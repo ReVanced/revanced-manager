@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_view"
+    app:startDestination="@+id/navigation_dashboard">
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="manager.ui.dashboard.DashboardFragment"
+        android:label="@string/navigation_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_patch"
+        android:name="manager.ui.patcher.PatcherFragment"
+        android:label="@string/navigation_patcher"
+        tools:layout="@layout/fragment_patcher" />
+
+
+
+</navigation>
