@@ -3,6 +3,7 @@
     <string name="card_announcement_header">Krátké oznámení</string>
     <string name="card_updates_header">Aktualizace repozitáře</string>
     <string name="card_logs_header">Protokoly</string>
+    <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Možnosti</string>
     <string name="card_changelog_body">Klikněte sem pro zobrazení seznamu změn.</string>
     <string name="card_updates_body_patcher">Patcher:</string>
@@ -13,4 +14,10 @@
     <string name="card_logs_body">Klikněte sem pro zobrazení protokolů patcheru.</string>
     <string name="card_announcement_button_changelog">Seznam změn</string>
     <string name="button_patch">Patch</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
 </resources>
