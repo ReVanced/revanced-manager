@@ -3,6 +3,7 @@
     <string name="card_announcement_header">Korte mededeling</string>
     <string name="card_updates_header">Project updates</string>
     <string name="card_logs_header">Logboek</string>
+    <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Opties</string>
     <string name="card_changelog_body">Klik hier om de lijst met wijzigingen te bekijken.</string>
     <string name="card_updates_body_patcher">Patcher:</string>
@@ -13,4 +14,10 @@
     <string name="card_logs_body">Klik hier om de patcher logboeken te bekijken.</string>
     <string name="card_announcement_button_changelog">Wijzigingslogboek</string>
     <string name="button_patch">Patch</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
 </resources>
