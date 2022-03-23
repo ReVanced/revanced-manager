@@ -3,6 +3,7 @@
     <string name="card_announcement_header">Thông báo</string>
     <string name="card_updates_header">Cập nhật từ Repository</string>
     <string name="card_logs_header">Logs</string>
+    <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Tuỳ chọn</string>
     <string name="card_changelog_body">Nhấn để xem thay đổi ở phiên bản mới.</string>
     <string name="card_updates_body_patcher">Patcher:</string>
@@ -13,4 +14,10 @@
     <string name="card_logs_body">Nhấn để xem logs của patcher.</string>
     <string name="card_announcement_button_changelog">Thay đổi ở bản mới</string>
     <string name="button_patch">Vá</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
 </resources>
