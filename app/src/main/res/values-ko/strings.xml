@@ -3,6 +3,7 @@
     <string name="card_announcement_header">안내사항</string>
     <string name="card_updates_header">리포지토리 업데이트</string>
     <string name="card_logs_header">로그</string>
+    <string name="card_patches_header">Patches</string>
     <string name="card_options_header">설정</string>
     <string name="card_changelog_body">업데이트 내역 보기</string>
     <string name="card_updates_body_patcher">패쳐:</string>
@@ -13,4 +14,10 @@
     <string name="card_logs_body">패치 로그 보기</string>
     <string name="card_announcement_button_changelog">업데이트 정보</string>
     <string name="button_patch">패치</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
 </resources>
