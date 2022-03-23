@@ -3,6 +3,7 @@
     <string name="card_announcement_header">Pengumuman pendek</string>
     <string name="card_updates_header">Perbarui repositori</string>
     <string name="card_logs_header">Log</string>
+    <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Pengaturan</string>
     <string name="card_changelog_body">Ketuk di sini untuk melihat changelog.</string>
     <string name="card_updates_body_patcher">Patcher:</string>
@@ -13,4 +14,10 @@
     <string name="card_logs_body">Ketuk di sini untuk melihat log patcher.</string>
     <string name="card_announcement_button_changelog">Changelog</string>
     <string name="button_patch">Patch</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
 </resources>
