@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">簡短公告</string>
-    <string name="card_updates_header">儲存庫更新</string>
+    <string name="card_updates_header">倉庫更新</string>
     <string name="card_logs_header">日誌</string>
     <string name="card_options_header">選項</string>
-    <string name="card_changelog_body">點此檢視變更日誌。</string>
-    <string name="card_updates_body_patcher">增補器：</string>
-    <string name="card_updates_body_manager">管理器：</string>
+    <string name="card_changelog_body">按此查看更新日誌</string>
+    <string name="card_updates_body_patcher">補丁器(Patcher)</string>
+    <string name="card_updates_body_manager">管理員:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">使用已安裝的 YouTube</string>
-    <string name="card_logs_body">點此檢視增補器日誌。</string>
-    <string name="card_announcement_button_changelog">變更日誌</string>
-    <string name="button_patch">增補</string>
+    <string name="card_options_body_use_installed">使用已安裝的Youtube</string>
+    <string name="card_logs_body">按此查看補丁器日誌</string>
+    <string name="card_announcement_button_changelog">更新日誌</string>
+    <string name="button_patch">補丁包</string>
 </resources>
