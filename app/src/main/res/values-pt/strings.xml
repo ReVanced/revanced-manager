@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Short announcement</string>
-    <string name="card_updates_header">Repository updates</string>
+    <string name="card_announcement_header">Anúncio curto</string>
+    <string name="card_updates_header">Atualizações do repositório</string>
     <string name="card_logs_header">Logs</string>
-    <string name="card_patches_header">Patches</string>
-    <string name="card_options_header">Options</string>
-    <string name="card_changelog_body">Click here to view the changelog.</string>
+    <string name="card_options_header">Opções</string>
+    <string name="card_changelog_body">Clique aqui para ver o registro de mudanças.</string>
     <string name="card_updates_body_patcher">Patcher:</string>
     <string name="card_updates_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube</string>
-    <string name="card_logs_body">Click here to view patcher logs.</string>
-    <string name="card_announcement_button_changelog">Changelog</string>
+    <string name="card_options_body_use_installed">Usar o YouTube instalado</string>
+    <string name="card_logs_body">Clique aqui para ver os logs do patcher.</string>
+    <string name="card_announcement_button_changelog">Registro de mudanças</string>
     <string name="button_patch">Patch</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="navigation_dashboard">Dashboard</string>
-    <string name="navigation_patcher">Patcher</string>
 </resources>
