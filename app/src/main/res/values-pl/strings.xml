@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_announcement_header">Krótkie ogłoszenie</string>
+    <string name="card_updates_header">Aktualizacje repozytorium</string>
+    <string name="card_logs_header">Logi</string>
+    <string name="card_patches_header">Patches</string>
+    <string name="card_options_header">Opcje</string>
+    <string name="card_changelog_body">Kliknij tutaj, aby zobaczyć listę zmian.</string>
+    <string name="card_updates_body_patcher">Łatacz (Patcher):</string>
+    <string name="card_updates_body_manager">Menedżer:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Użyj zainstalowanego YouTube\'a</string>
+    <string name="card_logs_body">Kliknij tutaj, aby zobaczyć logi łatacza.</string>
+    <string name="card_announcement_button_changelog">Lista zmian</string>
+    <string name="button_patch">Łataj</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_announcement_header">Annuncio breve</string>
+    <string name="card_updates_header">Aggiornamenti del repository</string>
+    <string name="card_logs_header">Registri</string>
+    <string name="card_patches_header">Patches</string>
+    <string name="card_options_header">Opzioni</string>
+    <string name="card_changelog_body">Clicca qui per leggere il changelog.</string>
+    <string name="card_updates_body_patcher">Patcher:</string>
+    <string name="card_updates_body_manager">Gestore:</string>
+    <string name="card_announcement_body_placeholder">Questo è un testo di esempio per l\'anteprima del design di ReVanced Manager che sarà sostituita nel futuro da annunci dinamici.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Usa l\'app di YouTube già installata</string>
+    <string name="card_logs_body">Clicca qui per leggere i logs del patcher.</string>
+    <string name="card_announcement_button_changelog">Aggiornamenti</string>
+    <string name="button_patch">Patch</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
+</resources>

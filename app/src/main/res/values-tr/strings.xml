@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_announcement_header">Kısa duyuru</string>
+    <string name="card_updates_header">Depo (repository) güncellemeleri</string>
+    <string name="card_logs_header">Kayıtlar</string>
+    <string name="card_patches_header">Patches</string>
+    <string name="card_options_header">Seçenekler</string>
+    <string name="card_changelog_body">Değişiklikleri görmek için tıkla.</string>
+    <string name="card_updates_body_patcher">Yamalayıcı:</string>
+    <string name="card_updates_body_manager">Yönetici:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Halihazırdaki YouTube\'yi kullan</string>
+    <string name="card_logs_body">Yamalayıcı kayıtlarını görmek için tıkla.</string>
+    <string name="card_announcement_button_changelog">Değişiklikler</string>
+    <string name="button_patch">Yamala</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
+</resources>
