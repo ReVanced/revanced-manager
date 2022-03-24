@@ -3,7 +3,7 @@
     <string name="card_announcement_header">Kısa duyuru</string>
     <string name="card_updates_header">Depo (repository) güncellemeleri</string>
     <string name="card_logs_header">Kayıtlar</string>
-    <string name="card_patches_header">Patches</string>
+    <string name="card_patches_header">Yamalar</string>
     <string name="card_options_header">Seçenekler</string>
     <string name="card_changelog_body">Değişiklikleri görmek için tıkla.</string>
     <string name="card_updates_body_patcher">Yamalayıcı:</string>
@@ -15,9 +15,9 @@
     <string name="card_announcement_button_changelog">Değişiklikler</string>
     <string name="button_patch">Yamala</string>
     <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="navigation_dashboard">Dashboard</string>
-    <string name="navigation_patcher">Patcher</string>
+    <string name="title_home">Ana Sayfa</string>
+    <string name="title_dashboard">Kontrol paneli</string>
+    <string name="title_notifications">Bildirimler</string>
+    <string name="navigation_dashboard">Kontrol Paneli</string>
+    <string name="navigation_patcher">Yamalayıcı</string>
 </resources>
