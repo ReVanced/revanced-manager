@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Короткое объявление</string>
+    <string name="card_announcement_header">Краткое объявление</string>
     <string name="card_updates_header">Обновления</string>
     <string name="card_logs_header">Журнал</string>
     <string name="card_patches_header">Патчи</string>
     <string name="card_options_header">Опции</string>
-    <string name="card_changelog_body">Нажмите здесь, чтобы просмотреть список изменений.</string>
+    <string name="card_credits_header">Credits</string>
     <string name="card_updates_body_patcher">Патчер:</string>
     <string name="card_updates_body_manager">Менеджер:</string>
     <string name="card_announcement_body_placeholder">Это бессмысленный текст предназначенный для предпросмотра дизайна ReVanced Manager, данный текст вскоре будет заменен динамичными новостями.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Использовать установленный YouTube</string>
     <string name="card_logs_body">Нажмите здесь, чтобы просмотреть журнал патчера.</string>
+    <string name="card_credits_body">Click here to view ReVanced project credits.</string>
     <string name="card_announcement_button_changelog">Список изменений</string>
     <string name="button_patch">Применить</string>
-    <string name="title_activity_main2">ГлавнаяАктивность2</string>
-    <string name="title_home">Главная</string>
-    <string name="title_dashboard">Обзор</string>
-    <string name="title_notifications">Уведомления</string>
     <string name="navigation_dashboard">Обзор</string>
     <string name="navigation_patcher">Патчер</string>
+    <string name="activity_logs_modal_title">Logs</string>
+    <string name="activity_credits_modal_title">Credits</string>
+    <string name="activity_credits_team_manager">Manager</string>
+    <string name="activity_credits_team_website">Website</string>
+    <string name="activity_credits_team">Team</string>
+    <string name="activity_credits_translators">Translators</string>
+    <string name="activity_credits_team_patcher">Patcher</string>
 </resources>
