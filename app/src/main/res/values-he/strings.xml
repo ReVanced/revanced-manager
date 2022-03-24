@@ -3,7 +3,7 @@
     <string name="card_announcement_header">מודעה קצרה</string>
     <string name="card_updates_header">עדכוני מאגר</string>
     <string name="card_logs_header">לוגים</string>
-    <string name="card_patches_header">Patches</string>
+    <string name="card_patches_header">פאצ\'ים</string>
     <string name="card_options_header">הגדרות</string>
     <string name="card_changelog_body">לחצו כאן לצפיית לוגים.</string>
     <string name="card_updates_body_patcher">פאצ\'ר:</string>
@@ -14,10 +14,10 @@
     <string name="card_logs_body">לחצו כאן לצפיית לוגים של פאצ\'ר.</string>
     <string name="card_announcement_button_changelog">יומן שינויים</string>
     <string name="button_patch">פאצ\'</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="navigation_dashboard">Dashboard</string>
-    <string name="navigation_patcher">Patcher</string>
+    <string name="title_activity_main2">פעילות עיקרית</string>
+    <string name="title_home">ראשי</string>
+    <string name="title_dashboard">לוח בקרה</string>
+    <string name="title_notifications">התראות</string>
+    <string name="navigation_dashboard">לוח בקרה</string>
+    <string name="navigation_patcher">פאצ\'ר</string>
 </resources>
