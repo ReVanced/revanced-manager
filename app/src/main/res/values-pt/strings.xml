@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Pequeno anúncio</string>
+    <string name="card_announcement_header">Anúncio curto</string>
     <string name="card_updates_header">Atualizações do repositório</string>
     <string name="card_logs_header">Registros</string>
     <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Opções</string>
     <string name="card_credits_header">Credits</string>
     <string name="card_updates_body_patcher">Patcher:</string>
-    <string name="card_updates_body_manager">Gerenciador:</string>
-    <string name="card_announcement_body_placeholder">Este é um texto de exemplo para visualizar o design do ReVanced Manager que será substituído por anúncios dinâmicos no futuro.</string>
+    <string name="card_updates_body_manager">Manager:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Usar o YouTube instalado</string>
-    <string name="card_logs_body">Clique aqui para ver os registros do patcher.</string>
+    <string name="card_logs_body">Clique aqui para ver os logs do patcher.</string>
     <string name="card_credits_body">Click here to view ReVanced project credits.</string>
     <string name="card_announcement_button_changelog">Registro de mudanças</string>
     <string name="button_patch">Patch</string>
-    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_dashboard">Painel de controle</string>
     <string name="navigation_patcher">Patcher</string>
     <string name="activity_logs_modal_title">Logs</string>
     <string name="activity_credits_modal_title">Credits</string>
