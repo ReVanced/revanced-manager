@@ -15,9 +15,9 @@
     <string name="card_announcement_button_changelog">Änderungsverlauf</string>
     <string name="button_patch">Patch</string>
     <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="navigation_dashboard">Dashboard</string>
+    <string name="title_home">Startseite</string>
+    <string name="title_dashboard">Übersicht</string>
+    <string name="title_notifications">Benachrichtigungen</string>
+    <string name="navigation_dashboard">Übersicht</string>
     <string name="navigation_patcher">Patcher</string>
 </resources>
