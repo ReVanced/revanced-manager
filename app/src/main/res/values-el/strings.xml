@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Short announcement</string>
-    <string name="card_updates_header">Repository updates</string>
-    <string name="card_logs_header">Logs</string>
+    <string name="card_announcement_header">Σύντομη ανακοίνωση</string>
+    <string name="card_updates_header">Ενημερώσεις αποθετηρίου</string>
+    <string name="card_logs_header">Καταγραφές</string>
     <string name="card_patches_header">Patches</string>
-    <string name="card_options_header">Options</string>
-    <string name="card_changelog_body">Click here to view the changelog.</string>
-    <string name="card_updates_body_patcher">Patcher:</string>
-    <string name="card_updates_body_manager">Manager:</string>
+    <string name="card_options_header">Επιλογές</string>
+    <string name="card_changelog_body">Πατήστε εδώ για να δείτε τις αλλαγές των αρχείων.</string>
+    <string name="card_updates_body_patcher">Eπισκευαστής:</string>
+    <string name="card_updates_body_manager">Διαχείριση</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube</string>
-    <string name="card_logs_body">Click here to view patcher logs.</string>
-    <string name="card_announcement_button_changelog">Changelog</string>
-    <string name="button_patch">Patch</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="navigation_dashboard">Dashboard</string>
-    <string name="navigation_patcher">Patcher</string>
+    <string name="card_options_body_use_installed">Χρήση εγκατεστημένου YouTube</string>
+    <string name="card_logs_body">Κάντε κλικ εδώ για να δείτε αρχεία καταγραφής του επισκευαστή.</string>
+    <string name="card_announcement_button_changelog">Αρχείο καταγραφής αλλαγών</string>
+    <string name="button_patch">Eπισκευή</string>
+    <string name="title_activity_main2">Κύρια δραστηριότητα 2</string>
+    <string name="title_home">Αρχική</string>
+    <string name="title_dashboard">Πίνακας εργαλείων</string>
+    <string name="title_notifications">Ειδοποιήσεις</string>
+    <string name="navigation_dashboard">Πίνακας εργαλείων</string>
+    <string name="navigation_patcher">Eπισκευαστής</string>
 </resources>
