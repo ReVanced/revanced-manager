@@ -2,26 +2,26 @@
 <resources>
     <string name="card_announcement_header">Σύντομη ανακοίνωση</string>
     <string name="card_updates_header">Ενημερώσεις αποθετηρίου</string>
-    <string name="card_logs_header">Καταγραφές</string>
+    <string name="card_logs_header">Αρχεία καταγραφής</string>
     <string name="card_patches_header">Διορθώσεις</string>
     <string name="card_options_header">Επιλογές</string>
-    <string name="card_credits_header">Credits</string>
+    <string name="card_credits_header">Πιστώσεις</string>
     <string name="card_updates_body_patcher">Eπισκευαστής:</string>
     <string name="card_updates_body_manager">Διαχειριστής:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Χρήση εγκατεστημένου YouTube</string>
-    <string name="card_logs_body">Κάντε κλικ εδώ για να δείτε αρχεία καταγραφής του επισκευαστή.</string>
-    <string name="card_credits_body">Click here to view ReVanced project credits.</string>
+    <string name="card_logs_body">Κάντε κλικ εδώ για να δείτε τα αρχεία καταγραφής του επισκευαστή.</string>
+    <string name="card_credits_body">Κάντε κλικ εδώ για να δείτε τις πιστώσεις του ReVanced.</string>
     <string name="card_announcement_button_changelog">Αρχείο καταγραφής αλλαγών</string>
     <string name="button_patch">Eπισκευή</string>
     <string name="navigation_dashboard">Πίνακας εργαλείων</string>
     <string name="navigation_patcher">Eπισκευαστής</string>
-    <string name="activity_logs_modal_title">Logs</string>
-    <string name="activity_credits_modal_title">Credits</string>
-    <string name="activity_credits_team_manager">Manager</string>
-    <string name="activity_credits_team_website">Website</string>
-    <string name="activity_credits_team">Team</string>
-    <string name="activity_credits_translators">Translators</string>
-    <string name="activity_credits_team_patcher">Patcher</string>
+    <string name="activity_logs_modal_title">Αρχεία καταγραφής</string>
+    <string name="activity_credits_modal_title">Πιστώσεις</string>
+    <string name="activity_credits_team_manager">Διαχειριστής</string>
+    <string name="activity_credits_team_website">Ιστοσελίδα</string>
+    <string name="activity_credits_team">Ομάδα</string>
+    <string name="activity_credits_translators">Μεταφραστές</string>
+    <string name="activity_credits_team_patcher">Επισκευαστής</string>
 </resources>
