@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">短い発表</string>
-    <string name="card_updates_header">更新</string>
+    <string name="card_announcement_header">短い告知</string>
+    <string name="card_updates_header">リポジトリの更新</string>
     <string name="card_logs_header">ログ</string>
-    <string name="card_patches_header">Patches</string>
+    <string name="card_patches_header">パッチ</string>
     <string name="card_options_header">設定</string>
-    <string name="card_credits_header">Credits</string>
+    <string name="card_credits_header">クレジット</string>
     <string name="card_updates_body_patcher">パッチャー</string>
     <string name="card_updates_body_manager">マネジャー</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">インストールされたYouTubeを使用する</string>
     <string name="card_logs_body">パッチャーログを表示するには、ここをクリックしてください</string>
-    <string name="card_credits_body">Click here to view ReVanced project credits.</string>
-    <string name="card_announcement_button_changelog">変更点のリスト</string>
+    <string name="card_credits_body">ReVancedプロジェクトのクレジットを表示するにはここをクリックしてください</string>
+    <string name="card_announcement_button_changelog">変更履歴</string>
     <string name="button_patch">パッチ</string>
-    <string name="navigation_dashboard">Dashboard</string>
-    <string name="navigation_patcher">Patcher</string>
-    <string name="activity_logs_modal_title">Logs</string>
-    <string name="activity_credits_modal_title">Credits</string>
-    <string name="activity_credits_team_manager">Manager</string>
-    <string name="activity_credits_team_website">Website</string>
-    <string name="activity_credits_team">Team</string>
-    <string name="activity_credits_translators">Translators</string>
-    <string name="activity_credits_team_patcher">Patcher</string>
+    <string name="navigation_dashboard">ダッシュボード</string>
+    <string name="navigation_patcher">パッチャー</string>
+    <string name="activity_logs_modal_title">ログ</string>
+    <string name="activity_credits_modal_title">クレジット</string>
+    <string name="activity_credits_team_manager">マネージャー</string>
+    <string name="activity_credits_team_website">ウェブサイト</string>
+    <string name="activity_credits_team">チーム</string>
+    <string name="activity_credits_translators">翻訳者</string>
+    <string name="activity_credits_team_patcher">パッチャー</string>
 </resources>
