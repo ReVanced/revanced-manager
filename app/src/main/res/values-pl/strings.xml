@@ -12,7 +12,7 @@
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Użyj zainstalowanego YouTube\'a</string>
     <string name="card_logs_body">Kliknij tutaj, aby zobaczyć logi łatacza.</string>
-    <string name="card_credits_body">Kliknij tutaj, aby zobaczyć podziękowania projekty ReVanced.</string>
+    <string name="card_credits_body">Kliknij tutaj, aby zobaczyć podziękowania projektu ReVanced.</string>
     <string name="card_announcement_button_changelog">Lista zmian</string>
     <string name="button_patch">Patchuj</string>
     <string name="navigation_dashboard">Pulpit</string>
