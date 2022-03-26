@@ -12,7 +12,7 @@
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">使用已安裝的 YouTube</string>
     <string name="card_logs_body">點此檢視修補器日誌。</string>
-    <string name="card_credits_body">按此檢視 ReVanced 專案製作團隊</string>
+    <string name="card_credits_body">按此檢視 ReVanced 專案製作團隊。</string>
     <string name="card_announcement_button_changelog">更新紀錄</string>
     <string name="button_patch">補丁</string>
     <string name="navigation_dashboard">儀表板</string>
