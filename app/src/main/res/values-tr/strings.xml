@@ -12,8 +12,8 @@
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Yüklü olan YouTube\'u kullan</string>
     <string name="card_logs_body">Yamalayıcı günlüklerini görmek için tıkla.</string>
-    <string name="card_credits_body">ReVanced projesine katkıda bulunanları görmek için tıkla.</string>
-    <string name="card_announcement_button_changelog">Değişiklikler</string>
+    <string name="card_credits_body">ReVanced projesine katkıda bulunanları görmek için buraya tıklayın.</string>
+    <string name="card_announcement_button_changelog">Değişiklik günlüğü</string>
     <string name="button_patch">Yamala</string>
     <string name="navigation_dashboard">Kontrol paneli</string>
     <string name="navigation_patcher">Yamalayıcı</string>
