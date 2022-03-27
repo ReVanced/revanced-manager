@@ -3,8 +3,8 @@
     <string name="card_announcement_header">Maikling anunsyo</string>
     <string name="card_updates_header">Mga update ng repository</string>
     <string name="card_logs_header">Logs</string>
-    <string name="card_patches_header">Mga patch</string>
-    <string name="card_options_header">Mga options</string>
+    <string name="card_patches_header">Patches</string>
+    <string name="card_options_header">Mga opsyon</string>
     <string name="card_credits_header">Credits</string>
     <string name="card_updates_body_patcher">Patcher:</string>
     <string name="card_updates_body_manager">Manager:</string>
