@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Krótkie ogłoszenie</string>
+    <string name="card_announcement_header">Krótki komunikat</string>
     <string name="card_updates_header">Aktualizacje repozytorium</string>
     <string name="card_logs_header">Logi</string>
     <string name="card_patches_header">Patche</string>
     <string name="card_options_header">Opcje</string>
-    <string name="card_credits_header">Podziękowania</string>
+    <string name="card_credits_header">Autorzy</string>
     <string name="card_updates_body_patcher">Patcher:</string>
     <string name="card_updates_body_manager">Menedżer:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Użyj zainstalowanego YouTube\'a</string>
-    <string name="card_logs_body">Kliknij tutaj, aby zobaczyć logi łatacza.</string>
-    <string name="card_credits_body">Kliknij tutaj, aby zobaczyć podziękowania projektu ReVanced.</string>
+    <string name="card_logs_body">Kliknij tutaj, aby zobaczyć logi patchera.</string>
+    <string name="card_credits_body">Kliknij tutaj, aby zobaczyć autorów projektu ReVanced.</string>
     <string name="card_announcement_button_changelog">Lista zmian</string>
     <string name="button_patch">Patchuj</string>
     <string name="navigation_dashboard">Pulpit</string>
     <string name="navigation_patcher">Patcher</string>
     <string name="activity_logs_modal_title">Logi</string>
-    <string name="activity_credits_modal_title">Podziękowania</string>
+    <string name="activity_credits_modal_title">Autorzy</string>
     <string name="activity_credits_team_manager">Menedżer</string>
     <string name="activity_credits_team_website">Strona Internetowa</string>
     <string name="activity_credits_team">Zespół</string>
