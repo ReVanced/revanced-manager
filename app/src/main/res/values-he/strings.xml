@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">מודעה קצרה</string>
+    <string name="card_announcement_header">הודעה קצרה</string>
     <string name="card_updates_header">עדכוני מאגר</string>
-    <string name="card_logs_header">לוגים</string>
-    <string name="card_patches_header">פאצ\'ים</string>
+    <string name="card_logs_header">רישומים</string>
+    <string name="card_patches_header">טלאים</string>
     <string name="card_options_header">הגדרות</string>
     <string name="card_credits_header">אודות</string>
     <string name="card_updates_body_patcher">פאצ\'ר:</string>
-    <string name="card_updates_body_manager">ניהול:</string>
+    <string name="card_updates_body_manager">מנהל:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">השתמש ב Youtube מהותקן</string>
-    <string name="card_logs_body">לחצו כאן לצפיית לוגים של פאצ\'ר.</string>
+    <string name="card_options_body_use_installed">השתמש ביוטיוב המותקן</string>
+    <string name="card_logs_body">לחצו כאן לצפיית רישומים של הפאצ\'ר.</string>
     <string name="card_credits_body">לחץ כאן על מנת לצפות בקרדיטים של פרויקט ה-ReVanced.</string>
-    <string name="card_announcement_button_changelog">יומן שינויים</string>
+    <string name="card_announcement_button_changelog">היסטורית שינויים</string>
     <string name="button_patch">פאצ\'</string>
     <string name="navigation_dashboard">לוח בקרה</string>
     <string name="navigation_patcher">פאצ\'ר</string>
-    <string name="activity_logs_modal_title">לוגים</string>
+    <string name="activity_logs_modal_title">רישומים</string>
     <string name="activity_credits_modal_title">אודות</string>
-    <string name="activity_credits_team_manager">ניהול</string>
+    <string name="activity_credits_team_manager">מנהל</string>
     <string name="activity_credits_team_website">אתר</string>
     <string name="activity_credits_team">צוות</string>
     <string name="activity_credits_translators">מתרגמים</string>
