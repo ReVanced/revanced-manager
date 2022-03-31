@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Anunț scurt</string>
-    <string name="card_updates_header">Actualizări ale depozitului</string>
-    <string name="card_logs_header">Jurnale</string>
-    <string name="card_patches_header">Pachete</string>
+    <string name="card_announcement_header">Anunț rapid</string>
+    <string name="card_updates_header">Actualizări Repository</string>
+    <string name="card_logs_header">Log-uri</string>
+    <string name="card_patches_header">Patch-uri</string>
     <string name="card_options_header">Opțiuni</string>
     <string name="card_credits_header">Contribuții</string>
     <string name="card_updates_body_patcher">Patcher:</string>
-    <string name="card_updates_body_manager">Managerul:</string>
+    <string name="card_updates_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Utilizați YouTube instalat</string>
-    <string name="card_logs_body">Faceți clic aici pentru a vizualiza jurnalele de corecție.</string>
-    <string name="card_credits_body">Faceți clic aici pentru a vedea creditele proiectului ReVanced.</string>
-    <string name="card_announcement_button_changelog">Jurnalul modificărilor</string>
+    <string name="card_logs_body">Apasă aici pentru a vedea jurnalele de log-uri.</string>
+    <string name="card_credits_body">Apasă aici pentru a vedea contribuțiile proiectului ReVanced.</string>
+    <string name="card_announcement_button_changelog">Istoric modificări</string>
     <string name="button_patch">Patch</string>
-    <string name="navigation_dashboard">Tablou de bord</string>
+    <string name="navigation_dashboard">Panou de control</string>
     <string name="navigation_patcher">Patcher</string>
-    <string name="activity_logs_modal_title">Jurnale</string>
+    <string name="activity_logs_modal_title">Log-uri</string>
     <string name="activity_credits_modal_title">Contribuții</string>
     <string name="activity_credits_team_manager">Manager</string>
-    <string name="activity_credits_team_website">Site web</string>
-    <string name="activity_credits_team">Echipa</string>
+    <string name="activity_credits_team_website">Website</string>
+    <string name="activity_credits_team">Echipă</string>
     <string name="activity_credits_translators">Traducători</string>
     <string name="activity_credits_team_patcher">Patcher</string>
 </resources>
