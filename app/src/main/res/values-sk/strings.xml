@@ -4,7 +4,7 @@
     <string name="card_updates_header">Aktualizácia depozitára</string>
     <string name="card_logs_header">Záznamy</string>
     <string name="card_patches_header">Záplaty</string>
-    <string name="card_options_header">Možnosti</string>
+    <string name="card_options_header">Nastavenia</string>
     <string name="card_credits_header">Poďakovania</string>
     <string name="card_updates_body_patcher">Autor:</string>
     <string name="card_updates_body_manager">Manažér:</string>
