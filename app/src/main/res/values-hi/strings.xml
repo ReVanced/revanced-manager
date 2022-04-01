@@ -10,9 +10,9 @@
     <string name="card_updates_body_manager">मैनेजर:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">स्थापित YouTube का  उपयोग करें </string>
+    <string name="card_options_body_use_installed">स्थापित YouTube का उपयोग करें</string>
     <string name="card_logs_body">पैचर लॉग देखने के लिए यहां क्लिक करें</string>
-    <string name="card_credits_body">ReVanced प्रोजेक्ट क्रेडिट को देखने के लिए यहां क्लिक करें।</string>
+    <string name="card_credits_body">ReVanced प्रोजेक्ट का क्रेडिट देखने के लिए यहां क्लिक करें</string>
     <string name="card_announcement_button_changelog">बदलाव</string>
     <string name="button_patch">पैच</string>
     <string name="navigation_dashboard">डैशबोर्ड</string>
