@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Short announcement</string>
+    <string name="card_announcement_header">Kort annonsering</string>
     <string name="card_updates_header">Repository updates</string>
     <string name="card_logs_header">Logger</string>
     <string name="card_patches_header">Endringer</string>
     <string name="card_options_header">Alternativer</string>
-    <string name="card_credits_header">Credits</string>
+    <string name="card_credits_header">Medvirkende</string>
     <string name="card_updates_body_patcher">Patcher:</string>
     <string name="card_updates_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
