@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Краткое объявление</string>
-    <string name="card_updates_header">Обновления</string>
+    <string name="card_announcement_header">Короткое объявление</string>
+    <string name="card_commits_header">Latest commits</string>
     <string name="card_logs_header">Журнал</string>
     <string name="card_patches_header">Патчи</string>
     <string name="card_options_header">Опции</string>
     <string name="card_credits_header">Авторы</string>
-    <string name="card_updates_body_patcher">Патчер:</string>
-    <string name="card_updates_body_manager">Менеджер:</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">Это бессмысленный текст предназначенный для предпросмотра дизайна ReVanced Manager, данный текст вскоре будет заменен динамичными новостями.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Использовать установленный YouTube</string>
+    <string name="card_options_body_use_installed">Use installed YouTube app</string>
     <string name="card_logs_body">Нажмите здесь, чтобы просмотреть журнал патчера.</string>
     <string name="card_credits_body">Нажмите здесь, чтобы просмотреть авторов проекта ReVanced.</string>
     <string name="card_announcement_button_changelog">Список изменений</string>
