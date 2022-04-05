@@ -3,8 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_main.xml" value="0.15833333333333333" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_dashboard.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_baseline_build_24.xml" value="0.168" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_baseline_code_24.xml" value="0.156" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_baseline_dashboard_24.xml" value="0.294" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_discord_24dp.xml" value="0.1585" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_github_24dp.xml" value="0.156" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_credits_modal.xml" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_logs_modal.xml" value="0.1762917933130699" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_patcher.xml" value="0.22" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_patcher_modal.xml" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_logs.xml" value="0.3625" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_patcher.xml" value="0.22" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_patcher_logs.xml" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_patcher_modal.xml" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/sample_component_patches_list_card.xml" value="0.16945288753799392" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/sample_s.xml" value="0.1762917933130699" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/settings_activity.xml" value="0.3625" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/menu/top_app_bar.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/xml/root_preferences.xml" value="0.1" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-managerv/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-managerv/app/src/main/res/menu/top_app_bar.xml" value="0.1" />
       </map>
     </option>
   </component>

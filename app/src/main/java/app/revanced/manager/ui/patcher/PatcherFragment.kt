@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import app.revanced.manager.databinding.FragmentPatcherBinding
+import com.google.android.material.color.DynamicColors
 
 class PatcherFragment : Fragment() {
 
@@ -21,19 +22,8 @@ class PatcherFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-
-        val patchViewModel =
-            ViewModelProvider(this).get(PatcherViewModel::class.java)
-
         _binding = FragmentPatcherBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
         return root
     }
 

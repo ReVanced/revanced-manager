@@ -30,14 +30,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Title, secondary and supporting text -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -56,7 +54,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button3"
+                    android:id="@+id/card_announcement_action_changelog"
                     style="@style/Widget.Material3.Button.TextButton.Dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -70,14 +68,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_updates47"
+                android:id="@+id/card_commits"
                 style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="192dp"
                 android:layout_margin="4dp"
+                android:visibility="visible"
                 tools:ignore="MissingConstraints">
 
                 <LinearLayout
@@ -95,19 +95,19 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/card_updates_header"
+                            android:text="@string/card_commits_header"
                             android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="@string/card_updates_body_patcher"
+                            android:text="@string/card_commits_body_patcher"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
-                            android:id="@+id/card_updates_body_updates_relative"
+                            android:id="@+id/card_commits_body_patcher_relative"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="an hour ago"
@@ -119,12 +119,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="@string/card_updates_body_manager"
+                            android:text="@string/card_commits_body_manager"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
-                            android:id="@+id/card_updates_body_manager_relative"
+                            android:id="@+id/card_commits_body_manager_relative"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2 hours ago"
@@ -139,11 +139,12 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_updates7"
+                android:id="@+id/card_credits"
                 style="@style/Widget.Material3.CardView.Filled"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
+                android:visibility="visible"
                 tools:ignore="MissingConstraints">
 
                 <LinearLayout
@@ -160,14 +161,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Logs"
+                            android:text="@string/card_credits_header"
                             android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="@string/card_logs_body"
+                            android:text="@string/card_credits_body"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary" />
 
@@ -178,7 +179,44 @@
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_logs"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            tools:ignore="MissingConstraints">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/card_logs_header"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/card_logs_body"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

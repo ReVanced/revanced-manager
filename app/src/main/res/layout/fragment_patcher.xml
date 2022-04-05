@@ -4,133 +4,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
     tools:context=".ui.patcher.PatcherFragment">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_options"
+        style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_patches"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_options"
-            style="@style/Widget.Material3.CardView.Filled"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="4dp"
-            tools:layout_editor_absoluteY="4dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_options_header"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/card_options_body_root"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginTop="16dp"
+                    android:checked="true"
+                    android:text="@string/card_options_body_root" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_options_header"
-                        android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-                    <!--                    <com.google.android.material.chip.ChipGroup-->
-                    <!--                        android:id="@+id/chipGroup"-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_marginTop="16dp"-->
-                    <!--                        android:layout_height="wrap_content">-->
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            android:id="@+id/chip"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:checkable="true"-->
-                    <!--                            android:text="Root" />-->
-                    <!--                        <com.google.android.material.chip.Chip-->
-                    <!--                            android:id="@+id/chip2"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:checkable="true"-->
-                    <!--                            android:text="Use installed YouTube" />-->
-                    <!--                    </com.google.android.material.chip.ChipGroup>-->
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/card_options_body_root"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:checked="true"
-                        android:text="@string/card_options_body_root" />
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/card_options_body_use_installed"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:checked="true"
-                        android:text="@string/card_options_body_use_installed" />
-                </LinearLayout>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/card_options_body_use_installed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:text="@string/card_options_body_use_installed" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_patches"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toTopOf="@id/button_patch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_options"
+        tools:ignore="MissingConstraints">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_patches"
-            style="@style/Widget.Material3.CardView.Filled"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="4dp"
-            tools:layout_editor_absoluteY="4dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_patches_header"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <ListView
+                    android:id="@+id/card_patches_body_patchlist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_patches_header"
-                        android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-                    <ListView
-                        android:id="@+id/card_patches_body_patchlist"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="16dp" />
-                </LinearLayout>
+                    android:padding="16dp" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_patch"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:clickable="true"
-        android:src="@drawable/ic_baseline_build_24"
+        android:layout_marginTop="32dp"
+        android:text="@string/button_patch"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_patches" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

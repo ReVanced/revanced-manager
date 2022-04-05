@@ -4,7 +4,6 @@
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#FFD8EF</color>
     <color name="md_theme_light_onPrimaryContainer">#3B0030</color>
-    <color name="md_theme_light_secondary">#626100</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
     <color name="md_theme_light_secondaryContainer">#EAEA00</color>
     <color name="md_theme_light_onSecondaryContainer">#1D1D00</color>
@@ -25,8 +24,6 @@
     <color name="md_theme_light_outline">#81737A</color>
     <color name="md_theme_light_inverseOnSurface">#F9EEF1</color>
     <color name="md_theme_light_inverseSurface">#342F31</color>
-    <color name="md_theme_light_inversePrimary">#FFADE3</color>
-    <color name="md_theme_light_shadow">#000000</color>
     <color name="md_theme_light_primaryInverse">#FFADE3</color>
     <color name="md_theme_dark_primary">#FFADE3</color>
     <color name="md_theme_dark_onPrimary">#5F004E</color>
@@ -34,7 +31,6 @@
     <color name="md_theme_dark_onPrimaryContainer">#FFD8EF</color>
     <color name="md_theme_dark_secondary">#CECD00</color>
     <color name="md_theme_dark_onSecondary">#333200</color>
-    <color name="md_theme_dark_secondaryContainer">#4A4900</color>
     <color name="md_theme_dark_onSecondaryContainer">#EAEA00</color>
     <color name="md_theme_dark_tertiary">#FFB68C</color>
     <color name="md_theme_dark_onTertiary">#552100</color>
@@ -53,9 +49,9 @@
     <color name="md_theme_dark_outline">#9C8D94</color>
     <color name="md_theme_dark_inverseOnSurface">#1F1A1C</color>
     <color name="md_theme_dark_inverseSurface">#EBE0E3</color>
-    <color name="md_theme_dark_inversePrimary">#B00090</color>
-    <color name="md_theme_dark_shadow">#000000</color>
     <color name="md_theme_dark_primaryInverse">#B00090</color>
-    <color name="seed">#D21DAD</color>
-    <color name="error">#BA1B1B</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 </resources>

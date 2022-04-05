@@ -13,6 +13,14 @@
         android:theme="@style/Theme.ReVancedManager"
         tools:targetApi="31">
         <activity
+            android:name=".LogsModal"
+            android:exported="false"
+            android:label="@string/activity_logs_modal_title"
+            android:theme="@style/Theme.ReVancedManager" />
+        <activity
+            android:name=".CreditsModal"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

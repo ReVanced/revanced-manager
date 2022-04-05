@@ -7,16 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="manager.ui.dashboard.DashboardFragment"
+        android:name="app.revanced.manager.ui.dashboard.DashboardFragment"
         android:label="@string/navigation_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_patch"
-        android:name="manager.ui.patcher.PatcherFragment"
+        android:name="app.revanced.manager.ui.patcher.PatcherFragment"
         android:label="@string/navigation_patcher"
         tools:layout="@layout/fragment_patcher" />
-
-
-
 </navigation>

@@ -4,12 +4,12 @@
     tools:context="manager.MainActivity">
     <item
         android:id="@+id/action_chat"
-        android:icon="@drawable/ic_baseline_chat_24"
+        android:icon="@drawable/ic_discord_24"
         android:title="@string/action_chat"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_git"
-        android:icon="@drawable/ic_github"
+        android:icon="@drawable/ic_github_24"
         android:title="@string/action_git"
         app:showAsAction="always" />
 </menu>
