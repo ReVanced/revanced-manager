@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Anuncio breve</string>
-    <string name="card_updates_header">Actualizaciones del repositorio</string>
+    <string name="card_commits_header">Latest commits</string>
     <string name="card_logs_header">Registros</string>
     <string name="card_patches_header">Parches</string>
     <string name="card_options_header">Opciones</string>
     <string name="card_credits_header">Créditos</string>
-    <string name="card_updates_body_patcher">Parcheador:</string>
-    <string name="card_updates_body_manager">Gestor:</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">Este es un texto de ejemplo para tener una vista previa del diseño de ReVanced Manager el cual será reemplazado por anuncios dinámicos en el futuro.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Usar YouTube instalado</string>
+    <string name="card_options_body_use_installed">Use installed YouTube app</string>
     <string name="card_logs_body">Haz clic aquí para ver los registros del parcheador.</string>
     <string name="card_credits_body">Presiona aquí para ver los créditos del proyecto ReVanced.</string>
     <string name="card_announcement_button_changelog">Historial de cambios</string>
