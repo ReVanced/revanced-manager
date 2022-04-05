@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">संक्षिप्त घोषणा</string>
-    <string name="card_updates_header">रिपॉजिटरी अपडेट</string>
+    <string name="card_commits_header">Latest commits</string>
     <string name="card_logs_header">लॉग्स</string>
     <string name="card_patches_header">पैच</string>
     <string name="card_options_header">विकल्प</string>
     <string name="card_credits_header">आभार</string>
-    <string name="card_updates_body_patcher">पैचर:</string>
-    <string name="card_updates_body_manager">मैनेजर:</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">स्थापित YouTube का उपयोग करें</string>
+    <string name="card_options_body_use_installed">Use installed YouTube app</string>
     <string name="card_logs_body">पैचर लॉग देखने के लिए यहां क्लिक करें</string>
     <string name="card_credits_body">ReVanced प्रोजेक्ट का क्रेडिट देखने के लिए यहां क्लिक करें</string>
     <string name="card_announcement_button_changelog">बदलाव</string>
