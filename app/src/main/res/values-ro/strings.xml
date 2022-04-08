@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Anunț rapid</string>
-    <string name="card_commits_header">Latest commits</string>
+    <string name="card_commits_header">Ultimele schimbări</string>
     <string name="card_logs_header">Istoric</string>
     <string name="card_patches_header">Patch-uri</string>
     <string name="card_options_header">Opțiuni</string>
@@ -10,7 +10,7 @@
     <string name="card_commits_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">Folosește aplicația YouTube instalată</string>
     <string name="card_logs_body">Apasă aici pentru a vedea istoricul de patch-uri.</string>
     <string name="card_credits_body">Apasă aici pentru a vedea contribuțiile proiectului ReVanced.</string>
     <string name="card_announcement_button_changelog">Istoric modificări</string>
