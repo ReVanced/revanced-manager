@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">짧은 공지사항</string>
+    <string name="card_announcement_header">공지사항</string>
     <string name="card_commits_header">최신 커밋</string>
     <string name="card_logs_header">로그</string>
     <string name="card_patches_header">패치</string>
     <string name="card_options_header">설정</string>
     <string name="card_credits_header">크레딧</string>
     <string name="card_commits_body_patcher">패쳐:</string>
-    <string name="card_commits_body_manager">매니저:</string>
+    <string name="card_commits_body_manager">관리자</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">설치된 유튜브 앱 사용</string>
