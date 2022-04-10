@@ -10,7 +10,7 @@
     <string name="card_commits_body_manager">Gestore:</string>
     <string name="card_announcement_body_placeholder">Questo è un testo di esempio per l\'anteprima del design di ReVanced Manager che sarà sostituita nel futuro da annunci dinamici.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">Use installed application</string>
     <string name="card_logs_body">Clicca qui per leggere i log del patcher.</string>
     <string name="card_credits_body">Clicca qui per vedere i riconoscimenti del progetto ReVanced.</string>
     <string name="card_announcement_button_changelog">Registro modifiche</string>
