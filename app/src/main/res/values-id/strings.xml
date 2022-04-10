@@ -10,7 +10,7 @@
     <string name="card_commits_body_manager">Pengelola:</string>
     <string name="card_announcement_body_placeholder">Tulisan preview untuk desain ReVanced Manager yang akan diganti dengan pesan pengumuman.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Gunakan aplikasi YouTube yang sudah terpasang</string>
+    <string name="card_options_body_use_installed">Use installed application</string>
     <string name="card_logs_body">Ketuk di sini untuk melihat log patcher.</string>
     <string name="card_credits_body">Klik di sini untuk melihat kontributor proyek ReVanced.</string>
     <string name="card_announcement_button_changelog">Catatan Perubahan</string>
