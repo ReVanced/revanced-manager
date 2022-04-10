@@ -13,7 +13,7 @@
     <string name="card_options_body_use_installed">ইন্সটলকৃত ইউটিউব অ্যাপ ব্যবহার করুন</string>
     <string name="card_logs_body">প্যাচার লগ দেখতে এখানে ক্লিক করুন.</string>
     <string name="card_credits_body">ReVanced প্রজেক্টের অবদানকারীদের নাম দেখতে এখানে ক্লিক করুন.</string>
-    <string name="card_announcement_button_changelog">পরিবর্তন</string>
+    <string name="card_announcement_button_changelog">চেঞ্জলগ</string>
     <string name="button_patch">প্যাচ</string>
     <string name="navigation_dashboard">ড্যাশবোর্ড</string>
     <string name="navigation_patcher">প্যাচার</string>
