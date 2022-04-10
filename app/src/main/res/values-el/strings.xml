@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Σύντομη ανακοίνωση</string>
-    <string name="card_commits_header">Latest commits</string>
+    <string name="card_commits_header">Τελευταίες υποβολές κώδικα</string>
     <string name="card_logs_header">Αρχεία καταγραφής</string>
     <string name="card_patches_header">Διορθώσεις</string>
     <string name="card_options_header">Επιλογές</string>
     <string name="card_credits_header">Πιστώσεις</string>
-    <string name="card_commits_body_patcher">Patcher:</string>
-    <string name="card_commits_body_manager">Manager:</string>
+    <string name="card_commits_body_patcher">Eπισκευαστής:</string>
+    <string name="card_commits_body_manager">Διαχειριστής:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">Use installed application</string>
     <string name="card_logs_body">Κάντε κλικ εδώ για να δείτε τα αρχεία καταγραφής του επισκευαστή.</string>
     <string name="card_credits_body">Κάντε κλικ εδώ για να δείτε τα εύσημα του έργου ReVanced.</string>
     <string name="card_announcement_button_changelog">Τι νέο υπάρχει</string>
