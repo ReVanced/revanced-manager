@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Annuncio breve</string>
-    <string name="card_commits_header">Ultimi commit</string>
+    <string name="card_commits_header">Ultime revisioni</string>
     <string name="card_logs_header">Logs</string>
     <string name="card_patches_header">Patch</string>
     <string name="card_options_header">Opzioni</string>
