@@ -10,7 +10,7 @@
     <string name="card_commits_body_manager">Gestionnaire:</string>
     <string name="card_announcement_body_placeholder">Ceci est un exemple de texte pour la prévisualisation de ReVanced Manager qui va être remplacé par des annonces dynamiques à l\'avenir.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed application</string>
+    <string name="card_options_body_use_installed">Utiliser l\'application installée</string>
     <string name="card_logs_body">Cliquer ici pour lire le change log du patcher.</string>
     <string name="card_credits_body">Cliquez ici pour voir les remerciements du projet ReVanced.</string>
     <string name="card_announcement_button_changelog">Historique des changements</string>
