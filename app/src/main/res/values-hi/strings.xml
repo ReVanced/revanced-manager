@@ -10,7 +10,7 @@
     <string name="card_commits_body_manager">मैनेजर:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed application</string>
+    <string name="card_options_body_use_installed">इंस्टॉल एप्लिकेशन का इस्तेमाल करें</string>
     <string name="card_logs_body">पैचर लॉग देखने के लिए यहां क्लिक करें</string>
     <string name="card_credits_body">ReVanced प्रोजेक्ट का क्रेडिट देखने के लिए यहां क्लिक करें</string>
     <string name="card_announcement_button_changelog">बदलाव</string>
