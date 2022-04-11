@@ -5,7 +5,7 @@
     <string name="card_logs_header">Αρχεία καταγραφής</string>
     <string name="card_patches_header">Διορθώσεις</string>
     <string name="card_options_header">Επιλογές</string>
-    <string name="card_credits_header">Πιστώσεις</string>
+    <string name="card_credits_header">Εύσημα</string>
     <string name="card_commits_body_patcher">Eπισκευαστής:</string>
     <string name="card_commits_body_manager">Διαχειριστής:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
