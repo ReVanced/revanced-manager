@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">הודעה קצרה</string>
-    <string name="card_commits_header">Latest commits</string>
+    <string name="card_commits_header">הצעות אחרונות</string>
     <string name="card_logs_header">רישומים</string>
     <string name="card_patches_header">טלאים</string>
     <string name="card_options_header">הגדרות</string>
     <string name="card_credits_header">תודות</string>
-    <string name="card_commits_body_patcher">Patcher:</string>
-    <string name="card_commits_body_manager">Manager:</string>
+    <string name="card_commits_body_patcher">פאצ\'ר:</string>
+    <string name="card_commits_body_manager">מנהל:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed application</string>
+    <string name="card_options_body_use_installed">השתמש באפליקציה המותקנת</string>
     <string name="card_logs_body">לחצו כאן על מנת לצפות ברישומי הטלאי.</string>
     <string name="card_credits_body">לחץ כאן על מנת לצפות בקרדיטים של פרויקט ה-ReVanced.</string>
     <string name="card_announcement_button_changelog">יומן שינויים</string>
