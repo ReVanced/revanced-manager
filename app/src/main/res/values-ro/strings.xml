@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Anunț rapid</string>
+    <string name="card_announcement_header">Anunț scurt</string>
     <string name="card_commits_header">Ultimele schimbări</string>
-    <string name="card_logs_header">Modificări</string>
+    <string name="card_logs_header">Istoric</string>
     <string name="card_patches_header">Patch-uri</string>
     <string name="card_options_header">Opțiuni</string>
     <string name="card_credits_header">Contribuții</string>
-    <string name="card_commits_body_patcher">Modofixator:</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
     <string name="card_commits_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed application</string>
+    <string name="card_options_body_use_installed">Folosește aplicația instalată</string>
     <string name="card_logs_body">Apasă aici pentru a vedea istoricul de modificări ale versiunilor.</string>
     <string name="card_credits_body">Apasă aici pentru a vedea cine a contribuit la proiectul ReVanced.</string>
     <string name="card_announcement_button_changelog">Istoric modificări</string>
@@ -23,5 +23,5 @@
     <string name="activity_credits_team_website">Website</string>
     <string name="activity_credits_team">Echipă</string>
     <string name="activity_credits_translators">Traducători</string>
-    <string name="activity_credits_team_patcher">Modificator</string>
+    <string name="activity_credits_team_patcher">Patcher</string>
 </resources>
