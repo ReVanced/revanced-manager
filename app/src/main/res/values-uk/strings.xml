@@ -10,9 +10,9 @@
     <string name="card_commits_body_manager">Менеджер:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed application</string>
+    <string name="card_options_body_use_installed">Використовувати встановлений додаток</string>
     <string name="card_logs_body">Натисніть тут, щоб переглянути журнал патчеру.</string>
-    <string name="card_credits_body">Натисніть тут, щоб переглянути авторів проекту ReVanced.</string>
+    <string name="card_credits_body">Натисніть тут, щоб переглянути авторів проєкту ReVanced.</string>
     <string name="card_announcement_button_changelog">Список змін</string>
     <string name="button_patch">Застосувати</string>
     <string name="navigation_dashboard">Огляд</string>
