@@ -18,8 +18,8 @@
     <string name="navigation_dashboard">डैशबोर्ड</string>
     <string name="navigation_patcher">पैचर</string>
     <string name="activity_logs_modal_title">लॉग्स</string>
-    <string name="activity_credits_modal_title">आभार</string>
-    <string name="activity_credits_team_manager">मैनेजर</string>
+    <string name="activity_credits_modal_title">क्रेडिट</string>
+    <string name="activity_credits_team_manager">प्रबंधक</string>
     <string name="activity_credits_team_website">वेबसाइट</string>
     <string name="activity_credits_team">टीम</string>
     <string name="activity_credits_translators">अनुवादक</string>
