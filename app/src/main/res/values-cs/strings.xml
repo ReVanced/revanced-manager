@@ -2,7 +2,7 @@
 <resources>
     <string name="card_announcement_header">Krátké oznámení</string>
     <string name="card_commits_header">Poslední komity</string>
-    <string name="card_logs_header">Protokoly</string>
+    <string name="card_logs_header">Logy</string>
     <string name="card_patches_header">Záplaty</string>
     <string name="card_options_header">Možnosti</string>
     <string name="card_credits_header">Poděkování</string>
@@ -17,10 +17,10 @@
     <string name="button_patch">Patch</string>
     <string name="navigation_dashboard">Přehled</string>
     <string name="navigation_patcher">Patcher</string>
-    <string name="activity_logs_modal_title">Protokoly</string>
+    <string name="activity_logs_modal_title">Logy</string>
     <string name="activity_credits_modal_title">Poděkování</string>
-    <string name="activity_credits_team_manager">Manager</string>
-    <string name="activity_credits_team_website">Web</string>
+    <string name="activity_credits_team_manager">Správce</string>
+    <string name="activity_credits_team_website">Webová stránka</string>
     <string name="activity_credits_team">Tým</string>
     <string name="activity_credits_translators">Překladatelé</string>
     <string name="activity_credits_team_patcher">Patcher</string>
