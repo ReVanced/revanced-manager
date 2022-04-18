@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Anúncio breve</string>
-    <string name="card_commits_header">Últimas mudanças</string>
+    <string name="card_commits_header">Commits recentes</string>
     <string name="card_logs_header">Registros</string>
     <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Opções</string>
@@ -15,7 +15,7 @@
     <string name="card_credits_body">Clique aqui para ver os créditos do projeto ReVanced.</string>
     <string name="card_announcement_button_changelog">Registro de alterações</string>
     <string name="button_patch">Patch</string>
-    <string name="navigation_dashboard">Painel de controle</string>
+    <string name="navigation_dashboard">Painel de navegação</string>
     <string name="navigation_patcher">Patcher</string>
     <string name="activity_logs_modal_title">Registros</string>
     <string name="activity_credits_modal_title">Créditos</string>
