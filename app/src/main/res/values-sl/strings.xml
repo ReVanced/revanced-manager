@@ -3,7 +3,7 @@
     <string name="card_announcement_header">Kratka naznanitev</string>
     <string name="card_commits_header">Zadnji prispevki</string>
     <string name="card_logs_header">Dnevniki</string>
-    <string name="card_patches_header">Popravki</string>
+    <string name="card_patches_header">Krpice</string>
     <string name="card_options_header">Možnosti</string>
     <string name="card_credits_header">Zasluge</string>
     <string name="card_commits_body_patcher">Krpalnik:</string>
