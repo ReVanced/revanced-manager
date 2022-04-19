@@ -17,7 +17,7 @@
     <string name="button_patch">Appliquer les modifications</string>
     <string name="navigation_dashboard">Tableau de bord</string>
     <string name="navigation_patcher">Patcheur</string>
-    <string name="activity_logs_modal_title">Journal</string>
+    <string name="activity_logs_modal_title">Journaux</string>
     <string name="activity_credits_modal_title">Remerciements</string>
     <string name="activity_credits_team_manager">Gestionnaire</string>
     <string name="activity_credits_team_website">Site web</string>
