@@ -11,7 +11,7 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">설치된 앱을 사용</string>
-    <string name="card_logs_body">여기를 클릭하여 변경내역을 확인하세요.</string>
+    <string name="card_logs_body">여기를 클릭하여 변경 내역을 확인하세요.</string>
     <string name="card_credits_body">여기를 클릭하여 ReVanced 프로젝트 크레딧을 확인합니다</string>
     <string name="card_announcement_button_changelog">변경사항</string>
     <string name="button_patch">패치</string>
