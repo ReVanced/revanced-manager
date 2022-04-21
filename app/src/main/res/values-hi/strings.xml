@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">संक्षिप्त घोषणा</string>
-    <string name="card_commits_header">नवीनतम कमिट</string>
+    <string name="card_commits_header">नए कमिट</string>
     <string name="card_logs_header">लॉग्स</string>
     <string name="card_patches_header">पैच</string>
     <string name="card_options_header">विकल्प</string>
-    <string name="card_credits_header">आभार</string>
+    <string name="card_credits_header">श्रेय</string>
     <string name="card_commits_body_patcher">पैचर:</string>
     <string name="card_commits_body_manager">मैनेजर:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">इंस्टॉल एप्लिकेशन का इस्तेमाल करें</string>
     <string name="card_logs_body">पैचर लॉग देखने के लिए यहां क्लिक करें</string>
-    <string name="card_credits_body">ReVanced प्रोजेक्ट का क्रेडिट देखने के लिए यहां क्लिक करें</string>
+    <string name="card_credits_body">ReVanced प्रोजेक्ट के श्रेय देखने के लिए यहां क्लिक करें</string>
     <string name="card_announcement_button_changelog">बदलाव</string>
     <string name="button_patch">पैच</string>
     <string name="navigation_dashboard">डैशबोर्ड</string>
     <string name="navigation_patcher">पैचर</string>
     <string name="activity_logs_modal_title">लॉग्स</string>
-    <string name="activity_credits_modal_title">क्रेडिट</string>
-    <string name="activity_credits_team_manager">प्रबंधक</string>
+    <string name="activity_credits_modal_title">श्रेय</string>
+    <string name="activity_credits_team_manager">मैनेजर</string>
     <string name="activity_credits_team_website">वेबसाइट</string>
     <string name="activity_credits_team">टीम</string>
     <string name="activity_credits_translators">अनुवादक</string>
