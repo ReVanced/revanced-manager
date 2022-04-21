@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Kratka naznanitev</string>
+    <string name="card_announcement_header">Kratko obvestilo</string>
     <string name="card_commits_header">Zadnji prispevki</string>
     <string name="card_logs_header">Dnevniki</string>
     <string name="card_patches_header">Krpice</string>
