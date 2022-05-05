@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">מודעה קצרה</string>
-    <string name="card_commits_header">ביצועים אחרונים</string>
+    <string name="card_announcement_header">הודעה קצרה</string>
+    <string name="card_commits_header">שינוים אחרונים</string>
     <string name="card_logs_header">שינויים</string>
     <string name="card_patches_header">תיקונים</string>
     <string name="card_options_header">הגדרות</string>
@@ -11,15 +11,15 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">השתמש באפליקציה המותקנת</string>
-    <string name="card_logs_body">לחצו כאן על מנת לצפות ברישומי הטלאי.</string>
+    <string name="card_logs_body">לחצו כאן על מנת לצפות ברשימת השינויים.</string>
     <string name="card_credits_body">לחץ כאן לצפיית תודות פרוייקט ReVanced.</string>
     <string name="card_announcement_button_changelog">יומן שינויים</string>
     <string name="button_patch">תיקון</string>
     <string name="navigation_dashboard">לוח בקרה</string>
     <string name="navigation_patcher">מתקן</string>
     <string name="activity_logs_modal_title">שינויים</string>
-    <string name="activity_credits_modal_title">תודות</string>
-    <string name="activity_credits_team_manager">אחראי</string>
+    <string name="activity_credits_modal_title">אודות</string>
+    <string name="activity_credits_team_manager">מנהל</string>
     <string name="activity_credits_team_website">אתר</string>
     <string name="activity_credits_team">צוות</string>
     <string name="activity_credits_translators">מתרגמים</string>
