@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Korte mededeling</string>
-    <string name="card_commits_header">Nieuwste bijdragen</string>
+    <string name="card_commits_header">Laatste wijzigingen</string>
     <string name="card_logs_header">Logboek</string>
     <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Opties</string>
@@ -13,7 +13,7 @@
     <string name="card_options_body_use_installed">Gebruik geïnstalleerde applicatie</string>
     <string name="card_logs_body">Klik hier om het patcher logboek te bekijken.</string>
     <string name="card_credits_body">Klik hier om de ReVanced project credits te bekijken.</string>
-    <string name="card_announcement_button_changelog">Wijzigingen sinds laatste update</string>
+    <string name="card_announcement_button_changelog">Wijzigingslogboek</string>
     <string name="button_patch">Patch</string>
     <string name="navigation_dashboard">Dashboard</string>
     <string name="navigation_patcher">Patcher</string>
