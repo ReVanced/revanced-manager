@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_announcement_header">Thông báo</string>
+    <string name="card_commits_header">Thay đổi mới nhất</string>
+    <string name="card_logs_header">Logs</string>
+    <string name="card_patches_header">Các bản vá</string>
+    <string name="card_options_header">Tuỳ chọn</string>
+    <string name="card_credits_header">Tác giả</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Dùng ứng dụng đã cài đặt</string>
+    <string name="card_logs_body">Nhấn để xem logs của patcher.</string>
+    <string name="card_credits_body">Nhấn để xem các Tác giả của ReVanced.</string>
+    <string name="card_announcement_button_changelog">Thay đổi ở bản mới</string>
+    <string name="button_patch">Vá</string>
+    <string name="navigation_dashboard">Tổng quan</string>
+    <string name="navigation_patcher">Patcher</string>
+    <string name="activity_logs_modal_title">Logs</string>
+    <string name="activity_credits_modal_title">Các Tác giả</string>
+    <string name="activity_credits_team_manager">Manager</string>
+    <string name="activity_credits_team_website">Website</string>
+    <string name="activity_credits_team">Nhóm tác giả</string>
+    <string name="activity_credits_translators">Phiên dịch</string>
+    <string name="activity_credits_team_patcher">Patcher</string>
+</resources>
