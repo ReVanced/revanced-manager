@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="card_announcement_header">Pengumuman singkat</string>
-    <string name="card_commits_header">Komitmen Terbaru</string>
+    <string name="card_commits_header">Pembaharuan terbaru</string>
     <string name="card_logs_header">Log</string>
     <string name="card_patches_header">Tambalan</string>
     <string name="card_options_header">Pengaturan</string>
