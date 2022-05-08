@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_announcement_header">Anuncio corto</string>
+    <string name="card_announcement_header">Aviso breve</string>
     <string name="card_commits_header">Últimos cambios</string>
     <string name="card_logs_header">Registros</string>
     <string name="card_patches_header">Parches</string>
     <string name="card_options_header">Opciones</string>
     <string name="card_credits_header">Créditos</string>
-    <string name="card_commits_body_patcher">Parcheador:</string>
-    <string name="card_commits_body_manager">Administrador:</string>
-    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_commits_body_patcher">Aplicador de parches:</string>
+    <string name="card_commits_body_manager">Gestor:</string>
+    <string name="card_announcement_body_placeholder">Este es un texto de ejemplo para tener una vista previa del diseño de ReVanced Manager el cual será reemplazado por anuncios dinámicos en el futuro.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Usar la aplicacion instalada</string>
-    <string name="card_logs_body">Toque aquí para ver el historial de cambios.</string>
+    <string name="card_options_body_use_installed">Usar la instalación actual</string>
+    <string name="card_logs_body">Haz clic aquí para ver los registros del parcheador.</string>
     <string name="card_credits_body">Presiona aquí para ver los créditos del proyecto ReVanced.</string>
     <string name="card_announcement_button_changelog">Historial de cambios</string>
     <string name="button_patch">Aplicar parche</string>
@@ -19,7 +19,7 @@
     <string name="navigation_patcher">Aplicador de parches</string>
     <string name="activity_logs_modal_title">Registros</string>
     <string name="activity_credits_modal_title">Créditos</string>
-    <string name="activity_credits_team_manager">Administrador</string>
+    <string name="activity_credits_team_manager">Gestor</string>
     <string name="activity_credits_team_website">Sitio Web</string>
     <string name="activity_credits_team">Equipo</string>
     <string name="activity_credits_translators">Traductores</string>
