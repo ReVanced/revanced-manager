@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_announcement_header">Krátké oznámení</string>
+    <string name="card_commits_header">Poslední commity</string>
+    <string name="card_logs_header">Protokoly</string>
+    <string name="card_patches_header">Doplňky</string>
+    <string name="card_options_header">Možnosti</string>
+    <string name="card_credits_header">Poděkování</string>
+    <string name="card_commits_body_patcher">Doplňky:</string>
+    <string name="card_commits_body_manager">Správce:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Použít nainstalovanou aplikaci</string>
+    <string name="card_logs_body">Klikněte sem pro zobrazení protokolů doplňků.</string>
+    <string name="card_credits_body">Klikněte sem pro zobrazení poděkování projektu ReVanced.</string>
+    <string name="card_announcement_button_changelog">Seznam změn</string>
+    <string name="button_patch">Doplněk</string>
+    <string name="navigation_dashboard">Přehled</string>
+    <string name="navigation_patcher">Doplňky</string>
+    <string name="activity_logs_modal_title">Protokoly</string>
+    <string name="activity_credits_modal_title">Poděkování</string>
+    <string name="activity_credits_team_manager">Správce</string>
+    <string name="activity_credits_team_website">Web</string>
+    <string name="activity_credits_team">Tým</string>
+    <string name="activity_credits_translators">Překladatelé</string>
+    <string name="activity_credits_team_patcher">Doplňky</string>
+</resources>
