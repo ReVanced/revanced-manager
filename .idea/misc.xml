@@ -3,34 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_baseline_build_24.xml" value="0.168" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_baseline_code_24.xml" value="0.156" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_baseline_dashboard_24.xml" value="0.294" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_discord_24dp.xml" value="0.1585" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/drawable/ic_github_24dp.xml" value="0.156" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_credits_modal.xml" value="0.25" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_logs_modal.xml" value="0.1762917933130699" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_patcher.xml" value="0.22" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/activity_patcher_modal.xml" value="0.25" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_logs.xml" value="0.3625" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_patcher.xml" value="0.22" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_patcher_logs.xml" value="0.25" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/fragment_patcher_modal.xml" value="0.25" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/sample_component_patches_list_card.xml" value="0.16945288753799392" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/sample_s.xml" value="0.1762917933130699" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/layout/settings_activity.xml" value="0.3625" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.15885416666666666" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/menu/top_app_bar.xml" value="0.15885416666666666" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-manager/app/src/main/res/xml/root_preferences.xml" value="0.1" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-managerv/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
-        <entry key="..\:/Users/baiorett/AndroidStudioProjects/revanced-managerv/app/src/main/res/menu/top_app_bar.xml" value="0.1" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/MainActivity.kt" value="0.5" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/components/AppBar.kt" value="0.25" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/components/BottomNavBar.kt" value="0.37962962962962965" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/components/DialogAppBar.kt" value="0.4638888888888889" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/components/Navigator.kt" value="0.3194444444444444" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/components/placeholders/Icon.kt" value="0.960431654676259" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/components/placeholders/ListItem.kt" value="0.960431654676259" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/java/app/revanced/manager/ui/screens/AppSelectorScreen.kt" value="0.31476793248945145" />
+        <entry key="..\:/Users/baiorett/AndroidStudioProjects/ReVancedManagerCompose/app/src/main/res/drawable/ic_discord_24.xml" value="0.138" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

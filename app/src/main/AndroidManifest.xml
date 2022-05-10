@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,27 +18,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
         android:theme="@style/Theme.ReVancedManager"
-        tools:targetApi="31">
+        tools:targetApi="26">
         <activity
-            android:name=".LogsModal"
-            android:exported="false"
-            android:label="@string/activity_logs_modal_title"
-            android:theme="@style/Theme.ReVancedManager" />
-        <activity
-            android:name=".CreditsModal"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".ShellHeater"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ReVancedManager">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ReVancedManager"/>
     </application>
 
 </manifest>

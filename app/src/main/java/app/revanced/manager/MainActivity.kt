@@ -1,38 +1,56 @@
 package app.revanced.manager
 
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
-import app.revanced.manager.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.color.DynamicColors
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.*
 
-class MainActivity : AppCompatActivity() {
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+import androidx.navigation.compose.rememberNavController
+import app.revanced.manager.ui.components.AppBar
+import app.revanced.manager.ui.components.MainScreen
+import app.revanced.manager.ui.components.placeholders.AppListItem
+import app.revanced.manager.ui.screens.AppSelectorScreen
+import app.revanced.manager.ui.theme.ReVancedManagerTheme
 
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        DynamicColors.applyToActivitiesIfAvailable(application);
-        DynamicColors.applyIfAvailable(this);
-        WindowCompat.setDecorFitsSystemWindows(window, true)
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-//        supportFragmentManager.beginTransaction().replace(androidx.appcompat.R.id.content, Logs()).commit()
-        val navView: BottomNavigationView = binding.navView
-//        val sussy: ActionBar? = supportActionBar
-//        if (sussy != null) {
-//            sussy.setDisplayHomeAsUpEnabled(true)
-//        }
-        val navController = findNavController(R.id.nav_host_fragment)
-        navView.setupWithNavController(navController)
-
-
+        setContent {
+            ReVancedManagerTheme () {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val mainNavController = rememberNavController()
+                    NavHost(navController = mainNavController, startDestination = "mainScreen") {
+                        composable("mainScreen") { MainScreen() }
+                        composable("appSelectorScreen") { AppSelectorScreen() }
+                        /*...*/
+                    }
+                }
+            }
         }
     }
+}
+
+@Preview
+@Composable
+fun FullPreview() {
+    ReVancedManagerTheme {
+        MainScreen()
+    }
+}

@@ -12,9 +12,14 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="maven3" />
-      <option name="name" value="maven3" />
-      <option name="url" value="https://maven.pkg.github.com/ReVancedTeam/revanced-patches" />
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://maven.pkg.github.com/revanced/revanced-patcher" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://maven.pkg.github.com/revanced/revanced-patches" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="MavenRepo" />
@@ -24,11 +29,6 @@
     <remote-repository>
       <option name="id" value="maven" />
       <option name="name" value="maven" />
-      <option name="url" value="https://maven.pkg.github.com/ReVancedTeam/revanced-patcher" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven2" />
-      <option name="name" value="maven2" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
     <remote-repository>
