@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">ReVanced Manager</string>
-    <string name="app_selector_title">Select an app...</string>
+    <string name="app_selector_title">Select an app…</string>
 
     <string name="app_bar_open_discord" translatable="false">Discord</string>
     <string name="app_bar_open_github" translatable="false">GitHub</string>
 
-    <string name="card_announcement_header" translatable="false">Short announcement</string>
-    <string name="card_commits_header">Latest commits</string>
+    <string name="card_announcement_header">Short announcement</string>
+    <string name="card_commits_header">Latest updates</string>
     <string name="card_logs_header">Logs</string>
     <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Options</string>
