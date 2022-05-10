@@ -8,7 +8,7 @@ import com.topjohnwu.superuser.Shell
 class ShellHeater : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Shell.getShell { shell ->
+        Shell.getShell {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()

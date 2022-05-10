@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
 
-
 @Composable
 fun DialogAppBar(title: String) {
     SmallTopAppBar(
@@ -18,8 +17,11 @@ fun DialogAppBar(title: String) {
             Text(title)
         },
         navigationIcon = {
-            IconButton(onClick = {  }) {
-                androidx.compose.material3.Icon(Icons.Default.ArrowBack, contentDescription = "Return")
+            IconButton(onClick = { }) {
+                androidx.compose.material3.Icon(
+                    Icons.Default.ArrowBack,
+                    contentDescription = "Return"
+                )
             }
         }
     )

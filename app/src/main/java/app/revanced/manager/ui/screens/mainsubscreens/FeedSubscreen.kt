@@ -2,9 +2,6 @@ package app.revanced.manager.ui.screens.mainsubscreens
 
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -12,12 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.revanced.manager.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +37,7 @@ fun FeedSubscreen() {
                 )
             }
         }
-        Row() {
+        Row {
             Card(
                 modifier = Modifier
                     .padding(4.dp)

@@ -13,5 +13,6 @@ fun AppIcon(drawable: Drawable?, contentDescription: String?) {
     Image(
         rememberDrawablePainter(drawable),
         contentDescription,
-        Modifier.size(48.dp))
+        Modifier.size(48.dp)
+    )
 }

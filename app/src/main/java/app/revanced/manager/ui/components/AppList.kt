@@ -12,9 +12,14 @@ import app.revanced.manager.ui.components.placeholders.applist.AppIcon
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AppList(applications: MutableList<ApplicationInfo>) {
-    LazyColumn() {
+    LazyColumn {
         items(count = applications.size) {
-            ListItem(icon = { AppIcon(applications[it].loadIcon(LocalContext.current.packageManager), applications[it].packageName) }, text = { Text(applications[it].packageName) })
+            ListItem(icon = {
+                AppIcon(
+                    applications[it].loadIcon(LocalContext.current.packageManager),
+                    applications[it].packageName
+                )
+            }, text = { Text(applications[it].packageName) })
         }
     }
 }

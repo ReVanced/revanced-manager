@@ -1,7 +1,5 @@
 package app.revanced.manager.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -12,7 +10,10 @@ import app.revanced.manager.R
 @Composable
 fun BottomNavBar() {
     var selectedItem by remember { mutableStateOf("") }
-    val items = mapOf("Dashboard" to R.drawable.ic_baseline_dashboard_24, "Patcher" to R.drawable.ic_baseline_build_24)
+    val items = mapOf(
+        "Dashboard" to R.drawable.ic_baseline_dashboard_24,
+        "Patcher" to R.drawable.ic_baseline_build_24
+    )
 
     NavigationBar {
         for ((name_, drawable_) in items.entries) {
