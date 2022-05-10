@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_announcement_header">Кратко съобщение</string>
+    <string name="card_commits_header">Последни изменения</string>
+    <string name="card_logs_header">Дневници</string>
+    <string name="card_patches_header">Пачове</string>
+    <string name="card_options_header">Опции</string>
+    <string name="card_credits_header">Кредити</string>
+    <string name="card_commits_body_patcher">Пачър:</string>
+    <string name="card_commits_body_manager">Мениджър:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Използвайте инсталирано приложение</string>
+    <string name="card_logs_body">Щракнете тук, за да видите дневниците на пачър.</string>
+    <string name="card_credits_body">Натиснете тук за да проверите кредитите на проекта \"ReVanced\".</string>
+    <string name="card_announcement_button_changelog">Списък на промените</string>
+    <string name="button_patch">Пач</string>
+    <string name="navigation_dashboard">Табло</string>
+    <string name="navigation_patcher">Пачър</string>
+    <string name="activity_logs_modal_title">Дневници</string>
+    <string name="activity_credits_modal_title">Сътрудници</string>
+    <string name="activity_credits_team_manager">Мениджър</string>
+    <string name="activity_credits_team_website">Уебсайт</string>
+    <string name="activity_credits_team">Екип</string>
+    <string name="activity_credits_translators">Преводачи</string>
+    <string name="activity_credits_team_patcher">Пачър</string>
+</resources>
