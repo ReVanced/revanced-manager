@@ -1,5 +1,7 @@
 package app.revanced.manager.ui.components
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -7,21 +9,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import app.revanced.manager.R
 
-
 @Composable
-fun Navigator() {
-    var selectedItem by remember { mutableStateOf(0) }
-    val items = listOf("Dashboard", "Patcher")
-    val icons = listOf("Dashboard", "Patcher")
+fun BottomNavBar() {
+    var selectedItem by remember { mutableStateOf("") }
+    val items = mapOf("Dashboard" to R.drawable.ic_baseline_dashboard_24, "Patcher" to R.drawable.ic_baseline_build_24)
 
-    NavigationBar() {
-        items.forEachIndexed { index, item ->
+    NavigationBar {
+        for ((name_, drawable_) in items.entries) {
+            val name = name_
+            val drawable = drawable_
             NavigationBarItem(
-                icon = { Icon(R.drawable.ic_baseline_dashboard_24, contentDescription = null) },
-                label = { Text(item) },
+                icon = { Icon(drawable, contentDescription = null) },
+                label = { Text(name) },
                 alwaysShowLabel = false,
-                selected = selectedItem == index,
-                onClick = { selectedItem = index }
+                selected = selectedItem == name,
+                onClick = { selectedItem = name }
             )
         }
     }
@@ -29,6 +31,6 @@ fun Navigator() {
 
 @Preview
 @Composable
-fun NavigatorPreview() {
-    Navigator()
+fun BottomNavBarPreview() {
+    BottomNavBar()
 }

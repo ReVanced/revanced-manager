@@ -17,15 +17,12 @@ fun MainScreen() {
             AppBar()
         },
         bottomBar = {
-            Navigator()
+            BottomNavBar()
         },
         content = { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) {
                 FeedSubscreen()
             }
-
-
-
         }
     )
 }

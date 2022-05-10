@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,11 +20,12 @@ import androidx.compose.ui.unit.sp
 fun FeedSubscreen() {
     LazyVerticalGrid(modifier = Modifier.padding(8.dp), columns = GridCells.Adaptive(100.dp)) {
         item() {
-            Card(modifier = Modifier.padding(4.dp).sizeIn(minWidth = 250.dp, minHeight = 150.dp)) {
+            Card(modifier = Modifier
+                .padding(4.dp)
+                .sizeIn(minWidth = 250.dp, minHeight = 150.dp)) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(text = "test", fontSize = 16.sp, fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, lineHeight = 24.sp)
                 }
-
             }
         }
         item {
@@ -37,4 +39,10 @@ fun FeedSubscreen() {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun FeedPreview() {
+    FeedSubscreen()
 }
