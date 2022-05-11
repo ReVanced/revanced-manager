@@ -3,6 +3,7 @@ val composeVersion = rootProject.extra.get("compose_version") as String
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 repositories {
@@ -10,7 +11,7 @@ repositories {
     maven("https://jitpack.io")
     google()
     maven {
-        url = uri("https://maven.pkg.github.com/revanced/revanced-patcher") // note the "r"!
+        url = uri("https://maven.pkg.github.com/revanced/revanced-patcher")
         credentials {
             username =
                 (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
@@ -19,7 +20,7 @@ repositories {
         }
     }
     maven {
-        url = uri("https://maven.pkg.github.com/revanced/revanced-patches") // note the "r"!
+        url = uri("https://maven.pkg.github.com/revanced/revanced-patches")
         credentials {
             username =
                 (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
@@ -45,7 +46,13 @@ android {
             useSupportLibrary = true
         }
     }
-
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -73,23 +80,41 @@ android {
 }
 
 dependencies {
-    implementation("com.google.accompanist:accompanist-drawablepainter:+")
+    // Core
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.3.1")
     implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha10")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha06")
-    implementation("com.github.topjohnwu.libsu:core:4.0.3")
-    implementation("com.github.topjohnwu.libsu:io:4.0.3")
-    implementation("com.beust:klaxon:5.5")
-    implementation("org.bouncycastle:bcpkix-jdk15on:+")
+
+    // ReVanced
     implementation("app.revanced:revanced-patcher:+")
     implementation("app.revanced:revanced-patches:+")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+
+    // Compose Destinations
+    implementation("io.github.raamcosta.compose-destinations:core:+")
+    ksp("io.github.raamcosta.compose-destinations:ksp:+")
+
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-drawablepainter:+")
+
+    // libsu
+    implementation("com.github.topjohnwu.libsu:core:4.0.3")
+    implementation("com.github.topjohnwu.libsu:io:4.0.3")
+
+    // ???
+    implementation("com.beust:klaxon:5.5")
+
+    // Signing
+    implementation("org.bouncycastle:bcpkix-jdk15on:+")
+
+    // Material 3 + 2
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha10")
     implementation("androidx.compose.material3:material3:1.0.0-alpha10")
     implementation("androidx.compose.material:material:1.1.1")
 
+    // Tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

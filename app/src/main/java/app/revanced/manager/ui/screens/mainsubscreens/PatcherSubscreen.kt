@@ -19,9 +19,14 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.revanced.manager.R
+import app.revanced.manager.ui.screens.MainNavGraph
+import com.ramcosta.composedestinations.annotation.Destination
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
+@MainNavGraph
 @Composable
+// patcher_subscreen
 fun PatcherSubscreen() {
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
@@ -43,9 +48,6 @@ fun PatcherSubscreen() {
                 )
             }
         }
-
-
-
     }
 
 }
