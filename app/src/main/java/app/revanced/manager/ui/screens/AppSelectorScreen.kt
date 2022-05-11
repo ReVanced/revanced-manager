@@ -15,12 +15,12 @@ import app.revanced.manager.ui.components.DialogAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppSelectorScreen() {
+fun AppSelectorScreen(titleText: String, filter: List<String>) {
     val applications = LocalContext.current.packageManager.getInstalledApplications(0)
 
     Scaffold(
         topBar = {
-            DialogAppBar(stringResource(id = R.string.app_selector_title))
+            DialogAppBar(titleText)
         },
         content = { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) {
@@ -33,5 +33,5 @@ fun AppSelectorScreen() {
 @Preview
 @Composable
 fun PreviewAppSelectorScreen() {
-    AppSelectorScreen()
+    AppSelectorScreen(stringResource(id = R.string.app_selector_title), filter = listOf("placeholder"))
 }
