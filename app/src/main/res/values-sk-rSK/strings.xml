@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_selector_title">Vyberte aplikáciu…</string>
+    <string name="card_announcement_header">Krátke oznámenie</string>
+    <string name="card_commits_header">Posledné aktualizácie</string>
+    <string name="card_logs_header">Záznamy</string>
+    <string name="card_patches_header">Záplaty</string>
+    <string name="card_options_header">Nastavenia</string>
+    <string name="card_credits_header">Poďakovania</string>
+    <string name="card_commits_body_patcher">Autor:</string>
+    <string name="card_commits_body_manager">Manažér:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Použiť nainštalovaný YouTube</string>
+    <string name="card_logs_body">Kliknite sem pre zobrazenie záznamov záplaty.</string>
+    <string name="card_credits_body">Kliknite sem pre zobrazenie poďakovaní pre projekt ReVanced.</string>
+    <string name="card_announcement_button_changelog">Zoznam zmien</string>
+    <string name="button_patch">Záplata</string>
+    <string name="navigation_dashboard">Hlavný panel</string>
+    <string name="navigation_patcher">Autor</string>
+    <string name="activity_logs_modal_title">Záznamy</string>
+    <string name="activity_credits_modal_title">Poďakovania</string>
+    <string name="activity_credits_team_manager">Manažér</string>
+    <string name="activity_credits_team_website">Webová stránka</string>
+    <string name="activity_credits_team">Tím</string>
+    <string name="activity_credits_translators">Prekladatelia</string>
+    <string name="activity_credits_team_patcher">Autor</string>
+</resources>
