@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_selector_title">Виберіть додаток…</string>
+    <string name="card_announcement_header">Коротке оголошення</string>
+    <string name="card_commits_header">Останні оновлення</string>
+    <string name="card_logs_header">Журнал</string>
+    <string name="card_patches_header">Патчі</string>
+    <string name="card_options_header">Налаштування</string>
+    <string name="card_credits_header">Автори</string>
+    <string name="card_commits_body_patcher">Патчер:</string>
+    <string name="card_commits_body_manager">Менеджер:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Використовувати встановлений YouTube</string>
+    <string name="card_logs_body">Натисніть тут, щоб переглянути журнал патчеру.</string>
+    <string name="card_credits_body">Натисніть тут, щоб переглянути авторів проєкту ReVanced.</string>
+    <string name="card_announcement_button_changelog">Список змін</string>
+    <string name="button_patch">Застосувати</string>
+    <string name="navigation_dashboard">Огляд</string>
+    <string name="navigation_patcher">Патчер</string>
+    <string name="activity_logs_modal_title">Журнал</string>
+    <string name="activity_credits_modal_title">Автори</string>
+    <string name="activity_credits_team_manager">Менеджер</string>
+    <string name="activity_credits_team_website">Сайт</string>
+    <string name="activity_credits_team">Команда</string>
+    <string name="activity_credits_translators">Перекладачі</string>
+    <string name="activity_credits_team_patcher">Патчер</string>
+</resources>
