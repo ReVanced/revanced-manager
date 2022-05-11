@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_selector_title">Bir tətbiq seçin…</string>
+    <string name="card_announcement_header">Qısa elan</string>
+    <string name="card_commits_header">Son yeniləmələr</string>
+    <string name="card_logs_header">Jurnallar</string>
+    <string name="card_patches_header">Yamaqlar</string>
+    <string name="card_options_header">Seçimlər</string>
+    <string name="card_credits_header">Töhfə Verənlər</string>
+    <string name="card_commits_body_patcher">Yamaqlayıcı:</string>
+    <string name="card_commits_body_manager">Menecer:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Quraşdırılmış YouTube tətbiqini istifadə edin</string>
+    <string name="card_logs_body">Yamaqlayıcı jurnalına baxmaq üçün bura kliklə.</string>
+    <string name="card_credits_body">ReVanced layihəsinə töhfə verənləri görmək üçün bura kliklə.</string>
+    <string name="card_announcement_button_changelog">Dəyişiklik jurnalı</string>
+    <string name="button_patch">Yamaqla</string>
+    <string name="navigation_dashboard">İdarəetmə paneli</string>
+    <string name="navigation_patcher">Yamaqlayıcı</string>
+    <string name="activity_logs_modal_title">Jurnallar</string>
+    <string name="activity_credits_modal_title">Töhfə verənlər</string>
+    <string name="activity_credits_team_manager">Menecer</string>
+    <string name="activity_credits_team_website">Veb sayt</string>
+    <string name="activity_credits_team">Komanda</string>
+    <string name="activity_credits_translators">Tərcüməçilər</string>
+    <string name="activity_credits_team_patcher">Yamaqlayıcı</string>
+</resources>
