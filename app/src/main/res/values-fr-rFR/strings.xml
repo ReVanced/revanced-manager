@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_selector_title">Sélectionnez une application…</string>
+    <string name="card_announcement_header">Petite annonce</string>
+    <string name="card_commits_header">Dernières mises à jour</string>
+    <string name="card_logs_header">Journaux</string>
+    <string name="card_patches_header">Correctifs</string>
+    <string name="card_options_header">Options</string>
+    <string name="card_credits_header">Remerciements</string>
+    <string name="card_commits_body_patcher">Patcheur :</string>
+    <string name="card_commits_body_manager">Gestionnaire :</string>
+    <string name="card_announcement_body_placeholder">Ceci est un exemple de texte pour la prévisualisation de ReVanced Manager qui va être remplacé par des annonces dynamiques à l\'avenir.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Utilisez l\'application YouTube installée</string>
+    <string name="card_logs_body">Cliquer ici pour lire le change log du patcher.</string>
+    <string name="card_credits_body">Cliquez ici pour voir les remerciements du projet ReVanced.</string>
+    <string name="card_announcement_button_changelog">Historique des changements</string>
+    <string name="button_patch">Appliquer les modifications</string>
+    <string name="navigation_dashboard">Tableau de bord</string>
+    <string name="navigation_patcher">Patcheur</string>
+    <string name="activity_logs_modal_title">Journaux</string>
+    <string name="activity_credits_modal_title">Remerciements</string>
+    <string name="activity_credits_team_manager">Gestionnaire</string>
+    <string name="activity_credits_team_website">Site web</string>
+    <string name="activity_credits_team">Équipe</string>
+    <string name="activity_credits_translators">Traducteurs</string>
+    <string name="activity_credits_team_patcher">Patcheur</string>
+</resources>
