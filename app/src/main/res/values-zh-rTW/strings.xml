@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">選擇一個應用程式…</string>
+    <string name="app_selector_title">選擇 app ……</string>
     <string name="card_announcement_header">簡短公告</string>
-    <string name="card_commits_header">最近更新</string>
+    <string name="card_commits_header">最新更新</string>
     <string name="card_logs_header">日誌</string>
     <string name="card_patches_header">補丁</string>
     <string name="card_options_header">選項</string>
-    <string name="card_credits_header">製作團隊</string>
-    <string name="card_commits_body_patcher">增補器：</string>
+    <string name="card_credits_header">貢獻名單</string>
+    <string name="card_commits_body_patcher">修補器：</string>
     <string name="card_commits_body_manager">管理器：</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">使用已安裝的 YouTube 應用程式</string>
+    <string name="card_options_body_use_installed">使用已安裝的 YouTube app</string>
     <string name="card_logs_body">點此檢視修補器日誌。</string>
-    <string name="card_credits_body">按此檢視 ReVanced 專案製作團隊。</string>
+    <string name="card_credits_body">按此檢視 ReVanced 專案貢獻名單。</string>
     <string name="card_announcement_button_changelog">更新日誌</string>
     <string name="button_patch">補丁</string>
     <string name="navigation_dashboard">儀表板</string>
