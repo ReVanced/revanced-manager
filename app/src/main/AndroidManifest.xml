@@ -24,7 +24,6 @@
         <activity
             android:name=".ShellHeater"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ReVancedManager">
 
             <intent-filter>
