@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">Select an app…</string>
+    <string name="app_selector_title">选择一个应用…</string>
     <string name="card_announcement_header">短通知</string>
-    <string name="card_commits_header">Latest updates</string>
+    <string name="card_commits_header">最近更新</string>
     <string name="card_logs_header">日志</string>
     <string name="card_patches_header">补丁</string>
     <string name="card_options_header">选项</string>
-    <string name="card_credits_header">信用</string>
+    <string name="card_credits_header">鸣谢</string>
     <string name="card_commits_body_patcher">补丁程序：</string>
     <string name="card_commits_body_manager">经理：</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">使用已安装的 YouTube 应用</string>
     <string name="card_logs_body">单击此处查看修补程序日志。</string>
-    <string name="card_credits_body">单击此处查看ReVanced项目学分。</string>
-    <string name="card_announcement_button_changelog">变更日志</string>
+    <string name="card_credits_body">单击此处查看 ReVanced 项目贡献名单。</string>
+    <string name="card_announcement_button_changelog">更新日志</string>
     <string name="button_patch">补丁</string>
     <string name="navigation_dashboard">控制面板</string>
     <string name="navigation_patcher">修补器</string>
