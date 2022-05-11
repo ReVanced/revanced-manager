@@ -2,7 +2,7 @@
 <resources>
     <string name="app_selector_title">Alkalmazás kiválasztása…</string>
     <string name="card_announcement_header">Rövid közlemény</string>
-    <string name="card_commits_header">Utolsó frissítések</string>
+    <string name="card_commits_header">Legújabb frissítések</string>
     <string name="card_logs_header">Naplók</string>
     <string name="card_patches_header">Javítások</string>
     <string name="card_options_header">Beállítások</string>
