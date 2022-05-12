@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">Select an app…</string>
+    <string name="app_selector_title">একটি অ্যাপ্লিকেশন নির্বাচন করুন…</string>
     <string name="card_announcement_header">সংক্ষিপ্ত ঘোষণা</string>
-    <string name="card_commits_header">Latest updates</string>
+    <string name="card_commits_header">সর্বশেষ আপডেট</string>
     <string name="card_logs_header">লগস</string>
     <string name="card_patches_header">প্যাচসমূহ</string>
     <string name="card_options_header">অপশন</string>
