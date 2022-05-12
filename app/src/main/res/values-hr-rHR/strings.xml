@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">Select an app…</string>
+    <string name="app_selector_title">Odaberite aplikaciju…</string>
     <string name="card_announcement_header">Kratka obavijest</string>
-    <string name="card_commits_header">Latest updates</string>
+    <string name="card_commits_header">Najnovija ažuriranja</string>
     <string name="card_logs_header">Izvještaji</string>
     <string name="card_patches_header">Zakrpe</string>
     <string name="card_options_header">Mogućnosti</string>
