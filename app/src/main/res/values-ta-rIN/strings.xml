@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">Select an app…</string>
+    <string name="app_selector_title">பயன்பாட்டைத் தேர்ந்தெடுக்கவும்…</string>
     <string name="card_announcement_header">சிறு அறிவிப்பு</string>
-    <string name="card_commits_header">Latest updates</string>
+    <string name="card_commits_header">சமீபத்திய புதுப்பிப்புகள்</string>
     <string name="card_logs_header">பதிவுகள்</string>
     <string name="card_patches_header">இணைப்புகள்</string>
     <string name="card_options_header">விருப்பங்கள்</string>
@@ -11,7 +11,7 @@
     <string name="card_commits_body_manager">மேனேஜர்:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">நிறுவப்பட்ட YouTube பயன்பாட்டைப் பயன்படுத்தவும்</string>
     <string name="card_logs_body">பேட்சர் மாற்றங்களைப் பார்க்க இங்குக் கிளிக் செய்யவும்.</string>
     <string name="card_credits_body">ReVanced திட்டத்திற்கு உதவியவர்களை அறிய இங்குக் கிளிக் செய்யவும்.</string>
     <string name="card_announcement_button_changelog">மாற்றங்களின் பதிவு</string>
