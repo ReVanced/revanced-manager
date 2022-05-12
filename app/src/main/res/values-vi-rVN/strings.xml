@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">Select an app…</string>
+    <string name="app_selector_title">Chọn một ứng dụng…</string>
     <string name="card_announcement_header">Thông báo</string>
-    <string name="card_commits_header">Latest updates</string>
+    <string name="card_commits_header">Cập nhật mới nhất</string>
     <string name="card_logs_header">Logs</string>
     <string name="card_patches_header">Các bản vá</string>
     <string name="card_options_header">Tuỳ chọn</string>
@@ -11,7 +11,7 @@
     <string name="card_commits_body_manager">Manager:</string>
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">Sử dụng ứng dụng YouTube đã cài đặt</string>
     <string name="card_logs_body">Nhấn để xem logs của patcher.</string>
     <string name="card_credits_body">Nhấn để xem các Tác giả của ReVanced.</string>
     <string name="card_announcement_button_changelog">Thay đổi ở bản mới</string>
