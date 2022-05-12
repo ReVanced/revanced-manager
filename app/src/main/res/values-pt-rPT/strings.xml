@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">Select an app…</string>
+    <string name="app_selector_title">Selecione um aplicativo…</string>
     <string name="card_announcement_header">Pequeno anúncio</string>
-    <string name="card_commits_header">Latest updates</string>
+    <string name="card_commits_header">Ultimas atualizações</string>
     <string name="card_logs_header">Registros</string>
     <string name="card_patches_header">Patches</string>
     <string name="card_options_header">Opções</string>
@@ -11,7 +11,7 @@
     <string name="card_commits_body_manager">Gerenciador:</string>
     <string name="card_announcement_body_placeholder">Este é um texto de exemplo para visualizar o design do ReVanced Manager que será substituído por anúncios dinâmicos no futuro.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Use installed YouTube app</string>
+    <string name="card_options_body_use_installed">Use o aplicativo do YouTube instalado</string>
     <string name="card_logs_body">Clique aqui para ver os registros do patcher.</string>
     <string name="card_credits_body">Clica aqui para ver os créditos do projeto ReVanced.</string>
     <string name="card_announcement_button_changelog">Registro de mudanças</string>
