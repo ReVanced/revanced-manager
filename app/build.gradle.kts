@@ -1,3 +1,5 @@
+val composeVersion = rootProject.extra.get("compose_version") as String
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
+    google()
     listOf("revanced-patcher", "revanced-patches").forEach { repo ->
         maven {
             url = uri("https://maven.pkg.github.com/revanced/$repo")
@@ -75,36 +78,36 @@ android {
 dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+    implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha06")
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:+")
-    implementation("app.revanced:revanced-patches:+")
+    implementation("app.revanced:revanced-patcher:1.0.0-dev.10")
+    implementation("app.revanced:revanced-patches:1.0.0-dev.7")
 
     // Compose Destinations
-    implementation("io.github.raamcosta.compose-destinations:core:+")
-    ksp("io.github.raamcosta.compose-destinations:ksp:+")
+    implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.5-beta")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-drawablepainter:+")
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")
 
     // libsu
     implementation("com.github.topjohnwu.libsu:core:4.0.3")
     implementation("com.github.topjohnwu.libsu:io:4.0.3")
 
-    // ???
-    implementation("com.beust:klaxon:5.5")
+    // JSON parsing
+    implementation("com.beust:klaxon:5.6")
 
     // Signing
-    implementation("org.bouncycastle:bcpkix-jdk15on:+")
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     // Material 3 + 2
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha10")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
     implementation("androidx.compose.material:material:1.1.1")
 
     // Tests
