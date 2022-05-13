@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.NavGraphs
-import app.revanced.manager.ui.components.ScaffoldPuppeteer
 import app.revanced.manager.ui.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.destinations.PatcherSubscreenDestination
 import app.revanced.manager.ui.screens.AppSelectorScreen
