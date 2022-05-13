@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 repositories {
@@ -29,6 +30,10 @@ val appId = "app.revanced.manager"
 android {
     namespace = appId
     compileSdk = 32
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 
     defaultConfig {
         applicationId = appId
@@ -115,6 +120,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.1.1")
 
     // Tests
+    testImplementation(kotlin("test"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
