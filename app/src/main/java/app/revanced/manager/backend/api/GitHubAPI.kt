@@ -11,12 +11,12 @@ object GitHubAPI {
     private const val baseUrl = "https://api.github.com/repos"
 
     object Releases {
-        suspend fun latestRelease(repo: String): Release? {
+        suspend fun latestRelease(repo: String): Release {
             Log.d(tag, "Fetching latest releases for repo ($repo)")
             val res: List<Release> = client.get("$baseUrl/$repo/releases") {
                 parameter("per_page", 1)
             }.body()
-            return res.firstOrNull()
+            return res.first()
         }
 
         @Serializable
