@@ -1,4 +1,5 @@
 val composeVersion = rootProject.extra.get("compose_version") as String
+val ktorVersion = rootProject.extra.get("ktor_version") as String
 
 plugins {
     id("com.android.application")
@@ -99,8 +100,11 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:4.0.3")
     implementation("com.github.topjohnwu.libsu:io:4.0.3")
 
-    // JSON parsing
-    implementation("com.beust:klaxon:5.6")
+    // HTTP client
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Signing
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
