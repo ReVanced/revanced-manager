@@ -8,29 +8,39 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
+import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.screens.destinations.DashboardSubscreenDestination
+import app.revanced.manager.ui.screens.destinations.PatcherSubscreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.ramcosta.composedestinations.utils.startDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination
-@RootNavGraph(start = true)
 @Composable
 fun MainScreen() {
-    val navControl = rememberNavController()
-    Scaffold(
-        topBar = {AppBar() },
-        bottomBar = {BottomNavBar(navControl)},
-        content = { innerPadding ->
+    val navController = rememberNavController()
+    when (navController.currentDestinationAsState().value) {
+        AppSelectorScreenDestination -> {
             DestinationsNavHost(
-                modifier = Modifier.padding(innerPadding),
-                navController = navControl,
+                navController = navController,
                 navGraph = NavGraphs.root,
-
-                startRoute = DashboardSubscreenDestination.startDestination
             )
         }
-    )
+        else -> {
+            Scaffold(
+                topBar = { AppBar() },
+                bottomBar = { BottomNavBar(navController) },
+                content = { innerPadding ->
+                    DestinationsNavHost(
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController,
+                        navGraph = NavGraphs.root,
+                    )
+                }
+            )
+        }
+    }
+
 }

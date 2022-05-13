@@ -24,35 +24,26 @@ fun BottomNavBar(
     val currentDestination: TypedDestination<*> =
         (navigationController.appCurrentDestinationAsState().value
             ?: NavGraphs.root.startAppDestination)
-    AnimatedVisibility(
-        visible = when (currentDestination) {
-            AppSelectorScreenDestination -> false
-            PatcherSubscreenDestination -> false
-            else -> true
-        },
-        enter = expandVertically(expandFrom = Alignment.CenterVertically) + fadeIn(),
-        exit = shrinkVertically(shrinkTowards = Alignment.CenterVertically) + fadeOut()
-    ) {
-        NavigationBar {
-            MainScreenDestinations.values().forEach { destination ->
-                NavigationBarItem(
-                    icon = { Icon(destination.icon, contentDescription = null) }, //wtf is this lmao
-                    label = { Text(stringResource(id = destination.label)) },
-                    alwaysShowLabel = true,
-                    selected = currentDestination.route == destination.direction.route,
-                    onClick = {
-                        if (destination.direction.route != currentDestination.route) {
-                            navigationController.navigate(destination.direction.route) {
-                                popUpTo(navigationController.graph.startDestinationId) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+
+    NavigationBar {
+        MainScreenDestinations.values().forEach { destination ->
+            NavigationBarItem(
+                icon = { Icon(destination.icon, contentDescription = null) }, //wtf is this lmao
+                label = { Text(stringResource(id = destination.label)) },
+                alwaysShowLabel = true,
+                selected = currentDestination.route == destination.direction.route,
+                onClick = {
+                    if (destination.direction.route != currentDestination.route) {
+                        navigationController.navigate(destination.direction.route) {
+                            popUpTo(navigationController.graph.startDestinationId) {
+                                saveState = true
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

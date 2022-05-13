@@ -19,7 +19,7 @@ import com.ramcosta.composedestinations.navigation.popUpTo
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
-@RootNavGraph
+@RootNavGraph(start = true)
 fun DashboardSubscreen(
     navigator: NavController,
     vm: DashboardViewModel = DashboardViewModel()
