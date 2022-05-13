@@ -5,7 +5,7 @@
     <string name="card_commits_header">უახლესი განახლებები</string>
     <string name="card_logs_header">ჟურნალები</string>
     <string name="card_patches_header">პატჩები</string>
-    <string name="card_options_header">Პარამეტრები</string>
+    <string name="card_options_header">პარამეტრები</string>
     <string name="card_credits_header">კონტრიბუტორები</string>
     <string name="card_commits_body_patcher">პატჩის ინსტალერი:</string>
     <string name="card_commits_body_manager">მენეჯერი:</string>
@@ -16,7 +16,7 @@
     <string name="card_credits_body">დააწკაპუნეთ აქ, რათა ნახოთ ReVanced პროექტის მონაწილეები.</string>
     <string name="card_announcement_button_changelog">ცვლილებების ჟურნალი</string>
     <string name="button_patch">დააინსტალირეთ პატჩი</string>
-    <string name="navigation_dashboard">Მართვის პანელი</string>
+    <string name="navigation_dashboard">მართვის პანელი</string>
     <string name="navigation_patcher">პატჩის ინსტალერი</string>
     <string name="activity_logs_modal_title">ჟურნალები</string>
     <string name="activity_credits_modal_title">კონტრიბუტორები</string>
