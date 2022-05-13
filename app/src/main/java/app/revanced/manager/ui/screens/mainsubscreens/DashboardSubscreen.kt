@@ -6,18 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.NavGraphs
 import app.revanced.manager.ui.destinations.AppSelectorScreenDestination
-import app.revanced.manager.ui.destinations.PatcherSubscreenDestination
-import app.revanced.manager.ui.screens.AppSelectorScreen
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.popBackStack
 import com.ramcosta.composedestinations.navigation.popUpTo
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +22,6 @@ import com.ramcosta.composedestinations.navigation.popUpTo
 fun DashboardSubscreen(
     navigator: NavController
 ) {
-
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
             modifier = Modifier
@@ -96,7 +90,6 @@ fun DashboardSubscreen(
                         text = stringResource(id = R.string.card_credits_header),
                         style = MaterialTheme.typography.titleMedium
                     )
-
                     Text(
                         text = stringResource(id = R.string.card_credits_body),
                         style = MaterialTheme.typography.bodyMedium,
@@ -106,21 +99,16 @@ fun DashboardSubscreen(
             }
         }
         Button(onClick = {
-
-            navigator.navigate(AppSelectorScreenDestination("lesss goooo", arrayOf("aboba")).route) {
+            navigator.navigate(
+                AppSelectorScreenDestination(
+                    "lesss goooo",
+                    arrayOf("aboba")
+                ).route
+            ) {
                 popUpTo(NavGraphs.root)
             }
-
-
         }, content = {
             Text("Sus")
         })
-
     }
-}
-
-@Preview
-@Composable
-fun FeedPreview() {
-    //DashboardSubscreen()
 }

@@ -12,10 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun DialogAppBar(title: String) {
     SmallTopAppBar(
-
-        title = {
-            Text(title)
-        },
+        title = {Text(title) },
         navigationIcon = {
             IconButton(onClick = { }) {
                 androidx.compose.material3.Icon(

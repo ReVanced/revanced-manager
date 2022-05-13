@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.revanced.manager.R
 import app.revanced.manager.backend.utils.openDiscord
 import app.revanced.manager.backend.utils.openGitHub
+import app.revanced.manager.ui.components.placeholders.Icon
 
 
 @Composable
@@ -16,9 +17,7 @@ fun AppBar() {
     val currentUriHandler = LocalUriHandler.current
 
     SmallTopAppBar(
-        title = {
-            Text("ReVanced Manager")
-        },
+        title = {Text("ReVanced Manager") },
         actions = {
             IconButton(onClick = { openDiscord(currentUriHandler) }) {
                 Icon(resourceId = R.drawable.ic_discord_24, contentDescription = "Discord")

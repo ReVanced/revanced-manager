@@ -1,23 +1,21 @@
 package app.revanced.manager.ui.components
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import app.revanced.manager.ui.NavGraphs
 import app.revanced.manager.ui.appCurrentDestinationAsState
+import app.revanced.manager.ui.components.placeholders.Icon
 import app.revanced.manager.ui.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.destinations.PatcherSubscreenDestination
 import app.revanced.manager.ui.destinations.TypedDestination
 import app.revanced.manager.ui.screens.MainScreenDestinations
 import app.revanced.manager.ui.startAppDestination
-import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 fun BottomNavBar(
@@ -57,10 +55,4 @@ fun BottomNavBar(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun BottomNavBarPreview() {
-    //BottomNavBar()
 }
