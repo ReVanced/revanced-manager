@@ -1,7 +1,5 @@
 package app.revanced.manager.ui.screens
 
-import android.content.pm.PackageManager
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,16 +12,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppList
 import app.revanced.manager.ui.components.DialogAppBar
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
+@RootNavGraph
 @Composable
-fun AppSelectorScreen() {
-    val applications = LocalContext.current.packageManager
-        .getInstalledApplications(PackageManager.GET_META_DATA)
+fun AppSelectorScreen(titleText: String, filter: Array<String>) {
+    val applications = LocalContext.current.packageManager.getInstalledApplications(0)
 
     Scaffold(
         topBar = {
-            DialogAppBar(stringResource(id = R.string.app_selector_title))
+            DialogAppBar(titleText)
         },
         content = { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) {
@@ -33,8 +34,8 @@ fun AppSelectorScreen() {
     )
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview
 @Composable
 fun PreviewAppSelectorScreen() {
-    AppSelectorScreen()
+    AppSelectorScreen(stringResource(id = R.string.app_selector_title), filter = arrayOf("placeholder"))
 }

@@ -2,10 +2,10 @@
     <string name="app_name" translatable="false">ReVanced Manager</string>
     <string name="app_selector_title">Select an app…</string>
 
-    <string name="app_bar_open_discord" translatable="false">Discord</string>
-    <string name="app_bar_open_github" translatable="false">GitHub</string>
+    <string name="app_bar_open_discord">Discord</string>
+    <string name="app_bar_open_github">GitHub</string>
 
-    <string name="card_announcement_header">Short announcement</string>
+    <string name="card_announcement_header">Announcement</string>
     <string name="card_commits_header">Latest updates</string>
     <string name="card_logs_header">Logs</string>
     <string name="card_patches_header">Patches</string>
@@ -28,11 +28,11 @@
     <string name="navigation_dashboard">Dashboard</string>
     <string name="navigation_patcher">Patcher</string>
 
-    <string name="activity_logs_modal_title">Logs</string>
-    <string name="activity_credits_modal_title">Credits</string>
-    <string name="activity_credits_team_manager">Manager</string>
-    <string name="activity_credits_team_website">Website</string>
-    <string name="activity_credits_team">Team</string>
-    <string name="activity_credits_translators">Translators</string>
-    <string name="activity_credits_team_patcher">Patcher</string>
+    <string name="screen_logs_title">Logs</string>
+    <string name="screen_credits_title">Credits</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
+    <string name="screen_credits_team_website">Website</string>
+    <string name="screen_credits_team">Team</string>
+    <string name="screen_credits_translators">Translators</string>
+    <string name="screen_credits_team_patcher">Patcher</string>
 </resources>
