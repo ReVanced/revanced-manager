@@ -9,8 +9,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.R
-import app.revanced.manager.ui.NavGraphs
-import app.revanced.manager.ui.destinations.AppSelectorScreenDestination
+import app.revanced.manager.ui.screens.NavGraphs
+import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.popUpTo

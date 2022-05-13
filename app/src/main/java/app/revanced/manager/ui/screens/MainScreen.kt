@@ -6,10 +6,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import app.revanced.manager.ui.NavGraphs
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
-import app.revanced.manager.ui.destinations.DashboardSubscreenDestination
+import app.revanced.manager.ui.screens.destinations.DashboardSubscreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph

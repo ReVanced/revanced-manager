@@ -8,14 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import app.revanced.manager.ui.NavGraphs
-import app.revanced.manager.ui.appCurrentDestinationAsState
 import app.revanced.manager.ui.components.placeholders.Icon
-import app.revanced.manager.ui.destinations.AppSelectorScreenDestination
-import app.revanced.manager.ui.destinations.PatcherSubscreenDestination
-import app.revanced.manager.ui.destinations.TypedDestination
 import app.revanced.manager.ui.screens.MainScreenDestinations
-import app.revanced.manager.ui.startAppDestination
+import app.revanced.manager.ui.screens.NavGraphs
+import app.revanced.manager.ui.screens.appCurrentDestinationAsState
+import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
+import app.revanced.manager.ui.screens.destinations.PatcherSubscreenDestination
+import app.revanced.manager.ui.screens.destinations.TypedDestination
+import app.revanced.manager.ui.screens.startAppDestination
 
 @Composable
 fun BottomNavBar(
