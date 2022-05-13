@@ -18,42 +18,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import app.revanced.manager.R
-import app.revanced.manager.ui.screens.MainNavGraph
+import app.revanced.manager.ui.components.ScaffoldPuppeteer
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
-@MainNavGraph
+@RootNavGraph
 @Composable
 // patcher_subscreen
-fun PatcherSubscreen() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Card(
-            modifier = Modifier
-                .padding(4.dp)
-                .fillMaxWidth()
-                .height(150.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = stringResource(id = R.string.card_announcement_header),
-                    style = MaterialTheme.typography.titleMedium
-                )
+fun PatcherSubscreen(
+    navigator: NavController
+) {
 
-                Text(
-                    text = stringResource(id = R.string.card_announcement_body_placeholder),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(0.dp, 8.dp)
-                )
+
+        Column(modifier = Modifier.padding(16.dp)) {
+            Card(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .height(150.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(id = R.string.card_announcement_header),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Text(
+                        text = stringResource(id = R.string.card_announcement_body_placeholder),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(0.dp, 8.dp)
+                    )
+                }
             }
         }
-    }
-
 }
 
 @Preview
 @Composable
 fun PatcherSubscreenPreview() {
-    PatcherSubscreen()
+   // PatcherSubscreen()
 }

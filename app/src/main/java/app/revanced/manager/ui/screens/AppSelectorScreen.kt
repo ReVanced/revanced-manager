@@ -12,10 +12,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppList
 import app.revanced.manager.ui.components.DialogAppBar
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
+@RootNavGraph
 @Composable
-fun AppSelectorScreen(titleText: String, filter: List<String>) {
+fun AppSelectorScreen(titleText: String, filter: Array<String>) {
     val applications = LocalContext.current.packageManager.getInstalledApplications(0)
 
     Scaffold(
@@ -33,5 +37,5 @@ fun AppSelectorScreen(titleText: String, filter: List<String>) {
 @Preview
 @Composable
 fun PreviewAppSelectorScreen() {
-    AppSelectorScreen(stringResource(id = R.string.app_selector_title), filter = listOf("placeholder"))
+    AppSelectorScreen(stringResource(id = R.string.app_selector_title), filter = arrayOf("placeholder"))
 }

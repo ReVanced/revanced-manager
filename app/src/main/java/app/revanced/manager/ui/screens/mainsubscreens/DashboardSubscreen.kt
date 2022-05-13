@@ -1,26 +1,34 @@
 package app.revanced.manager.ui.screens.mainsubscreens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import app.revanced.manager.R
-import app.revanced.manager.ui.screens.MainNavGraph
+import app.revanced.manager.ui.NavGraphs
+import app.revanced.manager.ui.components.ScaffoldPuppeteer
+import app.revanced.manager.ui.destinations.AppSelectorScreenDestination
+import app.revanced.manager.ui.destinations.PatcherSubscreenDestination
+import app.revanced.manager.ui.screens.AppSelectorScreen
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popBackStack
+import com.ramcosta.composedestinations.navigation.popUpTo
 
 @OptIn(ExperimentalMaterial3Api::class)
-@MainNavGraph(start = true)
 @Destination
 @Composable
-fun DashboardSubscreen() {
+@RootNavGraph
+fun DashboardSubscreen(
+    navigator: NavController
+) {
+
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
             modifier = Modifier
@@ -98,14 +106,22 @@ fun DashboardSubscreen() {
                 }
             }
         }
+        Button(onClick = {
 
+            navigator.navigate(AppSelectorScreenDestination("lesss goooo", arrayOf("aboba")).route) {
+                popUpTo(NavGraphs.root)
+            }
+
+
+        }, content = {
+            Text("Sus")
+        })
 
     }
-
 }
 
 @Preview
 @Composable
 fun FeedPreview() {
-    DashboardSubscreen()
+    //DashboardSubscreen()
 }

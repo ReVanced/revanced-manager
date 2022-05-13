@@ -21,27 +21,29 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 import androidx.navigation.compose.rememberNavController
+import app.revanced.manager.ui.NavGraphs
 import app.revanced.manager.ui.components.AppBar
+import app.revanced.manager.ui.components.BottomNavBar
 import app.revanced.manager.ui.components.MainScreen
 import app.revanced.manager.ui.components.placeholders.AppListItem
 import app.revanced.manager.ui.screens.AppSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ReVancedManagerTheme () {
+            ReVancedManagerTheme() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val mainNavController = rememberNavController()
-                    NavHost(navController = mainNavController, startDestination = "mainScreen") {
-                        composable("mainScreen") { MainScreen() }
-                        composable("appSelectorScreen") { AppSelectorScreen(stringResource(id = R.string.app_selector_title), listOf("placeholder")) }
-                        /*...*/
-                    }
+                    MainScreen()
                 }
             }
         }
