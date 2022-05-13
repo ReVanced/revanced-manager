@@ -4,9 +4,7 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
     maven("https://jitpack.io")
-    google()
     listOf("revanced-patcher", "revanced-patches").forEach { repo ->
         maven {
             url = uri("https://maven.pkg.github.com/revanced/$repo")
@@ -91,8 +89,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.4.0")
     // Compose
     implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
-    implementation("androidx.navigation:navigation-compose:2.5.0-beta01")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-util:$composeVersion")
     // Google
