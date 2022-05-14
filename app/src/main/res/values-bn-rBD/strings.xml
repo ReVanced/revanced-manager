@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_selector_title">একটি অ্যাপ্লিকেশন নির্বাচন করুন…</string>
-    <string name="card_announcement_header">সংক্ষিপ্ত ঘোষণা</string>
+    <string name="app_bar_open_discord">Discord</string>
+    <string name="app_bar_open_github">GitHub</string>
+    <string name="card_announcement_header">Announcement</string>
     <string name="card_commits_header">সর্বশেষ আপডেট</string>
     <string name="card_logs_header">লগস</string>
     <string name="card_patches_header">প্যাচসমূহ</string>
@@ -18,11 +20,11 @@
     <string name="button_patch">প্যাচ</string>
     <string name="navigation_dashboard">ড্যাশবোর্ড</string>
     <string name="navigation_patcher">প্যাচার</string>
-    <string name="activity_logs_modal_title">লগস</string>
-    <string name="activity_credits_modal_title">অবদানকারী</string>
-    <string name="activity_credits_team_manager">ম্যানেজার</string>
-    <string name="activity_credits_team_website">ওয়েবসাইট</string>
-    <string name="activity_credits_team">দল</string>
-    <string name="activity_credits_translators">অনুবাদকারী</string>
-    <string name="activity_credits_team_patcher">প্যাচার</string>
+    <string name="screen_logs_title">Logs</string>
+    <string name="screen_credits_title">Credits</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
+    <string name="screen_credits_team_website">Website</string>
+    <string name="screen_credits_team">Team</string>
+    <string name="screen_credits_translators">Translators</string>
+    <string name="screen_credits_team_patcher">Patcher</string>
 </resources>
