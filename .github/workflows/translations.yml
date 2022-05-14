@@ -1,0 +1,25 @@
+name: Synchronize translations (Crowdin)
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # weekly
+  workflow_dispatch:
+
+jobs:
+  synchronization:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Crowdin
+        uses: crowdin/github-action@1.0.4
+        with:
+          upload_translations: true
+          download_translations: true
+          push_translations: true
+          create_pull_request: false
+          localization_branch_name: main
+          config: crowdin.yml
+        env:
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
