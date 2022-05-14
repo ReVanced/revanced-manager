@@ -23,4 +23,4 @@ jobs:
           config: crowdin.yml
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-          CROWDIN_PROJECT_ID: 'revancedmanager'
+          CROWDIN_PROJECT_ID: 505840
