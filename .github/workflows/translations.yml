@@ -19,7 +19,7 @@ jobs:
           download_translations: true
           push_translations: true
           create_pull_request: false
-          localization_branch_name: main
+          localization_branch_name: l10n
           config: crowdin.yml
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
