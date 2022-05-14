@@ -24,3 +24,4 @@ jobs:
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           CROWDIN_PROJECT_ID: 505840
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
