@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_selector_title">Изаберите апликацију…</string>
-    <string name="card_announcement_header">Кратка обавештења</string>
+    <string name="app_bar_open_discord">Discord</string>
+    <string name="app_bar_open_github">GitHub</string>
+    <string name="card_announcement_header">Announcement</string>
     <string name="card_commits_header">Последња ажурирања</string>
     <string name="card_logs_header">Евиденције</string>
     <string name="card_patches_header">Печеви</string>
@@ -18,11 +20,11 @@
     <string name="button_patch">Печуј</string>
     <string name="navigation_dashboard">Контролна табла</string>
     <string name="navigation_patcher">Печер</string>
-    <string name="activity_logs_modal_title">Евиденције</string>
-    <string name="activity_credits_modal_title">Заслуге</string>
-    <string name="activity_credits_team_manager">Менаџер</string>
-    <string name="activity_credits_team_website">Веб сајт</string>
-    <string name="activity_credits_team">Тим</string>
-    <string name="activity_credits_translators">Преводиоци</string>
-    <string name="activity_credits_team_patcher">Печер</string>
+    <string name="screen_logs_title">Logs</string>
+    <string name="screen_credits_title">Credits</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
+    <string name="screen_credits_team_website">Website</string>
+    <string name="screen_credits_team">Team</string>
+    <string name="screen_credits_translators">Translators</string>
+    <string name="screen_credits_team_patcher">Patcher</string>
 </resources>
