@@ -31,6 +31,8 @@ jobs:
           git config --global user.name '$USER_NAME'
           git config --global user.email '$USER_EMAIL'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git clean -d -f
           git checkout main
           git merge l10n
+          
           git push
