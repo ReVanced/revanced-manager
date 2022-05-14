@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_selector_title">เลือกแอพ…</string>
+    <string name="app_bar_open_discord">Discord</string>
+    <string name="app_bar_open_github">GitHub</string>
+    <string name="card_announcement_header">Announcement</string>
+    <string name="card_commits_header">อัพเดทล่าสุด</string>
+    <string name="card_logs_header">นิตยสาร</string>
+    <string name="card_patches_header">แพทช์</string>
+    <string name="card_options_header">ตัวเลือก</string>
+    <string name="card_credits_header">ผู้ร่วมสมทบ</string>
+    <string name="card_commits_body_patcher">แพทช์:</string>
+    <string name="card_commits_body_manager">ผู้จัดการ:</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">ใช้แอป YouTube ที่ติดตั้งไว้</string>
+    <string name="card_logs_body">คลิกที่นี่เพื่อดูบันทึกโปรแกรมแก้ไข</string>
+    <string name="card_credits_body">คลิกที่นี่เพื่อดูผู้ที่มีส่วนร่วมในโครงการ ReVanced.</string>
+    <string name="card_announcement_button_changelog">การเปลี่ยนแปลง</string>
+    <string name="button_patch">ปะ</string>
+    <string name="navigation_dashboard">แผงควบคุม</string>
+    <string name="navigation_patcher">แพทช์</string>
+    <string name="screen_logs_title">Logs</string>
+    <string name="screen_credits_title">Credits</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
+    <string name="screen_credits_team_website">Website</string>
+    <string name="screen_credits_team">Team</string>
+    <string name="screen_credits_translators">Translators</string>
+    <string name="screen_credits_team_patcher">Patcher</string>
+</resources>

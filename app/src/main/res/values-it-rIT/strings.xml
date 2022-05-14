@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_selector_title">Seleziona un\'app…</string>
+    <string name="app_bar_open_discord">Discord</string>
+    <string name="app_bar_open_github">GitHub</string>
+    <string name="card_announcement_header">Annuncio</string>
+    <string name="card_commits_header">Ultimi aggiornamenti</string>
+    <string name="card_logs_header">Logs</string>
+    <string name="card_patches_header">Patch</string>
+    <string name="card_options_header">Opzioni</string>
+    <string name="card_credits_header">Riconoscimenti</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
+    <string name="card_announcement_body_placeholder">Questo è un testo di esempio per l\'anteprima del design di ReVanced Manager che sarà sostituita nel futuro da annunci dinamici.</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Usa l\'app di YouTube già installata</string>
+    <string name="card_logs_body">Clicca qui per leggere i log del patcher.</string>
+    <string name="card_credits_body">Clicca qui per vedere i riconoscimenti del progetto ReVanced.</string>
+    <string name="card_announcement_button_changelog">Registro modifiche</string>
+    <string name="button_patch">Patch</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
+    <string name="screen_logs_title">Logs</string>
+    <string name="screen_credits_title">Riconoscimenti</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
+    <string name="screen_credits_team_website">Sito web</string>
+    <string name="screen_credits_team">Team</string>
+    <string name="screen_credits_translators">Traduttori</string>
+    <string name="screen_credits_team_patcher">Patcher</string>
+</resources>
