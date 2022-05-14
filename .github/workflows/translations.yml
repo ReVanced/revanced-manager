@@ -22,22 +22,16 @@ jobs:
           localization_branch_name: l10n
           config: crowdin.yml
         env:
-          USER_NAME: 'baiorett'
-          USER_EMAIL: '70862504+baiorett@users.noreply.github.com'
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           CROWDIN_PROJECT_ID: 505840
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: GitHub is so dumb
+          
+      - name: GitHub is so dumb i just cant
         run: |
           sudo chmod -R ugo+rwX .
       - name: Merge
         run: |
-          git config --global user.name '$USER_NAME'
-          git config --global user.email '$USER_EMAIL'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git clean -d -f
           git checkout main
           git add *
           git merge l10n
-          
           git push
