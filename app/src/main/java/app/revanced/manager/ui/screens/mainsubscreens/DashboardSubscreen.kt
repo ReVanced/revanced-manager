@@ -102,17 +102,6 @@ fun DashboardSubscreen(
                 }
             }
         }
-        Button(onClick = {
-            navigator.navigate(
-                AppSelectorScreenDestination(
-                    "lesss goooo",
-                    arrayOf("aboba")
-                ).route
-            ) {
-                popUpTo(NavGraphs.root)
-            }
-        }, content = {
-            Text("Sus")
-        })
+
     }
 }

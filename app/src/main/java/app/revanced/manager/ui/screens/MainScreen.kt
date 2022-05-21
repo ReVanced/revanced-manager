@@ -21,14 +21,14 @@ import com.ramcosta.composedestinations.utils.startDestination
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    when (navController.currentDestinationAsState().value) {
-        AppSelectorScreenDestination -> {
-            DestinationsNavHost(
-                navController = navController,
-                navGraph = NavGraphs.root,
-            )
-        }
-        else -> {
+//    when (navController.currentDestinationAsState().value) {
+//        AppSelectorScreenDestination -> {
+//            DestinationsNavHost(
+//                navController = navController,
+//                navGraph = NavGraphs.root,
+//            )
+//        }
+//        else -> {
             Scaffold(
                 topBar = { AppBar() },
                 bottomBar = { BottomNavBar(navController) },
@@ -40,7 +40,7 @@ fun MainScreen() {
                     )
                 }
             )
-        }
-    }
+//        }
+//    }
 
 }

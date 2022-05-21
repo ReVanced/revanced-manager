@@ -1,11 +1,18 @@
 package app.revanced.manager.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ListItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,36 +22,53 @@ import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppList
 import app.revanced.manager.ui.components.DialogAppBar
+import app.revanced.manager.ui.components.placeholders.applist.AppIcon
 import app.revanced.manager.ui.screens.destinations.DashboardSubscreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.ramcosta.composedestinations.utils.startDestination
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("QueryPermissionsNeeded")
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @RootNavGraph
 @Composable
-fun AppSelectorScreen(titleText: String, filter: Array<String>, navigator: DestinationsNavigator) {
-    val applications = LocalContext.current.packageManager
-        .getInstalledApplications(PackageManager.GET_META_DATA)
+fun AppSelectorScreen(
+    applications: Array<ApplicationInfo>,
+    filter: Array<String>,
+    resultNavigator: ResultBackNavigator<String>
+) {
+    val pm = LocalContext.current.packageManager
+    val rl = rememberLazyListState()
+    rl.interactionSource
+    LazyColumn {
+        items(count = applications.size) {
+            val app = applications[it]
+            val label = pm.getApplicationLabel(app).toString()
+            val packageName = app.packageName
 
-    Scaffold(
-        topBar = { DialogAppBar(titleText, { navigator.navigate(DashboardSubscreenDestination) }) }, // (baiorett) TODO: find a way to do it better because that's not the best way to do it and i tried resultnavigator which returns back with a boolean but in this situation you cant just make it go back for some reason it just doesnt work and ill have to find out why it does not work later alright?
-        content = { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
-                AppList(applications)
-            }
+            val same = packageName == label
+            ListItem(modifier = Modifier.clickable {
+                resultNavigator.navigateBack(result = applications[it].packageName)
+            },
+                icon = {
+                    AppIcon(
+                        app.loadIcon(pm),
+                        packageName
+                    )
+                }, text = {
+                    if (same) {
+                        Text(packageName)
+                    } else {
+                        Text(label)
+                    }
+                }, secondaryText = {
+                    if (!same) {
+                        Text(packageName)
+                    }
+                })
         }
-    )
-}
-
-@Preview
-@Composable
-fun PreviewAppSelectorScreen() {
-//    AppSelectorScreen(
-//        stringResource(id = R.string.app_selector_title),
-//        filter = arrayOf("placeholder")
-//    )
+    }
 }
