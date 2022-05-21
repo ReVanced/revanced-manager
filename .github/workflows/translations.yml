@@ -1,0 +1,37 @@
+name: Synchronize translations (Crowdin)
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # weekly
+  workflow_dispatch:
+
+jobs:
+  synchronization:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Crowdin
+        uses: crowdin/github-action@1.0.4
+        with:
+          upload_translations: true
+          download_translations: true
+          push_translations: true
+          create_pull_request: false
+          localization_branch_name: l10n
+          config: crowdin.yml
+        env:
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          CROWDIN_PROJECT_ID: 505840
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: GitHub is so dumb i just cant
+        run: |
+          sudo chmod -R ugo+rwX .
+      - name: Merge
+        run: |
+          git checkout main
+          git add *
+          git merge l10n
+          git push
