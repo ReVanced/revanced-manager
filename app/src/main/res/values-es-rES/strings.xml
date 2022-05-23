@@ -6,6 +6,7 @@
     <string name="card_announcement_header">Anuncio</string>
     <string name="card_commits_header">Últimas actualizaciones</string>
     <string name="card_logs_header">Registros</string>
+    <string name="card_application_header">Select Application</string>
     <string name="card_patches_header">Parches</string>
     <string name="card_options_header">Opciones</string>
     <string name="card_credits_header">Créditos</string>
@@ -14,6 +15,10 @@
     <string name="card_announcement_body_placeholder">Este es un texto de ejemplo para tener una vista previa del diseño de ReVanced Manager el cual será reemplazado por anuncios dinámicos en el futuro.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Usar aplicación de YouTube instalada</string>
+    <string name="card_application_body">No application selected.</string>
+    <string name="card_patches_body_source">No patches source selected.</string>
+    <string name="card_patches_body_patches">No patches selected.</string>
+    <string name="card_application_body_selected">Selected:</string>
     <string name="card_logs_body">Haz clic aquí para ver los registros del parcheador.</string>
     <string name="card_credits_body">Presiona aquí para ver los créditos del proyecto ReVanced.</string>
     <string name="card_announcement_button_changelog">Historial de cambios</string>

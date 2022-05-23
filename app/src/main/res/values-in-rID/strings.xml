@@ -6,6 +6,7 @@
     <string name="card_announcement_header">Pengumuman</string>
     <string name="card_commits_header">Pembaruan terbaru</string>
     <string name="card_logs_header">Log</string>
+    <string name="card_application_header">Select Application</string>
     <string name="card_patches_header">Modifikasi</string>
     <string name="card_options_header">Pengaturan</string>
     <string name="card_credits_header">Kontributor</string>
@@ -14,6 +15,10 @@
     <string name="card_announcement_body_placeholder">Tulisan preview untuk desain ReVanced Manager yang akan diganti dengan pesan pengumuman.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Gunakan aplikasi YouTube yang sudah terpasang</string>
+    <string name="card_application_body">No application selected.</string>
+    <string name="card_patches_body_source">No patches source selected.</string>
+    <string name="card_patches_body_patches">No patches selected.</string>
+    <string name="card_application_body_selected">Selected:</string>
     <string name="card_logs_body">Ketuk di sini untuk melihat log modifikasi.</string>
     <string name="card_credits_body">Ketuk di sini untuk melihat kontributor proyek ReVanced.</string>
     <string name="card_announcement_button_changelog">Catatan Perubahan</string>

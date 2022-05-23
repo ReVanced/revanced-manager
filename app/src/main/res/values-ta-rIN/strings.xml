@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_selector_title">பயன்பாட்டைத் தேர்ந்தெடுக்கவும்…</string>
+    <string name="app_selector_title">செயலியைத் தேர்ந்தெடுக்கவும்…</string>
     <string name="app_bar_open_discord">Discord</string>
     <string name="app_bar_open_github">GitHub</string>
-    <string name="card_announcement_header">Announcement</string>
+    <string name="card_announcement_header">அறிவிப்பு</string>
     <string name="card_commits_header">சமீபத்திய புதுப்பிப்புகள்</string>
     <string name="card_logs_header">பதிவுகள்</string>
+    <string name="card_application_header">Select Application</string>
     <string name="card_patches_header">இணைப்புகள்</string>
     <string name="card_options_header">விருப்பங்கள்</string>
     <string name="card_credits_header">நன்றி</string>
@@ -14,17 +15,21 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">நிறுவப்பட்ட YouTube பயன்பாட்டைப் பயன்படுத்தவும்</string>
+    <string name="card_application_body">No application selected.</string>
+    <string name="card_patches_body_source">No patches source selected.</string>
+    <string name="card_patches_body_patches">No patches selected.</string>
+    <string name="card_application_body_selected">Selected:</string>
     <string name="card_logs_body">பேட்சர் மாற்றங்களைப் பார்க்க இங்குக் கிளிக் செய்யவும்.</string>
     <string name="card_credits_body">ReVanced திட்டத்திற்கு உதவியவர்களை அறிய இங்குக் கிளிக் செய்யவும்.</string>
     <string name="card_announcement_button_changelog">மாற்றங்களின் பதிவு</string>
     <string name="button_patch">இணைப்பு</string>
     <string name="navigation_dashboard">கட்டுப்பாட்டகம்</string>
     <string name="navigation_patcher">இணைப்பான்</string>
-    <string name="screen_logs_title">Logs</string>
-    <string name="screen_credits_title">Credits</string>
-    <string name="screen_credits_team_manager">ReVanced Manager</string>
-    <string name="screen_credits_team_website">Website</string>
-    <string name="screen_credits_team">Team</string>
-    <string name="screen_credits_translators">Translators</string>
-    <string name="screen_credits_team_patcher">Patcher</string>
+    <string name="screen_logs_title">பதிவுகள்</string>
+    <string name="screen_credits_title">நன்றி</string>
+    <string name="screen_credits_team_manager">ReVanced மேனேஜர்</string>
+    <string name="screen_credits_team_website">இணையத்தளம்</string>
+    <string name="screen_credits_team">குழு</string>
+    <string name="screen_credits_translators">மொழிபெயர்ப்பாளர்கள்</string>
+    <string name="screen_credits_team_patcher">இணைப்பான்</string>
 </resources>
