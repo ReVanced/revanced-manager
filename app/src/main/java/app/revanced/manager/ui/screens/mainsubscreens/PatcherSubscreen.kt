@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -18,6 +19,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppList
 import app.revanced.manager.ui.screens.NavGraphs
 import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
+import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.popUpTo
@@ -33,7 +35,7 @@ fun PatcherSubscreen(
     navigator: NavController,
     resultRecipient: ResultRecipient<AppSelectorScreenDestination, String>
 ) {
-    var selectedAppPackage by remember { mutableStateOf("") }
+    var selectedAppPackage by rememberSaveable { mutableStateOf("") }
     val sela = stringResource(id = R.string.card_application_body)
     val selb = stringResource(id = R.string.card_application_body_selected)
     var e = ""
@@ -49,33 +51,11 @@ fun PatcherSubscreen(
         }
     }
     Scaffold(floatingActionButton = {
-        //ExtendedFloatingActionButton(onClick = {  null}, icon = {Icon(imageVector = Icons.Default.Build, contentDescription = "sd")}, text = {Text(text = "Patch")})
+        ExtendedFloatingActionButton(onClick = {  null }, icon = {Icon(imageVector = Icons.Default.Build, contentDescription = "sd")}, text = {Text(text = "Patch")})
     }) { paddingValues ->
         Column(modifier = Modifier
             .padding(paddingValues)
             .padding(16.dp)) {
-            Card(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxWidth(),
-                onClick = {
-                    navigator.navigate(
-                        AppSelectorScreenDestination(applications, arrayOf("aboba")).route
-                    )
-                }
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = stringResource(id = R.string.card_patches_header),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = stringResource(id = R.string.card_patches_body_patches),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(0.dp, 8.dp)
-                    )
-                }
-            }
             Card(
                 modifier = Modifier
                     .padding(4.dp)
@@ -106,6 +86,29 @@ fun PatcherSubscreen(
                     )
                 }
             }
+            Card(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth(),
+                onClick = {
+                    navigator.navigate(
+                        PatchesSelectorScreenDestination(arrayOf("patch-1", "patch-2", "patch-3"), arrayOf("aboba")).route
+                    )
+                }
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(id = R.string.card_patches_header),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = stringResource(id = R.string.card_patches_body_patches),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(0.dp, 8.dp)
+                    )
+                }
+            }
+
         }
     }
 
