@@ -26,9 +26,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
+        android:extractNativeLibs="true"
 
         android:theme="@style/Theme.ReVancedManager"
-        tools:targetApi="26">
+        tools:targetApi="32">
         <activity
             android:name=".ShellHeater"
             android:exported="true"

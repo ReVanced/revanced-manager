@@ -79,6 +79,9 @@ android {
         kotlinCompilerExtensionVersion = "1.1.1"
     }
     packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -95,8 +98,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:1.0.0-dev.10")
-    implementation("app.revanced:revanced-patches:1.0.0-dev.7")
+    implementation("app.revanced:revanced-patcher:1.0.0-dev.14")
+    implementation("app.revanced:revanced-patches:1.0.0-dev.10")
 
     // Compose Destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
@@ -124,8 +127,8 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     // Material 3 + 2
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha11")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha12")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
     implementation("androidx.compose.material:material:1.1.1")
 
     // Tests
