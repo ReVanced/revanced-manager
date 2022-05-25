@@ -1,5 +1,6 @@
 val composeVersion = rootProject.extra.get("compose_version") as String
 val ktorVersion = rootProject.extra.get("ktor_version") as String
+val roomVersion = rootProject.extra.get("room_version") as String
 
 plugins {
     id("com.android.application")
@@ -108,6 +109,10 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:4.0.3")
     implementation("com.github.topjohnwu.libsu:io:4.0.3")
 
+    // Room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     // HTTP client
     implementation("io.ktor:ktor-client-core:$ktorVersion")
