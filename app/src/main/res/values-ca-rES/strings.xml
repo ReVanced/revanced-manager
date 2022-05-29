@@ -6,8 +6,8 @@
     <string name="card_announcement_header">Anunci</string>
     <string name="card_commits_header">Últimes actualitzacions</string>
     <string name="card_logs_header">Registres</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">Pegats</string>
+    <string name="card_application_header">Seleccioneu Aplicació</string>
+    <string name="card_patches_header">Seleccioneu Pedaços</string>
     <string name="card_options_header">Opcions</string>
     <string name="card_credits_header">Col·laboradors</string>
     <string name="card_commits_body_patcher">Creador de pedaços:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Utilitza l\'aplicació YouTube instal·lada</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">No s\'ha seleccionat cap aplicació.</string>
+    <string name="card_patches_body_source">No s\'ha seleccionat cap font de pedaços.</string>
+    <string name="card_patches_body_patches">No s\'han seleccionat cap pedaç.</string>
+    <string name="card_application_body_selected">Seleccionat:</string>
     <string name="card_logs_body">Feu clic aquí per veure els registres de pedaços.</string>
     <string name="card_credits_body">Feu clic aquí per veure els que han contribuït al projecte ReVanced.</string>
     <string name="card_announcement_button_changelog">Registre de canvis</string>

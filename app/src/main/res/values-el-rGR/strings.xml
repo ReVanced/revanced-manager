@@ -6,8 +6,8 @@
     <string name="card_announcement_header">Ανακοίνωση</string>
     <string name="card_commits_header">Τελευταίες ενημερώσεις</string>
     <string name="card_logs_header">Αρχεία καταγραφής</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">Τροποποιήσεις</string>
+    <string name="card_application_header">Επιλέξτε Εφαρμογή</string>
+    <string name="card_patches_header">Επιλέξτε Τροποποιήσεις</string>
     <string name="card_options_header">Ρυθμίσεις</string>
     <string name="card_credits_header">Εύσημα</string>
     <string name="card_commits_body_patcher">Τροποποίητης:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Χρήση της εγκατεστημένης εφαρμογής YouTube</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">Δεν επιλέχθηκε εφαρμογή.</string>
+    <string name="card_patches_body_source">Δεν επιλέχθηκε πηγή τροποποιήσεων.</string>
+    <string name="card_patches_body_patches">Δεν επιλέχθηκαν τροποποιήσεις.</string>
+    <string name="card_application_body_selected">Επιλεγμένα:</string>
     <string name="card_logs_body">Πατήστε εδώ για να δείτε τα αρχεία καταγραφής του τροποποιητή.</string>
     <string name="card_credits_body">Πατήστε εδώ για να δείτε τα εύσημα του έργου ReVanced.</string>
     <string name="card_announcement_button_changelog">Τι νέο υπάρχει</string>

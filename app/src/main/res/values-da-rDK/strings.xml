@@ -6,8 +6,8 @@
     <string name="card_announcement_header">Meddelelse</string>
     <string name="card_commits_header">Seneste opdateringer</string>
     <string name="card_logs_header">Noter</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">Patches</string>
+    <string name="card_application_header">Vælg Applikation</string>
+    <string name="card_patches_header">Vælg Patches</string>
     <string name="card_options_header">Indstillinger</string>
     <string name="card_credits_header">Medvirkende</string>
     <string name="card_commits_body_patcher">Patcher:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Brug den installerede YouTube-app</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">Der er ikke valgt nogen applikation.</string>
+    <string name="card_patches_body_source">Ingen patches-kilde valgt.</string>
+    <string name="card_patches_body_patches">Ingen patches valgt.</string>
+    <string name="card_application_body_selected">Valgte:</string>
     <string name="card_logs_body">Klik her for at se patcher logs.</string>
     <string name="card_credits_body">Klik her for at se medvirkende i ReVanced projektet.</string>
     <string name="card_announcement_button_changelog">Ændringsoversigt</string>

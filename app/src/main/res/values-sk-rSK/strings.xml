@@ -6,8 +6,8 @@
     <string name="card_announcement_header">Oznámenie</string>
     <string name="card_commits_header">Najnovšie aktualizácie</string>
     <string name="card_logs_header">Záznamy</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">Záplaty</string>
+    <string name="card_application_header">Vyberte aplikáciu</string>
+    <string name="card_patches_header">Vyberte záplaty</string>
     <string name="card_options_header">Nastavenia</string>
     <string name="card_credits_header">Poďakovania</string>
     <string name="card_commits_body_patcher">Autor:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Použiť nainštalovaný YouTube</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">Nie je vybraná žiadna aplikácia.</string>
+    <string name="card_patches_body_source">Nie je vybraný žiadny zdroj pre záplaty.</string>
+    <string name="card_patches_body_patches">Nie sú vybrané žiadne záplaty.</string>
+    <string name="card_application_body_selected">Vybrané:</string>
     <string name="card_logs_body">Kliknite sem pre zobrazenie záznamov záplaty.</string>
     <string name="card_credits_body">Kliknite sem pre zobrazenie poďakovaní pre projekt ReVanced.</string>
     <string name="card_announcement_button_changelog">Zoznam zmien</string>

@@ -6,8 +6,8 @@
     <string name="card_announcement_header">ঘোষণা</string>
     <string name="card_commits_header">সর্বশেষ আপডেট</string>
     <string name="card_logs_header">লগস</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">প্যাচসমূহ</string>
+    <string name="card_application_header">অ্যাপ্লিকেশন নির্বাচন করুন</string>
+    <string name="card_patches_header">নির্বাচন করুন প্যাচসমূহ</string>
     <string name="card_options_header">অপশন</string>
     <string name="card_credits_header">কৃতিত্ব</string>
     <string name="card_commits_body_patcher">প্যাচার:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">ইনস্টল করা YouTube অ্যাপ ব্যবহার করুন</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">কোনো অ্যাপ্লিকেশন নির্বাচন করা হয়নি।.</string>
+    <string name="card_patches_body_source">কোনো প্যাচ উৎস নির্বাচন করা হয়নি.</string>
+    <string name="card_patches_body_patches">কোন প্যাচ নির্বাচন করা হয়নি.</string>
+    <string name="card_application_body_selected">নির্বাচিত:</string>
     <string name="card_logs_body">প্যাচার লগ দেখতে এখানে ক্লিক করুন.</string>
     <string name="card_credits_body">ReVanced প্রজেক্টের অবদানকারীদের নাম দেখতে এখানে ক্লিক করুন.</string>
     <string name="card_announcement_button_changelog">পরিবর্তনসূচী</string>

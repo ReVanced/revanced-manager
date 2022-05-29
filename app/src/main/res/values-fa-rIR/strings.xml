@@ -6,8 +6,8 @@
     <string name="card_announcement_header">اعلامیه</string>
     <string name="card_commits_header">آخرین به روزرسانی ها</string>
     <string name="card_logs_header">سیاهههای مربوط</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">وصله ها</string>
+    <string name="card_application_header">برنامه را انتخاب کنید</string>
+    <string name="card_patches_header">پچ ها را انتخاب کنید</string>
     <string name="card_options_header">گزینه ها</string>
     <string name="card_credits_header">مشارکت کنندگان</string>
     <string name="card_commits_body_patcher">پچ ساز:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">از برنامه نصب شده YouTube استفاده کنید</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">هیچ برنامه ای انتخاب نشده است.</string>
+    <string name="card_patches_body_source">هیچ منبع وصله‌ای انتخاب نشده است.</string>
+    <string name="card_patches_body_patches">هیچ وصله ای انتخاب نشده است.</string>
+    <string name="card_application_body_selected">انتخاب شد:</string>
     <string name="card_logs_body">برای دیدن لاگ های پچر کلیک کنید.</string>
     <string name="card_credits_body">برای دیدن مشارکت کنندگان در پروژه ReVanced کلیک کنید.</string>
     <string name="card_announcement_button_changelog">مجله تغییرات</string>

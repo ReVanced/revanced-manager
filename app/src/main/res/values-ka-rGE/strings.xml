@@ -6,8 +6,8 @@
     <string name="card_announcement_header">განცხადება</string>
     <string name="card_commits_header">უახლესი განახლებები</string>
     <string name="card_logs_header">ჟურნალები</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">პატჩები</string>
+    <string name="card_application_header">აირჩიეთ აპლიკაცია</string>
+    <string name="card_patches_header">აირჩიეთ პატჩები</string>
     <string name="card_options_header">პარამეტრები</string>
     <string name="card_credits_header">კონტრიბუტორები</string>
     <string name="card_commits_body_patcher">პატჩის ინსტალერი:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">გამოიყენეთ დაინსტალირებული YouTube აპი</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">არ არის არჩეული აპლიკაცია.</string>
+    <string name="card_patches_body_source">პატჩების წყარო არ არის არჩეული.</string>
+    <string name="card_patches_body_patches">არ არის შერჩეული პატჩები.</string>
+    <string name="card_application_body_selected">არჩეული:</string>
     <string name="card_logs_body">დააწკაპუნეთ აქ, რათა ნახოთ პატჩ ჟურნალები.</string>
     <string name="card_credits_body">დააწკაპუნეთ აქ, რათა ნახოთ ReVanced პროექტის მონაწილეები.</string>
     <string name="card_announcement_button_changelog">ცვლილებების ჟურნალი</string>

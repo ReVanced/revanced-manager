@@ -6,7 +6,7 @@
     <string name="card_announcement_header">公告</string>
     <string name="card_commits_header">最近更新</string>
     <string name="card_logs_header">日志</string>
-    <string name="card_application_header">Select Application</string>
+    <string name="card_application_header">选择应用程序</string>
     <string name="card_patches_header">补丁</string>
     <string name="card_options_header">选项</string>
     <string name="card_credits_header">鸣谢</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">使用已安装的 YouTube 应用</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">未选择应用程序</string>
+    <string name="card_patches_body_source">未选择修补程序源</string>
+    <string name="card_patches_body_patches">未选择修补程序</string>
+    <string name="card_application_body_selected">已选择：</string>
     <string name="card_logs_body">单击此处查看修补程序日志。</string>
     <string name="card_credits_body">单击此处查看 ReVanced 项目贡献名单。</string>
     <string name="card_announcement_button_changelog">更新日志</string>

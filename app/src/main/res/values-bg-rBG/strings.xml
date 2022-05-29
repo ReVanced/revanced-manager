@@ -6,8 +6,8 @@
     <string name="card_announcement_header">Съобщение</string>
     <string name="card_commits_header">Последни актуализации</string>
     <string name="card_logs_header">Дневници</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">Пачове</string>
+    <string name="card_application_header">Изберете Приложение</string>
+    <string name="card_patches_header">Изберете Кръпка</string>
     <string name="card_options_header">Опции</string>
     <string name="card_credits_header">Сътрудници</string>
     <string name="card_commits_body_patcher">Пачър:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Използвайте инсталирано приложение YouTube</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">Няма избрано приложение.</string>
+    <string name="card_patches_body_source">Няма избран източник на кръпка.</string>
+    <string name="card_patches_body_patches">Няма избрана кръпка.</string>
+    <string name="card_application_body_selected">Избрано:</string>
     <string name="card_logs_body">Щракнете тук, за да видите дневниците на пачър.</string>
     <string name="card_credits_body">Натиснете тук за да проверите кредитите на проекта \"ReVanced\".</string>
     <string name="card_announcement_button_changelog">Списък на промените</string>

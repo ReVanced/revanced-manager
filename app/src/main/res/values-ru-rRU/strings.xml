@@ -6,8 +6,8 @@
     <string name="card_announcement_header">Объявление</string>
     <string name="card_commits_header">Последние обновления</string>
     <string name="card_logs_header">Изменения</string>
-    <string name="card_application_header">Select Application</string>
-    <string name="card_patches_header">Патчи</string>
+    <string name="card_application_header">Выберите приложение</string>
+    <string name="card_patches_header">Выберите патчи</string>
     <string name="card_options_header">Опции</string>
     <string name="card_credits_header">Авторы</string>
     <string name="card_commits_body_patcher">Патчер:</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">Это бессмысленный текст предназначенный для предпросмотра дизайна ReVanced Manager, данный текст вскоре будет заменен динамичными новостями.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Использовать установленное приложение YouTube</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">Приложение не выбрано.</string>
+    <string name="card_patches_body_source">Источник патчей не выбран.</string>
+    <string name="card_patches_body_patches">Патчи не выбраны.</string>
+    <string name="card_application_body_selected">Выбрано:</string>
     <string name="card_logs_body">Нажмите здесь, чтобы просмотреть журнал патчера.</string>
     <string name="card_credits_body">Нажмите здесь, чтобы просмотреть авторов проекта ReVanced.</string>
     <string name="card_announcement_button_changelog">Список изменений</string>
