@@ -7,7 +7,7 @@
     <string name="card_commits_header">Últimas atualizações</string>
     <string name="card_logs_header">Registros</string>
     <string name="card_application_header">Selecionar Aplicativo</string>
-    <string name="card_patches_header">Patches</string>
+    <string name="card_patches_header">Selecionar Patches</string>
     <string name="card_options_header">Opções</string>
     <string name="card_credits_header">Créditos</string>
     <string name="card_commits_body_patcher">Patcher:</string>
@@ -16,8 +16,8 @@
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Usar o aplicativo do YouTube instalado</string>
     <string name="card_application_body">Nenhum aplicativo selecionado.</string>
-    <string name="card_patches_body_source">Nenhuma fonte de patches selecionada.</string>
-    <string name="card_patches_body_patches">Nenhum patches selecionado.</string>
+    <string name="card_patches_body_source">Nenhuma fonte de patch selecionada.</string>
+    <string name="card_patches_body_patches">Nenhum patch selecionado.</string>
     <string name="card_application_body_selected">Selecionado:</string>
     <string name="card_logs_body">Clique aqui para ver os registros do patcher.</string>
     <string name="card_credits_body">Clique aqui para ver os créditos do projeto ReVanced.</string>
