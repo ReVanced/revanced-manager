@@ -1,11 +1,12 @@
 package app.revanced.manager.data
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
 data class PatchEntity(
-    @PrimaryKey val name: String? = null,
+    @NonNull @PrimaryKey val name: String = "patch",
     val version: String?,
     val enabled: Boolean?
 )

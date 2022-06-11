@@ -30,7 +30,7 @@ val appId = "app.revanced.manager"
 
 android {
     namespace = appId
-    compileSdk = 32
+    compileSdk = 33
 
     testOptions {
         unitTests.isReturnDefaultValues = true
@@ -86,6 +86,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildToolsVersion = "33.0.0"
 }
 
 dependencies {
@@ -98,8 +99,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:1.0.0-dev.14")
-    implementation("app.revanced:revanced-patches:1.0.0-dev.10")
+    implementation("app.revanced:revanced-patcher:+")
+    implementation("app.revanced:revanced-patches:+")
 
     // Compose Destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
@@ -115,6 +116,7 @@ dependencies {
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // HTTP client
@@ -137,6 +139,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    implementation(kotlin("script-runtime"))
 }
 
 fun org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions.optIn(library: String) {
