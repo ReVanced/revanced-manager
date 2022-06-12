@@ -1,5 +1,6 @@
 val composeVersion = rootProject.extra.get("compose_version") as String
 val ktorVersion = rootProject.extra.get("ktor_version") as String
+val koinVersion = rootProject.extra.get("koin_version") as String
 val roomVersion = rootProject.extra.get("room_version") as String
 
 plugins {

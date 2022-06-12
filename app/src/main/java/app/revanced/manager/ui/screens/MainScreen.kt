@@ -11,38 +11,40 @@ import app.revanced.manager.R
 import androidx.compose.ui.Modifier
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
+import app.revanced.manager.ui.models.DashboardViewModel
 import app.revanced.manager.ui.screens.mainsubscreens.DashboardSubscreen
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherSubscreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    var mainScreenName by rememberSaveable {
-        mutableStateOf("Dashboard")
-    }
-    val items = mapOf(
-        "Dashboard" to R.drawable.ic_baseline_dashboard_24,
-        "Patcher" to R.drawable.ic_baseline_build_24
-    )
+//    var mainScreenName by rememberSaveable {
+//        mutableStateOf("Dashboard")
+//    }
+//    val items = mapOf(
+//        "Dashboard" to R.drawable.ic_baseline_dashboard_24,
+//        "Patcher" to R.drawable.ic_baseline_build_24
+//    )
     Scaffold(
         topBar = {
             AppBar()
         },
-        bottomBar = {
-            BottomNavBar(screenName = mainScreenName, items, onNavigateClick = {screenName ->
-                mainScreenName = screenName
-            })
-        },
+//        bottomBar = {
+//            BottomNavBar(screenName = mainScreenName, items, onNavigateClick = {screenName ->
+//                mainScreenName = screenName
+//            })
+//        },
         content = { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) {
-                when (mainScreenName) {
-                    "Dashboard" -> {
-                        DashboardSubscreen()
-                    }
-                    "Patcher" -> {
-                        PatcherSubscreen()
-                    }
-                }
+//                when (mainScreenName) {
+//                    "Dashboard" -> {
+//                        DashboardSubscreen()
+//                    }
+//                    "Patcher" -> {
+//                        PatcherSubscreen()
+//                    }
+//                }
+                PatcherSubscreen() // intended hardcode lock
             }
         }
     )
