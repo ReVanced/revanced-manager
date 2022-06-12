@@ -7,7 +7,7 @@
     <string name="card_commits_header">עדכונים אחרונים</string>
     <string name="card_logs_header">שינויים</string>
     <string name="card_application_header">בחר ביישום</string>
-    <string name="card_patches_header">תיקונים</string>
+    <string name="card_patches_header">בחר תיקונים</string>
     <string name="card_options_header">הגדרות</string>
     <string name="card_credits_header">אודות</string>
     <string name="card_commits_body_patcher">מתקן:</string>
@@ -19,7 +19,7 @@
     <string name="card_patches_body_source">לא נבחרו מקורי תיקונים.</string>
     <string name="card_patches_body_patches">לא נבחרו מקורי תיקונים.</string>
     <string name="card_application_body_selected">נבחר:</string>
-    <string name="card_logs_body">לחצו כאן על מנת לצפות ביומן רישומי הטלאים.</string>
+    <string name="card_logs_body">לחצו כאן על מנת לצפות ביומן תיקונים.</string>
     <string name="card_credits_body">לחץ כאן לצפיית תודות פרוייקט ReVanced.</string>
     <string name="card_announcement_button_changelog">יומן שינויים</string>
     <string name="button_patch">תיקון</string>

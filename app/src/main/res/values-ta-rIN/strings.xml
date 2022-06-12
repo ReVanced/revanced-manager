@@ -6,7 +6,7 @@
     <string name="card_announcement_header">அறிவிப்பு</string>
     <string name="card_commits_header">சமீபத்திய புதுப்பிப்புகள்</string>
     <string name="card_logs_header">பதிவுகள்</string>
-    <string name="card_application_header">Select Application</string>
+    <string name="card_application_header">செயலியைத் தேர்ந்தெடு</string>
     <string name="card_patches_header">இணைப்புகள்</string>
     <string name="card_options_header">விருப்பங்கள்</string>
     <string name="card_credits_header">நன்றி</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">நிறுவப்பட்ட YouTube பயன்பாட்டைப் பயன்படுத்தவும்</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">எந்தச் செயலியும் தேர்ந்தெடுக்கப்படவில்லை.</string>
+    <string name="card_patches_body_source">இணைப்புமூலம் தேர்ந்தெடுக்கப்படவில்லை.</string>
+    <string name="card_patches_body_patches">இணைப்புகள் தேர்வு செய்யப்படவில்லை.</string>
+    <string name="card_application_body_selected">தேர்வு செய்யப்பட்டது:</string>
     <string name="card_logs_body">பேட்சர் மாற்றங்களைப் பார்க்க இங்குக் கிளிக் செய்யவும்.</string>
     <string name="card_credits_body">ReVanced திட்டத்திற்கு உதவியவர்களை அறிய இங்குக் கிளிக் செய்யவும்.</string>
     <string name="card_announcement_button_changelog">மாற்றங்களின் பதிவு</string>
