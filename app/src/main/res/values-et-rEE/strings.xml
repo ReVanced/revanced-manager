@@ -6,7 +6,7 @@
     <string name="card_announcement_header">Teadaanne</string>
     <string name="card_commits_header">Viimased uuendused</string>
     <string name="card_logs_header">Logid</string>
-    <string name="card_application_header">Select Application</string>
+    <string name="card_application_header">Valige rakendus</string>
     <string name="card_patches_header">Uuendused</string>
     <string name="card_options_header">Valikud</string>
     <string name="card_credits_header">Tunnustused</string>
@@ -15,10 +15,10 @@
     <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
     <string name="card_options_body_root">Root</string>
     <string name="card_options_body_use_installed">Kasuta installitud YouTube\'i rakendust</string>
-    <string name="card_application_body">No application selected.</string>
-    <string name="card_patches_body_source">No patches source selected.</string>
-    <string name="card_patches_body_patches">No patches selected.</string>
-    <string name="card_application_body_selected">Selected:</string>
+    <string name="card_application_body">Ühtegi rakendust pole valitud.</string>
+    <string name="card_patches_body_source">Ühtegi patch\'i allikat pole valitud.</string>
+    <string name="card_patches_body_patches">Ühtegi patch\'i pole valitud.</string>
+    <string name="card_application_body_selected">Valitud:</string>
     <string name="card_logs_body">Vajuta siia, et näha patcheri logisi.</string>
     <string name="card_credits_body">Vajuta siia, et näha projekti panustanuid.</string>
     <string name="card_announcement_button_changelog">Muudatuste loend</string>
