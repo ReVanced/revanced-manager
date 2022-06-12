@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screens.mainsubscreens
 
 
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,13 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.R
-import app.revanced.manager.ui.components.AppList
-import app.revanced.manager.ui.screens.NavGraphs
+import app.revanced.manager.backend.vital.ApkUtil
 import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 
@@ -39,14 +36,16 @@ fun PatcherSubscreen(
     val sela = stringResource(id = R.string.card_application_body)
     val selb = stringResource(id = R.string.card_application_body_selected)
     var e = ""
-    val pm = LocalContext.current.packageManager
-    val applications = LocalContext.current.packageManager.getInstalledApplications(PackageManager.GET_META_DATA).toTypedArray()
+    val pm = ApkUtil(LocalContext.current.packageManager)
+
+    val applications = pm.getInstalledApplications()
     resultRecipient.onNavResult { result ->
         when (result) {
             is NavResult.Canceled -> {}
-            is NavResult.Value -> {
+            is  NavResult.Value ->  {
                 selectedAppPackage = result.value
-                println(pm.getApplicationInfo(result.value, 0))
+
+                println(pm.pathFromPackageName(packageName = result.value))
             }
         }
     }

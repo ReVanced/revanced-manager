@@ -36,5 +36,10 @@
       <option name="name" value="Google" />
       <option name="url" value="https://dl.google.com/dl/android/maven2/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven4" />
+      <option name="name" value="maven4" />
+      <option name="url" value="https://maven.pkg.github.com/revanced/multidexlib2" />
+    </remote-repository>
   </component>
 </project>

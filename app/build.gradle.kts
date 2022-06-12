@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
     maven("https://jitpack.io")
     google()
-    listOf("revanced-patcher", "revanced-patches").forEach { repo ->
+    listOf("revanced-patcher", "revanced-patches", "multidexlib2").forEach { repo ->
         maven {
             url = uri("https://maven.pkg.github.com/revanced/$repo")
             credentials {
@@ -127,6 +127,7 @@ dependencies {
 
     // Signing
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
+    implementation("com.android.tools.build:apksig:7.2.1")
 
     // Material 3 + 2
     implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha12")

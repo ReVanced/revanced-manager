@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import app.revanced.manager.backend.utils.AndroidAaptProvider
 import app.revanced.manager.ui.screens.MainScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import brut.androlib.res.AndrolibResources
@@ -17,7 +16,6 @@ import brut.androlib.res.AndrolibResources
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndrolibResources.setAaptProvider(AndroidAaptProvider(applicationContext))
         setContent {
             ReVancedManagerTheme {
                 Surface(
