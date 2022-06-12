@@ -16,15 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.models.DashboardViewModel
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination
 @Composable
-@RootNavGraph(start = true)
 fun DashboardSubscreen(
-    navigator: NavController,
     vm: DashboardViewModel = DashboardViewModel()
 ) {
     LaunchedEffect(Unit) { vm.fetchLastCommit() }

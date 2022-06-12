@@ -102,10 +102,6 @@ dependencies {
     implementation("app.revanced:revanced-patcher:+")
     implementation("app.revanced:revanced-patches:+")
 
-    // Compose Destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.5-beta")
-
     // Accompanist
     implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")
 

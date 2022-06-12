@@ -10,5 +10,7 @@ class Global {
         const val ghPatches = "$ghOrg/revanced-patches"
         const val ghPatcher = "$ghOrg/revanced-patcher"
         const val ghManager = "$ghOrg/revanced-manager"
+
+        var showBar = true
     }
 }

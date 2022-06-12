@@ -1,28 +1,49 @@
 package app.revanced.manager.ui.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import app.revanced.manager.R
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
-import com.ramcosta.composedestinations.DestinationsNavHost
+import app.revanced.manager.ui.screens.mainsubscreens.DashboardSubscreen
+import app.revanced.manager.ui.screens.mainsubscreens.PatcherSubscreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
+    var mainScreenName by rememberSaveable {
+        mutableStateOf("Dashboard")
+    }
+    val items = mapOf(
+        "Dashboard" to R.drawable.ic_baseline_dashboard_24,
+        "Patcher" to R.drawable.ic_baseline_build_24
+    )
     Scaffold(
-        topBar = { AppBar() },
-        bottomBar = { BottomNavBar(navController) },
+        topBar = {
+            AppBar()
+        },
+        bottomBar = {
+            BottomNavBar(screenName = mainScreenName, items, onNavigateClick = {screenName ->
+                mainScreenName = screenName
+            })
+        },
         content = { innerPadding ->
-            DestinationsNavHost(
-                modifier = Modifier.padding(innerPadding),
-                navController = navController,
-                navGraph = NavGraphs.root,
-            )
+            Column(modifier = Modifier.padding(innerPadding)) {
+                when (mainScreenName) {
+                    "Dashboard" -> {
+                        DashboardSubscreen()
+                    }
+                    "Patcher" -> {
+                        PatcherSubscreen()
+                    }
+                }
+            }
         }
     )
 }

@@ -29,22 +29,13 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppList
 import app.revanced.manager.ui.components.DialogAppBar
 import app.revanced.manager.ui.components.placeholders.applist.AppIcon
-import app.revanced.manager.ui.screens.destinations.DashboardSubscreenDestination
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.result.ResultBackNavigator
-import com.ramcosta.composedestinations.utils.startDestination
 
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("QueryPermissionsNeeded")
-@Destination
-@RootNavGraph
 @Composable
 fun PatchesSelectorScreen(
     patches: Array<String>,
-    filter: Array<String>,
-    resultNavigator: ResultBackNavigator<String>
+    filter: Array<String>
 ) {
     val rl = rememberLazyListState()
     rl.interactionSource
