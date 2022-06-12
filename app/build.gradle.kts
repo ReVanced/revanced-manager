@@ -1,6 +1,5 @@
 val composeVersion = rootProject.extra.get("compose_version") as String
 val ktorVersion = rootProject.extra.get("ktor_version") as String
-val koinVersion = rootProject.extra.get("koin_version") as String
 val roomVersion = rootProject.extra.get("room_version") as String
 
 plugins {
@@ -39,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId = appId
-        minSdk = 23
+        minSdk = 26
         targetSdk = 32
         versionCode = 1
         versionName = "1.0"
@@ -102,6 +101,10 @@ dependencies {
     // ReVanced
     implementation("app.revanced:revanced-patcher:+")
     implementation("app.revanced:revanced-patches:+")
+
+    // Compose Destinations
+    implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.5-beta")
 
     // Accompanist
     implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")

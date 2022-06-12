@@ -7,17 +7,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.models.DashboardViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
 @Composable
+@RootNavGraph(start = true)
 fun DashboardSubscreen(
+    navigator: NavController,
     vm: DashboardViewModel = DashboardViewModel()
 ) {
     LaunchedEffect(Unit) { vm.fetchLastCommit() }

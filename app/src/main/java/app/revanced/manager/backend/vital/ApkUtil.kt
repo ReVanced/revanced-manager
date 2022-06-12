@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.res.TypedArray
 import com.topjohnwu.superuser.Shell
+import java.io.File
 
 class ApkUtil() {
     lateinit var cn: Context;
@@ -23,6 +24,9 @@ class ApkUtil() {
         return pm.getApplicationInfo(packageName, 0).publicSourceDir
     }
 
+    fun getCacheDir(): File {
+        return cn.cacheDir
+    }
 
     fun installFromPath(path: String) {
         if (Shell.rootAccess())
