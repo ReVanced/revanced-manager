@@ -79,28 +79,29 @@ fun PatcherSubscreen(
 
                 patcher.addFiles(listOf(g) as List<File>)
                 }
+                // TODO: finish adapting patcher utils and such
                 // add patches, but filter incompatible or excluded patches
-                patcher.addPatchesFiltered(includeFilter = includedPatches.isNotEmpty())
-                // apply patches
-                patcher.applyPatchesVerbose()
-
-                // write output file
-                if (output.exists()) Files.delete(output.toPath())
-                MainCommand.inputFile.copyTo(output)
-
-                ZipFileSystemUtils(output).use { fileSystem ->
-                    // replace all dex files
-                    val result = patcher.save()
-                    result.dexFiles.forEach {
-                        fileSystem.write(it.name, it.memoryDataStore.data)
-                    }
-
-                    // write resources
-                    if (!disableResourcePatching) {
-                        fileSystem.writePathRecursively(File(cacheDirectory).resolve("build").toPath())
-                        fileSystem.uncompress(*result.doNotCompress!!.toTypedArray())
-                    }
-                }
+//                patcher.addPatchesFiltered(includeFilter = includedPatches.isNotEmpty())
+//                // apply patches
+//                patcher.applyPatchesVerbose()
+//
+//                // write output file
+//                if (output.exists()) Files.delete(output.toPath())
+//                MainCommand.inputFile.copyTo(output)
+//
+//                ZipFileSystemUtils(output).use { fileSystem ->
+//                    // replace all dex files
+//                    val result = patcher.save()
+//                    result.dexFiles.forEach {
+//                        fileSystem.write(it.name, it.memoryDataStore.data)
+//                    }
+//
+//                    // write resources
+//                    if (!disableResourcePatching) {
+//                        fileSystem.writePathRecursively(File(cacheDirectory).resolve("build").toPath())
+//                        fileSystem.uncompress(*result.doNotCompress!!.toTypedArray())
+//                    }
+//                }
                       },
             icon = { Icon(imageVector = Icons.Default.Build, contentDescription = "sd") },
             text = { Text(text = "Patch") })
