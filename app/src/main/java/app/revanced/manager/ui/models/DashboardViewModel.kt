@@ -27,18 +27,23 @@ class DashboardViewModel : ViewModel() {
     val managerCommitDate: String
         get() = _latestManagerCommit?.commitDate ?: "unknown"
 
-    fun fetchLastCommit() {
+    init {
+        fetchLastCommit()
+    }
+
+    private fun fetchLastCommit() {
         viewModelScope.launch {
             try {
                 _latestPatcherCommit = GitHubAPI.Commits.latestCommit(Global.ghPatcher, "HEAD")
             } catch (e: Exception) {
                 Log.e(tag, "failed to fetch latest patcher commit", e)
             }
-            try {
-                _latestManagerCommit = GitHubAPI.Commits.latestCommit(Global.ghManager, "HEAD")
-            } catch (e: Exception) {
-                Log.e(tag, "failed to fetch latest manager commit", e)
-            }
+            // TODO: add back when this is public
+//            try {
+//                _latestManagerCommit = GitHubAPI.Commits.latestCommit(Global.ghManager, "HEAD")
+//            } catch (e: Exception) {
+//                Log.e(tag, "failed to fetch latest manager commit", e)
+//            }
         }
     }
 

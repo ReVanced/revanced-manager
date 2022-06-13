@@ -1,12 +1,18 @@
 package app.revanced.manager.backend.api
 
+import android.util.Log
 import app.revanced.manager.Global
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.cio.*
+import io.ktor.utils.io.*
 import kotlinx.serialization.json.Json
+import java.io.File
 
 val client = HttpClient(Android) {
     BrowserUserAgent()
@@ -20,12 +26,23 @@ val client = HttpClient(Android) {
 }
 
 object ManagerAPI {
-    suspend fun downloadPatches(): PatchesAsset {
-        val patchesAsset = findPatchesAsset()
-        val (_, asset) = patchesAsset
-        // TODO
+    private const val tag = "ManagerAPI"
 
-        return patchesAsset
+    suspend fun downloadPatches(workdir: File): Pair<PatchesAsset, File> {
+        val patchesAsset = findPatchesAsset()
+        val (release, asset) = patchesAsset
+        val out = workdir.resolve("${release.tagName}-${asset.name}")
+        if (out.exists()) {
+            Log.d(tag, "Skipping downloading asset ${asset.name} because it exists in cache!")
+            return patchesAsset to out
+        }
+
+        Log.d(tag, "Downloading asset ${asset.name}")
+        client.get(asset.downloadUrl)
+            .bodyAsChannel()
+            .copyAndClose(out.writeChannel())
+
+        return patchesAsset to out
     }
 
     private suspend fun findPatchesAsset(): PatchesAsset {
@@ -40,7 +57,7 @@ object ManagerAPI {
     )
 
     private fun List<GitHubAPI.Releases.ReleaseAsset>.findAsset() = find { asset ->
-        !asset.name.contains("-sources") && !asset.name.contains("-javadoc")
+        (asset.name.contains(".apk") || asset.name.contains(".dex")) && !asset.name.contains("-sources") && !asset.name.contains("-javadoc")
     }
 }
 

@@ -1,110 +1,62 @@
 package app.revanced.manager.ui.screens.mainsubscreens
 
-
-import android.content.Intent
+import android.app.Application
 import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.net.toFile
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import app.revanced.manager.R
-import app.revanced.manager.backend.vital.ApkUtil
+import app.revanced.manager.backend.api.ManagerAPI
+import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
-import app.revanced.patcher.PatcherOptions
+import app.revanced.patcher.data.base.Data
+import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
+import app.revanced.patcher.patch.base.Patch
+import app.revanced.patcher.util.patch.implementation.DexPatchBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.result.NavResult
-import com.ramcosta.composedestinations.result.ResultRecipient
+import dalvik.system.DexClassLoader
+import kotlinx.coroutines.launch
 import java.io.File
-import app.revanced.manager.backend.utils.patcher.addPatchesFiltered
-import app.revanced.manager.backend.utils.patcher.applyPatchesVerbose
-import app.revanced.manager.backend.utils.patcher.mergeFiles
+import java.util.*
+
+private const val tag = "PatcherScreen"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @RootNavGraph
 @Composable
-// patcher_subscreen
 fun PatcherSubscreen(
     navigator: NavController,
-    resultRecipient: ResultRecipient<AppSelectorScreenDestination, String>
+    vm: PatcherViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
-    var selectedAppPackage by rememberSaveable { mutableStateOf("") }
-    val sela = stringResource(id = R.string.card_application_body)
-    val selb = stringResource(id = R.string.card_application_body_selected)
-    var e = ""
-    val pm = ApkUtil(LocalContext.current)
+    val selectedAppPackage by vm.selectedAppPackage
 
-    val applications = pm.getInstalledApplications()
-    resultRecipient.onNavResult { result ->
-        when (result) {
-            is NavResult.Canceled -> {}
-            is NavResult.Value -> {
-                selectedAppPackage = result.value
-
-                println(pm.pathFromPackageName(packageName = result.value))
-            }
-        }
-    }
-    var g : File? = null
-    val pickintegrations = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { file ->
-        if (file != null) {
-            g = file.toFile()
-            // Update the state with the Uri
-        }
-    }
     Scaffold(floatingActionButton = {
-        ExtendedFloatingActionButton(
-            onClick = {
-                var patcher = app.revanced.patcher.Patcher(PatcherOptions(File(pm.pathFromPackageName(selectedAppPackage)), pm.getCacheDir().toString(), false))
-
-                pickintegrations.launch("application/java-archive")
-                if (g != null) {
-
-                patcher.addFiles(listOf(g) as List<File>)
-                }
-                // TODO: finish adapting patcher utils and such
-                // add patches, but filter incompatible or excluded patches
-//                patcher.addPatchesFiltered(includeFilter = includedPatches.isNotEmpty())
-//                // apply patches
-//                patcher.applyPatchesVerbose()
-//
-//                // write output file
-//                if (output.exists()) Files.delete(output.toPath())
-//                MainCommand.inputFile.copyTo(output)
-//
-//                ZipFileSystemUtils(output).use { fileSystem ->
-//                    // replace all dex files
-//                    val result = patcher.save()
-//                    result.dexFiles.forEach {
-//                        fileSystem.write(it.name, it.memoryDataStore.data)
-//                    }
-//
-//                    // write resources
-//                    if (!disableResourcePatching) {
-//                        fileSystem.writePathRecursively(File(cacheDirectory).resolve("build").toPath())
-//                        fileSystem.uncompress(*result.doNotCompress!!.toTypedArray())
-//                    }
-//                }
-                      },
-            icon = { Icon(imageVector = Icons.Default.Build, contentDescription = "sd") },
-            text = { Text(text = "Patch") })
+        // TODO: fix being able to disable button
+        ExtendedFloatingActionButton(onClick = {
+            if (!selectedAppPackage.isPresent) return@ExtendedFloatingActionButton
+        }, icon = {
+            Icon(imageVector = Icons.Default.Build, contentDescription = "sd")
+        }, text = { Text(text = "Patch") })
     }) { paddingValues ->
         Column(
             modifier = Modifier
@@ -117,7 +69,7 @@ fun PatcherSubscreen(
                     .fillMaxWidth(),
                 onClick = {
                     navigator.navigate(
-                        AppSelectorScreenDestination(applications, arrayOf("aboba")).route
+                        AppSelectorScreenDestination().route
                     )
                 }
             ) {
@@ -126,16 +78,8 @@ fun PatcherSubscreen(
                         text = stringResource(id = R.string.card_application_header),
                         style = MaterialTheme.typography.titleMedium
                     )
-                    when (selectedAppPackage) {
-                        "" -> {
-                            e = sela
-                        }
-                        else -> {
-                            e = selectedAppPackage
-                        }
-                    }
                     Text(
-                        text = e,
+                        text = selectedAppPackage.orElse(stringResource(R.string.card_application_body)),
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(0.dp, 8.dp)
                     )
@@ -147,33 +91,114 @@ fun PatcherSubscreen(
                     .fillMaxWidth(),
                 onClick = {
                     navigator.navigate(
-                        PatchesSelectorScreenDestination(
-                            arrayOf("patch-1", "patch-2", "patch-3"),
-                            arrayOf("aboba")
-                        ).route
+                        PatchesSelectorScreenDestination().route
                     )
                 }
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = stringResource(id = R.string.card_patches_header),
+                        text = stringResource(R.string.card_patches_header),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = stringResource(id = R.string.card_patches_body_patches),
+                        text = if (vm.anyPatchSelected()) {
+                            "${vm.selectedAmount()} patches selected"
+                        } else {
+                            stringResource(R.string.card_patches_body_patches)
+                        },
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(0.dp, 8.dp)
                     )
                 }
             }
+        }
+    }
+}
 
+data class PatchClass(
+    val patch: Class<out Patch<Data>>,
+    val unsupported: Boolean
+)
+
+class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
+    private val workdir = app.filesDir.resolve("work").also { it.mkdirs() }
+
+    val selectedAppPackage = mutableStateOf(Optional.empty<String>())
+    private val selectedPatches = mutableStateListOf<String>()
+    val patches = mutableStateOf<Resource<List<Class<out Patch<Data>>>>>(Resource.Loading)
+
+    init {
+        loadPatches()
+    }
+
+    fun setSelectedAppPackage(appId: String) {
+        selectedAppPackage.value = Optional.of(appId)
+        selectedPatches.clear()
+    }
+
+    fun selectPatch(patchId: String, state: Boolean) {
+        if (state) selectedPatches.add(patchId)
+        else selectedPatches.remove(patchId)
+    }
+
+    fun isPatchSelected(patchId: String): Boolean {
+        return selectedPatches.contains(patchId)
+    }
+
+    fun selectedAmount(): Int {
+        return selectedPatches.size
+    }
+
+    fun anyPatchSelected(): Boolean {
+        return !selectedPatches.isEmpty()
+    }
+
+    fun getFilteredPatches(): List<PatchClass> {
+        return buildList {
+            val selected = if (selectedAppPackage.value.isPresent)
+                app.packageManager.getPackageInfo(
+                    selectedAppPackage.value.get(),
+                    PackageManager.GET_META_DATA
+                )
+            else return@buildList
+            val rsrc = patches.value as? Resource.Success ?: return@buildList
+            rsrc.data.forEach patch@{ patch ->
+                patch.compatiblePackages?.forEach { pkg ->
+                    if (pkg.name != selected.packageName) return@patch
+                    val unsupported = !pkg.versions.any { it == selected.versionName }
+                    add(PatchClass(patch, unsupported))
+                }
+            }
         }
     }
 
-}
+    private suspend fun downloadDefaultPatchBundle(workdir: File): File {
+        return try {
+            val (_, out) = ManagerAPI.downloadPatches(workdir)
+            out
+        } catch (e: Exception) {
+            throw Exception("Failed to download default patch bundle", e)
+        }
+    }
 
-@Preview
-@Composable
-fun PatcherSubscreenPreview() {
-    // PatcherSubscreen()
+    private fun loadPatches() = viewModelScope.launch {
+        try {
+            val file = downloadDefaultPatchBundle(workdir)
+            loadPatches0(file.absolutePath)
+        } catch (e: Exception) {
+            Log.e(tag, "An error occurred while loading patches", e)
+        }
+    }
+
+    private fun loadPatches0(path: String) {
+        val patchClasses = DexPatchBundle(
+            path, DexClassLoader(
+                path,
+                app.codeCacheDir.absolutePath,
+                null,
+                javaClass.classLoader
+            )
+        ).loadPatches()
+        patches.value = Resource.Success(patchClasses)
+    }
 }
