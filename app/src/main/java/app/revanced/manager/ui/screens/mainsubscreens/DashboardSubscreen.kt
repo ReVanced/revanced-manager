@@ -52,7 +52,7 @@ fun DashboardSubscreen(
             Card(
                 modifier = Modifier
                     .padding(4.dp)
-                    .sizeIn(minWidth = 200.dp, maxWidth = 200.dp)
+                    .weight(1f)
                     .fillMaxHeight()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -88,7 +88,7 @@ fun DashboardSubscreen(
                 onClick = { /*TODO*/ },
                 modifier = Modifier
                     .padding(4.dp)
-                    .sizeIn(minWidth = 250.dp)
+                    .weight(1f)
                     .fillMaxHeight()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
