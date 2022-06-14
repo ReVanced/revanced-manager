@@ -53,8 +53,6 @@ fun AppSelectorScreen(
                     val label = vm.applicationLabel(app)
                     val packageName = app.packageName
 
-                    if (!packageName.contains("youtube")) return@items
-
                     val same = packageName == label
                     ListItem(modifier = Modifier.clickable {
                         pvm.setSelectedAppPackage(app.packageName)
