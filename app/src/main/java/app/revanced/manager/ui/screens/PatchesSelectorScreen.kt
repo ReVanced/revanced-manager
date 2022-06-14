@@ -82,7 +82,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 ) {
                     Text(
                         text = name.replace("-", " ").split(" ")
-                            .joinToString(separator = " ") { it.replaceFirstChar { it -> it.uppercase() } },
+                            .joinToString(" ") { it.replaceFirstChar(Char::uppercase) },
                         color = Color.White,
                         style = Typography.titleMedium
                     )
