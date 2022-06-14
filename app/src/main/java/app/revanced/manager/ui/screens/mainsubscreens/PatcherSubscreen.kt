@@ -49,11 +49,12 @@ fun PatcherSubscreen(
     vm: PatcherViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
     val selectedAppPackage by vm.selectedAppPackage
+    val hasAppSelected = selectedAppPackage.isPresent
 
     Scaffold(floatingActionButton = {
         // TODO: fix being able to disable button
         ExtendedFloatingActionButton(onClick = {
-            if (!selectedAppPackage.isPresent) return@ExtendedFloatingActionButton
+            if (!hasAppSelected) return@ExtendedFloatingActionButton
         }, icon = {
             Icon(imageVector = Icons.Default.Build, contentDescription = "sd")
         }, text = { Text(text = "Patch") })
@@ -89,12 +90,11 @@ fun PatcherSubscreen(
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth(),
-
+                enabled = hasAppSelected,
                 onClick = {
-                    if (selectedAppPackage.isPresent)
-                        navigator.navigate(
-                            PatchesSelectorScreenDestination().route
-                        )
+                    if (hasAppSelected) {
+                        navigator.navigate(PatchesSelectorScreenDestination().route)
+                    }
                 }
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -103,8 +103,10 @@ fun PatcherSubscreen(
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = if (vm.anyPatchSelected()) {
-                            "${vm.selectedAmount()} patches selected"
+                        text = if (!hasAppSelected) {
+                            "Select an application first."
+                        } else if (vm.anyPatchSelected()) {
+                            "${vm.selectedAmount()} patches selected."
                         } else {
                             stringResource(R.string.card_patches_body_patches)
                         },
