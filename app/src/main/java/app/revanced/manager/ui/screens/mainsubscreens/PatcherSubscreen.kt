@@ -92,9 +92,7 @@ fun PatcherSubscreen(
                     .fillMaxWidth(),
                 enabled = hasAppSelected,
                 onClick = {
-                    if (hasAppSelected) {
-                        navigator.navigate(PatchesSelectorScreenDestination().route)
-                    }
+                    navigator.navigate(PatchesSelectorScreenDestination().route)
                 }
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
