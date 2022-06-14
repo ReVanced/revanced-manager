@@ -91,30 +91,42 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // TODO: get these 2 little shits to align properly!
-                    // also figure out a way to limit the length of the name, so it doesn't overflow
-                    Text(
-                        name + name + name,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                    SecondaryText(
-                        patch.version ?: "unknown",
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                    if (patchClass.unsupported) {
-                        SecondaryText(
-                            "Unsupported!", // get some yellow warning icon here
-                            modifier = Modifier.padding(horizontal = 4.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            name,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-                }
-                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-                    Checkbox(
-                        checked = isSelected,
-                        onCheckedChange = { onSelected() }
-                    )
+                    Column {
+                        SecondaryText(
+                            patch.version ?: "unknown",
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .defaultMinSize(50.dp)
+                        )
+                    }
+
+                    if (patchClass.unsupported) {
+                        Column {
+                            SecondaryText(
+                                "Unsupported!", // get some yellow warning icon here
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            )
+                        }
+                    }
+                    Column(verticalArrangement = Arrangement.Top) {
+                        CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                            Checkbox(
+                                checked = isSelected,
+                                onCheckedChange = { onSelected() }
+                            )
+                        }
+                    }
                 }
             }
             patch.description?.let { desc ->
