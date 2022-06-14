@@ -25,7 +25,7 @@
     <string name="card_logs_body">Click here to view patcher logs.</string>
     <string name="card_credits_body">Click here to view ReVanced project credits.</string>
 
-    <string name="loading_body">One moment, please..</string>
+    <string name="loading_body">One moment, please...</string>
     <string name="loading_fetching_patches">Fetching patches</string>
 
     <string name="card_announcement_button_changelog">Changelog</string>
