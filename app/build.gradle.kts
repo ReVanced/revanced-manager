@@ -28,7 +28,7 @@ val appId = "app.revanced.manager"
 
 android {
     namespace = appId
-    compileSdk = 33
+    compileSdk = 32
 
     testOptions {
         unitTests.isReturnDefaultValues = true
@@ -37,7 +37,7 @@ android {
     defaultConfig {
         applicationId = appId
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 32 // TODO: update to 33 when sources are available
         versionCode = 1
         versionName = "1.0"
 
