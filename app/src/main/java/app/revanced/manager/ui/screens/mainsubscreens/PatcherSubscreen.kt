@@ -134,10 +134,10 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     fun setSelectedAppPackage(appId: String) {
-        selectedAppPackage.value = Optional.of(appId)
         selectedAppPackage.value.ifPresent { s ->
             if (s != appId) selectedPatches.clear()
         }
+        selectedAppPackage.value = Optional.of(appId)
     }
 
     fun selectPatch(patchId: String, state: Boolean) {
