@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -34,7 +36,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @RootNavGraph
 @Composable
 fun PatchesSelectorScreen(
-    navigator: NavController, // TODO: add back button
+    navigator: NavController,
     pvm: PatcherViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
     val patches = rememberSaveable { pvm.getFilteredPatches() }
@@ -42,7 +44,15 @@ fun PatchesSelectorScreen(
 
     when (patchesState) {
         is Resource.Success -> {
-            Scaffold { paddingValues ->
+            Scaffold(floatingActionButton = {
+                if (pvm.anyPatchSelected()) {
+                    ExtendedFloatingActionButton(
+                        icon = { Icon(Icons.Default.Check, "Done") },
+                        text = { Text("Done") },
+                        onClick = { navigator.navigateUp() },
+                    )
+                }
+            }) { paddingValues ->
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
