@@ -5,10 +5,8 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
@@ -27,11 +25,9 @@ import app.revanced.manager.ui.components.placeholders.applist.AppIcon
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.result.ResultBackNavigator
 
 private const val tag = "AppSelector"
 
-@RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("QueryPermissionsNeeded")
 @Destination
