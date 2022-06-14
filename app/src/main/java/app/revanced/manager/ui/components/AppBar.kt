@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.components
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
@@ -13,24 +14,22 @@ import app.revanced.manager.ui.components.placeholders.Icon
 
 
 @Composable
-fun AppBar() {
-    val currentUriHandler = LocalUriHandler.current
-
+fun AppBar(title: @Composable () -> Unit, actions: @Composable RowScope.() -> Unit = {}, navigationIcon: @Composable () -> Unit = {}) {
     SmallTopAppBar(
-        title = {Text("ReVanced Manager") },
-        actions = {
-            IconButton(onClick = { openDiscord(currentUriHandler) }) {
-                Icon(resourceId = R.drawable.ic_discord_24, contentDescription = "Discord")
-            }
-            IconButton(onClick = { openGitHub(currentUriHandler) }) {
-                Icon(resourceId = R.drawable.ic_github_24, contentDescription = "GitHub")
-            }
-        }
+        title = title,
+        navigationIcon = navigationIcon,
+        actions = actions
     )
 }
 
 @Preview(name = "Top App Bar Preview")
 @Composable
 fun AppBarPreview() {
-    AppBar()
+    AppBar(
+        title = { Text("ReVanced Manager") },
+        actions = {
+            Icon(resourceId = R.drawable.ic_discord_24, contentDescription = "Discord")
+            Icon(resourceId = R.drawable.ic_github_24, contentDescription = "GitHub")
+        }
+    )
 }
