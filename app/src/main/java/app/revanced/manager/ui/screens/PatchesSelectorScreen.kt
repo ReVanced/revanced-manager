@@ -4,10 +4,6 @@ import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -79,14 +75,14 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
         onClick = { onSelected() }
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Row{
+            Row {
                 Column(
                     Modifier
                         .weight(1f)
                 ) {
                     Text(
                         text = name.replace("-", " ").split(" ")
-                            .joinToString(separator = " ") { it.replaceFirstChar { it -> it.uppercase() } } ,
+                            .joinToString(separator = " ") { it.replaceFirstChar { it -> it.uppercase() } },
                         color = Color.White,
                         style = Typography.titleMedium
                     )
