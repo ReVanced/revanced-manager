@@ -25,10 +25,12 @@ import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.backend.api.ManagerAPI
 import app.revanced.manager.ui.Resource
+import app.revanced.manager.ui.components.FloatingActionButton
 import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
 import app.revanced.patcher.data.base.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
+import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.patch.base.Patch
 import app.revanced.patcher.util.patch.implementation.DexPatchBundle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -52,12 +54,14 @@ fun PatcherSubscreen(
     val hasAppSelected = selectedAppPackage.isPresent
 
     Scaffold(floatingActionButton = {
-        // TODO: fix being able to disable button
-        ExtendedFloatingActionButton(onClick = {
-            if (!hasAppSelected) return@ExtendedFloatingActionButton
-        }, icon = {
-            Icon(imageVector = Icons.Default.Build, contentDescription = "sd")
-        }, text = { Text(text = "Patch") })
+        FloatingActionButton(
+            enabled = hasAppSelected && vm.anyPatchSelected(),
+            icon = { Icon(Icons.Default.Build, "sd") },
+            text = { Text("Patch") },
+            onClick = {
+                println("hi")
+            },
+        )
     }) { paddingValues ->
         Column(
             modifier = Modifier
@@ -123,7 +127,7 @@ data class PatchClass(
 )
 
 class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
-    private val workdir = app.filesDir.resolve("work").also { it.mkdirs() }
+    private val patchBundleDir = app.filesDir.resolve("bundle-cache").also { it.mkdirs() }
 
     val selectedAppPackage = mutableStateOf(Optional.empty<String>())
     private val selectedPatches = mutableStateListOf<String>()
@@ -157,6 +161,11 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
         return !selectedPatches.isEmpty()
     }
 
+    fun findPatchesByIds(ids: Iterable<String>): List<Class<out Patch<Data>>> {
+        val (patches) = patches.value as? Resource.Success ?: return listOf()
+        return patches.filter { patch -> ids.any { it == patch.patchName } }
+    }
+
     fun getFilteredPatches(): List<PatchClass> {
         return buildList {
             val selected = if (selectedAppPackage.value.isPresent)
@@ -165,8 +174,8 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
                     PackageManager.GET_META_DATA
                 )
             else return@buildList
-            val rsrc = patches.value as? Resource.Success ?: return@buildList
-            rsrc.data.forEach patch@{ patch ->
+            val (patches) = patches.value as? Resource.Success ?: return@buildList
+            patches.forEach patch@{ patch ->
                 patch.compatiblePackages?.forEach { pkg ->
                     if (pkg.name != selected.packageName) return@patch
                     val unsupported = !pkg.versions.any { it == selected.versionName }
@@ -187,7 +196,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private fun loadPatches() = viewModelScope.launch {
         try {
-            val file = downloadDefaultPatchBundle(workdir)
+            val file = downloadDefaultPatchBundle(patchBundleDir)
             loadPatches0(file.absolutePath)
         } catch (e: Exception) {
             Log.e(tag, "An error occurred while loading patches", e)
@@ -204,5 +213,9 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
             )
         ).loadPatches()
         patches.value = Resource.Success(patchClasses)
+    }
+
+    fun startPatcher() {
+
     }
 }
