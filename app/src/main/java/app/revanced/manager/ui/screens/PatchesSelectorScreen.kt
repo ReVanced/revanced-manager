@@ -14,16 +14,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import app.revanced.manager.R
@@ -37,8 +31,6 @@ import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-import org.bouncycastle.math.raw.Mod
-import kotlin.text.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("QueryPermissionsNeeded")
@@ -58,7 +50,6 @@ fun PatchesSelectorScreen(
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
-                        .padding(16.dp)
                 ) {
                     LazyColumn {
                         items(count = patches.size) {
@@ -84,8 +75,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
 
     Card(
         modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth(),
+            .padding(16.dp, 4.dp),
         onClick = { onSelected() }
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -96,16 +86,16 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 ) {
                     Text(
                         text = name.replace("-", " ").split(" ")
-                            .joinToString(separator = " ") { it.replaceFirstChar { it -> it.uppercase() } },
+                            .joinToString(separator = " ") { it.replaceFirstChar { it -> it.uppercase() } } ,
                         color = Color.White,
                         style = Typography.titleMedium
                     )
                 }
 
                 if (patchClass.unsupported) {
-                    Column(Modifier.align(CenterVertically)) {
+                    Column(Modifier.align(Alignment.CenterVertically)) {
                         Text(
-                            text = "Unsupported!", // get some yellow warning icon here
+                            text = "Unsupported!", // TODO: get some yellow warning icon here
                             modifier = Modifier.padding(horizontal = 4.dp),
                             style = Typography.bodySmall,
                         )
@@ -122,8 +112,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                                 text = patch.version ?: "unknown",
                                 style = Typography.bodySmall,
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                                    .defaultMinSize(50.dp)
+                                    .absolutePadding(24.dp, 0.dp, 12.dp, 0.dp)
                             )
                         }
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
