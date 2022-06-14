@@ -14,6 +14,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -34,6 +35,7 @@ import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import org.bouncycastle.math.raw.Mod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("QueryPermissionsNeeded")
@@ -92,17 +94,19 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
-                    Column(Modifier.weight(1f)) {
+                    Column(
+                        Modifier
+                            .weight(1f)
+                            .align(CenterVertically)
+                    ) {
                         Text(
-                            name,
+                            name + name + name,
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Column {
+                    Column(Modifier.align(CenterVertically)) {
                         SecondaryText(
                             patch.version ?: "unknown",
                             modifier = Modifier
@@ -112,14 +116,14 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     }
 
                     if (patchClass.unsupported) {
-                        Column {
+                        Column(Modifier.align(CenterVertically)) {
                             SecondaryText(
                                 "Unsupported!", // get some yellow warning icon here
                                 modifier = Modifier.padding(horizontal = 4.dp)
                             )
                         }
                     }
-                    Column(verticalArrangement = Arrangement.Top) {
+                    Column{
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
                                 checked = isSelected,
