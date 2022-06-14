@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,12 +31,14 @@ import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.components.LoadingIndicator
 import app.revanced.manager.ui.screens.mainsubscreens.PatchClass
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
+import app.revanced.manager.ui.theme.Typography
 import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import org.bouncycastle.math.raw.Mod
+import kotlin.text.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("QueryPermissionsNeeded")
@@ -86,44 +89,43 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
         onClick = { onSelected() }
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
+            Row{
+                Column(
+                    Modifier
+                        .weight(1f)
                 ) {
-                    Column(
-                        Modifier
-                            .weight(1f)
-                            .align(CenterVertically)
-                    ) {
-                        Text(
-                            name + name + name,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Column(Modifier.align(CenterVertically)) {
-                        SecondaryText(
-                            patch.version ?: "unknown",
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .defaultMinSize(50.dp)
-                        )
-                    }
+                    Text(
+                        text = name.replace("-", " ").split(" ")
+                            .joinToString(separator = " ") { it.replaceFirstChar { it -> it.uppercase() } },
+                        color = Color.White,
+                        style = Typography.titleMedium
+                    )
+                }
 
-                    if (patchClass.unsupported) {
-                        Column(Modifier.align(CenterVertically)) {
-                            SecondaryText(
-                                "Unsupported!", // get some yellow warning icon here
-                                modifier = Modifier.padding(horizontal = 4.dp)
+                if (patchClass.unsupported) {
+                    Column(Modifier.align(CenterVertically)) {
+                        Text(
+                            text = "Unsupported!", // get some yellow warning icon here
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            style = Typography.bodySmall,
+                        )
+                    }
+                }
+
+                Column {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = patch.version ?: "unknown",
+                                style = Typography.bodySmall,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .defaultMinSize(50.dp)
                             )
                         }
-                    }
-                    Column{
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
                                 checked = isSelected,
@@ -134,26 +136,12 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 }
             }
             patch.description?.let { desc ->
-                SecondaryText(
-                    desc,
+                Text(
+                    text = desc,
+                    style = Typography.bodyMedium,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun SecondaryText(text: String, modifier: Modifier = Modifier) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-        ProvideTextStyle(MaterialTheme.typography.body2) {
-            Text(
-                text,
-                fontSize = 12.sp,
-                lineHeight = 12.sp,
-                modifier = modifier,
-                fontWeight = FontWeight.Light
-            )
         }
     }
 }
