@@ -28,8 +28,19 @@ val client = HttpClient(Android) {
 object ManagerAPI {
     private const val tag = "ManagerAPI"
 
-    suspend fun downloadPatches(workdir: File): Pair<PatchesAsset, File> {
-        val patchesAsset = findPatchesAsset()
+    suspend fun downloadPatches(workdir: File) = downloadAsset(workdir, findPatchesAsset())
+    suspend fun downloadIntegrations(workdir: File) = downloadAsset(workdir, findIntegrationsAsset())
+
+    private suspend fun findPatchesAsset() = findAsset(Global.ghPatches)
+    private suspend fun findIntegrationsAsset() = findAsset(Global.ghIntegrations)
+
+    private suspend fun findAsset(repo: String): PatchesAsset {
+        val release = GitHubAPI.Releases.latestRelease(repo)
+        val asset = release.assets.findAsset() ?: throw MissingAssetException()
+        return PatchesAsset(release, asset)
+    }
+
+    private suspend fun downloadAsset(workdir: File, patchesAsset: PatchesAsset): Pair<PatchesAsset, File> {
         val (release, asset) = patchesAsset
         val out = workdir.resolve("${release.tagName}-${asset.name}")
         if (out.exists()) {
@@ -43,12 +54,6 @@ object ManagerAPI {
             .copyAndClose(out.writeChannel())
 
         return patchesAsset to out
-    }
-
-    private suspend fun findPatchesAsset(): PatchesAsset {
-        val release = GitHubAPI.Releases.latestRelease(Global.ghPatches)
-        val asset = release.assets.findAsset() ?: throw MissingAssetException()
-        return PatchesAsset(release, asset)
     }
 
     data class PatchesAsset(

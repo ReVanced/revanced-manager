@@ -1,61 +1,44 @@
-package app.revanced.manager.backend.utils.filesyste
+package app.revanced.manager.backend.utils.filesystem
 
+import net.lingala.zip4j.ZipFile
+import net.lingala.zip4j.model.ZipParameters
+import net.lingala.zip4j.model.enums.CompressionMethod
+import java.io.Closeable
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 
-// TODO: adapt zipfilesystemutils code to android
-//import java.io.Closeable
-//import java.io.File
-//import java.nio.file.FileSystems
-//import java.nio.file.Files
-//import java.nio.file.Path
-//import java.util.zip.ZipEntry
-//
-//internal class ZipFileSystemUtils(
-//    file: File
-//) : Closeable {
-//    private var zipFileSystem = FileSystems.newFileSystem(file.toPath(), mapOf("noCompression" to true))
-//
-//    private fun Path.deleteRecursively() {
-//        if (Files.isDirectory(this)) {
-//            Files.list(this).forEach { path ->
-//                path.deleteRecursively()
-//            }
-//        }
-//
-//        Files.delete(this)
-//    }
-//
-//    internal fun writePathRecursively(path: Path) {
-//        Files.list(path).let { fileStream ->
-//            fileStream.forEach { filePath ->
-//                val fileSystemPath = filePath.getRelativePath(path)
-//                fileSystemPath.deleteRecursively()
-//            }
-//
-//            fileStream
-//        }.close()
-//
-//        Files.walk(path).let { fileStream ->
-//            fileStream.skip(1).forEach { filePath ->
-//                val relativePath = filePath.getRelativePath(path)
-//
-//                if (Files.isDirectory(filePath)) {
-//                    Files.createDirectory(relativePath)
-//                    return@forEach
-//                }
-//
-//                Files.copy(filePath, relativePath)
-//            }
-//
-//            fileStream
-//        }.close()
-//    }
-//
-//    internal fun write(path: String, content: ByteArray) = Files.write(zipFileSystem.getPath(path), content)
-//
-//    private fun Path.getRelativePath(path: Path): Path = zipFileSystem.getPath(path.relativize(this).toString())
-//
-//    internal fun uncompress(vararg paths: String) =
-//        paths.forEach { Files.setAttribute(zipFileSystem.getPath(it), "zip:method", ZipEntry.STORED) }
-//
-//    override fun close() = zipFileSystem.close()
-//}
+internal class ZipFileSystemUtils(file: File, private val dir: String) : Closeable {
+    private var zf = ZipFile(file)
+
+    fun writePathRecursively(path: Path, doNotCompress: List<String>) {
+        Files.list(path).use { fileStream ->
+            fileStream.forEach { filePath ->
+                if (Files.isRegularFile(filePath)) {
+                    val relPath = filePath.toString().replace(dir, "")
+                    zf.removeFile(relPath)
+                }
+            }
+        }
+
+        Files.walk(path).use { fileStream ->
+            fileStream.forEach { filePath ->
+                if (Files.isRegularFile(filePath) && !filePath.toString().contains(".zip")) { // this is ugly.
+                    val relPath = filePath.toString().replace(dir, "")
+                    write(relPath, filePath.toFile(), !doNotCompress.contains(relPath))
+                }
+            }
+        }
+    }
+
+    fun write(path: String, content: File, compress: Boolean = true) {
+        zf.addFile(content, ZipParameters().also { zp ->
+            zp.compressionMethod =
+                if (compress) CompressionMethod.DEFLATE else CompressionMethod.STORE
+            zp.fileNameInZip = path
+            zp.entrySize = content.length()
+        })
+    }
+
+    override fun close() = zf.close()
+}

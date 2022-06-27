@@ -94,10 +94,17 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:1.1.0")
+    implementation("app.revanced:revanced-patcher:1.2.8")
+
+    // Zip File System
+    implementation("net.lingala.zip4j:zip4j:2.10.0")
+
+    // Signing & aligning
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
+    implementation("com.android.tools.build:apksig:7.2.1")
 
     // Compose Destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
