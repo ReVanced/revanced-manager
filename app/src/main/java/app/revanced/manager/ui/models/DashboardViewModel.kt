@@ -38,12 +38,11 @@ class DashboardViewModel : ViewModel() {
             } catch (e: Exception) {
                 Log.e(tag, "failed to fetch latest patcher commit", e)
             }
-            // TODO: add back when this is public
-//            try {
-//                _latestManagerCommit = GitHubAPI.Commits.latestCommit(Global.ghManager, "HEAD")
-//            } catch (e: Exception) {
-//                Log.e(tag, "failed to fetch latest manager commit", e)
-//            }
+           try {
+               _latestManagerCommit = GitHubAPI.Commits.latestCommit(Global.ghManager, "HEAD")
+           } catch (e: Exception) {
+               Log.e(tag, "failed to fetch latest manager commit", e)
+           }
         }
     }
 
