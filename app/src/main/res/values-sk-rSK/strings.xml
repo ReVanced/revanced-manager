@@ -1,35 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">ReVanced Manager</string>
     <string name="app_selector_title">Vyberte aplikáciu…</string>
+
     <string name="app_bar_open_discord">Discord</string>
     <string name="app_bar_open_github">GitHub</string>
+
     <string name="card_announcement_header">Oznámenie</string>
     <string name="card_commits_header">Najnovšie aktualizácie</string>
     <string name="card_logs_header">Záznamy</string>
-    <string name="card_application_header">Vyberte aplikáciu</string>
-    <string name="card_patches_header">Vyberte záplaty</string>
-    <string name="card_options_header">Nastavenia</string>
-    <string name="card_credits_header">Poďakovania</string>
-    <string name="card_commits_body_patcher">Autor:</string>
-    <string name="card_commits_body_manager">Manažér:</string>
-    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+    <string name="card_application_header">Vyberte Aplikáciu</string>
+    <string name="card_patches_header">Vyberte Záplaty</string>
+    <string name="card_options_header">Možnosti</string>
+    <string name="card_credits_header">Kredity</string>
+
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
+    <string name="card_announcement_body_placeholder">Toto je vzorový text na zobrazenie ukážky dizajnu ReVanced Manager, ktorý bude v budúcnosti nahradený dynamickými oznámeniami.</string>
     <string name="card_options_body_root">Root</string>
-    <string name="card_options_body_use_installed">Použiť nainštalovaný YouTube</string>
-    <string name="card_application_body">Nie je vybraná žiadna aplikácia.</string>
-    <string name="card_patches_body_source">Nie je vybraný žiadny zdroj pre záplaty.</string>
-    <string name="card_patches_body_patches">Nie sú vybrané žiadne záplaty.</string>
-    <string name="card_application_body_selected">Vybrané:</string>
-    <string name="card_logs_body">Kliknite sem pre zobrazenie záznamov záplaty.</string>
-    <string name="card_credits_body">Kliknite sem pre zobrazenie poďakovaní pre projekt ReVanced.</string>
-    <string name="card_announcement_button_changelog">Zoznam zmien</string>
-    <string name="button_patch">Záplata</string>
-    <string name="navigation_dashboard">Hlavný panel</string>
-    <string name="navigation_patcher">Autor</string>
+    <string name="card_options_body_use_installed">Použite nainštalovanú aplikáciu YouTube</string>
+    <string name="card_application_body">Nie je vybratá žiadna aplikácia.</string>
+    <string name="card_patches_body_source">Nie je vybratý žiadny zdroj opráv.</string>
+    <string name="card_patches_body_patches">Nie sú vybraté žiadne záplaty.</string>
+    <string name="card_application_body_selected">Vybraté:</string>
+    <string name="card_logs_body">Kliknutím sem zobrazíte záznamy záplatača.</string>
+    <string name="card_credits_body">Kliknutím sem zobrazíte kredity projektu ReVanced.</string>
+
+    <string name="loading_body">Moment prosím...</string>
+    <string name="loading_fetching_patches">Načítavanie záplat</string>
+
+    <string name="card_announcement_button_changelog">Changelog</string>
+
+    <string name="button_patch">Patch</string>
+
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_patcher">Patcher</string>
+
     <string name="screen_logs_title">Záznamy</string>
-    <string name="screen_credits_title">Poďakovania</string>
-    <string name="screen_credits_team_manager">ReVanced Manažér</string>
+    <string name="screen_credits_title">Kredity</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
     <string name="screen_credits_team_website">Webová stránka</string>
     <string name="screen_credits_team">Tím</string>
     <string name="screen_credits_translators">Prekladatelia</string>
-    <string name="screen_credits_team_patcher">Autor</string>
+    <string name="screen_credits_team_patcher">Záplatači</string>
 </resources>
