@@ -34,20 +34,16 @@ import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
-import app.revanced.patcher.data.base.Data
+import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.extensions.PatchExtensions.patchName
-import app.revanced.patcher.patch.base.Patch
+import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.util.patch.implementation.DexPatchBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import dalvik.system.DexClassLoader
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 import java.util.*
 
 private const val tag = "PatcherScreen"
@@ -286,7 +282,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
                 )
 
                 Log.d(tag, "Merging integrations")
-                patcher.addFiles(listOf(integrations))
+                patcher.addFiles(listOf(integrations)) {}
 
                 Log.d(tag, "Adding ${patches.size} patch(es)")
                 patcher.addPatches(patches)
@@ -301,15 +297,11 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
                 }
 
                 Log.d(tag, "Saving file")
-                ZipFileSystemUtils(patchedFile, buildDirectory.absolutePath + File.separator).use { fs ->
-                    buildDirectory.mkdirs()
-                    val result = patcher.save()
-                    result.dexFiles.forEach {
-                        val f = File(cacheDirectory, it.name)
-                        Files.write(f.toPath(), it.memoryDataStore.data)
-                        fs.write(it.name, f)
-                    }
-                    fs.writePathRecursively(buildDirectory.toPath(), result.doNotCompress!!)
+                val result = patcher.save()
+                ZipFileSystemUtils(result.resourceFile!!, patchedFile).use { fs ->
+                    result.dexFiles.forEach { fs.write(it.name, it.dexFileInputStream.readBytes()) }
+                    fs.writeInput()
+                    fs.uncompress(*result.doNotCompress!!.toTypedArray())
                 }
 
                 Log.d(tag, "Aligning apk")

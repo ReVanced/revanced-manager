@@ -63,11 +63,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
         optIn("kotlin.RequiresOptIn")
     }
     buildFeatures {
@@ -97,10 +97,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:1.2.8")
-
-    // Zip File System
-    implementation("net.lingala.zip4j:zip4j:2.10.0")
+    implementation("app.revanced:revanced-patcher:2.0.4")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
