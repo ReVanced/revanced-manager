@@ -42,4 +42,6 @@
     <string name="screen_credits_team">Team</string>
     <string name="screen_credits_translators">Translators</string>
     <string name="screen_credits_team_patcher">Patcher</string>
+    <string name="help_translate">Help translate!</string>
+    <string name="whats_new">What\'s New</string>
 </resources>
