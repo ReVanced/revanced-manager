@@ -14,17 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import app.revanced.manager.R
+import app.revanced.manager.Global.Companion.socialLinks
+import androidx.compose.ui.platform.LocalUriHandler
 
 private const val tag = "AboutScreen"
 
-val socialLinks = mapOf(
-    "https://revanced.app/" to R.drawable.ic_web,
-    "https://revanced.app/discord" to R.drawable.ic_discord_24,
-    "https://revanced.app/github" to R.drawable.ic_github_24,
-    "https://twitter.com/@revancedapp" to R.drawable.ic_twitter,
-    "https://youtube.com/channel/UCLktAUh5Gza9zAJBStwxNdw" to R.drawable.ic_youtube,
-    "https://reddit.com/r/revancedapp" to R.drawable.ic_reddit,
-    )
 
 @OptIn(ExperimentalMaterialApi::class)
 @Destination
@@ -54,10 +48,12 @@ fun AboutScreen(
         )
         Divider(Modifier.alpha(.5f))
 
+        var currentUriHandler = LocalUriHandler.current
+
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            for ((_name, drawble_) in socialLinks.entries) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(painter = painterResource(drawble_), contentDescription = "Links")
+            for ((social_ic, uri) in socialLinks.entries) {
+                IconButton(onClick = { currentUriHandler.openUri(uri) }) {
+                    Icon(painter = painterResource(social_ic), contentDescription = "Links")
                 }
             }
         }

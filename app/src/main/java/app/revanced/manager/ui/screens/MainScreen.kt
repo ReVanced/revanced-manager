@@ -12,9 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import app.revanced.manager.Global.Companion.socialLinks
 import app.revanced.manager.R
-import app.revanced.manager.backend.utils.openDiscord
-import app.revanced.manager.backend.utils.openGitHub
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
 import app.revanced.manager.ui.components.placeholders.Icon
@@ -73,21 +72,7 @@ fun MainScreen() {
                     val currentUriHandler = LocalUriHandler.current
 
                     AppBar(
-                        title = { Text("ReVanced Manager") },
-                        actions = {
-                            IconButton(onClick = { openDiscord(currentUriHandler) }) {
-                                Icon(
-                                    resourceId = R.drawable.ic_discord_24,
-                                    contentDescription = "Discord"
-                                )
-                            }
-                            IconButton(onClick = { openGitHub(currentUriHandler) }) {
-                                Icon(
-                                    resourceId = R.drawable.ic_github_24,
-                                    contentDescription = "GitHub"
-                                )
-                            }
-                        }
+                        title = { Text("ReVanced Manager") }
                     )
                 }
             }

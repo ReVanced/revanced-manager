@@ -8,8 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import app.revanced.manager.R
-import app.revanced.manager.backend.utils.openDiscord
-import app.revanced.manager.backend.utils.openGitHub
 import app.revanced.manager.ui.components.placeholders.Icon
 
 
@@ -27,9 +25,5 @@ fun AppBar(title: @Composable () -> Unit, actions: @Composable RowScope.() -> Un
 fun AppBarPreview() {
     AppBar(
         title = { Text("ReVanced Manager") },
-        actions = {
-            Icon(resourceId = R.drawable.ic_discord_24, contentDescription = "Discord")
-            Icon(resourceId = R.drawable.ic_github_24, contentDescription = "GitHub")
-        }
     )
 }
