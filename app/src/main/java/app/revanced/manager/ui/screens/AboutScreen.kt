@@ -1,47 +1,30 @@
 package app.revanced.manager.ui.screens
 
-import android.annotation.SuppressLint
-import android.app.Application
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
-import android.util.Log
-import androidx.activity.ComponentActivity
+
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.IconButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import app.revanced.manager.ui.Resource
-import app.revanced.manager.ui.components.placeholders.applist.AppIcon
-import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import app.revanced.manager.R
 
 private const val tag = "AboutScreen"
+
+val socialLinks = mapOf(
+    "https://revanced.app/" to R.drawable.ic_web,
+    "https://revanced.app/discord" to R.drawable.ic_discord_24,
+    "https://revanced.app/github" to R.drawable.ic_github_24,
+    "https://twitter.com/@revancedapp" to R.drawable.ic_twitter,
+    "https://youtube.com/channel/UCLktAUh5Gza9zAJBStwxNdw" to R.drawable.ic_youtube,
+    "https://reddit.com/r/revancedapp" to R.drawable.ic_reddit,
+    )
 
 @OptIn(ExperimentalMaterialApi::class)
 @Destination
@@ -71,6 +54,15 @@ fun AboutScreen(
         )
         Divider(Modifier.alpha(.5f))
 
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            for ((_name, drawble_) in socialLinks.entries) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(painter = painterResource(drawble_), contentDescription = "Links")
+                }
+            }
+        }
     }
+    
+
 
 }
