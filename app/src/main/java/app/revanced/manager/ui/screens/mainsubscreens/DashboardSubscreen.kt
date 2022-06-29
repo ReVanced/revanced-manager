@@ -17,7 +17,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.models.DashboardViewModel
+import app.revanced.manager.ui.screens.AboutScreen
 import com.ramcosta.composedestinations.annotation.Destination
+import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
+import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,7 +88,7 @@ fun DashboardSubscreen(
                 }
             }
             Card(
-                onClick = { /*TODO*/ },
+                onClick = { navigator.navigate(AboutScreenDestination().route) },
                 modifier = Modifier
                     .padding(4.dp)
                     .weight(1f)

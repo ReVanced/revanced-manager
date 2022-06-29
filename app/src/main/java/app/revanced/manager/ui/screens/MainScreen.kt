@@ -20,6 +20,7 @@ import app.revanced.manager.ui.components.BottomNavBar
 import app.revanced.manager.ui.components.placeholders.Icon
 import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
+import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +46,19 @@ fun MainScreen() {
                 PatchesSelectorScreenDestination -> {
                     AppBar(
                         title = { Text("Select patches...") },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.navigateUp() }) {
+                                androidx.compose.material3.Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Return"
+                                )
+                            }
+                        }
+                    )
+                }
+                AboutScreenDestination -> {
+                    AppBar(
+                        title = { Text(text = "About")},
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
@@ -84,6 +98,8 @@ fun MainScreen() {
                 navController.appCurrentDestinationAsState().value != AppSelectorScreenDestination
                 &&
                 navController.appCurrentDestinationAsState().value != PatchesSelectorScreenDestination
+                &&
+                        navController.appCurrentDestinationAsState().value != AboutScreenDestination
             ) BottomNavBar(navController)
         },
         content = { innerPadding ->
