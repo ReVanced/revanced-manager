@@ -97,7 +97,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:2.0.4")
+    implementation("app.revanced:revanced-patcher:2.1.1")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")

@@ -101,9 +101,10 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 if (patchClass.unsupported) {
                     Column(Modifier.align(Alignment.CenterVertically)) {
                         Text(
-                            text = "Unsupported!", // TODO: get some yellow warning icon here
+                            text = "⚠️Unsupported!",
                             modifier = Modifier.padding(horizontal = 4.dp),
                             style = Typography.bodySmall,
+                            color = Color.Yellow
                         )
                     }
                 }
