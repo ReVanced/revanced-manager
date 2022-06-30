@@ -73,7 +73,7 @@ fun AboutScreen(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {
                 IconButton(onClick = { currentUriHandler.openUri(uri) }) {
-                    Icon(painter = painterResource(social_ic), contentDescription = "Links")
+                    Icon(painter = painterResource(social_ic), contentDescription = "Links", tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }
