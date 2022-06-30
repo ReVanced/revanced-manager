@@ -17,6 +17,7 @@ import app.revanced.manager.R
 import app.revanced.manager.Global.Companion.socialLinks
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import app.revanced.manager.ui.components.ExpandableCard
 import app.revanced.manager.ui.components.PreferenceRow
 
 private const val tag = "AboutScreen"
@@ -49,7 +50,9 @@ fun AboutScreen(
                 .height(150.dp)
         )
         Divider(Modifier.alpha(.5f))
-        
+
+        ExpandableCard("Patcher Credits")
+
         var currentUriHandler = LocalUriHandler.current
 
         PreferenceRow(
