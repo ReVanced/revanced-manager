@@ -2,12 +2,12 @@ package app.revanced.manager.ui.screens
 
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material.IconButton
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
@@ -18,16 +18,14 @@ import app.revanced.manager.R
 import app.revanced.manager.Global.Companion.socialLinks
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.revanced.manager.Global
 import app.revanced.manager.backend.api.GitHubAPI
 import app.revanced.manager.ui.components.ExpandableCard
 import app.revanced.manager.ui.components.PreferenceRow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private const val tag = "AboutScreen"
 
@@ -41,24 +39,17 @@ fun AboutScreen(
 ) {
 
     Column(Modifier.padding(8.dp)) {
-//        Box() {
-//            Text(
-//                text = "ReVanced Manager",
-//                style = MaterialTheme.typography.headlineMedium,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .align(Alignment.TopCenter)
-//                    .padding(20.dp,0.dp,0.dp,12.dp),
-//                textAlign = TextAlign.Center
-//            )
-//        }
-        Image(
-            painterResource(R.drawable.revancedtext),
-            contentDescription = "ReVanced Logo",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-        )
+        Box() {
+            Icon(
+                painterResource(id = R.drawable.ic_revanced),
+                contentDescription = "Header Icon",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+                    .padding(32.dp)
+                    .size(100.dp),
+            )
+        }
         Divider(Modifier.alpha(.5f))
 
         ExpandableCard("Patcher Credits")
