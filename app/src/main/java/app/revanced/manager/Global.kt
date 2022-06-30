@@ -10,7 +10,7 @@ class Global {
             R.drawable.ic_github to "$websiteUrl/github",
             R.drawable.ic_twitter to "https://twitter.com/revancedapp",
             R.drawable.ic_reddit to "https://reddit.com/r/revancedapp",
-            R.drawable.ic_telegram_filled to "https://t.me/app_revanced",
+            R.drawable.ic_telegram to "https://t.me/app_revanced",
             //            R.drawable.ic_youtube to "https://youtube.com/channel/UCLktAUh5Gza9zAJBStwxNdw",
 
         )

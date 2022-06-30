@@ -48,6 +48,7 @@ fun AboutScreen(
                     .align(Alignment.TopCenter)
                     .padding(32.dp)
                     .size(100.dp),
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         Divider(Modifier.alpha(.5f))
@@ -66,9 +67,9 @@ fun AboutScreen(
             onClick = { currentUriHandler.openUri("https://revanced.app") }
         )
 
-        Text(
-            text = vm.contributorName,
-        )
+//        Text(
+//            text = vm.contributorName,
+//        )
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {
