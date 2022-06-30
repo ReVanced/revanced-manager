@@ -63,4 +63,20 @@ object GitHubAPI {
             }
         }
     }
+
+    object Contributors {
+        suspend fun contributors(org: String, repo: String) : Contributor {
+            Log.d(tag, "Fetching contributors for repo ($repo)")
+            val res: Contributors.Contributor = client.get("$baseUrl/$org/$repo/contributors") {
+                parameter("per_page", 1)
+            }.body()
+            return res
+        }
+        @Serializable
+        class Contributor(
+            @SerialName("login") val login: String,
+            @SerialName("avatar_url") val avatar_url: String,
+            @SerialName("url") val url: String,
+        )
+    }
 }
