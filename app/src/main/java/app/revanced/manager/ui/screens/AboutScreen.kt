@@ -61,11 +61,6 @@ fun AboutScreen(
             title = stringResource(R.string.help_translate),
             onClick = { currentUriHandler.openUri("https://revanced.app") },
         )
-        
-        PreferenceRow(
-            title = stringResource(R.string.help_translate),
-            onClick = { currentUriHandler.openUri("https://revanced.app") },
-        )
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {
