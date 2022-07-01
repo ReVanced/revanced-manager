@@ -2,7 +2,7 @@ package app.revanced.manager
 
 class Global {
     companion object {
-        private const val websiteUrl = "https://revanced.app"
+        const val websiteUrl = "https://revanced.app"
 
         val socialLinks = mapOf(
             R.drawable.ic_web to "$websiteUrl",

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.backend.api.GitHubAPI
 import app.revanced.manager.ui.components.ExpandableCard
 import app.revanced.manager.ui.components.PreferenceRow
@@ -59,12 +60,12 @@ fun AboutScreen(
 
         PreferenceRow(
             title = stringResource(R.string.whats_new),
-            onClick = { currentUriHandler.openUri("https://revanced.app") },
+            onClick = { currentUriHandler.openUri(websiteUrl) },
         )
 
         PreferenceRow(
             title = stringResource(R.string.help_translate),
-            onClick = { currentUriHandler.openUri("https://revanced.app") }
+            onClick = { currentUriHandler.openUri(websiteUrl) }
         )
 
 //        Text(
