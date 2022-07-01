@@ -6,6 +6,9 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -88,11 +91,33 @@ fun ExpandableCard(
                 if(vm.contributorsList.isNotEmpty()) {
                     var currentUriHandler = LocalUriHandler.current
 
-                    for(contributor in vm.contributorsList) {
-                         Row(
-                             Modifier
-                                 .fillMaxWidth()) {
-                             AsyncImage(
+//                    for(contributor in vm.contributorsList) {
+//                         Row(
+//                             Modifier
+//                                 .fillMaxWidth()) {
+//                             AsyncImage(
+//                                 model = contributor.avatar_url,
+//                                 contentDescription = stringResource(id = R.string.contributor_image),
+//                                 Modifier
+//                                     .size(40.dp)
+//                                     .clip(CircleShape)
+//                                     .clickable {
+//                                         currentUriHandler.openUri(contributor.url)
+//                                     }
+//                             )
+//                             Text(text = contributor.login)
+//
+//                         }
+//                    }
+
+                  Box(Modifier.height(100.dp)){
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(48.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        items(vm.contributorsList) {
+                            contributor -> AsyncImage(
                                  model = contributor.avatar_url,
                                  contentDescription = stringResource(id = R.string.contributor_image),
                                  Modifier
@@ -102,12 +127,12 @@ fun ExpandableCard(
                                          currentUriHandler.openUri(contributor.url)
                                      }
                              )
-                             Text(text = contributor.login)
-
-                         }
+                        }
                     }
+                  }
+                } else {
+                    CircularProgressIndicator()
                 }
-                Text(text = stringResource(R.string.no_contributors))
             }
         }
     }

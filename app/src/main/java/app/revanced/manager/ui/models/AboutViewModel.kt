@@ -15,8 +15,9 @@ class AboutViewModel : ViewModel() {
         viewModelScope.launch {
             val githubContributors = GitHubAPI.Contributors.contributors("Aunali321","revanced-manager")
             githubContributors.sortedByDescending {
-                contributorsList.add(it)
+                it.login
             }
+            contributorsList.addAll(githubContributors)
         }
     }
 
