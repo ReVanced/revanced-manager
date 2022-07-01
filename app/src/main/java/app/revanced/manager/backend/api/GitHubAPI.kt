@@ -75,7 +75,7 @@ object GitHubAPI {
         class Contributor(
             @SerialName("login") val login: String,
             @SerialName("avatar_url") val avatar_url: String,
-            @SerialName("url") val url: String,
+            @SerialName("html_url") val url: String,
         )
     }
 }

@@ -1,10 +1,7 @@
 package app.revanced.manager.ui.screens
 
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material.IconButton
 import androidx.compose.material3.*
@@ -12,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -21,17 +17,10 @@ import app.revanced.manager.R
 import app.revanced.manager.Global.Companion.socialLinks
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.revanced.manager.Global.Companion.websiteUrl
-import app.revanced.manager.backend.api.GitHubAPI
 import app.revanced.manager.ui.components.ExpandableCard
 import app.revanced.manager.ui.components.PreferenceRow
-import coil.ImageLoader
-import coil.compose.AsyncImage
-import kotlinx.coroutines.launch
 import app.revanced.manager.ui.models.AboutViewModel
 
 private const val tag = "AboutScreen"
@@ -74,20 +63,6 @@ fun AboutScreen(
             title = stringResource(R.string.help_translate),
             onClick = { currentUriHandler.openUri(websiteUrl) }
         )
-
-//        Row(modifier = Modifier.fillMaxWidth()) {
-//            AsyncImage(
-//                model = "${vm.contributorAvatar}",
-//                contentDescription = "image",
-//                modifier = Modifier
-//                    .size(40.dp).
-//                    clip(CircleShape)
-//            )
-//            Text(
-//                text = vm.contributorName,
-//            )
-//            Log.e(tag, vm.contributorAvatar)
-//        }
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {

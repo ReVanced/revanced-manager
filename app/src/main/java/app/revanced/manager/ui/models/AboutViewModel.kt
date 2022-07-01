@@ -1,9 +1,6 @@
 package app.revanced.manager.ui.models
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.backend.api.GitHubAPI
@@ -12,33 +9,19 @@ import kotlinx.coroutines.launch
 class AboutViewModel : ViewModel() {
     private val tag = "AboutViewModel"
 
-    private var _fetchContributorName : GitHubAPI.Contributors.Contributor? by mutableStateOf(null)
-    val contributorName: String
-        get() = _fetchContributorName?.login ?: "Null"
+    val contributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
 
-    private var _fetchContributorAvatar : GitHubAPI.Contributors.Contributor? by mutableStateOf(null)
-    val contributorAvatar: String
-        get() = _fetchContributorAvatar?.avatar_url ?: "Null"
-
-    private var _fetchContributorProfile : GitHubAPI.Contributors.Contributor? by mutableStateOf(null)
-    val contributorProfile: String
-        get() = _fetchContributorProfile?.url ?: "Null"
-
-    init {
-        fetchContributors()
-    }
-    private fun fetchContributors() {
+    fun load() {
         viewModelScope.launch {
-            try {
-                _fetchContributorName = GitHubAPI.Contributors.contributors("revanced", "revanced-manager").elementAt(4)
-            } catch (e: Exception) {
-                Log.e(tag, "failed to fetch contributor names", e)
-            }
-            try {
-                _fetchContributorAvatar = GitHubAPI.Contributors.contributors("revanced", "revanced-manager").elementAt(4)
-            } catch (e: Exception) {
-                Log.e(tag, "failed to fetch latest contributor avatar", e)
+            val githubContributors = GitHubAPI.Contributors.contributors("Aunali321","revanced-manager")
+            githubContributors.sortedByDescending {
+                contributorsList.add(it)
             }
         }
     }
+
+    init {
+        load()
+    }
+
 }

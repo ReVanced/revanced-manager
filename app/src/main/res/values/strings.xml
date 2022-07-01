@@ -46,4 +46,6 @@
     <string name="whats_new">What\'s New</string>
     <string name="ic_non_selected">No patches are selected!</string>
     <string name="patcher_credits">Patcher Credits</string>
+    <string name="contributor_image">Contributor image</string>
+    <string name="no_contributors">No contributors</string>
 </resources>

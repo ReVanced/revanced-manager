@@ -1,14 +1,15 @@
 package app.revanced.manager.ui.components
 
-import android.icu.text.CaseMap.Title
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -19,13 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import app.revanced.manager.ui.models.AboutViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.revanced.manager.R
+import coil.compose.AsyncImage
 
 
 private const val tag = "Expandable Card"
@@ -43,6 +46,7 @@ fun ExpandableCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(state = rememberScrollState())
             .padding(8.dp)
             .animateContentSize(
                 animationSpec = tween(
@@ -51,9 +55,6 @@ fun ExpandableCard(
                 )
             ),
         shape = RoundedCornerShape(8.dp),
-        onClick = {
-            expandedState = !expandedState
-        }
     ) {
         Column(
             modifier = Modifier
@@ -84,19 +85,29 @@ fun ExpandableCard(
                 }
             }
             if (expandedState) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    AsyncImage(
-                        model = "${vm.contributorAvatar}",
-                        contentDescription = "image",
-                        modifier = Modifier
-                            .size(40.dp).
-                            clip(CircleShape)
-                    )
-                    Text(
-                        text = vm.contributorName,
-                    )
-                    Log.e(tag, vm.contributorAvatar)
+                if(vm.contributorsList.isNotEmpty()) {
+                    var currentUriHandler = LocalUriHandler.current
+
+                    for(contributor in vm.contributorsList) {
+                         Row(
+                             Modifier
+                                 .fillMaxWidth()) {
+                             AsyncImage(
+                                 model = contributor.avatar_url,
+                                 contentDescription = stringResource(id = R.string.contributor_image),
+                                 Modifier
+                                     .size(40.dp)
+                                     .clip(CircleShape)
+                                     .clickable {
+                                         currentUriHandler.openUri(contributor.url)
+                                     }
+                             )
+                             Text(text = contributor.login)
+
+                         }
+                    }
                 }
+                Text(text = stringResource(R.string.no_contributors))
             }
         }
     }
