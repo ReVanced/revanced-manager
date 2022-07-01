@@ -103,12 +103,12 @@ class AboutViewModel : ViewModel() {
     private fun fetchContributors() {
         viewModelScope.launch {
             try {
-                _fetchContributorName = GitHubAPI.Contributors.contributors("revanced", "revanced-patches")
+                _fetchContributorName = GitHubAPI.Contributors.contributors("revanced", "revanced-patches").first()
             } catch (e: Exception) {
                 Log.e(tag, "failed to fetch contributor names", e)
             }
             try {
-                _fetchContributorName = GitHubAPI.Contributors.contributors("revanced", "revanced-patches")
+                _fetchContributorName = GitHubAPI.Contributors.contributors("revanced", "revanced-patches").first()
             } catch (e: Exception) {
                 Log.e(tag, "failed to fetch latest contributor names", e)
             }

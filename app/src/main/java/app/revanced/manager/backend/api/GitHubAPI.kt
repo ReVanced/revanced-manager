@@ -65,10 +65,9 @@ object GitHubAPI {
     }
 
     object Contributors {
-        suspend fun contributors(org: String, repo: String) : Contributor {
+        suspend fun contributors(org: String, repo: String) : List<Contributor> {
             Log.d(tag, "Fetching contributors for repo ($repo)")
-            val res: Contributors.Contributor = client.get("$baseUrl/$org/$repo/contributors") {
-                parameter("per_page", 1)
+            val res: List<Contributor> = client.get("$baseUrl/$org/$repo/contributors") {
             }.body()
             return res
         }
