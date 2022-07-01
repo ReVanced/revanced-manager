@@ -45,4 +45,5 @@
     <string name="help_translate">Help translate!</string>
     <string name="whats_new">What\'s New</string>
     <string name="ic_non_selected">No patches are selected!</string>
+    <string name="patcher_credits">Patcher Credits</string>
 </resources>

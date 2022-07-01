@@ -54,7 +54,7 @@ fun AboutScreen(
         }
         Divider(Modifier.alpha(.5f))
 
-        ExpandableCard("Patcher Credits")
+        ExpandableCard(stringResource(R.string.patcher_credits))
 
         var currentUriHandler = LocalUriHandler.current
 
