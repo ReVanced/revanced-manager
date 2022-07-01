@@ -139,6 +139,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     implementation(kotlin("script-runtime"))
+
+    // Coil for network image
+    implementation("io.coil-kt:coil-compose:2.1.0")
 }
 
 fun org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions.optIn(library: String) {
