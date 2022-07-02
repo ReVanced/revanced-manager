@@ -23,6 +23,16 @@ fun MainScreen() {
     Scaffold(
         topBar = {
             when (navController.appCurrentDestinationAsState().value) {
+                PatcherSubscreenDestination -> {
+                    AppBar(
+                        title = { Text("Patcher") }
+                    )
+                }
+                MoreSubscreenDestination -> {
+                    AppBar(
+                        title = { Text("More") }
+                    )
+                }
                 AppSelectorScreenDestination -> {
                     AppBar(
                         title = { Text("Select an app...") },
