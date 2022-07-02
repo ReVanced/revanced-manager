@@ -29,7 +29,6 @@ fun ContributorsScreen(
 //    navigator: NavController,
     vm: ContributorsViewModel = viewModel()
 ) {
-
         Column(
             Modifier
                 .padding(8.dp)

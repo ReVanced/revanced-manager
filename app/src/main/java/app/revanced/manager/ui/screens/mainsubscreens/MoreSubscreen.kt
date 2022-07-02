@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
+import app.revanced.manager.ui.components.IconHeader
 import app.revanced.manager.ui.components.PreferenceRow
 import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
 import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
@@ -33,19 +34,7 @@ fun MoreSubscreen(
     navigator: NavController,
 ) {
     Column(Modifier.padding(8.dp)) {
-        Box() {
-            Icon(
-                painterResource(id = R.drawable.ic_revanced),
-                contentDescription = "Header Icon",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter)
-                    .padding(32.dp)
-                    .size(100.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-        Divider(Modifier.alpha(.5f))
+        IconHeader()
 
         var currentUriHandler = LocalUriHandler.current
 
