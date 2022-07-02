@@ -1,7 +1,6 @@
-package app.revanced.manager.ui.screens
+package app.revanced.manager.ui.screens.mainsubscreens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.IconButton
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,21 +13,24 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.Global.Companion.socialLinks
+import androidx.navigation.NavController
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.PreferenceRow
+import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
+import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
+import app.revanced.manager.ui.screens.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
-private const val tag = "AboutScreen"
+private const val tag = "MoreScreen"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
-@RootNavGraph
 @Composable
-fun AboutScreen(
-    //    navigator: NavController,
+@RootNavGraph
+fun MoreSubscreen(
+    navigator: NavController,
 ) {
     Column(Modifier.padding(8.dp)) {
         Box() {
@@ -48,23 +50,24 @@ fun AboutScreen(
         var currentUriHandler = LocalUriHandler.current
 
         PreferenceRow(
-            title = stringResource(R.string.whats_new),
-            painter = painterResource(id = R.drawable.ic_baseline_new_releases_24
-            ),
-            onClick = { currentUriHandler.openUri(websiteUrl) },
+            title = stringResource(R.string.screen_settings_title),
+            painter = painterResource(id = R.drawable.ic_baseline_settings_24),
+            onClick = { navigator.navigate(SettingsScreenDestination().route) }
         )
         PreferenceRow(
-            title = stringResource(R.string.help_translate),
-            painter = painterResource(id = R.drawable.ic_translate_black_24dp),
-            onClick = { currentUriHandler.openUri(websiteUrl) }
+            title = stringResource(R.string.screen_contributors_title),
+            painter = painterResource(id = R.drawable.ic_baseline_favorite_24 ),
+            onClick = { navigator.navigate(ContributorsScreenDestination().route) }
         )
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            for ((social_ic, uri) in socialLinks.entries) {
-                IconButton(onClick = { currentUriHandler.openUri(uri) }) {
-                    Icon(painter = painterResource(social_ic), contentDescription = "Links", tint = MaterialTheme.colorScheme.primary)
-                }
-            }
-        }
+        PreferenceRow(
+            title = stringResource(R.string.screen_about_title),
+            painter = painterResource(id = R.drawable.ic_baseline_info_24),
+            onClick = { navigator.navigate(AboutScreenDestination().route) }
+        )
+        PreferenceRow(
+            title = stringResource(R.string.help),
+            painter = painterResource(id = R.drawable.ic_baseline_help_24),
+            onClick = { currentUriHandler.openUri("$websiteUrl/discord") }
+        )
     }
 }

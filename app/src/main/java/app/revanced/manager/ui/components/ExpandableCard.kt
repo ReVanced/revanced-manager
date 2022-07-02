@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.ui.models.AboutViewModel
+import app.revanced.manager.ui.models.ContributorsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.revanced.manager.R
 import coil.compose.AsyncImage
@@ -41,7 +41,7 @@ private const val tag = "Expandable Card"
 @ExperimentalMaterial3Api
 fun ExpandableCard(
     title: String,
-    vm: AboutViewModel = viewModel()
+    vm: ContributorsViewModel = viewModel()
 ) {
     var expandedState by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)

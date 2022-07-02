@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.backend.api.GitHubAPI
 import kotlinx.coroutines.launch
 
-class AboutViewModel : ViewModel() {
-    private val tag = "AboutViewModel"
+class ContributorsViewModel : ViewModel() {
+    private val tag = "ContributorsViewModel"
 
     val contributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
 

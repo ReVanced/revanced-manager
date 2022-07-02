@@ -10,16 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
-import app.revanced.manager.Global.Companion.socialLinks
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
-import app.revanced.manager.ui.components.placeholders.Icon
-import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
-import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestination
-import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
+import app.revanced.manager.ui.screens.destinations.*
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,9 +51,35 @@ fun MainScreen() {
                         }
                     )
                 }
+                SettingsScreenDestination -> {
+                    AppBar(
+                        title = { stringResource(id = R.string.screen_settings_title) },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.navigateUp() }) {
+                                androidx.compose.material3.Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Return"
+                                )
+                            }
+                        }
+                    )
+                }
                 AboutScreenDestination -> {
                     AppBar(
-                        title = { Text(text = "About")},
+                        title = { stringResource(id = R.string.screen_about_title ) },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.navigateUp() }) {
+                                androidx.compose.material3.Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Return"
+                                )
+                            }
+                        }
+                    )
+                }
+                ContributorsScreenDestination -> {
+                    AppBar(
+                        title = { Text(text = "Contributors")},
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
@@ -84,7 +106,11 @@ fun MainScreen() {
                 &&
                 navController.appCurrentDestinationAsState().value != PatchesSelectorScreenDestination
                 &&
-                        navController.appCurrentDestinationAsState().value != AboutScreenDestination
+                navController.appCurrentDestinationAsState().value != SettingsScreenDestination
+                &&
+                navController.appCurrentDestinationAsState().value != AboutScreenDestination
+                &&
+                navController.appCurrentDestinationAsState().value != ContributorsScreenDestination
             ) BottomNavBar(navController)
         },
         content = { innerPadding ->

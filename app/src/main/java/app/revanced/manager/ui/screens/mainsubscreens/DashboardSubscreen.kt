@@ -6,10 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -17,10 +14,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.models.DashboardViewModel
-import app.revanced.manager.ui.screens.AboutScreen
+import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
-import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
-import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,7 +83,7 @@ fun DashboardSubscreen(
                 }
             }
             Card(
-                onClick = { navigator.navigate(AboutScreenDestination().route) },
+                onClick = { navigator.navigate(ContributorsScreenDestination().route) },
                 modifier = Modifier
                     .padding(4.dp)
                     .weight(1f)
@@ -96,7 +91,7 @@ fun DashboardSubscreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = stringResource(id = R.string.card_credits_header),
+                        text = stringResource(id = R.string.card_contributors_header),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
