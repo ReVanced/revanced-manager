@@ -50,7 +50,7 @@ fun ExpandableCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(state = rememberScrollState())
+            .height(100.dp)
             .padding(8.dp)
             .animateContentSize(
                 animationSpec = tween(
@@ -62,6 +62,7 @@ fun ExpandableCard(
     ) {
         Column(
             modifier = Modifier
+                .height(80.dp)
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
@@ -92,7 +93,10 @@ fun ExpandableCard(
                 if(data.isNotEmpty()) {
                     var currentUriHandler = LocalUriHandler.current
 
-                  Box(Modifier.height(size.dp).padding(0.dp,10.dp,0.dp,0.dp)){
+                  Box(
+                      Modifier
+                          .height(200.dp)
+                          .padding(0.dp, 10.dp, 0.dp, 0.dp)){
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(48.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -102,12 +106,12 @@ fun ExpandableCard(
                             contributor -> AsyncImage(
                                  model = contributor.avatar_url,
                                  contentDescription = stringResource(id = R.string.contributor_image),
-                                 Modifier
-                                     .size(40.dp)
-                                     .clip(CircleShape)
-                                     .clickable {
-                                         currentUriHandler.openUri(contributor.url)
-                                     }
+                            Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    currentUriHandler.openUri(contributor.url)
+                                }
                              )
                         }
                     }
