@@ -39,7 +39,8 @@ android {
         minSdk = 26
         targetSdk = 32 // TODO: update to 33 when sources are available
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1"
+        buildConfigField("String", "VERSION_TYPE", "\"Alpha\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

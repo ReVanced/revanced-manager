@@ -58,4 +58,5 @@
     <string name="manager_contributors">Manager Contributors</string>
     <string name="integrations_contributors">Integrations Contributors</string>
     <string name="dropdown_button">Dropdown Button</string>
+    <string name="app_version">Version</string>
 </resources>
