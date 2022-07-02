@@ -29,152 +29,136 @@ fun ContributorsScreen(
 //    navigator: NavController,
     vm: ContributorsViewModel = viewModel()
 ) {
-//    Box(
-//        Modifier
-//            .verticalScroll(rememberScrollState())
-//            .height(1400.dp)
-//            ) {
-//        Column(
-//            Modifier
-//                .padding(8.dp)
-//                .height(1400.dp)) {
-//            Box() {
-//                Icon(
-//                    painterResource(id = R.drawable.ic_revanced),
-//                    contentDescription = "Header Icon",
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .align(Alignment.TopCenter)
-//                        .padding(32.dp)
-//                        .size(100.dp),
-//                    tint = MaterialTheme.colorScheme.primary
-//                )
+
+        Column(
+            Modifier
+                .padding(8.dp)
+                .height(1400.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Box() {
+                Icon(
+                    painterResource(id = R.drawable.ic_revanced),
+                    contentDescription = "Header Icon",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(32.dp)
+                        .size(100.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+            Divider(Modifier.alpha(.5f))
+
+                ExpandableCard(
+                    stringResource(R.string.cli_contributors),
+                    data = vm.cliContributorsList,
+                    size = 100
+                )
+                ExpandableCard(
+                    stringResource(R.string.patcher_contributors),
+                    data = vm.patcherContributorsList,
+                    size = 100
+                )
+                ExpandableCard(
+                    stringResource(R.string.patches_contributors),
+                    data = vm.patchesContributorsList,
+                    size = 150
+                )
+                ExpandableCard(
+                    stringResource(R.string.manager_contributors),
+                    data = vm.managerContributorsList,
+                    size = 100
+                )
+                ExpandableCard(
+                    stringResource(R.string.integrations_contributors),
+                    data = vm.integrationsContributorsList,
+                    size = 200
+                )
+
+
+        }
+
+        }
+//        LazyColumn(
+//            Modifier.height(1200.dp),
+//            contentPadding = PaddingValues(4.dp)
+//        ) {
+//            item {
+//                Box() {
+//                    Icon(
+//                        painterResource(id = R.drawable.ic_revanced),
+//                        contentDescription = "Header Icon",
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .align(Alignment.TopCenter)
+//                            .padding(32.dp)
+//                            .size(100.dp),
+//                        tint = MaterialTheme.colorScheme.primary
+//                    )
+//                }
 //            }
-//            Divider(Modifier.alpha(.5f))
+//            item {
+//                Divider(Modifier.alpha(.5f))
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
 //
-//                ExpandableCard(
-//                    stringResource(R.string.cli_contributors),
-//                    data = vm.cliContributorsList,
-//                    size = 100
-//                )
-//                ExpandableCard(
-//                    stringResource(R.string.patcher_contributors),
-//                    data = vm.patcherContributorsList,
-//                    size = 100
-//                )
-//                ExpandableCard(
-//                    stringResource(R.string.patches_contributors),
-//                    data = vm.patchesContributorsList,
-//                    size = 150
-//                )
-//                ExpandableCard(
-//                    stringResource(R.string.manager_contributors),
-//                    data = vm.managerContributorsList,
-//                    size = 100
-//                )
-//                ExpandableCard(
-//                    stringResource(R.string.integrations_contributors),
-//                    data = vm.integrationsContributorsList,
-//                    size = 200
-//                )
-//
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
+//            item {
+//                    ExpandableCard(
+//                        stringResource(R.string.cli_contributors),
+//                        data = vm.cliContributorsList,
+//                        size = 100
+//                    )
+//            }
 //
 //        }
 //    }
-        LazyColumn(
-            Modifier.height(1200.dp), 
-            contentPadding = PaddingValues(4.dp) 
-        ) {
-            item {
-                Box() {
-                    Icon(
-                        painterResource(id = R.drawable.ic_revanced),
-                        contentDescription = "Header Icon",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.TopCenter)
-                            .padding(32.dp)
-                            .size(100.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-            item {
-                Divider(Modifier.alpha(.5f))
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-            item {
-                Box(Modifier.padding(12.dp).height(80.dp)) {
-                    ExpandableCard(
-                        stringResource(R.string.cli_contributors),
-                        data = vm.cliContributorsList,
-                        size = 100
-                    )
-                }
-            }
-
-        }
-    }
 

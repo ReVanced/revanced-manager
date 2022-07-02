@@ -50,7 +50,6 @@ fun ExpandableCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
             .padding(8.dp)
             .animateContentSize(
                 animationSpec = tween(
@@ -63,7 +62,6 @@ fun ExpandableCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
                 .padding(12.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -85,7 +83,7 @@ fun ExpandableCard(
                     }) {
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Dropdown"
+                        contentDescription = stringResource(R.string.dropdown_button)
                     )
                 }
             }
@@ -93,12 +91,12 @@ fun ExpandableCard(
                 if(data.isNotEmpty()) {
                     var currentUriHandler = LocalUriHandler.current
 
-                  Box(Modifier.height(size.dp).padding(0.dp,10.dp,0.dp,0.dp)){
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(48.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.height(size.dp),
+                        ) {
                         items(data) {
                             contributor -> AsyncImage(
                                  model = contributor.avatar_url,
@@ -112,7 +110,7 @@ fun ExpandableCard(
                              )
                         }
                     }
-                  }
+
                 } else {
                     CircularProgressIndicator()
                 }
