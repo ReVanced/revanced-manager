@@ -10,9 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
-import app.revanced.manager.R
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
 import app.revanced.manager.ui.screens.destinations.*
@@ -53,7 +51,7 @@ fun MainScreen() {
                 }
                 SettingsScreenDestination -> {
                     AppBar(
-                        title = { stringResource(id = R.string.screen_settings_title) },
+                        title = {  Text(text = "Settings") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
@@ -66,7 +64,7 @@ fun MainScreen() {
                 }
                 AboutScreenDestination -> {
                     AppBar(
-                        title = { stringResource(id = R.string.screen_about_title ) },
+                        title = { Text(text = "About") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
@@ -79,7 +77,7 @@ fun MainScreen() {
                 }
                 ContributorsScreenDestination -> {
                     AppBar(
-                        title = { Text(text = "Contributors")},
+                        title = { Text(text = "Contributors") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
