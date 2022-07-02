@@ -50,7 +50,8 @@ fun ExpandableCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(40.dp)
+            .verticalScroll(state = rememberScrollState())
             .padding(8.dp)
             .animateContentSize(
                 animationSpec = tween(
@@ -62,8 +63,8 @@ fun ExpandableCard(
     ) {
         Column(
             modifier = Modifier
-                .height(80.dp)
                 .fillMaxWidth()
+                .height(300.dp)
                 .padding(12.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -93,10 +94,7 @@ fun ExpandableCard(
                 if(data.isNotEmpty()) {
                     var currentUriHandler = LocalUriHandler.current
 
-                  Box(
-                      Modifier
-                          .height(200.dp)
-                          .padding(0.dp, 10.dp, 0.dp, 0.dp)){
+                  Box(Modifier.height(size.dp).padding(0.dp,10.dp,0.dp,0.dp)){
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(48.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -106,12 +104,12 @@ fun ExpandableCard(
                             contributor -> AsyncImage(
                                  model = contributor.avatar_url,
                                  contentDescription = stringResource(id = R.string.contributor_image),
-                            Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .clickable {
-                                    currentUriHandler.openUri(contributor.url)
-                                }
+                                 Modifier
+                                     .size(40.dp)
+                                     .clip(CircleShape)
+                                     .clickable {
+                                         currentUriHandler.openUri(contributor.url)
+                                     }
                              )
                         }
                     }

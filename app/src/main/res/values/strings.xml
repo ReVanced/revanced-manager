@@ -56,5 +56,5 @@
     <string name="cli_contributors">CLI Contributors</string>
     <string name="patches_contributors">Patches Contributors</string>
     <string name="manager_contributors">Manager Contributors</string>
-    <string name="integrations_contrubutors">Integrations Contributors</string>
+    <string name="integrations_contributors">Integrations Contributors</string>
 </resources>
