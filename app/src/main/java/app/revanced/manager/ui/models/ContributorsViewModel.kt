@@ -9,20 +9,48 @@ import kotlinx.coroutines.launch
 class ContributorsViewModel : ViewModel() {
     private val tag = "ContributorsViewModel"
 
-    val contributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
+    val patcherContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
+    val patchesContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
+    val cliContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
+    val managerContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
+    val integrationsContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
 
-    fun load() {
+    fun loadContributors() {
         viewModelScope.launch {
-            val githubContributors = GitHubAPI.Contributors.contributors("Aunali321","revanced-manager")
-            githubContributors.sortedByDescending {
+            val cliContributors = GitHubAPI.Contributors.contributors("revanced","revanced-cli")
+            cliContributors.sortedByDescending {
                 it.login
             }
-            contributorsList.addAll(githubContributors)
+            cliContributorsList.addAll(cliContributors)
+
+            val patcherContributors = GitHubAPI.Contributors.contributors("revanced","revanced-patcher")
+            patcherContributors.sortedByDescending {
+                it.login
+            }
+            patcherContributorsList.addAll(patcherContributors)
+
+            val patchesContributors = GitHubAPI.Contributors.contributors("revanced","revanced-patches")
+            patchesContributors.sortedByDescending {
+                it.login
+            }
+            patchesContributorsList.addAll(patchesContributors)
+
+            val managerContributors = GitHubAPI.Contributors.contributors("Aunali321","revanced-manager")
+            managerContributors.sortedByDescending {
+                it.login
+            }
+            managerContributorsList.addAll(managerContributors)
+
+            val integrationsContributors = GitHubAPI.Contributors.contributors("revanced","revanced-integrations")
+            integrationsContributors.sortedByDescending {
+                it.login
+            }
+            integrationsContributorsList.addAll(integrationsContributors)
         }
     }
 
     init {
-        load()
+        loadContributors()
     }
 
 }

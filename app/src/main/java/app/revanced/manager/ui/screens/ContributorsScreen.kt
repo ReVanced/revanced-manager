@@ -44,6 +44,6 @@ fun ContributorsScreen(
         }
         Divider(Modifier.alpha(.5f))
 
-        ExpandableCard(stringResource(R.string.patcher_contributors))
+        ExpandableCard(stringResource(R.string.patcher_contributors), data = vm.integrationsContributorsList)
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -28,9 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.ui.models.ContributorsViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.revanced.manager.R
+import app.revanced.manager.backend.api.GitHubAPI
 import coil.compose.AsyncImage
 
 
@@ -41,7 +41,7 @@ private const val tag = "Expandable Card"
 @ExperimentalMaterial3Api
 fun ExpandableCard(
     title: String,
-    vm: ContributorsViewModel = viewModel()
+    data: SnapshotStateList<GitHubAPI.Contributors.Contributor>,
 ) {
     var expandedState by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
@@ -88,27 +88,8 @@ fun ExpandableCard(
                 }
             }
             if (expandedState) {
-                if(vm.contributorsList.isNotEmpty()) {
+                if(data.isNotEmpty()) {
                     var currentUriHandler = LocalUriHandler.current
-
-//                    for(contributor in vm.contributorsList) {
-//                         Row(
-//                             Modifier
-//                                 .fillMaxWidth()) {
-//                             AsyncImage(
-//                                 model = contributor.avatar_url,
-//                                 contentDescription = stringResource(id = R.string.contributor_image),
-//                                 Modifier
-//                                     .size(40.dp)
-//                                     .clip(CircleShape)
-//                                     .clickable {
-//                                         currentUriHandler.openUri(contributor.url)
-//                                     }
-//                             )
-//                             Text(text = contributor.login)
-//
-//                         }
-//                    }
 
                   Box(Modifier.height(100.dp)){
                     LazyVerticalGrid(
@@ -116,7 +97,7 @@ fun ExpandableCard(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        items(vm.contributorsList) {
+                        items(data) {
                             contributor -> AsyncImage(
                                  model = contributor.avatar_url,
                                  contentDescription = stringResource(id = R.string.contributor_image),
