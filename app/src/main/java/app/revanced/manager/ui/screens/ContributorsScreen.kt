@@ -81,7 +81,6 @@ fun ContributorsScreen(
 //
 //        }
 //    }
-    Box(Modifier.height(1500.dp)) {
         LazyColumn(
             Modifier.height(1200.dp), 
             contentPadding = PaddingValues(4.dp) 
@@ -104,24 +103,78 @@ fun ContributorsScreen(
                 Divider(Modifier.alpha(.5f))
             }
             item {
-                Box(Modifier.padding(12.dp).height(250.dp)) {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
                     ExpandableCard(
                         stringResource(R.string.cli_contributors),
                         data = vm.cliContributorsList,
                         size = 100
                     )
                 }
-//                Text(text = "hello")
             }
             item {
-//                ExpandableCard(
-//                    stringResource(R.string.cli_contributors),
-//                    data = vm.cliContributorsList,
-//                    size = 100
-//                )
-                Text(text = "hello")
-
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
             }
+            item {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
+            }
+            item {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
+            }
+            item {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
+            }
+            item {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
+            }
+            item {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
+            }
+            item {
+                Box(Modifier.padding(12.dp).height(80.dp)) {
+                    ExpandableCard(
+                        stringResource(R.string.cli_contributors),
+                        data = vm.cliContributorsList,
+                        size = 100
+                    )
+                }
+            }
+
         }
     }
-}
+

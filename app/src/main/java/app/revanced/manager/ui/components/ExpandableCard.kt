@@ -50,8 +50,7 @@ fun ExpandableCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(40.dp)
-            .verticalScroll(state = rememberScrollState())
+            .height(80.dp)
             .padding(8.dp)
             .animateContentSize(
                 animationSpec = tween(
