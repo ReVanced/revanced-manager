@@ -53,4 +53,8 @@
     <string name="screen_about_title">About</string>
     <string name="about">About</string>
     <string name="navigation_more">More</string>
+    <string name="cli_contributors">CLI Contributors</string>
+    <string name="patches_contributors">Patches Contributors</string>
+    <string name="manager_contributors">Manager Contributors</string>
+    <string name="integrations_contrubutors">Integrations Contributors</string>
 </resources>

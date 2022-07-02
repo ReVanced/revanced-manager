@@ -41,6 +41,7 @@ private const val tag = "Expandable Card"
 @ExperimentalMaterial3Api
 fun ExpandableCard(
     title: String,
+    size: Int,
     data: SnapshotStateList<GitHubAPI.Contributors.Contributor>,
 ) {
     var expandedState by remember { mutableStateOf(false) }
@@ -91,7 +92,7 @@ fun ExpandableCard(
                 if(data.isNotEmpty()) {
                     var currentUriHandler = LocalUriHandler.current
 
-                  Box(Modifier.height(100.dp)){
+                  Box(Modifier.height(size.dp).padding(0.dp,10.dp,0.dp,0.dp)){
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(48.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
