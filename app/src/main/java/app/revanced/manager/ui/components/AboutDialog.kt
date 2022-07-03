@@ -33,6 +33,7 @@ fun AboutDialog() {
         subtitle = "${BuildConfig.VERSION_TYPE} ${BuildConfig.VERSION_NAME}",
         painter = painterResource(id = R.drawable.ic_baseline_info_24),
         onClick = { showPopup = true },
+        onLongClick = { localClipboardManager.setText(AnnotatedString("Debug Info:\n" + DebugInfo())) }
     )
 
     if (showPopup) {
@@ -46,7 +47,7 @@ fun AboutDialog() {
             },
             // TODO: MAKE CLIPBOARD REUSABLE, ADD TOAST MESSAGE *CLEANLY*
             confirmButton = {
-                TextButton(onClick = { localClipboardManager.setText(AnnotatedString(DebugInfo())) }) {
+                TextButton(onClick = { localClipboardManager.setText(AnnotatedString("Debug Info:\n" + DebugInfo())) } ) {
                     Text(text = "Copy")
                 }
             },
