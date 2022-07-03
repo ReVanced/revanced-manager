@@ -3,10 +3,7 @@
 package app.revanced.manager.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
@@ -34,7 +31,8 @@ fun AboutDialog() {
     Column(
         Modifier
             .clickable { showPopup = true }
-            .padding(horizontal = 12.dp)
+            .padding(16.dp,16.dp,16.dp,0.dp)
+            .fillMaxWidth()
             .height(56.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -43,9 +41,8 @@ fun AboutDialog() {
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
             )
-            Card(
+            Column(
                 modifier = Modifier.padding(horizontal = 28.dp),
-                border = null,
             ) {
                 Text(text = stringResource(id = R.string.app_version),
                     style = MaterialTheme.typography.bodyLarge,

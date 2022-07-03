@@ -34,14 +34,6 @@ fun AboutScreen(
 
         var currentUriHandler = LocalUriHandler.current
 
-        PreferenceRow(
-            title = stringResource(R.string.app_version),
-            subtitle = "${BuildConfig.VERSION_TYPE} ${BuildConfig.VERSION_NAME}",
-            painter = painterResource(id = R.drawable.ic_baseline_info_24
-            ),
-            onClick = { /* TODO: COPY DEVICE INFORMATION AND APP INFO */ },
-        )
-
         AboutDialog()
 
         PreferenceRow(
