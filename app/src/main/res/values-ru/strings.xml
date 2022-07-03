@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_selector_title">Выберите приложение…</string>
+
+    <string name="card_announcement_header">Анонсы</string>
+    <string name="card_commits_header">Последние обновления</string>
+    <string name="card_logs_header">Логи</string>
+    <string name="card_application_header">Выберите приложение</string>
+    <string name="card_patches_header">Выберите патчи</string>
+    <string name="card_options_header">Настройки</string>
+    <string name="card_credits_header">Благодарности</string>
+
+    <string name="card_commits_body_patcher">Патчер:</string>
+    <string name="card_commits_body_manager">Менеджер:</string>
+    <string name="card_announcement_body_placeholder">Это пример для предварительного просмотра дизайна менеджера. Будет заменено на динамические анонсы в будущем.</string>
+    <string name="card_options_body_use_installed">Использовать уже установленное приложение.</string>
+    <string name="card_application_body">Приложения не выбраны.</string>
+    <string name="card_patches_body_source">Исходники патчей не выбраны.</string>
+    <string name="card_patches_body_patches">Патчи не выбраны.</string>
+    <string name="card_application_body_selected">Выбрано:</string>
+    <string name="card_logs_body">Коснитесь, чтобы увидеть лог патчера.</string>
+    <string name="card_credits_body">Коснитесь, чтобы увидеть благодарности.</string>
+
+    <string name="loading_body">Минуточку...</string>
+    <string name="loading_fetching_patches">Получение патчей</string>
+
+    <string name="card_announcement_button_changelog">Изменения</string>
+
+    <string name="button_patch">Патч</string>
+
+    <string name="navigation_dashboard">Панель</string>
+    <string name="navigation_patcher">Патчер</string>
+
+    <string name="screen_logs_title">Логи</string>
+    <string name="screen_credits_title">Благодарности</string>
+    <string name="screen_credits_team_website">Сайт</string>
+    <string name="screen_credits_team">Команда</string>
+    <string name="screen_credits_translators">Переводчики</string>
+    <string name="screen_credits_team_patcher">Патчер</string>
+</resources>
