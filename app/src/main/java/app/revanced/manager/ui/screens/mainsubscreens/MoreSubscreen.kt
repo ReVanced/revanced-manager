@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
+import app.revanced.manager.ui.components.FullScreenDialog
 import app.revanced.manager.ui.components.IconHeader
 import app.revanced.manager.ui.components.PreferenceRow
 import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
@@ -49,10 +50,6 @@ fun MoreSubscreen(
             painter = painterResource(id = R.drawable.ic_baseline_info_24),
             onClick = { navigator.navigate(AboutScreenDestination().route) }
         )
-        PreferenceRow(
-            title = stringResource(R.string.help),
-            painter = painterResource(id = R.drawable.ic_baseline_help_24),
-            onClick = { currentUriHandler.openUri("$websiteUrl/discord") }
-        )
+        FullScreenDialog()
     }
 }
