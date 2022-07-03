@@ -2,6 +2,7 @@ package app.revanced.manager.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.IconButton
+import androidx.compose.material.TextButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.IconHeader
 import app.revanced.manager.ui.components.PreferenceRow
+import app.revanced.manager.ui.components.AboutDialog
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
@@ -39,6 +41,9 @@ fun AboutScreen(
             ),
             onClick = { /* TODO: COPY DEVICE INFORMATION AND APP INFO */ },
         )
+
+        AboutDialog()
+
         PreferenceRow(
             title = stringResource(R.string.whats_new),
             painter = painterResource(id = R.drawable.ic_baseline_new_releases_24
