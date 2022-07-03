@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_selector_title">Обрати додаток…</string>
+
+    <string name="card_announcement_header">Анонси</string>
+    <string name="card_commits_header">Останні оновлення</string>
+    <string name="card_logs_header">Логи</string>
+    <string name="card_application_header">Оберіть додаток...</string>
+    <string name="card_patches_header">Оберіть патчі</string>
+    <string name="card_options_header">Налаштування</string>
+    <string name="card_credits_header">Подяки</string>
+
+    <string name="card_commits_body_patcher">Патчер:</string>
+    <string name="card_commits_body_manager">Менеджер:</string>
+    <string name="card_announcement_body_placeholder">Це приклад для попереднього перегляду дизайну менеджера. Буде замінено на динамічні анонси у майбутньому..</string>
+    <string name="card_options_body_use_installed">Вибрати вже встановлений додаток.</string>
+    <string name="card_application_body">Додатки не обрані.</string>
+    <string name="card_patches_body_source">Вихідники патчів не вибрані.</string>
+    <string name="card_patches_body_patches">Патчі не вибрані.</string>
+    <string name="card_application_body_selected">Обрано:</string>
+    <string name="card_logs_body">Торкніться, щоб побачити лог патчера.</string>
+    <string name="card_credits_body">Торкніться, щоб побачити подяки.</string>
+
+    <string name="loading_body">Хвилинку...</string>
+    <string name="loading_fetching_patches">Отримання патчів</string>
+
+    <string name="card_announcement_button_changelog">Зміни</string>
+
+    <string name="button_patch">Патч</string>
+
+    <string name="navigation_dashboard">Панель</string>
+    <string name="navigation_patcher">Патчер</string>
+
+    <string name="screen_logs_title">Логи</string>
+    <string name="screen_credits_title">Подяки</string>
+    <string name="screen_credits_team_website">Сайт</string>
+    <string name="screen_credits_team">Команда</string>
+    <string name="screen_credits_translators">Перекладачі</string>
+    <string name="screen_credits_team_patcher">Патчер</string>
+</resources>
