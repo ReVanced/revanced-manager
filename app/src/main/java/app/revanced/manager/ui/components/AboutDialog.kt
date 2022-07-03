@@ -2,18 +2,14 @@
 
 package app.revanced.manager.ui.components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Icon
 import androidx.compose.material.TextButton
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,36 +23,13 @@ fun AboutDialog() {
     var showPopup by remember { mutableStateOf(false) }
 
     val onPopupDismissed = { showPopup = false }
-    
-    Column(
-        Modifier
-            .clickable { showPopup = true }
-            .padding(16.dp,16.dp,16.dp,0.dp)
-            .fillMaxWidth()
-            .height(56.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(R.drawable.ic_baseline_info_24),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-            )
-            Column(
-                modifier = Modifier.padding(horizontal = 28.dp),
-            ) {
-                Text(text = stringResource(id = R.string.app_version),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-                Text(
-                    text = BuildConfig.VERSION_TYPE + " " + BuildConfig.VERSION_NAME,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f),
-                    ),
-                    modifier = Modifier.padding(top = 4.dp),
-                )
-            }
-        }
-    }
+
+    PreferenceRow(
+        title = stringResource(R.string.app_version),
+        subtitle = "${BuildConfig.VERSION_TYPE} ${BuildConfig.VERSION_NAME}",
+        painter = painterResource(id = R.drawable.ic_baseline_info_24),
+        onClick = { showPopup = true },
+    )
 
     if (showPopup) {
     AlertDialog(
