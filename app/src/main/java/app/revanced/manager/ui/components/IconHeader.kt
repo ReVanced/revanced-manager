@@ -24,6 +24,7 @@ fun IconHeader(){
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
+                .padding(32.dp)
                 .size(100.dp),
             tint = MaterialTheme.colorScheme.primary
         )
