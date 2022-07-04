@@ -50,6 +50,12 @@ fun MoreSubscreen(
             painter = painterResource(id = R.drawable.ic_baseline_info_24),
             onClick = { navigator.navigate(AboutScreenDestination().route) }
         )
+        PreferenceRow(
+            title = stringResource(R.string.help),
+            painter = painterResource(id = R.drawable.ic_baseline_help_24),
+            onClick = { //TODO: Add a popup for where to ask for help
+                 }
+        )
         FullScreenDialog()
     }
 }

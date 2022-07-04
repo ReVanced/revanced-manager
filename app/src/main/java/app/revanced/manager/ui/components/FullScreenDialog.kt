@@ -23,9 +23,9 @@ fun FullScreenDialog(
     var showPopup by remember { mutableStateOf(false) }
 
     PreferenceRow(
-        title = stringResource(id = R.string.help),
+        title = stringResource(id = R.string.faq),
         onClick = { showPopup = true },
-        painter = painterResource(id = R.drawable.ic_baseline_help_24),
+        painter = painterResource(id = R.drawable.ic_faq),
     )
 
     if(showPopup) {
