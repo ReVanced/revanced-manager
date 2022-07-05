@@ -39,11 +39,6 @@ fun MoreSubscreen(
             onClick = { navigator.navigate(SettingsScreenDestination().route) }
         )
         PreferenceRow(
-            title = stringResource(R.string.screen_contributors_title),
-            painter = painterResource(id = R.drawable.ic_baseline_favorite_24 ),
-            onClick = { navigator.navigate(ContributorsScreenDestination().route) }
-        )
-        PreferenceRow(
             title = stringResource(R.string.screen_about_title),
             painter = painterResource(id = R.drawable.ic_baseline_info_24),
             onClick = { navigator.navigate(AboutScreenDestination().route) }

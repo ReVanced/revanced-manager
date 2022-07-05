@@ -34,7 +34,7 @@ private const val tag = "AppSelector"
 @RootNavGraph
 @Composable
 fun AppSelectorScreen(
-    navigator: NavController, // TODO: add back button
+    navigator: NavController,
     vm: AppSelectorViewModel = viewModel(),
     pvm: PatcherViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
