@@ -5,18 +5,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.revanced.manager.Global
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
-import app.revanced.manager.ui.components.ExpandableCard
+import app.revanced.manager.ui.components.ContributorsCard
 import app.revanced.manager.ui.components.IconHeader
 import app.revanced.manager.ui.models.ContributorsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -40,33 +38,33 @@ fun ContributorsScreen(
         ) {
             IconHeader()
 
-                ExpandableCard(
-                    stringResource(R.string.cli_contributors),
-                    data = vm.cliContributorsList,
-                    size = 100
-                )
-                ExpandableCard(
+            ContributorsCard(
+                stringResource(R.string.cli_contributors),
+                data = vm.cliContributorsList,
+                size = 100
+            )
+            ContributorsCard(
                     stringResource(R.string.patcher_contributors),
                     data = vm.patcherContributorsList,
                     size = 100
-                )
-                ExpandableCard(
+            )
+            ContributorsCard(
                     stringResource(R.string.patches_contributors),
                     data = vm.patchesContributorsList,
                     size = 150
-                )
-                ExpandableCard(
+            )
+            ContributorsCard(
                     stringResource(R.string.manager_contributors),
                     data = vm.managerContributorsList,
                     size = 100
-                )
-                ExpandableCard(
+            )
+            ContributorsCard(
                     stringResource(R.string.integrations_contributors),
                     data = vm.integrationsContributorsList,
                     size = 200
-                )
+            )
 
-            var currentUriHandler = LocalUriHandler.current
+            val currentUriHandler = LocalUriHandler.current
 
             Spacer(Modifier.weight(1f, true))
 
@@ -79,7 +77,7 @@ fun ContributorsScreen(
                     contentDescription = "GitHub Link"
                 )
                 Spacer(Modifier.padding(4.dp))
-                Text(text = "GitHub")
+                Text(text = "GitHub", color = Color.White)
             }
         }
 }
