@@ -37,19 +37,7 @@ fun ContributorsScreen(
                 .height(1400.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Box() {
-                Icon(
-                    painterResource(id = R.drawable.ic_revanced),
-                    contentDescription = "Header Icon",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                        .padding(32.dp)
-                        .size(100.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-            Divider(Modifier.alpha(.5f))
+            IconHeader()
 
                 ExpandableCard(
                     stringResource(R.string.cli_contributors),
