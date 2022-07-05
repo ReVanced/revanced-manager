@@ -19,7 +19,7 @@ import app.revanced.manager.R
 fun IconHeader(){
     Box() {
         Icon(
-            painterResource(id = R.drawable.ic_revanced),
+            painterResource(id = R.drawable.ic_manager),
             contentDescription = "Header Icon",
             modifier = Modifier
                 .fillMaxWidth()
