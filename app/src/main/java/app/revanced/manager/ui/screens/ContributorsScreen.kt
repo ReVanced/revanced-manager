@@ -17,6 +17,7 @@ import app.revanced.manager.Global
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.ExpandableCard
+import app.revanced.manager.ui.components.IconHeader
 import app.revanced.manager.ui.models.ContributorsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
