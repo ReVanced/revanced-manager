@@ -12,10 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
-import app.revanced.manager.ui.components.FullScreenDialog
-import app.revanced.manager.ui.components.HelpDialog
-import app.revanced.manager.ui.components.IconHeader
-import app.revanced.manager.ui.components.PreferenceRow
+import app.revanced.manager.ui.components.*
 import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
 import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
 import app.revanced.manager.ui.screens.destinations.SettingsScreenDestination
@@ -55,6 +52,6 @@ fun MoreSubscreen(
         // TODO MAKE THESE DIALOGS REUSABLE
         HelpDialog()
 
-        FullScreenDialog()
+        FAQDialog()
     }
 }

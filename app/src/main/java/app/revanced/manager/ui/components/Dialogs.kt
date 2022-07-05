@@ -4,21 +4,118 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.TextButton
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 
+@Composable
+fun AboutDialog() {
+
+    var showPopup by remember { mutableStateOf(false) }
+
+    val onPopupDismissed = { showPopup = false }
+
+    val localClipboardManager = LocalClipboardManager.current
+
+    PreferenceRow(
+        title = stringResource(R.string.app_version),
+        subtitle = "${BuildConfig.VERSION_TYPE} ${BuildConfig.VERSION_NAME}",
+        painter = painterResource(id = R.drawable.ic_baseline_info_24),
+        onClick = { showPopup = true },
+        onLongClick = { localClipboardManager.setText(AnnotatedString("Debug Info:\n" + DebugInfo())) }
+    )
+
+    if (showPopup) {
+        AlertDialog(
+            backgroundColor = MaterialTheme.colorScheme.background,
+            onDismissRequest = onPopupDismissed,
+            text = {
+                Column(Modifier.padding(8.dp)) {
+                    Text(text = DebugInfo())
+                }
+            },
+            // TODO: MAKE CLIPBOARD REUSABLE, ADD TOAST MESSAGE *CLEANLY*
+            confirmButton = {
+                TextButton(onClick = { localClipboardManager.setText(AnnotatedString("Debug Info:\n" + DebugInfo())) } ) {
+                    Text(text = "Copy")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onPopupDismissed() }) {
+                    Text(text = "Close")
+                }
+            },
+            title = {
+                Text(
+                    text = stringResource(R.string.app_version)
+                )
+            },
+        )}
+
+}
+
+@Composable
+fun HelpDialog() {
+
+    var showPopup by remember { mutableStateOf(false) }
+
+    val onPopupDismissed = { showPopup = false }
+
+    var currentUriHandler = LocalUriHandler.current
+
+    PreferenceRow(
+        title = stringResource(R.string.help),
+        painter = painterResource(id = R.drawable.ic_baseline_help_24),
+        onClick = { showPopup = true },
+    )
+
+    if (showPopup) {
+        AlertDialog(
+            backgroundColor = MaterialTheme.colorScheme.background,
+            onDismissRequest = onPopupDismissed,
+            text = {
+                Column(Modifier.padding(8.dp)) {
+                    Text(text = "In need of some help?\nJoin our Discord Server and ask in our dedicated support channel!")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { currentUriHandler.openUri("https://discord.gg/mxsFc6nyqp") }) {
+                    Text(text = "Open Discord")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onPopupDismissed() }) {
+                    Text(text = "Close")
+                }
+            },
+            title = {
+                Text(
+                    text = stringResource(R.string.help)
+                )
+            },
+        )}
+
+}
 
 
 @Composable
-fun FullScreenDialog(
+fun FAQDialog(
 ) {
     var showPopup by remember { mutableStateOf(false) }
 
@@ -88,7 +185,7 @@ fun FullScreenDialog(
                                     "XV \uD83D\uDD38 Can you support me?\n" +
                                     "If you have no idea how to use ReVanced yet, then do not use it yet. ReVanced is currently in development and directed toward developers. If you genuinely have a problem and need help for development purposes, please include the error you get, what caused it and your current environment such as which files and versions you used.\n" + "\n" + "\n"
                         )
-                        TextButton(
+                        androidx.compose.material3.TextButton(
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
                             ),
