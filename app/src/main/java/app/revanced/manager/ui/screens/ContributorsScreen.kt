@@ -77,7 +77,7 @@ fun ContributorsScreen(
                     contentDescription = "GitHub Link"
                 )
                 Spacer(Modifier.padding(4.dp))
-                Text(text = "GitHub", color = Color.White)
+                Text(text = "GitHub")
             }
         }
 }
