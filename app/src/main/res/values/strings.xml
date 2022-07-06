@@ -42,4 +42,6 @@
     <string name="screen_credits_team">Team</string>
     <string name="screen_credits_translators">Translators</string>
     <string name="screen_credits_team_patcher">Patcher</string>
+    <string name="patcher_notification_title">Patching</string>
+    <string name="patcher_notification_message">ReVanced Manager is patching</string>
 </resources>
