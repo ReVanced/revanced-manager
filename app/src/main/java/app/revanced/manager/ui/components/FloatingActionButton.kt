@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.components
 
-import android.widget.Toast
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
@@ -33,11 +32,9 @@ fun FloatingActionButton(
             icon = icon,
             onClick = {
                 if (!enabled) {
-                    Toast.makeText(context, "Please select an application to patch", Toast.LENGTH_LONG).show()
+                    context.showToast("Please select an application to patch")
                 }
                 if (enabled) onClick()
-
-
             },
             containerColor = if (enabled) MaterialTheme.colorScheme.primaryContainer else Color.Gray,
         )
