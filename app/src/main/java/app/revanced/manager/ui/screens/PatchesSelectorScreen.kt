@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screens
 
+import ExpandingText
 import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
@@ -7,9 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -132,12 +131,12 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 }
             }
             patch.description?.let { desc ->
-                Text(
+                ExpandingText(
                     text = desc,
-                    style = Typography.bodyMedium,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
+
         }
     }
 }
