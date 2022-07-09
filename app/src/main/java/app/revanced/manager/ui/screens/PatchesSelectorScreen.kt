@@ -1,7 +1,7 @@
 package app.revanced.manager.ui.screens
 
 import ExpandingText
-import app.revanced.manager.ui.components.MonthDialog
+import app.revanced.manager.ui.components.PatchCompatibilityDialog
 import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
@@ -132,7 +132,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                             )
                         }
                         if (showDialog) {
-                            MonthDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
                         }
                         Button(onClick =  {showDialog = true}) {
                             Icon(painter = painterResource(id = R.drawable.ic_baseline_info_24), contentDescription = null)

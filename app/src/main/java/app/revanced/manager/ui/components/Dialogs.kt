@@ -206,7 +206,7 @@ fun FAQDialog(
 }
 
 @Composable
-fun MonthDialog(
+fun PatchCompatibilityDialog(
     patchClass: PatchClass,
     onClose: () -> Unit) {
     val patch = patchClass.patch
