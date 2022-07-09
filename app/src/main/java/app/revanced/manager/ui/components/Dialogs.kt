@@ -1,18 +1,18 @@
 package app.revanced.manager.ui.components
 
+import ExpandingText
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.TextButton
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -22,6 +22,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
+import app.revanced.manager.ui.screens.mainsubscreens.PatchClass
+import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 
 @Composable
 fun AboutDialog() {
@@ -75,7 +77,7 @@ fun HelpDialog() {
 
     val onPopupDismissed = { showPopup = false }
 
-    var currentUriHandler = LocalUriHandler.current
+    val currentUriHandler = LocalUriHandler.current
 
     PreferenceRow(
         title = stringResource(R.string.help),
@@ -183,7 +185,7 @@ fun FAQDialog(
                                     "XV \uD83D\uDD38 Can you support me?\n" +
                                     "If you have no idea how to use ReVanced yet, then do not use it yet. ReVanced is currently in development and directed toward developers. If you genuinely have a problem and need help for development purposes, please include the error you get, what caused it and your current environment such as which files and versions you used.\n" + "\n" + "\n"
                         )
-                        androidx.compose.material3.TextButton(
+                        TextButton(
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
                             ),
@@ -201,4 +203,54 @@ fun FAQDialog(
             }
         }
     }
+}
+
+@Composable
+fun MonthDialog(
+    patchClass: PatchClass,
+    onClose: () -> Unit) {
+    val patch = patchClass.patch
+    val color = if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        Color.Black
+    }
+    AlertDialog(
+        onDismissRequest = onClose,
+        backgroundColor = MaterialTheme.colorScheme.background,
+        shape = RoundedCornerShape(12.dp),
+        title = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(text = "Compatible App Versions", color = color)
+            }
+        },
+        text = {
+            patch.compatiblePackages?. let {
+                if (it.isNotEmpty()) {
+                    ExpandingText(
+                        text = it
+                            .joinToString(", ")
+                            .replaceBefore("["," ").
+                            replaceAfter("]"," "),
+//                        style = Typography.bodySmall,
+//                        color = color,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
+        },
+        buttons = {
+            Row(
+                modifier = Modifier.padding(all = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = onClose
+                ) {
+                    Text("Dismiss")
+                }
+            }
+        }
+    )
 }

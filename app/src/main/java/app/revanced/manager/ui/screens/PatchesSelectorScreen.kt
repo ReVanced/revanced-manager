@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screens
 
 import ExpandingText
+import app.revanced.manager.ui.components.MonthDialog
 import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -23,7 +25,6 @@ import app.revanced.manager.ui.components.LoadingIndicator
 import app.revanced.manager.ui.screens.mainsubscreens.PatchClass
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
 import app.revanced.manager.ui.theme.Typography
-import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
@@ -79,6 +80,8 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
     val patch = patchClass.patch
     val name = patch.patchName
 
+    var showDialog by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .padding(16.dp, 4.dp),
@@ -128,6 +131,12 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                                 onCheckedChange = { onSelected() }
                             )
                         }
+                        if (showDialog) {
+                            MonthDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                        }
+                        Button(onClick =  {showDialog = true}) {
+                            Icon(painter = painterResource(id = R.drawable.ic_baseline_info_24), contentDescription = null)
+                        }
                     }
                 }
             }
@@ -136,18 +145,6 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     text = desc,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
-            }
-            patch.compatiblePackages?. let {
-                if (it.isNotEmpty()) {
-                    Text(
-                        text = it
-                            .joinToString(", ")
-                            .replaceBefore("["," ").
-                            replaceAfter("]"," "),
-                        style = Typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
             }
         }
     }
