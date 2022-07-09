@@ -23,6 +23,7 @@ import app.revanced.manager.ui.components.LoadingIndicator
 import app.revanced.manager.ui.screens.mainsubscreens.PatchClass
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
 import app.revanced.manager.ui.theme.Typography
+import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
@@ -136,7 +137,18 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
-
+            patch.compatiblePackages?. let {
+                if (it.isNotEmpty()) {
+                    Text(
+                        text = it
+                            .joinToString(", ")
+                            .replaceBefore("["," ").
+                            replaceAfter("]"," "),
+                        style = Typography.bodySmall,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
         }
     }
 }
