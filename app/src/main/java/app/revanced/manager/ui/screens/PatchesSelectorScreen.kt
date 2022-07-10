@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,7 +34,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("QueryPermissionsNeeded")
+@SuppressLint("QueryPermissionsNeeded", "UnrememberedMutableState")
 @Destination
 @RootNavGraph
 @Composable
@@ -42,6 +44,7 @@ fun PatchesSelectorScreen(
 ) {
     val patches = rememberSaveable { pvm.getFilteredPatches() }
     val patchesState by pvm.patches
+    var query by mutableStateOf("")
 
     when (patchesState) {
         is Resource.Success -> {
@@ -58,12 +61,56 @@ fun PatchesSelectorScreen(
                     modifier = Modifier
                         .padding(paddingValues)
                 ) {
-                    LazyColumn {
-                        items(count = patches.size) {
-                            val patch = patches[it]
-                            val name = patch.patch.patchName
-                            PatchSelectable(patch, pvm.isPatchSelected(name)) {
-                                pvm.selectPatch(name, !pvm.isPatchSelected(name))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp, 4.dp),
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            TextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                value = query,
+                                onValueChange = {
+                                        newValue -> query = newValue
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Search, "Search")
+                                },
+                                trailingIcon = {
+                                    if (query.isNotEmpty()) {
+                                        IconButton(onClick = {
+                                            query = ""
+                                        }) {
+                                            Icon(Icons.Default.Clear, "Clear")
+                                        }
+                                    }
+                                },
+                            )
+                        }
+                    }
+                        LazyColumn {
+
+                        if (query.isEmpty() || query.isBlank()) {
+                            items(count = patches.size) {
+                                val patch = patches[it]
+                                val name = patch.patch.patchName
+                                PatchSelectable(patch, pvm.isPatchSelected(name)) {
+                                    pvm.selectPatch(name, !pvm.isPatchSelected(name))
+                                }
+                            }
+                        } else {
+                            items(count = patches.size) {
+                                val patch = patches[it]
+                                val name = patch.patch.patchName
+                                if (name.contains(query.lowercase())) {
+                                    PatchSelectable(patch, pvm.isPatchSelected(name)) {
+                                        pvm.selectPatch(name, !pvm.isPatchSelected(name))
+                                    }
+                                }
                             }
                         }
                     }
