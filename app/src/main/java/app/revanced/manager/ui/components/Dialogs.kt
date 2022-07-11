@@ -225,7 +225,7 @@ fun PatchCompatibilityDialog(
             }
         },
         text = {
-            patch.compatiblePackages!!.forEach { p: Package -> Text(p.versions.joinToString(", ")) }
+            patch.compatiblePackages!!.forEach { p: Package -> Text(p.versions.reversed().joinToString(", ")) }
         },
         buttons = {
             Row(
