@@ -60,4 +60,6 @@
     <string name="dropdown_button">Dropdown Button</string>
     <string name="app_version">Version</string>
     <string name="faq">FAQ</string>
+    <string name="unsupported_version">Unsupported Version</string>
+    <string name="version_info">Version info</string>
 </resources>
