@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.components
 
-import ExpandingText
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -23,6 +22,7 @@ import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.screens.mainsubscreens.PatchClass
+import app.revanced.patcher.annotation.Package
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 
 @Composable
@@ -225,19 +225,7 @@ fun PatchCompatibilityDialog(
             }
         },
         text = {
-            patch.compatiblePackages?. let {
-                if (it.isNotEmpty()) {
-                    ExpandingText(
-                        text = it
-                            .joinToString(", ")
-                            .replaceBefore("["," ").
-                            replaceAfter("]"," "),
-//                        style = Typography.bodySmall,
-//                        color = color,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-            }
+            patch.compatiblePackages!!.forEach { p: Package -> Text(p.versions.joinToString(", ")) }
         },
         buttons = {
             Row(
