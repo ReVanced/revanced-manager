@@ -134,11 +134,12 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
             .padding(16.dp, 4.dp),
         onClick = { onSelected() }
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(modifier = Modifier.padding(12.dp, 0.dp, 12.dp, 12.dp)) {
             Row {
                 Column(
                     Modifier
                         .weight(1f)
+                        .align(Alignment.CenterVertically)
                 ) {
                     Text(
                         text = name.replace("-", " ").split(" ")
@@ -172,17 +173,19 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                                     .absolutePadding(24.dp, 0.dp, 12.dp, 0.dp)
                             )
                         }
+
+                        if (showDialog) {
+                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                        }
+                        IconButton(onClick =  {showDialog = true}) {
+                            Icon(painter = painterResource(id = R.drawable.ic_baseline_info_24), contentDescription = null)
+                        }
+
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
                                 checked = isSelected,
                                 onCheckedChange = { onSelected() }
                             )
-                        }
-                        if (showDialog) {
-                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
-                        }
-                        Button(onClick =  {showDialog = true}) {
-                            Icon(painter = painterResource(id = R.drawable.ic_baseline_info_24), contentDescription = null)
                         }
                     }
                 }
