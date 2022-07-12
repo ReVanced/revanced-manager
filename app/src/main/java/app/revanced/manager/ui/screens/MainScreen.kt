@@ -35,7 +35,7 @@ fun MainScreen() {
                 }
                 AppSelectorScreenDestination -> {
                     AppBar(
-                        title = { Text("Select an app...") },
+                        title = { Text("Select an app") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
@@ -48,7 +48,7 @@ fun MainScreen() {
                 }
                 PatchesSelectorScreenDestination -> {
                     AppBar(
-                        title = { Text("Select patches...") },
+                        title = { Text("Select patches") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(
