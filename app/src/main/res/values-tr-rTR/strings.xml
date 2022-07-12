@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ReVanced Manager</string>
+    <string name="app_selector_title">Uygulama seçin...</string>
+    <string name="app_bar_open_discord">Discord</string>
+    <string name="app_bar_open_github">Github</string>
+    <string name="card_announcement_header">Duyuru</string>
+    <string name="card_commits_header">Son güncellemeler</string>
+    <string name="card_logs_header">Günlük kayıtları</string>
+    <string name="card_application_header">Uygulama Seçin</string>
+    <string name="card_patches_header">Yama Seçin</string>
+    <string name="card_options_header">Seçenekler</string>
+    <string name="card_credits_header">Katkıda Bulunanlar</string>
+    <string name="card_commits_body_patcher">Patcher:</string>
+    <string name="card_commits_body_manager">Manager:</string>
+    <string name="card_options_body_root">Root</string>
+    <string name="card_options_body_use_installed">Yüklü Youtube uygulamasını kullan</string>
+    <string name="card_application_body">Hiçbir uygulama seçilmedi.</string>
+    <string name="card_patches_body_source">Yama kaynağı seçilmedi.</string>
+    <string name="card_patches_body_patches">Yama seçilmedi.</string>
+    <string name="card_application_body_selected">Seçilen:</string>
+    <string name="card_logs_body">Yama günlüklerini görüntülemek için buraya dokunun.</string>
+    <string name="card_credits_body">Revanced projesine katkıda bulunanları görüntülemek için buraya dokunun.</string>
+    <string name="loading_body">Lütfen bekleyin...</string>
+    <string name="loading_fetching_patches">Yamalar alınıyor</string>
+    <string name="card_announcement_button_changelog">Değişiklik günlüğü</string>
+    <string name="button_patch">Yama</string>
+    <string name="navigation_dashboard">Gösterge Paneli</string>
+    <string name="screen_logs_title">Günlük kayıtları</string>
+    <string name="screen_credits_title">Katkıda bulunanlar</string>
+    <string name="screen_credits_team_website">Website</string>
+    <string name="screen_credits_team_manager">ReVanced Manager</string>
+    <string name="screen_credits_team">Takım</string>
+    <string name="screen_credits_translators">Çevirmenler</string>
+    <string name="navigation_patcher">Patcher</string>
+    <string name="screen_credits_team_patcher">Patcher</string>
+    <string name="card_announcement_body_placeholder">This is an example text for previewing ReVanced Manager design that will be replaced by dynamic announcements in the future.</string>
+</resources>
