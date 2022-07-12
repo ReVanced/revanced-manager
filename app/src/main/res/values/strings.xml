@@ -62,4 +62,5 @@
     <string name="faq">FAQ</string>
     <string name="unsupported_version">Unsupported Version</string>
     <string name="version_info">Version info</string>
+    <string name="supported_versions">Supported Versions</string>
 </resources>

@@ -127,50 +127,40 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
 
     var showDialog by remember { mutableStateOf(false) }
 
-    Card(
+    ElevatedCard(
         modifier = Modifier
             .padding(16.dp, 4.dp),
         onClick = { onSelected() }
     ) {
-        Column(modifier = Modifier.padding(12.dp, 0.dp, 12.dp, 12.dp)) {
+        Column(modifier = Modifier.padding(12.dp, 12.dp, 12.dp, 12.dp)) {
             Row {
                 Column(
                     Modifier
-                        .weight(1f)
                         .align(Alignment.CenterVertically)
                 ) {
                     Text(
                         text = name.replace("-", " ").split(" ")
                             .joinToString(" ") { it.replaceFirstChar(Char::uppercase) },
-                        color = Color.White,
-                        style = Typography.titleMedium
+//                        color = Color.White,
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
-
+                Spacer(Modifier.width(4.dp))
+                Row(
+                    Modifier
+                        .align(Alignment.CenterVertically)
+                ) {
+                    Text(
+                        text  = patch.version ?: "unknown",
+                        style = Typography.bodySmall
+                    )
+                }
+                Spacer(Modifier.weight(1f, true))
                 Column {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        if (showDialog) {
-                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
-                        }
-                        InputChip(
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            onClick = { showDialog = true },
-                            leadingIcon = {
-                                if (patchClass.unsupported) Icon(
-                                    Icons.Default.Warning,
-                                    contentDescription = stringResource(id = R.string.unsupported_version)
-                                ) else Icon(
-                                    Icons.Default.Info,
-                                    contentDescription = stringResource(id = R.string.version_info)
-                                )
-                            },
-                            label = { Text(text = patch.version ?: "unknown") }
-                        )
-
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
                                 checked = isSelected,
@@ -183,8 +173,31 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
             patch.description?.let { desc ->
                 ExpandingText(
                     text = desc,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 8.dp),
                 )
+            }
+            Column {
+                Row {
+                    if (showDialog) {
+                        PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                    }
+                    InputChip(
+                        onClick = { showDialog = true },
+                        leadingIcon = {
+                            if (patchClass.unsupported) Icon(
+                                Icons.Default.Warning,
+//                                tint = Color.Yellow,
+                                tint = MaterialTheme.colorScheme.primary,
+                                contentDescription = stringResource(id = R.string.unsupported_version)
+                            ) else Icon(
+                                Icons.Default.Info,
+                                tint = MaterialTheme.colorScheme.primary,
+                                contentDescription = stringResource(id = R.string.version_info)
+                            )
+                        },
+                        label = { Text(stringResource(id = R.string.supported_versions)) }
+                    )
+                }
             }
         }
     }
