@@ -62,12 +62,12 @@ fun PatchesSelectorScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp, 4.dp),
+                            .padding(8.dp, 4.dp),
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TextField(
+                            OutlinedTextField(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(8.dp),
