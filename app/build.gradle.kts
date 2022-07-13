@@ -91,26 +91,26 @@ android {
 dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
+    implementation("androidx.navigation:navigation-compose:2.5.0")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:2.1.1")
+    implementation("app.revanced:revanced-patcher:2.4.0")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android.tools.build:apksig:7.2.1")
 
     // Compose Destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.5-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
 
     // Accompanist
     implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.10-beta")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.13-rc")
 
     // libsu
     implementation("com.github.topjohnwu.libsu:core:4.0.3")
@@ -129,8 +129,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Material 3 + 2
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha13")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
     implementation("androidx.compose.material:material:1.1.1")
 
     // Tests

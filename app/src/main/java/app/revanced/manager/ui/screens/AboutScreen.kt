@@ -19,8 +19,6 @@ import app.revanced.manager.ui.components.PreferenceRow
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
-private const val tag = "AboutScreen"
-
 @Destination
 @RootNavGraph
 @Composable
@@ -38,6 +36,11 @@ fun AboutScreen(
             title = stringResource(R.string.whats_new),
             painter = painterResource(id = R.drawable.ic_baseline_new_releases_24),
             onClick = { currentUriHandler.openUri(websiteUrl) },
+        )
+        PreferenceRow(
+            title = stringResource(R.string.card_contributors_header),
+            painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
+            onClick = { currentUriHandler.openUri("${websiteUrl}/github") }
         )
         PreferenceRow(
             title = stringResource(R.string.help_translate),

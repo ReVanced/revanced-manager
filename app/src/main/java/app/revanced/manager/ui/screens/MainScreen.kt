@@ -85,19 +85,6 @@ fun MainScreen() {
                         }
                     )
                 }
-                ContributorsScreenDestination -> {
-                    AppBar(
-                        title = { Text(text = "Contributors") },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                androidx.compose.material3.Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Return"
-                                )
-                            }
-                        }
-                    )
-                }
                 else -> {
                     val currentUriHandler = LocalUriHandler.current
 
@@ -117,8 +104,6 @@ fun MainScreen() {
                 navController.appCurrentDestinationAsState().value != SettingsScreenDestination
                 &&
                 navController.appCurrentDestinationAsState().value != AboutScreenDestination
-                &&
-                navController.appCurrentDestinationAsState().value != ContributorsScreenDestination
             ) BottomNavBar(navController)
         },
         content = { innerPadding ->
