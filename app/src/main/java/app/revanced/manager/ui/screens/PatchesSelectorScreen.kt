@@ -6,7 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -140,7 +143,6 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     Text(
                         text = name.replace("-", " ").split(" ")
                             .joinToString(" ") { it.replaceFirstChar(Char::uppercase) },
-//                        color = Color.White,
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -175,28 +177,25 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     modifier = Modifier.padding(vertical = 8.dp),
                 )
             }
-            Column {
-                Row {
-                    if (showDialog) {
-                        PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
+            if (patchClass.unsupported) {
+                Column {
+                    Row {
+                        if (showDialog) {
+                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                        }
+                        InputChip(
+                            selected = false,
+                            onClick = { showDialog = true },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Warning,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    contentDescription = stringResource(id = R.string.unsupported_version)
+                                )
+                            },
+                            label = { Text(stringResource(id = R.string.unsupported_version)) }
+                        )
                     }
-                    InputChip(
-                        selected = false,
-                        onClick = { showDialog = true },
-                        leadingIcon = {
-                            if (patchClass.unsupported) Icon(
-                                Icons.Default.Warning,
-//                                tint = Color.Yellow,
-                                tint = MaterialTheme.colorScheme.primary,
-                                contentDescription = stringResource(id = R.string.unsupported_version)
-                            ) else Icon(
-                                Icons.Default.Info,
-                                tint = MaterialTheme.colorScheme.primary,
-                                contentDescription = stringResource(id = R.string.version_info)
-                            )
-                        },
-                        label = { Text(stringResource(id = R.string.supported_versions)) }
-                    )
                 }
             }
         }

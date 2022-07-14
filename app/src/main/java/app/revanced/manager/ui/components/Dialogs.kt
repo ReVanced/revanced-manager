@@ -48,7 +48,7 @@ fun HelpDialog() {
             },
             dismissButton = {
                 TextButton(onClick = { onPopupDismissed() }) {
-                    Text(text = "Close")
+                    Text(text = "Dismiss")
                 }
             },
             title = {
@@ -66,34 +66,18 @@ fun PatchCompatibilityDialog(
     patchClass: PatchClass,
     onClose: () -> Unit) {
     val patch = patchClass.patch
-    val color = if (isSystemInDarkTheme()) {
-        Color.White
-    } else {
-        Color.Black
-    }
     AlertDialog(
         onDismissRequest = onClose,
-        backgroundColor = MaterialTheme.colorScheme.background,
         shape = RoundedCornerShape(12.dp),
         title = {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "Compatible App Versions", color = color)
-            }
+                Text(stringResource(id = R.string.compatible_versions))
         },
         text = {
             patch.compatiblePackages!!.forEach { p: Package -> Text(p.versions.reversed().joinToString(", ")) }
         },
-        buttons = {
-            Row(
-                modifier = Modifier.padding(all = 8.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onClose
-                ) {
-                    Text("Dismiss")
-                }
+        confirmButton = {
+            TextButton(onClick = onClose) {
+                Text(text = "Dismiss")
             }
         }
     )
