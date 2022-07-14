@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screens
 
-import ExpandingText
 import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
@@ -172,7 +171,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 }
             }
             patch.description?.let { desc ->
-                ExpandingText(
+                Text(
                     text = desc,
                     modifier = Modifier.padding(vertical = 8.dp),
                 )
