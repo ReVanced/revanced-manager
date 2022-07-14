@@ -6,7 +6,7 @@ import app.revanced.manager.BuildConfig
 fun DebugInfo(): String {
     return """
             Application version: ${BuildConfig.VERSION_NAME}
-            Version Type = ${BuildConfig.VERSION_TYPE} ${BuildConfig.BUILD_TYPE}
+            Version Type: ${BuildConfig.BUILD_TYPE}-${BuildConfig.VERSION_TYPE}
             Android Version: ${Build.VERSION.RELEASE}
             SDK: ${Build.VERSION.SDK_INT}
             Device Brand: ${Build.BRAND}
