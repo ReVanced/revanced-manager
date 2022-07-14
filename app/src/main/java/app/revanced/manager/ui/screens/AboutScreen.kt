@@ -25,7 +25,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 fun AboutScreen(
     //    navigator: NavController,
 ) {
-    Column(Modifier.padding(8.dp)) {
+    Column(Modifier.padding(8.dp,8.dp,8.dp,20.dp)) {
         IconHeader()
 
         var currentUriHandler = LocalUriHandler.current
@@ -53,6 +53,8 @@ fun AboutScreen(
             painter = painterResource(id = R.drawable.ic_translate_black_24dp),
             onClick = { currentUriHandler.openUri(websiteUrl) }
         )
+
+        Spacer(Modifier.weight(1f))
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {
