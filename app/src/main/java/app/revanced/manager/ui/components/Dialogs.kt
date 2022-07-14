@@ -1,25 +1,17 @@
 package app.revanced.manager.ui.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.TextButton
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.screens.mainsubscreens.PatchClass
 import app.revanced.patcher.annotation.Package
@@ -87,8 +79,8 @@ fun HelpDialog() {
 
     if (showPopup) {
         AlertDialog(
-            backgroundColor = MaterialTheme.colorScheme.background,
             onDismissRequest = onPopupDismissed,
+            shape = RoundedCornerShape(12.dp),
             text = {
                 Column(Modifier.padding(8.dp)) {
                     Text(text = "In need of some help?\nJoin our Discord Server and ask in our dedicated support channel!")
@@ -109,8 +101,8 @@ fun HelpDialog() {
                     text = stringResource(R.string.help)
                 )
             },
-        )}
-
+        )
+    }
 }
 
 
