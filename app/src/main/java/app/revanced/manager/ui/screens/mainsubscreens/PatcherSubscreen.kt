@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,6 +29,7 @@ import app.revanced.manager.backend.utils.Aapt
 import app.revanced.manager.backend.utils.aligning.ZipAligner
 import app.revanced.manager.backend.utils.filesystem.ZipFileSystemUtils
 import app.revanced.manager.backend.utils.signing.Signer
+import app.revanced.manager.settings
 import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.components.FloatingActionButton
 import app.revanced.manager.ui.screens.destinations.AppSelectorScreenDestination
@@ -42,6 +44,8 @@ import app.revanced.patcher.util.patch.implementation.DexPatchBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import dalvik.system.DexClassLoader
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
@@ -202,7 +206,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private suspend fun downloadDefaultPatchBundle(workdir: File): File {
         return try {
-            val (_, out) = ManagerAPI.downloadPatches(workdir)
+            val (_, out) = ManagerAPI.downloadPatches(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("patches")) }.first().toString())
             out
         } catch (e: Exception) {
             throw Exception("Failed to download default patch bundle", e)
@@ -211,7 +215,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private suspend fun downloadIntegrations(workdir: File): File {
         return try {
-            val (_, out) = ManagerAPI.downloadIntegrations(workdir)
+            val (_, out) = ManagerAPI.downloadIntegrations(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("integrations")) }.first().toString())
             out
         } catch (e: Exception) {
             throw Exception("Failed to download integrations", e)

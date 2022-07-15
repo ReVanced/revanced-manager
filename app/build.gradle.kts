@@ -116,6 +116,10 @@ dependencies {
     implementation("com.github.topjohnwu.libsu:core:4.0.3")
     implementation("com.github.topjohnwu.libsu:io:4.0.3")
 
+    // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    implementation("com.github.JamalMulla:ComposePrefs3:1.0.2")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")

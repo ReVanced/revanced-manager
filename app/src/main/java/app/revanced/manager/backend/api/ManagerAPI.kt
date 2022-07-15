@@ -28,11 +28,8 @@ val client = HttpClient(Android) {
 object ManagerAPI {
     private const val tag = "ManagerAPI"
 
-    suspend fun downloadPatches(workdir: File) = downloadAsset(workdir, findPatchesAsset())
-    suspend fun downloadIntegrations(workdir: File) = downloadAsset(workdir, findIntegrationsAsset())
-
-    private suspend fun findPatchesAsset() = findAsset(Global.ghPatches)
-    private suspend fun findIntegrationsAsset() = findAsset(Global.ghIntegrations)
+    suspend fun downloadPatches(workdir: File, asset: String) = downloadAsset(workdir, findAsset(asset))
+    suspend fun downloadIntegrations(workdir: File, asset: String) = downloadAsset(workdir, findAsset(asset))
 
     private suspend fun findAsset(repo: String): PatchesAsset {
         val release = GitHubAPI.Releases.latestRelease(repo)

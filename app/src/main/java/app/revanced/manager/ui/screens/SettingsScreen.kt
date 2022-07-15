@@ -7,41 +7,64 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.stringPreferencesKey
+import app.revanced.manager.Global
+import app.revanced.manager.settings
+import com.jamal.composeprefs3.ui.PrefsScreen
+import com.jamal.composeprefs3.ui.prefs.CheckBoxPref
+import com.jamal.composeprefs3.ui.prefs.EditTextPref
+import com.jamal.composeprefs3.ui.prefs.SwitchPref
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 private const val tag = "SettingsScreen"
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Destination
 @RootNavGraph
 @Composable
 fun SettingsScreen(
 ) {
-    val checkedState = remember { mutableStateOf(true) }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "Change Theme",
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        Spacer(modifier = Modifier.weight(1f),)
-        Switch(
-            checked = checkedState.value,
-            onCheckedChange = {
-                checkedState.value = it
-
+    val data = LocalContext.current.settings.data
+    val prefs by remember { data }.collectAsState(initial = null)
+    PrefsScreen(dataStore = LocalContext.current.settings) {
+        prefsGroup("Appearance") {
+            prefsItem {
+                SwitchPref(
+                    key = "darklight",
+                    title = "Change Theme",
+                    summary = "dark/lightie",
+                )
             }
-        )
+        }
+        prefsGroup("Sources") {
+            prefsItem {
+                EditTextPref(
+                    key = "patches",
+                    title = "Patches source",
+                    summary = prefs?.get(stringPreferencesKey("patches")),
+                    dialogTitle = "Patches source",
+                    dialogMessage = "Specify where to grab patches.",
+                    defaultValue = "${Global.ghPatches}",
+                )
+            }
+            prefsItem {
+                EditTextPref(
+                    key = "integrations",
+                    title = "Integrations source",
+                    summary = prefs?.get(stringPreferencesKey("integrations")),
+                    dialogTitle = "Integrations source",
+                    dialogMessage = "Specify where to grab integrations.",
+                    defaultValue = "${Global.ghIntegrations}",
+                )
+            }
+        }
     }
 }
