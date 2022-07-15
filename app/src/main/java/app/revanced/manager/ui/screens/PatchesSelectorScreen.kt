@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -72,6 +73,7 @@ fun PatchesSelectorScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(8.dp),
+                                shape = RoundedCornerShape(12.dp),
                                 value = query,
                                 onValueChange = {
                                         newValue -> query = newValue
