@@ -30,12 +30,12 @@ val Context.settings: DataStore<Preferences> by preferencesDataStore(name = "set
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         val darklight: Flow<Boolean> = baseContext.settings.data.map { preferences ->
-            preferences.get(booleanPreferencesKey("darklight")) ?: false
+            preferences.get(booleanPreferencesKey("darklight")) ?: true
         }
+        super.onCreate(savedInstanceState)
         setContent {
-            val darklightstate = darklight.collectAsState(initial = false)
+            val darklightstate = darklight.collectAsState(initial = true)
             ReVancedManagerTheme(darkTheme = darklightstate.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -49,9 +49,7 @@ class MainActivity : ComponentActivity() {
                             color = background,
                             darkIcons = useDarkIcons
                         )
-
                     }
-
                     MainScreen()
                 }
             }
