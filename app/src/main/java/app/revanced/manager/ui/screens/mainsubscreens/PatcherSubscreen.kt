@@ -23,6 +23,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import app.revanced.manager.Global
 import app.revanced.manager.R
 import app.revanced.manager.backend.api.ManagerAPI
 import app.revanced.manager.backend.utils.Aapt
@@ -206,7 +207,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private suspend fun downloadDefaultPatchBundle(workdir: File): File {
         return try {
-            val (_, out) = ManagerAPI.downloadPatches(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("patches")) }.first().toString())
+            val (_, out) = ManagerAPI.downloadPatches(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("patches")) ?: Global.ghPatches }.first())
             out
         } catch (e: Exception) {
             throw Exception("Failed to download default patch bundle", e)
@@ -215,7 +216,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private suspend fun downloadIntegrations(workdir: File): File {
         return try {
-            val (_, out) = ManagerAPI.downloadIntegrations(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("integrations")) }.first().toString())
+            val (_, out) = ManagerAPI.downloadIntegrations(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("integrations")) ?: Global.ghIntegrations }.first())
             out
         } catch (e: Exception) {
             throw Exception("Failed to download integrations", e)

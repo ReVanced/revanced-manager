@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         }
         super.onCreate(savedInstanceState)
         setContent {
-            val darklightstate = darklight.collectAsState(initial = true)
+            val darklightstate = darklight.collectAsState(initial = isSystemInDarkTheme())
             ReVancedManagerTheme(darkTheme = darklightstate.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
