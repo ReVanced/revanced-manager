@@ -6,20 +6,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.Global.Companion.socialLinks
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
-import app.revanced.manager.ui.components.AboutDialog
-import app.revanced.manager.ui.components.IconHeader
-import app.revanced.manager.ui.components.PreferenceRow
+import app.revanced.manager.ui.components.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-
-private const val tag = "AboutScreen"
 
 @Destination
 @RootNavGraph
@@ -27,23 +25,36 @@ private const val tag = "AboutScreen"
 fun AboutScreen(
     //    navigator: NavController,
 ) {
-    Column(Modifier.padding(8.dp)) {
+    Column(Modifier.padding(8.dp,8.dp,8.dp,20.dp)) {
         IconHeader()
 
         var currentUriHandler = LocalUriHandler.current
 
-        AboutDialog()
+        val context = LocalContext.current
 
+        PreferenceRow(
+            title = stringResource(R.string.app_version),
+            subtitle = "${BuildConfig.VERSION_TYPE} ${BuildConfig.VERSION_NAME}",
+            painter = painterResource(id = R.drawable.ic_baseline_info_24),
+            onLongClick = { context.copyToClipboard("Debug Info:\n" + DebugInfo()) }
+        )
         PreferenceRow(
             title = stringResource(R.string.whats_new),
             painter = painterResource(id = R.drawable.ic_baseline_new_releases_24),
             onClick = { currentUriHandler.openUri(websiteUrl) },
         )
         PreferenceRow(
+            title = stringResource(R.string.card_contributors_header),
+            painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
+            onClick = { currentUriHandler.openUri("${websiteUrl}/github") }
+        )
+        PreferenceRow(
             title = stringResource(R.string.help_translate),
             painter = painterResource(id = R.drawable.ic_translate_black_24dp),
             onClick = { currentUriHandler.openUri(websiteUrl) }
         )
+
+        Spacer(Modifier.weight(1f))
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {

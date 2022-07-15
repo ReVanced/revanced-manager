@@ -7,14 +7,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.models.DashboardViewModel
-import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
@@ -26,6 +27,8 @@ fun DashboardSubscreen(
     navigator: NavController,
     vm: DashboardViewModel = viewModel()
 ) {
+    var currentUriHandler = LocalUriHandler.current
+
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
             modifier = Modifier
@@ -83,7 +86,7 @@ fun DashboardSubscreen(
                 }
             }
             Card(
-                onClick = { navigator.navigate(ContributorsScreenDestination().route) },
+                onClick = { currentUriHandler.openUri("${websiteUrl}/github") },
                 modifier = Modifier
                     .padding(4.dp)
                     .weight(1f)
