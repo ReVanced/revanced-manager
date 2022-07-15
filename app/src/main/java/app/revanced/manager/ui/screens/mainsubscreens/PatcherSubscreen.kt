@@ -189,11 +189,13 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
                 var unsupported = false
                 patch.compatiblePackages?.forEach { pkg ->
                     // if we detect unsupported once, don't overwrite it
-                    if (pkg.name == selected.packageName && !unsupported) {
-                        unsupported = pkg.versions.isNotEmpty() && !pkg.versions.any { it == selected.versionName }
+                    if (pkg.name == selected.packageName) {
+                        if (!unsupported)
+                            unsupported =
+                                pkg.versions.isNotEmpty() && !pkg.versions.any { it == selected.versionName }
+                        add(PatchClass(patch, unsupported))
                     }
                 }
-                add(PatchClass(patch, unsupported))
             }
         }
     }
