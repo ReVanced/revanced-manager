@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -14,8 +15,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -71,7 +74,8 @@ fun PatchesSelectorScreen(
                             OutlinedTextField(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(8.dp),
+                                    .padding(8.dp)
+                                    .clip(shape = RoundedCornerShape(12.dp)),
                                 value = query,
                                 onValueChange = {
                                         newValue -> query = newValue
@@ -131,7 +135,8 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
     ElevatedCard(
         modifier = Modifier
             .padding(16.dp, 4.dp),
-        onClick = { onSelected() }
+        enabled = !patchClass.unsupported,
+        onClick = onSelected
     ) {
         Column(modifier = Modifier.padding(12.dp, 12.dp, 12.dp, 12.dp)) {
             Row {
@@ -163,6 +168,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     ) {
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
+                                enabled = !patchClass.unsupported,
                                 checked = isSelected,
                                 onCheckedChange = { onSelected() }
                             )
