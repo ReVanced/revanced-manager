@@ -183,51 +183,33 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 }
             }
             var isExpanded by remember { mutableStateOf(false) }
-            var isOverflowed by remember { mutableStateOf(false) }
             patch.description?.let { desc ->
                 Text(
                     text = desc,
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
-                            // The condition here is to prevent the text being clickable if it's not overflowing
-                        .clickable { if(isOverflowed || isExpanded) isExpanded = !isExpanded },
+                        .padding(0.dp, 8.dp, 22.dp, 8.dp)
+                        .clickable { isExpanded = !isExpanded },
                     maxLines = if (isExpanded) Int.MAX_VALUE else 1,
-                    // kill me
-                    onTextLayout = {result -> isOverflowed = result.hasVisualOverflow },
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-            Row {
-                if (patchClass.unsupported) {
-                    if (showDialog) PatchCompatibilityDialog(
-                        onClose = { showDialog = false },
-                        patchClass = patchClass
-                    )
-                    InputChip(
-                        selected = false,
-                        onClick = { showDialog = true },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.Warning,
-                                tint = MaterialTheme.colorScheme.primary,
-                                contentDescription = stringResource(id = R.string.unsupported_version)
-                            )
-                        },
-                        label = { Text(stringResource(id = R.string.unsupported_version)) }
-                    )
-                }
-                Spacer(Modifier.weight(1f))
-                // Condition to hide the arrow if there's no overflowing description (isExpanded is necessary to keep the arrow when description is Expanded, as it's no longer considered to be overflowing)
-                if (isOverflowed || isExpanded) {
-                    val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
-                    IconButton(
-                        modifier = Modifier
-                            .rotate(rotateState),
-                        onClick = { isExpanded = !isExpanded }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = stringResource(id = R.string.dropdown_button)
+            if (patchClass.unsupported) {
+                Column {
+                    Row {
+                        if (showDialog) {
+                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                        }
+                        InputChip(
+                            selected = false,
+                            onClick = { showDialog = true },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Warning,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    contentDescription = stringResource(id = R.string.unsupported_version)
+                                )
+                            },
+                            label = { Text(stringResource(id = R.string.unsupported_version)) }
                         )
                     }
                 }

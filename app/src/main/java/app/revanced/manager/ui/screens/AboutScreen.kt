@@ -11,11 +11,13 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.Global.Companion.socialLinks
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.*
+import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
@@ -23,7 +25,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @RootNavGraph
 @Composable
 fun AboutScreen(
-    //    navigator: NavController,
+    navigator: NavController,
 ) {
     Column(Modifier.padding(8.dp,8.dp,8.dp,20.dp)) {
         IconHeader()
@@ -46,7 +48,7 @@ fun AboutScreen(
         PreferenceRow(
             title = stringResource(R.string.card_contributors_header),
             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
-            onClick = { currentUriHandler.openUri("${websiteUrl}/github") }
+            onClick = { navigator.navigate(ContributorsScreenDestination().route) }
         )
         PreferenceRow(
             title = stringResource(R.string.help_translate),
