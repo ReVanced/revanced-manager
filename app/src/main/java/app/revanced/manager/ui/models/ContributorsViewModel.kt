@@ -4,7 +4,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.backend.api.GitHubAPI
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ContributorsViewModel : ViewModel() {
     private val tag = "ContributorsViewModel"
@@ -15,42 +18,47 @@ class ContributorsViewModel : ViewModel() {
     val managerContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
     val integrationsContributorsList = mutableStateListOf<GitHubAPI.Contributors.Contributor>()
 
-    fun loadContributors() {
-        viewModelScope.launch {
-            val cliContributors = GitHubAPI.Contributors.contributors("revanced","revanced-cli")
-            cliContributors.sortedByDescending {
-                it.login
-            }
-            cliContributorsList.addAll(cliContributors)
+     suspend fun loadContributors() {
+        withContext(Dispatchers.IO){
+            viewModelScope.launch {
+                val cliContributors = GitHubAPI.Contributors.contributors("revanced","revanced-cli")
+                cliContributors.sortedByDescending {
+                    it.login
+                }
+                cliContributorsList.addAll(cliContributors)
 
-            val patcherContributors = GitHubAPI.Contributors.contributors("revanced","revanced-patcher")
-            patcherContributors.sortedByDescending {
-                it.login
-            }
-            patcherContributorsList.addAll(patcherContributors)
+                val patcherContributors = GitHubAPI.Contributors.contributors("revanced","revanced-patcher")
+                patcherContributors.sortedByDescending {
+                    it.login
+                }
+                patcherContributorsList.addAll(patcherContributors)
 
-            val patchesContributors = GitHubAPI.Contributors.contributors("revanced","revanced-patches")
-            patchesContributors.sortedByDescending {
-                it.login
-            }
-            patchesContributorsList.addAll(patchesContributors)
+                val patchesContributors = GitHubAPI.Contributors.contributors("revanced","revanced-patches")
+                patchesContributors.sortedByDescending {
+                    it.login
+                }
+                patchesContributorsList.addAll(patchesContributors)
 
-            val managerContributors = GitHubAPI.Contributors.contributors("Aunali321","revanced-manager")
-            managerContributors.sortedByDescending {
-                it.login
-            }
-            managerContributorsList.addAll(managerContributors)
+                val managerContributors = GitHubAPI.Contributors.contributors("Aunali321","revanced-manager")
+                managerContributors.sortedByDescending {
+                    it.login
+                }
+                managerContributorsList.addAll(managerContributors)
 
-            val integrationsContributors = GitHubAPI.Contributors.contributors("revanced","revanced-integrations")
-            integrationsContributors.sortedByDescending {
-                it.login
+                val integrationsContributors = GitHubAPI.Contributors.contributors("revanced","revanced-integrations")
+                integrationsContributors.sortedByDescending {
+                    it.login
+                }
+                integrationsContributorsList.addAll(integrationsContributors)
             }
-            integrationsContributorsList.addAll(integrationsContributors)
+
         }
     }
 
     init {
-        loadContributors()
+        GlobalScope.launch {
+            loadContributors()
+        }
     }
 
 }
