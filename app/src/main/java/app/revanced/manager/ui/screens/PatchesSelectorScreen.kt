@@ -2,21 +2,29 @@ package app.revanced.manager.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -154,7 +162,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                         .align(Alignment.CenterVertically)
                 ) {
                     Text(
-                        text  = patch.version ?: "unknown",
+                        text = patch.version ?: "unknown",
                         style = Typography.bodySmall
                     )
                 }
@@ -174,29 +182,52 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                     }
                 }
             }
+            var isExpanded by remember { mutableStateOf(false) }
+            var isOverflowed by remember { mutableStateOf(false) }
             patch.description?.let { desc ->
                 Text(
                     text = desc,
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                            // The condition here is to prevent the text being clickable if it's not overflowing
+                        .clickable { if(isOverflowed || isExpanded) isExpanded = !isExpanded },
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
+                    // kill me
+                    onTextLayout = {result -> isOverflowed = result.hasVisualOverflow },
+                    overflow = TextOverflow.Ellipsis
                 )
             }
-            if (patchClass.unsupported) {
-                Column {
-                    Row {
-                        if (showDialog) {
-                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
-                        }
-                        InputChip(
-                            selected = false,
-                            onClick = { showDialog = true },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.Warning,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    contentDescription = stringResource(id = R.string.unsupported_version)
-                                )
-                            },
-                            label = { Text(stringResource(id = R.string.unsupported_version)) }
+            Row {
+                if (patchClass.unsupported) {
+                    if (showDialog) PatchCompatibilityDialog(
+                        onClose = { showDialog = false },
+                        patchClass = patchClass
+                    )
+                    InputChip(
+                        selected = false,
+                        onClick = { showDialog = true },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Warning,
+                                tint = MaterialTheme.colorScheme.primary,
+                                contentDescription = stringResource(id = R.string.unsupported_version)
+                            )
+                        },
+                        label = { Text(stringResource(id = R.string.unsupported_version)) }
+                    )
+                }
+                Spacer(Modifier.weight(1f))
+                // Condition to hide the arrow if there's no overflowing description (isExpanded is necessary to keep the arrow when description is Expanded, as it's no longer considered to be overflowing)
+                if (isOverflowed || isExpanded) {
+                    val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
+                    IconButton(
+                        modifier = Modifier
+                            .rotate(rotateState),
+                        onClick = { isExpanded = !isExpanded }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = stringResource(id = R.string.dropdown_button)
                         )
                     }
                 }
