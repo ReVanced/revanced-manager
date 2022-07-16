@@ -191,6 +191,7 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                         .clickable { isExpanded = !isExpanded },
                     maxLines = if (isExpanded) Int.MAX_VALUE else 1,
                     overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
             if (patchClass.unsupported) {
