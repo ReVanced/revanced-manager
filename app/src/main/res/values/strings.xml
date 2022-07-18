@@ -63,6 +63,4 @@
     <string name="version_info">Version info</string>
     <string name="unsupported_version">Unsupported version</string>
     <string name="compatible_versions">Compatible app versions</string>
-    <string name="patcher_notification_title">Patching</string>
-    <string name="patcher_notification_message">ReVanced Manager is patching</string>
 </resources>
