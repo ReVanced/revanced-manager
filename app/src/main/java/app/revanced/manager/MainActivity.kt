@@ -33,12 +33,21 @@ class MainActivity : ComponentActivity() {
             preferences.get(booleanPreferencesKey("darklight")) ?: true
         }
 
+        val dynamicColor: Flow<Boolean> = baseContext.settings.data.map { preferences ->
+            preferences.get(booleanPreferencesKey("dynamicTheming")) ?: true
+        }
+
         Shell.getShell()
 
         setContent {
             val darklightstate = darklight.collectAsState(initial = isSystemInDarkTheme())
 
-            ReVancedManagerTheme(darkTheme = darklightstate.value) {
+            val dynamicColorstate = dynamicColor.collectAsState(initial = true)
+
+            ReVancedManagerTheme(
+                darkTheme = darklightstate.value,
+                dynamicColor = dynamicColorstate.value
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

@@ -38,9 +38,15 @@ fun SettingsScreen(
         prefsGroup("Appearance") {
             prefsItem {
                 SwitchPref(
+                    key = "dynamicTheming",
+                    title = "Material You",
+                )
+            }
+            prefsItem {
+                SwitchPref(
                     key = "darklight",
                     title = "Change Theme",
-                    summary = "dark/lightie",
+                    summary = "Light/Dark",
                 )
             }
         }
