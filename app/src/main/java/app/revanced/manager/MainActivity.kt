@@ -8,59 +8,55 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import app.revanced.manager.ui.screens.MainScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 val Context.settings: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
+        super.onCreate(savedInstanceState)
+
         val darklight: Flow<Boolean> = baseContext.settings.data.map { preferences ->
             preferences.get(booleanPreferencesKey("darklight")) ?: true
         }
-        super.onCreate(savedInstanceState)
+
+        Shell.getShell()
+
         setContent {
             val darklightstate = darklight.collectAsState(initial = isSystemInDarkTheme())
+
             ReVancedManagerTheme(darkTheme = darklightstate.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val systemUiController = rememberSystemUiController()
-                    val useDarkIcons = !darklightstate.value
-                    val background = MaterialTheme.colorScheme.background
-                    SideEffect {
-                        systemUiController.setSystemBarsColor(
-                            color = background,
-                            darkIcons = useDarkIcons
-                        )
-                    }
                     MainScreen()
                 }
             }
         }
     }
-}
 
-@Preview
-@Composable
-fun FullPreview() {
-    ReVancedManagerTheme {
-        MainScreen()
+    companion object {
+        init {
+            Shell.enableVerboseLogging = BuildConfig.DEBUG
+            Shell.setDefaultBuilder(
+                Shell.Builder.create()
+                    .setFlags(Shell.FLAG_REDIRECT_STDERR)
+                    .setTimeout(10)
+            )
+        }
     }
 }
