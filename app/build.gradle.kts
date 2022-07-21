@@ -100,7 +100,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0-rc01")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:2.4.0")
+    implementation("app.revanced:revanced-patcher:2.5.1")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
