@@ -16,10 +16,8 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/revanced/revanced-patcher")
         credentials {
-            username =
-                (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
-            password =
-                (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")) as String
+            username = (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
+            password = (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")) as String
         }
     }
 }
@@ -47,6 +45,7 @@ android {
             useSupportLibrary = true
         }
     }
+
     applicationVariants.all {
         kotlin.sourceSets {
             getByName(name) {
@@ -54,29 +53,34 @@ android {
             }
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
         optIn("kotlin.RequiresOptIn")
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = composeVersion
     }
+
     packagingOptions {
         jniLibs {
             useLegacyPackaging = true
@@ -85,6 +89,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     buildToolsVersion = "33.0.0"
 }
 
@@ -100,7 +105,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0-rc01")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:2.5.1")
+    implementation("app.revanced:revanced-patcher:2.5.2")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
@@ -108,7 +113,7 @@ dependencies {
 
     // Compose Destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
-    implementation("androidx.work:work-runtime-ktx:2.5.0")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
 
     // Accompanist
