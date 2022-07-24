@@ -37,8 +37,8 @@ import java.io.File
 
 class PatcherWorker(context: Context, parameters: WorkerParameters) :
     CoroutineWorker(context, parameters) {
-    val patches = mutableStateOf<Resource<List<Class<out Patch<Data>>>>>(Resource.Loading)
-    val tag = "Patcher"
+    private val patches = mutableStateOf<Resource<List<Class<out Patch<Data>>>>>(Resource.Loading)
+    val tag = "PatcherWorker"
 
     override suspend fun doWork(): Result {
         val selectedPatches = inputData.getStringArray("selectedPatches")
@@ -77,8 +77,10 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         return Result.success()
     }
 
-    private suspend fun runPatcher(selectedPatches: List<String>, patchBundleFile: String): Boolean {
-
+    private suspend fun runPatcher(
+        selectedPatches: List<String>,
+        patchBundleFile: String
+    ): Boolean {
         val aaptPath = Aapt.binary(applicationContext).absolutePath
         val frameworkPath =
             applicationContext.filesDir.resolve("framework").also { it.mkdirs() }.absolutePath
@@ -100,14 +102,14 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         val cacheDirectory = workdir.resolve("cache")
 
         try {
-            //                Log.d(tag, "Copying base.apk from ${info.packageName}")
-            //                withContext(Dispatchers.IO) {
-            //                    Files.copy(
-            //                        File(info.publicSourceDir).toPath(),
-            //                        inputFile.toPath(),
-            //                        StandardCopyOption.REPLACE_EXISTING
-            //                    )
-            //                }
+//            Log.d(tag, "Copying base.apk from ${info.packageName}")
+//            withContext(Dispatchers.IO) {
+//                Files.copy(
+//                    File(info.publicSourceDir).toPath(),
+//                    inputFile.toPath(),
+//                    StandardCopyOption.REPLACE_EXISTING
+//                )
+//            }
 
             Log.d(tag, "Creating patcher")
             val patcher = Patcher(
@@ -164,7 +166,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             ZipAligner.align(patchedFile, alignedFile)
             Log.d(tag, "Signing apk")
             Signer("ReVanced", "s3cur3p@ssw0rd").signApk(alignedFile, outputFile)
-            Log.i(tag,"Successfully patched into $outputFile")
+            Log.i(tag, "Successfully patched into $outputFile")
         } catch (e: Exception) {
             Log.e(tag, "Error while patching", e)
         }
@@ -209,21 +211,17 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
 
     private fun loadPatches(patchBundleFile: String) {
         try {
-            loadPatches0(patchBundleFile)
+            val patchClasses = DexPatchBundle(
+                patchBundleFile, DexClassLoader(
+                    patchBundleFile,
+                    applicationContext.codeCacheDir.absolutePath,
+                    null,
+                    javaClass.classLoader
+                )
+            ).loadPatches()
+            patches.value = Resource.Success(patchClasses)
         } catch (e: Exception) {
             Log.e(tag, "An error occurred while loading patches", e)
         }
-    }
-
-    private fun loadPatches0(path: String) {
-        val patchClasses = DexPatchBundle(
-            path, DexClassLoader(
-                path,
-                applicationContext.codeCacheDir.absolutePath,
-                null,
-                javaClass.classLoader
-            )
-        ).loadPatches()
-        patches.value = Resource.Success(patchClasses)
     }
 }
