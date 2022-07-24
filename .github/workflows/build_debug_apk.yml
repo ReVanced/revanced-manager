@@ -20,7 +20,7 @@ jobs:
     - name: Build with Gradle
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: chmod +x gradlew && ./gradlew assembleDebug
+      run: ./gradlew assembleDebug
     - name: Store generated APK file
       uses: actions/upload-artifact@v2
       with:
