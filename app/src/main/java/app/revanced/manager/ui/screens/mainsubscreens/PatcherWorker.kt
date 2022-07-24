@@ -77,33 +77,10 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         return Result.success()
     }
 
-    private fun zfstest() {
-        val workdir = applicationContext.filesDir
-        val resourceFile = File(workdir, "aapt_temp_file")
-
-        val baseFile = File(workdir, "base-test.apk")
-        val inputFile = File(workdir, "base-test-${System.currentTimeMillis()}.apk")
-        baseFile.copyTo(inputFile)
-
-        try {
-            ZipFileSystemUtils(resourceFile, inputFile).use { fs ->
-                fs.writeInput()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        inputFile.delete()
-    }
-
-    @NoLiveLiterals
     private suspend fun runPatcher(
         selectedPatches: List<String>,
         patchBundleFile: String
     ): Boolean {
-        zfstest()
-        return false
-
         val aaptPath = Aapt.binary(applicationContext).absolutePath
         val frameworkPath =
             applicationContext.filesDir.resolve("framework").also { it.mkdirs() }.absolutePath
@@ -119,12 +96,10 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         Log.d(tag, "Creating directories")
         val workdir = createWorkDir()
         val inputFile = File(workdir.parentFile!!, "base.apk")
-        val patchedFile = File(workdir, "patched.apk")
+        val patchedFile = File(workdir, "patched.apk").apply { createNewFile() }
         val alignedFile = File(workdir, "aligned.apk")
         val outputFile = File(workdir, "out.apk")
         val cacheDirectory = workdir.resolve("cache")
-
-        inputFile.copyTo(patchedFile)
 
         try {
 //            Log.d(tag, "Copying base.apk from ${info.packageName}")
@@ -181,10 +156,10 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
 
             Log.d(tag, "Saving file")
             val result = patcher.save()
-            ZipFileSystemUtils(result.resourceFile!!, patchedFile).use { fs ->
+            ZipFileSystemUtils(patchedFile).use { fs ->
                 result.dexFiles.forEach { fs.write(it.name, it.dexFileInputStream.readBytes()) }
-                fs.writeInput()
-                fs.uncompress(*result.doNotCompress!!.toTypedArray())
+                fs.copyOver(result.resourceFile!!, result.doNotCompress!!)
+                fs.copyOver(inputFile, listOf())
             }
 
             Log.d(tag, "Aligning apk")
