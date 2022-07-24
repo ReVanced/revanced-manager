@@ -155,6 +155,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             }
 
             Log.d(tag, "Saving file")
+            inputFile.copyTo(patchedFile)
             val result = patcher.save()
             ZipFileSystemUtils(result.resourceFile!!, patchedFile).use { fs ->
                 result.dexFiles.forEach { fs.write(it.name, it.dexFileInputStream.readBytes()) }
