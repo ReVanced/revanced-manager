@@ -121,8 +121,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.13-rc")
 
     // libsu
-    implementation("com.github.topjohnwu.libsu:core:4.0.3")
-    implementation("com.github.topjohnwu.libsu:io:4.0.3")
+//    implementation("com.github.topjohnwu.libsu:core:4.0.3")
+//    implementation("com.github.topjohnwu.libsu:io:4.0.3")
 
     // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     implementation("com.github.JamalMulla:ComposePrefs3:1.0.2")

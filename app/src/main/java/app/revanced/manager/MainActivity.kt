@@ -17,7 +17,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import app.revanced.manager.ui.screens.MainScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
-import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -37,7 +36,7 @@ class MainActivity : ComponentActivity() {
             preferences.get(booleanPreferencesKey("dynamicTheming")) ?: true
         }
 
-        Shell.getShell()
+//        Shell.getShell()
 
         setContent {
             val darklightstate = darklight.collectAsState(initial = isSystemInDarkTheme())
@@ -58,14 +57,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    companion object {
-        init {
-            Shell.enableVerboseLogging = BuildConfig.DEBUG
-            Shell.setDefaultBuilder(
-                Shell.Builder.create()
-                    .setFlags(Shell.FLAG_REDIRECT_STDERR)
-                    .setTimeout(10)
-            )
-        }
-    }
+//    companion object {
+//        init {
+//            Shell.enableVerboseLogging = BuildConfig.DEBUG
+//            Shell.setDefaultBuilder(
+//                Shell.Builder.create()
+//                    .setFlags(Shell.FLAG_REDIRECT_STDERR)
+//                    .setTimeout(10)
+//            )
+//        }
+//    }
 }
