@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -19,12 +17,10 @@ jobs:
         java-version: '17'
         distribution: 'zulu'
         cache: gradle
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
     - name: Build with Gradle
-      run: export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} && chmod +x gradlew && ./gradlew assembleDebug
-
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: chmod +x gradlew && ./gradlew assembleDebug
     - name: Store generated APK file
       uses: actions/upload-artifact@v2
       with:
