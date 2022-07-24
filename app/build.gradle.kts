@@ -108,6 +108,7 @@ dependencies {
 
     // Compose Destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
+    implementation("androidx.work:work-runtime-ktx:2.5.0")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
 
     // Accompanist
