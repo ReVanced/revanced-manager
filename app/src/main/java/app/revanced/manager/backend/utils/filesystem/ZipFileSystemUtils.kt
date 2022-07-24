@@ -56,12 +56,20 @@ internal class ZipFileSystemUtils(input: File, output: File) : Closeable {
         }.close()
     }
 
-    internal fun write(path: String, content: ByteArray) = Files.write(outFileSystem.getPath(path), content)
+    internal fun write(path: String, content: ByteArray) =
+        Files.write(outFileSystem.getPath(path), content)
 
-    private fun Path.getRelativePath(path: Path): Path = outFileSystem.getPath(path.relativize(this).toString())
+    private fun Path.getRelativePath(path: Path): Path =
+        outFileSystem.getPath(path.relativize(this).toString())
 
     internal fun uncompress(vararg paths: String) =
-        paths.forEach { Files.setAttribute(outFileSystem.getPath(it), "zip:method", ZipEntry.STORED) }
+        paths.forEach {
+            Files.setAttribute(
+                outFileSystem.getPath(it),
+                "zip:method",
+                ZipEntry.STORED
+            )
+        }
 
     override fun close() {
         inFileSystem?.close()
