@@ -1,11 +1,13 @@
 package app.revanced.manager.ui.screens.mainsubscreens
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.net.Uri
-import android.os.IBinder
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
@@ -31,9 +33,7 @@ import app.revanced.patcher.util.patch.implementation.DexPatchBundle
 import dalvik.system.DexClassLoader
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.lang.IllegalArgumentException
 
 class PatcherWorker(context: Context, parameters: WorkerParameters) :
     CoroutineWorker(context, parameters) {
@@ -164,8 +164,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             ZipAligner.align(patchedFile, alignedFile)
             Log.d(tag, "Signing apk")
             Signer("ReVanced", "s3cur3p@ssw0rd").signApk(alignedFile, outputFile)
-            Log.d(tag, "Installing apk ${outputFile.absolutePath}")
-            install(outputFile)
+            Log.i(tag,"Successfully patched into $outputFile")
         } catch (e: Exception) {
             Log.e(tag, "Error while patching", e)
         }
@@ -176,13 +175,13 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         return false
     }
 
-    private fun install(apk: File) {
-        val intent = Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(
-            Uri.fromFile(apk), "application/vnd.android.package-archive"
-        );
-        applicationContext.startActivity(intent);
-    }
+    //private fun installNonRoot(apk: File) {
+    //    val intent = Intent(Intent.ACTION_VIEW);
+    //    intent.setDataAndType(
+    //        Uri.fromFile(apk), "application/vnd.android.package-archive"
+    //    );
+    //    applicationContext.startActivity(intent);
+    //}
 
     private fun createWorkDir(): File {
         return applicationContext.filesDir.resolve("tmp-${System.currentTimeMillis()}")
