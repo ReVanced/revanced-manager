@@ -1,5 +1,6 @@
 package app.revanced.manager.backend.utils.filesystem
 
+import app.revanced.manager.backend.utils.filesystem.zipfs.ZipFileSystemProvider
 import java.io.Closeable
 import java.io.File
 import java.nio.file.FileSystems
@@ -7,9 +8,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.zip.ZipEntry
 
+private val zfsProvider = ZipFileSystemProvider()
+
 internal class ZipFileSystemUtils(input: File, output: File) : Closeable {
-    private val inFileSystem = FileSystems.newFileSystem(input.toURI(), mapOf<String, Any>())
-    private val outFileSystem = FileSystems.newFileSystem(output.toURI(), mapOf("noCompression" to true))
+    private val inFileSystem = zfsProvider.newFileSystem(input.toPath(), mapOf<String, Any>())
+    private val outFileSystem = zfsProvider.newFileSystem(output.toPath(), mapOf("noCompression" to true))
 
     private fun Path.deleteRecursively() {
         if (!Files.exists(this)) {
