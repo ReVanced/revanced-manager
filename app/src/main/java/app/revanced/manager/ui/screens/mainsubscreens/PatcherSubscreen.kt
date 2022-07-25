@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screens.mainsubscreens
 
 import android.app.Application
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -232,7 +231,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
             .getInstance(app)
             .enqueueUniqueWork(
                 "patching",
-                ExistingWorkPolicy.REPLACE,
+                ExistingWorkPolicy.KEEP,
                 OneTimeWorkRequest.Builder(PatcherWorker::class.java)
                     .setInputData(
                         androidx.work.Data.Builder()
