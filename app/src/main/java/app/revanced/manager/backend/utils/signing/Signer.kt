@@ -33,7 +33,8 @@ internal class Signer(
         gen.initialize(2048)
         val pair = gen.generateKeyPair()
         var serialNumber: BigInteger
-        do serialNumber = BigInteger.valueOf(SecureRandom().nextLong()) while (serialNumber < BigInteger.ZERO)
+        do serialNumber =
+            BigInteger.valueOf(SecureRandom().nextLong()) while (serialNumber < BigInteger.ZERO)
         val x500Name = X500Name("CN=$cn")
         val builder = X509v3CertificateBuilder(
             x500Name,

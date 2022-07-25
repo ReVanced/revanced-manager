@@ -23,7 +23,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.work.*
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import app.revanced.manager.Global
 import app.revanced.manager.R
 import app.revanced.manager.backend.api.ManagerAPI
@@ -167,7 +169,6 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
 
-
     private fun getSelectedPackageInfo() =
         if (selectedAppPackage.value.isPresent)
             app.packageManager.getPackageInfo(
@@ -197,7 +198,12 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private suspend fun downloadDefaultPatchBundle(workdir: File): File {
         return try {
-            val (_, out) = ManagerAPI.downloadPatches(workdir, this.app.baseContext.settings.data.map { pref -> pref.get(stringPreferencesKey("patches")) ?: Global.ghPatches }.first())
+            val (_, out) = ManagerAPI.downloadPatches(
+                workdir,
+                this.app.baseContext.settings.data.map { pref ->
+                    pref.get(stringPreferencesKey("patches")) ?: Global.ghPatches
+                }.first()
+            )
             out
         } catch (e: Exception) {
             throw Exception("Failed to download default patch bundle", e)
@@ -207,7 +213,7 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
     private fun loadPatches() = viewModelScope.launch {
         try {
             val file = downloadDefaultPatchBundle(bundleCacheDir)
-            patchBundleFile=file.absolutePath
+            patchBundleFile = file.absolutePath
             loadPatches0(file.absolutePath)
         } catch (e: Exception) {
             Log.e(tag, "An error occurred while loading patches", e)
@@ -235,8 +241,8 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
                 OneTimeWorkRequest.Builder(PatcherWorker::class.java)
                     .setInputData(
                         androidx.work.Data.Builder()
-                            .putStringArray("selectedPatches",selectedPatches.toTypedArray())
-                            .putString("patchBundleFile",patchBundleFile)
+                            .putStringArray("selectedPatches", selectedPatches.toTypedArray())
+                            .putString("patchBundleFile", patchBundleFile)
                             .build()
                     )
                     .build()

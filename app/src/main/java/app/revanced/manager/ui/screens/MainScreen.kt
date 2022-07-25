@@ -61,7 +61,7 @@ fun MainScreen() {
                 }
                 SettingsScreenDestination -> {
                     AppBar(
-                        title = {  Text(text = "Settings") },
+                        title = { Text(text = "Settings") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
                                 androidx.compose.material3.Icon(

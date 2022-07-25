@@ -13,7 +13,7 @@ class Global {
             R.drawable.ic_telegram to "https://t.me/app_revanced",
             R.drawable.ic_youtube to "https://youtube.com/channel/UCLktAUh5Gza9zAJBStwxNdw",
 
-        )
+            )
 
         private const val ghOrg = "revanced"
         const val ghPatches = "$ghOrg/revanced-patches"

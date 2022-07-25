@@ -3,8 +3,8 @@ package app.revanced.manager.ui.screens
 import androidx.annotation.StringRes
 import app.revanced.manager.R
 import app.revanced.manager.ui.screens.destinations.DashboardSubscreenDestination
-import app.revanced.manager.ui.screens.destinations.PatcherSubscreenDestination
 import app.revanced.manager.ui.screens.destinations.MoreSubscreenDestination
+import app.revanced.manager.ui.screens.destinations.PatcherSubscreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 enum class MainScreenDestinations(

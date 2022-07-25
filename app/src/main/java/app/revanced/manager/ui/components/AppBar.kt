@@ -8,7 +8,11 @@ import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
-fun AppBar(title: @Composable () -> Unit, actions: @Composable RowScope.() -> Unit = {}, navigationIcon: @Composable () -> Unit = {}) {
+fun AppBar(
+    title: @Composable () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {},
+    navigationIcon: @Composable () -> Unit = {}
+) {
     SmallTopAppBar(
         title = title,
         navigationIcon = navigationIcon,

@@ -64,16 +64,21 @@ fun HelpDialog() {
 @Composable
 fun PatchCompatibilityDialog(
     patchClass: PatchClass,
-    onClose: () -> Unit) {
+    onClose: () -> Unit
+) {
     val patch = patchClass.patch
     AlertDialog(
         onDismissRequest = onClose,
         shape = RoundedCornerShape(12.dp),
         title = {
-                Text(stringResource(id = R.string.compatible_versions))
+            Text(stringResource(id = R.string.compatible_versions))
         },
         text = {
-            patch.compatiblePackages!!.forEach { p: Package -> Text(p.versions.reversed().joinToString(", ")) }
+            patch.compatiblePackages!!.forEach { p: Package ->
+                Text(
+                    p.versions.reversed().joinToString(", ")
+                )
+            }
         },
         confirmButton = {
             TextButton(onClick = onClose) {

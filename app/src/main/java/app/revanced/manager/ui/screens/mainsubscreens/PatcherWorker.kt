@@ -41,11 +41,12 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
     val tag = "PatcherWorker"
 
     override suspend fun doWork(): Result {
-        if(runAttemptCount>0){
-            return Result.failure(androidx.work.Data.Builder()
-                .putString("error","Android requested retrying but retrying is disabled")
-                .build()
-            )//don't retry
+        if (runAttemptCount > 0) {
+            return Result.failure(
+                androidx.work.Data.Builder()
+                    .putString("error", "Android requested retrying but retrying is disabled")
+                    .build()
+            ) // don't retry
         }
         val selectedPatches = inputData.getStringArray("selectedPatches")
             ?: throw IllegalArgumentException("selectedPatches is missing")
@@ -53,19 +54,12 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             ?: throw IllegalArgumentException("patchBundleFile is missing")
 
         val notificationIntent = Intent(applicationContext, PatcherWorker::class.java)
-        val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(
-                applicationContext,
-                0,
-                notificationIntent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        val channel =
-            NotificationChannel(
-                "revanced-patcher-patching",
-                "Patching",
-                NotificationManager.IMPORTANCE_LOW
-            )
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+        val channel = NotificationChannel(
+            "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_LOW
+        )
         val notificationManager =
             ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
         notificationManager!!.createNotificationChannel(channel)
@@ -74,26 +68,24 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             .setContentText(applicationContext.getText(R.string.patcher_notification_message))
             .setLargeIcon(Icon.createWithResource(applicationContext, R.drawable.manager))
             .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.manager))
-            .setContentIntent(pendingIntent)
-            .build()
+            .setContentIntent(pendingIntent).build()
 
         setForeground(ForegroundInfo(1, notification))
         return try {
             runPatcher(selectedPatches.toList(), patchBundleFile)
             Result.success()
-        }catch (e: Exception){
-            Log.e(tag,"Error while patching", e)
+        } catch (e: Exception) {
+            Log.e(tag, "Error while patching", e)
             Result.failure(
                 androidx.work.Data.Builder()
-                    .putString("error","Error while patching: ${e.message ?: e::class.simpleName}")
+                    .putString("error", "Error while patching: ${e.message ?: e::class.simpleName}")
                     .build()
             )
         }
     }
 
     private suspend fun runPatcher(
-        selectedPatches: List<String>,
-        patchBundleFile: String
+        selectedPatches: List<String>, patchBundleFile: String
     ): Boolean {
         val aaptPath = Aapt.binary(applicationContext).absolutePath
         val frameworkPath =
@@ -116,19 +108,19 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         val cacheDirectory = workdir.resolve("cache")
 
         try {
-//            Log.d(tag, "Copying base.apk from ${info.packageName}")
-//            withContext(Dispatchers.IO) {
-//                Files.copy(
-//                    File(info.publicSourceDir).toPath(),
-//                    inputFile.toPath(),
-//                    StandardCopyOption.REPLACE_EXISTING
-//                )
-//            }
+            // TODO: Add back when split support is added to the Patcher.
+            // Log.d(tag, "Copying base.apk from ${info.packageName}")
+            // withContext(Dispatchers.IO) {
+            //     Files.copy(
+            //         File(info.publicSourceDir).toPath(),
+            //         inputFile.toPath(),
+            //         StandardCopyOption.REPLACE_EXISTING
+            //     )
+            // }
 
             Log.d(tag, "Creating patcher")
             val patcher = Patcher(
-                PatcherOptions(
-                    inputFile,
+                PatcherOptions(inputFile,
                     cacheDirectory.absolutePath,
                     patchResources = true,
                     aaptPath = aaptPath,
@@ -149,8 +141,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
                         override fun trace(msg: String) {
                             Log.v(tag, msg)
                         }
-                    }
-                )
+                    })
             )
 
             Log.d(tag, "Merging integrations")//TODO add again
@@ -174,8 +165,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             ZipFile(patchedFile).use { file ->
                 result.dexFiles.forEach {
                     file.addEntryCompressData(
-                        ZipEntry.createWithName(it.name),
-                        it.dexFileInputStream.readBytes()
+                        ZipEntry.createWithName(it.name), it.dexFileInputStream.readBytes()
                     )
                 }
 
@@ -188,9 +178,9 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             Log.d(tag, "Signing apk")
             Signer("ReVanced", "s3cur3p@ssw0rd").signApk(alignedFile, outputFile)
             Log.i(tag, "Successfully patched into $outputFile")
-        }finally {
+        } finally {
             Log.d(tag, "Deleting workdir")
-            //workdir.deleteRecursively()
+            // workdir.deleteRecursively()
         }
         return false
     }
@@ -216,8 +206,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
     private suspend fun downloadIntegrations(workdir: File): File {
         return try {
             val (_, out) = ManagerAPI.downloadIntegrations(
-                workdir,
-                applicationContext.settings.data.map { pref ->
+                workdir, applicationContext.settings.data.map { pref ->
                     pref.get(stringPreferencesKey("integrations")) ?: Global.ghIntegrations
                 }.first()
             )

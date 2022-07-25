@@ -2,28 +2,22 @@ package app.revanced.manager.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -83,8 +77,8 @@ fun PatchesSelectorScreen(
                                     .padding(8.dp),
                                 shape = RoundedCornerShape(12.dp),
                                 value = query,
-                                onValueChange = {
-                                        newValue -> query = newValue
+                                onValueChange = { newValue ->
+                                    query = newValue
                                 },
                                 leadingIcon = {
                                     Icon(Icons.Default.Search, "Search")
@@ -101,7 +95,7 @@ fun PatchesSelectorScreen(
                             )
                         }
                     }
-                        LazyColumn {
+                    LazyColumn {
 
                         if (query.isEmpty() || query.isBlank()) {
                             items(count = patches.size) {
@@ -198,7 +192,10 @@ fun PatchSelectable(patchClass: PatchClass, isSelected: Boolean, onSelected: () 
                 Column {
                     Row {
                         if (showDialog) {
-                            PatchCompatibilityDialog(onClose = { showDialog = false }, patchClass = patchClass)
+                            PatchCompatibilityDialog(
+                                onClose = { showDialog = false },
+                                patchClass = patchClass
+                            )
                         }
                         InputChip(
                             selected = false,

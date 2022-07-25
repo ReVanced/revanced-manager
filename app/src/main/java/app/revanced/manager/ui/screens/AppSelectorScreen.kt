@@ -63,8 +63,8 @@ fun AppSelectorScreen(
                             .padding(8.dp),
                         shape = RoundedCornerShape(12.dp),
                         value = query,
-                        onValueChange = {
-                                newValue -> query = newValue
+                        onValueChange = { newValue ->
+                            query = newValue
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Search, "Search")

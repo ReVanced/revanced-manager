@@ -16,7 +16,10 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.Global.Companion.socialLinks
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
-import app.revanced.manager.ui.components.*
+import app.revanced.manager.ui.components.DebugInfo
+import app.revanced.manager.ui.components.IconHeader
+import app.revanced.manager.ui.components.PreferenceRow
+import app.revanced.manager.ui.components.copyToClipboard
 import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -27,7 +30,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 fun AboutScreen(
     navigator: NavController,
 ) {
-    Column(Modifier.padding(8.dp,8.dp,8.dp,20.dp)) {
+    Column(Modifier.padding(8.dp, 8.dp, 8.dp, 20.dp)) {
         IconHeader()
 
         var currentUriHandler = LocalUriHandler.current
@@ -61,7 +64,11 @@ fun AboutScreen(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             for ((social_ic, uri) in socialLinks.entries) {
                 IconButton(onClick = { currentUriHandler.openUri(uri) }) {
-                    Icon(painter = painterResource(social_ic), contentDescription = "Links", tint = MaterialTheme.colorScheme.primary)
+                    Icon(
+                        painter = painterResource(social_ic),
+                        contentDescription = "Links",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
         }

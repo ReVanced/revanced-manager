@@ -3,10 +3,12 @@ package app.revanced.manager.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -15,7 +17,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.ContributorsCard
-import app.revanced.manager.ui.components.IconHeader
 import app.revanced.manager.ui.models.ContributorsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
