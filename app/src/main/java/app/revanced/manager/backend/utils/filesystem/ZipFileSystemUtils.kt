@@ -8,7 +8,7 @@ import java.util.zip.ZipOutputStream
 
 internal class ZipFileSystemUtils(destFile: File) : Closeable {
     private val dest = ZipOutputStream(destFile.outputStream())
-    private val written = mutableListOf<String>()
+    private val written = mutableListOf<String>() // TODO: instead of this, just catch ZipException in putNextEntry.
 
     internal fun copyOver(srcFile: File, uncompressed: List<String>) {
         val src = ZipFile(srcFile)
