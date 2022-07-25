@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
@@ -40,29 +41,18 @@ fun MainScreen() {
                 AppSelectorScreenDestination -> {
                     AppBar(
                         title = { Text("Select an app") },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Return"
-                                )
-                            }
-                        },
+                        navigationIcon = { ReturnButton(navController) },
                         actions = {
                             IconButton(onClick = {
-                                fun selectApp(pickerInitialUri: Uri) {
-                                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                                        addCategory(Intent.CATEGORY_OPENABLE)
-                                        type = "application/vnd.android.package-archive"
-                                    }
-                                    ContextCompat.startActivity(context, intent, null)
-
+                                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                    addCategory(Intent.CATEGORY_OPENABLE)
+                                    type = "application/vnd.android.package-archive"
                                 }
-                                selectApp(pickerInitialUri = "file:///storage/emulated/0/".toUri())
+                                ContextCompat.startActivity(context, intent, null)
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = "Return"
+                                    contentDescription = "From filesystem"
                                 )
                             }
                         }
@@ -71,58 +61,28 @@ fun MainScreen() {
                 PatchesSelectorScreenDestination -> {
                     AppBar(
                         title = { Text("Select patches") },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Return"
-                                )
-                            }
-                        }
+                        navigationIcon = { ReturnButton(navController) }
                     )
                 }
                 SettingsScreenDestination -> {
                     AppBar(
                         title = { Text(text = "Settings") },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Return"
-                                )
-                            }
-                        }
+                        navigationIcon = { ReturnButton(navController) }
                     )
                 }
                 AboutScreenDestination -> {
                     AppBar(
                         title = { Text(text = "About") },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Return"
-                                )
-                            }
-                        }
+                        navigationIcon = { ReturnButton(navController) }
                     )
                 }
                 ContributorsScreenDestination -> {
                     AppBar(
                         title = { Text(text = "Contributors") },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.navigateUp() }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Return"
-                                )
-                            }
-                        }
+                        navigationIcon = { ReturnButton(navController) }
                     )
                 }
                 else -> {
-                    val currentUriHandler = LocalUriHandler.current
-
                     AppBar(
                         title = { Text("ReVanced Manager") }
                     )
@@ -151,4 +111,14 @@ fun MainScreen() {
             )
         }
     )
+}
+
+@Composable
+fun ReturnButton(navController: NavHostController) {
+    IconButton(onClick = navController::navigateUp) {
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = "Return"
+        )
+    }
 }
