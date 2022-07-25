@@ -103,7 +103,6 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         val workdir = createWorkDir()
         val inputFile = File(workdir.parentFile!!, "base.apk")
         val patchedFile = File(workdir, "patched.apk").apply { createNewFile() }
-        val alignedFile = File(workdir, "aligned.apk")
         val outputFile = File(workdir, "out.apk")
         val cacheDirectory = workdir.resolve("cache")
 
@@ -169,14 +168,12 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
                     )
                 }
 
-                file.copyEntriesFromFile(ZipFile(result.resourceFile!!))
-                file.copyEntriesFromFile(ZipFile(inputFile))
+                file.copyEntriesFromFileAligned(ZipFile(result.resourceFile!!), ZipAligner::getEntryAlignment)
+                file.copyEntriesFromFileAligned(ZipFile(inputFile), ZipAligner::getEntryAlignment)
             }
 
-            Log.d(tag, "Aligning apk")
-            ZipAligner.align(patchedFile, alignedFile)
             Log.d(tag, "Signing apk")
-            Signer("ReVanced", "s3cur3p@ssw0rd").signApk(alignedFile, outputFile)
+            Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outputFile)
             Log.i(tag, "Successfully patched into $outputFile")
         } finally {
             Log.d(tag, "Deleting workdir")

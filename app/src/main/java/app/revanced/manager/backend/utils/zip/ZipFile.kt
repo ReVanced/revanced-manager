@@ -14,7 +14,9 @@ class ZipFile(val file: File) : Closeable {
     var entries: MutableList<ZipEntry> = mutableListOf()
 
     private val filePointer: RandomAccessFile = RandomAccessFile(file, "rw")
-    private var CDENeedsRewrite = false
+    private var CDNeedsRewrite = false
+
+    private val compressionLevel = 9
 
     init {
         //if file isn't empty try to load entries
@@ -73,8 +75,8 @@ class ZipFile(val file: File) : Closeable {
         }
     }
 
-    private fun writeCDE() {
-        val CDEStart = filePointer.channel.position().toUInt()
+    private fun writeCD() {
+        val CDStart = filePointer.channel.position().toUInt()
 
         entries.forEach {
             filePointer.channel.write(it.toCDE())
@@ -87,8 +89,8 @@ class ZipFile(val file: File) : Closeable {
             0u,
             entriesCount,
             entriesCount,
-            filePointer.channel.position().toUInt() - CDEStart,
-            CDEStart,
+            filePointer.channel.position().toUInt() - CDStart,
+            CDStart,
             ""
         )
 
@@ -96,7 +98,7 @@ class ZipFile(val file: File) : Closeable {
     }
 
     private fun addEntry(entry: ZipEntry, data: ByteBuffer) {
-        CDENeedsRewrite = true
+        CDNeedsRewrite = true
 
         entry.localHeaderOffset = filePointer.channel.position().toUInt()
 
@@ -107,7 +109,7 @@ class ZipFile(val file: File) : Closeable {
     }
 
     fun addEntryCompressData(entry: ZipEntry, data: ByteArray) {
-        val compressor = Deflater(9, true)
+        val compressor = Deflater(compressionLevel, true)
         compressor.setInput(data)
         compressor.finish()
 
@@ -158,17 +160,17 @@ class ZipFile(val file: File) : Closeable {
         )
     }
 
-    fun copyEntriesFromFile(file: ZipFile) {
+    fun copyEntriesFromFileAligned(file: ZipFile, entryAlignment: (entry: ZipEntry) -> Int?) {
         for (entry in file.entries) {
             if (entries.any { it.fileName == entry.fileName }) continue //don't add duplicates
 
             val data = file.getDataForEntry(entry)
-            addEntryCopyData(entry, data)
+            addEntryCopyData(entry, data, entryAlignment(entry))
         }
     }
 
     override fun close() {
-        if (CDENeedsRewrite) writeCDE()
+        if (CDNeedsRewrite) writeCD()
         filePointer.close()
     }
 }
