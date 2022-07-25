@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.util.Log
-import androidx.compose.runtime.NoLiveLiterals
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -20,8 +19,9 @@ import app.revanced.manager.R
 import app.revanced.manager.backend.api.ManagerAPI
 import app.revanced.manager.backend.utils.Aapt
 import app.revanced.manager.backend.utils.aligning.ZipAligner
-import app.revanced.manager.backend.utils.filesystem.ZipFileSystemUtils
 import app.revanced.manager.backend.utils.signing.Signer
+import app.revanced.manager.backend.utils.zip.ZipFile
+import app.revanced.manager.backend.utils.zip.structures.ZipEntry
 import app.revanced.manager.settings
 import app.revanced.manager.ui.Resource
 import app.revanced.patcher.Patcher
@@ -156,10 +156,17 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
 
             Log.d(tag, "Saving file")
             val result = patcher.save()
-            ZipFileSystemUtils(patchedFile).use { fs ->
-                result.dexFiles.forEach { fs.write(it.name, it.dexFileInputStream.readBytes()) }
-                fs.copyOver(result.resourceFile!!, result.doNotCompress!!)
-                fs.copyOver(inputFile, listOf())
+
+            ZipFile(patchedFile).use { file ->
+                result.dexFiles.forEach {
+                    file.addEntryCompressData(
+                        ZipEntry.createWithName(it.name),
+                        it.dexFileInputStream.readBytes()
+                    )
+                }
+
+                file.copyEntriesFromFile(ZipFile(result.resourceFile!!))
+                file.copyEntriesFromFile(ZipFile(inputFile))
             }
 
             Log.d(tag, "Aligning apk")
