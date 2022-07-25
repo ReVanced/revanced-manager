@@ -24,10 +24,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
+import androidx.work.*
 import app.revanced.manager.Global
 import app.revanced.manager.R
 import app.revanced.manager.backend.api.ManagerAPI
@@ -233,7 +230,9 @@ class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
     fun startPatcher() {
         WorkManager
             .getInstance(app)
-            .enqueue(
+            .enqueueUniqueWork(
+                "patching",
+                ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequest.Builder(PatcherWorker::class.java)
                     .setInputData(
                         androidx.work.Data.Builder()

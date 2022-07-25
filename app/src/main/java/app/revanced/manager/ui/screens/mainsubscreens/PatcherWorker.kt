@@ -41,6 +41,12 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
     val tag = "PatcherWorker"
 
     override suspend fun doWork(): Result {
+        if(runAttemptCount>0){
+            return Result.failure(androidx.work.Data.Builder()
+                .putString("error","Android requested retrying but retrying is disabled")
+                .build()
+            )//don't retry
+        }
         val selectedPatches = inputData.getStringArray("selectedPatches")
             ?: throw IllegalArgumentException("selectedPatches is missing")
         val patchBundleFile = inputData.getString("patchBundleFile")
@@ -72,9 +78,17 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             .build()
 
         setForeground(ForegroundInfo(1, notification))
-
-        runPatcher(selectedPatches.toList(), patchBundleFile)
-        return Result.success()
+        return try {
+            runPatcher(selectedPatches.toList(), patchBundleFile)
+            Result.success()
+        }catch (e: Exception){
+            Log.e(tag,"Error while patching", e)
+            Result.failure(
+                androidx.work.Data.Builder()
+                    .putString("error","Error while patching: ${e.message ?: e::class.simpleName}")
+                    .build()
+            )
+        }
     }
 
     private suspend fun runPatcher(
@@ -174,13 +188,10 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             Log.d(tag, "Signing apk")
             Signer("ReVanced", "s3cur3p@ssw0rd").signApk(alignedFile, outputFile)
             Log.i(tag, "Successfully patched into $outputFile")
-        } catch (e: Exception) {
-            Log.e(tag, "Error while patching", e)
+        }finally {
+            Log.d(tag, "Deleting workdir")
+            //workdir.deleteRecursively()
         }
-
-        Log.d(tag, "Deleting workdir")
-        //workdir.deleteRecursively()
-
         return false
     }
 
