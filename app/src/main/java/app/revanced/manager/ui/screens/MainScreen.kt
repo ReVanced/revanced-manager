@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -133,6 +134,6 @@ fun ReturnButton(navController: NavHostController) {
     }
 }
 
-class MainViewModel(val app: Application) : ViewModel() {
+class MainViewModel(val app: Application) : AndroidViewModel(app) {
     fun getInputStream(uri: Uri) = app.contentResolver.openInputStream(uri)!!
 }

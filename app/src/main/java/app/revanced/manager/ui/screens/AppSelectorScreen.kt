@@ -21,10 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -34,6 +31,9 @@ import androidx.navigation.NavController
 import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.components.placeholders.applist.AppIcon
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
+import app.revanced.patcher.data.Data
+import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
+import app.revanced.patcher.patch.Patch
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
@@ -51,6 +51,20 @@ fun AppSelectorScreen(
 ) {
     val installedApps by vm.installedApps
     var query by mutableStateOf("")
+    val patches by pvm.patches
+
+    LaunchedEffect(Unit) {
+        if (patches is Resource.Success) {
+            val filter =
+                (patches as Resource.Success<List<Class<out Patch<Data>>>>).data.flatMap { patch ->
+                    (patch.compatiblePackages?.toList() ?: emptyList()).map { it.name }
+                }
+            vm.filterInstalledApps(filter)
+            // TODO: someone capable, instead of filtering them completely out make the ones
+            // that are not in the filter (don't have a patch belonging to them)
+            // be grayed out and not clickable. also put the filtered apps on top of the list.
+        }
+    }
 
     when (val installedApps = installedApps) {
         is Resource.Success -> {
@@ -165,5 +179,12 @@ class AppSelectorViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun loadIcon(info: ApplicationInfo): Drawable? {
         return info.loadIcon(app.packageManager)
+    }
+
+    fun filterInstalledApps(toPkgs: Iterable<String>) {
+        if (installedApps.value !is Resource.Success) return
+        val apps = (installedApps.value as Resource.Success<List<ApplicationInfo>>).data
+        val filtered = apps.filter { app -> toPkgs.any { app.packageName == it } }
+        installedApps.value = Resource.success(filtered)
     }
 }
