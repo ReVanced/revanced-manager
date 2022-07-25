@@ -1,7 +1,10 @@
 package app.revanced.manager.ui.screens
 
-import android.content.Intent
+import android.app.Application
 import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -10,21 +13,32 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
 import app.revanced.manager.ui.screens.destinations.*
+import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    pvm: PatcherViewModel = viewModel(LocalContext.current as ComponentActivity),
+    vm: MainViewModel = viewModel()
+) {
     val navController = rememberNavController()
-    val context = LocalContext.current
+    val getContent =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri == null) return@rememberLauncherForActivityResult
+            // val input = vm.getInputStream(uri) // example
+            pvm.setSelectedAppPackage(uri.path!!) // TODO: this is obviously not going to work.
+            // TODO: switch over from "selected app package" string to a SelectedApp object.
+            // which includes the InputStreamSupplier (or path?), package name and version.
+        }
+
     Scaffold(
         topBar = {
             when (navController.appCurrentDestinationAsState().value) {
@@ -44,11 +58,7 @@ fun MainScreen() {
                         navigationIcon = { ReturnButton(navController) },
                         actions = {
                             IconButton(onClick = {
-                                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                                    addCategory(Intent.CATEGORY_OPENABLE)
-                                    type = "application/vnd.android.package-archive"
-                                }
-                                ContextCompat.startActivity(context, intent, null)
+                                getContent.launch("application/vnd.android.package-archive")
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
@@ -121,4 +131,8 @@ fun ReturnButton(navController: NavHostController) {
             contentDescription = "Return"
         )
     }
+}
+
+class MainViewModel(val app: Application) : ViewModel() {
+    fun getInputStream(uri: Uri) = app.contentResolver.openInputStream(uri)!!
 }
