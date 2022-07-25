@@ -28,24 +28,21 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-        val darklight: Flow<Boolean> = baseContext.settings.data.map { preferences ->
-            preferences.get(booleanPreferencesKey("darklight")) ?: true
+        val darkLight: Flow<Boolean> = baseContext.settings.data.map { preferences ->
+            preferences[booleanPreferencesKey("darklight")] ?: true
         }
 
         val dynamicColor: Flow<Boolean> = baseContext.settings.data.map { preferences ->
-            preferences.get(booleanPreferencesKey("dynamicTheming")) ?: true
+            preferences[booleanPreferencesKey("dynamicTheming")] ?: true
         }
 
-//        Shell.getShell()
-
         setContent {
-            val darklightstate = darklight.collectAsState(initial = isSystemInDarkTheme())
-
-            val dynamicColorstate = dynamicColor.collectAsState(initial = true)
+            val dlState = darkLight.collectAsState(initial = isSystemInDarkTheme())
+            val dcState = dynamicColor.collectAsState(initial = true)
 
             ReVancedManagerTheme(
-                darkTheme = darklightstate.value,
-                dynamicColor = dynamicColorstate.value
+                darkTheme = dlState.value,
+                dynamicColor = dcState.value
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -56,15 +53,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-//    companion object {
-//        init {
-//            Shell.enableVerboseLogging = BuildConfig.DEBUG
-//            Shell.setDefaultBuilder(
-//                Shell.Builder.create()
-//                    .setFlags(Shell.FLAG_REDIRECT_STDERR)
-//                    .setTimeout(10)
-//            )
-//        }
-//    }
 }
