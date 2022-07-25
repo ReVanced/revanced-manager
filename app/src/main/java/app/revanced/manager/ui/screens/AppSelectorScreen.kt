@@ -8,15 +8,26 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -29,7 +40,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 private const val tag = "AppSelector"
 
 @OptIn(ExperimentalMaterialApi::class)
-@SuppressLint("QueryPermissionsNeeded")
+@SuppressLint("QueryPermissionsNeeded", "UnrememberedMutableState")
 @Destination
 @RootNavGraph
 @Composable
@@ -39,33 +50,90 @@ fun AppSelectorScreen(
     pvm: PatcherViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
     val installedApps by vm.installedApps
+    var query by mutableStateOf("")
 
     when (val installedApps = installedApps) {
         is Resource.Success -> {
             val apps = installedApps.data
             LazyColumn {
-                items(count = apps.size) {
-                    val app = apps[it]
-                    val label = vm.applicationLabel(app)
-                    val packageName = app.packageName
+                item {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        value = query,
+                        onValueChange = {
+                                newValue -> query = newValue
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.Search, "Search")
+                        },
+                        trailingIcon = {
+                            if (query.isNotEmpty()) {
+                                IconButton(onClick = {
+                                    query = ""
+                                }) {
+                                    Icon(Icons.Default.Clear, "Clear")
+                                }
+                            }
+                        },
+                    )
+                }
 
-                    val same = packageName == label
-                    ListItem(modifier = Modifier.clickable {
-                        pvm.setSelectedAppPackage(app.packageName)
-                        navigator.navigateUp()
-                    }, icon = {
-                        AppIcon(vm.loadIcon(app), packageName)
-                    }, text = {
-                        if (same) {
-                            Text(packageName)
-                        } else {
-                            Text(label)
+                // show all apps if there is no query
+                if (query.isEmpty() || query.isBlank()) {
+                    items(count = apps.size) {
+                        val app = apps[it]
+                        val label = vm.applicationLabel(app)
+                        val packageName = app.packageName
+
+                        val same = packageName == label
+                        ListItem(modifier = Modifier.clickable {
+                            pvm.setSelectedAppPackage(app.packageName)
+                            navigator.navigateUp()
+                        }, icon = {
+                            AppIcon(vm.loadIcon(app), packageName)
+                        }, text = {
+                            if (same) {
+                                Text(packageName)
+                            } else {
+                                Text(label)
+                            }
+                        }, secondaryText = {
+                            if (!same) {
+                                Text(packageName)
+                            }
+                        })
+                    }
+                }
+                // filter apps to match query
+                else {
+                    items(count = apps.size) {
+                        val app = apps[it]
+                        val label = vm.applicationLabel(app)
+                        val packageName = app.packageName
+
+                        val same = packageName == label
+                        if (label.contains(query, true)) {
+                            ListItem(modifier = Modifier.clickable {
+                                pvm.setSelectedAppPackage(app.packageName)
+                                navigator.navigateUp()
+                            }, icon = {
+                                AppIcon(vm.loadIcon(app), packageName)
+                            }, text = {
+                                if (same) {
+                                    Text(packageName)
+                                } else {
+                                    Text(label)
+                                }
+                            }, secondaryText = {
+                                if (!same) {
+                                    Text(packageName)
+                                }
+                            })
                         }
-                    }, secondaryText = {
-                        if (!same) {
-                            Text(packageName)
-                        }
-                    })
+                    }
                 }
             }
         }
