@@ -1,15 +1,18 @@
 package app.revanced.manager.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.navigation.compose.rememberNavController
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
@@ -20,6 +23,7 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             when (navController.appCurrentDestinationAsState().value) {
@@ -38,8 +42,26 @@ fun MainScreen() {
                         title = { Text("Select an app") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Return"
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = {
+                                fun selectApp(pickerInitialUri: Uri) {
+                                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                        addCategory(Intent.CATEGORY_OPENABLE)
+                                        type = "application/vnd.android.package-archive"
+                                    }
+                                    ContextCompat.startActivity(context, intent, null)
+
+                                }
+                                selectApp(pickerInitialUri = "file:///storage/emulated/0/".toUri())
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
                                     contentDescription = "Return"
                                 )
                             }
@@ -51,7 +73,7 @@ fun MainScreen() {
                         title = { Text("Select patches") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     imageVector = Icons.Default.ArrowBack,
                                     contentDescription = "Return"
                                 )
@@ -64,7 +86,7 @@ fun MainScreen() {
                         title = { Text(text = "Settings") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     imageVector = Icons.Default.ArrowBack,
                                     contentDescription = "Return"
                                 )
@@ -77,7 +99,7 @@ fun MainScreen() {
                         title = { Text(text = "About") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     imageVector = Icons.Default.ArrowBack,
                                     contentDescription = "Return"
                                 )
@@ -90,7 +112,7 @@ fun MainScreen() {
                         title = { Text(text = "Contributors") },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigateUp() }) {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     imageVector = Icons.Default.ArrowBack,
                                     contentDescription = "Return"
                                 )
