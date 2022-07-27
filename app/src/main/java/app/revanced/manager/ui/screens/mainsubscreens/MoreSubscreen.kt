@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.HelpDialog
-import app.revanced.manager.ui.components.IconHeader
+import app.revanced.manager.ui.components.LogoHeader
 import app.revanced.manager.ui.components.PreferenceRow
 import app.revanced.manager.ui.screens.destinations.AboutScreenDestination
 import app.revanced.manager.ui.screens.destinations.SettingsScreenDestination
@@ -24,7 +24,7 @@ fun MoreSubscreen(
     navigator: NavController,
 ) {
     Column(Modifier.padding(8.dp)) {
-        IconHeader()
+        LogoHeader()
 
         PreferenceRow(
             title = stringResource(R.string.screen_settings_title),

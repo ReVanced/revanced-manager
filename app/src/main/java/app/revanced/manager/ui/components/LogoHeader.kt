@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
 @Composable
-fun IconHeader() {
+fun LogoHeader() {
     Box {
         Icon(
             painterResource(id = R.drawable.ic_revanced),

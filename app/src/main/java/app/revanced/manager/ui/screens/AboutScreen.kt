@@ -17,7 +17,7 @@ import app.revanced.manager.Global.Companion.socialLinks
 import app.revanced.manager.Global.Companion.websiteUrl
 import app.revanced.manager.R
 import app.revanced.manager.ui.components.DebugInfo
-import app.revanced.manager.ui.components.IconHeader
+import app.revanced.manager.ui.components.LogoHeader
 import app.revanced.manager.ui.components.PreferenceRow
 import app.revanced.manager.ui.components.copyToClipboard
 import app.revanced.manager.ui.screens.destinations.ContributorsScreenDestination
@@ -31,7 +31,7 @@ fun AboutScreen(
     navigator: NavController,
 ) {
     Column(Modifier.padding(8.dp, 8.dp, 8.dp, 20.dp)) {
-        IconHeader()
+        LogoHeader()
 
         var currentUriHandler = LocalUriHandler.current
 
