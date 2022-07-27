@@ -16,7 +16,7 @@ class ZipFile(val file: File) : Closeable {
     private val filePointer: RandomAccessFile = RandomAccessFile(file, "rw")
     private var CDNeedsRewrite = false
 
-    private val compressionLevel = 9
+    private val compressionLevel = 5
 
     init {
         //if file isn't empty try to load entries
