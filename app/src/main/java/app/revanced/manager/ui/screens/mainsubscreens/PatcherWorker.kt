@@ -143,7 +143,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
                     })
             )
 
-            Log.d(tag, "Merging integrations")//TODO add again
+            Log.d(tag, "Merging integrations")
             patcher.addFiles(listOf(integrations)) {}
 
             Log.d(tag, "Adding ${patches.size} patch(es)")
@@ -168,7 +168,9 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
                     )
                 }
 
-                file.copyEntriesFromFileAligned(ZipFile(result.resourceFile!!), ZipAligner::getEntryAlignment)
+                result.resourceFile?.let{
+                    file.copyEntriesFromFileAligned(ZipFile(it), ZipAligner::getEntryAlignment)
+                }
                 file.copyEntriesFromFileAligned(ZipFile(inputFile), ZipAligner::getEntryAlignment)
             }
 
