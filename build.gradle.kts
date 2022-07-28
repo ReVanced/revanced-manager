@@ -6,6 +6,7 @@ buildscript {
         set("room_version", "2.4.2")
     }
     repositories {
+        mavenCentral()
         google()
     }
 }
@@ -18,4 +19,6 @@ plugins {
 }
 repositories {
     google()
+    mavenCentral()
+    maven(url = "https://jitpack.io")
 }

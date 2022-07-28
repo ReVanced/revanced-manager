@@ -155,6 +155,11 @@ dependencies {
 
     // Coil for network image
     implementation("io.coil-kt:coil-compose:2.1.0")
+
+    // Koin
+    val koinVersion = "3.2.0"
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
 }
 
 fun org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions.optIn(library: String) {

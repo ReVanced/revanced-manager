@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import app.revanced.manager.ui.components.AppBar
 import app.revanced.manager.ui.components.BottomNavBar
 import app.revanced.manager.ui.screens.destinations.*
+import app.revanced.manager.ui.screens.destinations.SettingsTempScreenDestination
 import app.revanced.manager.ui.screens.mainsubscreens.PatcherViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost
 
@@ -81,6 +82,12 @@ fun MainScreen(
                         navigationIcon = { ReturnButton(navController) }
                     )
                 }
+                SettingsTempScreenDestination -> {
+                    AppBar(
+                        title = { Text(text = "Settings TEMP") },
+                        navigationIcon = { ReturnButton(navController) }
+                    )
+                }
                 AboutScreenDestination -> {
                     AppBar(
                         title = { Text(text = "About") },
@@ -108,6 +115,8 @@ fun MainScreen(
                 navController.appCurrentDestinationAsState().value != PatchesSelectorScreenDestination
                 &&
                 navController.appCurrentDestinationAsState().value != SettingsScreenDestination
+                &&
+                navController.appCurrentDestinationAsState().value != SettingsTempScreenDestination
                 &&
                 navController.appCurrentDestinationAsState().value != AboutScreenDestination
                 &&
