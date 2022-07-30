@@ -7,6 +7,6 @@ import androidx.room.RoomDatabase
     entities = [PatchEntity::class],
     version = 1
 )
-abstract class PatchDatabase: RoomDatabase() {
+abstract class PatchDatabase : RoomDatabase() {
     abstract val dao: PatchesDao
 }

@@ -1,7 +1,6 @@
 package app.revanced.manager.backend.api
 
 import android.util.Log
-import app.revanced.manager.Global
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.*
@@ -28,11 +27,11 @@ val client = HttpClient(Android) {
 object ManagerAPI {
     private const val tag = "ManagerAPI"
 
-    suspend fun downloadPatches(workdir: File) = downloadAsset(workdir, findPatchesAsset())
-    suspend fun downloadIntegrations(workdir: File) = downloadAsset(workdir, findIntegrationsAsset())
+    suspend fun downloadPatches(workdir: File, asset: String) =
+        downloadAsset(workdir, findAsset(asset))
 
-    private suspend fun findPatchesAsset() = findAsset(Global.ghPatches)
-    private suspend fun findIntegrationsAsset() = findAsset(Global.ghIntegrations)
+    suspend fun downloadIntegrations(workdir: File, asset: String) =
+        downloadAsset(workdir, findAsset(asset))
 
     private suspend fun findAsset(repo: String): PatchesAsset {
         val release = GitHubAPI.Releases.latestRelease(repo)
@@ -40,7 +39,10 @@ object ManagerAPI {
         return PatchesAsset(release, asset)
     }
 
-    private suspend fun downloadAsset(workdir: File, patchesAsset: PatchesAsset): Pair<PatchesAsset, File> {
+    private suspend fun downloadAsset(
+        workdir: File,
+        patchesAsset: PatchesAsset
+    ): Pair<PatchesAsset, File> {
         val (release, asset) = patchesAsset
         val out = workdir.resolve("${release.tagName}-${asset.name}")
         if (out.exists()) {
@@ -62,7 +64,9 @@ object ManagerAPI {
     )
 
     private fun List<GitHubAPI.Releases.ReleaseAsset>.findAsset() = find { asset ->
-        (asset.name.contains(".apk") || asset.name.contains(".dex")) && !asset.name.contains("-sources") && !asset.name.contains("-javadoc")
+        (asset.name.contains(".apk") || asset.name.contains(".dex")) && !asset.name.contains("-sources") && !asset.name.contains(
+            "-javadoc"
+        )
     }
 }
 

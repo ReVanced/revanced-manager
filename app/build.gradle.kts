@@ -16,10 +16,8 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/revanced/revanced-patcher")
         credentials {
-            username =
-                (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
-            password =
-                (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")) as String
+            username = (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
+            password = (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")) as String
         }
     }
 }
@@ -39,13 +37,15 @@ android {
         minSdk = 26
         targetSdk = 32 // TODO: update to 33 when sources are available
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1"
+        buildConfigField("String", "VERSION_TYPE", "\"Alpha\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
+
     applicationVariants.all {
         kotlin.sourceSets {
             getByName(name) {
@@ -53,29 +53,34 @@ android {
             }
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
         optIn("kotlin.RequiresOptIn")
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = composeVersion
     }
+
     packagingOptions {
         jniLibs {
             useLegacyPackaging = true
@@ -84,36 +89,44 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     buildToolsVersion = "33.0.0"
 }
 
 dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
+    implementation("androidx.navigation:navigation-compose:2.5.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.core:core-splashscreen:1.0.0-rc01")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:2.0.4")
+    implementation("app.revanced:revanced-patcher:2.5.2")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android.tools.build:apksig:7.2.1")
 
     // Compose Destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.5.5-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.5.5-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
 
     // Accompanist
     implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.10-beta")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.13-rc")
 
     // libsu
-    implementation("com.github.topjohnwu.libsu:core:4.0.3")
-    implementation("com.github.topjohnwu.libsu:io:4.0.3")
+//    implementation("com.github.topjohnwu.libsu:core:4.0.3")
+//    implementation("com.github.topjohnwu.libsu:io:4.0.3")
+
+    // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    implementation("com.github.JamalMulla:ComposePrefs3:1.0.2")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
@@ -128,8 +141,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Material 3 + 2
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha13")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
     implementation("androidx.compose.material:material:1.1.1")
 
     // Tests
@@ -139,6 +152,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     implementation(kotlin("script-runtime"))
+
+    // Coil for network image
+    implementation("io.coil-kt:coil-compose:2.1.0")
 }
 
 fun org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions.optIn(library: String) {

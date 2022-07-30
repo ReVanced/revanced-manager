@@ -11,7 +11,7 @@
     <string name="card_application_header">Select Application</string>
     <string name="card_patches_header">Select Patches</string>
     <string name="card_options_header">Options</string>
-    <string name="card_credits_header">Credits</string>
+    <string name="card_contributors_header">Contributors</string>
 
     <string name="card_commits_body_patcher">Patcher:</string>
     <string name="card_commits_body_manager">Manager:</string>
@@ -23,7 +23,7 @@
     <string name="card_patches_body_patches">No patches selected.</string>
     <string name="card_application_body_selected">Selected:</string>
     <string name="card_logs_body">Click here to view patcher logs.</string>
-    <string name="card_credits_body">Click here to view ReVanced project credits.</string>
+    <string name="card_credits_body">Click here to view people who have contributed to the ReVanced Project.</string>
 
     <string name="loading_body">One moment, please...</string>
     <string name="loading_fetching_patches">Fetching patches</string>
@@ -36,10 +36,33 @@
     <string name="navigation_patcher">Patcher</string>
 
     <string name="screen_logs_title">Logs</string>
-    <string name="screen_credits_title">Credits</string>
+    <string name="screen_contributors_title">Contributors</string>
     <string name="screen_credits_team_manager">ReVanced Manager</string>
     <string name="screen_credits_team_website">Website</string>
     <string name="screen_credits_team">Team</string>
     <string name="screen_credits_translators">Translators</string>
     <string name="screen_credits_team_patcher">Patcher</string>
+    <string name="help">Help</string>
+    <string name="help_translate">Help translate</string>
+    <string name="whats_new">What\'s New</string>
+    <string name="ic_non_selected">No patches are selected!</string>
+    <string name="patcher_contributors">Patcher Contributors</string>
+    <string name="contributor_image">Contributor image</string>
+    <string name="no_contributors">No contributors</string>
+    <string name="screen_settings_title">Settings</string>
+    <string name="screen_about_title">About</string>
+    <string name="about">About</string>
+    <string name="navigation_more">More</string>
+    <string name="cli_contributors">CLI Contributors</string>
+    <string name="patches_contributors">Patches Contributors</string>
+    <string name="manager_contributors">Manager Contributors</string>
+    <string name="integrations_contributors">Integrations Contributors</string>
+    <string name="dropdown_button">Dropdown Button</string>
+    <string name="app_version">Version</string>
+    <string name="faq">FAQ</string>
+    <string name="version_info">Version info</string>
+    <string name="unsupported_version">Unsupported version</string>
+    <string name="compatible_versions">Compatible app versions</string>
+    <string name="patcher_notification_title">Patching</string>
+    <string name="patcher_notification_message">ReVanced Manager is patching</string>
 </resources>

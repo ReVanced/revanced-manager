@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+
 
 @Composable
 fun FloatingActionButton(
@@ -16,6 +18,8 @@ fun FloatingActionButton(
     onClick: () -> Unit,
     enabled: Boolean
 ) {
+    val context = LocalContext.current
+
     // TODO: set icon color:
     // tint = if (enabled) LocalContentColor.current.copy(alpha = LocalContentAlpha.current) else else DarkGray
     CompositionLocalProvider(
@@ -27,6 +31,9 @@ fun FloatingActionButton(
             text = text,
             icon = icon,
             onClick = {
+                if (!enabled) {
+                    context.showToast("Please select an application to patch")
+                }
                 if (enabled) onClick()
             },
             containerColor = if (enabled) MaterialTheme.colorScheme.primaryContainer else Color.Gray,

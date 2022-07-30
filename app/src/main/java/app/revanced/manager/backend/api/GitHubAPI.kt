@@ -3,8 +3,8 @@ package app.revanced.manager.backend.api
 import android.util.Log
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 object GitHubAPI {
     private const val tag = "GitHubAPI"
@@ -62,5 +62,21 @@ object GitHubAPI {
                 )
             }
         }
+    }
+
+    object Contributors {
+        suspend fun contributors(org: String, repo: String): List<Contributor> {
+            Log.d(tag, "Fetching contributors for repo ($repo)")
+            val res: List<Contributor> = client.get("$baseUrl/$org/$repo/contributors") {
+            }.body()
+            return res
+        }
+
+        @Serializable
+        class Contributor(
+            @SerialName("login") val login: String,
+            @SerialName("avatar_url") val avatar_url: String,
+            @SerialName("html_url") val url: String,
+        )
     }
 }
