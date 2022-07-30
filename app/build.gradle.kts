@@ -117,7 +117,7 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:1.7.15-beta")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.26.0-alpha")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.13-rc")
 
     // libsu
