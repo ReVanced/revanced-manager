@@ -143,7 +143,7 @@ dependencies {
     // Material 3 + 2
     implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha15")
     implementation("androidx.compose.material3:material3:1.0.0-alpha14")
-    implementation("androidx.compose.material:material:1.1.1")
+    implementation("androidx.compose.material:material:1.2.0")
 
     // Tests
     testImplementation(kotlin("test"))
