@@ -141,7 +141,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Material 3 + 2
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha14")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha15")
     implementation("androidx.compose.material3:material3:1.0.0-alpha14")
     implementation("androidx.compose.material:material:1.1.1")
 
