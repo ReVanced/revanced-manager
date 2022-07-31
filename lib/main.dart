@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager_flutter/ui/screens/home_screen.dart';
 import 'package:revanced_manager_flutter/ui/screens/patcher_screen.dart';
 import 'constants.dart';
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'ReVanced Manager',
       theme: ThemeData.light().copyWith(
         backgroundColor: Colors.red,
+        textTheme: GoogleFonts.interTextTheme(
+          Theme.of(context).textTheme,
+        ),
         useMaterial3: true,
         colorScheme: const ColorScheme.light(
           primary: purple40,
