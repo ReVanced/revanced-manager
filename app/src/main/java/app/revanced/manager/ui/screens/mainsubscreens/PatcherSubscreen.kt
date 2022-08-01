@@ -2,6 +2,7 @@ package app.revanced.manager.ui.screens.mainsubscreens
 
 import android.app.Application
 import android.content.pm.PackageManager
+import android.os.Parcelable
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import app.revanced.patcher.util.patch.implementation.DexPatchBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import dalvik.system.DexClassLoader
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -127,10 +129,11 @@ fun PatcherSubscreen(
     }
 }
 
+@Parcelize
 data class PatchClass(
     val patch: Class<out Patch<Data>>,
     val unsupported: Boolean,
-)
+) : Parcelable
 
 class PatcherViewModel(val app: Application) : AndroidViewModel(app) {
     private val bundleCacheDir = app.filesDir.resolve("bundle-cache").also { it.mkdirs() }
