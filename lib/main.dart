@@ -17,6 +17,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ReVanced Manager',
       theme: ThemeData.light().copyWith(
+        navigationBarTheme: NavigationBarThemeData(
+          labelTextStyle: MaterialStateProperty.all(
+            GoogleFonts.roboto(
+              fontSize: 12,
+            ),
+          ),
+        ),
         backgroundColor: Colors.red,
         textTheme: GoogleFonts.interTextTheme(
           Theme.of(context).textTheme,
@@ -30,6 +37,18 @@ class MyApp extends StatelessWidget {
         ),
       ),
       darkTheme: ThemeData.dark().copyWith(
+        navigationBarTheme: NavigationBarThemeData(
+          iconTheme: MaterialStateProperty.all(const IconThemeData(
+            color: Colors.white,
+          )),
+          indicatorColor: const Color(0xff223144),
+          backgroundColor: const Color(0x1b222b6b),
+          labelTextStyle: MaterialStateProperty.all(
+            GoogleFonts.roboto(
+              fontSize: 12,
+            ),
+          ),
+        ),
         backgroundColor: Colors.red,
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xff0A0D11),

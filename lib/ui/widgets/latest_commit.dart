@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager_flutter/constants.dart';
+import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
 class LatestCommitWidget extends StatelessWidget {
   const LatestCommitWidget({Key? key}) : super(key: key);
@@ -16,26 +19,42 @@ class LatestCommitWidget extends StatelessWidget {
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text("Patcher: 20 hours ago"),
-              Text("Manager: 3 days ago"),
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Patcher: ",
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    "20 hours ago",
+                    style: robotoTextStyle,
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Manager: ",
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    "3 days ago",
+                    style: robotoTextStyle,
+                  )
+                ],
+              ),
             ],
           ),
-          TextButton(
+          PatchTextButton(
+            text: "Update Manager",
             onPressed: () {},
-            style: TextButton.styleFrom(
-              primary: Colors.white,
-              backgroundColor: const Color(0xff7792BA),
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 24,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-            ),
-            child: const Text("Update Manager"),
-          )
+            backgroundColor: const Color(0xff7792BA),
+          ),
         ],
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager_flutter/constants.dart';
+import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
 class AvailableUpdatesWidget extends StatelessWidget {
   const AvailableUpdatesWidget({Key? key}) : super(key: key);
@@ -58,24 +60,13 @@ class AvailableUpdatesWidget extends StatelessWidget {
                 color: const Color(0xff7792BA),
               ),
             ),
-            subtitle: const Text("Released 2 days ago"),
-            trailing: TextButton(
+            subtitle: Text(
+              "Released 2 days ago",
+              style: robotoTextStyle,
+            ),
+            trailing: PatchTextButton(
+              text: "Patch",
               onPressed: () {},
-              style: TextButton.styleFrom(
-                side: const BorderSide(
-                  color: Color(0xff7792BA),
-                  width: 1,
-                ),
-                primary: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 24,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-              ),
-              child: const Text("Patch"),
             ),
           ),
           ListTile(
@@ -91,24 +82,10 @@ class AvailableUpdatesWidget extends StatelessWidget {
                 color: const Color(0xff7792BA),
               ),
             ),
-            subtitle: const Text("Released 1 month ago"),
-            trailing: TextButton(
+            subtitle: Text("Released 1 month ago", style: robotoTextStyle),
+            trailing: PatchTextButton(
+              text: "Patch",
               onPressed: () {},
-              style: TextButton.styleFrom(
-                side: const BorderSide(
-                  color: Color(0xff7792BA),
-                  width: 1,
-                ),
-                primary: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 24,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-              ),
-              child: const Text("Patch"),
             ),
           ),
           const SizedBox(height: 4),
