@@ -1,10 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager_flutter/backend/api/github_api.dart';
 import 'package:revanced_manager_flutter/constants.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
-class LatestCommitWidget extends StatelessWidget {
+class LatestCommitWidget extends StatefulWidget {
   const LatestCommitWidget({Key? key}) : super(key: key);
+
+  @override
+  State<LatestCommitWidget> createState() => _LatestCommitWidgetState();
+}
+
+class _LatestCommitWidgetState extends State<LatestCommitWidget> {
+  GithubAPI githubAPI = GithubAPI();
+  String lastPatcherCommit = "Loading...";
+  String lastManagerCommit = "Loading...";
+
+  void latestCommit() async {
+    lastPatcherCommit =
+        await githubAPI.latestCommitTime("revanced", "revanced-patcher");
+    lastManagerCommit =
+        await githubAPI.latestCommitTime("revanced", "revanced-manager");
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      latestCommit();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +54,7 @@ class LatestCommitWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "20 hours ago",
+                    "$lastPatcherCommit ago",
                     style: robotoTextStyle,
                   )
                 ],
@@ -43,7 +68,7 @@ class LatestCommitWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "3 days ago",
+                    "$lastManagerCommit ago",
                     style: robotoTextStyle,
                   )
                 ],
