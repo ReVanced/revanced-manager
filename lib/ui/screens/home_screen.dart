@@ -18,6 +18,7 @@ class HomeScreen extends StatelessWidget {
               horizontal: 20.0,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
                   alignment: Alignment.topRight,
@@ -29,35 +30,26 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 60),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Dashboard",
-                    style: GoogleFonts.inter(
-                      fontSize: 28,
-                    ),
+                Text(
+                  "Dashboard",
+                  style: GoogleFonts.inter(
+                    fontSize: 28,
                   ),
                 ),
                 const SizedBox(height: 23),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "ReVanced Updates",
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                    ),
+                Text(
+                  "ReVanced Updates",
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
                   ),
                 ),
                 const SizedBox(height: 10),
                 const LatestCommitWidget(),
                 const SizedBox(height: 14),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Patched Applications",
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                    ),
+                Text(
+                  "Patched Applications",
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
                   ),
                 ),
                 const SizedBox(height: 14),

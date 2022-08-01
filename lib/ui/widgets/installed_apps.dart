@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager_flutter/ui/widgets/app_details.dart';
 
 class InstalledAppsWidget extends StatelessWidget {
   const InstalledAppsWidget({Key? key}) : super(key: key);
@@ -24,38 +25,11 @@ class InstalledAppsWidget extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          ListTile(
-            horizontalTitleGap: 12.0,
-            leading: const Image(
-              image: AssetImage("lib/assets/images/reddit.png"),
-              height: 39,
-              width: 39,
-            ),
-            title: Text(
-              "ReVanced",
-              style: GoogleFonts.roboto(
-                color: const Color(0xff7792BA),
-              ),
-            ),
-            subtitle: const Text("Released 2 days ago"),
-            trailing: TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                side: const BorderSide(
-                  color: Color(0xff7792BA),
-                  width: 1,
-                ),
-                primary: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 24,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-              ),
-              child: const Text("Patch"),
-            ),
+          AppDetails(
+            asset: "lib/assets/images/revanced.svg",
+            name: "ReVanced",
+            releaseDate: "2 days ago",
+            onPressed: () {},
           ),
           Text(
             "Changelog",

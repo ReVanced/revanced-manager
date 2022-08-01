@@ -8,12 +8,14 @@ class AppDetails extends StatelessWidget {
   final String asset;
   final String name;
   final String releaseDate;
+  final Function()? onPressed;
 
   const AppDetails({
     Key? key,
     required this.asset,
     required this.name,
     required this.releaseDate,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -24,8 +26,8 @@ class AppDetails extends StatelessWidget {
       leading: isSVG
           ? SvgPicture.asset(
               asset,
-              height: 24,
-              width: 24,
+              height: 26,
+              width: 26,
             )
           : Image.asset(
               asset,
@@ -44,7 +46,7 @@ class AppDetails extends StatelessWidget {
       ),
       trailing: PatchTextButton(
         text: "Patch",
-        onPressed: () {},
+        onPressed: onPressed,
       ),
     );
   }
