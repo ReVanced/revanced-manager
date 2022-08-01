@@ -16,9 +16,10 @@ class GithubAPI {
   }
 
   Future latestCommitTime(String org, repoName) async {
-    var latestCommit =
+    var repo =
         await github.repositories.getRepository(RepositorySlug(org, repoName));
-    var commitTime = latestCommit.pushedAt?.difference(
+
+    var commitTime = repo.pushedAt?.difference(
       DateTime.now().toLocal(),
     );
 
@@ -38,10 +39,21 @@ class GithubAPI {
       return "$minutes mins";
     }
   }
+
+  Future contributors(String org, repoName) async {
+    var contributors =
+        github.repositories.listContributors(RepositorySlug(org, repoName));
+    contributors.forEach((contributor) {
+      print(contributor.login);
+      print(contributor.avatarUrl);
+    });
+    return contributors;
+  }
 }
 
 void main(List<String> args) {
   GithubAPI githubAPI = GithubAPI();
-  githubAPI.latestRelease('revanced', 'revanced-patches');
-  githubAPI.latestCommitTime("revanced", "revanced-patches");
+  // githubAPI.latestRelease('revanced', 'revanced-patches');
+  // githubAPI.latestCommitTime("revanced", "revanced-patches");
+  // githubAPI.contributors("revanced", "revanced-manager");
 }
