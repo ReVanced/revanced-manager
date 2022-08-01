@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager_flutter/backend/api/manager_api.dart';
 import 'package:revanced_manager_flutter/ui/widgets/available_updates_card.dart';
 import 'package:revanced_manager_flutter/ui/widgets/installed_apps_card.dart';
 import 'package:revanced_manager_flutter/ui/widgets/latest_commit_card.dart';
@@ -23,7 +24,9 @@ class HomeScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.topRight,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      getPath();
+                    },
                     icon: const Icon(
                       Icons.more_vert,
                     ),
