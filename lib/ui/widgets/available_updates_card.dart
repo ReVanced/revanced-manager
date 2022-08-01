@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/ui/widgets/app_details.dart';
+import 'package:revanced_manager_flutter/ui/widgets/application_item.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
-class AvailableUpdatesWidget extends StatelessWidget {
-  const AvailableUpdatesWidget({Key? key}) : super(key: key);
+class AvailableUpdatesCard extends StatelessWidget {
+  const AvailableUpdatesCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +36,13 @@ class AvailableUpdatesWidget extends StatelessWidget {
               ),
             ],
           ),
-          AppDetails(
+          ApplicationItem(
             asset: "lib/assets/images/revanced.svg",
             name: "ReVanced",
             releaseDate: "2 days ago",
             onPressed: () {},
           ),
-          AppDetails(
+          ApplicationItem(
             asset: "lib/assets/images/reddit.png",
             name: "ReReddit",
             releaseDate: "Released 1 month ago",

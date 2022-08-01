@@ -4,13 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager_flutter/constants.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
-class AppDetails extends StatelessWidget {
+class ApplicationItem extends StatelessWidget {
   final String asset;
   final String name;
   final String releaseDate;
   final Function()? onPressed;
 
-  const AppDetails({
+  const ApplicationItem({
     Key? key,
     required this.asset,
     required this.name,

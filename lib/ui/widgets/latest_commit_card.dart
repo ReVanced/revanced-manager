@@ -4,14 +4,14 @@ import 'package:revanced_manager_flutter/backend/api/github_api.dart';
 import 'package:revanced_manager_flutter/constants.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
-class LatestCommitWidget extends StatefulWidget {
-  const LatestCommitWidget({Key? key}) : super(key: key);
+class LatestCommitCard extends StatefulWidget {
+  const LatestCommitCard({Key? key}) : super(key: key);
 
   @override
-  State<LatestCommitWidget> createState() => _LatestCommitWidgetState();
+  State<LatestCommitCard> createState() => _LatestCommitCardState();
 }
 
-class _LatestCommitWidgetState extends State<LatestCommitWidget> {
+class _LatestCommitCardState extends State<LatestCommitCard> {
   GithubAPI githubAPI = GithubAPI();
   String lastPatcherCommit = "Loading...";
   String lastManagerCommit = "Loading...";

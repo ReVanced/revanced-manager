@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/ui/widgets/available_update.dart';
-import 'package:revanced_manager_flutter/ui/widgets/installed_apps.dart';
-import 'package:revanced_manager_flutter/ui/widgets/latest_commit.dart';
+import 'package:revanced_manager_flutter/ui/widgets/available_updates_card.dart';
+import 'package:revanced_manager_flutter/ui/widgets/installed_apps_card.dart';
+import 'package:revanced_manager_flutter/ui/widgets/latest_commit_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const LatestCommitWidget(),
+                const LatestCommitCard(),
                 const SizedBox(height: 14),
                 Text(
                   "Patched Applications",
@@ -53,9 +53,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const AvailableUpdatesWidget(),
+                const AvailableUpdatesCard(),
                 const SizedBox(height: 15),
-                const InstalledAppsWidget(),
+                const InstalledAppsCard(),
               ],
             ),
           ),

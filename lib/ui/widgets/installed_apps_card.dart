@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/ui/widgets/app_details.dart';
+import 'package:revanced_manager_flutter/ui/widgets/application_item.dart';
 
-class InstalledAppsWidget extends StatelessWidget {
-  const InstalledAppsWidget({Key? key}) : super(key: key);
+class InstalledAppsCard extends StatelessWidget {
+  const InstalledAppsCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class InstalledAppsWidget extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          AppDetails(
+          ApplicationItem(
             asset: "lib/assets/images/revanced.svg",
             name: "ReVanced",
             releaseDate: "2 days ago",
