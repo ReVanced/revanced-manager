@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/constants.dart';
+import 'package:revanced_manager_flutter/ui/widgets/app_details.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 
 class AvailableUpdatesWidget extends StatelessWidget {
@@ -30,63 +29,22 @@ class AvailableUpdatesWidget extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              TextButton(
+              PatchTextButton(
+                text: "Patch all",
                 onPressed: () {},
-                style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: const Color(0xff7792BA),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 18,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-                child: const Text("Patch all"),
-              )
+                backgroundColor: const Color(0xff7792BA),
+              ),
             ],
           ),
-          ListTile(
-            horizontalTitleGap: 12.0,
-            leading: SvgPicture.asset(
-              "lib/assets/images/revanced.svg",
-              height: 26,
-              width: 26,
-            ),
-            title: Text(
-              "ReVanced",
-              style: GoogleFonts.roboto(
-                color: const Color(0xff7792BA),
-              ),
-            ),
-            subtitle: Text(
-              "Released 2 days ago",
-              style: robotoTextStyle,
-            ),
-            trailing: PatchTextButton(
-              text: "Patch",
-              onPressed: () {},
-            ),
+          const AppDetails(
+            asset: "lib/assets/images/revanced.svg",
+            name: "ReVanced",
+            releaseDate: "2 days ago",
           ),
-          ListTile(
-            horizontalTitleGap: 12.0,
-            leading: const Image(
-              image: AssetImage("lib/assets/images/reddit.png"),
-              height: 39,
-              width: 39,
-            ),
-            title: Text(
-              "ReReddit",
-              style: GoogleFonts.roboto(
-                color: const Color(0xff7792BA),
-              ),
-            ),
-            subtitle: Text("Released 1 month ago", style: robotoTextStyle),
-            trailing: PatchTextButton(
-              text: "Patch",
-              onPressed: () {},
-            ),
+          const AppDetails(
+            asset: "lib/assets/images/reddit.png",
+            name: "ReReddit",
+            releaseDate: "Released 1 month ago",
           ),
           const SizedBox(height: 4),
           Text(
