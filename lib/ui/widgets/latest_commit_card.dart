@@ -17,10 +17,10 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
   String lastManagerCommit = "Loading...";
 
   void latestCommit() async {
-    lastPatcherCommit =
-        await githubAPI.latestCommitTime("revanced", "revanced-patcher");
-    lastManagerCommit =
-        await githubAPI.latestCommitTime("revanced", "revanced-manager");
+    // lastPatcherCommit =
+    //     await githubAPI.latestCommitTime("revanced", "revanced-patcher");
+    // lastManagerCommit =
+    //     await githubAPI.latestCommitTime("revanced", "revanced-manager");
   }
 
   @override

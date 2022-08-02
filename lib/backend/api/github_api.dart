@@ -3,7 +3,7 @@ import 'package:github/github.dart';
 class GithubAPI {
   var github = GitHub();
 
-  Future latestRelease(String org, repoName) async {
+  Future<String?> latestRelease(String org, repoName) async {
     var latestRelease = await github.repositories
         .getLatestRelease(RepositorySlug(org, repoName));
     var dlurl = latestRelease.assets
@@ -12,7 +12,7 @@ class GithubAPI {
             element.browserDownloadUrl!.contains(".apk"))
         .browserDownloadUrl;
     print(dlurl);
-    return latestRelease;
+    return dlurl;
   }
 
   Future latestCommitTime(String org, repoName) async {
@@ -53,7 +53,7 @@ class GithubAPI {
 
 void main(List<String> args) {
   GithubAPI githubAPI = GithubAPI();
-  // githubAPI.latestRelease('revanced', 'revanced-patches');
+  githubAPI.latestRelease('revanced', 'revanced-patches');
   // githubAPI.latestCommitTime("revanced", "revanced-patches");
   // githubAPI.contributors("revanced", "revanced-manager");
 }
