@@ -12,7 +12,7 @@ class AppSelectorScreen extends StatefulWidget {
 
 class _AppSelectorScreenState extends State<AppSelectorScreen> {
   List<Application> apps = [];
-  String query = 'yout';
+  String query = '';
 
   void getApps() async {
     apps = await DeviceApps.getInstalledApplications();
@@ -30,10 +30,16 @@ class _AppSelectorScreenState extends State<AppSelectorScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
           child: Column(
             children: [
-              SearchBar(),
+              SearchBar(
+                onQueryChanged: (searchQuery) {
+                  setState(() {
+                    query = searchQuery;
+                  });
+                },
+              ),
               if (query.isEmpty || query.length < 2)
                 apps.isEmpty
                     ? const Center(
@@ -43,6 +49,8 @@ class _AppSelectorScreenState extends State<AppSelectorScreen> {
                         child: ListView.builder(
                           itemCount: apps.length,
                           itemBuilder: (context, index) {
+                            //sort alphabetically
+                            apps.sort((a, b) => a.appName.compareTo(b.appName));
                             return InstalledAppItem(
                               name: apps[index].appName,
                               pkgName: apps[index].packageName,
@@ -60,6 +68,7 @@ class _AppSelectorScreenState extends State<AppSelectorScreen> {
                         child: ListView.builder(
                           itemCount: apps.length,
                           itemBuilder: (context, index) {
+                            apps.sort((a, b) => a.appName.compareTo(b.appName));
                             if (apps[index].appName.toLowerCase().contains(
                                   query.toLowerCase(),
                                 )) {

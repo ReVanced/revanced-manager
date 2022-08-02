@@ -37,7 +37,7 @@ class PatcherScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AppSelectorScreen()));
+                          builder: (context) => const AppSelectorScreen()));
                 },
               ),
               const SizedBox(height: 16),

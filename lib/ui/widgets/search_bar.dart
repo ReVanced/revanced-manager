@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatefulWidget {
-  const SearchBar({
+  SearchBar({
     Key? key,
+    required this.onQueryChanged,
   }) : super(key: key);
+
+  final Function(String) onQueryChanged;
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -14,10 +17,6 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 0.0,
-        horizontal: 0.0,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: const Color(0xff1B222B),
@@ -30,7 +29,7 @@ class _SearchBarState extends State<SearchBar> {
         children: [
           Expanded(
             child: TextField(
-              onSubmitted: (value) {},
+              onChanged: widget.onQueryChanged,
               decoration: InputDecoration(
                 fillColor: Colors.blueGrey[700],
                 filled: true,
