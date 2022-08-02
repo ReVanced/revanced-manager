@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager_flutter/ui/screens/app_selector_screen.dart';
 import 'package:revanced_manager_flutter/ui/widgets/app_selector_card.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_selector_card.dart';
 
@@ -33,18 +34,10 @@ class PatcherScreen extends StatelessWidget {
               const SizedBox(height: 23),
               AppSelectorCard(
                 onPressed: () {
-                  //show snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        "Select application",
-                        style: GoogleFonts.inter(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AppSelectorScreen()));
                 },
               ),
               const SizedBox(height: 16),

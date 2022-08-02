@@ -40,6 +40,7 @@ dependencies:
   github: ^9.4.0
   path_provider: ^2.0.11
   dio: ^4.0.6
+  device_apps: ^2.2.0
 
 dev_dependencies:
   flutter_test:
