@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/backend/api/github_api.dart';
+import 'package:revanced_manager_flutter/services/github_api.dart';
 import 'package:revanced_manager_flutter/constants.dart';
 import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
 

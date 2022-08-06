@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart' as p;
 import 'package:revanced_manager_flutter/constants.dart';
 import 'github_api.dart';
 
 // use path_provider to get the path of the storage directory
-
+@lazySingleton
 class ManagerAPI {
   Dio dio = Dio();
   GithubAPI githubAPI = GithubAPI();

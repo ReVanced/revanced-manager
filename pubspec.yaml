@@ -36,11 +36,25 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.1+1
   google_fonts: ^3.0.1
+
+  #networking
   http: ^0.13.4
-  github: ^9.4.0
-  path_provider: ^2.0.11
   dio: ^4.0.6
+  github: ^9.4.0
+
+  path_provider: ^2.0.11
   device_apps: ^2.2.0
+
+  #state management
+  stacked: ^2.3.15
+
+  #navigation
+  stacked_services: ^0.9.3
+
+  #inversion of control
+  get_it: ^7.2.0
+  injectable: ^1.5.3
+  stacked_generator: ^0.7.14
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +66,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.2.0
+  injectable_generator: ^1.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
