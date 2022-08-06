@@ -11,7 +11,7 @@ class GithubAPI {
     var dlurl = latestRelease.assets
         ?.firstWhere((asset) =>
             asset.name != null &&
-            asset.name!.endsWith('.dex') &&
+            (asset.name!.endsWith('.dex') || asset.name!.endsWith('.apk')) &&
             !asset.name!.contains('-sources') &&
             !asset.name!.contains('-javadoc'))
         .browserDownloadUrl;
