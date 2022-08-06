@@ -37,13 +37,13 @@ class AvailableUpdatesCard extends StatelessWidget {
             ],
           ),
           ApplicationItem(
-            asset: "lib/assets/images/revanced.svg",
+            asset: "assets/images/revanced.svg",
             name: "ReVanced",
             releaseDate: "2 days ago",
             onPressed: () {},
           ),
           ApplicationItem(
-            asset: "lib/assets/images/reddit.png",
+            asset: "assets/images/reddit.png",
             name: "ReReddit",
             releaseDate: "Released 1 month ago",
             onPressed: () {},

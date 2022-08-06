@@ -26,7 +26,7 @@ class InstalledAppsCard extends StatelessWidget {
             ),
           ),
           ApplicationItem(
-            asset: "lib/assets/images/revanced.svg",
+            asset: "assets/images/revanced.svg",
             name: "ReVanced",
             releaseDate: "2 days ago",
             onPressed: () {},
