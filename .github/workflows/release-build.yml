@@ -17,7 +17,6 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter format --set-exit-if-changed .
       - run: flutter build apk
       - uses: actions/upload-artifact@v1
         with:
