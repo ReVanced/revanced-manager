@@ -1,0 +1,103 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build (Serializer)",
+            "type": "shell",
+            "command": "flutter packages pub run build_runner build --delete-conflicting-outputs",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build (Android)",
+            "type": "shell",
+            "command": "flutter build apk",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Install (Android)",
+            "type": "shell",
+            "command": "adb install build\\app\\outputs\\flutter-apk\\app-release.apk",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean (Flutter)",
+            "type": "shell",
+            "command": "flutter clean && flutter pub get",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean (Serializer)",
+            "type": "shell",
+            "command": "flutter packages pub run build_runner clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build all (Android)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Build (Serializer)",
+                "Build (Android)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean all",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean (Flutter)",
+                "Clean (Serializer)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean all & Build all (Android)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean all",
+                "Build all (Android)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean all & Install (Android)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean all",
+                "Build all (Android)",
+                "Install (Android)",
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & Install (Android)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Build (Android)",
+                "Install (Android)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate dependencies",
+            "type": "shell",
+            "command": "flutter pub pub run dependency_validator",
+            "problemMatcher": []
+        },
+        {
+            "label": "Show upgradable dependencies",
+            "type": "shell",
+            "command": "flutter pub outdated",
+            "problemMatcher": []
+        },
+        {
+            "label": "Validate translations",
+            "type": "shell",
+            "command": "flutter pub run flutter_i18n diff en.json pt.json",
+            "problemMatcher": []
+        }
+    ]
+}

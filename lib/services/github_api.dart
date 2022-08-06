@@ -8,7 +8,13 @@ class GithubAPI {
   Future<String?> latestRelease(String org, repoName) async {
     var latestRelease = await github.repositories
         .getLatestRelease(RepositorySlug(org, repoName));
-    var dlurl = latestRelease.assets?.first.browserDownloadUrl;
+    var dlurl = latestRelease.assets
+        ?.firstWhere((asset) =>
+            asset.name != null &&
+            asset.name!.endsWith('.dex') &&
+            !asset.name!.contains('-sources') &&
+            !asset.name!.contains('-javadoc'))
+        .browserDownloadUrl;
     return dlurl;
   }
 
