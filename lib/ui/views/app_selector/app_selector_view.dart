@@ -1,7 +1,7 @@
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
-import 'package:revanced_manager_flutter/ui/widgets/installed_app_item.dart';
-import 'package:revanced_manager_flutter/ui/widgets/search_bar.dart';
+import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
+import 'package:revanced_manager/ui/widgets/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
 import 'app_selector_viewmodel.dart';

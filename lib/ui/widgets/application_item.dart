@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/constants.dart';
-import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
+import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
 
 class ApplicationItem extends StatelessWidget {
   final String asset;

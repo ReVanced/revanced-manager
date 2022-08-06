@@ -1,6 +1,6 @@
 {
-    "name": "revanced_manager_flutter",
-    "short_name": "revanced_manager_flutter",
+    "name": "revanced_manager",
+    "short_name": "revanced_manager",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

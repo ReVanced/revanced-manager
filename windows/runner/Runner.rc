@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "app.revanced" "\0"
-            VALUE "FileDescription", "revanced_manager_flutter" "\0"
+            VALUE "FileDescription", "revanced_manager" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "revanced_manager_flutter" "\0"
+            VALUE "InternalName", "revanced_manager" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 app.revanced. All rights reserved." "\0"
-            VALUE "OriginalFilename", "revanced_manager_flutter.exe" "\0"
-            VALUE "ProductName", "revanced_manager_flutter" "\0"
+            VALUE "OriginalFilename", "revanced_manager.exe" "\0"
+            VALUE "ProductName", "revanced_manager" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

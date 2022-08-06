@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/services/github_api.dart';
-import 'package:revanced_manager_flutter/constants.dart';
-import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
+import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
   const LatestCommitCard({Key? key}) : super(key: key);

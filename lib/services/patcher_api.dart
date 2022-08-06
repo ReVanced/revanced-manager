@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
-import 'package:revanced_manager_flutter/models/patch.dart';
-import 'package:revanced_manager_flutter/services/github_api.dart';
-import 'package:revanced_manager_flutter/utils/string.dart';
+import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/utils/string.dart';
 
 class PatcherService {
   File? _patchBundleFile;

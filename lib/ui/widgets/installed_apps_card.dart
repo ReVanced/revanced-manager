@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/ui/widgets/application_item.dart';
+import 'package:revanced_manager/ui/widgets/application_item.dart';
 
 class InstalledAppsCard extends StatelessWidget {
   const InstalledAppsCard({Key? key}) : super(key: key);

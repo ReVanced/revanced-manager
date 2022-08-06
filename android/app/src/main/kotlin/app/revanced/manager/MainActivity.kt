@@ -1,4 +1,4 @@
-package app.revanced.revanced_manager_flutter
+package app.revanced.manager
 
 import androidx.annotation.NonNull
 import app.revanced.patcher.data.Data

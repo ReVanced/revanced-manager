@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revanced_manager_flutter/constants.dart';
+import 'package:revanced_manager/constants.dart';
 
 class PatchTextButton extends StatelessWidget {
   final String text;

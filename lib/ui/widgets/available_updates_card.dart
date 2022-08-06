@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/ui/widgets/application_item.dart';
-import 'package:revanced_manager_flutter/ui/widgets/patch_text_button.dart';
+import 'package:revanced_manager/ui/widgets/application_item.dart';
+import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
   const AvailableUpdatesCard({Key? key}) : super(key: key);

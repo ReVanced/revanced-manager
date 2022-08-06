@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:revanced_manager_flutter/app/app.locator.dart';
-import 'package:revanced_manager_flutter/app/app.router.dart';
-import 'package:revanced_manager_flutter/main_viewmodel.dart';
-import 'package:revanced_manager_flutter/theme.dart';
-import 'package:revanced_manager_flutter/ui/views/home/home_view.dart';
-import 'package:revanced_manager_flutter/ui/views/patcher/patcher_view.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/main_viewmodel.dart';
+import 'package:revanced_manager/theme.dart';
+import 'package:revanced_manager/ui/views/home/home_view.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -38,7 +38,7 @@ class Navigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
       viewModelBuilder: () => MainViewModel(),
-      builder: (context,MainViewModel model, child) => Scaffold(
+      builder: (context, MainViewModel model, child) => Scaffold(
         body: getViewForIndex(model.currentIndex),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: model.setIndex,
@@ -57,6 +57,7 @@ class Navigation extends StatelessWidget {
       ),
     );
   }
+
   Widget getViewForIndex(int index) {
     switch (index) {
       case 0:

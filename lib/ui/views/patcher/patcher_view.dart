@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager_flutter/ui/views/app_selector/app_selector_view.dart';
-import 'package:revanced_manager_flutter/ui/widgets/app_selector_card.dart';
-import 'package:revanced_manager_flutter/ui/widgets/patch_selector_card.dart';
+import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
+import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
+import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
 
 import 'patcher_viewmodel.dart';
