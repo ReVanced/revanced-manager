@@ -2,12 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build (Serializer)",
-            "type": "shell",
-            "command": "flutter packages pub run build_runner build --delete-conflicting-outputs",
-            "problemMatcher": []
-        },
-        {
             "label": "Build (Android)",
             "type": "shell",
             "command": "flutter build apk",
@@ -30,44 +24,20 @@
             "problemMatcher": []
         },
         {
-            "label": "Clean (Serializer)",
-            "type": "shell",
-            "command": "flutter packages pub run build_runner clean",
-            "problemMatcher": []
-        },
-        {
-            "label": "Build all (Android)",
+            "label": "Clean & Build (Android)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Build (Serializer)",
+                "Clean (Flutter)",
                 "Build (Android)"
             ],
             "problemMatcher": []
         },
         {
-            "label": "Clean all",
+            "label": "Clean & Install (Android)",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "Clean (Flutter)",
-                "Clean (Serializer)"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Clean all & Build all (Android)",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Clean all",
-                "Build all (Android)"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Clean all & Install (Android)",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Clean all",
-                "Build all (Android)",
+                "Build (Android)",
                 "Install (Android)",
             ],
             "problemMatcher": []
@@ -79,12 +49,6 @@
                 "Build (Android)",
                 "Install (Android)"
             ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Validate dependencies",
-            "type": "shell",
-            "command": "flutter pub pub run dependency_validator",
             "problemMatcher": []
         },
         {
