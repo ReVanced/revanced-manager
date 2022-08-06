@@ -14,7 +14,7 @@ class ManagerAPI {
   Future<String?> getPath() async {
     final path = await p.getApplicationSupportDirectory();
     final workDir = Directory('${path.path}/revanced').createSync();
-    final workDirPath = "${path.path}/revanced";
+    final workDirPath = '${path.path}/revanced';
     return workDirPath;
   }
 

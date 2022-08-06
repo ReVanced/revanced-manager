@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/constants.dart';
 
@@ -23,17 +24,23 @@ class PatchSelectorCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Select patches",
-              style: GoogleFonts.roboto(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+            I18nText(
+              'patchSelectorCard.widgetTitle',
+              child: Text(
+                '',
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            Text(
-              "Select an application first.",
-              style: robotoTextStyle,
+            I18nText(
+              'patchSelectorCard.widgetSubtitle',
+              child: Text(
+                '',
+                style: robotoTextStyle,
+              ),
             ),
           ],
         ),

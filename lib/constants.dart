@@ -11,6 +11,6 @@ const pink40 = Color(0xFF7D5260);
 final interTextStyle = GoogleFonts.inter();
 final robotoTextStyle = GoogleFonts.roboto();
 
-const ghOrg = "revanced";
-const patchesRepo = "revanced-patches";
-const integrationsRepo = "revanced-integrations";
+const ghOrg = 'revanced';
+const patchesRepo = 'revanced-patches';
+const integrationsRepo = 'revanced-integrations';

@@ -1,0 +1,40 @@
+{
+    "main": {
+        "dashboardTab": "Dashboard",
+        "patcherTab": "Patcher"
+    },
+    "homeView": {
+        "widgetTitle": "Dashboard",
+        "updatesSubtitle": "ReVanced Updates",
+        "patchedSubtitle": "Patched Applications"
+    },
+    "availableUpdatesCard": {
+        "widgetTitle": "Updates Available",
+        "patchButton": "Patch All",
+        "changelogLabel": "Changelog"
+    },
+    "applicationItem": {
+        "patchButton": "Patch"
+    },
+    "installedAppsCard": {
+        "widgetTitle": "Total Installed",
+        "changelogLabel": "Changelog"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Loading",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Update Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Select application",
+        "widgetSubtitle": "No application selected."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Select patches",
+        "widgetSubtitle": "Select an application first."
+    }
+}

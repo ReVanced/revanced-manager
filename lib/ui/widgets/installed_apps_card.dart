@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/widgets/application_item.dart';
 
@@ -17,37 +18,43 @@ class InstalledAppsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            "Total Installed(3)",
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              color: const Color(0xff7792BA),
-              fontWeight: FontWeight.w500,
+          I18nText(
+            'installedAppsCard.widgetTitle',
+            child: Text(
+              '',
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                color: const Color(0xff7792BA),
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           ApplicationItem(
-            asset: "assets/images/revanced.svg",
-            name: "ReVanced",
-            releaseDate: "2 days ago",
+            asset: 'assets/images/revanced.svg',
+            name: 'ReVanced',
+            releaseDate: '2 days ago',
             onPressed: () {},
           ),
-          Text(
-            "Changelog",
-            style: GoogleFonts.roboto(
-              color: const Color(0xff8691A0),
-              fontWeight: FontWeight.w700,
+          I18nText(
+            'installedAppsCard.changelogLabel',
+            child: Text(
+              '',
+              style: GoogleFonts.roboto(
+                color: const Color(0xff8691A0),
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            "fix: we made the player even worse (you love)",
+            'fix: we made the player even worse (you love)',
             style: GoogleFonts.roboto(
               color: const Color(0xff8691A0),
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            "chore: guhhughghu",
+            'chore: guhhughghu',
             style: GoogleFonts.roboto(
               color: const Color(0xff8691A0),
             ),

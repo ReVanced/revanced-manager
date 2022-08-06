@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.3.0
+  flutter_i18n: ^0.32.4
   flutter_svg: ^1.1.1+1
   get_it: ^7.2.0
   github: ^9.4.0
@@ -41,3 +42,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/i18n/

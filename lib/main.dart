@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/main_viewmodel.dart';
@@ -27,6 +29,16 @@ class MyApp extends StatelessWidget {
       navigatorKey: StackedService.navigatorKey,
       onGenerateRoute: StackedRouter().onGenerateRoute,
       home: const Navigation(),
+      localizationsDelegates: [
+        FlutterI18nDelegate(
+          translationLoader: FileTranslationLoader(
+            fallbackFile: 'en',
+            basePath: 'assets/i18n',
+          ),
+        ),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
     );
   }
 }
@@ -43,14 +55,20 @@ class Navigation extends StatelessWidget {
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: model.setIndex,
           selectedIndex: model.currentIndex,
-          destinations: const <Widget>[
+          destinations: <Widget>[
             NavigationDestination(
-              icon: Icon(Icons.dashboard),
-              label: "Dashboard",
+              icon: const Icon(Icons.dashboard),
+              label: FlutterI18n.translate(
+                context,
+                'main.dashboardTab',
+              ),
             ),
             NavigationDestination(
-              icon: Icon(Icons.build),
-              label: "Patcher",
+              icon: const Icon(Icons.build),
+              label: FlutterI18n.translate(
+                context,
+                'main.patcherTab',
+              ),
             ),
           ],
         ),

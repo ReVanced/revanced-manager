@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/constants.dart';
@@ -13,14 +14,14 @@ class LatestCommitCard extends StatefulWidget {
 
 class _LatestCommitCardState extends State<LatestCommitCard> {
   GithubAPI githubAPI = GithubAPI();
-  String lastPatcherCommit = "Loading...";
-  String lastManagerCommit = "Loading...";
+  String lastPatcherCommit = 'Loading...';
+  String lastManagerCommit = 'Loading...';
 
   void latestCommit() async {
     // lastPatcherCommit =
-    //     await githubAPI.latestCommitTime("revanced", "revanced-patcher");
+    //     await githubAPI.latestCommitTime('revanced', 'revanced-patcher');
     // lastManagerCommit =
-    //     await githubAPI.latestCommitTime("revanced", "revanced-manager");
+    //     await githubAPI.latestCommitTime('revanced', 'revanced-manager');
   }
 
   @override
@@ -47,28 +48,34 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
             children: [
               Row(
                 children: [
-                  Text(
-                    "Patcher: ",
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w700,
+                  I18nText(
+                    'latestCommitCard.patcherLabel',
+                    child: Text(
+                      '',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   Text(
-                    "$lastPatcherCommit ago",
+                    '$lastPatcherCommit ago',
                     style: robotoTextStyle,
                   )
                 ],
               ),
               Row(
                 children: [
-                  Text(
-                    "Manager: ",
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w700,
+                  I18nText(
+                    'latestCommitCard.managerLabel',
+                    child: Text(
+                      '',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   Text(
-                    "$lastManagerCommit ago",
+                    '$lastManagerCommit ago',
                     style: robotoTextStyle,
                   )
                 ],
@@ -76,7 +83,10 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
             ],
           ),
           PatchTextButton(
-            text: "Update Manager",
+            text: FlutterI18n.translate(
+              context,
+              'latestCommitCard.updateButton',
+            ),
             onPressed: () {},
             backgroundColor: const Color(0xff7792BA),
           ),

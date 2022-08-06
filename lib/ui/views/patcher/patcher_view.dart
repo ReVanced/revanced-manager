@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
 import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
@@ -29,11 +30,14 @@ class PatcherView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 12),
-                Text(
-                  "Patcher",
-                  style: GoogleFonts.inter(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
+                I18nText(
+                  'patcherView.widgetTitle',
+                  child: Text(
+                    '',
+                    style: GoogleFonts.inter(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 23),

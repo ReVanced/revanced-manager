@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/constants.dart';
@@ -20,7 +21,7 @@ class ApplicationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSVG = asset.endsWith(".svg");
+    final isSVG = asset.endsWith('.svg');
     return ListTile(
       horizontalTitleGap: 12.0,
       leading: isSVG
@@ -45,7 +46,10 @@ class ApplicationItem extends StatelessWidget {
         style: robotoTextStyle,
       ),
       trailing: PatchTextButton(
-        text: "Patch",
+        text: FlutterI18n.translate(
+          context,
+          'applicationItem.patchButton',
+        ),
         onPressed: onPressed,
       ),
     );
