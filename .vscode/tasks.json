@@ -18,7 +18,7 @@
             "problemMatcher": []
         },
         {
-            "label": "Clean (Flutter)",
+            "label": "Clean",
             "type": "shell",
             "command": "flutter clean && flutter pub get",
             "problemMatcher": []
@@ -27,7 +27,7 @@
             "label": "Clean & Build (Android)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Clean (Flutter)",
+                "Clean",
                 "Build (Android)"
             ],
             "problemMatcher": []
@@ -36,7 +36,7 @@
             "label": "Clean & Install (Android)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Clean (Flutter)",
+                "Clean",
                 "Build (Android)",
                 "Install (Android)",
             ],
