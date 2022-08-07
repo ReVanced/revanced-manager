@@ -13,7 +13,7 @@ class ManagerAPI {
 
   Future<String?> getPath() async {
     final path = await p.getApplicationSupportDirectory();
-    final workDir = Directory('${path.path}/revanced').createSync();
+    Directory('${path.path}/revanced').createSync();
     final workDirPath = '${path.path}/revanced';
     return workDirPath;
   }
@@ -25,7 +25,6 @@ class ManagerAPI {
       final name = dlUrl
           ?.split('/')
           .lastWhere((element) => element.contains('revanced'));
-      print(name);
       final assetFile = File('$workDir/$name');
       final response = await dio.get(
         dlUrl!,
@@ -34,16 +33,12 @@ class ManagerAPI {
           followRedirects: true,
           receiveTimeout: 0,
         ),
-        onReceiveProgress: (count, total) {
-          print('$count/$total');
-        },
       );
       final raf = assetFile.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       raf.closeSync();
       return assetFile;
     } catch (e) {
-      print(e);
       return null;
     }
   }

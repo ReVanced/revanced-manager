@@ -11,7 +11,6 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
-  device_apps: ^2.2.0
   dio: ^4.0.6
   flutter:
     sdk: flutter

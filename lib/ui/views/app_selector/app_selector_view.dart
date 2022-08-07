@@ -1,10 +1,10 @@
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:installed_apps/app_info.dart';
+import 'package:installed_apps/installed_apps.dart';
 import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
 import 'package:stacked/stacked.dart';
-
-import 'app_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 
 class AppSelectorView extends StatefulWidget {
   const AppSelectorView({Key? key}) : super(key: key);
@@ -14,11 +14,11 @@ class AppSelectorView extends StatefulWidget {
 }
 
 class _AppSelectorViewState extends State<AppSelectorView> {
-  List<Application> apps = [];
+  List<AppInfo> apps = [];
   String query = '';
 
   void getApps() async {
-    apps = await DeviceApps.getInstalledApplications();
+    apps = await InstalledApps.getInstalledApps(false, true);
     setState(() {});
   }
 
@@ -55,12 +55,11 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                             itemCount: apps.length,
                             itemBuilder: (context, index) {
                               //sort alphabetically
-                              apps.sort(
-                                  (a, b) => a.appName.compareTo(b.appName));
+                              apps.sort((a, b) => a.name!.compareTo(b.name!));
                               return InstalledAppItem(
-                                name: apps[index].appName,
-                                pkgName: apps[index].packageName,
-                                isSelected: false,
+                                name: apps[index].name!,
+                                pkgName: apps[index].packageName!,
+                                icon: apps[index].icon!,
                               );
                             },
                           ),
@@ -74,18 +73,17 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                           child: ListView.builder(
                             itemCount: apps.length,
                             itemBuilder: (context, index) {
-                              apps.sort(
-                                  (a, b) => a.appName.compareTo(b.appName));
-                              if (apps[index].appName.toLowerCase().contains(
+                              apps.sort((a, b) => a.name!.compareTo(b.name!));
+                              if (apps[index].name!.toLowerCase().contains(
                                     query.toLowerCase(),
                                   )) {
                                 return InstalledAppItem(
-                                  name: apps[index].appName,
-                                  pkgName: apps[index].packageName,
-                                  isSelected: false,
+                                  name: apps[index].name!,
+                                  pkgName: apps[index].packageName!,
+                                  icon: apps[index].icon!,
                                 );
                               } else {
-                                return SizedBox();
+                                return const SizedBox();
                               }
                             },
                           ),

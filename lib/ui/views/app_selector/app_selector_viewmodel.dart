@@ -1,8 +1,9 @@
-import 'package:device_apps/device_apps.dart';
+import 'package:installed_apps/app_info.dart';
+import 'package:installed_apps/installed_apps.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
-  List<Application> apps = [];
+  List<AppInfo> apps = [];
   String query = '';
 
   void initialization() {
@@ -10,6 +11,6 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   void getApps() async {
-    apps = await DeviceApps.getInstalledApplications();
+    apps = await InstalledApps.getInstalledApps(false, true);
   }
 }

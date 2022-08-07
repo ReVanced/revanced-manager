@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
 import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
@@ -24,8 +23,7 @@ class PatcherView extends StatelessWidget {
         ),
         body: SafeArea(
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

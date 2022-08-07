@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatefulWidget {
-  SearchBar({
+  const SearchBar({
     Key? key,
     required this.onQueryChanged,
   }) : super(key: key);
