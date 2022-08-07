@@ -37,5 +37,11 @@
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
         "widgetSubtitle": "Select an application first."
+    },
+    "appSelectorView": {
+        "searchBarHint": "Search applications"
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Search patches"
     }
 }

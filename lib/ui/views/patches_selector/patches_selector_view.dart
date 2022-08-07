@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patch_item.dart';
@@ -28,7 +29,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                 child: SearchBar(
-                  hintText: "Search patches",
+                  hintText: FlutterI18n.translate(
+                    context,
+                    'patchesSelectorView.searchBarHint',
+                  ),
                   onQueryChanged: (searchQuery) {
                     setState(
                       () {
@@ -46,27 +50,27 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          if (query.isEmpty ||
-                              query.length < 2) {
+                          if (query.isEmpty || query.length < 2) {
                             return PatchItem(
                               name: snapshot.data![index].simpleName,
                               version: snapshot.data![index].version,
                               description: snapshot.data![index].description,
                               isSelected: false,
                             );
-                          }
-                          else if(query.isNotEmpty &&
+                          } else if (query.isNotEmpty &&
                               query.length >= 2 &&
-                              snapshot.data![index].simpleName.toLowerCase().contains(query.toLowerCase())) {
+                              snapshot.data![index].simpleName
+                                  .toLowerCase()
+                                  .contains(query.toLowerCase())) {
                             return PatchItem(
                               name: snapshot.data![index].simpleName,
                               version: snapshot.data![index].version,
                               description: snapshot.data![index].description,
                               isSelected: false,
                             );
+                          } else {
+                            return Container();
                           }
-                          else {return Container();}
-
                         },
                       );
                     } else if (snapshot.hasError) {

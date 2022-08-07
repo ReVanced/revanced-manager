@@ -40,7 +40,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             child: Column(
               children: [
                 SearchBar(
-                  hintText: "Search applications",
+                  hintText: FlutterI18n.translate(
+                    context,
+                    'appSelectorView.searchBarHint',
+                  ),
                   onQueryChanged: (searchQuery) {
                     setState(() {
                       query = searchQuery;
