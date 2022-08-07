@@ -39,6 +39,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             child: Column(
               children: [
                 SearchBar(
+                  hintText: "Search applications",
                   onQueryChanged: (searchQuery) {
                     setState(() {
                       query = searchQuery;

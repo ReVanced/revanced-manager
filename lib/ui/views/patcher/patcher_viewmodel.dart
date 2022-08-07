@@ -4,9 +4,13 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PatcherViewModel extends BaseViewModel {
-  final _naviagtionService = locator<NavigationService>();
+  final _navigationService = locator<NavigationService>();
 
   void navigateToAppSelector() {
-    _naviagtionService.navigateTo(Routes.appSelectorView);
+    _navigationService.navigateTo(Routes.appSelectorView);
+  }
+
+  void navigateToPatchesSelector() {
+    _navigationService.navigateTo(Routes.patchesSelectorView);
   }
 }

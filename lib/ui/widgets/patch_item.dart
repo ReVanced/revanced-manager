@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PatchItem extends StatelessWidget {
+class PatchItem extends StatefulWidget {
   final String name;
   final String description;
   final String version;
-  final bool isSelected;
+  bool isSelected;
 
   PatchItem({
     Key? key,
@@ -16,10 +16,15 @@ class PatchItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PatchItem> createState() => _PatchItemState();
+}
+
+class _PatchItemState extends State<PatchItem> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: const Color(0xff1B222B),
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
@@ -37,19 +42,19 @@ class PatchItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          name,
+                          widget.name,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Text(version)
+                        Text(widget.version)
                       ],
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      description,
+                      widget.description,
                       softWrap: true,
                       maxLines: 3,
                       overflow: TextOverflow.visible,
@@ -63,8 +68,13 @@ class PatchItem extends StatelessWidget {
               Transform.scale(
                 scale: 1.2,
                 child: Checkbox(
-                  value: isSelected,
-                  onChanged: (newValue) {},
+                  value: widget.isSelected,
+                  activeColor: Colors.blueGrey[500],
+                  onChanged: (newValue) {
+                    setState(() {
+                      widget.isSelected = newValue!;
+                    });
+                  },
                 ),
               )
             ],

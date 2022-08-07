@@ -43,7 +43,9 @@ class PatcherView extends StatelessWidget {
                   onPressed: model.navigateToAppSelector,
                 ),
                 const SizedBox(height: 16),
-                const PatchSelectorCard(),
+                PatchSelectorCard(
+                  onPressed: model.navigateToPatchesSelector,
+                ),
               ],
             ),
           ),

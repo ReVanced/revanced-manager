@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatefulWidget {
-  const SearchBar({
+  String? hintText = "Search";
+  Color? backgroundColor;
+  Color? hintTextColor;
+
+   SearchBar({
+    required this.hintText,
+    this.backgroundColor = const Color(0xff1B222B),
+    this.hintTextColor = Colors.white,
     Key? key,
     required this.onQueryChanged,
   }) : super(key: key);
@@ -19,9 +26,9 @@ class _SearchBarState extends State<SearchBar> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xff1B222B),
+        color: widget.backgroundColor,
         border: Border.all(
-          color: const Color(0xff1B222B),
+          color: widget.backgroundColor != null ? widget.backgroundColor! : Colors.white,
           width: 1,
         ),
       ),
@@ -34,9 +41,9 @@ class _SearchBarState extends State<SearchBar> {
                 fillColor: Colors.blueGrey[700],
                 filled: true,
                 contentPadding: const EdgeInsets.all(12.0),
-                hintText: 'Search applications',
+                hintText: widget.hintText,
                 hintStyle: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: widget.hintTextColor,
                   fontWeight: FontWeight.w400,
                 ),
                 prefixIcon: const Icon(
