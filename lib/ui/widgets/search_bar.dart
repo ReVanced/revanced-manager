@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatefulWidget {
-  String? hintText = "Search";
-  Color? backgroundColor;
-  Color? hintTextColor;
+  final String? hintText;
+  final Color? backgroundColor;
+  final Color? hintTextColor;
 
-   SearchBar({
+  const SearchBar({
     required this.hintText,
     this.backgroundColor = const Color(0xff1B222B),
     this.hintTextColor = Colors.white,
@@ -28,7 +28,9 @@ class _SearchBarState extends State<SearchBar> {
         borderRadius: BorderRadius.circular(12),
         color: widget.backgroundColor,
         border: Border.all(
-          color: widget.backgroundColor != null ? widget.backgroundColor! : Colors.white,
+          color: widget.backgroundColor != null
+              ? widget.backgroundColor!
+              : Colors.white,
           width: 1,
         ),
       ),
