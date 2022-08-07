@@ -31,7 +31,8 @@
     },
     "appSelectorCard": {
         "widgetTitle": "Select application",
-        "widgetSubtitle": "No application selected."
+        "widgetSubtitle": "No application selected.",
+        "noAppsLabel": "No apps found."
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",

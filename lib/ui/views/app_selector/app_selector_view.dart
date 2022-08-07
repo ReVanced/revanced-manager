@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
@@ -66,8 +67,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                         ),
                 if (query.isNotEmpty)
                   apps.isEmpty
-                      ? const Center(
-                          child: Text('No apps found'),
+                      ? Center(
+                          child: I18nText('appSelectorCard.noAppsLabel'),
                         )
                       : Expanded(
                           child: ListView.builder(
