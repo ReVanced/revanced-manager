@@ -14,23 +14,6 @@ class LatestCommitCard extends StatefulWidget {
 
 class _LatestCommitCardState extends State<LatestCommitCard> {
   GithubAPI githubAPI = GithubAPI();
-  String lastPatcherCommit = 'Loading...';
-  String lastManagerCommit = 'Loading...';
-
-  void latestCommit() async {
-    // lastPatcherCommit =
-    //     await githubAPI.latestCommitTime('revanced', 'revanced-patcher');
-    // lastManagerCommit =
-    //     await githubAPI.latestCommitTime('revanced', 'revanced-manager');
-  }
-
-  @override
-  void initState() {
-    setState(() {
-      latestCommit();
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +40,20 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       ),
                     ),
                   ),
-                  Text(
-                    '$lastPatcherCommit ago',
-                    style: robotoTextStyle,
-                  )
+                  FutureBuilder<String>(
+                    future: githubAPI.latestCommitTime(
+                      'revanced',
+                      'revanced-patcher',
+                    ),
+                    initialData: FlutterI18n.translate(
+                      context,
+                      'latestCommitCard.loadingLabel',
+                    ),
+                    builder: (context, snapshot) => Text(
+                      snapshot.data!,
+                      style: robotoTextStyle,
+                    ),
+                  ),
                 ],
               ),
               Row(
@@ -74,10 +67,20 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       ),
                     ),
                   ),
-                  Text(
-                    '$lastManagerCommit ago',
-                    style: robotoTextStyle,
-                  )
+                  FutureBuilder<String>(
+                    future: githubAPI.latestCommitTime(
+                      'revanced',
+                      'revanced-patcher',
+                    ),
+                    initialData: FlutterI18n.translate(
+                      context,
+                      'latestCommitCard.loadingLabel',
+                    ),
+                    builder: (context, snapshot) => Text(
+                      snapshot.data!,
+                      style: robotoTextStyle,
+                    ),
+                  ),
                 ],
               ),
             ],

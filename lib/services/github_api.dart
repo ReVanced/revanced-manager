@@ -1,5 +1,6 @@
 import 'package:github/github.dart';
 import 'package:injectable/injectable.dart';
+import 'package:timeago/timeago.dart';
 
 @lazySingleton
 class GithubAPI {
@@ -19,10 +20,10 @@ class GithubAPI {
     return dlurl;
   }
 
-  Future<DateTime?> latestCommitTime(String org, repoName) async {
+  Future<String> latestCommitTime(String org, repoName) async {
     var repo = await github.repositories.getRepository(
       RepositorySlug(org, repoName),
     );
-    return repo.pushedAt;
+    return format(repo.pushedAt!);
   }
 }
