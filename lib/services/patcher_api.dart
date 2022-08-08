@@ -1,21 +1,30 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:injectable/injectable.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/utils/string.dart';
 
+@lazySingleton
 class PatcherService {
-  File? _patchBundleFile;
+  final GithubAPI githubAPI = GithubAPI();
   final List<AppInfo> _filteredPackages = [];
   final Map<String, List<Patch>> _filteredPatches = <String, List<Patch>>{};
-  final GithubAPI githubAPI = GithubAPI();
+  File? _patchBundleFile;
+  String _selectedApp = '';
+  List<Patch> _selectedPatches = [];
   static const platform = MethodChannel('app.revanced/patcher');
-  static final PatcherService _instance = PatcherService.internal();
-  factory PatcherService() => _instance;
-  PatcherService.internal();
+
+  String getSelectedApp() => _selectedApp;
+
+  void setSelectedApp(String app) => _selectedApp = app;
+
+  List<Patch> getSelectedPatches() => _selectedPatches;
+
+  void setSelectedPatches(List<Patch> patches) => _selectedPatches = patches;
 
   Future<void> loadPatches() async {
     if (_patchBundleFile == null) {

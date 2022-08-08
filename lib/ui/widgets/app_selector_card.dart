@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/services/patcher_api.dart';
 
 class AppSelectorCard extends StatelessWidget {
   final Function()? onPressed;
-  const AppSelectorCard({
+  AppSelectorCard({
     Key? key,
     this.onPressed,
   }) : super(key: key);
+
+  final PatcherService patcherService = locator<PatcherService>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +39,18 @@ class AppSelectorCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            I18nText(
-              'appSelectorCard.widgetSubtitle',
-              child: Text(
-                '',
-                style: robotoTextStyle,
-              ),
-            ),
+            patcherService.getSelectedApp().isNotEmpty
+                ? Text(
+                    patcherService.getSelectedApp(),
+                    style: robotoTextStyle,
+                  )
+                : I18nText(
+                    'appSelectorCard.widgetSubtitle',
+                    child: Text(
+                      '',
+                      style: robotoTextStyle,
+                    ),
+                  ),
           ],
         ),
       ),

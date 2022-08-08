@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
@@ -12,8 +13,8 @@ class PatcherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder.reactive(
-      builder: (context, PatcherViewModel model, child) => Scaffold(
+    return ViewModelBuilder<PatcherViewModel>.reactive(
+      builder: (context, model, child) => Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
           child: const Icon(
@@ -51,7 +52,7 @@ class PatcherView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => PatcherViewModel(),
+      viewModelBuilder: () => locator<PatcherViewModel>(),
     );
   }
 }

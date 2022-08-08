@@ -51,7 +51,7 @@ class Navigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
       viewModelBuilder: () => MainViewModel(),
-      builder: (context, MainViewModel model, child) => Scaffold(
+      builder: (context, model, child) => Scaffold(
         body: getViewForIndex(model.currentIndex),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: model.setIndex,

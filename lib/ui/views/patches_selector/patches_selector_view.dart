@@ -18,9 +18,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder.reactive(
+    return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
       viewModelBuilder: () => PatchesSelectorViewModel(),
-      builder: (context, PatchesSelectorViewModel model, child) => Scaffold(
+      builder: (context, model, child) => Scaffold(
         body: Container(
           margin: const EdgeInsets.fromLTRB(6.0, 26.0, 6.0, 0),
           child: Column(

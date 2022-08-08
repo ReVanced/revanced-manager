@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/available_updates_card.dart';
 import 'package:revanced_manager/ui/widgets/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/latest_commit_card.dart';
 import 'package:stacked/stacked.dart';
-import 'home_viewmodel.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);

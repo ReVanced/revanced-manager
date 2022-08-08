@@ -23,52 +23,49 @@ class InstalledAppItem extends StatefulWidget {
 class _InstalledAppItemState extends State<InstalledAppItem> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.pop(context),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0),
-        child: Container(
-          padding: const EdgeInsets.all(12.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: const Color(0xff1B222B),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                alignment: Alignment.center,
-                child: CircleAvatar(
-                  child: Image.memory(widget.icon),
-                ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: const Color(0xff1B222B),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              alignment: Alignment.center,
+              child: CircleAvatar(
+                child: Image.memory(widget.icon),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.visible,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.pkgName,
-                      style: robotoTextStyle,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.pkgName,
+                    style: robotoTextStyle,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

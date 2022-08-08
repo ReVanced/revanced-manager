@@ -12,6 +12,7 @@ import 'package:stacked_core/stacked_core.dart';
 import 'package:stacked_services/src/navigation/navigation_service.dart';
 
 import '../services/patcher_api.dart';
+import '../ui/views/patcher/patcher_viewmodel.dart';
 
 final locator = StackedLocator.instance;
 
@@ -24,4 +25,5 @@ Future<void> setupLocator(
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => PatcherService());
+  locator.registerLazySingleton(() => PatcherViewModel());
 }

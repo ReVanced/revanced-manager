@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:installed_apps/app_info.dart';
-import 'package:installed_apps/installed_apps.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -15,23 +16,13 @@ class AppSelectorView extends StatefulWidget {
 }
 
 class _AppSelectorViewState extends State<AppSelectorView> {
-  List<AppInfo> apps = [];
+  final PatcherService patcherService = locator<PatcherService>();
   String query = '';
-
-  void getApps() async {
-    apps = await InstalledApps.getInstalledApps(false, true);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    getApps();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder.reactive(
+    return ViewModelBuilder<AppSelectorViewModel>.reactive(
+      onModelReady: (model) => model.initialise(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
           child: Padding(
@@ -51,41 +42,53 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                   },
                 ),
                 if (query.isEmpty || query.length < 2)
-                  apps.isEmpty
+                  model.apps.isEmpty
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
                       : Expanded(
                           child: ListView.builder(
-                            itemCount: apps.length,
+                            itemCount: model.apps.length,
                             itemBuilder: (context, index) {
                               //sort alphabetically
-                              apps.sort((a, b) => a.name!.compareTo(b.name!));
-                              return InstalledAppItem(
-                                name: apps[index].name!,
-                                pkgName: apps[index].packageName!,
-                                icon: apps[index].icon!,
+                              model.apps
+                                  .sort((a, b) => a.name!.compareTo(b.name!));
+                              return InkWell(
+                                onTap: () {
+                                  patcherService.setSelectedApp(
+                                      model.apps[index].packageName!);
+                                  Navigator.of(context).pop();
+                                  locator<PatcherViewModel>().notifyListeners();
+                                },
+                                child: InstalledAppItem(
+                                  name: model.apps[index].name!,
+                                  pkgName: model.apps[index].packageName!,
+                                  icon: model.apps[index].icon!,
+                                ),
                               );
                             },
                           ),
                         ),
                 if (query.isNotEmpty)
-                  apps.isEmpty
+                  model.apps.isEmpty
                       ? Center(
                           child: I18nText('appSelectorCard.noAppsLabel'),
                         )
                       : Expanded(
                           child: ListView.builder(
-                            itemCount: apps.length,
+                            itemCount: model.apps.length,
                             itemBuilder: (context, index) {
-                              apps.sort((a, b) => a.name!.compareTo(b.name!));
-                              if (apps[index].name!.toLowerCase().contains(
+                              model.apps
+                                  .sort((a, b) => a.name!.compareTo(b.name!));
+                              if (model.apps[index].name!
+                                  .toLowerCase()
+                                  .contains(
                                     query.toLowerCase(),
                                   )) {
                                 return InstalledAppItem(
-                                  name: apps[index].name!,
-                                  pkgName: apps[index].packageName!,
-                                  icon: apps[index].icon!,
+                                  name: model.apps[index].name!,
+                                  pkgName: model.apps[index].packageName!,
+                                  icon: model.apps[index].icon!,
                                 );
                               } else {
                                 return const SizedBox();
