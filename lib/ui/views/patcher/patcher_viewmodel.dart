@@ -5,6 +5,8 @@ import 'package:stacked_services/stacked_services.dart';
 
 class PatcherViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
+  bool dimPatchCard = true;
+  bool hideFabButton = true;
 
   void navigateToAppSelector() {
     _navigationService.navigateTo(Routes.appSelectorView);

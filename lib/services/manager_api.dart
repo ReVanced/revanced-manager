@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart' as p;
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/services/github_api.dart';
 
-// use path_provider to get the path of the storage directory
 @lazySingleton
 class ManagerAPI {
   Dio dio = Dio();

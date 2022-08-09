@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 
 class PatchSelectorCard extends StatelessWidget {
   final Function()? onPressed;
@@ -35,13 +38,35 @@ class PatchSelectorCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            I18nText(
-              'patchSelectorCard.widgetSubtitle',
-              child: Text(
-                '',
-                style: robotoTextStyle,
-              ),
-            ),
+            locator<AppSelectorViewModel>().selectedApp == null
+                ? I18nText(
+                    'patchSelectorCard.widgetFirstSubtitle',
+                    child: Text(
+                      '',
+                      style: robotoTextStyle,
+                    ),
+                  )
+                : locator<PatchesSelectorViewModel>().selectedPatches.isEmpty
+                    ? I18nText(
+                        'patchSelectorCard.widgetSecondSubtitle',
+                        child: Text(
+                          '',
+                          style: robotoTextStyle,
+                        ),
+                      )
+                    : I18nText(
+                        'patchSelectorCard.widgetThirdSubtitle',
+                        translationParams: {
+                          'selected': locator<PatchesSelectorViewModel>()
+                              .selectedPatches
+                              .length
+                              .toString()
+                        },
+                        child: Text(
+                          '',
+                          style: robotoTextStyle,
+                        ),
+                      ),
           ],
         ),
       ),

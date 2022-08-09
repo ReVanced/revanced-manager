@@ -21,6 +21,7 @@ class AppSelectorViewModel extends BaseViewModel {
 
   void selectApp(AppInfo appInfo) {
     locator<AppSelectorViewModel>().selectedApp = appInfo;
+    locator<PatcherViewModel>().dimPatchCard = false;
     locator<PatcherViewModel>().notifyListeners();
   }
 }

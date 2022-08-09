@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
   final String name;
+  final String simpleName;
   final String description;
   final String version;
   bool isSelected;
@@ -11,6 +12,7 @@ class PatchItem extends StatefulWidget {
   PatchItem({
     Key? key,
     required this.name,
+    required this.simpleName,
     required this.description,
     required this.version,
     required this.isSelected,
@@ -43,7 +45,7 @@ class _PatchItemState extends State<PatchItem> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          widget.name,
+                          widget.simpleName,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

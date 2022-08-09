@@ -17,12 +17,15 @@ class PatcherView extends StatelessWidget {
       disposeViewModel: false,
       viewModelBuilder: () => locator<PatcherViewModel>(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => {},
-          label: I18nText('patcherView.fabButton'),
-          icon: const Icon(Icons.build),
-          backgroundColor: const Color(0xff7792BA),
-          foregroundColor: Colors.white,
+        floatingActionButton: Visibility(
+          visible: locator<PatcherViewModel>().hideFabButton,
+          child: FloatingActionButton.extended(
+            onPressed: () => {},
+            label: I18nText('patcherView.fabButton'),
+            icon: const Icon(Icons.build),
+            backgroundColor: const Color(0xff7792BA),
+            foregroundColor: Colors.white,
+          ),
         ),
         body: SafeArea(
           child: Padding(
@@ -46,8 +49,11 @@ class PatcherView extends StatelessWidget {
                   onPressed: model.navigateToAppSelector,
                 ),
                 const SizedBox(height: 16),
-                PatchSelectorCard(
-                  onPressed: model.navigateToPatchesSelector,
+                Opacity(
+                  opacity: model.dimPatchCard ? 0.5 : 1,
+                  child: PatchSelectorCard(
+                    onPressed: model.navigateToPatchesSelector,
+                  ),
                 ),
               ],
             ),

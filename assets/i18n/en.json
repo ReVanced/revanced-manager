@@ -37,7 +37,9 @@
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
-        "widgetSubtitle": "Select an application first."
+        "widgetFirstSubtitle": "Select an application first.",
+        "widgetSecondSubtitle": "No patches selected.",
+        "widgetThirdSubtitle": "{selected} patch(es) selected."
     },
     "appSelectorView": {
         "searchBarHint": "Search applications"

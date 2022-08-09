@@ -14,6 +14,7 @@ class PatchesSelectorView extends StatefulWidget {
 }
 
 class _PatchesSelectorViewState extends State<PatchesSelectorView> {
+  final List<PatchItem> patches = [];
   String query = '';
 
   @override
@@ -24,7 +25,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       viewModelBuilder: () => locator<PatchesSelectorViewModel>(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => {},
+          onPressed: () {
+            model.selectPatches(patches);
+            Navigator.of(context).pop();
+          },
           label: I18nText('patchesSelectorView.fabButton'),
           icon: const Icon(Icons.check),
           backgroundColor: const Color(0xff7792BA),
@@ -66,23 +70,30 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   }
 
   Widget _getAllResults(PatchesSelectorViewModel model) {
+    patches.clear();
     return Expanded(
       child: ListView.builder(
         itemCount: model.patches!.length,
         itemBuilder: (context, index) {
           model.patches!.sort((a, b) => a.simpleName.compareTo(b.simpleName));
-          return PatchItem(
-            name: model.patches![index].simpleName,
+          PatchItem item = PatchItem(
+            name: model.patches![index].name,
+            simpleName: model.patches![index].simpleName,
             version: model.patches![index].version,
             description: model.patches![index].description,
-            isSelected: false,
+            isSelected: model.selectedPatches.any(
+              (element) => element.name == model.patches![index].name,
+            ),
           );
+          patches.add(item);
+          return item;
         },
       ),
     );
   }
 
   Widget _getFilteredResults(PatchesSelectorViewModel model) {
+    patches.clear();
     return Expanded(
       child: ListView.builder(
         itemCount: model.patches!.length,
@@ -91,12 +102,17 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
           if (model.patches![index].simpleName.toLowerCase().contains(
                 query.toLowerCase(),
               )) {
-            return PatchItem(
-              name: model.patches![index].simpleName,
+            PatchItem item = PatchItem(
+              name: model.patches![index].name,
+              simpleName: model.patches![index].simpleName,
               version: model.patches![index].version,
               description: model.patches![index].description,
-              isSelected: false,
+              isSelected: model.selectedPatches.any(
+                (element) => element.name == model.patches![index].name,
+              ),
             );
+            patches.add(item);
+            return item;
           } else {
             return const SizedBox();
           }
