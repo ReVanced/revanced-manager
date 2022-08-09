@@ -18,7 +18,7 @@ class PatcherView extends StatelessWidget {
       viewModelBuilder: () => locator<PatcherViewModel>(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
-          visible: locator<PatcherViewModel>().hideFabButton,
+          visible: locator<PatcherViewModel>().showFabButton,
           child: FloatingActionButton.extended(
             onPressed: () => {},
             label: I18nText('patcherView.fabButton'),

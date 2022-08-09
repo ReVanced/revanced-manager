@@ -33,8 +33,8 @@ class PatchesSelectorViewModel extends BaseViewModel {
         }
       }
     }
-    locator<PatcherViewModel>().hideFabButton =
-        selectedPatches.isEmpty ? true : false;
+    locator<PatcherViewModel>().showFabButton =
+        selectedPatches.isNotEmpty ? true : false;
     locator<PatcherViewModel>().notifyListeners();
   }
 }
