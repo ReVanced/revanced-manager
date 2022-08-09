@@ -13,6 +13,6 @@ import 'package:stacked_services/stacked_services.dart';
   MaterialRoute(page: PatchesSelectorView),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
-  LazySingleton(classType: PatcherService),
+  LazySingleton(classType: PatcherAPI),
 ])
 class AppSetup {}

@@ -26,7 +26,7 @@ Future<void> setupLocator(
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
-  locator.registerLazySingleton(() => PatcherService());
+  locator.registerLazySingleton(() => PatcherAPI());
   locator.registerLazySingleton(() => PatcherViewModel());
   locator.registerLazySingleton(() => AppSelectorViewModel());
   locator.registerLazySingleton(() => PatchesSelectorViewModel());

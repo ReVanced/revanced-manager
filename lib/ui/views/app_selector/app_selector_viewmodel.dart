@@ -5,7 +5,7 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
-  final PatcherService patcherService = locator<PatcherService>();
+  final PatcherAPI patcherAPI = locator<PatcherAPI>();
   List<AppInfo> apps = [];
   AppInfo? selectedApp;
 
@@ -15,8 +15,8 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> getApps() async {
-    await patcherService.loadPatches();
-    apps = await patcherService.getFilteredInstalledApps();
+    await patcherAPI.loadPatches();
+    apps = await patcherAPI.getFilteredInstalledApps();
   }
 
   void selectApp(AppInfo appInfo) {

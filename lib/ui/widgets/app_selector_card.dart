@@ -13,7 +13,7 @@ class AppSelectorCard extends StatelessWidget {
     this.onPressed,
   }) : super(key: key);
 
-  final PatcherService patcherService = locator<PatcherService>();
+  final PatcherAPI patcherAPI = locator<PatcherAPI>();
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/utils/string.dart';
 
 @lazySingleton
-class PatcherService {
+class PatcherAPI {
   final GithubAPI githubAPI = GithubAPI();
   final List<AppInfo> _filteredPackages = [];
   final Map<String, List<Patch>> _filteredPatches = <String, List<Patch>>{};
