@@ -14,13 +14,15 @@ class PatcherView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatcherViewModel>.reactive(
+      disposeViewModel: false,
+      viewModelBuilder: () => locator<PatcherViewModel>(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(
-            Icons.build,
-            color: Colors.white,
-          ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => {},
+          label: I18nText('patcherView.fabButton'),
+          icon: const Icon(Icons.build),
+          backgroundColor: const Color(0xff7792BA),
+          foregroundColor: Colors.white,
         ),
         body: SafeArea(
           child: Padding(
@@ -52,7 +54,6 @@ class PatcherView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => locator<PatcherViewModel>(),
     );
   }
 }

@@ -13,6 +13,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
+      viewModelBuilder: () => HomeViewModel(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -24,7 +25,7 @@ class HomeView extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () => {},
                       icon: const Icon(
                         Icons.more_vert,
                       ),
@@ -72,7 +73,6 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => HomeViewModel(),
     );
   }
 }

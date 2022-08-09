@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 
 class AppSelectorCard extends StatelessWidget {
   final Function()? onPressed;
@@ -39,9 +40,9 @@ class AppSelectorCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            patcherService.getSelectedApp().isNotEmpty
+            locator<AppSelectorViewModel>().selectedApp != null
                 ? Text(
-                    patcherService.getSelectedApp(),
+                    locator<AppSelectorViewModel>().selectedApp!.packageName!,
                     style: robotoTextStyle,
                   )
                 : I18nText(

@@ -14,23 +14,13 @@ class PatcherService {
   final List<AppInfo> _filteredPackages = [];
   final Map<String, List<Patch>> _filteredPatches = <String, List<Patch>>{};
   File? _patchBundleFile;
-  String _selectedApp = '';
-  List<Patch> _selectedPatches = [];
   static const platform = MethodChannel('app.revanced/patcher');
-
-  String getSelectedApp() => _selectedApp;
-
-  void setSelectedApp(String app) => _selectedApp = app;
-
-  List<Patch> getSelectedPatches() => _selectedPatches;
-
-  void setSelectedPatches(List<Patch> patches) => _selectedPatches = patches;
 
   Future<void> loadPatches() async {
     if (_patchBundleFile == null) {
       String? dexFileUrl =
           await githubAPI.latestRelease('revanced', 'revanced-patches');
-      if (dexFileUrl != null) {
+      if (dexFileUrl != null && dexFileUrl.isNotEmpty) {
         _patchBundleFile =
             await DefaultCacheManager().getSingleFile(dexFileUrl);
         try {

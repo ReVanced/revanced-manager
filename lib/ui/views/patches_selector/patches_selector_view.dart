@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
@@ -19,73 +19,88 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
-      viewModelBuilder: () => PatchesSelectorViewModel(),
+      disposeViewModel: false,
+      onModelReady: (model) => model.initialise(),
+      viewModelBuilder: () => locator<PatchesSelectorViewModel>(),
       builder: (context, model, child) => Scaffold(
-        body: Container(
-          margin: const EdgeInsets.fromLTRB(6.0, 26.0, 6.0, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                child: SearchBar(
-                  hintText: FlutterI18n.translate(
-                    context,
-                    'patchesSelectorView.searchBarHint',
-                  ),
-                  onQueryChanged: (searchQuery) {
-                    setState(
-                      () {
-                        query = searchQuery;
-                      },
-                    );
-                  },
-                ),
-              ),
-              Expanded(
-                child: FutureBuilder<List<Patch>?>(
-                  future: model.getPatches(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          if (query.isEmpty || query.length < 2) {
-                            return PatchItem(
-                              name: snapshot.data![index].simpleName,
-                              version: snapshot.data![index].version,
-                              description: snapshot.data![index].description,
-                              isSelected: false,
-                            );
-                          } else if (query.isNotEmpty &&
-                              query.length >= 2 &&
-                              snapshot.data![index].simpleName
-                                  .toLowerCase()
-                                  .contains(query.toLowerCase())) {
-                            return PatchItem(
-                              name: snapshot.data![index].simpleName,
-                              version: snapshot.data![index].version,
-                              description: snapshot.data![index].description,
-                              isSelected: false,
-                            );
-                          } else {
-                            return Container();
-                          }
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => {},
+          label: I18nText('patchesSelectorView.fabButton'),
+          icon: const Icon(Icons.check),
+          backgroundColor: const Color(0xff7792BA),
+          foregroundColor: Colors.white,
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+            child: model.patches != null && model.patches!.isNotEmpty
+                ? Column(
+                    children: [
+                      SearchBar(
+                        hintText: FlutterI18n.translate(
+                          context,
+                          'patchesSelectorView.searchBarHint',
+                        ),
+                        onQueryChanged: (searchQuery) {
+                          setState(() {
+                            query = searchQuery;
+                          });
                         },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
+                      ),
+                      const SizedBox(height: 12),
+                      query.isEmpty || query.length < 2
+                          ? _getAllResults(model)
+                          : _getFilteredResults(model)
+                    ],
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xff7792BA),
+                    ),
+                  ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _getAllResults(PatchesSelectorViewModel model) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: model.patches!.length,
+        itemBuilder: (context, index) {
+          model.patches!.sort((a, b) => a.simpleName.compareTo(b.simpleName));
+          return PatchItem(
+            name: model.patches![index].simpleName,
+            version: model.patches![index].version,
+            description: model.patches![index].description,
+            isSelected: false,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _getFilteredResults(PatchesSelectorViewModel model) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: model.patches!.length,
+        itemBuilder: (context, index) {
+          model.patches!.sort((a, b) => a.simpleName.compareTo(b.simpleName));
+          if (model.patches![index].simpleName.toLowerCase().contains(
+                query.toLowerCase(),
+              )) {
+            return PatchItem(
+              name: model.patches![index].simpleName,
+              version: model.patches![index].version,
+              description: model.patches![index].description,
+              isSelected: false,
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
       ),
     );
   }

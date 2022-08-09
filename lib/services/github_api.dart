@@ -7,23 +7,34 @@ class GithubAPI {
   var github = GitHub();
 
   Future<String?> latestRelease(String org, repoName) async {
-    var latestRelease = await github.repositories.getLatestRelease(
-      RepositorySlug(org, repoName),
-    );
-    var dlurl = latestRelease.assets
-        ?.firstWhere((asset) =>
-            asset.name != null &&
-            (asset.name!.endsWith('.dex') || asset.name!.endsWith('.apk')) &&
-            !asset.name!.contains('-sources') &&
-            !asset.name!.contains('-javadoc'))
-        .browserDownloadUrl;
+    String? dlurl = '';
+    try {
+      var latestRelease = await github.repositories.getLatestRelease(
+        RepositorySlug(org, repoName),
+      );
+      dlurl = latestRelease.assets
+          ?.firstWhere((asset) =>
+              asset.name != null &&
+              (asset.name!.endsWith('.dex') || asset.name!.endsWith('.apk')) &&
+              !asset.name!.contains('-sources') &&
+              !asset.name!.contains('-javadoc'))
+          .browserDownloadUrl;
+    } on Exception {
+      dlurl = '';
+    }
     return dlurl;
   }
 
   Future<String> latestCommitTime(String org, repoName) async {
-    var repo = await github.repositories.getRepository(
-      RepositorySlug(org, repoName),
-    );
-    return format(repo.pushedAt!);
+    String pushedAt = '';
+    try {
+      var repo = await github.repositories.getRepository(
+        RepositorySlug(org, repoName),
+      );
+      pushedAt = repo.pushedAt != null ? format(repo.pushedAt!) : '';
+    } on Exception {
+      pushedAt = '';
+    }
+    return pushedAt;
   }
 }

@@ -27,7 +27,8 @@
         "updateButton": "Update Manager"
     },
     "patcherView": {
-        "widgetTitle": "Patcher"
+        "widgetTitle": "Patcher",
+        "fabButton": "Patch"
     },
     "appSelectorCard": {
         "widgetTitle": "Select application",
@@ -42,6 +43,7 @@
         "searchBarHint": "Search applications"
     },
     "patchesSelectorView": {
-        "searchBarHint": "Search patches"
+        "searchBarHint": "Search patches",
+        "fabButton": "Done"
     }
 }

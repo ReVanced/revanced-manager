@@ -33,7 +33,7 @@ class InstalledAppsCard extends StatelessWidget {
             asset: 'assets/images/revanced.svg',
             name: 'ReVanced',
             releaseDate: '2 days ago',
-            onPressed: () {},
+            onPressed: () => {},
           ),
           I18nText(
             'installedAppsCard.changelogLabel',
