@@ -39,18 +39,21 @@ class PatcherAPI {
 
   Future<List<AppInfo>> getFilteredInstalledApps() async {
     if (_patchBundleFile != null && _filteredPackages.isEmpty) {
-      List<AppInfo> all = await InstalledApps.getInstalledApps(false, true);
       try {
         List<String>? patchesPackages =
             await platform.invokeListMethod<String>('getCompatiblePackages');
         if (patchesPackages != null) {
-          for (AppInfo app in all) {
-            if (patchesPackages.contains(app.packageName)) {
+          for (String package in patchesPackages) {
+            try {
+              AppInfo app = await InstalledApps.getAppInfo(package);
               _filteredPackages.add(app);
+            } catch (e) {
+              continue;
             }
           }
         }
-      } on Exception {
+      } on PlatformException {
+        _filteredPackages.clear();
         return List.empty();
       }
     }
@@ -73,21 +76,25 @@ class PatcherAPI {
           );
           if (patches != null) {
             for (var patch in patches) {
-              _filteredPatches[targetApp.packageName]!.add(
-                Patch(
-                  name: patch['name'],
-                  simpleName: (patch['name'] as String)
-                      .replaceAll('-', ' ')
-                      .split('-')
-                      .join(' ')
-                      .toTitleCase(),
-                  version: patch['version'] ?? 'unknown',
-                  description: patch['description'] ?? 'unknown',
-                ),
-              );
+              if (!_filteredPatches[targetApp.packageName]!
+                  .any((element) => element.name == patch['name'])) {
+                _filteredPatches[targetApp.packageName]!.add(
+                  Patch(
+                    name: patch['name'],
+                    simpleName: (patch['name'] as String)
+                        .replaceAll('-', ' ')
+                        .split('-')
+                        .join(' ')
+                        .toTitleCase(),
+                    version: patch['version'] ?? '?.?.?',
+                    description: patch['description'] ?? 'N/A',
+                  ),
+                );
+              }
             }
           }
-        } on Exception {
+        } on PlatformException {
+          _filteredPatches[targetApp.packageName]!.clear();
           return List.empty();
         }
       }
