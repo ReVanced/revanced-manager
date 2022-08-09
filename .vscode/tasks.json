@@ -2,6 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Build (Serializer)",
+            "type": "shell",
+            "command": "flutter packages pub run build_runner build --delete-conflicting-outputs",
+            "problemMatcher": []
+        },
+        {
             "label": "Build (Android)",
             "type": "shell",
             "command": "flutter build apk",
@@ -18,26 +24,50 @@
             "problemMatcher": []
         },
         {
-            "label": "Clean",
+            "label": "Clean (Flutter)",
             "type": "shell",
             "command": "flutter clean && flutter pub get",
             "problemMatcher": []
         },
         {
-            "label": "Clean & Build (Android)",
+            "label": "Clean (Serializer)",
+            "type": "shell",
+            "command": "flutter packages pub run build_runner clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build all (Android)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Clean",
+                "Build (Serializer)",
                 "Build (Android)"
             ],
             "problemMatcher": []
         },
         {
-            "label": "Clean & Install (Android)",
+            "label": "Clean all",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Clean",
-                "Build (Android)",
+                "Clean (Flutter)",
+                "Clean (Serializer)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean all & Build all (Android)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean all",
+                "Build all (Android)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean all & Install (Android)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean all",
+                "Build all (Android)",
                 "Install (Android)",
             ],
             "problemMatcher": []
