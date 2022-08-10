@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -8,6 +9,7 @@ import 'package:revanced_manager/main_viewmodel.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
+import 'package:revanced_manager/ui/views/settings/settings_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -71,6 +73,13 @@ class Navigation extends StatelessWidget {
                 'main.patcherTab',
               ),
             ),
+            NavigationDestination(
+              icon: const Icon(Icons.settings),
+              label: FlutterI18n.translate(
+                context,
+                'main.settingsTab',
+              ),
+            ),
           ],
         ),
       ),
@@ -83,6 +92,8 @@ class Navigation extends StatelessWidget {
         return const HomeView();
       case 1:
         return const PatcherView();
+      case 2:
+        return const SettingsView();
       default:
         return const HomeView();
     }

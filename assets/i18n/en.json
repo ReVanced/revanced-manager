@@ -1,7 +1,8 @@
 {
     "main": {
         "dashboardTab": "Dashboard",
-        "patcherTab": "Patcher"
+        "patcherTab": "Patcher",
+        "settingsTab": "Settings"
     },
     "homeView": {
         "widgetTitle": "Dashboard",
@@ -47,5 +48,18 @@
     "patchesSelectorView": {
         "searchBarHint": "Search patches",
         "fabButton": "Done"
+    },
+    "settingsView": {
+        "widgetTitle": "Settings",
+        "languageLabel": "Language",
+        "themeLabel": "Theme",
+        "themeHint": "Change the theme of the app",
+        "dynamicColorsLabel": "Dynamic Colors",
+        "dynamicColorsHint": "Enable dynamic colors",
+        "darkThemeLabel": "Dark",
+        "lightThemeLabel": "Light",
+        "versionLabel": "Version",
+        "aboutLabel": "About",
+        "contributorsLabel": "Contributors"
     }
 }

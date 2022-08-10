@@ -6,9 +6,7 @@
 
 // ignore_for_file: public_member_api_docs
 
-// ignore: depend_on_referenced_packages
 import 'package:stacked_core/stacked_core.dart';
-// ignore: implementation_imports
 import 'package:stacked_services/src/navigation/navigation_service.dart';
 
 import '../services/patcher_api.dart';
