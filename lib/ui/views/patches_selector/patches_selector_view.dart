@@ -24,16 +24,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       onModelReady: (model) => model.initialise(),
       viewModelBuilder: () => locator<PatchesSelectorViewModel>(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            model.selectPatches(patches);
-            Navigator.of(context).pop();
-          },
-          label: I18nText('patchesSelectorView.fabButton'),
-          icon: const Icon(Icons.check),
-          backgroundColor: const Color(0xff7792BA),
-          foregroundColor: Colors.white,
-        ),
         body: SafeArea(
           child: Padding(
             padding:
@@ -55,7 +45,24 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       const SizedBox(height: 12),
                       query.isEmpty || query.length < 2
                           ? _getAllResults(model)
-                          : _getFilteredResults(model)
+                          : _getFilteredResults(model),
+                      MaterialButton(
+                        textColor: Colors.white,
+                        color: const Color(0x957792BA),
+                        minWidth: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 8,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        onPressed: () {
+                          model.selectPatches(patches);
+                          Navigator.of(context).pop();
+                        },
+                        child: I18nText('patchesSelectorView.fabButton'),
+                      ),
                     ],
                   )
                 : const Center(
