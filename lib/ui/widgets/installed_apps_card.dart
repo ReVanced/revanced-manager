@@ -4,14 +4,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/widgets/application_item.dart';
 
 class InstalledAppsCard extends StatelessWidget {
-  const InstalledAppsCard({Key? key}) : super(key: key);
+  final Color? color;
+  const InstalledAppsCard({
+    Key? key,
+    this.color = const Color(0xff1B222B),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xff1B222B),
+        color: color,
       ),
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       child: Column(

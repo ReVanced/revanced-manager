@@ -5,6 +5,7 @@ import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class AppSelectorView extends StatefulWidget {
   const AppSelectorView({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder<AppSelectorViewModel>.reactive(
       disposeViewModel: false,
       onModelReady: (model) => model.initialise(),
@@ -31,10 +33,13 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                 ? Column(
                     children: [
                       SearchBar(
+                        fillColor:
+                            isDark ? Colors.blueGrey[700] : Colors.grey[400],
                         hintText: FlutterI18n.translate(
                           context,
                           'appSelectorView.searchBarHint',
                         ),
+                        hintTextColor: isDark ? Colors.white : Colors.grey[800],
                         onQueryChanged: (searchQuery) {
                           setState(() {
                             query = searchQuery;

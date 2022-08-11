@@ -3,16 +3,22 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/widgets/application_item.dart';
 import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
-  const AvailableUpdatesCard({Key? key}) : super(key: key);
+  final Color? color;
+  const AvailableUpdatesCard({
+    Key? key,
+    this.color = const Color(0xff1B222B),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = getThemeManager(context).isDarkMode;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xff1B222B),
+        color: color,
       ),
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       child: Column(

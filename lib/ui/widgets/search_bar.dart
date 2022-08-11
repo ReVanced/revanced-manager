@@ -4,12 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 class SearchBar extends StatefulWidget {
   final String? hintText;
   final Color? backgroundColor;
+  final Color? fillColor;
   final Color? hintTextColor;
 
   const SearchBar({
     required this.hintText,
     this.backgroundColor = const Color(0xff1B222B),
     this.hintTextColor = Colors.white,
+    required this.fillColor,
     Key? key,
     required this.onQueryChanged,
   }) : super(key: key);
@@ -40,7 +42,7 @@ class _SearchBarState extends State<SearchBar> {
             child: TextField(
               onChanged: widget.onQueryChanged,
               decoration: InputDecoration(
-                fillColor: Colors.blueGrey[700],
+                fillColor: widget.fillColor,
                 filled: true,
                 contentPadding: const EdgeInsets.all(12.0),
                 hintText: widget.hintText,
@@ -50,7 +52,6 @@ class _SearchBarState extends State<SearchBar> {
                 ),
                 prefixIcon: const Icon(
                   Icons.search,
-                  color: Colors.white,
                   size: 24.0,
                 ),
                 border: OutlineInputBorder(

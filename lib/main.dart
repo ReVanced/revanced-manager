@@ -68,7 +68,9 @@ class Navigation extends StatelessWidget {
           selectedIndex: model.currentIndex,
           destinations: <Widget>[
             NavigationDestination(
-              icon: const Icon(Icons.dashboard),
+              icon: const Icon(
+                Icons.dashboard,
+              ),
               label: FlutterI18n.translate(
                 context,
                 'main.dashboardTab',

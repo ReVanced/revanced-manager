@@ -13,6 +13,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewModel(),
       builder: (context, model, child) => Scaffold(
@@ -53,7 +54,9 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const LatestCommitCard(),
+                  LatestCommitCard(
+                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                  ),
                   const SizedBox(height: 14),
                   I18nText(
                     'homeView.patchedSubtitle',
@@ -65,9 +68,13 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  const AvailableUpdatesCard(),
+                  AvailableUpdatesCard(
+                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                  ),
                   const SizedBox(height: 15),
-                  const InstalledAppsCard(),
+                  InstalledAppsCard(
+                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                  ),
                 ],
               ),
             ),

@@ -6,7 +6,11 @@ import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
-  const LatestCommitCard({Key? key}) : super(key: key);
+  final Color? color;
+  const LatestCommitCard({
+    Key? key,
+    this.color = const Color(0xff1B222B),
+  }) : super(key: key);
 
   @override
   State<LatestCommitCard> createState() => _LatestCommitCardState();
@@ -20,7 +24,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xff1B222B),
+        color: widget.color,
       ),
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       child: Row(

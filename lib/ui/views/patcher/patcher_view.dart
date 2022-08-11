@@ -5,6 +5,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 import 'patcher_viewmodel.dart';
 
@@ -13,6 +14,7 @@ class PatcherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder<PatcherViewModel>.reactive(
       disposeViewModel: false,
       viewModelBuilder: () => locator<PatcherViewModel>(),
@@ -47,12 +49,16 @@ class PatcherView extends StatelessWidget {
                 const SizedBox(height: 23),
                 AppSelectorCard(
                   onPressed: model.navigateToAppSelector,
+                  color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
                 ),
                 const SizedBox(height: 16),
                 Opacity(
-                  opacity: model.dimPatchCard ? 0.5 : 1,
+                  opacity: isDark
+                      ? (model.dimPatchCard ? 0.5 : 1)
+                      : (model.dimPatchCard ? 0.75 : 1),
                   child: PatchSelectorCard(
                     onPressed: model.navigateToPatchesSelector,
+                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
                   ),
                 ),
               ],

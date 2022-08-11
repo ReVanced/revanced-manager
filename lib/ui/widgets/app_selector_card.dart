@@ -8,9 +8,12 @@ import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.da
 
 class AppSelectorCard extends StatelessWidget {
   final Function()? onPressed;
+  final Color? color;
+
   AppSelectorCard({
     Key? key,
     this.onPressed,
+    this.color = const Color(0xff1B222B),
   }) : super(key: key);
 
   final PatcherAPI patcherAPI = locator<PatcherAPI>();
@@ -23,7 +26,7 @@ class AppSelectorCard extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: const Color(0xff1B222B),
+          color: color,
         ),
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         child: Column(
