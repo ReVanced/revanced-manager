@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -29,29 +30,16 @@ class SettingsView extends StatelessWidget {
                   trailing: Switch(
                     value: model.isDarkMode,
                     onChanged: (value) {
-                      model.toggleTheme();
+                      model.isDarkMode = value;
+                      getThemeManager(context).toggleDarkLightTheme();
                     },
                   ),
-                  onTap: () {
-                    model.toggleTheme;
-                  },
-                ),
-                ListTile(
-                  title: I18nText('settingsView.dynamicColorsLabel'),
-                  subtitle: I18nText('settingsView.dynamicColorsHint'),
-                  trailing: Switch(
-                    value: model.isDynamicColors,
-                    onChanged: (value) {
-                      model.toggleDynamicColors();
-                    },
-                  ),
-                  onTap: () {
-                    model.toggleDynamicColors();
-                  },
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

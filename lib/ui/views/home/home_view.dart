@@ -6,6 +6,7 @@ import 'package:revanced_manager/ui/widgets/available_updates_card.dart';
 import 'package:revanced_manager/ui/widgets/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/latest_commit_card.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class HomeView extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      onPressed: () => {},
+                      onPressed: () {},
                       icon: const Icon(
                         Icons.more_vert,
                       ),

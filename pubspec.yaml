@@ -28,6 +28,7 @@ dependencies:
   stacked: ^2.3.15
   stacked_generator: ^0.7.14
   stacked_services: ^0.9.3
+  stacked_themes: ^0.3.9
   timeago: ^3.2.2
 
 dev_dependencies:

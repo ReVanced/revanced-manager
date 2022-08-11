@@ -54,8 +54,6 @@
         "languageLabel": "Language",
         "themeLabel": "Theme",
         "themeHint": "Change the theme of the app",
-        "dynamicColorsLabel": "Dynamic Colors",
-        "dynamicColorsHint": "Enable dynamic colors",
         "darkThemeLabel": "Dark",
         "lightThemeLabel": "Light",
         "versionLabel": "Version",

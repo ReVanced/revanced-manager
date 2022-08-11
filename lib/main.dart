@@ -12,8 +12,10 @@ import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
-void main() async {
+Future main() async {
+  await ThemeManager.initialise();
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
   runApp(const MyApp());
@@ -24,24 +26,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ReVanced Manager',
-      theme: lightTheme,
+    return ThemeBuilder(
+      defaultThemeMode: ThemeMode.dark,
       darkTheme: darkTheme,
-      navigatorKey: StackedService.navigatorKey,
-      onGenerateRoute: StackedRouter().onGenerateRoute,
-      home: const Navigation(),
-      localizationsDelegates: [
-        FlutterI18nDelegate(
-          translationLoader: FileTranslationLoader(
-            fallbackFile: 'en',
-            basePath: 'assets/i18n',
+      lightTheme: lightTheme,
+      builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'ReVanced Manager',
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: themeMode,
+        navigatorKey: StackedService.navigatorKey,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
+        home: const Navigation(),
+        localizationsDelegates: [
+          FlutterI18nDelegate(
+            translationLoader: FileTranslationLoader(
+              fallbackFile: 'en',
+              basePath: 'assets/i18n',
+            ),
           ),
-        ),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+      ),
     );
   }
 }
