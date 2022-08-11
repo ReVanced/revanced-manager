@@ -23,6 +23,7 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+  final TextEditingController _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,6 +42,7 @@ class _SearchBarState extends State<SearchBar> {
           Expanded(
             child: TextField(
               onChanged: widget.onQueryChanged,
+              controller: _textController,
               decoration: InputDecoration(
                 fillColor: widget.fillColor,
                 filled: true,
@@ -54,6 +56,16 @@ class _SearchBarState extends State<SearchBar> {
                   Icons.search,
                   size: 24.0,
                 ),
+                suffixIcon: _textController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        iconSize: 24.0,
+                        onPressed: () {
+                          _textController.clear();
+                          widget.onQueryChanged('');
+                        },
+                      )
+                    : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
