@@ -30,6 +30,7 @@ dependencies:
   stacked_services: ^0.9.3
   stacked_themes: ^0.3.9
   timeago: ^3.2.2
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   build_runner: any

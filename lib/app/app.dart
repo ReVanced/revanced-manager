@@ -1,6 +1,7 @@
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -17,7 +18,8 @@ import 'package:stacked_themes/stacked_themes.dart';
     MaterialRoute(page: AppSelectorView),
     MaterialRoute(page: PatcherView),
     MaterialRoute(page: PatchesSelectorView),
-    MaterialRoute(page: SettingsView)
+    MaterialRoute(page: SettingsView),
+    MaterialRoute(page: ContributorsView)
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

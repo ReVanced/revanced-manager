@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/constants.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 import 'app/app.locator.dart';

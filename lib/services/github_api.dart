@@ -37,4 +37,16 @@ class GithubAPI {
     }
     return pushedAt;
   }
+
+  Future<List<Contributor>> getContributors(String org, repoName) async {
+    try {
+      var contributors = await github.repositories.listContributors(
+        RepositorySlug(org, repoName),
+      );
+      return contributors.toList();
+    } on Exception {
+      print(Exception);
+      return [];
+    }
+  }
 }

@@ -14,3 +14,6 @@ final robotoTextStyle = GoogleFonts.roboto();
 const ghOrg = 'revanced';
 const patchesRepo = 'revanced-patches';
 const integrationsRepo = 'revanced-integrations';
+const patcherRepo = 'revanced-patcher';
+const cliRepo = 'revanced-cli';
+const managerRepo = 'revanced-manager';

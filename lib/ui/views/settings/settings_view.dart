@@ -77,6 +77,7 @@ class SettingsView extends StatelessWidget {
                 ),
                 ListTile(
                   title: I18nText('settingsView.contributorsLabel'),
+                  onTap: model.navigateToContributors,
                 ),
               ],
             ),
