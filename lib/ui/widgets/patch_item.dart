@@ -28,6 +28,7 @@ class _PatchItemState extends State<PatchItem> {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
+        borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),

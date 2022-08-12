@@ -40,6 +40,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               alignment: Alignment.center,
               child: CircleAvatar(
+                backgroundColor: Colors.transparent,
                 child: Image.memory(widget.icon),
               ),
             ),
