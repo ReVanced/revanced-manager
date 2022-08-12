@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
@@ -28,9 +29,9 @@ class SettingsView extends StatelessWidget {
                   title: I18nText('settingsView.themeLabel'),
                   subtitle: I18nText('settingsView.themeHint'),
                   trailing: Switch(
-                    value: model.isDarkMode,
+                    value: isDark,
                     onChanged: (value) {
-                      model.isDarkMode = value;
+                      isDark = value;
                       getThemeManager(context).toggleDarkLightTheme();
                     },
                   ),

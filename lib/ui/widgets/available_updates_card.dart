@@ -3,7 +3,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/widgets/application_item.dart';
 import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
   final Color? color;
@@ -14,40 +13,42 @@ class AvailableUpdatesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = getThemeManager(context).isDarkMode;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: color,
       ),
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              I18nText(
-                'availableUpdatesCard.widgetTitle',
-                child: Text(
-                  '',
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    color: const Color(0xff7792BA),
-                    fontWeight: FontWeight.w500,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                I18nText(
+                  'availableUpdatesCard.widgetTitle',
+                  child: Text(
+                    '',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              PatchTextButton(
-                text: FlutterI18n.translate(
-                  context,
-                  'availableUpdatesCard.patchButton',
+                PatchTextButton(
+                  text: FlutterI18n.translate(
+                    context,
+                    'availableUpdatesCard.patchButton',
+                  ),
+                  onPressed: () => {},
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                 ),
-                onPressed: () => {},
-                backgroundColor: const Color(0xff7792BA),
-              ),
-            ],
+              ],
+            ),
           ),
           ApplicationItem(
             asset: 'assets/images/revanced.svg',
@@ -67,7 +68,7 @@ class AvailableUpdatesCard extends StatelessWidget {
             child: Text(
               '',
               style: GoogleFonts.roboto(
-                color: const Color(0xff8691A0),
+                color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -76,14 +77,14 @@ class AvailableUpdatesCard extends StatelessWidget {
           Text(
             'fix: we made the player even worse (you love)',
             style: GoogleFonts.roboto(
-              color: const Color(0xff8691A0),
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             'chore: guhhughghu',
             style: GoogleFonts.roboto(
-              color: const Color(0xff8691A0),
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
         ],

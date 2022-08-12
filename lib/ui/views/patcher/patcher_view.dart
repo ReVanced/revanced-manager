@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 import 'patcher_viewmodel.dart';
 
@@ -14,7 +14,6 @@ class PatcherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder<PatcherViewModel>.reactive(
       disposeViewModel: false,
       viewModelBuilder: () => locator<PatcherViewModel>(),
@@ -25,7 +24,7 @@ class PatcherView extends StatelessWidget {
             onPressed: () => {},
             label: I18nText('patcherView.fabButton'),
             icon: const Icon(Icons.build),
-            backgroundColor: const Color(0xff7792BA),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             foregroundColor: Colors.white,
           ),
         ),
@@ -49,7 +48,7 @@ class PatcherView extends StatelessWidget {
                 const SizedBox(height: 23),
                 AppSelectorCard(
                   onPressed: model.navigateToAppSelector,
-                  color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(height: 16),
                 Opacity(
@@ -58,7 +57,7 @@ class PatcherView extends StatelessWidget {
                       : (model.dimPatchCard ? 0.75 : 1),
                   child: PatchSelectorCard(
                     onPressed: model.navigateToPatchesSelector,
-                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ],

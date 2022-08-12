@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class PatchesSelectorView extends StatefulWidget {
   const PatchesSelectorView({Key? key}) : super(key: key);
@@ -20,7 +20,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
       disposeViewModel: false,
       onModelReady: (model) => model.initialise(),
@@ -35,12 +34,12 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     children: [
                       SearchBar(
                         fillColor:
-                            isDark ? Colors.blueGrey[700] : Colors.grey[400],
+                            isDark ? const Color(0xff1B222B) : Colors.grey[200],
                         hintText: FlutterI18n.translate(
                           context,
                           'patchesSelectorView.searchBarHint',
                         ),
-                        hintTextColor: isDark ? Colors.white : Colors.grey[800],
+                        hintTextColor: Theme.of(context).colorScheme.tertiary,
                         onQueryChanged: (searchQuery) {
                           setState(() {
                             query = searchQuery;
@@ -70,9 +69,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       ),
                     ],
                   )
-                : const Center(
+                : Center(
                     child: CircularProgressIndicator(
-                      color: Color(0xff7792BA),
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
           ),

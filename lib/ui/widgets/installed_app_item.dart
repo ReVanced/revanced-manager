@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/constants.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class InstalledAppItem extends StatefulWidget {
   final String name;
@@ -24,14 +23,13 @@ class InstalledAppItem extends StatefulWidget {
 class _InstalledAppItemState extends State<InstalledAppItem> {
   @override
   Widget build(BuildContext context) {
-    bool isDark = getThemeManager(context).isDarkMode;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Container(
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+          color: Theme.of(context).colorScheme.primary,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

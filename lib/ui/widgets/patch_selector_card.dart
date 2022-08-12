@@ -5,7 +5,6 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class PatchSelectorCard extends StatelessWidget {
   final Function()? onPressed;

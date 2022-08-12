@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class AppSelectorView extends StatefulWidget {
   const AppSelectorView({Key? key}) : super(key: key);
@@ -19,7 +19,6 @@ class _AppSelectorViewState extends State<AppSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder<AppSelectorViewModel>.reactive(
       disposeViewModel: false,
       onModelReady: (model) => model.initialise(),
@@ -34,12 +33,12 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                     children: [
                       SearchBar(
                         fillColor:
-                            isDark ? Colors.blueGrey[700] : Colors.grey[400],
+                            isDark ? const Color(0xff1B222B) : Colors.grey[200],
                         hintText: FlutterI18n.translate(
                           context,
                           'appSelectorView.searchBarHint',
                         ),
-                        hintTextColor: isDark ? Colors.white : Colors.grey[800],
+                        hintTextColor: Theme.of(context).colorScheme.tertiary,
                         onQueryChanged: (searchQuery) {
                           setState(() {
                             query = searchQuery;
@@ -53,9 +52,9 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                     ],
                   )
                 : query.isEmpty || query.length < 2
-                    ? const Center(
+                    ? Center(
                         child: CircularProgressIndicator(
-                          color: Color(0xff7792BA),
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       )
                     : Center(

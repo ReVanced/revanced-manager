@@ -95,7 +95,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               'latestCommitCard.updateButton',
             ),
             onPressed: () => {},
-            backgroundColor: const Color(0xff7792BA),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ),

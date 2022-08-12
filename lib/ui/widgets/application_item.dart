@@ -38,7 +38,8 @@ class ApplicationItem extends StatelessWidget {
       title: Text(
         name,
         style: GoogleFonts.roboto(
-          color: const Color(0xff7792BA),
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.w600,
         ),
       ),
       subtitle: Text(

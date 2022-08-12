@@ -28,7 +28,7 @@ class InstalledAppsCard extends StatelessWidget {
               '',
               style: GoogleFonts.inter(
                 fontSize: 16,
-                color: const Color(0xff7792BA),
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -44,7 +44,7 @@ class InstalledAppsCard extends StatelessWidget {
             child: Text(
               '',
               style: GoogleFonts.roboto(
-                color: const Color(0xff8691A0),
+                color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -53,14 +53,14 @@ class InstalledAppsCard extends StatelessWidget {
           Text(
             'fix: we made the player even worse (you love)',
             style: GoogleFonts.roboto(
-              color: const Color(0xff8691A0),
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             'chore: guhhughghu',
             style: GoogleFonts.roboto(
-              color: const Color(0xff8691A0),
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
         ],

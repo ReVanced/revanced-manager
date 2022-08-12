@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/available_updates_card.dart';
 import 'package:revanced_manager/ui/widgets/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/latest_commit_card.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = getThemeManager(context).isDarkMode;
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewModel(),
       builder: (context, model, child) => Scaffold(
@@ -49,31 +48,36 @@ class HomeView extends StatelessWidget {
                     child: Text(
                       '',
                       style: GoogleFonts.inter(
-                        fontSize: 18,
+                        fontSize: 20,
+                        color: isDark
+                            ? const Color(0xffD1E1FA)
+                            : const Color(0xff384E6E),
                       ),
                     ),
                   ),
                   const SizedBox(height: 10),
                   LatestCommitCard(
-                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
-                  ),
+                      color: Theme.of(context).colorScheme.primary),
                   const SizedBox(height: 14),
                   I18nText(
                     'homeView.patchedSubtitle',
                     child: Text(
                       '',
                       style: GoogleFonts.inter(
-                        fontSize: 18,
+                        fontSize: 20,
+                        color: isDark
+                            ? const Color(0xffD1E1FA)
+                            : const Color(0xff384E6E),
                       ),
                     ),
                   ),
                   const SizedBox(height: 14),
                   AvailableUpdatesCard(
-                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(height: 15),
                   InstalledAppsCard(
-                    color: isDark ? const Color(0xff1B222B) : Colors.grey[350],
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ],
               ),

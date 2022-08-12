@@ -18,24 +18,21 @@ class PatchTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        side: BorderSide(
-          color: borderColor,
-          width: 1,
-        ),
-        primary: Colors.white,
-        backgroundColor: backgroundColor,
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 24,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-      ),
+      style: Theme.of(context).textButtonTheme.style?.copyWith(
+            backgroundColor: MaterialStateProperty.all<Color?>(backgroundColor),
+            side: MaterialStateProperty.all<BorderSide>(
+              BorderSide(
+                color: borderColor,
+                width: 1,
+              ),
+            ),
+          ),
       child: Text(
         text,
-        style: interTextStyle,
+        style: interTextStyle.copyWith(
+            color: backgroundColor == Colors.transparent
+                ? const Color.fromRGBO(119, 146, 186, 1)
+                : Colors.white),
       ),
     );
   }

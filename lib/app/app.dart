@@ -9,18 +9,24 @@ import 'package:revanced_manager/ui/views/patches_selector/patches_selector_view
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
-@StackedApp(routes: [
-  MaterialRoute(page: HomeView),
-  MaterialRoute(page: AppSelectorView),
-  MaterialRoute(page: PatcherView),
-  MaterialRoute(page: PatchesSelectorView),
-  MaterialRoute(page: SettingsView)
-], dependencies: [
-  LazySingleton(classType: NavigationService),
-  LazySingleton(classType: PatcherAPI),
-  LazySingleton(classType: PatcherViewModel),
-  LazySingleton(classType: AppSelectorViewModel),
-  LazySingleton(classType: PatchesSelectorViewModel),
-])
+@StackedApp(
+  routes: [
+    MaterialRoute(page: HomeView),
+    MaterialRoute(page: AppSelectorView),
+    MaterialRoute(page: PatcherView),
+    MaterialRoute(page: PatchesSelectorView),
+    MaterialRoute(page: SettingsView)
+  ],
+  dependencies: [
+    LazySingleton(classType: NavigationService),
+    LazySingleton(classType: PatcherAPI),
+    LazySingleton(classType: PatcherViewModel),
+    LazySingleton(classType: AppSelectorViewModel),
+    LazySingleton(classType: PatchesSelectorViewModel),
+    LazySingleton(
+        classType: ThemeService, resolveUsing: ThemeService.getInstance),
+  ],
+)
 class AppSetup {}

@@ -15,9 +15,10 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 Future main() async {
-  await ThemeManager.initialise();
-  WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
+  await ThemeManager.initialise();
+  setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
