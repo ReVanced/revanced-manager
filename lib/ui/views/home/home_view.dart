@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () => {},
                       icon: const Icon(
                         Icons.more_vert,
                       ),

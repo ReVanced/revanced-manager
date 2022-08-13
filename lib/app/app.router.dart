@@ -4,36 +4,33 @@
 // StackedRouterGenerator
 // **************************************************************************
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes
+// ignore_for_file: no_leading_underscores_for_library_prefixes, implementation_imports
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart' as _i7;
 import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i8;
 
-import '../ui/views/app_selector/app_selector_view.dart' as _i3;
-import '../ui/views/contributors/contributors_view.dart' as _i7;
-import '../ui/views/home/home_view.dart' as _i2;
-import '../ui/views/patcher/patcher_view.dart' as _i4;
-import '../ui/views/patches_selector/patches_selector_view.dart' as _i5;
-import '../ui/views/settings/settings_view.dart' as _i6;
+import '../ui/views/app_selector/app_selector_view.dart' as _i2;
+import '../ui/views/contributors/contributors_view.dart' as _i6;
+import '../ui/views/installer/installer_view.dart' as _i4;
+import '../ui/views/patches_selector/patches_selector_view.dart' as _i3;
+import '../ui/views/settings/settings_view.dart' as _i5;
 
 class Routes {
-  static const homeView = '/home-view';
-
   static const appSelectorView = '/app-selector-view';
 
-  static const patcherView = '/patcher-view';
-
   static const patchesSelectorView = '/patches-selector-view';
+
+  static const installerView = '/installer-view';
 
   static const settingsView = '/settings-view';
 
   static const contributorsView = '/contributors-view';
 
   static const all = <String>{
-    homeView,
     appSelectorView,
-    patcherView,
     patchesSelectorView,
+    installerView,
     settingsView,
     contributorsView
   };
@@ -41,48 +38,44 @@ class Routes {
 
 class StackedRouter extends _i1.RouterBase {
   final _routes = <_i1.RouteDef>[
-    _i1.RouteDef(Routes.homeView, page: _i2.HomeView),
-    _i1.RouteDef(Routes.appSelectorView, page: _i3.AppSelectorView),
-    _i1.RouteDef(Routes.patcherView, page: _i4.PatcherView),
-    _i1.RouteDef(Routes.patchesSelectorView, page: _i5.PatchesSelectorView),
-    _i1.RouteDef(Routes.settingsView, page: _i6.SettingsView),
-    _i1.RouteDef(Routes.contributorsView, page: _i7.ContributorsView)
+    _i1.RouteDef(Routes.appSelectorView, page: _i2.AppSelectorView),
+    _i1.RouteDef(Routes.patchesSelectorView, page: _i3.PatchesSelectorView),
+    _i1.RouteDef(Routes.installerView, page: _i4.InstallerView),
+    _i1.RouteDef(Routes.settingsView, page: _i5.SettingsView),
+    _i1.RouteDef(Routes.contributorsView, page: _i6.ContributorsView)
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
-    _i2.HomeView: (data) {
+    _i2.AppSelectorView: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i2.HomeView(),
+        builder: (context) => const _i2.AppSelectorView(),
         settings: data,
       );
     },
-    _i3.AppSelectorView: (data) {
+    _i3.PatchesSelectorView: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i3.AppSelectorView(),
+        builder: (context) => const _i3.PatchesSelectorView(),
         settings: data,
       );
     },
-    _i4.PatcherView: (data) {
+    _i4.InstallerView: (data) {
+      final args = data.getArgs<InstallerViewArguments>(
+        orElse: () => const InstallerViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i4.PatcherView(),
+        builder: (context) => _i4.InstallerView(key: args.key),
         settings: data,
       );
     },
-    _i5.PatchesSelectorView: (data) {
+    _i5.SettingsView: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i5.PatchesSelectorView(),
+        builder: (context) => const _i5.SettingsView(),
         settings: data,
       );
     },
-    _i6.SettingsView: (data) {
+    _i6.ContributorsView: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i6.SettingsView(),
-        settings: data,
-      );
-    },
-    _i7.ContributorsView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const _i7.ContributorsView(),
+        builder: (context) => const _i6.ContributorsView(),
         settings: data,
       );
     }
@@ -94,21 +87,13 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-extension NavigatorStateExtension on _i8.NavigationService {
-  Future<dynamic> navigateToHomeView(
-      [int? routerId,
-      bool preventDuplicates = true,
-      Map<String, String>? parameters,
-      Widget Function(
-              BuildContext, Animation<double>, Animation<double>, Widget)?
-          transition]) async {
-    navigateTo(Routes.homeView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
+class InstallerViewArguments {
+  const InstallerViewArguments({this.key});
 
+  final _i7.Key? key;
+}
+
+extension NavigatorStateExtension on _i8.NavigationService {
   Future<dynamic> navigateToAppSelectorView(
       [int? routerId,
       bool preventDuplicates = true,
@@ -123,20 +108,6 @@ extension NavigatorStateExtension on _i8.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToPatcherView(
-      [int? routerId,
-      bool preventDuplicates = true,
-      Map<String, String>? parameters,
-      Widget Function(
-              BuildContext, Animation<double>, Animation<double>, Widget)?
-          transition]) async {
-    navigateTo(Routes.patcherView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> navigateToPatchesSelectorView(
       [int? routerId,
       bool preventDuplicates = true,
@@ -145,6 +116,22 @@ extension NavigatorStateExtension on _i8.NavigationService {
               BuildContext, Animation<double>, Animation<double>, Widget)?
           transition]) async {
     navigateTo(Routes.patchesSelectorView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToInstallerView(
+      {_i7.Key? key,
+      int? routerId,
+      bool preventDuplicates = true,
+      Map<String, String>? parameters,
+      Widget Function(
+              BuildContext, Animation<double>, Animation<double>, Widget)?
+          transition}) async {
+    navigateTo(Routes.installerView,
+        arguments: InstallerViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

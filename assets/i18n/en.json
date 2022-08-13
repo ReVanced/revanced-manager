@@ -43,11 +43,18 @@
         "widgetThirdSubtitle": "{selected} patch(es) selected."
     },
     "appSelectorView": {
-        "searchBarHint": "Search applications"
+        "searchBarHint": "Search applications",
+        "fabButton": "Storage",
+        "errorMessage": "Unable to use selected application."
     },
     "patchesSelectorView": {
         "searchBarHint": "Search patches",
         "fabButton": "Done"
+    },
+    "installerView": {
+        "widgetTitle": "Installer",
+        "installButton": "Install",
+        "shareButton": "Share"
     },
     "settingsView": {
         "widgetTitle": "Settings",

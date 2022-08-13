@@ -21,9 +21,19 @@ class _AppSelectorViewState extends State<AppSelectorView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AppSelectorViewModel>.reactive(
       disposeViewModel: false,
-      onModelReady: (model) => model.initialise(),
+      onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => locator<AppSelectorViewModel>(),
       builder: (context, model, child) => Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            model.selectAppFromStorage(context);
+            Navigator.of(context).pop();
+          },
+          label: I18nText('appSelectorView.fabButton'),
+          icon: const Icon(Icons.sd_storage),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          foregroundColor: Colors.white,
+        ),
         body: SafeArea(
           child: Padding(
             padding:
@@ -71,16 +81,16 @@ class _AppSelectorViewState extends State<AppSelectorView> {
       child: ListView.builder(
         itemCount: model.apps.length,
         itemBuilder: (context, index) {
-          model.apps.sort((a, b) => a.name!.compareTo(b.name!));
+          model.apps.sort((a, b) => a.appName.compareTo(b.appName));
           return InkWell(
             onTap: () {
               model.selectApp(model.apps[index]);
               Navigator.of(context).pop();
             },
             child: InstalledAppItem(
-              name: model.apps[index].name!,
-              pkgName: model.apps[index].packageName!,
-              icon: model.apps[index].icon!,
+              name: model.apps[index].appName,
+              pkgName: model.apps[index].packageName,
+              icon: model.apps[index].icon,
             ),
           );
         },
@@ -93,8 +103,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
       child: ListView.builder(
         itemCount: model.apps.length,
         itemBuilder: (context, index) {
-          model.apps.sort((a, b) => a.name!.compareTo(b.name!));
-          if (model.apps[index].name!.toLowerCase().contains(
+          model.apps.sort((a, b) => a.appName.compareTo(b.appName));
+          if (model.apps[index].appName.toLowerCase().contains(
                 query.toLowerCase(),
               )) {
             return InkWell(
@@ -103,9 +113,9 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                 Navigator.of(context).pop();
               },
               child: InstalledAppItem(
-                name: model.apps[index].name!,
-                pkgName: model.apps[index].packageName!,
-                icon: model.apps[index].icon!,
+                name: model.apps[index].appName,
+                pkgName: model.apps[index].packageName,
+                icon: model.apps[index].icon,
               ),
             );
           } else {

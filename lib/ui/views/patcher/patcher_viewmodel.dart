@@ -15,4 +15,8 @@ class PatcherViewModel extends BaseViewModel {
   void navigateToPatchesSelector() {
     _navigationService.navigateTo(Routes.patchesSelectorView);
   }
+
+  void navigateToInstaller() {
+    _navigationService.navigateTo(Routes.installerView);
+  }
 }

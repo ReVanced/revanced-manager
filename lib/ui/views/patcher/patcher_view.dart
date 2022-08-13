@@ -3,11 +3,10 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/theme.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
-
-import 'patcher_viewmodel.dart';
 
 class PatcherView extends StatelessWidget {
   const PatcherView({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class PatcherView extends StatelessWidget {
         floatingActionButton: Visibility(
           visible: locator<PatcherViewModel>().showFabButton,
           child: FloatingActionButton.extended(
-            onPressed: () => {},
+            onPressed: () => model.navigateToInstaller(),
             label: I18nText('patcherView.fabButton'),
             icon: const Icon(Icons.build),
             backgroundColor: Theme.of(context).colorScheme.secondary,

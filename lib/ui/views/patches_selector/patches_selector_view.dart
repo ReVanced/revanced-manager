@@ -22,7 +22,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
       disposeViewModel: false,
-      onModelReady: (model) => model.initialise(),
+      onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => locator<PatchesSelectorViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
@@ -52,7 +52,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                           : _getFilteredResults(model),
                       MaterialButton(
                         textColor: Colors.white,
-                        color: const Color(0x957792BA),
+                        color: Theme.of(context).colorScheme.secondary,
                         minWidth: double.infinity,
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,
