@@ -68,8 +68,9 @@ class MainActivity : FlutterActivity() {
                 "createPatcher" -> {
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
-                    if (inputFilePath != null && cacheDirPath != null) {
-                        result.success(createPatcher(inputFilePath, cacheDirPath))
+                    val resourcePatching = call.argument<Boolean>("resourcePatching")
+                    if (inputFilePath != null && cacheDirPath != null && resourcePatching != null) {
+                        result.success(createPatcher(inputFilePath, cacheDirPath, resourcePatching))
                     } else {
                         result.notImplemented()
                     }
@@ -178,10 +179,10 @@ class MainActivity : FlutterActivity() {
         return true
     }
 
-    fun createPatcher(inputFilePath: String, cacheDirPath: String): Boolean {
+    fun createPatcher(inputFilePath: String, cacheDirPath: String, resourcePatching: Boolean): Boolean {
         val inputFile = File(inputFilePath)
         val aaptPath = Aapt.binary(applicationContext).absolutePath
-        patcher = Patcher(PatcherOptions(inputFile, cacheDirPath, true, aaptPath, cacheDirPath))
+        patcher = Patcher(PatcherOptions(inputFile, cacheDirPath, resourcePatching, aaptPath, cacheDirPath))
         return true
     }
 

@@ -55,7 +55,15 @@ class InstallerViewModel extends BaseViewModel {
             addLog('Done');
             updateProgress(0.2);
             addLog('Creating patcher...');
-            isSuccess = await locator<PatcherAPI>().createPatcher();
+            bool resourcePatching = false;
+            if (selectedApp.packageName == 'com.google.android.youtube' ||
+                selectedApp.packageName ==
+                    'com.google.android.apps.youtube.music') {
+              resourcePatching = true;
+            }
+            isSuccess = await locator<PatcherAPI>().createPatcher(
+              resourcePatching,
+            );
             if (isSuccess != null && isSuccess) {
               if (selectedApp.packageName == 'com.google.android.youtube') {
                 addLog('Done');

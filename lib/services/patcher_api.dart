@@ -178,7 +178,7 @@ class PatcherAPI {
     return false;
   }
 
-  Future<bool?> createPatcher() async {
+  Future<bool?> createPatcher(bool resourcePatching) async {
     if (_inputFile != null && _cacheDir != null) {
       try {
         return await platform.invokeMethod<bool>(
@@ -186,6 +186,7 @@ class PatcherAPI {
           {
             'inputFilePath': _inputFile!.path,
             'cacheDirPath': _cacheDir!.path,
+            'resourcePatching': resourcePatching,
           },
         );
       } on Exception {
