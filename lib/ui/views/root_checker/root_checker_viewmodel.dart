@@ -1,7 +1,5 @@
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
-import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:root/root.dart';
@@ -18,21 +16,25 @@ class RootCheckerViewModel extends BaseViewModel {
 
   Future<void> checkRoot() async {
     isRooted = await Root.isRooted();
+    if (isRooted == true) {
+      navigateToHome();
+    }
     notifyListeners();
   }
 
-  Future<void> getMagiskPermissions() async {
-    if (isRooted == true) {
-      Fluttertoast.showToast(msg: 'Magisk permission already granted!');
+  Future<bool> getMagiskPermissions() async {
+    try {
+      await Root.exec(cmd: 'cat /proc/version');
+    } on Exception {
+      return false;
     }
-    await Root.exec(cmd: "adb shell su -c exit");
-    notifyListeners();
+    return true;
   }
 
   Future<void> navigateToHome() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('showHome', true);
-    _navigationService.navigateTo(Routes.homeView);
+    prefs.setBool('isRooted', isRooted!);
+    _navigationService.navigateTo(Routes.navigation);
     notifyListeners();
   }
 }

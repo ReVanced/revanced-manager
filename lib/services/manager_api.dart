@@ -7,8 +7,8 @@ import 'package:revanced_manager/services/github_api.dart';
 
 @lazySingleton
 class ManagerAPI {
-  Dio dio = Dio();
-  GithubAPI githubAPI = GithubAPI();
+  final Dio dio = Dio();
+  final GithubAPI githubAPI = GithubAPI();
 
   Future<String?> getPath() async {
     final path = await p.getApplicationSupportDirectory();

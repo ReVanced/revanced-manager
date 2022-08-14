@@ -70,6 +70,7 @@
     "rootCheckerView": {
         "widgetTitle": "Is your device rooted?",
         "widgetDescription": "Don't know what's this or prefer to use non-root version? Just click button below!",
-        "grantPermission": "Grant Root Permission"
+        "grantPermission": "Grant Root Permission",
+        "grantedPermission": "Magisk permission granted: {isRooted}"
     }
 }

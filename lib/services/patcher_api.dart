@@ -6,9 +6,10 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
-import 'package:revanced_manager/models/application_info.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/utils/string.dart';
 import 'package:share_extend/share_extend.dart';
@@ -17,9 +18,10 @@ import 'package:share_extend/share_extend.dart';
 class PatcherAPI {
   static const platform = MethodChannel('app.revanced.manager/patcher');
   final GithubAPI githubAPI = GithubAPI();
+  final RootAPI rootAPI = RootAPI();
   final List<ApplicationWithIcon> _filteredPackages = [];
   final Map<String, List<Patch>> _filteredPatches = <String, List<Patch>>{};
-  bool isRoot = false;
+  Directory? _tmpDir;
   Directory? _workDir;
   Directory? _cacheDir;
   File? _patchBundleFile;
@@ -89,7 +91,9 @@ class PatcherAPI {
     return _filteredPackages;
   }
 
-  Future<List<Patch>?> getFilteredPatches(ApplicationInfo? selectedApp) async {
+  Future<List<Patch>?> getFilteredPatches(
+    PatchedApplication? selectedApp,
+  ) async {
     if (_patchBundleFile != null && selectedApp != null) {
       if (_filteredPatches[selectedApp.packageName] == null ||
           _filteredPatches[selectedApp.packageName]!.isEmpty) {
@@ -146,8 +150,8 @@ class PatcherAPI {
     try {
       _integrations = await downloadIntegrations();
       if (_integrations != null) {
-        Directory tmpDir = await getTemporaryDirectory();
-        _workDir = tmpDir.createTempSync('tmp-');
+        _tmpDir = await getTemporaryDirectory();
+        _workDir = _tmpDir!.createTempSync('tmp-');
         _inputFile = File('${_workDir!.path}/base.apk');
         _patchedFile = File('${_workDir!.path}/patched.apk');
         _outFile = File('${_workDir!.path}/out.apk');
@@ -256,15 +260,19 @@ class PatcherAPI {
     return false;
   }
 
-  Future<bool> installPatchedFile() async {
+  Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
     if (_outFile != null) {
       try {
-        if (isRoot) {
-          // TBD
+        if (patchedApp.isRooted && !patchedApp.isFromStorage) {
+          return rootAPI.installApp(
+            patchedApp.packageName,
+            patchedApp.apkFilePath,
+            _outFile!.path,
+          );
         } else {
           await AppInstaller.installApk(_outFile!.path);
+          return true;
         }
-        return true;
       } on Exception {
         return false;
       }
@@ -280,11 +288,11 @@ class PatcherAPI {
 
   bool sharePatchedFile(String appName, String version) {
     if (_outFile != null) {
-      String path = _outFile!.parent.path;
+      String path = _tmpDir!.path;
       String prefix = appName.toLowerCase().replaceAll(' ', '-');
       String sharePath = '$path/$prefix-revanced_v$version.apk';
       File share = _outFile!.copySync(sharePath);
-      ShareExtend.share(share.path, "file");
+      ShareExtend.share(share.path, 'file');
       return true;
     } else {
       return false;

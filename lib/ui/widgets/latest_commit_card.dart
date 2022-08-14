@@ -17,7 +17,7 @@ class LatestCommitCard extends StatefulWidget {
 }
 
 class _LatestCommitCardState extends State<LatestCommitCard> {
-  GithubAPI githubAPI = GithubAPI();
+  final GithubAPI githubAPI = GithubAPI();
 
   @override
   Widget build(BuildContext context) {

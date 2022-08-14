@@ -8,7 +8,9 @@ import 'package:revanced_manager/main_viewmodel.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
+import 'package:revanced_manager/ui/views/root_checker/root_checker_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
@@ -37,7 +39,20 @@ class MyApp extends StatelessWidget {
         themeMode: themeMode,
         navigatorKey: StackedService.navigatorKey,
         onGenerateRoute: StackedRouter().onGenerateRoute,
-        home: const Navigation(),
+        home: FutureBuilder<Widget>(
+          future: _init(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return snapshot.data!;
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              );
+            }
+          },
+        ),
         localizationsDelegates: [
           FlutterI18nDelegate(
             translationLoader: FileTranslationLoader(
@@ -50,6 +65,15 @@ class MyApp extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<Widget> _init() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isRooted = prefs.getBool('isRooted');
+    if (isRooted != null) {
+      return const Navigation();
+    }
+    return const RootCheckerView();
   }
 }
 

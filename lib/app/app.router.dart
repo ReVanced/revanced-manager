@@ -10,16 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../main.dart';
 import '../ui/views/app_selector/app_selector_view.dart';
 import '../ui/views/contributors/contributors_view.dart';
-import '../ui/views/home/home_view.dart';
 import '../ui/views/installer/installer_view.dart';
 import '../ui/views/patches_selector/patches_selector_view.dart';
 import '../ui/views/root_checker/root_checker_view.dart';
 import '../ui/views/settings/settings_view.dart';
 
 class Routes {
-  static const String homeView = '/home-view';
+  static const String navigation = '/Navigation';
   static const String appSelectorView = '/app-selector-view';
   static const String patchesSelectorView = '/patches-selector-view';
   static const String installerView = '/installer-view';
@@ -27,7 +27,7 @@ class Routes {
   static const String contributorsView = '/contributors-view';
   static const String rootCheckerView = '/root-checker-view';
   static const all = <String>{
-    homeView,
+    navigation,
     appSelectorView,
     patchesSelectorView,
     installerView,
@@ -41,7 +41,7 @@ class StackedRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.homeView, page: HomeView),
+    RouteDef(Routes.navigation, page: Navigation),
     RouteDef(Routes.appSelectorView, page: AppSelectorView),
     RouteDef(Routes.patchesSelectorView, page: PatchesSelectorView),
     RouteDef(Routes.installerView, page: InstallerView),
@@ -52,9 +52,9 @@ class StackedRouter extends RouterBase {
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, StackedRouteFactory>{
-    HomeView: (data) {
+    Navigation: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const HomeView(),
+        builder: (context) => const Navigation(),
         settings: data,
       );
     },
@@ -115,7 +115,7 @@ class InstallerViewArguments {
 /// *************************************************************************
 
 extension NavigatorStateExtension on NavigationService {
-  Future<dynamic> navigateToHomeView({
+  Future<dynamic> navigateToNavigation({
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -123,7 +123,7 @@ extension NavigatorStateExtension on NavigationService {
         transition,
   }) async {
     return navigateTo(
-      Routes.homeView,
+      Routes.navigation,
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,

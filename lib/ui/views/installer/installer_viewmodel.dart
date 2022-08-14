@@ -1,6 +1,6 @@
 import 'package:revanced_manager/app/app.locator.dart';
-import 'package:revanced_manager/models/application_info.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -38,7 +38,8 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     updateProgress(0.0);
-    ApplicationInfo? selectedApp = locator<AppSelectorViewModel>().selectedApp;
+    PatchedApplication? selectedApp =
+        locator<AppSelectorViewModel>().selectedApp;
     if (selectedApp != null) {
       String apkFilePath = selectedApp.apkFilePath;
       List<Patch> selectedPatches =
@@ -111,11 +112,16 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void installResult() async {
-    await locator<PatcherAPI>().installPatchedFile();
+    PatchedApplication? selectedApp =
+        locator<AppSelectorViewModel>().selectedApp;
+    if (selectedApp != null) {
+      await locator<PatcherAPI>().installPatchedFile(selectedApp);
+    }
   }
 
   void shareResult() {
-    ApplicationInfo? selectedApp = locator<AppSelectorViewModel>().selectedApp;
+    PatchedApplication? selectedApp =
+        locator<AppSelectorViewModel>().selectedApp;
     if (selectedApp != null) {
       locator<PatcherAPI>().sharePatchedFile(
         selectedApp.name,

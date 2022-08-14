@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/root_checker/root_checker_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/magisk_button.dart';
 import 'package:stacked/stacked.dart';
@@ -11,8 +12,9 @@ class RootCheckerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RootCheckerViewModel>.reactive(
+      disposeViewModel: false,
       onModelReady: (model) => model.initialize,
-      viewModelBuilder: () => RootCheckerViewModel(),
+      viewModelBuilder: () => locator<RootCheckerViewModel>(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -64,15 +66,20 @@ class RootCheckerView extends StatelessWidget {
               const SizedBox(height: 170),
               MagiskButton(
                 onPressed: () {
-                  model.getMagiskPermissions();
-                  Future.delayed(const Duration(seconds: 5), () {
-                    model.checkRoot();
-                  });
+                  model
+                      .getMagiskPermissions()
+                      .then((value) => model.checkRoot());
                 },
               ),
-              Text(
-                "Magisk permission granted: ${model.isRooted.toString()}",
-                style: GoogleFonts.poppins(),
+              I18nText(
+                'rootCheckerView.grantedPermission',
+                translationParams: {
+                  'isRooted': model.isRooted.toString(),
+                },
+                child: Text(
+                  '',
+                  style: GoogleFonts.poppins(),
+                ),
               ),
             ],
           ),
