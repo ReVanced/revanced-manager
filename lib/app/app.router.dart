@@ -12,22 +12,28 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../ui/views/app_selector/app_selector_view.dart';
 import '../ui/views/contributors/contributors_view.dart';
+import '../ui/views/home/home_view.dart';
 import '../ui/views/installer/installer_view.dart';
 import '../ui/views/patches_selector/patches_selector_view.dart';
+import '../ui/views/root_checker/root_checker_view.dart';
 import '../ui/views/settings/settings_view.dart';
 
 class Routes {
+  static const String homeView = '/home-view';
   static const String appSelectorView = '/app-selector-view';
   static const String patchesSelectorView = '/patches-selector-view';
   static const String installerView = '/installer-view';
   static const String settingsView = '/settings-view';
   static const String contributorsView = '/contributors-view';
+  static const String rootCheckerView = '/root-checker-view';
   static const all = <String>{
+    homeView,
     appSelectorView,
     patchesSelectorView,
     installerView,
     settingsView,
     contributorsView,
+    rootCheckerView,
   };
 }
 
@@ -35,15 +41,23 @@ class StackedRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
+    RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.appSelectorView, page: AppSelectorView),
     RouteDef(Routes.patchesSelectorView, page: PatchesSelectorView),
     RouteDef(Routes.installerView, page: InstallerView),
     RouteDef(Routes.settingsView, page: SettingsView),
     RouteDef(Routes.contributorsView, page: ContributorsView),
+    RouteDef(Routes.rootCheckerView, page: RootCheckerView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, StackedRouteFactory>{
+    HomeView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const HomeView(),
+        settings: data,
+      );
+    },
     AppSelectorView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const AppSelectorView(),
@@ -77,6 +91,12 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    RootCheckerView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const RootCheckerView(),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -95,6 +115,22 @@ class InstallerViewArguments {
 /// *************************************************************************
 
 extension NavigatorStateExtension on NavigationService {
+  Future<dynamic> navigateToHomeView({
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.homeView,
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
   Future<dynamic> navigateToAppSelectorView({
     int? routerId,
     bool preventDuplicates = true,
@@ -170,6 +206,22 @@ extension NavigatorStateExtension on NavigationService {
   }) async {
     return navigateTo(
       Routes.contributorsView,
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
+  Future<dynamic> navigateToRootCheckerView({
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.rootCheckerView,
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,
