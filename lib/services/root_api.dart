@@ -26,8 +26,9 @@ class RootAPI {
     String patchedFilePath,
   ) async {
     try {
-      Directory managerDir = Directory(managerDirPath);
-      managerDir.createSync();
+      await Root.exec(
+        cmd: 'mkdir "$managerDirPath"',
+      );
       String newPatchedFilePath = '$managerDirPath/$packageName.apk';
       installServiceDScript(
         packageName,
@@ -39,15 +40,17 @@ class RootAPI {
         originalFilePath,
         newPatchedFilePath,
       );
-      File(patchedFilePath).renameSync(newPatchedFilePath);
       await Root.exec(
-        cmd: 'chmod 644 $newPatchedFilePath',
+        cmd: 'cp $patchedFilePath $newPatchedFilePath',
       );
       await Root.exec(
-        cmd: 'chown system:system $newPatchedFilePath',
+        cmd: 'chmod 644 "$newPatchedFilePath"',
       );
       await Root.exec(
-        cmd: 'chcon u:object_r:apk_data_file:s0 $newPatchedFilePath',
+        cmd: 'chown system:system "$newPatchedFilePath"',
+      );
+      await Root.exec(
+        cmd: 'chcon u:object_r:apk_data_file:s0 "$newPatchedFilePath"',
       );
       return true;
     } on Exception {
@@ -65,9 +68,11 @@ class RootAPI {
         'sleep 1\n'
         'chcon u:object_r:apk_data_file:s0 $patchedFilePath\n'
         'mount -o bind $patchedFilePath $originalFilePath';
-    File scriptFile = File('$serviceDDirPath/$packageName.sh');
-    await scriptFile.writeAsString(content);
-    await Root.exec(cmd: 'chmod 744 ${scriptFile.path}');
+    String scriptFilePath = '$serviceDDirPath/$packageName.sh';
+    await Root.exec(
+      cmd: 'echo "$content" > "$scriptFilePath"',
+    );
+    await Root.exec(cmd: 'chmod 744 "$scriptFilePath"');
   }
 
   Future<void> installPostFsDataScript(
@@ -78,8 +83,10 @@ class RootAPI {
     String content = '#!/system/bin/sh\n'
         'while read line; do echo \$line | grep $originalFilePath | '
         'awk \'{print \$2}\' | xargs umount -l; done< /proc/mounts';
-    File scriptFile = File('$postFsDataDirPath/$packageName.sh');
-    await scriptFile.writeAsString(content);
-    await Root.exec(cmd: 'chmod 744 ${scriptFile.path}');
+    String scriptFilePath = '$postFsDataDirPath/$packageName.sh';
+    await Root.exec(
+      cmd: 'echo "$content" > "$scriptFilePath"',
+    );
+    await Root.exec(cmd: 'chmod 744 $scriptFilePath');
   }
 }

@@ -115,7 +115,16 @@ class InstallerViewModel extends BaseViewModel {
     PatchedApplication? selectedApp =
         locator<AppSelectorViewModel>().selectedApp;
     if (selectedApp != null) {
-      await locator<PatcherAPI>().installPatchedFile(selectedApp);
+      addLog(selectedApp.isRooted
+          ? 'Installing patched file using root method...'
+          : 'Installing patched file using nonroot method...');
+      bool isSucess =
+          await locator<PatcherAPI>().installPatchedFile(selectedApp);
+      if (isSucess) {
+        addLog('Done');
+      } else {
+        addLog('An error occurred! Aborting...');
+      }
     }
   }
 
