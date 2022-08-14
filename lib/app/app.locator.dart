@@ -4,11 +4,11 @@
 // StackedLocatorGenerator
 // **************************************************************************
 
-// ignore_for_file: public_member_api_docs, depend_on_referenced_packages, implementation_imports
+// ignore_for_file: public_member_api_docs, depend_on_referenced_packages
 
 import 'package:stacked_core/stacked_core.dart';
-import 'package:stacked_services/src/navigation/navigation_service.dart';
-import 'package:stacked_themes/src/theme_service.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 import '../services/patcher_api.dart';
 import '../ui/views/app_selector/app_selector_viewmodel.dart';

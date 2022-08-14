@@ -9,6 +9,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/application_info.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
@@ -34,6 +35,7 @@ class AppSelectorViewModel extends BaseViewModel {
       apkFilePath: application.apkFilePath,
     );
     locator<AppSelectorViewModel>().selectedApp = app;
+    locator<PatchesSelectorViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().dimPatchCard = false;
     locator<PatcherViewModel>().notifyListeners();
   }
@@ -55,6 +57,7 @@ class AppSelectorViewModel extends BaseViewModel {
           apkFilePath: result.files.single.path!,
         );
         locator<AppSelectorViewModel>().selectedApp = app;
+        locator<PatchesSelectorViewModel>().selectedPatches.clear();
         locator<PatcherViewModel>().dimPatchCard = false;
         locator<PatcherViewModel>().notifyListeners();
       }

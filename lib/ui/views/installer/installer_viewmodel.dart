@@ -3,6 +3,7 @@ import 'package:revanced_manager/models/application_info.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -43,7 +44,7 @@ class InstallerViewModel extends BaseViewModel {
       List<Patch> selectedPatches =
           locator<PatchesSelectorViewModel>().selectedPatches;
       if (selectedPatches.isNotEmpty) {
-        addLog('Initializing patcher...');
+        addLog('Initializing installer...');
         bool? isSuccess = await locator<PatcherAPI>().initPatcher();
         if (isSuccess != null && isSuccess) {
           addLog('Done');
@@ -108,7 +109,17 @@ class InstallerViewModel extends BaseViewModel {
   void shareResult() {
     ApplicationInfo? selectedApp = locator<AppSelectorViewModel>().selectedApp;
     if (selectedApp != null) {
-      locator<PatcherAPI>().sharePatchedFile(selectedApp.packageName);
+      locator<PatcherAPI>().sharePatchedFile(
+        selectedApp.name,
+        selectedApp.version,
+      );
     }
+  }
+
+  void cleanWorkplace() {
+    locator<PatcherAPI>().cleanPatcher();
+    locator<AppSelectorViewModel>().selectedApp = null;
+    locator<PatchesSelectorViewModel>().selectedPatches.clear();
+    locator<PatcherViewModel>().notifyListeners();
   }
 }

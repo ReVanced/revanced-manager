@@ -75,7 +75,10 @@ class InstallerView extends StatelessWidget {
                             child: SelectableText(
                               model.logs,
                               style: const TextStyle(
-                                  fontFamily: 'monospace', fontSize: 15),
+                                fontFamily: 'monospace',
+                                fontSize: 15,
+                                height: 1.5,
+                              ),
                             ),
                           ),
                           const Spacer(),
@@ -133,6 +136,7 @@ class InstallerView extends StatelessWidget {
           ),
           onWillPop: () async {
             if (!model.isPatching) {
+              model.cleanWorkplace();
               Navigator.of(context).pop();
             }
             return false;

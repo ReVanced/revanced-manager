@@ -23,15 +23,6 @@ class HomeView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () => {},
-                      icon: const Icon(
-                        Icons.more_vert,
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 60),
                   I18nText(
                     'homeView.widgetTitle',

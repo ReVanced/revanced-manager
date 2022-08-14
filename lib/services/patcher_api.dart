@@ -44,16 +44,16 @@ class PatcherAPI {
       String? dexFileUrl =
           await githubAPI.latestRelease('revanced', 'revanced-patches');
       if (dexFileUrl != null && dexFileUrl.isNotEmpty) {
-        _patchBundleFile =
-            await DefaultCacheManager().getSingleFile(dexFileUrl);
         try {
+          _patchBundleFile =
+              await DefaultCacheManager().getSingleFile(dexFileUrl);
           return await platform.invokeMethod<bool>(
             'loadPatches',
             {
               'pathBundlesPaths': <String>[_patchBundleFile!.absolute.path],
             },
           );
-        } on PlatformException {
+        } on Exception {
           _patchBundleFile = null;
           return false;
         }
@@ -81,7 +81,7 @@ class PatcherAPI {
             }
           }
         }
-      } on PlatformException {
+      } on Exception {
         _filteredPackages.clear();
         return List.empty();
       }
@@ -122,7 +122,7 @@ class PatcherAPI {
               }
             }
           }
-        } on PlatformException {
+        } on Exception {
           _filteredPatches[selectedApp.packageName]!.clear();
           return List.empty();
         }
@@ -171,7 +171,7 @@ class PatcherAPI {
             'inputFilePath': _inputFile!.path,
           },
         );
-      } on PlatformException {
+      } on Exception {
         return false;
       }
     }
@@ -188,7 +188,7 @@ class PatcherAPI {
             'cacheDirPath': _cacheDir!.path,
           },
         );
-      } on PlatformException {
+      } on Exception {
         return false;
       }
     }
@@ -203,7 +203,7 @@ class PatcherAPI {
           'integrationsPath': _integrations!.path,
         },
       );
-    } on PlatformException {
+    } on Exception {
       return false;
     }
   }
@@ -216,7 +216,7 @@ class PatcherAPI {
           'selectedPatches': selectedPatches.map((e) => e.name).toList(),
         },
       );
-    } on PlatformException {
+    } on Exception {
       return false;
     }
   }
@@ -231,7 +231,7 @@ class PatcherAPI {
             'patchedFilePath': _patchedFile!.path,
           },
         );
-      } on PlatformException {
+      } on Exception {
         return false;
       }
     }
@@ -248,7 +248,7 @@ class PatcherAPI {
             'outFilePath': _outFile!.path,
           },
         );
-      } on PlatformException {
+      } on Exception {
         return false;
       }
     }
@@ -277,9 +277,11 @@ class PatcherAPI {
     }
   }
 
-  bool sharePatchedFile(String packageName) {
+  bool sharePatchedFile(String appName, String version) {
     if (_outFile != null) {
-      String sharePath = '${_outFile!.parent.path}/$packageName.revanced.apk';
+      String path = _outFile!.parent.path;
+      String prefix = appName.toLowerCase().replaceAll(' ', '-');
+      String sharePath = '$path/$prefix-revanced_v$version.apk';
       File share = _outFile!.copySync(sharePath);
       ShareExtend.share(share.path, "file");
       return true;

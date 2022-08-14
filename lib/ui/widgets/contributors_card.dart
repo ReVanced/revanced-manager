@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:github/github.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsCard extends StatefulWidget {

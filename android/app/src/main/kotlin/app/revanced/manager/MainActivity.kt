@@ -121,7 +121,7 @@ class MainActivity : FlutterActivity() {
                                         path,
                                         DexClassLoader(
                                                 path,
-                                                context.cacheDir.path,
+                                                applicationContext.cacheDir.path,
                                                 null,
                                                 javaClass.classLoader
                                         )
@@ -180,7 +180,7 @@ class MainActivity : FlutterActivity() {
 
     fun createPatcher(inputFilePath: String, cacheDirPath: String): Boolean {
         val inputFile = File(inputFilePath)
-        val aaptPath = Aapt.binary(context).absolutePath
+        val aaptPath = Aapt.binary(applicationContext).absolutePath
         patcher = Patcher(PatcherOptions(inputFile, cacheDirPath, true, aaptPath, cacheDirPath))
         return true
     }
