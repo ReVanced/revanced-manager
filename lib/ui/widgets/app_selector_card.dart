@@ -45,7 +45,7 @@ class AppSelectorCard extends StatelessWidget {
             const SizedBox(height: 10),
             locator<AppSelectorViewModel>().selectedApp != null
                 ? Text(
-                    locator<AppSelectorViewModel>().selectedApp!.name,
+                    _getAppSelection(),
                     style: robotoTextStyle,
                   )
                 : I18nText(
@@ -59,5 +59,11 @@ class AppSelectorCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getAppSelection() {
+    String name = locator<AppSelectorViewModel>().selectedApp!.name;
+    String version = locator<AppSelectorViewModel>().selectedApp!.version;
+    return '$name (v$version)';
   }
 }

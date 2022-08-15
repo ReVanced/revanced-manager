@@ -62,7 +62,7 @@ class InstallerViewModel extends BaseViewModel {
           locator<PatchesSelectorViewModel>().selectedPatches;
       if (selectedPatches.isNotEmpty) {
         addLog('Initializing installer...');
-        if (selectedApp.isRooted) {
+        if (selectedApp.isRooted && !selectedApp.isFromStorage) {
           addLog('Checking if an old patched version exists...');
           bool oldExists =
               await locator<PatcherAPI>().checkOldPatch(selectedApp);

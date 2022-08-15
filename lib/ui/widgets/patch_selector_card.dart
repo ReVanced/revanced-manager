@@ -3,6 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 
@@ -58,15 +59,20 @@ class PatchSelectorCard extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        locator<PatchesSelectorViewModel>()
-                            .selectedPatches
-                            .map((e) => e.simpleName)
-                            .toList()
-                            .join('\n'),
+                        _getPatchesSelection(),
+                        style: robotoTextStyle,
                       ),
           ],
         ),
       ),
     );
+  }
+
+  String _getPatchesSelection() {
+    String text = '';
+    for (Patch p in locator<PatchesSelectorViewModel>().selectedPatches) {
+      text += '${p.simpleName} (v${p.version})\n';
+    }
+    return text.substring(0, text.length - 1);
   }
 }
