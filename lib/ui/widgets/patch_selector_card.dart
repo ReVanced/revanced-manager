@@ -43,7 +43,7 @@ class PatchSelectorCard extends StatelessWidget {
             const SizedBox(height: 10),
             locator<AppSelectorViewModel>().selectedApp == null
                 ? I18nText(
-                    'patchSelectorCard.widgetFirstSubtitle',
+                    'patchSelectorCard.widgetSubtitle',
                     child: Text(
                       '',
                       style: robotoTextStyle,
@@ -51,24 +51,18 @@ class PatchSelectorCard extends StatelessWidget {
                   )
                 : locator<PatchesSelectorViewModel>().selectedPatches.isEmpty
                     ? I18nText(
-                        'patchSelectorCard.widgetSecondSubtitle',
+                        'patchSelectorCard.widgetEmptySubtitle',
                         child: Text(
                           '',
                           style: robotoTextStyle,
                         ),
                       )
-                    : I18nText(
-                        'patchSelectorCard.widgetThirdSubtitle',
-                        translationParams: {
-                          'selected': locator<PatchesSelectorViewModel>()
-                              .selectedPatches
-                              .length
-                              .toString()
-                        },
-                        child: Text(
-                          '',
-                          style: robotoTextStyle,
-                        ),
+                    : Text(
+                        locator<PatchesSelectorViewModel>()
+                            .selectedPatches
+                            .map((e) => e.simpleName)
+                            .toList()
+                            .join('\n'),
                       ),
           ],
         ),

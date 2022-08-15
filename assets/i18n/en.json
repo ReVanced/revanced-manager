@@ -38,9 +38,8 @@
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
-        "widgetFirstSubtitle": "Select an application first.",
-        "widgetSecondSubtitle": "No patches selected.",
-        "widgetThirdSubtitle": "{selected} patch(es) selected."
+        "widgetSubtitle": "Select an application first.",
+        "widgetEmptySubtitle": "No patches selected."
     },
     "appSelectorView": {
         "searchBarHint": "Search applications",
@@ -53,8 +52,8 @@
     },
     "installerView": {
         "widgetTitle": "Installer",
-        "installButton": "Install",
-        "shareButton": "Share"
+        "fabInstallButton": "Install",
+        "fabOpenButton": "Open"
     },
     "settingsView": {
         "widgetTitle": "Settings",

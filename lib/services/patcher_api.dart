@@ -32,11 +32,8 @@ class PatcherAPI {
 
   Future<dynamic> handlePlatformChannelMethods() async {
     platform.setMethodCallHandler((call) async {
-      switch (call.method) {
-        case 'updateInstallerLog':
-          var message = call.arguments<String>('message');
-          locator<InstallerViewModel>().addLog(message);
-          return 'OK';
+      if (call.method == 'updateInstallerLog' && call.arguments != null) {
+        locator<InstallerViewModel>().addLog(call.arguments);
       }
     });
   }
@@ -296,6 +293,19 @@ class PatcherAPI {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<bool> checkOldPatch(PatchedApplication patchedApp) async {
+    if (patchedApp.isRooted) {
+      return await rootAPI.checkApp(patchedApp.packageName);
+    }
+    return false;
+  }
+
+  Future<void> deleteOldPatch(PatchedApplication patchedApp) async {
+    if (patchedApp.isRooted) {
+      await rootAPI.deleteApp(patchedApp.packageName, patchedApp.apkFilePath);
     }
   }
 }

@@ -40,13 +40,12 @@ class GithubAPI {
 
   Future<List<Contributor>> getContributors(String org, repoName) async {
     try {
-      var contributors = await github.repositories.listContributors(
+      var contributors = github.repositories.listContributors(
         RepositorySlug(org, repoName),
       );
       return contributors.toList();
     } on Exception {
-      print(Exception);
-      return [];
+      return List.empty();
     }
   }
 }

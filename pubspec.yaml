@@ -17,8 +17,8 @@ dependencies:
   file_picker: ^5.0.1
   flutter:
     sdk: flutter
+  flutter_background: ^1.1.0
   flutter_cache_manager: ^3.3.0
-  flutter_foreground_task: ^3.8.1
   flutter_i18n: ^0.32.4
   flutter_svg: ^1.1.1+1
   fluttertoast: ^8.0.9

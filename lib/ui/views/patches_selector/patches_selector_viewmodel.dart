@@ -25,11 +25,13 @@ class PatchesSelectorViewModel extends BaseViewModel {
   void selectPatches(List<PatchItem> patchItems) {
     selectedPatches.clear();
     if (patches != null) {
-      for (PatchItem patch in patchItems) {
-        if (patch.isSelected) {
-          selectedPatches.add(
-            patches!.firstWhere((element) => element.name == patch.name),
-          );
+      for (PatchItem item in patchItems) {
+        if (item.isSelected) {
+          Patch patch =
+              patches!.firstWhere((element) => element.name == item.name);
+          if (!selectedPatches.contains(patch)) {
+            selectedPatches.add(patch);
+          }
         }
       }
     }

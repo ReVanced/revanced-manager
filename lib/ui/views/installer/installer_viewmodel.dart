@@ -1,3 +1,5 @@
+import 'package:device_apps/device_apps.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -11,9 +13,22 @@ class InstallerViewModel extends BaseViewModel {
   double? progress = 0.2;
   String logs = '';
   bool isPatching = false;
+  bool isInstalled = false;
   bool showButtons = false;
 
   Future<void> initialize() async {
+    await FlutterBackground.initialize(
+      androidConfig: const FlutterBackgroundAndroidConfig(
+        notificationTitle: 'Patching',
+        notificationText: 'ReVanced Manager is patching',
+        notificationImportance: AndroidNotificationImportance.Default,
+        notificationIcon: AndroidResource(
+          name: 'ic_launcher_foreground',
+          defType: 'drawable',
+        ),
+      ),
+    );
+    await FlutterBackground.enableBackgroundExecution();
     await locator<PatcherAPI>().handlePlatformChannelMethods();
     runPatcher();
   }
@@ -28,6 +43,7 @@ class InstallerViewModel extends BaseViewModel {
 
   void updateProgress(double value) {
     progress = value;
+    isInstalled = false;
     isPatching = progress == 1.0 ? false : true;
     showButtons = progress == 1.0 ? true : false;
     if (progress == 0.0) {
@@ -46,6 +62,18 @@ class InstallerViewModel extends BaseViewModel {
           locator<PatchesSelectorViewModel>().selectedPatches;
       if (selectedPatches.isNotEmpty) {
         addLog('Initializing installer...');
+        if (selectedApp.isRooted) {
+          addLog('Checking if an old patched version exists...');
+          bool oldExists =
+              await locator<PatcherAPI>().checkOldPatch(selectedApp);
+          addLog('Done');
+          if (oldExists) {
+            addLog('Deleting old patched version...');
+            await locator<PatcherAPI>().deleteOldPatch(selectedApp);
+            addLog('Done');
+          }
+        }
+        addLog('Creating working directory...');
         bool? isSuccess = await locator<PatcherAPI>().initPatcher();
         if (isSuccess != null && isSuccess) {
           addLog('Done');
@@ -108,6 +136,7 @@ class InstallerViewModel extends BaseViewModel {
     } else {
       addLog('No app selected! Aborting...');
     }
+    await FlutterBackground.disableBackgroundExecution();
     isPatching = false;
   }
 
@@ -118,9 +147,8 @@ class InstallerViewModel extends BaseViewModel {
       addLog(selectedApp.isRooted
           ? 'Installing patched file using root method...'
           : 'Installing patched file using nonroot method...');
-      bool isSucess =
-          await locator<PatcherAPI>().installPatchedFile(selectedApp);
-      if (isSucess) {
+      isInstalled = await locator<PatcherAPI>().installPatchedFile(selectedApp);
+      if (isInstalled) {
         addLog('Done');
       } else {
         addLog('An error occurred! Aborting...');
@@ -139,10 +167,18 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void cleanWorkplace() {
+  Future<void> cleanWorkplace() async {
     locator<PatcherAPI>().cleanPatcher();
     locator<AppSelectorViewModel>().selectedApp = null;
     locator<PatchesSelectorViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().notifyListeners();
+  }
+
+  void openApp() {
+    PatchedApplication? selectedApp =
+        locator<AppSelectorViewModel>().selectedApp;
+    if (selectedApp != null) {
+      DeviceApps.openApp(selectedApp.packageName);
+    }
   }
 }
