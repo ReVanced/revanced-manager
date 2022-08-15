@@ -1,40 +1,30 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
+import 'package:timeago/timeago.dart';
 
 class ApplicationItem extends StatelessWidget {
-  final String asset;
+  final Uint8List icon;
   final String name;
-  final String releaseDate;
+  final DateTime patchDate;
   final Function()? onPressed;
 
   const ApplicationItem({
     Key? key,
-    required this.asset,
+    required this.icon,
     required this.name,
-    required this.releaseDate,
+    required this.patchDate,
     required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isSVG = asset.endsWith('.svg');
     return ListTile(
       horizontalTitleGap: 12.0,
-      leading: isSVG
-          ? SvgPicture.asset(
-              asset,
-              height: 26,
-              width: 26,
-            )
-          : Image.asset(
-              asset,
-              height: 39,
-              width: 39,
-            ),
+      leading: Image.memory(icon),
       title: Text(
         name,
         style: GoogleFonts.roboto(
@@ -43,7 +33,7 @@ class ApplicationItem extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        releaseDate,
+        format(patchDate),
         style: robotoTextStyle,
       ),
       trailing: PatchTextButton(
