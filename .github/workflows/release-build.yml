@@ -19,8 +19,6 @@ jobs:
           channel: 'stable'
       - name: Set up Flutter
         run: flutter pub get
-      - name: Generate files with Builder
-        run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

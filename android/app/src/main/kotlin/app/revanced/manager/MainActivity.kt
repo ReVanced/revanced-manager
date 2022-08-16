@@ -179,41 +179,10 @@ class MainActivity : FlutterActivity() {
         return true
     }
 
-    fun createPatcher(
-            inputFilePath: String,
-            cacheDirPath: String,
-            resourcePatching: Boolean
-    ): Boolean {
+    fun createPatcher(inputFilePath: String, cacheDirPath: String, resourcePatching: Boolean): Boolean {
         val inputFile = File(inputFilePath)
         val aaptPath = Aapt.binary(applicationContext).absolutePath
-        patcher =
-                Patcher(
-                        PatcherOptions(
-                                inputFile,
-                                cacheDirPath,
-                                resourcePatching,
-                                aaptPath,
-                                cacheDirPath,
-                                logger =
-                                        object : app.revanced.patcher.logging.Logger {
-                                            override fun error(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-
-                                            override fun warn(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-
-                                            override fun info(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-
-                                            override fun trace(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-                                        }
-                        )
-                )
+        patcher = Patcher(PatcherOptions(inputFile, cacheDirPath, resourcePatching, aaptPath, cacheDirPath))
         return true
     }
 

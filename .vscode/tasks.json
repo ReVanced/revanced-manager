@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Generate (Builder)",
+            "label": "Build (Serializer)",
             "type": "shell",
             "command": "flutter packages pub run build_runner build --delete-conflicting-outputs",
             "problemMatcher": []
@@ -30,7 +30,7 @@
             "problemMatcher": []
         },
         {
-            "label": "Clean (Builder)",
+            "label": "Clean (Serializer)",
             "type": "shell",
             "command": "flutter packages pub run build_runner clean",
             "problemMatcher": []
@@ -39,7 +39,7 @@
             "label": "Build all (Android)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Generate (Builder)",
+                "Build (Serializer)",
                 "Build (Android)"
             ],
             "problemMatcher": []
@@ -49,7 +49,7 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "Clean (Flutter)",
-                "Clean (Builder)"
+                "Clean (Serializer)"
             ],
             "problemMatcher": []
         },

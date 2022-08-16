@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/app/app.locator.dart';
-import 'package:revanced_manager/models/patched_application.dart';
-import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/application_item.dart';
 
 class InstalledAppsCard extends StatelessWidget {
@@ -36,19 +33,11 @@ class InstalledAppsCard extends StatelessWidget {
               ),
             ),
           ),
-          FutureBuilder<List<PatchedApplication>>(
-            future: locator<HomeViewModel>().getPatchedApps(),
-            builder: (context, snapshot) =>
-                snapshot.hasData && snapshot.data!.length > 1
-                    ? ListView.builder(
-                        itemBuilder: (context, index) => ApplicationItem(
-                          icon: snapshot.data![index].icon,
-                          name: snapshot.data![index].name,
-                          patchDate: snapshot.data![index].patchDate,
-                          onPressed: () => {},
-                        ),
-                      )
-                    : Container(),
+          ApplicationItem(
+            asset: 'assets/images/revanced.svg',
+            name: 'ReVanced',
+            releaseDate: '2 days ago',
+            onPressed: () => {},
           ),
           I18nText(
             'installedAppsCard.changelogLabel',
