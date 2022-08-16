@@ -7,18 +7,12 @@
     "homeView": {
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "ReVanced Updates",
-        "patchedSubtitle": "Patched Applications"
-    },
-    "availableUpdatesCard": {
-        "widgetTitle": "Updates Available",
-        "patchButton": "Patch All",
-        "changelogLabel": "Changelog"
+        "patchedSubtitle": "Patched Applications",
+        "updatesAvailable": "Updates Available",
+        "installed": "Installed"
     },
     "applicationItem": {
-        "patchButton": "Patch"
-    },
-    "installedAppsCard": {
-        "widgetTitle": "Total Installed",
+        "patchButton": "Patch",
         "changelogLabel": "Changelog"
     },
     "latestCommitCard": {

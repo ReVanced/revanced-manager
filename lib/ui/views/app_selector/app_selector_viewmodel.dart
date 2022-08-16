@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:package_archive_info/package_archive_info.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
@@ -39,6 +38,8 @@ class AppSelectorViewModel extends BaseViewModel {
       packageName: application.packageName,
       version: application.versionName!,
       apkFilePath: application.apkFilePath,
+      icon: application.icon,
+      patchDate: DateTime.now(),
       isRooted: isRooted,
       isFromStorage: isFromStorage,
     );
@@ -57,20 +58,25 @@ class AppSelectorViewModel extends BaseViewModel {
       );
       if (result != null && result.files.single.path != null) {
         File apkFile = File(result.files.single.path!);
-        PackageArchiveInfo? packageArchiveInfo =
-            await PackageArchiveInfo.fromPath(apkFile.path);
-        PatchedApplication app = PatchedApplication(
-          name: packageArchiveInfo.appName,
-          packageName: packageArchiveInfo.packageName,
-          version: packageArchiveInfo.version,
-          apkFilePath: result.files.single.path!,
-          isRooted: isRooted,
-          isFromStorage: isFromStorage,
-        );
-        locator<AppSelectorViewModel>().selectedApp = app;
-        locator<PatchesSelectorViewModel>().selectedPatches.clear();
-        locator<PatcherViewModel>().dimPatchCard = false;
-        locator<PatcherViewModel>().notifyListeners();
+        ApplicationWithIcon? application =
+            await DeviceApps.getAppFromStorage(apkFile.path, true)
+                as ApplicationWithIcon?;
+        if (application != null) {
+          PatchedApplication app = PatchedApplication(
+            name: application.appName,
+            packageName: application.packageName,
+            version: application.versionName!,
+            apkFilePath: result.files.single.path!,
+            icon: application.icon,
+            patchDate: DateTime.now(),
+            isRooted: isRooted,
+            isFromStorage: isFromStorage,
+          );
+          locator<AppSelectorViewModel>().selectedApp = app;
+          locator<PatchesSelectorViewModel>().selectedPatches.clear();
+          locator<PatcherViewModel>().dimPatchCard = false;
+          locator<PatcherViewModel>().notifyListeners();
+        }
       }
     } on Exception {
       Fluttertoast.showToast(

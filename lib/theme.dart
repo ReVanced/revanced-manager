@@ -24,7 +24,7 @@ var lightTheme = ThemeData.light().copyWith(
       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
         const EdgeInsets.symmetric(
           vertical: 8,
-          horizontal: 12,
+          horizontal: 14,
         ),
       ),
       backgroundColor: MaterialStateProperty.all<Color>(
@@ -70,7 +70,7 @@ var darkTheme = ThemeData.dark().copyWith(
     ),
   ),
   colorScheme: const ColorScheme.dark(
-    primary: Color(0x1B222B6B),
+    primary: Color(0xff11161C),
     secondary: Color(0xff7792BA),
     tertiary: Color(0xff8691A0),
     background: Color(0xff0A0D11),

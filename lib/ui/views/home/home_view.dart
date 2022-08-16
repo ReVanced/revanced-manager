@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/available_updates_card.dart';
+import 'package:revanced_manager/ui/widgets/dashboard_raw_chip.dart';
 import 'package:revanced_manager/ui/widgets/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/latest_commit_card.dart';
 import 'package:stacked/stacked.dart';
@@ -13,8 +15,9 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder.reactive(
-      viewModelBuilder: () => HomeViewModel(),
+    return ViewModelBuilder<HomeViewModel>.reactive(
+      disposeViewModel: false,
+      viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -30,6 +33,7 @@ class HomeView extends StatelessWidget {
                       '',
                       style: GoogleFonts.inter(
                         fontSize: 28,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -40,6 +44,7 @@ class HomeView extends StatelessWidget {
                       '',
                       style: GoogleFonts.inter(
                         fontSize: 20,
+                        fontWeight: FontWeight.w500,
                         color: isDark
                             ? const Color(0xffD1E1FA)
                             : const Color(0xff384E6E),
@@ -48,7 +53,8 @@ class HomeView extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   LatestCommitCard(
-                      color: Theme.of(context).colorScheme.primary),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   const SizedBox(height: 14),
                   I18nText(
                     'homeView.patchedSubtitle',
@@ -62,14 +68,30 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      DashboardChip(
+                        label: "homeView.updatesAvailable",
+                        isSelected: model.showUpdatableApps,
+                        onSelected: (value) {
+                          model.toggleUpdatableApps(value);
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      DashboardChip(
+                        label: "homeView.installed",
+                        isSelected: !model.showUpdatableApps,
+                        onSelected: (value) {
+                          model.toggleUpdatableApps(false);
+                        },
+                      )
+                    ],
+                  ),
                   const SizedBox(height: 14),
-                  AvailableUpdatesCard(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(height: 15),
-                  InstalledAppsCard(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  model.showUpdatableApps
+                      ? const AvailableUpdatesCard()
+                      : const InstalledAppsCard()
                 ],
               ),
             ),

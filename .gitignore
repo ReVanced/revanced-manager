@@ -42,6 +42,8 @@ version
 # Flutter/Dart/Pub related
 **/doc/api/
 **/*.g.dart
+**/*.locator.dart
+**/*.router.dart
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies

@@ -7,6 +7,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerViewModel extends BaseViewModel {
@@ -23,7 +24,7 @@ class InstallerViewModel extends BaseViewModel {
         notificationText: 'ReVanced Manager is patching',
         notificationImportance: AndroidNotificationImportance.Default,
         notificationIcon: AndroidResource(
-          name: 'ic_launcher_foreground',
+          name: 'ic_notification',
           defType: 'drawable',
         ),
       ),
@@ -34,11 +35,13 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void addLog(String message) {
-    if (logs.isNotEmpty) {
-      logs += '\n';
+    if (message.isNotEmpty && !message.startsWith('Merging L')) {
+      if (logs.isNotEmpty) {
+        logs += '\n';
+      }
+      logs += message;
+      notifyListeners();
     }
-    logs += message;
-    notifyListeners();
   }
 
   void updateProgress(double value) {
@@ -61,29 +64,25 @@ class InstallerViewModel extends BaseViewModel {
       List<Patch> selectedPatches =
           locator<PatchesSelectorViewModel>().selectedPatches;
       if (selectedPatches.isNotEmpty) {
-        addLog('Initializing installer...');
+        addLog('Initializing installer');
         if (selectedApp.isRooted && !selectedApp.isFromStorage) {
-          addLog('Checking if an old patched version exists...');
+          addLog('Checking if an old patched version exists');
           bool oldExists =
               await locator<PatcherAPI>().checkOldPatch(selectedApp);
-          addLog('Done');
           if (oldExists) {
-            addLog('Deleting old patched version...');
+            addLog('Deleting old patched version');
             await locator<PatcherAPI>().deleteOldPatch(selectedApp);
-            addLog('Done');
           }
         }
-        addLog('Creating working directory...');
+        addLog('Creating working directory');
         bool? isSuccess = await locator<PatcherAPI>().initPatcher();
         if (isSuccess != null && isSuccess) {
-          addLog('Done');
           updateProgress(0.1);
-          addLog('Copying original apk...');
+          addLog('Copying original apk');
           isSuccess = await locator<PatcherAPI>().copyInputFile(apkFilePath);
           if (isSuccess != null && isSuccess) {
-            addLog('Done');
             updateProgress(0.2);
-            addLog('Creating patcher...');
+            addLog('Creating patcher');
             bool resourcePatching = false;
             if (selectedApp.packageName == 'com.google.android.youtube' ||
                 selectedApp.packageName ==
@@ -95,31 +94,26 @@ class InstallerViewModel extends BaseViewModel {
             );
             if (isSuccess != null && isSuccess) {
               if (selectedApp.packageName == 'com.google.android.youtube') {
-                addLog('Done');
                 updateProgress(0.3);
-                addLog('Merging integrations...');
+                addLog('Merging integrations');
                 isSuccess = await locator<PatcherAPI>().mergeIntegrations();
               }
               if (isSuccess != null && isSuccess) {
-                addLog('Done');
                 updateProgress(0.5);
-                addLog('Applying patches...');
                 isSuccess =
                     await locator<PatcherAPI>().applyPatches(selectedPatches);
                 if (isSuccess != null && isSuccess) {
-                  addLog('Done');
                   updateProgress(0.7);
-                  addLog('Repacking patched apk...');
+                  addLog('Repacking patched apk');
                   isSuccess = await locator<PatcherAPI>().repackPatchedFile();
                   if (isSuccess != null && isSuccess) {
-                    addLog('Done');
                     updateProgress(0.9);
-                    addLog('Signing patched apk...');
+                    addLog('Signing patched apk');
                     isSuccess = await locator<PatcherAPI>().signPatchedFile();
                     if (isSuccess != null && isSuccess) {
-                      addLog('Done');
                       showButtons = true;
                       updateProgress(1.0);
+                      addLog('Finished');
                     }
                   }
                 }
@@ -128,13 +122,13 @@ class InstallerViewModel extends BaseViewModel {
           }
         }
         if (isSuccess == null || !isSuccess) {
-          addLog('An error occurred! Aborting...');
+          addLog('An error occurred! Aborting');
         }
       } else {
-        addLog('No patches selected! Aborting...');
+        addLog('No patches selected! Aborting');
       }
     } else {
-      addLog('No app selected! Aborting...');
+      addLog('No app selected! Aborting');
     }
     await FlutterBackground.disableBackgroundExecution();
     isPatching = false;
@@ -145,13 +139,14 @@ class InstallerViewModel extends BaseViewModel {
         locator<AppSelectorViewModel>().selectedApp;
     if (selectedApp != null) {
       addLog(selectedApp.isRooted
-          ? 'Installing patched file using root method...'
-          : 'Installing patched file using nonroot method...');
+          ? 'Installing patched file using root method'
+          : 'Installing patched file using nonroot method');
       isInstalled = await locator<PatcherAPI>().installPatchedFile(selectedApp);
       if (isInstalled) {
         addLog('Done');
+        await saveApp(selectedApp);
       } else {
-        addLog('An error occurred! Aborting...');
+        addLog('An error occurred! Aborting');
       }
     }
   }
@@ -179,6 +174,16 @@ class InstallerViewModel extends BaseViewModel {
         locator<AppSelectorViewModel>().selectedApp;
     if (selectedApp != null) {
       DeviceApps.openApp(selectedApp.packageName);
+    }
+  }
+
+  Future<void> saveApp(PatchedApplication selectedApp) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
+    String app = selectedApp.toJson().toString();
+    if (!patchedApps.contains(app)) {
+      patchedApps.add(app);
+      prefs.setStringList('patchedApps', patchedApps);
     }
   }
 }

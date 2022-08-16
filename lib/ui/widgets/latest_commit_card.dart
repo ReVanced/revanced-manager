@@ -89,6 +89,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
             ),
             onPressed: () => {},
             backgroundColor: Theme.of(context).colorScheme.secondary,
+            borderColor: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ),

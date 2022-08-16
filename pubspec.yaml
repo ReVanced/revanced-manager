@@ -12,8 +12,12 @@ environment:
 dependencies:
   app_installer: ^1.1.0
   cupertino_icons: ^1.0.2
-  device_apps: ^2.2.0
+  device_apps:
+    git:
+      url: https://github.com/ponces/flutter_plugin_device_apps
+      ref: appinfo-from-storage
   dio: ^4.0.6
+  expandable: ^5.0.1
   file_picker: ^5.0.1
   flutter:
     sdk: flutter
@@ -28,7 +32,6 @@ dependencies:
   http: ^0.13.4
   injectable: ^1.5.3
   json_annotation: ^4.6.0
-  package_archive_info: ^0.1.0
   path_provider: ^2.0.11
   root: ^2.0.2
   share_extend: ^2.0.0
