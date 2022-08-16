@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
                       '',
                       style: GoogleFonts.inter(
                         fontSize: 28,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -55,7 +55,7 @@ class HomeView extends StatelessWidget {
                   LatestCommitCard(
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 23),
                   I18nText(
                     'homeView.patchedSubtitle',
                     child: Text(

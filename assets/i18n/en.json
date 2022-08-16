@@ -6,7 +6,7 @@
     },
     "homeView": {
         "widgetTitle": "Dashboard",
-        "updatesSubtitle": "ReVanced Updates",
+        "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched Applications",
         "updatesAvailable": "Updates Available",
         "installed": "Installed"

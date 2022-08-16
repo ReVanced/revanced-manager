@@ -33,52 +33,60 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              I18nText(
-                'latestCommitCard.patcherLabel',
-                child: Text(
-                  '',
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w700,
+              Row(
+                children: [
+                  I18nText(
+                    'latestCommitCard.patcherLabel',
+                    child: Text(
+                      '',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              FutureBuilder<String>(
-                future: githubAPI.latestCommitTime(
-                  'revanced',
-                  'revanced-patcher',
-                ),
-                initialData: FlutterI18n.translate(
-                  context,
-                  'latestCommitCard.loadingLabel',
-                ),
-                builder: (context, snapshot) => Text(
-                  snapshot.data!,
-                  style: robotoTextStyle,
-                ),
+                  FutureBuilder<String>(
+                    future: githubAPI.latestCommitTime(
+                      'revanced',
+                      'revanced-patcher',
+                    ),
+                    initialData: FlutterI18n.translate(
+                      context,
+                      'latestCommitCard.loadingLabel',
+                    ),
+                    builder: (context, snapshot) => Text(
+                      "${snapshot.data!} ago",
+                      style: robotoTextStyle,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
-              I18nText(
-                'latestCommitCard.managerLabel',
-                child: Text(
-                  '',
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w700,
+              Row(
+                children: [
+                  I18nText(
+                    'latestCommitCard.managerLabel',
+                    child: Text(
+                      '',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              FutureBuilder<String>(
-                future: githubAPI.latestCommitTime(
-                  'revanced',
-                  'revanced-patcher',
-                ),
-                initialData: FlutterI18n.translate(
-                  context,
-                  'latestCommitCard.loadingLabel',
-                ),
-                builder: (context, snapshot) => Text(
-                  snapshot.data!,
-                  style: robotoTextStyle,
-                ),
+                  FutureBuilder<String>(
+                    future: githubAPI.latestCommitTime(
+                      'revanced',
+                      'revanced-manager',
+                    ),
+                    initialData: FlutterI18n.translate(
+                      context,
+                      'latestCommitCard.loadingLabel',
+                    ),
+                    builder: (context, snapshot) => Text(
+                      "${snapshot.data!} ago",
+                      style: robotoTextStyle,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

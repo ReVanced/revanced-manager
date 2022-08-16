@@ -31,7 +31,9 @@ class GithubAPI {
       var repo = await github.repositories.getRepository(
         RepositorySlug(org, repoName),
       );
-      pushedAt = repo.pushedAt != null ? format(repo.pushedAt!) : '';
+      pushedAt = repo.pushedAt != null
+          ? format(repo.pushedAt!, locale: 'en_short')
+          : '';
     } on Exception {
       pushedAt = '';
     }
