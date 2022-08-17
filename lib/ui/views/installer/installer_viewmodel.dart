@@ -143,6 +143,7 @@ class InstallerViewModel extends BaseViewModel {
     locator<PatcherAPI>().cleanPatcher();
     locator<AppSelectorViewModel>().selectedApp = null;
     locator<PatchesSelectorViewModel>().selectedPatches.clear();
+    locator<PatchesSelectorViewModel>().notifyListeners();
     locator<PatcherViewModel>().notifyListeners();
   }
 

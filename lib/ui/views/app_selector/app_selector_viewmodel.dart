@@ -45,6 +45,7 @@ class AppSelectorViewModel extends BaseViewModel {
     );
     locator<AppSelectorViewModel>().selectedApp = app;
     locator<PatchesSelectorViewModel>().selectedPatches.clear();
+    locator<PatchesSelectorViewModel>().notifyListeners();
     locator<PatcherViewModel>().notifyListeners();
   }
 
@@ -74,6 +75,7 @@ class AppSelectorViewModel extends BaseViewModel {
           );
           locator<AppSelectorViewModel>().selectedApp = app;
           locator<PatchesSelectorViewModel>().selectedPatches.clear();
+          locator<PatchesSelectorViewModel>().notifyListeners();
           locator<PatcherViewModel>().notifyListeners();
         }
       }
