@@ -27,7 +27,6 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> getApps() async {
-    await patcherAPI.loadPatches();
     apps = await patcherAPI.getFilteredInstalledApps();
   }
 
@@ -42,6 +41,7 @@ class AppSelectorViewModel extends BaseViewModel {
       patchDate: DateTime.now(),
       isRooted: isRooted,
       isFromStorage: isFromStorage,
+      appliedPatches: [],
     );
     locator<AppSelectorViewModel>().selectedApp = app;
     locator<PatchesSelectorViewModel>().selectedPatches.clear();
@@ -70,6 +70,7 @@ class AppSelectorViewModel extends BaseViewModel {
             patchDate: DateTime.now(),
             isRooted: isRooted,
             isFromStorage: isFromStorage,
+            appliedPatches: [],
           );
           locator<AppSelectorViewModel>().selectedApp = app;
           locator<PatchesSelectorViewModel>().selectedPatches.clear();

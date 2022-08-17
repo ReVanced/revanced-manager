@@ -109,6 +109,8 @@ class InstallerViewModel extends BaseViewModel {
   void installResult() async {
     PatchedApplication? selectedApp =
         locator<AppSelectorViewModel>().selectedApp;
+    List<Patch> selectedPatches =
+        locator<PatchesSelectorViewModel>().selectedPatches;
     if (selectedApp != null) {
       updateLog(selectedApp.isRooted
           ? 'Installing patched file using root method'
@@ -116,6 +118,8 @@ class InstallerViewModel extends BaseViewModel {
       isInstalled = await locator<PatcherAPI>().installPatchedFile(selectedApp);
       if (isInstalled) {
         updateLog('Done');
+        selectedApp.appliedPatches
+            .addAll(selectedPatches.map((p) => p.name).toList());
         await saveApp(selectedApp);
       } else {
         updateLog('An error occurred! Aborting');
@@ -153,9 +157,8 @@ class InstallerViewModel extends BaseViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
     String app = json.encode(selectedApp.toJson());
-    if (!patchedApps.contains(app)) {
-      patchedApps.add(app);
-      prefs.setStringList('patchedApps', patchedApps);
-    }
+    patchedApps.remove(app);
+    patchedApps.add(app);
+    prefs.setStringList('patchedApps', patchedApps);
   }
 }

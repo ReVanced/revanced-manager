@@ -39,7 +39,10 @@ class InstalledAppsCard extends StatelessWidget {
                           patchDate: snapshot.data![index].patchDate,
                           changelog: snapshot2.data!,
                           isUpdatableApp: false,
-                          onPressed: () => {},
+                          onPressed: () =>
+                              locator<HomeViewModel>().navigateToInstaller(
+                            snapshot.data![index],
+                          ),
                         ),
                       ),
                     )

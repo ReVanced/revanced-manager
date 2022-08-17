@@ -22,6 +22,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
       disposeViewModel: false,
+      fireOnModelReadyOnce: true,
       onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => locator<PatchesSelectorViewModel>(),
       builder: (context, model, child) => Scaffold(
@@ -29,7 +30,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-            child: model.patches != null && model.patches!.isNotEmpty
+            child: model.patches.isNotEmpty
                 ? Column(
                     children: [
                       SearchBar(
@@ -84,16 +85,16 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
     patches.clear();
     return Expanded(
       child: ListView.builder(
-        itemCount: model.patches!.length,
+        itemCount: model.patches.length,
         itemBuilder: (context, index) {
-          model.patches!.sort((a, b) => a.simpleName.compareTo(b.simpleName));
+          model.patches.sort((a, b) => a.simpleName.compareTo(b.simpleName));
           PatchItem item = PatchItem(
-            name: model.patches![index].name,
-            simpleName: model.patches![index].simpleName,
-            version: model.patches![index].version,
-            description: model.patches![index].description,
+            name: model.patches[index].name,
+            simpleName: model.patches[index].simpleName,
+            version: model.patches[index].version,
+            description: model.patches[index].description,
             isSelected: model.selectedPatches.any(
-              (element) => element.name == model.patches![index].name,
+              (element) => element.name == model.patches[index].name,
             ),
           );
           patches.add(item);
@@ -107,19 +108,19 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
     patches.clear();
     return Expanded(
       child: ListView.builder(
-        itemCount: model.patches!.length,
+        itemCount: model.patches.length,
         itemBuilder: (context, index) {
-          model.patches!.sort((a, b) => a.simpleName.compareTo(b.simpleName));
-          if (model.patches![index].simpleName.toLowerCase().contains(
+          model.patches.sort((a, b) => a.simpleName.compareTo(b.simpleName));
+          if (model.patches[index].simpleName.toLowerCase().contains(
                 query.toLowerCase(),
               )) {
             PatchItem item = PatchItem(
-              name: model.patches![index].name,
-              simpleName: model.patches![index].simpleName,
-              version: model.patches![index].version,
-              description: model.patches![index].description,
+              name: model.patches[index].name,
+              simpleName: model.patches[index].simpleName,
+              version: model.patches[index].version,
+              description: model.patches[index].description,
               isSelected: model.selectedPatches.any(
-                (element) => element.name == model.patches![index].name,
+                (element) => element.name == model.patches[index].name,
               ),
             );
             patches.add(item);

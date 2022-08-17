@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
   final PatcherAPI patcherAPI = locator<PatcherAPI>();
-  List<Patch>? patches = [];
+  List<Patch> patches = [];
   List<Patch> selectedPatches = [];
 
   Future<void> initialize() async {
@@ -24,14 +24,12 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   void selectPatches(List<PatchItem> patchItems) {
     selectedPatches.clear();
-    if (patches != null) {
-      for (PatchItem item in patchItems) {
-        if (item.isSelected) {
-          Patch patch =
-              patches!.firstWhere((element) => element.name == item.name);
-          if (!selectedPatches.contains(patch)) {
-            selectedPatches.add(patch);
-          }
+    for (PatchItem item in patchItems) {
+      if (item.isSelected) {
+        Patch patch =
+            patches.firstWhere((element) => element.name == item.name);
+        if (!selectedPatches.contains(patch)) {
+          selectedPatches.add(patch);
         }
       }
     }
