@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,8 +34,11 @@ class AppSelectorCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 10),
             I18nText(
-              'appSelectorCard.widgetTitle',
+              locator<AppSelectorViewModel>().selectedApp == null
+                  ? 'appSelectorCard.widgetTitle'
+                  : 'appSelectorCard.widgetTitleSelected',
               child: Text(
                 '',
                 style: GoogleFonts.roboto(
@@ -43,17 +48,35 @@ class AppSelectorCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            locator<AppSelectorViewModel>().selectedApp != null
-                ? Text(
-                    _getAppSelection(),
-                    style: robotoTextStyle,
-                  )
-                : I18nText(
+            locator<AppSelectorViewModel>().selectedApp == null
+                ? I18nText(
                     'appSelectorCard.widgetSubtitle',
                     child: Text(
                       '',
                       style: robotoTextStyle,
                     ),
+                  )
+                : Row(
+                    children: [
+                      SizedBox(
+                        height: 16.0,
+                        child: ClipOval(
+                          child: Image.memory(
+                            locator<AppSelectorViewModel>().selectedApp == null
+                                ? Uint8List(0)
+                                : locator<AppSelectorViewModel>()
+                                    .selectedApp!
+                                    .icon,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        _getAppSelection(),
+                        style: robotoTextStyle,
+                      ),
+                    ],
                   ),
           ],
         ),

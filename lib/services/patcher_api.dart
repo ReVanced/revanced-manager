@@ -206,7 +206,7 @@ class PatcherAPI {
           );
         } else {
           await AppInstaller.installApk(_outFile!.path);
-          return true;
+          return await DeviceApps.isAppInstalled(patchedApp.packageName);
         }
       } on Exception {
         return false;

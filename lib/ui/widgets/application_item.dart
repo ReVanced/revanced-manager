@@ -12,7 +12,7 @@ class ApplicationItem extends StatelessWidget {
   final Uint8List icon;
   final String name;
   final DateTime patchDate;
-  final String? changelog;
+  final String changelog;
   final bool isUpdatableApp;
   final Function()? onPressed;
 
@@ -21,7 +21,7 @@ class ApplicationItem extends StatelessWidget {
     required this.icon,
     required this.name,
     required this.patchDate,
-    this.changelog = '',
+    required this.changelog,
     required this.isUpdatableApp,
     required this.onPressed,
   }) : super(key: key);
@@ -66,7 +66,7 @@ class ApplicationItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    format(patchDate),
+                    format(patchDate, locale: 'en_short'),
                     style: robotoTextStyle.copyWith(
                       color: Theme.of(context).colorScheme.tertiary,
                     ),
@@ -104,7 +104,7 @@ class ApplicationItem extends StatelessWidget {
               ),
             ),
             Text(
-              changelog!,
+              changelog,
               style: robotoTextStyle,
             ),
           ],

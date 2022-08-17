@@ -32,7 +32,9 @@ class PatchSelectorCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             I18nText(
-              'patchSelectorCard.widgetTitle',
+              locator<PatchesSelectorViewModel>().selectedPatches.isEmpty
+                  ? 'patchSelectorCard.widgetTitle'
+                  : 'patchSelectorCard.widgetTitleSelected',
               child: Text(
                 '',
                 style: GoogleFonts.roboto(

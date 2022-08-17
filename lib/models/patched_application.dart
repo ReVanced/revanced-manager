@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,8 +11,8 @@ class PatchedApplication {
   final String version;
   final String apkFilePath;
   @JsonKey(
-    fromJson: bytesFromString,
-    toJson: bytesToString,
+    fromJson: decodeBase64,
+    toJson: encodeBase64,
   )
   final Uint8List icon;
   final DateTime patchDate;
@@ -36,8 +37,7 @@ class PatchedApplication {
 
   Map toJson() => _$PatchedApplicationToJson(this);
 
-  static Uint8List bytesFromString(String icon) =>
-      Uint8List.fromList(icon.codeUnits);
+  static Uint8List decodeBase64(String icon) => base64.decode(icon);
 
-  static String bytesToString(Uint8List bytes) => String.fromCharCodes(bytes);
+  static String encodeBase64(Uint8List bytes) => base64.encode(bytes);
 }

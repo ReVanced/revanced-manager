@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/application_item.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
-  const AvailableUpdatesCard({
+  AvailableUpdatesCard({
     Key? key,
   }) : super(key: key);
+
+  final GithubAPI githubAPI = GithubAPI();
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +21,26 @@ class AvailableUpdatesCard extends StatelessWidget {
         FutureBuilder<List<PatchedApplication>>(
           future: locator<HomeViewModel>().getPatchedApps(true),
           builder: (context, snapshot) =>
-              snapshot.hasData && snapshot.data!.length > 1
+              snapshot.hasData && snapshot.data!.isNotEmpty
                   ? ListView.builder(
-                      itemBuilder: (context, index) => ApplicationItem(
-                        icon: snapshot.data![index].icon,
-                        name: snapshot.data![index].name,
-                        patchDate: snapshot.data![index].patchDate,
-                        isUpdatableApp: true,
-                        onPressed: () => {},
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) => FutureBuilder<String>(
+                        future: githubAPI.getChangelog(
+                          snapshot.data![index],
+                          'revanced',
+                          'revanced-patches',
+                        ),
+                        initialData: '',
+                        builder: (context, snapshot2) => ApplicationItem(
+                          icon: snapshot.data![index].icon,
+                          name: snapshot.data![index].name,
+                          patchDate: snapshot.data![index].patchDate,
+                          changelog: snapshot2.data!,
+                          isUpdatableApp: true,
+                          onPressed: () => {},
+                        ),
                       ),
                     )
                   : Container(),

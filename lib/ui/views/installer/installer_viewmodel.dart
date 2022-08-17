@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -151,7 +152,7 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> saveApp(PatchedApplication selectedApp) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
-    String app = selectedApp.toJson().toString();
+    String app = json.encode(selectedApp.toJson());
     if (!patchedApps.contains(app)) {
       patchedApps.add(app);
       prefs.setStringList('patchedApps', patchedApps);
