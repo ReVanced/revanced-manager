@@ -62,10 +62,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        onPressed: () {
-                          model.selectPatches(patches);
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: () => Navigator.of(context).pop(),
                         child: I18nText('patchesSelectorView.fabButton'),
                       ),
                     ],

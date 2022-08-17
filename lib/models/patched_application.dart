@@ -15,7 +15,7 @@ class PatchedApplication {
     toJson: encodeBase64,
   )
   final Uint8List icon;
-  final DateTime patchDate;
+  DateTime patchDate;
   final bool isRooted;
   final bool isFromStorage;
   List<String> appliedPatches;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
@@ -26,9 +28,10 @@ class _PatchItemState extends State<PatchItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => setState(() {
-        widget.isSelected = !widget.isSelected;
-      }),
+      onTap: () {
+        setState(() => widget.isSelected = !widget.isSelected);
+        locator<PatchesSelectorViewModel>().selectPatch(widget);
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
@@ -78,9 +81,8 @@ class _PatchItemState extends State<PatchItem> {
                     value: widget.isSelected,
                     activeColor: Colors.blueGrey[500],
                     onChanged: (newValue) {
-                      setState(() {
-                        widget.isSelected = newValue!;
-                      });
+                      setState(() => widget.isSelected = newValue!);
+                      locator<PatchesSelectorViewModel>().selectPatch(widget);
                     },
                   ),
                 )

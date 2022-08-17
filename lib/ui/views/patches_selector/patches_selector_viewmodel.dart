@@ -22,17 +22,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
     patches = await patcherAPI.getFilteredPatches(app);
   }
 
-  void selectPatches(List<PatchItem> patchItems) {
-    selectedPatches.clear();
-    for (PatchItem item in patchItems) {
-      if (item.isSelected) {
-        Patch patch =
-            patches.firstWhere((element) => element.name == item.name);
-        if (!selectedPatches.contains(patch)) {
-          selectedPatches.add(patch);
-        }
-      }
+  void selectPatch(PatchItem item) {
+    Patch patch = locator<PatchesSelectorViewModel>()
+        .patches
+        .firstWhere((p) => p.name == item.name);
+    if (item.isSelected &&
+        !locator<PatchesSelectorViewModel>().selectedPatches.contains(patch)) {
+      locator<PatchesSelectorViewModel>().selectedPatches.add(patch);
+    } else {
+      locator<PatchesSelectorViewModel>().selectedPatches.remove(patch);
     }
+    locator<PatchesSelectorViewModel>().notifyListeners();
     locator<PatcherViewModel>().notifyListeners();
   }
 }

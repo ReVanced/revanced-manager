@@ -118,6 +118,7 @@ class InstallerViewModel extends BaseViewModel {
       isInstalled = await locator<PatcherAPI>().installPatchedFile(selectedApp);
       if (isInstalled) {
         updateLog('Done');
+        selectedApp.patchDate = DateTime.now();
         selectedApp.appliedPatches
             .addAll(selectedPatches.map((p) => p.name).toList());
         await saveApp(selectedApp);
@@ -157,7 +158,8 @@ class InstallerViewModel extends BaseViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
     String app = json.encode(selectedApp.toJson());
-    patchedApps.remove(app);
+    patchedApps.removeWhere(
+        (a) => json.decode(a)['packageName'] == selectedApp.packageName);
     patchedApps.add(app);
     prefs.setStringList('patchedApps', patchedApps);
   }
