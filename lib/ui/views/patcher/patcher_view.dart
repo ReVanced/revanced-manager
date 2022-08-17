@@ -55,7 +55,9 @@ class PatcherView extends StatelessWidget {
                       ? (model.dimPatchesCard() ? 0.5 : 1)
                       : (model.dimPatchesCard() ? 0.75 : 1),
                   child: PatchSelectorCard(
-                    onPressed: model.navigateToPatchesSelector,
+                    onPressed: model.dimPatchesCard()
+                        ? () => {}
+                        : model.navigateToPatchesSelector,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),

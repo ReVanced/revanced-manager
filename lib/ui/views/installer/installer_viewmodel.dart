@@ -17,20 +17,23 @@ class InstallerViewModel extends BaseViewModel {
   bool isInstalled = false;
 
   Future<void> initialize() async {
-    await FlutterBackground.initialize(
-      androidConfig: const FlutterBackgroundAndroidConfig(
-        notificationTitle: 'Patching',
-        notificationText: 'ReVanced Manager is patching',
-        notificationImportance: AndroidNotificationImportance.Default,
-        notificationIcon: AndroidResource(
-          name: 'ic_notification',
-          defType: 'drawable',
+    try {
+      await FlutterBackground.initialize(
+        androidConfig: const FlutterBackgroundAndroidConfig(
+          notificationTitle: 'Patching',
+          notificationText: 'ReVanced Manager is patching',
+          notificationImportance: AndroidNotificationImportance.Default,
+          notificationIcon: AndroidResource(
+            name: 'ic_notification',
+            defType: 'drawable',
+          ),
         ),
-      ),
-    );
-    await FlutterBackground.enableBackgroundExecution();
-    await locator<PatcherAPI>().handlePlatformChannelMethods();
-    await runPatcher();
+      );
+      await FlutterBackground.enableBackgroundExecution();
+    } finally {
+      await locator<PatcherAPI>().handlePlatformChannelMethods();
+      await runPatcher();
+    }
   }
 
   void updateProgress(double value) {
@@ -95,8 +98,11 @@ class InstallerViewModel extends BaseViewModel {
     } else {
       updateLog('No app or patches selected! Aborting');
     }
-    await FlutterBackground.disableBackgroundExecution();
-    isPatching = false;
+    try {
+      await FlutterBackground.disableBackgroundExecution();
+    } finally {
+      isPatching = false;
+    }
   }
 
   void installResult() async {

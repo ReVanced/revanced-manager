@@ -49,12 +49,8 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       'revanced',
                       'revanced-patcher',
                     ),
-                    initialData: FlutterI18n.translate(
-                      context,
-                      'latestCommitCard.loadingLabel',
-                    ),
                     builder: (context, snapshot) => Text(
-                      snapshot.data!.isNotEmpty
+                      snapshot.hasData && snapshot.data!.isNotEmpty
                           ? FlutterI18n.translate(
                               context,
                               'latestCommitCard.timeagoLabel',
@@ -86,12 +82,8 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       'revanced',
                       'revanced-manager',
                     ),
-                    initialData: FlutterI18n.translate(
-                      context,
-                      'latestCommitCard.loadingLabel',
-                    ),
                     builder: (context, snapshot) => Text(
-                      snapshot.data!.isNotEmpty
+                      snapshot.hasData && snapshot.data!.isNotEmpty
                           ? FlutterI18n.translate(
                               context,
                               'latestCommitCard.timeagoLabel',
