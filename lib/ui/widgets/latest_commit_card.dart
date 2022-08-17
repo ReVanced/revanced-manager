@@ -55,7 +55,11 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                     ),
                     builder: (context, snapshot) => Text(
                       snapshot.data!.isNotEmpty
-                          ? snapshot.data!
+                          ? FlutterI18n.translate(
+                              context,
+                              'latestCommitCard.timeagoLabel',
+                              translationParams: {'time': snapshot.data!},
+                            )
                           : FlutterI18n.translate(
                               context,
                               'latestCommitCard.loadingLabel',
@@ -88,7 +92,11 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                     ),
                     builder: (context, snapshot) => Text(
                       snapshot.data!.isNotEmpty
-                          ? snapshot.data!
+                          ? FlutterI18n.translate(
+                              context,
+                              'latestCommitCard.timeagoLabel',
+                              translationParams: {'time': snapshot.data!},
+                            )
                           : FlutterI18n.translate(
                               context,
                               'latestCommitCard.loadingLabel',
