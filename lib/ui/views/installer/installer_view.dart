@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
@@ -21,7 +22,7 @@ class InstallerView extends StatelessWidget {
       builder: (context, model, child) => WillPopScope(
         child: Scaffold(
           floatingActionButton: Visibility(
-            visible: model.showButtons,
+            visible: !model.isPatching,
             child: FloatingActionButton.extended(
               onPressed: () =>
                   model.isInstalled ? model.openApp() : model.installResult(),
@@ -54,7 +55,7 @@ class InstallerView extends StatelessWidget {
                         ),
                       ),
                       Visibility(
-                        visible: model.showButtons,
+                        visible: !model.isPatching,
                         child: IconButton(
                           icon: const Icon(Icons.share),
                           onPressed: () => model.shareResult(),

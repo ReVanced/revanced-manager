@@ -1,5 +1,7 @@
 package app.revanced.manager
 
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.NonNull
 import app.revanced.manager.utils.Aapt
 import app.revanced.manager.utils.aligning.ZipAligner
@@ -19,92 +21,76 @@ import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "app.revanced.manager/patcher"
+    private val PATCHER_CHANNEL = "app.revanced.manager/patcher"
+    private val INSTALLER_CHANNEL = "app.revanced.manager/installer"
     private var patches = mutableListOf<Class<out Patch<Data>>>()
-    private val tag = "Patcher"
-    private lateinit var methodChannel: MethodChannel
-    private lateinit var patcher: Patcher
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var installerChannel: MethodChannel
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-        methodChannel.setMethodCallHandler { call, result ->
+        val mainChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PATCHER_CHANNEL)
+        installerChannel =
+                MethodChannel(flutterEngine.dartExecutor.binaryMessenger, INSTALLER_CHANNEL)
+        mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "loadPatches" -> {
                     val pathBundlesPaths = call.argument<List<String>>("pathBundlesPaths")
                     if (pathBundlesPaths != null) {
-                        result.success(loadPatches(pathBundlesPaths))
+                        loadPatches(result, pathBundlesPaths)
                     } else {
                         result.notImplemented()
                     }
                 }
-                "getCompatiblePackages" -> result.success(getCompatiblePackages())
+                "getCompatiblePackages" -> getCompatiblePackages(result)
                 "getFilteredPatches" -> {
                     val targetPackage = call.argument<String>("targetPackage")
                     val targetVersion = call.argument<String>("targetVersion")
                     val ignoreVersion = call.argument<Boolean>("ignoreVersion")
                     if (targetPackage != null && targetVersion != null && ignoreVersion != null) {
-                        result.success(
-                                getFilteredPatches(targetPackage, targetVersion, ignoreVersion)
-                        )
+                        getFilteredPatches(result, targetPackage, targetVersion, ignoreVersion)
                     } else {
                         result.notImplemented()
                     }
                 }
-                "copyInputFile" -> {
+                "runPatcher" -> {
                     val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
-                    if (originalFilePath != null && inputFilePath != null) {
-                        result.success(copyInputFile(originalFilePath, inputFilePath))
-                    } else {
-                        result.notImplemented()
-                    }
-                }
-                "createPatcher" -> {
-                    val inputFilePath = call.argument<String>("inputFilePath")
-                    val cacheDirPath = call.argument<String>("cacheDirPath")
-                    val resourcePatching = call.argument<Boolean>("resourcePatching")
-                    if (inputFilePath != null && cacheDirPath != null && resourcePatching != null) {
-                        result.success(createPatcher(inputFilePath, cacheDirPath, resourcePatching))
-                    } else {
-                        result.notImplemented()
-                    }
-                }
-                "mergeIntegrations" -> {
-                    val integrationsPath = call.argument<String>("integrationsPath")
-                    if (integrationsPath != null) {
-                        result.success(mergeIntegrations(integrationsPath))
-                    } else {
-                        result.notImplemented()
-                    }
-                }
-                "applyPatches" -> {
-                    val selectedPatches = call.argument<List<String>>("selectedPatches")
-                    if (selectedPatches != null) {
-                        result.success(applyPatches(selectedPatches))
-                    } else {
-                        result.notImplemented()
-                    }
-                }
-                "repackPatchedFile" -> {
-                    val inputFilePath = call.argument<String>("inputFilePath")
-                    val patchedFilePath = call.argument<String>("patchedFilePath")
-                    if (inputFilePath != null && patchedFilePath != null) {
-                        result.success(repackPatchedFile(inputFilePath, patchedFilePath))
-                    } else {
-                        result.notImplemented()
-                    }
-                }
-                "signPatchedFile" -> {
                     val patchedFilePath = call.argument<String>("patchedFilePath")
                     val outFilePath = call.argument<String>("outFilePath")
-                    if (patchedFilePath != null && outFilePath != null) {
-                        result.success(signPatchedFile(patchedFilePath, outFilePath))
+                    val integrationsPath = call.argument<String>("integrationsPath")
+                    val selectedPatches = call.argument<List<String>>("selectedPatches")
+                    val cacheDirPath = call.argument<String>("cacheDirPath")
+                    val mergeIntegrations = call.argument<Boolean>("mergeIntegrations")
+                    val resourcePatching = call.argument<Boolean>("resourcePatching")
+                    if (originalFilePath != null &&
+                                    inputFilePath != null &&
+                                    patchedFilePath != null &&
+                                    outFilePath != null &&
+                                    integrationsPath != null &&
+                                    selectedPatches != null &&
+                                    cacheDirPath != null &&
+                                    mergeIntegrations != null &&
+                                    resourcePatching != null
+                    ) {
+                        runPatcher(
+                                result,
+                                originalFilePath,
+                                inputFilePath,
+                                patchedFilePath,
+                                outFilePath,
+                                integrationsPath,
+                                selectedPatches,
+                                cacheDirPath,
+                                mergeIntegrations,
+                                resourcePatching
+                        )
                     } else {
                         result.notImplemented()
                     }
@@ -114,157 +100,221 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    fun loadPatches(pathBundlesPaths: List<String>): Boolean {
-        try {
-            pathBundlesPaths.forEach { path ->
-                patches.addAll(
-                        DexPatchBundle(
-                                        path,
-                                        DexClassLoader(
-                                                path,
-                                                applicationContext.cacheDir.path,
-                                                null,
-                                                javaClass.classLoader
-                                        )
+    fun loadPatches(result: MethodChannel.Result, pathBundlesPaths: List<String>) {
+        Thread(
+                        Runnable {
+                            pathBundlesPaths.forEach { path ->
+                                patches.addAll(
+                                        DexPatchBundle(
+                                                        path,
+                                                        DexClassLoader(
+                                                                path,
+                                                                applicationContext.cacheDir.path,
+                                                                null,
+                                                                javaClass.classLoader
+                                                        )
+                                                )
+                                                .loadPatches()
                                 )
-                                .loadPatches()
+                            }
+                            handler.post { result.success(null) }
+                        }
                 )
-            }
-        } catch (e: Exception) {
-            return false
-        }
-        return true
+                .start()
     }
 
-    fun getCompatiblePackages(): List<String> {
-        val filteredPackages = mutableListOf<String>()
-        patches.forEach patch@{ patch ->
-            patch.compatiblePackages?.forEach { pkg -> filteredPackages.add(pkg.name) }
-        }
-        return filteredPackages.distinct()
+    fun getCompatiblePackages(result: MethodChannel.Result) {
+        Thread(
+                        Runnable {
+                            val filteredPackages = mutableListOf<String>()
+                            patches.forEach patch@{ patch ->
+                                patch.compatiblePackages?.forEach { pkg ->
+                                    filteredPackages.add(pkg.name)
+                                }
+                            }
+                            handler.post { result.success(filteredPackages.distinct()) }
+                        }
+                )
+                .start()
     }
 
     fun getFilteredPatches(
+            result: MethodChannel.Result,
             targetPackage: String,
             targetVersion: String,
             ignoreVersion: Boolean
-    ): List<Map<String, String?>> {
-        val filteredPatches = mutableListOf<Map<String, String?>>()
-        patches.forEach patch@{ patch ->
-            patch.compatiblePackages?.forEach { pkg ->
-                if (pkg.name == targetPackage &&
-                                (ignoreVersion ||
-                                        pkg.versions.isNotEmpty() ||
-                                        pkg.versions.contains(targetVersion))
-                ) {
-                    var p = mutableMapOf<String, String?>()
-                    p.put("name", patch.patchName)
-                    p.put("version", patch.version)
-                    p.put("description", patch.description)
-                    filteredPatches.add(p)
-                }
-            }
-        }
-        return filteredPatches
+    ) {
+        Thread(
+                        Runnable {
+                            val filteredPatches = mutableListOf<Map<String, String?>>()
+                            patches.forEach patch@{ patch ->
+                                patch.compatiblePackages?.forEach { pkg ->
+                                    if (pkg.name == targetPackage &&
+                                                    (ignoreVersion ||
+                                                            pkg.versions.isNotEmpty() ||
+                                                            pkg.versions.contains(targetVersion))
+                                    ) {
+                                        var p = mutableMapOf<String, String?>()
+                                        p.put("name", patch.patchName)
+                                        p.put("version", patch.version)
+                                        p.put("description", patch.description)
+                                        filteredPatches.add(p)
+                                    }
+                                }
+                            }
+                            handler.post { result.success(filteredPatches) }
+                        }
+                )
+                .start()
     }
 
-    private fun findPatchesByIds(ids: Iterable<String>): List<Class<out Patch<Data>>> {
-        return patches.filter { patch -> ids.any { it == patch.patchName } }
-    }
-
-    fun copyInputFile(originalFilePath: String, inputFilePath: String): Boolean {
+    fun runPatcher(
+            result: MethodChannel.Result,
+            originalFilePath: String,
+            inputFilePath: String,
+            patchedFilePath: String,
+            outFilePath: String,
+            integrationsPath: String,
+            selectedPatches: List<String>,
+            cacheDirPath: String,
+            mergeIntegrations: Boolean,
+            resourcePatching: Boolean
+    ) {
         val originalFile = File(originalFilePath)
         val inputFile = File(inputFilePath)
-        Files.copy(originalFile.toPath(), inputFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-        return true
-    }
-
-    fun createPatcher(
-            inputFilePath: String,
-            cacheDirPath: String,
-            resourcePatching: Boolean
-    ): Boolean {
-        val inputFile = File(inputFilePath)
-        val aaptPath = Aapt.binary(applicationContext).absolutePath
-        patcher =
-                Patcher(
-                        PatcherOptions(
-                                inputFile,
-                                cacheDirPath,
-                                resourcePatching,
-                                aaptPath,
-                                cacheDirPath,
-                                logger =
-                                        object : app.revanced.patcher.logging.Logger {
-                                            override fun error(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-
-                                            override fun warn(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-
-                                            override fun info(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-
-                                            override fun trace(msg: String) {
-                                                methodChannel.invokeMethod("updateInstallerLog", msg)
-                                            }
-                                        }
-                        )
-                )
-        return true
-    }
-
-    fun mergeIntegrations(integrationsPath: String): Boolean {
-        val integrations = File(integrationsPath)
-        if (patcher == null) return false
-        patcher.addFiles(listOf(integrations)) {}
-        return true
-    }
-
-    fun applyPatches(selectedPatches: List<String>): Boolean {
-        val patches = findPatchesByIds(selectedPatches)
-        if (patches.isEmpty()) return false
-        if (patcher == null) return false
-        patcher.addPatches(patches)
-        patcher.applyPatches().forEach { (patch, result) ->
-            if (result.isSuccess) {
-                val msg = "[success] $patch"
-                methodChannel.invokeMethod("updateInstallerLog", msg)
-                return@forEach
-            }
-            val msg = "[error] $patch:" + result.exceptionOrNull()!!
-            methodChannel.invokeMethod("updateInstallerLog", msg)
-        }
-        return true
-    }
-
-    fun repackPatchedFile(inputFilePath: String, patchedFilePath: String): Boolean {
-        val inputFile = File(inputFilePath)
-        val patchedFile = File(patchedFilePath)
-        if (patcher == null) return false
-        val result = patcher.save()
-        ZipFile(patchedFile).use { file ->
-            result.dexFiles.forEach {
-                file.addEntryCompressData(
-                        ZipEntry.createWithName(it.name),
-                        it.dexFileInputStream.readBytes()
-                )
-            }
-            result.resourceFile?.let {
-                file.copyEntriesFromFileAligned(ZipFile(it), ZipAligner::getEntryAlignment)
-            }
-            file.copyEntriesFromFileAligned(ZipFile(inputFile), ZipAligner::getEntryAlignment)
-        }
-        return true
-    }
-
-    fun signPatchedFile(patchedFilePath: String, outFilePath: String): Boolean {
         val patchedFile = File(patchedFilePath)
         val outFile = File(outFilePath)
-        Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile)
-        return true
+        val integrations = File(integrationsPath)
+        val filteredPatches = patches.filter { patch -> selectedPatches.any { it == patch.patchName } }
+
+        Thread(
+                        Runnable {
+                            handler.post {
+                                installerChannel.invokeMethod("updateProgress", 0.1)
+                                installerChannel.invokeMethod("updateLog", "Copying original apk")
+                            }
+                            Files.copy(
+                                    originalFile.toPath(),
+                                    inputFile.toPath(),
+                                    StandardCopyOption.REPLACE_EXISTING
+                            )
+
+                            handler.post {
+                                installerChannel.invokeMethod("updateProgress", 0.2)
+                                installerChannel.invokeMethod("updateLog", "Creating patcher")
+                            }
+                            val patcher =
+                                    Patcher(
+                                            PatcherOptions(
+                                                    inputFile,
+                                                    cacheDirPath,
+                                                    resourcePatching,
+                                                    Aapt.binary(applicationContext).absolutePath,
+                                                    cacheDirPath,
+                                                    logger =
+                                                            object :
+                                                                    app.revanced.patcher.logging.Logger {
+                                                                override fun error(msg: String) {
+                                                                    handler.post {
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "updateLog",
+                                                                                        msg
+                                                                                )
+                                                                    }
+                                                                }
+
+                                                                override fun warn(msg: String) {
+                                                                    handler.post {
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "updateLog",
+                                                                                        msg
+                                                                                )
+                                                                    }
+                                                                }
+
+                                                                override fun info(msg: String) {
+                                                                    handler.post {
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "updateLog",
+                                                                                        msg
+                                                                                )
+                                                                    }
+                                                                }
+
+                                                                override fun trace(msg: String) {
+                                                                    handler.post {
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "updateLog",
+                                                                                        msg
+                                                                                )
+                                                                    }
+                                                                }
+                                                            }
+                                            )
+                                    )
+
+                            handler.post { installerChannel.invokeMethod("updateProgress", 0.3) }
+                            if (mergeIntegrations) {
+                                handler.post {
+                                    installerChannel.invokeMethod(
+                                            "updateLog",
+                                            "Merging integrations"
+                                    )
+                                }
+                                patcher.addFiles(listOf(integrations)) {}
+                            }
+
+                            handler.post { installerChannel.invokeMethod("updateProgress", 0.5) }
+                            patcher.addPatches(filteredPatches)
+                            patcher.applyPatches().forEach { (patch, res) ->
+                                if (res.isSuccess) {
+                                    val msg = "[success] $patch"
+                                    handler.post { installerChannel.invokeMethod("updateLog", msg) }
+                                    return@forEach
+                                }
+                                val msg = "[error] $patch:" + res.exceptionOrNull()!!
+                                handler.post { installerChannel.invokeMethod("updateLog", msg) }
+                            }
+
+                            handler.post {
+                                installerChannel.invokeMethod("updateProgress", 0.7)
+                                installerChannel.invokeMethod("updateLog", "Repacking patched apk")
+                            }
+                            val res = patcher.save()
+                            ZipFile(patchedFile).use { file ->
+                                res.dexFiles.forEach {
+                                    file.addEntryCompressData(
+                                            ZipEntry.createWithName(it.name),
+                                            it.dexFileInputStream.readBytes()
+                                    )
+                                }
+                                res.resourceFile?.let {
+                                    file.copyEntriesFromFileAligned(
+                                            ZipFile(it),
+                                            ZipAligner::getEntryAlignment
+                                    )
+                                }
+                                file.copyEntriesFromFileAligned(
+                                        ZipFile(inputFile),
+                                        ZipAligner::getEntryAlignment
+                                )
+                            }
+
+                            handler.post { installerChannel.invokeMethod("updateProgress", 0.9) }
+                            Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile)
+
+                            handler.post {
+                                installerChannel.invokeMethod("updateProgress", 1.0)
+                                installerChannel.invokeMethod("updateLog", "Finished")
+                            }
+
+                            handler.post { result.success(null) }
+                        }
+                )
+                .start()
     }
 }

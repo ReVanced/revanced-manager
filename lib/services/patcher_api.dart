@@ -16,7 +16,12 @@ import 'package:share_extend/share_extend.dart';
 
 @lazySingleton
 class PatcherAPI {
-  static const platform = MethodChannel('app.revanced.manager/patcher');
+  static const patcherChannel = MethodChannel(
+    'app.revanced.manager/patcher',
+  );
+  static const installerChannel = MethodChannel(
+    'app.revanced.manager/installer',
+  );
   final GithubAPI githubAPI = GithubAPI();
   final RootAPI rootAPI = RootAPI();
   final List<ApplicationWithIcon> _filteredPackages = [];
@@ -31,9 +36,18 @@ class PatcherAPI {
   File? _outFile;
 
   Future<dynamic> handlePlatformChannelMethods() async {
-    platform.setMethodCallHandler((call) async {
-      if (call.method == 'updateInstallerLog' && call.arguments != null) {
-        locator<InstallerViewModel>().addLog(call.arguments);
+    installerChannel.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case 'updateProgress':
+          if (call.arguments != null) {
+            locator<InstallerViewModel>().updateProgress(call.arguments);
+          }
+          break;
+        case 'updateLog':
+          if (call.arguments != null) {
+            locator<InstallerViewModel>().updateLog(call.arguments);
+          }
+          break;
       }
     });
   }
@@ -46,7 +60,7 @@ class PatcherAPI {
         try {
           _patchBundleFile =
               await DefaultCacheManager().getSingleFile(dexFileUrl);
-          return await platform.invokeMethod<bool>(
+          return await patcherChannel.invokeMethod<bool>(
             'loadPatches',
             {
               'pathBundlesPaths': <String>[_patchBundleFile!.absolute.path],
@@ -65,8 +79,8 @@ class PatcherAPI {
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     if (_patchBundleFile != null && _filteredPackages.isEmpty) {
       try {
-        List<String>? patchesPackages =
-            await platform.invokeListMethod<String>('getCompatiblePackages');
+        List<String>? patchesPackages = await patcherChannel
+            .invokeListMethod<String>('getCompatiblePackages');
         if (patchesPackages != null) {
           for (String package in patchesPackages) {
             try {
@@ -96,7 +110,8 @@ class PatcherAPI {
           _filteredPatches[selectedApp.packageName]!.isEmpty) {
         _filteredPatches[selectedApp.packageName] = [];
         try {
-          var patches = await platform.invokeListMethod<Map<dynamic, dynamic>>(
+          var patches =
+              await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
             'getFilteredPatches',
             {
               'targetPackage': selectedApp.packageName,
@@ -143,118 +158,41 @@ class PatcherAPI {
     return null;
   }
 
-  Future<bool?> initPatcher() async {
-    try {
+  Future<void> initPatcher(bool mergeIntegrations) async {
+    if (mergeIntegrations) {
       _integrations = await downloadIntegrations();
-      if (_integrations != null) {
-        _tmpDir = await getTemporaryDirectory();
-        _workDir = _tmpDir!.createTempSync('tmp-');
-        _inputFile = File('${_workDir!.path}/base.apk');
-        _patchedFile = File('${_workDir!.path}/patched.apk');
-        _outFile = File('${_workDir!.path}/out.apk');
-        _cacheDir = Directory('${_workDir!.path}/cache');
-        _cacheDir!.createSync();
-        return true;
-      }
-    } on Exception {
-      return false;
+    } else {
+      _integrations = File('');
     }
-    return false;
+    _tmpDir = await getTemporaryDirectory();
+    _workDir = _tmpDir!.createTempSync('tmp-');
+    _inputFile = File('${_workDir!.path}/base.apk');
+    _patchedFile = File('${_workDir!.path}/patched.apk');
+    _outFile = File('${_workDir!.path}/out.apk');
+    _cacheDir = Directory('${_workDir!.path}/cache');
+    _cacheDir!.createSync();
   }
 
-  Future<bool?> copyInputFile(String originalFilePath) async {
-    if (_inputFile != null) {
-      try {
-        return await platform.invokeMethod<bool>(
-          'copyInputFile',
-          {
-            'originalFilePath': originalFilePath,
-            'inputFilePath': _inputFile!.path,
-          },
-        );
-      } on Exception {
-        return false;
-      }
-    }
-    return false;
-  }
-
-  Future<bool?> createPatcher(bool resourcePatching) async {
-    if (_inputFile != null && _cacheDir != null) {
-      try {
-        return await platform.invokeMethod<bool>(
-          'createPatcher',
-          {
-            'inputFilePath': _inputFile!.path,
-            'cacheDirPath': _cacheDir!.path,
-            'resourcePatching': resourcePatching,
-          },
-        );
-      } on Exception {
-        return false;
-      }
-    }
-    return false;
-  }
-
-  Future<bool?> mergeIntegrations() async {
-    try {
-      return await platform.invokeMethod<bool>(
-        'mergeIntegrations',
-        {
-          'integrationsPath': _integrations!.path,
-        },
-      );
-    } on Exception {
-      return false;
-    }
-  }
-
-  Future<bool?> applyPatches(List<Patch> selectedPatches) async {
-    try {
-      return await platform.invokeMethod<bool>(
-        'applyPatches',
-        {
-          'selectedPatches': selectedPatches.map((e) => e.name).toList(),
-        },
-      );
-    } on Exception {
-      return false;
-    }
-  }
-
-  Future<bool?> repackPatchedFile() async {
-    if (_inputFile != null && _patchedFile != null) {
-      try {
-        return await platform.invokeMethod<bool>(
-          'repackPatchedFile',
-          {
-            'inputFilePath': _inputFile!.path,
-            'patchedFilePath': _patchedFile!.path,
-          },
-        );
-      } on Exception {
-        return false;
-      }
-    }
-    return false;
-  }
-
-  Future<bool?> signPatchedFile() async {
-    if (_patchedFile != null && _outFile != null) {
-      try {
-        return await platform.invokeMethod<bool>(
-          'signPatchedFile',
-          {
-            'patchedFilePath': _patchedFile!.path,
-            'outFilePath': _outFile!.path,
-          },
-        );
-      } on Exception {
-        return false;
-      }
-    }
-    return false;
+  Future<void> runPatcher(
+    String originalFilePath,
+    List<Patch> selectedPatches,
+    bool mergeIntegrations,
+    bool resourcePatching,
+  ) async {
+    await patcherChannel.invokeMethod(
+      'runPatcher',
+      {
+        'originalFilePath': originalFilePath,
+        'inputFilePath': _inputFile!.path,
+        'patchedFilePath': _patchedFile!.path,
+        'outFilePath': _outFile!.path,
+        'integrationsPath': _integrations!.path,
+        'selectedPatches': selectedPatches.map((e) => e.name).toList(),
+        'cacheDirPath': _cacheDir!.path,
+        'mergeIntegrations': mergeIntegrations,
+        'resourcePatching': resourcePatching,
+      },
+    );
   }
 
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
