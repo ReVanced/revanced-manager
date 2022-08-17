@@ -12,7 +12,6 @@ class RootCheckerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<RootCheckerViewModel>.reactive(
       disposeViewModel: false,
-      onModelReady: (model) => model.initialize,
       viewModelBuilder: () => RootCheckerViewModel(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Column(
@@ -64,11 +63,7 @@ class RootCheckerView extends StatelessWidget {
               ),
               const SizedBox(height: 170),
               MagiskButton(
-                onPressed: () {
-                  model
-                      .getMagiskPermissions()
-                      .then((value) => model.checkRoot());
-                },
+                onPressed: () => model.checkRoot(),
               ),
               I18nText(
                 'rootCheckerView.grantedPermission',

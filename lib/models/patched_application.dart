@@ -36,8 +36,8 @@ class PatchedApplication {
 
   Map toJson() => _$PatchedApplicationToJson(this);
 
-  static Uint8List bytesFromString(String pictureUrl) =>
-      Uint8List.fromList(pictureUrl.codeUnits);
+  static Uint8List bytesFromString(String icon) =>
+      Uint8List.fromList(icon.codeUnits);
 
   static String bytesToString(Uint8List bytes) => String.fromCharCodes(bytes);
 }

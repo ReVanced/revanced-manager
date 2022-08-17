@@ -54,7 +54,12 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       'latestCommitCard.loadingLabel',
                     ),
                     builder: (context, snapshot) => Text(
-                      "${snapshot.data!} ago",
+                      snapshot.data!.isNotEmpty
+                          ? snapshot.data!
+                          : FlutterI18n.translate(
+                              context,
+                              'latestCommitCard.loadingLabel',
+                            ),
                       style: robotoTextStyle,
                     ),
                   ),
@@ -82,7 +87,12 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       'latestCommitCard.loadingLabel',
                     ),
                     builder: (context, snapshot) => Text(
-                      "${snapshot.data!} ago",
+                      snapshot.data!.isNotEmpty
+                          ? snapshot.data!
+                          : FlutterI18n.translate(
+                              context,
+                              'latestCommitCard.loadingLabel',
+                            ),
                       style: robotoTextStyle,
                     ),
                   ),

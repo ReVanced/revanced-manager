@@ -9,26 +9,12 @@ class RootCheckerViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   bool? isRooted = false;
 
-  Future<void> initialize() async {
-    await checkRoot();
-    notifyListeners();
-  }
-
   Future<void> checkRoot() async {
     isRooted = await Root.isRooted();
     if (isRooted == true) {
       navigateToHome();
     }
     notifyListeners();
-  }
-
-  Future<bool> getMagiskPermissions() async {
-    try {
-      await Root.exec(cmd: 'cat /proc/version');
-    } on Exception {
-      return false;
-    }
-    return true;
   }
 
   Future<void> navigateToHome() async {
