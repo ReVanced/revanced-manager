@@ -1,12 +1,17 @@
+import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
-import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
-import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/models/patched_application.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+@lazySingleton
 class PatcherViewModel extends BaseViewModel {
-  final _navigationService = locator<NavigationService>();
+  PatchedApplication? selectedApp;
+  List<Patch> selectedPatches = [];
+
+  final NavigationService _navigationService = locator<NavigationService>();
 
   void navigateToAppSelector() {
     _navigationService.navigateTo(Routes.appSelectorView);
@@ -21,10 +26,10 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   bool showFabButton() {
-    return locator<PatchesSelectorViewModel>().selectedPatches.isNotEmpty;
+    return selectedPatches.isNotEmpty;
   }
 
   bool dimPatchesCard() {
-    return locator<AppSelectorViewModel>().selectedApp == null;
+    return selectedApp == null;
   }
 }

@@ -4,16 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/models/patch.dart';
-import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
-import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 
 class PatchSelectorCard extends StatelessWidget {
-  final Function()? onPressed;
+  final Function() onPressed;
   final Color? color;
 
   const PatchSelectorCard({
     Key? key,
-    this.onPressed,
+    required this.onPressed,
     this.color = const Color(0xff1B222B),
   }) : super(key: key);
 
@@ -32,7 +31,7 @@ class PatchSelectorCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             I18nText(
-              locator<PatchesSelectorViewModel>().selectedPatches.isEmpty
+              locator<PatcherViewModel>().selectedPatches.isEmpty
                   ? 'patchSelectorCard.widgetTitle'
                   : 'patchSelectorCard.widgetTitleSelected',
               child: Text(
@@ -44,7 +43,7 @@ class PatchSelectorCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            locator<AppSelectorViewModel>().selectedApp == null
+            locator<PatcherViewModel>().selectedApp == null
                 ? I18nText(
                     'patchSelectorCard.widgetSubtitle',
                     child: Text(
@@ -52,7 +51,7 @@ class PatchSelectorCard extends StatelessWidget {
                       style: robotoTextStyle,
                     ),
                   )
-                : locator<PatchesSelectorViewModel>().selectedPatches.isEmpty
+                : locator<PatcherViewModel>().selectedPatches.isEmpty
                     ? I18nText(
                         'patchSelectorCard.widgetEmptySubtitle',
                         child: Text(
@@ -72,7 +71,7 @@ class PatchSelectorCard extends StatelessWidget {
 
   String _getPatchesSelection() {
     String text = '';
-    for (Patch p in locator<PatchesSelectorViewModel>().selectedPatches) {
+    for (Patch p in locator<PatcherViewModel>().selectedPatches) {
       text += '${p.simpleName} (v${p.version})\n';
     }
     return text.substring(0, text.length - 1);

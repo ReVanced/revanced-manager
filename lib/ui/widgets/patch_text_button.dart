@@ -5,13 +5,13 @@ import 'package:revanced_manager/theme.dart';
 
 class PatchTextButton extends StatelessWidget {
   final String text;
-  final Function()? onPressed;
+  final Function() onPressed;
   final Color borderColor;
   final Color backgroundColor;
   const PatchTextButton({
     Key? key,
     required this.text,
-    this.onPressed,
+    required this.onPressed,
     this.borderColor = const Color(0xff7792BA),
     this.backgroundColor = Colors.transparent,
   }) : super(key: key);

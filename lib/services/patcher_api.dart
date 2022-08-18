@@ -2,15 +2,12 @@ import 'dart:io';
 import 'package:app_installer/app_installer.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
-import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/utils/string.dart';
 import 'package:share_extend/share_extend.dart';
 
@@ -19,11 +16,8 @@ class PatcherAPI {
   static const patcherChannel = MethodChannel(
     'app.revanced.manager/patcher',
   );
-  static const installerChannel = MethodChannel(
-    'app.revanced.manager/installer',
-  );
-  final GithubAPI githubAPI = GithubAPI();
-  final RootAPI rootAPI = RootAPI();
+  final ManagerAPI _managerAPI = ManagerAPI();
+  final RootAPI _rootAPI = RootAPI();
   Directory? _tmpDir;
   Directory? _workDir;
   Directory? _cacheDir;
@@ -33,45 +27,18 @@ class PatcherAPI {
   File? _patchedFile;
   File? _outFile;
 
-  Future<dynamic> handlePlatformChannelMethods() async {
-    installerChannel.setMethodCallHandler((call) async {
-      switch (call.method) {
-        case 'updateProgress':
-          if (call.arguments != null) {
-            locator<InstallerViewModel>().updateProgress(call.arguments);
-          }
-          break;
-        case 'updateLog':
-          if (call.arguments != null) {
-            locator<InstallerViewModel>().updateLog(call.arguments);
-          }
-          break;
-      }
-    });
-  }
-
-  Future<bool?> loadPatches() async {
+  Future<void> loadPatches() async {
     if (_patchBundleFile == null) {
-      String? dexFileUrl =
-          await githubAPI.latestRelease('revanced', 'revanced-patches');
-      if (dexFileUrl != null && dexFileUrl.isNotEmpty) {
-        try {
-          _patchBundleFile =
-              await DefaultCacheManager().getSingleFile(dexFileUrl);
-          return await patcherChannel.invokeMethod<bool>(
-            'loadPatches',
-            {
-              'pathBundlesPaths': <String>[_patchBundleFile!.absolute.path],
-            },
-          );
-        } on Exception {
-          _patchBundleFile = null;
-          return false;
-        }
+      _patchBundleFile = await _managerAPI.downloadPatches();
+      if (_patchBundleFile != null) {
+        await patcherChannel.invokeMethod<bool>(
+          'loadPatches',
+          {
+            'pathBundlesPaths': <String>[_patchBundleFile!.absolute.path],
+          },
+        );
       }
-      return false;
     }
-    return true;
   }
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
@@ -181,20 +148,9 @@ class PatcherAPI {
     return appliedPatches;
   }
 
-  Future<File?> downloadIntegrations() async {
-    String? apkFileUrl =
-        await githubAPI.latestRelease('revanced', 'revanced-integrations');
-    if (apkFileUrl != null && apkFileUrl.isNotEmpty) {
-      return await DefaultCacheManager().getSingleFile(apkFileUrl);
-    }
-    return null;
-  }
-
   Future<void> initPatcher(bool mergeIntegrations) async {
     if (mergeIntegrations) {
-      _integrations = await downloadIntegrations();
-    } else {
-      _integrations = File('');
+      _integrations = await _managerAPI.downloadIntegrations();
     }
     _tmpDir = await getTemporaryDirectory();
     _workDir = _tmpDir!.createTempSync('tmp-');
@@ -218,7 +174,7 @@ class PatcherAPI {
         'inputFilePath': _inputFile!.path,
         'patchedFilePath': _patchedFile!.path,
         'outFilePath': _outFile!.path,
-        'integrationsPath': _integrations!.path,
+        'integrationsPath': _integrations != null ? _integrations!.path : '',
         'selectedPatches': selectedPatches.map((p) => p.name).toList(),
         'cacheDirPath': _cacheDir!.path,
         'mergeIntegrations': mergeIntegrations,
@@ -231,7 +187,7 @@ class PatcherAPI {
     if (_outFile != null) {
       try {
         if (patchedApp.isRooted && !patchedApp.isFromStorage) {
-          return rootAPI.installApp(
+          return _rootAPI.installApp(
             patchedApp.packageName,
             patchedApp.apkFilePath,
             _outFile!.path,
@@ -268,14 +224,14 @@ class PatcherAPI {
 
   Future<bool> checkOldPatch(PatchedApplication patchedApp) async {
     if (patchedApp.isRooted) {
-      return await rootAPI.checkApp(patchedApp.packageName);
+      return await _rootAPI.checkApp(patchedApp.packageName);
     }
     return false;
   }
 
   Future<void> deleteOldPatch(PatchedApplication patchedApp) async {
     if (patchedApp.isRooted) {
-      await rootAPI.deleteApp(patchedApp.packageName, patchedApp.apkFilePath);
+      await _rootAPI.deleteApp(patchedApp.packageName, patchedApp.apkFilePath);
     }
   }
 }

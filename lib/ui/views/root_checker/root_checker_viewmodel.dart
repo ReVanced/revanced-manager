@@ -6,12 +6,13 @@ import 'package:root/root.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class RootCheckerViewModel extends BaseViewModel {
-  final _navigationService = locator<NavigationService>();
-  bool? isRooted = false;
+  final NavigationService _navigationService = locator<NavigationService>();
+  bool isRooted = false;
 
   Future<void> checkRoot() async {
-    isRooted = await Root.isRooted();
-    if (isRooted == true) {
+    bool? res = await Root.isRooted();
+    isRooted = res != null && res == true;
+    if (isRooted) {
       navigateToHome();
     }
     notifyListeners();
@@ -19,7 +20,7 @@ class RootCheckerViewModel extends BaseViewModel {
 
   Future<void> navigateToHome() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isRooted', isRooted!);
+    prefs.setBool('isRooted', isRooted);
     _navigationService.navigateTo(Routes.navigation);
     notifyListeners();
   }

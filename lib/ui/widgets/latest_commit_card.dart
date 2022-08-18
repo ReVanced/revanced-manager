@@ -6,9 +6,11 @@ import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
+  final Function() onPressed;
   final Color? color;
   const LatestCommitCard({
     Key? key,
+    required this.onPressed,
     this.color = const Color(0xff1B222B),
   }) : super(key: key);
 
@@ -17,7 +19,7 @@ class LatestCommitCard extends StatefulWidget {
 }
 
 class _LatestCommitCardState extends State<LatestCommitCard> {
-  final GithubAPI githubAPI = GithubAPI();
+  final GithubAPI _githubAPI = GithubAPI();
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +47,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                     ),
                   ),
                   FutureBuilder<String>(
-                    future: githubAPI.latestCommitTime(
-                      'revanced',
-                      'revanced-patcher',
-                    ),
+                    future: _githubAPI.latestCommitTime(ghOrg, patcherRepo),
                     builder: (context, snapshot) => Text(
                       snapshot.hasData && snapshot.data!.isNotEmpty
                           ? FlutterI18n.translate(
@@ -78,10 +77,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                     ),
                   ),
                   FutureBuilder<String>(
-                    future: githubAPI.latestCommitTime(
-                      'revanced',
-                      'revanced-manager',
-                    ),
+                    future: _githubAPI.latestCommitTime(ghOrg, managerRepo),
                     builder: (context, snapshot) => Text(
                       snapshot.hasData && snapshot.data!.isNotEmpty
                           ? FlutterI18n.translate(
@@ -105,7 +101,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               context,
               'latestCommitCard.updateButton',
             ),
-            onPressed: () => {},
+            onPressed: widget.onPressed,
             backgroundColor: Theme.of(context).colorScheme.secondary,
             borderColor: Theme.of(context).colorScheme.secondary,
           ),

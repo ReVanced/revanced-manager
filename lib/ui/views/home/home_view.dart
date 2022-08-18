@@ -55,6 +55,7 @@ class HomeView extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   LatestCommitCard(
+                    onPressed: () => model.updateManager(context),
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(height: 23),
@@ -77,7 +78,7 @@ class HomeView extends StatelessWidget {
                         label: "homeView.updatesAvailable",
                         isSelected: model.showUpdatableApps,
                         onSelected: (value) {
-                          model.toggleUpdatableApps(value);
+                          model.toggleUpdatableApps(true);
                         },
                       ),
                       const SizedBox(width: 10),

@@ -9,7 +9,9 @@
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched Applications",
         "updatesAvailable": "Updates Available",
-        "installed": "Installed"
+        "installed": "Installed",
+        "notificationTitle": "ReVanced Manager was updated!",
+        "notificationText": "Tap to open the app"
     },
     "applicationItem": {
         "patchButton": "Patch",
@@ -50,7 +52,9 @@
     "installerView": {
         "widgetTitle": "Installer",
         "fabInstallButton": "Install",
-        "fabOpenButton": "Open"
+        "fabOpenButton": "Open",
+        "notificationTitle": "ReVanced Manager is patching",
+        "notificationText": "Tap to return to the installer"
     },
     "settingsView": {
         "widgetTitle": "Settings",

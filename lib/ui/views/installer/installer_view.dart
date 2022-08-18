@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -15,9 +14,8 @@ class InstallerView extends StatelessWidget {
       (_) => _controller.jumpTo(_controller.position.maxScrollExtent),
     );
     return ViewModelBuilder<InstallerViewModel>.reactive(
-      disposeViewModel: false,
-      onModelReady: (model) => model.initialize(),
-      viewModelBuilder: () => locator<InstallerViewModel>(),
+      onModelReady: (model) => model.initialize(context),
+      viewModelBuilder: () => InstallerViewModel(),
       builder: (context, model, child) => WillPopScope(
         child: Scaffold(
           floatingActionButton: Visibility(

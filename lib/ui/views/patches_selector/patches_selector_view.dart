@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patch_item.dart';
@@ -15,16 +14,14 @@ class PatchesSelectorView extends StatefulWidget {
 }
 
 class _PatchesSelectorViewState extends State<PatchesSelectorView> {
-  final List<PatchItem> patches = [];
+  final List<PatchItem> _items = [];
   String query = '';
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
-      disposeViewModel: false,
-      fireOnModelReadyOnce: true,
       onModelReady: (model) => model.initialize(),
-      viewModelBuilder: () => locator<PatchesSelectorViewModel>(),
+      viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
           child: Padding(
@@ -62,7 +59,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () {
+                          model.selectPatches();
+                          Navigator.of(context).pop();
+                        },
                         child: I18nText('patchesSelectorView.fabButton'),
                       ),
                     ],
@@ -79,7 +79,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   }
 
   Widget _getAllResults(PatchesSelectorViewModel model) {
-    patches.clear();
+    _items.clear();
     return Expanded(
       child: ListView.builder(
         itemCount: model.patches.length,
@@ -93,8 +93,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             isSelected: model.selectedPatches.any(
               (element) => element.name == model.patches[index].name,
             ),
+            onChanged: (value) =>
+                model.selectPatch(model.patches[index].name, value),
           );
-          patches.add(item);
+          _items.add(item);
           return item;
         },
       ),
@@ -102,7 +104,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   }
 
   Widget _getFilteredResults(PatchesSelectorViewModel model) {
-    patches.clear();
+    _items.clear();
     return Expanded(
       child: ListView.builder(
         itemCount: model.patches.length,
@@ -119,8 +121,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               isSelected: model.selectedPatches.any(
                 (element) => element.name == model.patches[index].name,
               ),
+              onChanged: (value) =>
+                  model.selectPatch(model.patches[index].name, value),
             );
-            patches.add(item);
+            _items.add(item);
             return item;
           } else {
             return const SizedBox();

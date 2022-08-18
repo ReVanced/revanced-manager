@@ -14,7 +14,7 @@ class ApplicationItem extends StatelessWidget {
   final DateTime patchDate;
   final String changelog;
   final bool isUpdatableApp;
-  final Function()? onPressed;
+  final Function() onPressed;
 
   const ApplicationItem({
     Key? key,

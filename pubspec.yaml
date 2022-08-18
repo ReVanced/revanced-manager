@@ -4,7 +4,7 @@ homepage: https://github.com/Aunali321/revanced-manager
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -16,7 +16,6 @@ dependencies:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: appinfo-from-storage
-  dio: ^4.0.6
   expandable: ^5.0.1
   file_picker: ^5.0.1
   flutter:
@@ -24,6 +23,7 @@ dependencies:
   flutter_background: ^1.1.0
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.32.4
+  flutter_local_notifications: ^9.8.0+1
   flutter_svg: ^1.1.1+1
   fluttertoast: ^8.0.9
   get_it: ^7.2.0

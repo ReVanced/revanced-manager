@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
@@ -10,7 +11,7 @@ class InstalledAppsCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final GithubAPI githubAPI = GithubAPI();
+  final GithubAPI _githubAPI = GithubAPI();
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,10 @@ class InstalledAppsCard extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) => FutureBuilder<String>(
-                        future: githubAPI.getChangelog(
+                        future: _githubAPI.getChangelog(
                           snapshot.data![index],
-                          'revanced',
-                          'revanced-patches',
+                          ghOrg,
+                          patchesRepo,
                         ),
                         initialData: '',
                         builder: (context, snapshot2) => ApplicationItem(

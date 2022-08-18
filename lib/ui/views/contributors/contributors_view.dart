@@ -9,7 +9,6 @@ class ContributorsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ContributorsViewModel>.reactive(
-      disposeViewModel: false,
       viewModelBuilder: () => ContributorsViewModel(),
       onModelReady: (model) => model.getContributors(),
       builder: (context, model, child) => Scaffold(

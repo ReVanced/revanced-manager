@@ -1,38 +1,34 @@
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
-import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/patch_item.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
-  final PatcherAPI patcherAPI = locator<PatcherAPI>();
-  List<Patch> patches = [];
-  List<Patch> selectedPatches = [];
+  final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final List<Patch> patches = [];
+  final List<Patch> selectedPatches =
+      locator<PatcherViewModel>().selectedPatches;
 
   Future<void> initialize() async {
-    await getPatches();
+    patches.addAll(await _patcherAPI.getFilteredPatches(
+      locator<PatcherViewModel>().selectedApp,
+    ));
     notifyListeners();
   }
 
-  Future<void> getPatches() async {
-    PatchedApplication? app = locator<AppSelectorViewModel>().selectedApp;
-    patches = await patcherAPI.getFilteredPatches(app);
+  void selectPatch(String name, bool isSelected) {
+    Patch patch = patches.firstWhere((p) => p.name == name);
+    if (isSelected && !selectedPatches.contains(patch)) {
+      selectedPatches.add(patch);
+    } else {
+      selectedPatches.remove(patch);
+    }
+    notifyListeners();
   }
 
-  void selectPatch(PatchItem item) {
-    Patch patch = locator<PatchesSelectorViewModel>()
-        .patches
-        .firstWhere((p) => p.name == item.name);
-    if (item.isSelected &&
-        !locator<PatchesSelectorViewModel>().selectedPatches.contains(patch)) {
-      locator<PatchesSelectorViewModel>().selectedPatches.add(patch);
-    } else {
-      locator<PatchesSelectorViewModel>().selectedPatches.remove(patch);
-    }
-    locator<PatchesSelectorViewModel>().notifyListeners();
+  void selectPatches() {
+    locator<PatcherViewModel>().selectedPatches = selectedPatches;
     locator<PatcherViewModel>().notifyListeners();
   }
 }

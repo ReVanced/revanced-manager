@@ -1,30 +1,43 @@
 import 'dart:convert';
 import 'package:device_apps/device_apps.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerViewModel extends BaseViewModel {
+  final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final PatchedApplication? _app = locator<PatcherViewModel>().selectedApp;
+  final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
+  static const _installerChannel = MethodChannel(
+    'app.revanced.manager/installer',
+  );
   double? progress = 0.0;
   String logs = '';
   bool isPatching = false;
   bool isInstalled = false;
 
-  Future<void> initialize() async {
+  Future<void> initialize(BuildContext context) async {
     try {
       await FlutterBackground.initialize(
-        androidConfig: const FlutterBackgroundAndroidConfig(
-          notificationTitle: 'Patching',
-          notificationText: 'ReVanced Manager is patching',
+        androidConfig: FlutterBackgroundAndroidConfig(
+          notificationTitle: FlutterI18n.translate(
+            context,
+            'installerView.notificationTitle',
+          ),
+          notificationText: FlutterI18n.translate(
+            context,
+            'installerView.notificationText',
+          ),
           notificationImportance: AndroidNotificationImportance.Default,
-          notificationIcon: AndroidResource(
+          notificationIcon: const AndroidResource(
             name: 'ic_notification',
             defType: 'drawable',
           ),
@@ -32,9 +45,26 @@ class InstallerViewModel extends BaseViewModel {
       );
       await FlutterBackground.enableBackgroundExecution();
     } finally {
-      await locator<PatcherAPI>().handlePlatformChannelMethods();
+      await handlePlatformChannelMethods();
       await runPatcher();
     }
+  }
+
+  Future<dynamic> handlePlatformChannelMethods() async {
+    _installerChannel.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case 'updateProgress':
+          if (call.arguments != null) {
+            updateProgress(call.arguments);
+          }
+          break;
+        case 'updateLog':
+          if (call.arguments != null) {
+            updateLog(call.arguments);
+          }
+          break;
+      }
+    });
   }
 
   void updateProgress(double value) {
@@ -59,37 +89,32 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     updateProgress(0.0);
-    PatchedApplication? selectedApp =
-        locator<AppSelectorViewModel>().selectedApp;
-    List<Patch> selectedPatches =
-        locator<PatchesSelectorViewModel>().selectedPatches;
-    if (selectedApp != null && selectedPatches.isNotEmpty) {
-      String apkFilePath = selectedApp.apkFilePath;
+    if (_app != null && _patches.isNotEmpty) {
+      String apkFilePath = _app!.apkFilePath;
       try {
         updateLog('Initializing installer');
-        if (selectedApp.isRooted && !selectedApp.isFromStorage) {
+        if (_app!.isRooted && !_app!.isFromStorage) {
           updateLog('Checking if an old patched version exists');
-          bool oldExists =
-              await locator<PatcherAPI>().checkOldPatch(selectedApp);
+          bool oldExists = await _patcherAPI.checkOldPatch(_app!);
           if (oldExists) {
             updateLog('Deleting old patched version');
-            await locator<PatcherAPI>().deleteOldPatch(selectedApp);
+            await _patcherAPI.deleteOldPatch(_app!);
           }
         }
         updateLog('Creating working directory');
         bool mergeIntegrations = false;
         bool resourcePatching = false;
-        if (selectedApp.packageName == 'com.google.android.youtube') {
+        if (_app!.packageName == 'com.google.android.youtube') {
           mergeIntegrations = true;
           resourcePatching = true;
-        } else if (selectedApp.packageName ==
+        } else if (_app!.packageName ==
             'com.google.android.apps.youtube.music') {
           resourcePatching = true;
         }
-        await locator<PatcherAPI>().initPatcher(mergeIntegrations);
-        await locator<PatcherAPI>().runPatcher(
+        await _patcherAPI.initPatcher(mergeIntegrations);
+        await _patcherAPI.runPatcher(
           apkFilePath,
-          selectedPatches,
+          _patches,
           mergeIntegrations,
           resourcePatching,
         );
@@ -107,21 +132,16 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void installResult() async {
-    PatchedApplication? selectedApp =
-        locator<AppSelectorViewModel>().selectedApp;
-    List<Patch> selectedPatches =
-        locator<PatchesSelectorViewModel>().selectedPatches;
-    if (selectedApp != null) {
-      updateLog(selectedApp.isRooted
+    if (_app != null) {
+      updateLog(_app!.isRooted
           ? 'Installing patched file using root method'
           : 'Installing patched file using nonroot method');
-      isInstalled = await locator<PatcherAPI>().installPatchedFile(selectedApp);
+      isInstalled = await _patcherAPI.installPatchedFile(_app!);
       if (isInstalled) {
         updateLog('Done');
-        selectedApp.patchDate = DateTime.now();
-        selectedApp.appliedPatches
-            .addAll(selectedPatches.map((p) => p.name).toList());
-        await saveApp(selectedApp);
+        _app!.patchDate = DateTime.now();
+        _app!.appliedPatches.addAll(_patches.map((p) => p.name).toList());
+        await saveApp();
       } else {
         updateLog('An error occurred! Aborting');
       }
@@ -129,39 +149,33 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void shareResult() {
-    PatchedApplication? selectedApp =
-        locator<AppSelectorViewModel>().selectedApp;
-    if (selectedApp != null) {
-      locator<PatcherAPI>().sharePatchedFile(
-        selectedApp.name,
-        selectedApp.version,
-      );
+    if (_app != null) {
+      _patcherAPI.sharePatchedFile(_app!.name, _app!.version);
     }
   }
 
   Future<void> cleanWorkplace() async {
-    locator<PatcherAPI>().cleanPatcher();
-    locator<AppSelectorViewModel>().selectedApp = null;
-    locator<PatchesSelectorViewModel>().selectedPatches.clear();
-    locator<PatchesSelectorViewModel>().notifyListeners();
+    _patcherAPI.cleanPatcher();
+    locator<PatcherViewModel>().selectedApp = null;
+    locator<PatcherViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().notifyListeners();
   }
 
   void openApp() {
-    PatchedApplication? selectedApp =
-        locator<AppSelectorViewModel>().selectedApp;
-    if (selectedApp != null) {
-      DeviceApps.openApp(selectedApp.packageName);
+    if (_app != null) {
+      DeviceApps.openApp(_app!.packageName);
     }
   }
 
-  Future<void> saveApp(PatchedApplication selectedApp) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
-    String app = json.encode(selectedApp.toJson());
-    patchedApps.removeWhere(
-        (a) => json.decode(a)['packageName'] == selectedApp.packageName);
-    patchedApps.add(app);
-    prefs.setStringList('patchedApps', patchedApps);
+  Future<void> saveApp() async {
+    if (_app != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
+      String appStr = json.encode(_app!.toJson());
+      patchedApps.removeWhere(
+          (a) => json.decode(a)['packageName'] == _app!.packageName);
+      patchedApps.add(appStr);
+      prefs.setStringList('patchedApps', patchedApps);
+    }
   }
 }

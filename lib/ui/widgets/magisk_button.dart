@@ -5,10 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/theme.dart';
 
 class MagiskButton extends StatelessWidget {
-  final Function()? onPressed;
+  final Function() onPressed;
   const MagiskButton({
     Key? key,
-    this.onPressed,
+    required this.onPressed,
   }) : super(key: key);
 
   @override

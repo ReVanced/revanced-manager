@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/search_bar.dart';
@@ -15,14 +14,13 @@ class AppSelectorView extends StatefulWidget {
 }
 
 class _AppSelectorViewState extends State<AppSelectorView> {
-  String query = '';
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AppSelectorViewModel>.reactive(
-      disposeViewModel: false,
       onModelReady: (model) => model.initialize(),
-      viewModelBuilder: () => locator<AppSelectorViewModel>(),
+      viewModelBuilder: () => AppSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -51,17 +49,17 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                         hintTextColor: Theme.of(context).colorScheme.tertiary,
                         onQueryChanged: (searchQuery) {
                           setState(() {
-                            query = searchQuery;
+                            _query = searchQuery;
                           });
                         },
                       ),
                       const SizedBox(height: 12),
-                      query.isEmpty || query.length < 2
+                      _query.isEmpty || _query.length < 2
                           ? _getAllResults(model)
                           : _getFilteredResults(model)
                     ],
                   )
-                : query.isEmpty || query.length < 2
+                : _query.isEmpty || _query.length < 2
                     ? Center(
                         child: CircularProgressIndicator(
                           color: Theme.of(context).colorScheme.secondary,
@@ -105,7 +103,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
         itemBuilder: (context, index) {
           model.apps.sort((a, b) => a.appName.compareTo(b.appName));
           if (model.apps[index].appName.toLowerCase().contains(
-                query.toLowerCase(),
+                _query.toLowerCase(),
               )) {
             return InkWell(
               onTap: () {

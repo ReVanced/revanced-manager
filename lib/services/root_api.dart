@@ -1,16 +1,14 @@
-import 'package:injectable/injectable.dart';
 import 'package:root/root.dart';
 
-@lazySingleton
 class RootAPI {
-  final String managerDirPath = "/data/adb/revanced_manager";
-  final String postFsDataDirPath = "/data/adb/post-fs-data.d";
-  final String serviceDDirPath = "/data/adb/service.d";
+  final String _managerDirPath = "/data/adb/revanced_manager";
+  final String _postFsDataDirPath = "/data/adb/post-fs-data.d";
+  final String _serviceDDirPath = "/data/adb/service.d";
 
   Future<bool> checkApp(String packageName) async {
     try {
       String? res = await Root.exec(
-        cmd: 'ls -la "$managerDirPath/$packageName"',
+        cmd: 'ls -la "$_managerDirPath/$packageName"',
       );
       return res != null && res.isNotEmpty;
     } on Exception {
@@ -26,13 +24,13 @@ class RootAPI {
       cmd: 'su -mm -c "umount -l $originalFilePath"',
     );
     await Root.exec(
-      cmd: 'rm -rf "$managerDirPath/$packageName"',
+      cmd: 'rm -rf "$_managerDirPath/$packageName"',
     );
     await Root.exec(
-      cmd: 'rm -rf "$serviceDDirPath/$packageName.sh"',
+      cmd: 'rm -rf "$_serviceDDirPath/$packageName.sh"',
     );
     await Root.exec(
-      cmd: 'rm -rf "$postFsDataDirPath/$packageName.sh"',
+      cmd: 'rm -rf "$_postFsDataDirPath/$packageName.sh"',
     );
   }
 
@@ -43,7 +41,7 @@ class RootAPI {
   ) async {
     try {
       await Root.exec(
-        cmd: 'mkdir -p "$managerDirPath/$packageName"',
+        cmd: 'mkdir -p "$_managerDirPath/$packageName"',
       );
       installServiceDScript(packageName);
       installPostFsDataScript(packageName);
@@ -58,10 +56,10 @@ class RootAPI {
   Future<void> installServiceDScript(String packageName) async {
     String content = '#!/system/bin/sh\n'
         'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 1; done\n'
-        'base_path=$managerDirPath/$packageName/base.apk\n'
+        'base_path=$_managerDirPath/$packageName/base.apk\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
         '[ ! -z \$stock_path ] && mount -o bind \$base_path \$stock_path';
-    String scriptFilePath = '$serviceDDirPath/$packageName.sh';
+    String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
     await Root.exec(
       cmd: 'echo \'$content\' > "$scriptFilePath"',
     );
@@ -74,7 +72,7 @@ class RootAPI {
     String content = '#!/system/bin/sh\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
         '[ ! -z \$stock_path ] && umount -l \$stock_path';
-    String scriptFilePath = '$postFsDataDirPath/$packageName.sh';
+    String scriptFilePath = '$_postFsDataDirPath/$packageName.sh';
     await Root.exec(
       cmd: 'echo \'$content\' > "$scriptFilePath"',
     );
@@ -84,7 +82,7 @@ class RootAPI {
   }
 
   Future<void> installApk(String packageName, String patchedFilePath) async {
-    String newPatchedFilePath = '$managerDirPath/$packageName/base.apk';
+    String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'cp "$patchedFilePath" "$newPatchedFilePath"',
     );
@@ -104,7 +102,7 @@ class RootAPI {
     String originalFilePath,
     String patchedFilePath,
   ) async {
-    String newPatchedFilePath = '$managerDirPath/$packageName/base.apk';
+    String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'am force-stop "$packageName"',
     );
