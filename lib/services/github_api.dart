@@ -1,13 +1,23 @@
 import 'dart:io';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:github/github.dart';
-import 'package:revanced_manager/models/patched_application.dart';
 import 'package:timeago/timeago.dart';
 
 class GithubAPI {
   final GitHub _github = GitHub();
 
-  Future<File?> latestRelease(String org, repoName) async {
+  Future<String?> latestReleaseVersion(String org, repoName) async {
+    try {
+      var latestRelease = await _github.repositories.getLatestRelease(
+        RepositorySlug(org, repoName),
+      );
+      return latestRelease.tagName;
+    } on Exception {
+      return null;
+    }
+  }
+
+  Future<File?> latestReleaseFile(String org, repoName) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
         RepositorySlug(org, repoName),
@@ -50,16 +60,5 @@ class GithubAPI {
     } on Exception {
       return List.empty();
     }
-  }
-
-  Future<bool> hasUpdates(PatchedApplication app, String org, repoName) async {
-    // TODO: get status based on last update time on the folder of this app?
-    return true;
-  }
-
-  Future<String> getChangelog(
-      PatchedApplication app, String org, repoName) async {
-    // TODO: get changelog based on last commits on the folder of this app?
-    return 'fix: incorrect fingerprint version';
   }
 }

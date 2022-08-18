@@ -8,9 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
-import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/models/patched_application.dart';
-import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -22,7 +20,6 @@ import 'package:stacked_services/stacked_services.dart';
 class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = ManagerAPI();
-  final GithubAPI _githubAPI = GithubAPI();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -56,12 +53,29 @@ class HomeViewModel extends BaseViewModel {
     List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
     for (String str in patchedApps) {
       PatchedApplication app = PatchedApplication.fromJson(json.decode(str));
-      bool hasUpdates = await _githubAPI.hasUpdates(app, ghOrg, patchesRepo);
+      bool hasUpdates = await _managerAPI.hasAppUpdates(app.packageName);
       if (hasUpdates == isUpdatable) {
         list.add(app);
       }
     }
     return list;
+  }
+
+  Future<bool> hasManagerUpdates() async {
+    String? latestVersion = await _managerAPI.getLatestManagerVersion();
+    String currentVersion = await _managerAPI.getCurrentManagerVersion();
+    if (latestVersion != null) {
+      try {
+        int latestVersionInt =
+            int.parse(latestVersion.replaceFirst('v', '').replaceAll('.', ''));
+        int currentVersionInt =
+            int.parse(currentVersion.replaceFirst('v', '').replaceAll('.', ''));
+        return latestVersionInt > currentVersionInt;
+      } on Exception {
+        return false;
+      }
+    }
+    return false;
   }
 
   void updateManager(BuildContext context) async {

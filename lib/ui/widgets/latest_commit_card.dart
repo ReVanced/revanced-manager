@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
@@ -96,14 +98,23 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               ),
             ],
           ),
-          PatchTextButton(
-            text: FlutterI18n.translate(
-              context,
-              'latestCommitCard.updateButton',
+          FutureBuilder<bool>(
+            future: locator<HomeViewModel>().hasManagerUpdates(),
+            initialData: false,
+            builder: (context, snapshot) => Opacity(
+              opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.5,
+              child: PatchTextButton(
+                text: FlutterI18n.translate(
+                  context,
+                  'latestCommitCard.updateButton',
+                ),
+                onPressed: snapshot.hasData && snapshot.data!
+                    ? widget.onPressed
+                    : () => {},
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                borderColor: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-            onPressed: widget.onPressed,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            borderColor: Theme.of(context).colorScheme.secondary,
           ),
         ],
       ),
