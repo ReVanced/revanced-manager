@@ -27,6 +27,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: flutter build apk --debug
+      - name: Add version to APK
+        run: mv build/app/outputs/flutter-apk/app-debug.apk revanced-manager-$GITHUB_REF_NAME.apk
       - name: Publish debug APK
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -34,4 +36,4 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: build/app/outputs/flutter-apk/app-debug.apk
+          files: revanced-manager-$GITHUB_REF_NAME.apk
