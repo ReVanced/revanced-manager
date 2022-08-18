@@ -1,9 +1,11 @@
-name: "Release Build"
+name: "Debug Build"
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - "master"
+    tags-ignore:
+      - "*"
 
 jobs:
   build:
@@ -24,12 +26,12 @@ jobs:
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: flutter build apk
-      - name: Add version to APK
-        run: mv build/app/outputs/flutter-apk/app-release.apk revanced-manager-$GITHUB_REF_NAME.apk
-      - name: Publish release APK
+        run: flutter build apk --debug
+      - name: Publish debug APK
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: revanced-manager-$GITHUB_REF_NAME.apk
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: build/app/outputs/flutter-apk/app-debug.apk
