@@ -11,7 +11,11 @@
         "updatesAvailable": "Updates Available",
         "installed": "Installed",
         "notificationTitle": "ReVanced Manager was updated!",
-        "notificationText": "Tap to open the app"
+        "notificationText": "Tap to open the app",
+        "downloadingMessage": "Downloading update!",
+        "installingMessage": "Installing update!",
+        "errorDownloadMessage": "Unable to download update!",
+        "errorInstallMessage": "Unable to download update!"
     },
     "applicationItem": {
         "patchButton": "Patch",
