@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
 import 'dart:io';
 import 'package:app_installer/app_installer.dart';
@@ -5,6 +6,7 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -79,16 +81,22 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void updateManager(BuildContext context) async {
+    Fluttertoast.showToast(
+      msg: FlutterI18n.translate(
+        context,
+        'homeView.downloadingMessage',
+      ),
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+    );
     File? managerApk = await _managerAPI.downloadManager();
     if (managerApk != null) {
       flutterLocalNotificationsPlugin.show(
         0,
-        // ignore: use_build_context_synchronously
         FlutterI18n.translate(
           context,
           'homeView.notificationTitle',
         ),
-        // ignore: use_build_context_synchronously
         FlutterI18n.translate(
           context,
           'homeView.notificationText',
@@ -100,7 +108,35 @@ class HomeViewModel extends BaseViewModel {
           ),
         ),
       );
-      AppInstaller.installApk(managerApk.path);
+      try {
+        Fluttertoast.showToast(
+          msg: FlutterI18n.translate(
+            context,
+            'homeView.installingMessage',
+          ),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+        await AppInstaller.installApk(managerApk.path);
+      } on Exception {
+        Fluttertoast.showToast(
+          msg: FlutterI18n.translate(
+            context,
+            'homeView.errorInstallMessage',
+          ),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: FlutterI18n.translate(
+          context,
+          'homeView.errorDownloadMessage',
+        ),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 }
