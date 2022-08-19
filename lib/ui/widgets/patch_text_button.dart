@@ -37,7 +37,7 @@ class PatchTextButton extends StatelessWidget {
       child: I18nText(text,
           child: Text(
             '',
-            style: interTextStyle.copyWith(
+            style: kInterTextStyle.copyWith(
               color: backgroundColor == Colors.transparent
                   ? const Color.fromRGBO(119, 146, 186, 1)
                   : isDark

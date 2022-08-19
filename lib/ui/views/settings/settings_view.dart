@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/about_info_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
@@ -15,18 +18,30 @@ class SettingsView extends StatelessWidget {
       builder: (context, SettingsViewModel model, child) => Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                const SizedBox(height: 12),
                 I18nText(
                   'settingsView.widgetTitle',
                   child: Text(
                     '',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: GoogleFonts.inter(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
+                const SizedBox(height: 12),
                 ListTile(
-                  title: I18nText('settingsView.themeLabel'),
+                  title: I18nText(
+                    'settingsView.themeLabel',
+                    child: Text(
+                      '',
+                      style: kSettingItemTextStyle,
+                    ),
+                  ),
                   subtitle: I18nText('settingsView.themeHint'),
                   trailing: Switch(
                     value: isDark,
@@ -46,12 +61,7 @@ class SettingsView extends StatelessWidget {
                     children: [
                       I18nText(
                         'settingsView.languageLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
+                        child: Text('', style: kSettingItemTextStyle),
                       ),
                       DropdownButton(
                         value: 'en',
@@ -73,12 +83,13 @@ class SettingsView extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  title: I18nText('settingsView.aboutLabel'),
-                ),
-                ListTile(
-                  title: I18nText('settingsView.contributorsLabel'),
+                  title: I18nText(
+                    'settingsView.contributorsLabel',
+                    child: Text('', style: kSettingItemTextStyle),
+                  ),
                   onTap: model.navigateToContributors,
                 ),
+                const AboutWidget(),
               ],
             ),
           ),

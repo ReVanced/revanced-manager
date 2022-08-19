@@ -16,6 +16,7 @@ dependencies:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: appinfo-from-storage
+  device_info_plus: ^4.1.2
   expandable: ^5.0.1
   file_picker: ^5.0.1
   flutter:

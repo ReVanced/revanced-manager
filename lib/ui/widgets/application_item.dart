@@ -67,7 +67,7 @@ class ApplicationItem extends StatelessWidget {
                   ),
                   Text(
                     format(patchDate, locale: 'en_short'),
-                    style: robotoTextStyle.copyWith(
+                    style: kRobotoTextStyle.copyWith(
                       color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
@@ -100,12 +100,12 @@ class ApplicationItem extends StatelessWidget {
               'applicationItem.changelogLabel',
               child: Text(
                 '',
-                style: robotoTextStyle.copyWith(fontWeight: FontWeight.w700),
+                style: kRobotoTextStyle.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
             Text(
               changelog,
-              style: robotoTextStyle,
+              style: kRobotoTextStyle,
             ),
           ],
         ),

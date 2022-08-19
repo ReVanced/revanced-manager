@@ -60,7 +60,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                   const SizedBox(height: 4),
                   Text(
                     widget.pkgName,
-                    style: robotoTextStyle,
+                    style: kRobotoTextStyle,
                   ),
                 ],
               ),

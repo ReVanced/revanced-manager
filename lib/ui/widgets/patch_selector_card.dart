@@ -48,7 +48,7 @@ class PatchSelectorCard extends StatelessWidget {
                     'patchSelectorCard.widgetSubtitle',
                     child: Text(
                       '',
-                      style: robotoTextStyle,
+                      style: kRobotoTextStyle,
                     ),
                   )
                 : locator<PatcherViewModel>().selectedPatches.isEmpty
@@ -56,12 +56,12 @@ class PatchSelectorCard extends StatelessWidget {
                         'patchSelectorCard.widgetEmptySubtitle',
                         child: Text(
                           '',
-                          style: robotoTextStyle,
+                          style: kRobotoTextStyle,
                         ),
                       )
                     : Text(
                         _getPatchesSelection(),
-                        style: robotoTextStyle,
+                        style: kRobotoTextStyle,
                       ),
           ],
         ),

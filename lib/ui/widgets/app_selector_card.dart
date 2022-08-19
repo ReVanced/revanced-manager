@@ -49,7 +49,7 @@ class AppSelectorCard extends StatelessWidget {
                     'appSelectorCard.widgetSubtitle',
                     child: Text(
                       '',
-                      style: robotoTextStyle,
+                      style: kRobotoTextStyle,
                     ),
                   )
                 : Row(
@@ -68,7 +68,7 @@ class AppSelectorCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         _getAppSelection(),
-                        style: robotoTextStyle,
+                        style: kRobotoTextStyle,
                       ),
                     ],
                   ),

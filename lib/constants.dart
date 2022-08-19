@@ -8,8 +8,16 @@ const purple40 = Color(0xFF6650a4);
 const purpleGrey40 = Color(0xFF625b71);
 const pink40 = Color(0xFF7D5260);
 
-final interTextStyle = GoogleFonts.inter();
-final robotoTextStyle = GoogleFonts.roboto();
+final kInterTextStyle = GoogleFonts.inter();
+final kRobotoTextStyle = GoogleFonts.roboto();
+final kSettingItemTextStyle = GoogleFonts.roboto(
+  fontSize: 20,
+  fontWeight: FontWeight.w500,
+);
+final kSettingItemSubtitleTextStyle = GoogleFonts.roboto(
+  fontSize: 13,
+  fontWeight: FontWeight.w300,
+);
 
 const ghOrg = 'revanced';
 const patchesRepo = 'revanced-patches';
