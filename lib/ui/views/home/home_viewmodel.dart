@@ -89,7 +89,7 @@ class HomeViewModel extends BaseViewModel {
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.CENTER,
     );
-    File? managerApk = await _managerAPI.downloadManager();
+    File? managerApk = await _managerAPI.downloadManager('.apk');
     if (managerApk != null) {
       flutterLocalNotificationsPlugin.show(
         0,

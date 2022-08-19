@@ -17,7 +17,11 @@ class GithubAPI {
     }
   }
 
-  Future<File?> latestReleaseFile(String org, repoName) async {
+  Future<File?> latestReleaseFile(
+    String extension,
+    String org,
+    repoName,
+  ) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
         RepositorySlug(org, repoName),
@@ -25,7 +29,7 @@ class GithubAPI {
       String? url = latestRelease.assets
           ?.firstWhere((asset) =>
               asset.name != null &&
-              (asset.name!.endsWith('.dex') || asset.name!.endsWith('.apk')) &&
+              asset.name!.endsWith(extension) &&
               !asset.name!.contains('-sources') &&
               !asset.name!.contains('-javadoc'))
           .browserDownloadUrl;

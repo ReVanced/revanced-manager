@@ -21,6 +21,7 @@ dependencies:
   file_picker: ^5.0.1
   flutter:
     sdk: flutter
+  flutter_archive: ^5.0.0
   flutter_background: ^1.1.0
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.32.4

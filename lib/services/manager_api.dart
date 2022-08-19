@@ -6,19 +6,20 @@ import 'package:revanced_manager/services/github_api.dart';
 class ManagerAPI {
   final GithubAPI _githubAPI = GithubAPI();
 
-  Future<File?> downloadPatches() async {
-    return await _githubAPI.latestReleaseFile(ghOrg, patchesRepo);
+  Future<File?> downloadPatches(String extension) async {
+    return await _githubAPI.latestReleaseFile(extension, ghOrg, patchesRepo);
   }
 
-  Future<File?> downloadIntegrations() async {
-    return await _githubAPI.latestReleaseFile(ghOrg, integrationsRepo);
-  }
-
-  Future<File?> downloadManager() async {
+  Future<File?> downloadIntegrations(String extension) async {
     return await _githubAPI.latestReleaseFile(
-      'Aunali321',
-      'revanced-manager-flutter',
+      extension,
+      ghOrg,
+      integrationsRepo,
     );
+  }
+
+  Future<File?> downloadManager(String extension) async {
+    return await _githubAPI.latestReleaseFile(extension, ghOrg, managerRepo);
   }
 
   Future<String?> getLatestPatchesVersion() async {
@@ -26,10 +27,7 @@ class ManagerAPI {
   }
 
   Future<String?> getLatestManagerVersion() async {
-    return await _githubAPI.latestReleaseVersion(
-      'Aunali321',
-      'revanced-manager-flutter',
-    );
+    return await _githubAPI.latestReleaseVersion(ghOrg, managerRepo);
   }
 
   Future<String> getCurrentManagerVersion() async {

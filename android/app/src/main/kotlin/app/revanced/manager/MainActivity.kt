@@ -16,7 +16,7 @@ import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 import app.revanced.patcher.patch.Patch
-import app.revanced.patcher.util.patch.implementation.DexPatchBundle
+import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -41,9 +41,10 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "loadPatches" -> {
-                    val pathBundlesPaths = call.argument<List<String>>("pathBundlesPaths")
-                    if (pathBundlesPaths != null) {
-                        loadPatches(result, pathBundlesPaths)
+                    val zipPatchBundlePath = call.argument<String>("zipPatchBundlePath")
+                    val cacheDirPath = call.argument<String>("cacheDirPath")
+                    if (zipPatchBundlePath != null && cacheDirPath != null) {
+                        loadPatches(result, zipPatchBundlePath, cacheDirPath)
                     } else {
                         result.notImplemented()
                     }
@@ -100,23 +101,25 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    fun loadPatches(result: MethodChannel.Result, pathBundlesPaths: List<String>) {
+    fun loadPatches(
+            result: MethodChannel.Result,
+            zipPatchBundlePath: String,
+            cacheDirPath: String
+    ) {
         Thread(
                         Runnable {
-                            pathBundlesPaths.forEach { path ->
-                                patches.addAll(
-                                        DexPatchBundle(
-                                                        path,
-                                                        DexClassLoader(
-                                                                path,
-                                                                applicationContext.cacheDir.path,
-                                                                null,
-                                                                javaClass.classLoader
-                                                        )
-                                                )
-                                                .loadPatches()
-                                )
-                            }
+                            patches.addAll(
+                                    DexPatchBundle(
+                                                    zipPatchBundlePath,
+                                                    DexClassLoader(
+                                                            zipPatchBundlePath,
+                                                            cacheDirPath,
+                                                            null,
+                                                            javaClass.classLoader
+                                                    )
+                                            )
+                                            .loadPatches()
+                            )
                             handler.post { result.success(null) }
                         }
                 )
@@ -185,7 +188,8 @@ class MainActivity : FlutterActivity() {
         val patchedFile = File(patchedFilePath)
         val outFile = File(outFilePath)
         val integrations = File(integrationsPath)
-        val filteredPatches = patches.filter { patch -> selectedPatches.any { it == patch.patchName } }
+        val filteredPatches =
+                patches.filter { patch -> selectedPatches.any { it == patch.patchName } }
 
         Thread(
                         Runnable {
@@ -289,7 +293,7 @@ class MainActivity : FlutterActivity() {
                                 res.dexFiles.forEach {
                                     file.addEntryCompressData(
                                             ZipEntry.createWithName(it.name),
-                                            it.dexFileInputStream.readBytes()
+                                            it.stream.readBytes()
                                     )
                                 }
                                 res.resourceFile?.let {

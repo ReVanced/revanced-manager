@@ -30,12 +30,12 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
     sourceSets {
@@ -67,7 +67,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // ReVanced
-    implementation "app.revanced:revanced-patcher:3.3.1"
+    implementation "app.revanced:revanced-patcher:3.3.3"
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")

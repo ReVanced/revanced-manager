@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:app_installer/app_installer.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -21,29 +22,47 @@ class PatcherAPI {
   Directory? _tmpDir;
   Directory? _workDir;
   Directory? _cacheDir;
-  File? _patchBundleFile;
+  File? _zipPatchBundleFile;
   File? _integrations;
   File? _inputFile;
   File? _patchedFile;
   File? _outFile;
 
+  Future<void> initPatcher() async {
+    _tmpDir = await getTemporaryDirectory();
+    _workDir = _tmpDir!.createTempSync('tmp-');
+    _inputFile = File('${_workDir!.path}/base.apk');
+    _patchedFile = File('${_workDir!.path}/patched.apk');
+    _outFile = File('${_workDir!.path}/out.apk');
+    _cacheDir = Directory('${_workDir!.path}/cache');
+    _cacheDir!.createSync();
+  }
+
   Future<void> loadPatches() async {
-    if (_patchBundleFile == null) {
-      _patchBundleFile = await _managerAPI.downloadPatches();
-      if (_patchBundleFile != null) {
-        await patcherChannel.invokeMethod<bool>(
-          'loadPatches',
-          {
-            'pathBundlesPaths': <String>[_patchBundleFile!.absolute.path],
-          },
-        );
+    if (_cacheDir == null) {
+      await initPatcher();
+    }
+    if (_zipPatchBundleFile == null) {
+      File? patchBundleDexFile = await _managerAPI.downloadPatches('.dex');
+      File? patchBundleJarFile = await _managerAPI.downloadPatches('.jar');
+      if (patchBundleDexFile != null && patchBundleJarFile != null) {
+        await joinPatchBundleFiles(patchBundleDexFile, patchBundleJarFile);
+        if (_zipPatchBundleFile != null) {
+          await patcherChannel.invokeMethod<bool>(
+            'loadPatches',
+            {
+              'zipPatchBundlePath': _zipPatchBundleFile!.path,
+              'cacheDirPath': _cacheDir!.path,
+            },
+          );
+        }
       }
     }
   }
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     List<ApplicationWithIcon> filteredPackages = [];
-    if (_patchBundleFile != null) {
+    if (_zipPatchBundleFile != null) {
       try {
         List<String>? patchesPackages = await patcherChannel
             .invokeListMethod<String>('getCompatiblePackages');
@@ -71,7 +90,7 @@ class PatcherAPI {
     PatchedApplication? selectedApp,
   ) async {
     List<Patch> filteredPatches = [];
-    if (_patchBundleFile != null && selectedApp != null) {
+    if (_zipPatchBundleFile != null && selectedApp != null) {
       try {
         var patches =
             await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
@@ -112,7 +131,7 @@ class PatcherAPI {
     PatchedApplication? selectedApp,
   ) async {
     List<Patch> appliedPatches = [];
-    if (_patchBundleFile != null && selectedApp != null) {
+    if (_zipPatchBundleFile != null && selectedApp != null) {
       try {
         var patches =
             await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
@@ -148,17 +167,12 @@ class PatcherAPI {
     return appliedPatches;
   }
 
-  Future<void> initPatcher(bool mergeIntegrations) async {
+  Future<void> mergeIntegrations(bool mergeIntegrations) async {
     if (mergeIntegrations) {
-      _integrations = await _managerAPI.downloadIntegrations();
+      _integrations = await _managerAPI.downloadIntegrations('.apk');
+    } else {
+      _integrations = null;
     }
-    _tmpDir = await getTemporaryDirectory();
-    _workDir = _tmpDir!.createTempSync('tmp-');
-    _inputFile = File('${_workDir!.path}/base.apk');
-    _patchedFile = File('${_workDir!.path}/patched.apk');
-    _outFile = File('${_workDir!.path}/out.apk');
-    _cacheDir = Directory('${_workDir!.path}/cache');
-    _cacheDir!.createSync();
   }
 
   Future<void> runPatcher(
@@ -232,6 +246,28 @@ class PatcherAPI {
   Future<void> deleteOldPatch(PatchedApplication patchedApp) async {
     if (patchedApp.isRooted) {
       await _rootAPI.deleteApp(patchedApp.packageName, patchedApp.apkFilePath);
+    }
+  }
+
+  Future<void> joinPatchBundleFiles(
+    File patchBundleDexFile,
+    File patchBundleJarFile,
+  ) async {
+    _zipPatchBundleFile = File('${_workDir!.path}/join.zip');
+    Directory joinDir = Directory('${_cacheDir!.path}/join');
+    try {
+      await ZipFile.extractToDirectory(
+        zipFile: patchBundleJarFile,
+        destinationDir: joinDir,
+      );
+      patchBundleDexFile.copySync('${joinDir.path}/classes.dex');
+      await ZipFile.createFromDirectory(
+        sourceDir: joinDir,
+        zipFile: _zipPatchBundleFile!,
+        recurseSubDirs: true,
+      );
+    } on Exception {
+      _zipPatchBundleFile = null;
     }
   }
 }

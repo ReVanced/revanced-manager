@@ -111,7 +111,7 @@ class InstallerViewModel extends BaseViewModel {
             'com.google.android.apps.youtube.music') {
           resourcePatching = true;
         }
-        await _patcherAPI.initPatcher(mergeIntegrations);
+        await _patcherAPI.mergeIntegrations(mergeIntegrations);
         await _patcherAPI.runPatcher(
           apkFilePath,
           _patches,
