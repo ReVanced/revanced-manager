@@ -69,7 +69,9 @@
         "lightThemeLabel": "Light",
         "versionLabel": "Version",
         "aboutLabel": "About",
-        "contributorsLabel": "Contributors"
+        "contributorsLabel": "Contributors",
+        "rootModeLabel": "Root Mode",
+        "rootModeHint": "Enable this if you want to patch applications as rooted."
     },
     "rootCheckerView": {
         "widgetTitle": "Is your device rooted?",
