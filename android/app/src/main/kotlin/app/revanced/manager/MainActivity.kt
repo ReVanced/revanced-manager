@@ -41,10 +41,10 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "loadPatches" -> {
-                    val zipPatchBundlePath = call.argument<String>("zipPatchBundlePath")
+                    val jarPatchBundlePath = call.argument<String>("jarPatchBundlePath")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
-                    if (zipPatchBundlePath != null && cacheDirPath != null) {
-                        loadPatches(result, zipPatchBundlePath, cacheDirPath)
+                    if (jarPatchBundlePath != null && cacheDirPath != null) {
+                        loadPatches(result, jarPatchBundlePath, cacheDirPath)
                     } else {
                         result.notImplemented()
                     }
@@ -103,16 +103,16 @@ class MainActivity : FlutterActivity() {
 
     fun loadPatches(
             result: MethodChannel.Result,
-            zipPatchBundlePath: String,
+            jarPatchBundlePath: String,
             cacheDirPath: String
     ) {
         Thread(
                         Runnable {
                             patches.addAll(
                                     DexPatchBundle(
-                                                    zipPatchBundlePath,
+                                                    jarPatchBundlePath,
                                                     DexClassLoader(
-                                                            zipPatchBundlePath,
+                                                            jarPatchBundlePath,
                                                             cacheDirPath,
                                                             null,
                                                             javaClass.classLoader
