@@ -5,6 +5,7 @@ import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_info_widget.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_switch_item.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
@@ -20,11 +21,11 @@ class SettingsView extends StatelessWidget {
       builder: (context, SettingsViewModel model, child) => Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 12),
+                const SizedBox(height: 60),
                 I18nText(
                   'settingsView.widgetTitle',
                   child: Text(
@@ -36,22 +37,14 @@ class SettingsView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                ListTile(
-                  title: I18nText(
-                    'settingsView.themeLabel',
-                    child: Text(
-                      '',
-                      style: kSettingItemTextStyle,
-                    ),
-                  ),
-                  subtitle: I18nText('settingsView.themeHint'),
-                  trailing: Switch(
-                    value: isDark,
-                    onChanged: (value) {
-                      isDark = value;
-                      getThemeManager(context).toggleDarkLightTheme();
-                    },
-                  ),
+                SettingsSwitchItem(
+                  title: 'settingsView.themeLabel',
+                  subtitle: 'settingsView.themeHint',
+                  value: isDark,
+                  onTap: (value) {
+                    isDark = value;
+                    getThemeManager(context).toggleDarkLightTheme();
+                  },
                 ),
                 ListTile(
                   title: I18nText(

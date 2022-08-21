@@ -29,11 +29,11 @@ class PatcherView extends StatelessWidget {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 12),
+                const SizedBox(height: 60),
                 I18nText(
                   'patcherView.widgetTitle',
                   child: Text(
