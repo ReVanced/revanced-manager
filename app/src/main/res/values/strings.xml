@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name" translatable="false">ReVanced Manager</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="patcher">Patcher</string>
+    <string name="dynamic_color">Dynamic Color</string>
+    <string name="github" translatable="false">GitHub</string>
+    <string name="settings">Settings</string>
+    <string name="updates">Updates</string>
+    <string name="manager">Manager</string>
+    <string name="update_manager">Update Manager</string>
+    <string name="patched_apps">Installed</string>
+    <string name="update_all">Update All</string>
+    <string name="updates_available">Available updates</string>
+    <string name="expand">Expand</string>
+    <string name="update">Update</string>
+</resources>
