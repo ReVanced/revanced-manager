@@ -1,6 +1,6 @@
 # ReVanced Manager
 
-An unofficial ReVanced Manager based on Flutter.
+The official ReVanced Manager based on Flutter.
 
 ## Credits
 - Vanced team for the original idea
