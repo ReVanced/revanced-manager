@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/root_checker/root_checker_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/magisk_button.dart';
+import 'package:revanced_manager/ui/widgets/rootCheckerView/magisk_button.dart';
 import 'package:stacked/stacked.dart';
 
 class RootCheckerView extends StatelessWidget {

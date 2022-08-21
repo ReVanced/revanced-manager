@@ -3,7 +3,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/application_item.dart';
+import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 
 class InstalledAppsCard extends StatelessWidget {
   InstalledAppsCard({

@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/app_selector_card.dart';
-import 'package:revanced_manager/ui/widgets/patch_selector_card.dart';
+import 'package:revanced_manager/ui/widgets/patcherView/app_selector_card.dart';
+import 'package:revanced_manager/ui/widgets/patcherView/patch_selector_card.dart';
 import 'package:stacked/stacked.dart';
 
 class PatcherView extends StatelessWidget {

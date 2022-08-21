@@ -5,7 +5,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/patch_text_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
   final Function() onPressed;

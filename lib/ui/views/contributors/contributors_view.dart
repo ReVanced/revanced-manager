@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/contributors_card.dart';
+import 'package:revanced_manager/ui/widgets/contributorsView/contributors_card.dart';
 import 'package:stacked/stacked.dart';
 
 class ContributorsView extends StatelessWidget {

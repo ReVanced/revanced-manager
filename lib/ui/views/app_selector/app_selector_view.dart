@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/theme.dart';
-import 'package:revanced_manager/ui/widgets/installed_app_item.dart';
-import 'package:revanced_manager/ui/widgets/search_bar.dart';
+import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
+import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 

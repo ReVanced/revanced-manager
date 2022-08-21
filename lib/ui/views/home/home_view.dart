@@ -4,10 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/available_updates_card.dart';
-import 'package:revanced_manager/ui/widgets/dashboard_raw_chip.dart';
-import 'package:revanced_manager/ui/widgets/installed_apps_card.dart';
-import 'package:revanced_manager/ui/widgets/latest_commit_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/available_updates_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/dashboard_raw_chip.dart';
+import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/about_info_widget.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/about_info_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 

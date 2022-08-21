@@ -4,7 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
-import 'package:revanced_manager/ui/widgets/patch_text_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/patch_text_button.dart';
 import 'package:expandable/expandable.dart';
 import 'package:timeago/timeago.dart';
 
