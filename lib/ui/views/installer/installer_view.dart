@@ -17,8 +17,14 @@ class InstallerView extends StatelessWidget {
           floatingActionButton: Visibility(
             visible: !model.isPatching,
             child: FloatingActionButton.extended(
-              onPressed: () =>
-                  model.isInstalled ? model.openApp() : model.installResult(),
+              onPressed: () {
+                if (model.isInstalled) {
+                  model.openApp();
+                  Navigator.of(context).pop();
+                } else {
+                  model.installResult();
+                }
+              },
               label: I18nText(model.isInstalled
                   ? 'installerView.fabOpenButton'
                   : 'installerView.fabInstallButton'),
