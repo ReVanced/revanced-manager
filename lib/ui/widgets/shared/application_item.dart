@@ -75,18 +75,18 @@ class ApplicationItem extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            isUpdatableApp
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: PatchTextButton(
-                      text: 'applicationItem.patchButton',
-                      onPressed: onPressed,
-                      borderColor: isDark
-                          ? const Color(0xff4D5054)
-                          : const Color.fromRGBO(119, 146, 168, 1),
-                    ),
-                  )
-                : const SizedBox(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: PatchTextButton(
+                text: isUpdatableApp
+                    ? 'applicationItem.patchButton'
+                    : 'applicationItem.openButton',
+                onPressed: onPressed,
+                borderColor: isDark
+                    ? const Color(0xff4D5054)
+                    : const Color.fromRGBO(119, 146, 168, 1),
+              ),
+            ),
           ],
         ),
       ),

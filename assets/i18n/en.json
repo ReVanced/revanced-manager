@@ -19,6 +19,7 @@
     },
     "applicationItem": {
         "patchButton": "Patch",
+        "openButton": "Open",
         "changelogLabel": "Changelog"
     },
     "latestCommitCard": {

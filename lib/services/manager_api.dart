@@ -37,11 +37,11 @@ class ManagerAPI {
 
   Future<bool> hasAppUpdates(String packageName) async {
     // TODO: get status based on last update time on the folder of this app?
-    return true;
+    return false;
   }
 
   Future<String> getAppChangelog(String packageName) async {
     // TODO: get changelog based on last commits on the folder of this app?
-    return 'to be implemented';
+    return 'To be implemented';
   }
 }

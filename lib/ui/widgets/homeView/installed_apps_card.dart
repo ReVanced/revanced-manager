@@ -1,3 +1,4 @@
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -37,9 +38,8 @@ class InstalledAppsCard extends StatelessWidget {
                           patchDate: snapshot.data![index].patchDate,
                           changelog: snapshot2.data!,
                           isUpdatableApp: false,
-                          onPressed: () =>
-                              locator<HomeViewModel>().navigateToPatcher(
-                            snapshot.data![index],
+                          onPressed: () => DeviceApps.openApp(
+                            snapshot.data![index].packageName,
                           ),
                         ),
                       ),
