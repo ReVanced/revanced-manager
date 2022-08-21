@@ -17,12 +17,26 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void selectPatch(String name, bool isSelected) {
-    Patch patch = patches.firstWhere((p) => p.name == name);
+  bool isSelected(int index) {
+    return selectedPatches.any(
+      (element) => element.name == patches[index].name,
+    );
+  }
+
+  void selectPatch(int index, bool isSelected) {
+    Patch patch = patches.firstWhere((p) => p.name == patches[index].name);
     if (isSelected && !selectedPatches.contains(patch)) {
       selectedPatches.add(patch);
     } else {
       selectedPatches.remove(patch);
+    }
+    notifyListeners();
+  }
+
+  void selectAllPatches(bool isSelected) {
+    selectedPatches.clear();
+    if (isSelected) {
+      selectedPatches.addAll(patches);
     }
     notifyListeners();
   }

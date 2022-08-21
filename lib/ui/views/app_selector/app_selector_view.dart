@@ -40,6 +40,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                 ? Column(
                     children: [
                       SearchBar(
+                        showSelectIcon: false,
                         fillColor:
                             isDark ? const Color(0xff1B222B) : Colors.grey[200],
                         hintText: FlutterI18n.translate(

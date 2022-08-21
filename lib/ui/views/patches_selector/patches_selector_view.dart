@@ -31,6 +31,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 ? Column(
                     children: [
                       SearchBar(
+                        showSelectIcon: true,
                         fillColor:
                             isDark ? const Color(0xff1B222B) : Colors.grey[200],
                         hintText: FlutterI18n.translate(
@@ -43,6 +44,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                             query = searchQuery;
                           });
                         },
+                        onSelectAll: (value) => model.selectAllPatches(value),
                       ),
                       const SizedBox(height: 12),
                       query.isEmpty || query.length < 2
@@ -90,11 +92,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             simpleName: model.patches[index].simpleName,
             version: model.patches[index].version,
             description: model.patches[index].description,
-            isSelected: model.selectedPatches.any(
-              (element) => element.name == model.patches[index].name,
-            ),
-            onChanged: (value) =>
-                model.selectPatch(model.patches[index].name, value),
+            isSelected: model.isSelected(index),
+            onChanged: (value) => model.selectPatch(index, value),
           );
           _items.add(item);
           return item;
@@ -118,11 +117,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               simpleName: model.patches[index].simpleName,
               version: model.patches[index].version,
               description: model.patches[index].description,
-              isSelected: model.selectedPatches.any(
-                (element) => element.name == model.patches[index].name,
-              ),
-              onChanged: (value) =>
-                  model.selectPatch(model.patches[index].name, value),
+              isSelected: model.isSelected(index),
+              onChanged: (value) => model.selectPatch(index, value),
             );
             _items.add(item);
             return item;
