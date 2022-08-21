@@ -33,13 +33,11 @@ class _AboutWidgetState extends State<AboutWidget> {
                   onLongPress: () {
                     Clipboard.setData(
                       ClipboardData(
-                        text: """
-                            Version: ${snapshot.data!['version']} \n 
-                            Build: ${snapshot.data!['buildNumber']} \n
-                            Model: ${snapshot.data!['model']} \n
-                            Android Version: ${snapshot.data!['androidVersion']} \n
-                            Arch: ${snapshot.data!['arch']}
-                            """,
+                        text: 'Version: ${snapshot.data!['version']}\n'
+                            'Build: ${snapshot.data!['buildNumber']}\n'
+                            'Model: ${snapshot.data!['model']}\n'
+                            'Android Version: ${snapshot.data!['androidVersion']}\n'
+                            'Arch: ${snapshot.data!['arch']}\n',
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
