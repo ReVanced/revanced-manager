@@ -71,7 +71,10 @@
         "aboutLabel": "About",
         "contributorsLabel": "Contributors",
         "rootModeLabel": "Root Mode",
-        "rootModeHint": "Enable this if you want to patch applications as rooted."
+        "rootModeHint": "Enable this if you want to patch applications as rooted.",
+        "organizationLabel": "Organization",
+        "patchesSourceLabel" : "Patches Source",
+        "integrationsSourceLabel": "Integrations Source"
     },
     "rootCheckerView": {
         "widgetTitle": "Is your device rooted?",

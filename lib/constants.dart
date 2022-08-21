@@ -19,9 +19,9 @@ final kSettingItemSubtitleTextStyle = GoogleFonts.roboto(
   fontWeight: FontWeight.w300,
 );
 
-const ghOrg = 'revanced';
-const patchesRepo = 'revanced-patches';
-const integrationsRepo = 'revanced-integrations';
+String ghOrg = 'revanced';
+String patchesRepo = 'revanced-patches';
+String integrationsRepo = 'revanced-integrations';
 const patcherRepo = 'revanced-patcher';
 const cliRepo = 'revanced-cli';
 const managerRepo = 'revanced-manager';

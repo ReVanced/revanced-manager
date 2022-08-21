@@ -128,7 +128,7 @@ class Navigation extends StatelessWidget {
       case 1:
         return const PatcherView();
       case 2:
-        return const SettingsView();
+        return SettingsView();
       default:
         return const HomeView();
     }
