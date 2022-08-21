@@ -13,6 +13,7 @@ import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.extensions.PatchExtensions.description
+import app.revanced.patcher.extensions.PatchExtensions.include
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 import app.revanced.patcher.patch.Patch
@@ -149,7 +150,7 @@ class MainActivity : FlutterActivity() {
     ) {
         Thread(
                         Runnable {
-                            val filteredPatches = mutableListOf<Map<String, String?>>()
+                            val filteredPatches = mutableListOf<Map<String, Any?>>()
                             patches.forEach patch@{ patch ->
                                 patch.compatiblePackages?.forEach { pkg ->
                                     if (pkg.name == targetPackage &&
@@ -157,10 +158,11 @@ class MainActivity : FlutterActivity() {
                                                             pkg.versions.isNotEmpty() ||
                                                             pkg.versions.contains(targetVersion))
                                     ) {
-                                        var p = mutableMapOf<String, String?>()
+                                        var p = mutableMapOf<String, Any?>()
                                         p.put("name", patch.patchName)
                                         p.put("version", patch.version)
                                         p.put("description", patch.description)
+                                        p.put("include", patch.include)
                                         filteredPatches.add(p)
                                     }
                                 }

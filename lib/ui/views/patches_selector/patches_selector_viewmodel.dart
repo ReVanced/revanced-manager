@@ -14,6 +14,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
     patches.addAll(await _patcherAPI.getFilteredPatches(
       locator<PatcherViewModel>().selectedApp,
     ));
+    for (Patch p in patches) {
+      if (p.include) {
+        selectedPatches.add(p);
+      }
+    }
     notifyListeners();
   }
 

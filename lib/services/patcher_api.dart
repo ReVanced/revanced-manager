@@ -110,6 +110,7 @@ class PatcherAPI {
                       .toTitleCase(),
                   version: patch['version'] ?? '?.?.?',
                   description: patch['description'] ?? 'N/A',
+                  include: patch['include'] ?? true,
                 ),
               );
             }
@@ -150,6 +151,7 @@ class PatcherAPI {
                       .toTitleCase(),
                   version: patch['version'] ?? '?.?.?',
                   description: patch['description'] ?? 'N/A',
+                  include: patch['include'] ?? true,
                 ),
               );
             }
