@@ -5,14 +5,10 @@ import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
-  InstallerView({Key? key}) : super(key: key);
-  final ScrollController _controller = ScrollController();
+  const InstallerView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _controller.jumpTo(_controller.position.maxScrollExtent),
-    );
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
@@ -36,7 +32,7 @@ class InstallerView extends StatelessWidget {
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              controller: _controller,
+              controller: model.scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -78,7 +74,7 @@ class InstallerView extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: SelectableText(
+                    child: Text(
                       model.logs,
                       style: GoogleFonts.jetBrainsMono(
                         fontSize: 13,

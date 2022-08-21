@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerViewModel extends BaseViewModel {
+  final ScrollController scrollController = ScrollController();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final PatchedApplication? _app = locator<PatcherViewModel>().selectedApp;
   final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
@@ -83,6 +84,13 @@ class InstallerViewModel extends BaseViewModel {
         logs += '\n';
       }
       logs += message;
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.fastOutSlowIn,
+        );
+      });
       notifyListeners();
     }
   }
