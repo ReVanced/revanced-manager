@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/main_viewmodel.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
@@ -42,11 +43,12 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void navigateToInstaller(PatchedApplication app) async {
+  void navigateToPatcher(PatchedApplication app) async {
     locator<PatcherViewModel>().selectedApp = app;
     locator<PatcherViewModel>().selectedPatches =
         await _patcherAPI.getAppliedPatches(app);
-    _navigationService.navigateTo(Routes.installerView);
+    locator<PatcherViewModel>().notifyListeners();
+    locator<MainViewModel>().setIndex(1);
   }
 
   Future<List<PatchedApplication>> getPatchedApps(bool isUpdatable) async {

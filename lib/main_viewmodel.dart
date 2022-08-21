@@ -1,6 +1,5 @@
+import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
-class MainViewModel extends IndexTrackingViewModel {
-
-
-}
+@lazySingleton
+class MainViewModel extends IndexTrackingViewModel {}

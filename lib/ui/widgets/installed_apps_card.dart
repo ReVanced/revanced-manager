@@ -38,7 +38,7 @@ class InstalledAppsCard extends StatelessWidget {
                           changelog: snapshot2.data!,
                           isUpdatableApp: false,
                           onPressed: () =>
-                              locator<HomeViewModel>().navigateToInstaller(
+                              locator<HomeViewModel>().navigateToPatcher(
                             snapshot.data![index],
                           ),
                         ),

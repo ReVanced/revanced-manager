@@ -38,7 +38,7 @@ class AvailableUpdatesCard extends StatelessWidget {
                           changelog: snapshot2.data!,
                           isUpdatableApp: true,
                           onPressed: () =>
-                              locator<HomeViewModel>().navigateToInstaller(
+                              locator<HomeViewModel>().navigateToPatcher(
                             snapshot.data![index],
                           ),
                         ),
