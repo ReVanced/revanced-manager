@@ -15,10 +15,7 @@ class CustomSwitch extends StatelessWidget {
     Color? activeColor = Theme.of(context).colorScheme.tertiary;
     Color? inactiveColor = Theme.of(context).colorScheme.secondary;
     return GestureDetector(
-      onTap: () {
-        onChanged(!value);
-        Fluttertoast.showToast(msg: 'Rooted: ${!value}');
-      },
+      onTap: () => onChanged(!value),
       child: SizedBox(
         height: 25,
         width: 50,
