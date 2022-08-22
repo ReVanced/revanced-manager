@@ -95,7 +95,7 @@ class InstallerView extends StatelessWidget {
         ),
         onWillPop: () async {
           if (!model.isPatching) {
-            model.cleanWorkplace();
+            model.cleanPatcher();
             Navigator.of(context).pop();
           }
           return false;

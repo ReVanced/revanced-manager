@@ -28,7 +28,9 @@ class PatcherAPI {
   File? _outFile;
 
   Future<void> initPatcher() async {
-    _tmpDir = await getTemporaryDirectory();
+    Directory appCache = await getTemporaryDirectory();
+    _tmpDir = Directory('$appCache/patcher');
+    _tmpDir!.createSync();
     _workDir = _tmpDir!.createTempSync('tmp-');
     _inputFile = File('${_workDir!.path}/base.apk');
     _patchedFile = File('${_workDir!.path}/patched.apk');
@@ -37,27 +39,33 @@ class PatcherAPI {
     _cacheDir!.createSync();
   }
 
-  Future<void> loadPatches() async {
-    if (_cacheDir == null) {
+  Future<bool> loadPatches() async {
+    if (_tmpDir == null) {
       await initPatcher();
     }
     if (_jarPatchBundleFile == null) {
       _jarPatchBundleFile = await _managerAPI.downloadPatches('.jar');
       if (_jarPatchBundleFile != null) {
-        await patcherChannel.invokeMethod<bool>(
-          'loadPatches',
-          {
-            'jarPatchBundlePath': _jarPatchBundleFile!.path,
-            'cacheDirPath': _cacheDir!.path,
-          },
-        );
+        try {
+          await patcherChannel.invokeMethod<bool>(
+            'loadPatches',
+            {
+              'jarPatchBundlePath': _jarPatchBundleFile!.path,
+              'cacheDirPath': _cacheDir!.path,
+            },
+          );
+        } on Exception {
+          return false;
+        }
       }
     }
+    return _jarPatchBundleFile != null;
   }
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     List<ApplicationWithIcon> filteredPackages = [];
-    if (_jarPatchBundleFile != null) {
+    bool isLoaded = await loadPatches();
+    if (isLoaded) {
       try {
         List<String>? patchesPackages = await patcherChannel
             .invokeListMethod<String>('getCompatiblePackages');
@@ -85,39 +93,42 @@ class PatcherAPI {
     PatchedApplication? selectedApp,
   ) async {
     List<Patch> filteredPatches = [];
-    if (_jarPatchBundleFile != null && selectedApp != null) {
-      try {
-        var patches =
-            await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
-          'getFilteredPatches',
-          {
-            'targetPackage': selectedApp.packageName,
-            'targetVersion': selectedApp.version,
-            'ignoreVersion': true,
-          },
-        );
-        if (patches != null) {
-          for (var patch in patches) {
-            if (!filteredPatches
-                .any((element) => element.name == patch['name'])) {
-              filteredPatches.add(
-                Patch(
-                  name: patch['name'],
-                  simpleName: (patch['name'] as String)
-                      .replaceAll('-', ' ')
-                      .split('-')
-                      .join(' ')
-                      .toTitleCase(),
-                  version: patch['version'] ?? '?.?.?',
-                  description: patch['description'] ?? 'N/A',
-                  include: patch['include'] ?? true,
-                ),
-              );
+    if (selectedApp != null) {
+      bool isLoaded = await loadPatches();
+      if (isLoaded) {
+        try {
+          var patches =
+              await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
+            'getFilteredPatches',
+            {
+              'targetPackage': selectedApp.packageName,
+              'targetVersion': selectedApp.version,
+              'ignoreVersion': true,
+            },
+          );
+          if (patches != null) {
+            for (var patch in patches) {
+              if (!filteredPatches
+                  .any((element) => element.name == patch['name'])) {
+                filteredPatches.add(
+                  Patch(
+                    name: patch['name'],
+                    simpleName: (patch['name'] as String)
+                        .replaceAll('-', ' ')
+                        .split('-')
+                        .join(' ')
+                        .toTitleCase(),
+                    version: patch['version'] ?? '?.?.?',
+                    description: patch['description'] ?? 'N/A',
+                    include: patch['include'] ?? true,
+                  ),
+                );
+              }
             }
           }
+        } on Exception {
+          return List.empty();
         }
-      } on Exception {
-        return List.empty();
       }
     }
     return filteredPatches;
@@ -127,38 +138,41 @@ class PatcherAPI {
     PatchedApplication? selectedApp,
   ) async {
     List<Patch> appliedPatches = [];
-    if (_jarPatchBundleFile != null && selectedApp != null) {
-      try {
-        var patches =
-            await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
-          'getFilteredPatches',
-          {
-            'targetPackage': selectedApp.packageName,
-            'targetVersion': selectedApp.version,
-            'ignoreVersion': true,
-          },
-        );
-        if (patches != null) {
-          for (var patch in patches) {
-            if (selectedApp.appliedPatches.contains(patch['name'])) {
-              appliedPatches.add(
-                Patch(
-                  name: patch['name'],
-                  simpleName: (patch['name'] as String)
-                      .replaceAll('-', ' ')
-                      .split('-')
-                      .join(' ')
-                      .toTitleCase(),
-                  version: patch['version'] ?? '?.?.?',
-                  description: patch['description'] ?? 'N/A',
-                  include: patch['include'] ?? true,
-                ),
-              );
+    if (selectedApp != null) {
+      bool isLoaded = await loadPatches();
+      if (isLoaded) {
+        try {
+          var patches =
+              await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
+            'getFilteredPatches',
+            {
+              'targetPackage': selectedApp.packageName,
+              'targetVersion': selectedApp.version,
+              'ignoreVersion': true,
+            },
+          );
+          if (patches != null) {
+            for (var patch in patches) {
+              if (selectedApp.appliedPatches.contains(patch['name'])) {
+                appliedPatches.add(
+                  Patch(
+                    name: patch['name'],
+                    simpleName: (patch['name'] as String)
+                        .replaceAll('-', ' ')
+                        .split('-')
+                        .join(' ')
+                        .toTitleCase(),
+                    version: patch['version'] ?? '?.?.?',
+                    description: patch['description'] ?? 'N/A',
+                    include: patch['include'] ?? true,
+                  ),
+                );
+              }
             }
           }
+        } on Exception {
+          return List.empty();
         }
-      } on Exception {
-        return List.empty();
       }
     }
     return appliedPatches;
@@ -215,17 +229,16 @@ class PatcherAPI {
   }
 
   void cleanPatcher() {
-    if (_workDir != null) {
-      _workDir!.deleteSync(recursive: true);
+    if (_tmpDir != null) {
+      _tmpDir!.deleteSync(recursive: true);
+      _tmpDir = null;
     }
   }
 
   bool sharePatchedFile(String appName, String version) {
     if (_outFile != null) {
-      String path = _tmpDir!.path;
       String prefix = appName.toLowerCase().replaceAll(' ', '-');
-      String sharePath = '$path/$prefix-revanced_v$version.apk';
-      File share = _outFile!.copySync(sharePath);
+      File share = _outFile!.renameSync('$prefix-revanced_v$version.apk');
       ShareExtend.share(share.path, 'file');
       return true;
     } else {

@@ -162,7 +162,7 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> cleanWorkplace() async {
+  Future<void> cleanPatcher() async {
     _patcherAPI.cleanPatcher();
     locator<PatcherViewModel>().selectedApp = null;
     locator<PatcherViewModel>().selectedPatches.clear();
