@@ -29,7 +29,7 @@ class PatcherAPI {
 
   Future<void> initPatcher() async {
     Directory appCache = await getTemporaryDirectory();
-    _tmpDir = Directory('$appCache/patcher');
+    _tmpDir = Directory('${appCache.path}/patcher');
     _tmpDir!.createSync();
     _workDir = _tmpDir!.createTempSync('tmp-');
     _inputFile = File('${_workDir!.path}/base.apk');
