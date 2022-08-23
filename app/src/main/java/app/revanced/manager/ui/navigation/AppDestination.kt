@@ -23,6 +23,5 @@ enum class DashboardDestination(
     @StringRes val label: Int
 ) : Destination {
     DASHBOARD(Icons.Default.Dashboard, R.string.dashboard),
-    PATCHER(Icons.Default.Build, R.string.patcher),
-    SETTINGS(Icons.Default.Settings, R.string.settings),
+    PATCHER(Icons.Default.Build, R.string.patcher)
 }

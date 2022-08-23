@@ -31,7 +31,7 @@ fun MainRootScreen(navigator: BackstackNavigator<AppDestination>) {
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SmallTopAppBar(
+            LargeTopAppBar(
                 title = {
                     Text(
                         text = stringResource(mainRootNavigator.currentDestination.label),
@@ -64,11 +64,9 @@ fun MainRootScreen(navigator: BackstackNavigator<AppDestination>) {
             ) { destination ->
                 when (destination) {
                     DashboardDestination.DASHBOARD -> DashboardScreen()
-                    DashboardDestination.PATCHER -> DashboardScreen()
-                    DashboardDestination.SETTINGS -> SettingsScreen()
+                    DashboardDestination.PATCHER -> PatcherScreen()
                 }
             }
         }
-
     }
 }
