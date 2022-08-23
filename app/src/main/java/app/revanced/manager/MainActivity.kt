@@ -12,8 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.ui.navigation.AppDestination
-import app.revanced.manager.ui.screen.MainRootScreen
-import app.revanced.manager.ui.screen.SettingsScreen
+import app.revanced.manager.ui.screen.MainDashboardScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import com.xinto.taxi.Taxi
 import com.xinto.taxi.rememberBackstackNavigator
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     transitionSpec = { fadeIn() with fadeOut() }
                 ) { destination ->
                     when (destination) {
-                        is AppDestination.Dashboard -> MainRootScreen(navigator = navigator)
+                        is AppDestination.Dashboard -> MainDashboardScreen(navigator = navigator)
                     }
                 }
             }

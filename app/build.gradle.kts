@@ -72,7 +72,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     // Taxi (navigation)
-    implementation("com.github.X1nto:Taxi:1.0.0")
+    implementation("com.github.X1nto:Taxi:1.2.0")
 
     // Ktor
     val ktorVersion = "2.0.3"
