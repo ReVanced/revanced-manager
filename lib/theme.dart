@@ -8,6 +8,7 @@ final _themeService = locator<ThemeService>();
 bool isDark = _themeService.isDarkMode;
 
 var lightTheme = ThemeData.light().copyWith(
+  backgroundColor: const Color.fromARGB(255, 243, 243, 243),
   navigationBarTheme: NavigationBarThemeData(
     indicatorColor: const Color.fromRGBO(75, 129, 210, 0.20),
     backgroundColor: const Color(0xffCBDFFC),
@@ -17,7 +18,6 @@ var lightTheme = ThemeData.light().copyWith(
       ),
     ),
   ),
-  backgroundColor: Colors.red,
   useMaterial3: true,
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
@@ -41,6 +41,7 @@ var lightTheme = ThemeData.light().copyWith(
 );
 
 var darkTheme = ThemeData.dark().copyWith(
+  backgroundColor: const Color(0xff1E1E1E),
   navigationBarTheme: NavigationBarThemeData(
     iconTheme: MaterialStateProperty.all(const IconThemeData(
       color: Colors.white,
@@ -53,7 +54,6 @@ var darkTheme = ThemeData.dark().copyWith(
       ),
     ),
   ),
-  backgroundColor: Colors.red,
   useMaterial3: true,
   scaffoldBackgroundColor: const Color(0xff0A0D11),
   textButtonTheme: TextButtonThemeData(

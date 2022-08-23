@@ -7,6 +7,7 @@ import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_info_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_switch_item.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/social_media_cards.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
@@ -144,6 +145,7 @@ class SettingsView extends StatelessWidget {
                     ),
                     onTap: model.navigateToContributors,
                   ),
+                  const SocialMediaCards(),
                   const AboutWidget(),
                 ],
               ),
