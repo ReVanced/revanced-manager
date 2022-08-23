@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -14,50 +15,23 @@ class InstallerView extends StatelessWidget {
       viewModelBuilder: () => InstallerViewModel(),
       builder: (context, model, child) => WillPopScope(
         child: Scaffold(
-          floatingActionButton: Visibility(
-            visible: !model.isPatching,
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                if (model.isInstalled) {
-                  model.openApp();
-                  Navigator.of(context).pop();
-                } else {
-                  model.installResult();
-                }
-              },
-              label: I18nText(model.isInstalled
-                  ? 'installerView.fabOpenButton'
-                  : 'installerView.fabInstallButton'),
-              icon: model.isInstalled
-                  ? const Icon(Icons.open_in_new)
-                  : const Icon(Icons.install_mobile),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              foregroundColor: Colors.white,
-            ),
-          ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               controller: model.scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  const SizedBox(height: 60),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      I18nText(
-                        'installerView.widgetTitle',
-                        child: Text(
-                          '',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ),
-                      Visibility(
-                        visible: !model.isPatching,
-                        child: IconButton(
-                          icon: const Icon(Icons.share),
-                          onPressed: () => model.shareResult(),
+                      Text(
+                        model.headerLogs,
+                        style: GoogleFonts.inter(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
@@ -85,6 +59,96 @@ class InstallerView extends StatelessWidget {
                       style: GoogleFonts.jetBrainsMono(
                         fontSize: 13,
                         height: 1.5,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                    child: Visibility(
+                      visible: !model.isPatching,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          //TODO: Move to separate file
+                          TextButton(
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  side: BorderSide(
+                                    width: 1,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
+                              side: MaterialStateProperty.all(
+                                BorderSide(
+                                  color: Theme.of(context)
+                                      .iconTheme
+                                      .color!
+                                      .withOpacity(0.4),
+                                  width: 1,
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all(
+                                isDark
+                                    ? Theme.of(context).colorScheme.background
+                                    : Colors.white,
+                              ),
+                              foregroundColor: MaterialStateProperty.all(
+                                Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            onPressed: () => model.shareResult(),
+                            child: I18nText("Share file"),
+                          ),
+                          const SizedBox(width: 16),
+                          TextButton(
+                            onPressed: () {
+                              if (model.isInstalled) {
+                                model.openApp();
+                                Navigator.of(context).pop();
+                              } else {
+                                model.installResult();
+                              }
+                            },
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 8,
+                                ),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  side: BorderSide(
+                                    width: 1,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all(
+                                Theme.of(context).colorScheme.secondary,
+                              ),
+                              foregroundColor: MaterialStateProperty.all(
+                                Theme.of(context).colorScheme.background,
+                              ),
+                            ),
+                            child: I18nText(model.isInstalled
+                                ? 'installerView.fabOpenButton'
+                                : 'installerView.fabInstallButton'),
+                          ),
+                        ],
                       ),
                     ),
                   ),

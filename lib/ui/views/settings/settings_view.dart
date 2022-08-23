@@ -34,13 +34,16 @@ class SettingsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(height: 60),
-                  I18nText(
-                    'settingsView.widgetTitle',
-                    child: Text(
-                      '',
-                      style: GoogleFonts.inter(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: I18nText(
+                      'settingsView.widgetTitle',
+                      child: Text(
+                        '',
+                        style: GoogleFonts.inter(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),

@@ -22,6 +22,7 @@ class InstallerViewModel extends BaseViewModel {
   );
   double? progress = 0.0;
   String logs = '';
+  String headerLogs = '';
   bool isPatching = false;
   bool isInstalled = false;
 
@@ -101,6 +102,7 @@ class InstallerViewModel extends BaseViewModel {
       String apkFilePath = _app!.apkFilePath;
       try {
         updateLog('Initializing installer');
+        headerLogs = 'Initializing';
         if (_app!.isRooted && !_app!.isFromStorage) {
           updateLog('Checking if an old patched version exists');
           bool oldExists = await _patcherAPI.checkOldPatch(_app!);
@@ -120,6 +122,7 @@ class InstallerViewModel extends BaseViewModel {
           resourcePatching = true;
         }
         await _patcherAPI.mergeIntegrations(mergeIntegrations);
+        headerLogs = "Merging integrations";
         await _patcherAPI.runPatcher(
           apkFilePath,
           _patches,
@@ -128,6 +131,7 @@ class InstallerViewModel extends BaseViewModel {
         );
       } on Exception {
         updateLog('An error occurred! Aborting');
+        headerLogs = 'Aborting...';
       }
     } else {
       updateLog('No app or patches selected! Aborting');
@@ -144,6 +148,7 @@ class InstallerViewModel extends BaseViewModel {
       updateLog(_app!.isRooted
           ? 'Installing patched file using root method'
           : 'Installing patched file using nonroot method');
+      headerLogs = 'Installing...';
       isInstalled = await _patcherAPI.installPatchedFile(_app!);
       if (isInstalled) {
         updateLog('Done');
@@ -152,6 +157,7 @@ class InstallerViewModel extends BaseViewModel {
         await saveApp();
       } else {
         updateLog('An error occurred! Aborting');
+        headerLogs = 'Aborting...';
       }
     }
   }
