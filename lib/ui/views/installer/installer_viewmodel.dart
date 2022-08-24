@@ -23,7 +23,7 @@ class InstallerViewModel extends BaseViewModel {
   double? progress = 0.0;
   String logs = '';
   String headerLogs = '';
-  bool isPatching = false;
+  bool isPatching = true;
   bool isInstalled = false;
 
   Future<void> initialize(BuildContext context) async {
@@ -55,36 +55,34 @@ class InstallerViewModel extends BaseViewModel {
   Future<dynamic> handlePlatformChannelMethods() async {
     _installerChannel.setMethodCallHandler((call) async {
       switch (call.method) {
-        case 'updateProgress':
+        case 'update':
           if (call.arguments != null) {
-            updateProgress(call.arguments);
-          }
-          break;
-        case 'updateLog':
-          if (call.arguments != null) {
-            updateLog(call.arguments);
+            Map<dynamic, dynamic> arguments = call.arguments;
+            double progress = arguments['progress'];
+            String header = arguments['header'];
+            String log = arguments['log'];
+            update(progress, header, log);
           }
           break;
       }
     });
   }
 
-  void updateProgress(double value) {
+  void update(double value, String header, String log) {
     progress = value;
     isInstalled = false;
     isPatching = progress == 1.0 ? false : true;
     if (progress == 0.0) {
       logs = '';
     }
-    notifyListeners();
-  }
-
-  void updateLog(String message) {
-    if (message.isNotEmpty && !message.startsWith('Merging L')) {
+    if (header.isNotEmpty) {
+      headerLogs = header;
+    }
+    if (log.isNotEmpty && !log.startsWith('Merging L')) {
       if (logs.isNotEmpty) {
         logs += '\n';
       }
-      logs += message;
+      logs += log;
       Future.delayed(const Duration(milliseconds: 500)).then((value) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
@@ -92,26 +90,24 @@ class InstallerViewModel extends BaseViewModel {
           curve: Curves.fastOutSlowIn,
         );
       });
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> runPatcher() async {
-    updateProgress(0.0);
+    update(0.0, 'Initializing...', 'Initializing installer');
     if (_app != null && _patches.isNotEmpty) {
       String apkFilePath = _app!.apkFilePath;
       try {
-        updateLog('Initializing installer');
-        headerLogs = 'Initializing';
         if (_app!.isRooted && !_app!.isFromStorage) {
-          updateLog('Checking if an old patched version exists');
+          update(0.0, '', 'Checking if an old patched version exists');
           bool oldExists = await _patcherAPI.checkOldPatch(_app!);
           if (oldExists) {
-            updateLog('Deleting old patched version');
+            update(0.0, '', 'Deleting old patched version');
             await _patcherAPI.deleteOldPatch(_app!);
           }
         }
-        updateLog('Creating working directory');
+        update(0.0, '', 'Creating working directory');
         bool mergeIntegrations = false;
         bool resourcePatching = false;
         if (_app!.packageName == 'com.google.android.youtube') {
@@ -122,7 +118,6 @@ class InstallerViewModel extends BaseViewModel {
           resourcePatching = true;
         }
         await _patcherAPI.mergeIntegrations(mergeIntegrations);
-        headerLogs = 'Merging integrations';
         await _patcherAPI.runPatcher(
           apkFilePath,
           _patches,
@@ -130,11 +125,10 @@ class InstallerViewModel extends BaseViewModel {
           resourcePatching,
         );
       } on Exception {
-        updateLog('An error occurred! Aborting');
-        headerLogs = 'Aborting...';
+        update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }
     } else {
-      updateLog('No app or patches selected! Aborting');
+      update(1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
     try {
       await FlutterBackground.disableBackgroundExecution();
@@ -145,19 +139,21 @@ class InstallerViewModel extends BaseViewModel {
 
   void installResult() async {
     if (_app != null) {
-      updateLog(_app!.isRooted
-          ? 'Installing patched file using root method'
-          : 'Installing patched file using nonroot method');
-      headerLogs = 'Installing...';
+      update(
+        1.0,
+        'Installing...',
+        _app!.isRooted
+            ? 'Installing patched file using root method'
+            : 'Installing patched file using nonroot method',
+      );
       isInstalled = await _patcherAPI.installPatchedFile(_app!);
       if (isInstalled) {
-        updateLog('Done');
+        update(1.0, 'Installed...', 'Installed');
         _app!.patchDate = DateTime.now();
         _app!.appliedPatches.addAll(_patches.map((p) => p.name).toList());
         await saveApp();
       } else {
-        updateLog('An error occurred! Aborting');
-        headerLogs = 'Aborting...';
+        update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }
     }
   }

@@ -196,8 +196,14 @@ class MainActivity : FlutterActivity() {
         Thread(
                         Runnable {
                             handler.post {
-                                installerChannel.invokeMethod("updateProgress", 0.1)
-                                installerChannel.invokeMethod("updateLog", "Copying original apk")
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 0.1,
+                                                "header" to "",
+                                                "log" to "Copying original apk"
+                                        )
+                                )
                             }
                             Files.copy(
                                     originalFile.toPath(),
@@ -206,8 +212,14 @@ class MainActivity : FlutterActivity() {
                             )
 
                             handler.post {
-                                installerChannel.invokeMethod("updateProgress", 0.2)
-                                installerChannel.invokeMethod("updateLog", "Creating patcher")
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 0.2,
+                                                "header" to "Unpacking apk...",
+                                                "log" to "Unpacking copied apk"
+                                        )
+                                )
                             }
                             val patcher =
                                     Patcher(
@@ -222,73 +234,131 @@ class MainActivity : FlutterActivity() {
                                                                     app.revanced.patcher.logging.Logger {
                                                                 override fun error(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel
-                                                                                .invokeMethod(
-                                                                                        "updateLog",
-                                                                                        msg
+                                                                        installerChannel.invokeMethod(
+                                                                                "update",
+                                                                                mapOf(
+                                                                                        "progress" to 0.2,
+                                                                                        "header" to "",
+                                                                                        "log" to msg
                                                                                 )
+                                                                        )
                                                                     }
                                                                 }
 
                                                                 override fun warn(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel
-                                                                                .invokeMethod(
-                                                                                        "updateLog",
-                                                                                        msg
+                                                                        installerChannel.invokeMethod(
+                                                                                "update",
+                                                                                mapOf(
+                                                                                        "progress" to 0.2,
+                                                                                        "header" to "",
+                                                                                        "log" to msg
                                                                                 )
+                                                                        )
                                                                     }
                                                                 }
 
                                                                 override fun info(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel
-                                                                                .invokeMethod(
-                                                                                        "updateLog",
-                                                                                        msg
+                                                                        installerChannel.invokeMethod(
+                                                                                "update",
+                                                                                mapOf(
+                                                                                        "progress" to 0.2,
+                                                                                        "header" to "",
+                                                                                        "log" to msg
                                                                                 )
+                                                                        )
                                                                     }
                                                                 }
 
                                                                 override fun trace(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel
-                                                                                .invokeMethod(
-                                                                                        "updateLog",
-                                                                                        msg
+                                                                        installerChannel.invokeMethod(
+                                                                                "update",
+                                                                                mapOf(
+                                                                                        "progress" to 0.2,
+                                                                                        "header" to "",
+                                                                                        "log" to msg
                                                                                 )
+                                                                        )
                                                                     }
                                                                 }
                                                             }
                                             )
                                     )
 
-                            handler.post { installerChannel.invokeMethod("updateProgress", 0.3) }
+                            handler.post {
+                                installerChannel.invokeMethod(
+                                        "update", 
+                                        mapOf(
+                                                "progress" to 0.3,
+                                                "header" to "",
+                                                "log" to ""
+                                        )
+                                )
+                            }
                             if (mergeIntegrations) {
                                 handler.post {
                                     installerChannel.invokeMethod(
-                                            "updateLog",
-                                            "Merging integrations"
+                                            "update",
+                                            mapOf(
+                                                    "progress" to 0.4,
+                                                    "header" to "Merging integrations...",
+                                                    "log" to "Merging integrations"
+                                            )
                                     )
                                 }
                                 patcher.addFiles(listOf(integrations)) {}
                             }
 
-                            handler.post { installerChannel.invokeMethod("updateProgress", 0.5) }
+                            handler.post {
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 0.5,
+                                                "header" to "Applying patches...",
+                                                "log" to ""
+                                        )
+                                )
+                            }
                             patcher.addPatches(filteredPatches)
                             patcher.applyPatches().forEach { (patch, res) ->
                                 if (res.isSuccess) {
                                     val msg = "[success] $patch"
-                                    handler.post { installerChannel.invokeMethod("updateLog", msg) }
+                                    handler.post {
+                                        installerChannel.invokeMethod(
+                                                "update",
+                                                mapOf(
+                                                        "progress" to 0.5,
+                                                        "header" to "",
+                                                        "log" to msg
+                                                )
+                                        )
+                                    }
                                     return@forEach
                                 }
                                 val msg = "[error] $patch:" + res.exceptionOrNull()!!
-                                handler.post { installerChannel.invokeMethod("updateLog", msg) }
+                                handler.post {
+                                    installerChannel.invokeMethod(
+                                            "update",
+                                            mapOf(
+                                                    "progress" to 0.5,
+                                                    "header" to "",
+                                                    "log" to msg
+                                            )
+                                    )
+                                }
                             }
 
                             handler.post {
-                                installerChannel.invokeMethod("updateProgress", 0.7)
-                                installerChannel.invokeMethod("updateLog", "Repacking patched apk")
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 0.7,
+                                                "header" to "Repacking apk...",
+                                                "log" to "Repacking patched apk"
+                                        )
+                                )
                             }
                             val res = patcher.save()
                             ZipFile(patchedFile).use { file ->
@@ -309,13 +379,27 @@ class MainActivity : FlutterActivity() {
                                         ZipAligner::getEntryAlignment
                                 )
                             }
-
-                            handler.post { installerChannel.invokeMethod("updateProgress", 0.9) }
+                            handler.post {
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 0.9,
+                                                "header" to "Signing apk...",
+                                                "log" to ""
+                                        )
+                                )
+                            }
                             Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile)
 
                             handler.post {
-                                installerChannel.invokeMethod("updateProgress", 1.0)
-                                installerChannel.invokeMethod("updateLog", "Finished")
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 1.0,
+                                                "header" to "Finished",
+                                                "log" to "Finished"
+                                        )
+                                )
                             }
 
                             handler.post { result.success(null) }
