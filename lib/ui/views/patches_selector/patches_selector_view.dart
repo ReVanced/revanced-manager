@@ -14,8 +14,7 @@ class PatchesSelectorView extends StatefulWidget {
 }
 
 class _PatchesSelectorViewState extends State<PatchesSelectorView> {
-  final List<PatchItem> _items = [];
-  String query = '';
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +26,13 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-            child: model.patches.isNotEmpty
-                ? Column(
+            child: model.patches.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  )
+                : Column(
                     children: [
                       SearchBar(
                         showSelectIcon: true,
@@ -41,15 +45,28 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         hintTextColor: Theme.of(context).colorScheme.tertiary,
                         onQueryChanged: (searchQuery) {
                           setState(() {
-                            query = searchQuery;
+                            _query = searchQuery;
                           });
                         },
                         onSelectAll: (value) => model.selectAllPatches(value),
                       ),
                       const SizedBox(height: 12),
-                      query.isEmpty || query.length < 2
-                          ? _getAllResults(model)
-                          : _getFilteredResults(model),
+                      Expanded(
+                        child: ListView(
+                          children: model
+                              .getFilteredPatches(_query)
+                              .map((patch) => PatchItem(
+                                    name: patch.name,
+                                    simpleName: patch.simpleName,
+                                    version: patch.version,
+                                    description: patch.description,
+                                    isSelected: model.isSelected(patch),
+                                    onChanged: (value) =>
+                                        model.selectPatch(patch, value),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
                       MaterialButton(
                         textColor: Colors.white,
                         color: Theme.of(context).colorScheme.secondary,
@@ -68,64 +85,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         child: I18nText('patchesSelectorView.doneButton'),
                       ),
                     ],
-                  )
-                : Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
                   ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _getAllResults(PatchesSelectorViewModel model) {
-    _items.clear();
-    return Expanded(
-      child: ListView.builder(
-        itemCount: model.patches.length,
-        itemBuilder: (context, index) {
-          model.patches.sort((a, b) => a.simpleName.compareTo(b.simpleName));
-          PatchItem item = PatchItem(
-            name: model.patches[index].name,
-            simpleName: model.patches[index].simpleName,
-            version: model.patches[index].version,
-            description: model.patches[index].description,
-            isSelected: model.isSelected(index),
-            onChanged: (value) => model.selectPatch(index, value),
-          );
-          _items.add(item);
-          return item;
-        },
-      ),
-    );
-  }
-
-  Widget _getFilteredResults(PatchesSelectorViewModel model) {
-    _items.clear();
-    return Expanded(
-      child: ListView.builder(
-        itemCount: model.patches.length,
-        itemBuilder: (context, index) {
-          model.patches.sort((a, b) => a.simpleName.compareTo(b.simpleName));
-          if (model.patches[index].simpleName.toLowerCase().contains(
-                query.toLowerCase(),
-              )) {
-            PatchItem item = PatchItem(
-              name: model.patches[index].name,
-              simpleName: model.patches[index].simpleName,
-              version: model.patches[index].version,
-              description: model.patches[index].description,
-              isSelected: model.isSelected(index),
-              onChanged: (value) => model.selectPatch(index, value),
-            );
-            _items.add(item);
-            return item;
-          } else {
-            return const SizedBox();
-          }
-        },
       ),
     );
   }

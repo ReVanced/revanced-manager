@@ -14,17 +14,20 @@ import 'package:stacked/stacked.dart';
 class AppSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final List<ApplicationWithIcon> apps = [];
+  bool noApps = false;
   bool _isRooted = false;
 
   Future<void> initialize() async {
     apps.addAll(await _patcherAPI.getFilteredInstalledApps());
+    apps.sort((a, b) => a.appName.compareTo(b.appName));
+    noApps = apps.isEmpty;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isRooted = prefs.getBool('isRooted') ?? false;
     notifyListeners();
   }
 
   void selectApp(ApplicationWithIcon application) async {
-    PatchedApplication app = PatchedApplication(
+    locator<PatcherViewModel>().selectedApp = PatchedApplication(
       name: application.appName,
       packageName: application.packageName,
       version: application.versionName!,
@@ -35,7 +38,6 @@ class AppSelectorViewModel extends BaseViewModel {
       isFromStorage: false,
       appliedPatches: [],
     );
-    locator<PatcherViewModel>().selectedApp = app;
     locator<PatcherViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().notifyListeners();
   }
@@ -52,7 +54,7 @@ class AppSelectorViewModel extends BaseViewModel {
             await DeviceApps.getAppFromStorage(apkFile.path, true)
                 as ApplicationWithIcon?;
         if (application != null) {
-          PatchedApplication app = PatchedApplication(
+          locator<PatcherViewModel>().selectedApp = PatchedApplication(
             name: application.appName,
             packageName: application.packageName,
             version: application.versionName!,
@@ -63,7 +65,6 @@ class AppSelectorViewModel extends BaseViewModel {
             isFromStorage: true,
             appliedPatches: [],
           );
-          locator<PatcherViewModel>().selectedApp = app;
           locator<PatcherViewModel>().selectedPatches.clear();
           locator<PatcherViewModel>().notifyListeners();
         }
@@ -78,5 +79,14 @@ class AppSelectorViewModel extends BaseViewModel {
         gravity: ToastGravity.CENTER,
       );
     }
+  }
+
+  List<ApplicationWithIcon> getFilteredApps(String query) {
+    return apps
+        .where((app) =>
+            query.isEmpty ||
+            query.length < 2 ||
+            app.appName.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 }

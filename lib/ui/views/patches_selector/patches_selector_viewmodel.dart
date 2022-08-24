@@ -14,6 +14,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     patches.addAll(await _patcherAPI.getFilteredPatches(
       locator<PatcherViewModel>().selectedApp,
     ));
+    patches.sort((a, b) => a.simpleName.compareTo(b.simpleName));
     for (Patch p in patches) {
       if (p.include) {
         selectedPatches.add(p);
@@ -22,14 +23,13 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool isSelected(int index) {
+  bool isSelected(Patch patch) {
     return selectedPatches.any(
-      (element) => element.name == patches[index].name,
+      (element) => element.name == patch.name,
     );
   }
 
-  void selectPatch(int index, bool isSelected) {
-    Patch patch = patches.firstWhere((p) => p.name == patches[index].name);
+  void selectPatch(Patch patch, bool isSelected) {
     if (isSelected && !selectedPatches.contains(patch)) {
       selectedPatches.add(patch);
     } else {
@@ -49,5 +49,16 @@ class PatchesSelectorViewModel extends BaseViewModel {
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
     locator<PatcherViewModel>().notifyListeners();
+  }
+
+  List<Patch> getFilteredPatches(String query) {
+    return patches
+        .where((patch) =>
+            query.isEmpty ||
+            query.length < 2 ||
+            patch.simpleName.toLowerCase().contains(
+                  query.toLowerCase(),
+                ))
+        .toList();
   }
 }
