@@ -1,5 +1,6 @@
 import 'package:revanced_manager/main.dart';
 import 'package:revanced_manager/main_viewmodel.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
@@ -34,6 +35,7 @@ import 'package:stacked_themes/stacked_themes.dart';
       classType: ThemeService,
       resolveUsing: ThemeService.getInstance,
     ),
+    LazySingleton(classType: ManagerAPI),
     LazySingleton(classType: PatcherAPI),
   ],
 )

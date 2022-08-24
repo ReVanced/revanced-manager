@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -7,19 +6,20 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerViewModel extends BaseViewModel {
-  final ScrollController scrollController = ScrollController();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final PatchedApplication? _app = locator<PatcherViewModel>().selectedApp;
   final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
   static const _installerChannel = MethodChannel(
     'app.revanced.manager/installer',
   );
+  final ScrollController scrollController = ScrollController();
   double? progress = 0.0;
   String logs = '';
   String headerLogs = '';
@@ -148,10 +148,10 @@ class InstallerViewModel extends BaseViewModel {
       );
       isInstalled = await _patcherAPI.installPatchedFile(_app!);
       if (isInstalled) {
-        update(1.0, 'Installed...', 'Installed');
+        update(1.0, 'Installed!', 'Installed');
         _app!.patchDate = DateTime.now();
         _app!.appliedPatches.addAll(_patches.map((p) => p.name).toList());
-        await saveApp();
+        _managerAPI.savePatchedApp(_app!);
       } else {
         update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }
@@ -174,18 +174,6 @@ class InstallerViewModel extends BaseViewModel {
   void openApp() {
     if (_app != null) {
       DeviceApps.openApp(_app!.packageName);
-    }
-  }
-
-  Future<void> saveApp() async {
-    if (_app != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> patchedApps = prefs.getStringList('patchedApps') ?? [];
-      String appStr = json.encode(_app!.toJson());
-      patchedApps.removeWhere(
-          (a) => json.decode(a)['packageName'] == _app!.packageName);
-      patchedApps.add(appStr);
-      prefs.setStringList('patchedApps', patchedApps);
     }
   }
 }

@@ -5,15 +5,39 @@ class RootAPI {
   final String _postFsDataDirPath = "/data/adb/post-fs-data.d";
   final String _serviceDDirPath = "/data/adb/service.d";
 
-  Future<bool> checkApp(String packageName) async {
+  Future<bool> isAppInstalled(String packageName) async {
+    if (packageName.isNotEmpty) {
+      String? res = await Root.exec(
+        cmd: 'ls "$_managerDirPath/$packageName"',
+      );
+      if (res != null && res.isNotEmpty) {
+        res = await Root.exec(
+          cmd: 'ls "$_serviceDDirPath/$packageName.sh"',
+        );
+        return res != null && res.isNotEmpty;
+      }
+    }
+    return false;
+  }
+
+  Future<List<String>> getInstalledApps() async {
     try {
       String? res = await Root.exec(
-        cmd: 'ls -la "$_managerDirPath/$packageName"',
+        cmd: 'ls "$_managerDirPath"',
       );
-      return res != null && res.isNotEmpty;
+      if (res != null) {
+        List<String> apps = res.split('\n');
+        for (String packageName in apps) {
+          bool isInstalled = await isAppInstalled(packageName);
+          if (!isInstalled) {
+            apps.remove(packageName);
+          }
+        }
+      }
     } on Exception {
-      return false;
+      return List.empty();
     }
+    return List.empty();
   }
 
   Future<void> deleteApp(String packageName, String originalFilePath) async {

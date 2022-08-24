@@ -5,19 +5,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/main_viewmodel.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:revanced_manager/ui/views/root_checker/root_checker_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 Future main() async {
   await ThemeManager.initialise();
-  setupLocator();
+  await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -68,8 +68,8 @@ class MyApp extends StatelessWidget {
   }
 
   Future<Widget> _init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isRooted = prefs.getBool('isRooted');
+    await locator<ManagerAPI>().initialize();
+    bool? isRooted = locator<ManagerAPI>().isRooted();
     if (isRooted != null) {
       return const Navigation();
     }

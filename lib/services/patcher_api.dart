@@ -4,6 +4,7 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -16,7 +17,7 @@ class PatcherAPI {
   static const patcherChannel = MethodChannel(
     'app.revanced.manager/patcher',
   );
-  final ManagerAPI _managerAPI = ManagerAPI();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
   Directory? _tmpDir;
   Directory? _workDir;
@@ -248,7 +249,7 @@ class PatcherAPI {
 
   Future<bool> checkOldPatch(PatchedApplication patchedApp) async {
     if (patchedApp.isRooted) {
-      return await _rootAPI.checkApp(patchedApp.packageName);
+      return await _rootAPI.isAppInstalled(patchedApp.packageName);
     }
     return false;
   }

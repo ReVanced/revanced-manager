@@ -10,7 +10,7 @@ class AvailableUpdatesCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final ManagerAPI _managerAPI = ManagerAPI();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
   @override
   Widget build(BuildContext context) {
