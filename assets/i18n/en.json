@@ -55,7 +55,7 @@
     },
     "patchesSelectorView": {
         "searchBarHint": "Search patches",
-        "fabButton": "Done"
+        "doneButton": "Done"
     },
     "installerView": {
         "widgetTitle": "Installer",

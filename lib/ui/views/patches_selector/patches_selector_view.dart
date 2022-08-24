@@ -65,7 +65,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                           model.selectPatches();
                           Navigator.of(context).pop();
                         },
-                        child: I18nText('patchesSelectorView.fabButton'),
+                        child: I18nText('patchesSelectorView.doneButton'),
                       ),
                     ],
                   )
