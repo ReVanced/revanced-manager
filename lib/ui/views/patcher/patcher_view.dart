@@ -27,43 +27,64 @@ class PatcherView extends StatelessWidget {
             foregroundColor: Colors.white,
           ),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 60),
-                I18nText(
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              pinned: true,
+              snap: false,
+              floating: false,
+              expandedHeight: 100.0,
+              automaticallyImplyLeading: false,
+              backgroundColor: MaterialStateColor.resolveWith(
+                (states) => states.contains(MaterialState.scrolledUnder)
+                    ? isDark
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).navigationBarTheme.backgroundColor!
+                    : Theme.of(context).scaffoldBackgroundColor,
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.symmetric(
+                  vertical: 23.0,
+                  horizontal: 20.0,
+                ),
+                title: I18nText(
                   'patcherView.widgetTitle',
                   child: Text(
                     '',
                     style: GoogleFonts.inter(
-                      fontSize: 28,
+                      color: Theme.of(context).textTheme.headline5!.color,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                const SizedBox(height: 23),
-                AppSelectorCard(
-                  onPressed: model.navigateToAppSelector,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 16),
-                Opacity(
-                  opacity: isDark
-                      ? (model.dimPatchesCard() ? 0.5 : 1)
-                      : (model.dimPatchesCard() ? 0.75 : 1),
-                  child: PatchSelectorCard(
-                    onPressed: model.dimPatchesCard()
-                        ? () => {}
-                        : model.navigateToPatchesSelector,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed(
+                  <Widget>[
+                    AppSelectorCard(
+                      onPressed: model.navigateToAppSelector,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 16),
+                    Opacity(
+                      opacity: isDark
+                          ? (model.dimPatchesCard() ? 0.5 : 1)
+                          : (model.dimPatchesCard() ? 0.75 : 1),
+                      child: PatchSelectorCard(
+                        onPressed: model.dimPatchesCard()
+                            ? () => {}
+                            : model.navigateToPatchesSelector,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

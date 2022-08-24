@@ -26,134 +26,150 @@ class SettingsView extends StatelessWidget {
       viewModelBuilder: () => SettingsViewModel(),
       onModelReady: (model) => model.initialize(),
       builder: (context, SettingsViewModel model, child) => Scaffold(
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 60),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: I18nText(
-                      'settingsView.widgetTitle',
-                      child: Text(
-                        '',
-                        style: GoogleFonts.inter(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              pinned: true,
+              snap: false,
+              floating: false,
+              expandedHeight: 100.0,
+              automaticallyImplyLeading: false,
+              backgroundColor: MaterialStateColor.resolveWith(
+                (states) => states.contains(MaterialState.scrolledUnder)
+                    ? isDark
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).navigationBarTheme.backgroundColor!
+                    : Theme.of(context).scaffoldBackgroundColor,
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.symmetric(
+                  vertical: 23.0,
+                  horizontal: 20.0,
+                ),
+                title: I18nText(
+                  'homeView.widgetTitle',
+                  child: Text(
+                    '',
+                    style: GoogleFonts.inter(
+                      color: Theme.of(context).textTheme.headline5!.color,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  SettingsSwitchItem(
-                    title: 'settingsView.themeLabel',
-                    subtitle: 'settingsView.themeHint',
-                    value: isDark,
-                    onTap: (value) {
-                      isDark = value;
-                      getThemeManager(context).toggleDarkLightTheme();
-                    },
-                  ),
-                  ListTile(
-                    title: I18nText(
-                      'settingsView.rootModeLabel',
-                      child: Text(
-                        '',
-                        style: kSettingItemTextStyle,
-                      ),
-                    ),
-                    subtitle: I18nText('settingsView.rootModeHint'),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        model.navigateToRootChecker();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            width: 1,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        child: Text(
-                          model.isRooted ? 'Rooted' : 'Not rooted',
-                        ),
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                    inputController: organizationController,
-                    label: 'settingsView.organizationLabel',
-                    hint: ghOrg,
-                    onChanged: (value) {
-                      ghOrg = value;
-                    },
-                  ),
-                  CustomTextField(
-                    inputController: patchesSourceController,
-                    label: 'settingsView.patchesSourceLabel',
-                    hint: patchesRepo,
-                    onChanged: (value) {
-                      patchesRepo = value;
-                    },
-                  ),
-                  CustomTextField(
-                    inputController: integrationsSourceController,
-                    label: 'settingsView.integrationsSourceLabel',
-                    hint: integrationsRepo,
-                    onChanged: (value) {
-                      integrationsRepo = value;
-                    },
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        I18nText(
-                          'settingsView.languageLabel',
-                          child: Text('', style: kSettingItemTextStyle),
-                        ),
-                        DropdownButton(
-                          value: 'en',
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'en',
-                              child: Text('English'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'fr',
-                              child: Text('French'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            value = value;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    title: I18nText(
-                      'settingsView.contributorsLabel',
-                      child: Text('', style: kSettingItemTextStyle),
-                    ),
-                    onTap: model.navigateToContributors,
-                  ),
-                  const SocialMediaCards(),
-                  const AboutWidget(),
-                ],
+                ),
               ),
             ),
-          ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed(
+                  <Widget>[
+                    SettingsSwitchItem(
+                      title: 'settingsView.themeLabel',
+                      subtitle: 'settingsView.themeHint',
+                      value: isDark,
+                      onTap: (value) {
+                        isDark = value;
+                        getThemeManager(context).toggleDarkLightTheme();
+                      },
+                    ),
+                    ListTile(
+                      title: I18nText(
+                        'settingsView.rootModeLabel',
+                        child: Text(
+                          '',
+                          style: kSettingItemTextStyle,
+                        ),
+                      ),
+                      subtitle: I18nText('settingsView.rootModeHint'),
+                      trailing: GestureDetector(
+                        onTap: () {
+                          model.navigateToRootChecker();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              width: 1,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          child: Text(
+                            model.isRooted ? 'Rooted' : 'Not rooted',
+                          ),
+                        ),
+                      ),
+                    ),
+                    CustomTextField(
+                      inputController: organizationController,
+                      label: 'settingsView.organizationLabel',
+                      hint: ghOrg,
+                      onChanged: (value) {
+                        ghOrg = value;
+                      },
+                    ),
+                    CustomTextField(
+                      inputController: patchesSourceController,
+                      label: 'settingsView.patchesSourceLabel',
+                      hint: patchesRepo,
+                      onChanged: (value) {
+                        patchesRepo = value;
+                      },
+                    ),
+                    CustomTextField(
+                      inputController: integrationsSourceController,
+                      label: 'settingsView.integrationsSourceLabel',
+                      hint: integrationsRepo,
+                      onChanged: (value) {
+                        integrationsRepo = value;
+                      },
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          I18nText(
+                            'settingsView.languageLabel',
+                            child: Text('', style: kSettingItemTextStyle),
+                          ),
+                          DropdownButton(
+                            value: 'en',
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'en',
+                                child: Text('English'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'fr',
+                                child: Text('French'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              value = value;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      title: I18nText(
+                        'settingsView.contributorsLabel',
+                        child: Text('', style: kSettingItemTextStyle),
+                      ),
+                      onTap: model.navigateToContributors,
+                    ),
+                    const SocialMediaCards(),
+                    const AboutWidget(),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

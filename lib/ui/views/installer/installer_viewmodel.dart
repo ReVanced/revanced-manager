@@ -122,7 +122,7 @@ class InstallerViewModel extends BaseViewModel {
           resourcePatching = true;
         }
         await _patcherAPI.mergeIntegrations(mergeIntegrations);
-        headerLogs = "Merging integrations";
+        headerLogs = 'Merging integrations';
         await _patcherAPI.runPatcher(
           apkFilePath,
           _patches,
