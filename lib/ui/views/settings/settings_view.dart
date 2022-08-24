@@ -47,7 +47,7 @@ class SettingsView extends StatelessWidget {
                   horizontal: 20.0,
                 ),
                 title: I18nText(
-                  'homeView.widgetTitle',
+                  'settingsView.widgetTitle',
                   child: Text(
                     '',
                     style: GoogleFonts.inter(
