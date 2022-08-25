@@ -54,7 +54,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       Expanded(
                         child: ListView(
                           children: model
-                              .getFilteredPatches(_query)
+                              .getQueriedPatches(_query)
                               .map((patch) => PatchItem(
                                     name: patch.name,
                                     simpleName: patch.simpleName,

@@ -51,7 +51,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     locator<PatcherViewModel>().notifyListeners();
   }
 
-  List<Patch> getFilteredPatches(String query) {
+  List<Patch> getQueriedPatches(String query) {
     return patches
         .where((patch) =>
             query.isEmpty ||
