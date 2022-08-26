@@ -8,7 +8,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,11 +24,11 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.ApplicationItem
 import app.revanced.manager.ui.component.HeadlineWithCard
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(viewModel: DashboardViewModel = getViewModel()) {
+fun PatcherScreen(viewModel: DashboardViewModel = getViewModel()) {
     val context = LocalContext.current
     val padHoriz = 16.dp
     val padVert = 10.dp
@@ -36,7 +39,7 @@ fun DashboardScreen(viewModel: DashboardViewModel = getViewModel()) {
             .padding(horizontal = 18.dp)
             .verticalScroll(state = rememberScrollState()),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(18.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         HeadlineWithCard(R.string.updates) {
             Row(
@@ -64,35 +67,50 @@ fun DashboardScreen(viewModel: DashboardViewModel = getViewModel()) {
                                 .show()
                         },
                     ) { Text(stringResource(R.string.update_patch_bundle)) }
-
+                    Text(
+                        text = "No updates available",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 10.sp,
+                    )
                 }
             }
         }
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
 
-
-            Text(
-                text = "Patched Applications",
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(selected = true, onClick = { /*TODO*/ }, label = {
-                    Text("Updates Available")
-                })
-                FilterChip(selected = false, onClick = { /*TODO*/ }, label = {
-                    Text("Installed")
-                })
+        HeadlineWithCard(R.string.patched_apps) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = padHoriz, vertical = padVert)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column {
+                    val amount = 2 // TODO
+                    Text(
+                        text = "${stringResource(R.string.updates_available)}: $amount",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                }
+                Button(
+                    enabled = true, // needs update
+                    onClick = {
+                        Toast.makeText(context, "Already up-to-date!", Toast.LENGTH_SHORT).show()
+                    }
+                ) { Text(stringResource(R.string.update_all)) }
             }
-
             Column(
                 modifier = Modifier
+                    .padding(horizontal = padHoriz)
                     .padding(bottom = padVert)
                     .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 ApplicationItem(
                     name = "ReVanced",
-                    released = "com.google.android.youtube",
+                    released = "Released 2 days ago",
                     icon = { Icon(Icons.Default.Dashboard, "ReVanced") }
                 ) {
                     ChangelogText(
@@ -136,37 +154,5 @@ fun DashboardScreen(viewModel: DashboardViewModel = getViewModel()) {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun CommitDate(@StringRes label: Int, date: String) {
-    Row {
-        Text(
-            text = "${stringResource(label)}: ",
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = date,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
-
-@Composable
-fun ChangelogText(text: String) {
-    Column {
-        Text(
-            text = "Changelog",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
     }
 }

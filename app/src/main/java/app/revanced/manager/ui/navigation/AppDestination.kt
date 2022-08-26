@@ -24,5 +24,5 @@ enum class DashboardDestination(
 ) : Destination {
     DASHBOARD(Icons.Default.Dashboard, R.string.dashboard),
     PATCHER(Icons.Default.Build, R.string.patcher),
-    SETTINGS(Icons.Default.Settings, R.string.settings),
+    SETTINGS(Icons.Default.Settings, R.string.settings)
 }
