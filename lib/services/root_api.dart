@@ -27,12 +27,15 @@ class RootAPI {
       );
       if (res != null) {
         List<String> apps = res.split('\n');
+        List<String> toRemove = [];
         for (String packageName in apps) {
           bool isInstalled = await isAppInstalled(packageName);
           if (!isInstalled) {
-            apps.remove(packageName);
+            toRemove.add(packageName);
           }
         }
+        apps.removeWhere((a) => toRemove.contains(a));
+        return apps;
       }
     } on Exception {
       return List.empty();

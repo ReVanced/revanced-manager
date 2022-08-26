@@ -32,5 +32,6 @@ class ContributorsViewModel extends BaseViewModel {
       ghOrg,
       managerRepo,
     );
+    notifyListeners();
   }
 }

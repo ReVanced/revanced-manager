@@ -94,6 +94,7 @@ class ManagerAPI {
   Future<void> reAssessSavedApps() async {
     List<PatchedApplication> patchedApps = getPatchedApps();
     bool isRoot = isRooted() ?? false;
+    List<PatchedApplication> toRemove = [];
     for (PatchedApplication app in patchedApps) {
       bool existsRoot = false;
       if (isRoot) {
@@ -101,23 +102,23 @@ class ManagerAPI {
       }
       bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
       if (!existsRoot && !existsNonRoot) {
-        patchedApps.remove(app);
+        toRemove.add(app);
       } else if (existsNonRoot) {
         ApplicationWithIcon? application =
             await DeviceApps.getApp(app.packageName, true)
                 as ApplicationWithIcon?;
         if (application != null) {
           int savedVersionInt =
-              int.parse(app.version.replaceFirst('v', '').replaceAll('.', ''));
-          int currentVersionInt = int.parse(application.versionName!
-              .replaceFirst('v', '')
-              .replaceAll('.', ''));
+              int.parse(app.version.replaceAll(RegExp('[^0-9]'), ''));
+          int currentVersionInt = int.parse(
+              application.versionName!.replaceAll(RegExp('[^0-9]'), ''));
           if (savedVersionInt < currentVersionInt) {
-            patchedApps.remove(app);
+            toRemove.add(app);
           }
         }
       }
     }
+    patchedApps.removeWhere((a) => toRemove.contains(a));
     setPatchedApps(patchedApps);
     List<String> apps = await _rootAPI.getInstalledApps();
     for (String packageName in apps) {
@@ -136,8 +137,19 @@ class ManagerAPI {
     return false;
   }
 
-  Future<String> getAppChangelog(String packageName) async {
-    // TODO: get changelog based on last commits on the folder of this app?
-    return 'To be implemented';
+  Future<List<String>> getAppChangelog(
+    String packageName,
+    DateTime lastUpdated,
+  ) async {
+    return (await _githubAPI.getCommits(ghOrg, patchesRepo))
+        .where((c) =>
+            c.commit != null &&
+            c.commit!.message != null &&
+            !c.commit!.message!.startsWith('chore') &&
+            c.commit!.author != null &&
+            c.commit!.author!.date != null)
+        .map((c) => '  - ${c.commit!.message!}')
+        .toList()
+        .sublist(0, 3);
   }
 }

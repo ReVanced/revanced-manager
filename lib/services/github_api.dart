@@ -56,13 +56,14 @@ class GithubAPI {
   }
 
   Future<List<Contributor>> getContributors(String org, repoName) async {
-    try {
-      var contributors = _github.repositories.listContributors(
-        RepositorySlug(org, repoName),
-      );
-      return contributors.toList();
-    } on Exception {
-      return List.empty();
-    }
+    return await (_github.repositories.listContributors(
+      RepositorySlug(org, repoName),
+    )).toList();
+  }
+
+  Future<List<RepositoryCommit>> getCommits(String org, repoName) async {
+    return await (_github.repositories.listCommits(
+      RepositorySlug(org, repoName),
+    )).toList();
   }
 }

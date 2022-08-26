@@ -21,31 +21,32 @@ class InstalledAppsCard extends StatelessWidget {
       children: [
         FutureBuilder<List<PatchedApplication>>(
           future: locator<HomeViewModel>().getPatchedApps(false),
-          builder: (context, snapshot) =>
-              snapshot.hasData && snapshot.data!.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) => FutureBuilder<String>(
-                        future: _managerAPI.getAppChangelog(
-                          snapshot.data![index].packageName,
-                        ),
-                        initialData: '',
-                        builder: (context, snapshot2) => ApplicationItem(
-                          icon: snapshot.data![index].icon,
-                          name: snapshot.data![index].name,
-                          patchDate: snapshot.data![index].patchDate,
-                          changelog: snapshot2.data!,
-                          isUpdatableApp: false,
-                          onPressed: () => DeviceApps.openApp(
-                            snapshot.data![index].packageName,
-                          ),
-                        ),
+          builder: (context, snapshot) => snapshot.hasData &&
+                  snapshot.data!.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) => FutureBuilder<List<String>>(
+                    future: _managerAPI.getAppChangelog(
+                      snapshot.data![index].packageName,
+                      snapshot.data![index].patchDate,
+                    ),
+                    initialData: const ['Loading'],
+                    builder: (context, snapshot2) => ApplicationItem(
+                      icon: snapshot.data![index].icon,
+                      name: snapshot.data![index].name,
+                      patchDate: snapshot.data![index].patchDate,
+                      changelog: '${snapshot2.data!.join('\n')}\n(...)',
+                      isUpdatableApp: false,
+                      onPressed: () => DeviceApps.openApp(
+                        snapshot.data![index].packageName,
                       ),
-                    )
-                  : Container(),
+                    ),
+                  ),
+                )
+              : Container(),
         ),
       ],
     );

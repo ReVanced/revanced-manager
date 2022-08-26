@@ -65,9 +65,9 @@ class HomeViewModel extends BaseViewModel {
     if (latestVersion != null) {
       try {
         int latestVersionInt =
-            int.parse(latestVersion.replaceFirst('v', '').replaceAll('.', ''));
+            int.parse(latestVersion.replaceAll(RegExp('[^0-9]'), ''));
         int currentVersionInt =
-            int.parse(currentVersion.replaceFirst('v', '').replaceAll('.', ''));
+            int.parse(currentVersion.replaceAll(RegExp('[^0-9]'), ''));
         return latestVersionInt > currentVersionInt;
       } on Exception {
         return false;
