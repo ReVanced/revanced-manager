@@ -10,13 +10,7 @@ import app.revanced.manager.utils.zip.ZipFile
 import app.revanced.manager.utils.zip.structures.ZipEntry
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
-import app.revanced.patcher.data.Data
-import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
-import app.revanced.patcher.extensions.PatchExtensions.description
-import app.revanced.patcher.extensions.PatchExtensions.include
 import app.revanced.patcher.extensions.PatchExtensions.patchName
-import app.revanced.patcher.extensions.PatchExtensions.version
-import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
@@ -30,7 +24,6 @@ import java.nio.file.StandardCopyOption
 class MainActivity : FlutterActivity() {
     private val PATCHER_CHANNEL = "app.revanced.manager/patcher"
     private val INSTALLER_CHANNEL = "app.revanced.manager/installer"
-    private var patches = mutableListOf<Class<out Patch<Data>>>()
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
 
@@ -41,27 +34,8 @@ class MainActivity : FlutterActivity() {
                 MethodChannel(flutterEngine.dartExecutor.binaryMessenger, INSTALLER_CHANNEL)
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
-                "loadPatches" -> {
-                    val jarPatchBundlePath = call.argument<String>("jarPatchBundlePath")
-                    val cacheDirPath = call.argument<String>("cacheDirPath")
-                    if (jarPatchBundlePath != null && cacheDirPath != null) {
-                        loadPatches(result, jarPatchBundlePath, cacheDirPath)
-                    } else {
-                        result.notImplemented()
-                    }
-                }
-                "getCompatiblePackages" -> getCompatiblePackages(result)
-                "getFilteredPatches" -> {
-                    val targetPackage = call.argument<String>("targetPackage")
-                    val targetVersion = call.argument<String>("targetVersion")
-                    val ignoreVersion = call.argument<Boolean>("ignoreVersion")
-                    if (targetPackage != null && targetVersion != null && ignoreVersion != null) {
-                        getFilteredPatches(result, targetPackage, targetVersion, ignoreVersion)
-                    } else {
-                        result.notImplemented()
-                    }
-                }
                 "runPatcher" -> {
+                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
                     val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val patchedFilePath = call.argument<String>("patchedFilePath")
@@ -71,7 +45,8 @@ class MainActivity : FlutterActivity() {
                     val cacheDirPath = call.argument<String>("cacheDirPath")
                     val mergeIntegrations = call.argument<Boolean>("mergeIntegrations")
                     val resourcePatching = call.argument<Boolean>("resourcePatching")
-                    if (originalFilePath != null &&
+                    if (patchBundleFilePath != null &&
+                                    originalFilePath != null &&
                                     inputFilePath != null &&
                                     patchedFilePath != null &&
                                     outFilePath != null &&
@@ -83,6 +58,7 @@ class MainActivity : FlutterActivity() {
                     ) {
                         runPatcher(
                                 result,
+                                patchBundleFilePath,
                                 originalFilePath,
                                 inputFilePath,
                                 patchedFilePath,
@@ -102,79 +78,9 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    fun loadPatches(
-            result: MethodChannel.Result,
-            jarPatchBundlePath: String,
-            cacheDirPath: String
-    ) {
-        Thread(
-                        Runnable {
-                            patches.addAll(
-                                    DexPatchBundle(
-                                                    jarPatchBundlePath,
-                                                    DexClassLoader(
-                                                            jarPatchBundlePath,
-                                                            cacheDirPath,
-                                                            null,
-                                                            javaClass.classLoader
-                                                    )
-                                            )
-                                            .loadPatches()
-                            )
-                            handler.post { result.success(null) }
-                        }
-                )
-                .start()
-    }
-
-    fun getCompatiblePackages(result: MethodChannel.Result) {
-        Thread(
-                        Runnable {
-                            val filteredPackages = mutableListOf<String>()
-                            patches.forEach patch@{ patch ->
-                                patch.compatiblePackages?.forEach { pkg ->
-                                    filteredPackages.add(pkg.name)
-                                }
-                            }
-                            handler.post { result.success(filteredPackages.distinct()) }
-                        }
-                )
-                .start()
-    }
-
-    fun getFilteredPatches(
-            result: MethodChannel.Result,
-            targetPackage: String,
-            targetVersion: String,
-            ignoreVersion: Boolean
-    ) {
-        Thread(
-                        Runnable {
-                            val filteredPatches = mutableListOf<Map<String, Any?>>()
-                            patches.forEach patch@{ patch ->
-                                patch.compatiblePackages?.forEach { pkg ->
-                                    if (pkg.name == targetPackage &&
-                                                    (ignoreVersion ||
-                                                            pkg.versions.isNotEmpty() ||
-                                                            pkg.versions.contains(targetVersion))
-                                    ) {
-                                        var p = mutableMapOf<String, Any?>()
-                                        p.put("name", patch.patchName)
-                                        p.put("version", patch.version)
-                                        p.put("description", patch.description)
-                                        p.put("include", patch.include)
-                                        filteredPatches.add(p)
-                                    }
-                                }
-                            }
-                            handler.post { result.success(filteredPatches) }
-                        }
-                )
-                .start()
-    }
-
     fun runPatcher(
             result: MethodChannel.Result,
+            patchBundleFilePath: String,
             originalFilePath: String,
             inputFilePath: String,
             patchedFilePath: String,
@@ -190,8 +96,19 @@ class MainActivity : FlutterActivity() {
         val patchedFile = File(patchedFilePath)
         val outFile = File(outFilePath)
         val integrations = File(integrationsPath)
-        val filteredPatches =
-                patches.filter { patch -> selectedPatches.any { it == patch.patchName } }
+
+        val patches =
+                DexPatchBundle(
+                                patchBundleFilePath,
+                                DexClassLoader(
+                                        patchBundleFilePath,
+                                        cacheDirPath,
+                                        null,
+                                        javaClass.classLoader
+                                )
+                        )
+                        .loadPatches()
+                        .filter { patch -> selectedPatches.any { it == patch.patchName } }
 
         Thread(
                         Runnable {
@@ -234,53 +151,69 @@ class MainActivity : FlutterActivity() {
                                                                     app.revanced.patcher.logging.Logger {
                                                                 override fun error(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel.invokeMethod(
-                                                                                "update",
-                                                                                mapOf(
-                                                                                        "progress" to 0.2,
-                                                                                        "header" to "",
-                                                                                        "log" to msg
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "update",
+                                                                                        mapOf(
+                                                                                                "progress" to
+                                                                                                        0.2,
+                                                                                                "header" to
+                                                                                                        "",
+                                                                                                "log" to
+                                                                                                        msg
+                                                                                        )
                                                                                 )
-                                                                        )
                                                                     }
                                                                 }
 
                                                                 override fun warn(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel.invokeMethod(
-                                                                                "update",
-                                                                                mapOf(
-                                                                                        "progress" to 0.2,
-                                                                                        "header" to "",
-                                                                                        "log" to msg
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "update",
+                                                                                        mapOf(
+                                                                                                "progress" to
+                                                                                                        0.2,
+                                                                                                "header" to
+                                                                                                        "",
+                                                                                                "log" to
+                                                                                                        msg
+                                                                                        )
                                                                                 )
-                                                                        )
                                                                     }
                                                                 }
 
                                                                 override fun info(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel.invokeMethod(
-                                                                                "update",
-                                                                                mapOf(
-                                                                                        "progress" to 0.2,
-                                                                                        "header" to "",
-                                                                                        "log" to msg
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "update",
+                                                                                        mapOf(
+                                                                                                "progress" to
+                                                                                                        0.2,
+                                                                                                "header" to
+                                                                                                        "",
+                                                                                                "log" to
+                                                                                                        msg
+                                                                                        )
                                                                                 )
-                                                                        )
                                                                     }
                                                                 }
 
                                                                 override fun trace(msg: String) {
                                                                     handler.post {
-                                                                        installerChannel.invokeMethod(
-                                                                                "update",
-                                                                                mapOf(
-                                                                                        "progress" to 0.2,
-                                                                                        "header" to "",
-                                                                                        "log" to msg
+                                                                        installerChannel
+                                                                                .invokeMethod(
+                                                                                        "update",
+                                                                                        mapOf(
+                                                                                                "progress" to
+                                                                                                        0.2,
+                                                                                                "header" to
+                                                                                                        "",
+                                                                                                "log" to
+                                                                                                        msg
+                                                                                        )
                                                                                 )
-                                                                        )
                                                                     }
                                                                 }
                                                             }
@@ -289,12 +222,8 @@ class MainActivity : FlutterActivity() {
 
                             handler.post {
                                 installerChannel.invokeMethod(
-                                        "update", 
-                                        mapOf(
-                                                "progress" to 0.3,
-                                                "header" to "",
-                                                "log" to ""
-                                        )
+                                        "update",
+                                        mapOf("progress" to 0.3, "header" to "", "log" to "")
                                 )
                             }
                             if (mergeIntegrations) {
@@ -321,7 +250,7 @@ class MainActivity : FlutterActivity() {
                                         )
                                 )
                             }
-                            patcher.addPatches(filteredPatches)
+                            patcher.addPatches(patches)
                             patcher.applyPatches().forEach { (patch, res) ->
                                 if (res.isSuccess) {
                                     val msg = "[success] $patch"
@@ -341,11 +270,7 @@ class MainActivity : FlutterActivity() {
                                 handler.post {
                                     installerChannel.invokeMethod(
                                             "update",
-                                            mapOf(
-                                                    "progress" to 0.5,
-                                                    "header" to "",
-                                                    "log" to msg
-                                            )
+                                            mapOf("progress" to 0.5, "header" to "", "log" to msg)
                                     )
                                 }
                             }

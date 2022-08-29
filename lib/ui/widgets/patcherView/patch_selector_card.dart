@@ -72,7 +72,7 @@ class PatchSelectorCard extends StatelessWidget {
   String _getPatchesSelection() {
     String text = '';
     for (Patch p in locator<PatcherViewModel>().selectedPatches) {
-      text += '${p.simpleName} (v${p.version})\n';
+      text += '${p.getSimpleName()} (v${p.version})\n';
     }
     return text.substring(0, text.length - 1);
   }

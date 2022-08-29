@@ -27,7 +27,6 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     await _getPatchedApps();
-    await _patcherAPI.loadPatches();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
@@ -45,7 +44,7 @@ class HomeViewModel extends BaseViewModel {
   void navigateToPatcher(PatchedApplication app) async {
     locator<PatcherViewModel>().selectedApp = app;
     locator<PatcherViewModel>().selectedPatches =
-        await _patcherAPI.getAppliedPatches(app);
+        await _patcherAPI.getAppliedPatches(app.appliedPatches);
     locator<PatcherViewModel>().notifyListeners();
     locator<MainViewModel>().setIndex(1);
   }

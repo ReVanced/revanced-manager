@@ -39,7 +39,7 @@ class PatchedApplication {
   factory PatchedApplication.fromJson(Map<String, dynamic> json) =>
       _$PatchedApplicationFromJson(json);
 
-  Map toJson() => _$PatchedApplicationToJson(this);
+  Map<String, dynamic> toJson() => _$PatchedApplicationToJson(this);
 
   static Uint8List decodeBase64(String icon) => base64.decode(icon);
 

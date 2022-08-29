@@ -6,6 +6,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/main_viewmodel.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
 
   Future<Widget> _init() async {
     await locator<ManagerAPI>().initialize();
+    await locator<PatcherAPI>().initialize();
     bool? isRooted = locator<ManagerAPI>().isRooted();
     if (isRooted != null) {
       return const Navigation();

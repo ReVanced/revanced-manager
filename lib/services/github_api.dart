@@ -6,7 +6,7 @@ import 'package:timeago/timeago.dart';
 class GithubAPI {
   final GitHub _github = GitHub();
 
-  Future<String?> latestReleaseVersion(String org, repoName) async {
+  Future<String?> latestReleaseVersion(String org, String repoName) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
         RepositorySlug(org, repoName),
@@ -20,7 +20,7 @@ class GithubAPI {
   Future<File?> latestReleaseFile(
     String extension,
     String org,
-    repoName,
+    String repoName,
   ) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
@@ -42,7 +42,7 @@ class GithubAPI {
     return null;
   }
 
-  Future<String> latestCommitTime(String org, repoName) async {
+  Future<String> latestCommitTime(String org, String repoName) async {
     try {
       var repo = await _github.repositories.getRepository(
         RepositorySlug(org, repoName),
@@ -55,13 +55,13 @@ class GithubAPI {
     }
   }
 
-  Future<List<Contributor>> getContributors(String org, repoName) async {
+  Future<List<Contributor>> getContributors(String org, String repoName) async {
     return await (_github.repositories.listContributors(
       RepositorySlug(org, repoName),
     )).toList();
   }
 
-  Future<List<RepositoryCommit>> getCommits(String org, repoName) async {
+  Future<List<RepositoryCommit>> getCommits(String org, String repoName) async {
     return await (_github.repositories.listCommits(
       RepositorySlug(org, repoName),
     )).toList();

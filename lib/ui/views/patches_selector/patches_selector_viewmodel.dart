@@ -12,11 +12,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     patches.addAll(await _patcherAPI.getFilteredPatches(
-      locator<PatcherViewModel>().selectedApp,
+      locator<PatcherViewModel>().selectedApp!.packageName,
     ));
-    patches.sort((a, b) => a.simpleName.compareTo(b.simpleName));
+    patches.sort((a, b) => a.name.compareTo(b.name));
     for (Patch p in patches) {
-      if (p.include) {
+      if (!p.excluded) {
         selectedPatches.add(p);
       }
     }
@@ -56,7 +56,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
         .where((patch) =>
             query.isEmpty ||
             query.length < 2 ||
-            patch.simpleName.toLowerCase().contains(
+            patch.name.toLowerCase().contains(
                   query.toLowerCase(),
                 ))
         .toList();

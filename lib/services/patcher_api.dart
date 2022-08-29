@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:app_installer/app_installer.dart';
 import 'package:device_apps/device_apps.dart';
@@ -9,7 +10,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:revanced_manager/utils/string.dart';
 import 'package:share_extend/share_extend.dart';
 
 @lazySingleton
@@ -19,194 +19,123 @@ class PatcherAPI {
   );
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
+  List<Patch> _patches = [];
   Directory? _tmpDir;
-  Directory? _workDir;
-  Directory? _cacheDir;
-  File? _jarPatchBundleFile;
-  File? _integrations;
-  File? _inputFile;
-  File? _patchedFile;
   File? _outFile;
 
-  Future<void> initPatcher() async {
-    Directory appCache = await getTemporaryDirectory();
-    _tmpDir = Directory('${appCache.path}/patcher');
-    _tmpDir!.createSync();
-    _workDir = _tmpDir!.createTempSync('tmp-');
-    _inputFile = File('${_workDir!.path}/base.apk');
-    _patchedFile = File('${_workDir!.path}/patched.apk');
-    _outFile = File('${_workDir!.path}/out.apk');
-    _cacheDir = Directory('${_workDir!.path}/cache');
-    _cacheDir!.createSync();
+  Future<void> initialize() async {
+    await _loadPatches();
   }
 
-  Future<bool> loadPatches() async {
-    if (_tmpDir == null) {
-      await initPatcher();
-    }
-    if (_jarPatchBundleFile == null) {
-      _jarPatchBundleFile = await _managerAPI.downloadPatches('.jar');
-      if (_jarPatchBundleFile != null) {
-        try {
-          await patcherChannel.invokeMethod<bool>(
-            'loadPatches',
-            {
-              'jarPatchBundlePath': _jarPatchBundleFile!.path,
-              'cacheDirPath': _cacheDir!.path,
-            },
-          );
-        } on Exception {
-          return false;
+  Future<void> _loadPatches() async {
+    try {
+      if (_patches.isEmpty) {
+        File? patchJsonFile = await _managerAPI.downloadPatches('.json');
+        if (patchJsonFile != null) {
+          List<dynamic> list = json.decode(patchJsonFile.readAsStringSync());
+          _patches = list.map((patch) => Patch.fromJson(patch)).toList();
         }
       }
+    } on Exception {
+      _patches = List.empty();
     }
-    return _jarPatchBundleFile != null;
   }
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
-    List<ApplicationWithIcon> filteredPackages = [];
-    bool isLoaded = await loadPatches();
-    if (isLoaded) {
-      try {
-        List<String>? patchesPackages = await patcherChannel
-            .invokeListMethod<String>('getCompatiblePackages');
-        if (patchesPackages != null) {
-          for (String package in patchesPackages) {
-            try {
-              ApplicationWithIcon? app = await DeviceApps.getApp(package, true)
-                  as ApplicationWithIcon?;
-              if (app != null) {
-                filteredPackages.add(app);
-              }
-            } catch (e) {
-              continue;
-            }
-          }
-        }
-      } on Exception {
-        return List.empty();
-      }
-    }
-    return filteredPackages;
-  }
-
-  Future<List<Patch>> getFilteredPatches(
-    PatchedApplication? selectedApp,
-  ) async {
-    List<Patch> filteredPatches = [];
-    if (selectedApp != null) {
-      bool isLoaded = await loadPatches();
-      if (isLoaded) {
+    List<ApplicationWithIcon> filteredApps = [];
+    await _loadPatches();
+    for (Patch patch in _patches) {
+      for (Package package in patch.compatiblePackages) {
         try {
-          var patches =
-              await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
-            'getFilteredPatches',
-            {
-              'targetPackage': selectedApp.packageName,
-              'targetVersion': selectedApp.version,
-              'ignoreVersion': true,
-            },
-          );
-          if (patches != null) {
-            for (var patch in patches) {
-              if (!filteredPatches
-                  .any((element) => element.name == patch['name'])) {
-                filteredPatches.add(
-                  Patch(
-                    name: patch['name'],
-                    simpleName: (patch['name'] as String)
-                        .replaceAll('-', ' ')
-                        .split('-')
-                        .join(' ')
-                        .toTitleCase(),
-                    version: patch['version'] ?? '?.?.?',
-                    description: patch['description'] ?? 'N/A',
-                    include: patch['include'] ?? true,
-                  ),
-                );
-              }
+          if (!filteredApps.any((app) => app.packageName == package.name)) {
+            ApplicationWithIcon? app =
+                await DeviceApps.getApp(package.name, true)
+                    as ApplicationWithIcon?;
+            if (app != null) {
+              filteredApps.add(app);
             }
           }
-        } on Exception {
-          return List.empty();
+        } catch (e) {
+          continue;
         }
       }
     }
-    return filteredPatches;
+    return filteredApps;
   }
 
-  Future<List<Patch>> getAppliedPatches(
-    PatchedApplication? selectedApp,
-  ) async {
-    List<Patch> appliedPatches = [];
-    if (selectedApp != null) {
-      bool isLoaded = await loadPatches();
-      if (isLoaded) {
-        try {
-          var patches =
-              await patcherChannel.invokeListMethod<Map<dynamic, dynamic>>(
-            'getFilteredPatches',
-            {
-              'targetPackage': selectedApp.packageName,
-              'targetVersion': selectedApp.version,
-              'ignoreVersion': true,
-            },
-          );
-          if (patches != null) {
-            for (var patch in patches) {
-              if (selectedApp.appliedPatches.contains(patch['name'])) {
-                appliedPatches.add(
-                  Patch(
-                    name: patch['name'],
-                    simpleName: (patch['name'] as String)
-                        .replaceAll('-', ' ')
-                        .split('-')
-                        .join(' ')
-                        .toTitleCase(),
-                    version: patch['version'] ?? '?.?.?',
-                    description: patch['description'] ?? 'N/A',
-                    include: patch['include'] ?? true,
-                  ),
-                );
-              }
-            }
-          }
-        } on Exception {
-          return List.empty();
-        }
-      }
-    }
-    return appliedPatches;
+  Future<List<Patch>> getFilteredPatches(String packageName) async {
+    await _loadPatches();
+    return _patches
+        .where((patch) =>
+            !patch.name.contains('settings') &&
+            patch.compatiblePackages.any((pack) => pack.name == packageName))
+        .toList();
   }
 
-  Future<void> mergeIntegrations(bool mergeIntegrations) async {
-    if (mergeIntegrations) {
-      _integrations = await _managerAPI.downloadIntegrations('.apk');
-    } else {
-      _integrations = null;
-    }
+  Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
+    await _loadPatches();
+    return _patches
+        .where((patch) => appliedPatches.contains(patch.name))
+        .toList();
   }
 
   Future<void> runPatcher(
+    String packageName,
     String originalFilePath,
     List<Patch> selectedPatches,
-    bool mergeIntegrations,
-    bool resourcePatching,
   ) async {
-    await patcherChannel.invokeMethod(
-      'runPatcher',
-      {
-        'originalFilePath': originalFilePath,
-        'inputFilePath': _inputFile!.path,
-        'patchedFilePath': _patchedFile!.path,
-        'outFilePath': _outFile!.path,
-        'integrationsPath': _integrations != null ? _integrations!.path : '',
-        'selectedPatches': selectedPatches.map((p) => p.name).toList(),
-        'cacheDirPath': _cacheDir!.path,
-        'mergeIntegrations': mergeIntegrations,
-        'resourcePatching': resourcePatching,
-      },
+    bool mergeIntegrations = selectedPatches.any(
+      (patch) => patch.dependencies.contains('integrations'),
     );
+    bool resourcePatching = selectedPatches.any(
+      (patch) => patch.dependencies.any((dep) => dep.contains('resource-')),
+    );
+    bool includeSettings = selectedPatches.any(
+      (patch) => patch.dependencies.contains('settings'),
+    );
+    if (includeSettings) {
+      try {
+        Patch settingsPatch = _patches.firstWhere(
+          (patch) =>
+              patch.name.contains('settings') &&
+              patch.compatiblePackages.any((pack) => pack.name == packageName),
+        );
+        selectedPatches.add(settingsPatch);
+      } catch (e) {
+        // ignore
+      }
+    }
+    File? patchBundleFile = await _managerAPI.downloadPatches('.jar');
+    File? integrationsFile;
+    if (mergeIntegrations) {
+      integrationsFile = await _managerAPI.downloadIntegrations('.apk');
+    }
+    if (patchBundleFile != null) {
+      Directory appCache = await getTemporaryDirectory();
+      _tmpDir = Directory('${appCache.path}/patcher');
+      _tmpDir!.createSync();
+      Directory workDir = _tmpDir!.createTempSync('tmp-');
+      File inputFile = File('${workDir.path}/base.apk');
+      File patchedFile = File('${workDir.path}/patched.apk');
+      _outFile = File('${workDir.path}/out.apk');
+      Directory cacheDir = Directory('${workDir.path}/cache');
+      cacheDir.createSync();
+      await patcherChannel.invokeMethod(
+        'runPatcher',
+        {
+          'patchBundleFilePath': patchBundleFile.path,
+          'originalFilePath': originalFilePath,
+          'inputFilePath': inputFile.path,
+          'patchedFilePath': patchedFile.path,
+          'outFilePath': _outFile!.path,
+          'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
+          'selectedPatches': selectedPatches.map((p) => p.name).toList(),
+          'cacheDirPath': cacheDir.path,
+          'mergeIntegrations': mergeIntegrations,
+          'resourcePatching': resourcePatching,
+        },
+      );
+    }
   }
 
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {

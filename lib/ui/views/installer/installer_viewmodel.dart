@@ -108,22 +108,7 @@ class InstallerViewModel extends BaseViewModel {
           }
         }
         update(0.0, '', 'Creating working directory');
-        bool mergeIntegrations = false;
-        bool resourcePatching = false;
-        if (_app!.packageName == 'com.google.android.youtube') {
-          mergeIntegrations = true;
-          resourcePatching = true;
-        } else if (_app!.packageName ==
-            'com.google.android.apps.youtube.music') {
-          resourcePatching = true;
-        }
-        await _patcherAPI.mergeIntegrations(mergeIntegrations);
-        await _patcherAPI.runPatcher(
-          apkFilePath,
-          _patches,
-          mergeIntegrations,
-          resourcePatching,
-        );
+        await _patcherAPI.runPatcher(_app!.packageName, apkFilePath, _patches);
       } on Exception {
         update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }
