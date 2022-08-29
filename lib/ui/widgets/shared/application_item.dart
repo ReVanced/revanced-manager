@@ -12,7 +12,7 @@ class ApplicationItem extends StatelessWidget {
   final Uint8List icon;
   final String name;
   final DateTime patchDate;
-  final String changelog;
+  final List<String> changelog;
   final bool isUpdatableApp;
   final Function() onPressed;
 
@@ -103,8 +103,9 @@ class ApplicationItem extends StatelessWidget {
                 style: kRobotoTextStyle.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
+            const SizedBox(height: 4),
             Text(
-              changelog,
+              '    - ${changelog.join('\n- ')}',
               style: kRobotoTextStyle,
             ),
           ],

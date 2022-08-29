@@ -397,7 +397,7 @@ class MainActivity : FlutterActivity() {
                                         mapOf(
                                                 "progress" to 1.0,
                                                 "header" to "Finished!",
-                                                "log" to "Finished"
+                                                "log" to "Finished!"
                                         )
                                 )
                             }

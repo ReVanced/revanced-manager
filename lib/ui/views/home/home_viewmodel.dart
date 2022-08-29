@@ -22,8 +22,11 @@ class HomeViewModel extends BaseViewModel {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   bool showUpdatableApps = true;
+  List<PatchedApplication> patchedInstalledApps = [];
+  List<PatchedApplication> patchedUpdatableApps = [];
 
   Future<void> initialize() async {
+    await _getPatchedApps();
     await _patcherAPI.loadPatches();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
@@ -31,6 +34,7 @@ class HomeViewModel extends BaseViewModel {
       ),
       onSelectNotification: (p) => DeviceApps.openApp('app.revanced.manager'),
     );
+    _managerAPI.reAssessSavedApps().then((_) => notifyListeners());
   }
 
   void toggleUpdatableApps(bool value) {
@@ -46,17 +50,16 @@ class HomeViewModel extends BaseViewModel {
     locator<MainViewModel>().setIndex(1);
   }
 
-  Future<List<PatchedApplication>> getPatchedApps(bool isUpdatable) async {
-    await _managerAPI.reAssessSavedApps();
-    List<PatchedApplication> list = [];
-    List<PatchedApplication> patchedApps = _managerAPI.getPatchedApps();
-    for (PatchedApplication app in patchedApps) {
-      bool hasUpdates = await _managerAPI.hasAppUpdates(app.packageName);
-      if (hasUpdates == isUpdatable) {
-        list.add(app);
-      }
-    }
-    return list;
+  Future<void> _getPatchedApps() async {
+    patchedInstalledApps = _managerAPI
+        .getPatchedApps()
+        .where((app) => app.hasUpdates == false)
+        .toList();
+    patchedUpdatableApps = _managerAPI
+        .getPatchedApps()
+        .where((app) => app.hasUpdates == true)
+        .toList();
+    notifyListeners();
   }
 
   Future<bool> hasManagerUpdates() async {

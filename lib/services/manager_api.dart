@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:device_apps/device_apps.dart';
+import 'package:github/github.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:revanced_manager/constants.dart';
@@ -14,9 +15,11 @@ class ManagerAPI {
   final GithubAPI _githubAPI = GithubAPI();
   final RootAPI _rootAPI = RootAPI();
   late SharedPreferences _prefs;
+  late List<RepositoryCommit> _commits = [];
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    _commits = (await _githubAPI.getCommits(ghOrg, patchesRepo)).toList();
   }
 
   Future<File?> downloadPatches(String extension) async {
@@ -71,85 +74,58 @@ class ManagerAPI {
     setPatchedApps(patchedApps);
   }
 
-  void saveApp(
-    ApplicationWithIcon application,
-    bool isRooted,
-    bool isFromStorage,
-  ) {
-    savePatchedApp(
-      PatchedApplication(
-        name: application.appName,
-        packageName: application.packageName,
-        version: application.versionName!,
-        apkFilePath: application.apkFilePath,
-        icon: application.icon,
-        patchDate: DateTime.now(),
-        isRooted: isRooted,
-        isFromStorage: isFromStorage,
-        appliedPatches: [],
-      ),
-    );
-  }
-
   Future<void> reAssessSavedApps() async {
-    List<PatchedApplication> patchedApps = getPatchedApps();
     bool isRoot = isRooted() ?? false;
+    List<PatchedApplication> patchedApps = getPatchedApps();
     List<PatchedApplication> toRemove = [];
     for (PatchedApplication app in patchedApps) {
-      bool existsRoot = false;
-      if (isRoot) {
-        existsRoot = await _rootAPI.isAppInstalled(app.packageName);
-      }
-      bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
-      if (!existsRoot && !existsNonRoot) {
+      bool isRemove = await isAppUninstalled(app, isRoot);
+      if (isRemove) {
         toRemove.add(app);
-      } else if (existsNonRoot) {
-        ApplicationWithIcon? application =
-            await DeviceApps.getApp(app.packageName, true)
-                as ApplicationWithIcon?;
-        if (application != null) {
-          int savedVersionInt =
-              int.parse(app.version.replaceAll(RegExp('[^0-9]'), ''));
-          int currentVersionInt = int.parse(
-              application.versionName!.replaceAll(RegExp('[^0-9]'), ''));
-          if (savedVersionInt < currentVersionInt) {
-            toRemove.add(app);
-          }
+      } else {
+        List<String> newChangelog = getAppChangelog(
+          app.packageName,
+          app.patchDate,
+        );
+        if (newChangelog.isNotEmpty) {
+          app.changelog = newChangelog;
+          app.hasUpdates = true;
+        } else {
+          app.hasUpdates = false;
         }
       }
     }
     patchedApps.removeWhere((a) => toRemove.contains(a));
     setPatchedApps(patchedApps);
-    List<String> apps = await _rootAPI.getInstalledApps();
-    for (String packageName in apps) {
-      if (!patchedApps.any((a) => a.packageName == packageName)) {
-        ApplicationWithIcon? application =
-            await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
-        if (application != null) {
-          saveApp(application, true, false);
-        }
-      }
+  }
+
+  Future<bool> isAppUninstalled(PatchedApplication app, bool isRoot) async {
+    bool existsRoot = false;
+    if (isRoot) {
+      existsRoot = await _rootAPI.isAppInstalled(app.packageName);
     }
+    bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
+    return !existsRoot && !existsNonRoot;
   }
 
-  Future<bool> hasAppUpdates(String packageName) async {
-    // TODO: get status based on last update time on the folder of this app?
-    return false;
-  }
-
-  Future<List<String>> getAppChangelog(
-    String packageName,
-    DateTime lastUpdated,
-  ) async {
-    return (await _githubAPI.getCommits(ghOrg, patchesRepo))
+  List<String> getAppChangelog(String packageName, DateTime patchedDate) {
+    List<String> newCommits = _commits
         .where((c) =>
             c.commit != null &&
             c.commit!.message != null &&
-            !c.commit!.message!.startsWith('chore') &&
             c.commit!.author != null &&
-            c.commit!.author!.date != null)
-        .map((c) => '  - ${c.commit!.message!}')
-        .toList()
-        .sublist(0, 3);
+            c.commit!.author!.date != null &&
+            c.commit!.author!.date!.isAfter(patchedDate))
+        .map((c) => c.commit!.message!)
+        .toList();
+    if (newCommits.isNotEmpty) {
+      int firstChore = newCommits.indexWhere((c) => c.startsWith('chore'));
+      int secondChore =
+          newCommits.indexWhere((c) => c.startsWith('chore'), firstChore + 1);
+      if (firstChore >= 0 && secondChore > firstChore) {
+        return newCommits.sublist(firstChore + 1, secondChore);
+      }
+    }
+    return List.empty();
   }
 }

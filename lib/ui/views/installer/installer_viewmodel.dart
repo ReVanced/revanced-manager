@@ -70,10 +70,10 @@ class InstallerViewModel extends BaseViewModel {
 
   void update(double value, String header, String log) {
     progress = value;
-    isInstalled = false;
     isPatching = progress == 1.0 ? false : true;
     if (progress == 0.0) {
       logs = '';
+      isInstalled = false;
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -148,9 +148,9 @@ class InstallerViewModel extends BaseViewModel {
       );
       isInstalled = await _patcherAPI.installPatchedFile(_app!);
       if (isInstalled) {
-        update(1.0, 'Installed!', 'Installed');
+        update(1.0, 'Installed!', 'Installed!');
         _app!.patchDate = DateTime.now();
-        _app!.appliedPatches.addAll(_patches.map((p) => p.name).toList());
+        _app!.appliedPatches = _patches.map((p) => p.name).toList();
         _managerAPI.savePatchedApp(_app!);
       } else {
         update(1.0, 'Aborting...', 'An error occurred! Aborting');

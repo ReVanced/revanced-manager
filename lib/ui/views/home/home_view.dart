@@ -111,8 +111,8 @@ class HomeView extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     model.showUpdatableApps
-                        ? AvailableUpdatesCard()
-                        : InstalledAppsCard()
+                        ? const AvailableUpdatesCard()
+                        : const InstalledAppsCard()
                   ],
                 ),
               ),

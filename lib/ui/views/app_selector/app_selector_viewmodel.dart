@@ -35,8 +35,6 @@ class AppSelectorViewModel extends BaseViewModel {
       icon: application.icon,
       patchDate: DateTime.now(),
       isRooted: _isRooted,
-      isFromStorage: false,
-      appliedPatches: [],
     );
     locator<PatcherViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().notifyListeners();
@@ -63,7 +61,6 @@ class AppSelectorViewModel extends BaseViewModel {
             patchDate: DateTime.now(),
             isRooted: _isRooted,
             isFromStorage: true,
-            appliedPatches: [],
           );
           locator<PatcherViewModel>().selectedPatches.clear();
           locator<PatcherViewModel>().notifyListeners();
