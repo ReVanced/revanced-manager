@@ -6,6 +6,16 @@ import 'package:timeago/timeago.dart';
 class GithubAPI {
   final GitHub _github = GitHub();
 
+  final Map<String, String> repoAppPath = {
+    'com.google.android.youtube': 'youtube',
+    'com.google.android.apps.youtube.music': 'music',
+    'com.twitter.android': 'twitter',
+    'com.reddit.frontpage': 'reddit',
+    'com.zhiliaoapp.musically': 'tiktok',
+    'de.dwd.warnapp': 'warnwetter',
+    'com.garzotto.pflotsh.ecmwf_a': 'ecmwf',
+  };
+
   Future<String?> latestReleaseVersion(String org, String repoName) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
@@ -61,9 +71,19 @@ class GithubAPI {
     )).toList();
   }
 
-  Future<List<RepositoryCommit>> getCommits(String org, String repoName) async {
-    return await (_github.repositories.listCommits(
-      RepositorySlug(org, repoName),
+  Future<List<RepositoryCommit>> getCommits(
+    String packageName,
+    String org,
+    String repoName,
+  ) async {
+    String path =
+        'src/main/kotlin/app/revanced/patches/${repoAppPath[packageName]}';
+    return await (PaginationHelper(_github)
+        .objects<Map<String, dynamic>, RepositoryCommit>(
+      'GET',
+      '/repos/$org/$repoName/commits',
+      (i) => RepositoryCommit.fromJson(i),
+      params: <String, dynamic>{'path': path},
     )).toList();
   }
 }

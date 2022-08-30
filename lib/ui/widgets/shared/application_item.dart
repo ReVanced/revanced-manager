@@ -105,7 +105,7 @@ class ApplicationItem extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '    - ${changelog.join('\n- ')}',
+              '\u2022 ${changelog.join('\n\u2022 ')}',
               style: kRobotoTextStyle,
             ),
           ],

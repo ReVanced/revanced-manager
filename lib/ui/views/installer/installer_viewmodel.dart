@@ -136,7 +136,7 @@ class InstallerViewModel extends BaseViewModel {
         update(1.0, 'Installed!', 'Installed!');
         _app!.patchDate = DateTime.now();
         _app!.appliedPatches = _patches.map((p) => p.name).toList();
-        _managerAPI.savePatchedApp(_app!);
+        await _managerAPI.savePatchedApp(_app!);
       } else {
         update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }

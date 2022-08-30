@@ -20,7 +20,7 @@ class RootCheckerViewModel extends BaseViewModel {
 
   Future<void> navigateToHome() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isRooted', isRooted);
+    await prefs.setBool('isRooted', isRooted);
     _navigationService.navigateTo(Routes.navigation);
     notifyListeners();
   }

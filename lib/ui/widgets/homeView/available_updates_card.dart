@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
-  const AvailableUpdatesCard({
+  AvailableUpdatesCard({
     Key? key,
   }) : super(key: key);
+
+  final List<PatchedApplication> apps =
+      locator<HomeViewModel>().patchedUpdatableApps;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,7 @@ class AvailableUpdatesCard extends StatelessWidget {
       shrinkWrap: true,
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
-      children: locator<HomeViewModel>()
-          .patchedUpdatableApps
+      children: apps
           .map((app) => ApplicationItem(
                 icon: app.icon,
                 name: app.name,

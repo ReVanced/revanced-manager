@@ -15,11 +15,9 @@ class ManagerAPI {
   final GithubAPI _githubAPI = GithubAPI();
   final RootAPI _rootAPI = RootAPI();
   late SharedPreferences _prefs;
-  late List<RepositoryCommit> _commits = [];
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
-    _commits = (await _githubAPI.getCommits(ghOrg, patchesRepo)).toList();
   }
 
   Future<File?> downloadPatches(String extension) async {
@@ -62,16 +60,16 @@ class ManagerAPI {
         .toList();
   }
 
-  void setPatchedApps(List<PatchedApplication> patchedApps) {
-    _prefs.setStringList('patchedApps',
+  Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
+    await _prefs.setStringList('patchedApps',
         patchedApps.map((a) => json.encode(a.toJson())).toList());
   }
 
-  void savePatchedApp(PatchedApplication app) {
+  Future<void> savePatchedApp(PatchedApplication app) async {
     List<PatchedApplication> patchedApps = getPatchedApps();
     patchedApps.removeWhere((a) => a.packageName == app.packageName);
     patchedApps.add(app);
-    setPatchedApps(patchedApps);
+    await setPatchedApps(patchedApps);
   }
 
   Future<void> reAssessSavedApps() async {
@@ -83,20 +81,12 @@ class ManagerAPI {
       if (isRemove) {
         toRemove.add(app);
       } else {
-        List<String> newChangelog = getAppChangelog(
-          app.packageName,
-          app.patchDate,
-        );
-        if (newChangelog.isNotEmpty) {
-          app.changelog = newChangelog;
-          app.hasUpdates = true;
-        } else {
-          app.hasUpdates = false;
-        }
+        app.hasUpdates = await hasAppUpdates(app.packageName, app.patchDate);
+        app.changelog = await getAppChangelog(app.packageName, app.patchDate);
       }
     }
     patchedApps.removeWhere((a) => toRemove.contains(a));
-    setPatchedApps(patchedApps);
+    await setPatchedApps(patchedApps);
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app, bool isRoot) async {
@@ -108,24 +98,38 @@ class ManagerAPI {
     return !existsRoot && !existsNonRoot;
   }
 
-  List<String> getAppChangelog(String packageName, DateTime patchedDate) {
-    List<String> newCommits = _commits
+  Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {
+    List<RepositoryCommit> commits =
+        await _githubAPI.getCommits(packageName, ghOrg, patchesRepo);
+    return commits.any((c) =>
+        c.commit != null &&
+        c.commit!.author != null &&
+        c.commit!.author!.date != null &&
+        c.commit!.author!.date!.isAfter(patchDate));
+  }
+
+  Future<List<String>> getAppChangelog(
+    String packageName,
+    DateTime patchDate,
+  ) async {
+    List<RepositoryCommit> commits =
+        await _githubAPI.getCommits(packageName, ghOrg, patchesRepo);
+    List<String> newCommits = commits
         .where((c) =>
             c.commit != null &&
-            c.commit!.message != null &&
             c.commit!.author != null &&
             c.commit!.author!.date != null &&
-            c.commit!.author!.date!.isAfter(patchedDate))
+            c.commit!.author!.date!.isAfter(patchDate) &&
+            c.commit!.message != null)
         .map((c) => c.commit!.message!)
         .toList();
-    if (newCommits.isNotEmpty) {
-      int firstChore = newCommits.indexWhere((c) => c.startsWith('chore'));
-      int secondChore =
-          newCommits.indexWhere((c) => c.startsWith('chore'), firstChore + 1);
-      if (firstChore >= 0 && secondChore > firstChore) {
-        return newCommits.sublist(firstChore + 1, secondChore);
-      }
+    if (newCommits.isEmpty) {
+      newCommits = commits
+          .where((c) => c.commit != null && c.commit!.message != null)
+          .take(3)
+          .map((c) => c.commit!.message!)
+          .toList();
     }
-    return List.empty();
+    return newCommits;
   }
 }
