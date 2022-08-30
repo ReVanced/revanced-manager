@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -88,51 +88,18 @@ class InstallerView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              //TODO: Move to separate file
-                              TextButton(
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                    const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 12,
-                                    ),
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                      side: BorderSide(
-                                        width: 1,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                    ),
-                                  ),
-                                  side: MaterialStateProperty.all(
-                                    BorderSide(
-                                      color: Theme.of(context)
-                                          .iconTheme
-                                          .color!
-                                          .withOpacity(0.4),
-                                      width: 1,
-                                    ),
-                                  ),
-                                  backgroundColor: MaterialStateProperty.all(
-                                    isDark
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .background
-                                        : Colors.white,
-                                  ),
-                                  foregroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).colorScheme.secondary,
-                                  ),
-                                ),
+                              CustomMaterialButton(
+                                text: "installerView.shareButton",
+                                isFilled: false,
                                 onPressed: () => model.shareResult(),
-                                child: I18nText("Share file"),
                               ),
                               const SizedBox(width: 16),
-                              TextButton(
+                              CustomMaterialButton(
+                                text: model.isInstalled
+                                    ? 'installerView.openButton'
+                                    : 'installerView.installButton',
+                                isFilled: true,
+                                isExpanded: true,
                                 onPressed: () {
                                   if (model.isInstalled) {
                                     model.openApp();
@@ -141,34 +108,6 @@ class InstallerView extends StatelessWidget {
                                     model.installResult();
                                   }
                                 },
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                    const EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                      side: BorderSide(
-                                        width: 1,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                    ),
-                                  ),
-                                  backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  foregroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).colorScheme.background,
-                                  ),
-                                ),
-                                child: I18nText(model.isInstalled
-                                    ? 'installerView.openButton'
-                                    : 'installerView.installButton'),
                               ),
                             ],
                           ),

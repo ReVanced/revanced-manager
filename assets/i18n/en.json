@@ -61,6 +61,7 @@
         "widgetTitle": "Installer",
         "installButton": "Install",
         "openButton": "Open",
+        "shareButton": "Share file",
         "notificationTitle": "ReVanced Manager is patching",
         "notificationText": "Tap to return to the installer"
     },
