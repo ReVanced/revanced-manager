@@ -19,12 +19,21 @@ class PatcherAPI {
   );
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
+  late Directory _tmpDir;
   List<Patch> _patches = [];
-  Directory? _tmpDir;
   File? _outFile;
 
   Future<void> initialize() async {
     await _loadPatches();
+    Directory appCache = await getTemporaryDirectory();
+    _tmpDir = Directory('${appCache.path}/patcher');
+    cleanPatcher();
+  }
+
+  void cleanPatcher() {
+    if (_tmpDir.existsSync()) {
+      _tmpDir.deleteSync(recursive: true);
+    }
   }
 
   Future<void> _loadPatches() async {
@@ -111,10 +120,8 @@ class PatcherAPI {
       integrationsFile = await _managerAPI.downloadIntegrations('.apk');
     }
     if (patchBundleFile != null) {
-      Directory appCache = await getTemporaryDirectory();
-      _tmpDir = Directory('${appCache.path}/patcher');
-      _tmpDir!.createSync();
-      Directory workDir = _tmpDir!.createTempSync('tmp-');
+      _tmpDir.createSync();
+      Directory workDir = _tmpDir.createTempSync('tmp-');
       File inputFile = File('${workDir.path}/base.apk');
       File patchedFile = File('${workDir.path}/patched.apk');
       _outFile = File('${workDir.path}/out.apk');
@@ -156,13 +163,6 @@ class PatcherAPI {
       }
     }
     return false;
-  }
-
-  void cleanPatcher() {
-    if (_tmpDir != null) {
-      _tmpDir!.deleteSync(recursive: true);
-      _tmpDir = null;
-    }
   }
 
   bool sharePatchedFile(String appName, String version) {
