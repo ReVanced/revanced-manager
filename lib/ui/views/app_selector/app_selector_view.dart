@@ -23,12 +23,17 @@ class _AppSelectorViewState extends State<AppSelectorView> {
       viewModelBuilder: () => AppSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: FloatingActionButton.extended(
+          label: I18nText('appSelectorView.storageButton'),
+          icon: const Icon(Icons.sd_storage),
           onPressed: () {
             model.selectAppFromStorage(context);
             Navigator.of(context).pop();
           },
-          label: I18nText('appSelectorView.fabButton'),
-          icon: const Icon(Icons.sd_storage),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(16.0),
+            ),
+          ),
           backgroundColor: Theme.of(context).colorScheme.secondary,
           foregroundColor: Colors.white,
         ),

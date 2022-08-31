@@ -18,11 +18,16 @@ class PatcherView extends StatelessWidget {
       viewModelBuilder: () => locator<PatcherViewModel>(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
-          visible: model.showFabButton(),
+          visible: model.showPatchButton(),
           child: FloatingActionButton.extended(
-            onPressed: () => model.navigateToInstaller(),
-            label: I18nText('patcherView.fabButton'),
+            label: I18nText('patcherView.patchButton'),
             icon: const Icon(Icons.build),
+            onPressed: () => model.navigateToInstaller(),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(16.0),
+              ),
+            ),
             backgroundColor: Theme.of(context).colorScheme.secondary,
             foregroundColor: Colors.white,
           ),

@@ -31,7 +31,7 @@
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "fabButton": "Patch"
+        "patchButton": "Patch"
     },
     "appSelectorCard": {
         "widgetTitle": "Select application",
@@ -50,7 +50,7 @@
     },
     "appSelectorView": {
         "searchBarHint": "Search applications",
-        "fabButton": "Storage",
+        "storageButton": "Storage",
         "errorMessage": "Unable to use selected application."
     },
     "patchesSelectorView": {

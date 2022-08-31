@@ -25,7 +25,7 @@ class PatcherViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.installerView);
   }
 
-  bool showFabButton() {
+  bool showPatchButton() {
     return selectedPatches.isNotEmpty;
   }
 

@@ -12,10 +12,6 @@ class ContributorsView extends StatelessWidget {
       viewModelBuilder: () => ContributorsViewModel(),
       onModelReady: (model) => model.getContributors(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => model.getContributors(),
-          child: const Icon(Icons.refresh),
-        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
