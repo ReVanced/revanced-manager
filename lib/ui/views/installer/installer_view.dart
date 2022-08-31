@@ -82,7 +82,9 @@ class InstallerView extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 0),
+                          vertical: 16,
+                          horizontal: 0,
+                        ),
                         child: Visibility(
                           visible: !model.isPatching,
                           child: Row(
@@ -103,6 +105,7 @@ class InstallerView extends StatelessWidget {
                                 onPressed: () {
                                   if (model.isInstalled) {
                                     model.openApp();
+                                    model.cleanPatcher();
                                     Navigator.of(context).pop();
                                   } else {
                                     model.installResult();
