@@ -140,7 +140,7 @@ class SocialMediaCards extends StatelessWidget {
           ],
         ),
       ),
-      collapsed: const Text(""),
+      collapsed: const Text(''),
     );
   }
 }

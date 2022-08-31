@@ -1,9 +1,9 @@
 import 'package:root/root.dart';
 
 class RootAPI {
-  final String _managerDirPath = "/data/adb/revanced_manager";
-  final String _postFsDataDirPath = "/data/adb/post-fs-data.d";
-  final String _serviceDDirPath = "/data/adb/service.d";
+  final String _managerDirPath = '/data/adb/revanced_manager';
+  final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
+  final String _serviceDDirPath = '/data/adb/service.d';
 
   Future<bool> isAppInstalled(String packageName) async {
     if (packageName.isNotEmpty) {

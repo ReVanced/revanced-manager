@@ -90,7 +90,7 @@ class ApplicationItem extends StatelessWidget {
           ],
         ),
       ),
-      collapsed: const Text(""),
+      collapsed: const Text(''),
       expanded: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
