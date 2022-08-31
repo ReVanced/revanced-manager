@@ -1,5 +1,6 @@
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -16,9 +17,9 @@ class PatchesSelectorViewModel extends BaseViewModel {
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
     if (selectedPatches.isEmpty) {
-      for (Patch p in patches) {
-        if (!p.excluded) {
-          selectedPatches.add(p);
+      for (Patch patch in patches) {
+        if (!patch.excluded && isPatchSupported(patch)) {
+          selectedPatches.add(patch);
         }
       }
     }
@@ -62,5 +63,23 @@ class PatchesSelectorViewModel extends BaseViewModel {
                   query.toLowerCase(),
                 ))
         .toList();
+  }
+
+  String getAppVersion() {
+    return locator<PatcherViewModel>().selectedApp!.version;
+  }
+
+  List<String> getSupportedVersions(Patch patch) {
+    PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
+    return patch.compatiblePackages
+        .firstWhere((pack) => pack.name == app.packageName)
+        .versions;
+  }
+
+  bool isPatchSupported(Patch patch) {
+    PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
+    return patch.compatiblePackages.any((pack) =>
+        pack.name == app.packageName &&
+        (pack.versions.isEmpty || pack.versions.contains(app.version)));
   }
 }

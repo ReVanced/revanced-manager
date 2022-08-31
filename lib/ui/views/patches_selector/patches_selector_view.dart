@@ -60,6 +60,11 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     simpleName: patch.getSimpleName(),
                                     version: patch.version,
                                     description: patch.description,
+                                    packageVersion: model.getAppVersion(),
+                                    supportedPackageVersions:
+                                        model.getSupportedVersions(patch),
+                                    isUnsupported:
+                                        !model.isPatchSupported(patch),
                                     isSelected: model.isSelected(patch),
                                     onChanged: (value) =>
                                         model.selectPatch(patch, value),

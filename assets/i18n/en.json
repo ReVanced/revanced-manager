@@ -1,4 +1,5 @@
 {
+    "okButton": "OK",
     "main": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -56,6 +57,11 @@
     "patchesSelectorView": {
         "searchBarHint": "Search patches",
         "doneButton": "Done"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Unsupported version",
+        "alertDialogTitle": "Warning",
+        "alertDialogText": "Selecting this patch may or may not result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Installer",
