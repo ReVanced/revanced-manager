@@ -10,6 +10,8 @@
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched Applications",
         "updatesAvailable": "Updates Available",
+        "noUpdates": "No updates available",
+        "noInstallations": "No patched apps installed",
         "installed": "Installed",
         "notificationTitle": "ReVanced Manager was updated!",
         "notificationText": "Tap to open the app",
