@@ -46,25 +46,20 @@ class InstallerView extends StatelessWidget {
                     ),
                   ),
                 ),
+                bottom: PreferredSize(
+                  preferredSize: const Size(double.infinity, 1.0),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                    backgroundColor: Colors.white,
+                    value: model.progress,
+                  ),
+                ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.all(20.0),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 4.0,
-                          top: 0.0,
-                          right: 4.0,
-                          bottom: 16.0,
-                        ),
-                        child: LinearProgressIndicator(
-                          color: Theme.of(context).colorScheme.secondary,
-                          backgroundColor: Colors.white,
-                          value: model.progress,
-                        ),
-                      ),
                       Container(
                         padding: const EdgeInsets.all(12.0),
                         width: double.infinity,
