@@ -13,30 +13,20 @@ class RootCheckerView extends StatelessWidget {
     return ViewModelBuilder<RootCheckerViewModel>.reactive(
       viewModelBuilder: () => RootCheckerViewModel(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const Text('nonroot'),
-            const SizedBox(height: 8),
-            FloatingActionButton(
-              onPressed: model.navigateToHome,
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(48),
-              ),
-              child: const Icon(
-                Icons.keyboard_arrow_right,
-                size: 32,
-              ),
-            ),
-          ],
+        floatingActionButton: FloatingActionButton.extended(
+          label: I18nText('rootCheckerView.nonRootButton'),
+          icon: const Icon(Icons.keyboard_arrow_right),
+          onPressed: () => model.navigateAsNonRoot(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          foregroundColor: Theme.of(context).colorScheme.surface,
         ),
         body: Container(
           height: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 28.0),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             children: [
               const SizedBox(height: 120),
               I18nText(
@@ -60,18 +50,24 @@ class RootCheckerView extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 170),
-              MagiskButton(
-                onPressed: () => model.checkRoot(),
-              ),
-              I18nText(
-                'rootCheckerView.grantedPermission',
-                translationParams: {
-                  'isRooted': model.isRooted.toString(),
-                },
-                child: Text(
-                  '',
-                  style: GoogleFonts.poppins(),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MagiskButton(
+                      onPressed: () => model.navigateAsRoot(),
+                    ),
+                    I18nText(
+                      'rootCheckerView.grantedPermission',
+                      translationParams: {
+                        'isRooted': model.isRooted.toString(),
+                      },
+                      child: Text(
+                        '',
+                        style: GoogleFonts.poppins(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -40,7 +40,7 @@ class _ContributorsCardState extends State<ContributorsCard> {
           padding: const EdgeInsets.all(4.0),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.tertiary,
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12),
           ),
           height: widget.height,
           child: GridView.builder(

@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 // ignore: depend_on_referenced_packages
@@ -89,7 +90,21 @@ class Navigation extends StatelessWidget {
     return ViewModelBuilder<MainViewModel>.reactive(
       viewModelBuilder: () => locator<MainViewModel>(),
       builder: (context, model, child) => Scaffold(
-        body: getViewForIndex(model.currentIndex),
+        body: PageTransitionSwitcher(
+          duration: const Duration(milliseconds: 400),
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: getViewForIndex(model.currentIndex),
+        ),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: model.setIndex,
           selectedIndex: model.currentIndex,

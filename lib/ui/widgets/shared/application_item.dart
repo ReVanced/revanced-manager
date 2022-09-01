@@ -36,9 +36,7 @@ class ApplicationItem extends StatelessWidget {
       header: Container(
         height: 60,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
-          ),
+          borderRadius: BorderRadius.circular(12),
           color: Theme.of(context).colorScheme.primary,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),

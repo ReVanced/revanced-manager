@@ -70,7 +70,7 @@ class InstallerView extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           model.logs,

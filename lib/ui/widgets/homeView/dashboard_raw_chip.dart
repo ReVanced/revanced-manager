@@ -34,7 +34,7 @@ class DashboardChip extends StatelessWidget {
           isDark ? Theme.of(context).colorScheme.background : Colors.white,
       selectedColor: const Color.fromRGBO(118, 155, 209, 0.42),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         side: BorderSide(
           width: 1,
           color: isDark

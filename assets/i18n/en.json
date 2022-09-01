@@ -91,6 +91,7 @@
         "widgetTitle": "Is your device rooted?",
         "widgetDescription": "Don't know what this means or prefer to use non-root version? Just click on the button below!",
         "grantPermission": "Grant Root Permission",
-        "grantedPermission": "Magisk permission granted: {isRooted}"
+        "grantedPermission": "Magisk permission granted: {isRooted}",
+        "nonRootButton": "Nonroot"
     }
 }

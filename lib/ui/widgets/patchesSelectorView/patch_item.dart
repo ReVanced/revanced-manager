@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/theme.dart';
+import 'package:revanced_manager/ui/widgets/shared/patch_text_button.dart';
 
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
@@ -87,7 +87,7 @@ class _PatchItemState extends State<PatchItem> {
                   scale: 1.2,
                   child: Checkbox(
                     value: widget.isSelected,
-                    activeColor: Colors.blueGrey[500],
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     onChanged: (newValue) {
                       setState(() => widget.isSelected = newValue!);
                       widget.onChanged(widget.isSelected);
@@ -117,9 +117,7 @@ class _PatchItemState extends State<PatchItem> {
                               ),
                             ),
                             backgroundColor: MaterialStateProperty.all(
-                              isDark
-                                  ? Theme.of(context).colorScheme.background
-                                  : Colors.white,
+                              Colors.transparent,
                             ),
                             foregroundColor: MaterialStateProperty.all(
                               Theme.of(context).colorScheme.secondary,
@@ -137,10 +135,12 @@ class _PatchItemState extends State<PatchItem> {
   }
 
   Future<void> _showUnsupportedWarningDialog() {
-    return showDialog(
+    return showGeneralDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
+      pageBuilder: (ctx, a1, a2) => Container(),
+      transitionBuilder: (ctx, a1, a2, child) => Transform.scale(
+        scale: Curves.easeInOut.transform(a1.value),
+        child: AlertDialog(
           title: I18nText('patchItem.alertDialogTitle'),
           content: I18nText(
             'patchItem.alertDialogText',
@@ -151,13 +151,17 @@ class _PatchItemState extends State<PatchItem> {
             },
           ),
           actions: [
-            TextButton(
-              child: I18nText('okButton'),
+            PatchTextButton(
+              text: FlutterI18n.translate(context, 'okButton'),
               onPressed: () => Navigator.of(context).pop(),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              borderColor: Theme.of(context).colorScheme.secondary,
             )
           ],
-        );
-      },
+          backgroundColor: Theme.of(context).colorScheme.surface,
+        ),
+      ),
+      transitionDuration: const Duration(milliseconds: 400),
     );
   }
 }

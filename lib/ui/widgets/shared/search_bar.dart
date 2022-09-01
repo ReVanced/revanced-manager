@@ -49,6 +49,7 @@ class _SearchBarState extends State<SearchBar> {
             child: TextFormField(
               onChanged: widget.onQueryChanged,
               controller: _textController,
+              cursorColor: Theme.of(context).textTheme.headline5!.color,
               decoration: InputDecoration(
                 fillColor: widget.fillColor,
                 filled: true,
@@ -58,9 +59,10 @@ class _SearchBarState extends State<SearchBar> {
                   color: widget.hintTextColor,
                   fontWeight: FontWeight.w400,
                 ),
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   Icons.search,
                   size: 24.0,
+                  color: Theme.of(context).iconTheme.color,
                 ),
                 suffixIcon: _textController.text.isNotEmpty
                     ? IconButton(
@@ -88,12 +90,12 @@ class _SearchBarState extends State<SearchBar> {
                           )
                         : null,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
                 ),
               ),
               style: GoogleFonts.poppins(
-                color: Colors.white,
+                color: Theme.of(context).textTheme.headline5!.color,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),

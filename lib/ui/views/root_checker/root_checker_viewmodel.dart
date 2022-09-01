@@ -9,19 +9,24 @@ class RootCheckerViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   bool isRooted = false;
 
-  Future<void> checkRoot() async {
+  Future<void> navigateAsRoot() async {
     bool? res = await Root.isRooted();
     isRooted = res != null && res == true;
     if (isRooted) {
-      navigateToHome();
+      await navigateToHome();
+    } else {
+      notifyListeners();
     }
-    notifyListeners();
+  }
+
+  Future<void> navigateAsNonRoot() async {
+    isRooted = false;
+    await navigateToHome();
   }
 
   Future<void> navigateToHome() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isRooted', isRooted);
     _navigationService.navigateTo(Routes.navigation);
-    notifyListeners();
   }
 }

@@ -22,6 +22,22 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
+        floatingActionButton: Visibility(
+          visible: model.patches.isNotEmpty,
+          child: FloatingActionButton.extended(
+            label: I18nText('patchesSelectorView.doneButton'),
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              model.selectPatches();
+              Navigator.of(context).pop();
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            foregroundColor: Theme.of(context).colorScheme.surface,
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding:
@@ -53,6 +69,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       const SizedBox(height: 12),
                       Expanded(
                         child: ListView(
+                          padding: const EdgeInsets.only(bottom: 80),
                           children: model
                               .getQueriedPatches(_query)
                               .map((patch) => PatchItem(
@@ -71,23 +88,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   ))
                               .toList(),
                         ),
-                      ),
-                      MaterialButton(
-                        textColor: Colors.white,
-                        color: Theme.of(context).colorScheme.secondary,
-                        minWidth: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        onPressed: () {
-                          model.selectPatches();
-                          Navigator.of(context).pop();
-                        },
-                        child: I18nText('patchesSelectorView.doneButton'),
                       ),
                     ],
                   ),

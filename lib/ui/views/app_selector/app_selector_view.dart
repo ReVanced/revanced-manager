@@ -29,13 +29,11 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             model.selectAppFromStorage(context);
             Navigator.of(context).pop();
           },
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(16.0),
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          foregroundColor: Colors.white,
+          foregroundColor: Theme.of(context).colorScheme.surface,
         ),
         body: SafeArea(
           child: Padding(
@@ -73,6 +71,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                           const SizedBox(height: 12),
                           Expanded(
                             child: ListView(
+                              padding: const EdgeInsets.only(bottom: 80),
                               children: model
                                   .getFilteredApps(_query)
                                   .map((app) => InkWell(
