@@ -68,6 +68,13 @@ class ManagerAPI {
   Future<void> savePatchedApp(PatchedApplication app) async {
     List<PatchedApplication> patchedApps = getPatchedApps();
     patchedApps.removeWhere((a) => a.packageName == app.packageName);
+    ApplicationWithIcon? installed =
+        await DeviceApps.getApp(app.packageName, true) as ApplicationWithIcon?;
+    if (installed != null) {
+      app.name = installed.appName;
+      app.version = installed.versionName!;
+      app.icon = installed.icon;
+    }
     patchedApps.add(app);
     await setPatchedApps(patchedApps);
   }

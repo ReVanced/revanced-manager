@@ -6,15 +6,15 @@ part 'patched_application.g.dart';
 
 @JsonSerializable()
 class PatchedApplication {
-  final String name;
+  String name;
   final String packageName;
-  final String version;
+  String version;
   final String apkFilePath;
   @JsonKey(
     fromJson: decodeBase64,
     toJson: encodeBase64,
   )
-  final Uint8List icon;
+  Uint8List icon;
   DateTime patchDate;
   final bool isRooted;
   final bool isFromStorage;
