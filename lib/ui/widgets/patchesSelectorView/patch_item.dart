@@ -135,33 +135,28 @@ class _PatchItemState extends State<PatchItem> {
   }
 
   Future<void> _showUnsupportedWarningDialog() {
-    return showGeneralDialog(
+    return showDialog(
       context: context,
-      pageBuilder: (ctx, a1, a2) => Container(),
-      transitionBuilder: (ctx, a1, a2, child) => Transform.scale(
-        scale: Curves.easeInOut.transform(a1.value),
-        child: AlertDialog(
-          title: I18nText('patchItem.alertDialogTitle'),
-          content: I18nText(
-            'patchItem.alertDialogText',
-            translationParams: {
-              'packageVersion': widget.packageVersion,
-              'supportedVersions':
-                  '\u2022 ${widget.supportedPackageVersions.join('\n\u2022 ')}',
-            },
-          ),
-          actions: [
-            PatchTextButton(
-              text: FlutterI18n.translate(context, 'okButton'),
-              onPressed: () => Navigator.of(context).pop(),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              borderColor: Theme.of(context).colorScheme.secondary,
-            )
-          ],
-          backgroundColor: Theme.of(context).colorScheme.surface,
+      builder: (context) => AlertDialog(
+        title: I18nText('patchItem.alertDialogTitle'),
+        content: I18nText(
+          'patchItem.alertDialogText',
+          translationParams: {
+            'packageVersion': widget.packageVersion,
+            'supportedVersions':
+                '\u2022 ${widget.supportedPackageVersions.join('\n\u2022 ')}',
+          },
         ),
+        actions: [
+          PatchTextButton(
+            text: FlutterI18n.translate(context, 'okButton'),
+            onPressed: () => Navigator.of(context).pop(),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            borderColor: Theme.of(context).colorScheme.secondary,
+          )
+        ],
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
-      transitionDuration: const Duration(milliseconds: 400),
     );
   }
 }
