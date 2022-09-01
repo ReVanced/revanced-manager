@@ -26,7 +26,12 @@ class Patch {
   Map<String, dynamic> toJson() => _$PatchToJson(this);
 
   String getSimpleName() {
-    return name.replaceAll('-', ' ').split('-').join(' ').toTitleCase();
+    return name
+        .replaceAll('-', ' ')
+        .split('-')
+        .join(' ')
+        .toTitleCase()
+        .replaceFirst('Microg', 'MicroG');
   }
 }
 
