@@ -7,6 +7,7 @@ class DashboardChip extends StatelessWidget {
   final String label;
   final bool isSelected;
   final Function(bool)? onSelected;
+
   const DashboardChip({
     Key? key,
     required this.label,

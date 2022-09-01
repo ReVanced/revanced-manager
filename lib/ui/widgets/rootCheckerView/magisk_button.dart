@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MagiskButton extends StatelessWidget {
   final Function() onPressed;
+
   const MagiskButton({
     Key? key,
     required this.onPressed,

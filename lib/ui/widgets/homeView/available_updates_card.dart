@@ -5,9 +5,7 @@ import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
-  AvailableUpdatesCard({
-    Key? key,
-  }) : super(key: key);
+  AvailableUpdatesCard({Key? key}) : super(key: key);
 
   final List<PatchedApplication> apps =
       locator<HomeViewModel>().patchedUpdatableApps;

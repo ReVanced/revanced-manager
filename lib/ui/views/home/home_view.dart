@@ -73,7 +73,6 @@ class HomeView extends StatelessWidget {
                     const SizedBox(height: 10),
                     LatestCommitCard(
                       onPressed: () => model.updateManager(context),
-                      color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(height: 23),
                     I18nText(

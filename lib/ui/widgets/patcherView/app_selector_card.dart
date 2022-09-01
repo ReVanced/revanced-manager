@@ -8,12 +8,10 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 
 class AppSelectorCard extends StatelessWidget {
   final Function() onPressed;
-  final Color? color;
 
   const AppSelectorCard({
     Key? key,
     required this.onPressed,
-    this.color = const Color(0xff1B222B),
   }) : super(key: key);
 
   @override
@@ -24,13 +22,12 @@ class AppSelectorCard extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: color,
+          color: Theme.of(context).colorScheme.primary,
         ),
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 10),
             I18nText(
               locator<PatcherViewModel>().selectedApp == null
                   ? 'appSelectorCard.widgetTitle'

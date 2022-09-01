@@ -81,9 +81,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Navigation extends StatelessWidget {
-  const Navigation({
-    Key? key,
-  }) : super(key: key);
+  const Navigation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
