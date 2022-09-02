@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/theme.dart';
 
 class CustomMaterialButton extends StatelessWidget {
-  final String text;
+  final Widget label;
   final bool isFilled;
   final bool isExpanded;
   final Function()? onPressed;
 
   const CustomMaterialButton({
     Key? key,
-    required this.text,
+    required this.label,
     this.isFilled = true,
     this.isExpanded = false,
     required this.onPressed,
@@ -62,7 +61,7 @@ class CustomMaterialButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: I18nText(text),
+      child: label,
     );
   }
 }

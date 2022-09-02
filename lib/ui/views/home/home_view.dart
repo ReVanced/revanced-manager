@@ -91,7 +91,7 @@ class HomeView extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         DashboardChip(
-                          label: 'homeView.updatesAvailable',
+                          label: I18nText('homeView.updatesAvailable'),
                           isSelected: model.showUpdatableApps,
                           onSelected: (value) {
                             model.toggleUpdatableApps(true);
@@ -99,7 +99,7 @@ class HomeView extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         DashboardChip(
-                          label: 'homeView.installed',
+                          label: I18nText('homeView.installed'),
                           isSelected: !model.showUpdatableApps,
                           onSelected: (value) {
                             model.toggleUpdatableApps(false);

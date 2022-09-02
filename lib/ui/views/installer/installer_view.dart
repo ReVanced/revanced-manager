@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
@@ -86,15 +87,15 @@ class InstallerView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               CustomMaterialButton(
-                                text: 'installerView.shareButton',
+                                label: I18nText('installerView.shareButton'),
                                 isFilled: false,
                                 onPressed: () => model.shareResult(),
                               ),
                               const SizedBox(width: 16),
                               CustomMaterialButton(
-                                text: model.isInstalled
-                                    ? 'installerView.openButton'
-                                    : 'installerView.installButton',
+                                label: model.isInstalled
+                                    ? I18nText('installerView.openButton')
+                                    : I18nText('installerView.installButton'),
                                 isFilled: true,
                                 isExpanded: true,
                                 onPressed: () {

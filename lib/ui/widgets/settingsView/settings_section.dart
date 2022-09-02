@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsSection extends StatelessWidget {
   final String title;

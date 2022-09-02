@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/theme.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController inputController;
-  final String label;
+  final Widget label;
   final String hint;
   final Function(String)? onChanged;
 
@@ -34,7 +33,7 @@ class CustomTextField extends StatelessWidget {
             ),
             cursorColor: Theme.of(context).textTheme.headline5!.color,
             decoration: InputDecoration(
-              label: I18nText(label),
+              label: label,
               labelStyle: TextStyle(
                 color: isDark ? Colors.grey[300] : Colors.black,
               ),

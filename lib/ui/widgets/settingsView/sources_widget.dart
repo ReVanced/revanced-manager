@@ -47,19 +47,19 @@ class SourcesWidget extends StatelessWidget {
             children: <Widget>[
               CustomTextField(
                 inputController: organizationController,
-                label: 'sourcesCard.organizationLabel',
+                label: I18nText('sourcesCard.organizationLabel'),
                 hint: ghOrg,
                 onChanged: (value) => ghOrg = value,
               ),
               CustomTextField(
                 inputController: patchesSourceController,
-                label: 'sourcesCard.patchesSourceLabel',
+                label: I18nText('sourcesCard.patchesSourceLabel'),
                 hint: patchesRepo,
                 onChanged: (value) => patchesRepo = value,
               ),
               CustomTextField(
                 inputController: integrationsSourceController,
-                label: 'sourcesCard.integrationsSourceLabel',
+                label: I18nText('sourcesCard.integrationsSourceLabel'),
                 hint: integrationsRepo,
                 onChanged: (value) => integrationsRepo = value,
               ),

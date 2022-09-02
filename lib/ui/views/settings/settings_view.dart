@@ -6,9 +6,9 @@ import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_info_widget.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_switch_item.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/social_media_cards.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/sources_widget.dart';
 import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
@@ -73,9 +73,15 @@ class SettingsView extends StatelessWidget {
                     SettingsSection(
                       title: 'settingsView.appearanceSectionTitle',
                       children: <Widget>[
-                        SettingsSwitchItem(
-                          title: 'settingsView.themeLabel',
-                          subtitle: 'settingsView.themeHint',
+                        CustomSwitchTile(
+                          title: I18nText(
+                            'settingsView.themeLabel',
+                            child: Text(
+                              '',
+                              style: kSettingItemTextStyle,
+                            ),
+                          ),
+                          subtitle: I18nText('settingsView.themeHint'),
                           value: isDark,
                           onTap: (value) {
                             isDark = value;

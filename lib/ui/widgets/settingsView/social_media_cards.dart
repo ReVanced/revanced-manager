@@ -1,6 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
