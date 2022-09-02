@@ -23,7 +23,7 @@ class InstalledAppsCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
             child: Center(
               child: Column(
-                children: [
+                children: <Widget>[
                   Icon(
                     Icons.file_download_off,
                     size: 40,

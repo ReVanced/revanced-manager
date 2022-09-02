@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/root_checker/root_checker_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/rootCheckerView/magisk_button.dart';
@@ -27,7 +27,7 @@ class RootCheckerView extends StatelessWidget {
           height: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 28.0),
           child: Column(
-            children: [
+            children: <Widget>[
               const SizedBox(height: 120),
               I18nText(
                 'rootCheckerView.widgetTitle',
@@ -53,7 +53,7 @@ class RootCheckerView extends StatelessWidget {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     MagiskButton(
                       onPressed: () => model.navigateAsRoot(),
                     ),

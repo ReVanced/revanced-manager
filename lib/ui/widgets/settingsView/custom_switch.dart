@@ -20,12 +20,12 @@ class CustomSwitch extends StatelessWidget {
         height: 25,
         width: 50,
         child: Stack(
-          children: [
+          children: <Widget>[
             AnimatedContainer(
               height: 25,
               width: 50,
               curve: Curves.ease,
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 400),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(25.0),
@@ -35,7 +35,7 @@ class CustomSwitch extends StatelessWidget {
             ),
             AnimatedAlign(
               curve: Curves.ease,
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 400),
               alignment: !value ? Alignment.centerLeft : Alignment.centerRight,
               child: Container(
                 height: 20,

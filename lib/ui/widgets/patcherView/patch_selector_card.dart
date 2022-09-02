@@ -27,7 +27,7 @@ class PatchSelectorCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             I18nText(
               locator<PatcherViewModel>().selectedPatches.isEmpty
                   ? 'patchSelectorCard.widgetTitle'

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
-import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch.dart';
 
-class SettingsSwitchItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
+class CustomSwitchTile extends StatelessWidget {
+  final Widget title;
+  final Widget subtitle;
   final bool value;
   final Function(bool) onTap;
 
-  const SettingsSwitchItem({
+  const CustomSwitchTile({
     Key? key,
     required this.title,
     required this.subtitle,
@@ -20,14 +18,9 @@ class SettingsSwitchItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: I18nText(
-        title,
-        child: Text(
-          '',
-          style: kSettingItemTextStyle,
-        ),
-      ),
-      subtitle: I18nText(subtitle),
+      contentPadding: EdgeInsets.zero,
+      title: title,
+      subtitle: subtitle,
       trailing: CustomSwitch(
         value: value,
         onChanged: onTap,

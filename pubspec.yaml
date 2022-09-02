@@ -28,6 +28,7 @@ dependencies:
   flutter_local_notifications: ^9.8.0+1
   flutter_svg: ^1.1.1+1
   fluttertoast: ^8.0.9
+  font_awesome_flutter: ^10.1.0
   get_it: ^7.2.0
   github: ^9.4.0
   google_fonts: ^3.0.1

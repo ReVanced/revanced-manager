@@ -32,6 +32,7 @@ var lightTheme = ThemeData.light().copyWith(
       ),
     ),
   ),
+  toggleableActiveColor: const Color(0xff3868AF),
   colorScheme: const ColorScheme.light(
     primary: Color.fromRGBO(154, 193, 252, 0.18),
     secondary: Color(0xff3868AF),
@@ -69,6 +70,7 @@ var darkTheme = ThemeData.dark().copyWith(
       ),
     ),
   ),
+  toggleableActiveColor: const Color(0xff7792BA),
   colorScheme: const ColorScheme.dark(
     primary: Color(0xff11161C),
     secondary: Color(0xff7792BA),

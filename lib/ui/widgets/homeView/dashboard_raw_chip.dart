@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/theme.dart';
 
 class DashboardChip extends StatelessWidget {
-  final String label;
+  final Widget label;
   final bool isSelected;
   final Function(bool)? onSelected;
 
@@ -19,7 +18,7 @@ class DashboardChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return RawChip(
       showCheckmark: false,
-      label: I18nText(label),
+      label: label,
       selected: isSelected,
       labelStyle: GoogleFonts.inter(
         color: isSelected

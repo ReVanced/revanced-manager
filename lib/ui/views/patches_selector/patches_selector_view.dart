@@ -49,7 +49,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     ),
                   )
                 : Column(
-                    children: [
+                    children: <Widget>[
                       SearchBar(
                         showSelectIcon: true,
                         fillColor:

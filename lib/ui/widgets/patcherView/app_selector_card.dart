@@ -27,7 +27,7 @@ class AppSelectorCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             I18nText(
               locator<PatcherViewModel>().selectedApp == null
                   ? 'appSelectorCard.widgetTitle'
@@ -50,7 +50,7 @@ class AppSelectorCard extends StatelessWidget {
                     ),
                   )
                 : Row(
-                    children: [
+                    children: <Widget>[
                       SizedBox(
                         height: 16.0,
                         child: ClipOval(

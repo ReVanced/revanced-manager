@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
@@ -22,7 +22,7 @@ class AvailableUpdatesCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
             child: Center(
               child: Column(
-                children: [
+                children: <Widget>[
                   Icon(
                     Icons.update_disabled,
                     size: 40,

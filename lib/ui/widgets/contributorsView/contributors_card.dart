@@ -24,7 +24,7 @@ class _ContributorsCardState extends State<ContributorsCard> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
           child: Text(

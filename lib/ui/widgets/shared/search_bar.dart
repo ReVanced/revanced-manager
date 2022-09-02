@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
         ),
       ),
       child: Row(
-        children: [
+        children: <Widget>[
           Expanded(
             child: TextFormField(
               onChanged: widget.onQueryChanged,
