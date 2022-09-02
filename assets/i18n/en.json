@@ -48,8 +48,16 @@
         "widgetSubtitle": "Select an application first.",
         "widgetEmptySubtitle": "No patches selected."
     },
-    "socialMediaCards": {
-        "widgetTitle": "Social Media"
+    "socialMediaCard": {
+        "widgetTitle": "Social Media",
+        "widgetSubtitle": "We are online!"
+    },
+    "sourcesCard": { 
+        "widgetTitle": "Sources",
+        "widgetSubtitle": "Add your custom Patcher sources",
+        "organizationLabel": "Organization",
+        "patchesSourceLabel" : "Patches Source",
+        "integrationsSourceLabel": "Integrations Source"
     },
     "appSelectorView": {
         "searchBarHint": "Search applications",
@@ -75,19 +83,21 @@
     },
     "settingsView": {
         "widgetTitle": "Settings",
-        "languageLabel": "Language",
+        "appearanceSectionTitle": "Appearance",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Team",
+        "infoSectionTitle": "Info",
         "themeLabel": "Theme",
         "themeHint": "Change the theme of the app",
-        "darkThemeLabel": "Dark",
-        "lightThemeLabel": "Light",
-        "versionLabel": "Version",
-        "aboutLabel": "About",
-        "contributorsLabel": "Contributors",
+        "languageLabel": "Language",
+        "englishOption": "English",
+        "frenchOption": "French",
         "rootModeLabel": "Root Mode",
-        "rootModeHint": "Enable this if you want to patch applications as rooted.",
-        "organizationLabel": "Organization",
-        "patchesSourceLabel" : "Patches Source",
-        "integrationsSourceLabel": "Integrations Source"
+        "rootModeHint": "Enable this if you want to patch applications as rooted",
+        "contributorsLabel": "Contributors",
+        "contributorsHint": "A list of contributors of ReVanced",
+        "aboutLabel": "About",
+        "versionLabel": "Version"
     },
     "rootCheckerView": {
         "widgetTitle": "Is your device rooted?",

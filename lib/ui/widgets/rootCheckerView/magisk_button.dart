@@ -15,7 +15,7 @@ class MagiskButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         GestureDetector(
           onTap: onPressed,
           child: CircleAvatar(

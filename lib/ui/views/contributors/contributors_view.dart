@@ -15,7 +15,7 @@ class ContributorsView extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              children: [
+              children: <Widget>[
                 ContributorsCard(
                   title: 'Patcher Contributors',
                   contributors: model.patcherContributors,

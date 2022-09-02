@@ -50,7 +50,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                         ),
                       )
                     : Column(
-                        children: [
+                        children: <Widget>[
                           SearchBar(
                             showSelectIcon: false,
                             fillColor: isDark

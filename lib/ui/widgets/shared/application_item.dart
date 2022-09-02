@@ -41,7 +41,7 @@ class ApplicationItem extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
         child: Row(
-          children: [
+          children: <Widget>[
             SizedBox(
               width: 60,
               child: Image.memory(
@@ -55,7 +55,7 @@ class ApplicationItem extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 250,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
                     name,
                     style: GoogleFonts.roboto(
@@ -93,7 +93,7 @@ class ApplicationItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             I18nText(
               'applicationItem.changelogLabel',
               child: Text(

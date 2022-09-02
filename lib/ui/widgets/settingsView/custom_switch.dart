@@ -20,7 +20,7 @@ class CustomSwitch extends StatelessWidget {
         height: 25,
         width: 50,
         child: Stack(
-          children: [
+          children: <Widget>[
             AnimatedContainer(
               height: 25,
               width: 50,

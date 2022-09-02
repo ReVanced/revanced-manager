@@ -32,7 +32,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: <Widget>[
             Container(
               width: 48,
               height: 48,
@@ -47,7 +47,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
                     widget.name,
                     maxLines: 2,

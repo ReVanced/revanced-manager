@@ -32,12 +32,12 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Row(
-                children: [
+                children: <Widget>[
                   I18nText(
                     'latestCommitCard.patcherLabel',
                     child: Text(
@@ -67,7 +67,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               ),
               const SizedBox(height: 8),
               Row(
-                children: [
+                children: <Widget>[
                   I18nText(
                     'latestCommitCard.managerLabel',
                     child: Text(

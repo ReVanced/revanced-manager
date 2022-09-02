@@ -16,10 +16,10 @@ class _AboutWidgetState extends State<AboutWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           I18nText(
             'settingsView.aboutLabel',
             child: Text('', style: kSettingItemTextStyle),
@@ -54,7 +54,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       Text('Version: ${snapshot.data!['version']}',
                           style: kSettingItemSubtitleTextStyle),
                       Text('Build: ${snapshot.data!['buildNumber']}',

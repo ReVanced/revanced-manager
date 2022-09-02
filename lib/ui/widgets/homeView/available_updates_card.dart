@@ -22,7 +22,7 @@ class AvailableUpdatesCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
             child: Center(
               child: Column(
-                children: [
+                children: <Widget>[
                   Icon(
                     Icons.update_disabled,
                     size: 40,

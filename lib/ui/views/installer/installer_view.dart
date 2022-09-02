@@ -84,7 +84,7 @@ class InstallerView extends StatelessWidget {
                           visible: !model.isPatching,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
+                            children: <Widget>[
                               CustomMaterialButton(
                                 text: 'installerView.shareButton',
                                 isFilled: false,
