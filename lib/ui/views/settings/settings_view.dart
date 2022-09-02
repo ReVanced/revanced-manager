@@ -5,11 +5,11 @@ import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/about_info_widget.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/social_media_cards.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/social_media_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/sources_widget.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
@@ -135,7 +135,7 @@ class SettingsView extends StatelessWidget {
                             onTap: openContainer,
                           ),
                         ),
-                        const SocialMediaCard(),
+                        const SocialMediaWidget(),
                       ],
                     ),
                     const Divider(thickness: 1.0),
