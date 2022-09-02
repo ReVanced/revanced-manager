@@ -11,7 +11,7 @@
         "patchedSubtitle": "Patched Applications",
         "updatesAvailable": "Updates Available",
         "noUpdates": "No updates available",
-        "noInstallations": "No patched apps installed",
+        "noInstallations": "No patched applications installed",
         "installed": "Installed",
         "notificationTitle": "ReVanced Manager was updated!",
         "notificationText": "Tap to open the app",
@@ -40,7 +40,7 @@
         "widgetTitle": "Select application",
         "widgetTitleSelected": "Selected application",
         "widgetSubtitle": "No application selected.",
-        "noAppsLabel": "No apps found."
+        "noAppsLabel": "No applications found."
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
@@ -93,7 +93,7 @@
         "englishOption": "English",
         "frenchOption": "French",
         "rootModeLabel": "Root Mode",
-        "rootModeHint": "Enable this if you want to patch applications as rooted",
+        "rootModeHint": "Do you want to patch applications as rooted?",
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
         "aboutLabel": "About",

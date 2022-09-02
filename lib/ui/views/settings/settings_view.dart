@@ -26,9 +26,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
-      disposeViewModel: false,
       viewModelBuilder: () => SettingsViewModel(),
-      onModelReady: (model) => model.initialize(),
       builder: (context, SettingsViewModel model, child) => Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
@@ -127,24 +125,7 @@ class SettingsView extends StatelessWidget {
                             ),
                           ),
                           subtitle: I18nText('settingsView.rootModeHint'),
-                          trailing: GestureDetector(
-                            onTap: () => model.navigateToRootChecker(),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  width: 1,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
-                              child: Text(
-                                model.isRooted ? 'Rooted' : 'Not rooted',
-                              ),
-                            ),
-                          ),
+                          onTap: () => model.navigateToRootChecker(),
                         ),
                         SourcesWidget(
                           title: 'settingsView.sourcesLabel',
