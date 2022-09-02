@@ -6,8 +6,8 @@ import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SocialMediaCard extends StatelessWidget {
-  const SocialMediaCard({Key? key}) : super(key: key);
+class SocialMediaWidget extends StatelessWidget {
+  const SocialMediaWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
