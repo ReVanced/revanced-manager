@@ -9,6 +9,7 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_view.dart';
 import 'package:revanced_manager/ui/widgets/patcherView/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patcherView/patch_selector_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
 import 'package:stacked/stacked.dart';
 
@@ -39,32 +40,14 @@ class PatcherView extends StatelessWidget {
         ),
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              pinned: true,
-              snap: false,
-              floating: false,
-              expandedHeight: 100.0,
-              automaticallyImplyLeading: false,
-              backgroundColor: MaterialStateColor.resolveWith(
-                (states) => states.contains(MaterialState.scrolledUnder)
-                    ? isDark
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).navigationBarTheme.backgroundColor!
-                    : Theme.of(context).scaffoldBackgroundColor,
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: const EdgeInsets.symmetric(
-                  vertical: 23.0,
-                  horizontal: 20.0,
-                ),
-                title: I18nText(
-                  'patcherView.widgetTitle',
-                  child: Text(
-                    '',
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline5!.color,
-                      fontWeight: FontWeight.w500,
-                    ),
+            CustomSliverAppBar(
+              title: I18nText(
+                'patcherView.widgetTitle',
+                child: Text(
+                  '',
+                  style: GoogleFonts.inter(
+                    color: Theme.of(context).textTheme.headline5!.color,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

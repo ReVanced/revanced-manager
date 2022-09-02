@@ -11,6 +11,7 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.da
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/social_media_cards.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/sources_widget.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_themes/stacked_themes.dart';
@@ -30,32 +31,14 @@ class SettingsView extends StatelessWidget {
       builder: (context, SettingsViewModel model, child) => Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              pinned: true,
-              snap: false,
-              floating: false,
-              expandedHeight: 100.0,
-              automaticallyImplyLeading: false,
-              backgroundColor: MaterialStateColor.resolveWith(
-                (states) => states.contains(MaterialState.scrolledUnder)
-                    ? isDark
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).navigationBarTheme.backgroundColor!
-                    : Theme.of(context).scaffoldBackgroundColor,
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: const EdgeInsets.symmetric(
-                  vertical: 23.0,
-                  horizontal: 20.0,
-                ),
-                title: I18nText(
-                  'settingsView.widgetTitle',
-                  child: Text(
-                    '',
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline5!.color,
-                      fontWeight: FontWeight.w500,
-                    ),
+            CustomSliverAppBar(
+              title: I18nText(
+                'settingsView.widgetTitle',
+                child: Text(
+                  '',
+                  style: GoogleFonts.inter(
+                    color: Theme.of(context).textTheme.headline5!.color,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -19,32 +19,12 @@ class InstallerView extends StatelessWidget {
           body: CustomScrollView(
             controller: model.scrollController,
             slivers: <Widget>[
-              SliverAppBar(
-                pinned: true,
-                snap: false,
-                floating: false,
-                expandedHeight: 100.0,
-                automaticallyImplyLeading: false,
-                backgroundColor: MaterialStateColor.resolveWith(
-                  (states) => states.contains(MaterialState.scrolledUnder)
-                      ? isDark
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context)
-                              .navigationBarTheme
-                              .backgroundColor!
-                      : Theme.of(context).scaffoldBackgroundColor,
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  titlePadding: const EdgeInsets.symmetric(
-                    vertical: 23.0,
-                    horizontal: 20.0,
-                  ),
-                  title: Text(
-                    model.headerLogs,
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline5!.color,
-                      fontWeight: FontWeight.w500,
-                    ),
+              CustomSliverAppBar(
+                title: Text(
+                  model.headerLogs,
+                  style: GoogleFonts.inter(
+                    color: Theme.of(context).textTheme.headline5!.color,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 bottom: PreferredSize(
