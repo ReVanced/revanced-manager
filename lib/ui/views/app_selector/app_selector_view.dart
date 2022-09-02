@@ -3,7 +3,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
-import 'package:stacked/stacked.dart';
+import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
+import 'package:stacked/stacked.dart' hide SkeletonLoader;
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 
 class AppSelectorView extends StatefulWidget {
@@ -44,11 +45,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                     child: I18nText('appSelectorCard.noAppsLabel'),
                   )
                 : model.apps.isEmpty
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      )
+                    ? const AppSkeletonLoader()
                     : Column(
                         children: <Widget>[
                           SearchBar(
