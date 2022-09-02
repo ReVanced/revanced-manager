@@ -54,7 +54,7 @@
     },
     "sourcesCard": { 
         "widgetTitle": "Sources",
-        "widgetSubtitle": "Add your custom Patcher sources",
+        "widgetSubtitle": "Add your custom sources",
         "organizationLabel": "Organization",
         "patchesSourceLabel" : "Patches Source",
         "integrationsSourceLabel": "Integrations Source"

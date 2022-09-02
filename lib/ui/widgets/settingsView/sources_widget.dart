@@ -21,61 +21,60 @@ class SourcesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: ExpandablePanel(
-        theme: ExpandableThemeData(
-          hasIcon: true,
-          iconColor: Theme.of(context).iconTheme.color,
-          animationDuration: const Duration(milliseconds: 450),
-        ),
-        header: SizedBox(
-          width: double.infinity,
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: I18nText(
-              'sourcesCard.widgetTitle',
-              child: Text('', style: kSettingItemTextStyle),
+    return ExpandablePanel(
+      theme: ExpandableThemeData(
+        hasIcon: true,
+        iconColor: Theme.of(context).iconTheme.color,
+        iconPadding: const EdgeInsets.symmetric(vertical: 16.0),
+        animationDuration: const Duration(milliseconds: 400),
+      ),
+      header: SizedBox(
+        width: double.infinity,
+        child: ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: I18nText(
+            'sourcesCard.widgetTitle',
+            child: Text('', style: kSettingItemTextStyle),
+          ),
+          subtitle: I18nText(
+            'sourcesCard.widgetSubtitle',
+            child: Text(
+              '',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  ),
             ),
           ),
         ),
-        expanded: Card(
-          color: isDark
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).navigationBarTheme.backgroundColor!,
-          child: Column(
-            children: <Widget>[
-              CustomTextField(
-                inputController: organizationController,
-                label: I18nText('sourcesCard.organizationLabel'),
-                hint: ghOrg,
-                onChanged: (value) => ghOrg = value,
-              ),
-              CustomTextField(
-                inputController: patchesSourceController,
-                label: I18nText('sourcesCard.patchesSourceLabel'),
-                hint: patchesRepo,
-                onChanged: (value) => patchesRepo = value,
-              ),
-              CustomTextField(
-                inputController: integrationsSourceController,
-                label: I18nText('sourcesCard.integrationsSourceLabel'),
-                hint: integrationsRepo,
-                onChanged: (value) => integrationsRepo = value,
-              ),
-            ],
-          ),
-        ),
-        collapsed: I18nText(
-          'sourcesCard.widgetSubtitle',
-          child: Text(
-            '',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
-                ),
-          ),
+      ),
+      expanded: Card(
+        color: isDark
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).navigationBarTheme.backgroundColor!,
+        child: Column(
+          children: <Widget>[
+            CustomTextField(
+              inputController: organizationController,
+              label: I18nText('sourcesCard.organizationLabel'),
+              hint: ghOrg,
+              onChanged: (value) => ghOrg = value,
+            ),
+            CustomTextField(
+              inputController: patchesSourceController,
+              label: I18nText('sourcesCard.patchesSourceLabel'),
+              hint: patchesRepo,
+              onChanged: (value) => patchesRepo = value,
+            ),
+            CustomTextField(
+              inputController: integrationsSourceController,
+              label: I18nText('sourcesCard.integrationsSourceLabel'),
+              hint: integrationsRepo,
+              onChanged: (value) => integrationsRepo = value,
+            ),
+          ],
         ),
       ),
+      collapsed: Container(),
     );
   }
 }
