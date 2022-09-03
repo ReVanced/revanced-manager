@@ -61,6 +61,9 @@ class ManagerAPI {
   }
 
   Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
+    if (patchedApps.length > 1) {
+      patchedApps.sort((a, b) => a.name.compareTo(b.name));
+    }
     await _prefs.setStringList('patchedApps',
         patchedApps.map((a) => json.encode(a.toJson())).toList());
   }
