@@ -27,7 +27,7 @@ class CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
             label: label,
             filled: true,
-            fillColor: Theme.of(context).colorScheme.surfaceVariant,
+            fillColor: Theme.of(context).colorScheme.secondaryContainer,
             hintText: hint,
             contentPadding: const EdgeInsets.symmetric(
               vertical: 0.0,

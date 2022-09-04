@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 // ignore: depend_on_referenced_packages
@@ -9,6 +8,7 @@ import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/main_viewmodel.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:revanced_manager/ui/views/root_checker/root_checker_view.dart';
@@ -18,8 +18,8 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 Future main() async {
-  await ThemeManager.initialise();
   await setupLocator();
+  await ThemeManager.initialise();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -29,36 +29,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicTheme(
-      themeCollection: ThemeCollection(
-        themes: {
-          0: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              brightness: Brightness.light,
-            ),
-            useMaterial3: true,
-            toggleableActiveColor: Theme.of(context).colorScheme.primary,
-          ),
-          1: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              brightness: Brightness.dark,
-            ),
-            useMaterial3: true,
-            toggleableActiveColor: Theme.of(context).colorScheme.primary,
-          ),
-        },
-        fallbackTheme: ThemeData.light(),
-      ),
-      builder: (context, theme) => MaterialApp(
+    return ThemeBuilder(
+      defaultThemeMode: ThemeMode.dark,
+      darkTheme: darkTheme,
+      lightTheme: lightTheme,
+      builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ReVanced Manager',
-        theme: theme,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: themeMode,
         navigatorKey: StackedService.navigatorKey,
         onGenerateRoute: StackedRouter().onGenerateRoute,
         home: FutureBuilder<Widget>(
-          future: _init(context),
+          future: _init(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return snapshot.data!;
@@ -85,7 +69,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Future<Widget> _init(BuildContext context) async {
+  Future<Widget> _init() async {
     await locator<ManagerAPI>().initialize();
     await locator<PatcherAPI>().initialize();
     bool? isRooted = locator<ManagerAPI>().isRooted();

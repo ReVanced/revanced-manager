@@ -23,7 +23,7 @@ class InstallerView extends StatelessWidget {
               CustomSliverAppBar(
                 title: Text(
                   model.headerLogs,
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),

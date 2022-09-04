@@ -1,6 +1,7 @@
-import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
@@ -12,6 +13,7 @@ import 'package:revanced_manager/ui/widgets/settingsView/sources_widget.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class SettingsView extends StatelessWidget {
   final TextEditingController organizationController = TextEditingController();
@@ -33,7 +35,7 @@ class SettingsView extends StatelessWidget {
                 'settingsView.widgetTitle',
                 child: Text(
                   '',
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
@@ -62,12 +64,10 @@ class SettingsView extends StatelessWidget {
                             ),
                           ),
                           subtitle: I18nText('settingsView.themeHint'),
-                          value:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? false
-                                  : true,
+                          value: isDark,
                           onTap: (value) {
-                            DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
+                            isDark = value;
+                            getThemeManager(context).toggleDarkLightTheme();
                           },
                         ),
                       ],

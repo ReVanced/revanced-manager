@@ -18,7 +18,10 @@ class DashboardChip extends StatelessWidget {
       showCheckmark: false,
       label: label,
       selected: isSelected,
-      labelStyle: Theme.of(context).textTheme.subtitle2,
+      labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
       backgroundColor: Colors.transparent,
       selectedColor: Theme.of(context).colorScheme.secondaryContainer,
       padding: const EdgeInsets.all(10),

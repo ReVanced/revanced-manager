@@ -29,7 +29,7 @@ class CustomMaterialButton extends StatelessWidget {
         ),
         foregroundColor: MaterialStateProperty.all(
           isFilled
-              ? Theme.of(context).colorScheme.surfaceVariant
+              ? Theme.of(context).colorScheme.surface
               : Theme.of(context).colorScheme.primary,
         ),
       ),

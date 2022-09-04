@@ -28,7 +28,7 @@ class _SearchBarState extends State<SearchBar> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.secondaryContainer,
       ),
       child: Row(
         children: <Widget>[
@@ -38,7 +38,7 @@ class _SearchBarState extends State<SearchBar> {
               controller: _textController,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Theme.of(context).colorScheme.surfaceVariant,
+                fillColor: Theme.of(context).colorScheme.secondaryContainer,
                 contentPadding: const EdgeInsets.all(12.0),
                 hintText: widget.hintText,
                 prefixIcon: Icon(

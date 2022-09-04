@@ -35,6 +35,7 @@ class SocialMediaWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -50,6 +51,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0).copyWith(left: 5),
                 child: FaIcon(
@@ -65,6 +67,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -80,6 +83,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -95,6 +99,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -110,6 +115,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
