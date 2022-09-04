@@ -99,39 +99,6 @@ class _PatchItemState extends State<PatchItem> {
                 )
               ],
             ),
-            // widget.name.contains("custom-branding")
-            //     ? Padding(
-            //         padding: const EdgeInsets.symmetric(vertical: 10.0),
-            //         child: Container(
-            //           padding: const EdgeInsets.symmetric(
-            //             vertical: 8,
-            //             horizontal: 8,
-            //           ),
-            //           decoration: BoxDecoration(
-            //             color: Theme.of(context)
-            //                 .colorScheme
-            //                 .tertiary
-            //                 .withOpacity(0.1),
-            //             borderRadius: BorderRadius.circular(12),
-            //           ),
-            //           child: Column(
-            //             children: [
-            //               Text(
-            //                 "Patch options",
-            //                 style: GoogleFonts.inter(
-            //                   fontSize: 18,
-            //                   fontWeight: FontWeight.w600,
-            //                 ),
-            //               ),
-            //               const OptionsTextField(hint: "App name"),
-            //               const OptionsFilePicker(
-            //                 optionName: "Choose a logo",
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       )
-            //     : const SizedBox(),
             widget.isUnsupported
                 ? Row(
                     children: <Widget>[
