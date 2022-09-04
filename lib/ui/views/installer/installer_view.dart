@@ -3,6 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,15 +23,14 @@ class InstallerView extends StatelessWidget {
               CustomSliverAppBar(
                 title: Text(
                   model.headerLogs,
-                  style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.headline5!.color,
-                    fontWeight: FontWeight.w500,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
                 bottom: PreferredSize(
                   preferredSize: const Size(double.infinity, 1.0),
                   child: LinearProgressIndicator(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.primary,
                     backgroundColor: Colors.white,
                     value: model.progress,
                   ),
@@ -41,13 +41,7 @@ class InstallerView extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(12.0),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                      CustomCard(
                         child: Text(
                           model.logs,
                           style: GoogleFonts.jetBrainsMono(

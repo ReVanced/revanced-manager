@@ -18,8 +18,10 @@ dependencies:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: appinfo-from-storage
   device_info_plus: ^4.1.2
+  dynamic_themes: ^1.1.0
   expandable: ^5.0.1
   file_picker: ^5.0.1
+  flex_color_scheme: ^6.0.0
   flutter:
     sdk: flutter
   flutter_background: ^1.1.0

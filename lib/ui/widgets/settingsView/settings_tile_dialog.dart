@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/constants.dart';
 
 class SettingsTileDialog extends StatelessWidget {
   final String title;
@@ -20,9 +19,12 @@ class SettingsTileDialog extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: I18nText(
         title,
-        child: Text(
+        child: const Text(
           '',
-          style: kSettingItemTextStyle,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
       subtitle: I18nText(subtitle),

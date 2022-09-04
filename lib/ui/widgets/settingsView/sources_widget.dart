@@ -2,8 +2,8 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/constants.dart';
-import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class SourcesWidget extends StatelessWidget {
   final String title;
@@ -28,29 +28,21 @@ class SourcesWidget extends StatelessWidget {
         iconPadding: const EdgeInsets.symmetric(vertical: 16.0),
         animationDuration: const Duration(milliseconds: 400),
       ),
-      header: SizedBox(
-        width: double.infinity,
-        child: ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: I18nText(
-            'sourcesCard.widgetTitle',
-            child: Text('', style: kSettingItemTextStyle),
-          ),
-          subtitle: I18nText(
-            'sourcesCard.widgetSubtitle',
-            child: Text(
-              '',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
-                  ),
+      header: ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: I18nText(
+          'sourcesCard.widgetTitle',
+          child: const Text(
+            '',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
+        subtitle: I18nText('sourcesCard.widgetSubtitle'),
       ),
-      expanded: Card(
-        color: isDark
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).navigationBarTheme.backgroundColor!,
+      expanded: CustomCard(
         child: Column(
           children: <Widget>[
             CustomTextField(
@@ -59,12 +51,14 @@ class SourcesWidget extends StatelessWidget {
               hint: ghOrg,
               onChanged: (value) => ghOrg = value,
             ),
+            const SizedBox(height: 8),
             CustomTextField(
               inputController: patchesSourceController,
               label: I18nText('sourcesCard.patchesSourceLabel'),
               hint: patchesRepo,
               onChanged: (value) => patchesRepo = value,
             ),
+            const SizedBox(height: 8),
             CustomTextField(
               inputController: integrationsSourceController,
               label: I18nText('sourcesCard.integrationsSourceLabel'),

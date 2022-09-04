@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/constants.dart';
-import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:flutter/services.dart';
 
@@ -22,7 +20,13 @@ class _AboutWidgetState extends State<AboutWidget> {
         children: <Widget>[
           I18nText(
             'settingsView.aboutLabel',
-            child: Text('', style: kSettingItemTextStyle),
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           const SizedBox(height: 4),
           FutureBuilder<Map<String, dynamic>>(
@@ -42,30 +46,50 @@ class _AboutWidgetState extends State<AboutWidget> {
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          'Copied to clipboard',
-                          style: TextStyle(
-                            color: isDark ? Colors.white : Colors.grey[300],
-                          ),
-                        ),
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        content: const Text('Copied to clipboard'),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
                       ),
                     );
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Version: ${snapshot.data!['version']}',
-                          style: kSettingItemSubtitleTextStyle),
-                      Text('Build: ${snapshot.data!['buildNumber']}',
-                          style: kSettingItemSubtitleTextStyle),
-                      Text('Model: ${snapshot.data!['model']}',
-                          style: kSettingItemSubtitleTextStyle),
                       Text(
-                          'Android Version: ${snapshot.data!['androidVersion']}',
-                          style: kSettingItemSubtitleTextStyle),
-                      Text('Arch: ${snapshot.data!['arch']}',
-                          style: kSettingItemSubtitleTextStyle),
+                        'Version: ${snapshot.data!['version']}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        'Build: ${snapshot.data!['buildNumber']}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        'Model: ${snapshot.data!['model']}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        'Android Version: ${snapshot.data!['androidVersion']}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        'Arch: ${snapshot.data!['arch']}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
                     ],
                   ),
                 );

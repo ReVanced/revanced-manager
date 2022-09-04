@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stacked_themes/stacked_themes.dart';
+//import 'package:stacked_themes/stacked_themes.dart';
 
-import 'app/app.locator.dart';
+//import 'app/app.locator.dart';
 
-final _themeService = locator<ThemeService>();
-bool isDark = _themeService.isDarkMode;
+//final _themeService = locator<ThemeService>();
+bool isDark = false; //_themeService.isDarkMode;
 
 var lightTheme = ThemeData.light().copyWith(
   backgroundColor: const Color.fromARGB(255, 243, 243, 243),

@@ -2,7 +2,6 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
@@ -35,11 +34,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               model.selectPatches();
               Navigator.of(context).pop();
             },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            foregroundColor: Theme.of(context).colorScheme.surface,
           ),
         ),
         body: SafeArea(
@@ -49,20 +43,17 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             child: model.patches.isEmpty
                 ? Center(
                     child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   )
                 : Column(
                     children: <Widget>[
                       SearchBar(
                         showSelectIcon: true,
-                        fillColor:
-                            isDark ? const Color(0xff1B222B) : Colors.grey[200],
                         hintText: FlutterI18n.translate(
                           context,
                           'patchesSelectorView.searchBarHint',
                         ),
-                        hintTextColor: Theme.of(context).colorScheme.tertiary,
                         onQueryChanged: (searchQuery) {
                           setState(() {
                             _query = searchQuery;

@@ -17,11 +17,6 @@ class RootCheckerView extends StatelessWidget {
           label: I18nText('rootCheckerView.nonRootButton'),
           icon: const Icon(Icons.keyboard_arrow_right),
           onPressed: () => model.navigateAsNonRoot(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          foregroundColor: Theme.of(context).colorScheme.surface,
         ),
         body: Container(
           height: double.infinity,
@@ -41,10 +36,10 @@ class RootCheckerView extends StatelessWidget {
               const SizedBox(height: 24),
               I18nText(
                 'rootCheckerView.widgetDescription',
-                child: Text(
+                child: const Text(
                   '',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.roboto(
+                  style: TextStyle(
                     fontSize: 17,
                     letterSpacing: 1.1,
                   ),
@@ -62,10 +57,6 @@ class RootCheckerView extends StatelessWidget {
                       translationParams: {
                         'isRooted': model.isRooted.toString(),
                       },
-                      child: Text(
-                        '',
-                        style: GoogleFonts.poppins(),
-                      ),
                     ),
                   ],
                 ),
