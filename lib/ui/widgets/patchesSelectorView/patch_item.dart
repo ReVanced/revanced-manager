@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
 import 'package:revanced_manager/ui/widgets/shared/patch_text_button.dart';
 
 // ignore: must_be_immutable
@@ -14,19 +15,21 @@ class PatchItem extends StatefulWidget {
   final bool isUnsupported;
   bool isSelected;
   final Function(bool) onChanged;
+  final Widget? child;
 
-  PatchItem({
-    Key? key,
-    required this.name,
-    required this.simpleName,
-    required this.description,
-    required this.version,
-    required this.packageVersion,
-    required this.supportedPackageVersions,
-    required this.isUnsupported,
-    required this.isSelected,
-    required this.onChanged,
-  }) : super(key: key);
+  PatchItem(
+      {Key? key,
+      required this.name,
+      required this.simpleName,
+      required this.description,
+      required this.version,
+      required this.packageVersion,
+      required this.supportedPackageVersions,
+      required this.isUnsupported,
+      required this.isSelected,
+      required this.onChanged,
+      this.child})
+      : super(key: key);
 
   @override
   State<PatchItem> createState() => _PatchItemState();
@@ -96,6 +99,39 @@ class _PatchItemState extends State<PatchItem> {
                 )
               ],
             ),
+            // widget.name.contains("custom-branding")
+            //     ? Padding(
+            //         padding: const EdgeInsets.symmetric(vertical: 10.0),
+            //         child: Container(
+            //           padding: const EdgeInsets.symmetric(
+            //             vertical: 8,
+            //             horizontal: 8,
+            //           ),
+            //           decoration: BoxDecoration(
+            //             color: Theme.of(context)
+            //                 .colorScheme
+            //                 .tertiary
+            //                 .withOpacity(0.1),
+            //             borderRadius: BorderRadius.circular(12),
+            //           ),
+            //           child: Column(
+            //             children: [
+            //               Text(
+            //                 "Patch options",
+            //                 style: GoogleFonts.inter(
+            //                   fontSize: 18,
+            //                   fontWeight: FontWeight.w600,
+            //                 ),
+            //               ),
+            //               const OptionsTextField(hint: "App name"),
+            //               const OptionsFilePicker(
+            //                 optionName: "Choose a logo",
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //     : const SizedBox(),
             widget.isUnsupported
                 ? Row(
                     children: <Widget>[
@@ -128,6 +164,7 @@ class _PatchItemState extends State<PatchItem> {
                     ],
                   )
                 : Container(),
+            widget.child ?? const SizedBox(),
           ],
         ),
       ),
