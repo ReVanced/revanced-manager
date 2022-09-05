@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
-import 'app/app.locator.dart';
-
-final _themeService = locator<ThemeService>();
-bool isDark = _themeService.isDarkMode;
-
-var lightTheme = ThemeData(
+var lightCustomTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.blue,
@@ -16,7 +10,7 @@ var lightTheme = ThemeData(
   textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
 );
 
-var darkTheme = ThemeData(
+var darkCustomTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.blue,

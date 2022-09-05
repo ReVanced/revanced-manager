@@ -6,12 +6,13 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final List<ApplicationWithIcon> apps = [];
   bool noApps = false;
@@ -21,8 +22,7 @@ class AppSelectorViewModel extends BaseViewModel {
     apps.addAll(await _patcherAPI.getFilteredInstalledApps());
     apps.sort((a, b) => a.appName.compareTo(b.appName));
     noApps = apps.isEmpty;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isRooted = prefs.getBool('isRooted') ?? false;
+    _isRooted = _managerAPI.isRooted() ?? false;
     notifyListeners();
   }
 
