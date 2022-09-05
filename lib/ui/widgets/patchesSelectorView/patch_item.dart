@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 

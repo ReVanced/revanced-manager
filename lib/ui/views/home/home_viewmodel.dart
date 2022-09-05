@@ -8,10 +8,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
-import 'package:revanced_manager/main_viewmodel.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -46,7 +46,7 @@ class HomeViewModel extends BaseViewModel {
     locator<PatcherViewModel>().selectedPatches =
         await _patcherAPI.getAppliedPatches(app.appliedPatches);
     locator<PatcherViewModel>().notifyListeners();
-    locator<MainViewModel>().setIndex(1);
+    locator<NavigationViewModel>().setIndex(1);
   }
 
   void _getPatchedApps() {

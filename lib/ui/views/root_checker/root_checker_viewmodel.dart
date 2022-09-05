@@ -27,6 +27,6 @@ class RootCheckerViewModel extends BaseViewModel {
 
   Future<void> navigateToHome() async {
     _managerAPI.setIsRooted(isRooted);
-    _navigationService.navigateTo(Routes.navigation);
+    _navigationService.navigateTo(Routes.navigationView);
   }
 }

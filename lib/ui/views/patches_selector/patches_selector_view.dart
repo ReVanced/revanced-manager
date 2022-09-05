@@ -62,7 +62,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         onSelectAll: (value) => model.selectAllPatches(value),
                       ),
                       const SizedBox(height: 12),
-                      //TODO:IMPROVE THIS BAD CODE!!
+                      // TODO: IMPROVE THIS BAD CODE
                       Expanded(
                         child: ListView(
                           padding: const EdgeInsets.only(bottom: 80),
