@@ -7,7 +7,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
-import 'package:revanced_manager/ui/views/root_checker/root_checker_view.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 Future main() async {
@@ -15,6 +14,7 @@ Future main() async {
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await locator<ManagerAPI>().initialize();
+  await locator<PatcherAPI>().initialize();
   runApp(const MyApp());
 }
 
@@ -25,20 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicThemeBuilder(
       title: 'ReVanced Manager',
-      home: FutureBuilder<Widget>(
-        future: _init(context),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return snapshot.data!;
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            );
-          }
-        },
-      ),
+      home: const NavigationView(),
       localizationsDelegates: [
         FlutterI18nDelegate(
           translationLoader: FileTranslationLoader(
@@ -50,15 +37,5 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate
       ],
     );
-  }
-
-  Future<Widget> _init(BuildContext context) async {
-    await locator<ManagerAPI>().initialize();
-    await locator<PatcherAPI>().initialize();
-    bool? isRooted = locator<ManagerAPI>().isRooted();
-    if (isRooted != null) {
-      return const NavigationView();
-    }
-    return const RootCheckerView();
   }
 }

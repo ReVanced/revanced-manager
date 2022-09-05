@@ -14,7 +14,7 @@ import 'package:stacked/stacked.dart';
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
-  final PatchedApplication? _app = locator<PatcherViewModel>().selectedApp;
+  final PatchedApplication _app = locator<PatcherViewModel>().selectedApp!;
   final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
   static const _installerChannel = MethodChannel(
     'app.revanced.manager/installer',
@@ -98,19 +98,19 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     update(0.0, 'Initializing...', 'Initializing installer');
-    if (_app != null && _patches.isNotEmpty) {
-      String apkFilePath = _app!.apkFilePath;
+    if (_patches.isNotEmpty) {
+      String apkFilePath = _app.apkFilePath;
       try {
-        if (_app!.isRooted) {
+        if (_app.isRooted) {
           update(0.0, '', 'Checking if an old patched version exists');
-          bool oldExists = await _patcherAPI.checkOldPatch(_app!);
+          bool oldExists = await _patcherAPI.checkOldPatch(_app);
           if (oldExists) {
             update(0.0, '', 'Deleting old patched version');
-            await _patcherAPI.deleteOldPatch(_app!);
+            await _patcherAPI.deleteOldPatch(_app);
           }
         }
         update(0.0, '', 'Creating working directory');
-        await _patcherAPI.runPatcher(_app!.packageName, apkFilePath, _patches);
+        await _patcherAPI.runPatcher(_app.packageName, apkFilePath, _patches);
       } on Exception {
         update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }
@@ -124,31 +124,32 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void installResult() async {
-    if (_app != null) {
-      update(
-        1.0,
-        'Installing...',
-        _app!.isRooted
-            ? 'Installing patched file using root method'
-            : 'Installing patched file using nonroot method',
-      );
-      isInstalled = await _patcherAPI.installPatchedFile(_app!);
-      if (isInstalled) {
-        update(1.0, 'Installed!', 'Installed!');
-        _app!.patchDate = DateTime.now();
-        _app!.appliedPatches = _patches.map((p) => p.name).toList();
-        await _managerAPI.savePatchedApp(_app!);
-      } else {
-        update(1.0, 'Aborting...', 'An error occurred! Aborting');
-      }
+  void installResult(bool installAsRoot) async {
+    _app.isRooted = installAsRoot;
+    update(
+      1.0,
+      'Installing...',
+      _app.isRooted
+          ? 'Installing patched file using root method'
+          : 'Installing patched file using nonroot method',
+    );
+    isInstalled = await _patcherAPI.installPatchedFile(_app);
+    if (isInstalled) {
+      update(1.0, 'Installed!', 'Installed!');
+      _app.patchDate = DateTime.now();
+      _app.appliedPatches = _patches.map((p) => p.name).toList();
+      await _managerAPI.savePatchedApp(_app);
+    } else {
+      update(1.0, 'Aborting...', 'An error occurred! Aborting');
     }
   }
 
   void shareResult() {
-    if (_app != null) {
-      _patcherAPI.sharePatchedFile(_app!.name, _app!.version);
-    }
+    _patcherAPI.sharePatchedFile(_app.name, _app.version);
+  }
+
+  void shareLog() {
+    _patcherAPI.shareLog(logs);
   }
 
   Future<void> cleanPatcher() async {
@@ -159,8 +160,17 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void openApp() {
-    if (_app != null) {
-      DeviceApps.openApp(_app!.packageName);
+    DeviceApps.openApp(_app.packageName);
+  }
+
+  void onMenuSelection(int value) {
+    switch (value) {
+      case 0:
+        shareResult();
+        break;
+      case 1:
+        shareLog();
+        break;
     }
   }
 }

@@ -5,6 +5,11 @@ class RootAPI {
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
   final String _serviceDDirPath = '/data/adb/service.d';
 
+  Future<bool> hasRootPermissions() async {
+    bool? isRooted = await Root.isRooted();
+    return isRooted != null && isRooted;
+  }
+
   Future<bool> isAppInstalled(String packageName) async {
     if (packageName.isNotEmpty) {
       String? res = await Root.exec(

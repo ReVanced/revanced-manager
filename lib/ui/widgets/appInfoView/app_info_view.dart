@@ -19,7 +19,6 @@ class AppInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AppInfoViewModel>.reactive(
-      onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => AppInfoViewModel(),
       builder: (context, model, child) => Scaffold(
         body: CustomScrollView(
@@ -68,9 +67,7 @@ class AppInfoView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
-                              onTap: () => DeviceApps.openApp(
-                                app.packageName,
-                              ),
+                              onTap: () => model.openApp(app),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -180,7 +177,7 @@ class AppInfoView extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: I18nText(
-                        'appInfoView.rootModeLabel',
+                        'appInfoView.rootInstallLabel',
                         child: const Text(
                           '',
                           style: TextStyle(
@@ -189,9 +186,9 @@ class AppInfoView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      subtitle: model.isRooted
-                          ? I18nText('enabledLabel')
-                          : I18nText('disabledLabel'),
+                      subtitle: app.isRooted
+                          ? I18nText('yesLabel')
+                          : I18nText('noLabel'),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

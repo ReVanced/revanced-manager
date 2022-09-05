@@ -65,14 +65,6 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
-  bool? isRooted() {
-    return _prefs.getBool('isRooted');
-  }
-
-  Future<void> setIsRooted(bool value) async {
-    await _prefs.setBool('isRooted', value);
-  }
-
   List<PatchedApplication> getPatchedApps() {
     List<String> apps = _prefs.getStringList('patchedApps') ?? [];
     return apps
@@ -109,11 +101,10 @@ class ManagerAPI {
   }
 
   Future<void> reAssessSavedApps() async {
-    bool isRooted = this.isRooted() ?? false;
     List<PatchedApplication> patchedApps = getPatchedApps();
     List<PatchedApplication> toRemove = [];
     for (PatchedApplication app in patchedApps) {
-      bool isRemove = await isAppUninstalled(app, isRooted);
+      bool isRemove = await isAppUninstalled(app);
       if (isRemove) {
         toRemove.add(app);
       } else {
@@ -139,9 +130,9 @@ class ManagerAPI {
     await setPatchedApps(patchedApps);
   }
 
-  Future<bool> isAppUninstalled(PatchedApplication app, bool isRooted) async {
+  Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
-    if (isRooted) {
+    if (app.isRooted) {
       existsRoot = await _rootAPI.isAppInstalled(app.packageName);
     }
     bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);

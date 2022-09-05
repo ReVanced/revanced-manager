@@ -16,7 +16,7 @@ class PatchedApplication {
   )
   Uint8List icon;
   DateTime patchDate;
-  final bool isRooted;
+  bool isRooted;
   bool hasUpdates;
   List<String> appliedPatches;
   List<String> changelog;
