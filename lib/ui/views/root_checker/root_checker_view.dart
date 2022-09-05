@@ -11,6 +11,7 @@ class RootCheckerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RootCheckerViewModel>.reactive(
+      onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => RootCheckerViewModel(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: FloatingActionButton.extended(

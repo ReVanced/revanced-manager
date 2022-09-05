@@ -10,6 +10,10 @@ class RootCheckerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   bool isRooted = false;
 
+  void initialize() {
+    isRooted = _managerAPI.isRooted() ?? false;
+  }
+
   Future<void> navigateAsRoot() async {
     bool? res = await Root.isRooted();
     isRooted = res != null && res == true;
