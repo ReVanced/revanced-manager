@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -30,18 +31,28 @@ class InstallerView extends StatelessWidget {
                 actions: <Widget>[
                   Visibility(
                     visible: !model.isPatching,
-                    child: PopupMenuButton<int>(
+                    child: CustomPopupMenu(
                       onSelected: (value) => model.onMenuSelection(value),
-                      itemBuilder: (context) => [
-                        PopupMenuItem<int>(
-                          value: 0,
-                          child: I18nText('installerView.shareApkMenuOption'),
+                      children: {
+                        0: I18nText(
+                          'installerView.shareApkMenuOption',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                        PopupMenuItem<int>(
-                          value: 1,
-                          child: I18nText('installerView.shareLogMenuOption'),
+                        1: I18nText(
+                          'installerView.shareLogMenuOption',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ],
+                      },
                     ),
                   ),
                 ],
