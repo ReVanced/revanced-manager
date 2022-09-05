@@ -22,6 +22,10 @@ class SettingsViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.rootCheckerView);
   }
 
+  void navigateToContributors() {
+    _navigationService.navigateTo(Routes.contributorsView);
+  }
+
   Future<void> updateLanguage(BuildContext context, String? value) async {
     if (value != null) {
       await FlutterI18n.refresh(context, Locale(value));

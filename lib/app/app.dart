@@ -11,6 +11,7 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_view.dart';
 import 'package:revanced_manager/ui/views/root_checker/root_checker_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
+import 'package:revanced_manager/ui/widgets/appInfoView/app_info_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -24,6 +25,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: SettingsView),
     MaterialRoute(page: ContributorsView),
     MaterialRoute(page: RootCheckerView),
+    MaterialRoute(page: AppInfoView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationViewModel),

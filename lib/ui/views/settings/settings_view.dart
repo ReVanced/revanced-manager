@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
@@ -10,7 +9,6 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/social_media_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/sources_widget.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
-import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsView extends StatelessWidget {
@@ -143,23 +141,20 @@ class SettingsView extends StatelessWidget {
                     SettingsSection(
                       title: 'settingsView.teamSectionTitle',
                       children: <Widget>[
-                        OpenContainerWrapper(
-                          openBuilder: (_, __) => const ContributorsView(),
-                          closedBuilder: (_, openContainer) => ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: I18nText(
-                              'settingsView.contributorsLabel',
-                              child: const Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: I18nText(
+                            'settingsView.contributorsLabel',
+                            child: const Text(
+                              '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            subtitle: I18nText('settingsView.contributorsHint'),
-                            onTap: openContainer,
                           ),
+                          subtitle: I18nText('settingsView.contributorsHint'),
+                          onTap: () => model.navigateToContributors(),
                         ),
                         const SocialMediaWidget(),
                       ],

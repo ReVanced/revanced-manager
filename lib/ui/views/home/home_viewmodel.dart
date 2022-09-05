@@ -8,15 +8,18 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 @lazySingleton
 class HomeViewModel extends BaseViewModel {
+  final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -34,6 +37,13 @@ class HomeViewModel extends BaseViewModel {
     );
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
+  }
+
+  void navigateToAppInfo(PatchedApplication app) {
+    _navigationService.navigateTo(
+      Routes.appInfoView,
+      arguments: AppInfoViewArguments(app: app),
+    );
   }
 
   void toggleUpdatableApps(bool value) {

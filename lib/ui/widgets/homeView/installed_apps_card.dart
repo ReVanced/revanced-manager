@@ -3,10 +3,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/appInfoView/app_info_view.dart';
 import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/open_container_wrapper.dart';
 
 class InstalledAppsCard extends StatelessWidget {
   InstalledAppsCard({Key? key}) : super(key: key);
@@ -41,16 +39,14 @@ class InstalledAppsCard extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             children: apps
                 .map(
-                  (app) => OpenContainerWrapper(
-                    openBuilder: (_, __) => AppInfoView(app: app),
-                    closedBuilder: (_, openContainer) => ApplicationItem(
-                      icon: app.icon,
-                      name: app.name,
-                      patchDate: app.patchDate,
-                      changelog: app.changelog,
-                      isUpdatableApp: false,
-                      onPressed: openContainer,
-                    ),
+                  (app) => ApplicationItem(
+                    icon: app.icon,
+                    name: app.name,
+                    patchDate: app.patchDate,
+                    changelog: app.changelog,
+                    isUpdatableApp: false,
+                    onPressed: () =>
+                        locator<HomeViewModel>().navigateToAppInfo(app),
                   ),
                 )
                 .toList(),
