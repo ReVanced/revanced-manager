@@ -102,12 +102,18 @@ class ManagerAPI {
     await setPatchedApps(patchedApps);
   }
 
+  Future<void> deletePatchedApp(PatchedApplication app) async {
+    List<PatchedApplication> patchedApps = getPatchedApps();
+    patchedApps.removeWhere((a) => a.packageName == app.packageName);
+    await setPatchedApps(patchedApps);
+  }
+
   Future<void> reAssessSavedApps() async {
-    bool isRoot = isRooted() ?? false;
+    bool isRooted = this.isRooted() ?? false;
     List<PatchedApplication> patchedApps = getPatchedApps();
     List<PatchedApplication> toRemove = [];
     for (PatchedApplication app in patchedApps) {
-      bool isRemove = await isAppUninstalled(app, isRoot);
+      bool isRemove = await isAppUninstalled(app, isRooted);
       if (isRemove) {
         toRemove.add(app);
       } else {
@@ -133,9 +139,9 @@ class ManagerAPI {
     await setPatchedApps(patchedApps);
   }
 
-  Future<bool> isAppUninstalled(PatchedApplication app, bool isRoot) async {
+  Future<bool> isAppUninstalled(PatchedApplication app, bool isRooted) async {
     bool existsRoot = false;
-    if (isRoot) {
+    if (isRooted) {
       existsRoot = await _rootAPI.isAppInstalled(app.packageName);
     }
     bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);

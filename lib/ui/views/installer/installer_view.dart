@@ -70,7 +70,6 @@ class InstallerView extends StatelessWidget {
                                 label: model.isInstalled
                                     ? I18nText('installerView.openButton')
                                     : I18nText('installerView.installButton'),
-                                isFilled: true,
                                 isExpanded: true,
                                 onPressed: () {
                                   if (model.isInstalled) {

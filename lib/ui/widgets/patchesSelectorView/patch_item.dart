@@ -148,7 +148,6 @@ class _PatchItemState extends State<PatchItem> {
         ),
         actions: [
           CustomMaterialButton(
-            isFilled: true,
             label: I18nText('okButton'),
             onPressed: () => Navigator.of(context).pop(),
           )

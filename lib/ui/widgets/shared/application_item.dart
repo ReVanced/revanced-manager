@@ -53,14 +53,17 @@ class ApplicationItem extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: CustomMaterialButton(
-                label: isUpdatableApp
-                    ? I18nText('applicationItem.patchButton')
-                    : I18nText('applicationItem.openButton'),
-                onPressed: onPressed,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                CustomMaterialButton(
+                  label: isUpdatableApp
+                      ? I18nText('applicationItem.patchButton')
+                      : I18nText('applicationItem.infoButton'),
+                  onPressed: onPressed,
+                ),
+              ],
             ),
           ],
         ),

@@ -146,7 +146,7 @@ class PatcherAPI {
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
     if (_outFile != null) {
       try {
-        if (patchedApp.isRooted && !patchedApp.isFromStorage) {
+        if (patchedApp.isRooted) {
           return _rootAPI.installApp(
             patchedApp.packageName,
             patchedApp.apkFilePath,

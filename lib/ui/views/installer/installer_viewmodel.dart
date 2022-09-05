@@ -99,7 +99,7 @@ class InstallerViewModel extends BaseViewModel {
     if (_app != null && _patches.isNotEmpty) {
       String apkFilePath = _app!.apkFilePath;
       try {
-        if (_app!.isRooted && !_app!.isFromStorage) {
+        if (_app!.isRooted) {
           update(0.0, '', 'Checking if an old patched version exists');
           bool oldExists = await _patcherAPI.checkOldPatch(_app!);
           if (oldExists) {

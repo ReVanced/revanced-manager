@@ -17,7 +17,6 @@ class PatchedApplication {
   Uint8List icon;
   DateTime patchDate;
   final bool isRooted;
-  final bool isFromStorage;
   bool hasUpdates;
   List<String> appliedPatches;
   List<String> changelog;
@@ -30,7 +29,6 @@ class PatchedApplication {
     required this.icon,
     required this.patchDate,
     this.isRooted = false,
-    this.isFromStorage = false,
     this.hasUpdates = false,
     this.appliedPatches = const [],
     this.changelog = const [],

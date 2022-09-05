@@ -1,5 +1,8 @@
 {
     "okButton": "OK",
+    "cancelButton": "Cancel",
+    "enabledLabel": "Enabled",
+    "disabledLabel": "Disabled",
     "main": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -22,7 +25,7 @@
     },
     "applicationItem": {
         "patchButton": "Patch",
-        "openButton": "Open",
+        "infoButton": "Info",
         "changelogLabel": "Changelog"
     },
     "latestCommitCard": {
@@ -107,5 +110,20 @@
         "grantPermission": "Grant Root Permission",
         "grantedPermission": "Magisk permission granted: {isRooted}",
         "nonRootButton": "Nonroot"
+    },
+    "appInfoView": {
+        "widgetTitle": "App Info",
+        "openButton": "Open",
+        "uninstallButton": "Uninstall",
+        "patchButton": "Patch",
+        "alertDialogTitle": "Uninstall",
+        "alertDialogText": "Are you sure you want to uninstall this app?",
+        "errorDialogText": "App was installed with root mode enabled but currently root mode is disabled.\nPlease enable root mode first.",
+        "packageNameLabel": "Package Name",
+        "rootModeLabel": "Root Mode",
+        "patchedDateLabel": "Patched Date",
+        "patchedDateHint": "{date} at {time}",
+        "appliedPatchesLabel": "Applied Patches",
+        "appliedPatchesHint": "{quantity} applied patches"
     }
 }

@@ -37,6 +37,7 @@ dependencies:
   google_fonts: ^3.0.1
   http: ^0.13.4
   injectable: ^1.5.3
+  intl: ^0.17.0
   json_annotation: ^4.6.0
   package_info_plus: ^1.4.3+1
   path_provider: ^2.0.11
