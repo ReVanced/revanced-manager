@@ -25,11 +25,13 @@ class DynamicThemeBuilder extends StatelessWidget {
         ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
           colorScheme: lightColorScheme?.harmonized(),
+          toggleableActiveColor: lightColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
         );
         ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
           colorScheme: darkColorScheme?.harmonized(),
+          toggleableActiveColor: darkColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
         );
         return DynamicTheme(
