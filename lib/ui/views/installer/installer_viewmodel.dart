@@ -69,7 +69,9 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void update(double value, String header, String log) {
-    progress = value;
+    if (value > 0) {
+      progress = value;
+    }
     isPatching = progress == 1.0 ? false : true;
     if (progress == 0.0) {
       logs = '';

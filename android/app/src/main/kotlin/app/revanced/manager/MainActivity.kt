@@ -156,7 +156,7 @@ class MainActivity : FlutterActivity() {
                                                                                         "update",
                                                                                         mapOf(
                                                                                                 "progress" to
-                                                                                                        0.2,
+                                                                                                        -1.0,
                                                                                                 "header" to
                                                                                                         "",
                                                                                                 "log" to
@@ -173,7 +173,7 @@ class MainActivity : FlutterActivity() {
                                                                                         "update",
                                                                                         mapOf(
                                                                                                 "progress" to
-                                                                                                        0.2,
+                                                                                                        -1.0,
                                                                                                 "header" to
                                                                                                         "",
                                                                                                 "log" to
@@ -190,7 +190,7 @@ class MainActivity : FlutterActivity() {
                                                                                         "update",
                                                                                         mapOf(
                                                                                                 "progress" to
-                                                                                                        0.2,
+                                                                                                        -1.0,
                                                                                                 "header" to
                                                                                                         "",
                                                                                                 "log" to
@@ -207,7 +207,7 @@ class MainActivity : FlutterActivity() {
                                                                                         "update",
                                                                                         mapOf(
                                                                                                 "progress" to
-                                                                                                        0.2,
+                                                                                                        -1.0,
                                                                                                 "header" to
                                                                                                         "",
                                                                                                 "log" to
