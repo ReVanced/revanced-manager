@@ -4,6 +4,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
   AvailableUpdatesCard({Key? key}) : super(key: key);
@@ -14,28 +15,18 @@ class AvailableUpdatesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return apps.isEmpty
-        ? Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+        ? CustomCard(
             child: Center(
               child: Column(
                 children: <Widget>[
-                  Icon(
-                    Icons.update_disabled,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+                  const Icon(Icons.update_disabled, size: 40),
                   const SizedBox(height: 16),
                   I18nText(
                     'homeView.noUpdates',
                     child: Text(
                       '',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          color: Theme.of(context).colorScheme.secondary),
+                      style: Theme.of(context).textTheme.subtitle1!,
                     ),
                   )
                 ],

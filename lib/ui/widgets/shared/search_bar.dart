@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatefulWidget {
   final String? hintText;
-  final Color? fillColor;
   final bool showSelectIcon;
   final Function(bool)? onSelectAll;
-  final Color? backgroundColor;
-  final Color? hintTextColor;
 
   const SearchBar({
     Key? key,
     required this.hintText,
-    required this.fillColor,
-    required this.onQueryChanged,
-    this.onSelectAll,
     this.showSelectIcon = false,
-    this.backgroundColor = const Color(0xff1B222B),
-    this.hintTextColor = Colors.white,
+    this.onSelectAll,
+    required this.onQueryChanged,
   }) : super(key: key);
 
   final Function(String) onQueryChanged;
@@ -34,14 +27,8 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: widget.backgroundColor,
-        border: Border.all(
-          color: widget.backgroundColor != null
-              ? widget.backgroundColor!
-              : Colors.white,
-          width: 1,
-        ),
+        borderRadius: BorderRadius.circular(16),
+        color: Theme.of(context).colorScheme.secondaryContainer,
       ),
       child: Row(
         children: <Widget>[
@@ -49,25 +36,18 @@ class _SearchBarState extends State<SearchBar> {
             child: TextFormField(
               onChanged: widget.onQueryChanged,
               controller: _textController,
-              cursorColor: Theme.of(context).textTheme.headline5!.color,
               decoration: InputDecoration(
-                fillColor: widget.fillColor,
                 filled: true,
+                fillColor: Theme.of(context).colorScheme.secondaryContainer,
                 contentPadding: const EdgeInsets.all(12.0),
                 hintText: widget.hintText,
-                hintStyle: GoogleFonts.poppins(
-                  color: widget.hintTextColor,
-                  fontWeight: FontWeight.w400,
-                ),
                 prefixIcon: Icon(
                   Icons.search,
-                  size: 24.0,
                   color: Theme.of(context).iconTheme.color,
                 ),
                 suffixIcon: _textController.text.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.clear),
-                        iconSize: 24.0,
                         onPressed: () {
                           _textController.clear();
                           widget.onQueryChanged('');
@@ -78,7 +58,6 @@ class _SearchBarState extends State<SearchBar> {
                             icon: _toggleSelectAll
                                 ? const Icon(Icons.deselect)
                                 : const Icon(Icons.select_all),
-                            iconSize: 24.0,
                             onPressed: widget.onSelectAll != null
                                 ? () {
                                     setState(() {
@@ -93,11 +72,6 @@ class _SearchBarState extends State<SearchBar> {
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
                 ),
-              ),
-              style: GoogleFonts.poppins(
-                color: Theme.of(context).textTheme.headline5!.color,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
               ),
             ),
           ),

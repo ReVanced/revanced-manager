@@ -21,7 +21,7 @@ class OpenContainerWrapper extends StatelessWidget {
       openColor: Theme.of(context).colorScheme.primary,
       closedColor: Colors.transparent,
       closedShape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
     );
   }

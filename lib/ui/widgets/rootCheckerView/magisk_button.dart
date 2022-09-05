@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MagiskButton extends StatelessWidget {
   final Function() onPressed;
@@ -20,7 +19,7 @@ class MagiskButton extends StatelessWidget {
           onTap: onPressed,
           child: CircleAvatar(
             radius: 32,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             child: SvgPicture.asset(
               'assets/images/magisk.svg',
               color: Theme.of(context).colorScheme.surface,
@@ -32,11 +31,9 @@ class MagiskButton extends StatelessWidget {
         const SizedBox(height: 8),
         I18nText(
           'rootCheckerView.grantPermission',
-          child: Text(
+          child: const Text(
             '',
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-            ),
+            style: TextStyle(fontSize: 15),
           ),
         ),
       ],

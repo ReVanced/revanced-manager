@@ -2,8 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:revanced_manager/constants.dart';
-import 'package:revanced_manager/theme.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialMediaWidget extends StatelessWidget {
@@ -18,32 +17,25 @@ class SocialMediaWidget extends StatelessWidget {
         iconPadding: const EdgeInsets.symmetric(vertical: 16.0),
         animationDuration: const Duration(milliseconds: 400),
       ),
-      header: SizedBox(
-        width: double.infinity,
-        child: ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: I18nText(
-            'socialMediaCard.widgetTitle',
-            child: Text('', style: kSettingItemTextStyle),
-          ),
-          subtitle: I18nText(
-            'socialMediaCard.widgetSubtitle',
-            child: Text(
-              '',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
-                  ),
+      header: ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: I18nText(
+          'socialMediaCard.widgetTitle',
+          child: const Text(
+            '',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
+        subtitle: I18nText('socialMediaCard.widgetSubtitle'),
       ),
-      expanded: Card(
-        color: isDark
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).navigationBarTheme.backgroundColor!,
+      expanded: CustomCard(
         child: Column(
           children: <Widget>[
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -59,6 +51,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0).copyWith(left: 5),
                 child: FaIcon(
@@ -74,6 +67,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -89,6 +83,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -104,6 +99,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
@@ -119,6 +115,7 @@ class SocialMediaWidget extends StatelessWidget {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:revanced_manager/theme.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   final Widget title;
@@ -21,10 +20,8 @@ class CustomSliverAppBar extends StatelessWidget {
       automaticallyImplyLeading: false,
       backgroundColor: MaterialStateColor.resolveWith(
         (states) => states.contains(MaterialState.scrolledUnder)
-            ? isDark
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).navigationBarTheme.backgroundColor!
-            : Theme.of(context).scaffoldBackgroundColor,
+            ? Theme.of(context).colorScheme.surface
+            : Theme.of(context).canvasColor,
       ),
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(

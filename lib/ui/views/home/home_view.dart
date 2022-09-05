@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
-import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/available_updates_card.dart';
-import 'package:revanced_manager/ui/widgets/homeView/dashboard_raw_chip.dart';
+import 'package:revanced_manager/ui/widgets/homeView/dashboard_chip.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
@@ -29,8 +28,7 @@ class HomeView extends StatelessWidget {
                 child: Text(
                   '',
                   style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.headline5!.color,
-                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
               ),
@@ -44,13 +42,7 @@ class HomeView extends StatelessWidget {
                       'homeView.updatesSubtitle',
                       child: Text(
                         '',
-                        style: GoogleFonts.inter(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: isDark
-                              ? const Color(0xffD1E1FA)
-                              : const Color(0xff384E6E),
-                        ),
+                        style: Theme.of(context).textTheme.headline6!,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -62,12 +54,7 @@ class HomeView extends StatelessWidget {
                       'homeView.patchedSubtitle',
                       child: Text(
                         '',
-                        style: GoogleFonts.inter(
-                          fontSize: 20,
-                          color: isDark
-                              ? const Color(0xffD1E1FA)
-                              : const Color(0xff384E6E),
-                        ),
+                        style: Theme.of(context).textTheme.headline6!,
                       ),
                     ),
                     const SizedBox(height: 8),

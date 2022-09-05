@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
   final String name;
@@ -24,12 +23,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.primary,
-        ),
+      child: CustomCard(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -52,16 +46,13 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                     widget.name,
                     maxLines: 2,
                     overflow: TextOverflow.visible,
-                    style: GoogleFonts.inter(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    widget.pkgName,
-                    style: kRobotoTextStyle,
-                  ),
+                  Text(widget.pkgName),
                 ],
               ),
             ),

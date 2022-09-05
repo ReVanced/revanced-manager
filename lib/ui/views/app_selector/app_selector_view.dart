@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/theme.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
@@ -30,11 +29,6 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             model.selectAppFromStorage(context);
             Navigator.of(context).pop();
           },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          foregroundColor: Theme.of(context).colorScheme.surface,
         ),
         body: SafeArea(
           child: Padding(
@@ -50,15 +44,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                         children: <Widget>[
                           SearchBar(
                             showSelectIcon: false,
-                            fillColor: isDark
-                                ? const Color(0xff1B222B)
-                                : Colors.grey[200],
                             hintText: FlutterI18n.translate(
                               context,
                               'appSelectorView.searchBarHint',
                             ),
-                            hintTextColor:
-                                Theme.of(context).colorScheme.tertiary,
                             onQueryChanged: (searchQuery) {
                               setState(() {
                                 _query = searchQuery;

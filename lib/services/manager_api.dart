@@ -49,8 +49,28 @@ class ManagerAPI {
     return packageInfo.version;
   }
 
+  bool getUseDynamicTheme() {
+    return _prefs.getBool('useDynamicTheme') ?? false;
+  }
+
+  Future<void> setUseDynamicTheme(bool value) async {
+    await _prefs.setBool('useDynamicTheme', value);
+  }
+
+  bool getUseDarkTheme() {
+    return _prefs.getBool('useDarkTheme') ?? false;
+  }
+
+  Future<void> setUseDarkTheme(bool value) async {
+    await _prefs.setBool('useDarkTheme', value);
+  }
+
   bool? isRooted() {
     return _prefs.getBool('isRooted');
+  }
+
+  Future<void> setIsRooted(bool value) async {
+    await _prefs.setBool('isRooted', value);
   }
 
   List<PatchedApplication> getPatchedApps() {

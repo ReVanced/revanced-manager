@@ -12,8 +12,6 @@ class CustomSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color? activeColor = Theme.of(context).colorScheme.tertiary;
-    Color? inactiveColor = Theme.of(context).colorScheme.secondary;
     return GestureDetector(
       onTap: () => onChanged(!value),
       child: SizedBox(
@@ -30,7 +28,9 @@ class CustomSwitch extends StatelessWidget {
                 borderRadius: const BorderRadius.all(
                   Radius.circular(25.0),
                 ),
-                color: !value ? activeColor : inactiveColor,
+                color: value
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
               ),
             ),
             AnimatedAlign(

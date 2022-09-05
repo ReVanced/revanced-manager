@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:revanced_manager/theme.dart';
 
 class CustomMaterialButton extends StatelessWidget {
   final Widget label;
@@ -21,43 +20,17 @@ class CustomMaterialButton extends StatelessWidget {
       style: ButtonStyle(
         padding: MaterialStateProperty.all(
           isExpanded
-              ? const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                )
-              : const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
+              ? const EdgeInsets.symmetric(horizontal: 24, vertical: 12)
+              : const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-            side: BorderSide(
-              width: 1,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          ),
-        ),
-        side: MaterialStateProperty.all(
-          BorderSide(
-            color: isFilled
-                ? Colors.transparent
-                : Theme.of(context).iconTheme.color!.withOpacity(0.4),
-            width: 1,
-          ),
-        ),
+        shape: MaterialStateProperty.all(const StadiumBorder()),
         backgroundColor: MaterialStateProperty.all(
-          isFilled
-              ? Theme.of(context).colorScheme.secondary
-              : isDark
-                  ? Theme.of(context).colorScheme.background
-                  : Colors.white,
+          isFilled ? Theme.of(context).colorScheme.primary : Colors.transparent,
         ),
         foregroundColor: MaterialStateProperty.all(
           isFilled
-              ? Theme.of(context).colorScheme.background
-              : Theme.of(context).colorScheme.secondary,
+              ? Theme.of(context).colorScheme.surface
+              : Theme.of(context).colorScheme.primary,
         ),
       ),
       onPressed: onPressed,

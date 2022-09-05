@@ -1,10 +1,8 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/constants.dart';
-import 'package:revanced_manager/theme.dart';
-import 'package:revanced_manager/ui/widgets/shared/patch_text_button.dart';
+import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:expandable/expandable.dart';
 import 'package:timeago/timeago.dart';
 
@@ -33,56 +31,35 @@ class ApplicationItem extends StatelessWidget {
         hasIcon: false,
         animationDuration: Duration(milliseconds: 450),
       ),
-      header: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+      header: CustomCard(
         child: Row(
           children: <Widget>[
             SizedBox(
               width: 60,
-              child: Image.memory(
-                icon,
-                height: 39,
-                width: 39,
-              ),
+              child: Image.memory(icon, height: 39, width: 39),
             ),
             const SizedBox(width: 4),
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 250,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    name,
-                    style: GoogleFonts.roboto(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w600,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
-                  Text(
-                    format(patchDate, locale: 'en_short'),
-                    style: kRobotoTextStyle.copyWith(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Text(format(patchDate, locale: 'en_short')),
+              ],
             ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: PatchTextButton(
-                text: isUpdatableApp
-                    ? 'applicationItem.patchButton'
-                    : 'applicationItem.openButton',
+              child: CustomMaterialButton(
+                label: isUpdatableApp
+                    ? I18nText('applicationItem.patchButton')
+                    : I18nText('applicationItem.openButton'),
                 onPressed: onPressed,
-                borderColor: isDark
-                    ? const Color(0xff4D5054)
-                    : const Color.fromRGBO(119, 146, 168, 1),
               ),
             ),
           ],
@@ -96,16 +73,13 @@ class ApplicationItem extends StatelessWidget {
           children: <Widget>[
             I18nText(
               'applicationItem.changelogLabel',
-              child: Text(
+              child: const Text(
                 '',
-                style: kRobotoTextStyle.copyWith(fontWeight: FontWeight.w700),
+                style: TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
             const SizedBox(height: 4),
-            Text(
-              '\u2022 ${changelog.join('\n\u2022 ')}',
-              style: kRobotoTextStyle,
-            ),
+            Text('\u2022 ${changelog.join('\n\u2022 ')}'),
           ],
         ),
       ),
