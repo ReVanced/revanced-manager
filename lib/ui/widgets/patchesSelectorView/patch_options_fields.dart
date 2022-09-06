@@ -61,7 +61,7 @@ class OptionsFilePicker extends StatelessWidget {
             child: Text(
               'Select File',
               style: TextStyle(
-                color: Theme.of(context).textTheme.headline6?.color,
+                color: Theme.of(context).textTheme.bodyText1?.color,
               ),
             ),
           ),

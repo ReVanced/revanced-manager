@@ -27,7 +27,7 @@ class DynamicThemeBuilder extends StatelessWidget {
           canvasColor: lightColorScheme?.background,
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: lightColorScheme?.background,
-            indicatorColor: lightColorScheme?.primary,
+            indicatorColor: lightColorScheme?.primary.withAlpha(150),
             labelTextStyle: MaterialStateProperty.all(
               const TextStyle(
                 fontWeight: FontWeight.w500,
@@ -44,7 +44,7 @@ class DynamicThemeBuilder extends StatelessWidget {
           canvasColor: darkColorScheme?.background,
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: darkColorScheme?.background,
-            indicatorColor: darkColorScheme?.primary,
+            indicatorColor: darkColorScheme?.primary.withOpacity(0.4),
             labelTextStyle: MaterialStateProperty.all(
               const TextStyle(
                 fontWeight: FontWeight.w500,
