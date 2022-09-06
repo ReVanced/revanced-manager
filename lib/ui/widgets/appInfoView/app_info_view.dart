@@ -176,7 +176,7 @@ class AppInfoView extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: I18nText(
-                        'appInfoView.rootInstallLabel',
+                        'appInfoView.installTypeLabel',
                         child: const Text(
                           '',
                           style: TextStyle(
@@ -186,8 +186,8 @@ class AppInfoView extends StatelessWidget {
                         ),
                       ),
                       subtitle: app.isRooted
-                          ? I18nText('yesLabel')
-                          : I18nText('noLabel'),
+                          ? I18nText('appInfoView.rootTypeLabel')
+                          : I18nText('appInfoView.nonRootTypeLabel'),
                     ),
                     const SizedBox(height: 4),
                     ListTile(
