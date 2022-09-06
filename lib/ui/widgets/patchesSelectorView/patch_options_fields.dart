@@ -52,13 +52,18 @@ class OptionsFilePicker extends StatelessWidget {
           ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
-                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.primary,
               ),
             ),
             onPressed: () {
               // pick files
             },
-            child: const Text('Select File'),
+            child: Text(
+              'Select File',
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyText1?.color,
+              ),
+            ),
           ),
         ],
       ),

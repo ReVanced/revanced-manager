@@ -7,6 +7,13 @@ var lightCustomTheme = ThemeData(
     seedColor: Colors.blue,
     brightness: Brightness.light,
   ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelTextStyle: MaterialStateProperty.all(
+      const TextStyle(
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+  ),
   textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
 );
 
@@ -17,6 +24,13 @@ var darkCustomTheme = ThemeData(
     brightness: Brightness.dark,
     primary: const Color(0xff7792BA),
     surface: const Color(0xff0A0D11),
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelTextStyle: MaterialStateProperty.all(
+      const TextStyle(
+        fontWeight: FontWeight.w500,
+      ),
+    ),
   ),
   canvasColor: const Color(0xff0A0D11),
   scaffoldBackgroundColor: const Color(0xff0A0D11),
