@@ -24,6 +24,17 @@ class DynamicThemeBuilder extends StatelessWidget {
       builder: (lightColorScheme, darkColorScheme) {
         ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
+          canvasColor: lightColorScheme?.background,
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: lightColorScheme?.background,
+            indicatorColor: lightColorScheme?.primary,
+            labelTextStyle: MaterialStateProperty.all(
+              const TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          scaffoldBackgroundColor: lightColorScheme?.background,
           colorScheme: lightColorScheme?.harmonized(),
           toggleableActiveColor: lightColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
@@ -35,7 +46,7 @@ class DynamicThemeBuilder extends StatelessWidget {
             backgroundColor: darkColorScheme?.background,
             indicatorColor: darkColorScheme?.primary,
             labelTextStyle: MaterialStateProperty.all(
-              TextStyle(
+              const TextStyle(
                 fontWeight: FontWeight.w500,
               ),
             ),
