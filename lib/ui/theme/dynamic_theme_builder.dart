@@ -50,6 +50,11 @@ class DynamicThemeBuilder extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            iconTheme: MaterialStateProperty.all(
+              const IconThemeData(
+                color: Colors.white,
+              ),
+            ),
           ),
           scaffoldBackgroundColor: darkColorScheme?.background,
           colorScheme: darkColorScheme?.harmonized(),
