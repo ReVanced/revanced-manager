@@ -19,13 +19,24 @@ class DashboardChip extends StatelessWidget {
       label: label,
       selected: isSelected,
       labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
-            color: Theme.of(context).colorScheme.primary,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
           ),
       backgroundColor: Colors.transparent,
       selectedColor: Theme.of(context).colorScheme.secondaryContainer,
       padding: const EdgeInsets.all(10),
       onSelected: onSelected,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: isSelected
+            ? BorderSide.none
+            : BorderSide(
+                width: 0.2,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+      ),
     );
   }
 }
