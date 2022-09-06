@@ -34,6 +34,11 @@ class DynamicThemeBuilder extends StatelessWidget {
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: darkColorScheme?.background,
             indicatorColor: darkColorScheme?.primary,
+            labelTextStyle: MaterialStateProperty.all(
+              TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           scaffoldBackgroundColor: darkColorScheme?.background,
           colorScheme: darkColorScheme?.harmonized(),
