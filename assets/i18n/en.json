@@ -3,6 +3,8 @@
     "cancelButton": "Cancel",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
+    "yesLabel": "Yes",
+    "noLabel": "No",
     "main": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -79,10 +81,13 @@
     "installerView": {
         "widgetTitle": "Installer",
         "installButton": "Install",
+        "installRootButton": "Install as Root",
         "openButton": "Open",
         "shareButton": "Share file",
         "notificationTitle": "ReVanced Manager is patching",
-        "notificationText": "Tap to return to the installer"
+        "notificationText": "Tap to return to the installer",
+        "shareApkMenuOption": "Share APK",
+        "shareLogMenuOption": "Share log"
     },
     "settingsView": {
         "widgetTitle": "Settings",
@@ -97,19 +102,10 @@
         "languageLabel": "Language",
         "englishOption": "English",
         "frenchOption": "French",
-        "rootModeLabel": "Root Mode",
-        "rootModeHint": "Do you want to patch applications as rooted?",
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
         "aboutLabel": "About",
         "versionLabel": "Version"
-    },
-    "rootCheckerView": {
-        "widgetTitle": "Is your device rooted?",
-        "widgetDescription": "Don't know what this means or prefer to use non-root version? Just click on the button below!",
-        "grantPermission": "Grant Root Permission",
-        "grantedPermission": "Magisk permission granted: {isRooted}",
-        "nonRootButton": "Nonroot"
     },
     "appInfoView": {
         "widgetTitle": "App Info",
@@ -120,7 +116,9 @@
         "alertDialogText": "Are you sure you want to uninstall this app?",
         "errorDialogText": "App was installed with root mode enabled but currently root mode is disabled.\nPlease enable root mode first.",
         "packageNameLabel": "Package Name",
-        "rootModeLabel": "Root Mode",
+        "installTypeLabel": "Installation Type",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
         "patchedDateLabel": "Patched Date",
         "patchedDateHint": "{date} at {time}",
         "appliedPatchesLabel": "Applied Patches",

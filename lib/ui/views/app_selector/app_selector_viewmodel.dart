@@ -6,23 +6,19 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
-import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
-  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final List<ApplicationWithIcon> apps = [];
   bool noApps = false;
-  bool _isRooted = false;
 
   Future<void> initialize() async {
     apps.addAll(await _patcherAPI.getFilteredInstalledApps());
     apps.sort((a, b) => a.appName.compareTo(b.appName));
     noApps = apps.isEmpty;
-    _isRooted = _managerAPI.isRooted() ?? false;
     notifyListeners();
   }
 
@@ -34,7 +30,7 @@ class AppSelectorViewModel extends BaseViewModel {
       apkFilePath: application.apkFilePath,
       icon: application.icon,
       patchDate: DateTime.now(),
-      isRooted: _isRooted,
+      isRooted: false,
     );
     locator<PatcherViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().notifyListeners();

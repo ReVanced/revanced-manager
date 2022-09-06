@@ -113,21 +113,6 @@ class SettingsView extends StatelessWidget {
                     SettingsSection(
                       title: 'settingsView.patcherSectionTitle',
                       children: <Widget>[
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: I18nText(
-                            'settingsView.rootModeLabel',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          subtitle: I18nText('settingsView.rootModeHint'),
-                          onTap: () => model.navigateToRootChecker(),
-                        ),
                         SourcesWidget(
                           title: 'settingsView.sourcesLabel',
                           organizationController: organizationController,

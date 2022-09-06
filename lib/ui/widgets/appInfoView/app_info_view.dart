@@ -1,4 +1,3 @@
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +18,6 @@ class AppInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AppInfoViewModel>.reactive(
-      onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => AppInfoViewModel(),
       builder: (context, model, child) => Scaffold(
         body: CustomScrollView(
@@ -68,9 +66,7 @@ class AppInfoView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
-                              onTap: () => DeviceApps.openApp(
-                                app.packageName,
-                              ),
+                              onTap: () => model.openApp(app),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -180,7 +176,7 @@ class AppInfoView extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: I18nText(
-                        'appInfoView.rootModeLabel',
+                        'appInfoView.installTypeLabel',
                         child: const Text(
                           '',
                           style: TextStyle(
@@ -189,9 +185,9 @@ class AppInfoView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      subtitle: model.isRooted
-                          ? I18nText('enabledLabel')
-                          : I18nText('disabledLabel'),
+                      subtitle: app.isRooted
+                          ? I18nText('appInfoView.rootTypeLabel')
+                          : I18nText('appInfoView.nonRootTypeLabel'),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

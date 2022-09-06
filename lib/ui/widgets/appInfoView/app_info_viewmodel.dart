@@ -17,11 +17,6 @@ class AppInfoViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
-  bool isRooted = false;
-
-  void initialize() {
-    isRooted = _managerAPI.isRooted() ?? false;
-  }
 
   void uninstallApp(PatchedApplication app) {
     if (app.isRooted) {
@@ -45,7 +40,8 @@ class AppInfoViewModel extends BaseViewModel {
     BuildContext context,
     PatchedApplication app,
   ) async {
-    if (app.isRooted && !isRooted) {
+    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    if (app.isRooted && !hasRootPermissions) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -128,5 +124,9 @@ class AppInfoViewModel extends BaseViewModel {
             .replaceFirst('Microg', 'MicroG'))
         .toList();
     return '\u2022 ${names.join('\n\u2022 ')}';
+  }
+
+  void openApp(PatchedApplication app) {
+    DeviceApps.openApp(app.packageName);
   }
 }

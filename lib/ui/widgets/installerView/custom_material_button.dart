@@ -23,7 +23,16 @@ class CustomMaterialButton extends StatelessWidget {
               ? const EdgeInsets.symmetric(horizontal: 24, vertical: 12)
               : const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         ),
-        shape: MaterialStateProperty.all(const StadiumBorder()),
+        shape: MaterialStateProperty.all(
+          StadiumBorder(
+            side: isFilled
+                ? BorderSide.none
+                : BorderSide(
+                    width: 1,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+          ),
+        ),
         backgroundColor: MaterialStateProperty.all(
           isFilled ? Theme.of(context).colorScheme.primary : Colors.transparent,
         ),

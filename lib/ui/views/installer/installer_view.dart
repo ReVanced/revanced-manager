@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -27,6 +28,34 @@ class InstallerView extends StatelessWidget {
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
+                actions: <Widget>[
+                  Visibility(
+                    visible: !model.isPatching,
+                    child: CustomPopupMenu(
+                      onSelected: (value) => model.onMenuSelection(value),
+                      children: {
+                        0: I18nText(
+                          'installerView.shareApkMenuOption',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        1: I18nText(
+                          'installerView.shareLogMenuOption',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      },
+                    ),
+                  ),
+                ],
                 bottom: PreferredSize(
                   preferredSize: const Size(double.infinity, 1.0),
                   child: LinearProgressIndicator(
@@ -60,26 +89,42 @@ class InstallerView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              CustomMaterialButton(
-                                label: I18nText('installerView.shareButton'),
-                                isFilled: false,
-                                onPressed: () => model.shareResult(),
-                              ),
-                              const SizedBox(width: 16),
-                              CustomMaterialButton(
-                                label: model.isInstalled
-                                    ? I18nText('installerView.openButton')
-                                    : I18nText('installerView.installButton'),
-                                isExpanded: true,
-                                onPressed: () {
-                                  if (model.isInstalled) {
+                              Visibility(
+                                visible: model.isInstalled,
+                                child: CustomMaterialButton(
+                                  label: I18nText('installerView.openButton'),
+                                  isExpanded: true,
+                                  onPressed: () {
                                     model.openApp();
                                     model.cleanPatcher();
                                     Navigator.of(context).pop();
-                                  } else {
-                                    model.installResult();
-                                  }
-                                },
+                                  },
+                                ),
+                              ),
+                              Visibility(
+                                visible: !model.isInstalled,
+                                child: CustomMaterialButton(
+                                  isFilled: false,
+                                  label:
+                                      I18nText('installerView.installButton'),
+                                  isExpanded: true,
+                                  onPressed: () => model.installResult(false),
+                                ),
+                              ),
+                              Visibility(
+                                visible: !model.isInstalled,
+                                child: const SizedBox(
+                                  width: 16,
+                                ),
+                              ),
+                              Visibility(
+                                visible: !model.isInstalled,
+                                child: CustomMaterialButton(
+                                  label: I18nText(
+                                      'installerView.installRootButton'),
+                                  isExpanded: true,
+                                  onPressed: () => model.installResult(true),
+                                ),
                               ),
                             ],
                           ),

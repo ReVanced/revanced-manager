@@ -147,11 +147,16 @@ class PatcherAPI {
     if (_outFile != null) {
       try {
         if (patchedApp.isRooted) {
-          return _rootAPI.installApp(
-            patchedApp.packageName,
-            patchedApp.apkFilePath,
-            _outFile!.path,
-          );
+          bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+          if (hasRootPermissions) {
+            return _rootAPI.installApp(
+              patchedApp.packageName,
+              patchedApp.apkFilePath,
+              _outFile!.path,
+            );
+          } else {
+            return false;
+          }
         } else {
           await AppInstaller.installApk(_outFile!.path);
           return await DeviceApps.isAppInstalled(patchedApp.packageName);
@@ -163,14 +168,15 @@ class PatcherAPI {
     return false;
   }
 
-  bool sharePatchedFile(String appName, String version) {
+  void sharePatchedFile(String appName, String version) {
     if (_outFile != null) {
       String prefix = appName.toLowerCase().replaceAll(' ', '-');
-      File share = _outFile!.renameSync('$prefix-revanced_v$version.apk');
+      String newName = '$prefix-revanced_v$version.apk';
+      int lastSeparator = _outFile!.path.lastIndexOf('/');
+      File share = _outFile!.renameSync(
+        _outFile!.path.substring(0, lastSeparator + 1) + newName,
+      );
       ShareExtend.share(share.path, 'file');
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -185,5 +191,9 @@ class PatcherAPI {
     if (patchedApp.isRooted) {
       await _rootAPI.deleteApp(patchedApp.packageName, patchedApp.apkFilePath);
     }
+  }
+
+  void shareLog(String logs) {
+    ShareExtend.share(logs, 'text');
   }
 }
