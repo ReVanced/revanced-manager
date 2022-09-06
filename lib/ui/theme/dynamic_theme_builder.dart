@@ -30,6 +30,12 @@ class DynamicThemeBuilder extends StatelessWidget {
         );
         ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
+          canvasColor: darkColorScheme?.background,
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: darkColorScheme?.background,
+            indicatorColor: darkColorScheme?.primary,
+          ),
+          scaffoldBackgroundColor: darkColorScheme?.background,
           colorScheme: darkColorScheme?.harmonized(),
           toggleableActiveColor: darkColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
@@ -42,7 +48,7 @@ class DynamicThemeBuilder extends StatelessWidget {
               2: lightDynamicTheme,
               3: darkDynamicTheme,
             },
-            fallbackTheme: lightCustomTheme,
+            fallbackTheme: darkCustomTheme,
           ),
           builder: (context, theme) => MaterialApp(
             debugShowCheckedModeBanner: false,
