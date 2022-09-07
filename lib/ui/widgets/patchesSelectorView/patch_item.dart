@@ -144,10 +144,10 @@ class _PatchItemState extends State<PatchItem> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('patchItem.alertDialogTitle'),
+        title: I18nText('patchItem.unsupportedDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
-          'patchItem.alertDialogText',
+          'patchItem.unsupportedDialogText',
           translationParams: {
             'packageVersion': widget.packageVersion,
             'supportedVersions':

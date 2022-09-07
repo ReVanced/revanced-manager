@@ -45,9 +45,9 @@ class AppInfoViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('appInfoView.alertDialogTitle'),
+          title: I18nText('appInfoView.rootDialogTitle'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('appInfoView.errorDialogText'),
+          content: I18nText('appInfoView.rootDialogText'),
           actions: [
             CustomMaterialButton(
               label: I18nText('okButton'),
@@ -60,9 +60,9 @@ class AppInfoViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('appInfoView.alertDialogTitle'),
+          title: I18nText('appInfoView.uninstallDialogTitle'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('appInfoView.alertDialogText'),
+          content: I18nText('appInfoView.uninstallDialogText'),
           actions: [
             CustomMaterialButton(
               isFilled: false,
