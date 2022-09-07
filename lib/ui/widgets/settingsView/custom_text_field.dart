@@ -30,6 +30,14 @@ class CustomTextField extends StatelessWidget {
           filled: true,
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           hintText: hint,
+          hintStyle: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          floatingLabelStyle: MaterialStateTextStyle.resolveWith(
+            (states) => states.contains(MaterialState.focused)
+                ? TextStyle(color: Theme.of(context).colorScheme.primary)
+                : TextStyle(color: Theme.of(context).colorScheme.secondary),
+          ),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 8.0,
             horizontal: 16.0,
