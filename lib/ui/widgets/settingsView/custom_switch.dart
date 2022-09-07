@@ -43,7 +43,9 @@ class CustomSwitch extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 3),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: value
+                      ? Theme.of(context).colorScheme.primaryContainer
+                      : Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12.withOpacity(0.1),
