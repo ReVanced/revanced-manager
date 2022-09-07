@@ -18,6 +18,7 @@ class PatcherAPI {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
   late Directory _tmpDir;
+  late File _keyStoreFile;
   List<Patch> _patches = [];
   File? _outFile;
 
@@ -25,6 +26,7 @@ class PatcherAPI {
     await _loadPatches();
     Directory appCache = await getTemporaryDirectory();
     _tmpDir = Directory('${appCache.path}/patcher');
+    _keyStoreFile = File('${appCache.path}/revanced-manager.keystore');
     cleanPatcher();
   }
 
@@ -138,6 +140,7 @@ class PatcherAPI {
           'cacheDirPath': cacheDir.path,
           'mergeIntegrations': mergeIntegrations,
           'resourcePatching': resourcePatching,
+          'keyStoreFilePath': _keyStoreFile.path,
         },
       );
     }
