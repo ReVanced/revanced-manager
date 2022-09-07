@@ -35,7 +35,7 @@ class NavigationView extends StatelessWidget {
           destinations: <Widget>[
             NavigationDestination(
               icon: const Icon(
-                Icons.dashboard,
+                Icons.dashboard_outlined,
               ),
               label: FlutterI18n.translate(
                 context,
@@ -43,14 +43,14 @@ class NavigationView extends StatelessWidget {
               ),
             ),
             NavigationDestination(
-              icon: const Icon(Icons.build),
+              icon: const Icon(Icons.build_outlined),
               label: FlutterI18n.translate(
                 context,
                 'main.patcherTab',
               ),
             ),
             NavigationDestination(
-              icon: const Icon(Icons.settings),
+              icon: const Icon(Icons.settings_outlined),
               label: FlutterI18n.translate(
                 context,
                 'main.settingsTab',
