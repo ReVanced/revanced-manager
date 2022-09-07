@@ -88,7 +88,7 @@ class _PatchItemState extends State<PatchItem> {
                       checkColor:
                           Theme.of(context).colorScheme.secondaryContainer,
                       side: BorderSide(
-                        width: 1.5,
+                        width: 2.0,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       onChanged: (newValue) {

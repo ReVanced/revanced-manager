@@ -40,11 +40,21 @@ class SocialMediaWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
                   FontAwesomeIcons.github,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              title: const Text('GitHub'),
-              subtitle: const Text('github.com/revanced'),
+              title: Text(
+                'GitHub',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              subtitle: Text(
+                'github.com/revanced',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               onTap: () => launchUrl(
                 Uri.parse('https://github.com/revanced'),
                 mode: LaunchMode.externalApplication,
@@ -56,11 +66,21 @@ class SocialMediaWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0).copyWith(left: 5),
                 child: FaIcon(
                   FontAwesomeIcons.discord,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              title: const Text('Discord'),
-              subtitle: const Text('discord.gg/revanced'),
+              title: Text(
+                'Discord',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              subtitle: Text(
+                'discord.gg/revanced',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               onTap: () => launchUrl(
                 Uri.parse('https://discord.gg/rF2YcEjcrT'),
                 mode: LaunchMode.externalApplication,
@@ -72,11 +92,21 @@ class SocialMediaWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
                   FontAwesomeIcons.telegram,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              title: const Text('Telegram'),
-              subtitle: const Text('t.me/app_revanced'),
+              title: Text(
+                'Telegram',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              subtitle: Text(
+                't.me/app_revanced',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               onTap: () => launchUrl(
                 Uri.parse('https://t.me/app_revanced'),
                 mode: LaunchMode.externalApplication,
@@ -88,11 +118,21 @@ class SocialMediaWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
                   FontAwesomeIcons.reddit,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              title: const Text('Reddit'),
-              subtitle: const Text('r/revancedapp'),
+              title: Text(
+                'Reddit',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              subtitle: Text(
+                'r/revancedapp',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               onTap: () => launchUrl(
                 Uri.parse('https://reddit.com/r/revancedapp'),
                 mode: LaunchMode.externalApplication,
@@ -104,11 +144,21 @@ class SocialMediaWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
                   FontAwesomeIcons.twitter,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              title: const Text('Twitter'),
-              subtitle: const Text('@revancedapp'),
+              title: Text(
+                'Twitter',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              subtitle: Text(
+                '@revancedapp',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               onTap: () => launchUrl(
                 Uri.parse('https://twitter.com/revancedapp'),
                 mode: LaunchMode.externalApplication,
@@ -120,11 +170,21 @@ class SocialMediaWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: FaIcon(
                   FontAwesomeIcons.youtube,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              title: const Text('YouTube'),
-              subtitle: const Text('youtube.com/revanced'),
+              title: Text(
+                'YouTube',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              subtitle: Text(
+                'youtube.com/revanced',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               onTap: () => launchUrl(
                 Uri.parse('https://youtube.com/revanced'),
                 mode: LaunchMode.externalApplication,

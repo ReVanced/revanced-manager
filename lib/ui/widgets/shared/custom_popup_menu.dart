@@ -15,6 +15,10 @@ class CustomPopupMenu extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(useMaterial3: false),
       child: PopupMenuButton<int>(
+        icon: Icon(
+          Icons.more_vert,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
         onSelected: onSelected,
         itemBuilder: (context) => children.entries
             .map(

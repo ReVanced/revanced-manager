@@ -26,10 +26,7 @@ class CustomSliverAppBar extends StatelessWidget {
             : Theme.of(context).canvasColor,
       ),
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.symmetric(
-          vertical: 23.0,
-          horizontal: 20.0,
-        ),
+        titlePadding: const EdgeInsets.only(bottom: 16.0, left: 20.0),
         title: title,
       ),
       actions: actions,
