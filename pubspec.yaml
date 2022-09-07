@@ -12,7 +12,6 @@ environment:
 dependencies:
   animations: ^2.0.4
   app_installer: ^1.1.0
-  cupertino_icons: ^1.0.2
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
