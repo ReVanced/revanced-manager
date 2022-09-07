@@ -34,16 +34,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  I18nText(
-                    'latestCommitCard.patcherLabel',
-                    child: Text(
-                      '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ),
+                  I18nText('latestCommitCard.patcherLabel'),
                   FutureBuilder<String>(
                     future: _githubAPI.latestCommitTime(
                       _managerAPI.getPatcherRepo(),
@@ -59,9 +50,6 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                               context,
                               'latestCommitCard.loadingLabel',
                             ),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
                     ),
                   ),
                 ],
@@ -69,41 +57,18 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               const SizedBox(height: 8),
               Row(
                 children: <Widget>[
-                  I18nText(
-                    'latestCommitCard.managerLabel',
-                    child: Text(
-                      '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ),
+                  I18nText('latestCommitCard.managerLabel'),
                   FutureBuilder<String>(
                     future: _githubAPI.latestCommitTime(
                       _managerAPI.getManagerRepo(),
                     ),
-                    builder: (context, snapshot) => snapshot.hasData &&
-                            snapshot.data!.isNotEmpty
-                        ? I18nText(
-                            'latestCommitCard.timeagoLabel',
-                            translationParams: {'time': snapshot.data!},
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          )
-                        : I18nText(
-                            'latestCommitCard.loadingLabel',
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
+                    builder: (context, snapshot) =>
+                        snapshot.hasData && snapshot.data!.isNotEmpty
+                            ? I18nText(
+                                'latestCommitCard.timeagoLabel',
+                                translationParams: {'time': snapshot.data!},
+                              )
+                            : I18nText('latestCommitCard.loadingLabel'),
                   ),
                 ],
               ),
