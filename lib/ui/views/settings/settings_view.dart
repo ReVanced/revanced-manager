@@ -7,17 +7,11 @@ import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/social_media_widget.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/sources_widget.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsView extends StatelessWidget {
-  final TextEditingController organizationController = TextEditingController();
-  final TextEditingController patchesSourceController = TextEditingController();
-  final TextEditingController integrationsSourceController =
-      TextEditingController();
-
-  SettingsView({Key? key}) : super(key: key);
+  const SettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,38 +81,18 @@ class SettingsView extends StatelessWidget {
                       ],
                     ),
                     SettingsTileDialog(
-                        title: 'settingsView.languageLabel',
-                        subtitle: 'English',
-                        children: <Widget>[
-                          RadioListTile<String>(
-                            title: I18nText('settingsView.englishOption'),
-                            value: 'en',
-                            groupValue: 'en',
-                            onChanged: (value) {
-                              model.updateLanguage(context, value);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          RadioListTile<String>(
-                            title: I18nText('settingsView.frenchOption'),
-                            value: 'fr',
-                            groupValue: 'en',
-                            onChanged: (value) {
-                              model.updateLanguage(context, value);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ]),
+                      title: 'settingsView.languageLabel',
+                      subtitle: 'English',
+                      onTap: () => model.showLanguagesDialog(context),
+                    ),
                     const Divider(thickness: 1.0),
                     SettingsSection(
                       title: 'settingsView.patcherSectionTitle',
                       children: <Widget>[
-                        SourcesWidget(
+                        SettingsTileDialog(
                           title: 'settingsView.sourcesLabel',
-                          organizationController: organizationController,
-                          patchesSourceController: patchesSourceController,
-                          integrationsSourceController:
-                              integrationsSourceController,
+                          subtitle: 'settingsView.sourcesLabelHint',
+                          onTap: () => model.showSourcesDialog(context),
                         ),
                       ],
                     ),

@@ -1,36 +1,33 @@
 import 'package:github/github.dart';
-import 'package:revanced_manager/constants.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:stacked/stacked.dart';
 
 class ContributorsViewModel extends BaseViewModel {
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final GithubAPI _githubAPI = GithubAPI();
+  List<Contributor> patcherContributors = [];
   List<Contributor> patchesContributors = [];
   List<Contributor> integrationsContributors = [];
-  List<Contributor> patcherContributors = [];
   List<Contributor> cliContributors = [];
   List<Contributor> managerContributors = [];
 
   Future<void> getContributors() async {
+    patcherContributors = await _githubAPI.getContributors(
+      _managerAPI.getPatcherRepo(),
+    );
     patchesContributors = await _githubAPI.getContributors(
-      ghOrg,
-      patchesRepo,
+      _managerAPI.getPatchesRepo(),
     );
     integrationsContributors = await _githubAPI.getContributors(
-      ghOrg,
-      integrationsRepo,
-    );
-    patcherContributors = await _githubAPI.getContributors(
-      ghOrg,
-      patcherRepo,
+      _managerAPI.getIntegrationsRepo(),
     );
     cliContributors = await _githubAPI.getContributors(
-      ghOrg,
-      cliRepo,
+      _managerAPI.getCliRepo(),
     );
     managerContributors = await _githubAPI.getContributors(
-      ghOrg,
-      managerRepo,
+      _managerAPI.getManagerRepo(),
     );
     notifyListeners();
   }

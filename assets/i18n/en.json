@@ -57,13 +57,6 @@
         "widgetTitle": "Social Media",
         "widgetSubtitle": "We are online!"
     },
-    "sourcesCard": { 
-        "widgetTitle": "Sources",
-        "widgetSubtitle": "Add your custom sources",
-        "organizationLabel": "Organization",
-        "patchesSourceLabel" : "Patches Source",
-        "integrationsSourceLabel": "Integrations Source"
-    },
     "appSelectorView": {
         "searchBarHint": "Search applications",
         "storageButton": "Storage",
@@ -102,6 +95,12 @@
         "languageLabel": "Language",
         "englishOption": "English",
         "frenchOption": "French",
+        "sourcesLabel": "Sources",
+        "sourcesLabelHint": "Add your custom sources",
+        "orgPatchesLabel" : "Patches Org",
+        "sourcesPatchesLabel" : "Patches Source",
+        "orgIntegrationsLabel": "Integrations Org",
+        "sourcesIntegrationsLabel": "Integrations Source",
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
         "aboutLabel": "About",

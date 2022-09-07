@@ -14,7 +14,7 @@ class NavigationViewModel extends IndexTrackingViewModel {
       case 1:
         return const PatcherView();
       case 2:
-        return SettingsView();
+        return const SettingsView();
       default:
         return const HomeView();
     }

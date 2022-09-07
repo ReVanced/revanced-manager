@@ -4,13 +4,13 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 class SettingsTileDialog extends StatelessWidget {
   final String title;
   final String subtitle;
-  final List<Widget> children;
+  final Function()? onTap;
 
   const SettingsTileDialog({
     Key? key,
     required this.title,
     required this.subtitle,
-    required this.children,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -28,14 +28,7 @@ class SettingsTileDialog extends StatelessWidget {
         ),
       ),
       subtitle: I18nText(subtitle),
-      onTap: () => showDialog(
-        context: context,
-        builder: (context) => SimpleDialog(
-          title: I18nText(title),
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          children: children,
-        ),
-      ),
+      onTap: onTap,
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:device_apps/device_apps.dart';
 import 'package:github/github.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:revanced_manager/constants.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
@@ -14,34 +13,78 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ManagerAPI {
   final GithubAPI _githubAPI = GithubAPI();
   final RootAPI _rootAPI = RootAPI();
+  final String patcherRepo = 'revanced-patcher';
+  final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  String defaultPatcherRepo = 'revanced/revanced-patcher';
+  String defaultPatchesRepo = 'revanced/revanced-patches';
+  String defaultIntegrationsRepo = 'revanced/revanced-integrations';
+  String defaultCliRepo = 'revanced/revanced-cli';
+  String defaultManagerRepo = 'revanced/revanced-manager';
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  String getPatcherRepo() {
+    return defaultPatcherRepo;
+  }
+
+  String getPatchesRepo() {
+    return _prefs.getString('patchesRepo') ?? defaultPatchesRepo;
+  }
+
+  Future<void> setPatchesRepo(String value) async {
+    if (value.isEmpty) {
+      value = defaultPatchesRepo;
+    }
+    await _prefs.setString('patchesRepo', value);
+  }
+
+  String getIntegrationsRepo() {
+    return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
+  }
+
+  Future<void> setIntegrationsRepo(String value) async {
+    if (value.isEmpty) {
+      value = defaultIntegrationsRepo;
+    }
+    await _prefs.setString('integrationsRepo', value);
+  }
+
+  String getCliRepo() {
+    return defaultCliRepo;
+  }
+
+  String getManagerRepo() {
+    return _prefs.getString('managerRepo') ?? defaultManagerRepo;
+  }
+
+  Future<void> setManagerRepo(String value) async {
+    if (value.isEmpty) {
+      value = defaultManagerRepo;
+    }
+    await _prefs.setString('managerRepo', value);
+  }
+
   Future<File?> downloadPatches(String extension) async {
-    return await _githubAPI.latestReleaseFile(extension, ghOrg, patchesRepo);
+    return await _githubAPI.latestReleaseFile(extension, getPatchesRepo());
   }
 
   Future<File?> downloadIntegrations(String extension) async {
-    return await _githubAPI.latestReleaseFile(
-      extension,
-      ghOrg,
-      integrationsRepo,
-    );
+    return await _githubAPI.latestReleaseFile(extension, getIntegrationsRepo());
   }
 
   Future<File?> downloadManager(String extension) async {
-    return await _githubAPI.latestReleaseFile(extension, ghOrg, managerRepo);
+    return await _githubAPI.latestReleaseFile(extension, getManagerRepo());
   }
 
   Future<String?> getLatestPatchesVersion() async {
-    return await _githubAPI.latestReleaseVersion(ghOrg, patchesRepo);
+    return await _githubAPI.latestReleaseVersion(getPatchesRepo());
   }
 
   Future<String?> getLatestManagerVersion() async {
-    return await _githubAPI.latestReleaseVersion(ghOrg, managerRepo);
+    return await _githubAPI.latestReleaseVersion(getManagerRepo());
   }
 
   Future<String> getCurrentManagerVersion() async {
@@ -140,8 +183,10 @@ class ManagerAPI {
   }
 
   Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {
-    List<RepositoryCommit> commits =
-        await _githubAPI.getCommits(packageName, ghOrg, patchesRepo);
+    List<RepositoryCommit> commits = await _githubAPI.getCommits(
+      packageName,
+      getPatchesRepo(),
+    );
     return commits.any((c) =>
         c.commit != null &&
         c.commit!.author != null &&
@@ -153,8 +198,10 @@ class ManagerAPI {
     String packageName,
     DateTime patchDate,
   ) async {
-    List<RepositoryCommit> commits =
-        await _githubAPI.getCommits(packageName, ghOrg, patchesRepo);
+    List<RepositoryCommit> commits = await _githubAPI.getCommits(
+      packageName,
+      getPatchesRepo(),
+    );
     List<String> newCommits = commits
         .where((c) =>
             c.commit != null &&
