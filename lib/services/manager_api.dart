@@ -35,7 +35,7 @@ class ManagerAPI {
   }
 
   Future<void> setPatchesRepo(String value) async {
-    if (value.isEmpty) {
+    if (value.isEmpty || value.startsWith('/') || value.endsWith('/')) {
       value = defaultPatchesRepo;
     }
     await _prefs.setString('patchesRepo', value);
@@ -46,7 +46,7 @@ class ManagerAPI {
   }
 
   Future<void> setIntegrationsRepo(String value) async {
-    if (value.isEmpty) {
+    if (value.isEmpty || value.startsWith('/') || value.endsWith('/')) {
       value = defaultIntegrationsRepo;
     }
     await _prefs.setString('integrationsRepo', value);
@@ -61,7 +61,7 @@ class ManagerAPI {
   }
 
   Future<void> setManagerRepo(String value) async {
-    if (value.isEmpty) {
+    if (value.isEmpty || value.startsWith('/') || value.endsWith('/')) {
       value = defaultManagerRepo;
     }
     await _prefs.setString('managerRepo', value);

@@ -96,14 +96,25 @@ class SettingsViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.sourcesLabel'),
+        title: Row(
+          children: [
+            I18nText('settingsView.sourcesLabel'),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.manage_history_outlined),
+              onPressed: () => showResetConfirmationDialog(context),
+              color: Theme.of(context).colorScheme.secondary,
+            )
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               CustomTextField(
                 leadingIcon: Icon(
                   Icons.extension_outlined,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 inputController: _orgPatSourceController,
                 label: I18nText('settingsView.orgPatchesLabel'),
@@ -125,7 +136,7 @@ class SettingsViewModel extends BaseViewModel {
               CustomTextField(
                 leadingIcon: Icon(
                   Icons.merge_outlined,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 inputController: _orgIntSourceController,
                 label: I18nText('settingsView.orgIntegrationsLabel'),
@@ -171,7 +182,33 @@ class SettingsViewModel extends BaseViewModel {
             },
           )
         ],
+      ),
+    );
+  }
+
+  Future<void> showResetConfirmationDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.sourcesResetDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('settingsView.sourcesResetDialogText'),
+        actions: [
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () {
+              _managerAPI.setPatchesRepo('');
+              _managerAPI.setIntegrationsRepo('');
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       ),
     );
   }
