@@ -16,10 +16,10 @@ class GithubAPI {
     'com.garzotto.pflotsh.ecmwf_a': 'ecmwf',
   };
 
-  Future<String?> latestReleaseVersion(String org, String repoName) async {
+  Future<String?> latestReleaseVersion(String repoName) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
-        RepositorySlug(org, repoName),
+        RepositorySlug.full(repoName),
       );
       return latestRelease.tagName;
     } on Exception {
@@ -27,14 +27,10 @@ class GithubAPI {
     }
   }
 
-  Future<File?> latestReleaseFile(
-    String extension,
-    String org,
-    String repoName,
-  ) async {
+  Future<File?> latestReleaseFile(String extension, String repoName) async {
     try {
       var latestRelease = await _github.repositories.getLatestRelease(
-        RepositorySlug(org, repoName),
+        RepositorySlug.full(repoName),
       );
       String? url = latestRelease.assets
           ?.firstWhere((asset) =>
@@ -52,10 +48,10 @@ class GithubAPI {
     return null;
   }
 
-  Future<String> latestCommitTime(String org, String repoName) async {
+  Future<String> latestCommitTime(String repoName) async {
     try {
       var repo = await _github.repositories.getRepository(
-        RepositorySlug(org, repoName),
+        RepositorySlug.full(repoName),
       );
       return repo.pushedAt != null
           ? format(repo.pushedAt!, locale: 'en_short')
@@ -65,15 +61,14 @@ class GithubAPI {
     }
   }
 
-  Future<List<Contributor>> getContributors(String org, String repoName) async {
+  Future<List<Contributor>> getContributors(String repoName) async {
     return await (_github.repositories.listContributors(
-      RepositorySlug(org, repoName),
+      RepositorySlug.full(repoName),
     )).toList();
   }
 
   Future<List<RepositoryCommit>> getCommits(
     String packageName,
-    String org,
     String repoName,
   ) async {
     String path =
@@ -81,7 +76,7 @@ class GithubAPI {
     return await (PaginationHelper(_github)
         .objects<Map<String, dynamic>, RepositoryCommit>(
       'GET',
-      '/repos/$org/$repoName/commits',
+      '/repos/$repoName/commits',
       (i) => RepositoryCommit.fromJson(i),
       params: <String, dynamic>{'path': path},
     )).toList();
