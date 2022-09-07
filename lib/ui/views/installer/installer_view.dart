@@ -60,7 +60,7 @@ class InstallerView extends StatelessWidget {
                   preferredSize: const Size(double.infinity, 1.0),
                   child: LinearProgressIndicator(
                     color: Theme.of(context).colorScheme.primary,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
                     value: model.progress,
                   ),
                 ),

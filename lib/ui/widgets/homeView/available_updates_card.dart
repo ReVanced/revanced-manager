@@ -19,14 +19,20 @@ class AvailableUpdatesCard extends StatelessWidget {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  const Icon(Icons.update_disabled, size: 40),
+                  Icon(
+                    size: 40,
+                    Icons.update_disabled,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   const SizedBox(height: 16),
                   I18nText(
                     'homeView.noUpdates',
                     child: Text(
                       '',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1!,
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                     ),
                   )
                 ],

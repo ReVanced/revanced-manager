@@ -29,8 +29,14 @@ class DynamicThemeBuilder extends StatelessWidget {
             backgroundColor: lightColorScheme?.background,
             indicatorColor: lightColorScheme?.primary.withAlpha(150),
             labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(
+              GoogleFonts.roboto(
+                color: lightColorScheme?.secondary,
                 fontWeight: FontWeight.w500,
+              ),
+            ),
+            iconTheme: MaterialStateProperty.all(
+              IconThemeData(
+                color: lightColorScheme?.secondary,
               ),
             ),
           ),
@@ -46,13 +52,14 @@ class DynamicThemeBuilder extends StatelessWidget {
             backgroundColor: darkColorScheme?.background,
             indicatorColor: darkColorScheme?.primary.withOpacity(0.4),
             labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(
+              GoogleFonts.roboto(
+                color: darkColorScheme?.secondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
             iconTheme: MaterialStateProperty.all(
-              const IconThemeData(
-                color: Colors.white,
+              IconThemeData(
+                color: darkColorScheme?.secondary,
               ),
             ),
           ),

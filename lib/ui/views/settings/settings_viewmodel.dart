@@ -70,7 +70,7 @@ class SettingsViewModel extends BaseViewModel {
       context: context,
       builder: (context) => SimpleDialog(
         title: I18nText('settingsView.languageLabel'),
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         children: <Widget>[
           RadioListTile<String>(
             title: I18nText('settingsView.englishOption'),

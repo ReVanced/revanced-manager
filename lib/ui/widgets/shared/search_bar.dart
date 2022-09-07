@@ -43,7 +43,7 @@ class _SearchBarState extends State<SearchBar> {
                 hintText: widget.hintText,
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 suffixIcon: _textController.text.isNotEmpty
                     ? IconButton(

@@ -46,6 +46,7 @@ class AppInfoViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('appInfoView.alertDialogTitle'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('appInfoView.errorDialogText'),
           actions: [
             CustomMaterialButton(
@@ -53,7 +54,6 @@ class AppInfoViewModel extends BaseViewModel {
               onPressed: () => Navigator.of(context).pop(),
             )
           ],
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         ),
       );
     } else {
@@ -61,6 +61,7 @@ class AppInfoViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('appInfoView.alertDialogTitle'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('appInfoView.alertDialogText'),
           actions: [
             CustomMaterialButton(
@@ -78,7 +79,6 @@ class AppInfoViewModel extends BaseViewModel {
               },
             )
           ],
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         ),
       );
     }
@@ -102,6 +102,7 @@ class AppInfoViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('appInfoView.appliedPatchesLabel'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(getAppliedPatchesString(app.appliedPatches)),
         actions: [
           CustomMaterialButton(
@@ -109,7 +110,6 @@ class AppInfoViewModel extends BaseViewModel {
             onPressed: () => Navigator.of(context).pop(),
           )
         ],
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       ),
     );
   }
