@@ -1,10 +1,7 @@
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
-import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -20,7 +17,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    ExpandableController expController = ExpandableController();
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
       onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
@@ -63,15 +59,27 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         onSelectAll: (value) => model.selectAllPatches(value),
                       ),
                       const SizedBox(height: 12),
-                      // TODO: IMPROVE THIS BAD CODE
                       Expanded(
                         child: ListView(
                           padding: const EdgeInsets.only(bottom: 80),
                           children: model
                               .getQueriedPatches(_query)
-                              .map((patch) => patch.name
-                                      .contains("custom-branding")
-                                  ? ExpandablePanel(
+                              .map(
+                                (patch) => PatchItem(
+                                  name: patch.name,
+                                  simpleName: patch.getSimpleName(),
+                                  version: patch.version,
+                                  description: patch.description,
+                                  packageVersion: model.getAppVersion(),
+                                  supportedPackageVersions:
+                                      model.getSupportedVersions(patch),
+                                  isUnsupported: !model.isPatchSupported(patch),
+                                  isSelected: model.isSelected(patch),
+                                  onChanged: (value) =>
+                                      model.selectPatch(patch, value),
+                                ),
+                                /* TODO: Enable this and make use of new Patch Options implementation
+                                     patch.hasOptions ? ExpandablePanel(
                                       controller: expController,
                                       theme: const ExpandableThemeData(
                                         hasIcon: false,
@@ -104,7 +112,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                                   vertical: 8.0,
                                                 ),
                                                 child: Text(
-                                                    'Long press for additional options.'),
+                                                    'Long press for additional options.',
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -147,21 +156,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                         ),
                                       ),
                                       collapsed: Container(),
-                                    )
-                                  : PatchItem(
-                                      name: patch.name,
-                                      simpleName: patch.getSimpleName(),
-                                      version: patch.version,
-                                      description: patch.description,
-                                      packageVersion: model.getAppVersion(),
-                                      supportedPackageVersions:
-                                          model.getSupportedVersions(patch),
-                                      isUnsupported:
-                                          !model.isPatchSupported(patch),
-                                      isSelected: model.isSelected(patch),
-                                      onChanged: (value) =>
-                                          model.selectPatch(patch, value),
-                                    ))
+                                    ) */
+                              )
                               .toList(),
                         ),
                       ),
