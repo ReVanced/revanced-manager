@@ -5,8 +5,6 @@
 > **Our goal is to make it as easy and friendly as possible so everyone can use it :D**
 
 ## Information
-### Language & UI Framework
-ReVanced Manager is written in [Kotlin](https://kotlinlang.org/), a cross-platform, statically typed, general-purpose programming language with type inference. It also uses [Compose](https://www.jetbrains.com/lp/compose-mpp/), a fast reactive Desktop and Web UI framework for Kotlin.
 
 ### Status
 🟡 ReVanced Manager is currently in WiP (Work in Progress), which means that it's not ready yet to be used by everyone as we're still coding the app and adding plenty of things.
