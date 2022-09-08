@@ -27,7 +27,7 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(48),
         color: Theme.of(context).colorScheme.secondaryContainer,
       ),
       child: Row(
@@ -72,7 +72,7 @@ class _SearchBarState extends State<SearchBar> {
                           )
                         : null,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(100),
                   borderSide: BorderSide.none,
                 ),
               ),
