@@ -25,6 +25,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       onModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButton: Visibility(
           visible: model.patches.isNotEmpty,
           child: FloatingActionButton.extended(
