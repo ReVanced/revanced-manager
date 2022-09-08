@@ -60,22 +60,30 @@ class SettingsView extends StatelessWidget {
                             value,
                           ),
                         ),
-                        CustomSwitchTile(
-                          title: I18nText(
-                            'settingsView.dynamicThemeLabel',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                        FutureBuilder<int>(
+                          future: model.getSdkVersion(),
+                          builder: (context, snapshot) => Visibility(
+                            visible: snapshot.hasData &&
+                                snapshot.data! >= ANDROID_12_SDK_VERSION,
+                            child: CustomSwitchTile(
+                              title: I18nText(
+                                'settingsView.dynamicThemeLabel',
+                                child: const Text(
+                                  '',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              subtitle:
+                                  I18nText('settingsView.dynamicThemeHint'),
+                              value: model.getDynamicThemeStatus(),
+                              onTap: (value) => model.setUseDynamicTheme(
+                                context,
+                                value,
                               ),
                             ),
-                          ),
-                          subtitle: I18nText('settingsView.dynamicThemeHint'),
-                          value: model.getDynamicThemeStatus(),
-                          onTap: (value) => model.setUseDynamicTheme(
-                            context,
-                            value,
                           ),
                         ),
                       ],

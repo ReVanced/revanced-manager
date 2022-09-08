@@ -82,12 +82,6 @@
             "problemMatcher": []
         },
         {
-            "label": "Show upgradable dependencies",
-            "type": "shell",
-            "command": "flutter pub outdated",
-            "problemMatcher": []
-        },
-        {
             "label": "Validate translations",
             "type": "shell",
             "command": "flutter pub run flutter_i18n diff en.json pt.json",
