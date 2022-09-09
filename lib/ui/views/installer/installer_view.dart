@@ -105,10 +105,10 @@ class InstallerView extends StatelessWidget {
                                 visible: !model.isInstalled,
                                 child: CustomMaterialButton(
                                   isFilled: false,
-                                  label:
-                                      I18nText('installerView.installButton'),
+                                  label: I18nText(
+                                      'installerView.installRootButton'),
                                   isExpanded: true,
-                                  onPressed: () => model.installResult(false),
+                                  onPressed: () => model.installResult(true),
                                 ),
                               ),
                               Visibility(
@@ -120,10 +120,10 @@ class InstallerView extends StatelessWidget {
                               Visibility(
                                 visible: !model.isInstalled,
                                 child: CustomMaterialButton(
-                                  label: I18nText(
-                                      'installerView.installRootButton'),
+                                  label:
+                                      I18nText('installerView.installButton'),
                                   isExpanded: true,
-                                  onPressed: () => model.installResult(true),
+                                  onPressed: () => model.installResult(false),
                                 ),
                               ),
                             ],
