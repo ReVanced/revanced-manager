@@ -1,6 +1,6 @@
 name: revanced_manager
-description: An unofficial ReVanced Manager based on Flutter.
-homepage: https://github.com/Aunali321/revanced-manager
+description: The official ReVanced Manager.
+homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
