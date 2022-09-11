@@ -10,6 +10,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import 'package:wakelock/wakelock.dart';
 
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -46,6 +47,7 @@ class InstallerViewModel extends BaseViewModel {
         ),
       );
       await FlutterBackground.enableBackgroundExecution();
+      await Wakelock.enable();
     } on Exception {
       // ignore
     }
@@ -119,9 +121,8 @@ class InstallerViewModel extends BaseViewModel {
       update(1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
     try {
-      if (FlutterBackground.isBackgroundExecutionEnabled) {
-        await FlutterBackground.disableBackgroundExecution();
-      }
+      await FlutterBackground.disableBackgroundExecution();
+      await Wakelock.disable();
     } on Exception {
       // ignore
     }

@@ -52,6 +52,7 @@ dependencies:
   stacked_themes: ^0.3.9
   timeago: ^3.2.2
   url_launcher: ^6.1.5
+  wakelock: ^0.6.2
 
 dev_dependencies:
   build_runner: any
