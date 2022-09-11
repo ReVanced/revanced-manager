@@ -35,29 +35,29 @@ class _AppSelectorViewState extends State<AppSelectorView> {
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-            child: model.noApps
-                ? Center(
-                    child: I18nText('appSelectorCard.noAppsLabel'),
-                  )
-                : model.apps.isEmpty
-                    ? const AppSkeletonLoader()
-                    : Column(
-                        children: <Widget>[
-                          SearchBar(
-                            showSelectIcon: false,
-                            hintText: FlutterI18n.translate(
-                              context,
-                              'appSelectorView.searchBarHint',
-                            ),
-                            onQueryChanged: (searchQuery) {
-                              setState(() {
-                                _query = searchQuery;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 12),
-                          Expanded(
-                            child: ListView(
+            child: Column(
+              children: <Widget>[
+                SearchBar(
+                  showSelectIcon: false,
+                  hintText: FlutterI18n.translate(
+                    context,
+                    'appSelectorView.searchBarHint',
+                  ),
+                  onQueryChanged: (searchQuery) {
+                    setState(() {
+                      _query = searchQuery;
+                    });
+                  },
+                ),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: model.noApps
+                      ? Center(
+                          child: I18nText('appSelectorCard.noAppsLabel'),
+                        )
+                      : model.apps.isEmpty
+                          ? const AppSkeletonLoader()
+                          : ListView(
                               padding: const EdgeInsets.only(bottom: 80),
                               children: model
                                   .getFilteredApps(_query)
@@ -74,9 +74,9 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       ))
                                   .toList(),
                             ),
-                          ),
-                        ],
-                      ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
