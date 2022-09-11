@@ -30,7 +30,7 @@ class AppSkeletonLoader extends StatelessWidget {
                   children: [
                     Container(
                       color: Colors.white,
-                      height: 25,
+                      height: 34,
                       width: screenWidth * 0.4,
                       child: SkeletonParagraph(
                         style: const SkeletonParagraphStyle(
@@ -42,7 +42,7 @@ class AppSkeletonLoader extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.only(bottom: 4),
                       color: Colors.white,
-                      height: 25,
+                      height: 34,
                       width: screenWidth * 0.6,
                       child: SkeletonParagraph(
                         style: const SkeletonParagraphStyle(
