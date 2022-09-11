@@ -46,10 +46,11 @@ class InstallerViewModel extends BaseViewModel {
         ),
       );
       await FlutterBackground.enableBackgroundExecution();
-    } finally {
-      await handlePlatformChannelMethods();
-      await runPatcher();
+    } on Exception {
+      // ignore
     }
+    await handlePlatformChannelMethods();
+    await runPatcher();
   }
 
   Future<dynamic> handlePlatformChannelMethods() async {
@@ -118,10 +119,13 @@ class InstallerViewModel extends BaseViewModel {
       update(1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
     try {
-      await FlutterBackground.disableBackgroundExecution();
-    } finally {
-      isPatching = false;
+      if (FlutterBackground.isBackgroundExecutionEnabled) {
+        await FlutterBackground.disableBackgroundExecution();
+      }
+    } on Exception {
+      // ignore
     }
+    isPatching = false;
   }
 
   void installResult(bool installAsRoot) async {

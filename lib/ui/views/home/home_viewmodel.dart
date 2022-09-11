@@ -23,8 +23,8 @@ class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  DateTime? _lastUpdate;
   bool showUpdatableApps = true;
   List<PatchedApplication> patchedInstalledApps = [];
   List<PatchedApplication> patchedUpdatableApps = [];
@@ -61,10 +61,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void _getPatchedApps() {
-    patchedInstalledApps = _managerAPI
-        .getPatchedApps()
-        .where((app) => app.hasUpdates == false)
-        .toList();
+    patchedInstalledApps = _managerAPI.getPatchedApps().toList();
     patchedUpdatableApps = _managerAPI
         .getPatchedApps()
         .where((app) => app.hasUpdates == true)
@@ -98,7 +95,7 @@ class HomeViewModel extends BaseViewModel {
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.CENTER,
     );
-    File? managerApk = await _managerAPI.downloadManager('.apk');
+    File? managerApk = await _managerAPI.downloadManager();
     if (managerApk != null) {
       flutterLocalNotificationsPlugin.show(
         0,
@@ -169,5 +166,22 @@ class HomeViewModel extends BaseViewModel {
         ],
       ),
     );
+  }
+
+  Future<String?> getLatestPatcherReleaseTime() async {
+    return _managerAPI.getLatestPatcherReleaseTime();
+  }
+
+  Future<String?> getLatestManagerReleaseTime() async {
+    return _managerAPI.getLatestManagerReleaseTime();
+  }
+
+  Future<void> forceRefresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (_lastUpdate == null ||
+        _lastUpdate!.difference(DateTime.now()).inSeconds > 60) {
+      _managerAPI.clearAllData();
+    }
+    initialize();
   }
 }

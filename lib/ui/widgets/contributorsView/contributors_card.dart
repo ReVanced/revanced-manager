@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:github/github.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsCard extends StatefulWidget {
   final String title;
-  final List<Contributor> contributors;
+  final List<dynamic> contributors;
   final double height;
 
   const ContributorsCard({
@@ -52,9 +51,9 @@ class _ContributorsCardState extends State<ContributorsCard> {
                   borderRadius: BorderRadius.circular(100),
                   child: GestureDetector(
                     onTap: () => launchUrl(
-                        Uri.parse(widget.contributors[index].htmlUrl!)),
+                        Uri.parse(widget.contributors[index]['html_url'])),
                     child: Image.network(
-                      widget.contributors[index].avatarUrl!,
+                      widget.contributors[index]['avatar_url'],
                       height: 40,
                       width: 40,
                     ),

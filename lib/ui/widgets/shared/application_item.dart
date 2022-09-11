@@ -49,7 +49,7 @@ class ApplicationItem extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(format(patchDate, locale: 'en_short')),
+                Text(format(patchDate)),
               ],
             ),
             const Spacer(),
