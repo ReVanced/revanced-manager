@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 import 'package:app_installer/app_installer.dart';
+import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -29,13 +30,24 @@ class HomeViewModel extends BaseViewModel {
   List<PatchedApplication> patchedInstalledApps = [];
   List<PatchedApplication> patchedUpdatableApps = [];
 
-  Future<void> initialize() async {
+  Future<void> initialize(BuildContext context) async {
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
       ),
       onSelectNotification: (p) => DeviceApps.openApp('app.revanced.manager'),
     );
+    bool isConnected = await Connectivity().checkConnection();
+    if (!isConnected) {
+      Fluttertoast.showToast(
+        msg: FlutterI18n.translate(
+          context,
+          'homeView.noConnection',
+        ),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+    }
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
@@ -176,12 +188,12 @@ class HomeViewModel extends BaseViewModel {
     return _managerAPI.getLatestManagerReleaseTime();
   }
 
-  Future<void> forceRefresh() async {
+  Future<void> forceRefresh(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 1));
     if (_lastUpdate == null ||
         _lastUpdate!.difference(DateTime.now()).inSeconds > 60) {
       _managerAPI.clearAllData();
     }
-    initialize();
+    initialize(context);
   }
 }

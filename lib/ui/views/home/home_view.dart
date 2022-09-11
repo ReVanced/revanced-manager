@@ -17,13 +17,13 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       disposeViewModel: false,
-      onModelReady: (model) => model.initialize(),
+      onModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: RefreshIndicator(
           color: Theme.of(context).colorScheme.secondary,
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          onRefresh: () => model.forceRefresh(),
+          onRefresh: () => model.forceRefresh(context),
           child: CustomScrollView(
             slivers: <Widget>[
               CustomSliverAppBar(

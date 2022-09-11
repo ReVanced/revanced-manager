@@ -12,6 +12,7 @@ environment:
 dependencies:
   animations: ^2.0.4
   app_installer: ^1.1.0
+  cross_connectivity: ^3.0.5
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
