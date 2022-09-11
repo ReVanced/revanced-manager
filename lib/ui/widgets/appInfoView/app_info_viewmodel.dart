@@ -74,7 +74,7 @@ class AppInfoViewModel extends BaseViewModel {
               label: I18nText('okButton'),
               onPressed: () {
                 uninstallApp(app);
-                locator<HomeViewModel>().initialize();
+                locator<HomeViewModel>().initialize(context);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
