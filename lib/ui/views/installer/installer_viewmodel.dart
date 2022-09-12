@@ -26,6 +26,7 @@ class InstallerViewModel extends BaseViewModel {
   String headerLogs = '';
   bool isPatching = true;
   bool isInstalled = false;
+  bool hasErrors = false;
 
   Future<void> initialize(BuildContext context) async {
     try {
@@ -79,6 +80,7 @@ class InstallerViewModel extends BaseViewModel {
     if (progress == 0.0) {
       logs = '';
       isInstalled = false;
+      hasErrors = false;
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -115,9 +117,11 @@ class InstallerViewModel extends BaseViewModel {
         update(0.0, '', 'Creating working directory');
         await _patcherAPI.runPatcher(_app.packageName, apkFilePath, _patches);
       } on Exception {
+        hasErrors = true;
         update(1.0, 'Aborting...', 'An error occurred! Aborting');
       }
     } else {
+      hasErrors = true;
       update(1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
     try {
@@ -144,8 +148,6 @@ class InstallerViewModel extends BaseViewModel {
       _app.patchDate = DateTime.now();
       _app.appliedPatches = _patches.map((p) => p.name).toList();
       await _managerAPI.savePatchedApp(_app);
-    } else {
-      update(1.0, 'Aborting...', 'An error occurred! Aborting');
     }
   }
 

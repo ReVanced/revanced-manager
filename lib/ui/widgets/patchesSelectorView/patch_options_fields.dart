@@ -38,7 +38,7 @@ class OptionsFilePicker extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           I18nText(
             optionName,
             child: Text(

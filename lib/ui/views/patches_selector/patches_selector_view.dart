@@ -88,7 +88,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                         tapHeaderToExpand: true,
                                       ),
                                       header: Column(
-                                        children: [
+                                        children: <Widget>[
                                           GestureDetector(
                                             onLongPress: () =>
                                                 expController.toggle(),
@@ -138,7 +138,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                                 BorderRadius.circular(12),
                                           ),
                                           child: Column(
-                                            children: [
+                                            children: <Widget>[
                                               Text(
                                                 "Patch options",
                                                 style: GoogleFonts.inter(

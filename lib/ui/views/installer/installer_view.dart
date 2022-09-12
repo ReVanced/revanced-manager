@@ -30,7 +30,7 @@ class InstallerView extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   Visibility(
-                    visible: !model.isPatching,
+                    visible: !model.isPatching && model.hasErrors,
                     child: CustomPopupMenu(
                       onSelected: (value) => model.onMenuSelection(value),
                       children: {
@@ -89,7 +89,7 @@ class InstallerView extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Visibility(
-                    visible: !model.isPatching,
+                    visible: !model.isPatching && !model.hasErrors,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0).copyWith(top: 0.0),
                       child: Row(

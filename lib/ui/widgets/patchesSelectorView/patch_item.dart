@@ -154,7 +154,7 @@ class _PatchItemState extends State<PatchItem> {
                 '\u2022 ${widget.supportedPackageVersions.join('\n\u2022 ')}',
           },
         ),
-        actions: [
+        actions: <Widget>[
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () => Navigator.of(context).pop(),

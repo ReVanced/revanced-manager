@@ -100,7 +100,7 @@ class SettingsViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: Row(
-          children: [
+          children: <Widget>[
             I18nText('settingsView.sourcesLabel'),
             const Spacer(),
             IconButton(
@@ -160,7 +160,7 @@ class SettingsViewModel extends BaseViewModel {
             ],
           ),
         ),
-        actions: [
+        actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
             label: I18nText('cancelButton'),
@@ -196,7 +196,7 @@ class SettingsViewModel extends BaseViewModel {
         title: I18nText('settingsView.sourcesResetDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.sourcesResetDialogText'),
-        actions: [
+        actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
             label: I18nText('cancelButton'),

@@ -15,7 +15,7 @@ class AppSkeletonLoader extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
           child: SkeletonItem(
             child: Row(
-              children: [
+              children: <Widget>[
                 SkeletonAvatar(
                   style: SkeletonAvatarStyle(
                     width: screenWidth * 0.15,
@@ -27,7 +27,7 @@ class AppSkeletonLoader extends StatelessWidget {
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     Container(
                       color: Colors.white,
                       height: 34,

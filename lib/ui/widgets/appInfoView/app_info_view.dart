@@ -64,12 +64,12 @@ class AppInfoView extends StatelessWidget {
                       child: IntrinsicHeight(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
+                          children: <Widget>[
                             InkWell(
                               onTap: () => model.openApp(app),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: <Widget>[
                                   Icon(
                                     Icons.open_in_new_outlined,
                                     color:
@@ -99,7 +99,7 @@ class AppInfoView extends StatelessWidget {
                                   model.showUninstallAlertDialog(context, app),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: <Widget>[
                                   Icon(
                                     Icons.delete_outline,
                                     color:
@@ -131,7 +131,7 @@ class AppInfoView extends StatelessWidget {
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: <Widget>[
                                   Icon(
                                     Icons.build_outlined,
                                     color:
