@@ -1,5 +1,4 @@
 import 'dart:io';
-// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';

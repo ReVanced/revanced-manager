@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:app_installer/app_installer.dart';
-// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/services.dart';

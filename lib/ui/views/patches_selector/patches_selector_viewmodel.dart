@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';

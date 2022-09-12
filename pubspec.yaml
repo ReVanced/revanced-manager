@@ -12,6 +12,7 @@ environment:
 dependencies:
   animations: ^2.0.4
   app_installer: ^1.1.0
+  collection: ^1.16.0
   cross_connectivity: ^3.0.5
   device_apps:
     git:
@@ -31,6 +32,8 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.32.4
   flutter_local_notifications: ^9.8.0+1
+  flutter_localizations:
+    sdk: flutter
   flutter_svg: ^1.1.1+1
   fluttertoast: ^8.0.9
   font_awesome_flutter: ^10.1.0
