@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "app.revanced.manager"
+        applicationId "app.revanced.manager.flutter"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

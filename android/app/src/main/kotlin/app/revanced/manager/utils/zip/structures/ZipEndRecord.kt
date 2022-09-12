@@ -1,9 +1,9 @@
-package app.revanced.manager.utils.zip.structures
+package app.revanced.manager.flutter.utils.zip.structures
 
-import app.revanced.manager.utils.zip.putUInt
-import app.revanced.manager.utils.zip.putUShort
-import app.revanced.manager.utils.zip.readUIntLE
-import app.revanced.manager.utils.zip.readUShortLE
+import app.revanced.manager.flutter.utils.zip.putUInt
+import app.revanced.manager.flutter.utils.zip.putUShort
+import app.revanced.manager.flutter.utils.zip.readUIntLE
+import app.revanced.manager.flutter.utils.zip.readUShortLE
 import java.io.DataInput
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

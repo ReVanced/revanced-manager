@@ -1,7 +1,7 @@
-package app.revanced.manager.utils.zip
+package app.revanced.manager.flutter.utils.zip
 
-import app.revanced.manager.utils.zip.structures.ZipEndRecord
-import app.revanced.manager.utils.zip.structures.ZipEntry
+import app.revanced.manager.flutter.utils.zip.structures.ZipEndRecord
+import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import java.io.Closeable
 import java.io.File
 import java.io.RandomAccessFile

@@ -14,7 +14,8 @@ import 'package:share_extend/share_extend.dart';
 
 @lazySingleton
 class PatcherAPI {
-  static const patcherChannel = MethodChannel('app.revanced.manager/patcher');
+  static const patcherChannel =
+      MethodChannel('app.revanced.manager.flutter/patcher');
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
   late Directory _tmpDir;

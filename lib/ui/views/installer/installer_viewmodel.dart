@@ -17,7 +17,7 @@ class InstallerViewModel extends BaseViewModel {
   final PatchedApplication _app = locator<PatcherViewModel>().selectedApp!;
   final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
   static const _installerChannel = MethodChannel(
-    'app.revanced.manager/installer',
+    'app.revanced.manager.flutter/installer',
   );
   final ScrollController scrollController = ScrollController();
   double? progress = 0.0;

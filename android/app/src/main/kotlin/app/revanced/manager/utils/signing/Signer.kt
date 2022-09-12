@@ -1,4 +1,4 @@
-package app.revanced.manager.utils.signing
+package app.revanced.manager.flutter.utils.signing
 
 import com.android.apksig.ApkSigner
 import org.bouncycastle.asn1.x500.X500Name

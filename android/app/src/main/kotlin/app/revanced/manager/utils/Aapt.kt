@@ -1,4 +1,4 @@
-package app.revanced.manager.utils
+package app.revanced.manager.flutter.utils
 
 import android.content.Context
 import java.io.File

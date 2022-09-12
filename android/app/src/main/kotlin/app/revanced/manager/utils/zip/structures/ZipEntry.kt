@@ -1,6 +1,6 @@
-package app.revanced.manager.utils.zip.structures
+package app.revanced.manager.flutter.utils.zip.structures
 
-import app.revanced.manager.utils.zip.*
+import app.revanced.manager.flutter.utils.zip.*
 import java.io.DataInput
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

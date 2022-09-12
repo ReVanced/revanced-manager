@@ -34,7 +34,8 @@ class HomeViewModel extends BaseViewModel {
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
       ),
-      onSelectNotification: (p) => DeviceApps.openApp('app.revanced.manager'),
+      onSelectNotification: (p) =>
+          DeviceApps.openApp('app.revanced.manager.flutter'),
     );
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());

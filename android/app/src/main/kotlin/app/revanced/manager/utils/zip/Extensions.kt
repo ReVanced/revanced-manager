@@ -1,4 +1,4 @@
-package app.revanced.manager.utils.zip
+package app.revanced.manager.flutter.utils.zip
 
 import java.io.DataInput
 import java.io.DataOutput
