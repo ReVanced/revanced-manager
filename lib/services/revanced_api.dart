@@ -38,7 +38,7 @@ class RevancedAPI {
         contributors[name] = repo['contributors'];
       }
     } on Exception {
-      // ignore
+      return {};
     }
     return contributors;
   }
@@ -49,9 +49,8 @@ class RevancedAPI {
       List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception {
-      // ignore
+      return List.empty();
     }
-    return List.empty();
   }
 
   Future<Map<String, dynamic>?> _getLatestRelease(

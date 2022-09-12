@@ -42,9 +42,8 @@ class GithubAPI {
       );
       return response.data;
     } on Exception {
-      // ignore
+      return null;
     }
-    return null;
   }
 
   Future<List<String>> getCommits(
@@ -70,9 +69,8 @@ class GithubAPI {
               (commit['commit']['message'] as String).split('\n')[0])
           .toList();
     } on Exception {
-      // ignore
+      return List.empty();
     }
-    return List.empty();
   }
 
   Future<File?> getLatestReleaseFile(String extension, String repoName) async {
@@ -104,7 +102,7 @@ class GithubAPI {
         patches = list.map((patch) => Patch.fromJson(patch)).toList();
       }
     } on Exception {
-      // ignore
+      return List.empty();
     }
     return patches;
   }
