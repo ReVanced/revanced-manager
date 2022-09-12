@@ -17,7 +17,7 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
       viewModelBuilder: () => SettingsViewModel(),
-      builder: (context, SettingsViewModel model, child) => Scaffold(
+      builder: (context, model, child) => Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
             CustomSliverAppBar(
@@ -32,10 +32,7 @@ class SettingsView extends StatelessWidget {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 10.0,
-                horizontal: 20.0,
-              ),
+              padding: const EdgeInsets.all(20.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate.fixed(
                   <Widget>[

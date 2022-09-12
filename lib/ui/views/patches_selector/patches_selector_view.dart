@@ -140,16 +140,16 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "Patch options",
+                                                'Patch options',
                                                 style: GoogleFonts.inter(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                               const OptionsTextField(
-                                                  hint: "App name"),
+                                                  hint: 'App name'),
                                               const OptionsFilePicker(
-                                                optionName: "Choose a logo",
+                                                optionName: 'Choose a logo',
                                               ),
                                             ],
                                           ),

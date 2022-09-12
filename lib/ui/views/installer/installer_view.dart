@@ -67,7 +67,7 @@ class InstallerView extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.all(20.0).copyWith(bottom: 20.0),
+                padding: const EdgeInsets.all(20.0),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[

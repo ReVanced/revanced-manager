@@ -58,7 +58,7 @@ class AppSkeletonLoader extends StatelessWidget {
         ),
       ),
       child: const Center(
-        child: Text("Content"),
+        child: Text('Content'),
       ),
     );
   }

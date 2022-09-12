@@ -128,5 +128,13 @@
         "patchedDateHint": "{date} at {time}",
         "appliedPatchesLabel": "Applied Patches",
         "appliedPatchesHint": "{quantity} applied patches"
+    },
+    "contributorsView": {
+        "widgetTitle": "Contributors",
+        "patcherContributors": "Patcher Contributors",
+        "patchesContributors": "Patches Contributors",
+        "integrationsContributors": "Integrations Contributors",
+        "cliContributors": "CLI Contributors",
+        "managerContributors": "Manager Contributors"
     }
 }
