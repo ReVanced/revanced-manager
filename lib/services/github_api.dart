@@ -5,16 +5,17 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
 
+@lazySingleton
 class GithubAPI {
   final String apiUrl = 'https://api.github.com';
   final Dio _dio = Dio();
-  final DioCacheManager _dioCacheManager = DioCacheManager(
-    CacheConfig(
-      defaultMaxAge: const Duration(hours: 1),
-      defaultMaxStale: const Duration(days: 7),
-    ),
+  final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
+  final Options _cacheOptions = buildCacheOptions(
+    const Duration(hours: 1),
+    maxStale: const Duration(days: 7),
   );
   final Map<String, String> repoAppPath = {
     'com.google.android.youtube': 'youtube',
@@ -38,13 +39,8 @@ class GithubAPI {
     try {
       var response = await _dio.get(
         '$apiUrl/repos/$repoName/releases/latest',
-        options: buildCacheOptions(const Duration(hours: 1)),
+        options: _cacheOptions,
       );
-      if (response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE) != null) {
-        print('1 - From cache');
-      } else {
-        print('1 - From net');
-      }
       return response.data;
     } on Exception {
       // ignore
@@ -67,13 +63,8 @@ class GithubAPI {
           'per_page': 3,
           'since': since.toIso8601String(),
         },
-        options: buildCacheOptions(const Duration(hours: 1)),
+        options: _cacheOptions,
       );
-      if (response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE) != null) {
-        print('2 - From cache');
-      } else {
-        print('2 - From net');
-      }
       List<dynamic> commits = response.data;
       return commits
           .map((commit) =>

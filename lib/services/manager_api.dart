@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
@@ -12,8 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class ManagerAPI {
-  final RevancedAPI _revancedAPI = RevancedAPI();
-  final GithubAPI _githubAPI = GithubAPI();
+  final RevancedAPI _revancedAPI = locator<RevancedAPI>();
+  final GithubAPI _githubAPI = locator<GithubAPI>();
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
