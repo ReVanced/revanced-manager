@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/file.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,11 +53,25 @@ class _ContributorsCardState extends State<ContributorsCard> {
                   borderRadius: BorderRadius.circular(100),
                   child: GestureDetector(
                     onTap: () => launchUrl(
-                        Uri.parse(widget.contributors[index]['html_url'])),
-                    child: Image.network(
-                      widget.contributors[index]['avatar_url'],
-                      height: 40,
-                      width: 40,
+                      Uri.parse(
+                        widget.contributors[index]['html_url'],
+                      ),
+                    ),
+                    child: FutureBuilder<File?>(
+                      future: DefaultCacheManager().getSingleFile(
+                        widget.contributors[index]['avatar_url'],
+                      ),
+                      builder: (context, snapshot) => snapshot.hasData
+                          ? Image.file(
+                              snapshot.data!,
+                              height: 40,
+                              width: 40,
+                            )
+                          : Image.network(
+                              widget.contributors[index]['avatar_url'],
+                              height: 40,
+                              width: 40,
+                            ),
                     ),
                   ),
                 );
