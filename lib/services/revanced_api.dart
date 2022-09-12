@@ -14,7 +14,7 @@ class RevancedAPI {
   final Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
-    const Duration(minutes: 10),
+    const Duration(hours: 1),
     maxStale: const Duration(days: 7),
   );
 
@@ -33,11 +33,6 @@ class RevancedAPI {
         '$apiUrl/contributors',
         options: _cacheOptions,
       );
-      if (response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE) != null) {
-        print('3 - From cache');
-      } else {
-        print('3 - From net');
-      }
       List<dynamic> repositories = response.data['repositories'];
       for (Map<String, dynamic> repo in repositories) {
         String name = repo['name'];
@@ -52,11 +47,6 @@ class RevancedAPI {
   Future<List<Patch>> getPatches() async {
     try {
       var response = await _dio.get('$apiUrl/patches', options: _cacheOptions);
-      if (response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE) != null) {
-        print('4 - From cache');
-      } else {
-        print('4 - From net');
-      }
       List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception {
@@ -71,11 +61,6 @@ class RevancedAPI {
   ) async {
     try {
       var response = await _dio.get('$apiUrl/tools', options: _cacheOptions);
-      if (response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE) != null) {
-        print('5 - From cache');
-      } else {
-        print('5 - From net');
-      }
       List<dynamic> tools = response.data['tools'];
       return tools.firstWhereOrNull(
         (t) =>
