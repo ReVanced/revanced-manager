@@ -10,6 +10,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import 'package:wakelock/wakelock.dart';
 
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -46,10 +47,12 @@ class InstallerViewModel extends BaseViewModel {
         ),
       );
       await FlutterBackground.enableBackgroundExecution();
-    } finally {
-      await handlePlatformChannelMethods();
-      await runPatcher();
+      await Wakelock.enable();
+    } on Exception {
+      // ignore
     }
+    await handlePlatformChannelMethods();
+    await runPatcher();
   }
 
   Future<dynamic> handlePlatformChannelMethods() async {
@@ -119,9 +122,11 @@ class InstallerViewModel extends BaseViewModel {
     }
     try {
       await FlutterBackground.disableBackgroundExecution();
-    } finally {
-      isPatching = false;
+      await Wakelock.disable();
+    } on Exception {
+      // ignore
     }
+    isPatching = false;
   }
 
   void installResult(bool installAsRoot) async {

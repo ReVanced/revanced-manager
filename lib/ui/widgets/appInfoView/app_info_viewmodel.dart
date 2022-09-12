@@ -7,6 +7,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
@@ -73,7 +74,7 @@ class AppInfoViewModel extends BaseViewModel {
               label: I18nText('okButton'),
               onPressed: () {
                 uninstallApp(app);
-                locator<NavigationViewModel>().notifyListeners();
+                locator<HomeViewModel>().initialize(context);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },

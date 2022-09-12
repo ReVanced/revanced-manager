@@ -1,6 +1,6 @@
 name: revanced_manager
-description: An unofficial ReVanced Manager based on Flutter.
-homepage: https://github.com/Aunali321/revanced-manager
+description: The official ReVanced Manager.
+homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
@@ -12,11 +12,15 @@ environment:
 dependencies:
   animations: ^2.0.4
   app_installer: ^1.1.0
+  collection: ^1.16.0
+  cross_connectivity: ^3.0.5
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: appinfo-from-storage
   device_info_plus: ^4.1.2
+  dio: ^4.0.6
+  dio_http_cache_lts: ^0.4.1
   dynamic_color: ^1.5.4
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
@@ -28,11 +32,12 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.32.4
   flutter_local_notifications: ^9.8.0+1
+  flutter_localizations:
+    sdk: flutter
   flutter_svg: ^1.1.1+1
   fluttertoast: ^8.0.9
   font_awesome_flutter: ^10.1.0
   get_it: ^7.2.0
-  github: ^9.4.0
   google_fonts: ^3.0.1
   http: ^0.13.4
   injectable: ^1.5.3
@@ -40,6 +45,7 @@ dependencies:
   json_annotation: ^4.6.0
   package_info_plus: ^1.4.3+1
   path_provider: ^2.0.11
+  pull_to_refresh: ^2.0.0
   root: ^2.0.2
   share_extend: ^2.0.0
   shared_preferences: ^2.0.15
@@ -50,6 +56,7 @@ dependencies:
   stacked_themes: ^0.3.9
   timeago: ^3.2.2
   url_launcher: ^6.1.5
+  wakelock: ^0.6.2
 
 dev_dependencies:
   build_runner: any

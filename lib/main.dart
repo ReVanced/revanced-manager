@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:stacked_themes/stacked_themes.dart';
@@ -15,6 +16,8 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await locator<ManagerAPI>().initialize();
   await locator<PatcherAPI>().initialize();
+  locator<RevancedAPI>().initialize();
+  locator<GithubAPI>().initialize();
   runApp(const MyApp());
 }
 

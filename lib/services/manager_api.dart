@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:device_apps/device_apps.dart';
-import 'package:github/github.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class ManagerAPI {
-  final GithubAPI _githubAPI = GithubAPI();
+  final RevancedAPI _revancedAPI = locator<RevancedAPI>();
+  final GithubAPI _githubAPI = locator<GithubAPI>();
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
@@ -24,10 +27,6 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
-  }
-
-  String getPatcherRepo() {
-    return defaultPatcherRepo;
   }
 
   String getPatchesRepo() {
@@ -52,46 +51,6 @@ class ManagerAPI {
     await _prefs.setString('integrationsRepo', value);
   }
 
-  String getCliRepo() {
-    return defaultCliRepo;
-  }
-
-  String getManagerRepo() {
-    return _prefs.getString('managerRepo') ?? defaultManagerRepo;
-  }
-
-  Future<void> setManagerRepo(String value) async {
-    if (value.isEmpty || value.startsWith('/') || value.endsWith('/')) {
-      value = defaultManagerRepo;
-    }
-    await _prefs.setString('managerRepo', value);
-  }
-
-  Future<File?> downloadPatches(String extension) async {
-    return await _githubAPI.latestReleaseFile(extension, getPatchesRepo());
-  }
-
-  Future<File?> downloadIntegrations(String extension) async {
-    return await _githubAPI.latestReleaseFile(extension, getIntegrationsRepo());
-  }
-
-  Future<File?> downloadManager(String extension) async {
-    return await _githubAPI.latestReleaseFile(extension, getManagerRepo());
-  }
-
-  Future<String?> getLatestPatchesVersion() async {
-    return await _githubAPI.latestReleaseVersion(getPatchesRepo());
-  }
-
-  Future<String?> getLatestManagerVersion() async {
-    return await _githubAPI.latestReleaseVersion(getManagerRepo());
-  }
-
-  Future<String> getCurrentManagerVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo.version;
-  }
-
   bool getUseDynamicTheme() {
     return _prefs.getBool('useDynamicTheme') ?? false;
   }
@@ -110,9 +69,7 @@ class ManagerAPI {
 
   List<PatchedApplication> getPatchedApps() {
     List<String> apps = _prefs.getStringList('patchedApps') ?? [];
-    return apps
-        .map((a) => PatchedApplication.fromJson(json.decode(a)))
-        .toList();
+    return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
   }
 
   Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
@@ -141,6 +98,71 @@ class ManagerAPI {
     List<PatchedApplication> patchedApps = getPatchedApps();
     patchedApps.removeWhere((a) => a.packageName == app.packageName);
     await setPatchedApps(patchedApps);
+  }
+
+  void clearAllData() {
+    _revancedAPI.clearAllCache();
+    _githubAPI.clearAllCache();
+  }
+
+  Future<Map<String, List<dynamic>>> getContributors() async {
+    return await _revancedAPI.getContributors();
+  }
+
+  Future<List<Patch>> getPatches() async {
+    if (getPatchesRepo() == defaultPatchesRepo) {
+      return await _revancedAPI.getPatches();
+    } else {
+      return await _githubAPI.getPatches(getPatchesRepo());
+    }
+  }
+
+  Future<File?> downloadPatches() async {
+    String repoName = getPatchesRepo();
+    if (repoName == defaultPatchesRepo) {
+      return await _revancedAPI.getLatestReleaseFile(
+        '.jar',
+        defaultPatchesRepo,
+      );
+    } else {
+      return await _githubAPI.getLatestReleaseFile('.jar', repoName);
+    }
+  }
+
+  Future<File?> downloadIntegrations() async {
+    String repoName = getIntegrationsRepo();
+    if (repoName == defaultIntegrationsRepo) {
+      return await _revancedAPI.getLatestReleaseFile(
+        '.apk',
+        defaultIntegrationsRepo,
+      );
+    } else {
+      return await _githubAPI.getLatestReleaseFile('.apk', repoName);
+    }
+  }
+
+  Future<File?> downloadManager() async {
+    return await _revancedAPI.getLatestReleaseFile('.apk', defaultManagerRepo);
+  }
+
+  Future<String?> getLatestPatcherReleaseTime() async {
+    return await _revancedAPI.getLatestReleaseTime('.gz', defaultPatcherRepo);
+  }
+
+  Future<String?> getLatestManagerReleaseTime() async {
+    return await _revancedAPI.getLatestReleaseTime('.apk', defaultManagerRepo);
+  }
+
+  Future<String?> getLatestManagerVersion() async {
+    return await _revancedAPI.getLatestReleaseVersion(
+      '.apk',
+      defaultManagerRepo,
+    );
+  }
+
+  Future<String> getCurrentManagerVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
   }
 
   Future<void> reAssessSavedApps() async {
@@ -183,40 +205,27 @@ class ManagerAPI {
   }
 
   Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {
-    List<RepositoryCommit> commits = await _githubAPI.getCommits(
+    List<String> commits = await _githubAPI.getCommits(
       packageName,
       getPatchesRepo(),
+      patchDate,
     );
-    return commits.any((c) =>
-        c.commit != null &&
-        c.commit!.author != null &&
-        c.commit!.author!.date != null &&
-        c.commit!.author!.date!.isAfter(patchDate));
+    return commits.isNotEmpty;
   }
 
   Future<List<String>> getAppChangelog(
-    String packageName,
-    DateTime patchDate,
-  ) async {
-    List<RepositoryCommit> commits = await _githubAPI.getCommits(
+      String packageName, DateTime patchDate) async {
+    List<String> newCommits = await _githubAPI.getCommits(
       packageName,
       getPatchesRepo(),
+      patchDate,
     );
-    List<String> newCommits = commits
-        .where((c) =>
-            c.commit != null &&
-            c.commit!.author != null &&
-            c.commit!.author!.date != null &&
-            c.commit!.author!.date!.isAfter(patchDate) &&
-            c.commit!.message != null)
-        .map((c) => c.commit!.message!)
-        .toList();
     if (newCommits.isEmpty) {
-      newCommits = commits
-          .where((c) => c.commit != null && c.commit!.message != null)
-          .take(3)
-          .map((c) => c.commit!.message!)
-          .toList();
+      newCommits = await _githubAPI.getCommits(
+        packageName,
+        getPatchesRepo(),
+        DateTime(2022, 3, 20, 21, 06, 01),
+      );
     }
     return newCommits;
   }

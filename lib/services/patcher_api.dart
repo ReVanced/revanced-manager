@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:app_installer/app_installer.dart';
+import 'package:collection/collection.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
@@ -40,11 +40,7 @@ class PatcherAPI {
   Future<void> _loadPatches() async {
     try {
       if (_patches.isEmpty) {
-        File? patchJsonFile = await _managerAPI.downloadPatches('.json');
-        if (patchJsonFile != null) {
-          List<dynamic> list = json.decode(patchJsonFile.readAsStringSync());
-          _patches = list.map((patch) => Patch.fromJson(patch)).toList();
-        }
+        _patches = await _managerAPI.getPatches();
       }
     } on Exception {
       _patches = List.empty();
@@ -53,7 +49,6 @@ class PatcherAPI {
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     List<ApplicationWithIcon> filteredApps = [];
-    await _loadPatches();
     for (Patch patch in _patches) {
       for (Package package in patch.compatiblePackages) {
         try {
@@ -74,7 +69,6 @@ class PatcherAPI {
   }
 
   Future<List<Patch>> getFilteredPatches(String packageName) async {
-    await _loadPatches();
     return _patches
         .where((patch) =>
             !patch.name.contains('settings') &&
@@ -83,7 +77,6 @@ class PatcherAPI {
   }
 
   Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
-    await _loadPatches();
     return _patches
         .where((patch) => appliedPatches.contains(patch.name))
         .toList();
@@ -105,20 +98,22 @@ class PatcherAPI {
     );
     if (includeSettings) {
       try {
-        Patch settingsPatch = _patches.firstWhere(
+        Patch? settingsPatch = _patches.firstWhereOrNull(
           (patch) =>
               patch.name.contains('settings') &&
               patch.compatiblePackages.any((pack) => pack.name == packageName),
         );
-        selectedPatches.add(settingsPatch);
+        if (settingsPatch != null) {
+          selectedPatches.add(settingsPatch);
+        }
       } catch (e) {
         // ignore
       }
     }
-    File? patchBundleFile = await _managerAPI.downloadPatches('.jar');
+    File? patchBundleFile = await _managerAPI.downloadPatches();
     File? integrationsFile;
     if (mergeIntegrations) {
-      integrationsFile = await _managerAPI.downloadIntegrations('.apk');
+      integrationsFile = await _managerAPI.downloadIntegrations();
     }
     if (patchBundleFile != null) {
       _tmpDir.createSync();

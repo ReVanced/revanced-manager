@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -71,9 +72,14 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   List<String> getSupportedVersions(Patch patch) {
     PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
-    return patch.compatiblePackages
-        .firstWhere((pack) => pack.name == app.packageName)
-        .versions;
+    Package? package = patch.compatiblePackages.firstWhereOrNull(
+      (pack) => pack.name == app.packageName,
+    );
+    if (package != null) {
+      return package.versions;
+    } else {
+      return List.empty();
+    }
   }
 
   bool isPatchSupported(Patch patch) {
