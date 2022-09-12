@@ -66,7 +66,7 @@ class InstallerView extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0).copyWith(bottom: 20.0),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[
@@ -79,58 +79,61 @@ class InstallerView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16,
-                          horizontal: 0,
-                        ),
-                        child: Visibility(
-                          visible: !model.isPatching,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Visibility(
-                                visible: model.isInstalled,
-                                child: CustomMaterialButton(
-                                  label: I18nText('installerView.openButton'),
-                                  isExpanded: true,
-                                  onPressed: () {
-                                    model.openApp();
-                                    model.cleanPatcher();
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                              Visibility(
-                                visible: !model.isInstalled,
-                                child: CustomMaterialButton(
-                                  isFilled: false,
-                                  label: I18nText(
-                                      'installerView.installRootButton'),
-                                  isExpanded: true,
-                                  onPressed: () => model.installResult(true),
-                                ),
-                              ),
-                              Visibility(
-                                visible: !model.isInstalled,
-                                child: const SizedBox(
-                                  width: 16,
-                                ),
-                              ),
-                              Visibility(
-                                visible: !model.isInstalled,
-                                child: CustomMaterialButton(
-                                  label:
-                                      I18nText('installerView.installButton'),
-                                  isExpanded: true,
-                                  onPressed: () => model.installResult(false),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                     ],
+                  ),
+                ),
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Visibility(
+                    visible: !model.isPatching,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0).copyWith(top: 0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Visibility(
+                            visible: model.isInstalled,
+                            child: CustomMaterialButton(
+                              label: I18nText('installerView.openButton'),
+                              isExpanded: true,
+                              onPressed: () {
+                                model.openApp();
+                                model.cleanPatcher();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: !model.isInstalled,
+                            child: CustomMaterialButton(
+                              isFilled: false,
+                              label:
+                                  I18nText('installerView.installRootButton'),
+                              isExpanded: true,
+                              onPressed: () => model.installResult(true),
+                            ),
+                          ),
+                          Visibility(
+                            visible: !model.isInstalled,
+                            child: const SizedBox(
+                              width: 16,
+                            ),
+                          ),
+                          Visibility(
+                            visible: !model.isInstalled,
+                            child: CustomMaterialButton(
+                              label: I18nText('installerView.installButton'),
+                              isExpanded: true,
+                              onPressed: () => model.installResult(false),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
