@@ -18,8 +18,6 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
 
 class MainActivity : FlutterActivity() {
     private val PATCHER_CHANNEL = "app.revanced.manager.flutter/patcher"
@@ -127,11 +125,7 @@ class MainActivity : FlutterActivity() {
                                         )
                                 )
                             }
-                            Files.copy(
-                                    originalFile.toPath(),
-                                    inputFile.toPath(),
-                                    StandardCopyOption.REPLACE_EXISTING
-                            )
+                            originalFile.copyTo(inputFile, true)
 
                             handler.post {
                                 installerChannel.invokeMethod(
