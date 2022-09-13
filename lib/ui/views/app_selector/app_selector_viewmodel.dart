@@ -30,7 +30,6 @@ class AppSelectorViewModel extends BaseViewModel {
       apkFilePath: application.apkFilePath,
       icon: application.icon,
       patchDate: DateTime.now(),
-      isRooted: false,
     );
     locator<PatcherViewModel>().selectedPatches.clear();
     locator<PatcherViewModel>().notifyListeners();
@@ -55,7 +54,6 @@ class AppSelectorViewModel extends BaseViewModel {
             apkFilePath: result.files.single.path!,
             icon: application.icon,
             patchDate: DateTime.now(),
-            isRooted: false,
           );
           locator<PatcherViewModel>().selectedPatches.clear();
           locator<PatcherViewModel>().notifyListeners();

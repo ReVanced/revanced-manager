@@ -104,25 +104,25 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> runPatcher() async {
     update(0.0, 'Initializing...', 'Initializing installer');
     if (_patches.isNotEmpty) {
-      String apkFilePath = _app.apkFilePath;
       try {
-        if (_app.isRooted) {
-          update(0.0, '', 'Checking if an old patched version exists');
-          bool oldExists = await _patcherAPI.checkOldPatch(_app);
-          if (oldExists) {
-            update(0.0, '', 'Deleting old patched version');
-            await _patcherAPI.deleteOldPatch(_app);
-          }
-        }
-        update(0.0, '', 'Creating working directory');
-        await _patcherAPI.runPatcher(_app.packageName, apkFilePath, _patches);
-      } on Exception {
+        update(0.1, '', 'Copying original apk');
+        String inputFilePath = await _patcherAPI.copyOriginalApk(
+          _app.packageName,
+          _app.apkFilePath,
+        );
+        update(0.1, '', 'Creating working directory');
+        await _patcherAPI.runPatcher(
+          _app.packageName,
+          inputFilePath,
+          _patches,
+        );
+      } catch (e) {
         hasErrors = true;
-        update(1.0, 'Aborting...', 'An error occurred! Aborting');
+        update(-1.0, 'Aborting...', 'An error occurred! Aborting\nError: $e');
       }
     } else {
       hasErrors = true;
-      update(1.0, 'Aborting...', 'No app or patches selected! Aborting');
+      update(-1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
     try {
       await FlutterBackground.disableBackgroundExecution();

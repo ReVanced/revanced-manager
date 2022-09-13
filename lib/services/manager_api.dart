@@ -198,7 +198,10 @@ class ManagerAPI {
   Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
     if (app.isRooted) {
-      existsRoot = await _rootAPI.isAppInstalled(app.packageName);
+      bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+      if (hasRootPermissions) {
+        existsRoot = await _rootAPI.isAppInstalled(app.packageName);
+      }
     }
     bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
     return !existsRoot && !existsNonRoot;

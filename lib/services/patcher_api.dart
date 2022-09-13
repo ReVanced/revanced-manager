@@ -82,9 +82,31 @@ class PatcherAPI {
         .toList();
   }
 
-  Future<void> runPatcher(
+  Future<String> copyOriginalApk(
     String packageName,
     String originalFilePath,
+  ) async {
+    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    if (hasRootPermissions) {
+      String originalRootPath = await _rootAPI.getOriginalFilePath(packageName);
+      if (File(originalRootPath).existsSync()) {
+        originalFilePath = originalRootPath;
+      }
+    }
+    String backupFilePath = '${_tmpDir.path}/$packageName.apk';
+    await patcherChannel.invokeMethod(
+      'copyOriginalApk',
+      {
+        'originalFilePath': originalFilePath,
+        'backupFilePath': backupFilePath,
+      },
+    );
+    return backupFilePath;
+  }
+
+  Future<void> runPatcher(
+    String packageName,
+    String inputFilePath,
     List<Patch> selectedPatches,
   ) async {
     bool mergeIntegrations = selectedPatches.any(
@@ -118,7 +140,6 @@ class PatcherAPI {
     if (patchBundleFile != null) {
       _tmpDir.createSync();
       Directory workDir = _tmpDir.createTempSync('tmp-');
-      File inputFile = File('${workDir.path}/base.apk');
       File patchedFile = File('${workDir.path}/patched.apk');
       _outFile = File('${workDir.path}/out.apk');
       Directory cacheDir = Directory('${workDir.path}/cache');
@@ -127,8 +148,7 @@ class PatcherAPI {
         'runPatcher',
         {
           'patchBundleFilePath': patchBundleFile.path,
-          'originalFilePath': originalFilePath,
-          'inputFilePath': inputFile.path,
+          'inputFilePath': inputFilePath,
           'patchedFilePath': patchedFile.path,
           'outFilePath': _outFile!.path,
           'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
@@ -153,8 +173,6 @@ class PatcherAPI {
               patchedApp.apkFilePath,
               _outFile!.path,
             );
-          } else {
-            return false;
           }
         } else {
           await AppInstaller.installApk(_outFile!.path);
@@ -176,19 +194,6 @@ class PatcherAPI {
         _outFile!.path.substring(0, lastSeparator + 1) + newName,
       );
       ShareExtend.share(share.path, 'file');
-    }
-  }
-
-  Future<bool> checkOldPatch(PatchedApplication patchedApp) async {
-    if (patchedApp.isRooted) {
-      return await _rootAPI.isAppInstalled(patchedApp.packageName);
-    }
-    return false;
-  }
-
-  Future<void> deleteOldPatch(PatchedApplication patchedApp) async {
-    if (patchedApp.isRooted) {
-      await _rootAPI.deleteApp(patchedApp.packageName, patchedApp.apkFilePath);
     }
   }
 

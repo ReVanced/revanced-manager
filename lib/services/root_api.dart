@@ -1,7 +1,7 @@
 import 'package:root/root.dart';
 
 class RootAPI {
-  final String _managerDirPath = '/data/adb/revanced_manager';
+  final String _managerDirPath = '/data/adb/revanced-manager';
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
   final String _serviceDDirPath = '/data/adb/service.d';
 
@@ -72,13 +72,15 @@ class RootAPI {
     String patchedFilePath,
   ) async {
     try {
+      await deleteApp(packageName, originalFilePath);
       await Root.exec(
         cmd: 'mkdir -p "$_managerDirPath/$packageName"',
       );
-      installServiceDScript(packageName);
-      installPostFsDataScript(packageName);
-      installApk(packageName, patchedFilePath);
-      mountApk(packageName, originalFilePath, patchedFilePath);
+      await saveOriginalFilePath(packageName, originalFilePath);
+      await installServiceDScript(packageName);
+      await installPostFsDataScript(packageName);
+      await installApk(packageName, patchedFilePath);
+      await mountApk(packageName, originalFilePath);
       return true;
     } on Exception {
       return false;
@@ -129,11 +131,7 @@ class RootAPI {
     );
   }
 
-  Future<void> mountApk(
-    String packageName,
-    String originalFilePath,
-    String patchedFilePath,
-  ) async {
+  Future<void> mountApk(String packageName, String originalFilePath) async {
     String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'am force-stop "$packageName"',
@@ -143,6 +141,20 @@ class RootAPI {
     );
     await Root.exec(
       cmd: 'su -mm -c "mount -o bind $newPatchedFilePath $originalFilePath"',
+    );
+  }
+
+  Future<String> getOriginalFilePath(String packageName) async {
+    return '$_managerDirPath/$packageName/original.apk';
+  }
+
+  Future<void> saveOriginalFilePath(
+    String packageName,
+    String originalFilePath,
+  ) async {
+    String originalRootPath = '$_managerDirPath/$packageName/original.apk';
+    await Root.exec(
+      cmd: 'cp "$originalFilePath" "$originalRootPath"',
     );
   }
 }
