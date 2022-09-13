@@ -1,13 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:logcat/logcat.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
+import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:timeago/timeago.dart';
@@ -219,5 +223,21 @@ class SettingsViewModel extends BaseViewModel {
   Future<int> getSdkVersion() async {
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;
+  }
+
+  Future<void> exportLogcatLogs() async {
+    Directory appCache = await getTemporaryDirectory();
+    Directory logDir = Directory('${appCache.path}/logs');
+    logDir.createSync();
+    String dateTime = DateTime.now()
+        .toIso8601String()
+        .replaceAll('-', '')
+        .replaceAll(':', '')
+        .replaceAll('T', '')
+        .replaceAll('.', '');
+    File logcat = File('${logDir.path}/revanced-manager_$dateTime.log');
+    String logs = await Logcat.execute();
+    logcat.writeAsStringSync(logs);
+    ShareExtend.share(logcat.path, 'file');
   }
 }

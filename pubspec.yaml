@@ -43,6 +43,10 @@ dependencies:
   injectable: ^1.5.3
   intl: ^0.17.0
   json_annotation: ^4.6.0
+  logcat:
+    git:
+      url: https://github.com/SuaMusica/logcat
+      ref: feature/nullSafe
   package_info_plus: ^1.4.3+1
   path_provider: ^2.0.11
   pull_to_refresh: ^2.0.0

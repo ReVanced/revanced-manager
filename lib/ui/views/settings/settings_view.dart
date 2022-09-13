@@ -124,10 +124,25 @@ class SettingsView extends StatelessWidget {
                       ],
                     ),
                     const Divider(thickness: 1.0),
-                    const SettingsSection(
+                    SettingsSection(
                       title: 'settingsView.infoSectionTitle',
                       children: <Widget>[
-                        AboutWidget(),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: I18nText(
+                            'settingsView.logsLabel',
+                            child: const Text(
+                              '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          subtitle: I18nText('settingsView.logsHint'),
+                          onTap: () => model.exportLogcatLogs(),
+                        ),
+                        const AboutWidget(),
                       ],
                     ),
                   ],
