@@ -194,7 +194,18 @@ class PatcherAPI {
     }
   }
 
-  void shareLog(String logs) {
-    ShareExtend.share(logs, 'text');
+  Future<void> sharePatcherLog(String logs) async {
+    Directory appCache = await getTemporaryDirectory();
+    Directory logDir = Directory('${appCache.path}/logs');
+    logDir.createSync();
+    String dateTime = DateTime.now()
+        .toIso8601String()
+        .replaceAll('-', '')
+        .replaceAll(':', '')
+        .replaceAll('T', '')
+        .replaceAll('.', '');
+    File log = File('${logDir.path}/revanced-manager_patcher_$dateTime.log');
+    log.writeAsStringSync(logs);
+    ShareExtend.share(log.path, 'file');
   }
 }

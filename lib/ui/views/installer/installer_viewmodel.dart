@@ -151,7 +151,7 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void shareLog() {
-    _patcherAPI.shareLog(logs);
+    _patcherAPI.sharePatcherLog(logs);
   }
 
   Future<void> cleanPatcher() async {

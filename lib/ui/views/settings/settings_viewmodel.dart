@@ -235,7 +235,7 @@ class SettingsViewModel extends BaseViewModel {
         .replaceAll(':', '')
         .replaceAll('T', '')
         .replaceAll('.', '');
-    File logcat = File('${logDir.path}/revanced-manager_$dateTime.log');
+    File logcat = File('${logDir.path}/revanced-manager_logcat_$dateTime.log');
     String logs = await Logcat.execute();
     logcat.writeAsStringSync(logs);
     ShareExtend.share(logcat.path, 'file');
