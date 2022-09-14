@@ -22,6 +22,12 @@ body:
       required: true
   - type: textarea
     attributes:
+      label: Branch
+      description: Which github branch did you use (Flutter or Compose)?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
       label: Bug description
       description: How did you find the bug? Any additional details that might help?
     validations:

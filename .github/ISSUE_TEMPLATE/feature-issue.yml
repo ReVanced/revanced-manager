@@ -14,6 +14,12 @@ body:
       required: true
   - type: textarea
     attributes:
+      label: Branch
+      description: Which github branch did you use (Flutter or Compose)?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
       label: Issue
       description: What is the current problem. Why does it require a feature request?
     validations:
