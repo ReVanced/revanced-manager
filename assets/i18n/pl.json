@@ -1,0 +1,143 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Anuluj",
+    "enabledLabel": "Włączone",
+    "disabledLabel": "Wyłączone",
+    "yesLabel": "Tak",
+    "noLabel": "Nie",
+    "navigationView": {
+        "dashboardTab": "Pulpit",
+        "patcherTab": "Modyfikuj",
+        "settingsTab": "Ustawienia"
+    },
+    "homeView": {
+        "widgetTitle": "Pulpit",
+        "updatesSubtitle": "Aktualizacje",
+        "patchedSubtitle": "Zmodyfikowane aplikacje",
+        "updatesAvailable": "Dostępne aktualizacje",
+        "noUpdates": "Brak dostępnych aktualizacji",
+        "noInstallations": "Nie zainstalowano zmodyfikowanych aplikacji",
+        "installed": "Zainstalowane",
+        "updateDialogTitle": "Aktualizacja",
+        "updateDialogText": "Czy na pewno chcesz pobrać i zaktualizować menedżer?",
+        "notificationTitle": "Menedżer ReVanced został zaktualizowany!",
+        "notificationText": "Stuknij, aby otworzyć aplikację",
+        "downloadingMessage": "Pobieranie aktualizacji!",
+        "installingMessage": "Instalowanie aktualizacji... Poczekaj!",
+        "errorDownloadMessage": "Nie można pobrać aktualizacji!",
+        "errorInstallMessage": "Nie można zainstalować aktualizacji!",
+        "noConnection": "Brak połączenia internetowego"
+    },
+    "applicationItem": {
+        "patchButton": "Modyfikuj",
+        "infoButton": "Informacje",
+        "changelogLabel": "Dziennik zmian"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Ładowanie",
+        "timeagoLabel": "{time} temu",
+        "patcherLabel": "Modyfikator: ",
+        "managerLabel": "Menedżer: ",
+        "updateButton": "Aktualizuj menedżer"
+    },
+    "patcherView": {
+        "widgetTitle": "Modyfikowanie aplikacji",
+        "patchButton": "Modyfikuj"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Wybierz aplikację",
+        "widgetTitleSelected": "Wybrana aplikacja",
+        "widgetSubtitle": "Nie wybrano aplikacji.",
+        "noAppsLabel": "Nie znaleziono aplikacji."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Wybierz łatki",
+        "widgetTitleSelected": "Wybrane łatki",
+        "widgetSubtitle": "Najpierw wybierz aplikację.",
+        "widgetEmptySubtitle": "Nie wybrano żadnych łatek."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Media społecznościowe",
+        "widgetSubtitle": "Jesteśmy online!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Wyszukaj aplikacje",
+        "storageButton": "Pamięć",
+        "errorMessage": "Nie można użyć wybranej aplikacji."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Szukaj łatek",
+        "doneButton": "Gotowe"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Nieobsługiwana wersja",
+        "unsupportedDialogTitle": "Ostrzeżenie",
+        "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas modyfikowania.\n\nWersja aplikacji: {packageVersion}\nAktualnie wspierane wersje:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Instalator",
+        "installButton": "Instaluj",
+        "installRootButton": "Instaluj jako Root",
+        "openButton": "Otworz",
+        "shareButton": "Udostępnij plik",
+        "notificationTitle": "Menedżer ReVanced wprowadza łatki",
+        "notificationText": "Stuknij, aby powrócić do instalatora",
+        "shareApkMenuOption": "Udostępnij APK",
+        "shareLogMenuOption": "Udostępnij log"
+    },
+    "settingsView": {
+        "widgetTitle": "Ustawienia",
+        "appearanceSectionTitle": "Wygląd",
+        "patcherSectionTitle": "Modyfikator",
+        "teamSectionTitle": "Zespół",
+        "infoSectionTitle": "Informacje",
+        "darkThemeLabel": "Tryb ciemny",
+        "darkThemeHint": "Witamy po ciemnej stronie mocy",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Ciesz się wrażeniami bliższymi urządzeniu",
+        "languageLabel": "Język",
+        "englishOption": "Angielski",
+        "frenchOption": "Francuski",
+        "polishOption": "Polski",
+        "sourcesLabel": "Źródła",
+        "sourcesLabelHint": "Skonfiguruj własne źródła",
+        "orgPatchesLabel" : "Nazwa ",
+        "sourcesPatchesLabel" : "Źródło łatek",
+        "orgIntegrationsLabel": "Integrations Org",
+        "sourcesIntegrationsLabel": "Integrations Source",
+        "sourcesResetDialogTitle": "Resetuj",
+        "sourcesResetDialogText": "Czy na pewno chcesz przywrócić źródła niestandardowe do ich wartości domyślnych?",
+        "contributorsLabel": "Współtwórcy",
+        "contributorsHint": "Lista współtwórców ReVanced",
+        "logsLabel": "Logi",
+        "logsHint": "Udostępnij logi debugowania urządzenia",
+        "aboutLabel": "O aplikacji",
+        "snackbarMessage": "Skopiowano do schowka"
+    },
+    "appInfoView": {
+        "widgetTitle": "Informacje o aplikacji",
+        "openButton": "Otwórz",
+        "uninstallButton": "Odinstaluj",
+        "patchButton": "Modyfikuj",
+        "uninstallDialogTitle": "Usuwanie aplikacji",
+        "uninstallDialogText": "Czy na pewno chcesz odinstalować tę aplikację?",
+        "rootDialogTitle": "Błąd",
+        "rootDialogText": "Aplikacja została zainstalowana z uprawnieniami root, ale obecnie dostęp do superusera jest wyłączony.\nProszę przywrócić dostęp do roota.",
+        "packageNameLabel": "Nazwa pakietu",
+        "installTypeLabel": "Wariant instalacji",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Data modyfikacji",
+        "patchedDateHint": "{date} o {time}",
+        "appliedPatchesLabel": "Zastosowane łatki",
+        "appliedPatchesHint": "Zastosowano {quantity} łatek"
+    },
+    "contributorsView": {
+        "widgetTitle": "Współtwórcy",
+        "patcherContributors": "Współtwórcy modyfikatora",
+        "patchesContributors": "Współtwórcy łatek",
+        "integrationsContributors": "Współtwórcy integracji",
+        "cliContributors": "Współtwórcy wersji CLI",
+        "managerContributors": "Współtwórcy menedżera"
+    }
+}
