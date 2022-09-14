@@ -9,4 +9,4 @@ object Aapt {
     }
 }
 
-private fun File.resolveAapt() = resolve(list { _, f -> !File(f).isDirectory && file.contains("aapt") }!!.first())
+private fun File.resolveAapt() = resolve(list { _, f -> !File(f).isDirectory && f.contains("aapt") }!!.first())
