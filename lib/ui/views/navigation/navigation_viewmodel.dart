@@ -1,6 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:app_installer/app_installer.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
