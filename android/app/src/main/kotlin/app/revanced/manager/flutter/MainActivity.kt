@@ -11,6 +11,7 @@ import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.extensions.PatchExtensions.patchName
+import app.revanced.patcher.logging.Logger
 import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
@@ -141,77 +142,7 @@ class MainActivity : FlutterActivity() {
                         resourcePatching,
                         Aapt.binary(applicationContext).absolutePath,
                         cacheDirPath,
-                        logger =
-                        object :
-                            app.revanced.patcher.logging.Logger {
-                            override fun error(msg: String) {
-                                handler.post {
-                                    installerChannel
-                                        .invokeMethod(
-                                            "update",
-                                            mapOf(
-                                                "progress" to
-                                                        -1.0,
-                                                "header" to
-                                                        "",
-                                                "log" to
-                                                        msg
-                                            )
-                                        )
-                                }
-                            }
-
-                            override fun warn(msg: String) {
-                                handler.post {
-                                    installerChannel
-                                        .invokeMethod(
-                                            "update",
-                                            mapOf(
-                                                "progress" to
-                                                        -1.0,
-                                                "header" to
-                                                        "",
-                                                "log" to
-                                                        msg
-                                            )
-                                        )
-                                }
-                            }
-
-                            override fun info(msg: String) {
-                                handler.post {
-                                    installerChannel
-                                        .invokeMethod(
-                                            "update",
-                                            mapOf(
-                                                "progress" to
-                                                        -1.0,
-                                                "header" to
-                                                        "",
-                                                "log" to
-                                                        msg
-                                            )
-                                        )
-                                }
-                            }
-
-                            override fun trace(msg: String) {
-                                handler.post {
-                                    installerChannel
-                                        .invokeMethod(
-                                            "update",
-                                            mapOf(
-                                                "progress" to
-                                                        -1.0,
-                                                "header" to
-                                                        "",
-                                                "log" to
-                                                        msg
-                                            )
-                                        )
-                                }
-                            }
-                        }
+                        logger = ManagerLogger()
                     )
                 )
 
@@ -325,5 +256,44 @@ class MainActivity : FlutterActivity() {
             handler.post { result.success(null) }
         }
             .start()
+    }
+
+    inner class ManagerLogger : Logger {
+        override fun error(msg: String) {
+            handler.post {
+                installerChannel
+                    .invokeMethod(
+                        "update",
+                        mapOf("progress" to -1.0, "header" to "", "log" to msg)
+                    )
+            }
+        }
+
+        override fun warn(msg: String) {
+            handler.post {
+                installerChannel.invokeMethod(
+                    "update",
+                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
+                )
+            }
+        }
+
+        override fun info(msg: String) {
+            handler.post {
+                installerChannel.invokeMethod(
+                    "update",
+                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
+                )
+            }
+        }
+
+        override fun trace(msg: String) {
+            handler.post {
+                installerChannel.invokeMethod(
+                    "update",
+                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
+                )
+            }
+        }
     }
 }
