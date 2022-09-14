@@ -76,7 +76,7 @@ class DynamicThemeBuilder extends StatelessWidget {
               2: lightDynamicTheme,
               3: darkDynamicTheme,
             },
-            fallbackTheme: darkCustomTheme,
+            fallbackTheme: lightCustomTheme,
           ),
           builder: (context, theme) => MaterialApp(
             debugShowCheckedModeBanner: false,
