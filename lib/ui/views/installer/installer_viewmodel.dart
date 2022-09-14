@@ -142,6 +142,13 @@ class InstallerViewModel extends BaseViewModel {
       update(1.0, 'Installed!', 'Installed!');
       _app.patchDate = DateTime.now();
       _app.appliedPatches = _patches.map((p) => p.name).toList();
+      bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
+      if (hasMicroG) {
+        _app.packageName = _app.packageName.replaceFirst(
+          'com.google.',
+          'app.revanced.',
+        );
+      }
       await _managerAPI.savePatchedApp(_app);
     }
   }
