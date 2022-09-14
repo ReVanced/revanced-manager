@@ -82,31 +82,23 @@ class PatcherAPI {
         .toList();
   }
 
-  Future<String> copyOriginalApk(
+  Future<String> getOriginalFilePath(
     String packageName,
     String originalFilePath,
   ) async {
     bool hasRootPermissions = await _rootAPI.hasRootPermissions();
     if (hasRootPermissions) {
-      String originalRootPath = await _rootAPI.getOriginalFilePath(packageName);
-      if (File(originalRootPath).existsSync()) {
-        originalFilePath = originalRootPath;
-      }
+      originalFilePath = await _rootAPI.getOriginalFilePath(
+        packageName,
+        originalFilePath,
+      );
     }
-    String backupFilePath = '${_tmpDir.path}/$packageName.apk';
-    await patcherChannel.invokeMethod(
-      'copyOriginalApk',
-      {
-        'originalFilePath': originalFilePath,
-        'backupFilePath': backupFilePath,
-      },
-    );
-    return backupFilePath;
+    return originalFilePath;
   }
 
   Future<void> runPatcher(
     String packageName,
-    String inputFilePath,
+    String originalFilePath,
     List<Patch> selectedPatches,
   ) async {
     bool mergeIntegrations = selectedPatches.any(
@@ -140,6 +132,7 @@ class PatcherAPI {
     if (patchBundleFile != null) {
       _tmpDir.createSync();
       Directory workDir = _tmpDir.createTempSync('tmp-');
+      File inputFile = File('${workDir.path}/base.apk');
       File patchedFile = File('${workDir.path}/patched.apk');
       _outFile = File('${workDir.path}/out.apk');
       Directory cacheDir = Directory('${workDir.path}/cache');
@@ -148,7 +141,11 @@ class PatcherAPI {
         'runPatcher',
         {
           'patchBundleFilePath': patchBundleFile.path,
-          'inputFilePath': inputFilePath,
+          'originalFilePath': await getOriginalFilePath(
+            packageName,
+            originalFilePath,
+          ),
+          'inputFilePath': inputFile.path,
           'patchedFilePath': patchedFile.path,
           'outFilePath': _outFile!.path,
           'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',

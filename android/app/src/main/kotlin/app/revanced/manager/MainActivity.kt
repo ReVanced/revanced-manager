@@ -31,18 +31,9 @@ class MainActivity : FlutterActivity() {
         installerChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, INSTALLER_CHANNEL)
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
-                "copyOriginalApk" -> {
-                    val originalFilePath = call.argument<String>("originalFilePath")
-                    val backupFilePath = call.argument<String>("backupFilePath") 
-                    if (originalFilePath != null && backupFilePath != null) {
-                        File(originalFilePath).copyTo(File(backupFilePath), true)
-                        result.success(null)
-                    } else {
-                        result.notImplemented()
-                    }
-                }
                 "runPatcher" -> {
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
+                    val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val patchedFilePath = call.argument<String>("patchedFilePath")
                     val outFilePath = call.argument<String>("outFilePath")
@@ -53,6 +44,7 @@ class MainActivity : FlutterActivity() {
                     val resourcePatching = call.argument<Boolean>("resourcePatching")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     if (patchBundleFilePath != null &&
+                                    originalFilePath != null &&
                                     inputFilePath != null &&
                                     patchedFilePath != null &&
                                     outFilePath != null &&
@@ -66,6 +58,7 @@ class MainActivity : FlutterActivity() {
                         runPatcher(
                                 result,
                                 patchBundleFilePath,
+                                originalFilePath,
                                 inputFilePath,
                                 patchedFilePath,
                                 outFilePath,
@@ -88,6 +81,7 @@ class MainActivity : FlutterActivity() {
     fun runPatcher(
             result: MethodChannel.Result,
             patchBundleFilePath: String,
+            originalFilePath: String,
             inputFilePath: String,
             patchedFilePath: String,
             outFilePath: String,
@@ -98,6 +92,7 @@ class MainActivity : FlutterActivity() {
             resourcePatching: Boolean,
             keyStoreFilePath: String
     ) {
+        val originalFile = File(originalFilePath)
         val inputFile = File(inputFilePath)
         val patchedFile = File(patchedFilePath)
         val outFile = File(outFilePath)
@@ -119,6 +114,18 @@ class MainActivity : FlutterActivity() {
 
         Thread(
                         Runnable {
+                            handler.post {
+                                installerChannel.invokeMethod(
+                                        "update",
+                                        mapOf(
+                                                "progress" to 0.1,
+                                                "header" to "",
+                                                "log" to "Copying original apk"
+                                        )
+                                )
+                            }
+                            originalFile.copyTo(inputFile, true)
+
                             handler.post {
                                 installerChannel.invokeMethod(
                                         "update",

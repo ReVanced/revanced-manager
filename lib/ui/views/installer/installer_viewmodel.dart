@@ -105,15 +105,10 @@ class InstallerViewModel extends BaseViewModel {
     update(0.0, 'Initializing...', 'Initializing installer');
     if (_patches.isNotEmpty) {
       try {
-        update(0.1, '', 'Copying original apk');
-        String inputFilePath = await _patcherAPI.copyOriginalApk(
-          _app.packageName,
-          _app.apkFilePath,
-        );
         update(0.1, '', 'Creating working directory');
         await _patcherAPI.runPatcher(
           _app.packageName,
-          inputFilePath,
+          _app.apkFilePath,
           _patches,
         );
       } catch (e) {
