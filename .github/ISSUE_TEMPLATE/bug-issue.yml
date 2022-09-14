@@ -1,0 +1,61 @@
+name: 🐞 Bug report
+description: Report a very clearly broken issue.
+title: 'bug: <title>'
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ReVanced Manager bug report
+
+        Important to note that your issue may have already been reported before. Please check for existing issues [here](https://github.com/revanced/revanced-manager/labels/bug).
+
+  - type: dropdown
+    attributes:
+      label: Type
+      options:
+        - Error while running the manager
+        - Error at runtime
+        - Cosmetic
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Bug description
+      description: How did you find the bug? Any additional details that might help?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Add the steps to reproduce this bug including your environment.
+      placeholder: Step 1. Download some files. Step 2. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots or videos
+      description: Add screenshots or videos that show the bug here.
+      placeholder: Drag and drop the screenshots/videos into this box.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Solution
+      description: If applicable, add a possible solution.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Add additional context here.
+    validations:
+      required: false
