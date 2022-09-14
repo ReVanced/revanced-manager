@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📃 Documentation
+    url: https://github.com/revanced/revanced-documentation/
+    about: Don't know how or where to start? Check out our documentation!
+  - name: 🗨 Discussions
+    url: https://github.com/revanced/revanced-suggestions/discussions
+    about: Got something you think should change or be added? Search for or start a new discussion!
