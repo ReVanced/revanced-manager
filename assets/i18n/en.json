@@ -111,7 +111,7 @@
         "logsLabel": "Logs",
         "logsHint": "Share device debug logs",
         "aboutLabel": "About",
-        "versionLabel": "Version"
+        "snackbarMessage": "Copied to clipboard"
     },
     "appInfoView": {
         "widgetTitle": "App Info",

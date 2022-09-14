@@ -38,7 +38,6 @@ class _AboutWidgetState extends State<AboutWidget> {
                     Clipboard.setData(
                       ClipboardData(
                         text: 'Version: ${snapshot.data!['version']}\n'
-                            'Build: ${snapshot.data!['buildNumber']}\n'
                             'Model: ${snapshot.data!['model']}\n'
                             'Android Version: ${snapshot.data!['androidVersion']}\n'
                             'Arch: ${snapshot.data!['arch']}\n',
@@ -46,7 +45,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text('Copied to clipboard'),
+                        content: I18nText('settingsView.snackbarMessage'),
                         backgroundColor:
                             Theme.of(context).colorScheme.secondary,
                       ),
@@ -57,13 +56,6 @@ class _AboutWidgetState extends State<AboutWidget> {
                     children: <Widget>[
                       Text(
                         'Version: ${snapshot.data!['version']}',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      Text(
-                        'Build: ${snapshot.data!['buildNumber']}',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w300,

@@ -5,13 +5,11 @@ class AboutInfo {
   static Future<Map<String, dynamic>> getInfo() async {
     final packageInfo = await PackageInfo.fromPlatform();
     final info = await DeviceInfoPlugin().androidInfo;
-
     return {
       'version': packageInfo.version,
-      'buildNumber': packageInfo.buildNumber,
       'model': info.model,
       'androidVersion': info.version.release,
-      'arch': info.supported64BitAbis
+      'arch': info.supportedAbis.first
     };
   }
 }
