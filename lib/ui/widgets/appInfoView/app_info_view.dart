@@ -41,6 +41,7 @@ class AppInfoView extends StatelessWidget {
                     SizedBox(
                       height: 64.0,
                       child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
                         child: Image.memory(
                           app.icon,
                           fit: BoxFit.cover,
