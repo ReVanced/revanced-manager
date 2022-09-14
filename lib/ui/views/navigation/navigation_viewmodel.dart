@@ -1,7 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:app_installer/app_installer.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
@@ -21,6 +25,8 @@ class NavigationViewModel extends IndexTrackingViewModel {
         DynamicTheme.of(context)!.setTheme(1);
       }
     }
+    RootAPI().hasRootPermissions();
+    Permission.requestInstallPackages.request();
   }
 
   Widget getViewForIndex(int index) {
