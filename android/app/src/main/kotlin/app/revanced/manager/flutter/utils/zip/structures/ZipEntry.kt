@@ -76,7 +76,7 @@ data class ZipEntry(
             val fileNameLength = input.readUShortLE()
             var fileName = ""
             val extraFieldLength = input.readUShortLE()
-            var extraField = ByteArray(extraFieldLength.toInt())
+            val extraField = ByteArray(extraFieldLength.toInt())
             val fileCommentLength = input.readUShortLE()
             var fileComment = ""
             val diskNumber = input.readUShortLE()

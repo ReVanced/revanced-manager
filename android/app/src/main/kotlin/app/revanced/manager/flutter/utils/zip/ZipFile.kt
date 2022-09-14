@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel
 import java.util.zip.CRC32
 import java.util.zip.Deflater
 
-class ZipFile(val file: File) : Closeable {
+class ZipFile(file: File) : Closeable {
     var entries: MutableList<ZipEntry> = mutableListOf()
 
     private val filePointer: RandomAccessFile = RandomAccessFile(file, "rw")
@@ -134,8 +134,8 @@ class ZipFile(val file: File) : Closeable {
         addEntry(entry, compressedBuffer)
     }
 
-    fun addEntryCopyData(entry: ZipEntry, data: ByteBuffer, alignment: Int? = null) {
-        alignment?.let { alignment ->
+    private fun addEntryCopyData(entry: ZipEntry, data: ByteBuffer, alignment: Int? = null) {
+        alignment?.let {
             //calculate where data would end up
             val dataOffset = filePointer.filePointer + entry.LFHSize
 

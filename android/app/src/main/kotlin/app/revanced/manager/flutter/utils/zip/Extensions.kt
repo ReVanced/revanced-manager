@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package app.revanced.manager.flutter.utils.zip
 
 import java.io.DataInput
@@ -17,8 +19,8 @@ fun UShort.toBigEndian() = (this.toUInt() shl 16).toBigEndian().toUShort()
 fun ByteBuffer.getUShort() = this.short.toUShort()
 fun ByteBuffer.getUInt() = this.int.toUInt()
 
-fun ByteBuffer.putUShort(ushort: UShort) = this.putShort(ushort.toShort())
-fun ByteBuffer.putUInt(uint: UInt) = this.putInt(uint.toInt())
+fun ByteBuffer.putUShort(ushort: UShort): ByteBuffer = this.putShort(ushort.toShort())
+fun ByteBuffer.putUInt(uint: UInt): ByteBuffer = this.putInt(uint.toInt())
 
 fun DataInput.readUShort() = this.readShort().toUShort()
 fun DataInput.readUInt() = this.readInt().toUInt()
