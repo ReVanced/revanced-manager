@@ -25,6 +25,7 @@ class NavigationViewModel extends IndexTrackingViewModel {
     }
     RootAPI().hasRootPermissions();
     Permission.requestInstallPackages.request();
+    Permission.ignoreBatteryOptimizations.request();
   }
 
   Widget getViewForIndex(int index) {
