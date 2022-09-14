@@ -1,8 +1,7 @@
 import 'package:root/root.dart';
 
 class RootAPI {
-  final String _managerDirPath = '/data/adb/revanced-manager';
-  final String _managerTmpDirPath = '/data/local/tmp/revanced-manager';
+  final String _managerDirPath = '/data/local/tmp/revanced-manager';
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
   final String _serviceDDirPath = '/data/adb/service.d';
 
@@ -100,7 +99,12 @@ class RootAPI {
       await Root.exec(
         cmd: 'mkdir -p "$_managerDirPath/$packageName"',
       );
-      await setPermissions('0755', '', '', "$_managerDirPath/$packageName");
+      await setPermissions(
+        '0755',
+        'shell:shell',
+        '',
+        '$_managerDirPath/$packageName',
+      );
       await saveOriginalFilePath(packageName, originalFilePath);
       await installServiceDScript(packageName);
       await installPostFsDataScript(packageName);
@@ -175,7 +179,7 @@ class RootAPI {
   ) async {
     bool isInstalled = await isAppInstalled(packageName);
     if (isInstalled && await isMounted(packageName)) {
-      originalFilePath = '$_managerTmpDirPath/$packageName/original.apk';
+      originalFilePath = '$_managerDirPath/$packageName/original.apk';
       await setPermissions(
         '0644',
         'shell:shell',
@@ -190,15 +194,15 @@ class RootAPI {
     String packageName,
     String originalFilePath,
   ) async {
-    String originalRootPath = '$_managerTmpDirPath/$packageName/original.apk';
+    String originalRootPath = '$_managerDirPath/$packageName/original.apk';
     await Root.exec(
-      cmd: 'mkdir -p "$_managerTmpDirPath/$packageName"',
+      cmd: 'mkdir -p "$_managerDirPath/$packageName"',
     );
     await setPermissions(
       '0755',
       'shell:shell',
       '',
-      '$_managerTmpDirPath/$packageName',
+      '$_managerDirPath/$packageName',
     );
     await Root.exec(
       cmd: 'cp "$originalFilePath" "$originalRootPath"',
