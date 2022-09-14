@@ -174,7 +174,10 @@ class HomeViewModel extends BaseViewModel {
           ),
           CustomMaterialButton(
             label: I18nText('okButton'),
-            onPressed: () => updateManager(context),
+            onPressed: () {
+              Navigator.of(context).pop();
+              updateManager(context);
+            },
           )
         ],
       ),
