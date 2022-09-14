@@ -26,9 +26,21 @@ jobs:
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
         run: flutter build apk
+      - name: Sign APK
+        id: sign_apk
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: build/app/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEYSTORE }}
+          keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
       - name: Add version to APK
-        run: mv build/app/outputs/flutter-apk/app-release.apk revanced-manager-${{ env.RELEASE_VERSION }}.apk
+        run: mv ${{steps.sign_apk.outputs.signedReleaseFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
       - name: Publish release APK
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
