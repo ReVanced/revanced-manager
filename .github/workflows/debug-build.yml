@@ -3,7 +3,7 @@ name: "Debug Build"
 on:
   push:
     branches:
-      - "master"
+      - "flutter-disabled"
     tags-ignore:
       - "*"
 
