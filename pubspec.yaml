@@ -64,11 +64,19 @@ dependencies:
 
 dev_dependencies:
   build_runner: any
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   injectable_generator: ^1.5.4
   json_serializable: ^6.3.1
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/ic_launcher_round.png"
+  adaptive_icon_background: "#1B1B1B"
+  adaptive_icon_foreground: "assets/images/ic_launcher.png"
 
 flutter:
   uses-material-design: true
