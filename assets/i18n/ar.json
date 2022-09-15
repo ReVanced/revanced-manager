@@ -1,0 +1,145 @@
+{
+    "okButton": "موافق",
+    "cancelButton": "إلغاء",
+    "enabledLabel": "مفعّل",
+    "disabledLabel": "معطَّل",
+    "yesLabel": "نعم",
+    "noLabel": "لا",
+    "navigationView": {
+        "dashboardTab": "لوحة التحكم",
+        "patcherTab": "المعدّل",
+        "settingsTab": "الإعدادات"
+    },
+    "homeView": {
+        "widgetTitle": "لوحة التحكم",
+        "updatesSubtitle": "التحديثات",
+        "patchedSubtitle": "التطبيقات المعدلة",
+        "updatesAvailable": "التحديث متوفر",
+        "noUpdates": "لا يوجد تحديث متوفر",
+        "noInstallations": "لا توجد تطبيقات معدلة مثبتة",
+        "installed": "مثبت",
+        "updateDialogTitle": "تحديث",
+        "updateDialogText": "هل أنت متأكد من أنك تريد تحميل وتحديث المدير؟",
+        "notificationTitle": "تم تحديث المدير!",
+        "notificationText": "انقر لفتح التطبيق",
+        "downloadingMessage": "جاري تنزيل التحديث!",
+        "installingMessage": "جارٍ تثبيت التحديث...",
+        "errorDownloadMessage": "تعذر تحميل التحديث!",
+        "errorInstallMessage": "تعذر تحميل التحديث!",
+        "noConnection": "لا يوجد اتصال بالإنترنت"
+    },
+    "applicationItem": {
+        "patchButton": "تعديل",
+        "infoButton": "معلومات",
+        "changelogLabel": "سِجل التغييرات"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "جار التحميل",
+        "timeagoLabel": "منذ {time}",
+        "patcherLabel": "المعدّل: ",
+        "managerLabel": "المدير: ",
+        "updateButton": "تحديث المدير"
+    },
+    "patcherView": {
+        "widgetTitle": "المعدّل",
+        "patchButton": "تعديل",
+        "patchDialogTitle": "تحذير",
+        "patchDialogText": "لقد اخترت تعديل مورد وتم اكتشاف تثبيت منقسم لAPK بحيث يمكن أن تحدث أخطاء في التصحيح.\nهل أنت متأكد من أنك تريد المضي قدما في تصحيح تطبيق APK الأساسي المقسم؟"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "اختر التطبيق",
+        "widgetTitleSelected": "التطبيق المحدد",
+        "widgetSubtitle": "لم يتم اختيار أي تطبيق.",
+        "noAppsLabel": "لم يتمّ العثور على أيّ تطبيق."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "اختر التعديلات",
+        "widgetTitleSelected": "التعديلات المحددة",
+        "widgetSubtitle": "اختر تطبيقاً أولاً.",
+        "widgetEmptySubtitle": "لم يتم تحديد اي تعديلات."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "التواصل الاجتماعي",
+        "widgetSubtitle": "تم الاتصال بالانترنت!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "البحث عن التطبيقات",
+        "storageButton": "التخزين",
+        "errorMessage": "غير قادر على استخدام التطبيق المحدد."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "البحث عن التعديلات",
+        "doneButton": "تم"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "إصدار غير مدعوم",
+        "unsupportedDialogTitle": "تحذير",
+        "unsupportedDialogText": "تحديد هذا التعديل قد يؤدي أو لا يؤدي إلى أخطاء في عملية التعديل.\n\nإصدار التطبيق: {packageVersion}\nالإصدارات الحالية المدعومة:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "المثبت",
+        "installButton": "تثبيت",
+        "installRootButton": "تثبيت كـ روت",
+        "openButton": "فتح",
+        "shareButton": "مشاركة الملف",
+        "notificationTitle": "المدير يقوم بعملية التعديل",
+        "notificationText": "انقر للعودة إلى المثبت",
+        "shareApkMenuOption": "مشاركة التطبيق",
+        "shareLogMenuOption": "مشاركة السجل"
+    },
+    "settingsView": {
+        "widgetTitle": "الإعدادات",
+        "appearanceSectionTitle": "المظهر",
+        "patcherSectionTitle": "المعدّل",
+        "teamSectionTitle": "الفريق",
+        "infoSectionTitle": "معلومات",
+        "darkThemeLabel": "الوضع الداكن",
+        "darkThemeHint": "مرحبا بك في جانب الظلام",
+        "dynamicThemeLabel": "واجهة Material You",
+        "dynamicThemeHint": "استمتع بتجربة أقرب إلى جهازك",
+        "languageLabel": "اللُّغة",
+        "englishOption": "English",
+        "frenchOption": "French",
+        "arabicOption": "Arabic",
+        "sourcesLabel": "المصادر",
+        "sourcesLabelHint": "تهيئة مصادرك المخصصة",
+        "orgPatchesLabel": "منظمة التعديلات",
+        "sourcesPatchesLabel": "مصدر التعديلات",
+        "orgIntegrationsLabel": "منظمة الـ Integrations",
+        "sourcesIntegrationsLabel": "مصدر الـ Integrations",
+        "sourcesResetDialogTitle": "إعادة تعيين",
+        "sourcesResetDialogText": "هل أنت متأكد من أنك تريد إعادة تعيين الإعدادات إلى حالتها الإفتراضية؟",
+        "contributorsLabel": "المساهمين",
+        "contributorsHint": "قائمة بالمساهمين في ReVanced",
+        "logsLabel": "السجلات",
+        "logsHint": "مشاركة سجلات تصحيح أخطاء الجهاز",
+        "aboutLabel": "حول",
+        "snackbarMessage": "تم النسخ إلى الحافظة"
+    },
+    "appInfoView": {
+        "widgetTitle": "معلومات التطبيق",
+        "openButton": "فتح",
+        "uninstallButton": "إلغاء التثبيت",
+        "patchButton": "تعديل",
+        "uninstallDialogTitle": "إلغاء التثبيت",
+        "uninstallDialogText": "هل أنت متأكد من أنك تريد إلغاء تثبيت هذا التطبيق؟",
+        "rootDialogTitle": "خطأ",
+        "rootDialogText": "تم تثبيت التطبيق مع تمكين وضع الروت ولكن تم تعطيل وضع الروت حاليا.\nالرجاء تمكين وضع الروت أولاً.",
+        "packageNameLabel": "اسم الحزمة",
+        "installTypeLabel": "نوع التثبيت",
+        "rootTypeLabel": "روت",
+        "nonRootTypeLabel": "بدون روت",
+        "patchedDateLabel": "تاريخ التعديل",
+        "patchedDateHint": "{date} في {time}",
+        "appliedPatchesLabel": "التعديلات المطبقة",
+        "appliedPatchesHint": "{quantity} من التعديلات المطبقة"
+    },
+    "contributorsView": {
+        "widgetTitle": "المساهمين",
+        "patcherContributors": "المساهمون في المعدّل",
+        "patchesContributors": "المساهمون في التعديلات",
+        "integrationsContributors": "المساهمون في Integrations",
+        "cliContributors": "المساهمون في CLI",
+        "managerContributors": "المساهمون في المعدّل"
+    }
+}
