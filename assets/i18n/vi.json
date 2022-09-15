@@ -1,0 +1,144 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Huỷ",
+    "enabledLabel": "Bật",
+    "disabledLabel": "Tắt",
+    "yesLabel": "Có",
+    "noLabel": "Không",
+    "navigationView": {
+        "dashboardTab": "Bảng điều khiển",
+        "patcherTab": "Patcher",
+        "settingsTab": "Cài đặt"
+    },
+    "homeView": {
+        "widgetTitle": "Bảng điều khiển",
+        "updatesSubtitle": "Cập nhật",
+        "patchedSubtitle": "Ứng dụng đã vá",
+        "updatesAvailable": "Cập nhật có sẵn",
+        "noUpdates": "Không có bảng cập nhật có sẵn",
+        "noInstallations": "Không có ứng dụng đã vá nào được cài đặt",
+        "installed": "Đã cài",
+        "updateDialogTitle": "Cập nhật",
+        "updateDialogText": "Bạn có chắc chắn muốn tải xuống và cập nhật Manager không?",
+        "notificationTitle": "ReVanced Manager đã được cập nhật!",
+        "notificationText": "Nhấn để mở ứng dụng",
+        "downloadingMessage": "Đang tải bản cập nhật!",
+        "installingMessage": "Đang cài đặt bản cập nhật... Chờ xíu nhé!",
+        "errorDownloadMessage": "Không thể tải xuống bản cập nhật!",
+        "errorInstallMessage": "Không thể tải xuống bản cập nhật!",
+        "noConnection": "Không có kết nối Internet"
+    },
+    "applicationItem": {
+        "patchButton": "Vá",
+        "infoButton": "Thông tin",
+        "changelogLabel": "Thay đổi"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Đang tải",
+        "timeagoLabel": "{time} trước",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Cập nhật Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Vá",
+        "patchDialogTitle": "Chú ý",
+        "patchDialogText": "Bạn đã chọn một bản vá tài nguyên và cài đặt APK phân tách được phát hiện nên có thể xảy ra lỗi vá.\nBạn có chắc chắn muốn tiếp tục vá một APK cơ sở phân tách không?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Chọn ứng dụng",
+        "widgetTitleSelected": "Ứng dụng đã chọn",
+        "widgetSubtitle": "Không có ứng dụng nào được chọn.",
+        "noAppsLabel": "Không tìm thấy ứng dụng nào."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Chọn các bản vá",
+        "widgetTitleSelected": "Các bản vá đã chọn",
+        "widgetSubtitle": "Chọn một ứng dụng trước tiên.",
+        "widgetEmptySubtitle": "Không có bản vá lỗi nào được chọn."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Truyền thông xã hội",
+        "widgetSubtitle": "Chúng ta đang trực tuyến!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Tìm kiếm ứng dụng",
+        "storageButton": "Bộ nhớ",
+        "errorMessage": "Không thể sử dụng ứng dụng đã chọn."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Tìm các bản vá lỗi",
+        "doneButton": "Xong"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Phiên bản không được hỗ trợ",
+        "unsupportedDialogTitle": "Chú ý",
+        "unsupportedDialogText": "Việc chọn bản vá này có thể dẫn đến hoặc không dẫn đến lỗi bản vá.\n\nPhiên bản ứng dụng: {packageVersion}\nCác phiên bản được hỗ trợ hiện tại:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Trình cài đặt",
+        "installButton": "Cài đặt",
+        "installRootButton": "Cài đặt dưới dạng Root",
+        "openButton": "Mở",
+        "shareButton": "Chia sẻ tệp",
+        "notificationTitle": "ReVanced Manager đang vá",
+        "notificationText": "Nhấn để quay lại trình cài đặt",
+        "shareApkMenuOption": "Chia sẻ APK",
+        "shareLogMenuOption": "Chia sẻ log"
+    },
+    "settingsView": {
+        "widgetTitle": "Cài đặt",
+        "appearanceSectionTitle": "Giao diện",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Đội",
+        "infoSectionTitle": "Thông tin",
+        "darkThemeLabel": "Chế độ tối",
+        "darkThemeHint": "Chào mừng đến phe bóng tối",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Tận hưởng trải nghiệm gần với thiết bị của bạn hơn",
+        "languageLabel": "Ngôn ngữ",
+        "englishOption": "Tiếng Anh",
+        "frenchOption": "Tiếng Pháp",
+        "sourcesLabel": "Nguồn",
+        "sourcesLabelHint": "Cấu hình các nguồn tùy chỉnh của bạn",
+        "orgPatchesLabel" : "Nguồn bản vá",
+        "sourcesPatchesLabel" : "Nguồn bản vá",
+        "orgIntegrationsLabel": "Nguồn tích hợp",
+        "sourcesIntegrationsLabel": "Nguồn tích hợp",
+        "sourcesResetDialogTitle": "Đặt lại",
+        "sourcesResetDialogText": "Bạn có chắc chắn muốn đặt lại các nguồn tùy chỉnh về giá trị mặc định của chúng không?",
+        "contributorsLabel": "Người đóng góp",
+        "contributorsHint": "Danh sách những người đóng góp cho ReVanced",
+        "logsLabel": "Nhật ký",
+        "logsHint": "Chia sẻ nhật ký gỡ lỗi thiết bị",
+        "aboutLabel": "Về",
+        "snackbarMessage": "Sao chép vào bộ nhớ tạm"
+    },
+    "appInfoView": {
+        "widgetTitle": "Thông tin ứng dụng",
+        "openButton": "Mở",
+        "uninstallButton": "Gỡ cài đặt",
+        "patchButton": "Vá",
+        "uninstallDialogTitle": "Gỡ cài đặt",
+        "uninstallDialogText": "Bạn có chắc chắn muốn gỡ cài đặt ứng dụng này không?",
+        "rootDialogTitle": "Lỗi",
+        "rootDialogText": "Ứng dụng đã được cài đặt với chế độ root, nhưng hiện tại chế độ root bị tắt.\nVui lòng bật chế độ root trước.",
+        "packageNameLabel": "Tên gói",
+        "installTypeLabel": "Loại cài đặt",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Không root",
+        "patchedDateLabel": "Ngày vá",
+        "patchedDateHint": "{date} lúc {time}",
+        "appliedPatchesLabel": "Các bản vá được áp dụng",
+        "appliedPatchesHint": "{quantity} bản vá lỗi đã áp dụng"
+    },
+    "contributorsView": {
+        "widgetTitle": "Người đóng góp",
+        "patcherContributors": "Người đóng góp cho Patcher",
+        "patchesContributors": "Người đóng góp cho Patches",
+        "integrationsContributors": "Người đóng góp cho Integrations",
+        "cliContributors": "Người đóng góp cho CLI",
+        "managerContributors": "Người đóng góp cho Manager"
+    }
+}
