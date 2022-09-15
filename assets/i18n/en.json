@@ -69,7 +69,8 @@
     },
     "patchesSelectorView": {
         "searchBarHint": "Search patches",
-        "doneButton": "Done"
+        "doneButton": "Done",
+        "noPatchesFound": "No patches found for the selected app."
     },
     "patchItem": {
         "unsupportedWarningButton": "Unsupported version",

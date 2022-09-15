@@ -6,7 +6,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:expandable/expandable.dart';
 import 'package:timeago/timeago.dart';
 
-class ApplicationItem extends StatelessWidget {
+class ApplicationItem extends StatefulWidget {
   final Uint8List icon;
   final String name;
   final DateTime patchDate;
@@ -25,9 +25,38 @@ class ApplicationItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ApplicationItem> createState() => _ApplicationItemState();
+}
+
+class _ApplicationItemState extends State<ApplicationItem>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    ExpandableController expController = ExpandableController();
     return ExpandablePanel(
+      controller: expController,
       theme: const ExpandableThemeData(
+        inkWellBorderRadius: BorderRadius.all(Radius.circular(16)),
+        tapBodyToCollapse: false,
+        tapBodyToExpand: false,
+        tapHeaderToExpand: false,
         hasIcon: false,
         animationDuration: Duration(milliseconds: 450),
       ),
@@ -36,32 +65,44 @@ class ApplicationItem extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: 60,
-              child: Image.memory(icon, height: 39, width: 39),
+              child: Image.memory(widget.icon, height: 39, width: 39),
             ),
             const SizedBox(width: 4),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  name,
+                  widget.name,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(format(patchDate)),
+                Text(format(widget.patchDate)),
               ],
             ),
             const Spacer(),
+            RotationTransition(
+              turns: Tween(begin: 0.0, end: 0.50).animate(_animationController),
+              child: IconButton(
+                onPressed: () {
+                  expController.toggle();
+                  _animationController.isCompleted
+                      ? _animationController.reverse()
+                      : _animationController.forward();
+                },
+                icon: const Icon(Icons.arrow_drop_down),
+              ),
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 CustomMaterialButton(
-                  label: isUpdatableApp
+                  label: widget.isUpdatableApp
                       ? I18nText('applicationItem.patchButton')
                       : I18nText('applicationItem.infoButton'),
-                  onPressed: onPressed,
+                  onPressed: widget.onPressed,
                 ),
               ],
             ),
@@ -82,7 +123,7 @@ class ApplicationItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Text('\u2022 ${changelog.join('\n\u2022 ')}'),
+            Text('\u2022 ${widget.changelog.join('\n\u2022 ')}'),
           ],
         ),
       ),
