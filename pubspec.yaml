@@ -17,7 +17,7 @@ dependencies:
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
-      ref: appinfo-from-storage
+      ref: revanced-manager
   device_info_plus: ^4.1.2
   dio: ^4.0.6
   dio_http_cache_lts: ^0.4.1

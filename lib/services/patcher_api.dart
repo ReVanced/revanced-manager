@@ -82,6 +82,24 @@ class PatcherAPI {
         .toList();
   }
 
+  Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
+    return selectedPatches.any(
+      (patch) => patch.dependencies.contains('integrations'),
+    );
+  }
+
+  Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
+    return selectedPatches.any(
+      (patch) => patch.dependencies.any((dep) => dep.contains('resource-')),
+    );
+  }
+
+  Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
+    return selectedPatches.any(
+      (patch) => patch.dependencies.contains('settings'),
+    );
+  }
+
   Future<String> getOriginalFilePath(
     String packageName,
     String originalFilePath,
@@ -101,15 +119,9 @@ class PatcherAPI {
     String originalFilePath,
     List<Patch> selectedPatches,
   ) async {
-    bool mergeIntegrations = selectedPatches.any(
-      (patch) => patch.dependencies.contains('integrations'),
-    );
-    bool resourcePatching = selectedPatches.any(
-      (patch) => patch.dependencies.any((dep) => dep.contains('resource-')),
-    );
-    bool includeSettings = selectedPatches.any(
-      (patch) => patch.dependencies.contains('settings'),
-    );
+    bool mergeIntegrations = await needsIntegrations(selectedPatches);
+    bool resourcePatching = await needsResourcePatching(selectedPatches);
+    bool includeSettings = await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
         Patch? settingsPatch = _patches.firstWhereOrNull(

@@ -42,7 +42,9 @@
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "Patch"
+        "patchButton": "Patch",
+        "patchDialogTitle": "Warning",
+        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors can occur.\nAre you sure you want to proceed with patching a split base APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select application",
