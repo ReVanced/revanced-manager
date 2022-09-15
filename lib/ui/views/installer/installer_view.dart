@@ -3,6 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
@@ -57,14 +58,9 @@ class InstallerView extends StatelessWidget {
                   ),
                 ],
                 bottom: PreferredSize(
-                  preferredSize: const Size(double.infinity, 1.0),
-                  child: LinearProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    value: model.progress,
-                  ),
-                ),
+                    preferredSize: const Size(double.infinity, 1.0),
+                    child:
+                        GradientProgressIndicator(progress: model.progress!)),
               ),
               SliverPadding(
                 padding: const EdgeInsets.all(20.0),
