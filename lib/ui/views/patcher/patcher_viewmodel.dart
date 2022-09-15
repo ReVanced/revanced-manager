@@ -1,14 +1,20 @@
+import 'package:device_apps/device_apps.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 @lazySingleton
 class PatcherViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
+  final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   PatchedApplication? selectedApp;
   List<Patch> selectedPatches = [];
 
@@ -30,5 +36,47 @@ class PatcherViewModel extends BaseViewModel {
 
   bool dimPatchesCard() {
     return selectedApp == null;
+  }
+
+  Future<bool> isValidPatchConfig() async {
+    bool needsResourcePatching =
+        await _patcherAPI.needsResourcePatching(selectedPatches);
+    if (needsResourcePatching && selectedApp != null) {
+      Application? app = await DeviceApps.getApp(selectedApp!.packageName);
+      if (app != null && app.isSplit) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Future<void> showPatchConfirmationDialog(BuildContext context) async {
+    bool isValid = await isValidPatchConfig();
+    if (isValid) {
+      navigateToInstaller();
+    } else {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('patcherView.patchDialogTitle'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText('patcherView.patchDialogText'),
+          actions: <Widget>[
+            CustomMaterialButton(
+              isFilled: false,
+              label: I18nText('cancelButton'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            CustomMaterialButton(
+              label: I18nText('okButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                navigateToInstaller();
+              },
+            )
+          ],
+        ),
+      );
+    }
   }
 }

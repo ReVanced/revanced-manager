@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,10 +51,16 @@ class SettingsViewModel extends BaseViewModel {
     await _managerAPI.setUseDynamicTheme(value);
     int currentTheme = DynamicTheme.of(context)!.themeId;
     if (currentTheme.isEven) {
-      DynamicTheme.of(context)!.setTheme(value ? 2 : 0);
+      await DynamicTheme.of(context)!.setTheme(value ? 2 : 0);
     } else {
-      DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
+      await DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
     }
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+            DynamicTheme.of(context)!.theme.colorScheme.surface,
+      ),
+    );
     notifyListeners();
   }
 
@@ -65,10 +72,18 @@ class SettingsViewModel extends BaseViewModel {
     await _managerAPI.setUseDarkTheme(value);
     int currentTheme = DynamicTheme.of(context)!.themeId;
     if (currentTheme < 2) {
-      DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
+      await DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
     } else {
-      DynamicTheme.of(context)!.setTheme(value ? 3 : 2);
+      await DynamicTheme.of(context)!.setTheme(value ? 3 : 2);
     }
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+            DynamicTheme.of(context)!.theme.colorScheme.surface,
+        systemNavigationBarIconBrightness:
+            value ? Brightness.light : Brightness.dark,
+      ),
+    );
     notifyListeners();
   }
 

@@ -22,7 +22,7 @@ class PatcherView extends StatelessWidget {
           child: FloatingActionButton.extended(
             label: I18nText('patcherView.patchButton'),
             icon: const Icon(Icons.build),
-            onPressed: () => model.navigateToInstaller(),
+            onPressed: () => model.showPatchConfirmationDialog(context),
           ),
         ),
         body: CustomScrollView(

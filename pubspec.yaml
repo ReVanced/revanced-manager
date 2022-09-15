@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 0.0.3+3
+version: 0.0.6+6
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -17,14 +17,17 @@ dependencies:
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
-      ref: appinfo-from-storage
+      ref: revanced-manager
   device_info_plus: ^4.1.2
   dio: ^4.0.6
   dio_http_cache_lts: ^0.4.1
   dynamic_color: ^1.5.4
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^5.0.1
+  file_picker:
+    git:
+      url: https://github.com/alexmercerind/flutter_file_picker
+      ref: master
   flex_color_scheme: ^6.0.0
   flutter:
     sdk: flutter

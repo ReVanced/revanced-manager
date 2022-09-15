@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/services/root_api.dart';
@@ -15,16 +16,24 @@ class NavigationViewModel extends IndexTrackingViewModel {
   void initialize(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('useDarkTheme') == null) {
-      if (MediaQuery.of(context).platformBrightness == Brightness.light) {
-        await prefs.setBool('useDarkTheme', false);
-        DynamicTheme.of(context)!.setTheme(0);
-      } else {
-        await prefs.setBool('useDarkTheme', true);
-        DynamicTheme.of(context)!.setTheme(1);
-      }
+      bool isDark =
+          MediaQuery.of(context).platformBrightness != Brightness.light;
+      await prefs.setBool('useDarkTheme', isDark);
+      await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
     }
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+            DynamicTheme.of(context)!.theme.colorScheme.surface,
+        systemNavigationBarIconBrightness:
+            DynamicTheme.of(context)!.theme.brightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light,
+      ),
+    );
     RootAPI().hasRootPermissions();
     Permission.requestInstallPackages.request();
+    Permission.ignoreBatteryOptimizations.request();
   }
 
   Widget getViewForIndex(int index) {
