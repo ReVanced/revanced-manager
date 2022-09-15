@@ -24,7 +24,10 @@ dependencies:
   dynamic_color: ^1.5.4
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^5.0.1
+  file_picker:
+    git:
+      url: https://github.com/alexmercerind/flutter_file_picker
+      ref: master
   flex_color_scheme: ^6.0.0
   flutter:
     sdk: flutter
