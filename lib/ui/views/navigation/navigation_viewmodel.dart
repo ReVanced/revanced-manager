@@ -31,9 +31,12 @@ class NavigationViewModel extends IndexTrackingViewModel {
                 : Brightness.light,
       ),
     );
-    RootAPI().hasRootPermissions();
-    Permission.requestInstallPackages.request();
-    Permission.ignoreBatteryOptimizations.request();
+    if (prefs.getBool('permissionsRequested') == null) {
+      await prefs.setBool('permissionsRequested', true);
+      RootAPI().hasRootPermissions();
+      Permission.requestInstallPackages.request();
+      Permission.ignoreBatteryOptimizations.request();
+    }
   }
 
   Widget getViewForIndex(int index) {
