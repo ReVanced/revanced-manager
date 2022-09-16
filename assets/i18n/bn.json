@@ -8,7 +8,7 @@
     "navigationView": {
         "dashboardTab": "ড্যাশবোর্ড",
         "patcherTab": "প্যাচার",
-        "settingsTab": "সেটিংস",
+        "settingsTab": "সেটিংস"
     },
     "homeView": {
         "widgetTitle": "ড্যাশবোর্ড",
@@ -75,7 +75,7 @@
     "patchItem": {
         "unsupportedWarningButton": "অসমর্থিত ভার্সন",
         "unsupportedDialogTitle": "সতর্কতা",
-        "unsupportedDialogText": "নির্বাচিত প্যাচ টি প্যাচড হতে পারেবা নাও হতে পারে।\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
+        "unsupportedDialogText": "নির্বাচিত প্যাচ টি প্যাচড হতে পারে বা নাও হতে পারে।\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "ইনস্টলার",
