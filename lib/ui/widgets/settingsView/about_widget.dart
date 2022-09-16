@@ -62,6 +62,13 @@ class _AboutWidgetState extends State<AboutWidget> {
                         ),
                       ),
                       Text(
+                        'Build: ${snapshot.data!['flavor']}',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
                         'Model: ${snapshot.data!['model']}',
                         style: const TextStyle(
                           fontSize: 13,
