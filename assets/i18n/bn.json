@@ -1,8 +1,8 @@
 {
     "okButton": "ঠিক আছে",
     "cancelButton": "ক্যান্সেল",
-    "enabledLabel": "সচল",
-    "disabledLabel": "বন্ধ",
+    "enabledLabel": "সক্রিয়",
+    "disabledLabel": "নিষ্ক্রিয়",
     "yesLabel": "হ্যাঁ",
     "noLabel": "না",
     "navigationView": {
@@ -99,6 +99,7 @@
         "dynamicThemeHint": "আপনার ডিভাইসের কাছাকাছি অভিজ্ঞতা নিন",
         "languageLabel": "ভাষা",
         "englishOption": "ইংরেজি",
+        "bengaliOption": "বাংলা",
         "frenchOption": "ফ্রেন্স",
         "sourcesLabel": "সোর্স",
         "sourcesLabelHint": "আপনার নিজস্ব সোর্স কনফিগ করুন",
