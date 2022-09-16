@@ -69,7 +69,8 @@
     },
     "patchesSelectorView": {
         "searchBarHint": "البحث عن التعديلات",
-        "doneButton": "تم"
+        "doneButton": "تم",
+        "noPatchesFound": "لم يتم العثور على تعديلات للتطبيق المحدد."
     },
     "patchItem": {
         "unsupportedWarningButton": "إصدار غير مدعوم",
@@ -100,7 +101,6 @@
         "languageLabel": "اللُّغة",
         "englishOption": "English",
         "frenchOption": "French",
-        "arabicOption": "Arabic",
         "sourcesLabel": "المصادر",
         "sourcesLabelHint": "تهيئة مصادرك المخصصة",
         "orgPatchesLabel": "منظمة التعديلات",
