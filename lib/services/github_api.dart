@@ -13,7 +13,7 @@ class GithubAPI {
   final Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
-    const Duration(hours: 1),
+    const Duration(days: 1),
     maxStale: const Duration(days: 7),
   );
   final Map<String, String> repoAppPath = {

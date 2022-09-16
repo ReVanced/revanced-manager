@@ -55,9 +55,16 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 const SizedBox(height: 12),
                 Expanded(
                   child: model.patches.isEmpty
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: I18nText(
+                              'patchesSelectorView.noPatchesFound',
+                              child: Text(
+                                '',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
                           ),
                         )
                       : ListView(
