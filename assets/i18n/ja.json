@@ -1,0 +1,146 @@
+{
+    "okButton": "OK",
+    "cancelButton": "キャンセル",
+    "enabledLabel": "有効",
+    "disabledLabel": "無効",
+    "yesLabel": "はい",
+    "noLabel": "いいえ",
+    "navigationView": {
+        "dashboardTab": "ダッシュボード",
+        "patcherTab": "パッチの適用",
+        "settingsTab": "設定"
+    },
+    "homeView": {
+        "widgetTitle": "ダッシュボード",
+        "updatesSubtitle": "アップデート",
+        "patchedSubtitle": "パッチ適用済のアプリケーション",
+        "updatesAvailable": "更新があります",
+        "noUpdates": "更新はありません",
+        "noInstallations": "パッチ適用済のアプリケーションはインストールされていません",
+        "installed": "インストール済",
+        "updateDialogTitle": "アップデート",
+        "updateDialogText": "ReVanced Managerをダウンロードして更新しますか？",
+        "notificationTitle": "ReVanced Managerを更新しました！",
+        "notificationText": "タップしてアプリを起動",
+        "downloadingMessage": "アップデートをダウンロード中!",
+        "installingMessage": "アップデートをインストール中...しばらくお待ち下さい",
+        "errorDownloadMessage": "アップデートをダウンロード出来ませんでした。",
+        "errorInstallMessage": "アップデートをインストール出来ませんでした。",
+        "noConnection": "ネットワーク接続がありません"
+    },
+    "applicationItem": {
+        "patchButton": "パッチ",
+        "infoButton": "情報",
+        "changelogLabel": "更新履歴"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "読み込み中",
+        "timeagoLabel": "{time} 前",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Managerを更新"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "パッチ",
+        "patchDialogTitle": "警告",
+        "patchDialogText": "リソースパッチとAPKの分割インストールが検出されました、パッチの適用時にエラーが発生する可能性があります。\n分割されたベースAPKにパッチを適用しますか？"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "アプリケーションを選択",
+        "widgetTitleSelected": "アプリケーション選択済",
+        "widgetSubtitle": "アプリケーションが選択されていません。",
+        "noAppsLabel": "アプリケーションが見つかりませんでした。"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "パッチの選択",
+        "widgetTitleSelected": "パッチ選択済",
+        "widgetSubtitle": "最初にアプリケーションを選択してください。",
+        "widgetEmptySubtitle": "パッチが選択されていません。"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "ソーシャルメディア",
+        "widgetSubtitle": "私たちはオンラインです!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "アプリケーションの選択",
+        "storageButton": "ストレージ",
+        "errorMessage": "選択したアプリケーションは使用できません。"
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "パッチの検索",
+        "doneButton": "完了",
+        "noPatchesFound": "選択したアプリのパッチは見つかりませんでした。"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "サポートされていないバージョン",
+        "unsupportedDialogTitle": "警告",
+        "unsupportedDialogText": "このパッチは、適用時にエラーが発生する場合があります。\n\nアプリバージョン: {packageVersion}\n現在サポートされているバージョン:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "インストーラー",
+        "installButton": "インストール",
+        "installRootButton": "rootとしてインストール",
+        "openButton": "開く",
+        "shareButton": "ファイルを共有する",
+        "notificationTitle": "ReVanced Managerはパッチを適用しています",
+        "notificationText": "タップするとインストーラーに戻ります",
+        "shareApkMenuOption": "APKを共有",
+        "shareLogMenuOption": "logを共有"
+    },
+    "settingsView": {
+        "widgetTitle": "設定",
+        "appearanceSectionTitle": "外観",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "チーム",
+        "infoSectionTitle": "情報",
+        "darkThemeLabel": "ダークモード",
+        "darkThemeHint": "ダークサイドへようこそ",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "よりデバイスに近い体験が楽しめます",
+        "languageLabel": "言語",
+        "englishOption": "English",
+        "frenchOption": "French",
+        "JapaneseOption": "日本語",
+        "sourcesLabel": "ソース",
+        "sourcesLabelHint": "カスタムソースの設定",
+        "orgPatchesLabel" : "パッチ提供元",
+        "sourcesPatchesLabel" : "パッチのソース",
+        "orgIntegrationsLabel": "Integrationsの提供元",
+        "sourcesIntegrationsLabel": "Integrationsのソース",
+        "sourcesResetDialogTitle": "リセット",
+        "sourcesResetDialogText": "カスタム ソースをデフォルト値にリセットしてもよろしいですか?",
+        "contributorsLabel": "貢献者",
+        "contributorsHint": "ReVancedへの貢献者一覧",
+        "logsLabel": "ログ",
+        "logsHint": "デバイスのデバッグログを共有",
+        "aboutLabel": "詳細",
+        "snackbarMessage": "クリップボードにコピーしました"
+    },
+    "appInfoView": {
+        "widgetTitle": "アプリ情報",
+        "openButton": "開く",
+        "uninstallButton": "アンインストール",
+        "patchButton": "パッチ",
+        "uninstallDialogTitle": "アンインストール",
+        "uninstallDialogText": "選択したアプリケーションをアンインストールしますか？",
+        "rootDialogTitle": "エラー",
+        "rootDialogText": "アプリは端末がルート化された状態でインストールされましたが、現在はルート化が解除されているようです。\n再度、ルート化してください。",
+        "packageNameLabel": "パッケージ名",
+        "installTypeLabel": "インストールされるタイプ",
+        "rootTypeLabel": "ルート",
+        "nonRootTypeLabel": "非ルート",
+        "patchedDateLabel": "パッチ適用日",
+        "patchedDateHint": "{date} の {time}",
+        "appliedPatchesLabel": "適用済のパッチ",
+        "appliedPatchesHint": "{quantity} 個の適用済パッチ"
+    },
+    "contributorsView": {
+        "widgetTitle": "貢献者",
+        "patcherContributors": "Patcherの貢献者",
+        "patchesContributors": "パッチの貢献者",
+        "integrationsContributors": "Integrationsの貢献者",
+        "cliContributors": "CLIの貢献者",
+        "managerContributors": "Managerの貢献者"
+    }
+}
