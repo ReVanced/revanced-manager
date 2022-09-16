@@ -1,6 +1,6 @@
 {
     "okButton": "ঠিক আছে",
-    "cancelButton": "ক্যান্সেল",
+    "cancelButton": "বাদ দিন",
     "enabledLabel": "সক্রিয়",
     "disabledLabel": "নিষ্ক্রিয়",
     "yesLabel": "হ্যাঁ",
@@ -8,7 +8,7 @@
     "navigationView": {
         "dashboardTab": "ড্যাশবোর্ড",
         "patcherTab": "প্যাচার",
-        "settingsTab": "সেটিংস"
+        "settingsTab": "সেটিংস",
     },
     "homeView": {
         "widgetTitle": "ড্যাশবোর্ড",
@@ -38,13 +38,13 @@
         "timeagoLabel": "{time} আগে",
         "patcherLabel": "প্যাচার: ",
         "managerLabel": "ম্যানেজার: ",
-        "updateButton": "মানেজার আপডেট করুন"
+        "updateButton": "ম্যানেজার আপডেট করুন"
     },
     "patcherView": {
         "widgetTitle": "প্যাচার",
         "patchButton": "প্যাচ",
         "patchDialogTitle": "nkvgjkf",
-        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ সিলেক্ট করেছেন এবং একটি স্প্লিট এপিকে দেখা গিয়েছে তাই প্যাচ করা সম্ভব নয়।.\n আপনি কি স্প্লিট বেজ এ্যাপ প্যাচ করার ব্যাপারে নিশ্চিত?"
+        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ সিলেক্ট করেছেন এবং একটি স্প্লিট এপিকে দেখা গিয়েছে তাই প্যাচ করা সম্ভব নয়।\nআপনি কি স্প্লিট বেজ এ্যাপ প্যাচ করার ব্যাপারে নিশ্চিত?"
     },
     "appSelectorCard": {
         "widgetTitle": "এ্যাপ্লিকেশন নির্বাচন করুন",
@@ -70,16 +70,17 @@
     "patchesSelectorView": {
         "searchBarHint": "প্যাচ খুঁজুন",
         "doneButton": "সম্পন্ন"
+        "noPatchesFound": "নির্বাচিত এ্যাপের জন্য কোন প্যাচ পাওয়া যায়নি।"
     },
     "patchItem": {
         "unsupportedWarningButton": "অসমর্থিত ভার্সন",
         "unsupportedDialogTitle": "সতর্কতা",
-        "unsupportedDialogText": "নির্বাচিত প্যাচ টি প্যাচড হতে পারে/নাও হতে পারে।.\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
+        "unsupportedDialogText": "নির্বাচিত প্যাচ টি প্যাচড হতে পারেবা নাও হতে পারে।\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "ইনস্টলার",
         "installButton": "ইনস্টল",
-        "installRootButton": "রুট হিসেবে ইনস্টল করুনু",
+        "installRootButton": "রুট ইনস্টল করুন",
         "openButton": "খুলুন",
         "shareButton": "ফাইলটি শেয়ার করুন",
         "notificationTitle": "রিভ্যান্সড ম্যানেজার প্যাচ করছে",
@@ -94,13 +95,13 @@
         "teamSectionTitle": "টিম",
         "infoSectionTitle": "তথ্য",
         "darkThemeLabel": "অন্ধকার মুড",
-        "darkThemeHint": "অন্ধকার দিকে স্বাগতম",
+        "darkThemeHint": "অন্ধকার থীমে স্বাগতম",
         "dynamicThemeLabel": "ম্যাটেরিয়াল ইউ",
         "dynamicThemeHint": "আপনার ডিভাইসের কাছাকাছি অভিজ্ঞতা নিন",
         "languageLabel": "ভাষা",
         "englishOption": "ইংরেজি",
         "bengaliOption": "বাংলা",
-        "frenchOption": "ফ্রেন্স",
+        "frenchOption": "ফরাসি",
         "sourcesLabel": "সোর্স",
         "sourcesLabelHint": "আপনার নিজস্ব সোর্স কনফিগ করুন",
         "orgPatchesLabel" : "প্যাচ অর্গ",
@@ -124,7 +125,7 @@
         "uninstallDialogTitle": "আনইনস্টল",
         "uninstallDialogText": "আপনি কি এ্যাপটি আনইনস্টল করার ব্যাপারে নিশ্চিত?",
         "rootDialogTitle": "ত্রুটি",
-        "rootDialogText": "রুট মুড সচল অবস্থায় এ্যাপ ইনস্টল করা হয়েছে কিন্তু এখন রুট মুড অচল আছে।\nঅনুগ্রহপূর্বক রুট মুড চালু করুন.",
+        "rootDialogText": "রুট মুড সচল অবস্থায় এ্যাপ ইনস্টল করা হয়েছে কিন্তু এখন রুট মুড অচল আছে।\nঅনুগ্রহপূর্বক রুট মুড চালু করুন।",
         "packageNameLabel": "প্যাকেজ নাম",
         "installTypeLabel": "ইনস্টলেশন পদ্ধতি",
         "rootTypeLabel": "রুট",
@@ -132,14 +133,14 @@
         "patchedDateLabel": "প্যাচড তারিখ",
         "patchedDateHint": "{date} তারিখ {time} টায়",
         "appliedPatchesLabel": "ব্যবহারিত প্যাচসমূহ",
-        "appliedPatchesHint": "{quantity} প্যাচ ব্যবহারিত"
+        "appliedPatchesHint": "{quantity} সংখ্যক প্যাচ ব্যবহারিত"
     },
     "contributorsView": {
         "widgetTitle": "অবদানকারী",
-        "patcherContributors": "প্যাচার অবদান যাদের",
+        "patcherContributors": "প্যাচার-এ অবদান যাদের",
         "patchesContributors": "প্যাচসমূহে অবদান যাদের",
-        "integrationsContributors": "ইনটিগ্রেশনস অবদান যাবদের",
-        "cliContributors": "সিএলআই অবদান যাবদের",
-        "managerContributors": "ম্যানেজার অবদান যাদের"
+        "integrationsContributors": "ইনটিগ্রেশনস-এ অবদান যাবদের",
+        "cliContributors": "সিএলআই-এ অবদান যাদের",
+        "managerContributors": "ম্যানেজার-এ অবদান যাদের"
     }
 }
