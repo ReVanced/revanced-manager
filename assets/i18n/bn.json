@@ -43,7 +43,7 @@
     "patcherView": {
         "widgetTitle": "প্যাচার",
         "patchButton": "প্যাচ",
-        "patchDialogTitle": "nkvgjkf",
+        "patchDialogTitle": "সতর্কতা",
         "patchDialogText": "আপনি একটি রিসোর্স প্যাচ সিলেক্ট করেছেন এবং একটি স্প্লিট এপিকে দেখা গিয়েছে তাই প্যাচ করা সম্ভব নয়।\nআপনি কি স্প্লিট বেজ এ্যাপ প্যাচ করার ব্যাপারে নিশ্চিত?"
     },
     "appSelectorCard": {
