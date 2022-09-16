@@ -1,0 +1,146 @@
+{
+    "okButton": "ОК",
+    "cancelButton": "Отмена",
+    "enabledLabel": "Включен",
+    "disabledLabel": "Отключен",
+    "yesLabel": "Да",
+    "noLabel": "Нет",
+    "navigationView": {
+        "dashboardTab": "Домашняя страница",
+        "patcherTab": "Патчер",
+        "settingsTab": "Настройки"
+    },
+    "homeView": {
+        "widgetTitle": "Домашняя страница",
+        "updatesSubtitle": "Обновления",
+        "patchedSubtitle": "Приложения с патчами",
+        "updatesAvailable": "Доступные обновления",
+        "noUpdates": "Нет доступных обновлений",
+        "noInstallations": "Нет приложений с установленными патчами",
+        "installed": "Установленные патчи",
+        "updateDialogTitle": "Update",
+        "updateDialogText": "Вы действительно хотите загрузить и обновить Manager?",
+        "notificationTitle": "ReVanced Manager успешно обновлён!",
+        "notificationText": "Нажмите, чтобы открыть приложение",
+        "downloadingMessage": "Загружаем обновление!",
+        "installingMessage": "Устанавливаем обновление... Не переключайтесь!",
+        "errorDownloadMessage": "Невозможно загрузить обновление!",
+        "errorInstallMessage": "Невозможно загрузить обновление!",
+        "noConnection": "Нет подключения к интернету"
+    },
+    "applicationItem": {
+        "patchButton": "Патч",
+        "infoButton": "Информация",
+        "changelogLabel": "Список изменений"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Загрузка",
+        "timeagoLabel": "{time} назад",
+        "patcherLabel": "Патчер: ",
+        "managerLabel": "Менеджер: ",
+        "updateButton": "Обновить Менеджер"
+    },
+    "patcherView": {
+        "widgetTitle": "Патчи",
+        "patchButton": "Установить",
+        "patchDialogTitle": "Предупреждение",
+        "patchDialogText": "Вы выбрали патч для программы, установленной методом split APK, а значит возможны ошибки во время установки патчей.\nAre you sure you want to proceed with patching a split base APK?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Выбрать приложение",
+        "widgetTitleSelected": "Выбранное приложение",
+        "widgetSubtitle": "Нет выбранного приложения.",
+        "noAppsLabel": "Не найдено приложений."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Выбор патчей",
+        "widgetTitleSelected": "Выбранные патчи",
+        "widgetSubtitle": "Сначала выберите приложение.",
+        "widgetEmptySubtitle": "Нет выбранных патчей."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Наши соцсети",
+        "widgetSubtitle": "Мы есть в разных сетях!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Найти приложения...",
+        "storageButton": "Выбрать файл",
+        "errorMessage": "Невозможно установить патчи на выбранное приложение."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Найти патчи...",
+        "doneButton": "Выполнено",
+        "noPatchesFound": "Для данного приложения не найдено патчей."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Не поддерживается",
+        "unsupportedDialogTitle": "Предупреждение",
+        "unsupportedDialogText": "При установке данного патча возможны ошибки.\n\nВерсия установленного приложения: {packageVersion}\nНа данный момент этот патч поддерживается следующими версиями:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Установщик",
+        "installButton": "Установить",
+        "installRootButton": "Установить через Root",
+        "openButton": "Открыть",
+        "shareButton": "Поделиться файлом",
+        "notificationTitle": "ReVanced Manager устанавливает патч(и)",
+        "notificationText": "Нажмите, чтобы вернуться к установщику",
+        "shareApkMenuOption": "Поделиться файлом APK",
+        "shareLogMenuOption": "Поделиться файлом с логами"
+    },
+    "settingsView": {
+        "widgetTitle": "Настройки",
+        "appearanceSectionTitle": "Тема оформления",
+        "patcherSectionTitle": "Патчер",
+        "teamSectionTitle": "Разработчики",
+        "infoSectionTitle": "Информация",
+        "darkThemeLabel": "Тёмный режим",
+        "darkThemeHint": "Добро пожаловать на тёмную сторону",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Как говорится: кайф на ладони",
+        "languageLabel": "Язык (Language)",
+        "englishOption": "Английский",
+        "frenchOption": "Французский",
+		"russianOption":"Русский"
+        "sourcesLabel": "Источники",
+        "sourcesLabelHint": "Выберите источники патчей",
+        "orgPatchesLabel" : "Patches Org",
+        "sourcesPatchesLabel" : "Patches Source",
+        "orgIntegrationsLabel": "Integrations Org",
+        "sourcesIntegrationsLabel": "Integrations Source",
+        "sourcesResetDialogTitle": "Сброс",
+        "sourcesResetDialogText": "Вы действительно хотите поставить пути скачивания патчей по умолчанию?",
+        "contributorsLabel": "Контрибьюторы",
+        "contributorsHint": "Все те ребята, внёсшие свой вклад в ReVanced",
+        "logsLabel": "Логи",
+        "logsHint": "Можете поделиться логами на случай багов",
+        "aboutLabel": "О программе",
+        "snackbarMessage": "Скопировано в буфер обмена"
+    },
+    "appInfoView": {
+        "widgetTitle": "Информация о приложении",
+        "openButton": "Открыть",
+        "uninstallButton": "Удалить",
+        "patchButton": "Установить патч",
+        "uninstallDialogTitle": "Удалить",
+        "uninstallDialogText": "Вы действительно хотите удалить это приложение?",
+        "rootDialogTitle": "Ошибка",
+        "rootDialogText": "Данное приложение установлено через Root, но сейчас режим Root отключен\nПожалуйста, включите сначала режим Root.",
+        "packageNameLabel": "Название пакета (Package Name)",
+        "installTypeLabel": "Метод установки",
+        "rootTypeLabel": "Режим администратора (Root)",
+        "nonRootTypeLabel": "Пользователь",
+        "patchedDateLabel": "Дата установки патча",
+        "patchedDateHint": "{date} в {time}",
+        "appliedPatchesLabel": "Установленные патчи",
+        "appliedPatchesHint": "Установлено {quantity} патч(а)"
+    },
+    "contributorsView": {
+        "widgetTitle": "Контрибьюторы",
+        "patcherContributors": "Patcher Contributors",
+        "patchesContributors": "Patches Contributors",
+        "integrationsContributors": "Integrations Contributors",
+        "cliContributors": "CLI Contributors",
+        "managerContributors": "Manager Contributors"
+    }
+}
