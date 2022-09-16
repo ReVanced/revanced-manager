@@ -6,19 +6,23 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:timeago/timeago.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class RevancedAPI {
-  final String apiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
+  String defaultApiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
+  String apiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
   final Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
+  late SharedPreferences _prefs;
   final Options _cacheOptions = buildCacheOptions(
     const Duration(days: 1),
     maxStale: const Duration(days: 7),
   );
 
-  void initialize() {
+  Future<void> initialize() async {
     _dio.interceptors.add(_dioCacheManager.interceptor);
+    _prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> clearAllCache() async {
@@ -117,5 +121,16 @@ class RevancedAPI {
       return null;
     }
     return null;
+  }
+
+  String getApiUrl() {
+    return _prefs.getString('apiUrl') ?? defaultApiUrl;
+  }
+
+  Future<void> setApiUrl(String url) async {
+    if (url.isEmpty || url == ' ') {
+      url = defaultApiUrl;
+    }
+    await _prefs.setString('apiUrl', url);
   }
 }

@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:share_extend/share_extend.dart';
@@ -23,10 +24,12 @@ const int ANDROID_12_SDK_VERSION = 31;
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
   final TextEditingController _intSourceController = TextEditingController();
+  final TextEditingController _apiEndpointController = TextEditingController();
 
   void setLanguage(String language) {
     notifyListeners();
@@ -208,6 +211,62 @@ class SettingsViewModel extends BaseViewModel {
     );
   }
 
+  Future<void> showApiEndpointDialog(BuildContext context) async {
+    String apiEndpoint = _revancedAPI.getApiUrl();
+    _apiEndpointController.text = apiEndpoint;
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            I18nText('settingsView.apiEndpointLabel'),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.manage_history_outlined),
+              onPressed: () => showApiEndpointResetDialog(context),
+              color: Theme.of(context).colorScheme.secondary,
+            )
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              CustomTextField(
+                leadingIcon: Icon(
+                  Icons.api_outlined,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                inputController: _apiEndpointController,
+                label: I18nText('settingsView.selectApiEndpoint'),
+                hint: apiEndpoint.split('/')[0],
+                onChanged: (value) => notifyListeners(),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () {
+              _apiEndpointController.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () {
+              _revancedAPI.setApiUrl(_apiEndpointController.text);
+              notifyListeners();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   Future<void> showResetConfirmationDialog(BuildContext context) async {
     return showDialog(
       context: context,
@@ -227,6 +286,32 @@ class SettingsViewModel extends BaseViewModel {
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> showApiEndpointResetDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.sourcesResetDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('settingsView.apiEndpointResetDialogText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () {
+              _revancedAPI.setApiUrl('');
+              notifyListeners();
               Navigator.of(context).pop();
             },
           )
