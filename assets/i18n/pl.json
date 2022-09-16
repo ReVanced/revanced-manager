@@ -42,7 +42,9 @@
     },
     "patcherView": {
         "widgetTitle": "Modyfikowanie aplikacji",
-        "patchButton": "Modyfikuj"
+        "patchButton": "Modyfikuj",
+        "patchDialogTitle": "Ostrzeżenie",
+        "patchDialogText": "Wykryto podzielony APK, więc mogą wystąpić błędy podczas modyfikacji.\nKontynuować modyfikowanie?"
     },
     "appSelectorCard": {
         "widgetTitle": "Wybierz aplikację",
@@ -67,7 +69,8 @@
     },
     "patchesSelectorView": {
         "searchBarHint": "Szukaj łatek",
-        "doneButton": "Gotowe"
+        "doneButton": "Gotowe",
+        "noPatchesFound": "Nie znaleziono łatek dla wybranej aplikacji."
     },
     "patchItem": {
         "unsupportedWarningButton": "Nieobsługiwana wersja",
@@ -98,13 +101,12 @@
         "languageLabel": "Język",
         "englishOption": "Angielski",
         "frenchOption": "Francuski",
-        "polishOption": "Polski",
         "sourcesLabel": "Źródła",
         "sourcesLabelHint": "Skonfiguruj własne źródła",
-        "orgPatchesLabel" : "Nazwa ",
-        "sourcesPatchesLabel" : "Źródło łatek",
-        "orgIntegrationsLabel": "Integrations Org",
-        "sourcesIntegrationsLabel": "Integrations Source",
+        "orgPatchesLabel": "Org. łatek",
+        "sourcesPatchesLabel": "Źródło łatek",
+        "orgIntegrationsLabel": "Org. integracji",
+        "sourcesIntegrationsLabel": "Źródło integracji",
         "sourcesResetDialogTitle": "Resetuj",
         "sourcesResetDialogText": "Czy na pewno chcesz przywrócić źródła niestandardowe do ich wartości domyślnych?",
         "contributorsLabel": "Współtwórcy",
