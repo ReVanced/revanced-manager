@@ -6,8 +6,12 @@ class RootAPI {
   final String _serviceDDirPath = '/data/adb/service.d';
 
   Future<bool> hasRootPermissions() async {
-    bool? isRooted = await Root.isRooted();
-    return isRooted != null && isRooted;
+    try {
+      bool? isRooted = await Root.isRooted();
+      return isRooted != null && isRooted;
+    } on Exception {
+      return false;
+    }
   }
 
   Future<void> setPermissions(
