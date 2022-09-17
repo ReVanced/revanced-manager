@@ -22,7 +22,7 @@ class DashboardChip extends StatelessWidget {
             color: isSelected
                 ? Theme.of(context).colorScheme.primary
                 : Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
       backgroundColor: Colors.transparent,
       selectedColor: Theme.of(context).colorScheme.secondaryContainer,
