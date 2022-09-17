@@ -64,7 +64,7 @@ class AppInfoView extends StatelessWidget {
                     CustomCard(
                       child: IntrinsicHeight(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             InkWell(
                               onTap: () => model.openApp(app),
