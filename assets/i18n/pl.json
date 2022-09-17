@@ -6,12 +6,12 @@
     "yesLabel": "Tak",
     "noLabel": "Nie",
     "navigationView": {
-        "dashboardTab": "Dashboard",
+        "dashboardTab": "Strona główna",
         "patcherTab": "Patcher",
         "settingsTab": "Ustawienia"
     },
     "homeView": {
-        "widgetTitle": "Dashboard",
+        "widgetTitle": "Strona główna",
         "updatesSubtitle": "Aktualizacje",
         "patchedSubtitle": "Zpatchowane aplikacje",
         "updatesAvailable": "Dostępne aktualizacje",
@@ -19,8 +19,8 @@
         "noInstallations": "Nie ma zainstalowanych aplikacji zpatchowanych",
         "installed": "Zainstalowano",
         "updateDialogTitle": "Aktualizuj",
-        "updateDialogText": "Czy na pewno chcesz zaktualizować ReVanced Manager?",
-        "notificationTitle": "ReVanced Manager został zaktualizowany!",
+        "updateDialogText": "Czy na pewno chcesz zaktualizować Menedżer ReVanced?",
+        "notificationTitle": "Menedżer ReVanced został zaktualizowany!",
         "notificationText": "Kliknij, aby otworzyć aplikacje",
         "downloadingMessage": "Pobieranie aktualizacji!",
         "installingMessage": "Instalowanie aktualizacji... Proszę czekać!",
@@ -29,7 +29,7 @@
         "noConnection": "Brak internetu"
     },
     "applicationItem": {
-        "patchButton": "Zpatchuj",
+        "patchButton": "Zainstaluj łatkę",
         "infoButton": "Informacje",
         "changelogLabel": "Lista zmian"
     },
@@ -38,83 +38,84 @@
         "timeagoLabel": "{time} temu",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Zaktualizuj Manager"
+        "updateButton": "Zaktualizuj menedżer"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "Zpatchuj",
+        "patchButton": "Zainstaluj łatkę",
         "patchDialogTitle": "Ostrzeżenie",
         "patchDialogText": "Wybrałeś łatkę zasobów i została wykryta instalacja podzielonego pakietu APK, mogą wystąpić błędy./nCzy na pewno chcesz kontynuować?"
     },
     "appSelectorCard": {
-        "widgetTitle": "Select application",
-        "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected.",
-        "noAppsLabel": "No applications found."
+        "widgetTitle": "Wybierz aplikację",
+        "widgetTitleSelected": "Wybrana aplikacja",
+        "widgetSubtitle": "Nie wybrano aplikacji",
+        "noAppsLabel": "Nie znaleziono aplikacji."
     },
     "patchSelectorCard": {
-        "widgetTitle": "Select patches",
-        "widgetTitleSelected": "Selected patches",
-        "widgetSubtitle": "Select an application first.",
-        "widgetEmptySubtitle": "No patches selected."
+        "widgetTitle": "Wybierz łatki",
+        "widgetTitleSelected": "Wybrane łatki",
+        "widgetSubtitle": "Najpierw wybierz aplikacje.",
+        "widgetEmptySubtitle": "Łatki nie zostały wybrane."
     },
     "socialMediaCard": {
-        "widgetTitle": "Social Media",
-        "widgetSubtitle": "We are online!"
+        "widgetTitle": "Media społecznościowe",
+        "widgetSubtitle": "Jesteśmy online!"
     },
     "appSelectorView": {
-        "searchBarHint": "Search applications",
-        "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application."
+        "searchBarHint": "Szukaj aplikacji",
+        "storageButton": "Pamięć",
+        "errorMessage": "Nie można użyć wybranej aplikacji."
     },
     "patchesSelectorView": {
-        "searchBarHint": "Search patches",
-        "doneButton": "Done",
-        "noPatchesFound": "No patches found for the selected app."
+        "searchBarHint": "Szukaj łatek",
+        "doneButton": "Gotowe",
+        "noPatchesFound": "Nie znaleziono łatek dla wybranej aplikacji."
     },
     "patchItem": {
-        "unsupportedWarningButton": "Unsupported version",
-        "unsupportedDialogTitle": "Warning",
-        "unsupportedDialogText": "Selecting this patch may or may not result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
+        "unsupportedWarningButton": "Niewspierana wersja aplikacji ",
+        "unsupportedDialogTitle": "Ostrzeżenie",
+        "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy w instalowaniu łatki.\n\nWersja aplikacji: {packageVersion}\nAktualnie wspierane wersje:\n{supportedVersions}"
     },
     "installerView": {
-        "widgetTitle": "Installer",
-        "installButton": "Install",
-        "installRootButton": "Install as Root",
-        "openButton": "Open",
-        "shareButton": "Share file",
-        "notificationTitle": "ReVanced Manager is patching",
-        "notificationText": "Tap to return to the installer",
-        "shareApkMenuOption": "Share APK",
-        "shareLogMenuOption": "Share log"
+        "widgetTitle": "Instalator",
+        "installButton": "Zainstaluj",
+        "installRootButton": "Zainstaluj jako Root",
+        "openButton": "Otwórz",
+        "shareButton": "Udostępnij",
+        "notificationTitle": "Menedżer ReVanced instaluje łatkę.",
+        "notificationText": "Kliknij, aby wrócić do instalatora",
+        "shareApkMenuOption": "Udostępnij pakiet APK",
+        "shareLogMenuOption": "Udostępnij log"
     },
     "settingsView": {
-        "widgetTitle": "Settings",
-        "appearanceSectionTitle": "Appearance",
+        "widgetTitle": "Ustawienia",
+        "appearanceSectionTitle": "Wygląd",
         "patcherSectionTitle": "Patcher",
-        "teamSectionTitle": "Team",
-        "infoSectionTitle": "Info",
-        "darkThemeLabel": "Dark Mode",
-        "darkThemeHint": "Welcome to the Dark Side",
+        "teamSectionTitle": "Twórcy",
+        "infoSectionTitle": "Informacje",
+        "darkThemeLabel": "Motyw ciemny",
+        "darkThemeHint": "Witaj po ciemnej stronie mocy",
         "dynamicThemeLabel": "Material You",
-        "dynamicThemeHint": "Enjoy an experience closer to your device",
-        "languageLabel": "Language",
-        "englishOption": "English",
-        "frenchOption": "French",
-        "sourcesLabel": "Sources",
-        "sourcesLabelHint": "Configure your custom sources",
-        "orgPatchesLabel" : "Patches Org",
-        "sourcesPatchesLabel" : "Patches Source",
-        "orgIntegrationsLabel": "Integrations Org",
-        "sourcesIntegrationsLabel": "Integrations Source",
-        "sourcesResetDialogTitle": "Reset",
-        "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
-        "contributorsLabel": "Contributors",
-        "contributorsHint": "A list of contributors of ReVanced",
-        "logsLabel": "Logs",
-        "logsHint": "Share device debug logs",
-        "aboutLabel": "About",
-        "snackbarMessage": "Copied to clipboard"
+        "dynamicThemeHint": "Ciesz się doświadczeniem bliższym do twojego urządzenia",
+        "languageLabel": "Język",
+        "englishOption": "Angielski",
+        "frenchOption": "Francuski",
+        "polishOption": "Polski"
+        "sourcesLabel": "Źródła",
+        "sourcesLabelHint": "Skonfiguruj swoje własne źródła",
+        "orgPatchesLabel" : "Łatki Org",
+        "sourcesPatchesLabel" : "Źródło łatek",
+        "orgIntegrationsLabel": "Integracje Org",
+        "sourcesIntegrationsLabel": "Źródło integracji",
+        "sourcesResetDialogTitle": "Zresetuj",
+        "sourcesResetDialogText": "Czy na pewno chcesz przywrócić właśne źródła do domyślnych?",
+        "contributorsLabel": "Współtwórcy",
+        "contributorsHint": "Lista współtwórcow ReVanced",
+        "logsLabel": "Logi",
+        "logsHint": "Udostępnij logi",
+        "aboutLabel": "O menedżerze ReVanced",
+        "snackbarMessage": "Skopiowano do schowka"
     },
     "appInfoView": {
         "widgetTitle": "App Info",
