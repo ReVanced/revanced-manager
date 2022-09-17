@@ -1,0 +1,145 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Anuluj",
+    "enabledLabel": "Włączone",
+    "disabledLabel": "Wyłączone",
+    "yesLabel": "Tak",
+    "noLabel": "Nie",
+    "navigationView": {
+        "dashboardTab": "Dashboard",
+        "patcherTab": "Patcher",
+        "settingsTab": "Ustawienia"
+    },
+    "homeView": {
+        "widgetTitle": "Dashboard",
+        "updatesSubtitle": "Aktualizacje",
+        "patchedSubtitle": "Zpatchowane aplikacje",
+        "updatesAvailable": "Dostępne aktualizacje",
+        "noUpdates": "Brak dostępnych aktualizacji",
+        "noInstallations": "Nie ma zainstalowanych aplikacji zpatchowanych",
+        "installed": "Zainstalowano",
+        "updateDialogTitle": "Aktualizuj",
+        "updateDialogText": "Czy na pewno chcesz zaktualizować ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager został zaktualizowany!",
+        "notificationText": "Kliknij, aby otworzyć aplikacje",
+        "downloadingMessage": "Pobieranie aktualizacji!",
+        "installingMessage": "Instalowanie aktualizacji... Proszę czekać!",
+        "errorDownloadMessage": "Nie udało się pobrać aktualizacji!",
+        "errorInstallMessage": "Nie udało się zainstalować aktualizacji!",
+        "noConnection": "Brak internetu"
+    },
+    "applicationItem": {
+        "patchButton": "Zpatchuj",
+        "infoButton": "Informacje",
+        "changelogLabel": "Lista zmian"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Ładowanie",
+        "timeagoLabel": "{time} temu",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Zaktualizuj Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Zpatchuj",
+        "patchDialogTitle": "Ostrzeżenie",
+        "patchDialogText": "Wybrałeś łatkę zasobów i została wykryta instalacja podzielonego pakietu APK, mogą wystąpić błędy./nCzy na pewno chcesz kontynuować?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Select application",
+        "widgetTitleSelected": "Selected application",
+        "widgetSubtitle": "No application selected.",
+        "noAppsLabel": "No applications found."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Select patches",
+        "widgetTitleSelected": "Selected patches",
+        "widgetSubtitle": "Select an application first.",
+        "widgetEmptySubtitle": "No patches selected."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Social Media",
+        "widgetSubtitle": "We are online!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Search applications",
+        "storageButton": "Storage",
+        "errorMessage": "Unable to use selected application."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Search patches",
+        "doneButton": "Done",
+        "noPatchesFound": "No patches found for the selected app."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Unsupported version",
+        "unsupportedDialogTitle": "Warning",
+        "unsupportedDialogText": "Selecting this patch may or may not result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installer",
+        "installButton": "Install",
+        "installRootButton": "Install as Root",
+        "openButton": "Open",
+        "shareButton": "Share file",
+        "notificationTitle": "ReVanced Manager is patching",
+        "notificationText": "Tap to return to the installer",
+        "shareApkMenuOption": "Share APK",
+        "shareLogMenuOption": "Share log"
+    },
+    "settingsView": {
+        "widgetTitle": "Settings",
+        "appearanceSectionTitle": "Appearance",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Team",
+        "infoSectionTitle": "Info",
+        "darkThemeLabel": "Dark Mode",
+        "darkThemeHint": "Welcome to the Dark Side",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Enjoy an experience closer to your device",
+        "languageLabel": "Language",
+        "englishOption": "English",
+        "frenchOption": "French",
+        "sourcesLabel": "Sources",
+        "sourcesLabelHint": "Configure your custom sources",
+        "orgPatchesLabel" : "Patches Org",
+        "sourcesPatchesLabel" : "Patches Source",
+        "orgIntegrationsLabel": "Integrations Org",
+        "sourcesIntegrationsLabel": "Integrations Source",
+        "sourcesResetDialogTitle": "Reset",
+        "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
+        "contributorsLabel": "Contributors",
+        "contributorsHint": "A list of contributors of ReVanced",
+        "logsLabel": "Logs",
+        "logsHint": "Share device debug logs",
+        "aboutLabel": "About",
+        "snackbarMessage": "Copied to clipboard"
+    },
+    "appInfoView": {
+        "widgetTitle": "App Info",
+        "openButton": "Open",
+        "uninstallButton": "Uninstall",
+        "patchButton": "Patch",
+        "uninstallDialogTitle": "Uninstall",
+        "uninstallDialogText": "Are you sure you want to uninstall this app?",
+        "rootDialogTitle": "Error",
+        "rootDialogText": "App was installed with root mode enabled but currently root mode is disabled.\nPlease enable root mode first.",
+        "packageNameLabel": "Package Name",
+        "installTypeLabel": "Installation Type",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Patched Date",
+        "patchedDateHint": "{date} at {time}",
+        "appliedPatchesLabel": "Applied Patches",
+        "appliedPatchesHint": "{quantity} applied patches"
+    },
+    "contributorsView": {
+        "widgetTitle": "Contributors",
+        "patcherContributors": "Patcher Contributors",
+        "patchesContributors": "Patches Contributors",
+        "integrationsContributors": "Integrations Contributors",
+        "cliContributors": "CLI Contributors",
+        "managerContributors": "Manager Contributors"
+    }
+}
