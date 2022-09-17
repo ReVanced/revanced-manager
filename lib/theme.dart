@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 var lightCustomColorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue,
   brightness: Brightness.light,
+  primary: const Color(0xff1B73E8),
 );
 
 var lightCustomTheme = ThemeData(
@@ -23,8 +24,8 @@ var lightCustomTheme = ThemeData(
 var darkCustomColorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue,
   brightness: Brightness.dark,
-  primary: const Color(0xff7792BA),
-  surface: const Color(0xff0A0D11),
+  primary: const Color(0xffA5CAFF),
+  surface: const Color(0xff1B1A1D),
 );
 
 var darkCustomTheme = ThemeData(
@@ -38,8 +39,8 @@ var darkCustomTheme = ThemeData(
       ),
     ),
   ),
-  canvasColor: const Color(0xff0A0D11),
-  scaffoldBackgroundColor: const Color(0xff0A0D11),
-  toggleableActiveColor: const Color(0xff7792BA),
+  canvasColor: const Color(0xff1B1A1D),
+  scaffoldBackgroundColor: const Color(0xff1B1A1D),
+  toggleableActiveColor: const Color(0xffA5CAFF),
   textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
 );
