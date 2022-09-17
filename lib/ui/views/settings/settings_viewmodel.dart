@@ -55,12 +55,7 @@ class SettingsViewModel extends BaseViewModel {
     } else {
       await DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
     }
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
-      ),
-    );
+
     notifyListeners();
   }
 
@@ -78,10 +73,7 @@ class SettingsViewModel extends BaseViewModel {
     }
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
-        systemNavigationBarIconBrightness:
-            value ? Brightness.light : Brightness.dark,
+        systemNavigationBarIconBrightness: value ? Brightness.light : Brightness.dark,
       ),
     );
     notifyListeners();
@@ -244,12 +236,7 @@ class SettingsViewModel extends BaseViewModel {
     Directory appCache = await getTemporaryDirectory();
     Directory logDir = Directory('${appCache.path}/logs');
     logDir.createSync();
-    String dateTime = DateTime.now()
-        .toIso8601String()
-        .replaceAll('-', '')
-        .replaceAll(':', '')
-        .replaceAll('T', '')
-        .replaceAll('.', '');
+    String dateTime = DateTime.now().toIso8601String().replaceAll('-', '').replaceAll(':', '').replaceAll('T', '').replaceAll('.', '');
     File logcat = File('${logDir.path}/revanced-manager_logcat_$dateTime.log');
     String logs = await Logcat.execute();
     logcat.writeAsStringSync(logs);
