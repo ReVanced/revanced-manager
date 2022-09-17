@@ -27,7 +27,7 @@ class AppInfoView extends StatelessWidget {
                 'appInfoView.widgetTitle',
                 child: Text(
                   '',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.roboto(
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
@@ -93,6 +93,7 @@ class AppInfoView extends StatelessWidget {
                               ),
                             ),
                             VerticalDivider(
+                              thickness: 1,
                               color: Theme.of(context).canvasColor,
                             ),
                             InkWell(
@@ -123,6 +124,7 @@ class AppInfoView extends StatelessWidget {
                               ),
                             ),
                             VerticalDivider(
+                              thickness: 1,
                               color: Theme.of(context).canvasColor,
                             ),
                             InkWell(

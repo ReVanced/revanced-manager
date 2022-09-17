@@ -43,7 +43,7 @@ class OptionsFilePicker extends StatelessWidget {
             optionName,
             child: Text(
               '',
-              style: GoogleFonts.inter(
+              style: GoogleFonts.roboto(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),

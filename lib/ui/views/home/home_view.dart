@@ -31,7 +31,7 @@ class HomeView extends StatelessWidget {
                   'homeView.widgetTitle',
                   child: Text(
                     '',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.roboto(
                       color: Theme.of(context).textTheme.headline6!.color,
                     ),
                   ),

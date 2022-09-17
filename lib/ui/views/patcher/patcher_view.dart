@@ -32,7 +32,7 @@ class PatcherView extends StatelessWidget {
                 'patcherView.widgetTitle',
                 child: Text(
                   '',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.roboto(
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
@@ -48,7 +48,7 @@ class PatcherView extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Opacity(
-                      opacity: model.dimPatchesCard() ? 0.5 : 1,
+                      opacity: model.dimPatchesCard() ? 0.4 : 1,
                       child: PatchSelectorCard(
                         onPressed: model.dimPatchesCard()
                             ? () => {}
