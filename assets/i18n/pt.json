@@ -1,0 +1,149 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Cancelar",
+    "enabledLabel": "Habilitado",
+    "disabledLabel": "Desabilitado",
+    "yesLabel": "Sim",
+    "noLabel": "Não",
+    "navigationView": {
+        "dashboardTab": "Dashboard",
+        "patcherTab": "Corretor",
+        "settingsTab": "Configurações"
+    },
+    "homeView": {
+        "widgetTitle": "Dashboard",
+        "updatesSubtitle": "Atualizações",
+        "patchedSubtitle": "Aplicações Corrigidas",
+        "updatesAvailable": "Atualizações Disponíveis",
+        "noUpdates": "Sem atualizações disponíveis",
+        "noInstallations": "Nenhuma aplicação corrigida instalada",
+        "installed": "Instalado",
+        "updateDialogTitle": "Atualizar",
+        "updateDialogText": "Você tem certeza que deseja atualizar o Gerenciador??",
+        "notificationTitle": "ReVanced Manager foi atualizado!",
+        "notificationText": "Clique para abrir o app",
+        "downloadingMessage": "Baixando atualização!",
+        "installingMessage": "Instalando atualização... espere um momento!",
+        "errorDownloadMessage": "Não foi possível baixar a atualização!",
+        "errorInstallMessage": "Não foi possível instalar a atualização!",
+        "noConnection": "Sem conexão com a internet"
+    },
+    "applicationItem": {
+        "patchButton": "Corrigir",
+        "infoButton": "Informações",
+        "changelogLabel": "Changelog"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Carregando",
+        "timeagoLabel": "{time} atrás",
+        "patcherLabel": "Corretor: ",
+        "managerLabel": "Gerenciador: ",
+        "updateButton": "Gerenciador de Atualizações"
+    },
+    "patcherView": {
+        "widgetTitle": "Corretor",
+        "patchButton": "Corrigir",
+        "patchDialogTitle": "Aviso",
+        "patchDialogText": "Você selecionou um patch de recurso e uma instalação de APK dividida foi detectada para que possam ocorrer erros de patch.\nTem certeza de que deseja continuar com o patch de um APK de base dividida?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Selecionar aplicação",
+        "widgetTitleSelected": "Aplicação selecionada",
+        "widgetSubtitle": "Nenhuma aplicação selecionada.",
+        "noAppsLabel": "Nenhuma aplicação encontrada."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Selecione correções",
+        "widgetTitleSelected": "Correções selecionadas",
+        "widgetSubtitle": "Selecione uma aplicação primeiro.",
+        "widgetEmptySubtitle": "Nenhuma correção selecionada."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Rede Social",
+        "widgetSubtitle": "Estamos online!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Procure aplicações",
+        "storageButton": "Armazenamento",
+        "errorMessage": "Não foi possível selecionar a aplicação."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Procure correções",
+        "doneButton": "Concluído",
+        "noPatchesFound": "Nenhuma correção encontrada para o app selecionado."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Versão não suportada",
+        "unsupportedDialogTitle": "Aviso",
+        "unsupportedDialogText": "Selecionando este patch, talvez nenhum erro seja corrigido.\n\nVersão do App: {packageVersion}\nVersões suportadas atualmente:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Instalador",
+        "installButton": "Instalar",
+        "installRootButton": "Instalar como Root",
+        "openButton": "Abrir",
+        "shareButton": "Compartilhar arquivo",
+        "notificationTitle": "ReVanced Manager está corrigindo",
+        "notificationText": "Clique para retornar ao instalador",
+        "shareApkMenuOption": "Compartilhar APK",
+        "shareLogMenuOption": "Compartilhar log"
+    },
+    "settingsView": {
+        "widgetTitle": "Configurações",
+        "appearanceSectionTitle": "Visual",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Equipe",
+        "infoSectionTitle": "Informações",
+        "darkThemeLabel": "Modo Escuro",
+        "darkThemeHint": "Bem-vindo(a) ao Lado Negro.",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Curta uma experiência mais próxima do seu dispositivo",
+        "languageLabel": "Idioma",
+        "englishOption": "Inglês",
+        "frenchOption": "Francês",
+        "portugueseOption": "Português",
+        "sourcesLabel": "Fontes",
+        "sourcesLabelHint": "Configurar suas fontes personalizadas",
+        "orgPatchesLabel" : "Patches Org",
+        "sourcesPatchesLabel" : "Fontes de Correções",
+        "orgIntegrationsLabel": "Integrations Org",
+        "sourcesIntegrationsLabel": "Integrations Source",
+        "sourcesResetDialogTitle": "Reiniciar",
+        "sourcesResetDialogText": "Tem certeza de que deseja redefinir as fontes personalizadas para seus valores originais?",
+        "contributorsLabel": "Contributors",
+        "contributorsHint": "Lista de contribuidores do ReVanced",
+        "logsLabel": "Logs",
+        "logsHint": "Compartilhe os logs de debug",
+        "aboutLabel": "Sobre",
+        "snackbarMessage": "Copiado para a área de transferência"
+    },
+    "appInfoView": {
+        "widgetTitle": "Informações do app",
+        "openButton": "Abrir",
+        "uninstallButton": "Desinstalar",
+        "patchButton": "Corrigir",
+        "unpatchButton": "Desfazer correção",
+        "uninstallDialogTitle": "Desinstalar",
+        "uninstallDialogText": "Você tem certeza que deseja desinstalar esse app?",
+        "unpatchDialogTitle": "Desfazer correção",
+        "unpatchDialogText": "Você tem certeza que deseja descorrigir esse app?",
+        "rootDialogTitle": "Erro",
+        "rootDialogText": "O aplicativo foi instalado com o modo root habilitado, mas atualmente o modo root está desabilitado.\nPor favor, habilite o modo root primeiro.",
+        "packageNameLabel": "Nome do pacote",
+        "installTypeLabel": "Tipo da instalação",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Não-root",
+        "patchedDateLabel": "Data da Correção",
+        "patchedDateHint": "{date} às {time}",
+        "appliedPatchesLabel": "Correções aplicadas",
+        "appliedPatchesHint": "Foram aplicados {quantity} correções"
+    },
+    "contributorsView": {
+        "widgetTitle": "Contribuidores",
+        "patcherContributors": "Contribuidores do Patcher",
+        "patchesContributors": "Contribuidores de Patches ",
+        "integrationsContributors": "Integrations Contribuidores",
+        "cliContributors": "Contribuidores da CLI",
+        "managerContributors": "Contribuidores do Gerenciador"
+    }
+}
