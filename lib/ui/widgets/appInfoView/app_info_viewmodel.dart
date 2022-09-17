@@ -19,12 +19,15 @@ class AppInfoViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
 
-  Future<void> uninstallApp(PatchedApplication app) async {
+  Future<void> uninstallApp(PatchedApplication app, bool onlyUnpatch) async {
     if (app.isRooted) {
       bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         _rootAPI.deleteApp(app.packageName, app.apkFilePath);
         _managerAPI.deletePatchedApp(app);
+        if (!onlyUnpatch) {
+          DeviceApps.uninstallApp(app.packageName);
+        }
       }
     } else {
       DeviceApps.uninstallApp(app.packageName);
@@ -43,32 +46,39 @@ class AppInfoViewModel extends BaseViewModel {
   Future<void> showUninstallAlertDialog(
     BuildContext context,
     PatchedApplication app,
+    bool onlyUnpatch,
   ) async {
-    if (app.isRooted) {
-      bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (!hasRootPermissions) {
-        return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: I18nText('appInfoView.rootDialogTitle'),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText('appInfoView.rootDialogText'),
-            actions: <Widget>[
-              CustomMaterialButton(
-                label: I18nText('okButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          ),
-        );
-      }
+    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    if (app.isRooted && !hasRootPermissions) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('appInfoView.rootDialogTitle'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText('appInfoView.rootDialogText'),
+          actions: <Widget>[
+            CustomMaterialButton(
+              label: I18nText('okButton'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
     } else {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('appInfoView.uninstallDialogTitle'),
+          title: I18nText(
+            onlyUnpatch
+                ? 'appInfoView.unpatchDialogTitle'
+                : 'appInfoView.uninstallDialogTitle',
+          ),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('appInfoView.uninstallDialogText'),
+          content: I18nText(
+            onlyUnpatch
+                ? 'appInfoView.unpatchDialogText'
+                : 'appInfoView.uninstallDialogText',
+          ),
           actions: <Widget>[
             CustomMaterialButton(
               isFilled: false,
@@ -78,7 +88,7 @@ class AppInfoViewModel extends BaseViewModel {
             CustomMaterialButton(
               label: I18nText('okButton'),
               onPressed: () {
-                uninstallApp(app);
+                uninstallApp(app, onlyUnpatch);
                 locator<HomeViewModel>().initialize(context);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
