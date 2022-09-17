@@ -6,12 +6,12 @@
     "yesLabel": "Igen",
     "noLabel": "Nem",
     "navigationView": {
-        "dashboardTab": "Dashboard",
+        "dashboardTab": "Vezérlőpult",
         "patcherTab": "Patcher",
         "settingsTab": "Beállítások"
     },
     "homeView": {
-        "widgetTitle": "Dashboard",
+        "widgetTitle": "Vezérlőpult",
         "updatesSubtitle": "Frissítések",
         "patchedSubtitle": "Patchelt applikációk",
         "updatesAvailable": "Elérhető frissítések",
