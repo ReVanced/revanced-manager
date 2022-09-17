@@ -63,6 +63,7 @@
         "widgetSubtitle": "We are online!"
     },
     "appSelectorView": {
+        "viewTitle": "Select application",
         "searchBarHint": "Search applications",
         "storageButton": "Storage",
         "errorMessage": "Unable to use selected application."
