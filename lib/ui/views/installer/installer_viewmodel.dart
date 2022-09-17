@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
