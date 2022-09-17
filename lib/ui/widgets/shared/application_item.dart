@@ -61,6 +61,12 @@ class _ApplicationItemState extends State<ApplicationItem>
         animationDuration: Duration(milliseconds: 450),
       ),
       header: CustomCard(
+        onTap: () {
+          expController.toggle();
+          _animationController.isCompleted
+              ? _animationController.reverse()
+              : _animationController.forward();
+        },
         child: Row(
           children: <Widget>[
             SizedBox(
@@ -84,14 +90,9 @@ class _ApplicationItemState extends State<ApplicationItem>
             const Spacer(),
             RotationTransition(
               turns: Tween(begin: 0.0, end: 0.50).animate(_animationController),
-              child: IconButton(
-                onPressed: () {
-                  expController.toggle();
-                  _animationController.isCompleted
-                      ? _animationController.reverse()
-                      : _animationController.forward();
-                },
-                icon: const Icon(Icons.arrow_drop_down),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.arrow_drop_down),
               ),
             ),
             Column(

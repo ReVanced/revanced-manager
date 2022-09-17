@@ -16,20 +16,15 @@ class NavigationViewModel extends IndexTrackingViewModel {
   void initialize(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('useDarkTheme') == null) {
-      bool isDark =
-          MediaQuery.of(context).platformBrightness != Brightness.light;
+      bool isDark = MediaQuery.of(context).platformBrightness != Brightness.light;
       await prefs.setBool('useDarkTheme', isDark);
       await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
     }
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
-        systemNavigationBarIconBrightness:
-            DynamicTheme.of(context)!.theme.brightness == Brightness.light
-                ? Brightness.dark
-                : Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: DynamicTheme.of(context)!.theme.brightness == Brightness.light ? Brightness.dark : Brightness.light,
       ),
     );
     RootAPI().hasRootPermissions();

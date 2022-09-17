@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -83,9 +84,26 @@ class HomeView extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 14),
-                      model.showUpdatableApps
-                          ? AvailableUpdatesCard()
-                          : InstalledAppsCard(),
+                      PageTransitionSwitcher(
+                        transitionBuilder:
+                            (child, primaryAnimation, secondaryAnimation) {
+                          return FadeThroughTransition(
+                            animation: primaryAnimation,
+                            secondaryAnimation: secondaryAnimation,
+                            fillColor: Colors.transparent,
+                            child: child,
+                          );
+                        },
+                        layoutBuilder: (entries) {
+                          return Stack(
+                            alignment: Alignment.topCenter,
+                            children: entries,
+                          );
+                        },
+                        child: model.showUpdatableApps
+                            ? AvailableUpdatesCard()
+                            : InstalledAppsCard(),
+                      ),
                     ],
                   ),
                 ),

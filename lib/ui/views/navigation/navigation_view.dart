@@ -33,29 +33,24 @@ class NavigationView extends StatelessWidget {
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: model.setIndex,
           selectedIndex: model.currentIndex,
+          elevation: 5.0,
           destinations: <Widget>[
             NavigationDestination(
-              icon: model.isIndexSelected(0)
-                  ? const Icon(Icons.dashboard)
-                  : const Icon(Icons.dashboard_outlined),
+              icon: model.isIndexSelected(0) ? const Icon(Icons.dashboard) : const Icon(Icons.dashboard_outlined),
               label: FlutterI18n.translate(
                 context,
                 'navigationView.dashboardTab',
               ),
             ),
             NavigationDestination(
-              icon: model.isIndexSelected(1)
-                  ? const Icon(Icons.build)
-                  : const Icon(Icons.build_outlined),
+              icon: model.isIndexSelected(1) ? const Icon(Icons.build) : const Icon(Icons.build_outlined),
               label: FlutterI18n.translate(
                 context,
                 'navigationView.patcherTab',
               ),
             ),
             NavigationDestination(
-              icon: model.isIndexSelected(2)
-                  ? const Icon(Icons.settings)
-                  : const Icon(Icons.settings_outlined),
+              icon: model.isIndexSelected(2) ? const Icon(Icons.settings) : const Icon(Icons.settings_outlined),
               label: FlutterI18n.translate(
                 context,
                 'navigationView.settingsTab',

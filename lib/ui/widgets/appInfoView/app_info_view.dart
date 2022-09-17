@@ -62,96 +62,131 @@ class AppInfoView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     CustomCard(
-                      child: IntrinsicHeight(
+                      padding: EdgeInsets.zero,
+                      child: SizedBox(
+                        height: 82.0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            InkWell(
-                              onTap: () => model.openApp(app),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.open_in_new_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  I18nText(
-                                    'appInfoView.openButton',
-                                    child: Text(
-                                      '',
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            Expanded(
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  onTap: () => model.openApp(app),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 6.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.open_in_new_outlined,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        I18nText(
+                                          'appInfoView.openButton',
+                                          child: Text(
+                                            '',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                             VerticalDivider(
                               color: Theme.of(context).canvasColor,
+                              indent: 12.0,
+                              endIndent: 12.0,
                             ),
-                            InkWell(
-                              onTap: () =>
-                                  model.showUninstallAlertDialog(context, app),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.delete_outline,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  I18nText(
-                                    'appInfoView.uninstallButton',
-                                    child: Text(
-                                      '',
-                                      style: TextStyle(
+                            Expanded(
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  onTap: () => model.showUninstallAlertDialog(
+                                      context, app),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.delete_outline,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary,
-                                        fontWeight: FontWeight.bold,
                                       ),
-                                    ),
+                                      const SizedBox(height: 10),
+                                      I18nText(
+                                        'appInfoView.uninstallButton',
+                                        child: Text(
+                                          '',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                             VerticalDivider(
                               color: Theme.of(context).canvasColor,
+                              indent: 12.0,
+                              endIndent: 12.0,
                             ),
-                            InkWell(
-                              onTap: () {
-                                model.navigateToPatcher(app);
-                                Navigator.of(context).pop();
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.build_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  I18nText(
-                                    'appInfoView.patchButton',
-                                    child: Text(
-                                      '',
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            Expanded(
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  onTap: () {
+                                    model.navigateToPatcher(app);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 6.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.build_outlined,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        I18nText(
+                                          'appInfoView.patchButton',
+                                          child: Text(
+                                            '',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ],
@@ -213,6 +248,8 @@ class AppInfoView extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     ListTile(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0)),
                       contentPadding: EdgeInsets.zero,
                       title: I18nText(
                         'appInfoView.appliedPatchesLabel',

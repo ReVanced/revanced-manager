@@ -39,10 +39,7 @@ class InstalledAppsCard extends StatelessWidget {
               ),
             ),
           )
-        : ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
+        : Column(
             children: apps
                 .map(
                   (app) => ApplicationItem(
