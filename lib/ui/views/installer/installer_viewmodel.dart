@@ -1,8 +1,11 @@
+import 'dart:html';
+
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -29,29 +32,31 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
 
   Future<void> initialize(BuildContext context) async {
-    try {
-      await FlutterBackground.initialize(
-        androidConfig: FlutterBackgroundAndroidConfig(
-          notificationTitle: FlutterI18n.translate(
-            context,
-            'installerView.notificationTitle',
+    if (await Permission.ignoreBatteryOptimizations.isGranted) {
+      try {
+        await FlutterBackground.initialize(
+          androidConfig: FlutterBackgroundAndroidConfig(
+            notificationTitle: FlutterI18n.translate(
+              context,
+              'installerView.notificationTitle',
+            ),
+            notificationText: FlutterI18n.translate(
+              context,
+              'installerView.notificationText',
+            ),
+            notificationImportance: AndroidNotificationImportance.Default,
+            notificationIcon: const AndroidResource(
+              name: 'ic_notification',
+              defType: 'drawable',
+            ),
           ),
-          notificationText: FlutterI18n.translate(
-            context,
-            'installerView.notificationText',
-          ),
-          notificationImportance: AndroidNotificationImportance.Default,
-          notificationIcon: const AndroidResource(
-            name: 'ic_notification',
-            defType: 'drawable',
-          ),
-        ),
-      );
-      await FlutterBackground.enableBackgroundExecution();
-      await Wakelock.enable();
-    } on Exception {
-      // ignore
+        );
+        await FlutterBackground.enableBackgroundExecution();
+      } on Exception {
+        // ignore
+      }
     }
+    await Wakelock.enable();
     await handlePlatformChannelMethods();
     await runPatcher();
   }
@@ -119,12 +124,14 @@ class InstallerViewModel extends BaseViewModel {
       hasErrors = true;
       update(-1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
-    try {
-      await FlutterBackground.disableBackgroundExecution();
-      await Wakelock.disable();
-    } on Exception {
-      // ignore
+    if (await Permission.ignoreBatteryOptimizations.isGranted) {
+      try {
+        await FlutterBackground.disableBackgroundExecution();
+      } on Exception {
+        // ignore
+      }
     }
+    await Wakelock.disable();
     isPatching = false;
   }
 
