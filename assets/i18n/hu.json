@@ -70,6 +70,7 @@
     "patchesSelectorView": {
         "searchBarHint": "Patchek keresése",
         "doneButton": "Kész"
+        "noPatchesFound": "Nem találhatóak patchek a kiválasztott applikációhoz."
     },
     "patchItem": {
         "unsupportedWarningButton": "Nem támogatott verzió",
