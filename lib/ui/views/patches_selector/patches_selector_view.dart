@@ -148,7 +148,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                             children: <Widget>[
                                               Text(
                                                 'Patch options',
-                                                style: GoogleFonts.roboto(
+                                                style: GoogleFonts.inter(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
                                                 ),
