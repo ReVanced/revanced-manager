@@ -64,34 +64,40 @@ class _ApplicationItemState extends State<ApplicationItem>
         child: Row(
           children: <Widget>[
             SizedBox(
-              width: 60,
-              child: Image.memory(widget.icon, height: 39, width: 39),
+              width: 40,
+              child: Image.memory(widget.icon, height: 40, width: 40),
             ),
             const SizedBox(width: 4),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  widget.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(format(widget.patchDate)),
+                  ],
                 ),
-                Text(format(widget.patchDate)),
-              ],
             ),
             const Spacer(),
-            RotationTransition(
-              turns: Tween(begin: 0.0, end: 0.50).animate(_animationController),
-              child: IconButton(
-                onPressed: () {
-                  expController.toggle();
-                  _animationController.isCompleted
-                      ? _animationController.reverse()
-                      : _animationController.forward();
-                },
-                icon: const Icon(Icons.arrow_drop_down),
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: RotationTransition(
+                turns: Tween(begin: 0.0, end: 0.50).animate(_animationController),
+                child: IconButton(
+                  onPressed: () {
+                    expController.toggle();
+                    _animationController.isCompleted
+                        ? _animationController.reverse()
+                        : _animationController.forward();
+                  },
+                  icon: const Icon(Icons.arrow_drop_down),
+                ),
               ),
             ),
             Column(
@@ -111,7 +117,7 @@ class _ApplicationItemState extends State<ApplicationItem>
       ),
       collapsed: const Text(''),
       expanded: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
