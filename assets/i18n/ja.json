@@ -44,7 +44,7 @@
         "widgetTitle": "Patcher",
         "patchButton": "パッチ",
         "patchDialogTitle": "警告",
-        "patchDialogText": "リソースパッチとAPKの分割インストールが検出されました、パッチの適用時にエラーが発生する可能性があります。\n分割されたベースAPKにパッチを適用しますか？"
+        "patchDialogText": "リソースパッチとAPKの分割インストールが検出されました、パッチ適用時にエラーが発生する可能性があります。\n分割されたベースAPKにパッチを適用しますか？"
     },
     "appSelectorCard": {
         "widgetTitle": "アプリケーションを選択",
@@ -125,9 +125,9 @@
         "uninstallDialogTitle": "アンインストール",
         "uninstallDialogText": "選択したアプリケーションをアンインストールしますか？",
         "rootDialogTitle": "エラー",
-        "rootDialogText": "アプリは端末がルート化された状態でインストールされましたが、現在はルート化が解除されているようです。\n再度、ルート化してください。",
+        "rootDialogText": "アプリは端末がルート化された状態でインストールされましたが、現在はルート化が解除されているようです。\n再度、ルート化してから実行してください。",
         "packageNameLabel": "パッケージ名",
-        "installTypeLabel": "インストールされるタイプ",
+        "installTypeLabel": "インストールタイプ",
         "rootTypeLabel": "ルート",
         "nonRootTypeLabel": "非ルート",
         "patchedDateLabel": "パッチ適用日",
