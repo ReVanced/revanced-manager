@@ -1,0 +1,144 @@
+{
+    "okButton": "Oké",
+    "cancelButton": "Mégse",
+    "enabledLabel": "Engedélyezés",
+    "disabledLabel": "Tíltás",
+    "yesLabel": "Igen",
+    "noLabel": "Nem",
+    "navigationView": {
+        "dashboardTab": "Dashboard",
+        "patcherTab": "Patcher",
+        "settingsTab": "Beállítások"
+    },
+    "homeView": {
+        "widgetTitle": "Dashboard",
+        "updatesSubtitle": "Frissítések",
+        "patchedSubtitle": "Patchelt applikációk",
+        "updatesAvailable": "Elérhető frissítések",
+        "noUpdates": "Nincs elérhető frissítés",
+        "noInstallations": "Nincs patchelt alkalmazás telepítve",
+        "installed": "Letöltve",
+        "updateDialogTitle": "Frissítés",
+        "updateDialogText": "Biztos, hogy leakarod tölteni és frissíteni a Managert??",
+        "notificationTitle": "A ReVanced Manager frissítve lett!",
+        "notificationText": "Nyomd meg az alkalmazás megnyitásához",
+        "downloadingMessage": "Frissítés letöltése!",
+        "installingMessage": "Frissítés telepítése... Várj!",
+        "errorDownloadMessage": "Nem sikerült letölteni a frissítést!",
+        "errorInstallMessage": "Nem sikerült letölteni a frissítést!",
+        "noConnection": "Nincs internetkapcsolat"
+    },
+    "applicationItem": {
+        "patchButton": "Patch",
+        "infoButton": "Infó",
+        "changelogLabel": "Változási napló"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Betöltés",
+        "timeagoLabel": "{time} óta",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Manager Frissítése"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
+        "patchDialogTitle": "Figyelemeztetés",
+        "patchDialogText": "Egy resource patchet választottál ki és egy split APK letöltése lett detectálva szóval lehetnek hibák a patchelés alatt.\nBiztos, hogy folytatni akarod egy split based APK javítását?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Válasszd ki az alkalmazást",
+        "widgetTitleSelected": "Kiválasztott alkalmazás",
+        "widgetSubtitle": "Nincs kiválasztva alkalmazás.",
+        "noAppsLabel": "Nem találhatóak alkalmazások."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Válasszd ki a patcheket",
+        "widgetTitleSelected": "Kiválasztott patchek",
+        "widgetSubtitle": "Először válassz ki egy alkalmazást.",
+        "widgetEmptySubtitle": "Nincsenek patchek kiválasztva."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Social Media",
+        "widgetSubtitle": "Online vagyunk!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Alkalmazások keresése",
+        "storageButton": "Tárhely",
+        "errorMessage": "A kiválasztott alkalmazás nem használható."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Patchek keresése",
+        "doneButton": "Kész"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Nem támogatott verzió",
+        "unsupportedDialogTitle": "Figyelmeztetés",
+        "unsupportedDialogText": "Ennek a patchnek a kiválasztása esetleg hibákat eredményezhet, vagy nem.\n\nApp verziója: {packageVersion}\nJelenleg támogatott verziók:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Telepítő",
+        "installButton": "Telepítés",
+        "installRootButton": "Telepítés Rootként",
+        "openButton": "Megnyitás",
+        "shareButton": "Fájl megosztása",
+        "notificationTitle": "ReVanced Manager éppen patchel",
+        "notificationText": "Nyomj egyet, hogy visszatérj a telepítőhöz",
+        "shareApkMenuOption": "APK megosztása",
+        "shareLogMenuOption": "Log megosztása"
+    },
+    "settingsView": {
+        "widgetTitle": "Beállítások",
+        "appearanceSectionTitle": "Megjelenés",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Csapat",
+        "infoSectionTitle": "Infó",
+        "darkThemeLabel": "Sötét Mód",
+        "darkThemeHint": "Üdvözöllek a sötét oldalon",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Élvezze az eszközéhez lévő legközelebbi élményt",
+        "languageLabel": "Nyelv",
+        "englishOption": "Angol",
+        "frenchOption": "Francia",
+        "sourcesLabel": "Források",
+        "sourcesLabelHint": "Konfiguráld az egyéni forrásokat",
+        "orgPatchesLabel" : "Patchek Org-ja",
+        "sourcesPatchesLabel" : "Patchek Forrása",
+        "orgIntegrationsLabel": "Integrációk Org-ja",
+        "sourcesIntegrationsLabel": "Integrációk Forrása",
+        "sourcesResetDialogTitle": "Visszaállítás",
+        "sourcesResetDialogText": "Biztosan vissza szeretnéd állítani az egyéni forrásokat az alapértelmezett értékekre?",
+        "contributorsLabel": "Közreműködők",
+        "contributorsHint": "A ReVanced közreműködőinek listája",
+        "logsLabel": "Logs",
+        "logsHint": "Osszd meg a hibakeresési naplót",
+        "aboutLabel": "Rólunk",
+        "snackbarMessage": "Vágólapra másolva"
+    },
+    "appInfoView": {
+        "widgetTitle": "Alkalmazásinformáció",
+        "openButton": "Megnyitás",
+        "uninstallButton": "Eltávolítás",
+        "patchButton": "Patch",
+        "uninstallDialogTitle": "Eltávolítás",
+        "uninstallDialogText": "Biztosan eltávolítod ezt az alkalmazást?",
+        "rootDialogTitle": "Hiba",
+        "rootDialogText": "Az alkalmazás telepítése engedélyezve volt a root móddal, de jelenleg a root mód le van tiltva.\nElőször engedélyezzd a root módot.",
+        "packageNameLabel": "Package Neve",
+        "installTypeLabel": "Telepítés Típusa",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Patched Dátuma",
+        "patchedDateHint": "{date} ekkor {time}",
+        "appliedPatchesLabel": "Alkalmazott Patchek",
+        "appliedPatchesHint": "{quantity} alkalmazott patchek"
+    },
+    "contributorsView": {
+        "widgetTitle": "Közreműködők",
+        "patcherContributors": "Patcherrel való Közreműködők",
+        "patchesContributors": "Patchessel való Közreműködők",
+        "integrationsContributors": "Integrációkkal való Közreműködők",
+        "cliContributors": "CLI Közreműködők",
+        "managerContributors": "Manager Közreműködők"
+    }
+}
