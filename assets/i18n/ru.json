@@ -19,7 +19,7 @@
         "noInstallations": "Нет приложений с установленными патчами",
         "installed": "Установленные патчи",
         "updateDialogTitle": "Update",
-        "updateDialogText": "Вы действительно хотите загрузить и обновить Manager?",
+        "updateDialogText": "Вы действительно хотите загрузить и обновить Менеджер?",
         "notificationTitle": "ReVanced Manager успешно обновлён!",
         "notificationText": "Нажмите, чтобы открыть приложение",
         "downloadingMessage": "Загружаем обновление!",
@@ -44,7 +44,7 @@
         "widgetTitle": "Патчи",
         "patchButton": "Установить",
         "patchDialogTitle": "Предупреждение",
-        "patchDialogText": "Вы выбрали патч для программы, установленной методом split APK, а значит возможны ошибки во время установки патчей.\nAre you sure you want to proceed with patching a split base APK?"
+        "patchDialogText": "Вы выбрали патч для программы, установленной методом split APK, а значит возможны ошибки во время установки патчей.\nВы действительно хотите продолжить?"
     },
     "appSelectorCard": {
         "widgetTitle": "Выбрать приложение",
@@ -75,7 +75,7 @@
     "patchItem": {
         "unsupportedWarningButton": "Не поддерживается",
         "unsupportedDialogTitle": "Предупреждение",
-        "unsupportedDialogText": "При установке данного патча возможны ошибки.\n\nВерсия установленного приложения: {packageVersion}\nНа данный момент этот патч поддерживается следующими версиями:\n{supportedVersions}"
+        "unsupportedDialogText": "При попытке установить данный патч возможны ошибки.\n\nВерсия установленного приложения: {packageVersion}\nНа данный момент этот патч поддерживается следующими версиями:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Установщик",
@@ -97,11 +97,11 @@
         "darkThemeLabel": "Тёмный режим",
         "darkThemeHint": "Добро пожаловать на тёмную сторону",
         "dynamicThemeLabel": "Material You",
-        "dynamicThemeHint": "Как говорится: кайф на ладони",
+        "dynamicThemeHint": "Всё самое лучшее для вашего устройства",
         "languageLabel": "Язык (Language)",
         "englishOption": "Английский",
         "frenchOption": "Французский",
-		"russianOption":"Русский"
+        "russianOption":"Русский"
         "sourcesLabel": "Источники",
         "sourcesLabelHint": "Выберите источники патчей",
         "orgPatchesLabel" : "Patches Org",
@@ -111,7 +111,7 @@
         "sourcesResetDialogTitle": "Сброс",
         "sourcesResetDialogText": "Вы действительно хотите поставить пути скачивания патчей по умолчанию?",
         "contributorsLabel": "Контрибьюторы",
-        "contributorsHint": "Все те ребята, внёсшие свой вклад в ReVanced",
+        "contributorsHint": "Список контрибьюторов ReVanced",
         "logsLabel": "Логи",
         "logsHint": "Можете поделиться логами на случай багов",
         "aboutLabel": "О программе",
@@ -129,7 +129,7 @@
         "packageNameLabel": "Название пакета (Package Name)",
         "installTypeLabel": "Метод установки",
         "rootTypeLabel": "Режим администратора (Root)",
-        "nonRootTypeLabel": "Пользователь",
+        "nonRootTypeLabel": "Пользователь (Non-root)",
         "patchedDateLabel": "Дата установки патча",
         "patchedDateHint": "{date} в {time}",
         "appliedPatchesLabel": "Установленные патчи",
@@ -137,10 +137,10 @@
     },
     "contributorsView": {
         "widgetTitle": "Контрибьюторы",
-        "patcherContributors": "Patcher Contributors",
-        "patchesContributors": "Patches Contributors",
-        "integrationsContributors": "Integrations Contributors",
-        "cliContributors": "CLI Contributors",
-        "managerContributors": "Manager Contributors"
+        "patcherContributors": "Патчер",
+        "patchesContributors": "Патчи",
+        "integrationsContributors": "Интеграции (Intergrations)",
+        "cliContributors": "CLI",
+        "managerContributors": "ReVanced Менеджер"
     }
 }
