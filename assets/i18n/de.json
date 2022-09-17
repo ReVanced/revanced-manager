@@ -1,0 +1,145 @@
+{
+    "okButton": "Ok",
+    "cancelButton": "Abbrechen",
+    "enabledLabel": "Aktiviert",
+    "disabledLabel": "Deaktiviert",
+    "yesLabel": "Ja",
+    "noLabel": "Nein",
+    "navigationView": {
+        "dashboardTab": "Dashboard",
+        "patcherTab": "Patcher",
+        "settingsTab": "Einstellungen"
+    },
+    "homeView": {
+        "widgetTitle": "Dashboard",
+        "updatesSubtitle": "Updates",
+        "patchedSubtitle": "Gepatchte Apps",
+        "updatesAvailable": "Verfügbare Updates",
+        "noUpdates": "Keine Updates verfügbar",
+        "noInstallations": "Keine gepatchte App installiert",
+        "installed": "Installiert",
+        "updateDialogTitle": "Update",
+        "updateDialogText": "Bist du sicher dass du den Manager updaten möchtest?",
+        "notificationTitle": "Der ReVanced Manager wurde geupdatet!",
+        "notificationText": "Tippe hier um die App zu öffnen",
+        "downloadingMessage": "Lade das Update herunter!",
+        "installingMessage": "Installiere das Update... einen Moment!",
+        "errorDownloadMessage": "Das Update konnte nicht geladen werden!",
+        "errorInstallMessage": "Das Update konnte nicht installiert werden!",
+        "noConnection": "Keine Internetverbindung"
+    },
+    "applicationItem": {
+        "patchButton": "Patchen",
+        "infoButton": "Infos",
+        "changelogLabel": "Changelog"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Bitte warten",
+        "timeagoLabel": "{time} her",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Update Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Patchen",
+        "patchDialogTitle": "Achtung",
+        "patchDialogText": "Du hast einen Resourcen-Patch ausgewählt, jedoch wurde eine geteilte APK installation erkannt. Es könnten Fehler auftreten!\nMöchtest du wirklich mit dem Patchen fortfahren?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "App auswählen",
+        "widgetTitleSelected": "Ausgewählte App",
+        "widgetSubtitle": "Keine App ausgewählt.",
+        "noAppsLabel": "Keine Apps gefunden."
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Ausgewählte Patches",
+        "widgetTitleSelected": "Ausgewählte Patches",
+        "widgetSubtitle": "Wähle zuerst eine App aus.",
+        "widgetEmptySubtitle": "Keine Patches ausgewählt."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Soziale Medien",
+        "widgetSubtitle": "Wir sind Online!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Apps durchsuchen",
+        "storageButton": "Speicher",
+        "errorMessage": "Die ausgewählte App kann nicht verwendet werden."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Patches durchsuchen",
+        "doneButton": "Fertig",
+        "noPatchesFound": "Es wurden keine Patches für die ausgewählte App gefunden."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Nicht-Unterstützte Version",
+        "unsupportedDialogTitle": "Achtung",
+        "unsupportedDialogText": "Dieser Patch könnte durch Inkompatiblität fehlerhaft Installiert werden.\n\nVersion der App: {packageVersion}\nDerzeit unterstütze Versionen:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installer",
+        "installButton": "Installieren",
+        "installRootButton": "Als Root installieren",
+        "openButton": "Öffnen",
+        "shareButton": "Datei teilen",
+        "notificationTitle": "Der ReVanced Manager ist am patchen",
+        "notificationText": "Tippe hier um zum Installer zurückzugelangen",
+        "shareApkMenuOption": "APK teilen",
+        "shareLogMenuOption": "Log teilen"
+    },
+    "settingsView": {
+        "widgetTitle": "Einstellungen",
+        "appearanceSectionTitle": "Aussehen",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Team",
+        "infoSectionTitle": "Infos",
+        "darkThemeLabel": "Dunkler Modus",
+        "darkThemeHint": "Willkommen auf der dunklen Seite",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Genieße ein Erlebnis mit Nähe zu deinem Gerät",
+        "languageLabel": "Sprache",
+        "englishOption": "Englisch",
+        "frenchOption": "Französisch",
+        "sourcesLabel": "Quellen",
+        "sourcesLabelHint": "Füge eigene Quellen hinzu",
+        "orgPatchesLabel" : "Ersteller der Patches",
+        "sourcesPatchesLabel" : "Quelle für Patches",
+        "orgIntegrationsLabel": "Ersteller der Integrationen",
+        "sourcesIntegrationsLabel": "Quelle für Integrationen",
+        "sourcesResetDialogTitle": "Zurücksetzen",
+        "sourcesResetDialogText": "Möchtest du die Quellen wirklich auf die Standardeinstellung zurücksetzen?",
+        "contributorsLabel": "Mitwirkende",
+        "contributorsHint": "Eine Liste der mitwirkenden Personen bei ReVanced",
+        "logsLabel": "Logs",
+        "logsHint": "Teile deine Debug-Logs des Geräts",
+        "aboutLabel": "Über",
+        "snackbarMessage": "In die Zwischenablage kopiert"
+    },
+    "appInfoView": {
+        "widgetTitle": "App Info",
+        "openButton": "Öffnen",
+        "uninstallButton": "Deinstallieren",
+        "patchButton": "Patch",
+        "uninstallDialogTitle": "Deinstallieren",
+        "uninstallDialogText": "Möchtest du diese App wirklich deinstallieren?",
+        "rootDialogTitle": "Fehler",
+        "rootDialogText": "Diese App wurde im Root-Modus installiert, jedoch ist Root nicht aktiviert.\nBitte aktiviere Root auf deinem Gerät.",
+        "packageNameLabel": "Paketname",
+        "installTypeLabel": "Installationstyp",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Patchdatum",
+        "patchedDateHint": "{date} um {time}",
+        "appliedPatchesLabel": "Angewandte Patches",
+        "appliedPatchesHint": "{quantity} Patches angewandt"
+    },
+    "contributorsView": {
+        "widgetTitle": "Mitwirkende",
+        "patcherContributors": "Mitwirkende am Patcher",
+        "patchesContributors": "Mitwirkende an den Patches",
+        "integrationsContributors": "Mitwirkende an den Integrations",
+        "cliContributors": "Mitwirkende am CLI",
+        "managerContributors": "Mitwirkende am Manager"
+    }
+}
