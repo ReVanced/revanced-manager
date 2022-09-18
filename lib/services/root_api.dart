@@ -58,16 +58,7 @@ class RootAPI {
         cmd: 'ls "$_managerDirPath"',
       );
       if (res != null) {
-        List<String> apps = res.split('\n');
-        List<String> toRemove = [];
-        for (String packageName in apps) {
-          bool isInstalled = await isAppInstalled(packageName);
-          if (!isInstalled) {
-            toRemove.add(packageName);
-          }
-        }
-        apps.removeWhere((a) => toRemove.contains(a));
-        return apps;
+        return res.split('\n').map((pack) => pack.trim()).toList();
       }
     } on Exception {
       return List.empty();

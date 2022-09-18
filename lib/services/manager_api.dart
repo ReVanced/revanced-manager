@@ -182,23 +182,27 @@ class ManagerAPI {
     List<PatchedApplication> patchedApps,
   ) async {
     List<PatchedApplication> unsavedApps = [];
-    List<String> installedApps = await _rootAPI.getInstalledApps();
-    for (String packageName in installedApps) {
-      if (!patchedApps.any((app) => app.packageName == packageName)) {
-        ApplicationWithIcon? application =
-            await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
-        if (application != null) {
-          unsavedApps.add(
-            PatchedApplication(
-              name: application.appName,
-              packageName: application.packageName,
-              version: application.versionName!,
-              apkFilePath: application.apkFilePath,
-              icon: application.icon,
-              patchDate: DateTime.now(),
-              isRooted: true,
-            ),
-          );
+    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    if (hasRootPermissions) {
+      List<String> installedApps = await _rootAPI.getInstalledApps();
+      for (String packageName in installedApps) {
+        if (!patchedApps.any((app) => app.packageName == packageName)) {
+          ApplicationWithIcon? application =
+              await DeviceApps.getApp(packageName, true)
+                  as ApplicationWithIcon?;
+          if (application != null) {
+            unsavedApps.add(
+              PatchedApplication(
+                name: application.appName,
+                packageName: application.packageName,
+                version: application.versionName!,
+                apkFilePath: application.apkFilePath,
+                icon: application.icon,
+                patchDate: DateTime.now(),
+                isRooted: true,
+              ),
+            );
+          }
         }
       }
     }
@@ -227,7 +231,6 @@ class ManagerAPI {
         }
       }
     }
-
     return unsavedApps;
   }
 
@@ -260,14 +263,15 @@ class ManagerAPI {
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
+    bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
     if (app.isRooted) {
       bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         existsRoot = await _rootAPI.isAppInstalled(app.packageName);
       }
+      return !existsRoot || !existsNonRoot;
     }
-    bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
-    return !existsRoot && !existsNonRoot;
+    return !existsNonRoot;
   }
 
   Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {
