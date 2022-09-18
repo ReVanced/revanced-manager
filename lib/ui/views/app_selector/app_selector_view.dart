@@ -61,16 +61,14 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                               padding: const EdgeInsets.only(bottom: 80),
                               children: model
                                   .getFilteredApps(_query)
-                                  .map((app) => InkWell(
+                                  .map((app) => InstalledAppItem(
+                                        name: app.appName,
+                                        pkgName: app.packageName,
+                                        icon: app.icon,
                                         onTap: () {
                                           model.selectApp(app);
                                           Navigator.of(context).pop();
                                         },
-                                        child: InstalledAppItem(
-                                          name: app.appName,
-                                          pkgName: app.packageName,
-                                          icon: app.icon,
-                                        ),
                                       ))
                                   .toList(),
                             ),

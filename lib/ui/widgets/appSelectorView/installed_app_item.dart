@@ -6,12 +6,14 @@ class InstalledAppItem extends StatefulWidget {
   final String name;
   final String pkgName;
   final Uint8List icon;
+  final Function()? onTap;
 
   const InstalledAppItem({
     Key? key,
     required this.name,
     required this.pkgName,
     required this.icon,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: CustomCard(
+        onTap: widget.onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

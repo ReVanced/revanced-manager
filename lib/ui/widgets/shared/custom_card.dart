@@ -3,30 +3,33 @@ import 'package:flutter/material.dart';
 class CustomCard extends StatelessWidget {
   final bool isFilled;
   final Widget child;
+  final Function()? onTap;
+  final EdgeInsetsGeometry? padding;
 
   const CustomCard({
     Key? key,
     this.isFilled = true,
     required this.child,
+    this.onTap,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return Material(
+      type: isFilled ? MaterialType.card : MaterialType.transparency,
+      color: isFilled
+          ? Theme.of(context).colorScheme.secondaryContainer.withOpacity(.4)
+          : Colors.transparent,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        color: isFilled
-            ? Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.40)
-            : Colors.transparent,
-        border: isFilled
-            ? null
-            : Border.all(
-                width: 1,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
+        child: Padding(
+          padding: padding ?? const EdgeInsets.all(20.0),
+          child: child,
+        ),
       ),
-      padding: const EdgeInsets.all(20),
-      child: child,
     );
   }
 }
