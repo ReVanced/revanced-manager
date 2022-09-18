@@ -74,7 +74,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void _getPatchedApps() {
-    patchedInstalledApps = _managerAPI.getPatchedApps().toList();
+    patchedInstalledApps = _managerAPI
+        .getPatchedApps()
+        .where((app) => app.hasUpdates == false)
+        .toList();
     patchedUpdatableApps = _managerAPI
         .getPatchedApps()
         .where((app) => app.hasUpdates == true)

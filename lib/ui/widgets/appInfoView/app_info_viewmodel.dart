@@ -30,8 +30,9 @@ class AppInfoViewModel extends BaseViewModel {
         }
       }
     } else {
-      DeviceApps.uninstallApp(app.packageName);
-      _managerAPI.deletePatchedApp(app);
+      DeviceApps.uninstallApp(app.packageName).then(
+        (value) => _managerAPI.deletePatchedApp(app),
+      );
     }
   }
 
