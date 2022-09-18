@@ -39,7 +39,7 @@ class AppSelectorCard extends StatelessWidget {
                 : Row(
                     children: <Widget>[
                       SizedBox(
-                        height: 16.0,
+                        height: 18.0,
                         child: ClipOval(
                           child: Image.memory(
                             locator<PatcherViewModel>().selectedApp == null
@@ -49,19 +49,28 @@ class AppSelectorCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 4),
-                      Text(_getAppSelection()),
+                      const SizedBox(width: 6),
+                      Text(locator<PatcherViewModel>().getAppSelectionString()),
+                    ],
+                  ),
+            locator<PatcherViewModel>().selectedApp == null
+                ? Container()
+                : Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          locator<PatcherViewModel>()
+                              .getRecommendedVersionString(context),
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ],
                   ),
           ],
         ),
       ),
     );
-  }
-
-  String _getAppSelection() {
-    String name = locator<PatcherViewModel>().selectedApp!.name;
-    String version = locator<PatcherViewModel>().selectedApp!.version;
-    return '$name (v$version)';
   }
 }
