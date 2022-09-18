@@ -99,7 +99,7 @@ class AppInfoView extends StatelessWidget {
                             ),
                             const Spacer(),
                             InkWell(
-                              onTap: () => model.showUninstallAlertDialog(
+                              onTap: () => model.showUninstallDialog(
                                 context,
                                 app,
                                 false,
@@ -171,7 +171,7 @@ class AppInfoView extends StatelessWidget {
                             app.isRooted ? const Spacer() : Container(),
                             app.isRooted
                                 ? InkWell(
-                                    onTap: () => model.showUninstallAlertDialog(
+                                    onTap: () => model.showUninstallDialog(
                                       context,
                                       app,
                                       true,
