@@ -145,6 +145,17 @@ class SettingsView extends StatelessWidget {
                         const AboutWidget(),
                       ],
                     ),
+                    const Divider(thickness: 1.0),
+                    SettingsSection(
+                      title: 'settingsView.advancedSectionTitle',
+                      children: <Widget>[
+                        SettingsTileDialog(
+                          title: 'settingsView.apiURLLabel',
+                          subtitle: 'settingsView.apiURLHint',
+                          onTap: () => model.showApiUrlDialog(context),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
