@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-//import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -30,7 +30,7 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
 
   Future<void> initialize(BuildContext context) async {
-    if (true /*await Permission.ignoreBatteryOptimizations.isGranted*/) {
+    if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
         await FlutterBackground.initialize(
           androidConfig: FlutterBackgroundAndroidConfig(
@@ -122,7 +122,7 @@ class InstallerViewModel extends BaseViewModel {
       hasErrors = true;
       update(-1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
-    if (true /*await Permission.ignoreBatteryOptimizations.isGranted*/) {
+    if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
         await FlutterBackground.disableBackgroundExecution();
       } on Exception {
