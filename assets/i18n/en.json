@@ -66,11 +66,13 @@
         "widgetSubtitle": "We are online!"
     },
     "appSelectorView": {
+        "viewTitle": "Select application",
         "searchBarHint": "Search applications",
         "storageButton": "Storage",
         "errorMessage": "Unable to use selected application."
     },
     "patchesSelectorView": {
+        "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
         "noPatchesFound": "No patches found for the selected app."
