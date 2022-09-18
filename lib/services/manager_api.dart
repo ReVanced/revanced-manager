@@ -212,7 +212,8 @@ class ManagerAPI {
     );
     for (Application app in userApps) {
       if (app.packageName.startsWith('app.revanced') &&
-          !app.packageName.startsWith('app.revanced.manager.')) {
+          !app.packageName.startsWith('app.revanced.manager.') &&
+          !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
         ApplicationWithIcon? application =
             await DeviceApps.getApp(app.packageName, true)
                 as ApplicationWithIcon?;
