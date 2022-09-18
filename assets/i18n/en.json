@@ -104,6 +104,7 @@
         "languageLabel": "Language",
         "englishOption": "English",
         "frenchOption": "French",
+        "spanishOption": "Spanish",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
         "orgPatchesLabel" : "Patches Org",
