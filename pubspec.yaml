@@ -75,13 +75,6 @@ dev_dependencies:
   injectable_generator: ^1.5.4
   json_serializable: ^6.3.1
 
-flutter_icons:
-  android: true
-  ios: false
-  image_path: "assets/images/ic_launcher_round.png"
-  adaptive_icon_background: "#1B1B1B"
-  adaptive_icon_foreground: "assets/images/ic_launcher.png"
-
 flutter:
   uses-material-design: true
   assets:
