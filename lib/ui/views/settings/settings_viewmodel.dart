@@ -27,6 +27,7 @@ class SettingsViewModel extends BaseViewModel {
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
   final TextEditingController _intSourceController = TextEditingController();
+  final TextEditingController _apiUrlController = TextEditingController();
 
   void setLanguage(String language) {
     notifyListeners();
@@ -208,6 +209,65 @@ class SettingsViewModel extends BaseViewModel {
     );
   }
 
+  Future<void> showApiUrlDialog(BuildContext context) async {
+    String apiUrl = _managerAPI.getApiUrl();
+    _apiUrlController.text = apiUrl.replaceAll('https://', '');
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            I18nText('settingsView.apiURLLabel'),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.manage_history_outlined),
+              onPressed: () => showApiUrlResetDialog(context),
+              color: Theme.of(context).colorScheme.secondary,
+            )
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              CustomTextField(
+                leadingIcon: Icon(
+                  Icons.api_outlined,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                inputController: _apiUrlController,
+                label: I18nText('settingsView.selectApiURL'),
+                hint: apiUrl.split('/')[0],
+                onChanged: (value) => notifyListeners(),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () {
+              _apiUrlController.clear();
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () {
+              String apiUrl = _apiUrlController.text;
+              if (!apiUrl.startsWith('https')) {
+                apiUrl = 'https://$apiUrl';
+              }
+              _managerAPI.setApiUrl(apiUrl);
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   Future<void> showResetConfirmationDialog(BuildContext context) async {
     return showDialog(
       context: context,
@@ -226,6 +286,32 @@ class SettingsViewModel extends BaseViewModel {
             onPressed: () {
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> showApiUrlResetDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.sourcesResetDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('settingsView.apiURLResetDialogText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () {
+              _managerAPI.setApiUrl('');
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
