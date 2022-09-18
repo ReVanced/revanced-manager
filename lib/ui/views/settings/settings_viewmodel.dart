@@ -23,9 +23,7 @@ const int ANDROID_12_SDK_VERSION = 31;
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
-  final TextEditingController _orgIntSourceController = TextEditingController();
   final TextEditingController _intSourceController = TextEditingController();
 
   void setLanguage(String language) {
@@ -111,10 +109,8 @@ class SettingsViewModel extends BaseViewModel {
   Future<void> showSourcesDialog(BuildContext context) async {
     String patchesRepo = _managerAPI.getPatchesRepo();
     String integrationsRepo = _managerAPI.getIntegrationsRepo();
-    _orgPatSourceController.text = patchesRepo.split('/')[0];
-    _patSourceController.text = patchesRepo.split('/')[1];
-    _orgIntSourceController.text = integrationsRepo.split('/')[0];
-    _intSourceController.text = integrationsRepo.split('/')[1];
+    _patSourceController.text = patchesRepo;
+    _intSourceController.text = integrationsRepo;
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -134,46 +130,18 @@ class SettingsViewModel extends BaseViewModel {
           child: Column(
             children: <Widget>[
               CustomTextField(
-                leadingIcon: Icon(
-                  Icons.extension_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                inputController: _orgPatSourceController,
-                label: I18nText('settingsView.orgPatchesLabel'),
-                hint: patchesRepo.split('/')[0],
-                onChanged: (value) => notifyListeners(),
-              ),
-              const SizedBox(height: 8),
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.extension_outlined,
-                  color: Colors.transparent,
-                ),
+                leadingIcon: const Icon(Icons.extension_outlined),
                 inputController: _patSourceController,
                 label: I18nText('settingsView.sourcesPatchesLabel'),
-                hint: patchesRepo.split('/')[1],
+                hint: patchesRepo,
                 onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 20),
               CustomTextField(
-                leadingIcon: Icon(
-                  Icons.merge_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                inputController: _orgIntSourceController,
-                label: I18nText('settingsView.orgIntegrationsLabel'),
-                hint: integrationsRepo.split('/')[0],
-                onChanged: (value) => notifyListeners(),
-              ),
-              const SizedBox(height: 8),
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.merge_outlined,
-                  color: Colors.transparent,
-                ),
+                leadingIcon: const Icon(Icons.merge_outlined),
                 inputController: _intSourceController,
                 label: I18nText('settingsView.sourcesIntegrationsLabel'),
-                hint: integrationsRepo.split('/')[1],
+                hint: integrationsRepo,
                 onChanged: (value) => notifyListeners(),
               ),
             ],
@@ -184,9 +152,7 @@ class SettingsViewModel extends BaseViewModel {
             isFilled: false,
             label: I18nText('cancelButton'),
             onPressed: () {
-              _orgPatSourceController.clear();
               _patSourceController.clear();
-              _orgIntSourceController.clear();
               _intSourceController.clear();
               Navigator.of(context).pop();
             },
@@ -194,12 +160,8 @@ class SettingsViewModel extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () {
-              _managerAPI.setPatchesRepo(
-                '${_orgPatSourceController.text}/${_patSourceController.text}',
-              );
-              _managerAPI.setIntegrationsRepo(
-                '${_orgIntSourceController.text}/${_intSourceController.text}',
-              );
+              _managerAPI.setPatchesRepo(_patSourceController.text);
+              _managerAPI.setIntegrationsRepo(_intSourceController.text);
               Navigator.of(context).pop();
             },
           )
