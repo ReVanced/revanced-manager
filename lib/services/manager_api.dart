@@ -19,6 +19,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  String defaultApiUrl = 'revanced-releases-api.afterst0rm.xyz';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
@@ -27,6 +28,17 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  String getApiUrl() {
+    return _prefs.getString('apiUrl') ?? defaultApiUrl;
+  }
+
+  Future<void> setApiUrl(String url) async {
+    if (url.isEmpty || url == ' ') {
+      url = defaultApiUrl;
+    }
+    await _prefs.setString('apiUrl', url);
   }
 
   String getPatchesRepo() {
@@ -106,21 +118,26 @@ class ManagerAPI {
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
-    return await _revancedAPI.getContributors();
+    String apiUrl = getApiUrl();
+    return await _revancedAPI.getContributors(apiUrl);
   }
 
   Future<List<Patch>> getPatches() async {
-    if (getPatchesRepo() == defaultPatchesRepo) {
-      return await _revancedAPI.getPatches();
+    String repoName = getPatchesRepo();
+    if (repoName == defaultPatchesRepo) {
+      String apiUrl = getApiUrl();
+      return await _revancedAPI.getPatches(apiUrl);
     } else {
-      return await _githubAPI.getPatches(getPatchesRepo());
+      return await _githubAPI.getPatches(repoName);
     }
   }
 
   Future<File?> downloadPatches() async {
     String repoName = getPatchesRepo();
     if (repoName == defaultPatchesRepo) {
+      String apiUrl = getApiUrl();
       return await _revancedAPI.getLatestReleaseFile(
+        apiUrl,
         '.jar',
         defaultPatchesRepo,
       );
@@ -132,7 +149,9 @@ class ManagerAPI {
   Future<File?> downloadIntegrations() async {
     String repoName = getIntegrationsRepo();
     if (repoName == defaultIntegrationsRepo) {
+      String apiUrl = getApiUrl();
       return await _revancedAPI.getLatestReleaseFile(
+        apiUrl,
         '.apk',
         defaultIntegrationsRepo,
       );
@@ -142,19 +161,36 @@ class ManagerAPI {
   }
 
   Future<File?> downloadManager() async {
-    return await _revancedAPI.getLatestReleaseFile('.apk', defaultManagerRepo);
+    String apiUrl = getApiUrl();
+    return await _revancedAPI.getLatestReleaseFile(
+      apiUrl,
+      '.apk',
+      defaultManagerRepo,
+    );
   }
 
   Future<String?> getLatestPatcherReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime('.gz', defaultPatcherRepo);
+    String apiUrl = getApiUrl();
+    return await _revancedAPI.getLatestReleaseTime(
+      apiUrl,
+      '.gz',
+      defaultPatcherRepo,
+    );
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime('.apk', defaultManagerRepo);
+    String apiUrl = getApiUrl();
+    return await _revancedAPI.getLatestReleaseTime(
+      apiUrl,
+      '.apk',
+      defaultManagerRepo,
+    );
   }
 
   Future<String?> getLatestManagerVersion() async {
+    String apiUrl = getApiUrl();
     return await _revancedAPI.getLatestReleaseVersion(
+      apiUrl,
       '.apk',
       defaultManagerRepo,
     );

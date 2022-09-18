@@ -110,7 +110,7 @@
         "sourcesIntegrationsLabel": "Integrations Source",
         "sourcesResetDialogTitle": "Reset",
         "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
-        "apiEndpointResetDialogText": "Are you sure you want to reset api endpoints to their default values?",
+        "apiEndpointResetDialogText": "Are you sure you want to reset API endpoints to their default values?",
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
         "logsLabel": "Logs",

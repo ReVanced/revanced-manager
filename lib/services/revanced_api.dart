@@ -6,15 +6,11 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:timeago/timeago.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class RevancedAPI {
-  String defaultApiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
-  String apiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
   final Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
-  late SharedPreferences _prefs;
   final Options _cacheOptions = buildCacheOptions(
     const Duration(days: 1),
     maxStale: const Duration(days: 7),
@@ -22,14 +18,13 @@ class RevancedAPI {
 
   Future<void> initialize() async {
     _dio.interceptors.add(_dioCacheManager.interceptor);
-    _prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> clearAllCache() async {
     await _dioCacheManager.clearAll();
   }
 
-  Future<Map<String, List<dynamic>>> getContributors() async {
+  Future<Map<String, List<dynamic>>> getContributors(String apiUrl) async {
     Map<String, List<dynamic>> contributors = {};
     try {
       var response = await _dio.get(
@@ -47,7 +42,7 @@ class RevancedAPI {
     return contributors;
   }
 
-  Future<List<Patch>> getPatches() async {
+  Future<List<Patch>> getPatches(String apiUrl) async {
     try {
       var response = await _dio.get('$apiUrl/patches', options: _cacheOptions);
       List<dynamic> patches = response.data;
@@ -58,6 +53,7 @@ class RevancedAPI {
   }
 
   Future<Map<String, dynamic>?> _getLatestRelease(
+    String apiUrl,
     String extension,
     String repoName,
   ) async {
@@ -75,10 +71,13 @@ class RevancedAPI {
   }
 
   Future<String?> getLatestReleaseVersion(
-      String extension, String repoName) async {
+    String apiUrl,
+    String extension,
+    String repoName,
+  ) async {
     try {
       Map<String, dynamic>? release =
-          await _getLatestRelease(extension, repoName);
+          await _getLatestRelease(apiUrl, extension, repoName);
       if (release != null) {
         return release['version'];
       }
@@ -88,9 +87,14 @@ class RevancedAPI {
     return null;
   }
 
-  Future<File?> getLatestReleaseFile(String extension, String repoName) async {
+  Future<File?> getLatestReleaseFile(
+    String apiUrl,
+    String extension,
+    String repoName,
+  ) async {
     try {
       Map<String, dynamic>? release = await _getLatestRelease(
+        apiUrl,
         extension,
         repoName,
       );
@@ -105,11 +109,13 @@ class RevancedAPI {
   }
 
   Future<String?> getLatestReleaseTime(
+    String apiUrl,
     String extension,
     String repoName,
   ) async {
     try {
       Map<String, dynamic>? release = await _getLatestRelease(
+        apiUrl,
         extension,
         repoName,
       );
@@ -121,16 +127,5 @@ class RevancedAPI {
       return null;
     }
     return null;
-  }
-
-  String getApiUrl() {
-    return _prefs.getString('apiUrl') ?? defaultApiUrl;
-  }
-
-  Future<void> setApiUrl(String url) async {
-    if (url.isEmpty || url == ' ') {
-      url = defaultApiUrl;
-    }
-    await _prefs.setString('apiUrl', url);
   }
 }

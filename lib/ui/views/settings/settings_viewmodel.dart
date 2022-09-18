@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:share_extend/share_extend.dart';
@@ -24,7 +23,6 @@ const int ANDROID_12_SDK_VERSION = 31;
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
@@ -212,8 +210,8 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   Future<void> showApiEndpointDialog(BuildContext context) async {
-    String apiEndpoint = _revancedAPI.getApiUrl();
-    _apiEndpointController.text = apiEndpoint;
+    String apiEndpoint = _managerAPI.getApiUrl();
+    _apiEndpointController.text = apiEndpoint.replaceAll('https://', '');
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -257,8 +255,11 @@ class SettingsViewModel extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () {
-              _revancedAPI.setApiUrl(_apiEndpointController.text);
-              notifyListeners();
+              String apiUrl = _apiEndpointController.text;
+              if (!apiUrl.startsWith('https')) {
+                apiUrl = 'https://$apiUrl';
+              }
+              _managerAPI.setApiUrl(apiUrl);
               Navigator.of(context).pop();
             },
           )
@@ -310,8 +311,8 @@ class SettingsViewModel extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () {
-              _revancedAPI.setApiUrl('');
-              notifyListeners();
+              _managerAPI.setApiUrl('');
+              Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
           )
