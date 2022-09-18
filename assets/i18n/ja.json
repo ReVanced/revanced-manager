@@ -50,7 +50,7 @@
         "widgetTitle": "アプリケーションを選択",
         "widgetTitleSelected": "アプリケーション選択済",
         "widgetSubtitle": "アプリケーションが選択されていません。",
-        "noAppsLabel": "アプリケーションが見つかりませんでした。"
+        "noAppsLabel": "アプリケーションが見つかりませんでした。",
         "currentVersion": "現在",
         "recommendedVersion": "推奨",
         "anyVersion": "any"
