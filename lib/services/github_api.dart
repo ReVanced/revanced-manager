@@ -9,8 +9,7 @@ import 'package:revanced_manager/models/patch.dart';
 
 @lazySingleton
 class GithubAPI {
-  final String apiUrl = 'https://api.github.com';
-  final Dio _dio = Dio();
+  final Dio _dio = Dio(BaseOptions(baseUrl: 'https://api.github.com'));
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(days: 1),
@@ -37,7 +36,7 @@ class GithubAPI {
   Future<Map<String, dynamic>?> _getLatestRelease(String repoName) async {
     try {
       var response = await _dio.get(
-        '$apiUrl/repos/$repoName/releases/latest',
+        '/repos/$repoName/releases/latest',
         options: _cacheOptions,
       );
       return response.data;
@@ -55,7 +54,7 @@ class GithubAPI {
         'src/main/kotlin/app/revanced/patches/${repoAppPath[packageName]}';
     try {
       var response = await _dio.get(
-        '$apiUrl/repos/$repoName/commits',
+        '/repos/$repoName/commits',
         queryParameters: {
           'path': path,
           'per_page': 3,
