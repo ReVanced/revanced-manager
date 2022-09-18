@@ -74,7 +74,9 @@ class _ApplicationItemState extends State<ApplicationItem>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        widget.name,
+                        widget.name.length > 14
+                          ? '${widget.name.substring(0, 14)}...'
+                          : widget.name,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
