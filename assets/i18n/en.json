@@ -25,7 +25,7 @@
         "downloadingMessage": "Downloading update!",
         "installingMessage": "Installing update... Hang on!",
         "errorDownloadMessage": "Unable to download update!",
-        "errorInstallMessage": "Unable to download update!",
+        "errorInstallMessage": "Unable to install update!",
         "noConnection": "No internet connection"
     },
     "applicationItem": {
