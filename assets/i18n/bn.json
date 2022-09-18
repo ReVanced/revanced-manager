@@ -25,7 +25,7 @@
         "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে",
         "installingMessage": "আপডেট ইনস্টল হচ্ছে... অপেক্ষা করুন!",
         "errorDownloadMessage": "আপডেট ডাউনলোড করা যায়নি!",
-        "errorInstallMessage": "আপডেট ডাউনলোড করা যায়নি!",
+        "errorInstallMessage": "আপডেট ইনস্টল করা যায়নি!",
         "noConnection": "ইন্টারনেট সংযোগ নেই"
     },
     "applicationItem": {
