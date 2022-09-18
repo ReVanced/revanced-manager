@@ -70,25 +70,28 @@ class _ApplicationItemState extends State<ApplicationItem>
             const SizedBox(width: 4),
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    widget.name.length > 10
+                        ? '${widget.name.substring(0, 10)}...'
+                        : widget.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Text(format(widget.patchDate)),
-                  ],
-                ),
+                  ),
+                  Text(format(widget.patchDate)),
+                ],
+              ),
             ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(right: 5.0),
               child: RotationTransition(
-                turns: Tween(begin: 0.0, end: 0.50).animate(_animationController),
+                turns:
+                    Tween(begin: 0.0, end: 0.50).animate(_animationController),
                 child: IconButton(
                   onPressed: () {
                     expController.toggle();
