@@ -104,7 +104,7 @@
         "languageLabel": "Idioma",
         "englishOption": "Inglés",
         "frenchOption": "Francés",
-		"spanishOption": "Español",
+	"spanishOption": "Español",
         "sourcesLabel": "Fuentes",
         "sourcesLabelHint": "Configura tus fuentes personalizadas",
         "orgPatchesLabel" : "Org. Parches",
