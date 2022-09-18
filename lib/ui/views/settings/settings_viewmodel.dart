@@ -217,7 +217,7 @@ class SettingsViewModel extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            I18nText('settingsView.apiUrlLabel'),
+            I18nText('settingsView.apiURLLabel'),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
@@ -236,7 +236,7 @@ class SettingsViewModel extends BaseViewModel {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 inputController: _apiUrlController,
-                label: I18nText('settingsView.selectApiUrl'),
+                label: I18nText('settingsView.selectApiURL'),
                 hint: apiUrl.split('/')[0],
                 onChanged: (value) => notifyListeners(),
               ),
@@ -301,7 +301,7 @@ class SettingsViewModel extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.sourcesResetDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('settingsView.apiUrlResetDialogText'),
+        content: I18nText('settingsView.apiURLResetDialogText'),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
