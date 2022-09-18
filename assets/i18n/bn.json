@@ -78,7 +78,7 @@
     "patchItem": {
         "unsupportedWarningButton": "অসমর্থিত ভার্সন",
         "unsupportedDialogTitle": "সতর্কতা",
-        "unsupportedDialogText": "নির্বাচিত প্যাচ টি প্যাচড হতে পারে বা নাও হতে পারে।\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
+        "unsupportedDialogText": "এই প্যাচ নির্বাচন করার ফলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "ইনস্টলার",
