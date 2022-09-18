@@ -1,0 +1,152 @@
+{
+    "okButton": "Tamam",
+    "cancelButton": "Vazgeç",
+    "enabledLabel": "Etkinleştirilmiş",
+    "disabledLabel": "Devre Dışı",
+    "yesLabel": "Evet",
+    "noLabel": "Hayır",
+    "navigationView": {
+        "dashboardTab": "Ana Sayfa",
+        "patcherTab": "Yamalar",
+        "settingsTab": "Ayarlar"
+    },
+    "homeView": {
+        "widgetTitle": "Ana Sayfa",
+        "updatesSubtitle": "Güncellemeler",
+        "patchedSubtitle": "Yamalanmış Uygulamalar",
+        "updatesAvailable": "Güncelleme Mevcut",
+        "noUpdates": "Mevcut Güncelleme Yok",
+        "noInstallations": "Yamalanmış uygulama yok",
+        "installed": "Yüklendi",
+        "updateDialogTitle": "Güncelleme",
+        "updateDialogText": "uygulamayı yüklemek ve güncellemek istediğinize emin misiniz?",
+        "notificationTitle": "ReVanced Manager güncellendi!",
+        "notificationText": "Uygulamayı açmak için dokunun",
+        "downloadingMessage": "Güncelleme indiriliyor!",
+        "installingMessage": "Güncelleme yükleniyor... Lütfen bekle!",
+        "errorDownloadMessage": "Güncelleme indirilemiyor!",
+        "errorInstallMessage": "Güncelleme yüklenemiyor!",
+        "noConnection": "İnternet bağlantısı bulunamadı"
+    },
+    "applicationItem": {
+        "patchButton": "Yama",
+        "infoButton": "Bilgi",
+        "changelogLabel": "Değişiklik"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Yükleniyor",
+        "timeagoLabel": "{time} önce",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Güncelleme Yöneticisi"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Yama",
+        "patchDialogTitle": "Uyarı",
+        "patchDialogText": "Bir kaynak yaması seçmiş bulunmaktasını ve Split-Apk yüklemesi algılandı, bu yükleme esnasında hatalar ile karşılaşabilirsiniz.\nSplit-Apk olarak yama işlemine devam etmek istediğinize emin misiniz?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Uygulamayı seç",
+        "widgetTitleSelected": "Seçilen uygulama",
+        "widgetSubtitle": "Hiçbir uygulama seçilmedi.",
+        "noAppsLabel": "Uygulama bulunamadı.",
+        "currentVersion": "Mevcut",
+        "recommendedVersion": "Önerilen",
+        "anyVersion": "Hiç"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Yamaları seç",
+        "widgetTitleSelected": "Seçilen yamalar",
+        "widgetSubtitle": "Öncelikle uygulamayı seçmelisiniz.",
+        "widgetEmptySubtitle": "Hiçbir yama seçilmedi."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Sosyal Medya",
+        "widgetSubtitle": "Şu an çevrimiçiyiz!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "Uygulama Ara",
+        "storageButton": "Depolama",
+        "errorMessage": "Seçilen uygulama kullanılamıyor."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "Yamalardan Ara",
+        "doneButton": "Tamamlandı",
+        "noPatchesFound": "Seçilen uygulama için yama bulunamadı."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Desteklenmeyen sürüm",
+        "unsupportedDialogTitle": "Uyarı",
+        "unsupportedDialogText": "Bu yamayı seçmeniz yama esnasında hatalar oluşturabilir.\n\nUygulama Sürümü: {packageVersion}\nDesteklene Sürümler:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Yükleyici",
+        "installButton": "Yükle",
+        "installRootButton": "Kök ile Yükle",
+        "openButton": "Aç",
+        "shareButton": "Dosyayı Paylaş",
+        "notificationTitle": "ReVanced Manager ile yamalandı",
+        "notificationText": "Yükleyiciye dönmek için dokun",
+        "shareApkMenuOption": "APK Dosyasını Paylaş",
+        "shareLogMenuOption": "Hata Ayıklamayı Paylaş"
+    },
+    "settingsView": {
+        "widgetTitle": "Ayarlar",
+        "appearanceSectionTitle": "Görünüş",
+        "patcherSectionTitle": "Patcher",
+        "teamSectionTitle": "Takım",
+        "infoSectionTitle": "Bilgi",
+        "darkThemeLabel": "Koyu Mod",
+        "darkThemeHint": "Karanlık tarafa hoşgeldin",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Cihazına uygun renkler ile devam et",
+        "languageLabel": "Dil",
+        "englishOption": "İngilizce",
+        "frenchOption": "Fransızca",
+        "turkishOption": "Türkçe",
+        "sourcesLabel": "Kaynaklar",
+        "sourcesLabelHint": "Özel kaynaklarınızı yapılandırın",
+        "orgPatchesLabel" : "Yamalar Org",
+        "sourcesPatchesLabel" : "Yamalar Kaynağı",
+        "orgIntegrationsLabel": "Entegrasyonlar Org",
+        "sourcesIntegrationsLabel": "Entegrasyonlar Kaynağı",
+        "sourcesResetDialogTitle": "Sıfırla",
+        "sourcesResetDialogText": "Özel kaynaklarınızı varsayılana döndürmek istediğinize emin misiniz?",
+        "contributorsLabel": "Katkıda Bulunanlar",
+        "contributorsHint": "ReVanced'e katkıda bulunanların listesi",
+        "logsLabel": "Hata Ayıklama",
+        "logsHint": "Cihaz hata ayıklama günlüklerini paylaşın",
+        "aboutLabel": "Hakkında",
+        "snackbarMessage": "Panoya kopyalandı"
+    },
+    "appInfoView": {
+        "widgetTitle": "Uygulama Bilgisi",
+        "openButton": "Aç",
+        "uninstallButton": "Kaldır",
+        "patchButton": "Yamala",
+        "unpatchButton": "Yamayı Kaldır",
+        "uninstallDialogTitle": "Kaldır",
+        "uninstallDialogText": "Bu uygulamayı kaldırmak istediğinizden emin misiniz??",
+        "unpatchDialogTitle": "Yamayı Kaldır",
+        "unpatchDialogText": "Bu uygulamanın yamasını kaldırmak istediğinizden emin misiniz??",
+        "rootDialogTitle": "Hata",
+        "rootDialogText": "Uygulama kök ile birlikte yüklendi ancak şuan köke ulaşılamıyor.\nLütfen önce kökü etkinleştirin.",
+        "packageNameLabel": "Paket İsmi",
+        "installTypeLabel": "Kurulum Türü",
+        "rootTypeLabel": "Kök (Root)",
+        "nonRootTypeLabel": "Köksüz (Non-root)",
+        "patchedDateLabel": "Yamalama Tarihi",
+        "patchedDateHint": "{date} tarihinde, saat {time}",
+        "appliedPatchesLabel": "Uygulanan Yamalar",
+        "appliedPatchesHint": "{quantity} yama uygulandı"
+    },
+    "contributorsView": {
+        "widgetTitle": "Katkıda Bulunanlar",
+        "patcherContributors": "Patcher Katkıda Bulunanlar",
+        "patchesContributors": "Patches Katkıda Bulunanlar",
+        "integrationsContributors": "Integrations Katkıda Bulunanlar",
+        "cliContributors": "CLI Katkıda Bulunanlar",
+        "managerContributors": "Manager Katkıda Bulunanlar"
+    }
+}
