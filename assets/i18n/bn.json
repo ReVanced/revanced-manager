@@ -50,7 +50,10 @@
         "widgetTitle": "এ্যাপ্লিকেশন নির্বাচন করুন",
         "widgetTitleSelected": "নির্বাচিত এ্যাপ্লিকেশন",
         "widgetSubtitle": "কোন এ্যাপ্লিকেশন নির্বাচিত হয়নি",
-        "noAppsLabel": "কোন এ্যাপ্লিকেশন পাওয়া যায়নি"
+        "noAppsLabel": "কোন এ্যাপ্লিকেশন পাওয়া যায়ন",
+        "currentVersion": "বর্তমান",
+        "recommendedVersion": "প্রস্তাবিত",
+        "anyVersion": "যেকোন"
     },
     "patchSelectorCard": {
         "widgetTitle": "প্যাচ নির্বাচন করুন",
