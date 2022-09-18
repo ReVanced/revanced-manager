@@ -78,7 +78,7 @@
     "patchItem": {
         "unsupportedWarningButton": "Unsupported version",
         "unsupportedDialogTitle": "Warning",
-        "unsupportedDialogText": "Selecting this patch may or may not result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
+        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Installer",
