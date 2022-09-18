@@ -1,0 +1,18 @@
+name: released
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  virustotal:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: VirusTotal Scan
+        uses: crazy-max/ghaction-virustotal@v3
+        with:
+          update_release_body: true
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: |
+            .apk$
