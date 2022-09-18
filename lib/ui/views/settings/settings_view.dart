@@ -150,9 +150,9 @@ class SettingsView extends StatelessWidget {
                       title: 'settingsView.advancedSectionTitle',
                       children: <Widget>[
                         SettingsTileDialog(
-                          title: 'settingsView.apiEndpointLabel',
-                          subtitle: 'settingsView.apiEndpointHint',
-                          onTap: () => model.showApiEndpointDialog(context),
+                          title: 'settingsView.apiURLLabel',
+                          subtitle: 'settingsView.apiURLHint',
+                          onTap: () => model.showApiUrlDialog(context),
                         ),
                       ],
                     ),
