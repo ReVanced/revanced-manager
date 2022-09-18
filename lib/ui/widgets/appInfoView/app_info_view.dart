@@ -64,8 +64,9 @@ class AppInfoView extends StatelessWidget {
                     CustomCard(
                       child: IntrinsicHeight(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            !app.isRooted ? const Spacer() : Container(),
                             InkWell(
                               onTap: () => model.openApp(app),
                               child: Column(
@@ -92,9 +93,11 @@ class AppInfoView extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            const Spacer(),
                             VerticalDivider(
                               color: Theme.of(context).canvasColor,
                             ),
+                            const Spacer(),
                             InkWell(
                               onTap: () => model.showUninstallAlertDialog(
                                 context,
@@ -125,9 +128,11 @@ class AppInfoView extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            const Spacer(),
                             VerticalDivider(
                               color: Theme.of(context).canvasColor,
                             ),
+                            const Spacer(),
                             InkWell(
                               onTap: () {
                                 model.navigateToPatcher(app);
@@ -157,45 +162,49 @@ class AppInfoView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Visibility(
-                              visible: app.isRooted,
-                              child: VerticalDivider(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
-                            Visibility(
-                              visible: app.isRooted,
-                              child: InkWell(
-                                onTap: () => model.showUninstallAlertDialog(
-                                  context,
-                                  app,
-                                  true,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.settings_backup_restore_outlined,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                            app.isRooted ? const Spacer() : Container(),
+                            app.isRooted
+                                ? VerticalDivider(
+                                    color: Theme.of(context).canvasColor,
+                                  )
+                                : Container(),
+                            app.isRooted ? const Spacer() : Container(),
+                            app.isRooted
+                                ? InkWell(
+                                    onTap: () => model.showUninstallAlertDialog(
+                                      context,
+                                      app,
+                                      true,
                                     ),
-                                    const SizedBox(height: 10),
-                                    I18nText(
-                                      'appInfoView.unpatchButton',
-                                      child: Text(
-                                        '',
-                                        style: TextStyle(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons
+                                              .settings_backup_restore_outlined,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
-                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
+                                        const SizedBox(height: 10),
+                                        I18nText(
+                                          'appInfoView.unpatchButton',
+                                          child: Text(
+                                            '',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                  )
+                                : Container(),
+                            !app.isRooted ? const Spacer() : Container(),
                           ],
                         ),
                       ),
