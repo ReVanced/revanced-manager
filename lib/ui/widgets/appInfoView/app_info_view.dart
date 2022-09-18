@@ -96,8 +96,11 @@ class AppInfoView extends StatelessWidget {
                               color: Theme.of(context).canvasColor,
                             ),
                             InkWell(
-                              onTap: () =>
-                                  model.showUninstallAlertDialog(context, app),
+                              onTap: () => model.showUninstallAlertDialog(
+                                context,
+                                app,
+                                false,
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -152,6 +155,45 @@ class AppInfoView extends StatelessWidget {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                            Visibility(
+                              visible: app.isRooted,
+                              child: VerticalDivider(
+                                color: Theme.of(context).canvasColor,
+                              ),
+                            ),
+                            Visibility(
+                              visible: app.isRooted,
+                              child: InkWell(
+                                onTap: () => model.showUninstallAlertDialog(
+                                  context,
+                                  app,
+                                  true,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.settings_backup_restore_outlined,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    I18nText(
+                                      'appInfoView.unpatchButton',
+                                      child: Text(
+                                        '',
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

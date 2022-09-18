@@ -31,7 +31,7 @@ class InstallerView extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   Visibility(
-                    visible: !model.isPatching && model.hasErrors,
+                    visible: !model.isPatching && !model.hasErrors,
                     child: CustomPopupMenu(
                       onSelected: (value) => model.onMenuSelection(value),
                       children: {

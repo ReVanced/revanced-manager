@@ -25,7 +25,7 @@
         "downloadingMessage": "Downloading update!",
         "installingMessage": "Installing update... Hang on!",
         "errorDownloadMessage": "Unable to download update!",
-        "errorInstallMessage": "Unable to download update!",
+        "errorInstallMessage": "Unable to install update!",
         "noConnection": "No internet connection"
     },
     "applicationItem": {
@@ -50,7 +50,10 @@
         "widgetTitle": "Select application",
         "widgetTitleSelected": "Selected application",
         "widgetSubtitle": "No application selected.",
-        "noAppsLabel": "No applications found."
+        "noAppsLabel": "No applications found.",
+        "currentVersion": "Current",
+        "recommendedVersion": "Recommended",
+        "anyVersion": "any"
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
@@ -121,8 +124,11 @@
         "openButton": "Open",
         "uninstallButton": "Uninstall",
         "patchButton": "Patch",
+        "unpatchButton": "Unpatch",
         "uninstallDialogTitle": "Uninstall",
         "uninstallDialogText": "Are you sure you want to uninstall this app?",
+        "unpatchDialogTitle": "Unpatch",
+        "unpatchDialogText": "Are you sure you want to unpatch this app?",
         "rootDialogTitle": "Error",
         "rootDialogText": "App was installed with root mode enabled but currently root mode is disabled.\nPlease enable root mode first.",
         "packageNameLabel": "Package Name",
