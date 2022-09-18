@@ -58,7 +58,9 @@ class RootAPI {
         cmd: 'ls "$_managerDirPath"',
       );
       if (res != null) {
-        return res.split('\n').map((pack) => pack.trim()).toList();
+        List<String> apps = res.split('\n');
+        apps.removeWhere((pack) => pack.isEmpty);
+        return apps.map((pack) => pack.trim()).toList();
       }
     } on Exception {
       return List.empty();
