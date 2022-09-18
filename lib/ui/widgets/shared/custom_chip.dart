@@ -26,12 +26,15 @@ class DashboardChip extends StatelessWidget {
           ),
       backgroundColor: Colors.transparent,
       selectedColor: Theme.of(context).colorScheme.secondaryContainer,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       onSelected: onSelected,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         side: isSelected
-            ? BorderSide.none
+            ? BorderSide(
+              width: 0.2,
+              color: Theme.of(context).colorScheme.secondaryContainer,
+            )
             : BorderSide(
                 width: 0.2,
                 color: Theme.of(context).colorScheme.secondary,

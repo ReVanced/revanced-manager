@@ -34,11 +34,13 @@ class CustomMaterialButton extends StatelessWidget {
           ),
         ),
         backgroundColor: MaterialStateProperty.all(
-          isFilled ? Theme.of(context).colorScheme.primary : Colors.transparent,
+          isFilled 
+            ? Theme.of(context).colorScheme.primary
+            : Colors.transparent,
         ),
         foregroundColor: MaterialStateProperty.all(
           isFilled
-              ? Theme.of(context).colorScheme.surface
+              ? Theme.of(context).colorScheme.primaryContainer
               : Theme.of(context).colorScheme.primary,
         ),
       ),

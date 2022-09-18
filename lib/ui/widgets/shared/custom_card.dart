@@ -16,7 +16,7 @@ class CustomCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: isFilled
-            ? Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.40)
+            ? Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.25)
             : Colors.transparent,
         border: isFilled
             ? null

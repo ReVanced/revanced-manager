@@ -24,7 +24,7 @@ class AvailableUpdatesCard extends StatelessWidget {
                     Icons.update_disabled,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   I18nText(
                     'homeView.noUpdates',
                     child: Text(

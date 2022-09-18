@@ -34,9 +34,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
         body: SafeArea(
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
             child: Column(
               children: <Widget>[
+                const SizedBox(height: 8),
                 SearchBar(
                   showSelectIcon: false,
                   hintText: FlutterI18n.translate(
@@ -49,7 +50,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                     });
                   },
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
                 Expanded(
                   child: model.noApps
                       ? Center(
@@ -58,7 +59,6 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                       : model.apps.isEmpty
                           ? const AppSkeletonLoader()
                           : ListView(
-                              padding: const EdgeInsets.only(bottom: 80),
                               children: model
                                   .getFilteredApps(_query)
                                   .map((app) => InkWell(

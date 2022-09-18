@@ -14,7 +14,7 @@
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched Applications",
-        "updatesAvailable": "Updates Available",
+        "updatesAvailable": "Updates available",
         "noUpdates": "No updates available",
         "noInstallations": "No patched applications installed",
         "installed": "Installed",
@@ -38,7 +38,7 @@
         "timeagoLabel": "{time} ago",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update Manager"
+        "updateButton": "Update manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",

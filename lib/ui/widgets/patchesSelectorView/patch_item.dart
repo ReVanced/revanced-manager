@@ -62,10 +62,10 @@ class _PatchItemState extends State<PatchItem> {
                               widget.simpleName,
                               style: const TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: 8),
                             Text(widget.version)
                           ],
                         ),
@@ -112,7 +112,7 @@ class _PatchItemState extends State<PatchItem> {
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(8),
                                   side: BorderSide(
                                     width: 1,
                                     color:

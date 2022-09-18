@@ -33,13 +33,13 @@ class AppSelectorCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             locator<PatcherViewModel>().selectedApp == null
                 ? I18nText('appSelectorCard.widgetSubtitle')
                 : Row(
                     children: <Widget>[
                       SizedBox(
-                        height: 18.0,
+                        height: 20.0,
                         child: ClipOval(
                           child: Image.memory(
                             locator<PatcherViewModel>().selectedApp == null
@@ -50,20 +50,23 @@ class AppSelectorCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text(locator<PatcherViewModel>().getAppSelectionString()),
+                      Text(
+                        locator<PatcherViewModel>()
+                        .getAppSelectionString(),
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
             locator<PatcherViewModel>().selectedApp == null
                 ? Container()
                 : Column(
                     children: [
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 4),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 0),
                         child: Text(
                           locator<PatcherViewModel>()
                               .getRecommendedVersionString(context),
-                          style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                     ],

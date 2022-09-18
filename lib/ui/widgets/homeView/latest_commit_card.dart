@@ -49,7 +49,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Row(
                 children: <Widget>[
                   I18nText('latestCommitCard.managerLabel'),

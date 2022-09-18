@@ -39,7 +39,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 20.0),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[

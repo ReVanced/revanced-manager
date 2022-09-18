@@ -38,7 +38,7 @@ class AppSkeletonLoader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
                     Container(
                       margin: const EdgeInsets.only(bottom: 4),
                       color: Colors.white,

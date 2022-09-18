@@ -39,7 +39,7 @@ class PatcherView extends StatelessWidget {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate.fixed(
                   <Widget>[

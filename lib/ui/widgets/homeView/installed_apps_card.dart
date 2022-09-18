@@ -24,7 +24,7 @@ class InstalledAppsCard extends StatelessWidget {
                     Icons.file_download_off,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   I18nText(
                     'homeView.noInstallations',
                     child: Text(

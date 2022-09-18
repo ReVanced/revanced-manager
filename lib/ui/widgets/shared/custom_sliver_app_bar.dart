@@ -18,7 +18,7 @@ class CustomSliverAppBar extends StatelessWidget {
       pinned: true,
       snap: false,
       floating: false,
-      expandedHeight: 100.0,
+      expandedHeight: 115.0,
       automaticallyImplyLeading: false,
       backgroundColor: MaterialStateColor.resolveWith(
         (states) => states.contains(MaterialState.scrolledUnder)

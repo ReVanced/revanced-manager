@@ -33,7 +33,7 @@ class PatchSelectorCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             locator<PatcherViewModel>().selectedApp == null
                 ? I18nText('patchSelectorCard.widgetSubtitle')
                 : locator<PatcherViewModel>().selectedPatches.isEmpty

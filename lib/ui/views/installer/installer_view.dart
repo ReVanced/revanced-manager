@@ -70,7 +70,7 @@ class InstallerView extends StatelessWidget {
                       CustomCard(
                         child: Text(
                           model.logs,
-                          style: GoogleFonts.jetBrainsMono(
+                          style: GoogleFonts.sourceCodePro(
                             fontSize: 13,
                             height: 1.5,
                           ),
@@ -87,7 +87,7 @@ class InstallerView extends StatelessWidget {
                   child: Visibility(
                     visible: !model.isPatching && !model.hasErrors,
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0).copyWith(top: 0.0),
+                      padding: const EdgeInsets.all(0.0).copyWith(top: 0.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
