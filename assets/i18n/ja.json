@@ -14,7 +14,7 @@
         "widgetTitle": "ダッシュボード",
         "updatesSubtitle": "アップデート",
         "patchedSubtitle": "パッチ適用済のアプリケーション",
-        "updatesAvailable": "更新があります",
+        "updatesAvailable": "利用可能な更新",
         "noUpdates": "更新はありません",
         "noInstallations": "パッチ適用済のアプリケーションはインストールされていません",
         "installed": "インストール済",
@@ -29,7 +29,7 @@
         "noConnection": "ネットワーク接続がありません"
     },
     "applicationItem": {
-        "patchButton": "パッチ",
+        "patchButton": "適用",
         "infoButton": "情報",
         "changelogLabel": "更新履歴"
     },
@@ -42,7 +42,7 @@
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "パッチ",
+        "patchButton": "適用",
         "patchDialogTitle": "警告",
         "patchDialogText": "リソースパッチとAPKの分割インストールが検出されました、パッチ適用時にエラーが発生する可能性があります。\n分割されたベースAPKにパッチを適用しますか？"
     },
@@ -51,6 +51,9 @@
         "widgetTitleSelected": "アプリケーション選択済",
         "widgetSubtitle": "アプリケーションが選択されていません。",
         "noAppsLabel": "アプリケーションが見つかりませんでした。"
+        "currentVersion": "現在",
+        "recommendedVersion": "推奨",
+        "anyVersion": "any"
     },
     "patchSelectorCard": {
         "widgetTitle": "パッチの選択",
@@ -121,9 +124,12 @@
         "widgetTitle": "アプリ情報",
         "openButton": "開く",
         "uninstallButton": "アンインストール",
-        "patchButton": "パッチ",
+        "patchButton": "適用",
+        "unpatchButton": "パッチ解除",
         "uninstallDialogTitle": "アンインストール",
         "uninstallDialogText": "選択したアプリケーションをアンインストールしますか？",
+        "unpatchDialogTitle": "パッチ解除",
+        "unpatchDialogText": "選択したアプリケーションに適用されているパッチを解除しますか？",
         "rootDialogTitle": "エラー",
         "rootDialogText": "アプリは端末がルート化された状態でインストールされましたが、現在はルート化が解除されているようです。\n再度、ルート化してから実行してください。",
         "packageNameLabel": "パッケージ名",
