@@ -38,7 +38,7 @@
         "timeagoLabel": "{time} ago",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update manager"
+        "updateButton": "Update Manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
