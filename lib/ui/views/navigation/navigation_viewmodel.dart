@@ -29,10 +29,10 @@ class NavigationViewModel extends IndexTrackingViewModel {
       await prefs.setBool('useDarkTheme', isDark);
       await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
     }
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
+        systemNavigationBarColor: Colors.transparent,
         systemNavigationBarIconBrightness:
             DynamicTheme.of(context)!.theme.brightness == Brightness.light
                 ? Brightness.dark
