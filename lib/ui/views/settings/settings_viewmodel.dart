@@ -56,12 +56,6 @@ class SettingsViewModel extends BaseViewModel {
     } else {
       await DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
     }
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
-      ),
-    );
     notifyListeners();
   }
 
@@ -79,8 +73,6 @@ class SettingsViewModel extends BaseViewModel {
     }
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
         systemNavigationBarIconBrightness:
             value ? Brightness.light : Brightness.dark,
       ),
