@@ -85,7 +85,7 @@
         "managerLabel": "ตัวจัดการ: ",
         "patcherLabel": "ตัวแก้ไข: ",
         "timeagoLabel": "{time} ที่แล้ว",
-        "updateButton": "อัพเดท"
+        "updateButton": "อัพเดทตัวจัดการ"
     },
     "navigationView": {
         "dashboardTab": "หน้าหลัก",
