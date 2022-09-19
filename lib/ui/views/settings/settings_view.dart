@@ -150,9 +150,20 @@ class SettingsView extends StatelessWidget {
                         subtitle: I18nText('settingsView.logsHint'),
                         onTap: () => model.exportLogcatLogs(),
                       ),
-                      const Padding(
+                      const AboutWidget(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: AboutWidget(),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
+                    title: 'settingsView.advancedSectionTitle',
+                    children: <Widget>[
+                      SettingsTileDialog(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: 'settingsView.apiURLLabel',
+                        subtitle: 'settingsView.apiURLHint',
+                        onTap: () => model.showApiUrlDialog(context),
                       ),
                     ],
                   ),

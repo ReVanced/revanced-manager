@@ -9,15 +9,15 @@ import 'package:timeago/timeago.dart';
 
 @lazySingleton
 class RevancedAPI {
-  final String apiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
-  final Dio _dio = Dio();
+  late Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(days: 1),
     maxStale: const Duration(days: 7),
   );
 
-  void initialize() {
+  Future<void> initialize(String apiUrl) async {
+    _dio = Dio(BaseOptions(baseUrl: apiUrl));
     _dio.interceptors.add(_dioCacheManager.interceptor);
   }
 
@@ -28,10 +28,7 @@ class RevancedAPI {
   Future<Map<String, List<dynamic>>> getContributors() async {
     Map<String, List<dynamic>> contributors = {};
     try {
-      var response = await _dio.get(
-        '$apiUrl/contributors',
-        options: _cacheOptions,
-      );
+      var response = await _dio.get('/contributors', options: _cacheOptions);
       List<dynamic> repositories = response.data['repositories'];
       for (Map<String, dynamic> repo in repositories) {
         String name = repo['name'];
@@ -45,7 +42,7 @@ class RevancedAPI {
 
   Future<List<Patch>> getPatches() async {
     try {
-      var response = await _dio.get('$apiUrl/patches', options: _cacheOptions);
+      var response = await _dio.get('/patches', options: _cacheOptions);
       List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception {
@@ -58,7 +55,7 @@ class RevancedAPI {
     String repoName,
   ) async {
     try {
-      var response = await _dio.get('$apiUrl/tools', options: _cacheOptions);
+      var response = await _dio.get('/tools', options: _cacheOptions);
       List<dynamic> tools = response.data['tools'];
       return tools.firstWhereOrNull(
         (t) =>
@@ -71,10 +68,14 @@ class RevancedAPI {
   }
 
   Future<String?> getLatestReleaseVersion(
-      String extension, String repoName) async {
+    String extension,
+    String repoName,
+  ) async {
     try {
-      Map<String, dynamic>? release =
-          await _getLatestRelease(extension, repoName);
+      Map<String, dynamic>? release = await _getLatestRelease(
+        extension,
+        repoName,
+      );
       if (release != null) {
         return release['version'];
       }

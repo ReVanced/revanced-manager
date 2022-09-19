@@ -19,7 +19,9 @@ class SocialMediaWidget extends StatelessWidget {
       theme: ExpandableThemeData(
         hasIcon: true,
         iconColor: Theme.of(context).iconTheme.color,
-        iconPadding: const EdgeInsets.symmetric(vertical: 16.0),
+        iconPadding: const EdgeInsets.symmetric(vertical: 16.0)
+            .add(padding ?? EdgeInsets.zero)
+            .resolve(Directionality.of(context)),
         animationDuration: const Duration(milliseconds: 400),
       ),
       header: ListTile(
@@ -81,7 +83,7 @@ class SocialMediaWidget extends StatelessWidget {
           ),
         ),
       ),
-      collapsed: Container(),
+      collapsed: const SizedBox(),
     );
   }
 }

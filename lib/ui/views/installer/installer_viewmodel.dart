@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-//import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -30,9 +31,9 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
 
   Future<void> initialize(BuildContext context) async {
-    if (true /*await Permission.ignoreBatteryOptimizations.isGranted*/) {
+    if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
-        await FlutterBackground.initialize(
+        FlutterBackground.initialize(
           androidConfig: FlutterBackgroundAndroidConfig(
             notificationTitle: FlutterI18n.translate(
               context,
@@ -48,8 +49,7 @@ class InstallerViewModel extends BaseViewModel {
               defType: 'drawable',
             ),
           ),
-        );
-        await FlutterBackground.enableBackgroundExecution();
+        ).then((value) => FlutterBackground.enableBackgroundExecution());
       } on Exception {
         // ignore
       }
@@ -122,9 +122,9 @@ class InstallerViewModel extends BaseViewModel {
       hasErrors = true;
       update(-1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
-    if (true /*await Permission.ignoreBatteryOptimizations.isGranted*/) {
+    if (FlutterBackground.isBackgroundExecutionEnabled) {
       try {
-        await FlutterBackground.disableBackgroundExecution();
+        FlutterBackground.disableBackgroundExecution();
       } on Exception {
         // ignore
       }
@@ -133,28 +133,56 @@ class InstallerViewModel extends BaseViewModel {
     isPatching = false;
   }
 
-  void installResult(bool installAsRoot) async {
+  void installResult(BuildContext context, bool installAsRoot) async {
     _app.isRooted = installAsRoot;
-    update(
-      1.0,
-      'Installing...',
-      _app.isRooted
-          ? 'Installing patched file using root method'
-          : 'Installing patched file using nonroot method',
-    );
-    isInstalled = await _patcherAPI.installPatchedFile(_app);
-    if (isInstalled) {
-      update(1.0, 'Installed!', 'Installed!');
-      _app.patchDate = DateTime.now();
-      _app.appliedPatches = _patches.map((p) => p.name).toList();
-      bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
-      if (hasMicroG) {
-        _app.packageName = _app.packageName.replaceFirst(
-          'com.google.',
-          'app.revanced.',
-        );
+    bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
+    bool rootMicroG = installAsRoot && hasMicroG;
+    bool rootFromStorage = installAsRoot && _app.isFromStorage;
+    bool ytWithoutRootMicroG =
+        !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
+    if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('installerView.installErrorDialogTitle'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText(
+            rootMicroG
+                ? 'installerView.installErrorDialogText1'
+                : rootFromStorage
+                    ? 'installerView.installErrorDialogText3'
+                    : 'installerView.installErrorDialogText2',
+          ),
+          actions: <Widget>[
+            CustomMaterialButton(
+              label: I18nText('okButton'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
+    } else {
+      update(
+        1.0,
+        'Installing...',
+        _app.isRooted
+            ? 'Installing patched file using root method'
+            : 'Installing patched file using nonroot method',
+      );
+      isInstalled = await _patcherAPI.installPatchedFile(_app);
+      if (isInstalled) {
+        update(1.0, 'Installed!', 'Installed!');
+        _app.isFromStorage = false;
+        _app.patchDate = DateTime.now();
+        _app.appliedPatches = _patches.map((p) => p.name).toList();
+        if (hasMicroG) {
+          _app.packageName = _app.packageName.replaceFirst(
+            'com.google.',
+            'app.revanced.',
+          );
+        }
+        await _managerAPI.savePatchedApp(_app);
       }
-      await _managerAPI.savePatchedApp(_app);
     }
   }
 

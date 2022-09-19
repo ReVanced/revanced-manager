@@ -19,6 +19,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  String defaultApiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
@@ -27,6 +28,19 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  String getApiUrl() {
+    return _prefs.getString('apiUrl') ?? defaultApiUrl;
+  }
+
+  Future<void> setApiUrl(String url) async {
+    if (url.isEmpty || url == ' ') {
+      url = defaultApiUrl;
+    }
+    await _revancedAPI.initialize(url);
+    await _revancedAPI.clearAllCache();
+    await _prefs.setString('apiUrl', url);
   }
 
   String getPatchesRepo() {
@@ -110,10 +124,11 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
-    if (getPatchesRepo() == defaultPatchesRepo) {
+    String repoName = getPatchesRepo();
+    if (repoName == defaultPatchesRepo) {
       return await _revancedAPI.getPatches();
     } else {
-      return await _githubAPI.getPatches(getPatchesRepo());
+      return await _githubAPI.getPatches(repoName);
     }
   }
 

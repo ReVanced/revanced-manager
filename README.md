@@ -13,3 +13,7 @@ If you wish to discuss the Manager, a thread has been made under the [#chat](htt
 
 ## ⚠️ Disclaimer
 *Please note that even though we're releasing the Manager, it is an ALPHA version. Meaning there's a big chance that the Manager might not work at all for you.*
+
+## Prerequisites
+1. Android 8 or higher.
+2. For YouTube and YouTube Music - Vanced MicroG(Only for non-root).
