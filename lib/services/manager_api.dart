@@ -19,6 +19,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  String defaultApiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
@@ -27,6 +28,19 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  String getApiUrl() {
+    return _prefs.getString('apiUrl') ?? defaultApiUrl;
+  }
+
+  Future<void> setApiUrl(String url) async {
+    if (url.isEmpty || url == ' ') {
+      url = defaultApiUrl;
+    }
+    await _revancedAPI.initialize(url);
+    await _revancedAPI.clearAllCache();
+    await _prefs.setString('apiUrl', url);
   }
 
   String getPatchesRepo() {
@@ -110,10 +124,11 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
-    if (getPatchesRepo() == defaultPatchesRepo) {
+    String repoName = getPatchesRepo();
+    if (repoName == defaultPatchesRepo) {
       return await _revancedAPI.getPatches();
     } else {
-      return await _githubAPI.getPatches(getPatchesRepo());
+      return await _githubAPI.getPatches(repoName);
     }
   }
 
@@ -165,46 +180,114 @@ class ManagerAPI {
     return packageInfo.version;
   }
 
-  Future<void> reAssessSavedApps() async {
-    List<PatchedApplication> patchedApps = getPatchedApps();
+  Future<List<PatchedApplication>> getAppsToRemove(
+    List<PatchedApplication> patchedApps,
+  ) async {
     List<PatchedApplication> toRemove = [];
     for (PatchedApplication app in patchedApps) {
       bool isRemove = await isAppUninstalled(app);
       if (isRemove) {
         toRemove.add(app);
-      } else {
-        app.hasUpdates = await hasAppUpdates(app.packageName, app.patchDate);
-        app.changelog = await getAppChangelog(app.packageName, app.patchDate);
-        if (!app.hasUpdates) {
-          String? currentInstalledVersion =
-              (await DeviceApps.getApp(app.packageName))?.versionName;
-          if (currentInstalledVersion != null) {
-            String currentSavedVersion = app.version;
-            int currentInstalledVersionInt = int.parse(
-                currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''));
-            int currentSavedVersionInt =
-                int.parse(currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
-            if (currentInstalledVersionInt > currentSavedVersionInt) {
-              app.hasUpdates = true;
-            }
+      }
+    }
+    return toRemove;
+  }
+
+  Future<List<PatchedApplication>> getUnsavedApps(
+    List<PatchedApplication> patchedApps,
+  ) async {
+    List<PatchedApplication> unsavedApps = [];
+    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    if (hasRootPermissions) {
+      List<String> installedApps = await _rootAPI.getInstalledApps();
+      for (String packageName in installedApps) {
+        if (!patchedApps.any((app) => app.packageName == packageName)) {
+          ApplicationWithIcon? application =
+              await DeviceApps.getApp(packageName, true)
+                  as ApplicationWithIcon?;
+          if (application != null) {
+            unsavedApps.add(
+              PatchedApplication(
+                name: application.appName,
+                packageName: application.packageName,
+                version: application.versionName!,
+                apkFilePath: application.apkFilePath,
+                icon: application.icon,
+                patchDate: DateTime.now(),
+                isRooted: true,
+              ),
+            );
           }
         }
       }
     }
+    List<Application> userApps = await DeviceApps.getInstalledApplications(
+      includeSystemApps: false,
+      includeAppIcons: false,
+    );
+    for (Application app in userApps) {
+      if (app.packageName.startsWith('app.revanced') &&
+          !app.packageName.startsWith('app.revanced.manager.') &&
+          !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
+        ApplicationWithIcon? application =
+            await DeviceApps.getApp(app.packageName, true)
+                as ApplicationWithIcon?;
+        if (application != null) {
+          unsavedApps.add(
+            PatchedApplication(
+              name: application.appName,
+              packageName: application.packageName,
+              version: application.versionName!,
+              apkFilePath: application.apkFilePath,
+              icon: application.icon,
+              patchDate: DateTime.now(),
+              isRooted: false,
+            ),
+          );
+        }
+      }
+    }
+    return unsavedApps;
+  }
+
+  Future<void> reAssessSavedApps() async {
+    List<PatchedApplication> patchedApps = getPatchedApps();
+    List<PatchedApplication> unsavedApps = await getUnsavedApps(patchedApps);
+    patchedApps.addAll(unsavedApps);
+    List<PatchedApplication> toRemove = await getAppsToRemove(patchedApps);
     patchedApps.removeWhere((a) => toRemove.contains(a));
+    for (PatchedApplication app in patchedApps) {
+      app.hasUpdates = await hasAppUpdates(app.packageName, app.patchDate);
+      app.changelog = await getAppChangelog(app.packageName, app.patchDate);
+      if (!app.hasUpdates) {
+        String? currentInstalledVersion =
+            (await DeviceApps.getApp(app.packageName))?.versionName;
+        if (currentInstalledVersion != null) {
+          String currentSavedVersion = app.version;
+          int currentInstalledVersionInt = int.parse(
+              currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''));
+          int currentSavedVersionInt =
+              int.parse(currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
+          if (currentInstalledVersionInt > currentSavedVersionInt) {
+            app.hasUpdates = true;
+          }
+        }
+      }
+    }
     await setPatchedApps(patchedApps);
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
+    bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
     if (app.isRooted) {
       bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         existsRoot = await _rootAPI.isAppInstalled(app.packageName);
       }
+      return !existsRoot || !existsNonRoot;
     }
-    bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
-    return !existsRoot && !existsNonRoot;
+    return !existsNonRoot;
   }
 
   Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {

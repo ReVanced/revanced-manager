@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -19,16 +20,20 @@ class AppInfoViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
 
-  Future<void> uninstallApp(PatchedApplication app) async {
+  Future<void> uninstallApp(PatchedApplication app, bool onlyUnpatch) async {
     if (app.isRooted) {
       bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         _rootAPI.deleteApp(app.packageName, app.apkFilePath);
         _managerAPI.deletePatchedApp(app);
+        if (!onlyUnpatch) {
+          DeviceApps.uninstallApp(app.packageName);
+        }
       }
     } else {
-      DeviceApps.uninstallApp(app.packageName);
-      _managerAPI.deletePatchedApp(app);
+      DeviceApps.uninstallApp(app.packageName).then(
+        (value) => _managerAPI.deletePatchedApp(app),
+      );
     }
   }
 
@@ -40,53 +45,62 @@ class AppInfoViewModel extends BaseViewModel {
     locator<NavigationViewModel>().setIndex(1);
   }
 
-  Future<void> showUninstallAlertDialog(
+  Future<void> showUninstallDialog(
     BuildContext context,
     PatchedApplication app,
+    bool onlyUnpatch,
   ) async {
-    if (app.isRooted) {
-      bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (!hasRootPermissions) {
-        return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: I18nText('appInfoView.rootDialogTitle'),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText('appInfoView.rootDialogText'),
-            actions: <Widget>[
-              CustomMaterialButton(
-                label: I18nText('okButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          ),
-        );
-      }
-    } else {
+    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    if (app.isRooted && !hasRootPermissions) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('appInfoView.uninstallDialogTitle'),
+          title: I18nText('appInfoView.rootDialogTitle'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('appInfoView.uninstallDialogText'),
+          content: I18nText('appInfoView.rootDialogText'),
           actions: <Widget>[
             CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('cancelButton'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CustomMaterialButton(
               label: I18nText('okButton'),
-              onPressed: () {
-                uninstallApp(app);
-                locator<HomeViewModel>().initialize(context);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
             )
           ],
         ),
       );
+    } else {
+      if (onlyUnpatch) {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText(
+              'appInfoView.unpatchButton',
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            content: I18nText(
+              'appInfoView.unpatchDialogText',
+            ),
+            actions: <Widget>[
+              CustomMaterialButton(
+                isFilled: false,
+                label: I18nText('noButton'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              CustomMaterialButton(
+                label: I18nText('yesButton'),
+                onPressed: () {
+                  uninstallApp(app, onlyUnpatch);
+                  locator<HomeViewModel>().initialize(context);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      } else {
+        uninstallApp(app, onlyUnpatch);
+        locator<HomeViewModel>().initialize(context);
+        Navigator.of(context).pop();
+      }
     }
   }
 

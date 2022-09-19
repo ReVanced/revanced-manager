@@ -74,7 +74,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void _getPatchedApps() {
-    patchedInstalledApps = _managerAPI.getPatchedApps().toList();
+    patchedInstalledApps = _managerAPI
+        .getPatchedApps()
+        .where((app) => app.hasUpdates == false)
+        .toList();
     patchedUpdatableApps = _managerAPI
         .getPatchedApps()
         .where((app) => app.hasUpdates == true)
@@ -169,11 +172,11 @@ class HomeViewModel extends BaseViewModel {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: I18nText('noButton'),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: I18nText('yesButton'),
             onPressed: () {
               Navigator.of(context).pop();
               updateManager(context);

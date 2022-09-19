@@ -41,11 +41,56 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: Relevant log output
+      label: Android version
+      description: Android version used.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Manager version
+      description: Manager version used.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Target package name
+      description: App you tried to patch.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Target package version.
+      description: Version of the app you tried to patch.
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Installation type
+      options:
+        - Non-root
+        - Root
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Patches selected.
+      description: Patches you selected for the app.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Device logs (exported using Manager settings).
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
     validations:
       required: true
+  - type: textarea
+    attributes:
+      label: Installer logs (exported using Installer menu option) [unneeded if issue is not during patching].
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: false
   - type: textarea
     attributes:
       label: Screenshots or videos

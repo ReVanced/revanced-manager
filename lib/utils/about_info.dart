@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -7,6 +8,7 @@ class AboutInfo {
     final info = await DeviceInfoPlugin().androidInfo;
     return {
       'version': packageInfo.version,
+      'flavor': kReleaseMode ? 'release' : 'debug',
       'model': info.model,
       'androidVersion': info.version.release,
       'arch': info.supportedAbis.first

@@ -15,25 +15,30 @@ import 'package:stacked/stacked.dart';
 class NavigationViewModel extends IndexTrackingViewModel {
   void initialize(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('permissionsRequested') == null) {
+      await prefs.setBool('permissionsRequested', true);
+      RootAPI().hasRootPermissions().then(
+            (value) => Permission.requestInstallPackages.request().then(
+                  (value) => Permission.ignoreBatteryOptimizations.request(),
+                ),
+          );
+    }
     if (prefs.getBool('useDarkTheme') == null) {
       bool isDark =
           MediaQuery.of(context).platformBrightness != Brightness.light;
       await prefs.setBool('useDarkTheme', isDark);
       await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
     }
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
+        systemNavigationBarColor: Colors.transparent,
         systemNavigationBarIconBrightness:
             DynamicTheme.of(context)!.theme.brightness == Brightness.light
                 ? Brightness.dark
                 : Brightness.light,
       ),
     );
-    RootAPI().hasRootPermissions();
-    Permission.requestInstallPackages.request();
-    Permission.ignoreBatteryOptimizations.request();
   }
 
   Widget getViewForIndex(int index) {

@@ -64,11 +64,11 @@ class PatcherViewModel extends BaseViewModel {
           actions: <Widget>[
             CustomMaterialButton(
               isFilled: false,
-              label: I18nText('cancelButton'),
+              label: I18nText('noButton'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             CustomMaterialButton(
-              label: I18nText('okButton'),
+              label: I18nText('yesButton'),
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
@@ -78,5 +78,33 @@ class PatcherViewModel extends BaseViewModel {
         ),
       );
     }
+  }
+
+  String getAppSelectionString() {
+    String text = '${selectedApp!.name} (${selectedApp!.packageName})';
+    if (text.length > 32) {
+      text = '${text.substring(0, 32)}...)';
+    }
+    return text;
+  }
+
+  String getRecommendedVersionString(BuildContext context) {
+    String recommendedVersion =
+        _patcherAPI.getRecommendedVersion(selectedApp!.packageName);
+    if (recommendedVersion.isEmpty) {
+      recommendedVersion = FlutterI18n.translate(
+        context,
+        'appSelectorCard.anyVersion',
+      );
+    } else {
+      recommendedVersion = 'v$recommendedVersion';
+    }
+    return '${FlutterI18n.translate(
+      context,
+      'appSelectorCard.currentVersion',
+    )}: v${selectedApp!.version}\n${FlutterI18n.translate(
+      context,
+      'appSelectorCard.recommendedVersion',
+    )}: $recommendedVersion';
   }
 }

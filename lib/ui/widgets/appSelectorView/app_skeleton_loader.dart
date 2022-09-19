@@ -10,6 +10,7 @@ class AppSkeletonLoader extends StatelessWidget {
     return Skeleton(
       isLoading: true,
       skeleton: ListView.builder(
+        shrinkWrap: true,
         itemCount: 7,
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
