@@ -9,6 +9,7 @@ import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:stacked_themes/stacked_themes.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 Future main() async {
   await ThemeManager.initialise();
@@ -19,6 +20,7 @@ Future main() async {
   await locator<RevancedAPI>().initialize(apiUrl);
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 

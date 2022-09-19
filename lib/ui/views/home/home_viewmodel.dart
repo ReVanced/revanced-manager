@@ -18,6 +18,7 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 @lazySingleton
 class HomeViewModel extends BaseViewModel {
@@ -38,6 +39,10 @@ class HomeViewModel extends BaseViewModel {
       onSelectNotification: (p) =>
           DeviceApps.openApp('app.revanced.manager.flutter'),
     );
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
     bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
       Fluttertoast.showToast(
@@ -102,35 +107,42 @@ class HomeViewModel extends BaseViewModel {
     return false;
   }
 
-  void updateManager(BuildContext context) async {
-    Fluttertoast.showToast(
-      msg: FlutterI18n.translate(
-        context,
-        'homeView.downloadingMessage',
-      ),
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-    );
-    File? managerApk = await _managerAPI.downloadManager();
-    if (managerApk != null) {
-      flutterLocalNotificationsPlugin.show(
-        0,
-        FlutterI18n.translate(
+  Future<void> updateManager(BuildContext context) async {
+    try {
+      Fluttertoast.showToast(
+        msg: FlutterI18n.translate(
           context,
-          'homeView.notificationTitle',
+          'homeView.downloadingMessage',
         ),
-        FlutterI18n.translate(
-          context,
-          'homeView.notificationText',
-        ),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'revanced_manager_channel',
-            'ReVanced Manager Channel',
-          ),
-        ),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
       );
-      try {
+      File? managerApk = await _managerAPI.downloadManager();
+      if (managerApk != null) {
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          0,
+          FlutterI18n.translate(
+            context,
+            'homeView.notificationTitle',
+          ),
+          FlutterI18n.translate(
+            context,
+            'homeView.notificationText',
+          ),
+          tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'revanced_manager_channel',
+              'ReVanced Manager Channel',
+              importance: Importance.max,
+              priority: Priority.high,
+              ticker: 'ticker',
+            ),
+          ),
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+        );
         Fluttertoast.showToast(
           msg: FlutterI18n.translate(
             context,
@@ -140,21 +152,21 @@ class HomeViewModel extends BaseViewModel {
           gravity: ToastGravity.CENTER,
         );
         await AppInstaller.installApk(managerApk.path);
-      } on Exception {
+      } else {
         Fluttertoast.showToast(
           msg: FlutterI18n.translate(
             context,
-            'homeView.errorInstallMessage',
+            'homeView.errorDownloadMessage',
           ),
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
         );
       }
-    } else {
+    } on Exception {
       Fluttertoast.showToast(
         msg: FlutterI18n.translate(
           context,
-          'homeView.errorDownloadMessage',
+          'homeView.errorInstallMessage',
         ),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
@@ -162,9 +174,9 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> showUpdateConfirmationDialog(BuildContext context) async {
+  Future<void> showUpdateConfirmationDialog(BuildContext parentContext) async {
     return showDialog(
-      context: context,
+      context: parentContext,
       builder: (context) => AlertDialog(
         title: I18nText('homeView.updateDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -179,7 +191,7 @@ class HomeViewModel extends BaseViewModel {
             label: I18nText('yesButton'),
             onPressed: () {
               Navigator.of(context).pop();
-              updateManager(context);
+              updateManager(parentContext);
             },
           )
         ],
