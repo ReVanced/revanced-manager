@@ -1,0 +1,154 @@
+{
+    "okButton": "확인,
+    "cancelButton": "취소",
+    "enabledLabel": "활성화",
+    "disabledLabel": "비활성화",
+    "yesButton": "예",
+    "noButton": "아니오",
+    "navigationView": {
+        "dashboardTab": "대시보드",
+        "patcherTab": "패처",
+        "settingsTab": "설정"
+    },
+    "homeView": {
+        "widgetTitle": "대시보드",
+        "updatesSubtitle": "업데이트",
+        "patchedSubtitle": "패치된 애플리케이션",
+        "updatesAvailable": "사용 가능한 업데이트",
+        "noUpdates": "사용 가능한 업데이트가 없음",
+        "noInstallations": "패치된 응용 프로그램이 설치되지 않음",
+        "installed": "설치됨",
+        "updateDialogTitle": "업데이트",
+        "updateDialogText": "매니저를 다운로드하고 업데이트하시겠습니까?",
+        "notificationTitle": "ReVanced 매니저가 업데이트되었습니다!",
+        "notificationText": "탭하여 앱 열기",
+        "downloadingMessage": "업데이트 다운로드 중!",
+        "installingMessage": "업데이트 설치 중... 잠시 기다려보세요!",
+        "errorDownloadMessage": "업데이트를 다운로드할 수 없습니다!",
+        "errorInstallMessage": "업데이트를 설치할 수 없습니다!",
+        "noConnection": "인터넷에 연결되지 않음"
+    },
+    "applicationItem": {
+        "patchButton": "패치",
+        "infoButton": "정보",
+        "changelogLabel": "변경이력"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "불러오기 중",
+        "timeagoLabel": "{time} 전",
+        "patcherLabel": "패처: ",
+        "managerLabel": "매니저: ",
+        "updateButton": "업데이트 매니저"
+    },
+    "patcherView": {
+        "widgetTitle": "패처",
+        "patchButton": "패치",
+        "patchDialogTitle": "경고",
+        "patchDialogText": "리소스 패치를 선택했는데 분할 APK 설치가 감지되어 패치 오류가 발생할 수 있습니다.\n분할 기본 APK 패치를 계속하겠습니까?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "애플리케이션 선택",
+        "widgetTitleSelected": "선택한 애플리케이션",
+        "widgetSubtitle": "선택한 애플리케이션이 없습니다.",
+        "noAppsLabel": "애플리케이션을 찾을 수 없습니다.",
+        "currentVersion": "현재",
+        "recommendedVersion": "추천",
+        "anyVersion": "모두"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "패치 선택",
+        "widgetTitleSelected": "선택한 패치",
+        "widgetSubtitle": "먼저 응용 프로그램을 선택하세요.",
+        "widgetEmptySubtitle": "선택된 패치가 없습니다."
+    },
+    "socialMediaCard": {
+        "widgetTitle": "소셜 미디어",
+        "widgetSubtitle": "온라인 상태입니다!"
+    },
+    "appSelectorView": {
+        "searchBarHint": "검색 응용 프로그램",
+        "storageButton": "저장소",
+        "errorMessage": "선택한 응용 프로그램을 사용할 수 없습니다."
+    },
+    "patchesSelectorView": {
+        "searchBarHint": "패치 검색",
+        "doneButton": "완료",
+        "noPatchesFound": "선택한 앱에 대한 패치를 찾을 수 없습니다."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "지원되지 않는 버전",
+        "unsupportedDialogTitle": "경고",
+        "unsupportedDialogText": "이 패치를 선택하면 패치 오류가 발생할 수 있습니다.\n\n앱 버전: {packageVersion}\n현재 지원되는 버전:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "설치 프로그램r",
+        "installButton": "설치",
+        "installRootButton": "루트로 설치",
+        "openButton": "열기",
+        "shareButton": "파일 공유",
+        "notificationTitle": "ReVanced Manager가 패치 중",
+        "notificationText": "설치 프로그램으로 돌아가려면 탭",
+        "shareApkMenuOption": "APK 공유",
+        "shareLogMenuOption": "로그 공유"
+    },
+    "settingsView": {
+        "widgetTitle": "설정",
+        "appearanceSectionTitle": "외관",
+        "patcherSectionTitle": "패처",
+        "teamSectionTitle": "팀",
+        "infoSectionTitle": "정보",
+        "advancedSectionTitle": "고급",
+        "darkThemeLabel": "어두운 모드",
+        "darkThemeHint": "다크 사이드에 오신 것을 환영",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "당신의 장치와 더 가까운 곳에서 경험을 즐기세요",
+        "languageLabel": "언어",
+        "englishOption": "영어",
+        "frenchOption": "프랑스어",
+		"koreaOption": "한국어",
+        "sourcesLabel": "소스",
+        "sourcesLabelHint": "커스텀 소스 구성",
+        "orgPatchesLabel" : "패치 출처",
+        "sourcesPatchesLabel" : "패치 소스",
+        "orgIntegrationsLabel": "통합 출처",
+        "sourcesIntegrationsLabel": "통합 소스",
+        "sourcesResetDialogTitle": "재설정",
+        "sourcesResetDialogText": "커스텀 소스를 기본값으로 재설정하겠습니까?",
+        "apiURLResetDialogText": "API URL을 기본값으로 재설정하겠습니까?",
+        "contributorsLabel": "기여자",
+        "contributorsHint": "ReVanced 기여자 목록",
+        "logsLabel": "로그",
+        "logsHint": "장치 디버그 로그 공유",
+        "apiURLLabel": "API URL",
+        "apiURLHint": "커스텀 API URL 구성",
+        "selectApiURL": "URL 선택",
+        "aboutLabel": "정보",
+        "snackbarMessage": "클립보드에 복사됨"
+    },
+    "appInfoView": {
+        "widgetTitle": "앱 정보",
+        "openButton": "열기",
+        "uninstallButton": "설치 제거",
+        "patchButton": "패치",
+        "unpatchButton": "패치 해제",
+        "unpatchDialogText": "이 앱의 패치를 해제하겠습니까?",
+        "rootDialogTitle": "오류",
+        "rootDialogText": "앱이 루트 모드가 활성화된 상태로 설치되었지만 현재 루트 모드는 비활성화되어 있습니다.\n먼저 루트 모드를 활성화하세요.",
+        "packageNameLabel": "패키지 이름",
+        "installTypeLabel": "설치 유형",
+        "rootTypeLabel": "루트",
+        "nonRootTypeLabel": "루트 아님",
+        "patchedDateLabel": "패치된 날짜",
+        "patchedDateHint": "{date}, {time}",
+        "appliedPatchesLabel": "적용된 패치",
+        "appliedPatchesHint": "{quantity} 적용 패치"
+    },
+    "contributorsView": {
+        "widgetTitle": "기여자",
+        "patcherContributors": "패처 기여자",
+        "patchesContributors": "패치 기여자",
+        "integrationsContributors": "통합 기여자",
+        "cliContributors": "CLI 기여자",
+        "managerContributors": "매니저 기여자"
+    }
+}
