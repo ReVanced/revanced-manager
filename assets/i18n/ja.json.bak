@@ -67,12 +67,12 @@
     },
     "appSelectorView": {
         "viewTitle": "アプリケーションの選択",
-        "searchBarHint": "アプリケーションの検索",
+        "searchBarHint": "Search applications",
         "storageButton": "ストレージ",
         "errorMessage": "選択したアプリケーションは使用できません。"
     },
     "patchesSelectorView": {
-    	"viewTitle": "パッチの選択",
+    	"viewTitle": "Select patches",
         "searchBarHint": "パッチの検索",
         "doneButton": "完了",
         "noPatchesFound": "選択したアプリのパッチは見つかりませんでした。"
@@ -92,10 +92,10 @@
         "notificationText": "タップするとインストーラーに戻ります",
         "shareApkMenuOption": "APKを共有",
         "shareLogMenuOption": "logを共有",
-        "installErrorDialogTitle": "エラー",
-        "installErrorDialogText1": "現在選択されているパッチでは、ルートインストールはできません。\nアプリを再パッチするか、非ルートインストールを選択してください。",
-        "installErrorDialogText2": "現在選択されているパッチでは、非ルートインストールはできません。\nアプリを再パッチするか、デバイスをルート化した後、ルートインストールを選択してください。",
-        "installErrorDialogText3": "ストレージからオリジナルAPKを選択したため、ルートインストールはできません。\nインストールされているアプリを選択するか、非ルートインストールを選択します。"
+        "installErrorDialogTitle": "Error",
+        "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
+        "installErrorDialogText2": "Non-root install is not possible with the current patches selection.\nRepatch your app or choose root install if you have your device rooted.",
+        "installErrorDialogText3": "Root install is not possible as the original APK was selected from storage.\nSelect an installed app or choose non-root install."
     },
     "settingsView": {
         "widgetTitle": "設定",
@@ -103,7 +103,7 @@
         "patcherSectionTitle": "Patcher",
         "teamSectionTitle": "チーム",
         "infoSectionTitle": "情報",
-        "advancedSectionTitle": "高度な機能",
+        "advancedSectionTitle": "Advanced",
         "darkThemeLabel": "ダークモード",
         "darkThemeHint": "ダークサイドへようこそ",
         "dynamicThemeLabel": "Material You",
@@ -120,14 +120,14 @@
         "sourcesIntegrationsLabel": "Integrationsのソース",
         "sourcesResetDialogTitle": "リセット",
         "sourcesResetDialogText": "カスタム ソースをデフォルト値にリセットしてもよろしいですか?",
-        "apiURLResetDialogText": "APIのURLをデフォルト値にリセットしてもよろしいですか？",
+        "apiURLResetDialogText": "Are you sure you want to reset API URL to their default values?",
         "contributorsLabel": "貢献者",
         "contributorsHint": "ReVancedへの貢献者一覧",
         "logsLabel": "ログ",
         "logsHint": "デバイスのデバッグログを共有",
         "apiURLLabel": "API URL",
-        "apiURLHint": "カスタムAPI URLの設定",
-        "selectApiURL": "URLを選択",
+        "apiURLHint": "Configure your custom API URL",
+        "selectApiURL": "Select URL",
         "aboutLabel": "詳細",
         "snackbarMessage": "クリップボードにコピーしました"
     },
@@ -137,6 +137,9 @@
         "uninstallButton": "アンインストール",
         "patchButton": "適用",
         "unpatchButton": "パッチ解除",
+        "uninstallDialogTitle": "アンインストール",
+        "uninstallDialogText": "選択したアプリケーションをアンインストールしますか？",
+        "unpatchDialogTitle": "パッチ解除",
         "unpatchDialogText": "選択したアプリケーションに適用されているパッチを解除しますか？",
         "rootDialogTitle": "エラー",
         "rootDialogText": "アプリは端末がルート化された状態でインストールされましたが、現在はルート化が解除されているようです。\n再度、ルート化してから実行してください。",
