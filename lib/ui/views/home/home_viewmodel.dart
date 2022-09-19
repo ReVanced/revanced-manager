@@ -6,13 +6,13 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
@@ -25,6 +25,7 @@ class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   DateTime? _lastUpdate;
   bool showUpdatableApps = true;
@@ -45,14 +46,7 @@ class HomeViewModel extends BaseViewModel {
         ?.requestPermission();
     bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'homeView.noConnection',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      _toast.show('homeView.noConnection');
     }
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
@@ -109,14 +103,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> updateManager(BuildContext context) async {
     try {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'homeView.downloadingMessage',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      _toast.show('homeView.downloadingMessage');
       File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
         await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -143,34 +130,13 @@ class HomeViewModel extends BaseViewModel {
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
         );
-        Fluttertoast.showToast(
-          msg: FlutterI18n.translate(
-            context,
-            'homeView.installingMessage',
-          ),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        _toast.show('homeView.installingMessage');
         await AppInstaller.installApk(managerApk.path);
       } else {
-        Fluttertoast.showToast(
-          msg: FlutterI18n.translate(
-            context,
-            'homeView.errorDownloadMessage',
-          ),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        _toast.show('homeView.errorDownloadMessage');
       }
     } on Exception {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'homeView.errorInstallMessage',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      _toast.show('homeView.errorInstallMessage');
     }
   }
 
