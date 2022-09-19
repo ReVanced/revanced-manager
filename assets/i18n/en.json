@@ -101,7 +101,6 @@
     "settingsView": {
         "widgetTitle": "Settings",
         "appearanceSectionTitle": "Appearance",
-        "patcherSectionTitle": "Patcher",
         "teamSectionTitle": "Team",
         "infoSectionTitle": "Info",
         "advancedSectionTitle": "Advanced",
