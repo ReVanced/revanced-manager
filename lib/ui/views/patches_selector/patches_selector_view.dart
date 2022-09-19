@@ -39,12 +39,29 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               pinned: true,
               floating: true,
               snap: false,
-              title: I18nText('patchesSelectorView.viewTitle'),
+              title: I18nText(
+                'patchesSelectorView.viewTitle',
+                child: Text(
+                  '',
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.headline6!.color,
+                  ),
+                ),
+              ),
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).textTheme.headline6!.color,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(64.0),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 12.0),
+                    vertical: 8.0,
+                    horizontal: 12.0,
+                  ),
                   child: SearchBar(
                     showSelectIcon: true,
                     hintText: FlutterI18n.translate(
@@ -76,8 +93,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       ),
                     )
                   : Padding(
-                      padding: const EdgeInsets.only(bottom: 80)
-                          .add(const EdgeInsets.symmetric(horizontal: 12.0)),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0)
+                          .copyWith(bottom: 80),
                       child: Column(
                         children: model
                             .getQueriedPatches(_query)

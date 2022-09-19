@@ -24,6 +24,7 @@ class SettingsView extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             CustomSliverAppBar(
+              isMainView: true,
               title: I18nText(
                 'settingsView.widgetTitle',
                 child: Text(
