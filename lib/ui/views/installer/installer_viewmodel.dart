@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -214,5 +215,22 @@ class InstallerViewModel extends BaseViewModel {
         shareLog();
         break;
     }
+  }
+
+  Future<bool> onWillPop(BuildContext context) async {
+    if (isPatching) {
+      Fluttertoast.showToast(
+        msg: FlutterI18n.translate(
+          context,
+          'installerView.noExit',
+        ),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+      return false;
+    }
+    cleanPatcher();
+    Navigator.of(context).pop();
+    return true;
   }
 }

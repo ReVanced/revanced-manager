@@ -29,6 +29,7 @@ class InstallerView extends StatelessWidget {
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
+                onBackButtonPressed: () => model.onWillPop(context),
                 actions: <Widget>[
                   Visibility(
                     visible: !model.isPatching && !model.hasErrors,
@@ -143,13 +144,7 @@ class InstallerView extends StatelessWidget {
             ],
           ),
         ),
-        onWillPop: () async {
-          if (!model.isPatching) {
-            model.cleanPatcher();
-            Navigator.of(context).pop();
-          }
-          return false;
-        },
+        onWillPop: () => model.onWillPop(context),
       ),
     );
   }
