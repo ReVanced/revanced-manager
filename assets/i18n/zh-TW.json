@@ -93,7 +93,7 @@
         "installErrorDialogTitle": "錯誤",
         "installErrorDialogText1": "目前選取的修補檔無法以 Root 安裝\n請選取無 Root 模式安裝或重新修補應用程式。",
         "installErrorDialogText2": "目前選取的修補檔無法以無 Root 安裝。\n如您的裝置已 Root，請選取 Root 模式安裝或重新修補應用程式。",
-        "installErrorDialogText3": "從存儲空間中選取的原始 APK 無法以 Root 安裝。\n請選取非 Root 模式安裝或重新修補應用程式。"
+        "installErrorDialogText3": "從存儲空間中選取的原始 APK 無法以 Root 安裝。\n請選取無 Root 模式安裝或重新修補應用程式。"
     },
     "settingsView": {
         "widgetTitle": "設定",
