@@ -14,18 +14,18 @@
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched Applications",
-        "updatesAvailable": "Updates Available",
+        "updatesAvailable": "Updates available",
         "noUpdates": "No updates available",
         "noInstallations": "No patched applications installed",
         "installed": "Installed",
         "updateDialogTitle": "Update",
-        "updateDialogText": "Are you sure you want to download and update Manager?",
-        "notificationTitle": "ReVanced Manager was updated!",
+        "updateDialogText": "Are you sure you want to download and update ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager was updated",
         "notificationText": "Tap to open the app",
-        "downloadingMessage": "Downloading update!",
-        "installingMessage": "Installing update... Hang on!",
-        "errorDownloadMessage": "Unable to download update!",
-        "errorInstallMessage": "Unable to install update!",
+        "downloadingMessage": "Downloading update...",
+        "installingMessage": "Installing update...",
+        "errorDownloadMessage": "Unable to download update",
+        "errorInstallMessage": "Unable to install update",
         "noConnection": "No internet connection"
     },
     "applicationItem": {
@@ -34,22 +34,22 @@
         "changelogLabel": "Changelog"
     },
     "latestCommitCard": {
-        "loadingLabel": "Loading",
+        "loadingLabel": "Loading...",
         "timeagoLabel": "{time} ago",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update Manager"
+        "updateButton": "Update"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Warning",
-        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors can occur.\nAre you sure you want to proceed with patching a split base APK?"
+        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors may occur.\nAre you sure you want to proceed with patching a split base APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select application",
         "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected.",
+        "widgetSubtitle": "No application selected",
         "noAppsLabel": "No applications found.",
         "currentVersion": "Current",
         "recommendedVersion": "Recommended",
@@ -58,11 +58,11 @@
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
         "widgetTitleSelected": "Selected patches",
-        "widgetSubtitle": "Select an application first.",
-        "widgetEmptySubtitle": "No patches selected."
+        "widgetSubtitle": "Select an application first",
+        "widgetEmptySubtitle": "No patches selected"
     },
     "socialMediaCard": {
-        "widgetTitle": "Social Media",
+        "widgetTitle": "Socials",
         "widgetSubtitle": "We are online!"
     },
     "appSelectorView": {
@@ -73,7 +73,7 @@
     "patchesSelectorView": {
         "searchBarHint": "Search patches",
         "doneButton": "Done",
-        "noPatchesFound": "No patches found for the selected app."
+        "noPatchesFound": "No patches found for the selected app"
     },
     "patchItem": {
         "unsupportedWarningButton": "Unsupported version",
@@ -102,8 +102,8 @@
         "teamSectionTitle": "Team",
         "infoSectionTitle": "Info",
         "advancedSectionTitle": "Advanced",
-        "darkThemeLabel": "Dark Mode",
-        "darkThemeHint": "Welcome to the Dark Side",
+        "darkThemeLabel": "Dark mode",
+        "darkThemeHint": "Welcome to the dark side",
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Enjoy an experience closer to your device",
         "languageLabel": "Language",
@@ -111,13 +111,13 @@
         "frenchOption": "French",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
-        "orgPatchesLabel" : "Patches Org",
-        "sourcesPatchesLabel" : "Patches Source",
-        "orgIntegrationsLabel": "Integrations Org",
-        "sourcesIntegrationsLabel": "Integrations Source",
+        "orgPatchesLabel" : "Patches organization",
+        "sourcesPatchesLabel" : "Patches source",
+        "orgIntegrationsLabel": "Integrations organization",
+        "sourcesIntegrationsLabel": "Integrations source",
         "sourcesResetDialogTitle": "Reset",
         "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
-        "apiURLResetDialogText": "Are you sure you want to reset API URL to their default values?",
+        "apiURLResetDialogText": "Are you sure you want to reset API URL to its default value?",
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
         "logsLabel": "Logs",
