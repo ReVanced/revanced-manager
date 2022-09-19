@@ -66,7 +66,7 @@ class AppInfoView extends StatelessWidget {
                       child: CustomCard(
                         padding: EdgeInsets.zero,
                         child: SizedBox(
-                          height: 80.0,
+                          height: 94.0,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
