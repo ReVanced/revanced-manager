@@ -3,8 +3,8 @@
     "cancelButton": "বাদ দিন",
     "enabledLabel": "সক্রিয়",
     "disabledLabel": "নিষ্ক্রিয়",
-    "yesLabel": "হ্যাঁ",
-    "noLabel": "না",
+    "yesButton": "হ্যাঁ",
+    "noButton": "না",
     "navigationView": {
         "dashboardTab": "ড্যাশবোর্ড",
         "patcherTab": "প্যাচার",
