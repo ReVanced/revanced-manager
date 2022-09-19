@@ -17,7 +17,7 @@ class SettingsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.only(top: 16.0, bottom: 10.0),
+          padding: const EdgeInsets.only(top: 16.0, bottom: 10.0, left: 20.0),
           child: I18nText(
             title,
             child: Text(

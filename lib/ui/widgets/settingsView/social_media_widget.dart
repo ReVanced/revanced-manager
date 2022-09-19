@@ -2,11 +2,16 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/social_media_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SocialMediaWidget extends StatelessWidget {
-  const SocialMediaWidget({Key? key}) : super(key: key);
+  final EdgeInsetsGeometry? padding;
+
+  const SocialMediaWidget({
+    Key? key,
+    this.padding,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +19,13 @@ class SocialMediaWidget extends StatelessWidget {
       theme: ExpandableThemeData(
         hasIcon: true,
         iconColor: Theme.of(context).iconTheme.color,
-        iconPadding: const EdgeInsets.symmetric(vertical: 16.0),
+        iconPadding: const EdgeInsets.symmetric(vertical: 16.0)
+            .add(padding ?? EdgeInsets.zero)
+            .resolve(Directionality.of(context)),
         animationDuration: const Duration(milliseconds: 400),
       ),
       header: ListTile(
-        contentPadding: EdgeInsets.zero,
+        contentPadding: padding ?? EdgeInsets.zero,
         title: I18nText(
           'socialMediaCard.widgetTitle',
           child: const Text(
@@ -31,169 +38,52 @@ class SocialMediaWidget extends StatelessWidget {
         ),
         subtitle: I18nText('socialMediaCard.widgetSubtitle'),
       ),
-      expanded: CustomCard(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FaIcon(
-                  FontAwesomeIcons.github,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+      expanded: Padding(
+        padding: padding ?? EdgeInsets.zero,
+        child: CustomCard(
+          child: Column(
+            children: const <Widget>[
+              SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.github),
+                title: Text('GitHub'),
+                subtitle: Text('github.com/revanced'),
+                url: 'https://github.com/revanced',
               ),
-              title: Text(
-                'GitHub',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.discord),
+                title: Text('Discord'),
+                subtitle: Text('discord.gg/revanced'),
+                url: 'https://discord.gg/rF2YcEjcrT',
               ),
-              subtitle: Text(
-                'github.com/revanced',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.telegram),
+                title: Text('Telegram'),
+                subtitle: Text('t.me/app_revanced'),
+                url: 'https://t.me/app_revanced',
               ),
-              onTap: () => launchUrl(
-                Uri.parse('https://github.com/revanced'),
-                mode: LaunchMode.externalApplication,
+              SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.reddit),
+                title: Text('Reddit'),
+                subtitle: Text('r/revancedapp'),
+                url: 'https://reddit.com/r/revancedapp',
               ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0).copyWith(left: 5),
-                child: FaIcon(
-                  FontAwesomeIcons.discord,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.twitter),
+                title: Text('Twitter'),
+                subtitle: Text('@revancedapp'),
+                url: 'https://twitter.com/revancedapp',
               ),
-              title: Text(
-                'Discord',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+              SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.youtube),
+                title: Text('YouTube'),
+                subtitle: Text('youtube.com/revanced'),
+                url: 'https://youtube.com/revanced',
               ),
-              subtitle: Text(
-                'discord.gg/revanced',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () => launchUrl(
-                Uri.parse('https://discord.gg/rF2YcEjcrT'),
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FaIcon(
-                  FontAwesomeIcons.telegram,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              title: Text(
-                'Telegram',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              subtitle: Text(
-                't.me/app_revanced',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () => launchUrl(
-                Uri.parse('https://t.me/app_revanced'),
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FaIcon(
-                  FontAwesomeIcons.reddit,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              title: Text(
-                'Reddit',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              subtitle: Text(
-                'r/revancedapp',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () => launchUrl(
-                Uri.parse('https://reddit.com/r/revancedapp'),
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FaIcon(
-                  FontAwesomeIcons.twitter,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              title: Text(
-                'Twitter',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              subtitle: Text(
-                '@revancedapp',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () => launchUrl(
-                Uri.parse('https://twitter.com/revancedapp'),
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FaIcon(
-                  FontAwesomeIcons.youtube,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              title: Text(
-                'YouTube',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              subtitle: Text(
-                'youtube.com/revanced',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () => launchUrl(
-                Uri.parse('https://youtube.com/revanced'),
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-      collapsed: Container(),
+      collapsed: const SizedBox(),
     );
   }
 }
