@@ -1,10 +1,10 @@
-{
+ {
     "okButton": "確定",
     "cancelButton": "取消",
     "enabledLabel": "已啟用",
     "disabledLabel": "已停用",
-    "yesLabel": "是",
-    "noLabel": "否",
+    "yesButton": "是",
+    "noButton": "否",
     "navigationView": {
         "dashboardTab": "儀表板",
         "patcherTab": "修補工具",
@@ -89,7 +89,11 @@
         "notificationTitle": "ReVanced Manager 正在修補",
         "notificationText": "輕觸以返回安裝程式",
         "shareApkMenuOption": "分享 APK",
-        "shareLogMenuOption": "分享記錄檔"
+        "shareLogMenuOption": "分享記錄檔",
+        "installErrorDialogTitle": "錯誤",
+        "installErrorDialogText1": "目前選取的修補檔無法以 Root 安裝\n請選取無 Root 模式安裝或重新修補應用程式。",
+        "installErrorDialogText2": "目前選取的修補檔無法以無 Root 安裝。\n如您的裝置已 Root，請選取 Root 模式安裝或重新修補應用程式。",
+        "installErrorDialogText3": "從存儲空間中選取的原始 APK 無法以 Root 安裝。\n請選取非 Root 模式安裝或重新修補應用程式。"
     },
     "settingsView": {
         "widgetTitle": "設定",
@@ -97,6 +101,7 @@
         "patcherSectionTitle": "修補工具",
         "teamSectionTitle": "團隊",
         "infoSectionTitle": "資訊",
+        "advancedSectionTitle": "進階",
         "darkThemeLabel": "深色模式",
         "darkThemeHint": "歡迎到來暗黑世界",
         "dynamicThemeLabel": "Material You",
@@ -112,10 +117,14 @@
         "sourcesIntegrationsLabel": "整合資源",
         "sourcesResetDialogTitle": "重設",
         "sourcesResetDialogText": "確定要重設自訂資源至預設值嗎？",
+        "apiURLResetDialogText": "確定要重設自訂 API URL 至預設值嗎？",
         "contributorsLabel": "貢獻者",
         "contributorsHint": "ReVanced 貢獻者列表",
         "logsLabel": "記錄檔",
         "logsHint": "分享裝置偵錯記錄檔",
+        "apiURLLabel": "API URL",
+        "apiURLHint": "配置自訂 API URL",
+        "selectApiURL": "選取 URL",
         "aboutLabel": "關於",
         "snackbarMessage": "已複製到剪貼簿"
     },
@@ -125,9 +134,6 @@
         "uninstallButton": "解除安裝",
         "patchButton": "修補",
         "unpatchButton": "取消修補",
-        "uninstallDialogTitle": "解除安裝",
-        "uninstallDialogText": "確定要解除安裝此應用程式嗎？",
-        "unpatchDialogTitle": "取消修補",
         "unpatchDialogText": "確定要取消修補此應用程式嗎？",
         "rootDialogTitle": "錯誤",
         "rootDialogText": "此應用程式是以 root 模式安裝，然而目前已停用 root 模式。\n請先啟用 root 模式再行操作。",
