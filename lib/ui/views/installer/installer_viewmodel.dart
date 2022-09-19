@@ -33,7 +33,7 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> initialize(BuildContext context) async {
     if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
-        await FlutterBackground.initialize(
+        FlutterBackground.initialize(
           androidConfig: FlutterBackgroundAndroidConfig(
             notificationTitle: FlutterI18n.translate(
               context,
@@ -49,8 +49,7 @@ class InstallerViewModel extends BaseViewModel {
               defType: 'drawable',
             ),
           ),
-        );
-        await FlutterBackground.enableBackgroundExecution();
+        ).then((value) => FlutterBackground.enableBackgroundExecution());
       } on Exception {
         // ignore
       }
@@ -123,9 +122,9 @@ class InstallerViewModel extends BaseViewModel {
       hasErrors = true;
       update(-1.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
-    if (await Permission.ignoreBatteryOptimizations.isGranted) {
+    if (FlutterBackground.isBackgroundExecutionEnabled) {
       try {
-        await FlutterBackground.disableBackgroundExecution();
+        FlutterBackground.disableBackgroundExecution();
       } on Exception {
         // ignore
       }
