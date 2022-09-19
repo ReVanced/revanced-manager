@@ -16,4 +16,5 @@ If you wish to discuss the Manager, a thread has been made under the [#chat](htt
 
 ## Prerequisites
 1. Android 8 or higher.
-2. For YouTube and YouTube Music - Vanced MicroG(Only for non-root).
+2. Does not work on armv7
+3. For YouTube and YouTube Music - Vanced MicroG(Only for non-root).
