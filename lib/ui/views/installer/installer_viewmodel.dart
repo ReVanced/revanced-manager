@@ -10,6 +10,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -133,28 +134,56 @@ class InstallerViewModel extends BaseViewModel {
     isPatching = false;
   }
 
-  void installResult(bool installAsRoot) async {
+  void installResult(BuildContext context, bool installAsRoot) async {
     _app.isRooted = installAsRoot;
-    update(
-      1.0,
-      'Installing...',
-      _app.isRooted
-          ? 'Installing patched file using root method'
-          : 'Installing patched file using nonroot method',
-    );
-    isInstalled = await _patcherAPI.installPatchedFile(_app);
-    if (isInstalled) {
-      update(1.0, 'Installed!', 'Installed!');
-      _app.patchDate = DateTime.now();
-      _app.appliedPatches = _patches.map((p) => p.name).toList();
-      bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
-      if (hasMicroG) {
-        _app.packageName = _app.packageName.replaceFirst(
-          'com.google.',
-          'app.revanced.',
-        );
+    bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
+    bool rootMicroG = installAsRoot && hasMicroG;
+    bool rootFromStorage = installAsRoot && _app.isFromStorage;
+    bool ytWithoutRootMicroG =
+        !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
+    if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('installerView.installErrorDialogTitle'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText(
+            rootMicroG
+                ? 'installerView.installErrorDialogText1'
+                : rootFromStorage
+                    ? 'installerView.installErrorDialogText3'
+                    : 'installerView.installErrorDialogText2',
+          ),
+          actions: <Widget>[
+            CustomMaterialButton(
+              label: I18nText('okButton'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
+    } else {
+      update(
+        1.0,
+        'Installing...',
+        _app.isRooted
+            ? 'Installing patched file using root method'
+            : 'Installing patched file using nonroot method',
+      );
+      isInstalled = await _patcherAPI.installPatchedFile(_app);
+      if (isInstalled) {
+        update(1.0, 'Installed!', 'Installed!');
+        _app.isFromStorage = false;
+        _app.patchDate = DateTime.now();
+        _app.appliedPatches = _patches.map((p) => p.name).toList();
+        if (hasMicroG) {
+          _app.packageName = _app.packageName.replaceFirst(
+            'com.google.',
+            'app.revanced.',
+          );
+        }
+        await _managerAPI.savePatchedApp(_app);
       }
-      await _managerAPI.savePatchedApp(_app);
     }
   }
 
