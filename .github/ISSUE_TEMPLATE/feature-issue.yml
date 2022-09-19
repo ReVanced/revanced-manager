@@ -12,10 +12,12 @@ body:
         - Other
     validations:
       required: true
-  - type: textarea
+  - type: dropdown
     attributes:
-      label: Branch
-      description: Which github branch did you use (Flutter or Compose)?
+      label: Manager Branch
+      options:
+        - Flutter
+        - Compose
     validations:
       required: true
   - type: textarea
