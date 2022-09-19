@@ -66,9 +66,9 @@ class AppInfoView extends StatelessWidget {
                       child: CustomCard(
                         padding: EdgeInsets.zero,
                         child: SizedBox(
-                          height: 94.0,
+                          height: 80.0,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Expanded(
                                 child: Material(
@@ -104,55 +104,57 @@ class AppInfoView extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              VerticalDivider(
-                                color: Theme.of(context).canvasColor,
-                                width: 1,
-                                indent: 12.0,
-                                endIndent: 12.0,
-                              ),
-                              Expanded(
-                                child: Material(
-                                  type: MaterialType.transparency,
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => model.showUninstallAlertDialog(
-                                      context,
-                                      app,
-                                      false,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.delete_outline,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        I18nText(
-                                          'appInfoView.uninstallButton',
-                                          child: Text(
-                                            '',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              fontWeight: FontWeight.bold,
+                              if (app.isRooted)
+                                VerticalDivider(
+                                  color: Theme.of(context).canvasColor,
+                                  indent: 12.0,
+                                  endIndent: 12.0,
+                                  width: 1.0,
+                                ),
+                              if (app.isRooted)
+                                Expanded(
+                                  child: Material(
+                                    type: MaterialType.transparency,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      onTap: () => model.showUninstallDialog(
+                                        context,
+                                        app,
+                                        false,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.delete_outline,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          I18nText(
+                                            'appInfoView.uninstallButton',
+                                            child: Text(
+                                              '',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
                               VerticalDivider(
                                 color: Theme.of(context).canvasColor,
-                                width: 1,
                                 indent: 12.0,
                                 endIndent: 12.0,
+                                width: 1.0,
                               ),
                               Expanded(
                                 child: Material(
