@@ -50,7 +50,7 @@
         "widgetTitle": "এ্যাপ্লিকেশন নির্বাচন করুন",
         "widgetTitleSelected": "নির্বাচিত এ্যাপ্লিকেশন",
         "widgetSubtitle": "কোন এ্যাপ্লিকেশন নির্বাচিত হয়নি",
-        "noAppsLabel": "কোন এ্যাপ্লিকেশন পাওয়া যায়ন",
+        "noAppsLabel": "কোন এ্যাপ্লিকেশন পাওয়া যায়নি",
         "currentVersion": "বর্তমান",
         "recommendedVersion": "প্রস্তাবিত",
         "anyVersion": "যেকোন"
@@ -115,7 +115,7 @@
         "orgPatchesLabel" : "প্যাচ অর্গ",
         "sourcesPatchesLabel" : "প্যাচ সোর্স",
         "orgIntegrationsLabel": "ইনট্রিগেশন অর্গ",
-        "sourcesIntegrationsLabel": "ইনট্রিগেশন অর্গ",
+        "sourcesIntegrationsLabel": "ইনট্রিগেশন সোর্স",
         "sourcesResetDialogTitle": "রিসেট",
         "sourcesResetDialogText": "আপনি কি কাস্টম-রিসোর্সকে তার ডিফল্ট ভ্যালুতে ফিরিয়ে নিতে নিশ্চিত?",
         "apiURLResetDialogText": "আপনি কি এপিআই রিসোর্স এর ডিফল্ট ভ্যালু রিসেট করতে নিশ্চিত?",
@@ -151,7 +151,7 @@
         "widgetTitle": "অবদানকারী",
         "patcherContributors": "প্যাচার-এ অবদান যাদের",
         "patchesContributors": "প্যাচসমূহে অবদান যাদের",
-        "integrationsContributors": "ইনটিগ্রেশনস-এ অবদান যাবদের",
+        "integrationsContributors": "ইনটিগ্রেশনস-এ অবদান যাদের",
         "cliContributors": "সিএলআই-এ অবদান যাদের",
         "managerContributors": "ম্যানেজার-এ অবদান যাদের"
     }
