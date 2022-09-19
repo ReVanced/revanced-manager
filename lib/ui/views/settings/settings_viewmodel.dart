@@ -56,12 +56,6 @@ class SettingsViewModel extends BaseViewModel {
     } else {
       await DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
     }
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
-      ),
-    );
     notifyListeners();
   }
 
@@ -79,8 +73,6 @@ class SettingsViewModel extends BaseViewModel {
     }
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            DynamicTheme.of(context)!.theme.colorScheme.surface,
         systemNavigationBarIconBrightness:
             value ? Brightness.light : Brightness.dark,
       ),
@@ -278,11 +270,11 @@ class SettingsViewModel extends BaseViewModel {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: I18nText('noButton'),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: I18nText('yesButton'),
             onPressed: () {
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
@@ -305,11 +297,11 @@ class SettingsViewModel extends BaseViewModel {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: I18nText('noButton'),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: I18nText('yesButton'),
             onPressed: () {
               _managerAPI.setApiUrl('');
               Navigator.of(context).pop();

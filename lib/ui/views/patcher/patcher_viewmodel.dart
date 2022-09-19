@@ -64,11 +64,11 @@ class PatcherViewModel extends BaseViewModel {
           actions: <Widget>[
             CustomMaterialButton(
               isFilled: false,
-              label: I18nText('cancelButton'),
+              label: I18nText('noButton'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             CustomMaterialButton(
-              label: I18nText('okButton'),
+              label: I18nText('yesButton'),
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();

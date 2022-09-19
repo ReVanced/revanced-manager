@@ -15,9 +15,10 @@ Future main() async {
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await locator<ManagerAPI>().initialize();
-  await locator<PatcherAPI>().initialize();
-  locator<RevancedAPI>().initialize();
+  String apiUrl = locator<ManagerAPI>().getApiUrl();
+  await locator<RevancedAPI>().initialize(apiUrl);
   locator<GithubAPI>().initialize();
+  await locator<PatcherAPI>().initialize();
   runApp(const MyApp());
 }
 

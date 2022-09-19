@@ -54,6 +54,7 @@ class AppSelectorViewModel extends BaseViewModel {
             apkFilePath: result.files.single.path!,
             icon: application.icon,
             patchDate: DateTime.now(),
+            isFromStorage: true,
           );
           locator<PatcherViewModel>().selectedPatches.clear();
           locator<PatcherViewModel>().notifyListeners();
