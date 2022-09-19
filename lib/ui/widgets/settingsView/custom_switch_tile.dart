@@ -6,6 +6,7 @@ class CustomSwitchTile extends StatelessWidget {
   final Widget subtitle;
   final bool value;
   final Function(bool) onTap;
+  final EdgeInsetsGeometry? padding;
 
   const CustomSwitchTile({
     Key? key,
@@ -13,14 +14,16 @@ class CustomSwitchTile extends StatelessWidget {
     required this.subtitle,
     required this.value,
     required this.onTap,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: padding ?? EdgeInsets.zero,
       title: title,
       subtitle: subtitle,
+      onTap: () => onTap(!value),
       trailing: CustomSwitch(
         value: value,
         onChanged: onTap,
