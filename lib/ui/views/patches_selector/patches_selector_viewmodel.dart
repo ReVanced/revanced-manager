@@ -17,13 +17,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp!.packageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
-    if (selectedPatches.isEmpty) {
-      for (Patch patch in patches) {
-        if (!patch.excluded && isPatchSupported(patch)) {
-          selectedPatches.add(patch);
-        }
-      }
-    }
     notifyListeners();
   }
 
