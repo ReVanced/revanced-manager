@@ -28,6 +28,7 @@ class HomeView extends StatelessWidget {
           child: CustomScrollView(
             slivers: <Widget>[
               CustomSliverAppBar(
+                isMainView: true,
                 title: I18nText(
                   'homeView.widgetTitle',
                   child: Text(

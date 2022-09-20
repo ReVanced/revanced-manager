@@ -29,6 +29,7 @@ class InstallerView extends StatelessWidget {
                     color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
+                onBackButtonPressed: () => model.onWillPop(context),
                 actions: <Widget>[
                   Visibility(
                     visible: !model.isPatching && !model.hasErrors,
@@ -111,7 +112,10 @@ class InstallerView extends StatelessWidget {
                               label:
                                   I18nText('installerView.installRootButton'),
                               isExpanded: true,
-                              onPressed: () => model.installResult(true),
+                              onPressed: () => model.installResult(
+                                context,
+                                true,
+                              ),
                             ),
                           ),
                           Visibility(
@@ -125,7 +129,10 @@ class InstallerView extends StatelessWidget {
                             child: CustomMaterialButton(
                               label: I18nText('installerView.installButton'),
                               isExpanded: true,
-                              onPressed: () => model.installResult(false),
+                              onPressed: () => model.installResult(
+                                context,
+                                false,
+                              ),
                             ),
                           ),
                         ],
@@ -137,13 +144,7 @@ class InstallerView extends StatelessWidget {
             ],
           ),
         ),
-        onWillPop: () async {
-          if (!model.isPatching) {
-            model.cleanPatcher();
-            Navigator.of(context).pop();
-          }
-          return false;
-        },
+        onWillPop: () => model.onWillPop(context),
       ),
     );
   }

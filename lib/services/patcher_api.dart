@@ -53,9 +53,10 @@ class PatcherAPI {
       for (Package package in patch.compatiblePackages) {
         try {
           if (!filteredApps.any((app) => app.packageName == package.name)) {
-            ApplicationWithIcon? app =
-                await DeviceApps.getApp(package.name, true)
-                    as ApplicationWithIcon?;
+            ApplicationWithIcon? app = await DeviceApps.getApp(
+              package.name,
+              true,
+            ) as ApplicationWithIcon?;
             if (app != null) {
               filteredApps.add(app);
             }
@@ -199,10 +200,9 @@ class PatcherAPI {
       String prefix = appName.toLowerCase().replaceAll(' ', '-');
       String newName = '$prefix-revanced_v$version.apk';
       int lastSeparator = _outFile!.path.lastIndexOf('/');
-      File share = _outFile!.renameSync(
-        _outFile!.path.substring(0, lastSeparator + 1) + newName,
-      );
-      ShareExtend.share(share.path, 'file');
+      String newPath = _outFile!.path.substring(0, lastSeparator + 1) + newName;
+      File shareFile = _outFile!.copySync(newPath);
+      ShareExtend.share(shareFile.path, 'file');
     }
   }
 

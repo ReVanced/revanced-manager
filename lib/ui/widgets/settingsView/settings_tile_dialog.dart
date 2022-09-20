@@ -5,18 +5,20 @@ class SettingsTileDialog extends StatelessWidget {
   final String title;
   final String subtitle;
   final Function()? onTap;
+  final EdgeInsetsGeometry? padding;
 
   const SettingsTileDialog({
     Key? key,
     required this.title,
     required this.subtitle,
     required this.onTap,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: padding ?? EdgeInsets.zero,
       title: I18nText(
         title,
         child: const Text(

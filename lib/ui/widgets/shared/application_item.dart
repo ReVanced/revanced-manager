@@ -60,67 +60,68 @@ class _ApplicationItemState extends State<ApplicationItem>
         hasIcon: false,
         animationDuration: Duration(milliseconds: 450),
       ),
-      header: CustomCard(
-        child: Row(
-          children: <Widget>[
-            SizedBox(
-              width: 40,
-              child: Image.memory(widget.icon, height: 40, width: 40),
-            ),
-            const SizedBox(width: 4),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    widget.name.length > 9
-                        ? '${widget.name.substring(0, 9)}...'
-                        : widget.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(format(widget.patchDate)),
-                ],
+      header: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: CustomCard(
+          onTap: () {
+            expController.toggle();
+            _animationController.isCompleted
+                ? _animationController.reverse()
+                : _animationController.forward();
+          },
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 40,
+                child: Image.memory(widget.icon, height: 40, width: 40),
               ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: RotationTransition(
+              const SizedBox(width: 4),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.name.length > 9
+                          ? '${widget.name.substring(0, 9)}...'
+                          : widget.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(format(widget.patchDate)),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              RotationTransition(
                 turns:
                     Tween(begin: 0.0, end: 0.50).animate(_animationController),
-                child: IconButton(
-                  onPressed: () {
-                    expController.toggle();
-                    _animationController.isCompleted
-                        ? _animationController.reverse()
-                        : _animationController.forward();
-                  },
-                  icon: const Icon(Icons.arrow_drop_down),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.arrow_drop_down),
                 ),
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                CustomMaterialButton(
-                  label: widget.isUpdatableApp
-                      ? I18nText('applicationItem.patchButton')
-                      : I18nText('applicationItem.infoButton'),
-                  onPressed: widget.onPressed,
-                ),
-              ],
-            ),
-          ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  CustomMaterialButton(
+                    label: widget.isUpdatableApp
+                        ? I18nText('applicationItem.patchButton')
+                        : I18nText('applicationItem.infoButton'),
+                    onPressed: widget.onPressed,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      collapsed: const Text(''),
+      collapsed: const SizedBox(),
       expanded: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        padding: const EdgeInsets.all(16.0).copyWith(top: 0.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

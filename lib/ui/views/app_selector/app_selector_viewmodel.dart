@@ -2,16 +2,16 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final Toast _toast = locator<Toast>();
   final List<ApplicationWithIcon> apps = [];
   bool noApps = false;
 
@@ -43,9 +43,10 @@ class AppSelectorViewModel extends BaseViewModel {
       );
       if (result != null && result.files.single.path != null) {
         File apkFile = File(result.files.single.path!);
-        ApplicationWithIcon? application =
-            await DeviceApps.getAppFromStorage(apkFile.path, true)
-                as ApplicationWithIcon?;
+        ApplicationWithIcon? application = await DeviceApps.getAppFromStorage(
+          apkFile.path,
+          true,
+        ) as ApplicationWithIcon?;
         if (application != null) {
           locator<PatcherViewModel>().selectedApp = PatchedApplication(
             name: application.appName,
@@ -54,20 +55,14 @@ class AppSelectorViewModel extends BaseViewModel {
             apkFilePath: result.files.single.path!,
             icon: application.icon,
             patchDate: DateTime.now(),
+            isFromStorage: true,
           );
           locator<PatcherViewModel>().selectedPatches.clear();
           locator<PatcherViewModel>().notifyListeners();
         }
       }
     } on Exception {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'appSelectorView.errorMessage',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      _toast.show('appSelectorView.errorMessage');
     }
   }
 

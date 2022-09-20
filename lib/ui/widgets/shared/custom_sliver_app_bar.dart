@@ -4,12 +4,16 @@ class CustomSliverAppBar extends StatelessWidget {
   final Widget title;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
+  final bool isMainView;
+  final Function()? onBackButtonPressed;
 
   const CustomSliverAppBar({
     Key? key,
     required this.title,
     this.actions,
     this.bottom,
+    this.isMainView = false,
+    this.onBackButtonPressed,
   }) : super(key: key);
 
   @override
@@ -19,15 +23,28 @@ class CustomSliverAppBar extends StatelessWidget {
       snap: false,
       floating: false,
       expandedHeight: 100.0,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: !isMainView,
+      flexibleSpace: FlexibleSpaceBar(
+        titlePadding: EdgeInsets.only(
+          bottom: bottom != null ? 16.0 : 14.0,
+          left: isMainView ? 20.0 : 55.0,
+        ),
+        title: title,
+      ),
+      leading: isMainView
+          ? null
+          : IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).textTheme.headline6!.color,
+              ),
+              onPressed:
+                  onBackButtonPressed ?? () => Navigator.of(context).pop(),
+            ),
       backgroundColor: MaterialStateColor.resolveWith(
         (states) => states.contains(MaterialState.scrolledUnder)
             ? Theme.of(context).colorScheme.surface
             : Theme.of(context).canvasColor,
-      ),
-      flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(bottom: 16.0, left: 20.0),
-        title: title,
       ),
       actions: actions,
       bottom: bottom,

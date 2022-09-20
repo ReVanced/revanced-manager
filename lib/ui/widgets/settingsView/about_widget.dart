@@ -4,7 +4,9 @@ import 'package:revanced_manager/utils/about_info.dart';
 import 'package:flutter/services.dart';
 
 class AboutWidget extends StatefulWidget {
-  const AboutWidget({Key? key}) : super(key: key);
+  const AboutWidget({Key? key, this.padding}) : super(key: key);
+
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<AboutWidget> createState() => _AboutWidgetState();
@@ -13,28 +15,15 @@ class AboutWidget extends StatefulWidget {
 class _AboutWidgetState extends State<AboutWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          I18nText(
-            'settingsView.aboutLabel',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          FutureBuilder<Map<String, dynamic>>(
-            future: AboutInfo.getInfo(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return GestureDetector(
-                  onLongPress: () {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: AboutInfo.getInfo(),
+      builder: (context, snapshot) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ListTile(
+            contentPadding: widget.padding ?? EdgeInsets.zero,
+            onLongPress: snapshot.hasData
+                ? () {
                     Clipboard.setData(
                       ClipboardData(
                         text: 'Version: ${snapshot.data!['version']}\n'
@@ -50,8 +39,20 @@ class _AboutWidgetState extends State<AboutWidget> {
                             Theme.of(context).colorScheme.secondary,
                       ),
                     );
-                  },
-                  child: Column(
+                  }
+                : null,
+            title: I18nText(
+              'settingsView.aboutLabel',
+              child: const Text(
+                '',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            subtitle: snapshot.hasData
+                ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
@@ -90,15 +91,11 @@ class _AboutWidgetState extends State<AboutWidget> {
                         ),
                       ),
                     ],
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
+                  )
+                : const SizedBox(),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

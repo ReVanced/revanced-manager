@@ -13,6 +13,9 @@ import 'package:stacked/stacked.dart';
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
+  static const _settingsDivider =
+      Divider(thickness: 1.0, indent: 20.0, endIndent: 20.0);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
@@ -21,6 +24,7 @@ class SettingsView extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             CustomSliverAppBar(
+              isMainView: true,
               title: I18nText(
                 'settingsView.widgetTitle',
                 child: Text(
@@ -31,133 +35,135 @@ class SettingsView extends StatelessWidget {
                 ),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.all(20.0),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate.fixed(
-                  <Widget>[
-                    SettingsSection(
-                      title: 'settingsView.appearanceSectionTitle',
-                      children: <Widget>[
-                        CustomSwitchTile(
-                          title: I18nText(
-                            'settingsView.darkThemeLabel',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
+            SliverList(
+              delegate: SliverChildListDelegate.fixed(
+                <Widget>[
+                  SettingsSection(
+                    title: 'settingsView.appearanceSectionTitle',
+                    children: <Widget>[
+                      CustomSwitchTile(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.darkThemeLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          subtitle: I18nText('settingsView.darkThemeHint'),
-                          value: model.getDarkThemeStatus(),
-                          onTap: (value) => model.setUseDarkTheme(
-                            context,
-                            value,
-                          ),
                         ),
-                        FutureBuilder<int>(
-                          future: model.getSdkVersion(),
-                          builder: (context, snapshot) => Visibility(
-                            visible: snapshot.hasData &&
-                                snapshot.data! >= ANDROID_12_SDK_VERSION,
-                            child: CustomSwitchTile(
-                              title: I18nText(
-                                'settingsView.dynamicThemeLabel',
-                                child: const Text(
-                                  '',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                        subtitle: I18nText('settingsView.darkThemeHint'),
+                        value: model.getDarkThemeStatus(),
+                        onTap: (value) => model.setUseDarkTheme(
+                          context,
+                          value,
+                        ),
+                      ),
+                      FutureBuilder<int>(
+                        future: model.getSdkVersion(),
+                        builder: (context, snapshot) => Visibility(
+                          visible: snapshot.hasData &&
+                              snapshot.data! >= ANDROID_12_SDK_VERSION,
+                          child: CustomSwitchTile(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            title: I18nText(
+                              'settingsView.dynamicThemeLabel',
+                              child: const Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              subtitle:
-                                  I18nText('settingsView.dynamicThemeHint'),
-                              value: model.getDynamicThemeStatus(),
-                              onTap: (value) => model.setUseDynamicTheme(
-                                context,
-                                value,
-                              ),
+                            ),
+                            subtitle: I18nText('settingsView.dynamicThemeHint'),
+                            value: model.getDynamicThemeStatus(),
+                            onTap: (value) => model.setUseDynamicTheme(
+                              context,
+                              value,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    SettingsTileDialog(
-                      title: 'settingsView.languageLabel',
-                      subtitle: 'English',
-                      onTap: () => model.showLanguagesDialog(context),
-                    ),
-                    const Divider(thickness: 1.0),
-                    SettingsSection(
-                      title: 'settingsView.patcherSectionTitle',
-                      children: <Widget>[
-                        SettingsTileDialog(
-                          title: 'settingsView.sourcesLabel',
-                          subtitle: 'settingsView.sourcesLabelHint',
-                          onTap: () => model.showSourcesDialog(context),
-                        ),
-                      ],
-                    ),
-                    const Divider(thickness: 1.0),
-                    SettingsSection(
-                      title: 'settingsView.teamSectionTitle',
-                      children: <Widget>[
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: I18nText(
-                            'settingsView.contributorsLabel',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
+                      ),
+                    ],
+                  ),
+                  SettingsTileDialog(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    title: 'settingsView.languageLabel',
+                    subtitle: 'English',
+                    onTap: () => model.showLanguagesDialog(context),
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
+                    title: 'settingsView.teamSectionTitle',
+                    children: <Widget>[
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.contributorsLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          subtitle: I18nText('settingsView.contributorsHint'),
-                          onTap: () => model.navigateToContributors(),
                         ),
-                        const SocialMediaWidget(),
-                      ],
-                    ),
-                    const Divider(thickness: 1.0),
-                    SettingsSection(
-                      title: 'settingsView.infoSectionTitle',
-                      children: <Widget>[
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: I18nText(
-                            'settingsView.logsLabel',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
+                        subtitle: I18nText('settingsView.contributorsHint'),
+                        onTap: () => model.navigateToContributors(),
+                      ),
+                      const SocialMediaWidget(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
+                    title: 'settingsView.advancedSectionTitle',
+                    children: <Widget>[
+                      SettingsTileDialog(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: 'settingsView.apiURLLabel',
+                        subtitle: 'settingsView.apiURLHint',
+                        onTap: () => model.showApiUrlDialog(context),
+                      ),
+                      SettingsTileDialog(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: 'settingsView.sourcesLabel',
+                        subtitle: 'settingsView.sourcesLabelHint',
+                        onTap: () => model.showSourcesDialog(context),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
+                    title: 'settingsView.infoSectionTitle',
+                    children: <Widget>[
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.logsLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          subtitle: I18nText('settingsView.logsHint'),
-                          onTap: () => model.exportLogcatLogs(),
                         ),
-                        const AboutWidget(),
-                      ],
-                    ),
-                    const Divider(thickness: 1.0),
-                    SettingsSection(
-                      title: 'settingsView.advancedSectionTitle',
-                      children: <Widget>[
-                        SettingsTileDialog(
-                          title: 'settingsView.apiURLLabel',
-                          subtitle: 'settingsView.apiURLHint',
-                          onTap: () => model.showApiUrlDialog(context),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                        subtitle: I18nText('settingsView.logsHint'),
+                        onTap: () => model.exportLogcatLogs(),
+                      ),
+                      const AboutWidget(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

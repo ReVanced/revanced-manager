@@ -38,6 +38,8 @@ class ManagerAPI {
     if (url.isEmpty || url == ' ') {
       url = defaultApiUrl;
     }
+    await _revancedAPI.initialize(url);
+    await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
   }
 
@@ -95,8 +97,10 @@ class ManagerAPI {
   Future<void> savePatchedApp(PatchedApplication app) async {
     List<PatchedApplication> patchedApps = getPatchedApps();
     patchedApps.removeWhere((a) => a.packageName == app.packageName);
-    ApplicationWithIcon? installed =
-        await DeviceApps.getApp(app.packageName, true) as ApplicationWithIcon?;
+    ApplicationWithIcon? installed = await DeviceApps.getApp(
+      app.packageName,
+      true,
+    ) as ApplicationWithIcon?;
     if (installed != null) {
       app.name = installed.appName;
       app.version = installed.versionName!;
@@ -118,15 +122,13 @@ class ManagerAPI {
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
-    String apiUrl = getApiUrl();
-    return await _revancedAPI.getContributors(apiUrl);
+    return await _revancedAPI.getContributors();
   }
 
   Future<List<Patch>> getPatches() async {
     String repoName = getPatchesRepo();
     if (repoName == defaultPatchesRepo) {
-      String apiUrl = getApiUrl();
-      return await _revancedAPI.getPatches(apiUrl);
+      return await _revancedAPI.getPatches();
     } else {
       return await _githubAPI.getPatches(repoName);
     }
@@ -135,9 +137,7 @@ class ManagerAPI {
   Future<File?> downloadPatches() async {
     String repoName = getPatchesRepo();
     if (repoName == defaultPatchesRepo) {
-      String apiUrl = getApiUrl();
       return await _revancedAPI.getLatestReleaseFile(
-        apiUrl,
         '.jar',
         defaultPatchesRepo,
       );
@@ -149,9 +149,7 @@ class ManagerAPI {
   Future<File?> downloadIntegrations() async {
     String repoName = getIntegrationsRepo();
     if (repoName == defaultIntegrationsRepo) {
-      String apiUrl = getApiUrl();
       return await _revancedAPI.getLatestReleaseFile(
-        apiUrl,
         '.apk',
         defaultIntegrationsRepo,
       );
@@ -161,36 +159,19 @@ class ManagerAPI {
   }
 
   Future<File?> downloadManager() async {
-    String apiUrl = getApiUrl();
-    return await _revancedAPI.getLatestReleaseFile(
-      apiUrl,
-      '.apk',
-      defaultManagerRepo,
-    );
+    return await _revancedAPI.getLatestReleaseFile('.apk', defaultManagerRepo);
   }
 
   Future<String?> getLatestPatcherReleaseTime() async {
-    String apiUrl = getApiUrl();
-    return await _revancedAPI.getLatestReleaseTime(
-      apiUrl,
-      '.gz',
-      defaultPatcherRepo,
-    );
+    return await _revancedAPI.getLatestReleaseTime('.gz', defaultPatcherRepo);
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
-    String apiUrl = getApiUrl();
-    return await _revancedAPI.getLatestReleaseTime(
-      apiUrl,
-      '.apk',
-      defaultManagerRepo,
-    );
+    return await _revancedAPI.getLatestReleaseTime('.apk', defaultManagerRepo);
   }
 
   Future<String?> getLatestManagerVersion() async {
-    String apiUrl = getApiUrl();
     return await _revancedAPI.getLatestReleaseVersion(
-      apiUrl,
       '.apk',
       defaultManagerRepo,
     );
@@ -223,9 +204,10 @@ class ManagerAPI {
       List<String> installedApps = await _rootAPI.getInstalledApps();
       for (String packageName in installedApps) {
         if (!patchedApps.any((app) => app.packageName == packageName)) {
-          ApplicationWithIcon? application =
-              await DeviceApps.getApp(packageName, true)
-                  as ApplicationWithIcon?;
+          ApplicationWithIcon? application = await DeviceApps.getApp(
+            packageName,
+            true,
+          ) as ApplicationWithIcon?;
           if (application != null) {
             unsavedApps.add(
               PatchedApplication(
@@ -250,9 +232,10 @@ class ManagerAPI {
       if (app.packageName.startsWith('app.revanced') &&
           !app.packageName.startsWith('app.revanced.manager.') &&
           !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
-        ApplicationWithIcon? application =
-            await DeviceApps.getApp(app.packageName, true)
-                as ApplicationWithIcon?;
+        ApplicationWithIcon? application = await DeviceApps.getApp(
+          app.packageName,
+          true,
+        ) as ApplicationWithIcon?;
         if (application != null) {
           unsavedApps.add(
             PatchedApplication(

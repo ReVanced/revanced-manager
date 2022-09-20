@@ -6,24 +6,26 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 @lazySingleton
 class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   DateTime? _lastUpdate;
   bool showUpdatableApps = true;
@@ -38,16 +40,13 @@ class HomeViewModel extends BaseViewModel {
       onSelectNotification: (p) =>
           DeviceApps.openApp('app.revanced.manager.flutter'),
     );
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
     bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'homeView.noConnection',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      _toast.show('homeView.noConnection');
     }
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
@@ -102,69 +101,48 @@ class HomeViewModel extends BaseViewModel {
     return false;
   }
 
-  void updateManager(BuildContext context) async {
-    Fluttertoast.showToast(
-      msg: FlutterI18n.translate(
-        context,
-        'homeView.downloadingMessage',
-      ),
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-    );
-    File? managerApk = await _managerAPI.downloadManager();
-    if (managerApk != null) {
-      flutterLocalNotificationsPlugin.show(
-        0,
-        FlutterI18n.translate(
-          context,
-          'homeView.notificationTitle',
-        ),
-        FlutterI18n.translate(
-          context,
-          'homeView.notificationText',
-        ),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'revanced_manager_channel',
-            'ReVanced Manager Channel',
-          ),
-        ),
-      );
-      try {
-        Fluttertoast.showToast(
-          msg: FlutterI18n.translate(
+  Future<void> updateManager(BuildContext context) async {
+    try {
+      _toast.show('homeView.downloadingMessage');
+      File? managerApk = await _managerAPI.downloadManager();
+      if (managerApk != null) {
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          0,
+          FlutterI18n.translate(
             context,
-            'homeView.installingMessage',
+            'homeView.notificationTitle',
           ),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
+          FlutterI18n.translate(
+            context,
+            'homeView.notificationText',
+          ),
+          tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'revanced_manager_channel',
+              'ReVanced Manager Channel',
+              importance: Importance.max,
+              priority: Priority.high,
+              ticker: 'ticker',
+            ),
+          ),
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
         );
+        _toast.show('homeView.installingMessage');
         await AppInstaller.installApk(managerApk.path);
-      } on Exception {
-        Fluttertoast.showToast(
-          msg: FlutterI18n.translate(
-            context,
-            'homeView.errorInstallMessage',
-          ),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+      } else {
+        _toast.show('homeView.errorDownloadMessage');
       }
-    } else {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'homeView.errorDownloadMessage',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+    } on Exception {
+      _toast.show('homeView.errorInstallMessage');
     }
   }
 
-  Future<void> showUpdateConfirmationDialog(BuildContext context) async {
+  Future<void> showUpdateConfirmationDialog(BuildContext parentContext) async {
     return showDialog(
-      context: context,
+      context: parentContext,
       builder: (context) => AlertDialog(
         title: I18nText('homeView.updateDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -172,14 +150,14 @@ class HomeViewModel extends BaseViewModel {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: I18nText('noButton'),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: I18nText('yesButton'),
             onPressed: () {
               Navigator.of(context).pop();
-              updateManager(context);
+              updateManager(parentContext);
             },
           )
         ],
