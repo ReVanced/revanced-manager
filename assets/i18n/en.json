@@ -18,7 +18,7 @@
         "noUpdates": "No updates available",
         "noInstallations": "No patched applications installed",
         "installed": "Installed",
-        "updateDialogTitle": "Update Manager",
+        "updateDialogTitle": "Update",
         "updateDialogText": "Are you sure you want to download and update ReVanced Manager?",
         "notificationTitle": "ReVanced Manager was updated",
         "notificationText": "Tap to open the app",
@@ -38,7 +38,7 @@
         "timeagoLabel": "{time} ago",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update"
+        "updateButton": "Update Manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
