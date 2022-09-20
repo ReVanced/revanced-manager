@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Annuler",
+    "enabledLabel": "Activé",
+    "disabledLabel": "Désactivé",
+    "yesButton": "Oui",
+    "noButton": "Non",
+    "navigationView": {
+        "dashboardTab": "Tableau de bord",
+        "patcherTab": "Patcheur",
+        "settingsTab": "Réglages"
+    },
+    "homeView": {
+        "widgetTitle": "Tableau de bord",
+        "updatesSubtitle": "Mises à jour",
+        "patchedSubtitle": "Applications modifiées",
+        "updatesAvailable": "Mises à jour disponibles",
+        "noUpdates": "Aucune mise à jour n'est disponible",
+        "noInstallations": "Aucune application modifiée n’est installée",
+        "installed": "Installée",
+        "updateDialogTitle": "Mettre à jour le Manager",
+        "updateDialogText": "Êtes-vous sûr de vouloir télécharger et mettre à jour ReVanced Manager ?",
+        "notificationTitle": "ReVanced Manager a été mis à jour",
+        "notificationText": "Appuyez pour ouvrir l'application",
+        "downloadingMessage": "Téléchargement de la mise à jour...",
+        "installingMessage": "Installation de la mise à jour...",
+        "errorDownloadMessage": "Téléchargement de la mise à jour impossible",
+        "errorInstallMessage": "Installation de la mise à jour impossible",
+        "noConnection": "Aucune connexion Internet"
+    },
+    "applicationItem": {
+        "patchButton": "Correctif",
+        "infoButton": "Info",
+        "changelogLabel": "Journal des changements"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Chargement...",
+        "timeagoLabel": "Il y a {time}",
+        "patcherLabel": "Patcheur:",
+        "managerLabel": "Manager: ",
+        "updateButton": "Mettre à jour le Gestionnaire"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcheur",
+        "patchButton": "Correctif",
+        "patchDialogTitle": "Avertissement",
+        "patchDialogText": "Vous avez sélectionné un emplacement de ressource et une installation fractionnée de l'APK a été détectée. Des erreurs durant l'application des correctifs peuvent se produire. Êtes-vous sûr de vouloir continuer de modifier un APK fractionnée?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Choisissez une application",
+        "widgetTitleSelected": "Application sélectionnée",
+        "widgetSubtitle": "Aucune application n’a été sélectionnée",
+        "noAppsLabel": "Aucune application n'a été trouvée.",
+        "currentVersion": "Actuellement",
+        "recommendedVersion": "Recommandé",
+        "anyVersion": "n'importe laquelle"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Sélectionner les patchs",
+        "widgetTitleSelected": "Correctifs sélectionnés",
+        "widgetSubtitle": "Choisissez d’abord une application",
+        "widgetEmptySubtitle": "Aucun patch n’est sélectionné"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Réseaux sociaux",
+        "widgetSubtitle": "Nous sommes sur Internet!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Choisissez une application",
+        "searchBarHint": "Recherche une application",
+        "storageButton": "Stockage",
+        "errorMessage": "Impossible d’utiliser l’application sélectionnée."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Sélectionner les correctifs",
+        "searchBarHint": "Rechercher les correctifs",
+        "doneButton": "Terminé",
+        "noPatchesFound": "Aucun correctif n’a été trouvé pour l’application sélectionnée"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Version non supportée",
+        "unsupportedDialogTitle": "Avertissement",
+        "unsupportedDialogText": "Sélectionner ce correctif pourrait entraîner des erreurs durant la phase d’application.\n\nVersion de l’application : {packageVersion}\nVersions actuellement prises en charge :\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installateur",
+        "installButton": "Installer",
+        "installRootButton": "Installer par la raçine",
+        "openButton": "Ouvrir",
+        "shareButton": "Partager le fichier",
+        "notificationTitle": "ReVanced Manager est en train de modifier",
+        "notificationText": "Appuyer pour revenir à l’installateur",
+        "shareApkMenuOption": "Partager l’APK",
+        "shareLogMenuOption": "Partager le journal",
+        "installErrorDialogTitle": "Erreur",
+        "installErrorDialogText1": "L'installation Root n'est pas possible avec la sélection actuelle de patchs.\nRe-patchez votre application ou choisissez une installation non root.",
+        "installErrorDialogText2": "L'installation Non-root n'est pas possible avec la sélection actuelle de patchs.\nRe-patchez votre application ou choisissez une installation en tant que Root.",
+        "installErrorDialogText3": "L'installation root n'est pas possible car l'APK original a été sélectionné à partir du stockage.\nSélectionnez une application installée ou choisissez une installation non root.",
+        "noExit": "L'installateur est toujours en cours d'exécution..."
+    },
+    "settingsView": {
+        "widgetTitle": "Réglages",
+        "appearanceSectionTitle": "Apparence",
+        "teamSectionTitle": "Équipe",
+        "infoSectionTitle": "Info",
+        "advancedSectionTitle": "Avancé",
+        "darkThemeLabel": "Mode Sombre",
+        "darkThemeHint": "Bienvenue dans le côté Sombre",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Profitez d’une expérience plus proche de votre appareil",
+        "languageLabel": "Langue",
+        "englishOption": "Anglais",
+        "frenchOption": "Français",
+        "sourcesLabel": "Sources",
+        "sourcesLabelHint": "Configurer vos sources personnalisées",
+        "orgPatchesLabel": "Organisation des correctifs",
+        "sourcesPatchesLabel": "Source des correctifs",
+        "orgIntegrationsLabel": "Organisation des Intégrations",
+        "sourcesIntegrationsLabel": "Source des Intégrations",
+        "sourcesResetDialogTitle": "Réinitialiser",
+        "sourcesResetDialogText": "Êtes-vous sûr de vouloir restaurer tous les sources personalisées à leurs valeurs par défaut?",
+        "apiURLResetDialogText": "Êtes-vous sûre de vouloir de restaurer l'URL de l'API à sa valeur par défaut?",
+        "contributorsLabel": "Contributeurs",
+        "contributorsHint": "Liste des contributeurs de ReVanced",
+        "logsLabel": "Journal",
+        "logsHint": "Partager les journeaux de débogage de l’appareil",
+        "apiURLLabel": "URL de l’API",
+        "apiURLHint": "Configurez l’URL de votre API personnalisée",
+        "selectApiURL": "Sélectionner l’URL",
+        "aboutLabel": "À propos",
+        "snackbarMessage": "Copié dans le presse-papier"
+    },
+    "appInfoView": {
+        "widgetTitle": "Information sur l’application",
+        "openButton": "Ouvrir",
+        "uninstallButton": "Désinstaller",
+        "patchButton": "Correctif",
+        "unpatchButton": "Restaurer",
+        "unpatchDialogText": "Êtes-vous sûr de vouloir restaurer cette application?",
+        "rootDialogTitle": "Erreur",
+        "rootDialogText": "L’application a été installée avec le mode d'accès à la raçine activé mais la raçine n’est actuellement pas disponible.",
+        "packageNameLabel": "Nom de Paquet",
+        "installTypeLabel": "Type d’installation",
+        "rootTypeLabel": "Enraciné",
+        "nonRootTypeLabel": "Non-enraciné",
+        "patchedDateLabel": "Date Correctif",
+        "patchedDateHint": "{date} le {time}",
+        "appliedPatchesLabel": "Correctifs Appliqués",
+        "appliedPatchesHint": "{quantity} correctifs appliqués"
+    },
+    "contributorsView": {
+        "widgetTitle": "Contributeurs",
+        "patcherContributors": "Contributeurs Modificateur",
+        "patchesContributors": "Contributeurs des Correctifs",
+        "integrationsContributors": "Contributeurs des Intégrations",
+        "cliContributors": "Contributeurs CLI",
+        "managerContributors": "Contributeurs du Gestionnaire"
+    }
+}
