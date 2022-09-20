@@ -18,9 +18,9 @@
         "noUpdates": "कोई अपडेट उपलब्ध नहीं",
         "noInstallations": "कोई पैच किया हुआ ऐप्लकैशन नहीं",
         "installed": "इंस्टॉल किया हुआ",
-        "updateDialogTitle": "अपडेट प्रबंधक",
-        "updateDialogText": "क्या आप रीवांस्ड प्रबंधक को डाउनलोड और अपडेट करना चाहते है?",
-        "notificationTitle": "रीवांस्ड प्रबंधक अपडेट हो चुका है",
+        "updateDialogTitle": "अपडेट Manager",
+        "updateDialogText": "क्या आप ReVanced Manager को डाउनलोड और अपडेट करना चाहते है?",
+        "notificationTitle": "ReVanced Manager अपडेट हो चुका है",
         "notificationText": "ऐप्लकैशन को शुरू करने के लिए टैप करें",
         "downloadingMessage": "अपडेट डाउनलोड हो रहा है",
         "installingMessage": "अपडेट इंस्टॉल हो रहा है",
@@ -37,19 +37,19 @@
         "loadingLabel": "लोड हो रहा है...",
         "timeagoLabel": "{time} पहले",
         "patcherLabel": "पैचर: ",
-        "managerLabel": "प्रबंधक: ",
-        "updateButton": "प्रबंधक अपडेट करे"
+        "managerLabel": "Manager: ",
+        "updateButton": "Manager अपडेट करे"
     },
     "patcherView": {
         "widgetTitle": "पैचर",
         "patchButton": "पैच",
         "patchDialogTitle": "चेतावनी",
-        "patchDialogText": "आपने एक संसाधन पैच चुना है और split APK का इंस्टॉल का पता चला है इसलिए पैचिंग त्रुटियां हो सकती हैं।\nक्या आप split APK के साथ आगे बढ़ना चाहते है?"
+        "patchDialogText": "आपने एक Resource पैच चुना है और split APK का इंस्टॉल का पता चला है इसलिए पैचिंग त्रुटियां हो सकती हैं।\nक्या आप split APK के साथ आगे बढ़ना चाहते है?"
     },
     "appSelectorCard": {
-        "widgetTitle": "एप्लिकेशन का चयन करें",
-        "widgetTitleSelected": "चयनित ऐप्लकैशन",
-        "widgetSubtitle": "कोई ऐप्लकैशन चयनित नहीं",
+        "widgetTitle": "एप्लिकेशन चुने",
+        "widgetTitleSelected": "चुना हुआ ऐप्लकैशन",
+        "widgetSubtitle": "कोई ऐप्लकैशन चुना हुआ नहीं",
         "noAppsLabel": "कोई एप्लिकेशन नहीं मिला।",
         "currentVersion": "वर्तमान",
         "recommendedVersion": "अनुशंसित",
@@ -57,19 +57,19 @@
     },
     "patchSelectorCard": {
         "widgetTitle": "पैच चुने",
-        "widgetTitleSelected": "चयनित पैच",
-        "widgetSubtitle": "पहले किसी एप्लिकेशन का चयन करे",
-        "widgetEmptySubtitle": "कोई पैच चयनित नहीं"
+        "widgetTitleSelected": "चुने हुए पैच",
+        "widgetSubtitle": "पहले किसी एप्लिकेशन को चुने",
+        "widgetEmptySubtitle": "कोई पैच चुना हुआ नहीं"
     },
     "socialMediaCard": {
         "widgetTitle": "सामाजिक",
         "widgetSubtitle": "हम ऑनलाइन है"
     },
     "appSelectorView": {
-        "viewTitle": "एप्लिकेशन का चयन करें",
+        "viewTitle": "एप्लिकेशन का चुने",
         "searchBarHint": "ऐप्लकैशन खोजे",
         "storageButton": "संग्रहण",
-        "errorMessage": "चुने हुए ऐप्लकैशन को प्रयोग करने मे असमर्थ"
+        "errorMessage": "चुने हुए ऐप्लकैशन को उपयोग करने मे असमर्थ"
     },
     "patchesSelectorView": {
         "viewTitle": "पैच चुने",
@@ -87,8 +87,8 @@
         "installButton": "इंस्टॉल करे",
         "installRootButton": "रूट के रूप मे इंस्टॉल करे",
         "openButton": "खोलें",
-        "shareButton": "फाइल साझा करे",
-        "notificationTitle": "रीवांस्ड प्रबंधक पैच कर रहा है",
+        "shareButton": "फाइल शेयर करे",
+        "notificationTitle": "ReVanced Manager पैच कर रहा है",
         "notificationText": "इंस्टॉल कर्ता पर जाने के लिए टैप करे",
         "shareApkMenuOption": "APK शेयर करे",
         "shareLogMenuOption": "लॉग शेयर करें",
