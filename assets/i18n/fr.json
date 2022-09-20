@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Annuler",
+    "enabledLabel": "Activé",
+    "disabledLabel": "Désactivé",
+    "yesButton": "Oui",
+    "noButton": "Non",
+    "navigationView": {
+        "dashboardTab": "Tableau de bord",
+        "patcherTab": "Patcheur",
+        "settingsTab": "Réglages"
+    },
+    "homeView": {
+        "widgetTitle": "Tableau de bord",
+        "updatesSubtitle": "Mises à jour",
+        "patchedSubtitle": "Applications Modifiées",
+        "updatesAvailable": "Mise à jour disponibles",
+        "noUpdates": "Pas de mise à jour disponible",
+        "noInstallations": "Aucune application modifiée installée",
+        "installed": "Installé",
+        "updateDialogTitle": "Mise à jour du Gestionnaire",
+        "updateDialogText": "Êtes vous sûr de vouloir télécharger et mettre à jour le Gestionnaire ReVanced?",
+        "notificationTitle": "Le Gestionnaire ReVanced a été mis à jour",
+        "notificationText": "Appuyer pour ouvrir l\’application",
+        "downloadingMessage": "Téléchargement de la mise à jour...",
+        "installingMessage": "Installation de la mise à jour...",
+        "errorDownloadMessage": "Téléchargement de la mise à jour impossible",
+        "errorInstallMessage": "Installation de la mise à jour impossible",
+        "noConnection": "Aucune connexion internet"
+    },
+    "applicationItem": {
+        "patchButton": "correctif",
+        "infoButton": "Infos",
+        "changelogLabel": "Journal des changements"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Chargement...",
+        "timeagoLabel": "il y a {time}",
+        "patcherLabel": "Patcheur: ",
+        "managerLabel": "Gestionnaire: ",
+        "updateButton": "Mise à jour du Gestionnaire"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcheur",
+        "patchButton": "Correctif",
+        "patchDialogTitle": "Avertissement",
+        "patchDialogText": "Vous avez sélectionné un emplacement de ressource et une installation d\’APK silencieuse à été détectée donc des erreurs pourraient survenir lors du patch.\nÊtes vous sûr de procéder avec une base divisée d\’APK?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Sélectionner application",
+        "widgetTitleSelected": "Application sélectionnée",
+        "widgetSubtitle": "Aucune application sélectionnée",
+        "noAppsLabel": "Aucune application trouvée.",
+        "currentVersion": "Actuelle",
+        "recommendedVersion": "Recommandée",
+        "anyVersion": "n\’importe laquelle"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Sélection des correctifs",
+        "widgetTitleSelected": "Correctifs sélectionnés",
+        "widgetSubtitle": "Sélectionner une application en premier lieu",
+        "widgetEmptySubtitle": "Aucun correctif sélectionné"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Réseaux sociaux",
+        "widgetSubtitle": "Nous sommes sur Internet!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Sélectionner l\’application",
+        "searchBarHint": "Sélectionner les applications",
+        "storageButton": "Stockage",
+        "errorMessage": "Impossible d\’utiliser les applications sélectionnées."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Sélectionner les correctifs",
+        "searchBarHint": "Rechercher les correctifs",
+        "doneButton": "Terminer",
+        "noPatchesFound": "Aucun correctif trouvé pour l\’application sélectionnée"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Version non supportée",
+        "unsupportedDialogTitle": "Avertissement",
+        "unsupportedDialogText": "Sélectionner ce correctif pourrait engendrer des erreures dans le correctif.\n\nVersion d\’application: {packageVersion}\nVersions actuellement supportées:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installateur",
+        "installButton": "Installer",
+        "installRootButton": "Installer par la raçine",
+        "openButton": "Ouvrir",
+        "shareButton": "Partager fichier",
+        "notificationTitle": "Le Gestionnaire ReVanced est en train de modifier",
+        "notificationText": "Appuyer pour revenir à l\’installateur",
+        "shareApkMenuOption": "Partager l\’APK",
+        "shareLogMenuOption": "Partager le journal",
+        "installErrorDialogTitle": "Erreur",
+        "installErrorDialogText1": "L\’installation par la raçine est impossible avec la sélection du correctif actuel.\nCorriger à nouveau votre application ou choisir l\’installation sans passer par la raçine.",
+        "installErrorDialogText2": "L\’installation sans passer par la raçine n\’est pas possible avec le correctif actuellement sélectionné.\Corriger à nouveau votre application ou choisissez l\’installation par la raçine si vous disposez d\’un périphérique enraçiné.",
+        "installErrorDialogText3": "L\’installation par la raçine n\’est pas possible étant donné que l\’APK d\’origine a été sélectionné depuis le stockage.\nSélectionner une application installée ou choisir l\’installation sans passer par la raçine.",
+        "noExit": "L\’installateur est toujours en fonctionnement..."
+    },
+    "settingsView": {
+        "widgetTitle": "Réglages",
+        "appearanceSectionTitle": "Apparence",
+        "teamSectionTitle": "Équipe",
+        "infoSectionTitle": "Infos",
+        "advancedSectionTitle": "Avancé",
+        "darkThemeLabel": "Mode sombre",
+        "darkThemeHint": "Bienvenue dans le Côté Obscur",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Profitez d\’une expérience plus proche de votre appareil",
+        "languageLabel": "Language",
+        "englishOption": "Anglais",
+        "frenchOption": "Francais",
+        "sourcesLabel": "Sources",
+        "sourcesLabelHint": "Configurer vos sources personnalisées",
+        "orgPatchesLabel" : "Groupe du correctif",
+        "sourcesPatchesLabel" : "Source du correctif",
+        "orgIntegrationsLabel": "Groupe d\’intégration",
+        "sourcesIntegrationsLabel": "Source d\’intégrations",
+        "sourcesResetDialogTitle": "Réinitialiser",
+        "sourcesResetDialogText": "Êtes vous sûr de vouloir réinitialiser les sources personnalisées à leurs valeures par défaut?",
+        "apiURLResetDialogText": "Êtes vous sûr de vouloir réinitialiser l\’URL de l\’API à sa valeure par défaut?",
+        "contributorsLabel": "Contributeurs",
+        "contributorsHint": "Une liste des contributeurs de ReVanced",
+        "logsLabel": "Journal",
+        "logsHint": "Partager le journal de débugguage du périphérique",
+        "apiURLLabel": "URL de l\’API",
+        "apiURLHint": "Configurer votre URL d\’API personnalisée",
+        "selectApiURL": "Sélectionner l\’URL",
+        "aboutLabel": "A propos de",
+        "snackbarMessage": "Copié dans le presse-papiers"
+    },
+    "appInfoView": {
+        "widgetTitle": "Info de l\’application",
+        "openButton": "Ouvrir",
+        "uninstallButton": "Désinstaller",
+        "patchButton": "Modifier",
+        "unpatchButton": "Retirer la modification",
+        "unpatchDialogText": "Êtes vous sûr de vouloir retirer la modification pour cette application?",
+        "rootDialogTitle": "Erreur",
+        "rootDialogText": "L\’application a été installée avec le mode raçine actif mais ce dernier estactuellement inactif.\Veuillez activer le mode raçine den premier lieu.",
+        "packageNameLabel": "Nom de paquet",
+        "installTypeLabel": "Type d\’installation",
+        "rootTypeLabel": "Enraciné",
+        "nonRootTypeLabel": "Non-enraciné",
+        "patchedDateLabel": "Date du correctif",
+        "patchedDateHint": "{date} à {time}",
+        "appliedPatchesLabel": "Correctif appliqué le",
+        "appliedPatchesHint": "{quantity} correctif(s) appliqué(s)"
+    },
+    "contributorsView": {
+        "widgetTitle": "Contributeurs",
+        "patcherContributors": "Contributeurs au modificateur",
+        "patchesContributors": "Contributeurs aux correctifs",
+        "integrationsContributors": "Contributeurs à l\’intégrations",
+        "cliContributors": "Contributeurs CLI",
+        "managerContributors": "Contributeurs au Gestionnaire"
+    }
+}
