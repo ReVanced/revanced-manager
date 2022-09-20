@@ -17,6 +17,7 @@ import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import net.dongliu.apk.parser.ApkFile
 import java.io.File
 
 private const val PATCHER_CHANNEL = "app.revanced.manager.flutter/patcher"
@@ -73,6 +74,11 @@ class MainActivity : FlutterActivity() {
                     } else {
                         result.notImplemented()
                     }
+                }
+
+                "min-sdk-version" -> {
+                    val filePath = call.argument<String>("filePath")
+                    getMinSdkVersion(filePath!!, result)
                 }
 
                 else -> result.notImplemented()
@@ -294,6 +300,17 @@ class MainActivity : FlutterActivity() {
                     mapOf("progress" to -1.0, "header" to "", "log" to msg)
                 )
             }
+        }
+    }
+
+    private fun getMinSdkVersion(filePath: String, result: MethodChannel.Result) {
+        try {
+            val apkFile = ApkFile(File(filePath))
+            val apkMeta = apkFile.apkMeta
+            val minSdk : String = apkMeta.minSdkVersion
+            result.success(minSdk.toInt())
+        } catch (ex: Exception) {
+            result.error("Reading Error", ex.message, ex.stackTrace)
         }
     }
 }

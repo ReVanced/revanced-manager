@@ -1,4 +1,5 @@
 import 'package:device_apps/device_apps.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
@@ -50,34 +51,81 @@ class PatcherViewModel extends BaseViewModel {
     return true;
   }
 
-  Future<void> showPatchConfirmationDialog(BuildContext context) async {
+  Future<bool> isCompatibleApk() async {
+    int minSdk = await _patcherAPI.getMinSdkApk(selectedApp!.apkFilePath);
+    AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+    final deviceSdk = androidInfo.version.sdkInt ?? -2;
+    return deviceSdk >= minSdk;
+  }
+
+  Future<void> showWarningDialogs(BuildContext context) async {
     bool isValid = await isValidPatchConfig();
-    if (isValid) {
-      navigateToInstaller();
-    } else {
-      return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: I18nText('patcherView.patchDialogTitle'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('patcherView.patchDialogText'),
-          actions: <Widget>[
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('noButton'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                navigateToInstaller();
-              },
-            )
-          ],
-        ),
-      );
+    bool isCompatible = await isCompatibleApk();
+    isCompatible = false;
+
+    // Needs to check for mounted but this is a stateless widget, so we can't.
+    // Fixed in a newer build of flutter: https://github.com/flutter/flutter/pull/111619
+    // So I'm leaving it as is for the time being since it works.
+
+    if (!isValid) {
+      bool yesPressed = await showInvalidPatchConfigDialog(context);
+      if (!yesPressed) return;
     }
+
+    if (!isCompatible) {
+      bool yesPressed = await showIncompatibleApkDialog(context);
+      if (!yesPressed) return;
+    }
+
+    // navigateToInstaller();
+  }
+
+  Future<bool> showInvalidPatchConfigDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('patcherView.patchDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('patcherView.patchDialogText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<bool> showIncompatibleApkDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('patcherView.patchDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('patcherView.patchDialogCompatibleText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          )
+        ],
+      ),
+    );
   }
 
   String getAppSelectionString() {

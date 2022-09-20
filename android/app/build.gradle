@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId "app.revanced.manager.flutter"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -76,4 +76,5 @@ dependencies {
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android.tools.build:apksig:7.2.2")
+    implementation("com.github.AndroidDeveloperLB:apk-parser:3")
 }

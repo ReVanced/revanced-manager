@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:app_installer/app_installer.dart';
 import 'package:collection/collection.dart';
 import 'package:device_apps/device_apps.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
@@ -251,5 +252,18 @@ class PatcherAPI {
       return (versions.keys.toList()..sort()).last;
     }
     return '';
+  }
+
+  Future<int> getMinSdkApk(String filePath) async {
+    try {
+      return await patcherChannel.invokeMethod(
+        'min-sdk-version',
+        {
+          'filePath': filePath,
+        },
+      );
+    } catch (e) {
+      return -1;
+    }
   }
 }
