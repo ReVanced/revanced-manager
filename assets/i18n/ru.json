@@ -18,42 +18,42 @@
         "noUpdates": "Нет доступных обновлений",
         "noInstallations": "Нет пропатченных приложений",
         "installed": "Установлено",
-        "updateDialogTitle": "Обновить Менеджер",
+        "updateDialogTitle": "Обновить Manager",
         "updateDialogText": "Вы уверены, что хотите загрузить и обновить ReVanced Менеджер?",
-        "notificationTitle": "ReVanced Менеджер был обновлен",
+        "notificationTitle": "ReVanced Manager был обновлен",
         "notificationText": "Нажмите, чтобы открыть приложение",
         "downloadingMessage": "Скачивается обновление...",
         "installingMessage": "Устанавливается обновление...",
         "errorDownloadMessage": "Не удалось загрузить обновление",
         "errorInstallMessage": "Не удалось установить обновление",
-        "noConnection": "No internet connection"
+        "noConnection": "Нет подключения к интернету"
     },
     "applicationItem": {
-        "patchButton": "Patch",
-        "infoButton": "Info",
-        "changelogLabel": "Changelog"
+        "patchButton": "Пропатчить",
+        "infoButton": "Инфо",
+        "changelogLabel": "Список изменений"
     },
     "latestCommitCard": {
-        "loadingLabel": "Loading...",
-        "timeagoLabel": "{time} ago",
-        "patcherLabel": "Patcher: ",
+        "loadingLabel": "Загрузка...",
+        "timeagoLabel": "{time} назад",
+        "patcherLabel": "Патчер: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update Manager"
+        "updateButton": "Обновить Manager"
     },
     "patcherView": {
-        "widgetTitle": "Patcher",
-        "patchButton": "Patch",
-        "patchDialogTitle": "Warning",
-        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors may occur.\nAre you sure you want to proceed with patching a split base APK?"
+        "widgetTitle": "Патчер",
+        "patchButton": "Пропатчить",
+        "patchDialogTitle": "Внимание",
+        "patchDialogText": "Вы выбрали патч ресурса, и была обнаружена установка разделённого APK, так что могут возникнуть ошибки.\\nВы уверены, что хотите продолжить патч с разделённым APK?"
     },
     "appSelectorCard": {
-        "widgetTitle": "Select application",
-        "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected",
-        "noAppsLabel": "No applications found.",
+        "widgetTitle": "Выберите приложение",
+        "widgetTitleSelected": "Выбранное приложение",
+        "widgetSubtitle": "Не выбрано приложение",
+        "noAppsLabel": "Не найдены приложения",
         "currentVersion": "Current",
         "recommendedVersion": "Recommended",
-        "anyVersion": "any"
+        "anyVersion": "любая"
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
