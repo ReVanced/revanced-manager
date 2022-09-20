@@ -1,19 +1,19 @@
 {
-    "okButton": "OK",
-    "cancelButton": "Cancel",
-    "enabledLabel": "Enabled",
-    "disabledLabel": "Disabled",
-    "yesButton": "Yes",
-    "noButton": "No",
+    "okButton": "Tamam",
+    "cancelButton": "İptal",
+    "enabledLabel": "Etkinleştirildi",
+    "disabledLabel": "Devre dışı bırakıldı",
+    "yesButton": "Evet",
+    "noButton": "Hayır",
     "navigationView": {
-        "dashboardTab": "Dashboard",
-        "patcherTab": "Patcher",
-        "settingsTab": "Settings"
+        "dashboardTab": "Kontrol Paneli",
+        "patcherTab": "Yamalayıcı",
+        "settingsTab": "Ayarlar"
     },
     "homeView": {
-        "widgetTitle": "Dashboard",
-        "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Patched Applications",
+        "widgetTitle": "Kontrol Paneli",
+        "updatesSubtitle": "Güncellemeler",
+        "patchedSubtitle": "Yamalanmış Uygulamalar",
         "updatesAvailable": "Updates available",
         "noUpdates": "No updates available",
         "noInstallations": "No patched applications installed",
