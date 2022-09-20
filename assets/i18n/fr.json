@@ -18,33 +18,33 @@
         "noUpdates": "Aucune mise à jour n'est disponible",
         "noInstallations": "Aucune application modifiée n’est installée",
         "installed": "Installée",
-        "updateDialogTitle": "Mettre à jour le manageur",
+        "updateDialogTitle": "Mettre à jour le Manager",
         "updateDialogText": "Êtes-vous sûr de vouloir télécharger et mettre à jour ReVanced Manager ?",
         "notificationTitle": "ReVanced Manager a été mis à jour",
         "notificationText": "Appuyez pour ouvrir l'application",
         "downloadingMessage": "Téléchargement de la mise à jour...",
         "installingMessage": "Installation de la mise à jour...",
         "errorDownloadMessage": "Téléchargement de la mise à jour impossible",
-        "errorInstallMessage": "Installation de la mise à jour impossible",
+        "errorInstallMessage": "Impossible d'installer la mise à jour",
         "noConnection": "Aucune connexion à Internet"
     },
     "applicationItem": {
-        "patchButton": "Correctif",
+        "patchButton": "Patch",
         "infoButton": "Info",
-        "changelogLabel": "Nouveautés"
+        "changelogLabel": "Journal des changements"
     },
     "latestCommitCard": {
         "loadingLabel": "Chargement...",
         "timeagoLabel": "Il y a {time}",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Mettre à jour ReVanced Manager"
+        "updateButton": "Mettre à jour le Manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Avertissement",
-        "patchDialogText": "Vous avez sélectionné un patch de ressources et une installation d'APK divisée a été détectée, des erreurs peuvent donc se produire au moment de faire le patch.\nÊtes-vous sûr de vouloir procéder au patch d'un APK divisée ?"
+        "patchDialogText": "Vous avez sélectionné un patch de ressources et une installation d'APK divisée a été détectée, des erreurs peuvent donc se produire au moment d'appliquer le patch.\nÊtes-vous sûr de vouloir procéder au patch d'un APK divisée ?"
     },
     "appSelectorCard": {
         "widgetTitle": "Choisissez une application",
@@ -56,14 +56,14 @@
         "anyVersion": "N'importe quelle version"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Sélectionner des patchs",
+        "widgetTitle": "Sélectionner des correctifs",
         "widgetTitleSelected": "Patchs sélectionnés",
         "widgetSubtitle": "Choisissez d’abord une application",
-        "widgetEmptySubtitle": "Aucun patch n’est sélectionné"
+        "widgetEmptySubtitle": "Aucun correctif n’est sélectionné"
     },
     "socialMediaCard": {
         "widgetTitle": "Réseaux sociaux",
-        "widgetSubtitle": "Nous sommes sur l'Internet!"
+        "widgetSubtitle": "Nous sommes en ligne!"
     },
     "appSelectorView": {
         "viewTitle": "Choisissez une application",
@@ -73,9 +73,9 @@
     },
     "patchesSelectorView": {
         "viewTitle": "Sélectionner les correctifs",
-        "searchBarHint": "Rechercher les correctifs",
+        "searchBarHint": "Rechercher les patchs",
         "doneButton": "Terminé",
-        "noPatchesFound": "Aucun correctif n’a été trouvé pour l’application sélectionnée"
+        "noPatchesFound": "Aucun patch n’a été trouvé pour l’application sélectionnée"
     },
     "patchItem": {
         "unsupportedWarningButton": "Version non supportée",
