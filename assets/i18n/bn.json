@@ -66,11 +66,13 @@
         "widgetSubtitle": "আমরা অনলাইনে আছি!"
     },
     "appSelectorView": {
+        "viewTitle": "এ্যাপ্লিকেশন নির্বাচন করুন",
         "searchBarHint": "এ্যাপ্লিকেশন খুঁজুন",
         "storageButton": "স্টোরেজ",
         "errorMessage": "নির্বাচিত এ্যাপ্লিকেশন ব্যবহার করা সম্ভব নয়"
     },
     "patchesSelectorView": {
+        "viewTitle": "প্যাচসমূহ নির্বাচন করুন",
         "searchBarHint": "প্যাচ খুঁজুন",
         "doneButton": "সম্পন্ন"
         "noPatchesFound": "নির্বাচিত এ্যাপের জন্য কোন প্যাচ পাওয়া যায়নি।"
