@@ -80,7 +80,7 @@
     "patchItem": {
         "unsupportedWarningButton": "Versi tidak didukung",
         "unsupportedDialogTitle": "Peringatan",
-        "unsupportedDialogText": "Menggunakan modifikasi ini dapat mengaibatkan kesalahan pada saat mengmodifikasi aplikasi.\n\nVersi aplikasi: {packageVersion}\nVersi yang disarankan saat ini:\n{supportedVersions}"
+        "unsupportedDialogText": "Menggunakan modifikasi ini dapat mengakibatkan kesalahan pada saat memodifikasi aplikasi.\n\nVersi aplikasi: {packageVersion}\nVersi yang disarankan pada saat ini:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Pemasang",
@@ -88,7 +88,7 @@
         "installRootButton": "Pasang dengan Root",
         "openButton": "Buka",
         "shareButton": "Bagikan file",
-        "notificationTitle": "ReVanced Manager sedang mengmodifikasi",
+        "notificationTitle": "ReVanced Manager sedang memodifikasi",
         "notificationText": "Ketuk untuk kembali ke pemasang",
         "shareApkMenuOption": "Bagikan APK",
         "shareLogMenuOption": "Bagikan catatan (Log)",
