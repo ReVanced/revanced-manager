@@ -16,7 +16,7 @@
         "patchedSubtitle": "Пропатченные приложения",
         "updatesAvailable": "Доступны обновления",
         "noUpdates": "Нет доступных обновлений",
-        "noInstallations": "Нет пропатченных приложений",
+        "noInstallations": "Не установлено пропатченных приложений",
         "installed": "Установлено",
         "updateDialogTitle": "Обновить Manager",
         "updateDialogText": "Вы уверены, что хотите загрузить и обновить ReVanced Менеджер?",
@@ -51,41 +51,41 @@
         "widgetTitleSelected": "Выбранное приложение",
         "widgetSubtitle": "Не выбрано приложение",
         "noAppsLabel": "Не найдены приложения",
-        "currentVersion": "Current",
-        "recommendedVersion": "Recommended",
+        "currentVersion": "Текущая",
+        "recommendedVersion": "Рекомендуемая",
         "anyVersion": "любая"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Select patches",
-        "widgetTitleSelected": "Selected patches",
-        "widgetSubtitle": "Select an application first",
-        "widgetEmptySubtitle": "No patches selected"
+        "widgetTitle": "Выберите патчи",
+        "widgetTitleSelected": "Выбранные патчи",
+        "widgetSubtitle": "Сначала выберите приложение",
+        "widgetEmptySubtitle": "Не выбраны патчи"
     },
     "socialMediaCard": {
-        "widgetTitle": "Socials",
-        "widgetSubtitle": "We are online!"
+        "widgetTitle": "Соцсети",
+        "widgetSubtitle": "Мы онлайн!"
     },
     "appSelectorView": {
-        "viewTitle": "Select application",
-        "searchBarHint": "Search applications",
-        "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application."
+        "viewTitle": "Выберите приложение",
+        "searchBarHint": "Искать приложения",
+        "storageButton": "Хранилище",
+        "errorMessage": "Невозможно использовать выбранное приложение."
     },
     "patchesSelectorView": {
-        "viewTitle": "Select patches",
-        "searchBarHint": "Search patches",
-        "doneButton": "Done",
-        "noPatchesFound": "No patches found for the selected app"
+        "viewTitle": "Выберите патчи",
+        "searchBarHint": "Искать патчи",
+        "doneButton": "Готово",
+        "noPatchesFound": "Для выбранного приложения не найдены патчи"
     },
     "patchItem": {
-        "unsupportedWarningButton": "Unsupported version",
-        "unsupportedDialogTitle": "Warning",
-        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
+        "unsupportedWarningButton": "Неподдерживаемая версия",
+        "unsupportedDialogTitle": "Внимание",
+        "unsupportedDialogText": "Выбор этого патча может привести к ошибкам во время патча.\n\nВерсия приложения: {packageVersion}\nТекущие поддерживаемые версии:\n{supportedVersions}"
     },
     "installerView": {
-        "widgetTitle": "Installer",
-        "installButton": "Install",
-        "installRootButton": "Install as Root",
+        "widgetTitle": "Установщик",
+        "installButton": "Установить",
+        "installRootButton": "Установить как Root",
         "openButton": "Open",
         "shareButton": "Share file",
         "notificationTitle": "ReVanced Manager is patching",
