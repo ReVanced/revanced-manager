@@ -7,7 +7,7 @@
     "noButton": "Non",
     "navigationView": {
         "dashboardTab": "Tableau de bord",
-        "patcherTab": "Patcher",
+        "patcherTab": "Patcheur",
         "settingsTab": "Paramètres"
     },
     "homeView": {
@@ -29,7 +29,7 @@
         "noConnection": "Aucune connexion à Internet"
     },
     "applicationItem": {
-        "patchButton": "Patch",
+        "patchButton": "Correctif",
         "infoButton": "Info",
         "changelogLabel": "Journal des changements"
     },
@@ -73,7 +73,7 @@
     },
     "patchesSelectorView": {
         "viewTitle": "Sélectionner les correctifs",
-        "searchBarHint": "Rechercher les patchs",
+        "searchBarHint": "Rechercher des patchs",
         "doneButton": "Terminé",
         "noPatchesFound": "Aucun patch n’a été trouvé pour l’application sélectionnée"
     },
