@@ -1,0 +1,159 @@
+{
+    "okButton": "ОК",
+    "cancelButton": "Поништи",
+    "enabledLabel": "Омогућено",
+    "disabledLabel": "Онемогућено",
+    "yesButton": "Да",
+    "noButton": "Не",
+    "navigationView": {
+        "dashboardTab": "Командна табла",
+        "patcherTab": "Печер",
+        "settingsTab": "Подешавања"
+    },
+    "homeView": {
+        "widgetTitle": "Командна табла",
+        "updatesSubtitle": "Ажурирања",
+        "patchedSubtitle": "Печоване апликације",
+        "updatesAvailable": "Ажурирање је доступно",
+        "noUpdates": "Нема доступних ажурирања",
+        "noInstallations": "Печована апликација није инсталирана",
+        "installed": "Инсталирано",
+        "updateDialogTitle": "Ажурирај менаџера",
+        "updateDialogText": "Да ли сте сигурни да желите да скинете и ажурирате ReVanced менаџер?",
+        "notificationTitle": "ReVanced менаџер је ажуриран",
+        "notificationText": "Додирните да бисте отворили апликацију",
+        "downloadingMessage": "Преузимање ажурирања...",
+        "installingMessage": "Инсталирање ажурирања...",
+        "errorDownloadMessage": "Не може да се преузме ажурирање",
+        "errorInstallMessage": "Не може да се инсталира ажурирање",
+        "noConnection": "Нема интернет везе"
+    },
+    "applicationItem": {
+        "patchButton": "Печуј",
+        "infoButton": "Информације",
+        "changelogLabel": "Историја измена"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Учитавање...",
+        "timeagoLabel": "пре {time}",
+        "patcherLabel": "Печер: ",
+        "managerLabel": "Менаџер: ",
+        "updateButton": "Ажурирај менаџера"
+    },
+    "patcherView": {
+        "widgetTitle": "Печер",
+        "patchButton": "Печуј",
+        "patchDialogTitle": "Упозорење",
+        "patchDialogText": "Одабрали сте печовање ресурса и инсталација АРК из делова је пронађена, због чега се могу десити грешке.\nДа ли сте сигурни да желите да наставите са печовањем основне АРК из делова?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Изаберите апликацију",
+        "widgetTitleSelected": "Изабрана апликација",
+        "widgetSubtitle": "Ниједна апликација није одабрана",
+        "noAppsLabel": "Ниједна апликација није пронађена.",
+        "currentVersion": "Тренутни",
+        "recommendedVersion": "Препоручено",
+        "anyVersion": "било који"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Одаберите печеве",
+        "widgetTitleSelected": "Одабрани печеви",
+        "widgetSubtitle": "Одаберите апликацију прво",
+        "widgetEmptySubtitle": "Печеви нису пронађени"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Друштвене мреже",
+        "widgetSubtitle": "На мрежи смо!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Изаберите апликацију",
+        "searchBarHint": "Претражите апликације",
+        "storageButton": "Складиште",
+        "errorMessage": "Није могуће користити изабрану апликацију."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Одаберите печеве",
+        "searchBarHint": "Претражите печеве",
+        "doneButton": "Готово",
+        "noPatchesFound": "Печеви нису пронађени за одабрану апликацију"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Неподржана верзија",
+        "unsupportedDialogTitle": "Упозорење",
+        "unsupportedDialogText": "Одабирање овог печа може довести до грешака приликом печовањал.\n\nВерзија апликације: {packageVersion}\nТренутно подржане верзије:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Програм за инсталацију",
+        "installButton": "Инсталирајте",
+        "installRootButton": "Инсталирајте као root",
+        "openButton": "Отвори",
+        "shareButton": "Подели фајл",
+        "notificationTitle": "ReVanced менаџер се печује",
+        "notificationText": "Притисни да се вратиш на програм за инсталацију",
+        "shareApkMenuOption": "Подели APK",
+        "shareLogMenuOption": "Подели лог",
+        "installErrorDialogTitle": "Грешка",
+        "installErrorDialogText1": "Root инсталација није могућа са тренутно одабраним печевима.\nПоново печујте вашу апликацију или одаберите инсталацију која није за root.",
+        "installErrorDialogText2": "Инсталација која није root није могућа са тренутно одабраним избором печева.\nПечујте своју апликацију поново или одаберите root инсталацију уколико је ваш уређај рутован.",
+        "installErrorDialogText3": "Root инсталација није могућа јер је оригинални АРК одабран из складишта.\nОдаберите инсталирану апликацију или изаберите инсталацију која није за root.",
+        "noExit": "Програм за инсталацију је и даље отворен..."
+    },
+    "settingsView": {
+        "widgetTitle": "Подешавања",
+        "appearanceSectionTitle": "Изглед",
+        "teamSectionTitle": "Тим",
+        "infoSectionTitle": "Информације",
+        "advancedSectionTitle": "Напредно",
+        "darkThemeLabel": "Тамни режим",
+        "darkThemeHint": "Добродошли на тамну страну",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Уживајте у искуству које је приближније теми на вашем уређају",
+        "languageLabel": "Језик",
+        "englishOption": "Енглески",
+        "frenchOption": "Француски",
+        "sourcesLabel": "Извори",
+        "sourcesLabelHint": "Конфигуришите своје прилагођене изворе",
+        "orgPatchesLabel": "Организација печева",
+        "sourcesPatchesLabel": "Извор печева",
+        "orgIntegrationsLabel": "Организација интеграције",
+        "sourcesIntegrationsLabel": "Извор интеграције",
+        "sourcesResetDialogTitle": "Ресетуј",
+        "sourcesResetDialogText": "Да ли сте сигурни да желите да ресетујете прилагођене изворе на њихове подразумеване вредности?",
+        "apiURLResetDialogText": "Да ли сте сигурни да желите да ресетујете АPI URL на његову подразумевану вредност?",
+        "contributorsLabel": "Сарадници",
+        "contributorsHint": "Листа сарадника ReVanced",
+        "logsLabel": "Дневник",
+        "logsHint": "Подели извештај за дебагинг са уређаја",
+        "apiURLLabel": "АПИ УРЛ",
+        "apiURLHint": "Конфигуришите свој прилагођени УРЛ",
+        "selectApiURL": "Одаберите УРЛ",
+        "aboutLabel": "О апликацији",
+        "snackbarMessage": "Копирано у привремену меморију"
+    },
+    "appInfoView": {
+        "widgetTitle": "Информације о апликацији",
+        "openButton": "Отвори",
+        "uninstallButton": "Деинсталирај",
+        "patchButton": "Печуј",
+        "unpatchButton": "Уклони печ",
+        "unpatchDialogText": "Да ли сте сигурни да желите уклонити печ за ову апликацију?",
+        "rootDialogTitle": "Грешка",
+        "rootDialogText": "Апликација је инсталирана са укљученим root модом али тренутно је root мод угашен.\nМолимо вас да укључите root мод прво.",
+        "packageNameLabel": "Назив пакета",
+        "installTypeLabel": "Тип инсталације",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Није-root",
+        "patchedDateLabel": "Датум печовања",
+        "patchedDateHint": "{date} у {time}",
+        "appliedPatchesLabel": "Инсталирани печеви",
+        "appliedPatchesHint": "{quantity} инсталираних печева"
+    },
+    "contributorsView": {
+        "widgetTitle": "Сарадници",
+        "patcherContributors": "Сарадници на печеру",
+        "patchesContributors": "Сарадници на печевима",
+        "integrationsContributors": "Сарадници за интеграцију",
+        "cliContributors": "Сарадници за CLI",
+        "managerContributors": "Сарадници на менаџеру"
+    }
+}
