@@ -1,0 +1,159 @@
+{
+    "okButton": "موافق",
+    "cancelButton": "إلغاء",
+    "enabledLabel": "مفعّل",
+    "disabledLabel": "معطّل",
+    "yesButton": "نعم",
+    "noButton": "لا",
+    "navigationView": {
+        "dashboardTab": "لوحة التحكم",
+        "patcherTab": "المعدّل",
+        "settingsTab": "إعدادات"
+    },
+    "homeView": {
+        "widgetTitle": "لوحة التحكم",
+        "updatesSubtitle": "تحديثات",
+        "patchedSubtitle": "التطبيقات المعدلة",
+        "updatesAvailable": "تحديثات متوفرة",
+        "noUpdates": "لا توجد تحديثات متاحة",
+        "noInstallations": "لا توجد تطبيقات معدلة مثبتة",
+        "installed": "مثبت",
+        "updateDialogTitle": "تحديث المدير",
+        "updateDialogText": "هل أنت متأكد من رغبتك في تنزيل وتحديث ReVanced Manager ؟",
+        "notificationTitle": "تم تحديث ReVanced Manager",
+        "notificationText": "انقر لفتح التطبيق",
+        "downloadingMessage": "جاري تحميل التحديث...",
+        "installingMessage": "جاري تثبيت التحديث...",
+        "errorDownloadMessage": "تعذر تحميل التحديث",
+        "errorInstallMessage": "لا يمكن تثبيت التحديث",
+        "noConnection": "لا يوجد اتصال بالإنترنت"
+    },
+    "applicationItem": {
+        "patchButton": "تصحيح",
+        "infoButton": "معلومات",
+        "changelogLabel": "سجل التغييرات"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "جاري التحميل...",
+        "timeagoLabel": "منذ {time}",
+        "patcherLabel": "المعدّل: ",
+        "managerLabel": "المدير: ",
+        "updateButton": "مدير التحديث"
+    },
+    "patcherView": {
+        "widgetTitle": "المعدّل",
+        "patchButton": "تعديل",
+        "patchDialogTitle": "تحذير",
+        "patchDialogText": "لقد اخترت تعديل مورد وتم اكتشاف تثبيت APK منقسم بحيث يمكن أن تحدث أخطاء في التصحيح.\nهل أنت متأكد من أنك تريد المضي قدما في تصحيح تطبيق APK المقسم؟"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "إختر تطبيقاً",
+        "widgetTitleSelected": "التطبيق المختار",
+        "widgetSubtitle": "لم يتم اختيار أي تطبيق",
+        "noAppsLabel": "لم يتم العثور على تطبيقات.",
+        "currentVersion": "الحالي",
+        "recommendedVersion": "موصى به",
+        "anyVersion": "اي"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "اختر التعديلات",
+        "widgetTitleSelected": "تصحيحات مختارة",
+        "widgetSubtitle": "اختر تطبيق أولاً",
+        "widgetEmptySubtitle": "لم يتم تحديد أي تصحيحات"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "وسائل التواصل",
+        "widgetSubtitle": "تم الاتصال بالانترنت!"
+    },
+    "appSelectorView": {
+        "viewTitle": "إختر تطبيقاً",
+        "searchBarHint": "البحث عن التطبيقات",
+        "storageButton": "تخزين",
+        "errorMessage": "لا يمكن استخدام التطبيق المحدد."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "اختر التعديلات",
+        "searchBarHint": "ابحث التعديلات",
+        "doneButton": "أُنجز بنجاح",
+        "noPatchesFound": "لم يتم العثور على تعديلات للتطبيق المحدد"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "الإصدار غير مدعوم",
+        "unsupportedDialogTitle": "تحذير",
+        "unsupportedDialogText": "تحديد هذا التعديل قد يؤدي أو لا يؤدي إلى أخطاء في عملية التعديل.\n\nإصدار التطبيق: {packageVersion}\nالإصدارات المدعومة حالياً:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "المثبت",
+        "installButton": "تثبيت",
+        "installRootButton": "تثبيت كجذر",
+        "openButton": "إفتح",
+        "shareButton": "شارك ملف",
+        "notificationTitle": "ري فانسد بصَدَدِ التعديل",
+        "notificationText": "انقر للعودة إلى المثبت",
+        "shareApkMenuOption": "مشاركة APK",
+        "shareLogMenuOption": "مشاركة السجل",
+        "installErrorDialogTitle": "خطأ",
+        "installErrorDialogText1": "التثبيت بطريقة root غير ممكن مع التصحيحات المختارة حالياً.\nأعد تعديل التطبيق الخاص بك أو اختر التثبيت بدون root.",
+        "installErrorDialogText2": "التثبيت بطريقة root غير ممكن مع التصحيحات المختارة حالياً\nأعد تعديل التطبيق الخاص بك أو اختر التثبيت دونroot.",
+        "installErrorDialogText3": "لا يمكن تثبيت بطريقة root لأن ملف APK تم اختياره من وحدة التخزين.\nحدد تطبيقًا مثبتًا أو اختر التثبيت بدون ميزة root.",
+        "noExit": "المثبت لا يزال يعمل..."
+    },
+    "settingsView": {
+        "widgetTitle": "إعدادات",
+        "appearanceSectionTitle": "إعدادات المظهر",
+        "teamSectionTitle": "الفريق",
+        "infoSectionTitle": "معلومات",
+        "advancedSectionTitle": "إعدادات متقدمة",
+        "darkThemeLabel": "الوضع المظلم",
+        "darkThemeHint": "مرحبا بكم في الجانب المظلم",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "استمتع بتجربة أقرب إلى جهازك",
+        "languageLabel": "اللغة",
+        "englishOption": "الإنجليزية",
+        "frenchOption": "الفرنسية",
+        "sourcesLabel": "المصادر",
+        "sourcesLabelHint": "تحديد مصادرك المخصصة",
+        "orgPatchesLabel": "تنظيم التعديلات",
+        "sourcesPatchesLabel": "مصدر التعديلات",
+        "orgIntegrationsLabel": "المنظمة المطورة ل Integrations",
+        "sourcesIntegrationsLabel": "مصدر الـ Integrations",
+        "sourcesResetDialogTitle": "إعادة التعيين",
+        "sourcesResetDialogText": "هل انت متاكد من انك تريد اعادة الاختصارات الى وضعها الأساسي ؟",
+        "apiURLResetDialogText": "هل أنت متأكد من أنك تريد إعادة رابط API إلى القيم الافتراضية؟",
+        "contributorsLabel": "المساهمون",
+        "contributorsHint": "قائمة المساهمين في ReVanced",
+        "logsLabel": "السجلات",
+        "logsHint": "مشاركة سجلات أخطاء الجهاز",
+        "apiURLLabel": "رابط API",
+        "apiURLHint": "تحديد رابط API الخاص بك",
+        "selectApiURL": "اختر الرابط",
+        "aboutLabel": "عن التطبيق",
+        "snackbarMessage": "نُسِخ إلى الحافظة"
+    },
+    "appInfoView": {
+        "widgetTitle": "معلومات عن التطبيق",
+        "openButton": "افتح",
+        "uninstallButton": "إلغاء التثبيت",
+        "patchButton": "تعديل",
+        "unpatchButton": "إلغاء التعديل",
+        "unpatchDialogText": "هل أنت متأكد من أنك تريد إلغاء تعديل هذا التطبيق؟",
+        "rootDialogTitle": "خطأ",
+        "rootDialogText": "تم تثبيت التطبيق مع تمكين وضع root ولكن وضع root معطل حاليا.\nالرجاء تمكين وضع root أولاً.",
+        "packageNameLabel": "اسم الحزمة",
+        "installTypeLabel": "نوع التثبيت",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "بدون root",
+        "patchedDateLabel": "تاريخ التعديل",
+        "patchedDateHint": "{date} على الساعة {time}",
+        "appliedPatchesLabel": "التعديلات المطبقة",
+        "appliedPatchesHint": "{quantity} من التعديلات المطبقة"
+    },
+    "contributorsView": {
+        "widgetTitle": "المساهمون",
+        "patcherContributors": "المساهمون في المعدّل",
+        "patchesContributors": "المساهمون في التعديلات",
+        "integrationsContributors": "المساهمون في Integrations",
+        "cliContributors": "المساهمون في CLI",
+        "managerContributors": "المساهمون في Manager"
+    }
+}
