@@ -95,12 +95,12 @@
         "installErrorDialogTitle": "エラー",
         "installErrorDialogText1": "現在選択されているパッチでは、ルートインストールはできません。\nアプリを再パッチするか、非ルートインストールを選択してください。",
         "installErrorDialogText2": "現在選択されているパッチでは、非ルートインストールはできません。\nアプリを再パッチするか、デバイスをルート化した後、ルートインストールを選択してください。",
-        "installErrorDialogText3": "ストレージからオリジナルAPKを選択したため、ルートインストールはできません。\nインストールされているアプリを選択するか、非ルートインストールを選択します。"
+        "installErrorDialogText3": "ストレージからオリジナルAPKを選択したため、ルートインストールはできません。\nインストールされているアプリを選択するか、非ルートインストールを選択します。",
+		"noExit": "インストーラーが実行中です..."
     },
     "settingsView": {
         "widgetTitle": "設定",
         "appearanceSectionTitle": "外観",
-        "patcherSectionTitle": "Patcher",
         "teamSectionTitle": "チーム",
         "infoSectionTitle": "情報",
         "advancedSectionTitle": "高度な機能",
