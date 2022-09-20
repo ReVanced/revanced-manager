@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Batal",
+    "enabledLabel": "Aktif",
+    "disabledLabel": "Nonaktif",
+    "yesButton": "Iya",
+    "noButton": "Tidak",
+    "navigationView": {
+        "dashboardTab": "Dasbor",
+        "patcherTab": "Pemodifikasi",
+        "settingsTab": "Pengaturan"
+    },
+    "homeView": {
+        "widgetTitle": "Dasbor",
+        "updatesSubtitle": "Pembaruan",
+        "patchedSubtitle": "Aplikasi Termodifikasi",
+        "updatesAvailable": "Pembaruan tersedia",
+        "noUpdates": "Pembaruan tidak tersedia",
+        "noInstallations": "Tidak ada aplikasi termodifikasi yang terpasang",
+        "installed": "Terpasang",
+        "updateDialogTitle": "Perbarui Manager",
+        "updateDialogText": "Apakah Anda ingin mengunduh dan memperbaharui ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager telah diperbaharui",
+        "notificationText": "Ketuk untuk membuka aplikasi",
+        "downloadingMessage": "Mengunduh pembaruan...",
+        "installingMessage": "Memasang pembaruan...",
+        "errorDownloadMessage": "Tidak dapat mengunduh pembaruan",
+        "errorInstallMessage": "Tidak dapat memasang pembaruan",
+        "noConnection": "Tidak ada koneksi internet"
+    },
+    "applicationItem": {
+        "patchButton": "Modifikasi",
+        "infoButton": "Info",
+        "changelogLabel": "Catatan perubahan"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Memuat...",
+        "timeagoLabel": "{time} yang lalu",
+        "patcherLabel": "Pemodifikasi: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Memperbaharui Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Pemodifikasi",
+        "patchButton": "Modifikasi",
+        "patchDialogTitle": "Peringatan",
+        "patchDialogText": "Anda telah memilih sumber modifikasi dan pemasangan split APK terdeteksi sehingga kesalahan pemodifikasi dapat terjadi.\nApakah Anda yakin ingin melanjutkan pemasangan split base APK?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Pilih aplikasi",
+        "widgetTitleSelected": "Aplikasi terpilih",
+        "widgetSubtitle": "Tidak ada aplikasi terpilih",
+        "noAppsLabel": "Aplikasi tidak dapat ditemukan.",
+        "currentVersion": "Saat ini",
+        "recommendedVersion": "Rekomendasi",
+        "anyVersion": "semua"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Pilih Modifikasi",
+        "widgetTitleSelected": "Modifikasi terpilih",
+        "widgetSubtitle": "Pilih aplikasi terlebih dahulu",
+        "widgetEmptySubtitle": "Tidak ada modifikasi yang terpilih"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Media sosial",
+        "widgetSubtitle": "Ikuti kami!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Pilih aplikasi",
+        "searchBarHint": "Cari aplikasi",
+        "storageButton": "Penyimpanan",
+        "errorMessage": "Tidak dapat menggunakan aplikasi terpilih."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Pilih modifikasi",
+        "searchBarHint": "Cari modifikasi",
+        "doneButton": "Selesai",
+        "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Versi tidak didukung",
+        "unsupportedDialogTitle": "Peringatan",
+        "unsupportedDialogText": "Menggunakan modifikasi ini dapat mengaibatkan kesalahan pada saat mengmodifikasi aplikasi.\n\nVersi aplikasi: {packageVersion}\nVersi yang disarankan saat ini:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Pemasang",
+        "installButton": "Pasang",
+        "installRootButton": "Pasang dengan Root",
+        "openButton": "Buka",
+        "shareButton": "Bagikan file",
+        "notificationTitle": "ReVanced Manager sedang mengmodifikasi",
+        "notificationText": "Ketuk untuk kembali ke pemasang",
+        "shareApkMenuOption": "Bagikan APK",
+        "shareLogMenuOption": "Bagikan catatan (Log)",
+        "installErrorDialogTitle": "Kesalahan",
+        "installErrorDialogText1": "Pemasangan root tidak mungkin dengan pilihan modifikasi sekarang.\nModifikasi ulang aplikasi Anda atau pilih pemasangan non-root.",
+        "installErrorDialogText2": "Pemasangan non-root tidak mungkin dengan pilihan modifikasi sekarang.\nModifikasi ulang aplikasi Anda atau pilih pemasangan root jika perangkat Anda memiliki root.",
+        "installErrorDialogText3": "Pemasangan root tidak mungkin karena APK dipilih dari penyimpanan.\nPilih aplikasi terpasang atau pilih pemasangan non-root.",
+        "noExit": "Pemasang sedang berjalan..."
+    },
+    "settingsView": {
+        "widgetTitle": "Pengaturan",
+        "appearanceSectionTitle": "Penampilan",
+        "teamSectionTitle": "Tim",
+        "infoSectionTitle": "Info",
+        "advancedSectionTitle": "Lanjutan",
+        "darkThemeLabel": "Mode Gelap",
+        "darkThemeHint": "Selamat datang di Sisi Gelap",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Nikmati pengalaman yang lebih dekat dengan perangkat Anda",
+        "languageLabel": "Bahasa",
+        "englishOption": "Inggris",
+        "frenchOption": "Prancis",
+        "sourcesLabel": "Sumber",
+        "sourcesLabelHint": "Konfigurasi sumber kustom Anda",
+        "orgPatchesLabel": "Organisasi Modifikasi",
+        "sourcesPatchesLabel": "Sumber Modifikasi",
+        "orgIntegrationsLabel": "Organisasi Intergrasi",
+        "sourcesIntegrationsLabel": "Sumber Integrasi",
+        "sourcesResetDialogTitle": "Atur ulang",
+        "sourcesResetDialogText": "Apakah Anda yakin ingin mengatur sumber kustom ke semula?",
+        "apiURLResetDialogText": "Apakah Anda yakin ingin mengatur URL API ke semula?",
+        "contributorsLabel": "Kontributor",
+        "contributorsHint": "Daftar kontributor ReVanced",
+        "logsLabel": "Catatan (Log)",
+        "logsHint": "Bagikan catatan debug perangkat (debug log)",
+        "apiURLLabel": "URL API",
+        "apiURLHint": "Konfigurasi URL API Anda",
+        "selectApiURL": "Pilih URL",
+        "aboutLabel": "Tentang",
+        "snackbarMessage": "Disalin ke clipboard"
+    },
+    "appInfoView": {
+        "widgetTitle": "Info aplikasi",
+        "openButton": "Buka",
+        "uninstallButton": "Copot pemasangan",
+        "patchButton": "Modifikasi",
+        "unpatchButton": "Memulihkan",
+        "unpatchDialogText": "Apakah Anda yakin ingin memulihkan aplikasi ini?",
+        "rootDialogTitle": "Kesalahan",
+        "rootDialogText": "Aplikasi terpasang dengan mode root aktif tetapi mode root sendang nonaktif.\nMohon untuk mengaktifkan mode root.",
+        "packageNameLabel": "Nama Aplikasi",
+        "installTypeLabel": "Tipe pemasangan",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Tanggal termodifikasi",
+        "patchedDateHint": "{date} {time}",
+        "appliedPatchesLabel": "Modifikasi terpasang",
+        "appliedPatchesHint": "{quantity} modifikasi terpasang"
+    },
+    "contributorsView": {
+        "widgetTitle": "Kontributor",
+        "patcherContributors": "Kontributor Pemodifikasi",
+        "patchesContributors": "Kontributor Modifikasi",
+        "integrationsContributors": "Kontributor Integrasi",
+        "cliContributors": "Kontributor CLI",
+        "managerContributors": "Kontributor Manager"
+    }
+}
