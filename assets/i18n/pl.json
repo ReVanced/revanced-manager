@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Anuluj",
+    "enabledLabel": "Włączone",
+    "disabledLabel": "Wyłączone",
+    "yesButton": "Tak",
+    "noButton": "Nie",
+    "navigationView": {
+        "dashboardTab": "Panel główny",
+        "patcherTab": "Patcher",
+        "settingsTab": "Ustawienia"
+    },
+    "homeView": {
+        "widgetTitle": "Panel główny",
+        "updatesSubtitle": "Aktualizacje",
+        "patchedSubtitle": "Zmodyfikowane aplikacje",
+        "updatesAvailable": "Dostępne aktualizacje",
+        "noUpdates": "Brak dostępnych aktualizacji",
+        "noInstallations": "Nie zainstalowano żadnych zmodyfikowanych aplikacji",
+        "installed": "Zainstalowane",
+        "updateDialogTitle": "Zaktualizuj Manager",
+        "updateDialogText": "Czy na pewno chcesz pobrać i zaktualizować ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager został zaktualizowany",
+        "notificationText": "Dotknij, aby otworzyć aplikację",
+        "downloadingMessage": "Pobieranie aktualizacji...",
+        "installingMessage": "Instalowanie aktualizacji...",
+        "errorDownloadMessage": "Nie udało się pobrać aktualizacji",
+        "errorInstallMessage": "Nie udało się zainstalować aktualizacji",
+        "noConnection": "Brak połączenia z internetem"
+    },
+    "applicationItem": {
+        "patchButton": "Patchuj",
+        "infoButton": "Info",
+        "changelogLabel": "Lista zmian"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Ładowanie...",
+        "timeagoLabel": "{time} temu",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Zaktualizuj Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Patchuj",
+        "patchDialogTitle": "Uwaga",
+        "patchDialogText": "Wykryto instalację split APK, więc mogą wystąpić błędy patchera. \nCzy jesteś pewien, że chcesz kontynuować?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Wybierz aplikację",
+        "widgetTitleSelected": "Wybrana aplikacja",
+        "widgetSubtitle": "Nie wybrano aplikacji",
+        "noAppsLabel": "Nie znaleziono żadnych aplikacji.",
+        "currentVersion": "Aktualna",
+        "recommendedVersion": "Zalecana",
+        "anyVersion": "dowolna"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Wybierz patche",
+        "widgetTitleSelected": "Wybrane patche",
+        "widgetSubtitle": "Najpierw wybierz aplikację",
+        "widgetEmptySubtitle": "Nie wybrano żadnych patchy"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Społeczność",
+        "widgetSubtitle": "Jesteśmy online!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Wybierz aplikację",
+        "searchBarHint": "Wyszukaj aplikacje",
+        "storageButton": "Pamięć",
+        "errorMessage": "Nie można użyć wybranej aplikacji."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Wybierz patche",
+        "searchBarHint": "Wyszukaj patchów",
+        "doneButton": "Gotowe",
+        "noPatchesFound": "Nie znaleziono żadnych patchów dla wybranej aplikacji"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Nieobsługiwana wersja",
+        "unsupportedDialogTitle": "Ostrzeżenie",
+        "unsupportedDialogText": "Wybranie tego patcha może spowodować błędy podczas patchowania.\n\nWersja aplikacji: {packageVersion}\nAktualnie wspierana wersja:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Instalator",
+        "installButton": "Zainstaluj",
+        "installRootButton": "Instaluj jako Root",
+        "openButton": "Otwórz",
+        "shareButton": "Udostępnij plik",
+        "notificationTitle": "ReVanced Manager patchuje",
+        "notificationText": "Dotknij, aby powrócić do instalatora",
+        "shareApkMenuOption": "Udostępnij plik APK",
+        "shareLogMenuOption": "Udostępnij logi",
+        "installErrorDialogTitle": "Błąd",
+        "installErrorDialogText1": "Instalacja za pomocą roota nie jest możliwa przy obecnym wyborze patchów.\nZpatchuj aplikacje ponownie lub wybierz instalacje bez roota.",
+        "installErrorDialogText2": "Instalacja bez roota nie jest możliwa przy obecnym wyborze patchów.\nZpatchuj aplikacje ponownie lub wybierz instalacje za pomocą roota, jeśli masz zrootowane urządzenie.",
+        "installErrorDialogText3": "Instalacja jako root nie jest możliwa, ponieważ oryginalny plik APK został wybrany z pamięci.\nWybierz zainstalowaną aplikację lub wybierz instalację bez używania roota.",
+        "noExit": "Instalator jest nadal uruchomiony..."
+    },
+    "settingsView": {
+        "widgetTitle": "Ustawienia",
+        "appearanceSectionTitle": "Wygląd",
+        "teamSectionTitle": "Zespół",
+        "infoSectionTitle": "Info",
+        "advancedSectionTitle": "Zaawansowane",
+        "darkThemeLabel": "Ciemny motyw",
+        "darkThemeHint": "Witamy po ciemnej stronie mocy",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
+        "languageLabel": "Język",
+        "englishOption": "Angielski",
+        "frenchOption": "Francuski",
+        "sourcesLabel": "Źródła",
+        "sourcesLabelHint": "Skonfiguruj własne źródła",
+        "orgPatchesLabel": "Organizacja Patchów",
+        "sourcesPatchesLabel": "Źródło Patchów",
+        "orgIntegrationsLabel": "Organizacja Integracji",
+        "sourcesIntegrationsLabel": "Źródło Integracji",
+        "sourcesResetDialogTitle": "Zresetuj",
+        "sourcesResetDialogText": "Czy na pewno chcesz przywrócić niestandardowe źródła do wartości domyślnych?",
+        "apiURLResetDialogText": "Czy jesteś pewien, że chcesz przywrócić wszystkie adresy API do domyślnych wartości?",
+        "contributorsLabel": "Współtwórcy",
+        "contributorsHint": "Lista współtwórców ReVanced",
+        "logsLabel": "Logi",
+        "logsHint": "Udostępnij logi",
+        "apiURLLabel": "Adres API",
+        "apiURLHint": "Ustaw własny adres API",
+        "selectApiURL": "Wybierz adres",
+        "aboutLabel": "O Aplikacji",
+        "snackbarMessage": "Skopiowano do schowka"
+    },
+    "appInfoView": {
+        "widgetTitle": "O aplikacji",
+        "openButton": "Otwórz",
+        "uninstallButton": "Odinstaluj",
+        "patchButton": "Patchuj",
+        "unpatchButton": "Odpatchuj",
+        "unpatchDialogText": "Czy na pewno chcesz odpachować tę aplikację?",
+        "rootDialogTitle": "Błąd",
+        "rootDialogText": "Aplikacja została zainstalowana z uprawnieniami root, ale obecnie dostęp do roota jest wyłączony.\nProszę przywrócić dostęp do roota.",
+        "packageNameLabel": "Nazwa Pakietu",
+        "installTypeLabel": "Typ Instalacji",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Data Pachowania",
+        "patchedDateHint": "{date} o godzinie {time}",
+        "appliedPatchesLabel": "Zastosowane Patche",
+        "appliedPatchesHint": "Zastosowano {quantity} patchów"
+    },
+    "contributorsView": {
+        "widgetTitle": "Współtwórcy",
+        "patcherContributors": "Współtwórcy Patchera",
+        "patchesContributors": "Współtwórcy Patchów",
+        "integrationsContributors": "Współtwórcy Integracji",
+        "cliContributors": "Współtwórcy CLI",
+        "managerContributors": "Współtwórcy Menedżera"
+    }
+}
