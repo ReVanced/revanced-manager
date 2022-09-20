@@ -178,6 +178,7 @@ class InstallerViewModel extends BaseViewModel {
         _app.patchDate = DateTime.now();
         _app.appliedPatches = _patches.map((p) => p.name).toList();
         if (hasMicroG) {
+          _app.name += ' ReVanced';
           _app.packageName = _app.packageName.replaceFirst(
             'com.google.',
             'app.revanced.',
