@@ -1,68 +1,68 @@
 {
     "okButton": "OK",
-    "cancelButton": "Cancel",
-    "enabledLabel": "Enabled",
-    "disabledLabel": "Disabled",
-    "yesButton": "Yes",
-    "noButton": "No",
+    "cancelButton": "Anuluj",
+    "enabledLabel": "Włączone",
+    "disabledLabel": "Wyłączone",
+    "yesButton": "Tak",
+    "noButton": "Nie",
     "navigationView": {
-        "dashboardTab": "Dashboard",
+        "dashboardTab": "Panel główny",
         "patcherTab": "Patcher",
-        "settingsTab": "Settings"
+        "settingsTab": "Ustawienia"
     },
     "homeView": {
         "widgetTitle": "Dashboard",
-        "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Patched Applications",
-        "updatesAvailable": "Updates available",
-        "noUpdates": "No updates available",
-        "noInstallations": "No patched applications installed",
-        "installed": "Installed",
-        "updateDialogTitle": "Update Manager",
-        "updateDialogText": "Are you sure you want to download and update ReVanced Manager?",
-        "notificationTitle": "ReVanced Manager was updated",
-        "notificationText": "Tap to open the app",
-        "downloadingMessage": "Downloading update...",
-        "installingMessage": "Installing update...",
-        "errorDownloadMessage": "Unable to download update",
-        "errorInstallMessage": "Unable to install update",
-        "noConnection": "No internet connection"
+        "updatesSubtitle": "Aktualizacje",
+        "patchedSubtitle": "Zmodyfikowane aplikacje",
+        "updatesAvailable": "Dostępne aktualizacje",
+        "noUpdates": "Brak dostępnych aktualizacji",
+        "noInstallations": "Nie zainstalowano żadnych zmodyfikowanych aplikacji",
+        "installed": "Zainstalowane",
+        "updateDialogTitle": "Zaktualizuj Manager",
+        "updateDialogText": "Czy na pewno chcesz pobrać i zaktualizować ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager został zaktualizowany",
+        "notificationText": "Dotknij, aby otworzyć aplikację",
+        "downloadingMessage": "Pobieranie aktualizacji...",
+        "installingMessage": "Instalowanie aktualizacji...",
+        "errorDownloadMessage": "Nie udało się pobrać aktualizacji",
+        "errorInstallMessage": "Nie udało się zainstalować aktualizacji",
+        "noConnection": "Brak połączenia z internetem"
     },
     "applicationItem": {
-        "patchButton": "Patch",
+        "patchButton": "Patchuj",
         "infoButton": "Info",
-        "changelogLabel": "Changelog"
+        "changelogLabel": "Lista zmian"
     },
     "latestCommitCard": {
-        "loadingLabel": "Loading...",
-        "timeagoLabel": "{time} ago",
+        "loadingLabel": "Ładowanie...",
+        "timeagoLabel": "{time} temu",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update Manager"
+        "updateButton": "Zaktualizuj Manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "Patch",
-        "patchDialogTitle": "Warning",
+        "patchButton": "Patchuj",
+        "patchDialogTitle": "Uwaga",
         "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors may occur.\nAre you sure you want to proceed with patching a split base APK?"
     },
     "appSelectorCard": {
-        "widgetTitle": "Select application",
-        "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected",
-        "noAppsLabel": "No applications found.",
+        "widgetTitle": "Wybierz aplikację",
+        "widgetTitleSelected": "Wybrana aplikacja",
+        "widgetSubtitle": "Nie wybrano aplikacji",
+        "noAppsLabel": "Nie znaleziono żadnych aplikacji.",
         "currentVersion": "Current",
         "recommendedVersion": "Recommended",
-        "anyVersion": "any"
+        "anyVersion": "dowolna"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Select patches",
-        "widgetTitleSelected": "Selected patches",
-        "widgetSubtitle": "Select an application first",
-        "widgetEmptySubtitle": "No patches selected"
+        "widgetTitle": "Wybierz patche",
+        "widgetTitleSelected": "Wybrane patche",
+        "widgetSubtitle": "Najpierw wybierz aplikację",
+        "widgetEmptySubtitle": "Nie wybrano żadnych patchy"
     },
     "socialMediaCard": {
-        "widgetTitle": "Socials",
+        "widgetTitle": "Społeczność",
         "widgetSubtitle": "We are online!"
     },
     "appSelectorView": {
