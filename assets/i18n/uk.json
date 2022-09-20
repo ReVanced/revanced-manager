@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Скасувати",
+    "enabledLabel": "Увімкнено",
+    "disabledLabel": "Вимкнено",
+    "yesButton": "Так",
+    "noButton": "Ні",
+    "navigationView": {
+        "dashboardTab": "Головна панель",
+        "patcherTab": "Патчер",
+        "settingsTab": "Налаштування"
+    },
+    "homeView": {
+        "widgetTitle": "Головна панель",
+        "updatesSubtitle": "Оновлення",
+        "patchedSubtitle": "Пропатчені додатки",
+        "updatesAvailable": "Доступні оновлення",
+        "noUpdates": "Немає доступних оновлень",
+        "noInstallations": "Пропатчені додатки не встановлено",
+        "installed": "Встановлено",
+        "updateDialogTitle": "Оновити Менеджер",
+        "updateDialogText": "Ви впевнені, що хочете завантажити та оновити ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager оновлено",
+        "notificationText": "Торкніться, щоб відкрити додаток",
+        "downloadingMessage": "Оновлення завантажується...",
+        "installingMessage": "Оновлення встановлюєтся...",
+        "errorDownloadMessage": "Неможливо завантажити оновлення",
+        "errorInstallMessage": "Не вдалося встановити оновлення",
+        "noConnection": "Немає з’єднання з Інтернетом"
+    },
+    "applicationItem": {
+        "patchButton": "Патч",
+        "infoButton": "Деталі",
+        "changelogLabel": "Список змін"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Завантаження...",
+        "timeagoLabel": "{time} тому",
+        "patcherLabel": "Патчер: ",
+        "managerLabel": "Менеджер: ",
+        "updateButton": "Оновити Менеджер"
+    },
+    "patcherView": {
+        "widgetTitle": "Патчер",
+        "patchButton": "Патч",
+        "patchDialogTitle": "Увага",
+        "patchDialogText": "Ви обрали додаток й було виявлено встановлення через Split APK що може призвести до помилок під час модифікації.\nВи дійсно хочете продовжити модифікувати Split APK?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Виберіть застосунок",
+        "widgetTitleSelected": "Обраний застосунок",
+        "widgetSubtitle": "Застосунок не обрано",
+        "noAppsLabel": "Застосунки не знайдено.",
+        "currentVersion": "Поточна версія",
+        "recommendedVersion": "Рекомендовано",
+        "anyVersion": "будь-яка"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Оберіть модифікації",
+        "widgetTitleSelected": "Обрані модифікації",
+        "widgetSubtitle": "Спочатку оберіть застосунок",
+        "widgetEmptySubtitle": "Модифікації не вибрано"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Мережі",
+        "widgetSubtitle": "Ми в мережі!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Оберіть застосунок",
+        "searchBarHint": "Пошук застосунку",
+        "storageButton": "Сховище",
+        "errorMessage": "Не вдалося використати вибрану програму."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Оберіть модифікації",
+        "searchBarHint": "Пошук модифікацій",
+        "doneButton": "Готово",
+        "noPatchesFound": "Для цього застосунку немає модифікацій"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Непідтримувана версія",
+        "unsupportedDialogTitle": "Увага",
+        "unsupportedDialogText": "Вибір цього патча може призвести до помилок при застосуванні.\n\nВерсія програми: {packageVersion}\nПоточна підтримувана версія:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Інсталятор",
+        "installButton": "Встановити",
+        "installRootButton": "Встановити як Root",
+        "openButton": "Відкрити",
+        "shareButton": "Поділитися файлом",
+        "notificationTitle": "ReVanced Manager патчить",
+        "notificationText": "Торкніться, щоб повернутися до інсталятора",
+        "shareApkMenuOption": "Поділитися APK-файлом",
+        "shareLogMenuOption": "Поділитися логами",
+        "installErrorDialogTitle": "Помилка",
+        "installErrorDialogText1": "Root-встановлення неможливе з цим набором патчів.\nПропатчіть додаток ще раз або виберіть встановлення без root.",
+        "installErrorDialogText2": "Не-root встановлення неможливе з цим набором патчів.\nПропатчіть додаток ще раз або виберіть встановлення з root, якщо Ваш пристрій рутовано.",
+        "installErrorDialogText3": "Root-встановлення неможливе, так як оригінальний APK-файл було вибрано з внутрішнього сховища.\nВиберіть встановлений додаток або виберіть встановлення без root.",
+        "noExit": "Встановлення ще триває..."
+    },
+    "settingsView": {
+        "widgetTitle": "Налаштування",
+        "appearanceSectionTitle": "Вигляд",
+        "teamSectionTitle": "Команда",
+        "infoSectionTitle": "Деталі",
+        "advancedSectionTitle": "Розширені",
+        "darkThemeLabel": "Темний режим",
+        "darkThemeHint": "Вітаємо на Темній стороні",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Насолоджуйтесь досвідом ближчим до Вашого пристрою",
+        "languageLabel": "Мова",
+        "englishOption": "English",
+        "frenchOption": "Français",
+        "sourcesLabel": "Джерела",
+        "sourcesLabelHint": "Налаштуйте власні джерела",
+        "orgPatchesLabel": "Організація патчів",
+        "sourcesPatchesLabel": "Джерело патчів",
+        "orgIntegrationsLabel": "Організація інтеграцій",
+        "sourcesIntegrationsLabel": "Джерело інтеграцій",
+        "sourcesResetDialogTitle": "Скинути",
+        "sourcesResetDialogText": "Ви впевнені, що хочете скинути власні джерела на джерела за замовчуванням?",
+        "apiURLResetDialogText": "Ви впевнені, що хочете скинути API URL до стандартного значення?",
+        "contributorsLabel": "Розробники",
+        "contributorsHint": "Список розробників ReVanced",
+        "logsLabel": "Логи",
+        "logsHint": "Поділитися логами налагодження пристрою",
+        "apiURLLabel": "API URL",
+        "apiURLHint": "Налаштувати власний API URL",
+        "selectApiURL": "Обрати URL",
+        "aboutLabel": "Про додаток",
+        "snackbarMessage": "Скопійовано в буфер обміну"
+    },
+    "appInfoView": {
+        "widgetTitle": "Інформація про додаток",
+        "openButton": "Відкрити",
+        "uninstallButton": "Видалити",
+        "patchButton": "Патч",
+        "unpatchButton": "Скасувати патч",
+        "unpatchDialogText": "Ви впевнені, що хочете скасувати патч цього додатку?",
+        "rootDialogTitle": "Помилка",
+        "rootDialogText": "Додаток установлено у режимі root, але наразі режим root вимкнено.\nБудь ласка, спочатку увімкніть режим root.",
+        "packageNameLabel": "Назва пакету",
+        "installTypeLabel": "Тип встановлення",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Не-root",
+        "patchedDateLabel": "Коли пропатчено",
+        "patchedDateHint": "{date} о {time}",
+        "appliedPatchesLabel": "Застосовані патчі",
+        "appliedPatchesHint": "{quantity} застосованих патчів"
+    },
+    "contributorsView": {
+        "widgetTitle": "Розробники",
+        "patcherContributors": "Розробники патчера",
+        "patchesContributors": "Розробники патчів",
+        "integrationsContributors": "Розробники інтеграцій",
+        "cliContributors": "Розробники CLI",
+        "managerContributors": "Розробники менеджера"
+    }
+}
