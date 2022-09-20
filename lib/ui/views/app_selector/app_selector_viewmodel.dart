@@ -43,9 +43,10 @@ class AppSelectorViewModel extends BaseViewModel {
       );
       if (result != null && result.files.single.path != null) {
         File apkFile = File(result.files.single.path!);
-        ApplicationWithIcon? application =
-            await DeviceApps.getAppFromStorage(apkFile.path, true)
-                as ApplicationWithIcon?;
+        ApplicationWithIcon? application = await DeviceApps.getAppFromStorage(
+          apkFile.path,
+          true,
+        ) as ApplicationWithIcon?;
         if (application != null) {
           locator<PatcherViewModel>().selectedApp = PatchedApplication(
             name: application.appName,

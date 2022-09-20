@@ -53,9 +53,10 @@ class PatcherAPI {
       for (Package package in patch.compatiblePackages) {
         try {
           if (!filteredApps.any((app) => app.packageName == package.name)) {
-            ApplicationWithIcon? app =
-                await DeviceApps.getApp(package.name, true)
-                    as ApplicationWithIcon?;
+            ApplicationWithIcon? app = await DeviceApps.getApp(
+              package.name,
+              true,
+            ) as ApplicationWithIcon?;
             if (app != null) {
               filteredApps.add(app);
             }

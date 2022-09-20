@@ -97,8 +97,10 @@ class ManagerAPI {
   Future<void> savePatchedApp(PatchedApplication app) async {
     List<PatchedApplication> patchedApps = getPatchedApps();
     patchedApps.removeWhere((a) => a.packageName == app.packageName);
-    ApplicationWithIcon? installed =
-        await DeviceApps.getApp(app.packageName, true) as ApplicationWithIcon?;
+    ApplicationWithIcon? installed = await DeviceApps.getApp(
+      app.packageName,
+      true,
+    ) as ApplicationWithIcon?;
     if (installed != null) {
       app.name = installed.appName;
       app.version = installed.versionName!;
@@ -202,9 +204,10 @@ class ManagerAPI {
       List<String> installedApps = await _rootAPI.getInstalledApps();
       for (String packageName in installedApps) {
         if (!patchedApps.any((app) => app.packageName == packageName)) {
-          ApplicationWithIcon? application =
-              await DeviceApps.getApp(packageName, true)
-                  as ApplicationWithIcon?;
+          ApplicationWithIcon? application = await DeviceApps.getApp(
+            packageName,
+            true,
+          ) as ApplicationWithIcon?;
           if (application != null) {
             unsavedApps.add(
               PatchedApplication(
@@ -229,9 +232,10 @@ class ManagerAPI {
       if (app.packageName.startsWith('app.revanced') &&
           !app.packageName.startsWith('app.revanced.manager.') &&
           !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
-        ApplicationWithIcon? application =
-            await DeviceApps.getApp(app.packageName, true)
-                as ApplicationWithIcon?;
+        ApplicationWithIcon? application = await DeviceApps.getApp(
+          app.packageName,
+          true,
+        ) as ApplicationWithIcon?;
         if (application != null) {
           unsavedApps.add(
             PatchedApplication(
