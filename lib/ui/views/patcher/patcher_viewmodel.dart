@@ -61,23 +61,22 @@ class PatcherViewModel extends BaseViewModel {
   Future<void> showWarningDialogs(BuildContext context) async {
     bool isValid = await isValidPatchConfig();
     bool isCompatible = await isCompatibleApk();
-    isCompatible = false;
 
     // Needs to check for mounted but this is a stateless widget, so we can't.
     // Fixed in a newer build of flutter: https://github.com/flutter/flutter/pull/111619
     // So I'm leaving it as is for the time being since it works.
 
     if (!isValid) {
-      bool yesPressed = await showInvalidPatchConfigDialog(context);
-      if (!yesPressed) return;
+      bool userContinued = await showInvalidPatchConfigDialog(context);
+      if (!userContinued) return;
     }
 
     if (!isCompatible) {
-      bool yesPressed = await showIncompatibleApkDialog(context);
-      if (!yesPressed) return;
+      bool userContinued = await showIncompatibleApkDialog(context);
+      if (!userContinued) return;
     }
 
-    // navigateToInstaller();
+    navigateToInstaller();
   }
 
   Future<bool> showInvalidPatchConfigDialog(BuildContext context) async {
