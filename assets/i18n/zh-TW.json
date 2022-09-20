@@ -66,11 +66,13 @@
         "widgetSubtitle": "掃榻以待，歡迎造訪！"
     },
     "appSelectorView": {
+        "viewTitle": "選取應用程式",
         "searchBarHint": "搜尋應用程式",
         "storageButton": "存儲空間",
         "errorMessage": "無法使用已選取的應用程式。"
     },
     "patchesSelectorView": {
+        "viewTitle": "選取修補檔",
         "searchBarHint": "搜尋修補檔",
         "doneButton": "完成",
         "noPatchesFound": "已選取的應用程式找不到任何修補檔。"
@@ -93,12 +95,12 @@
         "installErrorDialogTitle": "錯誤",
         "installErrorDialogText1": "目前選取的修補檔無法以 Root 安裝\n請選取無 Root 模式安裝或重新修補應用程式。",
         "installErrorDialogText2": "目前選取的修補檔無法以無 Root 安裝。\n如您的裝置已 Root，請選取 Root 模式安裝或重新修補應用程式。",
-        "installErrorDialogText3": "從存儲空間中選取的原始 APK 無法以 Root 安裝。\n請選取無 Root 模式安裝或重新修補應用程式。"
+        "installErrorDialogText3": "從存儲空間中選取的原始 APK 無法以 Root 安裝。\n請選取無 Root 模式安裝或重新修補應用程式。",
+        "noExit": "安裝程式仍在執行中..."
     },
     "settingsView": {
         "widgetTitle": "設定",
         "appearanceSectionTitle": "外觀",
-        "patcherSectionTitle": "修補工具",
         "teamSectionTitle": "團隊",
         "infoSectionTitle": "資訊",
         "advancedSectionTitle": "進階",
