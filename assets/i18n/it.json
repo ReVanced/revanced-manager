@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Annulla",
+    "enabledLabel": "Attivo",
+    "disabledLabel": "Disattivato",
+    "yesButton": "Si",
+    "noButton": "No",
+    "navigationView": {
+        "dashboardTab": "Gestione",
+        "patcherTab": "Modificatore",
+        "settingsTab": "Impostazioni"
+    },
+    "homeView": {
+        "widgetTitle": "Gestione",
+        "updatesSubtitle": "Aggiornamenti",
+        "patchedSubtitle": "Applicazioni modificate",
+        "updatesAvailable": "Aggiornamenti disponibili",
+        "noUpdates": "Nessun aggiornamento disponibile",
+        "noInstallations": "Nessuna applicazione modificata è stata installata",
+        "installed": "Installata",
+        "updateDialogTitle": "Aggiorna Manager",
+        "updateDialogText": "Sei sicuro di voler scaricare e aggiornare Revanced Manager?",
+        "notificationTitle": "ReVanced Manager è stato aggiornato",
+        "notificationText": "Tocca per aprire l'app",
+        "downloadingMessage": "Sto scaricando l'aggiornamento...",
+        "installingMessage": "Sto installando l'aggiornamento...",
+        "errorDownloadMessage": "Impossibile scaricare l'aggiornamento",
+        "errorInstallMessage": "Impossibile installare l'aggiornamento",
+        "noConnection": "Nessuna connessione internet"
+    },
+    "applicationItem": {
+        "patchButton": "Modifica",
+        "infoButton": "Info",
+        "changelogLabel": "Elenco dei cambiamenti"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Caricamento...",
+        "timeagoLabel": "{time} fa",
+        "patcherLabel": "Modificatore: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Aggiorna Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Modificatore",
+        "patchButton": "Modifica",
+        "patchDialogTitle": "Avviso",
+        "patchDialogText": "Hai selezionato una modifica di risorse ed è stata rilevata un'installazione APK suddivisa. Ciò potrebbe generare errori in fase di modifica.\nSei sicuro di voler procedere con la modifica di un'APK suddiviso?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Seleziona applicazione",
+        "widgetTitleSelected": "Applicazione selezionata",
+        "widgetSubtitle": "Nessuna applicazione selezionata",
+        "noAppsLabel": "Nessuna applicazione trovata.",
+        "currentVersion": "Corrente",
+        "recommendedVersion": "Consigliata",
+        "anyVersion": "qualsiasi"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Seleziona modifiche",
+        "widgetTitleSelected": "Modifiche selezionate",
+        "widgetSubtitle": "Seleziona prima un'applicazione",
+        "widgetEmptySubtitle": "Nessuna modifica selezionata"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Social",
+        "widgetSubtitle": "Siamo online!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Seleziona applicazione",
+        "searchBarHint": "Cerca applicazioni",
+        "storageButton": "Memoria",
+        "errorMessage": "Impossibile utilizzare l'applicazione selezionata."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Seleziona modifiche",
+        "searchBarHint": "Cerca modifiche",
+        "doneButton": "Fatto",
+        "noPatchesFound": "Nessuna modifica trovata per l'applicazione selezionata"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Versione non supportata",
+        "unsupportedDialogTitle": "Avviso",
+        "unsupportedDialogText": "Scegliere questa modifica potrebbe causare errori in fase di modifica.\n\nVersione dell'app: {packageVersion}\nVersioni attualmente supportate:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installatore",
+        "installButton": "Installa",
+        "installRootButton": "Installa come Root",
+        "openButton": "Apri",
+        "shareButton": "Condividi file",
+        "notificationTitle": "Revanced Manager è in fase di modifica",
+        "notificationText": "Tocca per tornare all'installatore",
+        "shareApkMenuOption": "Condividi APK",
+        "shareLogMenuOption": "Condividi log",
+        "installErrorDialogTitle": "Errore",
+        "installErrorDialogText1": "Impossibile installare come root con le modifiche attualmente selezionate. Modifica nuovamente la tua app o scegli la modalità di installazione non-root.",
+        "installErrorDialogText2": "Impossibile installare come non-root con le modifiche attualmente selezionate. Modifica nuovamente la tua app o scegli la modalità di installazione root.",
+        "installErrorDialogText3": "Impossibile eseguire l'installazione in modalità root poiché l'APK originale è stato selezionato dalla memoria.\nSeleziona un'app installata o il metodo di installazione non-root.",
+        "noExit": "L'installatore è ancora in esecuzione..."
+    },
+    "settingsView": {
+        "widgetTitle": "Impostazioni",
+        "appearanceSectionTitle": "Aspetto",
+        "teamSectionTitle": "Squadra",
+        "infoSectionTitle": "Info",
+        "advancedSectionTitle": "Avanzate",
+        "darkThemeLabel": "Tema Scuro",
+        "darkThemeHint": "Benvenuto sul Lato Oscuro",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Goditi un'esperienza più vicina al tuo dispositivo",
+        "languageLabel": "Lingua",
+        "englishOption": "Inglese",
+        "frenchOption": "Francese",
+        "sourcesLabel": "Sorgenti",
+        "sourcesLabelHint": "Configura le tue sorgenti personalizzate",
+        "orgPatchesLabel": "Organizzazione Modifiche",
+        "sourcesPatchesLabel": "Sorgente Modifiche",
+        "orgIntegrationsLabel": "Organizzazione Integrazioni",
+        "sourcesIntegrationsLabel": "Sorgente Integrazioni",
+        "sourcesResetDialogTitle": "Reimposta",
+        "sourcesResetDialogText": "Sei sicuro di voler reimpostare i sorgenti personalizzati ai valori predefiniti?",
+        "apiURLResetDialogText": "Sei sicuro di voler ripristinare l'URL delle API al suo valore predefinito?",
+        "contributorsLabel": "Collaboratori",
+        "contributorsHint": "Una lista di collaboratori di ReVanced",
+        "logsLabel": "Log",
+        "logsHint": "Condividi registri di debug del dispositivo",
+        "apiURLLabel": "URL API",
+        "apiURLHint": "Configura il tuo URL delle API personalizzato",
+        "selectApiURL": "Seleziona URL",
+        "aboutLabel": "Informazioni",
+        "snackbarMessage": "Copiato negli appunti"
+    },
+    "appInfoView": {
+        "widgetTitle": "Informazioni sull'app",
+        "openButton": "Apri",
+        "uninstallButton": "Disinstalla",
+        "patchButton": "Modifica",
+        "unpatchButton": "Ripristina",
+        "unpatchDialogText": "Sei sicuro di voler ripristinare questa applicazione?",
+        "rootDialogTitle": "Errore",
+        "rootDialogText": "L'app è stata installata in modalità root, ma attualmente quest'ultima risulta disattivata.\nSi prega di attivare prima la modalità root.",
+        "packageNameLabel": "Nome pacchetto",
+        "installTypeLabel": "Tipo di installazione",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-Root",
+        "patchedDateLabel": "Data di modifica",
+        "patchedDateHint": "{date} alle {time}",
+        "appliedPatchesLabel": "Modifiche applicate",
+        "appliedPatchesHint": "{quantity} modifiche applicate"
+    },
+    "contributorsView": {
+        "widgetTitle": "Collaboratori",
+        "patcherContributors": "Altri collaboratori",
+        "patchesContributors": "Collaboratori modifiche",
+        "integrationsContributors": "Collaboratori integrazioni",
+        "cliContributors": "Collaboratori CLI",
+        "managerContributors": "Collaboratori Manager"
+    }
+}
