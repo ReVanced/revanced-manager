@@ -17,7 +17,7 @@
         "updatesAvailable": "Güncellemeler mevcut",
         "noUpdates": "Güncelleme mevcut değil",
         "noInstallations": "Yamalanmış uygulama bulunmamaktadır",
-        "installed": "Kuruldu",
+        "installed": "Yüklendi",
         "updateDialogTitle": "Manager'ı güncelle",
         "updateDialogText": "ReVanced Manager'ın güncellemesini indirmek ve yüklemek istediğinize emin misiniz?",
         "notificationTitle": "ReVanced Manager güncellendi",
@@ -96,7 +96,7 @@
         "installErrorDialogText1": "Kök yüklemesi şuanki yama seçimiyle mümkün değil.\nUygulamanızı tekrar yamalayın veya köksüz yüklemeyi seçin.",
         "installErrorDialogText2": "Köksüz yükleme şuanki yama seçimiyle mümkün değil.\nUygulamanızı tekrar yamalayın veya cihazınız kök izni varsa kök ile yükleme yolunu seçin.",
         "installErrorDialogText3": "Orijinal APK depolamadan seçildiği için kök izni ile yükleme mümkün değil.\nYüklü olan bir uygulama seçin veya köksüz yüklemeyi seçin.",
-        "noExit": "Yükleyici hala çalışıyor..."
+        "noExit": "Yükleyici hâlâ çalışıyor..."
     },
     "settingsView": {
         "widgetTitle": "Ayarlar",
@@ -118,7 +118,7 @@
         "orgIntegrationsLabel": "Integrations Organizasyonu",
         "sourcesIntegrationsLabel": "Integrations Kaynakları",
         "sourcesResetDialogTitle": "Sıfırla",
-        "sourcesResetDialogText": "Bütün kaynakları varsayılan ayarlarına geri döndürmek istediğinize emin misiniz?",
+        "sourcesResetDialogText": "Özel kaynakları varsayılan ayarlarına geri döndürmek istediğinize emin misiniz?",
         "apiURLResetDialogText": "API URL'i varsayılan değerine sıfırlamak istediğinize emin misiniz?",
         "contributorsLabel": "Katkıda bulunanlar",
         "contributorsHint": "ReVanced'in katkıda bulunanlarının bir listesi",
@@ -145,7 +145,7 @@
         "nonRootTypeLabel": "Köksüz",
         "patchedDateLabel": "Yamalandığı Tarih",
         "patchedDateHint": "{date} saat {time}",
-        "appliedPatchesLabel": "Uygulanan Yamalar",
+        "appliedPatchesLabel": "Uygulanmış Yamalar",
         "appliedPatchesHint": "{quantity} tane uygulanmış yama"
     },
     "contributorsView": {
