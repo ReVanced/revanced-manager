@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
@@ -18,6 +18,7 @@ import 'package:wakelock/wakelock.dart';
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final Toast _toast = locator<Toast>();
   final PatchedApplication _app = locator<PatcherViewModel>().selectedApp!;
   final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
   static const _installerChannel = MethodChannel(
@@ -219,14 +220,7 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
-      Fluttertoast.showToast(
-        msg: FlutterI18n.translate(
-          context,
-          'installerView.noExit',
-        ),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      _toast.show('installerView.noExit');
       return false;
     }
     cleanPatcher();

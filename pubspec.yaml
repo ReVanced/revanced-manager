@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 0.0.14+14
+version: 0.0.16+16
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -63,6 +63,7 @@ dependencies:
   stacked_services: ^0.9.3
   stacked_themes: ^0.3.9
   timeago: ^3.2.2
+  timezone: ^0.8.0
   url_launcher: ^6.1.5
   wakelock: ^0.6.2
 

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_view.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_view.dart';
 import 'package:revanced_manager/ui/views/settings/settings_view.dart';
@@ -14,6 +16,7 @@ import 'package:stacked/stacked.dart';
 @lazySingleton
 class NavigationViewModel extends IndexTrackingViewModel {
   void initialize(BuildContext context) async {
+    locator<Toast>().initialize(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('permissionsRequested') == null) {
       await prefs.setBool('permissionsRequested', true);

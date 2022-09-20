@@ -21,7 +21,7 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   final TextEditingController _textController = TextEditingController();
-  bool _toggleSelectAll = true;
+  bool _toggleSelectAll = false;
 
   @override
   Widget build(BuildContext context) {

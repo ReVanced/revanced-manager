@@ -205,6 +205,7 @@ class AppInfoView extends StatelessWidget {
                                   child: Material(
                                     type: MaterialType.transparency,
                                     child: InkWell(
+                                      borderRadius: BorderRadius.circular(16.0),
                                       onTap: () => model.showUninstallDialog(
                                         context,
                                         app,

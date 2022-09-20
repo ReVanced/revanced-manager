@@ -2,6 +2,7 @@ import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
@@ -36,6 +37,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: PatcherAPI),
     LazySingleton(classType: RevancedAPI),
     LazySingleton(classType: GithubAPI),
+    LazySingleton(classType: Toast),
   ],
 )
 class AppSetup {}

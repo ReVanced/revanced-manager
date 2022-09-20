@@ -97,18 +97,6 @@ class SettingsView extends StatelessWidget {
                   ),
                   _settingsDivider,
                   SettingsSection(
-                    title: 'settingsView.patcherSectionTitle',
-                    children: <Widget>[
-                      SettingsTileDialog(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: 'settingsView.sourcesLabel',
-                        subtitle: 'settingsView.sourcesLabelHint',
-                        onTap: () => model.showSourcesDialog(context),
-                      ),
-                    ],
-                  ),
-                  _settingsDivider,
-                  SettingsSection(
                     title: 'settingsView.teamSectionTitle',
                     children: <Widget>[
                       ListTile(
@@ -134,6 +122,24 @@ class SettingsView extends StatelessWidget {
                   ),
                   _settingsDivider,
                   SettingsSection(
+                    title: 'settingsView.advancedSectionTitle',
+                    children: <Widget>[
+                      SettingsTileDialog(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: 'settingsView.apiURLLabel',
+                        subtitle: 'settingsView.apiURLHint',
+                        onTap: () => model.showApiUrlDialog(context),
+                      ),
+                      SettingsTileDialog(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: 'settingsView.sourcesLabel',
+                        subtitle: 'settingsView.sourcesLabelHint',
+                        onTap: () => model.showSourcesDialog(context),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
                     title: 'settingsView.infoSectionTitle',
                     children: <Widget>[
                       ListTile(
@@ -154,18 +160,6 @@ class SettingsView extends StatelessWidget {
                       ),
                       const AboutWidget(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      ),
-                    ],
-                  ),
-                  _settingsDivider,
-                  SettingsSection(
-                    title: 'settingsView.advancedSectionTitle',
-                    children: <Widget>[
-                      SettingsTileDialog(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: 'settingsView.apiURLLabel',
-                        subtitle: 'settingsView.apiURLHint',
-                        onTap: () => model.showApiUrlDialog(context),
                       ),
                     ],
                   ),
