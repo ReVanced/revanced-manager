@@ -1,0 +1,159 @@
+{
+    "okButton": "Εντάξει",
+    "cancelButton": "Ακύρωση",
+    "enabledLabel": "Ενεργό",
+    "disabledLabel": "Ανενεργό",
+    "yesButton": "Ναι",
+    "noButton": "Όχι",
+    "navigationView": {
+        "dashboardTab": "Πίνακας Ελέγχου",
+        "patcherTab": "Patcher",
+        "settingsTab": "Ρυθμίσεις"
+    },
+    "homeView": {
+        "widgetTitle": "Πίνακας Ελέγχου",
+        "updatesSubtitle": "Ενημερώσεις",
+        "patchedSubtitle": "Τροποποιημένες Εφαρμογές",
+        "updatesAvailable": "Διαθέσιμες ενημερώσεις",
+        "noUpdates": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
+        "noInstallations": "Δεν έχουν εγκατασταθεί τροποποιημένες εφαρμογές",
+        "installed": "Εγκατεστημένες",
+        "updateDialogTitle": "Ενημέρωση του Manager",
+        "updateDialogText": "Είστε βέβαιοι ότι θέλετε να κατεβάσετε και να ενημερώσετε το ReVanced Manager;",
+        "notificationTitle": "Το ReVanced Manager ενημερώθηκε",
+        "notificationText": "Πατήστε για να ανοίξετε την εφαρμογή",
+        "downloadingMessage": "Λήψη ενημέρωσης...",
+        "installingMessage": "Εγκατάσταση ενημέρωσης...",
+        "errorDownloadMessage": "Αδυναμία λήψης ενημέρωσης",
+        "errorInstallMessage": "Αδυναμία εγκατάστασης ενημέρωσης",
+        "noConnection": "Δεν υπάρχει σύνδεση στο διαδίκτυο"
+    },
+    "applicationItem": {
+        "patchButton": "Τροποποίηση",
+        "infoButton": "Πληροφορίες",
+        "changelogLabel": "Τι νέο υπάρχει"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Φόρτωση...",
+        "timeagoLabel": "{time} πριν",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Ενημέρωση του Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Τροποποίηση",
+        "patchDialogTitle": "Προειδοποίηση",
+        "patchDialogText": "Έχετε επιλέξει ένα resource patch και εντοπίστηκε μια εγκατάσταση split APK οπότε πιθανότατα να εμφανιστούν σφάλματα στο patching.\nΕίστε βέβαιοι ότι θέλετε να προχωρήσετε με την τροποποίηση ενός split base APK;"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Επιλέξτε εφαρμογή",
+        "widgetTitleSelected": "Επιλεγμένη εφαρμογή",
+        "widgetSubtitle": "Δεν έχει επιλεχθεί εφαρμογή",
+        "noAppsLabel": "Δεν βρέθηκαν εφαρμογές.",
+        "currentVersion": "Τρέχουσα",
+        "recommendedVersion": "Προτεινόμενη",
+        "anyVersion": "οποιαδήποτε"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Επιλέξτε τροποποιήσεις",
+        "widgetTitleSelected": "Επιλεγμένες τροποποιήσεις",
+        "widgetSubtitle": "Επιλέξτε πρώτα μια εφαρμογή",
+        "widgetEmptySubtitle": "Δεν επιλέχθηκαν τροποποιήσεις"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Κοινωνικά Δίκτυα",
+        "widgetSubtitle": "Είμαστε online!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Επιλέξτε εφαρμογή",
+        "searchBarHint": "Αναζήτηση εφαρμογών",
+        "storageButton": "Αποθηκευτικός χώρος",
+        "errorMessage": "Αδυναμία χρήσης της επιλεγμένης εφαρμογής."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Επιλέξτε τροποποιήσεις",
+        "searchBarHint": "Αναζήτηση τροποποιήσεων",
+        "doneButton": "Τέλος",
+        "noPatchesFound": "Δε βρέθηκαν τροποποιήσεις για την επιλεγμένη εφαρμογή"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Μη υποστηριζόμενη έκδοση",
+        "unsupportedDialogTitle": "Προειδοποίηση",
+        "unsupportedDialogText": "Επιλέγοντας αυτήν την τροποποίηση μπορεί να οδηγήσει σε σφάλματα patching.\n\nΈκδοση εφαρμογής: {packageVersion}\nΤωρινές υποστηριζόμενες εκδόσεις:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Πρόγραμμα Εγκατάστασης",
+        "installButton": "Εγκατάσταση",
+        "installRootButton": "Εγκατάσταση ως Root",
+        "openButton": "Άνοιγμα",
+        "shareButton": "Κοινοποίηση αρχείου",
+        "notificationTitle": "Το ReVanced Manager κάνει τροποποίηση",
+        "notificationText": "Πατήστε για να επιστρέψετε στο πρόγραμμα εγκατάστασης",
+        "shareApkMenuOption": "Κοινοποίηση Αρχείου APK",
+        "shareLogMenuOption": "Κοινοποίηση αρχείου καταγραφής",
+        "installErrorDialogTitle": "Σφάλμα",
+        "installErrorDialogText1": "Η εγκατάσταση Root δεν είναι δυνατή με την τρέχουσα επιλογή τροποποιήσεων.\nΤροποποιήστε ξανά την εφαρμογή σας ή επιλέξτε εγκατάσταση χωρίς root.",
+        "installErrorDialogText2": "Η εγκατάσταση χωρίς root δεν είναι δυνατή με την τρέχουσα επιλογή τροποποιήσεων.\nΤροποποιήστε ξανά την εφαρμογή σας ή επιλέξτε εγκατάσταση Root αν έχετε κάνει root τη συσκευή σας.",
+        "installErrorDialogText3": "Η εγκατάσταση Root δεν είναι δυνατή καθώς το αρχικό APK επιλέχθηκε από το χώρο αποθήκευσης.\nΕπιλέξτε μια εγκατεστημένη εφαρμογή ή επιλέξτε εγκατάσταση χωρίς root.",
+        "noExit": "Ο εγκαταστάτης εκτελείται ακόμη..."
+    },
+    "settingsView": {
+        "widgetTitle": "Ρυθμίσεις",
+        "appearanceSectionTitle": "Εμφάνιση",
+        "teamSectionTitle": "Ομάδα",
+        "infoSectionTitle": "Πληροφορίες",
+        "advancedSectionTitle": "Για Προχωρημένους",
+        "darkThemeLabel": "Σκοτεινή Λειτουργία",
+        "darkThemeHint": "Καλώς ήλθατε στη σκοτεινή πλευρά",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Απολαύστε μια εμπειρία πιο κοντά στη συσκευή σας",
+        "languageLabel": "Γλώσσα",
+        "englishOption": "Αγγλικά",
+        "frenchOption": "Γαλλικά",
+        "sourcesLabel": "Πηγές",
+        "sourcesLabelHint": "Διαμορφώστε τις δικές σας προσαρμοσμένες πηγές",
+        "orgPatchesLabel": "Οργάνωση Τροποποιήσεων",
+        "sourcesPatchesLabel": "Πηγή Τροποποιήσεων",
+        "orgIntegrationsLabel": "Οργάνωση Ενσωματώσεων",
+        "sourcesIntegrationsLabel": "Πηγή Ενσωματώσεων",
+        "sourcesResetDialogTitle": "Επαναφορά",
+        "sourcesResetDialogText": "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τις προσαρμοσμένες πηγές στις προεπιλεγμένες τιμές τους;",
+        "apiURLResetDialogText": "Είστε βέβαιοι ότι θέλετε να επαναφέρετε το API URL στην προεπιλεγμένη τιμή του;",
+        "contributorsLabel": "Συνεισφέροντες",
+        "contributorsHint": "Κατάλογος συνεισφερόντων του ReVanced",
+        "logsLabel": "Αρχεία καταγραφής",
+        "logsHint": "Κοινή χρήση αρχείων εντοπισμού σφαλμάτων συσκευής",
+        "apiURLLabel": "API URL",
+        "apiURLHint": "Διαμορφώστε το δικό σας προσαρμοσμένο API URL",
+        "selectApiURL": "Επιλογή Διεύθυνσης URL",
+        "aboutLabel": "Σχετικά με",
+        "snackbarMessage": "Αντιγράφηκε στο πρόχειρο"
+    },
+    "appInfoView": {
+        "widgetTitle": "Πληροφορίες εφαρμογής",
+        "openButton": "Άνοιγμα",
+        "uninstallButton": "Απεγκατάσταση",
+        "patchButton": "Τροποποίηση",
+        "unpatchButton": "Κατάργηση τροποποίησης",
+        "unpatchDialogText": "Είστε βέβαιοι ότι θέλετε να καταργήσετε τις τροποποιήσεις για αυτήν την εφαρμογή;",
+        "rootDialogTitle": "Σφάλμα",
+        "rootDialogText": "Η εφαρμογή εγκαταστάθηκε με ενεργή λειτουργία root, αλλά η τρέχουσα λειτουργία root της συσκευής είναι απενεργοποιημένη. Ενεργοποιήστε πρώτα τη λειτουργία root.",
+        "packageNameLabel": "Όνομα Πακέτου",
+        "installTypeLabel": "Τύπος εγκατάστασης",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Χωρίς root",
+        "patchedDateLabel": "Ημερομηνία Τροποποίησης",
+        "patchedDateHint": "{date} στις {time}",
+        "appliedPatchesLabel": "Εφαρμοσμένες Τροποποιήσεις",
+        "appliedPatchesHint": "{quantity} εφαρμοσμένες τροποποιήσεις"
+    },
+    "contributorsView": {
+        "widgetTitle": "Συνεισφέροντες",
+        "patcherContributors": "Συνεισφέροντες Patcher",
+        "patchesContributors": "Συνεισφέροντες Τροποποιήσεων",
+        "integrationsContributors": "Συνεισφέροντες Ενσωματώσεων",
+        "cliContributors": "Συνεισφέροντες CLI",
+        "managerContributors": "Συνεισφέροντες του Manager"
+    }
+}
