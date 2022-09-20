@@ -47,8 +47,8 @@
         "patchDialogText": "لقد اخترت تعديل مورد وتم اكتشاف تثبيت APK منقسم بحيث يمكن أن تحدث أخطاء في التصحيح.\nهل أنت متأكد من أنك تريد المضي قدما في تصحيح تطبيق APK المقسم؟"
     },
     "appSelectorCard": {
-        "widgetTitle": "إختر تطبيقاً",
-        "widgetTitleSelected": "التطبيق المختار",
+        "widgetTitle": "إختر تطبيقًا",
+        "widgetTitleSelected": "التطبيق المحدد",
         "widgetSubtitle": "لم يتم اختيار أي تطبيق",
         "noAppsLabel": "لم يتم العثور على تطبيقات.",
         "currentVersion": "الحالي",
@@ -73,8 +73,8 @@
     },
     "patchesSelectorView": {
         "viewTitle": "اختر التعديلات",
-        "searchBarHint": "ابحث التعديلات",
-        "doneButton": "أُنجز بنجاح",
+        "searchBarHint": "البحث عن التعديلات",
+        "doneButton": "تم",
         "noPatchesFound": "لم يتم العثور على تعديلات للتطبيق المحدد"
     },
     "patchItem": {
@@ -85,18 +85,18 @@
     "installerView": {
         "widgetTitle": "المثبت",
         "installButton": "تثبيت",
-        "installRootButton": "تثبيت كجذر",
-        "openButton": "إفتح",
+        "installRootButton": "تثبيت كـ Root",
+        "openButton": "فتح",
         "shareButton": "شارك ملف",
-        "notificationTitle": "ري فانسد بصَدَدِ التعديل",
+        "notificationTitle": "ReVanced Manager يقوم بعملية التعديل",
         "notificationText": "انقر للعودة إلى المثبت",
         "shareApkMenuOption": "مشاركة APK",
         "shareLogMenuOption": "مشاركة السجل",
         "installErrorDialogTitle": "خطأ",
-        "installErrorDialogText1": "التثبيت بطريقة root غير ممكن مع التصحيحات المختارة حالياً.\nأعد تعديل التطبيق الخاص بك أو اختر التثبيت بدون root.",
-        "installErrorDialogText2": "التثبيت بطريقة root غير ممكن مع التصحيحات المختارة حالياً\nأعد تعديل التطبيق الخاص بك أو اختر التثبيت دونroot.",
-        "installErrorDialogText3": "لا يمكن تثبيت بطريقة root لأن ملف APK تم اختياره من وحدة التخزين.\nحدد تطبيقًا مثبتًا أو اختر التثبيت بدون ميزة root.",
-        "noExit": "المثبت لا يزال يعمل..."
+        "installErrorDialogText1": "التثبيت بطريقة Root غير ممكن مع التعديلات التي تم اختيارها.\nأعد تعديل التطبيق الخاص بك أو اختر التثبيت كـ Non-Root.",
+        "installErrorDialogText2": "التثبيت بطريقة Non-Root غير ممكن مع التعديلات التي تم اختيارها.\nأعد تعديل التطبيق الخاص بك، أو اختر التثبيت كـ Root إذا كان قد تم عمل Root لجهازك.",
+        "installErrorDialogText3": "لا يمكن التثبيت بطريقة Root لأن ملف APK تم اختياره من وحدة التخزين.\nحدد تطبيقًا مثبتًا أو اختر التثبيت كـ Non-Root.",
+        "noExit": "لا يزال المثبت قيد العمل..."
     },
     "settingsView": {
         "widgetTitle": "إعدادات",
@@ -118,7 +118,7 @@
         "orgIntegrationsLabel": "المنظمة المطورة ل Integrations",
         "sourcesIntegrationsLabel": "مصدر الـ Integrations",
         "sourcesResetDialogTitle": "إعادة التعيين",
-        "sourcesResetDialogText": "هل انت متاكد من انك تريد اعادة الاختصارات الى وضعها الأساسي ؟",
+        "sourcesResetDialogText": "هل تريد بالتأكيد إعادة تعيين المصادر المخصصة إلى قيمها الافتراضية؟",
         "apiURLResetDialogText": "هل أنت متأكد من أنك تريد إعادة رابط API إلى القيم الافتراضية؟",
         "contributorsLabel": "المساهمون",
         "contributorsHint": "قائمة المساهمين في ReVanced",
@@ -150,7 +150,7 @@
     },
     "contributorsView": {
         "widgetTitle": "المساهمون",
-        "patcherContributors": "المساهمون في المعدّل",
+        "patcherContributors": "المساهمون المُعَدِّلون",
         "patchesContributors": "المساهمون في التعديلات",
         "integrationsContributors": "المساهمون في Integrations",
         "cliContributors": "المساهمون في CLI",
