@@ -80,7 +80,7 @@
     "patchItem": {
         "unsupportedWarningButton": "サポートされていないバージョン",
         "unsupportedDialogTitle": "警告",
-        "unsupportedDialogText": "このパッチは、適用時にエラーが発生する場合があります。\n\nアプリバージョン: {packageVersion}\n現在サポートされているバージョン:\n{supportedVersions}"
+        "unsupportedDialogText": "このパッチを選択すると、パッチの適用に失敗することがあります。\n\nアプリバージョン: {packageVersion}\n現在サポートされているバージョン:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "インストーラー",
