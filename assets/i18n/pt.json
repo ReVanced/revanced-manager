@@ -13,15 +13,15 @@
     "homeView": {
         "widgetTitle": "Painel de controlo",
         "updatesSubtitle": "Atualizações",
-        "patchedSubtitle": "Aplicativos Modificados",
-        "updatesAvailable": "Atualizações disponiveis",
+        "patchedSubtitle": "Aplicações Modificadas",
+        "updatesAvailable": "Atualizações disponíveis",
         "noUpdates": "Nenhuma atualização disponível",
-        "noInstallations": "Nenhum aplicativo modificado instalado",
+        "noInstallations": "Nenhuma aplicação modificada instalada",
         "installed": "Instalado",
         "updateDialogTitle": "Atualizar Manager",
-        "updateDialogText": "Tens a certeza que desejas baixar e atualizar o ReVanced Manager?",
-        "notificationTitle": "Gerenciador ReVanced foi atualizado",
-        "notificationText": "Toca para abrir a app",
+        "updateDialogText": "Tens a certeza que desejas descarregar e atualizar o ReVanced Manager?",
+        "notificationTitle": "O ReVanced Manager foi atualizado",
+        "notificationText": "Toca para abrir a aplicação",
         "downloadingMessage": "A transferir a atualização...",
         "installingMessage": "A instalar atualização...",
         "errorDownloadMessage": "Não é possível transferir a atualização",
@@ -30,7 +30,7 @@
     },
     "applicationItem": {
         "patchButton": "Modificar",
-        "infoButton": "Info",
+        "infoButton": "Informação",
         "changelogLabel": "Alterações"
     },
     "latestCommitCard": {
@@ -44,7 +44,7 @@
         "widgetTitle": "Patcher",
         "patchButton": "Modificar",
         "patchDialogTitle": "Aviso",
-        "patchDialogText": "Tu selecionaste um patch de recurso e uma instalação dividida do APK foi detetada então podem ocorrer erros de modificação.\nVocê tem certeza que deseja prosseguir com correção de um APK base dividido?"
+        "patchDialogText": "Tu selecionaste um patch de recurso e uma instalação dividida do APK foi detetada então podem ocorrer erros de modificação.\nTens a certeza que desejas prosseguir com a correção de um APK base dividido?"
     },
     "appSelectorCard": {
         "widgetTitle": "Selecionar aplicação",
@@ -56,31 +56,31 @@
         "anyVersion": "qualquer"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Selecionar patches",
-        "widgetTitleSelected": "Patches selecionados",
+        "widgetTitle": "Selecionar modificações",
+        "widgetTitleSelected": "Modificações selecionadas",
         "widgetSubtitle": "Seleciona uma aplicação primeiro",
-        "widgetEmptySubtitle": "Nenhum patch selecionado"
+        "widgetEmptySubtitle": "Nenhuma modificação selecionada"
     },
     "socialMediaCard": {
         "widgetTitle": "Redes sociais",
-        "widgetSubtitle": "Nós estamos online!"
+        "widgetSubtitle": "Estamos online!"
     },
     "appSelectorView": {
         "viewTitle": "Selecionar aplicação",
         "searchBarHint": "Procurar aplicações",
         "storageButton": "Armazenamento",
-        "errorMessage": "Não é possível usar o aplicativo selecionado."
+        "errorMessage": "Não é possível usar a aplicação selecionada."
     },
     "patchesSelectorView": {
-        "viewTitle": "Selecionar patches",
-        "searchBarHint": "Buscar patches",
-        "doneButton": "Concluido",
-        "noPatchesFound": "Nenhum patch encontrado para o aplicativo selecionado"
+        "viewTitle": "Selecionar modificações",
+        "searchBarHint": "Procurar modificações",
+        "doneButton": "Concluído",
+        "noPatchesFound": "Nenhuma modificação encontrada para a aplicação selecionada"
     },
     "patchItem": {
         "unsupportedWarningButton": "Versão não suportada",
         "unsupportedDialogTitle": "Aviso",
-        "unsupportedDialogText": "Selecionar este patch pode resultar em erros de patch.\n\nVersão do app: {packageVersion}\nVersões atuais suportadas:\n{supportedVersions}"
+        "unsupportedDialogText": "Selecionar esta modificação pode resultar em erros.\n\nVersão da aplicação: {packageVersion}\nVersões atuais suportadas:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Instalador",
@@ -88,21 +88,21 @@
         "installRootButton": "Instalar como Root",
         "openButton": "Abrir",
         "shareButton": "Partilhar ficheiro",
-        "notificationTitle": "Gerente ReVancado está fazendo patches",
-        "notificationText": "Toque para retornar ao instalador",
+        "notificationTitle": "O ReVanced Manager está a fazer as modificações",
+        "notificationText": "Toca para voltar ao instalador",
         "shareApkMenuOption": "Partilhar APK",
         "shareLogMenuOption": "Partilhar registo",
         "installErrorDialogTitle": "Erro",
-        "installErrorDialogText1": "A instalação com root não é possível com a seleção de patches atuais.\nFaz repatch no teu aplicativo ou escolhe uma instalação sem root.",
-        "installErrorDialogText2": "A instalação sem root não é possível com a seleção de patches atuais.\nFaz repatch no teu aplicativo ou escolhe uma instalação com root.",
-        "installErrorDialogText3": "Não é possível instalar com root, pois o APK original foi selecionado do armazenamento.\nSelecione um aplicativo instalado ou escolha uma instalação sem root.",
-        "noExit": "Instalador ainda está em execução..."
+        "installErrorDialogText1": "A instalação com root não é possível com a seleção de modificações atuais.\nVolta a fazer a modificação da tua aplicação ou escolhe uma instalação sem root.",
+        "installErrorDialogText2": "A instalação sem root não é possível com a seleção de modificações atuais.\nVolta a fazer a modificação da tua aplicação ou escolhe uma instalação com root se o teu dispositivo estiver rooted.",
+        "installErrorDialogText3": "Não é possível instalar com root, pois o APK original foi selecionado do armazenamento.\nSeleciona uma aplicação instalada ou escolhe uma instalação sem root.",
+        "noExit": "O instalador ainda está em execução..."
     },
     "settingsView": {
         "widgetTitle": "Definições",
         "appearanceSectionTitle": "Aparência",
         "teamSectionTitle": "Equipa",
-        "infoSectionTitle": "Info",
+        "infoSectionTitle": "Informação",
         "advancedSectionTitle": "Avançado",
         "darkThemeLabel": "Modo Escuro",
         "darkThemeHint": "Bem-vindo ao Dark Side",
