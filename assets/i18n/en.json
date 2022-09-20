@@ -44,7 +44,7 @@
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Warning",
-        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors may occur.\nAre you sure you want to proceed with patching a split base APK?"
+        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors may occur. Are you sure you want to proceed with patching a split base APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select application",
@@ -73,14 +73,14 @@
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
-        "searchBarHint": "Search patches",
+        "searchBarHint": "Select patches",
         "doneButton": "Done",
         "noPatchesFound": "No patches found for the selected app"
     },
     "patchItem": {
         "unsupportedWarningButton": "Unsupported version",
         "unsupportedDialogTitle": "Warning",
-        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
+        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -113,8 +113,8 @@
         "frenchOption": "French",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
-        "orgPatchesLabel" : "Patches Organization",
-        "sourcesPatchesLabel" : "Patches Source",
+        "orgPatchesLabel": "Patches Organization",
+        "sourcesPatchesLabel": "Patches Source",
         "orgIntegrationsLabel": "Integrations Organization",
         "sourcesIntegrationsLabel": "Integrations Source",
         "sourcesResetDialogTitle": "Reset",
