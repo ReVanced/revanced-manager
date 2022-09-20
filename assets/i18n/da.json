@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Afbryd",
+    "enabledLabel": "Aktiveret",
+    "disabledLabel": "Deaktiveret",
+    "yesButton": "Ja",
+    "noButton": "Nej",
+    "navigationView": {
+        "dashboardTab": "Oversigt",
+        "patcherTab": "Patcher",
+        "settingsTab": "Indstillinger"
+    },
+    "homeView": {
+        "widgetTitle": "Oversigt",
+        "updatesSubtitle": "Opdateringer",
+        "patchedSubtitle": "Patchede Apps",
+        "updatesAvailable": "Opdateringer tilgængelige",
+        "noUpdates": "Ingen tilgængelige opdateringer",
+        "noInstallations": "Ingen patchede apps installeret",
+        "installed": "Installeret",
+        "updateDialogTitle": "Opdater Manager",
+        "updateDialogText": "Er du sikker på, at du vil downloade og opdatere ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager blev opdateret",
+        "notificationText": "Tryk for at åbne appen",
+        "downloadingMessage": "Downloader opdatering...",
+        "installingMessage": "Installerer opdatering...",
+        "errorDownloadMessage": "Kunne ikke downloade opdateringen",
+        "errorInstallMessage": "Kunne ikke installere opdateringen",
+        "noConnection": "Ingen Internetforbindelse"
+    },
+    "applicationItem": {
+        "patchButton": "Patch",
+        "infoButton": "Info",
+        "changelogLabel": "Ændringslog"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Indlæser...",
+        "timeagoLabel": "{time} siden",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Opdater Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
+        "patchDialogTitle": "Advarsel",
+        "patchDialogText": "Du har valgt en ressource patch og en split APK installation blev opdaget så patching fejl kan forekomme.\nEr du sikker på du vil fortsætte med at patche en split base APK?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Vælg applikation",
+        "widgetTitleSelected": "Valgt applikation",
+        "widgetSubtitle": "Ingen applikation valgt",
+        "noAppsLabel": "Ingen applikationer fundet.",
+        "currentVersion": "Nuværende",
+        "recommendedVersion": "Anbefalet",
+        "anyVersion": "enhver"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Vælg patches",
+        "widgetTitleSelected": "Valgte patches",
+        "widgetSubtitle": "Vælg først en applikation",
+        "widgetEmptySubtitle": "Ingen patches valgt"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Sociale medier",
+        "widgetSubtitle": "Vi er online!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Vælg applikation",
+        "searchBarHint": "Søg efter applikationer",
+        "storageButton": "Lager",
+        "errorMessage": "Kunne ikke bruge valgte applikation."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Vælg patches",
+        "searchBarHint": "Søg efter patches",
+        "doneButton": "Udført",
+        "noPatchesFound": "Ingen patches fundet til den valgte app"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Ikke-understøttet version",
+        "unsupportedDialogTitle": "Advarsel",
+        "unsupportedDialogText": "Valg af denne patch kan medføre patching-fejl.\n\nApp-version: {packageVersion}\nNuværende understøttede versioner:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installationsprogram",
+        "installButton": "Installér",
+        "installRootButton": "Installér som Root",
+        "openButton": "Åbn",
+        "shareButton": "Del fil",
+        "notificationTitle": "ReVanced Manager patcher",
+        "notificationText": "Tryk for at gå tilbage til installationsprogrammet",
+        "shareApkMenuOption": "Del APK",
+        "shareLogMenuOption": "Del log",
+        "installErrorDialogTitle": "Fejl",
+        "installErrorDialogText1": "Root-installation er ikke muligt med de nuværende valgte patches.\nRepatch din app eller vælg ikke-root installation.",
+        "installErrorDialogText2": "Ikke-root installation er ikke muligt med de nuværende valgte patches.\nRepatch din app eller vælg root-installation hvis du har din enhed rooted.",
+        "installErrorDialogText3": "Root-installation er ikke muligt, da den oprindelige APK blev valgt fra lager.\nVælg en installeret app eller vælg ikke-root installation.",
+        "noExit": "Installationsprogrammet kører stadig..."
+    },
+    "settingsView": {
+        "widgetTitle": "Indstillinger",
+        "appearanceSectionTitle": "Udseende",
+        "teamSectionTitle": "Holdet",
+        "infoSectionTitle": "Info",
+        "advancedSectionTitle": "Avanceret",
+        "darkThemeLabel": "Mørke Tilstand",
+        "darkThemeHint": "Velkommen til den Mørke Side",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Nyd en oplevelse tættere på din enhed",
+        "languageLabel": "Sprog",
+        "englishOption": "Engelsk",
+        "frenchOption": "Fransk",
+        "sourcesLabel": "Kilder",
+        "sourcesLabelHint": "Konfigurér dine brugerdefinerede kilder",
+        "orgPatchesLabel": "Organisation for Patches",
+        "sourcesPatchesLabel": "Kilde til Patches",
+        "orgIntegrationsLabel": "Organisation for Integrationer",
+        "sourcesIntegrationsLabel": "Kilde til Integrationer",
+        "sourcesResetDialogTitle": "Nulstil",
+        "sourcesResetDialogText": "Er du sikker på, at du vil nulstille brugerdefinerede kilder til deres standardværdier?",
+        "apiURLResetDialogText": "Er du sikker på, at du vil nulstille API URL til dens standardværdi?",
+        "contributorsLabel": "Medvirkende",
+        "contributorsHint": "En liste over medvirkende til ReVanced",
+        "logsLabel": "Logfiler",
+        "logsHint": "Del enheds-fejlfindingslogfiler",
+        "apiURLLabel": "API URL",
+        "apiURLHint": "Konfigurer din brugerdefineret API URL",
+        "selectApiURL": "Vælg URL",
+        "aboutLabel": "Om",
+        "snackbarMessage": "Kopieret til udklipsholder"
+    },
+    "appInfoView": {
+        "widgetTitle": "Appinfo",
+        "openButton": "Åbn",
+        "uninstallButton": "Afinstallér",
+        "patchButton": "Patch",
+        "unpatchButton": "Unpatch",
+        "unpatchDialogText": "Er du sikker på du vil unpatche denne app?",
+        "rootDialogTitle": "Fejl",
+        "rootDialogText": "App blev installeret med root-tilstand aktiveret, men i øjeblikket er root-tilstand deaktiveret.\nAktivér root-tilstand først.",
+        "packageNameLabel": "Pakkenavn",
+        "installTypeLabel": "Installationstype",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Ikke-root",
+        "patchedDateLabel": "Dato for patching",
+        "patchedDateHint": "{date} kl. {time}",
+        "appliedPatchesLabel": "Anvendte Patches",
+        "appliedPatchesHint": "{quantity} anvendte patches"
+    },
+    "contributorsView": {
+        "widgetTitle": "Medvirkende",
+        "patcherContributors": "Patcher Medvirkende",
+        "patchesContributors": "Patches Medvirkende",
+        "integrationsContributors": "Integrationer Medvirkende",
+        "cliContributors": "CLI Medvirkende",
+        "managerContributors": "Manager Medvirkende"
+    }
+}
