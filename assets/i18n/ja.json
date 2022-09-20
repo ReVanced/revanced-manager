@@ -22,10 +22,10 @@
         "updateDialogText": "ReVanced Managerをダウンロードして更新しますか？",
         "notificationTitle": "ReVanced Managerを更新しました！",
         "notificationText": "タップしてアプリを起動",
-        "downloadingMessage": "アップデートをダウンロード中!",
-        "installingMessage": "アップデートをインストール中...しばらくお待ち下さい",
-        "errorDownloadMessage": "アップデートをダウンロード出来ませんでした。",
-        "errorInstallMessage": "アップデートをインストール出来ませんでした。",
+        "downloadingMessage": "アップデートをダウンロード中...",
+        "installingMessage": "アップデートをインストール中...",
+        "errorDownloadMessage": "アップデートをダウンロード出来ませんでした",
+        "errorInstallMessage": "アップデートをインストール出来ませんでした",
         "noConnection": "ネットワーク接続がありません"
     },
     "applicationItem": {
@@ -34,7 +34,7 @@
         "changelogLabel": "更新履歴"
     },
     "latestCommitCard": {
-        "loadingLabel": "読み込み中",
+        "loadingLabel": "読み込み中...",
         "timeagoLabel": "{time} 前",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
@@ -49,8 +49,8 @@
     "appSelectorCard": {
         "widgetTitle": "アプリケーションを選択",
         "widgetTitleSelected": "アプリケーション選択済",
-        "widgetSubtitle": "アプリケーションが選択されていません。",
-        "noAppsLabel": "アプリケーションが見つかりませんでした。",
+        "widgetSubtitle": "アプリケーションが選択されていません",
+        "noAppsLabel": "アプリケーションが見つかりませんでした",
         "currentVersion": "現在",
         "recommendedVersion": "推奨",
         "anyVersion": "any"
@@ -58,24 +58,24 @@
     "patchSelectorCard": {
         "widgetTitle": "パッチの選択",
         "widgetTitleSelected": "パッチ選択済",
-        "widgetSubtitle": "最初にアプリケーションを選択してください。",
-        "widgetEmptySubtitle": "パッチが選択されていません。"
+        "widgetSubtitle": "最初にアプリケーションを選択してください",
+        "widgetEmptySubtitle": "パッチが選択されていません"
     },
     "socialMediaCard": {
-        "widgetTitle": "ソーシャルメディア",
+        "widgetTitle": "ソーシャル",
         "widgetSubtitle": "私たちはオンラインです!"
     },
     "appSelectorView": {
         "viewTitle": "アプリケーションの選択",
         "searchBarHint": "アプリケーションの検索",
         "storageButton": "ストレージ",
-        "errorMessage": "選択したアプリケーションは使用できません。"
+        "errorMessage": "選択したアプリケーションは使用できません"
     },
     "patchesSelectorView": {
     	"viewTitle": "パッチの選択",
         "searchBarHint": "パッチの検索",
         "doneButton": "完了",
-        "noPatchesFound": "選択したアプリのパッチは見つかりませんでした。"
+        "noPatchesFound": "選択したアプリのパッチは見つかりませんでした"
     },
     "patchItem": {
         "unsupportedWarningButton": "サポートされていないバージョン",
