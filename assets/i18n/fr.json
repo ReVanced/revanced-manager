@@ -1,58 +1,58 @@
 {
     "okButton": "OK",
-    "cancelButton": "Cancel",
-    "enabledLabel": "Enabled",
-    "disabledLabel": "Disabled",
-    "yesButton": "Yes",
-    "noButton": "No",
+    "cancelButton": "Annuler",
+    "enabledLabel": "Activé",
+    "disabledLabel": "Désactivé",
+    "yesButton": "Oui",
+    "noButton": "Non",
     "navigationView": {
-        "dashboardTab": "Dashboard",
-        "patcherTab": "Patcher",
-        "settingsTab": "Settings"
+        "dashboardTab": "Tableau de bord",
+        "patcherTab": "Patcheur",
+        "settingsTab": "Réglages"
     },
     "homeView": {
-        "widgetTitle": "Dashboard",
-        "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Patched Applications",
-        "updatesAvailable": "Updates available",
-        "noUpdates": "No updates available",
-        "noInstallations": "No patched applications installed",
-        "installed": "Installed",
-        "updateDialogTitle": "Update Manager",
-        "updateDialogText": "Are you sure you want to download and update ReVanced Manager?",
-        "notificationTitle": "ReVanced Manager was updated",
-        "notificationText": "Tap to open the app",
-        "downloadingMessage": "Downloading update...",
-        "installingMessage": "Installing update...",
-        "errorDownloadMessage": "Unable to download update",
-        "errorInstallMessage": "Unable to install update",
-        "noConnection": "No internet connection"
+        "widgetTitle": "Tableau de bord",
+        "updatesSubtitle": "Mises à jour",
+        "patchedSubtitle": "Applications patchées",
+        "updatesAvailable": "Mises à jour disponibles",
+        "noUpdates": "Aucune mise à jour n'est disponible",
+        "noInstallations": "Aucune application patchée n'est installée",
+        "installed": "Installée",
+        "updateDialogTitle": "Mettre à jour le Manager",
+        "updateDialogText": "Êtes-vous sûr de vouloir télécharger et mettre à jour ReVanced Manager ?",
+        "notificationTitle": "ReVanced Manager a été mis à jour",
+        "notificationText": "Appuyez pour ouvrir l'application",
+        "downloadingMessage": "Téléchargement de la mise à jour...",
+        "installingMessage": "Installation de la mise à jour...",
+        "errorDownloadMessage": "Impossible de télécharger la mise à jour",
+        "errorInstallMessage": "Impossible d'installer la mise à jour",
+        "noConnection": "Aucune connexion Internet"
     },
     "applicationItem": {
         "patchButton": "Patch",
         "infoButton": "Info",
-        "changelogLabel": "Changelog"
+        "changelogLabel": "Journal des changements"
     },
     "latestCommitCard": {
-        "loadingLabel": "Loading...",
-        "timeagoLabel": "{time} ago",
-        "patcherLabel": "Patcher: ",
-        "managerLabel": "Manager: ",
-        "updateButton": "Update Manager"
+        "loadingLabel": "Chargement...",
+        "timeagoLabel": "Il y a {time}",
+        "patcherLabel": "Patcheur:",
+        "managerLabel": "Manager:",
+        "updateButton": "Mettre à jour le Manager"
     },
     "patcherView": {
-        "widgetTitle": "Patcher",
+        "widgetTitle": "Patcheur",
         "patchButton": "Patch",
-        "patchDialogTitle": "Warning",
-        "patchDialogText": "You have selected a resource patch and a split APK installation was detected so patching errors may occur.\nAre you sure you want to proceed with patching a split base APK?"
+        "patchDialogTitle": "Avertissement",
+        "patchDialogText": "Vous avez sélectionné un patch de ressource, et une installation APK Split a été détectée. Des erreurs durant l'application des patchs peuvent se produire. Êtes-vous sûr de vouloir continuer de patcher un APK Split?"
     },
     "appSelectorCard": {
-        "widgetTitle": "Select application",
-        "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected",
-        "noAppsLabel": "No applications found.",
-        "currentVersion": "Current",
-        "recommendedVersion": "Recommended",
+        "widgetTitle": "Choisissez une application",
+        "widgetTitleSelected": "Application sélectionnée",
+        "widgetSubtitle": "Aucune application n'a été sélectionnée",
+        "noAppsLabel": "Aucune application n'a été trouvée.",
+        "currentVersion": "Actuellement",
+        "recommendedVersion": "Recommandé",
         "anyVersion": "any"
     },
     "patchSelectorCard": {
