@@ -7,21 +7,21 @@
     "noButton": "Ne",
     "navigationView": {
         "dashboardTab": "Nadzorna ploča",
-        "patcherTab": "Krpanje",
+        "patcherTab": "Zakrpe",
         "settingsTab": "Postavke"
     },
     "homeView": {
         "widgetTitle": "Nadzorna ploča",
         "updatesSubtitle": "Ažuriranja",
-        "patchedSubtitle": "Patched aplikacije",
-        "updatesAvailable": "Dostupna ažuriranja",
+        "patchedSubtitle": "Zakrpane aplikacije",
+        "updatesAvailable": "Ažuriranja su dostupna",
         "noUpdates": "Nema dostupnih ažuriranja",
         "noInstallations": "Nema instaliranih zakrpanih aplikacija",
         "installed": "Instalirano",
         "updateDialogTitle": "Ažuriranje upravitelja",
         "updateDialogText": "Jeste li sigurni da želite preuzeti i ažurirati ReVanced Manager?",
         "notificationTitle": "ReVanced Manager je ažuriran",
-        "notificationText": "Dodirnite da biste otvorili aplikaciju",
+        "notificationText": "Dodirnite za otvaranje aplikacije",
         "downloadingMessage": "Preuzimanje ažuriranja...",
         "installingMessage": "Instaliranje ažuriranja...",
         "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
@@ -29,7 +29,7 @@
         "noConnection": "Nema internetske veze"
     },
     "applicationItem": {
-        "patchButton": "Zakrpa",
+        "patchButton": "Zakrpaj",
         "infoButton": "Informacije",
         "changelogLabel": "Zapis promjena"
     },
@@ -38,11 +38,11 @@
         "timeagoLabel": "Prije {time}",
         "patcherLabel": "Zakrpe uradio: ",
         "managerLabel": "Upravitelj: ",
-        "updateButton": "Ažuriranje upravitelja"
+        "updateButton": "Ažuriraj upravitelja"
     },
     "patcherView": {
-        "widgetTitle": "Krpanje",
-        "patchButton": "Zakrpa",
+        "widgetTitle": "Zakrpe",
+        "patchButton": "Zakrpaj",
         "patchDialogTitle": "Upozorenje",
         "patchDialogText": "Odabrali ste zakrpu resursa i otkrivena je podijeljena instalacija APK-a pa može doći do pogrešaka pri zakrpi. \nJeste li sigurni da želite nastaviti s krpanjem podijeljenog osnovnog APK-a?"
     },
@@ -53,7 +53,7 @@
         "noAppsLabel": "Nema pronađenih aplikacija.",
         "currentVersion": "Trenutno",
         "recommendedVersion": "Preporučeno",
-        "anyVersion": "bilo koji"
+        "anyVersion": "bilo koja"
     },
     "patchSelectorCard": {
         "widgetTitle": "Odaberite zakrpe",
