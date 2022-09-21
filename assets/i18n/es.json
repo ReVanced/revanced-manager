@@ -1,5 +1,5 @@
 {
-    "okButton": "Ok",
+    "okButton": "OK",
     "cancelButton": "Cancelar",
     "enabledLabel": "Activado",
     "disabledLabel": "Desactivado",
@@ -7,8 +7,8 @@
     "noButton": "No",
     "navigationView": {
         "dashboardTab": "Panel de control",
-        "patcherTab": "Aplicador de parches",
-        "settingsTab": "Ajustes"
+        "patcherTab": "Parcheador",
+        "settingsTab": "Configuración"
     },
     "homeView": {
         "widgetTitle": "Panel de control",
@@ -18,69 +18,69 @@
         "noUpdates": "No hay actualizaciones disponibles",
         "noInstallations": "No hay aplicaciones parcheadas instaladas",
         "installed": "Instalado",
-        "updateDialogTitle": "Actualizar administrador",
-        "updateDialogText": "¿Estás seguro de que quieres descargar y actualizar ReVanced Manager?",
+        "updateDialogTitle": "Actualizar Manager",
+        "updateDialogText": "¿Está seguro de que desea descargar y actualizar ReVanced Manager?",
         "notificationTitle": "ReVanced Manager ha sido actualizado",
-        "notificationText": "Pulsa para abrir la aplicación",
+        "notificationText": "Toca para abrir la aplicación",
         "downloadingMessage": "Descargando actualización...",
         "installingMessage": "Instalando actualización...",
-        "errorDownloadMessage": "Error al descargar la actualización",
-        "errorInstallMessage": "Error al instalar la actualización",
+        "errorDownloadMessage": "No se pudo descargar la actualización",
+        "errorInstallMessage": "No se pudo instalar la actualización",
         "noConnection": "Sin conexión a internet"
     },
     "applicationItem": {
-        "patchButton": "Parche",
+        "patchButton": "Parchear",
         "infoButton": "Información",
-        "changelogLabel": "Registro de cambios"
+        "changelogLabel": "Historial de cambios"
     },
     "latestCommitCard": {
         "loadingLabel": "Cargando...",
-        "timeagoLabel": "hace {time}",
-        "patcherLabel": "Aplicador de parches: ",
-        "managerLabel": "Gestor: ",
-        "updateButton": "Actualizar ReVanced Manager"
+        "timeagoLabel": "Hace {time}",
+        "patcherLabel": "Parcheador: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Actualizar Manager"
     },
     "patcherView": {
         "widgetTitle": "Parcheador",
-        "patchButton": "Parche",
+        "patchButton": "Parchear",
         "patchDialogTitle": "Advertencia",
-        "patchDialogText": "Ha seleccionado un parche de recursos y se ha detectado una instalación de APK dividida para que puedan producirse errores.\n¿Está seguro de que desea continuar con el parche de un APK base dividido?"
+        "patchDialogText": "Acaba de seleccionar un parche de recursos y un \"Split APK\" se ha detectado, así que algunos errores en el proceso de parcheo pueden ocurrir.\n¿Seguro que quiere continuar con el parcheo de un \"Split APK\"?"
     },
     "appSelectorCard": {
-        "widgetTitle": "Seleccione una aplicación",
+        "widgetTitle": "Selecciona una aplicación",
         "widgetTitleSelected": "Aplicación seleccionada",
         "widgetSubtitle": "Ninguna aplicación seleccionada",
-        "noAppsLabel": "No se encontraron aplicaciones.",
-        "currentVersion": "Actual",
-        "recommendedVersion": "Recomendado",
-        "anyVersion": "cualquiera"
+        "noAppsLabel": "No se encontró ninguna aplicación.",
+        "currentVersion": "Versión actual",
+        "recommendedVersion": "Versión recomendada",
+        "anyVersion": "Cualquier versión"
     },
     "patchSelectorCard": {
         "widgetTitle": "Seleccionar parches",
         "widgetTitleSelected": "Parches seleccionados",
-        "widgetSubtitle": "Seleccione primero una aplicación",
+        "widgetSubtitle": "Primero, seleccione una aplicación",
         "widgetEmptySubtitle": "Ningún parche seleccionado"
     },
     "socialMediaCard": {
-        "widgetTitle": "Redes Sociales",
-        "widgetSubtitle": "¡Estamos en línea!"
+        "widgetTitle": "Redes sociales",
+        "widgetSubtitle": "¡Estamos en la red!"
     },
     "appSelectorView": {
         "viewTitle": "Selecciona una aplicación",
         "searchBarHint": "Buscar aplicaciones",
         "storageButton": "Almacenamiento",
-        "errorMessage": "No se puede utilizar la aplicación seleccionada."
+        "errorMessage": "No se puede usar la aplicación seleccionada."
     },
     "patchesSelectorView": {
-        "viewTitle": "Selecciona parches",
+        "viewTitle": "Seleccionar parches",
         "searchBarHint": "Buscar parches",
-        "doneButton": "Completado",
+        "doneButton": "Listo",
         "noPatchesFound": "No se encontraron parches para la aplicación seleccionada"
     },
     "patchItem": {
-        "unsupportedWarningButton": "Versión no soportada",
+        "unsupportedWarningButton": "Versión no compatible",
         "unsupportedDialogTitle": "Advertencia",
-        "unsupportedDialogText": "Seleccionar este parche puede causar errores.\n\nVersión de la aplicación: {packageVersion}\nVersiones soportadas actualmente:\n{supportedVersions}"
+        "unsupportedDialogText": "Seleccionar este parche puede causar errores.\n\nVersión de la app: {packageVersion}\nVersiones compatibles:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Instalador",
@@ -89,71 +89,71 @@
         "openButton": "Abrir",
         "shareButton": "Compartir archivo",
         "notificationTitle": "ReVanced Manager está parcheando",
-        "notificationText": "Pulsa para volver al instalador",
+        "notificationText": "Toque para volver al instalador",
         "shareApkMenuOption": "Compartir APK",
-        "shareLogMenuOption": "Compartir registro",
+        "shareLogMenuOption": "Compartir registros",
         "installErrorDialogTitle": "Error",
-        "installErrorDialogText1": "La instalación de root no es posible con la selección de parches actual.\nVuelva a parchar su aplicación o elija una instalación sin-root.",
-        "installErrorDialogText2": "La instalación sin-root no es posible con la selección de parches actual.\nVuelva a parchar su aplicación o elija una instalación con root, si tu dispositivo cuenta con ello.",
-        "installErrorDialogText3": "La instalación con Root no es posible ya que la APK fue seleccionada desde el almacenamiento.\nSelecciona una aplicación instalada o elige la opcion no-root.",
-        "noExit": "El instalador aún se está ejecutando..."
+        "installErrorDialogText1": "La instalación como root no es posible con la selección actual de parches.\nVuelva a parchear la aplicación o elija una instalación no-root.",
+        "installErrorDialogText2": "La instalación como root no es posible con la selección actual de parches.\nVuelva a parchear la aplicación o elija una instalación no-root.",
+        "installErrorDialogText3": "La instalación como root no es posible porque la APK original fue seleccionada desde el almacenamiento.\nSeleccione una app ya instalada o utilice una instalación sin root.",
+        "noExit": "El instalador sigue en ejecución..."
     },
     "settingsView": {
-        "widgetTitle": "Ajustes",
+        "widgetTitle": "Configuración",
         "appearanceSectionTitle": "Apariencia",
         "teamSectionTitle": "Equipo",
         "infoSectionTitle": "Información",
-        "advancedSectionTitle": "Avanzado",
-        "darkThemeLabel": "Modo Oscuro",
-        "darkThemeHint": "Bienvenido al lado oscuro",
+        "advancedSectionTitle": "Opciones avanzadas",
+        "darkThemeLabel": "Modo oscuro",
+        "darkThemeHint": "Bienvenido al Lado Oscuro",
         "dynamicThemeLabel": "Material You",
-        "dynamicThemeHint": "Disfruta de una experiencia más cercana a tu dispositivo",
+        "dynamicThemeHint": "Disfrute de una experiencia más acorde a su dispositivo",
         "languageLabel": "Idioma",
         "englishOption": "Inglés",
         "frenchOption": "Francés",
-        "sourcesLabel": "Fuentes",
-        "sourcesLabelHint": "Configura tus fuentes personalizadas",
-        "orgPatchesLabel": "Organización de parches",
-        "sourcesPatchesLabel": "Fuente de los parches",
+        "sourcesLabel": "Orígenes",
+        "sourcesLabelHint": "Configure sus fuentes personalizadas",
+        "orgPatchesLabel": "Organización de los Parches",
+        "sourcesPatchesLabel": "Origen de los Parches",
         "orgIntegrationsLabel": "Organización de las Integraciones",
-        "sourcesIntegrationsLabel": "Origen de las integraciones",
-        "sourcesResetDialogTitle": "Reiniciar",
-        "sourcesResetDialogText": "¿Esta seguro de reiniciar las fuentes personalizadas a su valor predeterminado?",
-        "apiURLResetDialogText": "¿Esta seguro de restablecer la URL de la API a su valor predeterminado?",
+        "sourcesIntegrationsLabel": "Origen de las Integraciones",
+        "sourcesResetDialogTitle": "Restablecer",
+        "sourcesResetDialogText": "¿Está seguro de que desea restablecer las fuentes personalizadas a sus valores predeterminados?",
+        "apiURLResetDialogText": "¿Estás seguro de que quieres restablecer la URL de la API a su valor predeterminado?",
         "contributorsLabel": "Contribuidores",
-        "contributorsHint": "Lista de contribuidores de ReVanced",
+        "contributorsHint": "Una lista de contribuidores de ReVanced",
         "logsLabel": "Registros",
-        "logsHint": "Compartir registros de depuración de dispositivo",
-        "apiURLLabel": "URL API",
-        "apiURLHint": "Configure la URL personalizada de la API",
-        "selectApiURL": "Seleccionar URL",
+        "logsHint": "Compartir registros de depuración del dispositivo",
+        "apiURLLabel": "URL de la API",
+        "apiURLHint": "Configure su URL personalizada para la API",
+        "selectApiURL": "Seleccione una URL",
         "aboutLabel": "Acerca de",
         "snackbarMessage": "Copiado al portapapeles"
     },
     "appInfoView": {
-        "widgetTitle": "Información de la aplicación",
+        "widgetTitle": "Información de la app",
         "openButton": "Abrir",
         "uninstallButton": "Desinstalar",
-        "patchButton": "Parchar",
-        "unpatchButton": "Desparchar",
-        "unpatchDialogText": "¿Estás seguro que quieres remover el parche?",
+        "patchButton": "Parchear",
+        "unpatchButton": "Desparchear",
+        "unpatchDialogText": "¿Está seguro de que desea desparchear esta aplicación?",
         "rootDialogTitle": "Error",
-        "rootDialogText": "La aplicación fue instalada con el modo Root habilitado, pero este se encuentra deshabilitado.\nPor favor, habilite el modo Root.",
+        "rootDialogText": "La app fue instalada con el modo root, pero este se encuentra desactivado.\nPor favor active el modo root primero.",
         "packageNameLabel": "Nombre del paquete",
         "installTypeLabel": "Tipo de instalación",
         "rootTypeLabel": "Root",
-        "nonRootTypeLabel": "Sin-Root",
-        "patchedDateLabel": "Fecha de parche",
+        "nonRootTypeLabel": "No-Root",
+        "patchedDateLabel": "Fecha del parcheado",
         "patchedDateHint": "{date} a las {time}",
         "appliedPatchesLabel": "Parches aplicados",
         "appliedPatchesHint": "{quantity} parches aplicados"
     },
     "contributorsView": {
         "widgetTitle": "Contribuidores",
-        "patcherContributors": "Contribuidores del Parcheador",
-        "patchesContributors": "Contribuidores de Parches",
-        "integrationsContributors": "Contribuidores de Integraciones",
-        "cliContributors": "Contribuidores de CLI",
-        "managerContributors": "Contribuidores de ReVanced Manager"
+        "patcherContributors": "Contribuidores del parcheador",
+        "patchesContributors": "Contribuidores de los parches",
+        "integrationsContributors": "Contribuidores de las Integraciones",
+        "cliContributors": "Contribuidores del CLI",
+        "managerContributors": "Contribuidores del Manager"
     }
 }
