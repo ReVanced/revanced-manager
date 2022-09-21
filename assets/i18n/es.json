@@ -58,12 +58,12 @@
     "patchSelectorCard": {
         "widgetTitle": "Seleccionar parches",
         "widgetTitleSelected": "Parches seleccionados",
-        "widgetSubtitle": "Primero seleccione una aplicación",
+        "widgetSubtitle": "Primero, seleccione una aplicación",
         "widgetEmptySubtitle": "Ningún parche seleccionado"
     },
     "socialMediaCard": {
         "widgetTitle": "Redes sociales",
-        "widgetSubtitle": "¡Estamos conectados!"
+        "widgetSubtitle": "¡Estamos en la red!"
     },
     "appSelectorView": {
         "viewTitle": "Selecciona una aplicación",
@@ -91,18 +91,18 @@
         "notificationTitle": "ReVanced Manager está parcheando",
         "notificationText": "Pulse para volver al instalador",
         "shareApkMenuOption": "Compartir APK",
-        "shareLogMenuOption": "Compartir log",
+        "shareLogMenuOption": "Compartir registros",
         "installErrorDialogTitle": "Error",
         "installErrorDialogText1": "La instalación como root no es posible con la selección actual de parches.\nVuelva a parchear su aplicación o elija una instalación no-root.",
         "installErrorDialogText2": "La instalación como root no es posible con la selección actual de parches.\nVuelva a parchear su aplicación o elija una instalación no-root.",
-        "installErrorDialogText3": "La instalación como root no es posible ya que la APK original fue seleccionada desde el almacenamiento.\nSeleccione una app ya instalada o utilice una instalación sin root.",
+        "installErrorDialogText3": "La instalación como root no es posible porque la APK original fue seleccionada desde el almacenamiento.\nSeleccione una app ya instalada o utilice una instalación sin root.",
         "noExit": "El instalador sigue en ejecución..."
     },
     "settingsView": {
-        "widgetTitle": "Ajustes",
+        "widgetTitle": "Configuración",
         "appearanceSectionTitle": "Apariencia",
         "teamSectionTitle": "Equipo",
-        "infoSectionTitle": "Info",
+        "infoSectionTitle": "Información",
         "advancedSectionTitle": "Avanzado",
         "darkThemeLabel": "Modo oscuro",
         "darkThemeHint": "Bienvenido al Lado Oscuro",
@@ -111,18 +111,18 @@
         "languageLabel": "Idioma",
         "englishOption": "Inglés",
         "frenchOption": "Francés",
-        "sourcesLabel": "Fuentes",
+        "sourcesLabel": "Orígenes",
         "sourcesLabelHint": "Configure sus fuentes personalizadas",
-        "orgPatchesLabel": "Organización de Parches",
-        "sourcesPatchesLabel": "Fuente de los Parches",
+        "orgPatchesLabel": "Organización de los Parches",
+        "sourcesPatchesLabel": "Origen de los Parches",
         "orgIntegrationsLabel": "Organización de las Integraciones",
-        "sourcesIntegrationsLabel": "Fuente de las Integraciones",
+        "sourcesIntegrationsLabel": "Origen de las Integraciones",
         "sourcesResetDialogTitle": "Restablecer",
         "sourcesResetDialogText": "¿Está seguro de que desea restablecer las fuentes personalizadas a sus valores predeterminados?",
         "apiURLResetDialogText": "¿Estás seguro de que quieres restablecer la URL de la API a su valor predeterminado?",
-        "contributorsLabel": "Contribuyentes",
-        "contributorsHint": "Una lista de contribuyentes de ReVanced",
-        "logsLabel": "Logs",
+        "contributorsLabel": "Contribuidores",
+        "contributorsHint": "Una lista de contribuidores de ReVanced",
+        "logsLabel": "Registros",
         "logsHint": "Compartir registros de depuración del dispositivo",
         "apiURLLabel": "URL de la API",
         "apiURLHint": "Configure su URL personalizada para la API",
@@ -135,10 +135,10 @@
         "openButton": "Abrir",
         "uninstallButton": "Desinstalar",
         "patchButton": "Parchear",
-        "unpatchButton": "Desparchar",
-        "unpatchDialogText": "¿Está seguro de que desea desparchar esta aplicación?",
+        "unpatchButton": "Desparchear",
+        "unpatchDialogText": "¿Está seguro de que desea desparchear esta aplicación?",
         "rootDialogTitle": "Error",
-        "rootDialogText": "La app fue instalada con el modo root pero éste se encuentra desactivado.\nPor favor active el modo root primero.",
+        "rootDialogText": "La app fue instalada con el modo root, pero este se encuentra desactivado.\nPor favor active el modo root primero.",
         "packageNameLabel": "Nombre del paquete",
         "installTypeLabel": "Tipo de instalación",
         "rootTypeLabel": "Root",
@@ -149,11 +149,11 @@
         "appliedPatchesHint": "{quantity} parches aplicados"
     },
     "contributorsView": {
-        "widgetTitle": "Contribuyentes",
-        "patcherContributors": "Contribuyentes del parcheador",
-        "patchesContributors": "Contribuyentes de los parches",
-        "integrationsContributors": "Contribuyentes de las Integraciones",
-        "cliContributors": "Contribuyentes del CLI",
-        "managerContributors": "Contribuyentes del Manager"
+        "widgetTitle": "Contribuidores",
+        "patcherContributors": "Contribuidores del parcheador",
+        "patchesContributors": "Contribuidores de los parches",
+        "integrationsContributors": "Contribuidores de las Integraciones",
+        "cliContributors": "Contribuidores del CLI",
+        "managerContributors": "Contribuidores del Manager"
     }
 }
