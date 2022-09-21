@@ -6,26 +6,26 @@
     "yesButton": "Ja",
     "noButton": "Nein",
     "navigationView": {
-        "dashboardTab": "Dashboard",
+        "dashboardTab": "Übersicht",
         "patcherTab": "Patcher",
         "settingsTab": "Einstellungen"
     },
     "homeView": {
         "widgetTitle": "Dashboard",
-        "updatesSubtitle": "Updates",
+        "updatesSubtitle": "Aktualisierungen",
         "patchedSubtitle": "Gepatchte Apps",
-        "updatesAvailable": "Updates verfügbar",
-        "noUpdates": "Keine Updates verfügbar",
+        "updatesAvailable": "Aktualisierung verfügbar",
+        "noUpdates": "Keine Aktualisierungen verfügbar",
         "noInstallations": "Keine gepatchten Apps installiert",
         "installed": "Installiert",
-        "updateDialogTitle": "Update Manager",
+        "updateDialogTitle": "Manager aktualisieren",
         "updateDialogText": "Bist du sicher, dass du den ReVanced Manager herunterladen und aktualisieren möchtest?",
         "notificationTitle": "Der ReVanced Manager wurde aktualisiert",
         "notificationText": "Tippen, um die App zu öffnen",
-        "downloadingMessage": "Update wird heruntergeladen...",
+        "downloadingMessage": "Aktualisierung wird heruntergeladen...",
         "installingMessage": "Update wird installiert...",
-        "errorDownloadMessage": "Update konnte nicht heruntergeladen werden",
-        "errorInstallMessage": "Update konnte nicht installiert werden",
+        "errorDownloadMessage": "Aktualisierung konnte nicht heruntergeladen werden",
+        "errorInstallMessage": "Aktualisierung konnte nicht installiert werden",
         "noConnection": "Keine Internetverbindung"
     },
     "applicationItem": {
@@ -34,17 +34,17 @@
         "changelogLabel": "Änderungen"
     },
     "latestCommitCard": {
-        "loadingLabel": "Lädt...",
+        "loadingLabel": "Wird geladen...",
         "timeagoLabel": "vor {time}",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Update Manager"
+        "updateButton": "Manager aktualisieren"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Warnung",
-        "patchDialogText": "Du hast einen Ressourcen-Patch ausgewählt und eine split APK-Installation wurde erkannt, es könnten somit Fehler beim patchen auftreten.\nBist du sicher, dass du mit dem Patchen einer split Basis-APK fortfahren möchtest?"
+        "patchDialogText": "Du hast einen Ressourcen-Patch ausgewählt und eine gesplittete APK-Installation wurde entdeckt, durch die Fehler beim Patchen auftreten könnten.\nBist du dir sicher, dass du die gesplittete APK patchen möchtest?"
     },
     "appSelectorCard": {
         "widgetTitle": "App auswählen",
@@ -78,9 +78,9 @@
         "noPatchesFound": "Keine Patches für die ausgewählte App gefunden"
     },
     "patchItem": {
-        "unsupportedWarningButton": "Nicht unterstützte Version",
+        "unsupportedWarningButton": "Version nicht unterstützt",
         "unsupportedDialogTitle": "Warnung",
-        "unsupportedDialogText": "Die Auswahl dieses Patches kann zu Fehlern beim Patchen führen.\n\nApp-Version: {packageVersion}\nAktuelle unterstützte Versionen:\n{supportedVersions}"
+        "unsupportedDialogText": "Die Auswahl dieses Patches kann zu Fehlern beim Patchen führen.\n\nApp-Version: {packageVersion}\nAktuell unterstützte Versionen:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -89,14 +89,14 @@
         "openButton": "Öffnen",
         "shareButton": "Datei teilen",
         "notificationTitle": "ReVanced Manager patcht",
-        "notificationText": "Tippen, um zum Installer zurückzukehren",
+        "notificationText": "Tippen, um zum Installierprozess zurückzukehren",
         "shareApkMenuOption": "APK teilen",
         "shareLogMenuOption": "Log teilen",
         "installErrorDialogTitle": "Fehler",
-        "installErrorDialogText1": "Installation per Root ist mit den aktuell ausgewählten Patches nicht möglich.\nVersuche es erneut oder installiere die App ohne Root.",
-        "installErrorDialogText2": "Installation ohne Root ist mit den aktuell ausgewählten Patches nicht möglich.\nVersuche es erneut oder installiere die App mit Root, wenn dein Gerät gerooted ist.",
+        "installErrorDialogText1": "Installation per Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App anders oder installiere sie ohne Root.",
+        "installErrorDialogText2": "Installation ohne Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App anders oder installiere sie mit Root, wenn dein Gerät gerooted ist.",
         "installErrorDialogText3": "Root-Installation ist nicht möglich, da die ursprüngliche APK aus dem Speicher ausgewählt wurde.\nWähle eine installierte App oder wähle die Installation ohne Root.",
-        "noExit": "Installer wird noch ausgeführt..."
+        "noExit": "Installierprozess läuft noch..."
     },
     "settingsView": {
         "widgetTitle": "Einstellungen",
@@ -140,10 +140,10 @@
         "rootDialogTitle": "Fehler",
         "rootDialogText": "Die App wurde mit aktiviertem Root-Modus installiert, aber derzeit ist der Root-Modus deaktiviert.\nBitte aktiviere zuerst den Root-Modus.",
         "packageNameLabel": "Paketname",
-        "installTypeLabel": "Installationstyp",
+        "installTypeLabel": "Installationsart",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Nicht gerooted",
-        "patchedDateLabel": "Patch-Datum",
+        "patchedDateLabel": "Zeitpunkt des Patches",
         "patchedDateHint": "{date} um {time}",
         "appliedPatchesLabel": "Angewandte Patches",
         "appliedPatchesHint": "{quantity} angewandte Patches"
