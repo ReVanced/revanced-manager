@@ -53,7 +53,7 @@
         "noAppsLabel": "Hiçbir uygulama bulunamadı.",
         "currentVersion": "Şuanki",
         "recommendedVersion": "Önerilen",
-        "anyVersion": "herhangi"
+        "anyVersion": "herhangi biri"
     },
     "patchSelectorCard": {
         "widgetTitle": "Yamaları Seçin",
@@ -94,7 +94,7 @@
         "shareLogMenuOption": "Günlüğü paylaş",
         "installErrorDialogTitle": "Hata",
         "installErrorDialogText1": "Kök yüklemesi şuanki yama seçimiyle mümkün değil.\nUygulamanızı tekrar yamalayın veya köksüz yüklemeyi seçin.",
-        "installErrorDialogText2": "Köksüz yükleme şuanki yama seçimiyle mümkün değil.\nUygulamanızı tekrar yamalayın veya cihazınız kök izni varsa kök ile yükleme yolunu seçin.",
+        "installErrorDialogText2": "Köksüz yükleme şuanki yama seçimiyle mümkün değil.\nUygulamanızı tekrar yamalayın veya cihazınızda kök izniniz varsa kök ile yükleme yolunu seçin.",
         "installErrorDialogText3": "Orijinal APK depolamadan seçildiği için kök izni ile yükleme mümkün değil.\nYüklü olan bir uygulama seçin veya köksüz yüklemeyi seçin.",
         "noExit": "Yükleyici hâlâ çalışıyor..."
     },
@@ -121,7 +121,7 @@
         "sourcesResetDialogText": "Özel kaynakları varsayılan ayarlarına geri döndürmek istediğinize emin misiniz?",
         "apiURLResetDialogText": "API URL'i varsayılan değerine sıfırlamak istediğinize emin misiniz?",
         "contributorsLabel": "Katkıda bulunanlar",
-        "contributorsHint": "ReVanced'in katkıda bulunanlarının bir listesi",
+        "contributorsHint": "ReVanced'a katkıda bulunanların bir listesi",
         "logsLabel": "Günlükler",
         "logsHint": "Cihaz hata ayıklama günlüklerini paylaş",
         "apiURLLabel": "API URL",
