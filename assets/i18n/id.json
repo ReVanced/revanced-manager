@@ -144,7 +144,7 @@
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",
         "patchedDateLabel": "Tanggal termodifikasi",
-        "patchedDateHint": "{date} {time}",
+        "patchedDateHint": "{date} pada {time}",
         "appliedPatchesLabel": "Modifikasi terpasang",
         "appliedPatchesHint": "{quantity} modifikasi terpasang"
     },
