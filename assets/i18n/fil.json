@@ -67,14 +67,14 @@
     },
     "appSelectorView": {
         "viewTitle": "Pumili ng aplikasyon",
-        "searchBarHint": "Pumili ng aplikasyon",
+        "searchBarHint": "Maghanap ng mga aplikasyon",
         "storageButton": "Storage",
         "errorMessage": "Hindi kayang gamitin ang napiling aplikasyon."
     },
     "patchesSelectorView": {
         "viewTitle": "Pumili ng mga patch",
         "searchBarHint": "I-search ang patch",
-        "doneButton": "Ipasa",
+        "doneButton": "Tapos na",
         "noPatchesFound": "Walang nahanap na patch para sa napiling aplikasyon"
     },
     "patchItem": {
@@ -96,7 +96,7 @@
         "installErrorDialogText1": "Hindi maaari ang mag Root install sa mga nakapiling patch.\nI-patch uli ang iyong app o kaya piliin ang non-root install.",
         "installErrorDialogText2": "Hindi maaari ang mag Non-root install sa mga nakapiling patch.\nI-patch uli ang iyong app o kaya piliin ang root install kapag naka-root ang iyong device.",
         "installErrorDialogText3": "Hindi maaari ang Root install dahil ang original APK ay napili galing sa storage.\nPumili ng installed app o kaya piliin ang non-root install.",
-        "noExit": "Gumagawa parin ang installer..."
+        "noExit": "Gumagana pa rin ang installer..."
     },
     "settingsView": {
         "widgetTitle": "Mga Setting",
@@ -114,9 +114,9 @@
         "sourcesLabel": "Pinagmulan",
         "sourcesLabelHint": "I-configure ang iyong patches na nagmula sa iba",
         "orgPatchesLabel": "Organisasyon ng mga Patch",
-        "sourcesPatchesLabel": "Pinagmulan ng mga patch",
+        "sourcesPatchesLabel": "Pinagmulan ng mga Patch",
         "orgIntegrationsLabel": "Organisasyon ng Integrations",
-        "sourcesIntegrationsLabel": "Pinagmulan ng Integrations",
+        "sourcesIntegrationsLabel": "Pinagmulan ng mga Integrasyon",
         "sourcesResetDialogTitle": "I-reset",
         "sourcesResetDialogText": "Sigurado ka ba na gusto mong ibalik sa dati ang lahat ng custom sources?",
         "apiURLResetDialogText": "Sigurado ka bang gusto mong ibalik sa dati ang URL ng API?",
@@ -138,7 +138,7 @@
         "unpatchButton": "I-unpatch",
         "unpatchDialogText": "Sigurado ka ba na gusto mong i-unpatch ang app na ito?",
         "rootDialogTitle": "Error",
-        "rootDialogText": "Ang app ay ininstall ng nakabukas ang root mode ngunit nakapatay ngayon ang root mode.\nPaki-bukas muna ng root mode.",
+        "rootDialogText": "Ang app ay ininstall nang nakabukas ang root mode ngunit nakapatay ngayon ang root mode.\nPaki-bukas muna ng root mode.",
         "packageNameLabel": "Pangalan ng package",
         "installTypeLabel": "Uri ng Installation",
         "rootTypeLabel": "Naka-root",
@@ -149,7 +149,7 @@
         "appliedPatchesHint": "{quantity} ang mga naapply na patch"
     },
     "contributorsView": {
-        "widgetTitle": "Mga kontribyutor",
+        "widgetTitle": "Mga tumulong",
         "patcherContributors": "Mga tumulong sa Patcher",
         "patchesContributors": "Mga tumulong sa mga Patch",
         "integrationsContributors": "Mga tumulong sa Integrasyon",
