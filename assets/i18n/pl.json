@@ -13,7 +13,7 @@
     "homeView": {
         "widgetTitle": "Panel główny",
         "updatesSubtitle": "Aktualizacje",
-        "patchedSubtitle": "Zmodyfikowane aplikacje",
+        "patchedSubtitle": "Zmodyfikowane Aplikacje",
         "updatesAvailable": "Dostępne aktualizacje",
         "noUpdates": "Brak dostępnych aktualizacji",
         "noInstallations": "Nie zainstalowano żadnych zmodyfikowanych aplikacji",
@@ -63,7 +63,7 @@
     },
     "socialMediaCard": {
         "widgetTitle": "Społeczność",
-        "widgetSubtitle": "Jesteśmy online!"
+        "widgetSubtitle": "Jesteśmy w Internecie!"
     },
     "appSelectorView": {
         "viewTitle": "Wybierz aplikację",
@@ -78,7 +78,7 @@
         "noPatchesFound": "Nie znaleziono żadnych patchów dla wybranej aplikacji"
     },
     "patchItem": {
-        "unsupportedWarningButton": "Nieobsługiwana wersja",
+        "unsupportedWarningButton": "Niewspierana wersja",
         "unsupportedDialogTitle": "Ostrzeżenie",
         "unsupportedDialogText": "Wybranie tego patcha może spowodować błędy podczas patchowania.\n\nWersja aplikacji: {packageVersion}\nAktualnie wspierana wersja:\n{supportedVersions}"
     },
@@ -131,7 +131,7 @@
         "snackbarMessage": "Skopiowano do schowka"
     },
     "appInfoView": {
-        "widgetTitle": "O aplikacji",
+        "widgetTitle": "Informacje o aplikacji",
         "openButton": "Otwórz",
         "uninstallButton": "Odinstaluj",
         "patchButton": "Patchuj",
