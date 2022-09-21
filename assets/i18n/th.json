@@ -26,7 +26,7 @@
         "installingMessage": "กำลังติดตั้งอัพเดท...",
         "errorDownloadMessage": "ไม่สามารถดาวน์โหลดอัพเดท",
         "errorInstallMessage": "ไม่สามารถติดตั้งอัพเดท",
-        "noConnection": "ไม่มีสัญญาณเครือข่าย"
+        "noConnection": "ไม่​มี​การเชื่อม​ต่อ​อินเตอร์​เน็ต"
     },
     "applicationItem": {
         "patchButton": "ดัดแปลง",
@@ -50,20 +50,20 @@
         "widgetTitle": "เลือกแอป",
         "widgetTitleSelected": "แอปที่เลือกไว้",
         "widgetSubtitle": "ไม่ได้เลือกแอป",
-        "noAppsLabel": "ไม่มีแอปที่เลือกได้",
-        "currentVersion": "ของคุณ",
+        "noAppsLabel": "ไม่พบแอป",
+        "currentVersion": "ปัจจุบัน",
         "recommendedVersion": "แนะนำ",
         "anyVersion": "ทุกเวอร์ชั่น"
     },
     "patchSelectorCard": {
-        "widgetTitle": "เลือกตัวเสริม",
-        "widgetTitleSelected": "ตัวเสริมที่เลือกไว้",
+        "widgetTitle": "เลือกการดัดแปลง",
+        "widgetTitleSelected": "การดัดแปลงที่เลือกไว้",
         "widgetSubtitle": "เลือกแอปก่อน",
-        "widgetEmptySubtitle": "ไม่ได้เลือกตัวเสริม"
+        "widgetEmptySubtitle": "ไม่ได้เลือกการดัดแปลง"
     },
     "socialMediaCard": {
         "widgetTitle": "โซเชียล",
-        "widgetSubtitle": "พวกเราบนออนไลน์"
+        "widgetSubtitle": "พวกเราออนไลน์แล้ว!"
     },
     "appSelectorView": {
         "viewTitle": "เลือกแอป",
@@ -72,8 +72,8 @@
         "errorMessage": "ไม่สามารถใช้แอปที่เลือกไว้ได้"
     },
     "patchesSelectorView": {
-        "viewTitle": "เลือกตัวเสริม",
-        "searchBarHint": "ค้นหาตัวเสริม",
+        "viewTitle": "เลือกการดัดแปลง",
+        "searchBarHint": "ค้นหาการดัดแปลง",
         "doneButton": "เรียบร้อย",
         "noPatchesFound": "ไม่มีตัวเสริมสำหรับแอปที่เลือกไว้"
     },
@@ -88,7 +88,7 @@
         "installRootButton": "ติดตั้งแบบรูท",
         "openButton": "เปิด",
         "shareButton": "แชร์ไฟล์",
-        "notificationTitle": "ReVanced Manager กำลังดัดแปลง",
+        "notificationTitle": "ReVanced Manager กำลังแพทช์",
         "notificationText": "แตะเพื่อกลับไปยังตัวติดตั้ง",
         "shareApkMenuOption": "แชร์ไฟล์ติดตั้ง",
         "shareLogMenuOption": "แชร์ไฟล์บันทึกผล",
@@ -113,15 +113,15 @@
         "frenchOption": "ฝรั่งเศส",
         "sourcesLabel": "แหล่งที่มา",
         "sourcesLabelHint": "ตั้งแหล่งที่มาของคุณเอง",
-        "orgPatchesLabel": "องกรณ์ของตัวเสริม",
-        "sourcesPatchesLabel": "ที่มาของตัวเสริม",
-        "orgIntegrationsLabel": "องกรณ์ของตัวรวบรวม",
-        "sourcesIntegrationsLabel": "ที่มาของตัวรวบรวม",
+        "orgPatchesLabel": "องกรณ์ของการดัดแปลง",
+        "sourcesPatchesLabel": "ที่มาของการดัดแปลง",
+        "orgIntegrationsLabel": "องกรณ์ของตัวเสริม",
+        "sourcesIntegrationsLabel": "ที่มาของตัวเสริม",
         "sourcesResetDialogTitle": "รีเซ็ต",
         "sourcesResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตแหล่งที่มาเหล่านี้กลับเป็นค่าเริ่มต้น?",
         "apiURLResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ต URL ของ API กลับเป็นค่าเริ่มต้น?",
         "contributorsLabel": "ผู้สมทบ",
-        "contributorsHint": "รายชื่อผู้ที่สมทบกับ ReVanced",
+        "contributorsHint": "รายชื่อผู้ที่ช่วยเหลือกับโปรเจค ReVanced",
         "logsLabel": "ไฟล์บันทึกผล",
         "logsHint": "แชร์ไฟล์บันทึกผล",
         "apiURLLabel": "URL ของ API",
@@ -145,14 +145,14 @@
         "nonRootTypeLabel": "ไม่ใช้รูท",
         "patchedDateLabel": "วันที่ดัดแปลง",
         "patchedDateHint": "{date} เวลา {time}",
-        "appliedPatchesLabel": "ตัวเสริมที่เลือกไว้",
-        "appliedPatchesHint": "{quantity} ตัว"
+        "appliedPatchesLabel": "การดัดแปลงที่เลือกไว้",
+        "appliedPatchesHint": "{quantity} อย่าง"
     },
     "contributorsView": {
         "widgetTitle": "ผู้สมทบ",
         "patcherContributors": "ผู้สมทบตัวดัดแปลง",
-        "patchesContributors": "ผู้สมทบตัวเสรม",
-        "integrationsContributors": "ผู้สมทบตัวรวบรวม",
+        "patchesContributors": "ผู้สมทบการดัดแปลง",
+        "integrationsContributors": "ผู้สมทบตัวเสริม",
         "cliContributors": "ผู้สมทบ CLI",
         "managerContributors": "ผู้สมทบ Manager"
     }
