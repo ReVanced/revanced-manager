@@ -93,7 +93,7 @@
         "shareApkMenuOption": "Podijeli APK datoteku",
         "shareLogMenuOption": "Podijeli zapisnik",
         "installErrorDialogTitle": "Greška",
-        "installErrorDialogText1": "Root instalacija nije moguća s trenutnim odabirom zakrpa.\nPonovite zakrpu aplikacije ili odaberite instalaciju koja na koristi root.",
+        "installErrorDialogText1": "Root instalacija nije moguća s trenutnim odabirom zakrpa.\nPonovite zakrpu aplikacije ili odaberite instalaciju koja ne koristi root.",
         "installErrorDialogText2": "Instalacija koja ne koristi root nije moguća s trenutnim odabirom zakrpa.\nPonovite zakrpu aplikacije ili odaberite root instalaciju, ako je vaš uređaj rootan.",
         "installErrorDialogText3": "Root instalacija nije moguća jer je originalni APK odabran iz pohrane.\nOdaberite već instaliranu aplikaciju ili izaberite instalaciju koja ne koristi root.",
         "noExit": "Instalacija je u tijeku..."
