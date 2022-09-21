@@ -6,17 +6,17 @@
     "yesButton": "हाँ",
     "noButton": "नहीं",
     "navigationView": {
-        "dashboardTab": "नियंत्रण पट्ट",
+        "dashboardTab": "नियंत्रण-पट्ट",
         "patcherTab": "पैचर",
         "settingsTab": "सेटिंग्स"
     },
     "homeView": {
         "widgetTitle": "नियंत्रण पट्ट",
         "updatesSubtitle": "अपडेट",
-        "patchedSubtitle": "पैच किए हुए एप्लीकेशन",
+        "patchedSubtitle": "पैबंद किए हुए अनुप्रयोग",
         "updatesAvailable": "अपडेट उपलब्ध है",
         "noUpdates": "कोई अपडेट उपलब्ध नहीं",
-        "noInstallations": "कोई पैच किया हुआ ऐप्लकैशन नहीं",
+        "noInstallations": "कोई पैबंद किये हुआ अनुप्रयोग नहीं है।",
         "installed": "इंस्टॉल किया हुआ",
         "updateDialogTitle": "अपडेट Manager",
         "updateDialogText": "क्या आप ReVanced Manager को डाउनलोड और अपडेट करना चाहते है?",
@@ -29,22 +29,22 @@
         "noConnection": "कोई इंटरनेट कनेक्शन नहीं"
     },
     "applicationItem": {
-        "patchButton": "पैच",
+        "patchButton": "पैबंद",
         "infoButton": "जानकारी",
         "changelogLabel": "परिवर्तन पत्र"
     },
     "latestCommitCard": {
         "loadingLabel": "लोड हो रहा है...",
         "timeagoLabel": "{time} पहले",
-        "patcherLabel": "पैचर: ",
+        "patcherLabel": "पैबंद: ",
         "managerLabel": "Manager: ",
         "updateButton": "Manager अपडेट करे"
     },
     "patcherView": {
         "widgetTitle": "पैचर",
-        "patchButton": "पैच",
+        "patchButton": "पैबंद",
         "patchDialogTitle": "चेतावनी",
-        "patchDialogText": "आपने एक Resource पैच चुना है और split APK का इंस्टॉल का पता चला है इसलिए पैचिंग त्रुटियां हो सकती हैं।\nक्या आप split APK के साथ आगे बढ़ना चाहते है?"
+        "patchDialogText": "आपने एक रिसोर्स पैच चुना है और स्प्लिट APK के इंस्टॉल का पता चला है इसलिए पैचिंग त्रुटियां हो सकती हैं।\nक्या आप स्प्लिट APK के साथ आगे बढ़ना चाहते है?"
     },
     "appSelectorCard": {
         "widgetTitle": "एप्लिकेशन चुने",
@@ -68,7 +68,7 @@
     "appSelectorView": {
         "viewTitle": "एप्लिकेशन का चुने",
         "searchBarHint": "ऐप्लकैशन खोजे",
-        "storageButton": "संग्रहण",
+        "storageButton": "स्टोरेज",
         "errorMessage": "चुने हुए ऐप्लकैशन को उपयोग करने मे असमर्थ"
     },
     "patchesSelectorView": {
@@ -100,12 +100,12 @@
     },
     "settingsView": {
         "widgetTitle": "सेटिंग्स",
-        "appearanceSectionTitle": "स्वरूप",
-        "teamSectionTitle": "समूह",
+        "appearanceSectionTitle": "दिखावट",
+        "teamSectionTitle": "टीम",
         "infoSectionTitle": "जानकारी",
-        "advancedSectionTitle": "उन्नत",
+        "advancedSectionTitle": "एडवांसड",
         "darkThemeLabel": "डार्क मोड",
-        "darkThemeHint": "डार्क साइड में स्वागत है",
+        "darkThemeHint": "डार्क साइड में आपका स्वागत है",
         "dynamicThemeLabel": "मेटीरियल यू",
         "dynamicThemeHint": "अपने डिवाइस के करीब एक अनुभव का आनंद लें",
         "languageLabel": "भाषा",
@@ -121,8 +121,8 @@
         "sourcesResetDialogText": "क्या आप वाकई कस्टम साधन को डिफ़ॉल्ट वैल्यू पर रीसेट करना चाहते हैं?",
         "apiURLResetDialogText": "क्या आप वाकई कस्टम API URL को डिफ़ॉल्ट वैल्यू पर रीसेट करना चाहते हैं?",
         "contributorsLabel": "योगदानकर्ता",
-        "contributorsHint": "रीवांस्ड के योगदानकर्ताओ की सूची",
-        "logsLabel": "लॉग",
+        "contributorsHint": "ReVanced के योगदानकर्ताओ की सूची",
+        "logsLabel": "लॉग्स",
         "logsHint": "डिवाइस डिबग लोग साझा करे",
         "apiURLLabel": "API URL",
         "apiURLHint": "अपनी कस्टम API URL कॉन्फ़िगर करे",
