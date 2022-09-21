@@ -63,7 +63,7 @@
     },
     "socialMediaCard": {
         "widgetTitle": "Društvene mreže",
-        "widgetSubtitle": "Mi smo uključeni!"
+        "widgetSubtitle": "Pronađite nas ovdje!"
     },
     "appSelectorView": {
         "viewTitle": "Odaberite aplikaciju",
@@ -73,41 +73,41 @@
     },
     "patchesSelectorView": {
         "viewTitle": "Odaberite zakrpe",
-        "searchBarHint": "Pretraživanje zakrpi",
+        "searchBarHint": "Pretraživanje zakrpa",
         "doneButton": "Gotovo",
         "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
     },
     "patchItem": {
         "unsupportedWarningButton": "Nepodržana verzija",
         "unsupportedDialogTitle": "Upozorenje",
-        "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti pogreške pri zakrpi.\n\nVerzija aplikacije: {packageVersion}\nTrenutno podržane verzije:\n{supportedVersions}"
+        "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: {packageVersion}\nTrenutno podržane verzije:\n{supportedVersions}"
     },
     "installerView": {
-        "widgetTitle": "Za Instaliranje",
+        "widgetTitle": "Instalacija",
         "installButton": "Instaliraj",
-        "installRootButton": "Instaliraj kao Root",
+        "installRootButton": "Instaliraj kao root",
         "openButton": "Otvori",
         "shareButton": "Podijeli datoteku",
-        "notificationTitle": "ReVanced Manager je pri zakrpi",
+        "notificationTitle": "Krpanje u tijeku",
         "notificationText": "Dodirnite za povratak na instalacijski program",
-        "shareApkMenuOption": "Podijeli APK",
+        "shareApkMenuOption": "Podijeli APK datoteku",
         "shareLogMenuOption": "Podijeli zapisnik",
         "installErrorDialogTitle": "Greška",
-        "installErrorDialogText1": "Root instalacija nije moguća s trenutnim odabirom zakrpa.\nPoništite zakrpu aplikacije ili odaberite instalaciju bez root-a.",
-        "installErrorDialogText2": "Non-root instalacija nije moguća s trenutnim odabirom zakrpa.\nPoništite zakrpu aplikacije ili odaberite root instalaciju, ako je vaš uređaj rootan.",
-        "installErrorDialogText3": "Root instalacija nije moguća jer je originalni APK odabran iz pohrane.\nOdaberite instaliranu aplikaciju ili izaberite instalaciju bez root-a.",
+        "installErrorDialogText1": "Root instalacija nije moguća s trenutnim odabirom zakrpa.\nPonovite zakrpu aplikacije ili odaberite instalaciju koja na koristi root.",
+        "installErrorDialogText2": "Instalacija koja ne koristi root nije moguća s trenutnim odabirom zakrpa.\nPonovite zakrpu aplikacije ili odaberite root instalaciju, ako je vaš uređaj rootan.",
+        "installErrorDialogText3": "Root instalacija nije moguća jer je originalni APK odabran iz pohrane.\nOdaberite već instaliranu aplikaciju ili izaberite instalaciju koja ne koristi root.",
         "noExit": "Instalacija je u tijeku..."
     },
     "settingsView": {
         "widgetTitle": "Postavke",
         "appearanceSectionTitle": "Izgled",
-        "teamSectionTitle": "Djelatnici",
+        "teamSectionTitle": "Naš tim",
         "infoSectionTitle": "Informacije",
         "advancedSectionTitle": "Napredno",
         "darkThemeLabel": "Tamni način",
         "darkThemeHint": "Dobrodošli na Tamnu Stranu",
         "dynamicThemeLabel": "Material You",
-        "dynamicThemeHint": "Uživajte u iskustvu bliže svom uređaju",
+        "dynamicThemeHint": "Uživajte u iskustvu prilagođenom vašem uređaju",
         "languageLabel": "Jezik",
         "englishOption": "engleski",
         "frenchOption": "francuski",
@@ -117,13 +117,13 @@
         "sourcesPatchesLabel": "Izvor Zakrpa",
         "orgIntegrationsLabel": "Organizacije za ugradnju",
         "sourcesIntegrationsLabel": "Izvori ugradnje",
-        "sourcesResetDialogTitle": "Ponovno pokreni",
+        "sourcesResetDialogTitle": "Ponovno postavljanje",
         "sourcesResetDialogText": "Jeste li sigurni da želite vratiti prilagođene izvore na zadane vrijednosti?",
         "apiURLResetDialogText": "Jeste li sigurni da želite vratiti API URL na zadanu vrijednost?",
         "contributorsLabel": "Pridonositelji",
         "contributorsHint": "Popis suradnika ReVanceda",
         "logsLabel": "Zapisnici",
-        "logsHint": "Podijelite zapisnike za uklanjanje pogrešaka uređaja",
+        "logsHint": "Podijelite zapisnike uređaja za uklanjanje pogrešaka",
         "apiURLLabel": "API URL (Automatic Copy)",
         "apiURLHint": "Postavite svoj prilagođeni API URL",
         "selectApiURL": "Odaberite URL",
@@ -131,29 +131,29 @@
         "snackbarMessage": "Kopirano u međuspremnik"
     },
     "appInfoView": {
-        "widgetTitle": "O aplikaciji",
-        "openButton": "Otvorite",
+        "widgetTitle": "Informacije o aplikaciji",
+        "openButton": "Otvori",
         "uninstallButton": "Deinstaliraj",
-        "patchButton": "Zakrpa",
+        "patchButton": "Zakrpaj",
         "unpatchButton": "Poništiti zakrpu",
         "unpatchDialogText": "Jeste li sigurni da želite poništiti zakrpu ove aplikacije?",
         "rootDialogTitle": "Greška",
         "rootDialogText": "Aplikacija je instalirana s omogućenim root načinom rada, ali trenutno je root način onemogućen.\nPrvo omogućite root način rada.",
         "packageNameLabel": "Naziv paketa",
-        "installTypeLabel": "Vrsta Instalacije",
+        "installTypeLabel": "Vrsta instalacije",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",
-        "patchedDateLabel": "Datum Zakrpe",
+        "patchedDateLabel": "Zakrpano",
         "patchedDateHint": "{date} u {time}",
-        "appliedPatchesLabel": "Primijenjene Zakrpe",
-        "appliedPatchesHint": "{quantity} unesenih zakrpa"
+        "appliedPatchesLabel": "Primijenjene zakrpe",
+        "appliedPatchesHint": "{quantity} primijenjenih zakrpa"
     },
     "contributorsView": {
         "widgetTitle": "Pridonositelji",
-        "patcherContributors": "Pridonositelji Zakrpa",
-        "patchesContributors": "Pridonositelji Zakrpa",
-        "integrationsContributors": "Pridonositelji pri ugradnji",
+        "patcherContributors": "Pridonositelji krpatelja",
+        "patchesContributors": "Pridonositelji zakrpa",
+        "integrationsContributors": "Pridonositelji integracija",
         "cliContributors": "Pridonositelji za CLI",
-        "managerContributors": "Upravitelji"
+        "managerContributors": "Pridonositelji za upravitelja"
     }
 }
