@@ -7,7 +7,7 @@
     "noButton": "Non",
     "navigationView": {
         "dashboardTab": "Tableau de bord",
-        "patcherTab": "Patcher",
+        "patcherTab": "Patcheur",
         "settingsTab": "Paramètres"
     },
     "homeView": {
@@ -25,57 +25,57 @@
         "downloadingMessage": "Téléchargement de la mise à jour...",
         "installingMessage": "Installation de la mise à jour...",
         "errorDownloadMessage": "Téléchargement de la mise à jour impossible",
-        "errorInstallMessage": "Installation de la mise à jour impossible",
-        "noConnection": "Aucune connexion Internet"
+        "errorInstallMessage": "Impossible d'installer la mise à jour",
+        "noConnection": "Aucune connexion à Internet"
     },
     "applicationItem": {
         "patchButton": "Patch",
         "infoButton": "Info",
-        "changelogLabel": "Historique des changements"
+        "changelogLabel": "Nouveautés"
     },
     "latestCommitCard": {
         "loadingLabel": "Chargement...",
         "timeagoLabel": "Il y a {time}",
-        "patcherLabel": "Patcher: ",
+        "patcherLabel": "Patcheur:",
         "managerLabel": "Manager: ",
-        "updateButton": "Mettre à jour le Gestionnaire"
+        "updateButton": "Mettre à jour le Manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Avertissement",
-        "patchDialogText": "Vous avez sélectionné un emplacement de ressource et une installation fractionnée de l'APK a été détectée. Des erreurs durant l'application des correctifs peuvent se produire. Êtes-vous sûr de vouloir continuer de modifier un APK fractionnée?"
+        "patchDialogText": "Vous avez sélectionné un patch de ressources et une installation d'APK divisée a été détectée, des erreurs peuvent donc se produire au moment de faire le patch.\nÊtes-vous sûr de vouloir procéder au patch d'un APK divisée ?"
     },
     "appSelectorCard": {
         "widgetTitle": "Choisissez une application",
         "widgetTitleSelected": "Application sélectionnée",
         "widgetSubtitle": "Aucune application n’a été sélectionnée",
         "noAppsLabel": "Aucune application n'a été trouvée.",
-        "currentVersion": "Actuellement",
-        "recommendedVersion": "Recommandé",
-        "anyVersion": "n'importe laquelle"
+        "currentVersion": "Version actuelle",
+        "recommendedVersion": "Version recommandée",
+        "anyVersion": "N'importe quelle version"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Sélectionner les patches",
-        "widgetTitleSelected": "Patches sélectionnées",
+        "widgetTitle": "Sélectionner des correctifs",
+        "widgetTitleSelected": "Patchs sélectionnés",
         "widgetSubtitle": "Choisissez d’abord une application",
-        "widgetEmptySubtitle": "Aucun patch n’est sélectionné"
+        "widgetEmptySubtitle": "Aucun correctif n’est sélectionné"
     },
     "socialMediaCard": {
         "widgetTitle": "Réseaux sociaux",
-        "widgetSubtitle": "Nous sommes en ligne!"
+        "widgetSubtitle": "Nous sommes en ligne !"
     },
     "appSelectorView": {
-        "viewTitle": "Application sélectionnée",
+        "viewTitle": "Choisissez une application",
         "searchBarHint": "Rechercher une application",
         "storageButton": "Stockage",
         "errorMessage": "Impossible d’utiliser l’application sélectionnée."
     },
     "patchesSelectorView": {
-        "viewTitle": "Sélectionner les patches",
-        "searchBarHint": "Rechercher des patches",
+        "viewTitle": "Sélectionner les correctifs",
+        "searchBarHint": "Rechercher des patchs",
         "doneButton": "Terminé",
-        "noPatchesFound": "Aucun patches trouvé pour l'application sélectionnée"
+        "noPatchesFound": "Aucun patch n’a été trouvé pour l’application sélectionnée"
     },
     "patchItem": {
         "unsupportedWarningButton": "Version non supportée",
@@ -85,7 +85,7 @@
     "installerView": {
         "widgetTitle": "Installateur",
         "installButton": "Installer",
-        "installRootButton": "Installer en tant que Root",
+        "installRootButton": "Installer par la raçine",
         "openButton": "Ouvrir",
         "shareButton": "Partager le fichier",
         "notificationTitle": "ReVanced Manager est en train de modifier",
@@ -113,17 +113,17 @@
         "frenchOption": "Français",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configurer vos sources personnalisées",
-        "orgPatchesLabel": "Organisation des patches",
-        "sourcesPatchesLabel": "Source des patches",
+        "orgPatchesLabel": "Organisation des correctifs",
+        "sourcesPatchesLabel": "Source des correctifs",
         "orgIntegrationsLabel": "Organisation des Intégrations",
         "sourcesIntegrationsLabel": "Source des Intégrations",
         "sourcesResetDialogTitle": "Réinitialiser",
         "sourcesResetDialogText": "Êtes-vous sûr de vouloir restaurer tous les sources personalisées à leurs valeurs par défaut?",
-        "apiURLResetDialogText": "Êtes-vous sûre de vouloir de restaurer l'URL de l'API à sa valeur par défaut?",
+        "apiURLResetDialogText": "Êtes-vous sûr(e) de vouloir de restaurer l'URL de l'API à la valeur par défaut ?",
         "contributorsLabel": "Contributeurs",
         "contributorsHint": "Liste des contributeurs de ReVanced",
-        "logsLabel": "Journal",
-        "logsHint": "Partager les logsde débogage de l'appareil",
+        "logsLabel": "Logs",
+        "logsHint": "Partager les journeaux de débogage de l’appareil",
         "apiURLLabel": "URL de l’API",
         "apiURLHint": "Configurez l’URL de votre API personnalisée",
         "selectApiURL": "Sélectionner l’URL",
@@ -134,26 +134,26 @@
         "widgetTitle": "Information sur l’application",
         "openButton": "Ouvrir",
         "uninstallButton": "Désinstaller",
-        "patchButton": "Patch",
-        "unpatchButton": "Unpatch",
+        "patchButton": "Correctif",
+        "unpatchButton": "Restaurer",
         "unpatchDialogText": "Êtes-vous sûr de vouloir restaurer cette application?",
         "rootDialogTitle": "Erreur",
         "rootDialogText": "L’application a été installée avec le mode d'accès à la raçine activé mais la raçine n’est actuellement pas disponible.",
         "packageNameLabel": "Nom de Paquet",
         "installTypeLabel": "Type d’installation",
-        "rootTypeLabel": "Root",
-        "nonRootTypeLabel": "Non-root",
-        "patchedDateLabel": "Date de patched",
+        "rootTypeLabel": "Enraciné",
+        "nonRootTypeLabel": "Non-enraciné",
+        "patchedDateLabel": "Date Correctif",
         "patchedDateHint": "{date} le {time}",
-        "appliedPatchesLabel": "Patches appliquées",
-        "appliedPatchesHint": "{quantity} patches appliquées"
+        "appliedPatchesLabel": "Correctifs Appliqués",
+        "appliedPatchesHint": "{quantity} correctifs appliqués"
     },
     "contributorsView": {
         "widgetTitle": "Contributeurs",
-        "patcherContributors": "Contributeurs de Patcher",
-        "patchesContributors": "Contributeurs aux Patches",
+        "patcherContributors": "Contributeurs Modificateur",
+        "patchesContributors": "Contributeurs des Correctifs",
         "integrationsContributors": "Contributeurs des Intégrations",
         "cliContributors": "Contributeurs CLI",
-        "managerContributors": "Contributeurs du Manager"
+        "managerContributors": "Contributeurs du Gestionnaire"
     }
 }
