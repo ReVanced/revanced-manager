@@ -37,14 +37,14 @@
         "loadingLabel": "Завантаження...",
         "timeagoLabel": "{time} тому",
         "patcherLabel": "Патчер: ",
-        "managerLabel": "Менеджер: ",
+        "managerLabel": "Manager: ",
         "updateButton": "Оновити Менеджер"
     },
     "patcherView": {
         "widgetTitle": "Патчер",
         "patchButton": "Патч",
         "patchDialogTitle": "Увага",
-        "patchDialogText": "Ви обрали додаток й було виявлено встановлення через Split APK що може призвести до помилок під час модифікації.\nВи дійсно хочете продовжити модифікувати Split APK?"
+        "patchDialogText": "Ви обрали додаток й було виявлено встановлення через Split APK що може призвести до помилок під час пропатчення.\nВи дійсно хочете пропатчити Split APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Виберіть застосунок",
@@ -56,14 +56,14 @@
         "anyVersion": "будь-яка"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Оберіть модифікації",
-        "widgetTitleSelected": "Обрані модифікації",
+        "widgetTitle": "Оберіть патчі",
+        "widgetTitleSelected": "Обрані патчі",
         "widgetSubtitle": "Спочатку оберіть застосунок",
-        "widgetEmptySubtitle": "Модифікації не вибрано"
+        "widgetEmptySubtitle": "Патчі не вибрано"
     },
     "socialMediaCard": {
-        "widgetTitle": "Мережі",
-        "widgetSubtitle": "Ми в мережі!"
+        "widgetTitle": "Соцмережі",
+        "widgetSubtitle": "Ми онлайн!"
     },
     "appSelectorView": {
         "viewTitle": "Оберіть застосунок",
@@ -72,10 +72,10 @@
         "errorMessage": "Не вдалося використати вибрану програму."
     },
     "patchesSelectorView": {
-        "viewTitle": "Оберіть модифікації",
-        "searchBarHint": "Пошук модифікацій",
+        "viewTitle": "Оберіть патчі",
+        "searchBarHint": "Пошук патчів",
         "doneButton": "Готово",
-        "noPatchesFound": "Для цього застосунку немає модифікацій"
+        "noPatchesFound": "Для цього застосунку немає патчів"
     },
     "patchItem": {
         "unsupportedWarningButton": "Непідтримувана версія",
