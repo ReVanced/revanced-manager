@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Anulează",
+    "enabledLabel": "Activat",
+    "disabledLabel": "Dezactivat",
+    "yesButton": "Da",
+    "noButton": "Nu",
+    "navigationView": {
+        "dashboardTab": "Tablou de bord",
+        "patcherTab": "Patcher",
+        "settingsTab": "Setări"
+    },
+    "homeView": {
+        "widgetTitle": "Tablou de bord",
+        "updatesSubtitle": "Actualizări",
+        "patchedSubtitle": "Aplicații Patch-uite",
+        "updatesAvailable": "Actualizări disponibile",
+        "noUpdates": "Nu există actualizări disponibile",
+        "noInstallations": "Nu sunt instalate aplicații patch-uite",
+        "installed": "Instalat",
+        "updateDialogTitle": "Manager Actualizări",
+        "updateDialogText": "Sunteți sigur că doriți să descărcați și să actualizați ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager a fost actualizat",
+        "notificationText": "Atingeți pentru a deschide aplicația",
+        "downloadingMessage": "Se descarcă actualizarea...",
+        "installingMessage": "Se instalează actualizarea...",
+        "errorDownloadMessage": "Nu s-a putut descarca actualizarea",
+        "errorInstallMessage": "Nu s-a putut instala actualizarea",
+        "noConnection": "Nu există conexiune la internet"
+    },
+    "applicationItem": {
+        "patchButton": "Patch",
+        "infoButton": "Informații",
+        "changelogLabel": "Istoric schimbări"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Se încarcă...",
+        "timeagoLabel": "În urmă cu {time}",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Manager Actualizări"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
+        "patchDialogTitle": "Avertisment",
+        "patchDialogText": "Ați selectat un patch de resurse, iar o instalare APK separată a fost detectată, astfel că anumite erori ar putea apărea în momentul patch-uirii.\nSunteți sigur că doriți să continuați cu patch-uirea unui APK separat de bază?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Selectați aplicația",
+        "widgetTitleSelected": "Aplicația selectată",
+        "widgetSubtitle": "Nici o aplicație selectată",
+        "noAppsLabel": "Nu s-au găsit aplicații.",
+        "currentVersion": "Actual",
+        "recommendedVersion": "Recomandat",
+        "anyVersion": "oricare"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Selectați patch-urile",
+        "widgetTitleSelected": "Patch-uri selectate",
+        "widgetSubtitle": "Selectați mai întâi o aplicație",
+        "widgetEmptySubtitle": "Niciun patch selectat"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Rețele de socializare",
+        "widgetSubtitle": "Suntem online!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Selectați aplicația",
+        "searchBarHint": "Caută după o aplicație",
+        "storageButton": "Stocare",
+        "errorMessage": "Imposibil de utilizat aplicația selectată."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Selectați patch-urile",
+        "searchBarHint": "Căutați patch-uri",
+        "doneButton": "Finalizat",
+        "noPatchesFound": "Nu s-au găsit patch-uri pentru aplicația selectată"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Versiune incompatibilă",
+        "unsupportedDialogTitle": "Avertisment",
+        "unsupportedDialogText": "Selectând acest patch poate rezulta in erori de patch-uire.\n\nVersiunea aplicației: {packageVersion}\nVersiuni actuale compatibile:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Installer",
+        "installButton": "Instalează",
+        "installRootButton": "Instalează ca Root",
+        "openButton": "Deschide",
+        "shareButton": "Distribuie fișier",
+        "notificationTitle": "ReVanced Manager realizează patch-uirea",
+        "notificationText": "Atingeți pentru a reveni la Installer",
+        "shareApkMenuOption": "Distribuie APK",
+        "shareLogMenuOption": "Distribuie log-uri",
+        "installErrorDialogTitle": "Eroare",
+        "installErrorDialogText1": "Instalarea root nu este posibilă cu selecția curentă de patch-uri.\nReluați procesul de patch-uire sau selectați instalarea non-root.",
+        "installErrorDialogText2": "Instalarea non-root nu este posibilă cu selecția curentă de patch-uri.\nReluați procesul de patch-uire sau selectați instalarea root, dacă aveți dispozitivul rootat.",
+        "installErrorDialogText3": "Instalarea root nu este posibilă, deoarece fișierul APK original a fost selectat din stocarea internă.\nSelectați o aplicație deja instalată pe dispozitiv sau alegeți instalarea non-root.",
+        "noExit": "Installer-ul încă rulează..."
+    },
+    "settingsView": {
+        "widgetTitle": "Setări",
+        "appearanceSectionTitle": "Aspect",
+        "teamSectionTitle": "Echipă",
+        "infoSectionTitle": "Informații",
+        "advancedSectionTitle": "Setări avansate",
+        "darkThemeLabel": "Mod întunecat",
+        "darkThemeHint": "Welcome to the Dark Side",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Bucurați-vă de o experiență mai apropiată de dispozitivul vostru",
+        "languageLabel": "Limbă",
+        "englishOption": "Engleză",
+        "frenchOption": "Franceză",
+        "sourcesLabel": "Surse",
+        "sourcesLabelHint": "Configurați-vă sursele personalizate",
+        "orgPatchesLabel": "Organizarea Patch-urilor",
+        "sourcesPatchesLabel": "Sursă Patch-uri",
+        "orgIntegrationsLabel": "Organizare Integrări",
+        "sourcesIntegrationsLabel": "Sursă Integrări",
+        "sourcesResetDialogTitle": "Resetare",
+        "sourcesResetDialogText": "Sunteți sigur că vreți să resetați sursele personalizate la valorile inițiale?",
+        "apiURLResetDialogText": "Sunteți sigur că vreți să resetați API URL la valorile inițiale?",
+        "contributorsLabel": "Contribuitori",
+        "contributorsHint": "O listă cu contribuitorii ReVanced",
+        "logsLabel": "Log-uri",
+        "logsHint": "Distribuie log-urile de depanare ale dispozitivului",
+        "apiURLLabel": "API URL",
+        "apiURLHint": "Configurați-vă API URL-ul personalizat",
+        "selectApiURL": "Selectați URL",
+        "aboutLabel": "Despre",
+        "snackbarMessage": "Copiat în clipboard"
+    },
+    "appInfoView": {
+        "widgetTitle": "Informații despre aplicație",
+        "openButton": "Deschide",
+        "uninstallButton": "Dezinstalare",
+        "patchButton": "Patch",
+        "unpatchButton": "Unpatch",
+        "unpatchDialogText": "Sunteți sigur că vreți să înlăturați patch-urile din această aplicație?",
+        "rootDialogTitle": "Eroare",
+        "rootDialogText": "Aplicația a fost instalată cu modul root selectat, însă, momentan, modul root este dezactivat.\nVă rugăm să activați modul root mai întâi.",
+        "packageNameLabel": "Denumirea pachetului",
+        "installTypeLabel": "Tipul instalării",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Non-root",
+        "patchedDateLabel": "Data Patch-uirii",
+        "patchedDateHint": "{date} la {time}",
+        "appliedPatchesLabel": "Patch-uri Adăugate",
+        "appliedPatchesHint": "{quantity} patch-uri adăugate"
+    },
+    "contributorsView": {
+        "widgetTitle": "Contribuitori",
+        "patcherContributors": "Contribuitori ai Patcher-ului",
+        "patchesContributors": "Contribuitori ai Patch-urilor",
+        "integrationsContributors": "Contribuitori la Integrări",
+        "cliContributors": "Contribuitori ai CLI",
+        "managerContributors": "Contribuitori ai Manager-ului"
+    }
+}
