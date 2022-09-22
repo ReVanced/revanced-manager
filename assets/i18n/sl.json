@@ -1,0 +1,159 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Prekliči",
+    "enabledLabel": "Omogočeno",
+    "disabledLabel": "Onemogočeno",
+    "yesButton": "Da",
+    "noButton": "Ne",
+    "navigationView": {
+        "dashboardTab": "Nadzorna plošča",
+        "patcherTab": "Popravljalnik",
+        "settingsTab": "Nastavitve"
+    },
+    "homeView": {
+        "widgetTitle": "Nadzorna plošča",
+        "updatesSubtitle": "Posodobitve",
+        "patchedSubtitle": "Popravljena Aplikacija",
+        "updatesAvailable": "Posodobitve so na voljo",
+        "noUpdates": "Posodobitev ni na voljo",
+        "noInstallations": "Popravljene aplikacije niso nameščene",
+        "installed": "Nameščeno",
+        "updateDialogTitle": "Upravitelj Posodobitev",
+        "updateDialogText": "Ste prepričani, da želite naložiti in posodobiti Upravitelja ReVanced?",
+        "notificationTitle": "Upravitelj ReVanced je posodobljen",
+        "notificationText": "Klikni, da odpreš aplikacijo",
+        "downloadingMessage": "Prenašanje posodobitev...",
+        "installingMessage": "Nameščanje posodobitve...",
+        "errorDownloadMessage": "Posodobitve ni bilo mogoče prenesti",
+        "errorInstallMessage": "Posodobitve ni bilo mogoče namestiti",
+        "noConnection": "Ni internetne povezave"
+    },
+    "applicationItem": {
+        "patchButton": "Popravek",
+        "infoButton": "Informacije",
+        "changelogLabel": "Seznam sprememb"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Nalaganje...",
+        "timeagoLabel": "Pred {time}",
+        "patcherLabel": "Popravljalnik: ",
+        "managerLabel": "Upravitelj: ",
+        "updateButton": "Upravitelj Posodobitev"
+    },
+    "patcherView": {
+        "widgetTitle": "Popravljalnik",
+        "patchButton": "Popravek",
+        "patchDialogTitle": "Opozorilo",
+        "patchDialogText": "Izbral si popravek vira in zaznana je bila namestitev razdeljenega APK-ja, zato lahko pride do napak pri popravku.\nSi prepričan, da želiš nadaljevati?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Izberi aplikacijo",
+        "widgetTitleSelected": "Izbrana aplikacija",
+        "widgetSubtitle": "Nobena aplikacija ni izbrana",
+        "noAppsLabel": "Nobena aplikacija ni bila najdena.",
+        "currentVersion": "Trenutno",
+        "recommendedVersion": "Priporočeno",
+        "anyVersion": "katerakoli"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Izberi popravke",
+        "widgetTitleSelected": "Izbrani popravki",
+        "widgetSubtitle": "Najprej izberite aplikacijo",
+        "widgetEmptySubtitle": "Noben popravek ni izbran"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Družabna omrežja",
+        "widgetSubtitle": "Smo na voljo!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Izberi aplikacijo",
+        "searchBarHint": "Išči med aplikacijami",
+        "storageButton": "Shramba",
+        "errorMessage": "Izbrana aplikacija ne more biti uporabljena."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Izberi popravke",
+        "searchBarHint": "Poišči popravke",
+        "doneButton": "Opravljeno",
+        "noPatchesFound": "Ni popravkov za izbrano aplikacijo"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Nepodprta različica",
+        "unsupportedDialogTitle": "Opozorilo",
+        "unsupportedDialogText": "Izbran popravek bo morda povzročil napake.\n\nRazličica aplikacije: {packageVersion}\nTrenutna podprta različica:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Namestitveni program",
+        "installButton": "Namesti",
+        "installRootButton": "Namesti kot Root",
+        "openButton": "Odpri",
+        "shareButton": "Deljena datoteka",
+        "notificationTitle": "ReVanced upravitelj popravlja",
+        "notificationText": "Kliknite za vrnitev k nameščanju",
+        "shareApkMenuOption": "Deli APK",
+        "shareLogMenuOption": "Deli dnevnik",
+        "installErrorDialogTitle": "Napaka",
+        "installErrorDialogText1": "Root namestitev ni mogoča s trenutno izbiro popravkov.\nPonovno popravi aplikacijo ali pa izberi ne root namestitev.",
+        "installErrorDialogText2": "Namestitev brez roota ni mogoč s trenutno izbranimi popravki.\nPonovno popravi aplikacijo ali pa izberi namestitev brez roota.",
+        "installErrorDialogText3": "Namestitev z rootom ni mogoča, ker je bil prvotni APK izbran iz spomina.\nIzberi nameščeno aplikacijo ali izberi namestitev brez roota.",
+        "noExit": "Namestitev še poteka..."
+    },
+    "settingsView": {
+        "widgetTitle": "Nastavitve",
+        "appearanceSectionTitle": "Izgled",
+        "teamSectionTitle": "Ekipa",
+        "infoSectionTitle": "Informacije",
+        "advancedSectionTitle": "Napredno",
+        "darkThemeLabel": "Temni način",
+        "darkThemeHint": "Dobrodošel na Temni Strani",
+        "dynamicThemeLabel": "Izgled po meri",
+        "dynamicThemeHint": "Uživajte v temi svoje naprave",
+        "languageLabel": "Jezik",
+        "englishOption": "Angleščina",
+        "frenchOption": "Francoščina",
+        "sourcesLabel": "Viri",
+        "sourcesLabelHint": "Uredite svoje vire",
+        "orgPatchesLabel": "Organizacija popravkov",
+        "sourcesPatchesLabel": "Vir popravkov",
+        "orgIntegrationsLabel": "Organizacija integracij",
+        "sourcesIntegrationsLabel": "Vir integracij",
+        "sourcesResetDialogTitle": "Ponastavi",
+        "sourcesResetDialogText": "Ali ste prepričani, da želite ponastaviti vire na privzete vrednosti?",
+        "apiURLResetDialogText": "Ali si prepričan, da želiš ponastaviti spletni naslov API-ja na privzeto vrednost?",
+        "contributorsLabel": "Prispevali so",
+        "contributorsHint": "Seznam ljudi, ki so prispevali pri razvijanju ReVanced",
+        "logsLabel": "Dnevniki",
+        "logsHint": "Delite dnevnike naprave za odpravljanja napak",
+        "apiURLLabel": "Spletni naslov API-ja",
+        "apiURLHint": "Nastavite svojo povezavo do spletnega naslova za API",
+        "selectApiURL": "Izberi spletni naslov",
+        "aboutLabel": "O programu",
+        "snackbarMessage": "Kopirano v odložišče"
+    },
+    "appInfoView": {
+        "widgetTitle": "Informacije o aplikaciji",
+        "openButton": "Odpri",
+        "uninstallButton": "Odstrani",
+        "patchButton": "Popravek",
+        "unpatchButton": "Odstranite popravke",
+        "unpatchDialogText": "Ali ste prepričani, da želite to odstranite popravke?",
+        "rootDialogTitle": "Napaka",
+        "rootDialogText": "Aplikacija je bila nameščena z root načinom, vendar je ta trenutno onemogočen.\nNajprej omogoči root način.",
+        "packageNameLabel": "Ime Paketa",
+        "installTypeLabel": "Vrsta Namestitve",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Ne Root",
+        "patchedDateLabel": "Datum popravka",
+        "patchedDateHint": "{date} ob {time}",
+        "appliedPatchesLabel": "Aplikacija popravljena",
+        "appliedPatchesHint": "{quantity} popravkov"
+    },
+    "contributorsView": {
+        "widgetTitle": "Prispevali so",
+        "patcherContributors": "K Urejevalniku Popravkov so Prispevali",
+        "patchesContributors": "K popravkom so prispevali",
+        "integrationsContributors": "K integracijam so prispevali",
+        "cliContributors": "K CLI so Prispevali",
+        "managerContributors": "K upravitelju so prispevali"
+    }
+}
