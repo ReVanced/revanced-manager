@@ -1,7 +1,7 @@
 {
     "okButton": "Oké",
     "cancelButton": "Annuleren",
-    "enabledLabel": "Geactiveerd",
+    "enabledLabel": "Ingeschakeld",
     "disabledLabel": "Uitgeschakeld",
     "yesButton": "Ja",
     "noButton": "Nee",
@@ -13,28 +13,28 @@
     "homeView": {
         "widgetTitle": "Overzicht",
         "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Gepatchte applicatie",
+        "patchedSubtitle": "Gepatchte applicaties",
         "updatesAvailable": "Updates beschikbaar",
         "noUpdates": "Geen updates beschikbaar",
         "noInstallations": "Geen gepatchte applicaties geïnstalleerd",
         "installed": "Geïnstalleerd",
         "updateDialogTitle": "Manager bijwerken",
-        "updateDialogText": "Weet je het zeker dat je Revanche Manager wilt downloaden en bijwerken?",
-        "notificationTitle": "Revanche Manager is bijgewerkt",
+        "updateDialogText": "Weet je het zeker dat je Revanced Manager wilt downloaden en bijwerken?",
+        "notificationTitle": "ReVanced Manager is bijgewerkt",
         "notificationText": "Klik om de app te openen",
-        "downloadingMessage": "Update wordt gedownload...",
-        "installingMessage": "Update wordt geïnstalleerd...",
+        "downloadingMessage": "Update downloaden...",
+        "installingMessage": "Update installeren...",
         "errorDownloadMessage": "Update downloaden mislukt",
-        "errorInstallMessage": "Update installeren mislukt",
+        "errorInstallMessage": "Update kon niet worden geïnstalleerd",
         "noConnection": "Geen internetverbinding"
     },
     "applicationItem": {
         "patchButton": "Patch",
         "infoButton": "Informatie",
-        "changelogLabel": "Wijzigingsgeschiedenis"
+        "changelogLabel": "Wijzigingslogboek"
     },
     "latestCommitCard": {
-        "loadingLabel": "Bezig met laden...",
+        "loadingLabel": "Aan het laden...",
         "timeagoLabel": "{time} geleden",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
@@ -66,8 +66,8 @@
         "widgetSubtitle": "We zijn online!"
     },
     "appSelectorView": {
-        "viewTitle": "App selecteren",
-        "searchBarHint": "App zoeken",
+        "viewTitle": "Selecteer applicatie",
+        "searchBarHint": "Applicaties doorzoeken",
         "storageButton": "Opslag",
         "errorMessage": "Kan geselecteerde app niet gebruiken."
     },
@@ -91,10 +91,10 @@
         "notificationTitle": "ReVanced Manager is aan het patchen",
         "notificationText": "Tik om terug te keren naar het installatieprogramma",
         "shareApkMenuOption": "APK delen",
-        "shareLogMenuOption": "Deel log",
+        "shareLogMenuOption": "Log delen",
         "installErrorDialogTitle": "Fout",
-        "installErrorDialogText1": "Root installatie is niet mogelijk met de huidige patches selectie.\nRepatch uw app of kies voor niet-root-installatie.",
-        "installErrorDialogText2": "Niet-root installatie is niet mogelijk met de huidige patcheselectie.\nRepatch uw app of kies voor root install als u uw apparaat hebt geroot.",
+        "installErrorDialogText1": "Root installatie is niet mogelijk met de huidige selectie van patches.\nPatch uw app opnieuw of kies voor niet-root-installatie.",
+        "installErrorDialogText2": "Niet-root installatie is niet mogelijk met de huidige selectie van patches.\nPatch uw app opnieuw of kies voor root install als u uw apparaat heeft geroot.",
         "installErrorDialogText3": "Root installatie is niet mogelijk omdat de orginele APK uit de opslag is geselecteerd.\nSelecteer een geïnstalleerde app of kies voor niet-root installatie.",
         "noExit": "Installeren is nog bezig..."
     },
@@ -150,7 +150,7 @@
     },
     "contributorsView": {
         "widgetTitle": "Bijdragers",
-        "patcherContributors": "Patches Bijdragers",
+        "patcherContributors": "Patcher Bijdragers",
         "patchesContributors": "Patches Bijdragers",
         "integrationsContributors": "Integraties Bijdragers",
         "cliContributors": "CLI bijdragers",
