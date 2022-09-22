@@ -6,12 +6,12 @@
     "yesButton": "Sí",
     "noButton": "No",
     "navigationView": {
-        "dashboardTab": "Panell de control",
-        "patcherTab": "Modificacions",
+        "dashboardTab": "Tauler de control",
+        "patcherTab": "Patcher",
         "settingsTab": "Configuració"
     },
     "homeView": {
-        "widgetTitle": "Panell de control",
+        "widgetTitle": "Tauler de control",
         "updatesSubtitle": "Actualitzacions",
         "patchedSubtitle": "Aplicacions Modificades",
         "updatesAvailable": "Actualitzacions disponibles",
@@ -19,7 +19,7 @@
         "noInstallations": "Cap aplicació modificada instal·lada",
         "installed": "Instal·lades",
         "updateDialogTitle": "Actualiza el Manager",
-        "updateDialogText": "Esteu segur que vol descarregar i actualitzar el Gestor ReVanced?",
+        "updateDialogText": "Esteu segur que vol descarregar i actualitzar el ReVanced Manager?",
         "notificationTitle": "El ReVanced Manager s'ha actualitzat",
         "notificationText": "Toqui per obrir l'aplicació",
         "downloadingMessage": "Descarregant l'actualització...",
@@ -29,7 +29,7 @@
         "noConnection": "No hi ha connexió a Internet"
     },
     "applicationItem": {
-        "patchButton": "Modifica",
+        "patchButton": "Modificar",
         "infoButton": "Informació",
         "changelogLabel": "Historial de canvis"
     },
@@ -42,9 +42,9 @@
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "Modifica",
+        "patchButton": "Modificar",
         "patchDialogTitle": "Advertència",
-        "patchDialogText": "Heu seleccionat una modificació de recursos, però s'ha detectat una instal·lació APK modular. Això pot provocar errors durant el procés.\n\nEsteu segur de continuar amb la modificació d'una APK base modular?"
+        "patchDialogText": "Heu seleccionat una modificació de recursos, però s'ha detectat una instal·lació \"Split APK\". Això pot provocar errors durant el procés.\n\nEsteu segur de continuar amb la modificació d'una APK base modular?"
     },
     "appSelectorCard": {
         "widgetTitle": "Seleccioni l'aplicació",
@@ -72,7 +72,7 @@
         "errorMessage": "No s'ha pogut utilitzar l'aplicació seleccionada."
     },
     "patchesSelectorView": {
-        "viewTitle": "Seleccioni modificacions",
+        "viewTitle": "Seleccionar modificacions",
         "searchBarHint": "Buscar modificacions",
         "doneButton": "Fet",
         "noPatchesFound": "No s'han trobat modificacions per l'aplicació seleccionada"
@@ -80,7 +80,7 @@
     "patchItem": {
         "unsupportedWarningButton": "Versió no suportada",
         "unsupportedDialogTitle": "Advertència",
-        "unsupportedDialogText": "Seleccionar aquesta modificació pot provocar errors.\n\nVersió de l'aplicació: {packageVersion}\nVersions suportades: {supportedVersions}"
+        "unsupportedDialogText": "Seleccionar aquesta modificació pot provocar errors.\n\nVersió de l'aplicació: {packageVersion}\nVersions suportades:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Instal·lador",
@@ -93,9 +93,9 @@
         "shareApkMenuOption": "Compartir l'APK",
         "shareLogMenuOption": "Compartir el registre",
         "installErrorDialogTitle": "Error",
-        "installErrorDialogText1": "La instal·lació amb root no és possible amb la selecció actual de modificacions.\nTorni a modificar l'aplicació o triï la instal·lació sense root.",
-        "installErrorDialogText2": "La instal·lació sense root no és possible amb la selecció de modificacions actual.\nTorni a modificar l'aplicació o triï la instal·lació amb root si el seu dispositiu està rootejat.",
-        "installErrorDialogText3": "La instal·lació amb root no és possible, ja que l'APK original s'ha seleccionat des de l'emmagatzematge intern.\n\nSeleccioni una aplicació instal·lada o triï la instal·lació sense root.",
+        "installErrorDialogText1": "La instal·lació amb Root no és possible amb la selecció actual de modificacions.\nTorni a modificar l'aplicació o triï la instal·lació sense Root.",
+        "installErrorDialogText2": "La instal·lació sense Root no és possible amb la selecció de modificacions actual.\nTorni a modificar l'aplicació o triï la instal·lació amb Root si el seu dispositiu està rootejat.",
+        "installErrorDialogText3": "La instal·lació amb Root no és possible, ja que l'APK original s'ha seleccionat des de l'emmagatzematge intern.\n\nSeleccioni una aplicació instal·lada o triï la instal·lació sense Root.",
         "noExit": "L'instal·lador segueix en funcionament..."
     },
     "settingsView": {
@@ -107,7 +107,7 @@
         "darkThemeLabel": "Mode Fosc",
         "darkThemeHint": "Benvingut al Costat Fosc",
         "dynamicThemeLabel": "Material You",
-        "dynamicThemeHint": "Gaudeixi d'una experiència més semblant al seu dispositiu",
+        "dynamicThemeHint": "Gaudeixi d'una experiència més acord al seu dispositiu",
         "languageLabel": "Llengua",
         "englishOption": "Anglès",
         "frenchOption": "Francès",
