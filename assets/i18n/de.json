@@ -11,7 +11,7 @@
         "settingsTab": "Einstellungen"
     },
     "homeView": {
-        "widgetTitle": "Dashboard",
+        "widgetTitle": "Übersicht",
         "updatesSubtitle": "Aktualisierungen",
         "patchedSubtitle": "Gepatchte Apps",
         "updatesAvailable": "Aktualisierung verfügbar",
@@ -19,22 +19,22 @@
         "noInstallations": "Keine gepatchten Apps installiert",
         "installed": "Installiert",
         "updateDialogTitle": "Manager aktualisieren",
-        "updateDialogText": "Bist du sicher, dass du den ReVanced Manager herunterladen und aktualisieren möchtest?",
-        "notificationTitle": "Der ReVanced Manager wurde aktualisiert",
+        "updateDialogText": "Bist du dir sicher, dass du den ReVanced Manager herunterladen und aktualisieren möchtest?",
+        "notificationTitle": "ReVanced Manager wurde aktualisiert",
         "notificationText": "Tippen, um die App zu öffnen",
         "downloadingMessage": "Aktualisierung wird heruntergeladen...",
-        "installingMessage": "Update wird installiert...",
+        "installingMessage": "Aktualisierung wird installiert...",
         "errorDownloadMessage": "Aktualisierung konnte nicht heruntergeladen werden",
         "errorInstallMessage": "Aktualisierung konnte nicht installiert werden",
         "noConnection": "Keine Internetverbindung"
     },
     "applicationItem": {
-        "patchButton": "Patch",
+        "patchButton": "Patchen",
         "infoButton": "Info",
         "changelogLabel": "Änderungen"
     },
     "latestCommitCard": {
-        "loadingLabel": "Wird geladen...",
+        "loadingLabel": "Lädt...",
         "timeagoLabel": "vor {time}",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
@@ -44,7 +44,7 @@
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Warnung",
-        "patchDialogText": "Du hast einen Ressourcen-Patch ausgewählt und eine gesplittete APK-Installation wurde entdeckt, durch die Fehler beim Patchen auftreten könnten.\nBist du dir sicher, dass du die gesplittete APK patchen möchtest?"
+        "patchDialogText": "Du hast einen Ressourcen-Patch ausgewählt und eine split APK-Installation wurde entdeckt, durch die Fehler beim Patchen auftreten könnten.\nBist du dir sicher, dass du die split-APK patchen möchtest?"
     },
     "appSelectorCard": {
         "widgetTitle": "App auswählen",
@@ -52,8 +52,8 @@
         "widgetSubtitle": "Keine App ausgewählt",
         "noAppsLabel": "Keine Apps gefunden.",
         "currentVersion": "Aktuell",
-        "recommendedVersion": "Empfohlene",
-        "anyVersion": "beliebige"
+        "recommendedVersion": "Empfohlen",
+        "anyVersion": "beliebig"
     },
     "patchSelectorCard": {
         "widgetTitle": "Patches auswählen",
@@ -89,14 +89,14 @@
         "openButton": "Öffnen",
         "shareButton": "Datei teilen",
         "notificationTitle": "ReVanced Manager patcht",
-        "notificationText": "Tippen, um zum Installierprozess zurückzukehren",
+        "notificationText": "Tippen, um zum Installer zurückzukehren",
         "shareApkMenuOption": "APK teilen",
         "shareLogMenuOption": "Log teilen",
         "installErrorDialogTitle": "Fehler",
-        "installErrorDialogText1": "Installation per Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App anders oder installiere sie ohne Root.",
-        "installErrorDialogText2": "Installation ohne Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App anders oder installiere sie mit Root, wenn dein Gerät gerooted ist.",
+        "installErrorDialogText1": "Root-Installation ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App erneut oder installiere sie ohne Root.",
+        "installErrorDialogText2": "Installation ohne Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App erneut oder installiere sie mit Root, wenn dein Gerät gerooted ist.",
         "installErrorDialogText3": "Root-Installation ist nicht möglich, da die ursprüngliche APK aus dem Speicher ausgewählt wurde.\nWähle eine installierte App oder wähle die Installation ohne Root.",
-        "noExit": "Installierprozess läuft noch..."
+        "noExit": "Installer wird ausgeführt..."
     },
     "settingsView": {
         "widgetTitle": "Einstellungen",
@@ -112,20 +112,20 @@
         "englishOption": "Englisch",
         "frenchOption": "Französisch",
         "sourcesLabel": "Quellen",
-        "sourcesLabelHint": "Konfiguriere Deine eigenen Quellen",
-        "orgPatchesLabel": "Patches Organisation",
-        "sourcesPatchesLabel": "Patchquellen",
+        "sourcesLabelHint": "Konfiguriere deine eigenen Quellen",
+        "orgPatchesLabel": "Organisation der Patches",
+        "sourcesPatchesLabel": "Quelle der Patches",
         "orgIntegrationsLabel": "Organisation der Integration",
         "sourcesIntegrationsLabel": "Integrationen Quelle",
         "sourcesResetDialogTitle": "Zurücksetzen",
-        "sourcesResetDialogText": "Bist du sicher, dass du die benutzerdefinierten Quellen auf ihre Standardwerte zurücksetzen möchtest?",
-        "apiURLResetDialogText": "Bist du sicher, dass Du die API-URL auf ihren Standardwert zurücksetzen möchtest?",
+        "sourcesResetDialogText": "Bist du dir sicher, dass du die benutzerdefinierten Quellen auf ihre Standardwerte zurücksetzen möchtest?",
+        "apiURLResetDialogText": "Bist du dir sicher, dass du die API-URL auf ihren Standardwert zurücksetzen möchtest?",
         "contributorsLabel": "Mitwirkende",
         "contributorsHint": "Eine Liste der Mitwirkenden von ReVanced",
         "logsLabel": "Protokolle",
         "logsHint": "Debug-Protokolle des Geräts teilen",
         "apiURLLabel": "API URL",
-        "apiURLHint": "Konfiguriere deine eigene API URL",
+        "apiURLHint": "Konfiguriere deine eigene API-URL",
         "selectApiURL": "URL auswählen",
         "aboutLabel": "Über",
         "snackbarMessage": "In die Zwischenablage kopiert"
@@ -150,10 +150,10 @@
     },
     "contributorsView": {
         "widgetTitle": "Mitwirkende",
-        "patcherContributors": "Patcher Mitwirkende",
-        "patchesContributors": "Patch Mitwirkende",
-        "integrationsContributors": "Integration Mitwirkende",
-        "cliContributors": "CLI Mitwirkende",
-        "managerContributors": "Manager Mitwirkende"
+        "patcherContributors": "Mitwirkende am Patcher",
+        "patchesContributors": "Mitwirkende der Patches",
+        "integrationsContributors": "Mitwirkende an Integrationen",
+        "cliContributors": "Mitwirkende an der CLI",
+        "managerContributors": "Mitwirkende am Manager"
     }
 }
