@@ -44,14 +44,14 @@
         "widgetTitle": "Yamalayıcı",
         "patchButton": "Yamala",
         "patchDialogTitle": "Uyarı",
-        "patchDialogText": "Bir kaynak yaması seçtiniz ve split APK indirmesi belirlendi ve bu yüzden yamalama hataları meydana gelebilir.\nSplit base APK'sını yamalamaya devam etmek istediğinize emin misiniz?"
+        "patchDialogText": "Görünüşe göre seçtiğiniz uygulama bölünmüş(split) bir şekilde. Bu tür uygulamalar hatalar meydana getirebilir. Yine de devam etmek istediğinizde emin misiniz?"
     },
     "appSelectorCard": {
         "widgetTitle": "Uygulama seçin",
         "widgetTitleSelected": "Seçilen Uygulama",
         "widgetSubtitle": "Hiçbir uygulama seçilmedi",
         "noAppsLabel": "Hiçbir uygulama bulunamadı.",
-        "currentVersion": "Şuanki",
+        "currentVersion": "Şu anki",
         "recommendedVersion": "Önerilen",
         "anyVersion": "herhangi biri"
     },
@@ -62,7 +62,7 @@
         "widgetEmptySubtitle": "Hiçbir yama seçilmedi"
     },
     "socialMediaCard": {
-        "widgetTitle": "Sosyal Medyamız",
+        "widgetTitle": "Sosyal Medyalar",
         "widgetSubtitle": "Çevrimiçiyiz!"
     },
     "appSelectorView": {
@@ -80,12 +80,12 @@
     "patchItem": {
         "unsupportedWarningButton": "Desteklenmeyen sürüm",
         "unsupportedDialogTitle": "Uyarı",
-        "unsupportedDialogText": "Bu yamayı seçmek yamalama hatalarına sebep olabilir\n\nUygulama sürümü: {packageVersion}\nŞuanki desteklenen sürümler:\n{supportedVersions}"
+        "unsupportedDialogText": "Bu yamayı seçmek hatalarına sebep olabilir.\n\nUygulama sürümü: {packageVersion}\nŞuanki desteklenen sürümler:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Yükleyici",
         "installButton": "Yükle",
-        "installRootButton": "Kök olarak yükle",
+        "installRootButton": "Kök(Root) olarak yükle",
         "openButton": "Aç",
         "shareButton": "Dosyayı Paylaş",
         "notificationTitle": "ReVanced Manager yamalıyor",
@@ -113,15 +113,15 @@
         "frenchOption": "Fransızca",
         "sourcesLabel": "Kaynaklar",
         "sourcesLabelHint": "Özel kaynaklarınızı yapılandırın",
-        "orgPatchesLabel": "Patches Organizasyonu",
-        "sourcesPatchesLabel": "Patches Kaynakları",
-        "orgIntegrationsLabel": "Integrations Organizasyonu",
-        "sourcesIntegrationsLabel": "Integrations Kaynakları",
+        "orgPatchesLabel": "Yama organizasyonu",
+        "sourcesPatchesLabel": "Yama kaynağı",
+        "orgIntegrationsLabel": "Entegrasyon organizasyonu",
+        "sourcesIntegrationsLabel": "Entegrasyon Kaynağı",
         "sourcesResetDialogTitle": "Sıfırla",
         "sourcesResetDialogText": "Özel kaynakları varsayılan ayarlarına geri döndürmek istediğinize emin misiniz?",
         "apiURLResetDialogText": "API URL'i varsayılan değerine sıfırlamak istediğinize emin misiniz?",
         "contributorsLabel": "Katkıda bulunanlar",
-        "contributorsHint": "ReVanced'a katkıda bulunanların bir listesi",
+        "contributorsHint": "ReVanced'a katkıda bulunanların listesi",
         "logsLabel": "Günlükler",
         "logsHint": "Cihaz hata ayıklama günlüklerini paylaş",
         "apiURLLabel": "API URL",
@@ -150,10 +150,10 @@
     },
     "contributorsView": {
         "widgetTitle": "Katkıda bulunanlar",
-        "patcherContributors": "Patcher'a Katkıda bulunanlar",
-        "patchesContributors": "Patches'e Katkıda bulunanlar",
-        "integrationsContributors": "Integrations'a Katkıda bulunanlar",
+        "patcherContributors": "Yamalayıcıya Katkıda bulunanlar",
+        "patchesContributors": "Yamalara Katkıda bulunanlar",
+        "integrationsContributors": "Entegrasyonlara Katkıda bulunanlar",
         "cliContributors": "CLI'a Katkıda Bulunanlar",
-        "managerContributors": "Manager'a Katkıda Bulunanlar"
+        "managerContributors": "Yöneticiye Katkıda Bulunanlar"
     }
 }
