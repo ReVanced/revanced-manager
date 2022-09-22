@@ -20,20 +20,26 @@ class AppInfoViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
 
-  Future<void> uninstallApp(PatchedApplication app, bool onlyUnpatch) async {
+  Future<void> uninstallApp(
+    BuildContext context,
+    PatchedApplication app,
+    bool onlyUnpatch,
+  ) async {
+    bool isUninstalled = true;
     if (app.isRooted) {
       bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
-        _rootAPI.deleteApp(app.packageName, app.apkFilePath);
-        _managerAPI.deletePatchedApp(app);
+        await _rootAPI.deleteApp(app.packageName, app.apkFilePath);
         if (!onlyUnpatch) {
-          DeviceApps.uninstallApp(app.packageName);
+          await DeviceApps.uninstallApp(app.packageName);
         }
       }
     } else {
-      DeviceApps.uninstallApp(app.packageName).then(
-        (value) => _managerAPI.deletePatchedApp(app),
-      );
+      isUninstalled = await DeviceApps.uninstallApp(app.packageName);
+    }
+    if (isUninstalled) {
+      await _managerAPI.deletePatchedApp(app);
+      locator<HomeViewModel>().initialize(context);
     }
   }
 
@@ -87,8 +93,7 @@ class AppInfoViewModel extends BaseViewModel {
               CustomMaterialButton(
                 label: I18nText('yesButton'),
                 onPressed: () {
-                  uninstallApp(app, onlyUnpatch);
-                  locator<HomeViewModel>().initialize(context);
+                  uninstallApp(context, app, onlyUnpatch);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
@@ -97,8 +102,7 @@ class AppInfoViewModel extends BaseViewModel {
           ),
         );
       } else {
-        uninstallApp(app, onlyUnpatch);
-        locator<HomeViewModel>().initialize(context);
+        uninstallApp(context, app, onlyUnpatch);
         Navigator.of(context).pop();
       }
     }

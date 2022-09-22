@@ -89,19 +89,25 @@ class PatcherAPI {
 
   Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.contains('integrations'),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('integrations'),
+      ),
     );
   }
 
   Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.any((dep) => dep.contains('resource-')),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('resource-'),
+      ),
     );
   }
 
   Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.contains('settings'),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('settings'),
+      ),
     );
   }
 
