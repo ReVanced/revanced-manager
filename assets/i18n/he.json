@@ -1,0 +1,159 @@
+{
+    "okButton": "אישור",
+    "cancelButton": "ביטול",
+    "enabledLabel": "הופעל",
+    "disabledLabel": "כבוי",
+    "yesButton": "כן",
+    "noButton": "לא",
+    "navigationView": {
+        "dashboardTab": "לוח בקרה",
+        "patcherTab": "מתקן",
+        "settingsTab": "הגדרות"
+    },
+    "homeView": {
+        "widgetTitle": "לוח בקרה",
+        "updatesSubtitle": "עדכונים",
+        "patchedSubtitle": "אפליקציה מתוקנת",
+        "updatesAvailable": "עדכון חדש זמין",
+        "noUpdates": "אין עדכונים זמינים",
+        "noInstallations": "אין אפליקציות מתוקנת מותקנות",
+        "installed": "מותקן",
+        "updateDialogTitle": "מנהל עדכונים",
+        "updateDialogText": "האם אתה בטוח שברצונך להוריד ולעדכן את ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager עודכן",
+        "notificationText": "הקש כדי לפתוח את היישום",
+        "downloadingMessage": "מוריד עדכון...",
+        "installingMessage": "מתקין עדכון...",
+        "errorDownloadMessage": "הורדת קובץ העדכון נכשלה",
+        "errorInstallMessage": "לא ניתן לעדכן",
+        "noConnection": "אין חיבור לאינטרנט"
+    },
+    "applicationItem": {
+        "patchButton": "תיקון",
+        "infoButton": "מידע",
+        "changelogLabel": "רשימת שינויים"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "טוען...",
+        "timeagoLabel": "לפני {time}",
+        "patcherLabel": "מתקן: ",
+        "managerLabel": "מנהל: ",
+        "updateButton": "מנהל העדכונים"
+    },
+    "patcherView": {
+        "widgetTitle": "מתקן",
+        "patchButton": "תיקון",
+        "patchDialogTitle": "אזהרה",
+        "patchDialogText": "אתה בחרת במקור לתיקון וזוהה התקנה של split apk, אז יתכנו שגיאות תיקון.\nהאם את/ה בטוח/ה שברצונך להמשיך עם תיקון split apk?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "בחר יישום",
+        "widgetTitleSelected": "יישום נבחר",
+        "widgetSubtitle": "לא נבחרה אפליקציה",
+        "noAppsLabel": "לא נמצאו יישומים.",
+        "currentVersion": "נוכחי",
+        "recommendedVersion": "מומלץ",
+        "anyVersion": "הכל"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "בחר תיקונים",
+        "widgetTitleSelected": "תיקונים שנבחרו",
+        "widgetSubtitle": "קודם תבחר/י אפליקציה",
+        "widgetEmptySubtitle": "לא נבחרו תיקונים"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "חברתיות",
+        "widgetSubtitle": "אנחנו מחוברים!"
+    },
+    "appSelectorView": {
+        "viewTitle": "בחר יישום",
+        "searchBarHint": "חפש יישומים",
+        "storageButton": "אחסון",
+        "errorMessage": "לא ניתן להשתמש ביישום שנבחר."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "בחר תיקונים",
+        "searchBarHint": "חפש תיקונים",
+        "doneButton": "בוצע",
+        "noPatchesFound": "לא נמצאו תיקונים ליישום שנבחר"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "גרסה לא נתמכת",
+        "unsupportedDialogTitle": "אזהרה",
+        "unsupportedDialogText": "בחירה בתיקון זה עלול לגרום לשגיאות תיקון.\nגרסת יישום: {packageVersion}\nגרסאות נתמכות:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "מתקין",
+        "installButton": "התקן",
+        "installRootButton": "התקן בתור Root",
+        "openButton": "פתח",
+        "shareButton": "שתף קובץ",
+        "notificationTitle": "ReVanced Manager בתהליך תיקון",
+        "notificationText": "לחץ כדי לחזור להתקנה",
+        "shareApkMenuOption": "שתף APK",
+        "shareLogMenuOption": "שתף לוג",
+        "installErrorDialogTitle": "שגיאה",
+        "installErrorDialogText1": "התקנת root לא אפשרי עם התיקונים הנבחרים.\nתקן את היישום או תבחר באפשרות התקנה ללא root.",
+        "installErrorDialogText2": "הורדה של non-root היא לא אפשרית עם הבחירה של התיקונים הנוכחים.\nתקן את היישום או שתוריד root אם המכשיר שלך הוא root.",
+        "installErrorDialogText3": "הורדת root לא אפשרית מכיוון שה APK הראשוני נבחר מהאחסון שלך.\nתבחר יישום קיים או שתבחר הורדת non root.",
+        "noExit": "עדיין מתקין..."
+    },
+    "settingsView": {
+        "widgetTitle": "הגדרות",
+        "appearanceSectionTitle": "מראה",
+        "teamSectionTitle": "צוות",
+        "infoSectionTitle": "מידע",
+        "advancedSectionTitle": "מתקדם",
+        "darkThemeLabel": "מצב לילה",
+        "darkThemeHint": "ברוך הבא לצד האפל",
+        "dynamicThemeLabel": "Material you",
+        "dynamicThemeHint": "תהנה מניסיון קרוב יותר למכשיר שלך",
+        "languageLabel": "שפה",
+        "englishOption": "אנגלית",
+        "frenchOption": "צרפתית",
+        "sourcesLabel": "מקורות",
+        "sourcesLabelHint": "הגדר כתובת Api מותאמת אישית",
+        "orgPatchesLabel": "ארגון תיקונים",
+        "sourcesPatchesLabel": "המקור של התיקונים",
+        "orgIntegrationsLabel": "ארגון integrations",
+        "sourcesIntegrationsLabel": "מקור integrations",
+        "sourcesResetDialogTitle": "איפוס",
+        "sourcesResetDialogText": "האם אתה בטוח שברצונך לאפס מקורות מותאמים אישית לערכי ברירת המחדל שלהם?",
+        "apiURLResetDialogText": "האם אתה בטוח שברצונך לאפס את כתובת הAPI לערך ברירת המחדל?",
+        "contributorsLabel": "תורמים",
+        "contributorsHint": "רשימת התורמים לReVanced",
+        "logsLabel": "לוגים",
+        "logsHint": "שתף יומן ניפוי באגים",
+        "apiURLLabel": "כתובת API",
+        "apiURLHint": "הגדר כתובת API מותאמת אישית",
+        "selectApiURL": "בחר כתובת",
+        "aboutLabel": "אודות",
+        "snackbarMessage": "הועתק ללוח"
+    },
+    "appInfoView": {
+        "widgetTitle": "מידע על היישום",
+        "openButton": "פתח",
+        "uninstallButton": "הסר התקנה",
+        "patchButton": "תקן",
+        "unpatchButton": "הסר תיקון",
+        "unpatchDialogText": "האם אתה בטוח שברצונך להסיר את התיקון מיישום זה?",
+        "rootDialogTitle": "שגיאה",
+        "rootDialogText": "ישומון הותקן עם מצב root מופעל\nברגע זה מצב root לא פעיל. \nבבקשה הפעל מצב root ונסה שוב.",
+        "packageNameLabel": "שם החבילה",
+        "installTypeLabel": "סוג התקנה",
+        "rootTypeLabel": "רוט",
+        "nonRootTypeLabel": "לא root",
+        "patchedDateLabel": "תאריך תיקון",
+        "patchedDateHint": "{date} ב {time}",
+        "appliedPatchesLabel": "טלאים מופעלים",
+        "appliedPatchesHint": "{כמות} שינויים הוחלו"
+    },
+    "contributorsView": {
+        "widgetTitle": "תורמים",
+        "patcherContributors": "תורמי GitHub",
+        "patchesContributors": "תורמי GitHub",
+        "integrationsContributors": "תורמי אינטגרציה",
+        "cliContributors": "תורמים",
+        "managerContributors": "תורמי Manager"
+    }
+}
