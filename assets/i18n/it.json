@@ -3,11 +3,11 @@
     "cancelButton": "Annulla",
     "enabledLabel": "Attivo",
     "disabledLabel": "Disattivato",
-    "yesButton": "Si",
+    "yesButton": "Sì",
     "noButton": "No",
     "navigationView": {
         "dashboardTab": "Gestione",
-        "patcherTab": "Modificatore",
+        "patcherTab": "Patcher",
         "settingsTab": "Impostazioni"
     },
     "homeView": {
@@ -17,7 +17,7 @@
         "updatesAvailable": "Aggiornamenti disponibili",
         "noUpdates": "Nessun aggiornamento disponibile",
         "noInstallations": "Nessuna applicazione modificata è stata installata",
-        "installed": "Installata",
+        "installed": "Installate",
         "updateDialogTitle": "Aggiorna Manager",
         "updateDialogText": "Sei sicuro di voler scaricare e aggiornare Revanced Manager?",
         "notificationTitle": "ReVanced Manager è stato aggiornato",
@@ -29,29 +29,29 @@
         "noConnection": "Nessuna connessione internet"
     },
     "applicationItem": {
-        "patchButton": "Modifica",
+        "patchButton": "Patch",
         "infoButton": "Info",
-        "changelogLabel": "Elenco dei cambiamenti"
+        "changelogLabel": "Novità"
     },
     "latestCommitCard": {
         "loadingLabel": "Caricamento...",
         "timeagoLabel": "{time} fa",
-        "patcherLabel": "Modificatore: ",
+        "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
         "updateButton": "Aggiorna Manager"
     },
     "patcherView": {
-        "widgetTitle": "Modificatore",
-        "patchButton": "Modifica",
-        "patchDialogTitle": "Avviso",
-        "patchDialogText": "Hai selezionato una modifica di risorse ed è stata rilevata un'installazione APK suddivisa. Ciò potrebbe generare errori in fase di modifica.\nSei sicuro di voler procedere con la modifica di un'APK suddiviso?"
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
+        "patchDialogTitle": "Attenzione",
+        "patchDialogText": "Hai selezionato una modifica di risorse ed è stata rilevata un'installazione APK suddivisa. Questo potrebbe generare errori in fase di modifica.\nSei sicuro di voler procedere con la modifica di un'APK suddivisa?"
     },
     "appSelectorCard": {
         "widgetTitle": "Seleziona applicazione",
         "widgetTitleSelected": "Applicazione selezionata",
         "widgetSubtitle": "Nessuna applicazione selezionata",
         "noAppsLabel": "Nessuna applicazione trovata.",
-        "currentVersion": "Corrente",
+        "currentVersion": "Attuale",
         "recommendedVersion": "Consigliata",
         "anyVersion": "qualsiasi"
     },
@@ -63,65 +63,65 @@
     },
     "socialMediaCard": {
         "widgetTitle": "Social",
-        "widgetSubtitle": "Siamo online!"
+        "widgetSubtitle": "Seguici sui nostri canali!"
     },
     "appSelectorView": {
         "viewTitle": "Seleziona applicazione",
         "searchBarHint": "Cerca applicazioni",
-        "storageButton": "Memoria",
+        "storageButton": "Archiviazione",
         "errorMessage": "Impossibile utilizzare l'applicazione selezionata."
     },
     "patchesSelectorView": {
-        "viewTitle": "Seleziona modifiche",
-        "searchBarHint": "Cerca modifiche",
+        "viewTitle": "Seleziona patch",
+        "searchBarHint": "Cerca patch",
         "doneButton": "Fatto",
-        "noPatchesFound": "Nessuna modifica trovata per l'applicazione selezionata"
+        "noPatchesFound": "Nessuna patch trovata per l'applicazione selezionata"
     },
     "patchItem": {
         "unsupportedWarningButton": "Versione non supportata",
-        "unsupportedDialogTitle": "Avviso",
-        "unsupportedDialogText": "Scegliere questa modifica potrebbe causare errori in fase di modifica.\n\nVersione dell'app: {packageVersion}\nVersioni attualmente supportate:\n{supportedVersions}"
+        "unsupportedDialogTitle": "Attenzione",
+        "unsupportedDialogText": "La selezione di questa patch potrebbe causare degli errori.\n\nVersione dell'app: {packageVersion}\nVersioni attualmente supportate:\n{supportedVersions}"
     },
     "installerView": {
-        "widgetTitle": "Installatore",
+        "widgetTitle": "Installer",
         "installButton": "Installa",
         "installRootButton": "Installa come Root",
         "openButton": "Apri",
         "shareButton": "Condividi file",
-        "notificationTitle": "Revanced Manager è in fase di modifica",
-        "notificationText": "Tocca per tornare all'installatore",
+        "notificationTitle": "Revanced Manager è in fase di patch",
+        "notificationText": "Tocca per tornare all'installer",
         "shareApkMenuOption": "Condividi APK",
         "shareLogMenuOption": "Condividi log",
         "installErrorDialogTitle": "Errore",
-        "installErrorDialogText1": "Impossibile installare come root con le modifiche attualmente selezionate. Modifica nuovamente la tua app o scegli la modalità di installazione non-root.",
-        "installErrorDialogText2": "Impossibile installare come non-root con le modifiche attualmente selezionate. Modifica nuovamente la tua app o scegli la modalità di installazione root.",
-        "installErrorDialogText3": "Impossibile eseguire l'installazione in modalità root poiché l'APK originale è stato selezionato dalla memoria.\nSeleziona un'app installata o il metodo di installazione non-root.",
-        "noExit": "L'installatore è ancora in esecuzione..."
+        "installErrorDialogText1": "Impossibile installare come root con le patch selezionate. Modifica le patch della tua app o scegli la modalità di installazione non-root.",
+        "installErrorDialogText2": "Impossibile installare come non-root con le patch selezionate. Modifica le patch della tua app o scegli la modalità di installazione root.",
+        "installErrorDialogText3": "Impossibile eseguire l'installazione come root perché l'APK originale è stato selezionato dall'archiviazione.\nSeleziona un'app già installata o scegli l'installazione non-root.",
+        "noExit": "L'installazione è ancora in esecuzione..."
     },
     "settingsView": {
         "widgetTitle": "Impostazioni",
         "appearanceSectionTitle": "Aspetto",
-        "teamSectionTitle": "Squadra",
+        "teamSectionTitle": "Team",
         "infoSectionTitle": "Info",
         "advancedSectionTitle": "Avanzate",
         "darkThemeLabel": "Tema Scuro",
-        "darkThemeHint": "Benvenuto sul Lato Oscuro",
+        "darkThemeHint": "Benvenuto nel lato scuro",
         "dynamicThemeLabel": "Material You",
-        "dynamicThemeHint": "Goditi un'esperienza più vicina al tuo dispositivo",
+        "dynamicThemeHint": "Goditi un'esperienza più in armonia con il tuo dispositivo",
         "languageLabel": "Lingua",
-        "englishOption": "Inglese",
-        "frenchOption": "Francese",
+        "englishOption": "English",
+        "frenchOption": "Français",
         "sourcesLabel": "Sorgenti",
         "sourcesLabelHint": "Configura le tue sorgenti personalizzate",
-        "orgPatchesLabel": "Organizzazione Modifiche",
-        "sourcesPatchesLabel": "Sorgente Modifiche",
-        "orgIntegrationsLabel": "Organizzazione Integrazioni",
+        "orgPatchesLabel": "Autore Patch",
+        "sourcesPatchesLabel": "Sorgente Patch",
+        "orgIntegrationsLabel": "Autore Integrazioni",
         "sourcesIntegrationsLabel": "Sorgente Integrazioni",
         "sourcesResetDialogTitle": "Reimposta",
-        "sourcesResetDialogText": "Sei sicuro di voler reimpostare i sorgenti personalizzati ai valori predefiniti?",
+        "sourcesResetDialogText": "Sei sicuro di voler reimpostare le sorgenti personalizzate ai valori predefiniti?",
         "apiURLResetDialogText": "Sei sicuro di voler ripristinare l'URL delle API al suo valore predefinito?",
-        "contributorsLabel": "Collaboratori",
-        "contributorsHint": "Una lista di collaboratori di ReVanced",
+        "contributorsLabel": "Contributori",
+        "contributorsHint": "Lista dei contributori di ReVanced",
         "logsLabel": "Log",
         "logsHint": "Condividi registri di debug del dispositivo",
         "apiURLLabel": "URL API",
@@ -145,15 +145,15 @@
         "nonRootTypeLabel": "Non-Root",
         "patchedDateLabel": "Data di modifica",
         "patchedDateHint": "{date} alle {time}",
-        "appliedPatchesLabel": "Modifiche applicate",
+        "appliedPatchesLabel": "Patch applicate",
         "appliedPatchesHint": "{quantity} modifiche applicate"
     },
     "contributorsView": {
-        "widgetTitle": "Collaboratori",
-        "patcherContributors": "Altri collaboratori",
-        "patchesContributors": "Collaboratori modifiche",
-        "integrationsContributors": "Collaboratori integrazioni",
-        "cliContributors": "Collaboratori CLI",
-        "managerContributors": "Collaboratori Manager"
+        "widgetTitle": "Contributori",
+        "patcherContributors": "Contributori Patcher",
+        "patchesContributors": "Contributori Patch",
+        "integrationsContributors": "Contributori Integrazioni",
+        "cliContributors": "Contributori CLI",
+        "managerContributors": "Contributori Manager"
     }
 }
