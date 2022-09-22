@@ -4,18 +4,18 @@
     "enabledLabel": "활성화됨",
     "disabledLabel": "비활성화됨",
     "yesButton": "네",
-    "noButton": "아니오",
+    "noButton": "아니요",
     "navigationView": {
         "dashboardTab": "대시보드",
-        "patcherTab": "패쳐",
+        "patcherTab": "패처",
         "settingsTab": "설정"
     },
     "homeView": {
         "widgetTitle": "대시보드",
         "updatesSubtitle": "업데이트",
         "patchedSubtitle": "패치된 앱",
-        "updatesAvailable": "업데이트가 있습니다",
-        "noUpdates": "업데이트가 없습니다",
+        "updatesAvailable": "새 업데이트가 있습니다",
+        "noUpdates": "새 업데이트가 없습니다",
         "noInstallations": "패치된 앱이 설치되지 않았습니다.",
         "installed": "설치됨",
         "updateDialogTitle": "매니저 업데이트",
@@ -41,7 +41,7 @@
         "updateButton": "매니저 업데이트"
     },
     "patcherView": {
-        "widgetTitle": "패치기",
+        "widgetTitle": "패처",
         "patchButton": "패치",
         "patchDialogTitle": "경고",
         "patchDialogText": "리소스 패치가 선택되어 있으며 분할 APK 설치가 감지되었습니다. 패치 도중 에러가 발생할 수 있습니다. 계속 진행하겠습니까?"
@@ -49,7 +49,7 @@
     "appSelectorCard": {
         "widgetTitle": "앱을 선택하세요",
         "widgetTitleSelected": "선택된 앱",
-        "widgetSubtitle": "선택된 앱이 없음",
+        "widgetSubtitle": "선택된 앱 없음",
         "noAppsLabel": "앱이 찾을 수 없습니다.",
         "currentVersion": "현재",
         "recommendedVersion": "권장",
