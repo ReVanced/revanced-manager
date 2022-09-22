@@ -13,7 +13,7 @@
     "homeView": {
         "widgetTitle": "नियंत्रण पट्ट",
         "updatesSubtitle": "अपडेट",
-        "patchedSubtitle": "पैबंद किए हुए अनुप्रयोग",
+        "patchedSubtitle": "पैच किए हुए एप्लीकेशन",
         "updatesAvailable": "अपडेट उपलब्ध है",
         "noUpdates": "कोई अपडेट उपलब्ध नहीं",
         "noInstallations": "कोई पैबंद किये हुआ अनुप्रयोग नहीं है।",
@@ -74,7 +74,7 @@
     "patchesSelectorView": {
         "viewTitle": "पैच चुने",
         "searchBarHint": "पैच खोजे",
-        "doneButton": "पुर्ण हुआ",
+        "doneButton": "पूर्ण",
         "noPatchesFound": "चुने हुए ऐप्लकैशन के लिए कोई पैच नहीं मिले"
     },
     "patchItem": {
@@ -100,7 +100,7 @@
     },
     "settingsView": {
         "widgetTitle": "सेटिंग्स",
-        "appearanceSectionTitle": "दिखावट",
+        "appearanceSectionTitle": "स्वरूप",
         "teamSectionTitle": "टीम",
         "infoSectionTitle": "जानकारी",
         "advancedSectionTitle": "एडवांसड",
@@ -110,7 +110,7 @@
         "dynamicThemeHint": "अपने डिवाइस के करीब एक अनुभव का आनंद लें",
         "languageLabel": "भाषा",
         "englishOption": "अंग्रेज़ी",
-        "frenchOption": "फ्रांसीसी",
+        "frenchOption": "फ्रेंच",
         "sourcesLabel": "स्रोत",
         "sourcesLabelHint": "अपने कस्टम साधन कॉन्फ़िगर करे",
         "orgPatchesLabel": "पैच संगठन",
