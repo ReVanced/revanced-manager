@@ -1,0 +1,159 @@
+{
+    "okButton": "ঠিক আছে",
+    "cancelButton": "বাতিল করুন",
+    "enabledLabel": "সক্রিয়",
+    "disabledLabel": "নিষ্ক্রিয়",
+    "yesButton": "হ্যাঁ",
+    "noButton": "না",
+    "navigationView": {
+        "dashboardTab": "ড্যাশবোর্ড",
+        "patcherTab": "প্যাচার",
+        "settingsTab": "সেটিংস"
+    },
+    "homeView": {
+        "widgetTitle": "ড্যাশবোর্ড",
+        "updatesSubtitle": "আপডেটসমূহ",
+        "patchedSubtitle": "প্যাচড অ্যাপ্লিকেশনস",
+        "updatesAvailable": "আপডেটসমূহ উপলব্ধ আছে",
+        "noUpdates": "কোনো আপডেট উপলব্ধ নেই",
+        "noInstallations": "কোনো প্যাঁচড অ্যাপ্লিকেশন ইনস্টল নেই",
+        "installed": "ইনস্টলড",
+        "updateDialogTitle": "ম্যানেজার আপডেট করুন",
+        "updateDialogText": "আপনি কি নিশ্চিত আপনি ReVanced Manager ডাউনলোড এবং আপডেট করতে চান?",
+        "notificationTitle": "ReVanced ম্যানেজার আপডেট করা হয়েছে",
+        "notificationText": "অ্যাপ চালু করার জন্য ট্যাপ করুন",
+        "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে...",
+        "installingMessage": "আপডেট ইনস্টল করা হচ্ছে...",
+        "errorDownloadMessage": "আপডেট ডাউনলোড করতে অক্ষম",
+        "errorInstallMessage": "আপডেট ইনস্টল করতে অক্ষম",
+        "noConnection": "কোনো ইন্টারনেট সংযোগ নেই"
+    },
+    "applicationItem": {
+        "patchButton": "প্যাচ",
+        "infoButton": "তথ্য",
+        "changelogLabel": "পরিবর্তনসমূহের তালিকা"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "লোড করা হচ্ছে...",
+        "timeagoLabel": "{time} আগে",
+        "patcherLabel": "প্যাচার: ",
+        "managerLabel": "ম্যানেজার: ",
+        "updateButton": "ম্যানেজার আপডেট করুন"
+    },
+    "patcherView": {
+        "widgetTitle": "প্যাচার",
+        "patchButton": "প্যাচ",
+        "patchDialogTitle": "সতর্কতা",
+        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ নির্বাচন করেছেন এবং একটি স্প্লিট এপিকে\n ইনস্টলেশন সনাক্ত করা হয়েছে তাই প্যাচিং ত্রুটি ঘটতে পারে৷\nআপনি কি একটি স্প্লিট বেজ এপিকে প্যাচিং নিয়ে এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "অ্যাপ নির্বাচন করুন",
+        "widgetTitleSelected": "নির্বাচিত এপ্লিকেশন",
+        "widgetSubtitle": "কোনো অ্যাপ্লিকেশন নির্বাচন করা হয়নি।",
+        "noAppsLabel": "কোন অ্যাপ পাওয়া যায় নি।",
+        "currentVersion": "বর্তমান",
+        "recommendedVersion": "প্রস্তাবিত",
+        "anyVersion": "যেকোন"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "প্যাচসমূহ নির্বাচন করুন",
+        "widgetTitleSelected": "নির্বাচিত প্যাচসমূহ",
+        "widgetSubtitle": "প্রথমে একটি অ্যাপ নির্বাচন করুন",
+        "widgetEmptySubtitle": "কোন প্যাচ নির্বাচন করা হয়নি।"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "সোশ্যাল",
+        "widgetSubtitle": "আমরা অনলাইনে!"
+    },
+    "appSelectorView": {
+        "viewTitle": "অ্যাপ নির্বাচন করুন",
+        "searchBarHint": "অ্যাপ্লিকেশনগুলি খুজুন",
+        "storageButton": "সংগ্রহস্থল",
+        "errorMessage": "আপনার নির্বাচিত এপ্লিকেশনটি ব্যবহার করা সম্ভব হয়নি।"
+    },
+    "patchesSelectorView": {
+        "viewTitle": "প্যাচসমূহ নির্বাচন করুন",
+        "searchBarHint": "প্যাচসমূহ খুঁজুন",
+        "doneButton": "সম্পন্ন হয়েছে",
+        "noPatchesFound": "নির্বাচিত অ্যাপের জন্য কোনো প্যাচ পাওয়া যায়নি"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "অসমর্থিত সংস্করণ",
+        "unsupportedDialogTitle": "সতর্কতা",
+        "unsupportedDialogText": "এই প্যাচটি নির্বাচন করলে এরর দেখা দিতে পারে।\n\nঅ্যাপের সংস্করণ: {packageVersion}\nবর্তমানে সমর্থিত সংস্করণ: {supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "ইনস্টলার",
+        "installButton": "ইনস্টল করুন",
+        "installRootButton": "রুট হিসেবে ইন্সটল করুন",
+        "openButton": "ওপেন করুন",
+        "shareButton": "ফাইল শেয়ার করুন",
+        "notificationTitle": "রিভ্যান্সড ম্যানেজার বর্তমানে প্যাচ করছে",
+        "notificationText": "ইনস্টলারে ফিরে যেতে ট্যাপ করুন",
+        "shareApkMenuOption": "এপিকে শেয়ার করুন",
+        "shareLogMenuOption": "লগ শেয়ার করুন",
+        "installErrorDialogTitle": "ত্রুটি দেখা দিয়েছে",
+        "installErrorDialogText1": "বর্তমানে নির্বাচিত প্যাচসমূহ দিয়ে রুট ইনস্টল সম্ভব না।\nআপনার অ্যাপটি পুনরায় প্যাচ করুন অথবা নন-রুট ইনস্টল নির্বাচন করুন।",
+        "installErrorDialogText2": "বর্তমানে নির্বাচিত প্যাচসমূহ দিয়ে নন-রুট ইনস্টল সম্ভব না।\nআপনার অ্যাপটি পুনরায় প্যাচ করুন অথবা রুট ইনস্টল নির্বাচন করুন।",
+        "installErrorDialogText3": "রুট ইনস্টল সম্ভব নয় কারণ অরিজিনাল এপিকে ফোনের স্টোরেজ থেকে নির্বাচন করা হয়েছে।\nএকটি ইনস্টলড অ্যাপ নির্বাচন করুন অথবা নন-রুট ইন্সটল নির্বাচন করুন।",
+        "noExit": "ইনস্টলারটি এখনও চলছে..."
+    },
+    "settingsView": {
+        "widgetTitle": "সেটিংস",
+        "appearanceSectionTitle": "আকার",
+        "teamSectionTitle": "দল",
+        "infoSectionTitle": "তথ্য",
+        "advancedSectionTitle": "অ্যাডভান্সড",
+        "darkThemeLabel": "ডার্ক মড",
+        "darkThemeHint": "অন্ধকার পাশে স্বাগতম",
+        "dynamicThemeLabel": "ম্যাটেরিয়াল ইউ",
+        "dynamicThemeHint": "আপনার ডিভাসের লুকের কাছাকাছি অভিজ্ঞতা নিন",
+        "languageLabel": "ভাষা",
+        "englishOption": "ইংরেজি",
+        "frenchOption": "ফরাসী",
+        "sourcesLabel": "উৎস",
+        "sourcesLabelHint": "আপনার কাস্টম উৎস ঠিক করুন",
+        "orgPatchesLabel": "প্যাচসমূহের অর্গানাইজেশন",
+        "sourcesPatchesLabel": "প্যাচসমূহের উৎস",
+        "orgIntegrationsLabel": "ইন্টিগ্রেশনসমূহের অর্গানাইজেশন",
+        "sourcesIntegrationsLabel": "ইন্টিগ্রেশনসমূহের উৎস",
+        "sourcesResetDialogTitle": "পুনরায় সেট করুন",
+        "sourcesResetDialogText": "আপনি কি সমস্ত কাস্টম উৎসসমূহকে তাদের আসল মানগুলিতে পুনরায় সেট করতে চান?",
+        "apiURLResetDialogText": "আপনি কি এপিআই ইউআরএলকে ডিফল্ট মানে পুনরায় সেট করতে চান?",
+        "contributorsLabel": "অবদানকারীরা",
+        "contributorsHint": "রিভ্যান্সডে অবদানকারীদের তালিকা",
+        "logsLabel": "লগ",
+        "logsHint": "ডিভাইসের ডিবাগ লগ শেয়ার করুন",
+        "apiURLLabel": "এপিআই ইউআরএল",
+        "apiURLHint": "আপনার কাস্টম এপিআই ইউআরএল সেট করুন",
+        "selectApiURL": "ইউআরএল নির্বাচন করুন",
+        "aboutLabel": "সম্পর্কে",
+        "snackbarMessage": "ক্লিপবোর্ডে কপি করা হয়েছে"
+    },
+    "appInfoView": {
+        "widgetTitle": "অ্যাপের তথ্য",
+        "openButton": "ওপেন করুন",
+        "uninstallButton": "আনইন্সটল করুন",
+        "patchButton": "প্যাচ",
+        "unpatchButton": "আনপ্যাচ",
+        "unpatchDialogText": "আপনি কি অ্যাপটি আনপ্যাচ করার ব্যপারে নিশ্চিত?",
+        "rootDialogTitle": "ত্রুটি দেখা দিয়েছে",
+        "rootDialogText": "অ্যাপটি রুট মডে ইনস্টল করা হয়েছে কিন্তু বর্তমানে রুট মড বন্ধ রয়েছে।\nদয়া করে রুট মড চালু করুন।",
+        "packageNameLabel": "প্যাকেজের নাম",
+        "installTypeLabel": "ইনস্টলেশন টাইপ",
+        "rootTypeLabel": "রুট",
+        "nonRootTypeLabel": "নন-রুট",
+        "patchedDateLabel": "প্যাচ করার তারিখ",
+        "patchedDateHint": "{date} তারিখ {time} তে",
+        "appliedPatchesLabel": "সংযুক্ত প্যাচসমূহ",
+        "appliedPatchesHint": "{quantity} সংযুক্ত প্যাচ"
+    },
+    "contributorsView": {
+        "widgetTitle": "অবদানকারীরা",
+        "patcherContributors": "প্যাচারে অবদানকারীরা",
+        "patchesContributors": "প্যাচসমূহে অবদানকারীরা",
+        "integrationsContributors": "ইন্টিগ্রেশনসমূহে অবদানকারীরা",
+        "cliContributors": "সিএলএই-এ অবদানকারীরা",
+        "managerContributors": "ম্যানেজারে অবদানকারীরা"
+    }
+}
