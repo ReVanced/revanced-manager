@@ -6,12 +6,12 @@
     "yesButton": "Da",
     "noButton": "Nu",
     "navigationView": {
-        "dashboardTab": "Tablou de bord",
+        "dashboardTab": "Panou de administrare",
         "patcherTab": "Patcher",
         "settingsTab": "Setări"
     },
     "homeView": {
-        "widgetTitle": "Tablou de bord",
+        "widgetTitle": "Panou de administrare",
         "updatesSubtitle": "Actualizări",
         "patchedSubtitle": "Aplicații Patch-uite",
         "updatesAvailable": "Actualizări disponibile",
