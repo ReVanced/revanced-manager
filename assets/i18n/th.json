@@ -1,8 +1,8 @@
 {
     "okButton": "ตกลง",
     "cancelButton": "ยกเลิก",
-    "enabledLabel": "เปิดการใช้งาน",
-    "disabledLabel": "ปิดการใช้งาน",
+    "enabledLabel": "เปิดใช้งานอยู่",
+    "disabledLabel": "ปิดการใช้งานอยู่",
     "yesButton": "ใช่",
     "noButton": "ไม่",
     "navigationView": {
@@ -19,7 +19,7 @@
         "noInstallations": "ไม่มีแอพที่มีการดัดแปลงติดตั้งไว้",
         "installed": "ติดตั้งแล้ว",
         "updateDialogTitle": "อัพเดท Manager",
-        "updateDialogText": "คุณแน่ใจหรือว่าต้องการดาวน์โหลดและติดตั้ง ReVanced Manager ใช่หรือไม่?",
+        "updateDialogText": "คุณแน่ใจหรือว่าต้องการดาวน์โหลดและอัพเดท ReVanced Manager ใช่หรือไม่?",
         "notificationTitle": "อัปเดต ReVanced Manager แล้ว",
         "notificationText": "แตะเพื่อเปิดแอป",
         "downloadingMessage": "กำลังดาวน์โหลดอัพเดท...",
@@ -34,7 +34,7 @@
         "changelogLabel": "บันทึกการเปลี่ยนแปลง"
     },
     "latestCommitCard": {
-        "loadingLabel": "กำลังประมวลผล...",
+        "loadingLabel": "กำลังโหลด...",
         "timeagoLabel": "{time} ที่แล้ว",
         "patcherLabel": "ตัวตัดแปลง: ",
         "managerLabel": "Manager: ",
@@ -44,7 +44,7 @@
         "widgetTitle": "ตัวดัดแปลง",
         "patchButton": "เริ่มการดัดแปลง",
         "patchDialogTitle": "คำเตือน",
-        "patchDialogText": "คุณได้เลือกดัดแปลงแบบใช้ทรัพยากร และเราตรวจพบไฟล์ติดตั้งแบบแยก ซึ่งอาจทำให้เกิดข้อผิดพลาดได้\nคุณแน่ใจหรือไม่ว่าจะดำเนินการต่อ?"
+        "patchDialogText": "คุณเลือกดัดแปลงแบบใช้ทรัพยากร และเราตรวจพบไฟล์ติดตั้งแบบแยก ซึ่งอาจทำให้เกิดข้อผิดพลาดได้\nคุณแน่ใจหรือไม่ว่าจะดำเนินการต่อ?"
     },
     "appSelectorCard": {
         "widgetTitle": "เลือกแอป",
@@ -73,14 +73,14 @@
     },
     "patchesSelectorView": {
         "viewTitle": "เลือกการดัดแปลง",
-        "searchBarHint": "ค้นหาการดัดแปลง",
+        "searchBarHint": "ค้นหาส่วนเสริม",
         "doneButton": "เรียบร้อย",
-        "noPatchesFound": "ไม่มีตัวเสริมสำหรับแอปที่เลือกไว้"
+        "noPatchesFound": "ไม่พบส่วนเสริมสำหรับแอปที่เลือกไว้"
     },
     "patchItem": {
         "unsupportedWarningButton": "เวอร์ชั่นไม่รองรับ",
         "unsupportedDialogTitle": "คำเตือน",
-        "unsupportedDialogText": "การเลือกตัวเสริมนี้อาจส่งผลให้เกิดข้อผิดพลาด\n\nเวอร์ชั่นของคุณ: {packageVersion}\nเวอร์ชั่นที่รองรับ:\n{supportedVersions}"
+        "unsupportedDialogText": "การเลือกตัวเสริมนี้อาจส่งผลให้เกิดข้อผิดพลาด\n\nเวอร์ชั่นปัจจุบัน: {packageVersion}\nเวอร์ชั่นที่รองรับ:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "ตัวติดตั้ง",
@@ -88,20 +88,20 @@
         "installRootButton": "ติดตั้งแบบรูท",
         "openButton": "เปิด",
         "shareButton": "แชร์ไฟล์",
-        "notificationTitle": "ReVanced Manager กำลังแพทช์",
+        "notificationTitle": "ReVanced Manager กำลังดัดแปลง",
         "notificationText": "แตะเพื่อกลับไปยังตัวติดตั้ง",
         "shareApkMenuOption": "แชร์ไฟล์ติดตั้ง",
         "shareLogMenuOption": "แชร์ไฟล์บันทึกผล",
         "installErrorDialogTitle": "ข้อผิดพลาด",
         "installErrorDialogText1": "ไม่สามารถติดตั้งแบบรูทได้ กับตัวเสริมที่เลือกไว้ในขณะนี้\nดัดแปลงแอปของคุณอีกครั้ง หรือเลือกการติดตั้งแบบไม่ใช้รูท",
         "installErrorDialogText2": "ไม่สามารถติดตั้งแบบไม่ใช้รูททำได้ กับตัวเสริมที่เลือกไว้ในขณะนี้\nnดัดแปลงแอปของคุณอีกครั้ง หรือเลือกการติดตั้งแบบรูทหากคุณมีอุปกรณ์ที่รูทไว้แล้ว",
-        "installErrorDialogText3": "ไม่สามารถติดตั้งแบบรูทได้ เนื่องจากไฟล์ติดตั้งถูกเลือกจากพื้นที่จัดเก็บข้อมูล\nเลือกแอปที่ติดตั้งไว้ หรือเลือกการติดตั้งแบบไม่ใช้รูท",
-        "noExit": "ตัวติดตั้งยังเปิดไว้อยู่"
+        "installErrorDialogText3": "ไม่สามารถติดตั้งแบบรูทได้หากไฟล์ติดตั้งอยู่ในส่วนพื้นที่จัดเก็บข้อมูล\nเลือกแอปที่ติดตั้งไว้ หรือเลือกการติดตั้งแบบไม่ใช้รูท",
+        "noExit": "ตัวติดตั้งกำลังทำงาน"
     },
     "settingsView": {
         "widgetTitle": "ตั้งค่า",
         "appearanceSectionTitle": "หน้าตา",
-        "teamSectionTitle": "พวกเรา",
+        "teamSectionTitle": "ทีม",
         "infoSectionTitle": "อื่นๆ",
         "advancedSectionTitle": "ขั้นสูง",
         "darkThemeLabel": "ธีมมืด",
@@ -112,15 +112,15 @@
         "englishOption": "อังกฤษ",
         "frenchOption": "ฝรั่งเศส",
         "sourcesLabel": "แหล่งที่มา",
-        "sourcesLabelHint": "ตั้งแหล่งที่มาของคุณเอง",
-        "orgPatchesLabel": "องกรณ์ของการดัดแปลง",
+        "sourcesLabelHint": "ตั้งแหล่งที่มาของคุณ",
+        "orgPatchesLabel": "ผู้ดูแลการดัดแปลง",
         "sourcesPatchesLabel": "ที่มาของการดัดแปลง",
-        "orgIntegrationsLabel": "องกรณ์ของตัวเสริม",
+        "orgIntegrationsLabel": "ผู้ดูแลตัวเสริม",
         "sourcesIntegrationsLabel": "ที่มาของตัวเสริม",
         "sourcesResetDialogTitle": "รีเซ็ต",
         "sourcesResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตแหล่งที่มาเหล่านี้กลับเป็นค่าเริ่มต้น?",
         "apiURLResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ต URL ของ API กลับเป็นค่าเริ่มต้น?",
-        "contributorsLabel": "ผู้สมทบ",
+        "contributorsLabel": "ผู้ช่วยโปรเจค",
         "contributorsHint": "รายชื่อผู้ที่ช่วยเหลือกับโปรเจค ReVanced",
         "logsLabel": "ไฟล์บันทึกผล",
         "logsHint": "แชร์ไฟล์บันทึกผล",
@@ -138,20 +138,20 @@
         "unpatchButton": "ลบการดัดแปลง",
         "unpatchDialogText": "คุณแน่ใจหรือไม่ว่าจะลบการดัดแปลงของแอปนี้?",
         "rootDialogTitle": "ข้อผิดพลาด",
-        "rootDialogText": "ติดตั้งแอปโดยเปิดใช้โหมดรูทแล้ว แต่โหมดรูทปิดอยู่ในขณะนี้\nกรุณาเปิดใช้โหมดรูทก่อน.",
+        "rootDialogText": "แอปติดตั้งโดยเปิดใช้โหมดรูท แต่โหมดรูทปิดอยู่ในขณะนี้\nกรุณาเปิดใช้โหมดรูทก่อน.",
         "packageNameLabel": "ชื่อระบุแอป",
-        "installTypeLabel": "แบบการติดตั้ง",
+        "installTypeLabel": "รูปแบบการติดตั้ง",
         "rootTypeLabel": "รูท",
         "nonRootTypeLabel": "ไม่ใช้รูท",
-        "patchedDateLabel": "วันที่ดัดแปลง",
+        "patchedDateLabel": "วันที่ของส่วนเสริม",
         "patchedDateHint": "{date} เวลา {time}",
-        "appliedPatchesLabel": "การดัดแปลงที่เลือกไว้",
+        "appliedPatchesLabel": "ส่วนเสริมที่เลือกไว้",
         "appliedPatchesHint": "{quantity} อย่าง"
     },
     "contributorsView": {
         "widgetTitle": "ผู้สมทบ",
-        "patcherContributors": "ผู้สมทบตัวดัดแปลง",
-        "patchesContributors": "ผู้สมทบการดัดแปลง",
+        "patcherContributors": "ผู้ช่วยเหลือส่วนเสริม",
+        "patchesContributors": "ผู้ช่วยเหลือส่วนเสริม",
         "integrationsContributors": "ผู้สมทบตัวเสริม",
         "cliContributors": "ผู้สมทบ CLI",
         "managerContributors": "ผู้สมทบ Manager"
