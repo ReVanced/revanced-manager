@@ -54,7 +54,10 @@ dependencies:
   path_provider: ^2.0.11
   permission_handler: ^10.0.0
   pull_to_refresh: ^2.0.0
-  root: ^2.0.2
+  root:
+    git:
+      url: https://github.com/gokul1630/root
+      ref: main
   share_extend: ^2.0.0
   shared_preferences: ^2.0.15
   skeletons: ^0.0.3
