@@ -15,26 +15,26 @@
         "updatesSubtitle": "আপডেটসমূহ",
         "patchedSubtitle": "প্যাচড অ্যাপ্লিকেশন",
         "updatesAvailable": "আপডেট পাওয়া যাচ্ছে",
-        "noUpdates": "আপডেট পাওয়া যায়নি",
+        "noUpdates": "কোন আপডেট পাওয়া যায়নি",
         "noInstallations": "কোন প্যাচড অ্যাপ্লিকেশন ইনস্টল করা হয়নি",
         "installed": "ইনস্টল হয়েছে",
         "updateDialogTitle": "ম্যানেজার আপডেট",
-        "updateDialogText": "আপনি কি সর্বশেষ রিভ্যান্সড ম্যানেজার ডাউনোড করা সম্পর্কে নিশ্চিত?",
+        "updateDialogText": "আপনি কি সর্বশেষ রিভ্যান্সড ম্যানেজার ডাউনলোড ও আপডেট করতে চান?",
         "notificationTitle": "রিভ্যান্সড ম্যানেজার আপডেট হয়েছে",
-        "notificationText": "এ্যাপ চালু করতে ট্যাপ করুন",
+        "notificationText": "অ্যাপ চালু করতে ট্যাপ করুন",
         "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে...",
         "installingMessage": "আপডেট ইনস্টল হচ্ছে... অপেক্ষা করুন!",
-        "errorDownloadMessage": "আপডেট ডাউনলোড করা যায়নি!",
-        "errorInstallMessage": "আপডেট ইনস্টল করা যায়নি!",
-        "noConnection": "ইন্টারনেট সংযোগ নেই"
+        "errorDownloadMessage": "আপডেট ডাউনলোড করতে অক্ষম",
+        "errorInstallMessage": "আপডেট ইনস্টল করতে অক্ষম!",
+        "noConnection": "কোন ইন্টারনেট সংযোগ নেই"
     },
     "applicationItem": {
         "patchButton": "প্যাচ",
         "infoButton": "তথ্য",
-        "changelogLabel": "পরিবর্তনসমূহ"
+        "changelogLabel": "পরিবর্তনসমূহের তালিকা"
     },
     "latestCommitCard": {
-        "loadingLabel": "লোডিং...",
+        "loadingLabel": "লোড করা হচ্ছে...",
         "timeagoLabel": "{time} আগে",
         "patcherLabel": "প্যাচার: ",
         "managerLabel": "ম্যানেজার: ",
@@ -44,7 +44,7 @@
         "widgetTitle": "প্যাচার",
         "patchButton": "প্যাচ",
         "patchDialogTitle": "সতর্কতা",
-        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ সিলেক্ট করেছেন এবং একটি স্প্লিট এপিকে দেখা গিয়েছে তাই প্যাচ করা সম্ভব নাও হতে পারে।\nআপনি কি স্প্লিট বেজ এ্যাপ প্যাচ করার ব্যাপারে নিশ্চিত?"
+        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ নির্বাচন করেছেন এবং একটি স্প্লিট এপিকে ইনস্টলেশন সনাক্ত করা হয়েছে তাই প্যাচিং ত্রুটি ঘটতে পারে৷।\nআপনি কি একটি স্প্লিট বেজ এপিকে প্যাচিং নিয়ে এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?"
     },
     "appSelectorCard": {
         "widgetTitle": "অ্যাপ্লিকেশন নির্বাচন করুন",
@@ -56,10 +56,10 @@
         "anyVersion": "যেকোন"
     },
     "patchSelectorCard": {
-        "widgetTitle": "প্যাচ নির্বাচন করুন",
+        "widgetTitle": "প্যাচসমূহ নির্বাচন করুন",
         "widgetTitleSelected": "নির্বাচিত প্যাচসমূহ",
-        "widgetSubtitle": "আগে একটি অ্যাপ্লিকেশন নির্বাচন করুন",
-        "widgetEmptySubtitle": "কোন প্যাচ নির্বাচিত হয়নি"
+        "widgetSubtitle": "প্রথমে একটি অ্যাপ্লিকেশন নির্বাচন করুন",
+        "widgetEmptySubtitle": "কোন প্যাচ নির্বাচন করা হয়নি"
     },
     "socialMediaCard": {
         "widgetTitle": "সামাজিক মাধ্যম",
@@ -67,93 +67,93 @@
     },
     "appSelectorView": {
         "viewTitle": "অ্যাপ্লিকেশন নির্বাচন করুন",
-        "searchBarHint": "অ্যাপ্লিকেশন খুঁজুন",
-        "storageButton": "স্টোরেজ",
-        "errorMessage": "নির্বাচিত অ্যাপ্লিকেশন ব্যবহার করা সম্ভব নয়"
+        "searchBarHint": "অ্যাপ্লিকেশনগুলি খুঁজুন",
+        "storageButton": "সংগ্রহস্থল",
+        "errorMessage": "নির্বাচিত অ্যাপ্লিকেশনটি ব্যবহার করা সম্ভব নয়।"
     },
     "patchesSelectorView": {
         "viewTitle": "প্যাচসমূহ নির্বাচন করুন",
-        "searchBarHint": "প্যাচ খুঁজুন",
-        "doneButton": "সম্পন্ন"
-        "noPatchesFound": "নির্বাচিত এ্যাপের জন্য কোন প্যাচ পাওয়া যায়নি।"
+        "searchBarHint": "প্যাচসমূহ খুঁজুন",
+        "doneButton": "সম্পন্ন হয়েছে"
+        "noPatchesFound": "নির্বাচিত অ্যাপের জন্য কোন প্যাচ পাওয়া যায়নি।"
     },
     "patchItem": {
-        "unsupportedWarningButton": "অসমর্থিত ভার্সন",
+        "unsupportedWarningButton": "অসমর্থিত সংস্করণ",
         "unsupportedDialogTitle": "সতর্কতা",
-        "unsupportedDialogText": "এই প্যাচ নির্বাচন করার ফলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nএ্যাপ ভার্সন: {packageVersion}\nবর্তমানে সমর্থিত ভার্সন:\n{supportedVersions}"
+        "unsupportedDialogText": "এই প্যাচ নির্বাচন করার ফলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nঅ্যাপের সংস্করণ: {packageVersion}\nবর্তমানে সমর্থিত সংস্করণ:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "ইনস্টলার",
-        "installButton": "ইনস্টল",
-        "installRootButton": "রুট ইনস্টল করুন",
+        "installButton": "ইনস্টল করুন",
+        "installRootButton": "রুট হিসেবে ইনস্টল করুন",
         "openButton": "খুলুন",
         "shareButton": "ফাইলটি শেয়ার করুন",
         "notificationTitle": "রিভ্যান্সড ম্যানেজার প্যাচ করছে",
         "notificationText": "ইনস্টলারে ফিরে যেতে ট্যাপ করুন",
         "shareApkMenuOption": "এপিকে শেয়ার করুন",
         "shareLogMenuOption": "লগ শেয়ার করুন",
-        "installErrorDialogTitle": "ত্রুটি",
-        "installErrorDialogText1": "বর্তমানে নির্বাচিত প্যাচগুলো দিয়ে রুট ইনস্টল সম্ভব নয়।\nএ্যাপটি পুনরায় প্যাচ করুন অথবা নন-রুট ইনস্টল নির্বাচন করুন।",
-        "installErrorDialogText2": "বর্তমানে নির্বাচিত প্যাচগুলো দিয়ে নন-রুট ইনস্টল সম্ভব নয়।\nএ্যাপটি পুনরায় প্যাচ করুন অথবা আপনার একটি রুটেড ডিভাইস থাকলে রুট ইনস্টল নির্বাচন করুন।",
-        "installErrorDialogText3": "মূল এপিকেটি স্টোরেজ থেকে সিলেক্ট করায় রুট ইনস্টল সম্ভব নয়।\nইনস্টল করা এ্যাপ থেকে এ্যাপ নির্বাচন করুন অথবা নন-রুট ইনস্টল নির্বাচন করুন।",
-        "noExit": "ইনস্টলার এখনো চলছে..."
+        "installErrorDialogTitle": "ত্রুটি দেখা দিয়েছে",
+        "installErrorDialogText1": "বর্তমানে নির্বাচিত প্যাচসমূহ দিয়ে রুট ইনস্টল সম্ভব নয়।\nঅ্যাপটি পুনরায় প্যাচ করুন অথবা নন-রুট ইনস্টল নির্বাচন করুন।",
+        "installErrorDialogText2": "বর্তমানে নির্বাচিত প্যাচগুলো দিয়ে নন-রুট ইনস্টল সম্ভব নয়।\nঅ্যাপটি পুনরায় প্যাচ করুন অথবা আপনার একটি রুটেড ডিভাইস থাকলে রুট ইনস্টল নির্বাচন করুন।",
+        "installErrorDialogText3": "মূল এপিকেটি স্টোরেজ থেকে সিলেক্ট করায় রুট ইনস্টল সম্ভব নয়।\nফোনে ইনস্টল করা অ্যাপ থেকে অ্যাপ নির্বাচন করুন অথবা নন-রুট ইনস্টল নির্বাচন করুন।",
+        "noExit": "ইনস্টলারটি এখনো চলছে..."
     },
     "settingsView": {
         "widgetTitle": "সেটিংস",
         "appearanceSectionTitle": "চেহারা",
-        "teamSectionTitle": "টিম",
+        "teamSectionTitle": "টdম",
         "infoSectionTitle": "তথ্য",
-        "advancedSectionTitle": "এ্যাডভান্স",
-        "darkThemeLabel": "অন্ধকার মুড",
-        "darkThemeHint": "অন্ধকার থীমে স্বাগতম",
+        "advancedSectionTitle": "অ্যাডভান্সড",
+        "darkThemeLabel": "অন্ধকার মোড",
+        "darkThemeHint": "অন্ধকার পাশে স্বাগতম",
         "dynamicThemeLabel": "ম্যাটেরিয়াল ইউ",
-        "dynamicThemeHint": "আপনার ডিভাইসের কাছাকাছি অভিজ্ঞতা নিন",
+        "dynamicThemeHint": "আপনার ডিভাইসের লুকের কাছাকাছি অভিজ্ঞতা নিন",
         "languageLabel": "ভাষা",
         "englishOption": "ইংরেজি",
         "bengaliOption": "বাংলা",
         "frenchOption": "ফরাসি",
-        "sourcesLabel": "সোর্স",
-        "sourcesLabelHint": "আপনার নিজস্ব সোর্স কনফিগ করুন",
-        "orgPatchesLabel" : "প্যাচ সংস্থা",
-        "sourcesPatchesLabel" : "প্যাচ সোর্স",
-        "orgIntegrationsLabel": "ইনট্রিগেশন সংস্থা",
-        "sourcesIntegrationsLabel": "ইনট্রিগেশন সোর্স",
+        "sourcesLabel": "উৎস",
+        "sourcesLabelHint": "আপনার নিজস্ব উৎস সেট করুন",
+        "orgPatchesLabel" : "প্যাচসমূহের সংস্থা",
+        "sourcesPatchesLabel" : "প্যাচসমূহের উৎস",
+        "orgIntegrationsLabel": "ইনট্রিগেশনসমূহের সংস্থা",
+        "sourcesIntegrationsLabel": "ইনট্রিগেশনসমূহের উৎস",
         "sourcesResetDialogTitle": "রিসেট",
-        "sourcesResetDialogText": "আপনি কি কাস্টম-রিসোর্সকে তার ডিফল্ট ভ্যালুতে ফিরিয়ে নিতে নিশ্চিত?",
-        "apiURLResetDialogText": "আপনি কি এপিআই রিসোর্স এর ডিফল্ট ভ্যালু রিসেট করতে নিশ্চিত?",
+        "sourcesResetDialogText": "আপনি কি কাস্টম রিসোর্সসমূহকে তার নিজস্ব ভ্যালুতে ফিরিয়ে নিতে চান?",
+        "apiURLResetDialogText": "আপনি কি এপিআই ইউআরএল এর ডিফল্ট ভ্যালু রিসেট করতে চান?",
         "contributorsLabel": "অবদানকারীগণ",
-        "contributorsHint": "রিভ্যান্স এর অবদানকারীদের তালিকা",
-        "logsLabel": "লগসমূহ",
-        "logsHint": "ডিবাগ লগ শেয়ার করুন",
+        "contributorsHint": "রিভ্যান্সড-এ অবদানকারীদের তালিকা",
+        "logsLabel": "লগ",
+        "logsHint": "ডিভাইসের ডিবাগ লগ শেয়ার করুন",
         "apiURLLabel": "এপিআই ইউআরএল",
-        "apiURLHint": "আপনার নিজস্ব এপিআই ইউআরএল কনফিগ করুন",
+        "apiURLHint": "আপনার নিজস্ব এপিআই ইউআরএল সেট করুন",
         "selectApiURL": "ইউআরএল নির্বাচন করুন",
         "aboutLabel": "সম্পর্কে",
-        "snackbarMessage": "ক্লীপবোর্ডে কপি হয়েছে"
+        "snackbarMessage": "ক্লিপবোর্ডে কপি করা হয়েছে"
     },
     "appInfoView": {
-        "widgetTitle": "এ্যাপ তথ্য",
+        "widgetTitle": "অ্যাপের তথ্য",
         "openButton": "খুলুন",
-        "uninstallButton": "আনইনস্টল",
+        "uninstallButton": "আনইনস্টল করুন",
         "patchButton": "প্যাচ",
         "unpatchButton": "আনপ্যাচ",
-        "unpatchDialogText": "আপনি কি এ্যাপটি আনপ্যাচ করার ব্যাপারে নিশ্চিত?",
-        "rootDialogTitle": "ত্রুটি",
-        "rootDialogText": "রুট মুড সচল অবস্থায় এ্যাপ ইনস্টল করা হয়েছে কিন্তু এখন রুট মুড অচল আছে।\nঅনুগ্রহপূর্বক রুট মুড চালু করুন।",
-        "packageNameLabel": "প্যাকেজ নাম",
-        "installTypeLabel": "ইনস্টলেশন পদ্ধতি",
+        "unpatchDialogText": "আপনি কি অ্যাপটি আনপ্যাচ করতে চান?",
+        "rootDialogTitle": "ত্রুটি দেখা দিয়েছে",
+        "rootDialogText": "অ্যাপটি রুট মোড সচল অবস্থায় ইনস্টল করা হয়েছে কিন্তু বর্তমানে রুট মোড বন্ধ রয়েছে।\nঅনুগ্রহপূর্বক রুট মোড চালু করুন।",
+        "packageNameLabel": "প্যাকেজের নাম",
+        "installTypeLabel": "ইনস্টলেশন ধরন",
         "rootTypeLabel": "রুট",
         "nonRootTypeLabel": "নন-রুট",
-        "patchedDateLabel": "প্যাচড তারিখ",
-        "patchedDateHint": "{date} তারিখ {time} টায়",
+        "patchedDateLabel": "প্যাচ করার তারিখ",
+        "patchedDateHint": "{date} তারিখ {time} তে",
         "appliedPatchesLabel": "ব্যবহারিত প্যাচসমূহ",
         "appliedPatchesHint": "{quantity} সংখ্যক প্যাচ ব্যবহারিত"
     },
     "contributorsView": {
-        "widgetTitle": "অবদানকারী",
+        "widgetTitle": "অবদানকারীগণ",
         "patcherContributors": "প্যাচার-এ অবদান যাদের",
         "patchesContributors": "প্যাচসমূহে অবদান যাদের",
-        "integrationsContributors": "ইনটিগ্রেশনস-এ অবদান যাদের",
+        "integrationsContributors": "ইনটিগ্রেশনসমূহে অবদান যাদের",
         "cliContributors": "সিএলআই-এ অবদান যাদের",
         "managerContributors": "ম্যানেজার-এ অবদান যাদের"
     }
