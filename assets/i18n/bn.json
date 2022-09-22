@@ -18,11 +18,11 @@
         "noUpdates": "আপডেট পাওয়া যায়নি",
         "noInstallations": "কোন প্যাচড এপ্লিকেশন ইনস্টল করা হয়নি",
         "installed": "ইনস্টল হয়েছে",
-        "updateDialogTitle": "আপডেট",
-        "updateDialogText": "আপনি কি সর্বশেষ ম্যানেজার ডাউনোড করা সম্পর্কে নিশ্চিত?",
-        "notificationTitle": "রিভ্যান্সড ম্যানেজার আপডেট হয়েছে!",
+        "updateDialogTitle": "ম্যানেজার আপডেট",
+        "updateDialogText": "আপনি কি সর্বশেষ রিভ্যান্সড ম্যানেজার ডাউনোড করা সম্পর্কে নিশ্চিত?",
+        "notificationTitle": "রিভ্যান্সড ম্যানেজার আপডেট হয়েছে",
         "notificationText": "এ্যাপ চালু করতে ট্যাপ করুন",
-        "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে",
+        "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে...",
         "installingMessage": "আপডেট ইনস্টল হচ্ছে... অপেক্ষা করুন!",
         "errorDownloadMessage": "আপডেট ডাউনলোড করা যায়নি!",
         "errorInstallMessage": "আপডেট ইনস্টল করা যায়নি!",
@@ -34,7 +34,7 @@
         "changelogLabel": "পরিবর্তনসমূহ"
     },
     "latestCommitCard": {
-        "loadingLabel": "লোডিং",
+        "loadingLabel": "লোডিং...",
         "timeagoLabel": "{time} আগে",
         "patcherLabel": "প্যাচার: ",
         "managerLabel": "ম্যানেজার: ",
@@ -44,7 +44,7 @@
         "widgetTitle": "প্যাচার",
         "patchButton": "প্যাচ",
         "patchDialogTitle": "সতর্কতা",
-        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ সিলেক্ট করেছেন এবং একটি স্প্লিট এপিকে দেখা গিয়েছে তাই প্যাচ করা সম্ভব নয়।\nআপনি কি স্প্লিট বেজ এ্যাপ প্যাচ করার ব্যাপারে নিশ্চিত?"
+        "patchDialogText": "আপনি একটি রিসোর্স প্যাচ সিলেক্ট করেছেন এবং একটি স্প্লিট এপিকে দেখা গিয়েছে তাই প্যাচ করা সম্ভব নাও হতে পারে।\nআপনি কি স্প্লিট বেজ এ্যাপ প্যাচ করার ব্যাপারে নিশ্চিত?"
     },
     "appSelectorCard": {
         "widgetTitle": "এ্যাপ্লিকেশন নির্বাচন করুন",
@@ -62,7 +62,7 @@
         "widgetEmptySubtitle": "কোন প্যাচ নির্বাচিত হয়নি"
     },
     "socialMediaCard": {
-        "widgetTitle": "সামাজিক যোগাযোগ মাধ্যম",
+        "widgetTitle": "সামাজিক মাধ্যম",
         "widgetSubtitle": "আমরা অনলাইনে আছি!"
     },
     "appSelectorView": {
@@ -114,9 +114,9 @@
         "frenchOption": "ফরাসি",
         "sourcesLabel": "সোর্স",
         "sourcesLabelHint": "আপনার নিজস্ব সোর্স কনফিগ করুন",
-        "orgPatchesLabel" : "প্যাচ অর্গ",
+        "orgPatchesLabel" : "প্যাচ সংস্থা",
         "sourcesPatchesLabel" : "প্যাচ সোর্স",
-        "orgIntegrationsLabel": "ইনট্রিগেশন অর্গ",
+        "orgIntegrationsLabel": "ইনট্রিগেশন সংস্থা",
         "sourcesIntegrationsLabel": "ইনট্রিগেশন সোর্স",
         "sourcesResetDialogTitle": "রিসেট",
         "sourcesResetDialogText": "আপনি কি কাস্টম-রিসোর্সকে তার ডিফল্ট ভ্যালুতে ফিরিয়ে নিতে নিশ্চিত?",
