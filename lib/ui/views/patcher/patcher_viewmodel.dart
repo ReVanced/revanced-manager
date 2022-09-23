@@ -1,4 +1,3 @@
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
@@ -6,6 +5,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
@@ -14,6 +14,7 @@ import 'package:stacked_services/stacked_services.dart';
 @lazySingleton
 class PatcherViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   PatchedApplication? selectedApp;
   List<Patch> selectedPatches = [];
@@ -39,18 +40,12 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   Future<bool> isValidPatchConfig() async {
-    bool needsResourcePatching =
-        await _patcherAPI.needsResourcePatching(selectedPatches);
+    bool needsResourcePatching = await _patcherAPI.needsResourcePatching(
+      selectedPatches,
+    );
     if (needsResourcePatching && selectedApp != null) {
-      Application? app;
-      if (selectedApp!.isFromStorage) {
-        app = await DeviceApps.getAppFromStorage(selectedApp!.apkFilePath);
-      } else {
-        app = await DeviceApps.getApp(selectedApp!.packageName);
-      }
-      if (app != null && app.isSplit) {
-        return false;
-      }
+      bool isSplit = await _managerAPI.isSplitApk(selectedApp!);
+      return !isSplit;
     }
     return true;
   }

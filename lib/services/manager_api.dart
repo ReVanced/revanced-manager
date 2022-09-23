@@ -319,4 +319,14 @@ class ManagerAPI {
     }
     return newCommits;
   }
+
+  Future<bool> isSplitApk(PatchedApplication patchedApp) async {
+    Application? app;
+    if (patchedApp.isFromStorage) {
+      app = await DeviceApps.getAppFromStorage(patchedApp.apkFilePath);
+    } else {
+      app = await DeviceApps.getApp(patchedApp.packageName);
+    }
+    return app != null && app.isSplit;
+  }
 }
