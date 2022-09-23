@@ -106,7 +106,7 @@ class InstallerView extends StatelessWidget {
                             ),
                           ),
                           Visibility(
-                            visible: !model.isInstalled,
+                            visible: !model.isInstalled && model.isRooted,
                             child: CustomMaterialButton(
                               isFilled: false,
                               label:
