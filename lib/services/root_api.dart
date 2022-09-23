@@ -7,8 +7,12 @@ class RootAPI {
 
   Future<bool> hasRootPermissions() async {
     try {
-      bool? isRooted = await Root.isRooted();
-      return isRooted != null && isRooted;
+      bool? isRooted = await Root.isRootAvailable();
+      if (isRooted != null && isRooted) {
+        isRooted = await Root.isRooted();
+        return isRooted != null && isRooted;
+      }
+      return false;
     } on Exception {
       return false;
     }

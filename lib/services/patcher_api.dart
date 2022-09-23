@@ -70,10 +70,14 @@ class PatcherAPI {
   }
 
   Future<List<Patch>> getFilteredPatches(String packageName) async {
+    String newPackageName = packageName.replaceFirst(
+      'app.revanced.',
+      'com.google.',
+    );
     return _patches
         .where((patch) =>
             !patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == packageName))
+            patch.compatiblePackages.any((pack) => pack.name == newPackageName))
         .toList();
   }
 
@@ -85,19 +89,25 @@ class PatcherAPI {
 
   Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.contains('integrations'),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('integrations'),
+      ),
     );
   }
 
   Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.any((dep) => dep.contains('resource-')),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('resource-'),
+      ),
     );
   }
 
   Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.contains('settings'),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('settings'),
+      ),
     );
   }
 

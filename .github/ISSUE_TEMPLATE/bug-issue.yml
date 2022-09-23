@@ -112,3 +112,17 @@ body:
       description: Add additional context here.
     validations:
       required: false
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      description: Your issue will be closed if you haven't done these steps.
+      options:
+        - label: I have searched the existing issues and this is a new and no duplicate or related to another open issue.
+          required: true
+        - label: I have written a short but informative title.
+          required: true
+        - label: I filled out all of the requested information in this issue properly.
+          required: true
+        - label: The issue is related solely to the ReVanced Manager
+          required: true
