@@ -20,6 +20,7 @@ dependencies:
       ref: revanced-manager
   device_info_plus: ^4.1.2
   dio: ^4.0.6
+  dio_http2_adapter: ^2.0.0
   dio_http_cache_lts: ^0.4.1
   dynamic_color: ^1.5.4
   dynamic_themes: ^1.1.0

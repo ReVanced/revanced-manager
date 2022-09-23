@@ -6,6 +6,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:timeago/timeago.dart';
+import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 
 @lazySingleton
 class RevancedAPI {
@@ -17,7 +18,15 @@ class RevancedAPI {
   );
 
   Future<void> initialize(String apiUrl) async {
-    _dio = Dio(BaseOptions(baseUrl: apiUrl));
+    _dio = Dio(BaseOptions(
+      baseUrl: apiUrl,
+    ))
+      ..httpClientAdapter = Http2Adapter(
+        ConnectionManager(
+          idleTimeout: 10000,
+          onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+        ),
+      );
     _dio.interceptors.add(_dioCacheManager.interceptor);
   }
 
