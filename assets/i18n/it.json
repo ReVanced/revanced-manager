@@ -75,7 +75,9 @@
         "viewTitle": "Seleziona patch",
         "searchBarHint": "Cerca patch",
         "doneButton": "Fatto",
-        "noPatchesFound": "Nessuna patch trovata per l'applicazione selezionata"
+        "noPatchesFound": "Nessuna patch trovata per l'applicazione selezionata",
+        "selectAllPatchesWarningTitle": "Attenzione",
+        "selectAllPatchesWarningContent": "Stai per selezionare tutte le patch, incluse patch non consigliate che potrebbero causare comportamenti indesiderati."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versione non supportata",
