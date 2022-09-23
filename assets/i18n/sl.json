@@ -16,12 +16,12 @@
         "patchedSubtitle": "Popravljena Aplikacija",
         "updatesAvailable": "Posodobitve so na voljo",
         "noUpdates": "Posodobitev ni na voljo",
-        "noInstallations": "Popravljene aplikacije niso nameščene",
+        "noInstallations": "Nameščena ni nobena popravljena aplikacija",
         "installed": "Nameščeno",
         "updateDialogTitle": "Upravitelj Posodobitev",
         "updateDialogText": "Ste prepričani, da želite naložiti in posodobiti Upravitelja ReVanced?",
         "notificationTitle": "Upravitelj ReVanced je posodobljen",
-        "notificationText": "Klikni, da odpreš aplikacijo",
+        "notificationText": "Kliknite, da odprete aplikacijo",
         "downloadingMessage": "Prenašanje posodobitev...",
         "installingMessage": "Nameščanje posodobitve...",
         "errorDownloadMessage": "Posodobitve ni bilo mogoče prenesti",
@@ -75,7 +75,9 @@
         "viewTitle": "Izberi popravke",
         "searchBarHint": "Poišči popravke",
         "doneButton": "Opravljeno",
-        "noPatchesFound": "Ni popravkov za izbrano aplikacijo"
+        "noPatchesFound": "Ni popravkov za izbrano aplikacijo",
+        "selectAllPatchesWarningTitle": "Opozorilo",
+        "selectAllPatchesWarningContent": "Izbrali boste vse popravke, ki lahko vsebujejo tudi ne priporočene popravke, ki lahko povzročijo nezaželeno obnašanje."
     },
     "patchItem": {
         "unsupportedWarningButton": "Nepodprta različica",
