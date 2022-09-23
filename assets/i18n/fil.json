@@ -75,7 +75,9 @@
         "viewTitle": "Pumili ng mga patch",
         "searchBarHint": "I-search ang patch",
         "doneButton": "Tapos na",
-        "noPatchesFound": "Walang nahanap na patch para sa napiling aplikasyon"
+        "noPatchesFound": "Walang nahanap na patch para sa napiling aplikasyon",
+        "selectAllPatchesWarningTitle": "Babala",
+        "selectAllPatchesWarningContent": "Pipiliin mo na ang lahat ng mga patch, kasama dito ang mga patch na hindi inirerekomenda at maaaring magdulot ng mga hindi gustong kilos."
     },
     "patchItem": {
         "unsupportedWarningButton": "Hindi suportado ang bersyon",
