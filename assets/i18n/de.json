@@ -75,7 +75,9 @@
         "viewTitle": "Patches auswählen",
         "searchBarHint": "Patches suchen",
         "doneButton": "Fertig",
-        "noPatchesFound": "Keine Patches für die ausgewählte App gefunden"
+        "noPatchesFound": "Keine Patches für die ausgewählte App gefunden",
+        "selectAllPatchesWarningTitle": "Warnung",
+        "selectAllPatchesWarningContent": "Du bist dabei alle Patches auszuwählen, dies beinhaltet nicht vorgeschlagene Patches und kann zu unerwünschter Funktionsweise führen."
     },
     "patchItem": {
         "unsupportedWarningButton": "Version nicht unterstützt",
@@ -85,7 +87,7 @@
     "installerView": {
         "widgetTitle": "Installer",
         "installButton": "Installieren",
-        "installRootButton": "Mit Root installieren",
+        "installRootButton": "Als Root installieren",
         "openButton": "Öffnen",
         "shareButton": "Datei teilen",
         "notificationTitle": "ReVanced Manager patcht",
