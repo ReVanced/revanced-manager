@@ -75,7 +75,9 @@
         "viewTitle": "Seleccionar modificacions",
         "searchBarHint": "Buscar modificacions",
         "doneButton": "Fet",
-        "noPatchesFound": "No s'han trobat modificacions per l'aplicació seleccionada"
+        "noPatchesFound": "No s'han trobat modificacions per l'aplicació seleccionada",
+        "selectAllPatchesWarningTitle": "Advertència",
+        "selectAllPatchesWarningContent": "Està a punt de seleccionar totes les modificacions, això inclou les no recomanades i pot provocar comportament no desitjat."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versió no suportada",
