@@ -20,14 +20,6 @@ body:
         - Other
     validations:
       required: true
-  - type: dropdown
-    attributes:
-      label: Manager Branch
-      options:
-        - Flutter
-        - Compose
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Bug description
