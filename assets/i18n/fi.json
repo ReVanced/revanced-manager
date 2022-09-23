@@ -7,7 +7,7 @@
     "noButton": "Ei",
     "navigationView": {
         "dashboardTab": "Hallintapaneeli",
-        "patcherTab": "Paikkain",
+        "patcherTab": "Patcher",
         "settingsTab": "Asetukset"
     },
     "homeView": {
@@ -18,9 +18,9 @@
         "noUpdates": "Ei päivityksiä saatavilla",
         "noInstallations": "Paikattuja sovelluksia ei asennettu",
         "installed": "Asennettu",
-        "updateDialogTitle": "Päivitä hallintasovellus",
-        "updateDialogText": "Oletko varma, että haluat ladata ja päivittää ReVanced hallintasovelluksen?",
-        "notificationTitle": "ReVanced hallintasovellus päivitetty",
+        "updateDialogTitle": "Päivitä Manager",
+        "updateDialogText": "Oletko varma, että haluat ladata ja päivittää ReVanced Managerin?",
+        "notificationTitle": "ReVanced Manager päivitetty",
         "notificationText": "Napauta avataksesi sovellus",
         "downloadingMessage": "Ladataan päivitystä...",
         "installingMessage": "Asennetaan päivitystä...",
@@ -37,11 +37,11 @@
         "loadingLabel": "Ladataan...",
         "timeagoLabel": "{time} sitten",
         "patcherLabel": "Paikkain: ",
-        "managerLabel": "Hallinnoija: ",
-        "updateButton": "Päivitä hallintasovellus"
+        "managerLabel": "Manager: ",
+        "updateButton": "Päivitä Manager"
     },
     "patcherView": {
-        "widgetTitle": "Paikkain",
+        "widgetTitle": "Patcher",
         "patchButton": "Paikkaa",
         "patchDialogTitle": "Varoitus",
         "patchDialogText": "Olet valinnut resurssikorjauksen ja split APK-asennus havaittiin, joten paikkauksessa voi esiintyä virheitä.\nHaluatko varmastu jatkaa paikkaamalla split tyyppisen APK:n?"
@@ -75,7 +75,9 @@
         "viewTitle": "Valitse paikkaukset",
         "searchBarHint": "Etsi paikkauksia",
         "doneButton": "Valmis",
-        "noPatchesFound": "Valitulle sovellukselle ei löytynyt paikkauksia"
+        "noPatchesFound": "Valitulle sovellukselle ei löytynyt paikkauksia",
+        "selectAllPatchesWarningTitle": "Varoitus",
+        "selectAllPatchesWarningContent": "Olet valitsemassa kaikkia paikkauksia, sisältäen paikkauksia joita ei suositella ja voivat aiheittaa ei toivottua käyttäytymistä."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versiota ei tueta",
@@ -88,7 +90,7 @@
         "installRootButton": "Asenna root-oikeuksilla",
         "openButton": "Avaa",
         "shareButton": "Jaa tiedosto",
-        "notificationTitle": "ReVanced hallintaohjelma on paikkaamassa",
+        "notificationTitle": "ReVanced Manager on paikkaamassa",
         "notificationText": "Napauta palataksesi hallintasovellukseen",
         "shareApkMenuOption": "Jaa APK",
         "shareLogMenuOption": "Jaa loki",
@@ -154,6 +156,6 @@
         "patchesContributors": "Paikkauksien osallistujat",
         "integrationsContributors": "Integraatioiden osallistujat",
         "cliContributors": "CLI-Osallistujat",
-        "managerContributors": "Hallintasovelluksen osallistujat"
+        "managerContributors": "Manager osallistujat"
     }
 }
