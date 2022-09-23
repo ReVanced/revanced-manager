@@ -147,7 +147,7 @@ class _PatchItemState extends State<PatchItem> {
           translationParams: {
             'packageVersion': widget.packageVersion,
             'supportedVersions':
-                '\u2022 ${widget.supportedPackageVersions.join('\n\u2022 ')}',
+                '\u2022 ${widget.supportedPackageVersions.reversed.join('\n\u2022 ')}',
           },
         ),
         actions: <Widget>[
