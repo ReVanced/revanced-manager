@@ -1,6 +1,6 @@
 {
     "okButton": "ОК",
-    "cancelButton": "Отмена",
+    "cancelButton": "Отменить",
     "enabledLabel": "Включено",
     "disabledLabel": "Выключено",
     "yesButton": "Да",
@@ -44,7 +44,7 @@
         "widgetTitle": "Патчер",
         "patchButton": "Пропатчить",
         "patchDialogTitle": "Предупреждение",
-        "patchDialogText": "Вы выбрали патч ресурса, и была обнаружена установка разделённого APK, так что могут возникнуть ошибки.\\nВы уверены, что хотите продолжить патч с разделённым APK?"
+        "patchDialogText": "Вы выбрали разделённый APK файл, из-за него могут возникнуть ошибки при патче.\nВы уверены, что хотите продолжить патч с разделённым APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Выберите приложение",
@@ -75,7 +75,9 @@
         "viewTitle": "Выберите патчи",
         "searchBarHint": "Искать патчи",
         "doneButton": "Готово",
-        "noPatchesFound": "Для выбранного приложения не найдены патчи"
+        "noPatchesFound": "Для выбранного приложения не найдены патчи",
+        "selectAllPatchesWarningTitle": "Предупреждение",
+        "selectAllPatchesWarningContent": "Вы собираетесь выбрать все патчи, в том числе и нерекомендуемые патчи, которые могут вызвать нежелательное поведение."
     },
     "patchItem": {
         "unsupportedWarningButton": "Неподдерживаемая версия",
@@ -135,8 +137,8 @@
         "openButton": "Открыть",
         "uninstallButton": "Удалить",
         "patchButton": "Пропатчить",
-        "unpatchButton": "Удалить патчи",
-        "unpatchDialogText": "Вы уверены, что хотите удалить патчи с этого приложения?",
+        "unpatchButton": "Распатчить",
+        "unpatchDialogText": "Вы уверены, что хотите распатчить это приложение?",
         "rootDialogTitle": "Ошибка",
         "rootDialogText": "Приложение было установлено при включенном root-режиме, но сейчас root-режим отключен.\nПожалуйста, включите сначала root-режим.",
         "packageNameLabel": "Имя пакета",
