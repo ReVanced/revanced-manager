@@ -75,7 +75,9 @@
         "viewTitle": "Odaberite zakrpe",
         "searchBarHint": "Pretraživanje zakrpa",
         "doneButton": "Gotovo",
-        "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
+        "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa",
+        "selectAllPatchesWarningTitle": "Upozorenje",
+        "selectAllPatchesWarningContent": "Odabrat ćete sve zakrpe, koje uključuju i nepreporučene zakrpe koje mogu uzrokovati neželjeno ponašanje."
     },
     "patchItem": {
         "unsupportedWarningButton": "Nepodržana verzija",
