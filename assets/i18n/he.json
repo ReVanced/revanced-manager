@@ -75,7 +75,9 @@
         "viewTitle": "בחר תיקונים",
         "searchBarHint": "חפש תיקונים",
         "doneButton": "בוצע",
-        "noPatchesFound": "לא נמצאו תיקונים ליישום שנבחר"
+        "noPatchesFound": "לא נמצאו תיקונים ליישום שנבחר",
+        "selectAllPatchesWarningTitle": "אזהרה",
+        "selectAllPatchesWarningContent": "אתם עומדים לבחור את כל התיקונים, כולל תיקונים לא מומלצים שיכולים לגרום להתנהות לא רצויה."
     },
     "patchItem": {
         "unsupportedWarningButton": "גרסה לא נתמכת",
