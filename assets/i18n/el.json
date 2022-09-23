@@ -1,13 +1,13 @@
 {
     "okButton": "Εντάξει",
     "cancelButton": "Ακύρωση",
-    "enabledLabel": "Ενεργό",
-    "disabledLabel": "Ανενεργό",
+    "enabledLabel": "Ενεργοποιημένο",
+    "disabledLabel": "Απενεργοποιημένο",
     "yesButton": "Ναι",
     "noButton": "Όχι",
     "navigationView": {
         "dashboardTab": "Πίνακας Ελέγχου",
-        "patcherTab": "Patcher",
+        "patcherTab": "Τροποποιητής",
         "settingsTab": "Ρυθμίσεις"
     },
     "homeView": {
@@ -17,13 +17,13 @@
         "updatesAvailable": "Διαθέσιμες ενημερώσεις",
         "noUpdates": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
         "noInstallations": "Δεν έχουν εγκατασταθεί τροποποιημένες εφαρμογές",
-        "installed": "Εγκατεστημένες",
+        "installed": "Εγκαταστάθηκε",
         "updateDialogTitle": "Ενημέρωση του διαχειριστή",
         "updateDialogText": "Είστε βέβαιοι ότι θέλετε να κατεβάσετε και να ενημερώσετε το ReVanced Manager;",
         "notificationTitle": "Το ReVanced Manager ενημερώθηκε",
         "notificationText": "Πατήστε για να ανοίξετε την εφαρμογή",
-        "downloadingMessage": "Λήψη ενημέρωσης...",
-        "installingMessage": "Εγκατάσταση ενημέρωσης...",
+        "downloadingMessage": "Γίνεται λήψη ενημέρωσης...",
+        "installingMessage": "Γίνετε εγκατάσταση της ενημέρωσης...",
         "errorDownloadMessage": "Αδυναμία λήψης ενημέρωσης",
         "errorInstallMessage": "Αδυναμία εγκατάστασης ενημέρωσης",
         "noConnection": "Δεν υπάρχει σύνδεση στο διαδίκτυο"
@@ -36,7 +36,7 @@
     "latestCommitCard": {
         "loadingLabel": "Φόρτωση...",
         "timeagoLabel": "{time} πριν",
-        "patcherLabel": "Patcher: ",
+        "patcherLabel": "Τροποποιητής: ",
         "managerLabel": "Διαχειριστής: ",
         "updateButton": "Ενημέρωση του Διαχειριστή"
     },
@@ -75,7 +75,9 @@
         "viewTitle": "Επιλέξτε τροποποιήσεις",
         "searchBarHint": "Αναζήτηση τροποποιήσεων",
         "doneButton": "Τέλος",
-        "noPatchesFound": "Δε βρέθηκαν τροποποιήσεις για την επιλεγμένη εφαρμογή"
+        "noPatchesFound": "Δε βρέθηκαν τροποποιήσεις για την επιλεγμένη εφαρμογή",
+        "selectAllPatchesWarningTitle": "Προειδοποίηση",
+        "selectAllPatchesWarningContent": "Πρόκειται να επιλέξτε όλες τις μη συνιστώμενες τροποποιήσεις, μπορεί να προκληθεί ανεπιθύμητη συμπεριφορά."
     },
     "patchItem": {
         "unsupportedWarningButton": "Μη υποστηριζόμενη έκδοση",
