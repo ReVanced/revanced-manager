@@ -75,7 +75,9 @@
         "viewTitle": "Pilih modifikasi",
         "searchBarHint": "Cari modifikasi",
         "doneButton": "Selesai",
-        "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih"
+        "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih",
+        "selectAllPatchesWarningTitle": "Peringatan",
+        "selectAllPatchesWarningContent": "Anda akan memilih semua modifikasi, termasuk modifikasi tidak direkomendasi dan dapat mengakibatkan hal yang tidak diinginkan."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versi tidak didukung",
