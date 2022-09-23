@@ -42,7 +42,12 @@ class PatcherViewModel extends BaseViewModel {
     bool needsResourcePatching =
         await _patcherAPI.needsResourcePatching(selectedPatches);
     if (needsResourcePatching && selectedApp != null) {
-      Application? app = await DeviceApps.getApp(selectedApp!.packageName);
+      Application? app;
+      if (selectedApp!.isFromStorage) {
+        app = await DeviceApps.getAppFromStorage(selectedApp!.apkFilePath);
+      } else {
+        app = await DeviceApps.getApp(selectedApp!.packageName);
+      }
       if (app != null && app.isSplit) {
         return false;
       }
