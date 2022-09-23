@@ -32,19 +32,20 @@ class InstallerView extends StatelessWidget {
                 onBackButtonPressed: () => model.onWillPop(context),
                 actions: <Widget>[
                   Visibility(
-                    visible: !model.isPatching && !model.hasErrors,
+                    visible: !model.isPatching,
                     child: CustomPopupMenu(
                       onSelected: (value) => model.onMenuSelection(value),
                       children: {
-                        0: I18nText(
-                          'installerView.shareApkMenuOption',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                        if (!model.hasErrors)
+                          0: I18nText(
+                            'installerView.shareApkMenuOption',
+                            child: const Text(
+                              '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
                         1: I18nText(
                           'installerView.shareLogMenuOption',
                           child: const Text(
