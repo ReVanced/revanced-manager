@@ -18,8 +18,8 @@
         "noUpdates": "Brak dostępnych aktualizacji",
         "noInstallations": "Nie zainstalowano żadnych zmodyfikowanych aplikacji",
         "installed": "Zainstalowane",
-        "updateDialogTitle": "Zaktualizuj Manager",
-        "updateDialogText": "Czy na pewno chcesz pobrać i zaktualizować ReVanced Manager?",
+        "updateDialogTitle": "Zaktualizuj Managera",
+        "updateDialogText": "Czy na pewno chcesz pobrać i zaktualizować ReVanced Managera?",
         "notificationTitle": "ReVanced Manager został zaktualizowany",
         "notificationText": "Dotknij, aby otworzyć aplikację",
         "downloadingMessage": "Pobieranie aktualizacji...",
@@ -38,7 +38,7 @@
         "timeagoLabel": "{time} temu",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Zaktualizuj Manager"
+        "updateButton": "Zaktualizuj Managera"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
@@ -63,7 +63,7 @@
     },
     "socialMediaCard": {
         "widgetTitle": "Społeczność",
-        "widgetSubtitle": "Jesteśmy w Internecie!"
+        "widgetSubtitle": "Jesteśmy online!"
     },
     "appSelectorView": {
         "viewTitle": "Wybierz aplikację",
@@ -75,7 +75,9 @@
         "viewTitle": "Wybierz patche",
         "searchBarHint": "Wyszukaj patchów",
         "doneButton": "Gotowe",
-        "noPatchesFound": "Nie znaleziono żadnych patchów dla wybranej aplikacji"
+        "noPatchesFound": "Nie znaleziono żadnych patchów dla wybranej aplikacji",
+        "selectAllPatchesWarningTitle": "Uwaga",
+        "selectAllPatchesWarningContent": "Zamierzasz wybrać wszystkie łatki, włącznie z tymi niezalecanymi, które mogą powodować niepożądane zachowania."
     },
     "patchItem": {
         "unsupportedWarningButton": "Niewspierana wersja",
