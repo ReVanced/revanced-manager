@@ -48,6 +48,7 @@ class CustomMaterialButton extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class TimerButton extends StatefulWidget {
   Widget label;
   bool isFilled;
@@ -119,7 +120,7 @@ class _TimerButtonState extends State<TimerButton> {
       onPressed: widget.isRunning ? null : widget.onTimerEnd,
       child: Text(
         widget.isRunning ? '${widget.seconds}' : 'Install',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
