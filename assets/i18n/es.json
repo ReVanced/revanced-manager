@@ -47,7 +47,7 @@
         "patchDialogText": "Acaba de seleccionar un parche de recursos y un \"Split APK\" se ha detectado, así que algunos errores en el proceso de parcheo pueden ocurrir.\n¿Seguro que quiere continuar con el parcheo de un \"Split APK\"?"
     },
     "appSelectorCard": {
-        "widgetTitle": "Selecciona una aplicación",
+        "widgetTitle": "Seleccione una aplicación",
         "widgetTitleSelected": "Aplicación seleccionada",
         "widgetSubtitle": "Ninguna aplicación seleccionada",
         "noAppsLabel": "No se encontró ninguna aplicación.",
@@ -66,7 +66,7 @@
         "widgetSubtitle": "¡Estamos en la red!"
     },
     "appSelectorView": {
-        "viewTitle": "Selecciona una aplicación",
+        "viewTitle": "Seleccione una aplicación",
         "searchBarHint": "Buscar aplicaciones",
         "storageButton": "Almacenamiento",
         "errorMessage": "No se puede usar la aplicación seleccionada."
@@ -75,7 +75,9 @@
         "viewTitle": "Seleccionar parches",
         "searchBarHint": "Buscar parches",
         "doneButton": "Listo",
-        "noPatchesFound": "No se encontraron parches para la aplicación seleccionada"
+        "noPatchesFound": "No se encontraron parches para la aplicación seleccionada",
+        "selectAllPatchesWarningTitle": "Advertencia",
+        "selectAllPatchesWarningContent": "Está a punto de seleccionar todos los parches, que incluyen parches no recomendados y pueden causar comportamientos no deseados."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versión no compatible",
