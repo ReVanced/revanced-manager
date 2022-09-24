@@ -7,41 +7,41 @@
     "noButton": "ไม่",
     "navigationView": {
         "dashboardTab": "หน้าหลัก",
-        "patcherTab": "ตัวดัดแปลง",
+        "patcherTab": "ตัวติดตั้งส่วนเสริม",
         "settingsTab": "ตั้งค่า"
     },
     "homeView": {
         "widgetTitle": "หน้าหลัก",
-        "updatesSubtitle": "อัพเดท",
-        "patchedSubtitle": "แอพที่มีการดัดแปลง",
-        "updatesAvailable": "มีอัพเดทใหม่",
-        "noUpdates": "ไม่มีอัพเดทใหม่",
-        "noInstallations": "ไม่มีแอพที่มีการดัดแปลงติดตั้งไว้",
+        "updatesSubtitle": "อัปเดต",
+        "patchedSubtitle": "แอพลิเคชันที่มีการติดตั้งส่วนเสริม",
+        "updatesAvailable": "มีอัปเดตใหม่",
+        "noUpdates": "ไม่มีอัปเดตใหม่",
+        "noInstallations": "ไม่มีแอพลิเคชันที่มีการติดตั้งส่วนเสริม",
         "installed": "ติดตั้งแล้ว",
-        "updateDialogTitle": "อัพเดท Manager",
-        "updateDialogText": "คุณแน่ใจหรือว่าต้องการดาวน์โหลดและอัพเดท ReVanced Manager ใช่หรือไม่?",
+        "updateDialogTitle": "อัปเดต Manager",
+        "updateDialogText": "คุณแน่ใจหรือว่าต้องการดาวน์โหลดและอัปเดต ReVanced Manager ใช่หรือไม่?",
         "notificationTitle": "อัปเดต ReVanced Manager แล้ว",
         "notificationText": "แตะเพื่อเปิดแอป",
-        "downloadingMessage": "กำลังดาวน์โหลดอัพเดท...",
-        "installingMessage": "กำลังติดตั้งอัพเดท...",
-        "errorDownloadMessage": "ไม่สามารถดาวน์โหลดอัพเดท",
-        "errorInstallMessage": "ไม่สามารถติดตั้งอัพเดท",
+        "downloadingMessage": "กำลังดาวน์โหลดอัปเดต...",
+        "installingMessage": "กำลังติดตั้งอัปเดต...",
+        "errorDownloadMessage": "ไม่สามารถดาวน์โหลดอัปเดตได้",
+        "errorInstallMessage": "ไม่สามารถติดตั้งอัปเดตได้",
         "noConnection": "ไม่​มี​การเชื่อม​ต่อ​อินเตอร์​เน็ต"
     },
     "applicationItem": {
-        "patchButton": "ดัดแปลง",
+        "patchButton": "ติดตั้งส่วนเสริม",
         "infoButton": "ข้อมูล",
         "changelogLabel": "บันทึกการเปลี่ยนแปลง"
     },
     "latestCommitCard": {
         "loadingLabel": "กำลังโหลด...",
-        "timeagoLabel": "{time} ที่แล้ว",
+        "timeagoLabel": "{time} ที่ผ่านมา",
         "patcherLabel": "ตัวตัดแปลง: ",
         "managerLabel": "Manager: ",
-        "updateButton": "อัพเดท Manager"
+        "updateButton": "อัปเดต Manager"
     },
     "patcherView": {
-        "widgetTitle": "ตัวดัดแปลง",
+        "widgetTitle": "ตัวติดตั้งส่วนเสริม",
         "patchButton": "เริ่มการดัดแปลง",
         "patchDialogTitle": "คำเตือน",
         "patchDialogText": "คุณเลือกดัดแปลงแบบใช้ทรัพยากร และเราตรวจพบไฟล์ติดตั้งแบบแยก ซึ่งอาจทำให้เกิดข้อผิดพลาดได้\nคุณแน่ใจหรือไม่ว่าจะดำเนินการต่อ?"
@@ -56,10 +56,10 @@
         "anyVersion": "ทุกเวอร์ชั่น"
     },
     "patchSelectorCard": {
-        "widgetTitle": "เลือกการดัดแปลง",
-        "widgetTitleSelected": "การดัดแปลงที่เลือกไว้",
-        "widgetSubtitle": "เลือกแอปก่อน",
-        "widgetEmptySubtitle": "ไม่ได้เลือกการดัดแปลง"
+        "widgetTitle": "เลือกส่วนเสริม",
+        "widgetTitleSelected": "ส่วนเสริมที่เลือกไว้",
+        "widgetSubtitle": "เลือกแอพลิเคชันก่อน",
+        "widgetEmptySubtitle": "ไม่ได้เลือกส่วนเสริม"
     },
     "socialMediaCard": {
         "widgetTitle": "โซเชียล",
@@ -69,18 +69,20 @@
         "viewTitle": "เลือกแอป",
         "searchBarHint": "ค้นหาแอป",
         "storageButton": "พื้นที่จัดเก็บข้อมูล",
-        "errorMessage": "ไม่สามารถใช้แอปที่เลือกไว้ได้"
+        "errorMessage": "ไม่สามารถใช้แอพลิเคชันที่เลือกไว้ได้"
     },
     "patchesSelectorView": {
-        "viewTitle": "เลือกการดัดแปลง",
+        "viewTitle": "เลือกส่วนเสริม",
         "searchBarHint": "ค้นหาส่วนเสริม",
         "doneButton": "เรียบร้อย",
-        "noPatchesFound": "ไม่พบส่วนเสริมสำหรับแอปที่เลือกไว้"
+        "noPatchesFound": "ไม่พบส่วนเสริมสำหรับแอปที่เลือกไว้",
+        "selectAllPatchesWarningTitle": "คำเตือน",
+        "selectAllPatchesWarningContent": "คุณกำลังเลือกตัวเสริมทั้งหมด รวมถึงตัวเสริมที่ไม่แนะนำ ตัวเสริมเหล่านี้สามารถสร้างข้อผิดพลาดได้"
     },
     "patchItem": {
-        "unsupportedWarningButton": "เวอร์ชั่นไม่รองรับ",
+        "unsupportedWarningButton": "เวอร์ชันไม่รองรับ",
         "unsupportedDialogTitle": "คำเตือน",
-        "unsupportedDialogText": "การเลือกตัวเสริมนี้อาจส่งผลให้เกิดข้อผิดพลาด\n\nเวอร์ชั่นปัจจุบัน: {packageVersion}\nเวอร์ชั่นที่รองรับ:\n{supportedVersions}"
+        "unsupportedDialogText": "การเลือกส่วนเสริมนี้อาจส่งผลให้เกิดข้อผิดพลาด\n\nเวอร์ชันปัจจุบัน: {packageVersion}\nเวอร์ชันที่รองรับ:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "ตัวติดตั้ง",
@@ -88,13 +90,13 @@
         "installRootButton": "ติดตั้งแบบรูท",
         "openButton": "เปิด",
         "shareButton": "แชร์ไฟล์",
-        "notificationTitle": "ReVanced Manager กำลังดัดแปลง",
+        "notificationTitle": "ReVanced Manager กำลังติดตั้งส่วนเสริม",
         "notificationText": "แตะเพื่อกลับไปยังตัวติดตั้ง",
         "shareApkMenuOption": "แชร์ไฟล์ติดตั้ง",
         "shareLogMenuOption": "แชร์ไฟล์บันทึกผล",
         "installErrorDialogTitle": "ข้อผิดพลาด",
-        "installErrorDialogText1": "ไม่สามารถติดตั้งแบบรูทได้ กับตัวเสริมที่เลือกไว้ในขณะนี้\nดัดแปลงแอปของคุณอีกครั้ง หรือเลือกการติดตั้งแบบไม่ใช้รูท",
-        "installErrorDialogText2": "ไม่สามารถติดตั้งแบบไม่ใช้รูททำได้ กับตัวเสริมที่เลือกไว้ในขณะนี้\nnดัดแปลงแอปของคุณอีกครั้ง หรือเลือกการติดตั้งแบบรูทหากคุณมีอุปกรณ์ที่รูทไว้แล้ว",
+        "installErrorDialogText1": "ไม่สามารถติดตั้งแบบรูทได้กับส่วนเสริมที่เลือกไว้ในขณะนี้\nติดตั้งส่วนเสริมของคุณอีกครั้ง หรือเลือกการติดตั้งแบบไม่ใช้รูท",
+        "installErrorDialogText2": "ไม่สามารถติดตั้งแบบไม่ใช้รูทกับตัวเสริมที่เลือกไว้ในขณะนี้\nติดตั้งส่วนเสริมของคุณอีกครั้ง หรือเลือกการติดตั้งแบบรูทหากคุณมีรูทในอุปกรณ์ของคุณ",
         "installErrorDialogText3": "ไม่สามารถติดตั้งแบบรูทได้หากไฟล์ติดตั้งอยู่ในส่วนพื้นที่จัดเก็บข้อมูล\nเลือกแอปที่ติดตั้งไว้ หรือเลือกการติดตั้งแบบไม่ใช้รูท",
         "noExit": "ตัวติดตั้งกำลังทำงาน"
     },
@@ -105,7 +107,7 @@
         "infoSectionTitle": "อื่นๆ",
         "advancedSectionTitle": "ขั้นสูง",
         "darkThemeLabel": "ธีมมืด",
-        "darkThemeHint": "ยินดีต้อนรับสู่ความมืด",
+        "darkThemeHint": "ยินดีต้อนรับสู่ด้านมืด",
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "เพลิดเพลินกับประสบการณ์ที่ใกล้ชิดกับอุปกรณ์ของคุณมากขึ้น",
         "languageLabel": "ภาษา",
@@ -113,47 +115,47 @@
         "frenchOption": "ฝรั่งเศส",
         "sourcesLabel": "แหล่งที่มา",
         "sourcesLabelHint": "ตั้งแหล่งที่มาของคุณ",
-        "orgPatchesLabel": "ผู้ดูแลการดัดแปลง",
-        "sourcesPatchesLabel": "ที่มาของการดัดแปลง",
-        "orgIntegrationsLabel": "ผู้ดูแลตัวเสริม",
-        "sourcesIntegrationsLabel": "ที่มาของตัวเสริม",
+        "orgPatchesLabel": "ผู้ดูแลส่วนเสริม",
+        "sourcesPatchesLabel": "ที่มาของส่วนเสริม",
+        "orgIntegrationsLabel": "ผู้ดูแล Integrations",
+        "sourcesIntegrationsLabel": "ที่มาของ Integrations",
         "sourcesResetDialogTitle": "รีเซ็ต",
-        "sourcesResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตแหล่งที่มาเหล่านี้กลับเป็นค่าเริ่มต้น?",
+        "sourcesResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตแหล่งที่มาเหล่านี้ให้กลับเป็นค่าเริ่มต้น?",
         "apiURLResetDialogText": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ต URL ของ API กลับเป็นค่าเริ่มต้น?",
-        "contributorsLabel": "ผู้ช่วยโปรเจค",
-        "contributorsHint": "รายชื่อผู้ที่ช่วยเหลือกับโปรเจค ReVanced",
+        "contributorsLabel": "ผู้ช่วยเหลือโปรเจกต์",
+        "contributorsHint": "รายชื่อผู้ที่ช่วยเหลือกับโปรเจ็กต์ ReVanced",
         "logsLabel": "ไฟล์บันทึกผล",
         "logsHint": "แชร์ไฟล์บันทึกผล",
         "apiURLLabel": "URL ของ API",
         "apiURLHint": "ตั้งค่า URL ของ API ของคุณเอง",
         "selectApiURL": "เลือก URL",
         "aboutLabel": "เกี่ยวกับ",
-        "snackbarMessage": "คัดลอกแล้ว"
+        "snackbarMessage": "คัดลอกลงคลิปบอร์ดแล้ว"
     },
     "appInfoView": {
         "widgetTitle": "ข้อมูลแอป",
         "openButton": "เปิด",
         "uninstallButton": "ถอนการติดตั้ง",
-        "patchButton": "ดัดแปลง",
-        "unpatchButton": "ลบการดัดแปลง",
-        "unpatchDialogText": "คุณแน่ใจหรือไม่ว่าจะลบการดัดแปลงของแอปนี้?",
+        "patchButton": "ติดตั้งส่วนเสริม",
+        "unpatchButton": "ลบส่วนเสริม",
+        "unpatchDialogText": "คุณแน่ใจหรือไม่ว่าจะลบส่วนเสริมของแอพลิเคชันนี้?",
         "rootDialogTitle": "ข้อผิดพลาด",
-        "rootDialogText": "แอปติดตั้งโดยเปิดใช้โหมดรูท แต่โหมดรูทปิดอยู่ในขณะนี้\nกรุณาเปิดใช้โหมดรูทก่อน.",
-        "packageNameLabel": "ชื่อระบุแอป",
-        "installTypeLabel": "รูปแบบการติดตั้ง",
+        "rootDialogText": "แอปเคยติดตั้งโดยใช้โหมดรูท แต่ขณะนี้โหมดรูทปิดอยู่\nกรุณาเปิดใช้โหมดรูทก่อน",
+        "packageNameLabel": "ชื่อแพ็กเกจ",
+        "installTypeLabel": "แบบการติดตั้ง",
         "rootTypeLabel": "รูท",
         "nonRootTypeLabel": "ไม่ใช้รูท",
-        "patchedDateLabel": "วันที่ของส่วนเสริม",
+        "patchedDateLabel": "วันที่ดัดแปลง",
         "patchedDateHint": "{date} เวลา {time}",
-        "appliedPatchesLabel": "ส่วนเสริมที่เลือกไว้",
-        "appliedPatchesHint": "{quantity} อย่าง"
+        "appliedPatchesLabel": "ส่วนเสริมที่ติดตั้งไว้",
+        "appliedPatchesHint": "ติดตั้งไว้ {quantity} ตัว"
     },
     "contributorsView": {
-        "widgetTitle": "ผู้สมทบ",
-        "patcherContributors": "ผู้ช่วยเหลือส่วนเสริม",
-        "patchesContributors": "ผู้ช่วยเหลือส่วนเสริม",
-        "integrationsContributors": "ผู้สมทบตัวเสริม",
-        "cliContributors": "ผู้สมทบ CLI",
-        "managerContributors": "ผู้สมทบ Manager"
+        "widgetTitle": "ผู้ช่วยเหลือโปรเจกต์",
+        "patcherContributors": "ผู้ช่วยเหลือตัวติดตั้งส่วนเสริม",
+        "patchesContributors": "ผู้ช่วยเหลือตัวติดตั้งส่วนเสริม",
+        "integrationsContributors": "ผู้ช่วยเหลือการ Intergrations",
+        "cliContributors": "ผู้ช่วยเหลือ CLI",
+        "managerContributors": "ผู้ช่วยเหลือ Manager"
     }
 }
