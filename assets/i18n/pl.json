@@ -13,7 +13,7 @@
     "homeView": {
         "widgetTitle": "Panel główny",
         "updatesSubtitle": "Aktualizacje",
-        "patchedSubtitle": "Zmodyfikowane Aplikacje",
+        "patchedSubtitle": "Załatane Aplikacje",
         "updatesAvailable": "Dostępne aktualizacje",
         "noUpdates": "Brak dostępnych aktualizacji",
         "noInstallations": "Nie zainstalowano żadnych zmodyfikowanych aplikacji",
@@ -29,7 +29,7 @@
         "noConnection": "Brak połączenia z internetem"
     },
     "applicationItem": {
-        "patchButton": "Patchuj",
+        "patchButton": "Łataj",
         "infoButton": "Info",
         "changelogLabel": "Lista zmian"
     },
@@ -42,7 +42,7 @@
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "Patchuj",
+        "patchButton": "Łataj",
         "patchDialogTitle": "Uwaga",
         "patchDialogText": "Wykryto instalację split APK, więc mogą wystąpić błędy patchera. \nCzy jesteś pewien, że chcesz kontynuować?"
     },
@@ -73,30 +73,30 @@
     },
     "patchesSelectorView": {
         "viewTitle": "Wybierz patche",
-        "searchBarHint": "Wyszukaj patchów",
+        "searchBarHint": "Wyszukaj łatki",
         "doneButton": "Gotowe",
         "noPatchesFound": "Nie znaleziono żadnych patchów dla wybranej aplikacji",
         "selectAllPatchesWarningTitle": "Uwaga",
         "selectAllPatchesWarningContent": "Zamierzasz wybrać wszystkie łatki, włącznie z tymi niezalecanymi, które mogą powodować niepożądane zachowania."
     },
     "patchItem": {
-        "unsupportedWarningButton": "Niewspierana wersja",
-        "unsupportedDialogTitle": "Ostrzeżenie",
-        "unsupportedDialogText": "Wybranie tego patcha może spowodować błędy podczas patchowania.\n\nWersja aplikacji: {packageVersion}\nAktualnie wspierana wersja:\n{supportedVersions}"
+        "unsupportedWarningButton": "Nieobsługiwana wersja",
+        "unsupportedDialogTitle": "Uwaga",
+        "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas łatania.\n\nWersja aplikacji: {packageVersion}\nAktualnie wspierana wersja:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Instalator",
         "installButton": "Zainstaluj",
-        "installRootButton": "Instaluj jako Root",
+        "installRootButton": "Zainstaluj jako root",
         "openButton": "Otwórz",
         "shareButton": "Udostępnij plik",
-        "notificationTitle": "ReVanced Manager patchuje",
+        "notificationTitle": "ReVanced Manager łata",
         "notificationText": "Dotknij, aby powrócić do instalatora",
         "shareApkMenuOption": "Udostępnij plik APK",
         "shareLogMenuOption": "Udostępnij logi",
         "installErrorDialogTitle": "Błąd",
-        "installErrorDialogText1": "Instalacja za pomocą roota nie jest możliwa przy obecnym wyborze patchów.\nZpatchuj aplikacje ponownie lub wybierz instalacje bez roota.",
-        "installErrorDialogText2": "Instalacja bez roota nie jest możliwa przy obecnym wyborze patchów.\nZpatchuj aplikacje ponownie lub wybierz instalacje za pomocą roota, jeśli masz zrootowane urządzenie.",
+        "installErrorDialogText1": "Instalacja za pomocą roota nie jest możliwa przy obecnym wyborze łatania.\nZałataj aplikacje ponownie lub wybierz instalacje bez roota.",
+        "installErrorDialogText2": "Instalacja bez roota nie jest możliwa przy obecnym wyborze łatek.\nZałataj aplikacje ponownie lub wybierz instalacje za pomocą roota, jeśli masz zrootowane urządzenie.",
         "installErrorDialogText3": "Instalacja jako root nie jest możliwa, ponieważ oryginalny plik APK został wybrany z pamięci.\nWybierz zainstalowaną aplikację lub wybierz instalację bez używania roota.",
         "noExit": "Instalator jest nadal uruchomiony..."
     },
@@ -104,9 +104,9 @@
         "widgetTitle": "Ustawienia",
         "appearanceSectionTitle": "Wygląd",
         "teamSectionTitle": "Zespół",
-        "infoSectionTitle": "Info",
+        "infoSectionTitle": "Informacje",
         "advancedSectionTitle": "Zaawansowane",
-        "darkThemeLabel": "Ciemny motyw",
+        "darkThemeLabel": "Tryb Ciemny",
         "darkThemeHint": "Witamy po ciemnej stronie mocy",
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
@@ -115,8 +115,8 @@
         "frenchOption": "Francuski",
         "sourcesLabel": "Źródła",
         "sourcesLabelHint": "Skonfiguruj własne źródła",
-        "orgPatchesLabel": "Organizacja Patchów",
-        "sourcesPatchesLabel": "Źródło Patchów",
+        "orgPatchesLabel": "Organizacja Łatek",
+        "sourcesPatchesLabel": "Źródło Łatek",
         "orgIntegrationsLabel": "Organizacja Integracji",
         "sourcesIntegrationsLabel": "Źródło Integracji",
         "sourcesResetDialogTitle": "Zresetuj",
@@ -136,26 +136,26 @@
         "widgetTitle": "Informacje o aplikacji",
         "openButton": "Otwórz",
         "uninstallButton": "Odinstaluj",
-        "patchButton": "Patchuj",
-        "unpatchButton": "Odpatchuj",
+        "patchButton": "Łataj",
+        "unpatchButton": "Usuń łatkę",
         "unpatchDialogText": "Czy na pewno chcesz odpachować tę aplikację?",
         "rootDialogTitle": "Błąd",
         "rootDialogText": "Aplikacja została zainstalowana z uprawnieniami root, ale obecnie dostęp do roota jest wyłączony.\nProszę przywrócić dostęp do roota.",
         "packageNameLabel": "Nazwa Pakietu",
         "installTypeLabel": "Typ Instalacji",
         "rootTypeLabel": "Root",
-        "nonRootTypeLabel": "Non-root",
-        "patchedDateLabel": "Data Pachowania",
+        "nonRootTypeLabel": "Bez Roota",
+        "patchedDateLabel": "Data Łatki",
         "patchedDateHint": "{date} o godzinie {time}",
-        "appliedPatchesLabel": "Zastosowane Patche",
-        "appliedPatchesHint": "Zastosowano {quantity} patchów"
+        "appliedPatchesLabel": "Zastosowane Łatki",
+        "appliedPatchesHint": "Zastosowano {quantity} łatek"
     },
     "contributorsView": {
         "widgetTitle": "Współtwórcy",
         "patcherContributors": "Współtwórcy Patchera",
-        "patchesContributors": "Współtwórcy Patchów",
+        "patchesContributors": "Współtwórcy Łatek",
         "integrationsContributors": "Współtwórcy Integracji",
         "cliContributors": "Współtwórcy CLI",
-        "managerContributors": "Współtwórcy Menedżera"
+        "managerContributors": "Współtwórcy Managera"
     }
 }
