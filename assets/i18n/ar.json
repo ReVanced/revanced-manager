@@ -127,7 +127,7 @@
         "logsLabel": "السجلات",
         "logsHint": "مشاركة سجلات أخطاء الجهاز",
         "apiURLLabel": "رابط API",
-        "apiURLHint": "تحديد رابط API الخاص بك",
+        "apiURLHint": "تكوين رابط API الخاص بك",
         "selectApiURL": "اختر الرابط",
         "aboutLabel": "عن التطبيق",
         "snackbarMessage": "نُسِخ إلى الحافظة"
@@ -140,7 +140,7 @@
         "unpatchButton": "إلغاء التعديل",
         "unpatchDialogText": "هل أنت متأكد من أنك تريد إلغاء تعديل هذا التطبيق؟",
         "rootDialogTitle": "خطأ",
-        "rootDialogText": "تم تثبيت التطبيق مع تمكين وضع Root ولكن وضع Root معطل حاليًا.\nالرجاء تمكين وضع Root أولاً.",
+        "rootDialogText": "تم تثبيت التطبيق مع تمكين وضع Root ولكن وضع Root معطل حاليا.\nالرجاء تمكين وضع Root أولاً.",
         "packageNameLabel": "اسم الحزمة",
         "installTypeLabel": "نوع التثبيت",
         "rootTypeLabel": "Root",
