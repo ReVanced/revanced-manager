@@ -22,8 +22,8 @@
         "updateDialogText": "Weet je het zeker dat je Revanced Manager wilt downloaden en bijwerken?",
         "notificationTitle": "ReVanced Manager is bijgewerkt",
         "notificationText": "Klik om de app te openen",
-        "downloadingMessage": "Update downloaden...",
-        "installingMessage": "Update installeren...",
+        "downloadingMessage": "Update wordt gedownload...",
+        "installingMessage": "Update wordt geïnstalleerd...",
         "errorDownloadMessage": "Update downloaden mislukt",
         "errorInstallMessage": "Update kon niet worden geïnstalleerd",
         "noConnection": "Geen internetverbinding"
@@ -34,7 +34,7 @@
         "changelogLabel": "Wijzigingslogboek"
     },
     "latestCommitCard": {
-        "loadingLabel": "Aan het laden...",
+        "loadingLabel": "Bezig met laden...",
         "timeagoLabel": "{time} geleden",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
@@ -75,7 +75,9 @@
         "viewTitle": "Selecteer patches",
         "searchBarHint": "Patches zoeken",
         "doneButton": "Klaar",
-        "noPatchesFound": "Geen patches gevonden voor de geselecteerde app"
+        "noPatchesFound": "Geen patches gevonden voor de geselecteerde app",
+        "selectAllPatchesWarningTitle": "Waarschuwing",
+        "selectAllPatchesWarningContent": "U staat op het punt om alle patches te selecteren, waar onder anderen niet aanbevolen patches, en kunnen ongewenst gedrag veroorzaken."
     },
     "patchItem": {
         "unsupportedWarningButton": "Niet-ondersteunde versie",
@@ -85,7 +87,7 @@
     "installerView": {
         "widgetTitle": "Installatieprogramma",
         "installButton": "Installeren",
-        "installRootButton": "Installeren als root",
+        "installRootButton": "Installeer als Root",
         "openButton": "Open",
         "shareButton": "Bestand delen",
         "notificationTitle": "ReVanced Manager is aan het patchen",
@@ -96,7 +98,7 @@
         "installErrorDialogText1": "Root installatie is niet mogelijk met de huidige selectie van patches.\nPatch uw app opnieuw of kies voor niet-root-installatie.",
         "installErrorDialogText2": "Niet-root installatie is niet mogelijk met de huidige selectie van patches.\nPatch uw app opnieuw of kies voor root install als u uw apparaat heeft geroot.",
         "installErrorDialogText3": "Root installatie is niet mogelijk omdat de orginele APK uit de opslag is geselecteerd.\nSelecteer een geïnstalleerde app of kies voor niet-root installatie.",
-        "noExit": "Installeren is nog bezig..."
+        "noExit": "Installatie is nog bezig..."
     },
     "settingsView": {
         "widgetTitle": "Instellingen",
