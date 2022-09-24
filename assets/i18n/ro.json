@@ -17,21 +17,21 @@
         "updatesAvailable": "Actualizări disponibile",
         "noUpdates": "Nu există actualizări disponibile",
         "noInstallations": "Nu sunt instalate aplicații patch-uite",
-        "installed": "Instalat",
+        "installed": "Aplicații instalate",
         "updateDialogTitle": "Manager Actualizări",
         "updateDialogText": "Sunteți sigur că doriți să descărcați și să actualizați ReVanced Manager?",
         "notificationTitle": "ReVanced Manager a fost actualizat",
         "notificationText": "Atingeți pentru a deschide aplicația",
         "downloadingMessage": "Se descarcă actualizarea...",
         "installingMessage": "Se instalează actualizarea...",
-        "errorDownloadMessage": "Nu s-a putut descarca actualizarea",
+        "errorDownloadMessage": "Nu s-a putut descărca actualizarea",
         "errorInstallMessage": "Nu s-a putut instala actualizarea",
         "noConnection": "Nu există conexiune la internet"
     },
     "applicationItem": {
         "patchButton": "Patch",
         "infoButton": "Informații",
-        "changelogLabel": "Istoric schimbări"
+        "changelogLabel": "Istoricul schimbărilor"
     },
     "latestCommitCard": {
         "loadingLabel": "Se încarcă...",
@@ -44,12 +44,12 @@
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Avertisment",
-        "patchDialogText": "Ați selectat un patch de resurse, iar o instalare APK separată a fost detectată, astfel că anumite erori ar putea apărea în momentul patch-uirii.\nSunteți sigur că doriți să continuați cu patch-uirea unui APK separat de bază?"
+        "patchDialogText": "Ați selectat un patch de resurse, iar o instalare a unui split APK a fost detectată, astfel că anumite erori ar putea apărea în momentul efectuării patch-ului.\nSunteți sigur că doriți să continuați cu efectuarea patch-ului pentru un split base APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Selectați aplicația",
         "widgetTitleSelected": "Aplicația selectată",
-        "widgetSubtitle": "Nici o aplicație selectată",
+        "widgetSubtitle": "Nicio aplicație selectată",
         "noAppsLabel": "Nu s-au găsit aplicații.",
         "currentVersion": "Actual",
         "recommendedVersion": "Recomandat",
@@ -59,7 +59,7 @@
         "widgetTitle": "Selectați patch-urile",
         "widgetTitleSelected": "Patch-uri selectate",
         "widgetSubtitle": "Selectați mai întâi o aplicație",
-        "widgetEmptySubtitle": "Niciun patch selectat"
+        "widgetEmptySubtitle": "Niciun patch este selectat"
     },
     "socialMediaCard": {
         "widgetTitle": "Rețele de socializare",
@@ -67,15 +67,17 @@
     },
     "appSelectorView": {
         "viewTitle": "Selectați aplicația",
-        "searchBarHint": "Caută după o aplicație",
+        "searchBarHint": "Căutați aplicații",
         "storageButton": "Stocare",
-        "errorMessage": "Imposibil de utilizat aplicația selectată."
+        "errorMessage": "Aplicația selectată nu poate fi utilizată."
     },
     "patchesSelectorView": {
         "viewTitle": "Selectați patch-urile",
         "searchBarHint": "Căutați patch-uri",
         "doneButton": "Finalizat",
-        "noPatchesFound": "Nu s-au găsit patch-uri pentru aplicația selectată"
+        "noPatchesFound": "Nu s-au găsit patch-uri pentru aplicația selectată",
+        "selectAllPatchesWarningTitle": "Atenție",
+        "selectAllPatchesWarningContent": "Urmează să selectați toate patch-urile, acestea incluzând patch-uri nerecomandate care pot cauza funcționarea necorespunzătoare a aplicației."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versiune incompatibilă",
@@ -87,8 +89,8 @@
         "installButton": "Instalează",
         "installRootButton": "Instalează ca Root",
         "openButton": "Deschide",
-        "shareButton": "Distribuie fișier",
-        "notificationTitle": "ReVanced Manager realizează patch-uirea",
+        "shareButton": "Distribuie fișierul",
+        "notificationTitle": "ReVanced Manager efectuează patch-uri",
         "notificationText": "Atingeți pentru a reveni la Installer",
         "shareApkMenuOption": "Distribuie APK",
         "shareLogMenuOption": "Distribuie log-uri",
@@ -126,7 +128,7 @@
         "logsHint": "Distribuie log-urile de depanare ale dispozitivului",
         "apiURLLabel": "API URL",
         "apiURLHint": "Configurați-vă API URL-ul personalizat",
-        "selectApiURL": "Selectați URL",
+        "selectApiURL": "Selectați URL-ul",
         "aboutLabel": "Despre",
         "snackbarMessage": "Copiat în clipboard"
     },
@@ -142,7 +144,7 @@
         "packageNameLabel": "Denumirea pachetului",
         "installTypeLabel": "Tipul instalării",
         "rootTypeLabel": "Root",
-        "nonRootTypeLabel": "Non-root",
+        "nonRootTypeLabel": "Fără root",
         "patchedDateLabel": "Data Patch-uirii",
         "patchedDateHint": "{date} la {time}",
         "appliedPatchesLabel": "Patch-uri Adăugate",
