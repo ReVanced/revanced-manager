@@ -75,7 +75,9 @@
         "viewTitle": "Vælg patches",
         "searchBarHint": "Søg efter patches",
         "doneButton": "Udført",
-        "noPatchesFound": "Ingen patches fundet til den valgte app"
+        "noPatchesFound": "Ingen patches fundet til den valgte app",
+        "selectAllPatchesWarningTitle": "Advarsel",
+        "selectAllPatchesWarningContent": "Du er ved at vælge alle patches, der inkluderer ikke-anbefalede patches, og kan forårsage uønsket adfærd."
     },
     "patchItem": {
         "unsupportedWarningButton": "Ikke-understøttet version",
