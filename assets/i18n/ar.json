@@ -7,7 +7,7 @@
     "noButton": "لا",
     "navigationView": {
         "dashboardTab": "لوحة التحكم",
-        "patcherTab": "لوحة التعديل",
+        "patcherTab": "المعدّل",
         "settingsTab": "الإعدادات"
     },
     "homeView": {
@@ -25,7 +25,7 @@
         "downloadingMessage": "جاري تحميل التحديث...",
         "installingMessage": "جاري تثبيت التحديث...",
         "errorDownloadMessage": "تعذر تحميل التحديث",
-        "errorInstallMessage": "تعذّر تثبيت التحديث",
+        "errorInstallMessage": "لا يمكن تثبيت التحديث",
         "noConnection": "لا يوجد اتصال بالإنترنت"
     },
     "applicationItem": {
@@ -53,7 +53,7 @@
         "noAppsLabel": "لم يتم العثور على تطبيقات.",
         "currentVersion": "الحالي",
         "recommendedVersion": "موصى به",
-        "anyVersion": "أي"
+        "anyVersion": "اي"
     },
     "patchSelectorCard": {
         "widgetTitle": "اختر التعديلات",
@@ -62,11 +62,11 @@
         "widgetEmptySubtitle": "لم يتم تحديد أي تعديلات"
     },
     "socialMediaCard": {
-        "widgetTitle": "منصات التواصل",
+        "widgetTitle": "وسائل التواصل",
         "widgetSubtitle": "تم الاتصال بالانترنت!"
     },
     "appSelectorView": {
-        "viewTitle": "اختر تطبيقًا",
+        "viewTitle": "إختر تطبيقاً",
         "searchBarHint": "البحث عن التطبيقات",
         "storageButton": "التخزين",
         "errorMessage": "لا يمكن استخدام التطبيق المحدد."
@@ -80,7 +80,7 @@
         "selectAllPatchesWarningContent": "أنت على وشك تحديد جميع التعديلات ، بما في ذلك التعديلات غير الموصى بها والتي يمكن أن تسبب اجراءً غير مرغوب فيه."
     },
     "patchItem": {
-        "unsupportedWarningButton": "إصدار غير مدعوم",
+        "unsupportedWarningButton": "الإصدار غير مدعوم",
         "unsupportedDialogTitle": "تحذير",
         "unsupportedDialogText": "اختيار هذا التعديل قد يؤدي إلى أخطاء في عملية التعديل.\n\nإصدار التطبيق: {packageVersion}\nالإصدارات المدعومة حالياً:\n{supportedVersions}"
     },
@@ -102,7 +102,7 @@
     },
     "settingsView": {
         "widgetTitle": "الإعدادات",
-        "appearanceSectionTitle": "المظهر",
+        "appearanceSectionTitle": "إعدادات المظهر",
         "teamSectionTitle": "الفريق",
         "infoSectionTitle": "معلومات",
         "advancedSectionTitle": "إعدادات متقدمة",
@@ -127,7 +127,7 @@
         "logsLabel": "السجلات",
         "logsHint": "مشاركة سجلات أخطاء الجهاز",
         "apiURLLabel": "رابط API",
-        "apiURLHint": "تكوين رابط API الخاص بك",
+        "apiURLHint": "تحديد رابط API الخاص بك",
         "selectApiURL": "اختر الرابط",
         "aboutLabel": "عن التطبيق",
         "snackbarMessage": "نُسِخ إلى الحافظة"
@@ -138,7 +138,7 @@
         "uninstallButton": "إلغاء التثبيت",
         "patchButton": "تعديل",
         "unpatchButton": "إلغاء التعديل",
-        "unpatchDialogText": "هل أنت متأكد من إلغاء تعديل هذا التطبيق؟",
+        "unpatchDialogText": "هل أنت متأكد من أنك تريد إلغاء تعديل هذا التطبيق؟",
         "rootDialogTitle": "خطأ",
         "rootDialogText": "تم تثبيت التطبيق مع تمكين وضع Root ولكن وضع Root معطل حاليًا.\nالرجاء تمكين وضع Root أولاً.",
         "packageNameLabel": "اسم الحزمة",
@@ -148,7 +148,7 @@
         "patchedDateLabel": "تاريخ التعديل",
         "patchedDateHint": "{date} في {time}",
         "appliedPatchesLabel": "التعديلات المطبقة",
-        "appliedPatchesHint": "{quantity} تعديلات مطبقة"
+        "appliedPatchesHint": "{quantity} من التعديلات المطبقة"
     },
     "contributorsView": {
         "widgetTitle": "المساهمون",
