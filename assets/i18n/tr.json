@@ -14,10 +14,10 @@
         "widgetTitle": "Kontrol Paneli",
         "updatesSubtitle": "Güncellemeler",
         "patchedSubtitle": "Yamalanmış Uygulamalar",
-        "updatesAvailable": "Mevcut olan güncellemeler",
+        "updatesAvailable": "Güncellemeler mevcut",
         "noUpdates": "Güncelleme mevcut değil",
         "noInstallations": "Yamalanmış uygulama bulunmamaktadır",
-        "installed": "Kurulanlar",
+        "installed": "Yüklendi",
         "updateDialogTitle": "Manager'ı güncelle",
         "updateDialogText": "ReVanced Manager'ın güncellemesini indirmek ve yüklemek istediğinize emin misiniz?",
         "notificationTitle": "ReVanced Manager güncellendi",
@@ -31,7 +31,7 @@
     "applicationItem": {
         "patchButton": "Yamala",
         "infoButton": "Bilgi",
-        "changelogLabel": "Değişiklik günlüğü"
+        "changelogLabel": "Değişiklikler"
     },
     "latestCommitCard": {
         "loadingLabel": "Yükleniyor...",
@@ -44,7 +44,7 @@
         "widgetTitle": "Yamalayıcı",
         "patchButton": "Yamala",
         "patchDialogTitle": "Uyarı",
-        "patchDialogText": "Görünüşe göre seçtiğiniz uygulama bölünmüş(split) bir şekilde. Bu tür uygulamalar hatalar meydana getirebilir. Yine de devam etmek istediğinizde emin misiniz?"
+        "patchDialogText": "Bir kaynak yaması seçtiniz ve bölünmüş APK kurulumu saptandı. Yamalama hataları oluşabilir. Bölünmüş APK yamalamaya devam etmek istediğinize emin misiniz?"
     },
     "appSelectorCard": {
         "widgetTitle": "Uygulama seçin",
@@ -63,11 +63,11 @@
     },
     "socialMediaCard": {
         "widgetTitle": "Sosyal Medyalar",
-        "widgetSubtitle": "Çevrimiçiyiz!"
+        "widgetSubtitle": "Çevrim içiyiz!"
     },
     "appSelectorView": {
         "viewTitle": "Uygulama seçin",
-        "searchBarHint": "Uygulama arayın",
+        "searchBarHint": "Uygulamaları arayın",
         "storageButton": "Depolama",
         "errorMessage": "Seçili uygulama kullanılamıyor."
     },
@@ -75,22 +75,24 @@
         "viewTitle": "Yamaları Seçin",
         "searchBarHint": "Yama arayın",
         "doneButton": "Bitti",
-        "noPatchesFound": "Seçili uygulama için yama bulunamadı"
+        "noPatchesFound": "Seçili uygulama için yama bulunamadı",
+        "selectAllPatchesWarningTitle": "Uyarı",
+        "selectAllPatchesWarningContent": "Tavsiye edilmeyenler de dahil bütün yamaları seçmek üzeresiniz ve bu istenmeyen davranışlara sebep olabilir."
     },
     "patchItem": {
         "unsupportedWarningButton": "Desteklenmeyen sürüm",
         "unsupportedDialogTitle": "Uyarı",
-        "unsupportedDialogText": "Bu yamayı seçmek hatalarına sebep olabilir.\n\nUygulama sürümü: {packageVersion}\nŞuanki desteklenen sürümler:\n{supportedVersions}"
+        "unsupportedDialogText": "Bu yamayı seçmek yamalama hatalarına sebep olabilir.\n\nUygulama sürümü: {packageVersion}\nŞuanki desteklenen sürümler:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Yükleyici",
         "installButton": "Yükle",
         "installRootButton": "Kök(Root) olarak yükle",
         "openButton": "Aç",
-        "shareButton": "Dosyayı Paylaş",
+        "shareButton": "Dosyayı paylaş",
         "notificationTitle": "ReVanced Manager yamalıyor",
         "notificationText": "Yükleyiciye dönmek için tıklayın",
-        "shareApkMenuOption": "APK'yı Paylaş",
+        "shareApkMenuOption": "APK'yı paylaş",
         "shareLogMenuOption": "Günlüğü paylaş",
         "installErrorDialogTitle": "Hata",
         "installErrorDialogText1": "Kök yüklemesi şuanki yama seçimiyle mümkün değil.\nUygulamanızı tekrar yamalayın veya köksüz yüklemeyi seçin.",
