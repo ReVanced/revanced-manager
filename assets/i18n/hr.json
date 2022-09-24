@@ -44,7 +44,7 @@
         "widgetTitle": "Zakrpe",
         "patchButton": "Zakrpaj",
         "patchDialogTitle": "Upozorenje",
-        "patchDialogText": "Odabrali ste zakrpu resursa i otkrivena je podijeljena instalacija APK-a pa može doći do pogrešaka pri zakrpi. \nJeste li sigurni da želite nastaviti s krpanjem podijeljenog osnovnog APK-a?"
+        "patchDialogText": "Odabrali ste zakrpu resursa i otkrivena je podijeljena instalacija APK datoteke pa može doći do pogrešaka pri zakrpi. \nJeste li sigurni da želite nastaviti s krpanjem podijeljene osnovne APK datoteke?"
     },
     "appSelectorCard": {
         "widgetTitle": "Odaberite aplikaciju",
@@ -152,7 +152,7 @@
     },
     "contributorsView": {
         "widgetTitle": "Pridonositelji",
-        "patcherContributors": "Pridonositelji krpatelja",
+        "patcherContributors": "Pridonositelji zakrpa",
         "patchesContributors": "Pridonositelji zakrpa",
         "integrationsContributors": "Pridonositelji integracija",
         "cliContributors": "Pridonositelji za CLI",
