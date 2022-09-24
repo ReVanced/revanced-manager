@@ -50,93 +50,94 @@ class _ApplicationItemState extends State<ApplicationItem>
   @override
   Widget build(BuildContext context) {
     ExpandableController expController = ExpandableController();
-    return ExpandablePanel(
-      controller: expController,
-      theme: const ExpandableThemeData(
-        inkWellBorderRadius: BorderRadius.all(Radius.circular(16)),
-        tapBodyToCollapse: false,
-        tapBodyToExpand: false,
-        tapHeaderToExpand: false,
-        hasIcon: false,
-        animationDuration: Duration(milliseconds: 450),
-      ),
-      header: Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
-        child: CustomCard(
-          onTap: () {
-            expController.toggle();
-            _animationController.isCompleted
-                ? _animationController.reverse()
-                : _animationController.forward();
-          },
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                width: 40,
-                child: Image.memory(widget.icon, height: 40, width: 40),
-              ),
-              const SizedBox(width: 4),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.name.length > 9
-                          ? '${widget.name.substring(0, 9)}...'
-                          : widget.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(format(widget.patchDate)),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              RotationTransition(
-                turns:
-                    Tween(begin: 0.0, end: 0.50).animate(_animationController),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.arrow_drop_down),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16.0),
+      child: CustomCard(
+        onTap: () {
+                expController.toggle();
+                _animationController.isCompleted
+                    ? _animationController.reverse()
+                    : _animationController.forward();
+        },
+        child: ExpandablePanel(
+          controller: expController,
+          theme: const ExpandableThemeData(
+            inkWellBorderRadius: BorderRadius.all(Radius.circular(16)),
+            tapBodyToCollapse: false,
+            tapBodyToExpand: false,
+            tapHeaderToExpand: false,
+            hasIcon: false,
+            animationDuration: Duration(milliseconds: 450),
+          ),
+          header: Row(
                 children: <Widget>[
-                  CustomMaterialButton(
-                    label: widget.isUpdatableApp
-                        ? I18nText('applicationItem.patchButton')
-                        : I18nText('applicationItem.infoButton'),
-                    onPressed: widget.onPressed,
+                  SizedBox(
+                    width: 40,
+                    child: Image.memory(widget.icon, height: 40, width: 40),
+                  ),
+                  const SizedBox(width: 4),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.name.length > 12
+                              ? '${widget.name.substring(0, 12)}...'
+                              : widget.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(format(widget.patchDate)),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  RotationTransition(
+                    turns: Tween(begin: 0.0, end: 0.50)
+                        .animate(_animationController),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.arrow_drop_down),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      CustomMaterialButton(
+                        label: widget.isUpdatableApp
+                            ? I18nText('applicationItem.patchButton')
+                            : I18nText('applicationItem.infoButton'),
+                        onPressed: widget.onPressed,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+          collapsed: const SizedBox(),
+          expanded: Padding(
+            padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 4.0, bottom: 4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                I18nText(
+                  'applicationItem.changelogLabel',
+                  child: const Text(
+                    '',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text('\u2022 ${widget.changelog.join('\n\u2022 ')}'),
+              ],
+            ),
           ),
         ),
-      ),
-      collapsed: const SizedBox(),
-      expanded: Padding(
-        padding: const EdgeInsets.all(16.0).copyWith(top: 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            I18nText(
-              'applicationItem.changelogLabel',
-              child: const Text(
-                '',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text('\u2022 ${widget.changelog.join('\n\u2022 ')}'),
-          ],
-        ),
-      ),
+      )
     );
   }
 }
