@@ -44,7 +44,7 @@
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
         "patchDialogTitle": "Warnung",
-        "patchDialogText": "Du hast einen Ressourcen-Patch ausgewählt und eine split APK-Installation wurde entdeckt, durch die Fehler beim Patchen auftreten könnten.\nBist du dir sicher, dass du die split-APK patchen möchtest?"
+        "patchDialogText": "Du hast einen Ressourcen-Patch ausgewählt und eine gesplittete APK-Installation wurde entdeckt, durch die Fehler beim Patchen auftreten könnten.\nBist du dir sicher, dass du die gesplittete APK patchen möchtest?"
     },
     "appSelectorCard": {
         "widgetTitle": "App auswählen",
@@ -77,7 +77,7 @@
         "doneButton": "Fertig",
         "noPatchesFound": "Keine Patches für die ausgewählte App gefunden",
         "selectAllPatchesWarningTitle": "Warnung",
-        "selectAllPatchesWarningContent": "Du bist dabei alle Patches auszuwählen, dies beinhaltet nicht vorgeschlagene Patches und kann zu unerwünschter Funktionsweise führen."
+        "selectAllPatchesWarningContent": "Du bist dabei alle Patches auszuwählen, dies beinhaltet nicht empfohlene Patches und kann zu unerwünschtem Verhalten führen."
     },
     "patchItem": {
         "unsupportedWarningButton": "Version nicht unterstützt",
@@ -95,10 +95,10 @@
         "shareApkMenuOption": "APK teilen",
         "shareLogMenuOption": "Log teilen",
         "installErrorDialogTitle": "Fehler",
-        "installErrorDialogText1": "Root-Installation ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App erneut oder installiere sie ohne Root.",
+        "installErrorDialogText1": "Installation per Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App erneut oder installiere sie ohne Root.",
         "installErrorDialogText2": "Installation ohne Root ist mit den aktuell ausgewählten Patches nicht möglich.\nPatche die App erneut oder installiere sie mit Root, wenn dein Gerät gerooted ist.",
         "installErrorDialogText3": "Root-Installation ist nicht möglich, da die ursprüngliche APK aus dem Speicher ausgewählt wurde.\nWähle eine installierte App oder wähle die Installation ohne Root.",
-        "noExit": "Installer wird ausgeführt..."
+        "noExit": "Installierprozess läuft noch..."
     },
     "settingsView": {
         "widgetTitle": "Einstellungen",
@@ -126,7 +126,7 @@
         "contributorsHint": "Eine Liste der Mitwirkenden von ReVanced",
         "logsLabel": "Protokolle",
         "logsHint": "Debug-Protokolle des Geräts teilen",
-        "apiURLLabel": "API URL",
+        "apiURLLabel": "API-URL",
         "apiURLHint": "Konfiguriere deine eigene API-URL",
         "selectApiURL": "URL auswählen",
         "aboutLabel": "Über",
