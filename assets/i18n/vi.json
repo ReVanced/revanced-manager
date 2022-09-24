@@ -75,7 +75,9 @@
         "viewTitle": "Chọn bản vá",
         "searchBarHint": "Tìm bản vá",
         "doneButton": "Xong",
-        "noPatchesFound": "Không tìm thấy bản vá cho ứng dụng đã chọn"
+        "noPatchesFound": "Không tìm thấy bản vá cho ứng dụng đã chọn",
+        "selectAllPatchesWarningTitle": "Cảnh báo",
+        "selectAllPatchesWarningContent": "Bạn sắp lựa chọn vá hết tất cả bản vá, bao gồm những bán vá không được khuyến nghị và có thể gây ra những điều không mong muốn."
     },
     "patchItem": {
         "unsupportedWarningButton": "Phiên bản không hỗ trợ",
