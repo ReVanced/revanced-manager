@@ -13,14 +13,14 @@
     "homeView": {
         "widgetTitle": "Dasbor",
         "updatesSubtitle": "Pembaruan",
-        "patchedSubtitle": "Aplikasi Termodifikasi",
+        "patchedSubtitle": "Aplikasi Yang Dimodifikasi",
         "updatesAvailable": "Pembaruan tersedia",
         "noUpdates": "Pembaruan tidak tersedia",
         "noInstallations": "Tidak ada aplikasi termodifikasi yang terpasang",
         "installed": "Terpasang",
         "updateDialogTitle": "Perbarui Manager",
-        "updateDialogText": "Apakah Anda ingin mengunduh dan memperbaharui ReVanced Manager?",
-        "notificationTitle": "ReVanced Manager telah diperbaharui",
+        "updateDialogText": "Apakah Anda ingin mengunduh dan memperbarui ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager telah diperbarui",
         "notificationText": "Ketuk untuk membuka aplikasi",
         "downloadingMessage": "Mengunduh pembaruan...",
         "installingMessage": "Memasang pembaruan...",
@@ -77,19 +77,19 @@
         "doneButton": "Selesai",
         "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih",
         "selectAllPatchesWarningTitle": "Peringatan",
-        "selectAllPatchesWarningContent": "Anda akan memilih semua modifikasi, termasuk modifikasi tidak direkomendasi dan dapat mengakibatkan hal yang tidak diinginkan."
+        "selectAllPatchesWarningContent": "Anda akan memilih semua modifikasi, termasuk modifikasi yang tidak direkomendasikan dan dapat mengakibatkan hal yang tidak diinginkan."
     },
     "patchItem": {
         "unsupportedWarningButton": "Versi tidak didukung",
         "unsupportedDialogTitle": "Peringatan",
-        "unsupportedDialogText": "Menggunakan modifikasi ini dapat mengakibatkan kesalahan pada saat memodifikasi aplikasi.\n\nVersi aplikasi: {packageVersion}\nVersi yang disarankan pada saat ini:\n{supportedVersions}"
+        "unsupportedDialogText": "Menggunakan modifikasi ini mungkin dapat mengakibatkan kesalahan pada saat memodifikasi aplikasi.\n\nVersi aplikasi: {packageVersion}\nVersi yang dapat digunakan pada saat ini:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Pemasang",
         "installButton": "Pasang",
         "installRootButton": "Pasang dengan Root",
         "openButton": "Buka",
-        "shareButton": "Bagikan file",
+        "shareButton": "Bagikan berkas",
         "notificationTitle": "ReVanced Manager sedang memodifikasi",
         "notificationText": "Ketuk untuk kembali ke pemasang",
         "shareApkMenuOption": "Bagikan APK",
