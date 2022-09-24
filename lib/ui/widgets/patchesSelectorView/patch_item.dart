@@ -58,13 +58,28 @@ class _PatchItemState extends State<PatchItem> {
                         children: <Widget>[
                           Text(
                             widget.simpleName,
+                            maxLines: 2,
+                            overflow: TextOverflow.visible,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(width: 4),
-                          Text(widget.version)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .background
+                                  .withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(widget.version),
+                          )
                         ],
                       ),
                       const SizedBox(height: 4),
