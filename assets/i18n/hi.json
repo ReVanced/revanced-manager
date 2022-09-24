@@ -75,7 +75,9 @@
         "viewTitle": "पैच चुने",
         "searchBarHint": "पैच खोजे",
         "doneButton": "पूर्ण",
-        "noPatchesFound": "चुने हुए ऐप्लकैशन के लिए कोई पैच नहीं मिले"
+        "noPatchesFound": "चुने हुए ऐप्लकैशन के लिए कोई पैच नहीं मिले",
+        "selectAllPatchesWarningTitle": "चेतावनी",
+        "selectAllPatchesWarningContent": "आप सभी पैच का चयन करने वाले हैं, जिसमें अनुशंसित पैच शामिल हैं और अवांछित व्यवहार का कारण बन सकते हैं।"
     },
     "patchItem": {
         "unsupportedWarningButton": "असमार्थित वर्ज़न",
@@ -124,7 +126,7 @@
         "contributorsHint": "ReVanced के योगदानकर्ताओ की सूची",
         "logsLabel": "लॉग्स",
         "logsHint": "डिवाइस डिबग लोग साझा करे",
-        "apiURLLabel": "API URL",
+        "apiURLLabel": "API  URL",
         "apiURLHint": "अपनी कस्टम API URL कॉन्फ़िगर करे",
         "selectApiURL": "URL चुने",
         "aboutLabel": "विवरण",
