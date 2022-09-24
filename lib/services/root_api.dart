@@ -5,10 +5,23 @@ class RootAPI {
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
   final String _serviceDDirPath = '/data/adb/service.d';
 
+  Future<bool> isRooted() async {
+    try {
+      bool? isRooted = await Root.isRootAvailable();
+      return isRooted != null && isRooted;
+    } on Exception {
+      return false;
+    }
+  }
+
   Future<bool> hasRootPermissions() async {
     try {
-      bool? isRooted = await Root.isRooted();
-      return isRooted != null && isRooted;
+      bool? isRooted = await Root.isRootAvailable();
+      if (isRooted != null && isRooted) {
+        isRooted = await Root.isRooted();
+        return isRooted != null && isRooted;
+      }
+      return false;
     } on Exception {
       return false;
     }

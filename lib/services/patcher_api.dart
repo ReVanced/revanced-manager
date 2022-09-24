@@ -87,21 +87,38 @@ class PatcherAPI {
         .toList();
   }
 
+  bool dependencyNeedsIntegrations(String name) {
+    return name.contains('integrations') ||
+        _patches.any(
+          (patch) =>
+              patch.name == name &&
+              (patch.dependencies.any(
+                (dep) => dependencyNeedsIntegrations(dep),
+              )),
+        );
+  }
+
   Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.contains('integrations'),
+      (patch) => patch.dependencies.any(
+        (dep) => dependencyNeedsIntegrations(dep),
+      ),
     );
   }
 
   Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.any((dep) => dep.contains('resource-')),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('resource-'),
+      ),
     );
   }
 
   Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
     return selectedPatches.any(
-      (patch) => patch.dependencies.contains('settings'),
+      (patch) => patch.dependencies.any(
+        (dep) => dep.contains('settings'),
+      ),
     );
   }
 

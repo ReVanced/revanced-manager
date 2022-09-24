@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,15 +10,17 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final RootAPI _rootAPI = RootAPI();
   final Toast _toast = locator<Toast>();
   final PatchedApplication _app = locator<PatcherViewModel>().selectedApp!;
   final List<Patch> _patches = locator<PatcherViewModel>().selectedPatches;
@@ -28,11 +31,13 @@ class InstallerViewModel extends BaseViewModel {
   double? progress = 0.0;
   String logs = '';
   String headerLogs = '';
+  bool isRooted = false;
   bool isPatching = true;
   bool isInstalled = false;
   bool hasErrors = false;
 
   Future<void> initialize(BuildContext context) async {
+    isRooted = await _rootAPI.isRooted();
     if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
         FlutterBackground.initialize(
@@ -78,14 +83,20 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   void update(double value, String header, String log) {
-    if (value > 0) {
+    if (value >= 0.0) {
       progress = value;
     }
-    isPatching = progress == 1.0 ? false : true;
-    if (progress == 0.0) {
+    if (value == 0.0) {
       logs = '';
+      isPatching = true;
       isInstalled = false;
       hasErrors = false;
+    } else if (value == 1.0) {
+      isPatching = false;
+      hasErrors = false;
+    } else if (value == -100.0) {
+      isPatching = false;
+      hasErrors = true;
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -95,6 +106,9 @@ class InstallerViewModel extends BaseViewModel {
         logs += '\n';
       }
       logs += log;
+      if (logs[logs.length - 1] == '\n') {
+        logs = logs.substring(0, logs.length - 1);
+      }
       Future.delayed(const Duration(milliseconds: 500)).then((value) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
@@ -117,12 +131,14 @@ class InstallerViewModel extends BaseViewModel {
           _patches,
         );
       } catch (e) {
-        hasErrors = true;
-        update(-1.0, 'Aborting...', 'An error occurred! Aborting\nError: $e');
+        update(
+          -100.0,
+          'Aborting...',
+          'An error occurred! Aborting\nError:\n$e',
+        );
       }
     } else {
-      hasErrors = true;
-      update(-1.0, 'Aborting...', 'No app or patches selected! Aborting');
+      update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
     }
     if (FlutterBackground.isBackgroundExecutionEnabled) {
       try {
@@ -132,7 +148,6 @@ class InstallerViewModel extends BaseViewModel {
       }
     }
     await Wakelock.disable();
-    isPatching = false;
   }
 
   void installResult(BuildContext context, bool installAsRoot) async {

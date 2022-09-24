@@ -73,7 +73,12 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         _query = searchQuery;
                       });
                     },
-                    onSelectAll: (value) => model.selectAllPatches(value),
+                    onSelectAll: (value) {
+                      if (value) {
+                        model.selectAllPatcherWarning(context);
+                      }
+                      model.selectAllPatches(value);
+                    },
                   ),
                 ),
               ),

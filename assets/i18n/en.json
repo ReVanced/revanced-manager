@@ -75,7 +75,9 @@
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
-        "noPatchesFound": "No patches found for the selected app"
+        "noPatchesFound": "No patches found for the selected app",
+        "selectAllPatchesWarningTitle": "Warning",
+        "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
     },
     "patchItem": {
         "unsupportedWarningButton": "Unsupported version",

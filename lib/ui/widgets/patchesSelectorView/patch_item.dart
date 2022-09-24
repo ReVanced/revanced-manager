@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 // ignore: must_be_immutable
@@ -58,13 +58,28 @@ class _PatchItemState extends State<PatchItem> {
                         children: <Widget>[
                           Text(
                             widget.simpleName,
+                            maxLines: 2,
+                            overflow: TextOverflow.visible,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(width: 4),
-                          Text(widget.version)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .background
+                                  .withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(widget.version),
+                          )
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -147,7 +162,7 @@ class _PatchItemState extends State<PatchItem> {
           translationParams: {
             'packageVersion': widget.packageVersion,
             'supportedVersions':
-                '\u2022 ${widget.supportedPackageVersions.join('\n\u2022 ')}',
+                '\u2022 ${widget.supportedPackageVersions.reversed.join('\n\u2022 ')}',
           },
         ),
         actions: <Widget>[
