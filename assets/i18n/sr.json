@@ -1,6 +1,6 @@
 {
     "okButton": "ОК",
-    "cancelButton": "Поништите",
+    "cancelButton": "Откажите",
     "enabledLabel": "Омогућено",
     "disabledLabel": "Онемогућено",
     "yesButton": "Да",
@@ -21,7 +21,7 @@
         "updateDialogTitle": "Ажурирај Менаџер",
         "updateDialogText": "Да ли сте сигурни да желите да преузмете и ажурирате ReVanced Менаџер?",
         "notificationTitle": "ReVanced Менаџер је ажуриран",
-        "notificationText": "Додирните да бисте отворили XDA објаву",
+        "notificationText": "Додирните да бисте отворили апликацију",
         "downloadingMessage": "Преузимање ажурирања...",
         "installingMessage": "Инсталирање ажурирања...",
         "errorDownloadMessage": "Није могуће преузети ажурирање",
@@ -75,7 +75,9 @@
         "viewTitle": "Изаберите печеве",
         "searchBarHint": "Претражите печеве",
         "doneButton": "Готово",
-        "noPatchesFound": "Нису пронађени печеви за изабрану апликацију"
+        "noPatchesFound": "Нису пронађени печеви за изабрану апликацију",
+        "selectAllPatchesWarningTitle": "Упозорење",
+        "selectAllPatchesWarningContent": "Управо ћете изабрати све печеве, који укључују непрепоручене печеве и они могу изазвати нежељено понашање."
     },
     "patchItem": {
         "unsupportedWarningButton": "Неподржана верзија",
@@ -132,9 +134,9 @@
     },
     "appInfoView": {
         "widgetTitle": "Информације о апликацији",
-        "openButton": "Отвори",
-        "uninstallButton": "Деинсталирај",
-        "patchButton": "Печуј",
+        "openButton": "Отворите",
+        "uninstallButton": "Деинсталирајте",
+        "patchButton": "Печујте",
         "unpatchButton": "Уклоните печ",
         "unpatchDialogText": "Да ли сте сигурни да желите да уклоните печ за ову апликацију?",
         "rootDialogTitle": "Грешка",
