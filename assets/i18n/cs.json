@@ -7,16 +7,16 @@
     "noButton": "Ne",
     "navigationView": {
         "dashboardTab": "Přehled",
-        "patcherTab": "Patčer",
+        "patcherTab": "Záplatovač",
         "settingsTab": "Nastavení"
     },
     "homeView": {
         "widgetTitle": "Přehled",
         "updatesSubtitle": "Aktualizace",
-        "patchedSubtitle": "Patčované aplikace",
+        "patchedSubtitle": "Záplatované aplikace",
         "updatesAvailable": "Jsou dostupné aktualizace",
         "noUpdates": "Nejsou dostupné žádné aktualizace",
-        "noInstallations": "Žádné patčované aplikace nejsou nainstalované",
+        "noInstallations": "Nejsou nainstalovány žádné záplatované aplikace",
         "installed": "Nainstalováno",
         "updateDialogTitle": "Správce aktualizací",
         "updateDialogText": "Opravdu chcete stáhnout a aktualizovat ReVanced Manager?",
@@ -29,22 +29,22 @@
         "noConnection": "Žádné připojení k internetu"
     },
     "applicationItem": {
-        "patchButton": "Patč",
+        "patchButton": "Záplata",
         "infoButton": "Info",
         "changelogLabel": "Seznam změn"
     },
     "latestCommitCard": {
-        "loadingLabel": "Načítá se...",
+        "loadingLabel": "Načítání...",
         "timeagoLabel": "před {time}",
-        "patcherLabel": "Patčer: ",
+        "patcherLabel": "Záplatovač: ",
         "managerLabel": "Manažer: ",
         "updateButton": "Správce aktualizací"
     },
     "patcherView": {
-        "widgetTitle": "Patčer",
-        "patchButton": "Patčovat",
+        "widgetTitle": "Záplatovač",
+        "patchButton": "Záplatovat",
         "patchDialogTitle": "Varování",
-        "patchDialogText": "Vybrali jste patč zdrojů a byla zjištěna dělená instalace APK, takže se mohou vyskytnout chyby při patčování.\nJste si jisti, že chcete pokračovat s patčováním APK s děleným základem?"
+        "patchDialogText": "Vybrali jste opravu zdrojů a byla zjištěna dělená instalace APK, takže se mohou vyskytnout chyby opravy.\nJste si jisti, že chcete pokračovat se záplatováním rozděleného základu APK?"
     },
     "appSelectorCard": {
         "widgetTitle": "Vybrat aplikaci",
@@ -52,14 +52,14 @@
         "widgetSubtitle": "Nebyla vybrána žádná aplikace",
         "noAppsLabel": "Nebyly nalezeny žádné aplikace.",
         "currentVersion": "Aktuální",
-        "recommendedVersion": "Doporučené",
+        "recommendedVersion": "Doporučeno",
         "anyVersion": "jakákoliv"
     },
     "patchSelectorCard": {
-        "widgetTitle": "Vybrat patče",
-        "widgetTitleSelected": "Vybrané patče",
+        "widgetTitle": "Vybrat záplaty",
+        "widgetTitleSelected": "Vybrané záplaty",
         "widgetSubtitle": "Nejprve vyberte aplikaci",
-        "widgetEmptySubtitle": "Nejsou vybrány žádné patče"
+        "widgetEmptySubtitle": "Nejsou vybrány žádné záplaty"
     },
     "socialMediaCard": {
         "widgetTitle": "Sociální sítě",
@@ -68,14 +68,16 @@
     "appSelectorView": {
         "viewTitle": "Vybrat aplikaci",
         "searchBarHint": "Hledat aplikace",
-        "storageButton": "Uložiště",
+        "storageButton": "Úložiště",
         "errorMessage": "Vybranou aplikaci nelze použít."
     },
     "patchesSelectorView": {
         "viewTitle": "Vybrat záplaty",
         "searchBarHint": "Vyhledat záplaty",
         "doneButton": "Hotovo",
-        "noPatchesFound": "Pro vybranou aplikaci nebyly nalezeny žádné záplaty"
+        "noPatchesFound": "Pro vybranou aplikaci nebyly nalezeny žádné záplaty",
+        "selectAllPatchesWarningTitle": "Varování",
+        "selectAllPatchesWarningContent": "Chystáte se vybrat všechny záplaty, které obsahují nedoporučené záplaty a mohou způsobit nežádoucí chování."
     },
     "patchItem": {
         "unsupportedWarningButton": "Nepodporovaná verze",
@@ -106,14 +108,14 @@
         "advancedSectionTitle": "Pokročilé",
         "darkThemeLabel": "Tmavý režim",
         "darkThemeHint": "Vítejte na temné straně",
-        "dynamicThemeLabel": "Materiál Vy",
+        "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Užijte si zkušenosti blíže k vašemu zařízení",
         "languageLabel": "Jazyk",
         "englishOption": "Angličtina",
         "frenchOption": "Francouzština",
         "sourcesLabel": "Zdroje",
         "sourcesLabelHint": "Konfigurace vlastních zdrojů",
-        "orgPatchesLabel": "Organizace záplatů",
+        "orgPatchesLabel": "Organizace záplat",
         "sourcesPatchesLabel": "Zdroj záplat",
         "orgIntegrationsLabel": "Organizace integrací",
         "sourcesIntegrationsLabel": "Zdroj integrací",
@@ -122,7 +124,7 @@
         "apiURLResetDialogText": "Jste si jisti, že chcete resetovat API URL na výchozí hodnotu?",
         "contributorsLabel": "Přispěvatelé",
         "contributorsHint": "Seznam přispěvatelů ReVanced",
-        "logsLabel": "Logy",
+        "logsLabel": "Záznamy",
         "logsHint": "Sdílet záznamy o ladění zařízení",
         "apiURLLabel": "API URL",
         "apiURLHint": "Konfigurace vlastního API URL",
