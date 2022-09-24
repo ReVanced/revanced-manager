@@ -75,7 +75,9 @@
         "viewTitle": "Pasirinkti modifikacijas",
         "searchBarHint": "Ieškoti modifikacijų",
         "doneButton": "Atlikta",
-        "noPatchesFound": "Nerasta modifikacijų pasirinktai programai"
+        "noPatchesFound": "Nerasta modifikacijų pasirinktai programai",
+        "selectAllPatchesWarningTitle": "Įspėjimas",
+        "selectAllPatchesWarningContent": "Jūs pasirinksite visas modifikacijas, tai įskaito ir nerekomenduojamas modifikacijas ir tai gali sukelti nepageidaujama elgesį."
     },
     "patchItem": {
         "unsupportedWarningButton": "Nepalaikoma versija",
