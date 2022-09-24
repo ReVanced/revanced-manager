@@ -75,7 +75,9 @@
         "viewTitle": "Izvēlies pačus",
         "searchBarHint": "Meklē pačus",
         "doneButton": "Gatavs",
-        "noPatchesFound": "Atlasītajai lietotnei nav atrasts neviens patčs"
+        "noPatchesFound": "Atlasītajai lietotnei nav atrasts neviens patčs",
+        "selectAllPatchesWarningTitle": "Brīdinājums",
+        "selectAllPatchesWarningContent": "Jūs izvēlējāties visus pačus, kuros ir iekļauti neieteicami pači, kas var novest pie nevēlamāmas aplikācijas uzvedības."
     },
     "patchItem": {
         "unsupportedWarningButton": "Neatbalstīta versija",
