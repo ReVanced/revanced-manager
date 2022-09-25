@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class LatestCommitCard extends StatefulWidget {
@@ -49,7 +49,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Row(
                 children: <Widget>[
                   I18nText('latestCommitCard.managerLabel'),

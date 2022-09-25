@@ -1,10 +1,13 @@
 import 'package:collection/collection.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/material.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
@@ -33,6 +36,23 @@ class PatchesSelectorViewModel extends BaseViewModel {
       selectedPatches.remove(patch);
     }
     notifyListeners();
+  }
+
+  Future<void> selectAllPatcherWarning(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('patchesSelectorView.selectAllPatchesWarningTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('patchesSelectorView.selectAllPatchesWarningContent'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
+      ),
+    );
   }
 
   void selectAllPatches(bool isSelected) {

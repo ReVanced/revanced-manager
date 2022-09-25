@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-import 'package:revanced_manager/ui/widgets/installerView/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
