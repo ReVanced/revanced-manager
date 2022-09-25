@@ -75,7 +75,9 @@
     	"viewTitle": "パッチの選択",
         "searchBarHint": "パッチの検索",
         "doneButton": "完了",
-        "noPatchesFound": "選択したアプリのパッチは見つかりませんでした"
+        "noPatchesFound": "選択したアプリのパッチは見つかりませんでした",
+        "selectAllPatchesWarningTitle": "警告",
+        "selectAllPatchesWarningContent": "パッチをすべて選択すると、推奨されないパッチが含まれるため、問題を引き起こす可能性があります。"
     },
     "patchItem": {
         "unsupportedWarningButton": "サポートされていないバージョン",
