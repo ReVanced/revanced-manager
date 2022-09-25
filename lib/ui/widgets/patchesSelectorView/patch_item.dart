@@ -65,21 +65,14 @@ class _PatchItemState extends State<PatchItem> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(width: 4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
+                          const SizedBox(width: 6),
+                          Text(
+                            widget.version,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .background
-                                  .withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(widget.version),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -88,7 +81,10 @@ class _PatchItemState extends State<PatchItem> {
                         softWrap: true,
                         maxLines: 3,
                         overflow: TextOverflow.visible,
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        ),
                       ),
                     ],
                   ),
@@ -119,12 +115,12 @@ class _PatchItemState extends State<PatchItem> {
                         padding: const EdgeInsets.only(top: 8),
                         child: TextButton.icon(
                           label: I18nText('patchItem.unsupportedWarningButton'),
-                          icon: const Icon(Icons.warning),
+                          icon: const Icon(Icons.warning, size: 20.0),
                           onPressed: () => _showUnsupportedWarningDialog(),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(8),
                                 side: BorderSide(
                                   width: 1,
                                   color:
