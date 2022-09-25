@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: [
         FlutterI18nDelegate(
           translationLoader: FileTranslationLoader(
-            fallbackFile: 'en',
+            fallbackFile: 'en_US',
             basePath: 'assets/i18n',
           ),
         ),
