@@ -32,7 +32,7 @@ class PatchSelectorCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 4),
           locator<PatcherViewModel>().selectedApp == null
               ? I18nText('patchSelectorCard.widgetSubtitle')
               : locator<PatcherViewModel>().selectedPatches.isEmpty
@@ -46,7 +46,7 @@ class PatchSelectorCard extends StatelessWidget {
   String _getPatchesSelection() {
     String text = '';
     for (Patch p in locator<PatcherViewModel>().selectedPatches) {
-      text += '${p.getSimpleName()} (v${p.version})\n';
+      text += '\u2022  ${p.getSimpleName()}\n';
     }
     return text.substring(0, text.length - 1);
   }

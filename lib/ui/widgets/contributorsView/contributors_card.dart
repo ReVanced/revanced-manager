@@ -33,7 +33,7 @@ class _ContributorsCardState extends State<ContributorsCard> {
               '',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
