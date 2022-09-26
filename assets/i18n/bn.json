@@ -75,7 +75,9 @@
         "viewTitle": "প্যাচসমূহ নির্বাচন করুন",
         "searchBarHint": "প্যাচসমূহ খুঁজুন",
         "doneButton": "সম্পন্ন হয়েছে"
-        "noPatchesFound": "নির্বাচিত অ্যাপের জন্য কোন প্যাচ পাওয়া যায়নি।"
+        "noPatchesFound": "নির্বাচিত অ্যাপের জন্য কোন প্যাচ পাওয়া যায়নি।",
+        "selectAllPatchesWarningTitle": "সতর্কতা",
+        "selectAllPatchesWarningContent": "আপনি সব প্যাচসমূহ নির্বাচন করছেন, যার মধ্যে অবাঞ্চিত প্যাচও রয়েছে যা অপ্রস্তাবিত আচরণের কারণ হতে পারে।"
     },
     "patchItem": {
         "unsupportedWarningButton": "অসমর্থিত সংস্করণ",
