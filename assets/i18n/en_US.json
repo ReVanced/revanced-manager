@@ -80,7 +80,7 @@
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
     },
     "patchItem": {
-        "unsupportedWarningButton": "Unsupported version",
+        "unsupportedWarningButton": "Warning",
         "unsupportedDialogTitle": "Warning",
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
     },
