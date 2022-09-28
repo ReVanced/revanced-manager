@@ -20,8 +20,8 @@ class GithubAPI {
     );
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
-    const Duration(days: 1),
-    maxStale: const Duration(days: 7),
+    const Duration(hours: 6),
+    maxStale: const Duration(days: 1),
   );
   final Map<String, String> repoAppPath = {
     'com.google.android.youtube': 'youtube',
