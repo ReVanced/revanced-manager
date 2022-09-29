@@ -1,7 +1,7 @@
 import 'package:root/root.dart';
 
 class RootAPI {
-  final String _managerDirPath = '/data/local/tmp/revanced-manager';
+  final String _managerDirPath = '/data/adb/revanced';
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
   final String _serviceDDirPath = '/data/adb/service.d';
 
