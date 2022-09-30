@@ -142,7 +142,6 @@ class PatcherAPI {
     List<Patch> selectedPatches,
   ) async {
     bool mergeIntegrations = await needsIntegrations(selectedPatches);
-    bool resourcePatching = await needsResourcePatching(selectedPatches);
     bool includeSettings = await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
@@ -186,7 +185,6 @@ class PatcherAPI {
           'selectedPatches': selectedPatches.map((p) => p.name).toList(),
           'cacheDirPath': cacheDir.path,
           'mergeIntegrations': mergeIntegrations,
-          'resourcePatching': resourcePatching,
           'keyStoreFilePath': _keyStoreFile.path,
         },
       );
