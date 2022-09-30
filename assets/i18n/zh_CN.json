@@ -1,0 +1,161 @@
+{
+    "okButton": "确定",
+    "cancelButton": "取消",
+    "enabledLabel": "已启用",
+    "disabledLabel": "已禁用",
+    "yesButton": "是",
+    "noButton": "否",
+    "navigationView": {
+        "dashboardTab": "仪表板",
+        "patcherTab": "补丁程序",
+        "settingsTab": "设置"
+    },
+    "homeView": {
+        "widgetTitle": "仪表板",
+        "updatesSubtitle": "更新",
+        "patchedSubtitle": "已应用补丁的应用程序",
+        "updatesAvailable": "有可用的更新",
+        "noUpdates": "无可用的更新",
+        "noInstallations": "没有已安装补丁的应用程序",
+        "installed": "已安装",
+        "updateDialogTitle": "更新管理器",
+        "updateDialogText": "确定要下载并更新ReVanced Manager吗？",
+        "notificationTitle": "ReVanced Manager已更新",
+        "notificationText": "轻触以打开应用",
+        "downloadingMessage": "正在下载更新...",
+        "installingMessage": "正在安装更新...",
+        "errorDownloadMessage": "无法下载更新",
+        "errorInstallMessage": "无法安装更新",
+        "noConnection": "无网络连接"
+    },
+    "applicationItem": {
+        "patchButton": "补丁",
+        "infoButton": "信息",
+        "changelogLabel": "变更日志"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "正在加载...",
+        "timeagoLabel": "{time} 前",
+        "patcherLabel": "补丁: ",
+        "managerLabel": "管理器: ",
+        "updateButton": "更新管理器"
+    },
+    "patcherView": {
+        "widgetTitle": "补丁",
+        "patchButton": "打补丁",
+        "patchDialogTitle": "警告",
+        "patchDialogText": "检测到你准备应用补丁的APP是通过拆分APK的方式安装的，这可能导致补丁应用失败。\n你确定要继续吗？"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "选择应用程序",
+        "widgetTitleSelected": "已选择应用程序",
+        "widgetSubtitle": "未选择应用程序",
+        "noAppsLabel": "没有找到应用程序",
+        "currentVersion": "当前版本",
+        "recommendedVersion": "推荐版本",
+        "anyVersion": "通用版本"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "选择补丁",
+        "widgetTitleSelected": "已选择补丁",
+        "widgetSubtitle": "请先选择应用程序",
+        "widgetEmptySubtitle": "未选择补丁"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "社交媒体",
+        "widgetSubtitle": "我们一直都在！"
+    },
+    "appSelectorView": {
+        "viewTitle": "选择应用程序",
+        "searchBarHint": "搜索应用程序",
+        "storageButton": "内部存储",
+        "errorMessage": "无法应用于选定的应用程序。"
+    },
+    "patchesSelectorView": {
+        "viewTitle": "选择补丁",
+        "searchBarHint": "搜索补丁",
+        "doneButton": "完成",
+        "noPatchesFound": "未找到适用于所选应用的补丁",
+        "selectAllPatchesWarningTitle": "警告",
+        "selectAllPatchesWarningContent": "你选择了所有的补丁, 其中包括不推荐的补丁，并可能导致超预期的行为。"
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "警告",
+        "unsupportedDialogTitle": "警告",
+        "unsupportedDialogText": "选择此补丁可能导致修补错误.\n\n应用版本: {packageVersion}\n当前支持的版本:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "已安装",
+        "installButton": "安装",
+        "installRootButton": "通过Root安装",
+        "openButton": "打开",
+        "shareButton": "分享",
+        "notificationTitle": "ReVanced Manager正在打补丁",
+        "notificationText": "点按以返回到安装程序",
+        "shareApkMenuOption": "分享APK",
+        "shareLogMenuOption": "分享日志",
+        "installErrorDialogTitle": "错误",
+        "installErrorDialogText1": "当前选择的补丁无法通过Root安装。\n请重新对应用打补丁并选择非Root方式安装吧。",
+        "installErrorDialogText2": "当前选择的补丁无法通过非Root方式安装。\n请重新对应用打补丁，或者如果你的设备已Root，就选择通过Root安装。",
+        "installErrorDialogText3": "无法通过Root安装，因为你选择的原始APK来自内部存储\n选择已安装的应用程序或选择非Root方式安装吧。",
+        "noExit": "安装程序还在运行..."
+    },
+    "settingsView": {
+        "widgetTitle": "设置",
+        "appearanceSectionTitle": "外观",
+        "teamSectionTitle": "团队",
+        "infoSectionTitle": "信息",
+        "advancedSectionTitle": "高级",
+        "darkThemeLabel": "深色模式",
+        "darkThemeHint": "欢迎来到暗面",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "享受更接近您的设备的体验",
+        "languageLabel": "语言",
+        "englishOption": "英语",
+        "frenchOption": "法语",
+        "sourcesLabel": "来源",
+        "sourcesLabelHint": "配置你的自定义来源",
+        "orgPatchesLabel": "补丁来源组织",
+        "sourcesPatchesLabel": "补丁来源",
+        "orgIntegrationsLabel": "整合的组织",
+        "sourcesIntegrationsLabel": "整合源",
+        "sourcesResetDialogTitle": "重设",
+        "sourcesResetDialogText": "你确定要重设源为默认值吗？",
+        "apiURLResetDialogText": "你确定要重设API网址为默认值吗？",
+        "contributorsLabel": "贡献者",
+        "contributorsHint": "ReVanced贡献者名单",
+        "logsLabel": "日志",
+        "logsHint": "分享设备debug日志",
+        "apiURLLabel": "API网址",
+        "apiURLHint": "配置你的自定义API网址",
+        "selectApiURL": "选择网址",
+        "aboutLabel": "关于",
+        "snackbarMessage": "已复制到剪贴板"
+    },
+    "appInfoView": {
+        "widgetTitle": "应用信息",
+        "openButton": "打开",
+        "uninstallButton": "卸载",
+        "patchButton": "打补丁",
+        "unpatchButton": "取消补丁",
+        "unpatchDialogText": "你确定要对此应用程序取消应用补丁吗？",
+        "rootDialogTitle": "错误",
+        "rootDialogText": "此应用程序通过Root方式安装，但是当前Root权限被禁用\n请先启用Root权限",
+        "packageNameLabel": "包名称",
+        "installTypeLabel": "安装方式",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "非root",
+        "patchedDateLabel": "应用补丁的日期",
+        "patchedDateHint": "{date} at {time}",
+        "appliedPatchesLabel": "已应用补丁",
+        "appliedPatchesHint": "{quantity} 已应用补丁"
+    },
+    "contributorsView": {
+        "widgetTitle": "贡献者",
+        "patcherContributors": "Patcher贡献者",
+        "patchesContributors": "Patches贡献者",
+        "integrationsContributors": "Integrations贡献者",
+        "cliContributors": "CLI 贡献者",
+        "managerContributors": "Manager贡献者"
+    }
+}
