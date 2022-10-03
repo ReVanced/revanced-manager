@@ -73,9 +73,9 @@ class PatchesSelectorViewModel extends BaseViewModel {
         .where((patch) =>
             query.isEmpty ||
             query.length < 2 ||
-            patch.name.toLowerCase().contains(
-                  query.toLowerCase(),
-                ))
+            patch.name.toLowerCase().contains(query.toLowerCase()) ||
+            patch.getSimpleName().toLowerCase().contains(query.toLowerCase())
+         )
         .toList();
   }
 
