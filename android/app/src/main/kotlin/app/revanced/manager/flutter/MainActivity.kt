@@ -13,7 +13,7 @@ import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.logging.Logger
-import app.revanced.patcher.util.patch.impl.DexPatchBundle
+import app.revanced.patcher.util.patch.PatchBundle
 import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -100,7 +100,7 @@ class MainActivity : FlutterActivity() {
         Thread {
             try {   
                 val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-                    DexPatchBundle(
+                    PatchBundle.Dex(
                         patchBundleFilePath,
                         DexClassLoader(
                             patchBundleFilePath,
@@ -178,7 +178,7 @@ class MainActivity : FlutterActivity() {
                 }
 
                 patcher.addPatches(patches)
-                patcher.applyPatches().forEach { (patch, res) ->
+                patcher.executePatches().forEach { (patch, res) ->
                     if (res.isSuccess) {
                         val msg = "[success] $patch"
                         handler.post {
