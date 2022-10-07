@@ -5,19 +5,14 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
+import 'package:native_dio_client/native_dio_client.dart';
 import 'package:revanced_manager/models/patch.dart';
-import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 
 @lazySingleton
 class GithubAPI {
   final Dio _dio = Dio(
     BaseOptions(baseUrl: 'https://api.github.com'),
-  )..httpClientAdapter = Http2Adapter(
-      ConnectionManager(
-        idleTimeout: 10000,
-        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
-      ),
-    );
+  )..httpClientAdapter = NativeAdapter();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(hours: 6),
