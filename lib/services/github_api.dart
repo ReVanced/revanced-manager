@@ -20,6 +20,7 @@ class GithubAPI {
   );
   final Map<String, String> repoAppPath = {
     'com.google.android.youtube': 'youtube',
+    'app.revanced.android.youtube': 'youtube',
     'com.google.android.apps.youtube.music': 'music',
     'com.twitter.android': 'twitter',
     'com.reddit.frontpage': 'reddit',
@@ -60,17 +61,20 @@ class GithubAPI {
         '/repos/$repoName/commits',
         queryParameters: {
           'path': path,
-          'per_page': 3,
           'since': since.toIso8601String(),
         },
         options: _cacheOptions,
       );
       List<dynamic> commits = response.data;
       return commits
-          .map((commit) =>
-              (commit['commit']['message'] as String).split('\n')[0])
+          .map(
+            (commit) => (commit['commit']['message']).split('\n')[0] +
+                ' - ' +
+                commit['commit']['author']['name'] +
+                '\n' as String,
+          )
           .toList();
-    } on Exception {
+    } catch (e) {
       return List.empty();
     }
   }

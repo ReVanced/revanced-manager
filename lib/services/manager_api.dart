@@ -314,7 +314,7 @@ class ManagerAPI {
       newCommits = await _githubAPI.getCommits(
         packageName,
         getPatchesRepo(),
-        DateTime(2022, 3, 20, 21, 06, 01),
+        patchDate,
       );
     }
     return newCommits;
