@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_brotli_transformer/dio_brotli_transformer.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
@@ -11,7 +12,12 @@ import 'package:revanced_manager/models/patch.dart';
 @lazySingleton
 class GithubAPI {
   final Dio _dio = Dio(
-    BaseOptions(baseUrl: 'https://api.github.com'),
+    BaseOptions(
+      baseUrl: 'https://api.github.com',
+      headers: {
+        'accept-encoding': 'br',
+      },
+    ),
   )..httpClientAdapter = NativeAdapter();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
@@ -31,6 +37,7 @@ class GithubAPI {
 
   void initialize() {
     _dio.interceptors.add(_dioCacheManager.interceptor);
+    _dio.transformer = DioBrotliTransformer(transformer: DefaultTransformer());
   }
 
   Future<void> clearAllCache() async {

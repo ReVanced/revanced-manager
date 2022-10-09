@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:dio_brotli_transformer/dio_brotli_transformer.dart';
 import 'package:native_dio_client/native_dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
@@ -20,9 +21,13 @@ class RevancedAPI {
   Future<void> initialize(String apiUrl) async {
     _dio = Dio(BaseOptions(
       baseUrl: apiUrl,
+      headers: {
+        'accept-encoding': 'br',
+      },
     ))
       ..httpClientAdapter = NativeAdapter();
     _dio.interceptors.add(_dioCacheManager.interceptor);
+    _dio.transformer = DioBrotliTransformer(transformer: DefaultTransformer());
   }
 
   Future<void> clearAllCache() async {
