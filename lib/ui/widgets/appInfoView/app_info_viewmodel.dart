@@ -133,7 +133,8 @@ class AppInfoViewModel extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: I18nText('appInfoView.appliedPatchesLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: Text(getAppliedPatchesString(app.appliedPatches)),
+        content: SingleChildScrollView(
+            child: Text(getAppliedPatchesString(app.appliedPatches))),
         actions: <Widget>[
           CustomMaterialButton(
             label: I18nText('okButton'),
