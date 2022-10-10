@@ -72,14 +72,10 @@ class PatcherAPI {
   }
 
   Future<List<Patch>> getFilteredPatches(String packageName) async {
-    String newPackageName = packageName.replaceFirst(
-      'app.revanced.',
-      'com.google.',
-    );
     return _patches
         .where((patch) =>
             !patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == newPackageName))
+            patch.compatiblePackages.any((pack) => pack.name == packageName))
         .toList();
   }
 

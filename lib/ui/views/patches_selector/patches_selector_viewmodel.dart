@@ -17,7 +17,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     patches.addAll(await _patcherAPI.getFilteredPatches(
-      locator<PatcherViewModel>().selectedApp!.packageName,
+      locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
     notifyListeners();
@@ -74,8 +74,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
             query.isEmpty ||
             query.length < 2 ||
             patch.name.toLowerCase().contains(query.toLowerCase()) ||
-            patch.getSimpleName().toLowerCase().contains(query.toLowerCase())
-         )
+            patch.getSimpleName().toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
 
