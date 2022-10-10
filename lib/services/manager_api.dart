@@ -256,35 +256,6 @@ class ManagerAPI {
     return unsavedApps;
   }
 
-  Future<void> reAssessSavedApps() async {
-    List<PatchedApplication> patchedApps = getPatchedApps();
-    List<PatchedApplication> unsavedApps = await getUnsavedApps(patchedApps);
-    patchedApps.addAll(unsavedApps);
-    List<PatchedApplication> toRemove = await getAppsToRemove(patchedApps);
-    patchedApps.removeWhere((a) => toRemove.contains(a));
-    for (PatchedApplication app in patchedApps) {
-      app.hasUpdates =
-          await hasAppUpdates(app.originalPackageName, app.patchDate);
-      app.changelog =
-          await getAppChangelog(app.originalPackageName, app.patchDate);
-      if (!app.hasUpdates) {
-        String? currentInstalledVersion =
-            (await DeviceApps.getApp(app.packageName))?.versionName;
-        if (currentInstalledVersion != null) {
-          String currentSavedVersion = app.version;
-          int currentInstalledVersionInt = int.parse(
-              currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''));
-          int currentSavedVersionInt =
-              int.parse(currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
-          if (currentInstalledVersionInt > currentSavedVersionInt) {
-            app.hasUpdates = true;
-          }
-        }
-      }
-    }
-    await setPatchedApps(patchedApps);
-  }
-
   Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
     bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
