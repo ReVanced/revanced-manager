@@ -45,15 +45,17 @@ class AvailableUpdatesCard extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             children: apps
                 .map((app) => ApplicationItem(
-                      icon: app.icon,
-                      name: app.name,
-                      patchDate: app.patchDate,
-                      changelog: app.changelog,
-                      isUpdatableApp: true,
-                      onPressed: () =>
-                          locator<HomeViewModel>().navigateToPatcher(
-                        app,
-                      ),
+                    icon: app.icon,
+                    name: app.name,
+                    patchDate: app.patchDate,
+                    changelog: app.changelog,
+                    isUpdatableApp: true,
+                    //TODO: Find a better way to do update functionality
+                    onPressed: () {}
+                    // () =>
+                    //     locator<HomeViewModel>().navigateToPatcher(
+                    //   app,
+                    // ),
                     ))
                 .toList(),
           );

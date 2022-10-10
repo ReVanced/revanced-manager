@@ -160,8 +160,9 @@ class AppInfoView extends StatelessWidget {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
                                     onTap: () {
-                                      model.navigateToPatcher(app);
-                                      Navigator.of(context).pop();
+                                      model.updateNotImplemented(context);
+                                      // model.navigateToPatcher(app);
+                                      // Navigator.of(context).pop();
                                     },
                                     child: Column(
                                       mainAxisAlignment:

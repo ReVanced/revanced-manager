@@ -149,7 +149,8 @@
         "patchedDateLabel": "Patched Date",
         "patchedDateHint": "{date} at {time}",
         "appliedPatchesLabel": "Applied Patches",
-        "appliedPatchesHint": "{quantity} applied patches"
+        "appliedPatchesHint": "{quantity} applied patches",
+        "updateNotImplemented": "Update functionality not implemented yet"
     },
     "contributorsView": {
         "widgetTitle": "Contributors",
