@@ -26,13 +26,13 @@ class GithubAPI {
   );
   final Map<String, String> repoAppPath = {
     'com.google.android.youtube': 'youtube',
-    'app.revanced.android.youtube': 'youtube',
     'com.google.android.apps.youtube.music': 'music',
     'com.twitter.android': 'twitter',
     'com.reddit.frontpage': 'reddit',
     'com.zhiliaoapp.musically': 'tiktok',
     'de.dwd.warnapp': 'warnwetter',
     'com.garzotto.pflotsh.ecmwf_a': 'ecmwf',
+    'com.spotify.music': 'spotify',
   };
 
   void initialize() {

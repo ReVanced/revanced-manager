@@ -263,8 +263,10 @@ class ManagerAPI {
     List<PatchedApplication> toRemove = await getAppsToRemove(patchedApps);
     patchedApps.removeWhere((a) => toRemove.contains(a));
     for (PatchedApplication app in patchedApps) {
-      app.hasUpdates = await hasAppUpdates(app.packageName, app.patchDate);
-      app.changelog = await getAppChangelog(app.packageName, app.patchDate);
+      app.hasUpdates =
+          await hasAppUpdates(app.originalPackageName, app.patchDate);
+      app.changelog =
+          await getAppChangelog(app.originalPackageName, app.patchDate);
       if (!app.hasUpdates) {
         String? currentInstalledVersion =
             (await DeviceApps.getApp(app.packageName))?.versionName;
