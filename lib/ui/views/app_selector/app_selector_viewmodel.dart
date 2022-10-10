@@ -26,6 +26,7 @@ class AppSelectorViewModel extends BaseViewModel {
     locator<PatcherViewModel>().selectedApp = PatchedApplication(
       name: application.appName,
       packageName: application.packageName,
+      originalPackageName: application.packageName,
       version: application.versionName!,
       apkFilePath: application.apkFilePath,
       icon: application.icon,
@@ -51,6 +52,7 @@ class AppSelectorViewModel extends BaseViewModel {
           locator<PatcherViewModel>().selectedApp = PatchedApplication(
             name: application.appName,
             packageName: application.packageName,
+            originalPackageName: application.packageName,
             version: application.versionName!,
             apkFilePath: result.files.single.path!,
             icon: application.icon,

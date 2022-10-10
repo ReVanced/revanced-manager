@@ -142,6 +142,7 @@
         "rootDialogTitle": "Error",
         "rootDialogText": "App was installed with root mode enabled but currently root mode is disabled.\nPlease enable root mode first.",
         "packageNameLabel": "Package Name",
+        "originalPackageNameLabel": "Original Package Name",
         "installTypeLabel": "Installation Type",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",
