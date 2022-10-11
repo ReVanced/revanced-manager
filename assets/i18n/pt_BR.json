@@ -1,0 +1,163 @@
+{
+    "okButton": "OK",
+    "cancelButton": "Cancelar",
+    "enabledLabel": "Habilitado",
+    "disabledLabel": "Desabilitado",
+    "yesButton": "Sim",
+    "noButton": "Não",
+    "navigationView": {
+        "dashboardTab": "Dashboard",
+        "patcherTab": "Patcher",
+        "settingsTab": "Configurações"
+    },
+    "homeView": {
+        "widgetTitle": "Dashboard",
+        "updatesSubtitle": "Atualizações",
+        "patchedSubtitle": "Applicativos Patcheados",
+        "updatesAvailable": "Atualizações disponíveis",
+        "noUpdates": "Não há atualizações disponíveis",
+        "noInstallations": "Não há aplicativos patcheados instalados",
+        "installed": "Instalado",
+        "updateDialogTitle": "Gerenciador de atualizações",
+        "updateDialogText": "Tem certeza que deseja baixar e atualizar o ReVanced Manager?",
+        "notificationTitle": "ReVanced Manager foi atualizado",
+        "notificationText": "Toque para abrir o aplicativo",
+        "downloadingMessage": "Baixando atualização...",
+        "installingMessage": "Instalando atualização...",
+        "errorDownloadMessage": "Não foi possível baixar a atualização",
+        "errorInstallMessage": "Não foi possível instalar a atualização",
+        "noConnection": "Sem conexão com a internet"
+    },
+    "applicationItem": {
+        "patchButton": "Patchear",
+        "infoButton": "Informações",
+        "changelogLabel": "Registro de alterações"
+    },
+    "latestCommitCard": {
+        "loadingLabel": "Carregando...",
+        "timeagoLabel": "{time} ago",
+        "patcherLabel": "Patcher: ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Atualizar o Manager"
+    },
+    "patcherView": {
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
+        "patchDialogTitle": "Aviso",
+        "patchDialogText": "Você selecionou um patch com recursos, porém a instalação de um APK dividido foi detectada, e erros podem ocorrer.\nVocê deseja prosseguir patcheando a base do APK divido?"
+    },
+    "appSelectorCard": {
+        "widgetTitle": "Selecione um aplicativo",
+        "widgetTitleSelected": "Aplicativo selecionado",
+        "widgetSubtitle": "Nenhum aplicativo selecionado",
+        "noAppsLabel": "Nenhum aplicativo encontrado.",
+        "currentVersion": "Atual",
+        "recommendedVersion": "Recomendado",
+        "anyVersion": "qualquer uma"
+    },
+    "patchSelectorCard": {
+        "widgetTitle": "Selecione os patches",
+        "widgetTitleSelected": "Patches selecionados",
+        "widgetSubtitle": "Selecione um aplicativo primeiro",
+        "widgetEmptySubtitle": "Nenhum patch selecionado"
+    },
+    "socialMediaCard": {
+        "widgetTitle": "Redes sociais",
+        "widgetSubtitle": "Nós estamos online!"
+    },
+    "appSelectorView": {
+        "viewTitle": "Selecione um aplicativo",
+        "searchBarHint": "Buscar aplicativos",
+        "storageButton": "Armazenamento",
+        "errorMessage": "Não é possível usar o aplicativo selecionado."
+    },
+    "patchesSelectorView": {
+        "viewTitle": "Selecione os patches",
+        "searchBarHint": "Buscar patches",
+        "doneButton": "Concluído",
+        "noPatchesFound": "Nenhum patch encontrado para o aplicativo selecionado",
+        "selectAllPatchesWarningTitle": "Aviso",
+        "selectAllPatchesWarningContent": "Você está prestes a selecionar todos os patches, que podem incluir patches não recomendados e causar comportamentos indesejados."
+    },
+    "patchItem": {
+        "unsupportedWarningButton": "Aviso",
+        "unsupportedDialogTitle": "Aviso",
+        "unsupportedDialogText": "Selecionar esse patch pode resultar em erros na hora de patchear.\n\nVersão do aplicativo: {packageVersion}\nVersões suportadas no momento:\n{supportedVersions}"
+    },
+    "installerView": {
+        "widgetTitle": "Instalador",
+        "installButton": "Instalar",
+        "installRootButton": "Instalar como Root",
+        "openButton": "Abrir",
+        "shareButton": "Compartilhar arquivo",
+        "notificationTitle": "ReVanced Manager está patcheando",
+        "notificationText": "Toque para voltar para o instalador",
+        "shareApkMenuOption": "Compartilhar APK",
+        "shareLogMenuOption": "Compartilhar log",
+        "installErrorDialogTitle": "Erro",
+        "installErrorDialogText1": "Não é possível instalar como Root com os patches selecionados.\nRepatcheie seu aplicativo ou escolha uma instalação sem Root.",
+        "installErrorDialogText2": "Não é possível instalar sem Root com os patches selecionados.\nRepatcheie seu aplicativo ou escolha uma instalação como Root se o seu dispositivo é rooteado.",
+        "installErrorDialogText3": "Não é possível instalar como Root, já que o APK original foi selecionado a partir do armazenamento.\nSelecione um aplicativo instalado ou escolha uma instalação sem Root.",
+        "noExit": "O instalador ainda está executando..."
+    },
+    "settingsView": {
+        "widgetTitle": "Configurações",
+        "appearanceSectionTitle": "Aparência",
+        "teamSectionTitle": "Equipe",
+        "infoSectionTitle": "Informações",
+        "advancedSectionTitle": "Avançado",
+        "darkThemeLabel": "Modo escuro",
+        "darkThemeHint": "Bem vindo ao lado negro da força",
+        "dynamicThemeLabel": "Material You",
+        "dynamicThemeHint": "Aprecie uma experiência próxima ao seu dispositivo",
+        "languageLabel": "Idioma",
+        "englishOption": "Inglês",
+        "frenchOption": "Françês",
+        "sourcesLabel": "Fontes",
+        "sourcesLabelHint": "Configure suas fontes personalizadas",
+        "orgPatchesLabel": "Organização dos Patches",
+        "sourcesPatchesLabel": "Fonte dos Patches",
+        "orgIntegrationsLabel": "Organização das Integrações",
+        "sourcesIntegrationsLabel": "Fonte das Integrações",
+        "sourcesResetDialogTitle": "Redefinir",
+        "sourcesResetDialogText": "Tem certeza que deseja redefinir as fontes personalizadas para os seus valores padrão?",
+        "apiURLResetDialogText": "Tem certeza que deseja redefinir a URL da API para o seu valor padrão?",
+        "contributorsLabel": "Colaboradores",
+        "contributorsHint": "Uma lista de colaboradores do ReVanced",
+        "logsLabel": "Registros",
+        "logsHint": "Compartilhar registros de depuração do dispositivo",
+        "apiURLLabel": "URL da API",
+        "apiURLHint": "Configure a URL da sua API personalizada",
+        "selectApiURL": "Selecionar URL",
+        "aboutLabel": "Sobre",
+        "snackbarMessage": "Copiado para a área de transferência"
+    },
+    "appInfoView": {
+        "widgetTitle": "Informações do aplicativo",
+        "openButton": "Abrr",
+        "uninstallButton": "Desinstalar",
+        "patchButton": "Patchear",
+        "unpatchButton": "Despatchear",
+        "unpatchDialogText": "Tem certeza que deseja despatchear este aplicativo?",
+        "rootDialogTitle": "Erro",
+        "rootDialogText": "O aplicativo foi instalado com o modo Root habilitado, mas atualmente o Root está desabilitado.\nPor favor, habilite o modo Root primeiro.",
+        "packageNameLabel": "Nome do pacote",
+        "originalPackageNameLabel": "Nome original do pacote",
+        "installTypeLabel": "Tipo de instalação",
+        "rootTypeLabel": "Root",
+        "nonRootTypeLabel": "Sem Root",
+        "patchedDateLabel": "Data do patch",
+        "patchedDateHint": "{date} às {time}",
+        "appliedPatchesLabel": "Patches aplicados",
+        "appliedPatchesHint": "{quantity} patches aplicados",
+        "updateNotImplemented": "Funcionalidade de atualização não implementada ainda"
+    },
+    "contributorsView": {
+        "widgetTitle": "Colaboradores",
+        "patcherContributors": "Colaboradores do Patcher",
+        "patchesContributors": "Colaboradores dos Patches",
+        "integrationsContributors": "Colaboradores das Integrações",
+        "cliContributors": "Colaboradores do CLI",
+        "managerContributors": "Colaboradores do Manager"
+    }
+}
