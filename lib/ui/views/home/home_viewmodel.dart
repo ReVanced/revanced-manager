@@ -49,6 +49,7 @@ class HomeViewModel extends BaseViewModel {
       _toast.show('homeView.noConnection');
     }
     _getPatchedApps();
+    _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
   void navigateToAppInfo(PatchedApplication app) {
