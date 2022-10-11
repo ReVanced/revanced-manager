@@ -13,7 +13,7 @@
     "homeView": {
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Atualizações",
-        "patchedSubtitle": "Applicativos Patcheados",
+        "patchedSubtitle": "Aplicativos Patcheados",
         "updatesAvailable": "Atualizações disponíveis",
         "noUpdates": "Não há atualizações disponíveis",
         "noInstallations": "Não há aplicativos patcheados instalados",
@@ -43,7 +43,7 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-        "patchDialogTitle": "Aviso",
+        "patchDialogTitle": "Atenção",
         "patchDialogText": "Você selecionou um patch com recursos, porém a instalação de um APK dividido foi detectada, e erros podem ocorrer.\nVocê deseja prosseguir patcheando a base do APK divido?"
     },
     "appSelectorCard": {
@@ -76,28 +76,28 @@
         "searchBarHint": "Buscar patches",
         "doneButton": "Concluído",
         "noPatchesFound": "Nenhum patch encontrado para o aplicativo selecionado",
-        "selectAllPatchesWarningTitle": "Aviso",
+        "selectAllPatchesWarningTitle": "Atenção",
         "selectAllPatchesWarningContent": "Você está prestes a selecionar todos os patches, que podem incluir patches não recomendados e causar comportamentos indesejados."
     },
     "patchItem": {
-        "unsupportedWarningButton": "Aviso",
-        "unsupportedDialogTitle": "Aviso",
+        "unsupportedWarningButton": "Atenção",
+        "unsupportedDialogTitle": "Atenção",
         "unsupportedDialogText": "Selecionar esse patch pode resultar em erros na hora de patchear.\n\nVersão do aplicativo: {packageVersion}\nVersões suportadas no momento:\n{supportedVersions}"
     },
     "installerView": {
         "widgetTitle": "Instalador",
         "installButton": "Instalar",
-        "installRootButton": "Instalar como Root",
+        "installRootButton": "Instalar como superusuário (root)",
         "openButton": "Abrir",
         "shareButton": "Compartilhar arquivo",
         "notificationTitle": "ReVanced Manager está patcheando",
         "notificationText": "Toque para voltar para o instalador",
         "shareApkMenuOption": "Compartilhar APK",
-        "shareLogMenuOption": "Compartilhar log",
+        "shareLogMenuOption": "Compartilhar registros de depuração",
         "installErrorDialogTitle": "Erro",
-        "installErrorDialogText1": "Não é possível instalar como Root com os patches selecionados.\nRepatcheie seu aplicativo ou escolha uma instalação sem Root.",
-        "installErrorDialogText2": "Não é possível instalar sem Root com os patches selecionados.\nRepatcheie seu aplicativo ou escolha uma instalação como Root se o seu dispositivo é rooteado.",
-        "installErrorDialogText3": "Não é possível instalar como Root, já que o APK original foi selecionado a partir do armazenamento.\nSelecione um aplicativo instalado ou escolha uma instalação sem Root.",
+        "installErrorDialogText1": "Não é possível instalar como superusuário (root) com os patches selecionados.\nRepatcheie seu aplicativo ou escolha uma instalação sem root.",
+        "installErrorDialogText2": "Não é possível instalar os patches selecionados sem acesso de superusuário (root).\nRepatcheie seu aplicativo ou escolha a instalação como superusuário se o seu dispositivo for rooteado.",
+        "installErrorDialogText3": "Não é possível instalar como superusuário (root), já que o APK original foi selecionado a partir do armazenamento.\nSelecione um aplicativo instalado ou escolha uma instalação sem root.",
         "noExit": "O instalador ainda está executando..."
     },
     "settingsView": {
@@ -140,12 +140,12 @@
         "unpatchButton": "Despatchear",
         "unpatchDialogText": "Tem certeza que deseja despatchear este aplicativo?",
         "rootDialogTitle": "Erro",
-        "rootDialogText": "O aplicativo foi instalado com o modo Root habilitado, mas atualmente o Root está desabilitado.\nPor favor, habilite o modo Root primeiro.",
+        "rootDialogText": "O aplicativo foi instalado com acesso de superusuário (root), mas o dispositivo não detectou o root.\nPor favor, rooteie o dispositivo e tente novamente.",
         "packageNameLabel": "Nome do pacote",
         "originalPackageNameLabel": "Nome original do pacote",
         "installTypeLabel": "Tipo de instalação",
         "rootTypeLabel": "Root",
-        "nonRootTypeLabel": "Sem Root",
+        "nonRootTypeLabel": "Sem root",
         "patchedDateLabel": "Data do patch",
         "patchedDateHint": "{date} às {time}",
         "appliedPatchesLabel": "Patches aplicados",
