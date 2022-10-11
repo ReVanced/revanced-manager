@@ -35,7 +35,7 @@
     },
     "latestCommitCard": {
         "loadingLabel": "Carregando...",
-        "timeagoLabel": "{time} ago",
+        "timeagoLabel": "há {time}",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
         "updateButton": "Atualizar o Manager"
