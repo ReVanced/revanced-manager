@@ -2,23 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_brotli_transformer/dio_brotli_transformer.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:native_dio_client/native_dio_client.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/utils/check_for_gms.dart';
 
 @lazySingleton
 class GithubAPI {
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.github.com',
-      headers: {
-        'accept-encoding': 'br',
-      },
-    ),
-  )..httpClientAdapter = NativeAdapter();
+  late Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(hours: 6),
@@ -35,9 +28,22 @@ class GithubAPI {
     'com.spotify.music': 'spotify',
   };
 
-  void initialize() {
+  void initialize() async {
+    bool isGMSInstalled = await checkForGMS();
+
+    if (!isGMSInstalled) {
+      _dio = Dio(BaseOptions(
+        baseUrl: 'https://api.github.com',
+      ));
+      print('GitHub API: Using default engine + $isGMSInstalled');
+    } else {
+      _dio = Dio(BaseOptions(
+        baseUrl: 'https://api.github.com',
+      ))
+        ..httpClientAdapter = NativeAdapter();
+      print('ReVanced API: Using CronetEngine + $isGMSInstalled');
+    }
     _dio.interceptors.add(_dioCacheManager.interceptor);
-    _dio.transformer = DioBrotliTransformer(transformer: DefaultTransformer());
   }
 
   Future<void> clearAllCache() async {
