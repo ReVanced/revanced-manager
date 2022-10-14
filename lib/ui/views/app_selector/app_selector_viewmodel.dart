@@ -7,6 +7,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
@@ -63,7 +64,8 @@ class AppSelectorViewModel extends BaseViewModel {
           locator<PatcherViewModel>().notifyListeners();
         }
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       _toast.show('appSelectorView.errorMessage');
     }
   }

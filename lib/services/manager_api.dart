@@ -9,6 +9,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
@@ -116,9 +117,13 @@ class ManagerAPI {
     await setPatchedApps(patchedApps);
   }
 
-  void clearAllData() {
-    _revancedAPI.clearAllCache();
-    _githubAPI.clearAllCache();
+  void clearAllData() async {
+    try {
+      _revancedAPI.clearAllCache();
+      _githubAPI.clearAllCache();
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
@@ -126,35 +131,50 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
-    String repoName = getPatchesRepo();
-    if (repoName == defaultPatchesRepo) {
-      return await _revancedAPI.getPatches();
-    } else {
-      return await _githubAPI.getPatches(repoName);
+    try {
+      String repoName = getPatchesRepo();
+      if (repoName == defaultPatchesRepo) {
+        return await _revancedAPI.getPatches();
+      } else {
+        return await _githubAPI.getPatches(repoName);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return [];
     }
   }
 
   Future<File?> downloadPatches() async {
-    String repoName = getPatchesRepo();
-    if (repoName == defaultPatchesRepo) {
-      return await _revancedAPI.getLatestReleaseFile(
-        '.jar',
-        defaultPatchesRepo,
-      );
-    } else {
-      return await _githubAPI.getLatestReleaseFile('.jar', repoName);
+    try {
+      String repoName = getPatchesRepo();
+      if (repoName == defaultPatchesRepo) {
+        return await _revancedAPI.getLatestReleaseFile(
+          '.jar',
+          defaultPatchesRepo,
+        );
+      } else {
+        return await _githubAPI.getLatestReleaseFile('.jar', repoName);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return null;
     }
   }
 
   Future<File?> downloadIntegrations() async {
-    String repoName = getIntegrationsRepo();
-    if (repoName == defaultIntegrationsRepo) {
-      return await _revancedAPI.getLatestReleaseFile(
-        '.apk',
-        defaultIntegrationsRepo,
-      );
-    } else {
-      return await _githubAPI.getLatestReleaseFile('.apk', repoName);
+    try {
+      String repoName = getIntegrationsRepo();
+      if (repoName == defaultIntegrationsRepo) {
+        return await _revancedAPI.getLatestReleaseFile(
+          '.apk',
+          defaultIntegrationsRepo,
+        );
+      } else {
+        return await _githubAPI.getLatestReleaseFile('.apk', repoName);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return null;
     }
   }
 

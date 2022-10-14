@@ -136,3 +136,8 @@ app.*.map.json
 
 Firebase related
 .firebase
+
+# Environment variables
+.env
+lib\utils\env_class.g.dart
+/lib/utils/env_class.dart

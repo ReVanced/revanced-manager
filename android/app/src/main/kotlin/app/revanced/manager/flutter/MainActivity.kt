@@ -241,7 +241,16 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
-                Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+
+                // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+
+                try {
+                    Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+                } catch (e: Exception) {
+                    //log to console
+                    print("Error signing apk: ${e.message}")
+                    e.printStackTrace()
+                }
 
                 handler.post {
                     installerChannel.invokeMethod(
