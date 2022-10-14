@@ -20,19 +20,30 @@ Future main() async {
   await locator<ManagerAPI>().initialize();
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
+  bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
   await SentryFlutter.init(
     (options) {
       options
-        ..dsn = Env.SENTRY_DSN
+        ..dsn = isSentryEnabled ? Env.SENTRY_DSN : ''
         ..environment = 'alpha'
         ..release = '0.1'
         ..tracesSampleRate = 1.0
         ..anrEnabled = true
         ..enableOutOfMemoryTracking = true
-        ..sampleRate = 1.0;
+        ..sampleRate = isSentryEnabled ? 1.0 : 0.0
+        ..beforeSend = (event, hint) {
+          print('isSentryEnabled: $isSentryEnabled');
+          if (isSentryEnabled) {
+            print("Sentry event sent");
+            return event;
+          } else {
+            print("Sentry is disabled");
+            return null;
+          }
+        } as BeforeSendCallback?;
     },
     appRunner: () => runApp(const MyApp()),
   );

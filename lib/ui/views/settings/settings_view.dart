@@ -140,6 +140,28 @@ class SettingsView extends StatelessWidget {
                   ),
                   _settingsDivider,
                   SettingsSection(
+                    title: 'settingsView.privacySectionTitle',
+                    children: <Widget>[
+                      CustomSwitchTile(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.sentryLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.sentryHint'),
+                        value: model.isSentryEnabled(),
+                        onTap: (value) => model.useSentry(value),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
                     title: 'settingsView.infoSectionTitle',
                     children: <Widget>[
                       ListTile(

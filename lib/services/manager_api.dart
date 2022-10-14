@@ -82,6 +82,15 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
+  bool isSentryEnabled() {
+    return _prefs.getBool('sentryEnabled') ?? true;
+  }
+
+  Future<void> setSentryStatus(bool value) async {
+    await _prefs.setBool('sentryEnabled', value);
+    print('Sentry status: $value');
+  }
+
   List<PatchedApplication> getPatchedApps() {
     List<String> apps = _prefs.getStringList('patchedApps') ?? [];
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();

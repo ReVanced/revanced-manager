@@ -20,4 +20,15 @@ class Toast {
       gravity: t.ToastGravity.CENTER,
     );
   }
+
+  void showBottom(String text) {
+    t.Fluttertoast.showToast(
+      msg: FlutterI18n.translate(
+        _fToast.context!,
+        text,
+      ),
+      toastLength: t.Toast.LENGTH_LONG,
+      gravity: t.ToastGravity.BOTTOM,
+    );
+  }
 }
