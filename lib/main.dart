@@ -23,12 +23,24 @@ Future main() async {
   await locator<ManagerAPI>().initialize();
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
-  // Remove this line if you are building from source and don't have firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
+  bool isCrashlyticsEnabled = locator<ManagerAPI>().isCrashlyticsEnabled();
+  // Remove this line if you are building from source and don't have firebase config
+  if (isCrashlyticsEnabled) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    Firebase.app().setAutomaticDataCollectionEnabled(true);
+  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  Firebase.app().setAutomaticDataCollectionEnabled(false);
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
+
+  // Remove this line if you are building from source and don't have sentry configured
   await SentryFlutter.init(
     (options) {
       options
@@ -52,9 +64,9 @@ Future main() async {
     },
     appRunner: () {
       // Pass all uncaught errors from the framework to Crashlytics.
-      FlutterError.onError =
-          FirebaseCrashlytics.instance.recordFlutterFatalError;
-
+      if (isCrashlyticsEnabled) {
+        FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+      }
       runApp(const MyApp());
     },
   );

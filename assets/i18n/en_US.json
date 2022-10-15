@@ -106,7 +106,7 @@
         "teamSectionTitle": "Team",
         "infoSectionTitle": "Info",
         "advancedSectionTitle": "Advanced",
-        "privacySectionTitle": "Privacy",
+        "logsSectionTitle": "Logs",
         "darkThemeLabel": "Dark Mode",
         "darkThemeHint": "Welcome to the Dark Side",
         "dynamicThemeLabel": "Material You",
@@ -134,6 +134,8 @@
         "snackbarMessage": "Copied to clipboard",
         "sentryLabel": "Sentry Logging",
         "sentryHint": "Send anonymous logs to help us improve ReVanced Manager",
+        "firebaseCrashlyticsLabel": "Firebase Crashlytics",
+        "firebaseCrashlyticsHint": "Send anonymous crash reports to help us improve ReVanced Manager",
         "restartAppForChanges": "Restart the app to apply changes"
     },
     "appInfoView": {

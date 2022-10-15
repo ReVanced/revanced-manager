@@ -327,6 +327,16 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool isCrashlyticsEnabled() {
+    return _managerAPI.isCrashlyticsEnabled();
+  }
+
+  void useCrashlytics(bool value) {
+    _managerAPI.setCrashlyticsStatus(value);
+    _toast.showBottom('settingsView.restartAppForChanges');
+    notifyListeners();
+  }
+
   Future<int> getSdkVersion() async {
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;

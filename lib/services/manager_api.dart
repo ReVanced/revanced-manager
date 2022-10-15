@@ -91,6 +91,15 @@ class ManagerAPI {
     print('Sentry status: $value');
   }
 
+  bool isCrashlyticsEnabled() {
+    return _prefs.getBool('crashlyticsEnabled') ?? true;
+  }
+
+  Future<void> setCrashlyticsStatus(bool value) async {
+    await _prefs.setBool('crashlyticsEnabled', value);
+    print('Crashlytics status: $value');
+  }
+
   List<PatchedApplication> getPatchedApps() {
     List<String> apps = _prefs.getStringList('patchedApps') ?? [];
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
