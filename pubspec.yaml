@@ -74,6 +74,8 @@ dependencies:
   wakelock: ^0.6.2
   sentry_dio: ^6.12.2
   envied: ^0.2.3
+  firebase_core: ^1.24.0
+  firebase_crashlytics: ^2.9.0
 
 dev_dependencies:
   json_serializable: ^6.3.1

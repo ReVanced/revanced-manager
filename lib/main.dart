@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,6 +13,8 @@ import 'package:revanced_manager/utils/env_class.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   await ThemeManager.initialise();
@@ -20,6 +23,8 @@ Future main() async {
   await locator<ManagerAPI>().initialize();
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
+  // Remove this line if you are building from source and don't have firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
@@ -27,7 +32,7 @@ Future main() async {
   await SentryFlutter.init(
     (options) {
       options
-        ..dsn = isSentryEnabled ? Env.SENTRY_DSN : ''
+        ..dsn = isSentryEnabled ? Env.sentry_dsn : ''
         ..environment = 'alpha'
         ..release = '0.1'
         ..tracesSampleRate = 1.0
@@ -45,7 +50,13 @@ Future main() async {
           }
         } as BeforeSendCallback?;
     },
-    appRunner: () => runApp(const MyApp()),
+    appRunner: () {
+      // Pass all uncaught errors from the framework to Crashlytics.
+      FlutterError.onError =
+          FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+      runApp(const MyApp());
+    },
   );
 }
 
