@@ -133,7 +133,7 @@ class RootAPI {
 
   Future<void> installServiceDScript(String packageName) async {
     String content = '#!/system/bin/sh\n'
-        'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 1; done\n'
+        'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 3; done\n'
         'base_path=$_managerDirPath/$packageName/base.apk\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
         '[ ! -z \$stock_path ] && mount -o bind \$base_path \$stock_path';
