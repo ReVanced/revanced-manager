@@ -142,7 +142,10 @@
         "deletedKeystore": "Keystore deleted",
         "deleteTempDirLabel": "Delete temp directory",
         "deleteTempDirHint": "Delete the temporary directory used to store temporary files",
-        "deletedTempDir": "Temp directory deleted"
+        "deletedTempDir": "Temp directory deleted",
+        "deleteLogsLabel": "Delete logs",
+        "deleteLogsHint": "Delete collected manager logs",
+        "deletedLogs": "Logs deleted"
     },
     "appInfoView": {
         "widgetTitle": "App Info",

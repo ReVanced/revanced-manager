@@ -354,6 +354,15 @@ class SettingsViewModel extends BaseViewModel {
     return info.version.sdkInt ?? -1;
   }
 
+  Future<void> deleteLogs() async {
+    Directory appCacheDir = await getTemporaryDirectory();
+    Directory logsDir = Directory('${appCacheDir.path}/logs');
+    if (logsDir.existsSync()) {
+      logsDir.deleteSync(recursive: true);
+    }
+    _toast.showBottom('settingsView.deletedLogs');
+  }
+
   Future<void> exportLogcatLogs() async {
     Directory appCache = await getTemporaryDirectory();
     Directory logDir = Directory('${appCache.path}/logs');
