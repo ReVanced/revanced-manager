@@ -25,7 +25,7 @@ Future main() async {
   await locator<RevancedAPI>().initialize(apiUrl);
   bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
   bool isCrashlyticsEnabled = locator<ManagerAPI>().isCrashlyticsEnabled();
-  // Remove this line if you are building from source and don't have firebase config
+  // Remove this section if you are building from source and don't have firebase config
   if (isCrashlyticsEnabled) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -41,11 +41,11 @@ Future main() async {
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
 
-  // Remove this line if you are building from source and don't have sentry configured
+  // Remove this section if you are building from source and don't have sentry configured
   await SentryFlutter.init(
     (options) {
       options
-        ..dsn = isSentryEnabled ? Env.sentry_dsn : ''
+        ..dsn = isSentryEnabled ? Env.sentryDSN : ''
         ..environment = 'alpha'
         ..release = '0.1'
         ..tracesSampleRate = 1.0
@@ -53,18 +53,14 @@ Future main() async {
         ..enableOutOfMemoryTracking = true
         ..sampleRate = isSentryEnabled ? 1.0 : 0.0
         ..beforeSend = (event, hint) {
-          print('isSentryEnabled: $isSentryEnabled');
           if (isSentryEnabled) {
-            print("Sentry event sent");
             return event;
           } else {
-            print("Sentry is disabled");
             return null;
           }
         } as BeforeSendCallback?;
     },
     appRunner: () {
-      // Pass all uncaught errors from the framework to Crashlytics.
       if (isCrashlyticsEnabled) {
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       }

@@ -88,7 +88,6 @@ class ManagerAPI {
 
   Future<void> setSentryStatus(bool value) async {
     await _prefs.setBool('sentryEnabled', value);
-    print('Sentry status: $value');
   }
 
   bool isCrashlyticsEnabled() {
@@ -97,7 +96,6 @@ class ManagerAPI {
 
   Future<void> setCrashlyticsStatus(bool value) async {
     await _prefs.setBool('crashlyticsEnabled', value);
-    print('Crashlytics status: $value');
   }
 
   List<PatchedApplication> getPatchedApps() {
