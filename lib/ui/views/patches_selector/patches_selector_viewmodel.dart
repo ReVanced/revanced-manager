@@ -3,6 +3,7 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
@@ -11,11 +12,14 @@ import 'package:flutter/material.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final List<Patch> patches = [];
   final List<Patch> selectedPatches =
       locator<PatcherViewModel>().selectedPatches;
+  String? patchesVersion = '';
 
   Future<void> initialize() async {
+    getPatchesVersion();
     patches.addAll(await _patcherAPI.getFilteredPatches(
       locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
@@ -66,6 +70,12 @@ class PatchesSelectorViewModel extends BaseViewModel {
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
     locator<PatcherViewModel>().notifyListeners();
+  }
+
+  Future<String?> getPatchesVersion() async {
+    patchesVersion = await _managerAPI.getLatestPatchesVersion();
+    // print('Patches version: $patchesVersion');
+    return patchesVersion ?? '0.0.0';
   }
 
   List<Patch> getQueriedPatches(String query) {

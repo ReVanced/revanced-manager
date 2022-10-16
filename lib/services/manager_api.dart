@@ -228,6 +228,13 @@ class ManagerAPI {
     );
   }
 
+  Future<String?> getLatestPatchesVersion() async {
+    return await _revancedAPI.getLatestReleaseVersion(
+      '.json',
+      defaultPatchesRepo,
+    );
+  }
+
   Future<String> getCurrentManagerVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
