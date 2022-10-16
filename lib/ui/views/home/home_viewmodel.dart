@@ -179,7 +179,7 @@ class HomeViewModel extends BaseViewModel {
   Future<void> forceRefresh(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 1));
     if (_lastUpdate == null ||
-        _lastUpdate!.difference(DateTime.now()).inSeconds > 60) {
+        _lastUpdate!.difference(DateTime.now()).inSeconds > 2) {
       _managerAPI.clearAllData();
     }
     initialize(context);
