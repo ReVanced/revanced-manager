@@ -31,11 +31,12 @@ Future main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     Firebase.app().setAutomaticDataCollectionEnabled(true);
+  } else {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    Firebase.app().setAutomaticDataCollectionEnabled(false);
   }
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  Firebase.app().setAutomaticDataCollectionEnabled(false);
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
