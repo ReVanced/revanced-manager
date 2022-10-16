@@ -98,6 +98,13 @@ class ManagerAPI {
     await _prefs.setBool('crashlyticsEnabled', value);
   }
 
+  Future<void> deleteTempFolder() async {
+    final Directory dir = Directory('/data/local/tmp/revanced-manager');
+    if (await dir.exists()) {
+      await dir.delete(recursive: true);
+    }
+  }
+
   Future<void> deleteKeystore() async {
     final File keystore = File(
         '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-keystore.keystore');

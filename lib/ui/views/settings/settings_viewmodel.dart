@@ -343,6 +343,12 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void deleteTempDir() {
+    _managerAPI.deleteTempFolder();
+    _toast.showBottom('settingsView.deletedTempDir');
+    notifyListeners();
+  }
+
   Future<int> getSdkVersion() async {
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;

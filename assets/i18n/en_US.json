@@ -139,7 +139,10 @@
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
-        "deletedKeystore": "Keystore deleted"
+        "deletedKeystore": "Keystore deleted",
+        "deleteTempDirLabel": "Delete temp directory",
+        "deleteTempDirHint": "Delete the temporary directory used to store temporary files",
+        "deletedTempDir": "Temp directory deleted"
     },
     "appInfoView": {
         "widgetTitle": "App Info",

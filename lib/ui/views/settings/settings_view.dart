@@ -152,6 +152,22 @@ class SettingsView extends StatelessWidget {
                         subtitle: I18nText('settingsView.deleteKeystoreHint'),
                         onTap: () => model.deleteKeystore,
                       ),
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.deleteTempDirLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.deleteTempDirHint'),
+                        onTap: () => model.deleteTempDir(),
+                      ),
                     ],
                   ),
                   _settingsDivider,
