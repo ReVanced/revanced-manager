@@ -98,6 +98,14 @@ class ManagerAPI {
     await _prefs.setBool('crashlyticsEnabled', value);
   }
 
+  Future<void> deleteKeystore() async {
+    final File keystore = File(
+        '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-keystore.keystore');
+    if (await keystore.exists()) {
+      await keystore.delete();
+    }
+  }
+
   List<PatchedApplication> getPatchedApps() {
     List<String> apps = _prefs.getStringList('patchedApps') ?? [];
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();

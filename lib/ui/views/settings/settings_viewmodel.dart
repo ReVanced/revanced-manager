@@ -337,6 +337,12 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void deleteKeystore() {
+    _managerAPI.deleteKeystore();
+    _toast.showBottom('settingsView.deletedKeystore');
+    notifyListeners();
+  }
+
   Future<int> getSdkVersion() async {
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;

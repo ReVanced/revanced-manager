@@ -136,6 +136,22 @@ class SettingsView extends StatelessWidget {
                         subtitle: 'settingsView.sourcesLabelHint',
                         onTap: () => model.showSourcesDialog(context),
                       ),
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.deleteKeystoreLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.deleteKeystoreHint'),
+                        onTap: () => model.deleteKeystore,
+                      ),
                     ],
                   ),
                   _settingsDivider,
