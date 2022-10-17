@@ -17,7 +17,7 @@ import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load();
   await ThemeManager.initialise();
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,19 +25,15 @@ Future main() async {
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
   bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
-  bool isCrashlyticsEnabled = locator<ManagerAPI>().isCrashlyticsEnabled();
+  // bool isCrashlyticsEnabled = locator<ManagerAPI>().isCrashlyticsEnabled();
   // Remove this section if you are building from source and don't have firebase config
-  if (isCrashlyticsEnabled) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    Firebase.app().setAutomaticDataCollectionEnabled(true);
-  } else {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    Firebase.app().setAutomaticDataCollectionEnabled(false);
-  }
+  // if (isCrashlyticsEnabled) {
+  //   await Firebase.initializeApp();
+  //   Firebase.app().setAutomaticDataCollectionEnabled(true);
+  // } else {
+  //   await Firebase.initializeApp();
+  //   Firebase.app().setAutomaticDataCollectionEnabled(false);
+  // }
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
@@ -62,9 +58,9 @@ Future main() async {
         } as BeforeSendCallback?;
     },
     appRunner: () {
-      if (isCrashlyticsEnabled) {
-        FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-      }
+      // if (isCrashlyticsEnabled) {
+      //   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+      // }
       runApp(const MyApp());
     },
   );
