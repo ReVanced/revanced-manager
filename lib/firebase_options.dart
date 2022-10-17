@@ -3,7 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:revanced_manager/utils/env_class.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -54,8 +54,8 @@ class DefaultFirebaseOptions {
   }
 
   static FirebaseOptions android = FirebaseOptions(
-    apiKey: Env.apiKey,
-    appId: Env.appId,
+    apiKey: dotenv.env['apiKey'] ?? '',
+    appId: dotenv.env['appId'] ?? '',
     messagingSenderId: '1006104807752',
     projectId: 'revanced-manager',
     storageBucket: 'revanced-manager.appspot.com',

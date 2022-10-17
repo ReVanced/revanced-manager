@@ -9,14 +9,15 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
-import 'package:revanced_manager/utils/env_class.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
+  await dotenv.load(fileName: ".env");
   await ThemeManager.initialise();
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +46,7 @@ Future main() async {
   await SentryFlutter.init(
     (options) {
       options
-        ..dsn = isSentryEnabled ? Env.sentryDSN : ''
+        ..dsn = isSentryEnabled ? dotenv.env['sentryDSN'] : ''
         ..environment = 'alpha'
         ..release = '0.1'
         ..tracesSampleRate = 1.0
