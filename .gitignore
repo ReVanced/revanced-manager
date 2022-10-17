@@ -139,6 +139,5 @@ Firebase related
 
 # Environment variables
 .env
-/lib/firebase_options.dart
 android/app/google-services.json
 /lib/utils/env_class.g.dart
