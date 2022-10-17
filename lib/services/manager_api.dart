@@ -90,14 +90,6 @@ class ManagerAPI {
     await _prefs.setBool('sentryEnabled', value);
   }
 
-  bool isCrashlyticsEnabled() {
-    return _prefs.getBool('crashlyticsEnabled') ?? true;
-  }
-
-  Future<void> setCrashlyticsStatus(bool value) async {
-    await _prefs.setBool('crashlyticsEnabled', value);
-  }
-
   Future<void> deleteTempFolder() async {
     final Directory dir = Directory('/data/local/tmp/revanced-manager');
     if (await dir.exists()) {

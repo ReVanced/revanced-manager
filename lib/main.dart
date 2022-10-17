@@ -1,4 +1,3 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,8 +11,6 @@ import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
@@ -25,15 +22,6 @@ Future main() async {
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
   bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
-  // bool isCrashlyticsEnabled = locator<ManagerAPI>().isCrashlyticsEnabled();
-  // Remove this section if you are building from source and don't have firebase config
-  // if (isCrashlyticsEnabled) {
-  //   await Firebase.initializeApp();
-  //   Firebase.app().setAutomaticDataCollectionEnabled(true);
-  // } else {
-  //   await Firebase.initializeApp();
-  //   Firebase.app().setAutomaticDataCollectionEnabled(false);
-  // }
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
@@ -58,9 +46,6 @@ Future main() async {
         } as BeforeSendCallback?;
     },
     appRunner: () {
-      // if (isCrashlyticsEnabled) {
-      //   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-      // }
       runApp(const MyApp());
     },
   );

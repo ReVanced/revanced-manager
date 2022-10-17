@@ -206,24 +206,6 @@ class SettingsView extends StatelessWidget {
                         value: model.isSentryEnabled(),
                         onTap: (value) => model.useSentry(value),
                       ),
-                      const SizedBox(height: 20.0),
-                      CustomSwitchTile(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.firebaseCrashlyticsLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle:
-                            I18nText('settingsView.firebaseCrashlyticsHint'),
-                        value: model.isCrashlyticsEnabled(),
-                        onTap: (value) => model.useCrashlytics(value),
-                      ),
                     ],
                   ),
                   _settingsDivider,

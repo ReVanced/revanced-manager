@@ -327,16 +327,6 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool isCrashlyticsEnabled() {
-    return _managerAPI.isCrashlyticsEnabled();
-  }
-
-  void useCrashlytics(bool value) {
-    _managerAPI.setCrashlyticsStatus(value);
-    _toast.showBottom('settingsView.restartAppForChanges');
-    notifyListeners();
-  }
-
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
     _toast.showBottom('settingsView.deletedKeystore');
