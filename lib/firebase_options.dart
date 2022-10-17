@@ -53,11 +53,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
+  static FirebaseOptions android = FirebaseOptions(
     apiKey: Env.apiKey,
     appId: Env.appId,
-    messagingSenderId: Env.messagingSenderId,
-    projectId: Env.projectId,
-    storageBucket: Env.storageBucket,
+    messagingSenderId: '1006104807752',
+    projectId: 'revanced-manager',
+    storageBucket: 'revanced-manager.appspot.com',
   );
 }
