@@ -22,8 +22,6 @@ jobs:
       - uses: SpicyPizza/create-envfile@v1
         with:
           envkey_sentryDSN: ${{ secrets.SENTRY_DSN }}
-          envkey_apiKey: ${{ secrets.API_KEY }}
-          envkey_appId: ${{ secrets.APP_ID }}
       - name: Set up Flutter
         run: flutter pub get
       - name: Generate files with Builder

@@ -73,8 +73,6 @@ dependencies:
   url_launcher: ^6.1.5
   wakelock: ^0.6.2
   sentry_dio: ^6.12.2
-  firebase_core: ^1.24.0
-  firebase_crashlytics: ^2.9.0
   flutter_dotenv: ^5.0.2
 
 dev_dependencies:
