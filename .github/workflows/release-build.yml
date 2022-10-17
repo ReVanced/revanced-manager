@@ -19,6 +19,11 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+      - uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_sentryDSN: ${{ secrets.SENTRY_DSN }}
+          evykey_apiKey: ${{ secrets.API_KEY }}
+          envkey_appId: ${{ secrets.APP_ID }}
       - name: Set up Flutter
         run: flutter pub get
       - name: Generate files with Builder
