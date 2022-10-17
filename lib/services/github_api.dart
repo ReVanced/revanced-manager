@@ -5,19 +5,15 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
+import 'package:native_dio_client/native_dio_client.dart';
 import 'package:revanced_manager/models/patch.dart';
-import 'package:dio_http2_adapter/dio_http2_adapter.dart';
+import 'package:revanced_manager/utils/check_for_gms.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 
 @lazySingleton
 class GithubAPI {
-  final Dio _dio = Dio(
-    BaseOptions(baseUrl: 'https://api.github.com'),
-  )..httpClientAdapter = Http2Adapter(
-      ConnectionManager(
-        idleTimeout: 10000,
-        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
-      ),
-    );
+  late Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(hours: 6),
@@ -31,14 +27,40 @@ class GithubAPI {
     'com.zhiliaoapp.musically': 'tiktok',
     'de.dwd.warnapp': 'warnwetter',
     'com.garzotto.pflotsh.ecmwf_a': 'ecmwf',
+    'com.spotify.music': 'spotify',
   };
 
-  void initialize() {
-    _dio.interceptors.add(_dioCacheManager.interceptor);
+  void initialize() async {
+    try {
+      bool isGMSInstalled = await checkForGMS();
+
+      if (!isGMSInstalled) {
+        _dio = Dio(BaseOptions(
+          baseUrl: 'https://api.github.com',
+        ));
+        print('GitHub API: Using default engine + $isGMSInstalled');
+      } else {
+        _dio = Dio(BaseOptions(
+          baseUrl: 'https://api.github.com',
+        ))
+          ..httpClientAdapter = NativeAdapter();
+        print('ReVanced API: Using CronetEngine + $isGMSInstalled');
+      }
+      _dio.interceptors.add(_dioCacheManager.interceptor);
+      _dio.addSentry(
+        captureFailedRequests: true,
+      );
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<void> clearAllCache() async {
-    await _dioCacheManager.clearAll();
+    try {
+      await _dioCacheManager.clearAll();
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<Map<String, dynamic>?> _getLatestRelease(String repoName) async {
@@ -48,7 +70,8 @@ class GithubAPI {
         options: _cacheOptions,
       );
       return response.data;
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
   }
@@ -65,17 +88,21 @@ class GithubAPI {
         '/repos/$repoName/commits',
         queryParameters: {
           'path': path,
-          'per_page': 3,
           'since': since.toIso8601String(),
         },
         options: _cacheOptions,
       );
       List<dynamic> commits = response.data;
       return commits
-          .map((commit) =>
-              (commit['commit']['message'] as String).split('\n')[0])
+          .map(
+            (commit) => (commit['commit']['message']).split('\n')[0] +
+                ' - ' +
+                commit['commit']['author']['name'] +
+                '\n' as String,
+          )
           .toList();
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return List.empty();
     }
   }
@@ -94,7 +121,8 @@ class GithubAPI {
           );
         }
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;
@@ -108,7 +136,8 @@ class GithubAPI {
         List<dynamic> list = jsonDecode(f.readAsStringSync());
         patches = list.map((patch) => Patch.fromJson(patch)).toList();
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return List.empty();
     }
     return patches;

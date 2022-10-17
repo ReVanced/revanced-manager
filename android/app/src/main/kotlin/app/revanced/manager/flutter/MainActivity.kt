@@ -1,5 +1,6 @@
 package app.revanced.manager.flutter
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.NonNull
@@ -12,7 +13,7 @@ import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.logging.Logger
-import app.revanced.patcher.util.patch.impl.DexPatchBundle
+import app.revanced.patcher.util.patch.PatchBundle
 import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -42,7 +43,6 @@ class MainActivity : FlutterActivity() {
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
                     val mergeIntegrations = call.argument<Boolean>("mergeIntegrations")
-                    val resourcePatching = call.argument<Boolean>("resourcePatching")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     if (patchBundleFilePath != null &&
                         originalFilePath != null &&
@@ -53,7 +53,6 @@ class MainActivity : FlutterActivity() {
                         selectedPatches != null &&
                         cacheDirPath != null &&
                         mergeIntegrations != null &&
-                        resourcePatching != null &&
                         keyStoreFilePath != null
                     ) {
                         runPatcher(
@@ -67,7 +66,6 @@ class MainActivity : FlutterActivity() {
                             selectedPatches,
                             cacheDirPath,
                             mergeIntegrations,
-                            resourcePatching,
                             keyStoreFilePath
                         )
                     } else {
@@ -90,7 +88,6 @@ class MainActivity : FlutterActivity() {
         selectedPatches: List<String>,
         cacheDirPath: String,
         mergeIntegrations: Boolean,
-        resourcePatching: Boolean,
         keyStoreFilePath: String
     ) {
         val originalFile = File(originalFilePath)
@@ -102,16 +99,20 @@ class MainActivity : FlutterActivity() {
 
         Thread {
             try {   
-                val patches = DexPatchBundle(
-                    patchBundleFilePath,
-                    DexClassLoader(
+                val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                    PatchBundle.Dex(
                         patchBundleFilePath,
-                        cacheDirPath,
-                        null,
-                        javaClass.classLoader
-                    )
-                ).loadPatches().filter { patch -> selectedPatches.any { it == patch.patchName } }
-                
+                        DexClassLoader(
+                            patchBundleFilePath,
+                            cacheDirPath,
+                            null,
+                            javaClass.classLoader
+                        )
+                    ).loadPatches().filter { patch -> selectedPatches.any { it == patch.patchName } }
+                } else {
+                    TODO("VERSION.SDK_INT < CUPCAKE")
+                }
+
                 handler.post {
                     installerChannel.invokeMethod(
                         "update",
@@ -139,7 +140,6 @@ class MainActivity : FlutterActivity() {
                         PatcherOptions(
                             inputFile,
                             cacheDirPath,
-                            resourcePatching,
                             Aapt.binary(applicationContext).absolutePath,
                             cacheDirPath,
                             logger = ManagerLogger()
@@ -178,7 +178,7 @@ class MainActivity : FlutterActivity() {
                 }
 
                 patcher.addPatches(patches)
-                patcher.applyPatches().forEach { (patch, res) ->
+                patcher.executePatches().forEach { (patch, res) ->
                     if (res.isSuccess) {
                         val msg = "[success] $patch"
                         handler.post {
@@ -193,7 +193,7 @@ class MainActivity : FlutterActivity() {
                         }
                         return@forEach
                     }
-                    val msg = "[error] $patch:" + res.exceptionOrNull()!!
+                    val msg = "[error] $patch:" + res.exceptionOrNull()!!.printStackTrace()
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
@@ -241,7 +241,16 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
-                Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+
+                // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+
+                try {
+                    Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+                } catch (e: Exception) {
+                    //log to console
+                    print("Error signing apk: ${e.message}")
+                    e.printStackTrace()
+                }
 
                 handler.post {
                     installerChannel.invokeMethod(

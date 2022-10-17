@@ -14,6 +14,7 @@ import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -57,7 +58,8 @@ class InstallerViewModel extends BaseViewModel {
             ),
           ),
         ).then((value) => FlutterBackground.enableBackgroundExecution());
-      } on Exception {
+      } on Exception catch (e, s) {
+        await Sentry.captureException(e, stackTrace: s);
         // ignore
       }
     }
@@ -121,91 +123,108 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> runPatcher() async {
-    update(0.0, 'Initializing...', 'Initializing installer');
-    if (_patches.isNotEmpty) {
-      try {
-        update(0.1, '', 'Creating working directory');
-        await _patcherAPI.runPatcher(
-          _app.packageName,
-          _app.apkFilePath,
-          _patches,
-        );
-      } catch (e) {
-        update(
-          -100.0,
-          'Aborting...',
-          'An error occurred! Aborting\nError:\n$e',
-        );
+    try {
+      update(0.0, 'Initializing...', 'Initializing installer');
+      if (_patches.isNotEmpty) {
+        try {
+          update(0.1, '', 'Creating working directory');
+          await _patcherAPI.runPatcher(
+            _app.packageName,
+            _app.apkFilePath,
+            _patches,
+          );
+        } on Exception catch (e, s) {
+          update(
+            -100.0,
+            'Aborting...',
+            'An error occurred! Aborting\nError:\n$e',
+          );
+          await Sentry.captureException(e, stackTrace: s);
+          throw await Sentry.captureException(e, stackTrace: s);
+        }
+      } else {
+        update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
       }
-    } else {
-      update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
-    }
-    if (FlutterBackground.isBackgroundExecutionEnabled) {
-      try {
-        FlutterBackground.disableBackgroundExecution();
-      } on Exception {
-        // ignore
+      if (FlutterBackground.isBackgroundExecutionEnabled) {
+        try {
+          FlutterBackground.disableBackgroundExecution();
+        } on Exception catch (e, s) {
+          await Sentry.captureException(e, stackTrace: s);
+          // ignore
+        }
       }
+      await Wakelock.disable();
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
     }
-    await Wakelock.disable();
   }
 
   void installResult(BuildContext context, bool installAsRoot) async {
-    _app.isRooted = installAsRoot;
-    bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
-    bool rootMicroG = installAsRoot && hasMicroG;
-    bool rootFromStorage = installAsRoot && _app.isFromStorage;
-    bool ytWithoutRootMicroG =
-        !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
-    if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
-      return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: I18nText('installerView.installErrorDialogTitle'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText(
-            rootMicroG
-                ? 'installerView.installErrorDialogText1'
-                : rootFromStorage
-                    ? 'installerView.installErrorDialogText3'
-                    : 'installerView.installErrorDialogText2',
+    try {
+      _app.isRooted = installAsRoot;
+      bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
+      bool rootMicroG = installAsRoot && hasMicroG;
+      bool rootFromStorage = installAsRoot && _app.isFromStorage;
+      bool ytWithoutRootMicroG =
+          !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
+      if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText('installerView.installErrorDialogTitle'),
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            content: I18nText(
+              rootMicroG
+                  ? 'installerView.installErrorDialogText1'
+                  : rootFromStorage
+                      ? 'installerView.installErrorDialogText3'
+                      : 'installerView.installErrorDialogText2',
+            ),
+            actions: <Widget>[
+              CustomMaterialButton(
+                label: I18nText('okButton'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
           ),
-          actions: <Widget>[
-            CustomMaterialButton(
-              label: I18nText('okButton'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-        ),
-      );
-    } else {
-      update(
-        1.0,
-        'Installing...',
-        _app.isRooted
-            ? 'Installing patched file using root method'
-            : 'Installing patched file using nonroot method',
-      );
-      isInstalled = await _patcherAPI.installPatchedFile(_app);
-      if (isInstalled) {
-        update(1.0, 'Installed!', 'Installed!');
-        _app.isFromStorage = false;
-        _app.patchDate = DateTime.now();
-        _app.appliedPatches = _patches.map((p) => p.name).toList();
-        if (hasMicroG) {
-          _app.name += ' ReVanced';
-          _app.packageName = _app.packageName.replaceFirst(
-            'com.google.',
-            'app.revanced.',
-          );
+        );
+      } else {
+        update(
+          1.0,
+          'Installing...',
+          _app.isRooted
+              ? 'Installing patched file using root method'
+              : 'Installing patched file using nonroot method',
+        );
+        isInstalled = await _patcherAPI.installPatchedFile(_app);
+        if (isInstalled) {
+          update(1.0, 'Installed!', 'Installed!');
+          _app.isFromStorage = false;
+          _app.patchDate = DateTime.now();
+          _app.appliedPatches = _patches.map((p) => p.name).toList();
+          if (hasMicroG) {
+            _app.name += ' ReVanced';
+            _app.packageName = _app.packageName.replaceFirst(
+              'com.google.',
+              'app.revanced.',
+            );
+          }
+          await _managerAPI.savePatchedApp(_app);
         }
-        await _managerAPI.savePatchedApp(_app);
       }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
     }
   }
 
   void shareResult() {
-    _patcherAPI.sharePatchedFile(_app.name, _app.version);
+    try {
+      if (isInstalled) {
+        _patcherAPI.sharePatchedFile(_app.name, _app.version);
+      }
+    } on Exception catch (e, s) {
+      Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   void shareLog() {
@@ -213,10 +232,14 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> cleanPatcher() async {
-    _patcherAPI.cleanPatcher();
-    locator<PatcherViewModel>().selectedApp = null;
-    locator<PatcherViewModel>().selectedPatches.clear();
-    locator<PatcherViewModel>().notifyListeners();
+    try {
+      _patcherAPI.cleanPatcher();
+      locator<PatcherViewModel>().selectedApp = null;
+      locator<PatcherViewModel>().selectedPatches.clear();
+      locator<PatcherViewModel>().notifyListeners();
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   void openApp() {

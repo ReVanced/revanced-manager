@@ -8,6 +8,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -19,6 +20,7 @@ class AppInfoViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
+  final Toast _toast = locator<Toast>();
 
   Future<void> uninstallApp(
     BuildContext context,
@@ -49,6 +51,10 @@ class AppInfoViewModel extends BaseViewModel {
         await _patcherAPI.getAppliedPatches(app.appliedPatches);
     locator<PatcherViewModel>().notifyListeners();
     locator<NavigationViewModel>().setIndex(1);
+  }
+
+  void updateNotImplemented(BuildContext context) {
+    _toast.show('appInfoView.updateNotImplemented');
   }
 
   Future<void> showUninstallDialog(
@@ -127,7 +133,8 @@ class AppInfoViewModel extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: I18nText('appInfoView.appliedPatchesLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: Text(getAppliedPatchesString(app.appliedPatches)),
+        content: SingleChildScrollView(
+            child: Text(getAppliedPatchesString(app.appliedPatches))),
         actions: <Widget>[
           CustomMaterialButton(
             label: I18nText('okButton'),

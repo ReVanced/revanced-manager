@@ -106,6 +106,7 @@
         "teamSectionTitle": "Team",
         "infoSectionTitle": "Info",
         "advancedSectionTitle": "Advanced",
+        "logsSectionTitle": "Logs",
         "darkThemeLabel": "Dark Mode",
         "darkThemeHint": "Welcome to the Dark Side",
         "dynamicThemeLabel": "Material You",
@@ -130,7 +131,21 @@
         "apiURLHint": "Configure your custom API URL",
         "selectApiURL": "Select URL",
         "aboutLabel": "About",
-        "snackbarMessage": "Copied to clipboard"
+        "snackbarMessage": "Copied to clipboard",
+        "sentryLabel": "Sentry Logging",
+        "sentryHint": "Send anonymous logs to help us improve ReVanced Manager",
+        "firebaseCrashlyticsLabel": "Firebase Crashlytics",
+        "firebaseCrashlyticsHint": "Send anonymous crash reports to help us improve ReVanced Manager",
+        "restartAppForChanges": "Restart the app to apply changes",
+        "deleteKeystoreLabel": "Delete keystore",
+        "deleteKeystoreHint": "Delete the keystore used to sign the app",
+        "deletedKeystore": "Keystore deleted",
+        "deleteTempDirLabel": "Delete temp directory",
+        "deleteTempDirHint": "Delete the temporary directory used to store temporary files",
+        "deletedTempDir": "Temp directory deleted",
+        "deleteLogsLabel": "Delete logs",
+        "deleteLogsHint": "Delete collected manager logs",
+        "deletedLogs": "Logs deleted"
     },
     "appInfoView": {
         "widgetTitle": "App Info",
@@ -142,13 +157,15 @@
         "rootDialogTitle": "Error",
         "rootDialogText": "App was installed with root mode enabled but currently root mode is disabled.\nPlease enable root mode first.",
         "packageNameLabel": "Package Name",
+        "originalPackageNameLabel": "Original Package Name",
         "installTypeLabel": "Installation Type",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",
         "patchedDateLabel": "Patched Date",
         "patchedDateHint": "{date} at {time}",
         "appliedPatchesLabel": "Applied Patches",
-        "appliedPatchesHint": "{quantity} applied patches"
+        "appliedPatchesHint": "{quantity} applied patches",
+        "updateNotImplemented": "Update functionality not implemented yet"
     },
     "contributorsView": {
         "widgetTitle": "Contributors",

@@ -9,6 +9,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
@@ -19,7 +20,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
-  String defaultApiUrl = 'https://revanced-releases-api.afterst0rm.xyz';
+  String defaultApiUrl = 'https://releases.rvcd.win/';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
@@ -81,6 +82,37 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
+  bool isSentryEnabled() {
+    return _prefs.getBool('sentryEnabled') ?? true;
+  }
+
+  Future<void> setSentryStatus(bool value) async {
+    await _prefs.setBool('sentryEnabled', value);
+  }
+
+  bool isCrashlyticsEnabled() {
+    return _prefs.getBool('crashlyticsEnabled') ?? true;
+  }
+
+  Future<void> setCrashlyticsStatus(bool value) async {
+    await _prefs.setBool('crashlyticsEnabled', value);
+  }
+
+  Future<void> deleteTempFolder() async {
+    final Directory dir = Directory('/data/local/tmp/revanced-manager');
+    if (await dir.exists()) {
+      await dir.delete(recursive: true);
+    }
+  }
+
+  Future<void> deleteKeystore() async {
+    final File keystore = File(
+        '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-keystore.keystore');
+    if (await keystore.exists()) {
+      await keystore.delete();
+    }
+  }
+
   List<PatchedApplication> getPatchedApps() {
     List<String> apps = _prefs.getStringList('patchedApps') ?? [];
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
@@ -116,9 +148,13 @@ class ManagerAPI {
     await setPatchedApps(patchedApps);
   }
 
-  void clearAllData() {
-    _revancedAPI.clearAllCache();
-    _githubAPI.clearAllCache();
+  void clearAllData() async {
+    try {
+      _revancedAPI.clearAllCache();
+      _githubAPI.clearAllCache();
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
@@ -126,35 +162,50 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
-    String repoName = getPatchesRepo();
-    if (repoName == defaultPatchesRepo) {
-      return await _revancedAPI.getPatches();
-    } else {
-      return await _githubAPI.getPatches(repoName);
+    try {
+      String repoName = getPatchesRepo();
+      if (repoName == defaultPatchesRepo) {
+        return await _revancedAPI.getPatches();
+      } else {
+        return await _githubAPI.getPatches(repoName);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return [];
     }
   }
 
   Future<File?> downloadPatches() async {
-    String repoName = getPatchesRepo();
-    if (repoName == defaultPatchesRepo) {
-      return await _revancedAPI.getLatestReleaseFile(
-        '.jar',
-        defaultPatchesRepo,
-      );
-    } else {
-      return await _githubAPI.getLatestReleaseFile('.jar', repoName);
+    try {
+      String repoName = getPatchesRepo();
+      if (repoName == defaultPatchesRepo) {
+        return await _revancedAPI.getLatestReleaseFile(
+          '.jar',
+          defaultPatchesRepo,
+        );
+      } else {
+        return await _githubAPI.getLatestReleaseFile('.jar', repoName);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return null;
     }
   }
 
   Future<File?> downloadIntegrations() async {
-    String repoName = getIntegrationsRepo();
-    if (repoName == defaultIntegrationsRepo) {
-      return await _revancedAPI.getLatestReleaseFile(
-        '.apk',
-        defaultIntegrationsRepo,
-      );
-    } else {
-      return await _githubAPI.getLatestReleaseFile('.apk', repoName);
+    try {
+      String repoName = getIntegrationsRepo();
+      if (repoName == defaultIntegrationsRepo) {
+        return await _revancedAPI.getLatestReleaseFile(
+          '.apk',
+          defaultIntegrationsRepo,
+        );
+      } else {
+        return await _githubAPI.getLatestReleaseFile('.apk', repoName);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return null;
     }
   }
 
@@ -174,6 +225,13 @@ class ManagerAPI {
     return await _revancedAPI.getLatestReleaseVersion(
       '.apk',
       defaultManagerRepo,
+    );
+  }
+
+  Future<String?> getLatestPatchesVersion() async {
+    return await _revancedAPI.getLatestReleaseVersion(
+      '.json',
+      defaultPatchesRepo,
     );
   }
 
@@ -213,6 +271,7 @@ class ManagerAPI {
               PatchedApplication(
                 name: application.appName,
                 packageName: application.packageName,
+                originalPackageName: application.packageName,
                 version: application.versionName!,
                 apkFilePath: application.apkFilePath,
                 icon: application.icon,
@@ -241,6 +300,7 @@ class ManagerAPI {
             PatchedApplication(
               name: application.appName,
               packageName: application.packageName,
+              originalPackageName: application.packageName,
               version: application.versionName!,
               apkFilePath: application.apkFilePath,
               icon: application.icon,
@@ -261,8 +321,10 @@ class ManagerAPI {
     List<PatchedApplication> toRemove = await getAppsToRemove(patchedApps);
     patchedApps.removeWhere((a) => toRemove.contains(a));
     for (PatchedApplication app in patchedApps) {
-      app.hasUpdates = await hasAppUpdates(app.packageName, app.patchDate);
-      app.changelog = await getAppChangelog(app.packageName, app.patchDate);
+      app.hasUpdates =
+          await hasAppUpdates(app.originalPackageName, app.patchDate);
+      app.changelog =
+          await getAppChangelog(app.originalPackageName, app.patchDate);
       if (!app.hasUpdates) {
         String? currentInstalledVersion =
             (await DeviceApps.getApp(app.packageName))?.versionName;
@@ -314,7 +376,7 @@ class ManagerAPI {
       newCommits = await _githubAPI.getCommits(
         packageName,
         getPatchesRepo(),
-        DateTime(2022, 3, 20, 21, 06, 01),
+        patchDate,
       );
     }
     return newCommits;

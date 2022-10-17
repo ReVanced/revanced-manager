@@ -160,8 +160,9 @@ class AppInfoView extends StatelessWidget {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
                                     onTap: () {
-                                      model.navigateToPatcher(app);
-                                      Navigator.of(context).pop();
+                                      model.updateNotImplemented(context);
+                                      // model.navigateToPatcher(app);
+                                      // Navigator.of(context).pop();
                                     },
                                     child: Column(
                                       mainAxisAlignment:
@@ -258,6 +259,22 @@ class AppInfoView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(app.packageName),
+                    ),
+                    const SizedBox(height: 4),
+                    ListTile(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 20.0),
+                      title: I18nText(
+                        'appInfoView.originalPackageNameLabel',
+                        child: const Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      subtitle: Text(app.originalPackageName),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

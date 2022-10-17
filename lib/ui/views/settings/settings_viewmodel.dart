@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:share_extend/share_extend.dart';
@@ -23,6 +24,7 @@ const int ANDROID_12_SDK_VERSION = 31;
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  final Toast _toast = locator<Toast>();
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
@@ -313,9 +315,52 @@ class SettingsViewModel extends BaseViewModel {
     );
   }
 
+  // disable sentry using switch boolean
+
+  bool isSentryEnabled() {
+    return _managerAPI.isSentryEnabled();
+  }
+
+  void useSentry(bool value) {
+    _managerAPI.setSentryStatus(value);
+    _toast.showBottom('settingsView.restartAppForChanges');
+    notifyListeners();
+  }
+
+  bool isCrashlyticsEnabled() {
+    return _managerAPI.isCrashlyticsEnabled();
+  }
+
+  void useCrashlytics(bool value) {
+    _managerAPI.setCrashlyticsStatus(value);
+    _toast.showBottom('settingsView.restartAppForChanges');
+    notifyListeners();
+  }
+
+  void deleteKeystore() {
+    _managerAPI.deleteKeystore();
+    _toast.showBottom('settingsView.deletedKeystore');
+    notifyListeners();
+  }
+
+  void deleteTempDir() {
+    _managerAPI.deleteTempFolder();
+    _toast.showBottom('settingsView.deletedTempDir');
+    notifyListeners();
+  }
+
   Future<int> getSdkVersion() async {
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;
+  }
+
+  Future<void> deleteLogs() async {
+    Directory appCacheDir = await getTemporaryDirectory();
+    Directory logsDir = Directory('${appCacheDir.path}/logs');
+    if (logsDir.existsSync()) {
+      logsDir.deleteSync(recursive: true);
+    }
+    _toast.showBottom('settingsView.deletedLogs');
   }
 
   Future<void> exportLogcatLogs() async {

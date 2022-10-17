@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:native_dio_client/native_dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:timeago/timeago.dart';
-import 'package:dio_http2_adapter/dio_http2_adapter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 
 @lazySingleton
 class RevancedAPI {
@@ -18,20 +21,36 @@ class RevancedAPI {
   );
 
   Future<void> initialize(String apiUrl) async {
-    _dio = Dio(BaseOptions(
-      baseUrl: apiUrl,
-    ))
-      ..httpClientAdapter = Http2Adapter(
-        ConnectionManager(
-          idleTimeout: 10000,
-          onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
-        ),
+    try {
+      bool isGMSInstalled = await checkForGMS();
+
+      if (!isGMSInstalled) {
+        _dio = Dio(BaseOptions(
+          baseUrl: apiUrl,
+        ));
+        print('ReVanced API: Using default engine + $isGMSInstalled');
+      } else {
+        _dio = Dio(BaseOptions(
+          baseUrl: apiUrl,
+        ))
+          ..httpClientAdapter = NativeAdapter();
+        print('ReVanced API: Using CronetEngine + $isGMSInstalled');
+      }
+      _dio.interceptors.add(_dioCacheManager.interceptor);
+      _dio.addSentry(
+        captureFailedRequests: true,
       );
-    _dio.interceptors.add(_dioCacheManager.interceptor);
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<void> clearAllCache() async {
-    await _dioCacheManager.clearAll();
+    try {
+      await _dioCacheManager.clearAll();
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
@@ -43,7 +62,8 @@ class RevancedAPI {
         String name = repo['name'];
         contributors[name] = repo['contributors'];
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return {};
     }
     return contributors;
@@ -54,7 +74,8 @@ class RevancedAPI {
       var response = await _dio.get('/patches', options: _cacheOptions);
       List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return List.empty();
     }
   }
@@ -71,7 +92,8 @@ class RevancedAPI {
             t['repository'] == repoName &&
             (t['name'] as String).endsWith(extension),
       );
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
   }
@@ -88,7 +110,8 @@ class RevancedAPI {
       if (release != null) {
         return release['version'];
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;
@@ -104,7 +127,8 @@ class RevancedAPI {
         String url = release['browser_download_url'];
         return await DefaultCacheManager().getSingleFile(url);
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;
@@ -123,7 +147,8 @@ class RevancedAPI {
         DateTime timestamp = DateTime.parse(release['timestamp'] as String);
         return format(timestamp, locale: 'en_short');
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;

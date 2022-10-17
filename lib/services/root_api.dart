@@ -1,4 +1,5 @@
 import 'package:root/root.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class RootAPI {
   final String _managerDirPath = '/data/adb/revanced';
@@ -9,7 +10,8 @@ class RootAPI {
     try {
       bool? isRooted = await Root.isRootAvailable();
       return isRooted != null && isRooted;
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return false;
     }
   }
@@ -22,7 +24,8 @@ class RootAPI {
         return isRooted != null && isRooted;
       }
       return false;
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return false;
     }
   }
@@ -75,7 +78,8 @@ class RootAPI {
         apps.removeWhere((pack) => pack.isEmpty);
         return apps.map((pack) => pack.trim()).toList();
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return List.empty();
     }
     return List.empty();
@@ -121,14 +125,15 @@ class RootAPI {
       await installApk(packageName, patchedFilePath);
       await mountApk(packageName, originalFilePath);
       return true;
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       return false;
     }
   }
 
   Future<void> installServiceDScript(String packageName) async {
     String content = '#!/system/bin/sh\n'
-        'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 1; done\n'
+        'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 3; done\n'
         'base_path=$_managerDirPath/$packageName/base.apk\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
         '[ ! -z \$stock_path ] && mount -o bind \$base_path \$stock_path';

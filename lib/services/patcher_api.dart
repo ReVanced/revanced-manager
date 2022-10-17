@@ -10,6 +10,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
 
 @lazySingleton
@@ -18,6 +19,7 @@ class PatcherAPI {
       MethodChannel('app.revanced.manager.flutter/patcher');
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
+  late Directory _dataDir;
   late Directory _tmpDir;
   late File _keyStoreFile;
   List<Patch> _patches = [];
@@ -26,8 +28,9 @@ class PatcherAPI {
   Future<void> initialize() async {
     await _loadPatches();
     Directory appCache = await getTemporaryDirectory();
+    _dataDir = await getExternalStorageDirectory() ?? appCache;
     _tmpDir = Directory('${appCache.path}/patcher');
-    _keyStoreFile = File('${appCache.path}/revanced-manager.keystore');
+    _keyStoreFile = File('${_dataDir.path}/revanced-manager.keystore');
     cleanPatcher();
   }
 
@@ -42,7 +45,8 @@ class PatcherAPI {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
       }
-    } on Exception {
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
       _patches = List.empty();
     }
   }
@@ -61,7 +65,8 @@ class PatcherAPI {
               filteredApps.add(app);
             }
           }
-        } catch (e) {
+        } on Exception catch (e, s) {
+          await Sentry.captureException(e, stackTrace: s);
           continue;
         }
       }
@@ -70,14 +75,10 @@ class PatcherAPI {
   }
 
   Future<List<Patch>> getFilteredPatches(String packageName) async {
-    String newPackageName = packageName.replaceFirst(
-      'app.revanced.',
-      'com.google.',
-    );
     return _patches
         .where((patch) =>
             !patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == newPackageName))
+            patch.compatiblePackages.any((pack) => pack.name == packageName))
         .toList();
   }
 
@@ -126,14 +127,19 @@ class PatcherAPI {
     String packageName,
     String originalFilePath,
   ) async {
-    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-    if (hasRootPermissions) {
-      originalFilePath = await _rootAPI.getOriginalFilePath(
-        packageName,
-        originalFilePath,
-      );
+    try {
+      bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+      if (hasRootPermissions) {
+        originalFilePath = await _rootAPI.getOriginalFilePath(
+          packageName,
+          originalFilePath,
+        );
+      }
+      return originalFilePath;
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return originalFilePath;
     }
-    return originalFilePath;
   }
 
   Future<void> runPatcher(
@@ -142,7 +148,6 @@ class PatcherAPI {
     List<Patch> selectedPatches,
   ) async {
     bool mergeIntegrations = await needsIntegrations(selectedPatches);
-    bool resourcePatching = await needsResourcePatching(selectedPatches);
     bool includeSettings = await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
@@ -154,7 +159,8 @@ class PatcherAPI {
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
         }
-      } catch (e) {
+      } on Exception catch (e, s) {
+        await Sentry.captureException(e, stackTrace: s);
         // ignore
       }
     }
@@ -164,6 +170,7 @@ class PatcherAPI {
       integrationsFile = await _managerAPI.downloadIntegrations();
     }
     if (patchBundleFile != null) {
+      _dataDir.createSync();
       _tmpDir.createSync();
       Directory workDir = _tmpDir.createTempSync('tmp-');
       File inputFile = File('${workDir.path}/base.apk');
@@ -171,25 +178,29 @@ class PatcherAPI {
       _outFile = File('${workDir.path}/out.apk');
       Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
-      await patcherChannel.invokeMethod(
-        'runPatcher',
-        {
-          'patchBundleFilePath': patchBundleFile.path,
-          'originalFilePath': await getOriginalFilePath(
-            packageName,
-            originalFilePath,
-          ),
-          'inputFilePath': inputFile.path,
-          'patchedFilePath': patchedFile.path,
-          'outFilePath': _outFile!.path,
-          'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
-          'selectedPatches': selectedPatches.map((p) => p.name).toList(),
-          'cacheDirPath': cacheDir.path,
-          'mergeIntegrations': mergeIntegrations,
-          'resourcePatching': resourcePatching,
-          'keyStoreFilePath': _keyStoreFile.path,
-        },
-      );
+      try {
+        await patcherChannel.invokeMethod(
+          'runPatcher',
+          {
+            'patchBundleFilePath': patchBundleFile.path,
+            'originalFilePath': await getOriginalFilePath(
+              packageName,
+              originalFilePath,
+            ),
+            'inputFilePath': inputFile.path,
+            'patchedFilePath': patchedFile.path,
+            'outFilePath': _outFile!.path,
+            'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
+            'selectedPatches': selectedPatches.map((p) => p.name).toList(),
+            'cacheDirPath': cacheDir.path,
+            'mergeIntegrations': mergeIntegrations,
+            'keyStoreFilePath': _keyStoreFile.path,
+          },
+        );
+      } on Exception catch (e, s) {
+        print(e);
+        throw await Sentry.captureException(e, stackTrace: s);
+      }
     }
   }
 
@@ -209,7 +220,8 @@ class PatcherAPI {
           await AppInstaller.installApk(_outFile!.path);
           return await DeviceApps.isAppInstalled(patchedApp.packageName);
         }
-      } on Exception {
+      } on Exception catch (e, s) {
+        await Sentry.captureException(e, stackTrace: s);
         return false;
       }
     }
@@ -217,13 +229,18 @@ class PatcherAPI {
   }
 
   void sharePatchedFile(String appName, String version) {
-    if (_outFile != null) {
-      String prefix = appName.toLowerCase().replaceAll(' ', '-');
-      String newName = '$prefix-revanced_v$version.apk';
-      int lastSeparator = _outFile!.path.lastIndexOf('/');
-      String newPath = _outFile!.path.substring(0, lastSeparator + 1) + newName;
-      File shareFile = _outFile!.copySync(newPath);
-      ShareExtend.share(shareFile.path, 'file');
+    try {
+      if (_outFile != null) {
+        String prefix = appName.toLowerCase().replaceAll(' ', '-');
+        String newName = '$prefix-revanced_v$version.apk';
+        int lastSeparator = _outFile!.path.lastIndexOf('/');
+        String newPath =
+            _outFile!.path.substring(0, lastSeparator + 1) + newName;
+        File shareFile = _outFile!.copySync(newPath);
+        ShareExtend.share(shareFile.path, 'file');
+      }
+    } on Exception catch (e, s) {
+      Sentry.captureException(e, stackTrace: s);
     }
   }
 

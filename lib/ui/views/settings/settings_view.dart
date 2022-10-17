@@ -136,6 +136,94 @@ class SettingsView extends StatelessWidget {
                         subtitle: 'settingsView.sourcesLabelHint',
                         onTap: () => model.showSourcesDialog(context),
                       ),
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.deleteKeystoreLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.deleteKeystoreHint'),
+                        onTap: () => model.deleteKeystore,
+                      ),
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.deleteTempDirLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.deleteTempDirHint'),
+                        onTap: () => model.deleteTempDir(),
+                      ),
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.deleteLogsLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.deleteLogsHint'),
+                        onTap: () => model.deleteLogs(),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
+                    title: 'settingsView.logsSectionTitle',
+                    children: <Widget>[
+                      CustomSwitchTile(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.sentryLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.sentryHint'),
+                        value: model.isSentryEnabled(),
+                        onTap: (value) => model.useSentry(value),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomSwitchTile(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.firebaseCrashlyticsLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle:
+                            I18nText('settingsView.firebaseCrashlyticsHint'),
+                        value: model.isCrashlyticsEnabled(),
+                        onTap: (value) => model.useCrashlytics(value),
+                      ),
                     ],
                   ),
                   _settingsDivider,
