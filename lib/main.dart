@@ -11,10 +11,8 @@ import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
-  await dotenv.load();
   await ThemeManager.initialise();
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +28,7 @@ Future main() async {
   await SentryFlutter.init(
     (options) {
       options
-        ..dsn = isSentryEnabled ? dotenv.env['sentryDSN'] : ''
+        ..dsn = isSentryEnabled ? '' : ''
         ..environment = 'alpha'
         ..release = '0.1'
         ..tracesSampleRate = 1.0
