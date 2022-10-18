@@ -219,9 +219,7 @@ class InstallerViewModel extends BaseViewModel {
 
   void shareResult() {
     try {
-      if (isInstalled) {
-        _patcherAPI.sharePatchedFile(_app.name, _app.version);
-      }
+      _patcherAPI.sharePatchedFile(_app.name, _app.version);
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
     }
