@@ -29,7 +29,7 @@ class HomeViewModel extends BaseViewModel {
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   DateTime? _lastUpdate;
-  bool showUpdatableApps = true;
+  bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
   List<PatchedApplication> patchedUpdatableApps = [];
 

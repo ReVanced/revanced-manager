@@ -110,7 +110,7 @@ class _ApplicationItemState extends State<ApplicationItem>
                   children: <Widget>[
                     CustomMaterialButton(
                       label: widget.isUpdatableApp
-                          ? I18nText('applicationItem.infoButton')
+                          ? I18nText('applicationItem.patchButton')
                           : I18nText('applicationItem.infoButton'),
                       onPressed: widget.onPressed,
                     ),

@@ -16,6 +16,7 @@
         "patchedSubtitle": "Patched Applications",
         "updatesAvailable": "Updates available",
         "noUpdates": "No updates available",
+        "WIP": "Work In Progress",
         "noInstallations": "No patched applications installed",
         "installed": "Installed",
         "updateDialogTitle": "Update Manager",

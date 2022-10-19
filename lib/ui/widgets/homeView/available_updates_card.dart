@@ -14,47 +14,74 @@ class AvailableUpdatesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return apps.isEmpty
-        ? CustomCard(
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    size: 40,
-                    Icons.update_disabled,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(height: 16),
-                  I18nText(
-                    'homeView.noUpdates',
-                    child: Text(
-                      '',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                    ),
-                  )
-                ],
-              ),
+    return CustomCard(
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Icon(
+              size: 40,
+              Icons.update_disabled,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-          )
-        : ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            children: apps
-                .map((app) => ApplicationItem(
-                      icon: app.icon,
-                      name: app.name,
-                      patchDate: app.patchDate,
-                      changelog: app.changelog,
-                      isUpdatableApp: true,
-                      //TODO: Find a better way to do update functionality
-                      onPressed: () =>
-                          locator<HomeViewModel>().updatesAreDisabled(),
-                    ))
-                .toList(),
-          );
+            const SizedBox(height: 16),
+            I18nText(
+              'homeView.WIP',
+              child: Text(
+                '',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+    // return apps.isEmpty
+    //     ? CustomCard(
+    //         child: Center(
+    //           child: Column(
+    //             children: <Widget>[
+    //               Icon(
+    //                 size: 40,
+    //                 Icons.update_disabled,
+    //                 color: Theme.of(context).colorScheme.secondary,
+    //               ),
+    //               const SizedBox(height: 16),
+    //               I18nText(
+    //                 'homeView.noUpdates',
+    //                 child: Text(
+    //                   '',
+    //                   textAlign: TextAlign.center,
+    //                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
+    //                         color: Theme.of(context).colorScheme.secondary,
+    //                       ),
+    //                 ),
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //       )
+    //     : ListView(
+    //         shrinkWrap: true,
+    //         padding: EdgeInsets.zero,
+    //         physics: const NeverScrollableScrollPhysics(),
+    //         children: apps
+    //             .map((app) => ApplicationItem(
+    //                 icon: app.icon,
+    //                 name: app.name,
+    //                 patchDate: app.patchDate,
+    //                 changelog: app.changelog,
+    //                 isUpdatableApp: true,
+    //                 //TODO: Find a better way to do update functionality
+    //                 onPressed: () {}
+    //                 // () =>
+    //                 //     locator<HomeViewModel>().navigateToPatcher(
+    //                 //   app,
+    //                 // ),
+    //                 ))
+    //             .toList(),
+    //       );
   }
 }
