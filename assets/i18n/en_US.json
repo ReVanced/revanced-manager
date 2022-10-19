@@ -26,7 +26,8 @@
         "installingMessage": "Installing update...",
         "errorDownloadMessage": "Unable to download update",
         "errorInstallMessage": "Unable to install update",
-        "noConnection": "No internet connection"
+        "noConnection": "No internet connection",
+        "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
     },
     "applicationItem": {
         "patchButton": "Patch",

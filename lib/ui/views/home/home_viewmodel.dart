@@ -143,6 +143,10 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
+  void updatesAreDisabled() {
+    _toast.show('homeView.updatesDisabled');
+  }
+
   Future<void> showUpdateConfirmationDialog(BuildContext parentContext) async {
     return showDialog(
       context: parentContext,
