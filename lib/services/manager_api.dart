@@ -99,7 +99,7 @@ class ManagerAPI {
 
   Future<void> deleteKeystore() async {
     final File keystore = File(
-        '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-keystore.keystore');
+        '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore');
     if (await keystore.exists()) {
       await keystore.delete();
     }
