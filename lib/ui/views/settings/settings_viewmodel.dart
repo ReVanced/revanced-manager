@@ -315,17 +315,15 @@ class SettingsViewModel extends BaseViewModel {
     );
   }
 
-  // disable sentry using switch boolean
+  // bool isSentryEnabled() {
+  //   return _managerAPI.isSentryEnabled();
+  // }
 
-  bool isSentryEnabled() {
-    return _managerAPI.isSentryEnabled();
-  }
-
-  void useSentry(bool value) {
-    _managerAPI.setSentryStatus(value);
-    _toast.showBottom('settingsView.restartAppForChanges');
-    notifyListeners();
-  }
+  // void useSentry(bool value) {
+  //   _managerAPI.setSentryStatus(value);
+  //   _toast.showBottom('settingsView.restartAppForChanges');
+  //   notifyListeners();
+  // }
 
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
