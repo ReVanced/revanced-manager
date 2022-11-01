@@ -5,9 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:native_dio_client/native_dio_client.dart';
 import 'package:revanced_manager/models/patch.dart';
-import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 
@@ -32,20 +30,10 @@ class GithubAPI {
 
   void initialize() async {
     try {
-      bool isGMSInstalled = await checkForGMS();
+      _dio = Dio(BaseOptions(
+        baseUrl: 'https://api.github.com',
+      ));
 
-      if (!isGMSInstalled) {
-        _dio = Dio(BaseOptions(
-          baseUrl: 'https://api.github.com',
-        ));
-        print('GitHub API: Using default engine + $isGMSInstalled');
-      } else {
-        _dio = Dio(BaseOptions(
-          baseUrl: 'https://api.github.com',
-        ))
-          ..httpClientAdapter = NativeAdapter();
-        print('ReVanced API: Using CronetEngine + $isGMSInstalled');
-      }
       _dio.interceptors.add(_dioCacheManager.interceptor);
       _dio.addSentry(
         captureFailedRequests: true,
