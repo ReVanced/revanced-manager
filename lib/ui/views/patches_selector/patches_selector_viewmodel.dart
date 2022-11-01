@@ -61,9 +61,16 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   void selectAllPatches(bool isSelected) {
     selectedPatches.clear();
-    if (isSelected) {
+
+    if (isSelected && _managerAPI.areExperimentalPatchesEnabled() == false) {
+      selectedPatches
+          .addAll(patches.where((element) => isPatchSupported(element)));
+    }
+
+    if (isSelected && _managerAPI.areExperimentalPatchesEnabled()) {
       selectedPatches.addAll(patches);
     }
+
     notifyListeners();
   }
 
