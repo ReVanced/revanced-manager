@@ -180,7 +180,7 @@ class MainActivity : FlutterActivity() {
                 patcher.addPatches(patches)
                 patcher.executePatches().forEach { (patch, res) ->
                     if (res.isSuccess) {
-                        val msg = "[success] $patch"
+                        val msg = "Applied $patch"
                         handler.post {
                             installerChannel.invokeMethod(
                                 "update",
@@ -193,7 +193,7 @@ class MainActivity : FlutterActivity() {
                         }
                         return@forEach
                     }
-                    val msg = "[error] $patch:" + res.exceptionOrNull()!!.printStackTrace()
+                    val msg = "$patch failed.\nError:\n" + res.exceptionOrNull()!!.printStackTrace()
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
