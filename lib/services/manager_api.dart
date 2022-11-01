@@ -90,6 +90,14 @@ class ManagerAPI {
   //   await _prefs.setBool('sentryEnabled', value);
   // }
 
+  bool areExperimentalPatchesEnabled() {
+    return _prefs.getBool('experimentalPatchesEnabled') ?? false;
+  }
+
+  Future<void> enableExperimentalPatchesStatus(bool value) async {
+    await _prefs.setBool('experimentalPatchesEnabled', value);
+  }
+
   Future<void> deleteTempFolder() async {
     final Directory dir = Directory('/data/local/tmp/revanced-manager');
     if (await dir.exists()) {

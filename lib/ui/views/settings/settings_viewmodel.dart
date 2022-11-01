@@ -325,6 +325,16 @@ class SettingsViewModel extends BaseViewModel {
   //   notifyListeners();
   // }
 
+  bool areExperimentalPatchesEnabled() {
+    return _managerAPI.areExperimentalPatchesEnabled();
+  }
+
+  void useExperimentalPatches(bool value) {
+    _managerAPI.enableExperimentalPatchesStatus(value);
+    _toast.showBottom('settingsView.enabledExperimentalPatches');
+    notifyListeners();
+  }
+
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
     _toast.showBottom('settingsView.deletedKeystore');

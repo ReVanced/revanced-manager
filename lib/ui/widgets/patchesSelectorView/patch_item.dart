@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
@@ -15,6 +18,8 @@ class PatchItem extends StatefulWidget {
   bool isSelected;
   final Function(bool) onChanged;
   final Widget? child;
+  final toast = locator<Toast>();
+  final _managerAPI = locator<ManagerAPI>();
 
   PatchItem(
       {Key? key,
@@ -40,8 +45,21 @@ class _PatchItemState extends State<PatchItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: CustomCard(
+        backgroundColor: widget.isUnsupported &&
+                widget._managerAPI.areExperimentalPatchesEnabled() == false
+            ? Theme.of(context).colorScheme.brightness == Brightness.light
+                ? Colors.grey[400]
+                : Colors.grey[700]
+            : null,
         onTap: () {
-          setState(() => widget.isSelected = !widget.isSelected);
+          setState(() {
+            if (widget.isUnsupported) {
+              widget.isSelected = false;
+              widget.toast.showBottom('patchItem.unsupportedPatchVersion');
+            } else {
+              widget.isSelected = !widget.isSelected;
+            }
+          });
           widget.onChanged(widget.isSelected);
         },
         child: Column(
@@ -83,7 +101,9 @@ class _PatchItemState extends State<PatchItem> {
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
                       ),
                     ],
@@ -101,7 +121,18 @@ class _PatchItemState extends State<PatchItem> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     onChanged: (newValue) {
-                      setState(() => widget.isSelected = newValue!);
+                      setState(() {
+                        if (widget.isUnsupported &&
+                            widget._managerAPI
+                                    .areExperimentalPatchesEnabled() ==
+                                false) {
+                          widget.isSelected = false;
+                          widget.toast
+                              .showBottom('patchItem.unsupportedPatchVersion');
+                        } else {
+                          widget.isSelected = newValue!;
+                        }
+                      });
                       widget.onChanged(widget.isSelected);
                     },
                   ),

@@ -136,6 +136,23 @@ class SettingsView extends StatelessWidget {
                         subtitle: 'settingsView.sourcesLabelHint',
                         onTap: () => model.showSourcesDialog(context),
                       ),
+                      CustomSwitchTile(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          title: I18nText(
+                            'settingsView.experimentalPatchesLabel',
+                            child: const Text(
+                              '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          subtitle:
+                              I18nText('settingsView.experimentalPatchesHint'),
+                          value: model.areExperimentalPatchesEnabled(),
+                          onTap: (value) =>
+                              model.useExperimentalPatches(value)),
                       ListTile(
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20.0),

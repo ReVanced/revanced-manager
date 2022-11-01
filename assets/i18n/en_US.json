@@ -84,7 +84,8 @@
     "patchItem": {
         "unsupportedWarningButton": "Warning",
         "unsupportedDialogTitle": "Warning",
-        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}"
+        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nCurrent supported versions:\n{supportedVersions}",
+        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable experimental toggle in settings to proceed."
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -132,6 +133,9 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
         "selectApiURL": "Select URL",
+        "experimentalPatchesLabel": "Experimental Patch support",
+        "experimentalPatchesHint": "Enable to use unsupported patches in any app version",
+        "enabledExperimentalPatches": "Experimental patches enabled",
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
         "sentryLabel": "Sentry Logging",
