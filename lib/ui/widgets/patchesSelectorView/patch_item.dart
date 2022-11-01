@@ -53,7 +53,9 @@ class _PatchItemState extends State<PatchItem> {
             : null,
         onTap: () {
           setState(() {
-            if (widget.isUnsupported) {
+            if (widget.isUnsupported &&
+                !widget._managerAPI.areExperimentalPatchesEnabled()
+            ) {
               widget.isSelected = false;
               widget.toast.showBottom('patchItem.unsupportedPatchVersion');
             } else {
@@ -123,9 +125,8 @@ class _PatchItemState extends State<PatchItem> {
                     onChanged: (newValue) {
                       setState(() {
                         if (widget.isUnsupported &&
-                            widget._managerAPI
-                                    .areExperimentalPatchesEnabled() ==
-                                false) {
+                            !widget._managerAPI.areExperimentalPatchesEnabled()
+                        ) {
                           widget.isSelected = false;
                           widget.toast
                               .showBottom('patchItem.unsupportedPatchVersion');
