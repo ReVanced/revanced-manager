@@ -228,11 +228,26 @@ class PatcherAPI {
     return false;
   }
 
+
+  void exportPatchedFile(String appName, String version) {
+    try {
+      if (_outFile != null) {
+        const platform = MethodChannel("app.revanced.manager.flutter/exporter");
+        String newName = _getFileName(appName, version);
+        platform.invokeMethod("exportApk", {
+          "source_path": _outFile!.path,
+          "name": newName
+        });
+      }
+    } on Exception catch (e, s) {
+      Sentry.captureException(e, stackTrace: s);
+    }
+  }
+
   void sharePatchedFile(String appName, String version) {
     try {
       if (_outFile != null) {
-        String prefix = appName.toLowerCase().replaceAll(' ', '-');
-        String newName = '$prefix-revanced_v$version.apk';
+        String newName = _getFileName(appName, version);
         int lastSeparator = _outFile!.path.lastIndexOf('/');
         String newPath =
             _outFile!.path.substring(0, lastSeparator + 1) + newName;
@@ -242,6 +257,13 @@ class PatcherAPI {
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
     }
+  }
+
+  String _getFileName(String appName, String version) {
+      String prefix = appName.toLowerCase().replaceAll(' ', '-');
+      String newName = '$prefix-revanced_v$version.apk';
+      return newName;
+
   }
 
   Future<void> sharePatcherLog(String logs) async {

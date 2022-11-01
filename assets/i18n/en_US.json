@@ -95,6 +95,7 @@
         "notificationTitle": "ReVanced Manager is patching",
         "notificationText": "Tap to return to the installer",
         "shareApkMenuOption": "Share APK",
+        "exportApkMenuOption": "Export APK",
         "shareLogMenuOption": "Share log",
         "installErrorDialogTitle": "Error",
         "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
