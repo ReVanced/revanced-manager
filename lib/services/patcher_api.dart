@@ -12,6 +12,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
+import 'package:cr_file_saver/file_saver.dart';
 
 @lazySingleton
 class PatcherAPI {
@@ -232,12 +233,18 @@ class PatcherAPI {
   void exportPatchedFile(String appName, String version) {
     try {
       if (_outFile != null) {
-        const platform = MethodChannel("app.revanced.manager.flutter/exporter");
         String newName = _getFileName(appName, version);
-        platform.invokeMethod("exportApk", {
-          "source_path": _outFile!.path,
-          "name": newName
-        });
+
+        // This is temporary workaround to populate initial file name
+        // ref: https://github.com/Cleveroad/cr_file_saver/issues/7
+        int lastSeparator = _outFile!.path.lastIndexOf('/');
+        String newSourcePath = _outFile!.path.substring(0, lastSeparator + 1) + newName;
+        _outFile!.copySync(newSourcePath);
+
+        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
+          sourceFilePath: newSourcePath,
+          destinationFileName: newName
+        ));
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);

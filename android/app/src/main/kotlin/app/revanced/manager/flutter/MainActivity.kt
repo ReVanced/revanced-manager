@@ -1,8 +1,5 @@
 package app.revanced.manager.flutter
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -21,32 +18,19 @@ import dalvik.system.DexClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.Result
 import java.io.File
-import java.io.OutputStream
 
 private const val PATCHER_CHANNEL = "app.revanced.manager.flutter/patcher"
 private const val INSTALLER_CHANNEL = "app.revanced.manager.flutter/installer"
-private const val EXPORTER_CHANNEL = "app.revanced.manager.flutter/exporter"
-
-private const val APK_MIME_TYPE = "application/vnd.android.package-archive"
 
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
-    private lateinit var exporterChannel: MethodChannel
-
-
-    // Export APK 
-    internal val export_request_code = 1
-    internal var export_result: Result? = null
-    internal var export_source_path: String? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val mainChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PATCHER_CHANNEL)
         installerChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, INSTALLER_CHANNEL)
-        exporterChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, EXPORTER_CHANNEL)
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
@@ -90,71 +74,6 @@ class MainActivity : FlutterActivity() {
                 }
                 else -> result.notImplemented()
             }
-        }
-
-        exporterChannel.setMethodCallHandler { call, result ->
-            // Referenced from https://gist.github.com/MSVCode/9ccedfa6692f8bc3b82fdc74fad65bc6
-            if (call.method == "exportApk") {
-                export_result = result;
-
-                export_source_path = call.argument<String>("source_path")!!;
-                var name = call.argument<String>("name")!!;
-                startFileExport(APK_MIME_TYPE, name);
-            } else {
-                result.notImplemented();
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Check which request we're responding to
-        if (requestCode == export_request_code) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null && data.getData() != null) {
-                    exportToFile(data.getData() as Uri) // data.getData() is Uri
-                } else {
-                    export_result?.error("NO DATA", "Did not get valid data (Uri) for export", null)
-                }
-            } else {
-                export_result?.error("CANCELED", "User cancelled", null)
-            }
-        }
-    }
-
-    private fun startFileExport(mimeType: String, fileName: String) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            // Filter to only show results that can be "opened", such as
-            // a file (as opposed to a list of contacts or timezones).
-            addCategory(Intent.CATEGORY_OPENABLE)
-
-            // Create a file with the requested MIME type.
-            type = mimeType
-            putExtra(Intent.EXTRA_TITLE, fileName)
-        }
-
-        startActivityForResult(intent, export_request_code)
-    }
-
-
-    private fun exportToFile(uri: Uri) {
-        val outputStream: OutputStream?
-        try {
-            outputStream = getContentResolver().openOutputStream(uri)
-            if (outputStream != null) {
-                File(export_source_path).inputStream().copyTo(outputStream)
-                export_result?.success("SUCCESS")
-            } else {
-                export_result?.error("ERROR", "Unable to open output Uri", null)
-            }
-        } catch (e: Exception) {
-
-            // log to console
-            print("Error exporting apk: ${e.message}")
-            e.printStackTrace()
-
-            export_result?.error("ERROR", "Unable to write", null)
         }
     }
 
