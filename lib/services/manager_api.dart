@@ -398,7 +398,7 @@ class ManagerAPI {
     if (!await selectedPatchesFile.exists()) {
       await selectedPatchesFile.create(recursive: true);
     }
-    await selectedPatchesFile.writeAsString(patches, mode: FileMode.append);
+    await selectedPatchesFile.writeAsString(patches);
   }
 
   Future<File?> loadSelectedPatches(String app) async {
