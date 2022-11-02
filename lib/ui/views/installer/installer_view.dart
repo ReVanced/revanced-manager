@@ -48,7 +48,16 @@ class InstallerView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          1: I18nText(
+                            1: I18nText(
+                              'installerView.exportApkMenuOption',
+                              child: const Text(
+                                '',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          2: I18nText(
                             'installerView.shareLogMenuOption',
                             child: const Text(
                               '',
