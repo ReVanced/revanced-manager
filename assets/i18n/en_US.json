@@ -77,6 +77,8 @@
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
+        "saveSelectedPatchesButton": "Save",
+        "loadSelectedPatchesButton": "Load",
         "noPatchesFound": "No patches found for the selected app",
         "selectAllPatchesWarningTitle": "Warning",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
@@ -148,6 +150,9 @@
         "deleteTempDirLabel": "Delete temp directory",
         "deleteTempDirHint": "Delete the temporary directory used to store temporary files",
         "deletedTempDir": "Temp directory deleted",
+        "resetStoredPatchesLabel": "Reset stored patches",
+        "resetStoredPatchesHint": "Reset the stored patches",
+        "resetStoredPatches": "Stored patches reset",
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
         "deletedLogs": "Logs deleted"

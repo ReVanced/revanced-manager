@@ -189,7 +189,7 @@ class SettingsView extends StatelessWidget {
                         contentPadding:
                         const EdgeInsets.symmetric(horizontal: 20.0),
                         title: I18nText(
-                          'Reset stored patches',
+                          'settingsView.resetStoredPatchesLabel',
                           child: const Text(
                             '',
                             style: TextStyle(
@@ -198,7 +198,7 @@ class SettingsView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        subtitle: I18nText('Resets the stored patches'),
+                        subtitle: I18nText('settingsView.resetStoredPatchesHint'),
                         onTap: () => model.deleteTempDir(),
                       ),
                       ListTile(

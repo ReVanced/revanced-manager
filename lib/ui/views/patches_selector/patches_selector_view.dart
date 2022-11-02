@@ -45,7 +45,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   visible: model.patches.isNotEmpty,
                   child: FloatingActionButton.extended(
                     backgroundColor: Colors.blueGrey,
-                    label: const Text('Save'),
+                    label: I18nText('patchesSelectorView.saveSelectedPatchesButton'),
                     icon: const Icon(Icons.save),
                     onPressed: () {
                       model.saveSelectedPatches();
@@ -57,7 +57,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   visible: model.patches.isNotEmpty,
                   child: FloatingActionButton.extended(
                     backgroundColor: Colors.blueGrey,
-                    label: const Text('Load'),
+                    label: I18nText('patchesSelectorView.loadSelectedPatchesButton'),
                     icon: const Icon(Icons.upload),
                     onPressed: () {
                       model.loadSelectedPatches();
