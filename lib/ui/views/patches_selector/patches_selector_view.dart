@@ -26,10 +26,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
           visible: model.patches.isNotEmpty,
           child: FloatingActionButton.extended(
             label: Row(
-                children: <Widget>[
-                  I18nText('patchesSelectorView.doneButton'),
-                  Text(' (${model.selectedPatches.length})')
-                ],
+              children: <Widget>[
+                I18nText('patchesSelectorView.doneButton'),
+                Text(' (${model.selectedPatches.length})')
+              ],
             ),
             icon: const Icon(Icons.check),
             onPressed: () {
