@@ -35,9 +35,13 @@ class PatchSelectorCard extends StatelessWidget {
                 ),
               ),
               Text(
-                  locator<PatcherViewModel>().selectedPatches.isEmpty
+                locator<PatcherViewModel>().selectedPatches.isEmpty
                     ? ''
-                    : ' (${locator<PatcherViewModel>().selectedPatches.length})'
+                    : ' (${locator<PatcherViewModel>().selectedPatches.length})',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
