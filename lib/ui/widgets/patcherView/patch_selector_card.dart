@@ -21,7 +21,7 @@ class PatchSelectorCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            children: [
+            children: <Widget>[
               I18nText(
                 locator<PatcherViewModel>().selectedPatches.isEmpty
                     ? 'patchSelectorCard.widgetTitle'
