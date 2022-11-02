@@ -20,17 +20,26 @@ class PatchSelectorCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          I18nText(
-            locator<PatcherViewModel>().selectedPatches.isEmpty
-                ? 'patchSelectorCard.widgetTitle'
-                : 'patchSelectorCard.widgetTitleSelected',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+          Row(
+            children: [
+              I18nText(
+                locator<PatcherViewModel>().selectedPatches.isEmpty
+                    ? 'patchSelectorCard.widgetTitle'
+                    : 'patchSelectorCard.widgetTitleSelected',
+                child: const Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-            ),
+              Text(
+                  locator<PatcherViewModel>().selectedPatches.isEmpty
+                    ? ''
+                    : ' (${locator<PatcherViewModel>().selectedPatches.length})'
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           locator<PatcherViewModel>().selectedApp == null
