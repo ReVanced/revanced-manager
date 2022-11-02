@@ -391,4 +391,28 @@ class ManagerAPI {
     }
     return app != null && app.isSplit;
   }
+
+  Future<void> saveSelectedPatches(String app, String patches) async {
+    final File selectedPatchesFile = File(
+        '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches/$app.txt');
+    if (!await selectedPatchesFile.exists()) {
+      await selectedPatchesFile.create(recursive: true);
+    }
+    await selectedPatchesFile.writeAsString(patches, mode: FileMode.append);
+  }
+
+  Future<File?> loadSelectedPatches(String app) async {
+    final File selectedPatchesFile = File(
+        '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches/$app.txt');
+    if (await selectedPatchesFile.exists()) {
+      return selectedPatchesFile;
+    }
+    return null;
+  }
+
+  Future<void> resetSelectedPatches() async {
+    final Directory selectedPatchesDir = Directory(
+        '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches/');
+    selectedPatchesDir.delete(recursive: true);
+  }
 }

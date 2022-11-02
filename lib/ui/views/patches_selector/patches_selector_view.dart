@@ -22,16 +22,52 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         resizeToAvoidBottomInset: false,
-        floatingActionButton: Visibility(
-          visible: model.patches.isNotEmpty,
-          child: FloatingActionButton.extended(
-            label: I18nText('patchesSelectorView.doneButton'),
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              model.selectPatches();
-              Navigator.of(context).pop();
-            },
-          ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Visibility(
+              visible: model.patches.isNotEmpty,
+              child: FloatingActionButton.extended(
+                label: I18nText('patchesSelectorView.doneButton'),
+                icon: const Icon(Icons.check),
+                onPressed: () {
+                  model.selectPatches();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Visibility(
+                  visible: model.patches.isNotEmpty,
+                  child: FloatingActionButton.extended(
+                    backgroundColor: Colors.blueGrey,
+                    label: const Text('Save'),
+                    icon: const Icon(Icons.save),
+                    onPressed: () {
+                      model.saveSelectedPatches();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Visibility(
+                  visible: model.patches.isNotEmpty,
+                  child: FloatingActionButton.extended(
+                    backgroundColor: Colors.blueGrey,
+                    label: const Text('Load'),
+                    icon: const Icon(Icons.upload),
+                    onPressed: () {
+                      model.loadSelectedPatches();
+                      setState(() {model.selectedPatches;});
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         body: CustomScrollView(
           slivers: [

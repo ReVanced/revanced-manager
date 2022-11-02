@@ -187,6 +187,22 @@ class SettingsView extends StatelessWidget {
                       ),
                       ListTile(
                         contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'Reset stored patches',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('Resets the stored patches'),
+                        onTap: () => model.deleteTempDir(),
+                      ),
+                      ListTile(
+                        contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20.0),
                         title: I18nText(
                           'settingsView.deleteLogsLabel',

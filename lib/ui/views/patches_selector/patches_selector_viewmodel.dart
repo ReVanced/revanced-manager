@@ -117,4 +117,24 @@ class PatchesSelectorViewModel extends BaseViewModel {
         pack.name == app.packageName &&
         (pack.versions.isEmpty || pack.versions.contains(app.version)));
   }
+
+  Future<void> loadSelectedPatches() async {
+    List<String> lines = [];
+    await _managerAPI.loadSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName).then((selectedPatchesFile) => {
+      lines = selectedPatchesFile!.readAsLinesSync()
+    });
+    if (lines.isNotEmpty) {
+      selectedPatches.clear();
+      selectedPatches.addAll(patches.where((patch) => lines.contains(patch.name)));
+    }
+  }
+
+  Future<void> saveSelectedPatches() async {
+    String patches = "";
+    for (Patch p in selectedPatches) {
+      patches += p.name;
+      patches += "\n";
+    }
+    _managerAPI.saveSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, patches);
+  }
 }

@@ -347,6 +347,10 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> resetSelectedPatches() async {
+    _managerAPI.resetSelectedPatches();
+  }
+
   Future<int> getSdkVersion() async {
     AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;
