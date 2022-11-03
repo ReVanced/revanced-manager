@@ -85,6 +85,18 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     ),
                   ),
                 ),
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.arrow_downward),
+                  itemBuilder: (BuildContext context) {
+                    return {"Save selected patches", "Load selected patches"}
+                        .map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      );
+                    }).toList();
+                  },
+                ),
               ],
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(64.0),
