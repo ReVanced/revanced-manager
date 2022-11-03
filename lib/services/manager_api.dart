@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -19,8 +20,7 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
-  final String storedPatchesFile =
-      '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches.json';
+  final String storedPatchesFile = '/selected-patches.json';
   late SharedPreferences _prefs;
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -394,18 +394,18 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  Future<void> saveSelectedPatches(String app, List<String> patches) async {
-    final File selectedPatchesFile = File(storedPatchesFile);
+  Future<void> setLastSelectedPatches(String app, List<String> patches) async {
+    final File selectedPatchesFile = File((await getApplicationDocumentsDirectory()).path + storedPatchesFile);
     if (!await selectedPatchesFile.exists()) {
       await selectedPatchesFile.create(recursive: true);
     }
-    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    Map<String, dynamic> patchesMap = await readLastSelectedPatchesFile();
     patchesMap[app] = patches;
     await selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
-  Future<List<String>> loadSelectedPatches(String app) async {
-    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+  Future<List<String>> getLastSelectedPatches(String app) async {
+    Map<String, dynamic> patchesMap = await readLastSelectedPatchesFile();
     if (patchesMap.isNotEmpty) {
       final List<String> patches = List.from(patchesMap.putIfAbsent(app, () => List.empty()));
       return patches;
@@ -413,8 +413,8 @@ class ManagerAPI {
     return List.empty();
   }
 
-  Future<Map<String, dynamic>> readSelectedPatchesFile() async {
-    final File selectedPatchesFile = File(storedPatchesFile);
+  Future<Map<String, dynamic>> readLastSelectedPatchesFile() async {
+    final File selectedPatchesFile = File((await getApplicationDocumentsDirectory()).path + storedPatchesFile);
     if (await selectedPatchesFile.exists()) {
       String string = selectedPatchesFile.readAsStringSync();
       if (string.trim().isEmpty) return {};
@@ -424,7 +424,7 @@ class ManagerAPI {
   }
 
   Future<void> resetSelectedPatches() async {
-    final File selectedPatchesFile = File(storedPatchesFile);
+    final File selectedPatchesFile = File((await getApplicationDocumentsDirectory()).path + storedPatchesFile);
     await selectedPatchesFile.delete();
   }
 }

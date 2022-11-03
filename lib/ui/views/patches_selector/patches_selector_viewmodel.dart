@@ -77,6 +77,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
+    saveSelectedPatches();
     locator<PatcherViewModel>().notifyListeners();
   }
 
@@ -119,26 +120,33 @@ class PatchesSelectorViewModel extends BaseViewModel {
         (pack.versions.isEmpty || pack.versions.contains(app.version)));
   }
 
+  void onMenuSelection(value) {
+    switch (value) {
+      case 0:
+        loadSelectedPatches();
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
+    }
+  }
+
+  Future<void> saveSelectedPatches() async {
+    List<String> patches = selectedPatches.map((patch) => patch.name).toList();
+    try {
+      await _managerAPI.setLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, patches);
+    } catch (_) {}
+  }
+
   Future<void> loadSelectedPatches() async {
-    List<String> patches = [];
-    await _managerAPI.loadSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName)
-        .then((selectedPatches) => {patches = selectedPatches});
+    List<String> patches = await _managerAPI.getLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName);
     if (patches.isNotEmpty) {
       selectedPatches.clear();
       selectedPatches.addAll(this.patches.where((patch) => patches.contains(patch.name)));
     } else {
       locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
     }
-  }
-
-  Future<void> saveSelectedPatches() async {
-    List<String> patches = this.patches.where((patch) => selectedPatches.contains(patch))
-        .map((patch) => patch.name).toList();
-    try {
-      await _managerAPI.saveSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, patches);
-      locator<Toast>().showBottom('patchesSelectorView.savedSelectedPatches');
-    } catch (error) {
-      locator<Toast>().showBottom('patchesSelectorView.savedSelectedPatchesError');
-    }
+    notifyListeners();
   }
 }

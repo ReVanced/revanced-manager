@@ -5,6 +5,8 @@ import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart'
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../widgets/shared/custom_popup_menu.dart';
+
 class PatchesSelectorView extends StatefulWidget {
   const PatchesSelectorView({Key? key}) : super(key: key);
 
@@ -56,21 +58,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               actions: [
-                GestureDetector(
-                  child: IconButton(
-                    icon: const Icon(Icons.save),
-                    onPressed: () {
-                      model.loadSelectedPatches();
-                      setState(() {model.selectedPatches;});
-                    },
-                  ),
-                  onLongPress: () {
-                    model.saveSelectedPatches();
-                  },
-                ),
                 Container(
                   height: 2,
-                  margin: const EdgeInsets.only(right: 16, top: 12, bottom: 12),
+                  margin: const EdgeInsets.only(top: 12, bottom: 12),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                   decoration: BoxDecoration(
@@ -85,16 +75,38 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     ),
                   ),
                 ),
-                PopupMenuButton<String>(
-                  icon: const Icon(Icons.arrow_downward),
-                  itemBuilder: (BuildContext context) {
-                    return {"Save selected patches", "Load selected patches"}
-                        .map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
+                CustomPopupMenu(
+                  onSelected: (value) => {
+                    model.onMenuSelection(value)
+                  },
+                  children: {
+                    0: I18nText(
+                      'patchesSelectorView.loadPatchesSelection',
+                      child: const Text(
+                        '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    1: I18nText(
+                      'patchesSelectorView.importPatchesSelection',
+                      child: const Text(
+                        '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    2: I18nText(
+                      'patchesSelectorView.exportPatchesSelection',
+                      child: const Text(
+                        '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   },
                 ),
               ],

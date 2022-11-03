@@ -33,7 +33,7 @@ class AppSelectorViewModel extends BaseViewModel {
       icon: application.icon,
       patchDate: DateTime.now(),
     );
-    locator<PatcherViewModel>().selectedPatches.clear();
+    locator<PatcherViewModel>().loadLastSelectedPatches();
     locator<PatcherViewModel>().notifyListeners();
   }
 
@@ -60,7 +60,7 @@ class AppSelectorViewModel extends BaseViewModel {
             patchDate: DateTime.now(),
             isFromStorage: true,
           );
-          locator<PatcherViewModel>().selectedPatches.clear();
+          locator<PatcherViewModel>().loadLastSelectedPatches();
           locator<PatcherViewModel>().notifyListeners();
         }
       }

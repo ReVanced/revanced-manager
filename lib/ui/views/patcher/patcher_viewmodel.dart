@@ -107,4 +107,12 @@ class PatcherViewModel extends BaseViewModel {
       'appSelectorCard.recommendedVersion',
     )}: $recommendedVersion';
   }
+
+  Future<void> loadLastSelectedPatches() async {
+    this.selectedPatches.clear();
+    List<String> selectedPatches = await _managerAPI.getLastSelectedPatches(selectedApp!.originalPackageName);
+    List<Patch> patches = await _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
+    this.selectedPatches.addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
+    notifyListeners();
+  }
 }
