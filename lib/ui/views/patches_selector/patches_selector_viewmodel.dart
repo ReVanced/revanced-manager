@@ -119,6 +119,15 @@ class PatchesSelectorViewModel extends BaseViewModel {
         (pack.versions.isEmpty || pack.versions.contains(app.version)));
   }
 
+
+  void onMenuSelection(value) {
+    switch (value) {
+      case 0:
+        loadLastSelectedPatches();
+        break;
+    }
+  }
+
   void saveLastSelectedPatches() {
     _managerAPI.saveLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName,
         selectedPatches.map((patch) => patch.name).toList());
