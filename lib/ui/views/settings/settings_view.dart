@@ -199,7 +199,7 @@ class SettingsView extends StatelessWidget {
                           ),
                         ),
                         subtitle: I18nText('settingsView.resetStoredPatchesHint'),
-                        onTap: () => model.deleteTempDir(),
+                        onTap: () => model.resetSelectedPatches(),
                       ),
                       ListTile(
                         contentPadding:

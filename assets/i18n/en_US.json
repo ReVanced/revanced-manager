@@ -79,6 +79,9 @@
         "doneButton": "Done",
         "saveSelectedPatchesButton": "Save",
         "loadSelectedPatchesButton": "Load",
+        "noSavedPatches": "No saved patches for the selected app",
+        "savedSelectedPatches": "Selected patches saved",
+        "savedSelectedPatchesError": "Error saving selected patches",
         "noPatchesFound": "No patches found for the selected app",
         "selectAllPatchesWarningTitle": "Warning",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."

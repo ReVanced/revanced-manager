@@ -19,6 +19,8 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
+  final String storedPatchesFile =
+      '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches.json';
   late SharedPreferences _prefs;
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -392,27 +394,37 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  Future<void> saveSelectedPatches(String app, String patches) async {
-    final File selectedPatchesFile = File(
-        '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches/$app.txt');
+  Future<void> saveSelectedPatches(String app, List<String> patches) async {
+    final File selectedPatchesFile = File(storedPatchesFile);
     if (!await selectedPatchesFile.exists()) {
       await selectedPatchesFile.create(recursive: true);
     }
-    await selectedPatchesFile.writeAsString(patches);
+    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    patchesMap[app] = patches;
+    await selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
-  Future<File?> loadSelectedPatches(String app) async {
-    final File selectedPatchesFile = File(
-        '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches/$app.txt');
-    if (await selectedPatchesFile.exists()) {
-      return selectedPatchesFile;
+  Future<List<String>> loadSelectedPatches(String app) async {
+    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    if (patchesMap.isNotEmpty) {
+      final List<String> patches = List.from(patchesMap.putIfAbsent(app, () => List.empty()));
+      return patches;
     }
-    return null;
+    return List.empty();
+  }
+
+  Future<Map<String, dynamic>> readSelectedPatchesFile() async {
+    final File selectedPatchesFile = File(storedPatchesFile);
+    if (await selectedPatchesFile.exists()) {
+      String string = selectedPatchesFile.readAsStringSync();
+      if (string.trim().isEmpty) return {};
+      return json.decode(string);
+    }
+    return {};
   }
 
   Future<void> resetSelectedPatches() async {
-    final Directory selectedPatchesDir = Directory(
-        '/sdcard/Android/data/app.revanced.manager.flutter/files/selected-patches/');
-    selectedPatchesDir.delete(recursive: true);
+    final File selectedPatchesFile = File(storedPatchesFile);
+    await selectedPatchesFile.delete();
   }
 }

@@ -5,6 +5,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
@@ -119,22 +120,25 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> loadSelectedPatches() async {
-    List<String> lines = [];
-    await _managerAPI.loadSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName).then((selectedPatchesFile) => {
-      lines = selectedPatchesFile!.readAsLinesSync()
-    });
-    if (lines.isNotEmpty) {
+    List<String> patches = [];
+    await _managerAPI.loadSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName)
+        .then((selectedPatches) => {patches = selectedPatches});
+    if (patches.isNotEmpty) {
       selectedPatches.clear();
-      selectedPatches.addAll(patches.where((patch) => lines.contains(patch.name)));
+      selectedPatches.addAll(this.patches.where((patch) => patches.contains(patch.name)));
+    } else {
+      locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
     }
   }
 
   Future<void> saveSelectedPatches() async {
-    String patches = "";
-    for (Patch p in selectedPatches) {
-      patches += p.name;
-      patches += "\n";
+    List<String> patches = this.patches.where((patch) => selectedPatches.contains(patch))
+        .map((patch) => patch.name).toList();
+    try {
+      await _managerAPI.saveSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, patches);
+      locator<Toast>().showBottom('patchesSelectorView.savedSelectedPatches');
+    } catch (error) {
+      locator<Toast>().showBottom('patchesSelectorView.savedSelectedPatchesError');
     }
-    _managerAPI.saveSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, patches);
   }
 }

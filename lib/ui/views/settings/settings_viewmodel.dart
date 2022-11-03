@@ -343,12 +343,14 @@ class SettingsViewModel extends BaseViewModel {
 
   void deleteTempDir() {
     _managerAPI.deleteTempFolder();
-    _toast.showBottom('settingsView.resetStoredPatches');
+    _toast.showBottom('settingsView.deletedTempDir');
     notifyListeners();
   }
 
-  Future<void> resetSelectedPatches() async {
+  void resetSelectedPatches() {
     _managerAPI.resetSelectedPatches();
+    _toast.showBottom('settingsView.resetStoredPatches');
+    notifyListeners();
   }
 
   Future<int> getSdkVersion() async {
