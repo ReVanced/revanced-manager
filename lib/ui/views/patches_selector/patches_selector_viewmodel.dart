@@ -129,14 +129,14 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   void saveLastSelectedPatches() {
-    _managerAPI.saveLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName,
+    _managerAPI.setLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName,
         selectedPatches.map((patch) => patch.name).toList());
   }
 
   void loadLastSelectedPatches() {
     selectedPatches.clear();
     selectedPatches.addAll(
-        patches.where((patch) => _managerAPI.loadLastSelectedPatches
+        patches.where((patch) => _managerAPI.getLastSelectedPatches
           (locator<PatcherViewModel>().selectedApp!.originalPackageName)
             .contains(patch.name)));
   }

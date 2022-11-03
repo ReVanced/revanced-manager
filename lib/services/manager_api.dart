@@ -392,12 +392,12 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  List<String> loadLastSelectedPatches(String app) {
-    List<String>? list = _prefs.getStringList(app);
+  List<String> getLastSelectedPatches(String app) {
+    List<String>? list = _prefs.getStringList("lastSelectedPatches_$app");
     return list ?? [];
   }
 
-  void saveLastSelectedPatches(String app, List<String> patches) {
-    _prefs.setStringList(app, patches);
+  void setLastSelectedPatches(String app, List<String> patches) {
+    _prefs.setStringList("lastSelectedPatches_$app", patches);
   }
 }

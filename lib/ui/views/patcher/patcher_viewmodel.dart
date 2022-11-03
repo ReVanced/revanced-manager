@@ -112,7 +112,7 @@ class PatcherViewModel extends BaseViewModel {
     selectedPatches.clear();
     _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName)
         .then((list) => selectedPatches.addAll(list.where((patch) =>
-        _managerAPI.loadLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName)
+        _managerAPI.getLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName)
             .contains(patch.name))));
   }
 }
