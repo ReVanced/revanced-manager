@@ -22,52 +22,16 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         resizeToAvoidBottomInset: false,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Visibility(
-              visible: model.patches.isNotEmpty,
-              child: FloatingActionButton.extended(
-                label: I18nText('patchesSelectorView.doneButton'),
-                icon: const Icon(Icons.check),
-                onPressed: () {
-                  model.selectPatches();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Visibility(
-                  visible: model.patches.isNotEmpty,
-                  child: FloatingActionButton.extended(
-                    backgroundColor: Colors.blueGrey,
-                    label: I18nText('patchesSelectorView.saveSelectedPatchesButton'),
-                    icon: const Icon(Icons.save),
-                    onPressed: () {
-                      model.saveSelectedPatches();
-                    },
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Visibility(
-                  visible: model.patches.isNotEmpty,
-                  child: FloatingActionButton.extended(
-                    backgroundColor: Colors.blueGrey,
-                    label: I18nText('patchesSelectorView.loadSelectedPatchesButton'),
-                    icon: const Icon(Icons.upload),
-                    onPressed: () {
-                      model.loadSelectedPatches();
-                      setState(() {model.selectedPatches;});
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
+        floatingActionButton: Visibility(
+          visible: model.patches.isNotEmpty,
+          child: FloatingActionButton.extended(
+            label: I18nText('patchesSelectorView.doneButton'),
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              model.selectPatches();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: CustomScrollView(
           slivers: [
@@ -92,6 +56,18 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               actions: [
+                GestureDetector(
+                  child: IconButton(
+                    icon: const Icon(Icons.save),
+                    onPressed: () {
+                      model.loadSelectedPatches();
+                      setState(() {model.selectedPatches;});
+                    },
+                  ),
+                  onLongPress: () {
+                    model.saveSelectedPatches();
+                  },
+                ),
                 Container(
                   height: 2,
                   margin: const EdgeInsets.only(right: 16, top: 12, bottom: 12),
