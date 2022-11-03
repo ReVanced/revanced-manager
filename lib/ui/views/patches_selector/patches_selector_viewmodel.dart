@@ -76,6 +76,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
+    saveLastSelectedPatches();
     locator<PatcherViewModel>().notifyListeners();
   }
 
@@ -116,5 +117,18 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return patch.compatiblePackages.any((pack) =>
         pack.name == app.packageName &&
         (pack.versions.isEmpty || pack.versions.contains(app.version)));
+  }
+
+  void saveLastSelectedPatches() {
+    _managerAPI.saveLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName,
+        selectedPatches.map((patch) => patch.name).toList());
+  }
+
+  void loadLastSelectedPatches() {
+    selectedPatches.clear();
+    selectedPatches.addAll(
+        patches.where((patch) => _managerAPI.loadLastSelectedPatches
+          (locator<PatcherViewModel>().selectedApp!.originalPackageName)
+            .contains(patch.name)));
   }
 }

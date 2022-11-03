@@ -107,4 +107,12 @@ class PatcherViewModel extends BaseViewModel {
       'appSelectorCard.recommendedVersion',
     )}: $recommendedVersion';
   }
+
+  void loadLastSelectedPatches() {
+    selectedPatches.clear();
+    _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName)
+        .then((list) => selectedPatches.addAll(list.where((patch) =>
+        _managerAPI.loadLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName)
+            .contains(patch.name))));
+  }
 }
