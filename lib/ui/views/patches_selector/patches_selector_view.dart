@@ -81,7 +81,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   },
                   children: {
                     0: I18nText(
-                      'Load selected patches',
+                      'patchesSelectorView.loadPatchesSelection',
                       child: const Text(
                         '',
                         style: TextStyle(

@@ -77,6 +77,7 @@
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
+        "loadPatchesSelection": "Load patches selection",
         "noPatchesFound": "No patches found for the selected app",
         "selectAllPatchesWarningTitle": "Warning",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
