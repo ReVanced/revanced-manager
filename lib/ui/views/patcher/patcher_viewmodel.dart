@@ -110,9 +110,12 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
-    List<String> selectedPatches = await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
-    List<Patch> patches = await _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
-    this.selectedPatches.addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
+    List<String> selectedPatches =
+        await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
+    List<Patch> patches =
+        await _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
+    this.selectedPatches
+        .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     notifyListeners();
   }
 }

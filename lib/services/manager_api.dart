@@ -32,7 +32,8 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
-    storedPatchesFile = (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+    storedPatchesFile =
+        (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
 
   String getApiUrl() {
@@ -401,15 +402,18 @@ class ManagerAPI {
     if (!await selectedPatchesFile.exists()) {
       await selectedPatchesFile.create(recursive: true);
     }
-    Map<String, dynamic> patchesMap = await readSelectedPatchesFile(storedPatchesFile);
+    Map<String, dynamic> patchesMap =
+        await readSelectedPatchesFile(storedPatchesFile);
     patchesMap[app] = patches;
     await selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
   Future<List<String>> getSelectedPatches(String app, {String? path}) async {
-    Map<String, dynamic> patchesMap = await readSelectedPatchesFile(path ?? storedPatchesFile);
+    Map<String, dynamic> patchesMap =
+        await readSelectedPatchesFile(path ?? storedPatchesFile);
     if (patchesMap.isNotEmpty) {
-      final List<String> patches = List.from(patchesMap.putIfAbsent(app, () => List.empty()));
+      final List<String> patches =
+          List.from(patchesMap.putIfAbsent(app, () => List.empty()));
       return patches;
     }
     return List.empty();
@@ -434,10 +438,9 @@ class ManagerAPI {
     try {
       File outFile = File(storedPatchesFile);
       if (await outFile.exists()) {
-            CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
+        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
             sourceFilePath: outFile.path,
-            destinationFileName: outFile.path.split('/').last
-        ));
+            destinationFileName: outFile.path.split('/').last));
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
