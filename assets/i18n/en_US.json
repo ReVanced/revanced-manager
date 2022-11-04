@@ -81,6 +81,7 @@
         "importPatchesSelection": "Import patches selection",
         "exportPatchesSelection": "Export patches selection",
         "noSavedPatches": "No saved patches for the selected app\nPress Done to save current selection",
+        "jsonSelectorErrorMessage": "Unable to use selected json file.",
         "noPatchesFound": "No patches found for the selected app",
         "selectAllPatchesWarningTitle": "Warning",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."

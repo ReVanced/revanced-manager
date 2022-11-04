@@ -348,7 +348,7 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   void resetSelectedPatches() {
-    _managerAPI.resetSelectedPatches();
+    _managerAPI.resetLastSelectedPatches();
     _toast.showBottom('settingsView.resetStoredPatches');
     notifyListeners();
   }

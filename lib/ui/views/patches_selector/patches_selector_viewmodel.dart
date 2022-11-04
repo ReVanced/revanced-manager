@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -8,6 +12,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 
@@ -126,27 +131,53 @@ class PatchesSelectorViewModel extends BaseViewModel {
         loadSelectedPatches();
         break;
       case 1:
+        importPatchesSelection();
         break;
       case 2:
+        exportLastSelectedPatches();
         break;
     }
   }
 
   Future<void> saveSelectedPatches() async {
-    List<String> patches = selectedPatches.map((patch) => patch.name).toList();
+    List<String> selectedPatches = this.selectedPatches.map((patch) => patch.name).toList();
     try {
-      await _managerAPI.setLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, patches);
+      await _managerAPI.setLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, selectedPatches);
     } catch (_) {}
   }
 
-  Future<void> loadSelectedPatches() async {
-    List<String> patches = await _managerAPI.getLastSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName);
-    if (patches.isNotEmpty) {
-      selectedPatches.clear();
-      selectedPatches.addAll(this.patches.where((patch) => patches.contains(patch.name)));
+  Future<void> loadSelectedPatches({String? path}) async {
+    List<String> selectedPatches = await _managerAPI.getSelectedPatches(locator<PatcherViewModel>().selectedApp!.originalPackageName, path: path);
+    if (selectedPatches.isNotEmpty) {
+      this.selectedPatches.clear();
+      this.selectedPatches.addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     } else {
       locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
     }
     notifyListeners();
+  }
+
+  Future<void> importPatchesSelection() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
+      if (result != null && result.files.single.path != null) {
+        loadSelectedPatches(path: result.files.single.path);
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      locator<Toast>().show('patchesSelectorView.jsonSelectorErrorMessage');
+    }
+  }
+
+  Future<void> exportLastSelectedPatches() async {
+    try {
+      await saveSelectedPatches();
+      _managerAPI.exportLastSelectedPatches();
+    } on Exception catch (e, s) {
+      Sentry.captureException(e, stackTrace: s);
+    }
   }
 }
