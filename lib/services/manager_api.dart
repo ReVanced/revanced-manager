@@ -439,8 +439,9 @@ class ManagerAPI {
       File outFile = File(storedPatchesFile);
       if (await outFile.exists()) {
         CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: outFile.path,
-            destinationFileName: outFile.path.split('/').last));
+          sourceFilePath: outFile.path,
+          destinationFileName: outFile.path.split('/').last
+        ));
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);

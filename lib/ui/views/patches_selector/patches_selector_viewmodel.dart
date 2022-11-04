@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
@@ -77,12 +79,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void selectPatches() {
-    locator<PatcherViewModel>().selectedPatches = selectedPatches;
-    saveSelectedPatches();
-    locator<PatcherViewModel>().notifyListeners();
-  }
-
   Future<String?> getPatchesVersion() async {
     patchesVersion = await _managerAPI.getLatestPatchesVersion();
     // print('Patches version: $patchesVersion');
@@ -137,12 +133,14 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> saveSelectedPatches() async {
+    locator<PatcherViewModel>().selectedPatches = this.selectedPatches;
     List<String> selectedPatches =
         this.selectedPatches.map((patch) => patch.name).toList();
     try {
       await _managerAPI.setLastSelectedPatches(
           locator<PatcherViewModel>().selectedApp!.originalPackageName,
           selectedPatches);
+      locator<PatcherViewModel>().notifyListeners();
     } catch (_) {}
   }
 
@@ -167,7 +165,8 @@ class PatchesSelectorViewModel extends BaseViewModel {
         allowedExtensions: ['json'],
       );
       if (result != null && result.files.single.path != null) {
-        loadSelectedPatches(path: result.files.single.path);
+        await loadSelectedPatches(path: result.files.single.path);
+        File(result.files.single.path!).delete();
       }
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
