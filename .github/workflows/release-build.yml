@@ -35,10 +35,10 @@ jobs:
         id: sign_apk
         uses: ilharp/sign-android-release@v1
         with:
-          releaseDirectory: build/app/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEYSTORE }}
+          releaseDir: build/app/outputs/apk/release
+          signingKey: ${{ secrets.SIGNING_KEYSTORE }}
           keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
-          alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
       - name: Add version to APK
         run: mv ${{steps.sign_apk.outputs.signedReleaseFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
