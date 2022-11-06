@@ -359,10 +359,13 @@ class SettingsViewModel extends BaseViewModel {
             .toString()
             .replaceAll(' ', '_')
             .split('.').removeAt(0);
+        String tempFilePath = '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json';
+        outFile.copySync(tempFilePath);
         await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json',
-          destinationFileName: '${outFile.path.split('/').last.split(".").first}_$dateTime.json'
+          sourceFilePath: tempFilePath,
+          destinationFileName: ''
         ));
+        File(tempFilePath).delete();
         locator<Toast>().showBottom('settingsView.exportedPatches');
       } else {
         locator<Toast>().showBottom('settingsView.noExportFileFound');
