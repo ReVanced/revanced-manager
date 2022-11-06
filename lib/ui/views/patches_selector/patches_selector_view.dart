@@ -29,7 +29,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             label: I18nText('patchesSelectorView.doneButton'),
             icon: const Icon(Icons.check),
             onPressed: () {
-              model.saveSelectedPatches();
+              model.selectPatches();
               Navigator.of(context).pop();
             },
           ),

@@ -351,11 +351,6 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void resetSelectedPatches() {
-    _managerAPI.resetLastSelectedPatches();
-    _toast.showBottom('settingsView.resetStoredPatches');
-  }
-
   Future<void> exportPatches() async {
     try {
       File outFile = File(_managerAPI.storedPatchesFile);
@@ -400,6 +395,11 @@ class SettingsViewModel extends BaseViewModel {
       await Sentry.captureException(e, stackTrace: s);
       locator<Toast>().showBottom('settingsView.jsonSelectorErrorMessage');
     }
+  }
+
+  void resetSelectedPatches() {
+    _managerAPI.resetLastSelectedPatches();
+    _toast.showBottom('settingsView.resetStoredPatches');
   }
 
   Future<int> getSdkVersion() async {

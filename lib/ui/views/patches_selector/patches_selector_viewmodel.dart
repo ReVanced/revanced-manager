@@ -75,6 +75,12 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void selectPatches() {
+    locator<PatcherViewModel>().selectedPatches = selectedPatches;
+    saveSelectedPatches();
+    locator<PatcherViewModel>().notifyListeners();
+  }
+
   Future<String?> getPatchesVersion() async {
     patchesVersion = await _managerAPI.getLatestPatchesVersion();
     // print('Patches version: $patchesVersion');
@@ -123,15 +129,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> saveSelectedPatches() async {
-    locator<PatcherViewModel>().selectedPatches = this.selectedPatches;
     List<String> selectedPatches =
         this.selectedPatches.map((patch) => patch.name).toList();
-    try {
-      await _managerAPI.setSelectedPatches(
-          locator<PatcherViewModel>().selectedApp!.originalPackageName,
-          selectedPatches);
-      locator<PatcherViewModel>().notifyListeners();
-    } catch (_) {}
+    await _managerAPI.setSelectedPatches(
+        locator<PatcherViewModel>().selectedApp!.originalPackageName,
+        selectedPatches);
   }
 
   Future<void> loadSelectedPatches() async {

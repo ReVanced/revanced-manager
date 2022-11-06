@@ -411,8 +411,7 @@ class ManagerAPI {
   }
 
   Future<List<String>> getSelectedPatches(String app) async {
-    Map<String, dynamic> patchesMap =
-        await readSelectedPatchesFile();
+    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
     if (patchesMap.isNotEmpty) {
       final List<String> patches =
           List.from(patchesMap.putIfAbsent(app, () => List.empty()));
