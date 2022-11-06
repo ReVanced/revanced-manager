@@ -88,24 +88,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         ),
                       ),
                     ),
-                    1: I18nText(
-                      'patchesSelectorView.importPatchesSelection',
-                      child: const Text(
-                        '',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    2: I18nText(
-                      'patchesSelectorView.exportPatchesSelection',
-                      child: const Text(
-                        '',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                   },
                 ),
               ],

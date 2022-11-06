@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -11,7 +8,6 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
 
@@ -123,12 +119,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
       case 0:
         loadSelectedPatches();
         break;
-      case 1:
-        importPatchesSelection();
-        break;
-      case 2:
-        exportLastSelectedPatches();
-        break;
     }
   }
 
@@ -144,10 +134,9 @@ class PatchesSelectorViewModel extends BaseViewModel {
     } catch (_) {}
   }
 
-  Future<void> loadSelectedPatches({String? path}) async {
+  Future<void> loadSelectedPatches() async {
     List<String> selectedPatches = await _managerAPI.getSelectedPatches(
-        locator<PatcherViewModel>().selectedApp!.originalPackageName,
-        path: path);
+        locator<PatcherViewModel>().selectedApp!.originalPackageName);
     if (selectedPatches.isNotEmpty) {
       this.selectedPatches.clear();
       this.selectedPatches.addAll(
@@ -156,30 +145,5 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
     }
     notifyListeners();
-  }
-
-  Future<void> importPatchesSelection() async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['json'],
-      );
-      if (result != null && result.files.single.path != null) {
-        await loadSelectedPatches(path: result.files.single.path);
-        File(result.files.single.path!).delete();
-      }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
-      locator<Toast>().show('patchesSelectorView.jsonSelectorErrorMessage');
-    }
-  }
-
-  Future<void> exportLastSelectedPatches() async {
-    try {
-      await saveSelectedPatches();
-      _managerAPI.exportLastSelectedPatches();
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
-    }
   }
 }

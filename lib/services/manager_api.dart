@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -432,19 +431,5 @@ class ManagerAPI {
   Future<void> resetLastSelectedPatches() async {
     final File selectedPatchesFile = File(storedPatchesFile);
     await selectedPatchesFile.delete();
-  }
-
-  Future<void> exportLastSelectedPatches() async {
-    try {
-      File outFile = File(storedPatchesFile);
-      if (await outFile.exists()) {
-        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: outFile.path,
-          destinationFileName: outFile.path.split('/').last
-        ));
-      }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
-    }
   }
 }
