@@ -127,7 +127,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     List<String> selectedPatches =
         this.selectedPatches.map((patch) => patch.name).toList();
     try {
-      await _managerAPI.setLastSelectedPatches(
+      await _managerAPI.setSelectedPatches(
           locator<PatcherViewModel>().selectedApp!.originalPackageName,
           selectedPatches);
       locator<PatcherViewModel>().notifyListeners();

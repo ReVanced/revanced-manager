@@ -396,20 +396,23 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  Future<void> setLastSelectedPatches(String app, List<String> patches) async {
+  Future<void> setSelectedPatches(String app, List<String> patches) async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    if (!await selectedPatchesFile.exists()) {
-      await selectedPatchesFile.create(recursive: true);
+    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    if (patches.isEmpty) {
+      patchesMap.remove(app);
+    } else {
+      patchesMap[app] = patches;
     }
-    Map<String, dynamic> patchesMap =
-        await readSelectedPatchesFile(storedPatchesFile);
-    patchesMap[app] = patches;
-    await selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
+    if (selectedPatchesFile.existsSync()) {
+      selectedPatchesFile.createSync(recursive: true);
+    }
+    selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
-  Future<List<String>> getSelectedPatches(String app, {String? path}) async {
+  Future<List<String>> getSelectedPatches(String app) async {
     Map<String, dynamic> patchesMap =
-        await readSelectedPatchesFile(path ?? storedPatchesFile);
+        await readSelectedPatchesFile();
     if (patchesMap.isNotEmpty) {
       final List<String> patches =
           List.from(patchesMap.putIfAbsent(app, () => List.empty()));
@@ -418,9 +421,9 @@ class ManagerAPI {
     return List.empty();
   }
 
-  Future<Map<String, dynamic>> readSelectedPatchesFile(String path) async {
-    final File selectedPatchesFile = File(path);
-    if (await selectedPatchesFile.exists()) {
+  Future<Map<String, dynamic>> readSelectedPatchesFile() async {
+    final File selectedPatchesFile = File(storedPatchesFile);
+    if (selectedPatchesFile.existsSync()) {
       String string = selectedPatchesFile.readAsStringSync();
       if (string.trim().isEmpty) return {};
       return json.decode(string);
@@ -430,6 +433,6 @@ class ManagerAPI {
 
   Future<void> resetLastSelectedPatches() async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    await selectedPatchesFile.delete();
+    selectedPatchesFile.deleteSync();
   }
 }

@@ -13,6 +13,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -353,20 +354,23 @@ class SettingsViewModel extends BaseViewModel {
   void resetSelectedPatches() {
     _managerAPI.resetLastSelectedPatches();
     _toast.showBottom('settingsView.resetStoredPatches');
-    notifyListeners();
   }
 
   Future<void> exportPatches() async {
     try {
       File outFile = File(_managerAPI.storedPatchesFile);
-      if (await outFile.exists()) {
-        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: outFile.path,
-          destinationFileName: outFile.path.split('/').last
+      if (outFile.existsSync()) {
+        String dateTime = DateTime.now()
+            .toString()
+            .replaceAll(' ', '_')
+            .split('.').removeAt(0);
+        await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
+          sourceFilePath: '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json',
+          destinationFileName: '${outFile.path.split('/').last.split(".").first}_$dateTime.json'
         ));
-        locator<Toast>().show('settingsView.exportedPatches');
+        locator<Toast>().showBottom('settingsView.exportedPatches');
       } else {
-        locator<Toast>().show('settingsView.noExportFileFound');
+        locator<Toast>().showBottom('settingsView.noExportFileFound');
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
@@ -387,11 +391,14 @@ class SettingsViewModel extends BaseViewModel {
         }
         inFile.copySync(storedPatchesFile.path);
         inFile.delete();
-        locator<Toast>().show('settingsView.importedPatches');
+        if (locator<PatcherViewModel>().selectedApp != null) {
+          locator<PatcherViewModel>().loadLastSelectedPatches();
+        }
+        locator<Toast>().showBottom('settingsView.importedPatches');
       }
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
-      locator<Toast>().show('settingsView.jsonSelectorErrorMessage');
+      locator<Toast>().showBottom('settingsView.jsonSelectorErrorMessage');
     }
   }
 
