@@ -358,7 +358,7 @@ class SettingsViewModel extends BaseViewModel {
         String dateTime = DateTime.now()
             .toString()
             .replaceAll(' ', '_')
-            .split('.').removeAt(0);
+            .split('.').first;
         String tempFilePath = '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json';
         outFile.copySync(tempFilePath);
         await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
