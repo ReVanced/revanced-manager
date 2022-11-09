@@ -139,6 +139,7 @@
         "experimentalPatchesLabel": "Experimental Patch support",
         "experimentalPatchesHint": "Enable to use unsupported patches in any app version",
         "enabledExperimentalPatches": "Experimental patches enabled",
+        "exportSectionTitle": "Import/Export",
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
         "sentryLabel": "Sentry Logging",

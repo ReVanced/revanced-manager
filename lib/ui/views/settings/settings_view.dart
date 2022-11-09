@@ -137,22 +137,22 @@ class SettingsView extends StatelessWidget {
                         onTap: () => model.showSourcesDialog(context),
                       ),
                       CustomSwitchTile(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          title: I18nText(
-                            'settingsView.experimentalPatchesLabel',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.experimentalPatchesLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          subtitle:
-                              I18nText('settingsView.experimentalPatchesHint'),
-                          value: model.areExperimentalPatchesEnabled(),
-                          onTap: (value) =>
-                              model.useExperimentalPatches(value)),
+                        ),
+                        subtitle:
+                            I18nText('settingsView.experimentalPatchesHint'),
+                        value: model.areExperimentalPatchesEnabled(),
+                        onTap: (value) => model.useExperimentalPatches(value),
+                      ),
                       ListTile(
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20.0),
@@ -187,7 +187,29 @@ class SettingsView extends StatelessWidget {
                       ),
                       ListTile(
                         contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20.0),
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: I18nText(
+                          'settingsView.deleteLogsLabel',
+                          child: const Text(
+                            '',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        subtitle: I18nText('settingsView.deleteLogsHint'),
+                        onTap: () => model.deleteLogs(),
+                      ),
+                    ],
+                  ),
+                  _settingsDivider,
+                  SettingsSection(
+                    title: 'settingsView.exportSectionTitle',
+                    children: <Widget>[
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
                         title: I18nText(
                           'settingsView.exportPatchesLabel',
                           child: const Text(
@@ -203,7 +225,7 @@ class SettingsView extends StatelessWidget {
                       ),
                       ListTile(
                         contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20.0),
+                            const EdgeInsets.symmetric(horizontal: 20.0),
                         title: I18nText(
                           'settingsView.importPatchesLabel',
                           child: const Text(
@@ -219,7 +241,7 @@ class SettingsView extends StatelessWidget {
                       ),
                       ListTile(
                         contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 20.0),
+                            const EdgeInsets.symmetric(horizontal: 20.0),
                         title: I18nText(
                           'settingsView.resetStoredPatchesLabel',
                           child: const Text(
@@ -230,24 +252,9 @@ class SettingsView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        subtitle: I18nText('settingsView.resetStoredPatchesHint'),
+                        subtitle:
+                            I18nText('settingsView.resetStoredPatchesHint'),
                         onTap: () => model.resetSelectedPatches(),
-                      ),
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.deleteLogsLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.deleteLogsHint'),
-                        onTap: () => model.deleteLogs(),
                       ),
                     ],
                   ),
