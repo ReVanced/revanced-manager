@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -63,7 +64,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               actions: [
                 Container(
                   height: 2,
-                  margin: const EdgeInsets.only(right: 16, top: 12, bottom: 12),
+                  margin: const EdgeInsets.only(top: 12, bottom: 12),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                   decoration: BoxDecoration(
@@ -77,6 +78,22 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       color: Theme.of(context).textTheme.headline6!.color,
                     ),
                   ),
+                ),
+                CustomPopupMenu(
+                  onSelected: (value) => {
+                    model.onMenuSelection(value)
+                  },
+                  children: {
+                    0: I18nText(
+                      'patchesSelectorView.loadPatchesSelection',
+                      child: const Text(
+                        '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  },
                 ),
               ],
               bottom: PreferredSize(

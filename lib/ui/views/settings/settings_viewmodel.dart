@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:io';
+import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -11,8 +13,10 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -345,6 +349,60 @@ class SettingsViewModel extends BaseViewModel {
     _managerAPI.deleteTempFolder();
     _toast.showBottom('settingsView.deletedTempDir');
     notifyListeners();
+  }
+
+  Future<void> exportPatches() async {
+    try {
+      File outFile = File(_managerAPI.storedPatchesFile);
+      if (outFile.existsSync()) {
+        String dateTime = DateTime.now()
+            .toString()
+            .replaceAll(' ', '_')
+            .split('.').first;
+        String tempFilePath = '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json';
+        outFile.copySync(tempFilePath);
+        await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
+          sourceFilePath: tempFilePath,
+          destinationFileName: ''
+        ));
+        File(tempFilePath).delete();
+        locator<Toast>().showBottom('settingsView.exportedPatches');
+      } else {
+        locator<Toast>().showBottom('settingsView.noExportFileFound');
+      }
+    } on Exception catch (e, s) {
+      Sentry.captureException(e, stackTrace: s);
+    }
+  }
+
+  Future<void> importPatches() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
+      if (result != null && result.files.single.path != null) {
+        File inFile = File(result.files.single.path!);
+        final File storedPatchesFile = File(_managerAPI.storedPatchesFile);
+        if (!storedPatchesFile.existsSync()) {
+          storedPatchesFile.createSync(recursive: true);
+        }
+        inFile.copySync(storedPatchesFile.path);
+        inFile.delete();
+        if (locator<PatcherViewModel>().selectedApp != null) {
+          locator<PatcherViewModel>().loadLastSelectedPatches();
+        }
+        locator<Toast>().showBottom('settingsView.importedPatches');
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      locator<Toast>().showBottom('settingsView.jsonSelectorErrorMessage');
+    }
+  }
+
+  void resetSelectedPatches() {
+    _managerAPI.resetLastSelectedPatches();
+    _toast.showBottom('settingsView.resetStoredPatches');
   }
 
   Future<int> getSdkVersion() async {
