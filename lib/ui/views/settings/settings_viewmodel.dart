@@ -11,8 +11,11 @@ import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/main.dart';
+import 'package:revanced_manager/services/crowdin_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
@@ -20,7 +23,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:timeago/timeago.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: constant_identifier_names
 const int ANDROID_12_SDK_VERSION = 31;
@@ -28,14 +32,28 @@ const int ANDROID_12_SDK_VERSION = 31;
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  final CrowdinAPI _crowdinAPI = locator<CrowdinAPI>();
   final Toast _toast = locator<Toast>();
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
   final TextEditingController _intSourceController = TextEditingController();
   final TextEditingController _apiUrlController = TextEditingController();
+  late SharedPreferences _prefs;
+  String selectedLanguage = 'English';
+  String selectedLanguageLocale = prefs.getString('language') ?? 'en_US';
+  List languages = [];
 
-  void setLanguage(String language) {
+  Future<void> initLang() async {
+    languages = await _crowdinAPI.getLanguages();
+    languages.sort((a, b) => a['name'].compareTo(b['name']));
+    notifyListeners();
+  }
+
+  Future<void> initialize() async {
+    _prefs = await SharedPreferences.getInstance();
+    selectedLanguageLocale =
+        _prefs.getString('language') ?? selectedLanguageLocale;
     notifyListeners();
   }
 
@@ -45,8 +63,13 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> updateLanguage(BuildContext context, String? value) async {
     if (value != null) {
+      selectedLanguageLocale = value;
+      _prefs = await SharedPreferences.getInstance();
+      await _prefs.setString('language', value);
       await FlutterI18n.refresh(context, Locale(value));
-      setLocaleMessages(value, EnMessages());
+      timeago.setLocaleMessages(value, timeago.EnMessages());
+      locator<NavigationViewModel>().notifyListeners();
+      notifyListeners();
     }
   }
 
@@ -86,21 +109,33 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> showLanguagesDialog(BuildContext context) {
+  Future<void> showLanguagesDialog(BuildContext parentContext) {
+    initLang();
     return showDialog(
-      context: context,
+      context: parentContext,
       builder: (context) => SimpleDialog(
         title: I18nText('settingsView.languageLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        children: <Widget>[
-          RadioListTile<String>(
-            title: I18nText('settingsView.englishOption'),
-            value: 'en',
-            groupValue: 'en',
-            onChanged: (value) {
-              updateLanguage(context, value);
-              Navigator.of(context).pop();
-            },
+        children: [
+          SizedBox(
+            height: 500,
+            child: ListView.builder(
+              itemCount: languages.length,
+              itemBuilder: (context, index) {
+                return RadioListTile<String>(
+                  title: Text(languages[index]['name']),
+                  subtitle: Text(languages[index]['locale']),
+                  value: languages[index]['locale'],
+                  groupValue: selectedLanguageLocale,
+                  onChanged: (value) {
+                    selectedLanguage = languages[index]['name'];
+                    _toast.show('settingsView.restartAppForChanges');
+                    updateLanguage(context, value);
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -355,16 +390,13 @@ class SettingsViewModel extends BaseViewModel {
     try {
       File outFile = File(_managerAPI.storedPatchesFile);
       if (outFile.existsSync()) {
-        String dateTime = DateTime.now()
-            .toString()
-            .replaceAll(' ', '_')
-            .split('.').first;
-        String tempFilePath = '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json';
+        String dateTime =
+            DateTime.now().toString().replaceAll(' ', '_').split('.').first;
+        String tempFilePath =
+            '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json';
         outFile.copySync(tempFilePath);
         await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: tempFilePath,
-          destinationFileName: ''
-        ));
+            sourceFilePath: tempFilePath, destinationFileName: ''));
         File(tempFilePath).delete();
         locator<Toast>().showBottom('settingsView.exportedPatches');
       } else {
