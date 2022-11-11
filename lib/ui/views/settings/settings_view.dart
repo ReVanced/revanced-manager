@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
@@ -38,58 +39,7 @@ class SettingsView extends StatelessWidget {
             SliverList(
               delegate: SliverChildListDelegate.fixed(
                 <Widget>[
-                  SettingsSection(
-                    title: 'settingsView.appearanceSectionTitle',
-                    children: <Widget>[
-                      CustomSwitchTile(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.darkThemeLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.darkThemeHint'),
-                        value: model.sUpdateTheme.getDarkThemeStatus(),
-                        onTap: (value) => model.sUpdateTheme.setUseDarkTheme(
-                          context,
-                          value,
-                        ),
-                      ),
-                      FutureBuilder<int>(
-                        future: model.getSdkVersion(),
-                        builder: (context, snapshot) => Visibility(
-                          visible: snapshot.hasData &&
-                              snapshot.data! >= ANDROID_12_SDK_VERSION,
-                          child: CustomSwitchTile(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            title: I18nText(
-                              'settingsView.dynamicThemeLabel',
-                              child: const Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            subtitle: I18nText('settingsView.dynamicThemeHint'),
-                            value: model.sUpdateTheme.getDynamicThemeStatus(),
-                            onTap: (value) =>
-                                model.sUpdateTheme.setUseDynamicTheme(
-                              context,
-                              value,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  SUpdateThemeUI(),
                   SettingsTileDialog(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     title: 'settingsView.languageLabel',

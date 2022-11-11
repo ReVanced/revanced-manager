@@ -3,9 +3,15 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:stacked/stacked.dart';
+
+final _settingViewModel = SettingsViewModel();
 
 class SUpdateTheme extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -44,5 +50,64 @@ class SUpdateTheme extends BaseViewModel {
       ),
     );
     notifyListeners();
+  }
+}
+
+class SUpdateThemeUI extends StatelessWidget {
+  const SUpdateThemeUI({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsSection(
+      title: 'settingsView.appearanceSectionTitle',
+      children: <Widget>[
+        CustomSwitchTile(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.darkThemeLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.darkThemeHint'),
+          value: SUpdateTheme().getDarkThemeStatus(),
+          onTap: (value) => SUpdateTheme().setUseDarkTheme(
+            context,
+            value,
+          ),
+        ),
+        FutureBuilder<int>(
+          future: _settingViewModel.getSdkVersion(),
+          builder: (context, snapshot) => Visibility(
+            visible:
+                snapshot.hasData && snapshot.data! >= ANDROID_12_SDK_VERSION,
+            child: CustomSwitchTile(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              title: I18nText(
+                'settingsView.dynamicThemeLabel',
+                child: const Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              subtitle: I18nText('settingsView.dynamicThemeHint'),
+              value: _settingViewModel.sUpdateTheme.getDynamicThemeStatus(),
+              onTap: (value) =>
+                  _settingViewModel.sUpdateTheme.setUseDynamicTheme(
+                context,
+                value,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
