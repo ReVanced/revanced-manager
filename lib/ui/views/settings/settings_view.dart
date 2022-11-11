@@ -3,15 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_api_url.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/social_media_widget.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_advanced_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_export_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_info_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_team_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -46,158 +44,11 @@ class SettingsView extends StatelessWidget {
                   SUpdateThemeUI(),
                   SUpdateLanguageUI(),
                   _settingsDivider,
-                  SettingsSection(
-                    title: 'settingsView.teamSectionTitle',
-                    children: <Widget>[
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.contributorsLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.contributorsHint'),
-                        onTap: () => model.navigateToContributors(),
-                      ),
-                      const SocialMediaWidget(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      ),
-                    ],
-                  ),
+                  STeamSection(),
                   _settingsDivider,
-                  SettingsSection(
-                    title: 'settingsView.advancedSectionTitle',
-                    children: <Widget>[
-                      SManageApiUrlUI(),
-                      SManageSourcesUI(),
-                      CustomSwitchTile(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.experimentalPatchesLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle:
-                            I18nText('settingsView.experimentalPatchesHint'),
-                        value: model.areExperimentalPatchesEnabled(),
-                        onTap: (value) => model.useExperimentalPatches(value),
-                      ),
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.deleteKeystoreLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.deleteKeystoreHint'),
-                        onTap: () => model.deleteKeystore,
-                      ),
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.deleteTempDirLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.deleteTempDirHint'),
-                        onTap: () => model.deleteTempDir(),
-                      ),
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.deleteLogsLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.deleteLogsHint'),
-                        onTap: () => model.deleteLogs(),
-                      ),
-                    ],
-                  ),
+                  SAdvancedSection(),
                   _settingsDivider,
-                  SettingsSection(
-                    title: 'settingsView.exportSectionTitle',
-                    children: <Widget>[
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.exportPatchesLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.exportPatchesHint'),
-                        onTap: () => model.exportPatches(),
-                      ),
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.importPatchesLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.importPatchesHint'),
-                        onTap: () => model.importPatches(),
-                      ),
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.resetStoredPatchesLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle:
-                            I18nText('settingsView.resetStoredPatchesHint'),
-                        onTap: () => model.resetSelectedPatches(),
-                      ),
-                    ],
-                  ),
+                  SExportSection(),
                   _settingsDivider,
                   // SettingsSection(
                   //   title: 'settingsView.logsSectionTitle',
@@ -221,30 +72,7 @@ class SettingsView extends StatelessWidget {
                   //   ],
                   // ),
                   // _settingsDivider,
-                  SettingsSection(
-                    title: 'settingsView.infoSectionTitle',
-                    children: <Widget>[
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: I18nText(
-                          'settingsView.logsLabel',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        subtitle: I18nText('settingsView.logsHint'),
-                        onTap: () => model.exportLogcatLogs(),
-                      ),
-                      const AboutWidget(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      ),
-                    ],
-                  ),
+                  SInfoSection(),
                 ],
               ),
             ),
