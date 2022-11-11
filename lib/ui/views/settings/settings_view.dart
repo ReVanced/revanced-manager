@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
@@ -92,8 +93,8 @@ class SettingsView extends StatelessWidget {
                   SettingsTileDialog(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     title: 'settingsView.languageLabel',
-                    subtitle: model.selectedLanguage,
-                    onTap: () => model.showLanguagesDialog(context),
+                    subtitle: SUpdateLanguage().selectedLanguage,
+                    onTap: () => SUpdateLanguage().showLanguagesDialog(context),
                   ),
                   _settingsDivider,
                   SettingsSection(
