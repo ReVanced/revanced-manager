@@ -308,13 +308,6 @@ class MainActivity : FlutterActivity() {
             }
         }
 
-        override fun trace(msg: String) {
-            handler.post {
-                installerChannel.invokeMethod(
-                    "update",
-                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
-                )
-            }
-        }
+        override fun trace(_msg: String) { /* unused */ }
     }
 }
