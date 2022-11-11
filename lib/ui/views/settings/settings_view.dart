@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
@@ -55,8 +54,8 @@ class SettingsView extends StatelessWidget {
                           ),
                         ),
                         subtitle: I18nText('settingsView.darkThemeHint'),
-                        value: model.getDarkThemeStatus(),
-                        onTap: (value) => model.setUseDarkTheme(
+                        value: model.sUpdateTheme.getDarkThemeStatus(),
+                        onTap: (value) => model.sUpdateTheme.setUseDarkTheme(
                           context,
                           value,
                         ),
@@ -80,8 +79,9 @@ class SettingsView extends StatelessWidget {
                               ),
                             ),
                             subtitle: I18nText('settingsView.dynamicThemeHint'),
-                            value: model.getDynamicThemeStatus(),
-                            onTap: (value) => model.setUseDynamicTheme(
+                            value: model.sUpdateTheme.getDynamicThemeStatus(),
+                            onTap: (value) =>
+                                model.sUpdateTheme.setUseDynamicTheme(
                               context,
                               value,
                             ),
@@ -93,8 +93,9 @@ class SettingsView extends StatelessWidget {
                   SettingsTileDialog(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     title: 'settingsView.languageLabel',
-                    subtitle: SUpdateLanguage().selectedLanguage,
-                    onTap: () => SUpdateLanguage().showLanguagesDialog(context),
+                    subtitle: model.sUpdateLanguage.selectedLanguage,
+                    onTap: () =>
+                        model.sUpdateLanguage.showLanguagesDialog(context),
                   ),
                   _settingsDivider,
                   SettingsSection(
