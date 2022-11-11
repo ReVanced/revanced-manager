@@ -50,27 +50,7 @@ class SettingsView extends StatelessWidget {
                   _settingsDivider,
                   SExportSection(),
                   _settingsDivider,
-                  // SettingsSection(
-                  //   title: 'settingsView.logsSectionTitle',
-                  //   children: <Widget>[
-                  //     CustomSwitchTile(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  //       title: I18nText(
-                  //         'settingsView.sentryLabel',
-                  //         child: const Text(
-                  //           '',
-                  //           style: TextStyle(
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w500,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       subtitle: I18nText('settingsView.sentryHint'),
-                  //       value: model.isSentryEnabled(),
-                  //       onTap: (value) => model.useSentry(value),
-                  //     ),
-                  //   ],
-                  // ),
+                  // SLoggingSection(),
                   // _settingsDivider,
                   SInfoSection(),
                 ],

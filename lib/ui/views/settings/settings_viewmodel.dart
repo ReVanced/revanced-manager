@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -29,15 +28,15 @@ class SettingsViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.contributorsView);
   }
 
-  // bool isSentryEnabled() {
-  //   return _managerAPI.isSentryEnabled();
-  // }
+  bool isSentryEnabled() {
+    return _managerAPI.isSentryEnabled();
+  }
 
-  // void useSentry(bool value) {
-  //   _managerAPI.setSentryStatus(value);
-  //   _toast.showBottom('settingsView.restartAppForChanges');
-  //   notifyListeners();
-  // }
+  void useSentry(bool value) {
+    _managerAPI.setSentryStatus(value);
+    _toast.showBottom('settingsView.restartAppForChanges');
+    notifyListeners();
+  }
 
   bool areExperimentalPatchesEnabled() {
     return _managerAPI.areExperimentalPatchesEnabled();
