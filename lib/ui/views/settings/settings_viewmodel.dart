@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -14,113 +12,21 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-
-// ignore: constant_identifier_names
-const int ANDROID_12_SDK_VERSION = 31;
 
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
 
-  final TextEditingController _apiUrlController = TextEditingController();
-
   final SUpdateLanguage sUpdateLanguage = SUpdateLanguage();
   final SUpdateTheme sUpdateTheme = SUpdateTheme();
 
   void navigateToContributors() {
     _navigationService.navigateTo(Routes.contributorsView);
-  }
-
-  Future<void> showApiUrlDialog(BuildContext context) async {
-    String apiUrl = _managerAPI.getApiUrl();
-    _apiUrlController.text = apiUrl.replaceAll('https://', '');
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: <Widget>[
-            I18nText('settingsView.apiURLLabel'),
-            const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.manage_history_outlined),
-              onPressed: () => showApiUrlResetDialog(context),
-              color: Theme.of(context).colorScheme.secondary,
-            )
-          ],
-        ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.api_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                inputController: _apiUrlController,
-                label: I18nText('settingsView.selectApiURL'),
-                hint: apiUrl.split('/')[0],
-                onChanged: (value) => notifyListeners(),
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
-            onPressed: () {
-              _apiUrlController.clear();
-              Navigator.of(context).pop();
-            },
-          ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
-            onPressed: () {
-              String apiUrl = _apiUrlController.text;
-              if (!apiUrl.startsWith('https')) {
-                apiUrl = 'https://$apiUrl';
-              }
-              _managerAPI.setApiUrl(apiUrl);
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ),
-    );
-  }
-
-  Future<void> showApiUrlResetDialog(BuildContext context) async {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: I18nText('settingsView.sourcesResetDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('settingsView.apiURLResetDialogText'),
-        actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
-            onPressed: () {
-              _managerAPI.setApiUrl('');
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ),
-    );
   }
 
   // bool isSentryEnabled() {

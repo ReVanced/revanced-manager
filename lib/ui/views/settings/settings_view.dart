@@ -1,13 +1,15 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_api_url.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/social_media_widget.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
@@ -72,12 +74,7 @@ class SettingsView extends StatelessWidget {
                   SettingsSection(
                     title: 'settingsView.advancedSectionTitle',
                     children: <Widget>[
-                      SettingsTileDialog(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: 'settingsView.apiURLLabel',
-                        subtitle: 'settingsView.apiURLHint',
-                        onTap: () => model.showApiUrlDialog(context),
-                      ),
+                      SManageApiUrlUI(),
                       SManageSourcesUI(),
                       CustomSwitchTile(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),

@@ -13,6 +13,9 @@ import 'package:stacked/stacked.dart';
 
 final _settingViewModel = SettingsViewModel();
 
+// ignore: constant_identifier_names
+const int ANDROID_12_SDK_VERSION = 31;
+
 class SUpdateTheme extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
