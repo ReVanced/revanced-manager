@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
@@ -77,12 +78,7 @@ class SettingsView extends StatelessWidget {
                         subtitle: 'settingsView.apiURLHint',
                         onTap: () => model.showApiUrlDialog(context),
                       ),
-                      SettingsTileDialog(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        title: 'settingsView.sourcesLabel',
-                        subtitle: 'settingsView.sourcesLabelHint',
-                        onTap: () => model.showSourcesDialog(context),
-                      ),
+                      SManageSourcesUI(),
                       CustomSwitchTile(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         title: I18nText(
