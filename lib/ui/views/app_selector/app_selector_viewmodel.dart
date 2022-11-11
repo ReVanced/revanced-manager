@@ -49,8 +49,12 @@ class AppSelectorViewModel extends BaseViewModel {
         List<String> pathSplit = result.files.single.path!.split("/");
         pathSplit.removeLast();
         Directory filePickerCacheDir = Directory(pathSplit.join("/"));
-        Iterable<File> deletableFiles = (await filePickerCacheDir.list().toList()).whereType<File>();
-        for (var file in deletableFiles) { if (file.path != apkFile.path && file.path.endsWith(".apk")) file.delete(); }
+        Iterable<File> deletableFiles =
+            (await filePickerCacheDir.list().toList()).whereType<File>();
+        for (var file in deletableFiles) {
+          if (file.path != apkFile.path && file.path.endsWith(".apk"))
+            file.delete();
+        }
         ApplicationWithIcon? application = await DeviceApps.getAppFromStorage(
           apkFile.path,
           true,
@@ -72,7 +76,7 @@ class AppSelectorViewModel extends BaseViewModel {
       }
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
-      _toast.show('appSelectorView.errorMessage');
+      _toast.showBottom('appSelectorView.errorMessage');
     }
   }
 
