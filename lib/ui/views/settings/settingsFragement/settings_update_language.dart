@@ -7,9 +7,13 @@ import 'package:revanced_manager/main.dart';
 import 'package:revanced_manager/services/crowdin_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
+import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+final _settingViewModel = SettingsViewModel();
 
 class SUpdateLanguage extends BaseViewModel {
   final CrowdinAPI _crowdinAPI = locator<CrowdinAPI>();
@@ -74,6 +78,21 @@ class SUpdateLanguage extends BaseViewModel {
           ),
         ],
       ),
+    );
+  }
+}
+
+class SUpdateLanguageUI extends StatelessWidget {
+  const SUpdateLanguageUI({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsTileDialog(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      title: 'settingsView.languageLabel',
+      subtitle: _settingViewModel.sUpdateLanguage.selectedLanguage,
+      onTap: () =>
+          _settingViewModel.sUpdateLanguage.showLanguagesDialog(context),
     );
   }
 }

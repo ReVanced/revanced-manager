@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
@@ -40,13 +41,7 @@ class SettingsView extends StatelessWidget {
               delegate: SliverChildListDelegate.fixed(
                 <Widget>[
                   SUpdateThemeUI(),
-                  SettingsTileDialog(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    title: 'settingsView.languageLabel',
-                    subtitle: model.sUpdateLanguage.selectedLanguage,
-                    onTap: () =>
-                        model.sUpdateLanguage.showLanguagesDialog(context),
-                  ),
+                  SUpdateLanguageUI(),
                   _settingsDivider,
                   SettingsSection(
                     title: 'settingsView.teamSectionTitle',
