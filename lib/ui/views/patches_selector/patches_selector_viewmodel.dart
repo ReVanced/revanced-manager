@@ -25,8 +25,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
-    selectedPatches
-        .addAll(patches.where((element) => element.excluded == false));
+    selectRecommendedPatches();
     notifyListeners();
   }
 
@@ -72,6 +71,22 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
     if (isSelected && _managerAPI.areExperimentalPatchesEnabled()) {
       selectedPatches.addAll(patches);
+    }
+
+    notifyListeners();
+  }
+
+  void selectRecommendedPatches() {
+    selectedPatches.clear();
+
+    if (_managerAPI.areExperimentalPatchesEnabled() == false) {
+      selectedPatches.addAll(patches.where(
+          (element) => element.excluded == false && isPatchSupported(element)));
+    }
+
+    if (_managerAPI.areExperimentalPatchesEnabled()) {
+      selectedPatches
+          .addAll(patches.where((element) => element.excluded == false));
     }
 
     notifyListeners();
