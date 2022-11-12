@@ -47,7 +47,7 @@ class HomeViewModel extends BaseViewModel {
         ?.requestPermission();
     bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
-      _toast.show('homeView.noConnection');
+      _toast.showBottom('homeView.noConnection');
     }
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
@@ -105,7 +105,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> updateManager(BuildContext context) async {
     try {
-      _toast.show('homeView.downloadingMessage');
+      _toast.showBottom('homeView.downloadingMessage');
       File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
         await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -132,19 +132,19 @@ class HomeViewModel extends BaseViewModel {
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
         );
-        _toast.show('homeView.installingMessage');
+        _toast.showBottom('homeView.installingMessage');
         await AppInstaller.installApk(managerApk.path);
       } else {
-        _toast.show('homeView.errorDownloadMessage');
+        _toast.showBottom('homeView.errorDownloadMessage');
       }
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
-      _toast.show('homeView.errorInstallMessage');
+      _toast.showBottom('homeView.errorInstallMessage');
     }
   }
 
   void updatesAreDisabled() {
-    _toast.show('homeView.updatesDisabled');
+    _toast.showBottom('homeView.updatesDisabled');
   }
 
   Future<void> showUpdateConfirmationDialog(BuildContext parentContext) async {

@@ -80,9 +80,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   ),
                 ),
                 CustomPopupMenu(
-                  onSelected: (value) => {
-                    model.onMenuSelection(value)
-                  },
+                  onSelected: (value) => {model.onMenuSelection(value)},
                   children: {
                     0: I18nText(
                       'patchesSelectorView.loadPatchesSelection',
@@ -158,85 +156,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                 onChanged: (value) =>
                                     model.selectPatch(patch, value),
                               ),
-                              /* TODO: Enable this and make use of new Patch Options implementation
-                                   patch.hasOptions ? ExpandablePanel(
-                                    controller: expController,
-                                    theme: const ExpandableThemeData(
-                                      hasIcon: false,
-                                      tapBodyToExpand: true,
-                                      tapBodyToCollapse: true,
-                                      tapHeaderToExpand: true,
-                                    ),
-                                    header: Column(
-                                      children: <Widget>[
-                                        GestureDetector(
-                                          onLongPress: () =>
-                                              expController.toggle(),
-                                          child: PatchItem(
-                                            name: patch.name,
-                                            simpleName: patch.getSimpleName(),
-                                            description: patch.description,
-                                            version: patch.version,
-                                            packageVersion:
-                                                model.getAppVersion(),
-                                            supportedPackageVersions: model
-                                                .getSupportedVersions(patch),
-                                            isUnsupported: !model
-                                                .isPatchSupported(patch),
-                                            isSelected:
-                                                model.isSelected(patch),
-                                            onChanged: (value) => model
-                                                .selectPatch(patch, value),
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: 8.0,
-                                              ),
-                                              child: Text(
-                                                  'Long press for additional options.',
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    expanded: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0,
-                                        horizontal: 10,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                          horizontal: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Text(
-                                              'Patch options',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            const OptionsTextField(
-                                                hint: 'App name'),
-                                            const OptionsFilePicker(
-                                              optionName: 'Choose a logo',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    collapsed: Container(),
-                                  ) */
                             )
                             .toList(),
                       ),

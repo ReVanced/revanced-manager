@@ -5,6 +5,7 @@
     "disabledLabel": "Disabled",
     "yesButton": "Yes",
     "noButton": "No",
+    "warning": "Warning",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -45,7 +46,6 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-        "patchDialogTitle": "Warning",
         "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?"
     },
     "appSelectorCard": {
@@ -80,12 +80,9 @@
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app\nPress Done to save current selection",
         "noPatchesFound": "No patches found for the selected app",
-        "selectAllPatchesWarningTitle": "Warning",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
     },
     "patchItem": {
-        "unsupportedWarningButton": "Warning",
-        "unsupportedDialogTitle": "Warning",
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
         "unsupportedPatchVersion": "Patch is not supported for this app version. Enable experimental toggle in settings to proceed."
     },
@@ -119,7 +116,6 @@
         "dynamicThemeHint": "Enjoy an experience closer to your device",
         "languageLabel": "Language",
         "englishOption": "English",
-        "frenchOption": "French",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
         "orgPatchesLabel": "Patches organization",

@@ -268,7 +268,7 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
-      _toast.show('installerView.noExit');
+      _toast.showBottom('installerView.noExit');
       return false;
     }
     cleanPatcher();

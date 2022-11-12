@@ -58,7 +58,7 @@ class PatcherViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('patcherView.patchDialogTitle'),
+          title: I18nText('warning'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('patcherView.patchDialogText'),
           actions: <Widget>[
@@ -114,7 +114,8 @@ class PatcherViewModel extends BaseViewModel {
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
     List<Patch> patches =
         await _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
-    this.selectedPatches
+    this
+        .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     notifyListeners();
   }

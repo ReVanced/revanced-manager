@@ -25,6 +25,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
+    selectRecommendedPatches();
     notifyListeners();
   }
 
@@ -47,7 +48,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('patchesSelectorView.selectAllPatchesWarningTitle'),
+        title: I18nText('warning'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('patchesSelectorView.selectAllPatchesWarningContent'),
         actions: <Widget>[
@@ -70,6 +71,22 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
     if (isSelected && _managerAPI.areExperimentalPatchesEnabled()) {
       selectedPatches.addAll(patches);
+    }
+
+    notifyListeners();
+  }
+
+  void selectRecommendedPatches() {
+    selectedPatches.clear();
+
+    if (_managerAPI.areExperimentalPatchesEnabled() == false) {
+      selectedPatches.addAll(patches.where(
+          (element) => element.excluded == false && isPatchSupported(element)));
+    }
+
+    if (_managerAPI.areExperimentalPatchesEnabled()) {
+      selectedPatches
+          .addAll(patches.where((element) => element.excluded == false));
     }
 
     notifyListeners();

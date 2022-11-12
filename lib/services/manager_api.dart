@@ -86,13 +86,13 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
-  // bool isSentryEnabled() {
-  //   return _prefs.getBool('sentryEnabled') ?? true;
-  // }
+  bool isSentryEnabled() {
+    return _prefs.getBool('sentryEnabled') ?? true;
+  }
 
-  // Future<void> setSentryStatus(bool value) async {
-  //   await _prefs.setBool('sentryEnabled', value);
-  // }
+  Future<void> setSentryStatus(bool value) async {
+    await _prefs.setBool('sentryEnabled', value);
+  }
 
   bool areExperimentalPatchesEnabled() {
     return _prefs.getBool('experimentalPatchesEnabled') ?? false;
