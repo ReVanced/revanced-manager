@@ -25,6 +25,8 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
+    selectedPatches
+        .addAll(patches.where((element) => element.excluded == false));
     notifyListeners();
   }
 
