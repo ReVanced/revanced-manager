@@ -78,13 +78,13 @@
         "searchBarHint": "Search patches",
         "doneButton": "Done",
         "loadPatchesSelection": "Load patches selection",
-        "noSavedPatches": "No saved patches for the selected app\nPress Done to save current selection",
+        "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable experimental toggle in settings to proceed."
+        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed."
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -145,7 +145,7 @@
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
         "deletedKeystore": "Keystore deleted",
         "deleteTempDirLabel": "Delete temporary files",
-        "deleteTempDirHint": "Delete the unused temporary files",
+        "deleteTempDirHint": "Delete unused temporary files",
         "deletedTempDir": "Temporary files deleted",
         "exportPatchesLabel": "Export patches selection",
         "exportPatchesHint": "Export patches selection to a JSON file",
