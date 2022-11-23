@@ -24,7 +24,7 @@ Future main() async {
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
   await locator<CrowdinAPI>().initialize();
-  // bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
+  bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
