@@ -9,6 +9,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
+import 'package:revanced_manager/utils/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -23,35 +24,34 @@ Future main() async {
   String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
   await locator<CrowdinAPI>().initialize();
-  // bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
+  bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
   locator<GithubAPI>().initialize();
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
   prefs = await SharedPreferences.getInstance();
 
-  // Remove this section if you are building from source and don't have sentry configured
-  // await SentryFlutter.init(
-  //   (options) {
-  //     options
-  //       ..dsn = isSentryEnabled ? '' : ''
-  //       ..environment = 'alpha'
-  //       ..release = '0.1'
-  //       ..tracesSampleRate = 1.0
-  //       ..anrEnabled = true
-  //       ..enableOutOfMemoryTracking = true
-  //       ..sampleRate = isSentryEnabled ? 1.0 : 0.0
-  //       ..beforeSend = (event, hint) {
-  //         if (isSentryEnabled) {
-  //           return event;
-  //         } else {
-  //           return null;
-  //         }
-  //       } as BeforeSendCallback?;
-  //   },
-  //   appRunner: () {
-  //     runApp(const MyApp());
-  //   },
-  // );
+  await SentryFlutter.init(
+    (options) {
+      options
+        ..dsn = isSentryEnabled ? Environment.sentryDSN : ''
+        ..environment = 'alpha'
+        ..release = '0.1'
+        ..tracesSampleRate = 1.0
+        ..anrEnabled = true
+        ..enableOutOfMemoryTracking = true
+        ..sampleRate = isSentryEnabled ? 1.0 : 0.0
+        ..beforeSend = (event, hint) {
+          if (isSentryEnabled) {
+            return event;
+          } else {
+            return null;
+          }
+        } as BeforeSendCallback?;
+    },
+    appRunner: () {
+      runApp(const MyApp());
+    },
+  );
   runApp(const MyApp());
 }
 

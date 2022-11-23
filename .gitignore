@@ -136,4 +136,3 @@ app.*.map.json
 
 Firebase related
 .firebase
-/lib/utils/environment.dart
