@@ -19,6 +19,10 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
+      - name: Set environment variables
+        run: echo $SECRETS | base64 -d > lib/utils/environment.dart
+        env:
+          SECRETS: ${{ secrets.SECRETS }}
       - name: Set up Flutter
         run: flutter pub get
       - name: Generate files with Builder
