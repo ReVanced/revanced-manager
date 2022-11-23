@@ -9,7 +9,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
-import 'package:revanced_manager/utils/environment.dart'
+import 'package:revanced_manager/utils/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
