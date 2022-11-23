@@ -30,7 +30,6 @@ Future main() async {
   tz.initializeTimeZones();
   prefs = await SharedPreferences.getInstance();
 
-  Remove this section if you are building from source and don't have sentry configured
   await SentryFlutter.init(
     (options) {
       options
