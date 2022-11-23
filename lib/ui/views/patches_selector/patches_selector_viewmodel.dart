@@ -92,6 +92,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void clearPatches() {
+    selectedPatches.clear();
+    notifyListeners();
+  }
+
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
     saveSelectedPatches();

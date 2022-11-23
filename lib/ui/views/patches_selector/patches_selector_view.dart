@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_chip.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -140,24 +141,51 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       padding: const EdgeInsets.symmetric(horizontal: 12.0)
                           .copyWith(bottom: 80),
                       child: Column(
-                        children: model
-                            .getQueriedPatches(_query)
-                            .map(
-                              (patch) => PatchItem(
-                                name: patch.name,
-                                simpleName: patch.getSimpleName(),
-                                version: patch.version,
-                                description: patch.description,
-                                packageVersion: model.getAppVersion(),
-                                supportedPackageVersions:
-                                    model.getSupportedVersions(patch),
-                                isUnsupported: !model.isPatchSupported(patch),
-                                isSelected: model.isSelected(patch),
-                                onChanged: (value) =>
-                                    model.selectPatch(patch, value),
+                        children: [
+                          Row(
+                            children: [
+                              CustomChip(
+                                label:
+                                    I18nText('patchesSelectorView.recommended'),
+                                onSelected: (value) {
+                                  model.selectRecommendedPatches();
+                                },
                               ),
-                            )
-                            .toList(),
+                              const SizedBox(width: 8),
+                              CustomChip(
+                                label: I18nText('patchesSelectorView.all'),
+                                onSelected: (value) {
+                                  model.selectAllPatches(true);
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              CustomChip(
+                                label: I18nText('patchesSelectorView.none'),
+                                onSelected: (value) {
+                                  model.clearPatches();
+                                },
+                              ),
+                            ],
+                          ),
+                          ...model
+                              .getQueriedPatches(_query)
+                              .map(
+                                (patch) => PatchItem(
+                                  name: patch.name,
+                                  simpleName: patch.getSimpleName(),
+                                  version: patch.version,
+                                  description: patch.description,
+                                  packageVersion: model.getAppVersion(),
+                                  supportedPackageVersions:
+                                      model.getSupportedVersions(patch),
+                                  isUnsupported: !model.isPatchSupported(patch),
+                                  isSelected: model.isSelected(patch),
+                                  onChanged: (value) =>
+                                      model.selectPatch(patch, value),
+                                ),
+                              )
+                              .toList(),
+                        ],
                       ),
                     ),
             ),
