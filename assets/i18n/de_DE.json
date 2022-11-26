@@ -37,7 +37,7 @@
         "changelogLabel": "Changelog"
     },
     "latestCommitCard": {
-        "loadingLabel": "Läd...",
+        "loadingLabel": "Lädt...",
         "timeagoLabel": "{time} her",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
