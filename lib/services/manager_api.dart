@@ -118,8 +118,9 @@ class ManagerAPI {
   }
 
   List<PatchedApplication> getPatchedApps() {
-    List<String> apps = _prefs.getStringList('patchedApps') ?? [];
-    return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
+    // List<String> apps = _prefs.getStringList('patchedApps') ?? [];
+    // return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
+    return List.empty();
   }
 
   Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
