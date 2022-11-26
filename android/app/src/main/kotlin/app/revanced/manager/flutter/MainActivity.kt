@@ -11,6 +11,7 @@ import app.revanced.manager.flutter.utils.zip.ZipFile
 import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
+import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.logging.Logger
 import app.revanced.patcher.util.patch.PatchBundle
@@ -98,21 +99,7 @@ class MainActivity : FlutterActivity() {
         val keyStoreFile = File(keyStoreFilePath)
 
         Thread {
-            try {   
-                val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-                    PatchBundle.Dex(
-                        patchBundleFilePath,
-                        DexClassLoader(
-                            patchBundleFilePath,
-                            cacheDirPath,
-                            null,
-                            javaClass.classLoader
-                        )
-                    ).loadPatches().filter { patch -> selectedPatches.any { it == patch.patchName } }
-                } else {
-                    TODO("VERSION.SDK_INT < CUPCAKE")
-                }
-
+            try {
                 handler.post {
                     installerChannel.invokeMethod(
                         "update",
@@ -177,6 +164,22 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
+                val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                    PatchBundle.Dex(
+                        patchBundleFilePath,
+                        DexClassLoader(
+                            patchBundleFilePath,
+                            cacheDirPath,
+                            null,
+                            javaClass.classLoader
+                        )
+                    ).loadPatches().filter { patch ->
+                        patch.compatiblePackages!!.any { it.name == patcher.context.packageMetadata.packageName } &&
+                                selectedPatches.any { it == patch.patchName }
+                    }
+                } else {
+                    TODO("VERSION.SDK_INT < CUPCAKE")
+                }
                 patcher.addPatches(patches)
                 patcher.executePatches().forEach { (patch, res) ->
                     if (res.isSuccess) {
@@ -308,13 +311,7 @@ class MainActivity : FlutterActivity() {
             }
         }
 
-        override fun trace(msg: String) {
-            handler.post {
-                installerChannel.invokeMethod(
-                    "update",
-                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
-                )
-            }
+        override fun trace(_msg: String) { /* unused */
         }
     }
 }

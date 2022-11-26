@@ -130,4 +130,18 @@ class GithubAPI {
     }
     return patches;
   }
+
+  Future<String> getLastestReleaseVersion(String repoName) async {
+    try {
+      Map<String, dynamic>? release = await _getLatestRelease(repoName);
+      if (release != null) {
+        return release['tag_name'];
+      } else {
+        return 'Unknown';
+      }
+    } on Exception catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+      return '';
+    }
+  }
 }

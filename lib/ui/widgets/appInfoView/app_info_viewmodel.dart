@@ -54,7 +54,7 @@ class AppInfoViewModel extends BaseViewModel {
   }
 
   void updateNotImplemented(BuildContext context) {
-    _toast.show('appInfoView.updateNotImplemented');
+    _toast.showBottom('appInfoView.updateNotImplemented');
   }
 
   Future<void> showUninstallDialog(

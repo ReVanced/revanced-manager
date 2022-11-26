@@ -54,8 +54,7 @@ class _PatchItemState extends State<PatchItem> {
         onTap: () {
           setState(() {
             if (widget.isUnsupported &&
-                !widget._managerAPI.areExperimentalPatchesEnabled()
-            ) {
+                !widget._managerAPI.areExperimentalPatchesEnabled()) {
               widget.isSelected = false;
               widget.toast.showBottom('patchItem.unsupportedPatchVersion');
             } else {
@@ -125,8 +124,8 @@ class _PatchItemState extends State<PatchItem> {
                     onChanged: (newValue) {
                       setState(() {
                         if (widget.isUnsupported &&
-                            !widget._managerAPI.areExperimentalPatchesEnabled()
-                        ) {
+                            !widget._managerAPI
+                                .areExperimentalPatchesEnabled()) {
                           widget.isSelected = false;
                           widget.toast
                               .showBottom('patchItem.unsupportedPatchVersion');
@@ -146,7 +145,7 @@ class _PatchItemState extends State<PatchItem> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: TextButton.icon(
-                          label: I18nText('patchItem.unsupportedWarningButton'),
+                          label: I18nText('warning'),
                           icon: const Icon(Icons.warning, size: 20.0),
                           onPressed: () => _showUnsupportedWarningDialog(),
                           style: ButtonStyle(
@@ -183,7 +182,7 @@ class _PatchItemState extends State<PatchItem> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('patchItem.unsupportedDialogTitle'),
+        title: I18nText('warning'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'patchItem.unsupportedDialogText',

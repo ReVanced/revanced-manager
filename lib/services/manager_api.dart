@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -19,6 +20,7 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
+  late String storedPatchesFile = '/selected-patches.json';
   late SharedPreferences _prefs;
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -29,6 +31,8 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    storedPatchesFile =
+        (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
 
   String getApiUrl() {
@@ -82,13 +86,13 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
-  // bool isSentryEnabled() {
-  //   return _prefs.getBool('sentryEnabled') ?? true;
-  // }
+  bool isSentryEnabled() {
+    return _prefs.getBool('sentryEnabled') ?? true;
+  }
 
-  // Future<void> setSentryStatus(bool value) async {
-  //   await _prefs.setBool('sentryEnabled', value);
-  // }
+  Future<void> setSentryStatus(bool value) async {
+    await _prefs.setBool('sentryEnabled', value);
+  }
 
   bool areExperimentalPatchesEnabled() {
     return _prefs.getBool('experimentalPatchesEnabled') ?? false;
@@ -390,5 +394,44 @@ class ManagerAPI {
       app = await DeviceApps.getApp(patchedApp.packageName);
     }
     return app != null && app.isSplit;
+  }
+
+  Future<void> setSelectedPatches(String app, List<String> patches) async {
+    final File selectedPatchesFile = File(storedPatchesFile);
+    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    if (patches.isEmpty) {
+      patchesMap.remove(app);
+    } else {
+      patchesMap[app] = patches;
+    }
+    if (selectedPatchesFile.existsSync()) {
+      selectedPatchesFile.createSync(recursive: true);
+    }
+    selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
+  }
+
+  Future<List<String>> getSelectedPatches(String app) async {
+    Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    if (patchesMap.isNotEmpty) {
+      final List<String> patches =
+          List.from(patchesMap.putIfAbsent(app, () => List.empty()));
+      return patches;
+    }
+    return List.empty();
+  }
+
+  Future<Map<String, dynamic>> readSelectedPatchesFile() async {
+    final File selectedPatchesFile = File(storedPatchesFile);
+    if (selectedPatchesFile.existsSync()) {
+      String string = selectedPatchesFile.readAsStringSync();
+      if (string.trim().isEmpty) return {};
+      return json.decode(string);
+    }
+    return {};
+  }
+
+  Future<void> resetLastSelectedPatches() async {
+    final File selectedPatchesFile = File(storedPatchesFile);
+    selectedPatchesFile.deleteSync();
   }
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class DashboardChip extends StatelessWidget {
+class CustomChip extends StatelessWidget {
   final Widget label;
   final bool isSelected;
   final Function(bool)? onSelected;
 
-  const DashboardChip({
+  const CustomChip({
     Key? key,
     required this.label,
-    required this.isSelected,
+    this.isSelected = false,
     this.onSelected,
   }) : super(key: key);
 
