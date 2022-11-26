@@ -42,7 +42,7 @@ class SManageApiUrl extends BaseViewModel {
                 ),
                 inputController: _apiUrlController,
                 label: I18nText('settingsView.selectApiURL'),
-                hint: apiUrl.split('/')[0],
+                hint: apiUrl,
                 onChanged: (value) => notifyListeners(),
               ),
             ],
