@@ -34,7 +34,7 @@ class CrowdinAPI {
     }
   }
 
-  Future<List> getLanguages() async {
+  Future<List<Map<String, dynamic>>> getLanguages() async {
     try {
       var response = await _dio.get(
         '/projects',
@@ -49,8 +49,8 @@ class CrowdinAPI {
           ),
         ),
       );
-      List targetLanguages =
-          await response.data['data'][0]['data']['targetLanguages'];
+      final targetLanguages = await response.data['data'][0]['data']
+          ['targetLanguages'] as List<Map<String, dynamic>>;
 
       return targetLanguages;
     } on Exception catch (e, s) {

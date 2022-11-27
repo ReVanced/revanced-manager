@@ -21,7 +21,7 @@ class SUpdateLanguage extends BaseViewModel {
   late SharedPreferences _prefs;
   String selectedLanguage = 'English';
   String selectedLanguageLocale = prefs.getString('language') ?? 'en_US';
-  List languages = [];
+  List<Map<String, dynamic>> languages = [];
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
@@ -55,28 +55,28 @@ class SUpdateLanguage extends BaseViewModel {
       builder: (context) => SimpleDialog(
         title: I18nText('settingsView.languageLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        children: [
-          SizedBox(
-            height: 500,
-            child: ListView.builder(
-              itemCount: languages.length,
-              itemBuilder: (context, index) {
-                return RadioListTile<String>(
-                  title: Text(languages[index]['name']),
-                  subtitle: Text(languages[index]['locale']),
-                  value: languages[index]['locale'],
-                  groupValue: selectedLanguageLocale,
-                  onChanged: (value) {
-                    selectedLanguage = languages[index]['name'];
-                    _toast.showBottom('settingsView.restartAppForChanges');
-                    updateLanguage(context, value);
-                    Navigator.pop(context);
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+        children: languages
+            .asMap()
+            .map((index, e) {
+              return MapEntry(
+                  index,
+                  SimpleDialogOption(
+                    child: RadioListTile<String>(
+                      title: Text(languages[index]['name']),
+                      subtitle: Text(languages[index]['locale']),
+                      value: languages[index]['locale'],
+                      groupValue: selectedLanguageLocale,
+                      onChanged: (value) {
+                        selectedLanguage = languages[index]['name'];
+                        _toast.showBottom('settingsView.restartAppForChanges');
+                        updateLanguage(context, value);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ));
+            })
+            .values
+            .toList(),
       ),
     );
   }
