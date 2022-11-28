@@ -12,10 +12,11 @@ import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -26,6 +27,7 @@ class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final GithubAPI _githubAPI = locator<GithubAPI>();
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   DateTime? _lastUpdate;
@@ -147,36 +149,26 @@ class HomeViewModel extends BaseViewModel {
     _toast.showBottom('homeView.updatesDisabled');
   }
 
-  Future<void> showUpdateConfirmationDialog(BuildContext parentContext) async {
-    return showDialog(
+  Future<void> showUpdateConfirmationDialog(BuildContext parentContext) {
+    return showModalBottomSheet(
       context: parentContext,
-      builder: (context) => AlertDialog(
-        title: I18nText('homeView.updateDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('homeView.updateDialogText'),
-        actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              updateManager(parentContext);
-            },
-          )
-        ],
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
       ),
+      builder: (context) => const UpdateConfirmationDialog(),
     );
   }
 
-  Future<String?> getLatestPatcherReleaseTime() async {
+  Future<Map<String, dynamic>?> getLatestManagerRelease() {
+    return _githubAPI.getLatestRelease(_managerAPI.defaultManagerRepo);
+  }
+
+  Future<String?> getLatestPatcherReleaseTime() {
     return _managerAPI.getLatestPatcherReleaseTime();
   }
 
-  Future<String?> getLatestManagerReleaseTime() async {
+  Future<String?> getLatestManagerReleaseTime() {
     return _managerAPI.getLatestManagerReleaseTime();
   }
 

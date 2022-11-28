@@ -51,7 +51,7 @@ class GithubAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> _getLatestRelease(String repoName) async {
+  Future<Map<String, dynamic>?> getLatestRelease(String repoName) async {
     try {
       var response = await _dio.get(
         '/repos/$repoName/releases/latest',
@@ -97,7 +97,7 @@ class GithubAPI {
 
   Future<File?> getLatestReleaseFile(String extension, String repoName) async {
     try {
-      Map<String, dynamic>? release = await _getLatestRelease(repoName);
+      Map<String, dynamic>? release = await getLatestRelease(repoName);
       if (release != null) {
         Map<String, dynamic>? asset =
             (release['assets'] as List<dynamic>).firstWhereOrNull(
@@ -133,7 +133,7 @@ class GithubAPI {
 
   Future<String> getLastestReleaseVersion(String repoName) async {
     try {
-      Map<String, dynamic>? release = await _getLatestRelease(repoName);
+      Map<String, dynamic>? release = await getLatestRelease(repoName);
       if (release != null) {
         return release['tag_name'];
       } else {

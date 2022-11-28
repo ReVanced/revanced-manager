@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
     "yesButton": "Yes",
@@ -21,7 +22,7 @@
         "noInstallations": "No patched applications installed",
         "installed": "Installed",
         "updateDialogTitle": "Update Manager",
-        "updateDialogText": "Are you sure you want to download and update ReVanced Manager?",
+        "updateChangelogTitle": "Changelog",
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
         "downloadingMessage": "Downloading update...",
