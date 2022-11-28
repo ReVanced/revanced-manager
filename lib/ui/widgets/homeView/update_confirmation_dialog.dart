@@ -23,9 +23,12 @@ class UpdateConfirmationDialog extends StatelessWidget {
           child: FutureBuilder<Map<String, dynamic>?>(
             future: model.getLatestManagerRelease(),
             builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+              if (!snapshot.hasData) {
+                return const SizedBox(
+                  height: 300,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
 
