@@ -76,6 +76,7 @@ dependencies:
   sentry_dio: ^6.12.2
   flutter_dotenv: ^5.0.2
   pub_release: ^8.0.3
+  flutter_markdown: ^0.6.13
 
 dev_dependencies:
   json_serializable: ^6.3.1
