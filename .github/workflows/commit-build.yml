@@ -1,9 +1,11 @@
-name: "Release Build"
+name: "Android CI Actions"
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - "**"
+    tags-ignore:
+      - "v*" # Ignore tags that start with "v" (e.g. v1.0.0) because they are handled by release-build.yml
 
 jobs:
   release:
@@ -45,10 +47,9 @@ jobs:
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
       - name: Add version to APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
-      - name: Publish release APK
-        uses: "marvinpinto/action-automatic-releases@latest"
+        run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: revanced-manager-${{ env.RELEASE_VERSION }}.apk
+          name: revanced-manager-${{ env.RELEASE_VERSION }}
+          path: revanced-manager-${{ env.RELEASE_VERSION }}.apk
