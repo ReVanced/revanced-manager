@@ -12,14 +12,17 @@ import 'package:stacked/stacked.dart';
 class SManageSources extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
+  final TextEditingController _hostSourceController = TextEditingController();
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
   final TextEditingController _intSourceController = TextEditingController();
 
   Future<void> showSourcesDialog(BuildContext context) async {
+    String hostRepository = _managerAPI.getRepoUrl();
     String patchesRepo = _managerAPI.getPatchesRepo();
     String integrationsRepo = _managerAPI.getIntegrationsRepo();
+    _hostSourceController.text = hostRepository;
     _orgPatSourceController.text = patchesRepo.split('/')[0];
     _patSourceController.text = patchesRepo.split('/')[1];
     _orgIntSourceController.text = integrationsRepo.split('/')[0];
@@ -42,6 +45,17 @@ class SManageSources extends BaseViewModel {
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              CustomTextField(
+                leadingIcon: const Icon(
+                  Icons.extension_outlined,
+                  color: Colors.transparent,
+                ),
+                inputController: _hostSourceController,
+                label: I18nText('settingsView.hostRepositoryLabel'),
+                hint: hostRepository,
+                onChanged: (value) => notifyListeners(),
+              ),
+              const SizedBox(height: 20),
               CustomTextField(
                 leadingIcon: Icon(
                   Icons.extension_outlined,
@@ -103,6 +117,7 @@ class SManageSources extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () {
+              _managerAPI.setRepoUrl(_hostSourceController.text);
               _managerAPI.setPatchesRepo(
                 '${_orgPatSourceController.text}/${_patSourceController.text}',
               );
@@ -133,8 +148,10 @@ class SManageSources extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('yesButton'),
             onPressed: () {
+              _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
+              Navigator.of(context).pop();
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },

@@ -28,10 +28,10 @@ class GithubAPI {
     'com.spotify.music': 'spotify',
   };
 
-  void initialize() async {
+  void initialize(String repoUrl) async {
     try {
       _dio = Dio(BaseOptions(
-        baseUrl: 'https://api.github.com',
+        baseUrl: repoUrl,
       ));
 
       _dio.interceptors.add(_dioCacheManager.interceptor);
@@ -54,10 +54,10 @@ class GithubAPI {
   Future<Map<String, dynamic>?> getLatestRelease(String repoName) async {
     try {
       var response = await _dio.get(
-        '/repos/$repoName/releases/latest',
+        '/repos/$repoName/releases',
         options: _cacheOptions,
       );
-      return response.data;
+      return response.data[0];
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
       return null;

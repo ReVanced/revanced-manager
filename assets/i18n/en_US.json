@@ -122,6 +122,7 @@
         "englishOption": "English",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
+        "hostRepositoryLabel": "Repository API",
         "orgPatchesLabel": "Patches organization",
         "sourcesPatchesLabel": "Patches source",
         "orgIntegrationsLabel": "Integrations organization",
