@@ -23,6 +23,7 @@ class ManagerAPI {
   late String storedPatchesFile = '/selected-patches.json';
   late SharedPreferences _prefs;
   String defaultApiUrl = 'https://releases.revanced.app/';
+  String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
@@ -46,6 +47,17 @@ class ManagerAPI {
     await _revancedAPI.initialize(url);
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
+  }
+
+  String getRepoUrl() {
+    return _prefs.getString('repoUrl') ?? defaultRepoUrl;
+  }
+
+  Future<void> setRepoUrl(String url) async {
+    if (url.isEmpty || url == ' ') {
+      url = defaultRepoUrl;
+    }
+    await _prefs.setString('repoUrl', url);
   }
 
   String getPatchesRepo() {
