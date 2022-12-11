@@ -56,7 +56,7 @@ class PatcherAPI {
     List<ApplicationWithIcon> filteredApps = [];
     bool? allAppsIncluded =
         _patches.any((patch) => patch.compatiblePackages.isEmpty);
-    if (allAppsIncluded != null) {
+    if (allAppsIncluded) {
       var allPackages = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
         onlyAppsWithLaunchIntent: true,
@@ -93,17 +93,6 @@ class PatcherAPI {
     }
     return filteredApps;
   }
-
-  // Future<List<Patch>> getFilteredPatches(String packageName) async {
-  //   return _patches
-  //       .where((patch) =>
-  //           !patch.name.contains('settings') &&
-  //           (patch.compatiblePackages!
-  //                       .any((pack) => pack.name == packageName) ==
-  //                   true ||
-  //               patch.compatiblePackages == null))
-  //       .toList();
-  // }
 
   Future<List<Patch>> getFilteredPatches(String packageName) async {
     List<Patch> filteredPatches = [];

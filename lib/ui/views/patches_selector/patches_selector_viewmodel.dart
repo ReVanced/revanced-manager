@@ -30,7 +30,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
-    print(patches);
     notifyListeners();
   }
 
