@@ -25,7 +25,8 @@ Future main() async {
   await locator<RevancedAPI>().initialize(apiUrl);
   await locator<CrowdinAPI>().initialize();
   bool isSentryEnabled = locator<ManagerAPI>().isSentryEnabled();
-  locator<GithubAPI>().initialize();
+  String repoUrl = locator<ManagerAPI>().getRepoUrl();
+  locator<GithubAPI>().initialize(repoUrl);
   await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
   prefs = await SharedPreferences.getInstance();
