@@ -55,7 +55,7 @@ class PatcherAPI {
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     List<ApplicationWithIcon> filteredApps = [];
     bool? allAppsIncluded =
-        _patches.any((patch) => patch.compatiblePackages == null);
+        _patches.any((patch) => patch.compatiblePackages.isEmpty);
     if (allAppsIncluded != null) {
       var allPackages = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
@@ -74,7 +74,7 @@ class PatcherAPI {
       });
     }
     for (Patch patch in _patches) {
-      for (Package package in patch.compatiblePackages!) {
+      for (Package package in patch.compatiblePackages) {
         try {
           if (!filteredApps.any((app) => app.packageName == package.name)) {
             ApplicationWithIcon? app = await DeviceApps.getApp(
@@ -108,15 +108,14 @@ class PatcherAPI {
   Future<List<Patch>> getFilteredPatches(String packageName) async {
     List<Patch> filteredPatches = [];
     _patches.forEach((patch) {
-      if (patch.compatiblePackages == null) {
+      if (patch.compatiblePackages.isEmpty) {
         filteredPatches.add(patch);
       } else {
-        filteredPatches = _patches
-            .where((patch) =>
-                !patch.name.contains('settings') &&
-                patch.compatiblePackages!
-                    .any((pack) => pack.name == packageName))
-            .toList();
+        if (!patch.name.contains('settings') &&
+            patch.compatiblePackages.any((pack) => pack.name == packageName)
+        ) {
+          filteredPatches.add(patch);
+        }
       }
     });
     return filteredPatches;
@@ -194,7 +193,7 @@ class PatcherAPI {
         Patch? settingsPatch = _patches.firstWhereOrNull(
           (patch) =>
               patch.name.contains('settings') &&
-              patch.compatiblePackages!.any((pack) => pack.name == packageName),
+              patch.compatiblePackages.any((pack) => pack.name == packageName),
         );
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
@@ -327,7 +326,7 @@ class PatcherAPI {
   String getRecommendedVersion(String packageName) {
     Map<String, int> versions = {};
     for (Patch patch in _patches) {
-      Package? package = patch.compatiblePackages!.firstWhereOrNull(
+      Package? package = patch.compatiblePackages.firstWhereOrNull(
         (pack) => pack.name == packageName,
       );
       if (package != null) {

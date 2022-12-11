@@ -10,7 +10,7 @@ class Patch {
   final String version;
   final bool excluded;
   final List<String> dependencies;
-  final List<Package>? compatiblePackages;
+  final List<Package> compatiblePackages;
 
   Patch({
     required this.name,

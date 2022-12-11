@@ -30,6 +30,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp!.originalPackageName,
     ));
     patches.sort((a, b) => a.name.compareTo(b.name));
+    print(patches);
     notifyListeners();
   }
 
@@ -135,7 +136,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   List<String> getSupportedVersions(Patch patch) {
     PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
-    Package? package = patch.compatiblePackages!.firstWhereOrNull(
+    Package? package = patch.compatiblePackages.firstWhereOrNull(
       (pack) => pack.name == app.packageName,
     );
     if (package != null) {
@@ -147,7 +148,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   bool isPatchSupported(Patch patch) {
     PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
-    return patch.compatiblePackages!.any((pack) =>
+    return patch.compatiblePackages.isEmpty || patch.compatiblePackages.any((pack) =>
         pack.name == app.packageName &&
         (pack.versions.isEmpty || pack.versions.contains(app.version)));
   }
