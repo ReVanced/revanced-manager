@@ -54,8 +54,27 @@ class PatcherAPI {
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     List<ApplicationWithIcon> filteredApps = [];
+    bool? allAppsIncluded =
+        _patches.any((patch) => patch.compatiblePackages == null);
+    if (allAppsIncluded != null) {
+      var allPackages = await DeviceApps.getInstalledApplications(
+        includeAppIcons: true,
+        onlyAppsWithLaunchIntent: true,
+      );
+      allPackages.forEach((pkg) async {
+        if (!filteredApps.any((app) => app.packageName == pkg.packageName)) {
+          var appInfo = await DeviceApps.getApp(
+            pkg.packageName,
+            true,
+          ) as ApplicationWithIcon?;
+          if (appInfo != null) {
+            filteredApps.add(appInfo);
+          }
+        }
+      });
+    }
     for (Patch patch in _patches) {
-      for (Package package in patch.compatiblePackages) {
+      for (Package package in patch.compatiblePackages!) {
         try {
           if (!filteredApps.any((app) => app.packageName == package.name)) {
             ApplicationWithIcon? app = await DeviceApps.getApp(
@@ -75,12 +94,32 @@ class PatcherAPI {
     return filteredApps;
   }
 
+  // Future<List<Patch>> getFilteredPatches(String packageName) async {
+  //   return _patches
+  //       .where((patch) =>
+  //           !patch.name.contains('settings') &&
+  //           (patch.compatiblePackages!
+  //                       .any((pack) => pack.name == packageName) ==
+  //                   true ||
+  //               patch.compatiblePackages == null))
+  //       .toList();
+  // }
+
   Future<List<Patch>> getFilteredPatches(String packageName) async {
-    return _patches
-        .where((patch) =>
-            !patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == packageName))
-        .toList();
+    List<Patch> filteredPatches = [];
+    _patches.forEach((patch) {
+      if (patch.compatiblePackages == null) {
+        filteredPatches.add(patch);
+      } else {
+        filteredPatches = _patches
+            .where((patch) =>
+                !patch.name.contains('settings') &&
+                patch.compatiblePackages!
+                    .any((pack) => pack.name == packageName))
+            .toList();
+      }
+    });
+    return filteredPatches;
   }
 
   Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
@@ -155,7 +194,7 @@ class PatcherAPI {
         Patch? settingsPatch = _patches.firstWhereOrNull(
           (patch) =>
               patch.name.contains('settings') &&
-              patch.compatiblePackages.any((pack) => pack.name == packageName),
+              patch.compatiblePackages!.any((pack) => pack.name == packageName),
         );
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
@@ -229,7 +268,6 @@ class PatcherAPI {
     return false;
   }
 
-
   void exportPatchedFile(String appName, String version) {
     try {
       if (_outFile != null) {
@@ -238,13 +276,12 @@ class PatcherAPI {
         // This is temporary workaround to populate initial file name
         // ref: https://github.com/Cleveroad/cr_file_saver/issues/7
         int lastSeparator = _outFile!.path.lastIndexOf('/');
-        String newSourcePath = _outFile!.path.substring(0, lastSeparator + 1) + newName;
+        String newSourcePath =
+            _outFile!.path.substring(0, lastSeparator + 1) + newName;
         _outFile!.copySync(newSourcePath);
 
         CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: newSourcePath,
-          destinationFileName: newName
-        ));
+            sourceFilePath: newSourcePath, destinationFileName: newName));
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
@@ -267,10 +304,9 @@ class PatcherAPI {
   }
 
   String _getFileName(String appName, String version) {
-      String prefix = appName.toLowerCase().replaceAll(' ', '-');
-      String newName = '$prefix-revanced_v$version.apk';
-      return newName;
-
+    String prefix = appName.toLowerCase().replaceAll(' ', '-');
+    String newName = '$prefix-revanced_v$version.apk';
+    return newName;
   }
 
   Future<void> sharePatcherLog(String logs) async {
@@ -291,7 +327,7 @@ class PatcherAPI {
   String getRecommendedVersion(String packageName) {
     Map<String, int> versions = {};
     for (Patch patch in _patches) {
-      Package? package = patch.compatiblePackages.firstWhereOrNull(
+      Package? package = patch.compatiblePackages!.firstWhereOrNull(
         (pack) => pack.name == packageName,
       );
       if (package != null) {
