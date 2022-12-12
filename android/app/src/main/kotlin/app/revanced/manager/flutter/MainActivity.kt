@@ -196,7 +196,7 @@ class MainActivity : FlutterActivity() {
                         }
                         return@forEach
                     }
-                    val msg = "$patch failed.\nError:\n" + res.exceptionOrNull()!!.printStackTrace()
+                    val msg = "Failed to apply $patch: " + "${res.exceptionOrNull()!!.message ?: res.exceptionOrNull()!!::class.simpleName}"
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
