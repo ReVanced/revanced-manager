@@ -94,15 +94,14 @@ class PatcherAPI {
     return filteredApps;
   }
 
-  Future<List<Patch>> getFilteredPatches(String packageName) async {
+  List<Patch> getFilteredPatches(String packageName) {
     List<Patch> filteredPatches = [];
     _patches.forEach((patch) {
       if (patch.compatiblePackages.isEmpty) {
         filteredPatches.add(patch);
       } else {
         if (!patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == packageName)
-        ) {
+            patch.compatiblePackages.any((pack) => pack.name == packageName)) {
           filteredPatches.add(patch);
         }
       }
