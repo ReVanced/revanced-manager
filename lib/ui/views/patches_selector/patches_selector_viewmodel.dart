@@ -147,7 +147,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   bool isPatchSupported(Patch patch) {
     PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
-    return patch.compatiblePackages.any((pack) =>
+    return patch.compatiblePackages.isEmpty || patch.compatiblePackages.any((pack) =>
         pack.name == app.packageName &&
         (pack.versions.isEmpty || pack.versions.contains(app.version)));
   }

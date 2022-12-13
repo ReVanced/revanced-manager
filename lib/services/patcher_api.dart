@@ -54,6 +54,25 @@ class PatcherAPI {
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
     List<ApplicationWithIcon> filteredApps = [];
+    bool? allAppsIncluded =
+        _patches.any((patch) => patch.compatiblePackages.isEmpty);
+    if (allAppsIncluded) {
+      var allPackages = await DeviceApps.getInstalledApplications(
+        includeAppIcons: true,
+        onlyAppsWithLaunchIntent: true,
+      );
+      allPackages.forEach((pkg) async {
+        if (!filteredApps.any((app) => app.packageName == pkg.packageName)) {
+          var appInfo = await DeviceApps.getApp(
+            pkg.packageName,
+            true,
+          ) as ApplicationWithIcon?;
+          if (appInfo != null) {
+            filteredApps.add(appInfo);
+          }
+        }
+      });
+    }
     for (Patch patch in _patches) {
       for (Package package in patch.compatiblePackages) {
         try {
@@ -76,11 +95,19 @@ class PatcherAPI {
   }
 
   Future<List<Patch>> getFilteredPatches(String packageName) async {
-    return _patches
-        .where((patch) =>
-            !patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == packageName))
-        .toList();
+    List<Patch> filteredPatches = [];
+    _patches.forEach((patch) {
+      if (patch.compatiblePackages.isEmpty) {
+        filteredPatches.add(patch);
+      } else {
+        if (!patch.name.contains('settings') &&
+            patch.compatiblePackages.any((pack) => pack.name == packageName)
+        ) {
+          filteredPatches.add(patch);
+        }
+      }
+    });
+    return filteredPatches;
   }
 
   Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
@@ -229,7 +256,6 @@ class PatcherAPI {
     return false;
   }
 
-
   void exportPatchedFile(String appName, String version) {
     try {
       if (_outFile != null) {
@@ -238,13 +264,12 @@ class PatcherAPI {
         // This is temporary workaround to populate initial file name
         // ref: https://github.com/Cleveroad/cr_file_saver/issues/7
         int lastSeparator = _outFile!.path.lastIndexOf('/');
-        String newSourcePath = _outFile!.path.substring(0, lastSeparator + 1) + newName;
+        String newSourcePath =
+            _outFile!.path.substring(0, lastSeparator + 1) + newName;
         _outFile!.copySync(newSourcePath);
 
         CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: newSourcePath,
-          destinationFileName: newName
-        ));
+            sourceFilePath: newSourcePath, destinationFileName: newName));
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
@@ -267,10 +292,9 @@ class PatcherAPI {
   }
 
   String _getFileName(String appName, String version) {
-      String prefix = appName.toLowerCase().replaceAll(' ', '-');
-      String newName = '$prefix-revanced_v$version.apk';
-      return newName;
-
+    String prefix = appName.toLowerCase().replaceAll(' ', '-');
+    String newName = '$prefix-revanced_v$version.apk';
+    return newName;
   }
 
   Future<void> sharePatcherLog(String logs) async {

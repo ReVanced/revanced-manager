@@ -174,7 +174,7 @@ class MainActivity : FlutterActivity() {
                             javaClass.classLoader
                         )
                     ).loadPatches().filter { patch ->
-                        patch.compatiblePackages!!.any { it.name == patcher.context.packageMetadata.packageName } &&
+                        (patch.compatiblePackages?.any { it.name == patcher.context.packageMetadata.packageName } == true || patch.compatiblePackages.isNullOrEmpty()) &&
                                 selectedPatches.any { it == patch.patchName }
                     }
                 } else {
@@ -196,7 +196,7 @@ class MainActivity : FlutterActivity() {
                         }
                         return@forEach
                     }
-                    val msg = "$patch failed.\nError:\n" + res.exceptionOrNull()!!.printStackTrace()
+                    val msg = "Failed to apply $patch: " + "${res.exceptionOrNull()!!.message ?: res.exceptionOrNull()!!.cause!!::class.simpleName}"
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
