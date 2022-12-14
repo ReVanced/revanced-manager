@@ -92,6 +92,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       name: app.appName,
                                       pkgName: app.packageName,
                                       icon: app.icon,
+                                      patchesCount: model.patchesCount(app.packageName),
                                       onTap: () {
                                         model.selectApp(app);
                                         Navigator.of(context).pop();
