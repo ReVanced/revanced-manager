@@ -6,7 +6,6 @@ class InstalledAppItem extends StatefulWidget {
   final String name;
   final String pkgName;
   final Uint8List icon;
-  final int patchesCount;
   final Function()? onTap;
 
   const InstalledAppItem({
@@ -14,7 +13,6 @@ class InstalledAppItem extends StatefulWidget {
     required this.name,
     required this.pkgName,
     required this.icon,
-    required this.patchesCount,
     this.onTap,
   }) : super(key: key);
 
@@ -47,29 +45,14 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        widget.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        widget.patchesCount == 1
-                            ? "${widget.patchesCount} patch"
-                            : "${widget.patchesCount} patches",
-                        style: TextStyle(
-                          fontSize: 8,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(widget.pkgName),
