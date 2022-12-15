@@ -6,6 +6,7 @@ import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_ma
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 
 final _settingsViewModel = SettingsViewModel();
@@ -20,6 +21,7 @@ class SAdvancedSection extends StatelessWidget {
       children: <Widget>[
         SManageApiUrlUI(),
         SManageSourcesUI(),
+        SExperimentalUniversalPatches(),
         SExperimentalPatches(),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),

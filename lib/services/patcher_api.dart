@@ -24,6 +24,7 @@ class PatcherAPI {
   late Directory _tmpDir;
   late File _keyStoreFile;
   List<Patch> _patches = [];
+  Map filteredPatches = <String, List<Patch>>{};
   File? _outFile;
 
   Future<void> initialize() async {
@@ -52,10 +53,10 @@ class PatcherAPI {
     }
   }
 
-  Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
+  Future<List<ApplicationWithIcon>> getFilteredInstalledApps(bool showUniversalPatches) async {
     List<ApplicationWithIcon> filteredApps = [];
     bool? allAppsIncluded =
-        _patches.any((patch) => patch.compatiblePackages.isEmpty);
+        _patches.any((patch) => patch.compatiblePackages.isEmpty) && showUniversalPatches;
     if (allAppsIncluded) {
       var allPackages = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
@@ -94,20 +95,18 @@ class PatcherAPI {
     return filteredApps;
   }
 
-  Future<List<Patch>> getFilteredPatches(String packageName) async {
-    List<Patch> filteredPatches = [];
-    _patches.forEach((patch) {
-      if (patch.compatiblePackages.isEmpty) {
-        filteredPatches.add(patch);
-      } else {
-        if (!patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == packageName)
-        ) {
-          filteredPatches.add(patch);
-        }
-      }
-    });
-    return filteredPatches;
+  List<Patch> getFilteredPatches(String packageName) {
+    if (!filteredPatches.keys.contains(packageName)) {
+      List<Patch> patches = _patches
+          .where((patch) =>
+              patch.compatiblePackages.isEmpty ||
+              !patch.name.contains('settings') &&
+                  patch.compatiblePackages
+                      .any((pack) => pack.name == packageName))
+          .toList();
+      filteredPatches[packageName] = patches;
+    }
+    return filteredPatches[packageName];
   }
 
   Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {

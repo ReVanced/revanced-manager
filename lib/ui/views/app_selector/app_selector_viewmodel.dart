@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
@@ -10,16 +9,24 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
+import '../../../services/manager_api.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
   final List<ApplicationWithIcon> apps = [];
   bool noApps = false;
+  int patchesCount(String packageName) {
+    return _patcherAPI.getFilteredPatches(packageName).length;
+  }
 
   Future<void> initialize() async {
-    apps.addAll(await _patcherAPI.getFilteredInstalledApps());
-    apps.sort((a, b) => a.appName.compareTo(b.appName));
+    apps.addAll(await _patcherAPI.getFilteredInstalledApps(_managerAPI.areUniversalPatchesEnabled()));
+    apps.sort(((a, b) => _patcherAPI
+        .getFilteredPatches(b.packageName)
+        .length
+        .compareTo(_patcherAPI.getFilteredPatches(a.packageName).length)));
     noApps = apps.isEmpty;
     notifyListeners();
   }

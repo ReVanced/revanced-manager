@@ -113,7 +113,7 @@ class PatcherViewModel extends BaseViewModel {
     List<String> selectedPatches =
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
     List<Patch> patches =
-        await _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
+        _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
     this
         .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));

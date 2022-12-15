@@ -137,6 +137,8 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Experimental universal patches support",
+        "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
         "experimentalPatchesLabel": "Experimental patches support",
         "experimentalPatchesHint": "Enable usage of unsupported patches in any app version",
         "enabledExperimentalPatches": "Experimental patches support enabled",

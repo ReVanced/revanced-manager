@@ -106,6 +106,14 @@ class ManagerAPI {
     await _prefs.setBool('sentryEnabled', value);
   }
 
+  bool areUniversalPatchesEnabled() {
+    return _prefs.getBool('universalPatchesEnabled') ?? false;
+  }
+
+  Future<void> enableUniversalPatchesStatus(bool value) async {
+    await _prefs.setBool('universalPatchesEnabled', value);
+  }
+
   bool areExperimentalPatchesEnabled() {
     return _prefs.getBool('experimentalPatchesEnabled') ?? false;
   }
