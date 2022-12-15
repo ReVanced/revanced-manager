@@ -9,9 +9,11 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
+import '../../../services/manager_api.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
   final List<ApplicationWithIcon> apps = [];
   bool noApps = false;
@@ -20,7 +22,7 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> initialize() async {
-    apps.addAll(await _patcherAPI.getFilteredInstalledApps());
+    apps.addAll(await _patcherAPI.getFilteredInstalledApps(_managerAPI.areUniversalPatchesEnabled()));
     apps.sort(((a, b) => _patcherAPI
         .getFilteredPatches(b.packageName)
         .length

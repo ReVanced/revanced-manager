@@ -53,10 +53,10 @@ class PatcherAPI {
     }
   }
 
-  Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
+  Future<List<ApplicationWithIcon>> getFilteredInstalledApps(bool showUniversalPatches) async {
     List<ApplicationWithIcon> filteredApps = [];
     bool? allAppsIncluded =
-        _patches.any((patch) => patch.compatiblePackages.isEmpty);
+        _patches.any((patch) => patch.compatiblePackages.isEmpty) && showUniversalPatches;
     if (allAppsIncluded) {
       var allPackages = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,

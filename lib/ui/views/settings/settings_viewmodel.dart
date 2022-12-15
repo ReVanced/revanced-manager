@@ -38,6 +38,15 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool areUniversalPatchesEnabled() {
+    return _managerAPI.areUniversalPatchesEnabled();
+  }
+
+  void showUniversalPatches(bool value) {
+    _managerAPI.enableUniversalPatchesStatus(value);
+    notifyListeners();
+  }
+
   bool areExperimentalPatchesEnabled() {
     return _managerAPI.areExperimentalPatchesEnabled();
   }
