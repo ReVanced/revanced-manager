@@ -15,6 +15,9 @@ class AppSelectorViewModel extends BaseViewModel {
   final Toast _toast = locator<Toast>();
   final List<ApplicationWithIcon> apps = [];
   bool noApps = false;
+  int patchesCount(String packageName) {
+    return _patcherAPI.getFilteredPatches(packageName).length;
+  }
 
   Future<void> initialize() async {
     apps.addAll(await _patcherAPI.getFilteredInstalledApps());
