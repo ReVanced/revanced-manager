@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Zrušiť",
+    "updateButton": "Aktualizovať",
     "enabledLabel": "Zapnuté",
     "disabledLabel": "Vypnuté",
     "yesButton": "Áno",
@@ -21,7 +22,7 @@
         "noInstallations": "Žiadne zaplátané aplikácie nie sú nainštalované",
         "installed": "Nainštalované",
         "updateDialogTitle": "Aktualizovať Manažéra",
-        "updateDialogText": "Ste si istý, že chcete stiahnuť a aktualizovať ReVanced manažér?",
+        "updateChangelogTitle": "Zoznam zmien",
         "notificationTitle": "Aktualizácia bola stiahnutá",
         "notificationText": "Klepnutím nainštalujete aktualizáciu",
         "downloadingMessage": "Sťahovanie aktualizácie...",
@@ -81,13 +82,13 @@
         "all": "Všetky",
         "none": "Žiadne",
         "loadPatchesSelection": "Načítať výber záplat",
-        "noSavedPatches": "Žiadne uložené záplaty pre vybranú aplikáciu\nStlačením tlačidla Hotovo uložíte aktuálny výber",
+        "noSavedPatches": "Žiadne uložené záplaty pre vybranú aplikáciu\nStlačením tlačidla Hotovo uložíte aktuálny výber.",
         "noPatchesFound": "Neboli nájdené žiadne záplaty pre zvolenú aplikáciu",
         "selectAllPatchesWarningContent": "Týmto vyberiete všetky záplaty, aj tie ktoré nie sú odporúčané. Toto môže viesť k nežiadúcim účinkom."
     },
     "patchItem": {
         "unsupportedDialogText": "Výber tejto záplaty môže spôsobiť chyby.\n\nVerzia aplikácie: {packageVersion}\nPodporované verzie:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Záplata nie je pre túto verziu aplikácie podporovaná. Ak chcete pokračovať, povoľte v nastaveniach prepínač experimental."
+        "unsupportedPatchVersion": "Záplata nie je pre túto verziu aplikácie podporovaná. Ak chcete pokračovať, povoľte v nastaveniach experimentálny prepínač."
     },
     "installerView": {
         "widgetTitle": "Inštalátor",
@@ -121,6 +122,7 @@
         "englishOption": "Anglicky",
         "sourcesLabel": "Zdroje",
         "sourcesLabelHint": "Nastavte vlastné zdroje",
+        "hostRepositoryLabel": "API repozitára",
         "orgPatchesLabel": "Autor záplaty",
         "sourcesPatchesLabel": "Zdroj záplaty",
         "orgIntegrationsLabel": "Autor integrácie",
@@ -135,6 +137,8 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Nastaviť vlastnú API URL",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Experimentálna podpora univerzálnych záplat",
+        "experimentalUniversalPatchesHint": "Zobrazenie všetkých aplikácií na použitie s univerzálnymi záplatami, načítanie zoznamu aplikácií môže byť pomalšie",
         "experimentalPatchesLabel": "Podpora experimentálnych záplat",
         "experimentalPatchesHint": "Povoliť používanie nepodporovaných záplat v akejkoľvek verzii aplikácie",
         "enabledExperimentalPatches": "Podpora experimentálnych záplat povolená",

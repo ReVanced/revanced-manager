@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Annuler",
+    "updateButton": "Mise à jour",
     "enabledLabel": "Activé",
     "disabledLabel": "Désactivé",
     "yesButton": "Oui",
@@ -21,9 +22,9 @@
         "noInstallations": "Aucune application patchée n'est installée",
         "installed": "Installée",
         "updateDialogTitle": "Mettre à jour le Manager",
-        "updateDialogText": "Êtes-vous sûr de vouloir télécharger et mettre à jour ReVanced Manager ?",
+        "updateChangelogTitle": "Liste des changements",
         "notificationTitle": "Mise à jour téléchargée",
-        "notificationText": "Appuyer pour installer la mise à jour",
+        "notificationText": "Appuyez sur pour installer la mise à jour",
         "downloadingMessage": "Téléchargement de la mise à jour...",
         "installingMessage": "Installation de la mise à jour...",
         "errorDownloadMessage": "Impossible de télécharger la mise à jour",
@@ -51,7 +52,7 @@
     "appSelectorCard": {
         "widgetTitle": "Sélectionner une application",
         "widgetTitleSelected": "Application sélectionnée",
-        "widgetSubtitle": "Aucune application n'a été sélectionnée",
+        "widgetSubtitle": "Aucune application sélectionnée",
         "noAppsLabel": "Aucune application trouvée",
         "currentVersion": "Version actuelle",
         "recommendedVersion": "Version recommandée",
@@ -80,14 +81,14 @@
         "recommended": "Recommandé",
         "all": "Tout",
         "none": "Aucun",
-        "loadPatchesSelection": "Charger les patches sélectionnés",
-        "noSavedPatches": "Aucun patch enregistré pour l'application sélectionnée\nAppuyez sur Terminé pour enregistrer la sélection actuelle",
+        "loadPatchesSelection": "Charger les patchs sélectionnés",
+        "noSavedPatches": "Aucun patch enregistré pour l'application sélectionnée.\nAppuyez sur Terminé pour enregistrer la sélection actuelle.",
         "noPatchesFound": "Aucun patch n'a été trouvé pour l'application sélectionnée",
         "selectAllPatchesWarningContent": "Vous êtes sur le point de sélectionner tous les patchs, cela inclut des patchs non recommandés et peut causer des comportements indésirables."
     },
     "patchItem": {
-        "unsupportedDialogText": "Sélectionner ce patch pourrait entrainer des erreurs dans la modification.\n\nVersion de l'application: {packageVersion}\nVersions supportées:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Le patch n'est pas supporté pour cette version de l'application. Activez le commutateur expérimental dans les réglages pour continuer."
+        "unsupportedDialogText": "La sélection de ce patch peut entraîner des erreurs.\n\nVersion de l'application : {packageVersion}\nVersions prises en charge :\n{supportedVersions}",
+        "unsupportedPatchVersion": "Le correctif n'est pas pris en charge pour cette version de l'application. Activez le bouton expérimental dans les paramètres pour continuer."
     },
     "installerView": {
         "widgetTitle": "Installateur",
@@ -99,7 +100,7 @@
         "notificationText": "Appuyer pour revenir à l’installateur",
         "shareApkMenuOption": "Partager le fichier APK",
         "exportApkMenuOption": "Exporter l'APK",
-        "shareLogMenuOption": "Partager le log",
+        "shareLogMenuOption": "Partager le journal",
         "installErrorDialogTitle": "Erreur",
         "installErrorDialogText1": "L'installation Root n'est pas possible avec la sélection actuelle de patchs.\nRe-patchez votre application ou choisissez une installation non root.",
         "installErrorDialogText2": "L'installation Non-root n'est pas possible avec la sélection actuelle de patchs.\nRe-patchez votre application ou choisissez une installation en tant que Root.",
@@ -121,6 +122,7 @@
         "englishOption": "Anglais",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configurer vos sources personnalisées",
+        "hostRepositoryLabel": "Dépôt de l'API",
         "orgPatchesLabel": "Organisation des patchs",
         "sourcesPatchesLabel": "Source des patches",
         "orgIntegrationsLabel": "Organisme d'intégration",
@@ -135,6 +137,8 @@
         "apiURLLabel": "URL de l'API",
         "apiURLHint": "Configurez l'URL de votre API personnalisée",
         "selectApiURL": "URL de l'API",
+        "experimentalUniversalPatchesLabel": "Support expérimental des patchs universels",
+        "experimentalUniversalPatchesHint": "Afficher toutes les applications à utiliser avec les patchs universels, le chargement de la liste des applications pourrait être lent",
         "experimentalPatchesLabel": "Support des patchs expérimentaux",
         "experimentalPatchesHint": "Activer l'utilisation des patchs non supportés dans n'importe quelle version de l'application",
         "enabledExperimentalPatches": "Support pour les patchs expérimentaux activé",

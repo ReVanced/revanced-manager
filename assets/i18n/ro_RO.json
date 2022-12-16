@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Anulează",
+    "updateButton": "Actualizare",
     "enabledLabel": "Activat",
     "disabledLabel": "Dezactivat",
     "yesButton": "Da",
@@ -21,7 +22,7 @@
         "noInstallations": "Nu sunt instalate aplicații patch-uite",
         "installed": "Instalat",
         "updateDialogTitle": "Manager Actualizări",
-        "updateDialogText": "Sunteți sigur că doriți să descărcați și să actualizați ReVanced Manager?",
+        "updateChangelogTitle": "Istoric schimbări",
         "notificationTitle": "Actualizare descărcată",
         "notificationText": "Apăsați pentru a instala actualizarea",
         "downloadingMessage": "Se descarcă actualizarea...",
@@ -81,13 +82,13 @@
         "all": "Toate",
         "none": "Niciunul",
         "loadPatchesSelection": "Încărcați selecția de patch-uri",
-        "noSavedPatches": "Nu există patch-uri salvate pentru aplicația selectată\nApăsați Terminat pentru a salva selecția curentă",
+        "noSavedPatches": "Nu există patch-uri salvate pentru aplicația selectată.\nApăsați Terminat pentru a salva selecția curentă.",
         "noPatchesFound": "Nu s-au găsit patch-uri pentru aplicația selectată",
         "selectAllPatchesWarningContent": "Urmează să selectați toate patch-urile, acestea incluzând patch-uri nerecomandate care pot cauza funcționarea necorespunzătoare a aplicației."
     },
     "patchItem": {
         "unsupportedDialogText": "Selectarea acestui patch poate rezulta în erori de patch-uire.\n\nVersiunea aplicației: {packageVersion}\nVersiuni compatibile:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch-ul nu este compatibil cu versiunea curentă a aplicației.\nActivați comutatorul experimental din setări pentru a continua."
+        "unsupportedPatchVersion": "Patch-ul nu este compatibil cu această versiune a aplicației. Activați comutatorul experimental din setări pentru a continua."
     },
     "installerView": {
         "widgetTitle": "Instalator",
@@ -121,6 +122,7 @@
         "englishOption": "Engleză",
         "sourcesLabel": "Surse",
         "sourcesLabelHint": "Configurați-vă sursele personalizate",
+        "hostRepositoryLabel": "Repository API",
         "orgPatchesLabel": "Organizarea patch-urilor",
         "sourcesPatchesLabel": "Sursă patch-uri",
         "orgIntegrationsLabel": "Organizare integrări",
@@ -135,6 +137,8 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Configurați-vă API URL-ul personalizat",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Suport pentru patch-uri experimentale universale",
+        "experimentalUniversalPatchesHint": "Afișează toate aplicațiile de utilizat cu patch-uri universale, lista de aplicații poate fi mai lentă",
         "experimentalPatchesLabel": "Suport pentru patch-uri experimentale",
         "experimentalPatchesHint": "Activați utilizarea de patch-uri nesuportate în orice versiune a aplicației",
         "enabledExperimentalPatches": "Suport pentru patch-uri experimentale",
@@ -148,7 +152,7 @@
         "deleteKeystoreHint": "Ștergeți keystore-ul utilizat pentru a însemna aplicația",
         "deletedKeystore": "Keystore șters",
         "deleteTempDirLabel": "Ștergeți fișierele temporare",
-        "deleteTempDirHint": "Ștergeți fișierele temporare neutilizate",
+        "deleteTempDirHint": "Șterge fișierele temporare neutilizate",
         "deletedTempDir": "Fișierele temporare au fost șterse",
         "exportPatchesLabel": "Exportă selecția patch-urilor",
         "exportPatchesHint": "Exportă selecția patch-urilor într-un fișier JSON",

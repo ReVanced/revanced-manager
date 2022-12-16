@@ -1,6 +1,7 @@
 {
     "okButton": "Tamam",
     "cancelButton": "İptal",
+    "updateButton": "Güncelleme",
     "enabledLabel": "Etkinleştirildi",
     "disabledLabel": "Devre dışı",
     "yesButton": "Evet",
@@ -21,7 +22,7 @@
         "noInstallations": "Yamalanmış uygulama bulunmamaktadır",
         "installed": "Yüklendi",
         "updateDialogTitle": "Manager'ı güncelle",
-        "updateDialogText": "ReVanced Manager'ın güncellemesini indirmek ve yüklemek istediğinize emin misiniz?",
+        "updateChangelogTitle": "Değişiklik Notları",
         "notificationTitle": "Güncelleme indirildi",
         "notificationText": "Güncellemeyi yüklemek için dokunun",
         "downloadingMessage": "Güncelleme indiriliyor...",
@@ -40,7 +41,7 @@
         "loadingLabel": "Yükleniyor...",
         "timeagoLabel": "{time} önce",
         "patcherLabel": "Yamalayıcı: ",
-        "managerLabel": "Manager: ",
+        "managerLabel": "Yönetici: ",
         "updateButton": "Manager'ı güncelle"
     },
     "patcherView": {
@@ -81,7 +82,7 @@
         "all": "Hepsi",
         "none": "Hiçbiri",
         "loadPatchesSelection": "Yama seçimlerini yükle",
-        "noSavedPatches": "Seçilen uygulama için kaydedilmiş yama yok\nMevcut seçimi kaydetmek için Tamam'a tıklayın",
+        "noSavedPatches": "Seçilen uygulama için kaydedilmiş yama yok.\nMevcut seçimi kaydetmek için Tamam'a tıklayın.",
         "noPatchesFound": "Seçili uygulama için yama bulunamadı",
         "selectAllPatchesWarningContent": "Tavsiye edilmeyenler de dahil bütün yamaları seçmek üzeresiniz, bu istenmeyen davranışlara sebep olabilir."
     },
@@ -121,6 +122,7 @@
         "englishOption": "İngilizce",
         "sourcesLabel": "Kaynaklar",
         "sourcesLabelHint": "Özel kaynaklarınızı yapılandırın",
+        "hostRepositoryLabel": "Depo API",
         "orgPatchesLabel": "Yama organizasyonu",
         "sourcesPatchesLabel": "Yama kaynağı",
         "orgIntegrationsLabel": "Entegrasyon organizasyonu",
@@ -135,6 +137,8 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Özel API URL'inizi yapılandırın",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Deneysel evrensel yama desteği",
+        "experimentalUniversalPatchesHint": "Evrensel yamalarla kullanılacak tüm uygulamaları görüntüleyin, uygulamaların yüklenmesi daha yavaş olabilir",
         "experimentalPatchesLabel": "Deneysel yama desteği",
         "experimentalPatchesHint": "Herhangi bir uygulama sürümünde desteklenmeyen yamaları kullanmayı etkinleştir",
         "enabledExperimentalPatches": "Deneysel yama desteği etkin",

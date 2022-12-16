@@ -1,6 +1,7 @@
 {
     "okButton": "Oke",
     "cancelButton": "Batal",
+    "updateButton": "Perbarui",
     "enabledLabel": "Aktif",
     "disabledLabel": "Nonaktif",
     "yesButton": "Ya",
@@ -21,7 +22,7 @@
         "noInstallations": "Tidak ada aplikasi termodifikasi yang terpasang",
         "installed": "Terpasang",
         "updateDialogTitle": "Perbarui Manager",
-        "updateDialogText": "Apakah Anda yakin ingin mengunduh dan memperbarui ReVanced Manager?",
+        "updateChangelogTitle": "Catatan perubahan",
         "notificationTitle": "Pembaruan sudah diunduh",
         "notificationText": "Ketuk untuk memasang pembaharuan",
         "downloadingMessage": "Mengunduh pembaruan...",
@@ -81,13 +82,13 @@
         "all": "Semua",
         "none": "Tidak ada",
         "loadPatchesSelection": "Tidak ada modifikasi yang terpilih",
-        "noSavedPatches": "Tidak ada modifikasi tersimpan untuk aplikasi terpilih",
+        "noSavedPatches": "Tidak ada tambalan tersimpan untuk aplikasi terpilih.\nTekan \"Sudah\" untuk menyimpan seleksi saat ini.",
         "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih",
         "selectAllPatchesWarningContent": "Anda akan memilih semua modifikasi, termasuk modifikasi yang tidak direkomendasikan dan dapat mengakibatkan hal yang tidak diinginkan."
     },
     "patchItem": {
         "unsupportedDialogText": "Menggunakan modifikasi ini dapat menyebabkan error pada saat memodifikasi aplikasi\n\nVersi aplikasi: {packageVersion}\nVersi yang mendukung:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Modifikasi tidak didukung untuk versi aplikasi ini. Aktifkan eksperimental dalam pengaturan untuk melanjutkan."
+        "unsupportedPatchVersion": "Patch tidak didukung untuk versi aplikasi ini. Aktifkan tombol eksperimental di pengaturan untuk melanjutkan."
     },
     "installerView": {
         "widgetTitle": "Pemasang",
@@ -121,6 +122,7 @@
         "englishOption": "Inggris",
         "sourcesLabel": "Sumber",
         "sourcesLabelHint": "Konfigurasi sumber kustom Anda",
+        "hostRepositoryLabel": "API Repositori",
         "orgPatchesLabel": "Organisasi Modifikasi",
         "sourcesPatchesLabel": "Sumber Modifikasi",
         "orgIntegrationsLabel": "Organisasi Intergrasi",
@@ -135,6 +137,8 @@
         "apiURLLabel": "URL API",
         "apiURLHint": "Konfigurasi URL API kustom Anda",
         "selectApiURL": "URL API",
+        "experimentalUniversalPatchesLabel": "Dukungan tambalan universal eksperimental",
+        "experimentalUniversalPatchesHint": "Menampilkan semua aplikasi yang digunakan tambalan universal, pemuatan daftar aplikasi akan membuat lambat",
         "experimentalPatchesLabel": "Dukungan Modifikasi Eksperimental",
         "experimentalPatchesHint": "Aktifkan untuk menggunakan modifikasi yang tidak didukung di versi aplikasi apa pun",
         "enabledExperimentalPatches": "Modifikasi eksperimental diaktifkan",
