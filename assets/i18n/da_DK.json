@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Afbryd",
+    "updateButton": "Opdatér",
     "enabledLabel": "Aktiveret",
     "disabledLabel": "Deaktiveret",
     "yesButton": "Ja",
@@ -21,7 +22,7 @@
         "noInstallations": "Ingen patchede apps installeret",
         "installed": "Installeret",
         "updateDialogTitle": "Opdater Manager",
-        "updateDialogText": "Er du sikker på, at du vil downloade og opdatere ReVanced Manager?",
+        "updateChangelogTitle": "Ændringslog",
         "notificationTitle": "Opdatering downloadet",
         "notificationText": "Tryk for at installere opdateringen",
         "downloadingMessage": "Downloader opdatering...",
@@ -81,13 +82,13 @@
         "all": "Alle",
         "none": "Ingen",
         "loadPatchesSelection": "Indlæs patches udvælgelse",
-        "noSavedPatches": "Ingen gemte patches til den valgte app\nTryk på Udført for at gemme det aktuelle valg",
+        "noSavedPatches": "Ingen gemte patches til den valgte app.\nTryk på Udført for at gemme det aktuelle valg.",
         "noPatchesFound": "Ingen patches fundet til den valgte app",
         "selectAllPatchesWarningContent": "Du er ved at vælge alle patches, der inkluderer ikke-anbefalede patches, og kan forårsage uønsket adfærd."
     },
     "patchItem": {
         "unsupportedDialogText": "Valg af denne patch kan medføre patching-fejl.\n\nApp version: {packageVersion}\nUnderstøttede versioner:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch er ikke understøttet for denne app-version. Aktivér eksperimentel indstilling i indstillinger for at fortsætte."
+        "unsupportedPatchVersion": "Patch er ikke understøttet for denne app-version. Aktivér den eksperimentelle indstilling i indstillinger for at fortsætte."
     },
     "installerView": {
         "widgetTitle": "Installationsprogram",
@@ -121,6 +122,7 @@
         "englishOption": "Engelsk",
         "sourcesLabel": "Kilder",
         "sourcesLabelHint": "Konfigurér dine brugerdefinerede kilder",
+        "hostRepositoryLabel": "Repository API",
         "orgPatchesLabel": "Organisation for Patches",
         "sourcesPatchesLabel": "Kilde til Patches",
         "orgIntegrationsLabel": "Organisation for Integrationer",
@@ -135,6 +137,8 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Konfigurer din brugerdefineret API URL",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Understøttelse af eksperimentelle universale patches",
+        "experimentalUniversalPatchesHint": "Vis alle applikationer der skal bruges med universelle patches, indlæsningslisten over apps kan være langsommere",
         "experimentalPatchesLabel": "Understøttelse af eksperimentelle patches",
         "experimentalPatchesHint": "Aktiver brugen af ikke-understøttede patches i enhver app version",
         "enabledExperimentalPatches": "Understøttelse af eksperimentelle patches aktiveret",
@@ -148,7 +152,7 @@
         "deleteKeystoreHint": "Slet keystore der bruges til at signere appen",
         "deletedKeystore": "Keystore slettet",
         "deleteTempDirLabel": "Slet midlertidige filer",
-        "deleteTempDirHint": "Slet de ubrugte midlertidige filer",
+        "deleteTempDirHint": "Slet ubrugte midlertidige filer",
         "deletedTempDir": "Midlertidige filer slettet",
         "exportPatchesLabel": "Eksportér valgte patches",
         "exportPatchesHint": "Eksportér valgte patches til en JSON-fil",

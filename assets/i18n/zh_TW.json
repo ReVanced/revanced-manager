@@ -1,6 +1,7 @@
 {
     "okButton": "確定",
     "cancelButton": "取消",
+    "updateButton": "更新",
     "enabledLabel": "已啟用",
     "disabledLabel": "已停用",
     "yesButton": "是",
@@ -21,7 +22,7 @@
         "noInstallations": "沒有安裝已修補的應用程式",
         "installed": "已安裝",
         "updateDialogTitle": "更新 Manager",
-        "updateDialogText": "確定要下載並更新 ReVanced Manager 嗎？",
+        "updateChangelogTitle": "更新日誌",
         "notificationTitle": "已下載更新",
         "notificationText": "輕觸以安裝更新",
         "downloadingMessage": "正在下載更新...",
@@ -81,13 +82,13 @@
         "all": "全部",
         "none": "無",
         "loadPatchesSelection": "載入修補檔選取",
-        "noSavedPatches": "選取的應用程式尚無已儲存的修補檔\n按下 [完成] 以儲存目前選取",
+        "noSavedPatches": "選取的應用程式尚無已儲存的修補檔。\n按下 [完成] 以儲存目前選取。",
         "noPatchesFound": "找不到適合所選應用程式的修補檔",
         "selectAllPatchesWarningContent": "即將選取所有修補檔——之中包含不推薦的修補檔，且可能造成非預期的結果。"
     },
     "patchItem": {
         "unsupportedDialogText": "選取此修補檔可能導致修補錯誤。\n應用程式版本： {packageVersion}\n支援的版本： {supportedVersions}",
-        "unsupportedPatchVersion": "不支援此應用程式的版本的修補作業。請在設定中啟用實驗性選項以繼續進行。"
+        "unsupportedPatchVersion": "修補檔不支援這個版本的應用程式。需啟用設定中的實驗性選項才可繼續下一步。"
     },
     "installerView": {
         "widgetTitle": "安裝程式",
@@ -121,6 +122,7 @@
         "englishOption": "English",
         "sourcesLabel": "來源",
         "sourcesLabelHint": "設定自訂來源",
+        "hostRepositoryLabel": "儲存庫 API",
         "orgPatchesLabel": "修補檔組織",
         "sourcesPatchesLabel": "修補檔來源",
         "orgIntegrationsLabel": "整合組織",
@@ -135,6 +137,8 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "設定自訂 API URL",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "支援實驗性通用型修補檔",
+        "experimentalUniversalPatchesHint": "顯示所有可使用通用型修補檔的應用程式，載入應用程式清單的時長可能會變得更慢",
         "experimentalPatchesLabel": "支援實驗性修補檔",
         "experimentalPatchesHint": "啟用以在任何應用程式版本中使用不支援的修補檔",
         "enabledExperimentalPatches": "已啟用支援實驗性修補檔",
@@ -183,7 +187,7 @@
         "patchedDateHint": "{date} {time}",
         "appliedPatchesLabel": "已套用修補檔",
         "appliedPatchesHint": "已套用 {quantity} 個修補檔",
-        "updateNotImplemented": "這項功能還沒有實現"
+        "updateNotImplemented": "這項功能尚未實作"
     },
     "contributorsView": {
         "widgetTitle": "貢獻者",

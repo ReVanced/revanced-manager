@@ -1,6 +1,7 @@
 {
     "okButton": "موافق",
     "cancelButton": "إلغاء",
+    "updateButton": "تحديث",
     "enabledLabel": "مفعّل",
     "disabledLabel": "معطّل",
     "yesButton": "نعم",
@@ -21,7 +22,7 @@
         "noInstallations": "لا توجد تطبيقات معدلة مثبتة",
         "installed": "مثبت",
         "updateDialogTitle": "تحديث المدير",
-        "updateDialogText": "هل أنت متأكد من رغبتك في تنزيل وتحديث ReVanced Manager ؟",
+        "updateChangelogTitle": "سجل التغييرات",
         "notificationTitle": "تم تنزيل التحديث",
         "notificationText": "أنقر لتثبيت التحديث",
         "downloadingMessage": "جاري تحميل التحديث...",
@@ -81,13 +82,13 @@
         "all": "الكل",
         "none": "بدون",
         "loadPatchesSelection": "تحميل التعديلات المحددة",
-        "noSavedPatches": "لا توجد تعديلات محفوظة للتطبيق المحدد\nاضغط على تم لحفظ التحديد الحالي",
+        "noSavedPatches": "لا توجد تعديلات محفوظة للتطبيق المختار.\nاضغط على تم لحفظ الاختيار الحالي.",
         "noPatchesFound": "لم يتم العثور على تعديلات للتطبيق المحدد",
         "selectAllPatchesWarningContent": "أنت على وشك تحديد جميع التعديلات، بما في ذلك التعديلات غير الموصى بها والتي يمكن أن تسبب سلوكاً غير مرغوب فيه."
     },
     "patchItem": {
         "unsupportedDialogText": "قد يؤدي تحديد هذا التعديل إلى حدوث أخطاء في عملية التعديل.\n\nإصدار التطبيق: {packageVersion}\nالإصدارات المدعومة حالياً:\n{supportedVersions}",
-        "unsupportedPatchVersion": "التعديل غير مدعوم لهذا الإصدار من التطبيق. مكن التعديل التجريبي في الإعدادات للمتابعة."
+        "unsupportedPatchVersion": "التعديل غير مدعوم لهذا الإصدار من التطبيق. فعِّل خِيار التعديل التجريبي في الإعدادات للمتابعة."
     },
     "installerView": {
         "widgetTitle": "المثبت",
@@ -121,6 +122,7 @@
         "englishOption": "الإنجليزية",
         "sourcesLabel": "المصادر",
         "sourcesLabelHint": "تكوين مصادرك المخصصة",
+        "hostRepositoryLabel": "مستودع API",
         "orgPatchesLabel": "تنظيم التعديلات",
         "sourcesPatchesLabel": "مصدر التعديلات",
         "orgIntegrationsLabel": "تنظيم الدمج",
@@ -135,6 +137,8 @@
         "apiURLLabel": "رابط API",
         "apiURLHint": "تكوين رابط API الخاص بك",
         "selectApiURL": "رابط API",
+        "experimentalUniversalPatchesLabel": "دعم التعديلات العامة التجريبية",
+        "experimentalUniversalPatchesHint": "عرض جميع التطبيقات المراد استخدامها مع التعديلات العامة، قد يكون تحميل قائمة التطبيقات أبطأ",
         "experimentalPatchesLabel": "دعم التعديلات التجريبية",
         "experimentalPatchesHint": "تمكين استخدام التعديلات غير المدعومة في أي إصدار للتطبيق",
         "enabledExperimentalPatches": "تم تمكين دعم التعديلات التجريبية",

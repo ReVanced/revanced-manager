@@ -1,6 +1,7 @@
 {
     "okButton": "ОК",
     "cancelButton": "Отмена",
+    "updateButton": "Обновить",
     "enabledLabel": "Включено",
     "disabledLabel": "Выключено",
     "yesButton": "Да",
@@ -21,7 +22,7 @@
         "noInstallations": "Не установлено пропатченных приложений",
         "installed": "Установлено",
         "updateDialogTitle": "Обновить Manager",
-        "updateDialogText": "Вы уверены, что хотите загрузить и обновить ReVanced Manager?",
+        "updateChangelogTitle": "Список изменений",
         "notificationTitle": "Обновление загружено",
         "notificationText": "Нажмите, чтобы установить обновление",
         "downloadingMessage": "Скачивается обновление...",
@@ -77,17 +78,17 @@
         "viewTitle": "Выберите патчи",
         "searchBarHint": "Искать патчи",
         "doneButton": "Готово",
-        "recommended": "Рекомендуемые",
+        "recommended": "Рекомендуется",
         "all": "Все",
         "none": "Никакие",
         "loadPatchesSelection": "Загрузить выбор патчей",
-        "noSavedPatches": "Нет сохранённых патчей для выбранного приложения\nНажмите «Готово» для сохранения текущего выбора",
+        "noSavedPatches": "Нет сохранённых патчей для выбранного приложения.\nНажмите «Готово» для сохранения текущего выбора.",
         "noPatchesFound": "Для выбранного приложения не найдены патчи",
         "selectAllPatchesWarningContent": "Вы собираетесь выбрать все патчи, в том числе и нерекомендуемые патчи, которые могут вызвать нежелательное поведение."
     },
     "patchItem": {
         "unsupportedDialogText": "Выбор этого патча может привести к ошибкам во время патча.\n\nВерсия приложения: {packageVersion}\nПоддерживаемые версии:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Патч не поддерживается этой версией приложения. Для продолжения включите опцию экспериментальной поддержки в настройках."
+        "unsupportedPatchVersion": "Патч не поддерживается для этой версии приложения. Чтобы продолжить, включите опцию экспериментальной поддержки в настройках."
     },
     "installerView": {
         "widgetTitle": "Установщик",
@@ -101,7 +102,7 @@
         "exportApkMenuOption": "Экспорт APK",
         "shareLogMenuOption": "Отправить лог",
         "installErrorDialogTitle": "Ошибка",
-        "installErrorDialogText1": "Root-установка невозможна с выбранными патчами.\nПерепатчите приложение, или выберите non-root установку.",
+        "installErrorDialogText1": "Root-установка невозможна с выбранными патчами.\nПерепатчите приложение или выберите non-root установку.",
         "installErrorDialogText2": "Non-root установка невозможна с выбранными патчами.\nПерепатчите приложение, или выберите root-установку, если на вашем устройстве есть root.",
         "installErrorDialogText3": "Root-установка невозможна, так как оригинальный APK был выбран из хранилища.\nВыберите установленное приложение, или выберите non-root установку.",
         "noExit": "Установщик все еще запущен, выход невозможен..."
@@ -121,6 +122,7 @@
         "englishOption": "Английский",
         "sourcesLabel": "Источники",
         "sourcesLabelHint": "Настройте свои источники",
+        "hostRepositoryLabel": "API репозитория",
         "orgPatchesLabel": "Организация патчей",
         "sourcesPatchesLabel": "Репозиторий патчей",
         "orgIntegrationsLabel": "Организация интеграций",
@@ -135,6 +137,8 @@
         "apiURLLabel": "API-ссылка",
         "apiURLHint": "Настройте свою API-ссылку",
         "selectApiURL": "API-ссылка",
+        "experimentalUniversalPatchesLabel": "Экспериментальная поддержка универсальных патчей",
+        "experimentalUniversalPatchesHint": "Отображать все приложения, поддерживающие универсальные патчи; загрузка списка приложений может быть медленнее",
         "experimentalPatchesLabel": "Экспериментальная поддержка патчей",
         "experimentalPatchesHint": "Разрешить использование несовместимых патчей в любой версии приложения",
         "enabledExperimentalPatches": "Экспериментальная поддержка патчей включена",
