@@ -129,9 +129,14 @@ class ManagerAPI {
     }
   }
 
+  Future<File> getKeyStoreFile() async {
+    Directory appCache = await getTemporaryDirectory();
+    final dataDir = await getExternalStorageDirectory() ?? appCache;
+    return File('${dataDir.path}/revanced-manager.keystore');
+  }
+
   Future<void> deleteKeystore() async {
-    final File keystore = File(
-        '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore');
+    final File keystore = await getKeyStoreFile();
     if (await keystore.exists()) {
       await keystore.delete();
     }

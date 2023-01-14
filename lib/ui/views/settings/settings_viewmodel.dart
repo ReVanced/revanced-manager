@@ -73,9 +73,7 @@ class SettingsViewModel extends BaseViewModel {
 
         final f = File(result.files.single.path!);
 
-        final destinationFile = File(
-          '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
-        );
+        final destinationFile = await _managerAPI.getKeyStoreFile();
         await destinationFile.writeAsBytes(f.readAsBytesSync());
       }
     } on Exception {
@@ -85,9 +83,7 @@ class SettingsViewModel extends BaseViewModel {
 
   void exportKeystore() async {
     const name = 'revanced-manager.keystore';
-    final keyStore = File(
-      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
-    );
+    final keyStore = await _managerAPI.getKeyStoreFile();
 
     if (keyStore.existsSync()) {
       try {

@@ -32,7 +32,7 @@ class PatcherAPI {
     Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
     _tmpDir = Directory('${appCache.path}/patcher');
-    _keyStoreFile = File('${_dataDir.path}/revanced-manager.keystore');
+    _keyStoreFile = await _managerAPI.getKeyStoreFile();
     cleanPatcher();
   }
 
@@ -53,10 +53,12 @@ class PatcherAPI {
     }
   }
 
-  Future<List<ApplicationWithIcon>> getFilteredInstalledApps(bool showUniversalPatches) async {
+  Future<List<ApplicationWithIcon>> getFilteredInstalledApps(
+      bool showUniversalPatches) async {
     List<ApplicationWithIcon> filteredApps = [];
     bool? allAppsIncluded =
-        _patches.any((patch) => patch.compatiblePackages.isEmpty) && showUniversalPatches;
+        _patches.any((patch) => patch.compatiblePackages.isEmpty) &&
+            showUniversalPatches;
     if (allAppsIncluded) {
       var allPackages = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
