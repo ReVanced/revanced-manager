@@ -62,6 +62,46 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void importKeystore() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['keystore', 'jks'],
+      );
+      if (result != null && result.files.single.path != null) {
+        await _managerAPI.deleteKeystore();
+
+        final f = File(result.files.single.path!);
+
+        final destinationFile = File(
+          '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
+        );
+        await destinationFile.writeAsBytes(f.readAsBytesSync());
+      }
+    } on Exception {
+      _toast.showBottom('settingsView.importKeystoreFailed');
+    }
+  }
+
+  void exportKeystore() async {
+    const name = 'revanced-manager.keystore';
+    final keyStore = File(
+      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
+    );
+
+    if (keyStore.existsSync()) {
+      try {
+        final saveDialog = SaveFileDialogParams(
+          sourceFilePath: keyStore.path,
+          destinationFileName: name,
+        );
+        await CRFileSaver.saveFileWithDialog(saveDialog);
+      } on Exception catch (e, s) {
+        Sentry.captureException(e, stackTrace: s);
+      }
+    }
+  }
+
   void deleteTempDir() {
     _managerAPI.deleteTempFolder();
     _toast.showBottom('settingsView.deletedTempDir');
