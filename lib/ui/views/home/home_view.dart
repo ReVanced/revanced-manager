@@ -7,6 +7,7 @@ import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/available_updates_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/vanced_microg_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_chip.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -55,6 +56,10 @@ class HomeView extends StatelessWidget {
                       LatestCommitCard(
                         onPressed: () =>
                             model.showUpdateConfirmationDialog(context),
+                      ),
+                      const SizedBox(height: 10),
+                      VancedMicroGCard(
+                        onPressed: () => model.showUpdateMicroGDialog(context),
                       ),
                       const SizedBox(height: 23),
                       I18nText(

@@ -6,6 +6,7 @@ import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/models/tool.dart';
 import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:timeago/timeago.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -15,6 +16,8 @@ import 'package:sentry_dio/sentry_dio.dart';
 class RevancedAPI {
   late Dio _dio = Dio();
   final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
+
+  List<Tool> _tools = [];
   final Options _cacheOptions = buildCacheOptions(
     const Duration(hours: 6),
     maxStale: const Duration(days: 1),
@@ -40,6 +43,7 @@ class RevancedAPI {
       _dio.addSentry(
         captureFailedRequests: true,
       );
+      await _getTools();
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
     }
@@ -80,17 +84,24 @@ class RevancedAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> _getLatestRelease(
+  Future<void> _getTools() async {
+    try {
+      final response = await _dio.get('/tools', options: _cacheOptions);
+      List<dynamic> tools = response.data['tools'];
+
+      _tools = List<Tool>.from(tools.map((e) => Tool.fromJson(e)));
+    } catch (e, s) {
+      await Sentry.captureException(e, stackTrace: s);
+    }
+  }
+
+  Future<Tool?> _getLatestRelease(
     String extension,
     String repoName,
   ) async {
     try {
-      var response = await _dio.get('/tools', options: _cacheOptions);
-      List<dynamic> tools = response.data['tools'];
-      return tools.firstWhereOrNull(
-        (t) =>
-            t['repository'] == repoName &&
-            (t['name'] as String).endsWith(extension),
+      return _tools.firstWhereOrNull(
+        (t) => t.repository == repoName && t.name.endsWith(extension),
       );
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
@@ -103,12 +114,12 @@ class RevancedAPI {
     String repoName,
   ) async {
     try {
-      Map<String, dynamic>? release = await _getLatestRelease(
+      Tool? release = await _getLatestRelease(
         extension,
         repoName,
       );
       if (release != null) {
-        return release['version'];
+        return release.version;
       }
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
@@ -119,12 +130,12 @@ class RevancedAPI {
 
   Future<File?> getLatestReleaseFile(String extension, String repoName) async {
     try {
-      Map<String, dynamic>? release = await _getLatestRelease(
+      Tool? release = await _getLatestRelease(
         extension,
         repoName,
       );
       if (release != null) {
-        String url = release['browser_download_url'];
+        String url = release.browserDownloadUrl;
         return await DefaultCacheManager().getSingleFile(url);
       }
     } on Exception catch (e, s) {
@@ -139,12 +150,12 @@ class RevancedAPI {
     String repoName,
   ) async {
     try {
-      Map<String, dynamic>? release = await _getLatestRelease(
+      Tool? release = await _getLatestRelease(
         extension,
         repoName,
       );
       if (release != null) {
-        DateTime timestamp = DateTime.parse(release['timestamp'] as String);
+        DateTime timestamp = DateTime.parse(release.timestamp);
         return format(timestamp, locale: 'en_short');
       }
     } on Exception catch (e, s) {

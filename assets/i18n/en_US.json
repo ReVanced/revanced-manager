@@ -16,6 +16,7 @@
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
+        "vancedMicroG": "Vanced MicroG",
         "updatesAvailable": "Updates available",
         "noUpdates": "No updates available",
         "WIP": "Work in progress...",
@@ -43,6 +44,15 @@
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
         "updateButton": "Update Manager"
+    },
+    "vancedMicroGCard": {
+        "microGDownloading": "Downloading",
+        "loadingLabel": "Loading...",
+        "version": "Version: ",
+        "name": "Vanced MicroG ",
+        "managerLabel": "Manager: ",
+        "updateButton": "Update",
+        "installButton": "Install"
     },
     "patcherView": {
         "widgetTitle": "Patcher",

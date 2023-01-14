@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app_installer/app_installer.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -20,6 +21,8 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
+  final String vancedMicroGRepo = 'TeamVanced/VancedMicroG';
+  final String vancedMicroGPackageName = 'com.mgoogle.android.gms';
   late String storedPatchesFile = '/selected-patches.json';
   late SharedPreferences _prefs;
   String defaultApiUrl = 'https://releases.revanced.app/';
@@ -453,5 +456,47 @@ class ManagerAPI {
   Future<void> resetLastSelectedPatches() async {
     final File selectedPatchesFile = File(storedPatchesFile);
     selectedPatchesFile.deleteSync();
+  }
+
+  bool getBasicMode() {
+    return _prefs.getBool('basicMode') ?? true;
+  }
+
+  Future<void> setBasicMode(bool value) async {
+    await _prefs.setBool('basicMode', value);
+  }
+
+  Future<bool> isVancedMicroGInstalled() async {
+    return await DeviceApps.isAppInstalled(vancedMicroGPackageName);
+  }
+
+  Future<bool> hasUpdatedVancedMicroG() async {
+    final app = await DeviceApps.getApp(vancedMicroGPackageName);
+    final version =
+        await _revancedAPI.getLatestReleaseVersion('apk', vancedMicroGRepo);
+    if (app != null &&
+        version != null &&
+        version.contains(app.versionName ?? '')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> installVancedMicroG() async {
+    final isInstall = await isVancedMicroGInstalled();
+    if (!isInstall) {
+      final vancedMicroGFile =
+          await _revancedAPI.getLatestReleaseFile('apk', vancedMicroGRepo);
+      if (vancedMicroGFile != null) {
+        await AppInstaller.installApk(vancedMicroGFile.path);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<String?> getLatestVancedMicroGVersion() async {
+    return await _revancedAPI.getLatestReleaseVersion('apk', vancedMicroGRepo);
   }
 }
