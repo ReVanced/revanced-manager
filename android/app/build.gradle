@@ -67,6 +67,14 @@ flutter {
     source '../..'
 }
 
+configurations.all {
+    resolutionStrategy {
+        dependencySubstitution {
+            substitute module('org.smali:dexlib2:2.5.2') using module('app.revanced:dexlib2:2.5.3-8649b642')
+        }
+    }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
