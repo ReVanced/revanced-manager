@@ -155,6 +155,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               CustomChip(
                                 label: I18nText('patchesSelectorView.all'),
                                 onSelected: (value) {
+                                  if (value) {
+                                    model.selectAllPatcherWarning(context);
+                                  }
                                   model.selectAllPatches(true);
                                 },
                               ),
