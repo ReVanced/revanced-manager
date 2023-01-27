@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.compose.destination.Destination
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
@@ -15,6 +16,8 @@ class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        installSplashScreen()
         setContent {
             ReVancedManagerTheme(
                 darkTheme = true, // TODO: Implement preferences
