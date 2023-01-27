@@ -29,7 +29,7 @@ class AppInfoViewModel extends BaseViewModel {
   ) async {
     bool isUninstalled = true;
     if (app.isRooted) {
-      bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         await _rootAPI.deleteApp(app.packageName, app.apkFilePath);
         if (!onlyUnpatch) {
@@ -45,7 +45,7 @@ class AppInfoViewModel extends BaseViewModel {
     }
   }
 
-  void navigateToPatcher(PatchedApplication app) async {
+  Future<void> navigateToPatcher(PatchedApplication app) async {
     locator<PatcherViewModel>().selectedApp = app;
     locator<PatcherViewModel>().selectedPatches =
         await _patcherAPI.getAppliedPatches(app.appliedPatches);
@@ -62,7 +62,7 @@ class AppInfoViewModel extends BaseViewModel {
     PatchedApplication app,
     bool onlyUnpatch,
   ) async {
-    bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+    final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
     if (app.isRooted && !hasRootPermissions) {
       return showDialog(
         context: context,
@@ -134,7 +134,8 @@ class AppInfoViewModel extends BaseViewModel {
         title: I18nText('appInfoView.appliedPatchesLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
-            child: Text(getAppliedPatchesString(app.appliedPatches))),
+          child: Text(getAppliedPatchesString(app.appliedPatches)),
+        ),
         actions: <Widget>[
           CustomMaterialButton(
             label: I18nText('okButton'),
@@ -146,13 +147,15 @@ class AppInfoViewModel extends BaseViewModel {
   }
 
   String getAppliedPatchesString(List<String> appliedPatches) {
-    List<String> names = appliedPatches
-        .map((p) => p
-            .replaceAll('-', ' ')
-            .split('-')
-            .join(' ')
-            .toTitleCase()
-            .replaceFirst('Microg', 'MicroG'))
+    final List<String> names = appliedPatches
+        .map(
+          (p) => p
+              .replaceAll('-', ' ')
+              .split('-')
+              .join(' ')
+              .toTitleCase()
+              .replaceFirst('Microg', 'MicroG'),
+        )
         .toList();
     return '\u2022 ${names.join('\n\u2022 ')}';
   }

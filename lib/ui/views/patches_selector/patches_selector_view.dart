@@ -20,7 +20,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
-      onModelReady: (model) => model.initialize(),
+      onViewModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         resizeToAvoidBottomInset: false,
@@ -45,7 +45,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             SliverAppBar(
               pinned: true,
               floating: true,
-              snap: false,
               title: I18nText(
                 'patchesSelectorView.viewTitle',
                 child: Text(

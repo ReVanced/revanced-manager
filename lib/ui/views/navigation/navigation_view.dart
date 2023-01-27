@@ -11,7 +11,7 @@ class NavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NavigationViewModel>.reactive(
-      onModelReady: (model) => model.initialize(context),
+      onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: PageTransitionSwitcher(

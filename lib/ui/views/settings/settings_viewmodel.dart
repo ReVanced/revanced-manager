@@ -70,15 +70,19 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> exportPatches() async {
     try {
-      File outFile = File(_managerAPI.storedPatchesFile);
+      final File outFile = File(_managerAPI.storedPatchesFile);
       if (outFile.existsSync()) {
-        String dateTime =
+        final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        String tempFilePath =
+        final String tempFilePath =
             '${outFile.path.substring(0, outFile.path.lastIndexOf('/') + 1)}selected_patches_$dateTime.json';
         outFile.copySync(tempFilePath);
-        await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: tempFilePath, destinationFileName: ''));
+        await CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: tempFilePath,
+            destinationFileName: '',
+          ),
+        );
         File(tempFilePath).delete();
         locator<Toast>().showBottom('settingsView.exportedPatches');
       } else {
@@ -91,12 +95,12 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> importPatches() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
       );
       if (result != null && result.files.single.path != null) {
-        File inFile = File(result.files.single.path!);
+        final File inFile = File(result.files.single.path!);
         final File storedPatchesFile = File(_managerAPI.storedPatchesFile);
         if (!storedPatchesFile.existsSync()) {
           storedPatchesFile.createSync(recursive: true);
@@ -120,13 +124,13 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   Future<int> getSdkVersion() async {
-    AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
+    final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
     return info.version.sdkInt ?? -1;
   }
 
   Future<void> deleteLogs() async {
-    Directory appCacheDir = await getTemporaryDirectory();
-    Directory logsDir = Directory('${appCacheDir.path}/logs');
+    final Directory appCacheDir = await getTemporaryDirectory();
+    final Directory logsDir = Directory('${appCacheDir.path}/logs');
     if (logsDir.existsSync()) {
       logsDir.deleteSync(recursive: true);
     }
@@ -134,17 +138,18 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   Future<void> exportLogcatLogs() async {
-    Directory appCache = await getTemporaryDirectory();
-    Directory logDir = Directory('${appCache.path}/logs');
+    final Directory appCache = await getTemporaryDirectory();
+    final Directory logDir = Directory('${appCache.path}/logs');
     logDir.createSync();
-    String dateTime = DateTime.now()
+    final String dateTime = DateTime.now()
         .toIso8601String()
         .replaceAll('-', '')
         .replaceAll(':', '')
         .replaceAll('T', '')
         .replaceAll('.', '');
-    File logcat = File('${logDir.path}/revanced-manager_logcat_$dateTime.log');
-    String logs = await Logcat.execute();
+    final File logcat =
+        File('${logDir.path}/revanced-manager_logcat_$dateTime.log');
+    final String logs = await Logcat.execute();
     logcat.writeAsStringSync(logs);
     ShareExtend.share(logcat.path, 'file');
   }

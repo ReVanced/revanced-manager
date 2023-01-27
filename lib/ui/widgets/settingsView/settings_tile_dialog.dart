@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsTileDialog extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Function()? onTap;
-  final EdgeInsetsGeometry? padding;
-
   const SettingsTileDialog({
     Key? key,
     required this.title,
@@ -14,6 +9,10 @@ class SettingsTileDialog extends StatelessWidget {
     required this.onTap,
     this.padding,
   }) : super(key: key);
+  final String title;
+  final String subtitle;
+  final Function()? onTap;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {

@@ -6,12 +6,11 @@ import 'package:revanced_manager/ui/widgets/settingsView/social_media_item.dart'
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class SocialMediaWidget extends StatelessWidget {
-  final EdgeInsetsGeometry? padding;
-
   const SocialMediaWidget({
     Key? key,
     this.padding,
   }) : super(key: key);
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {

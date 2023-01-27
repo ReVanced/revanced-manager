@@ -1,13 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialMediaItem extends StatelessWidget {
-  final Widget? icon;
-  final Widget title;
-  final Widget? subtitle;
-  final String? url;
-
   const SocialMediaItem({
     Key? key,
     this.icon,
@@ -15,6 +9,10 @@ class SocialMediaItem extends StatelessWidget {
     this.subtitle,
     this.url,
   }) : super(key: key);
+  final Widget? icon;
+  final Widget title;
+  final Widget? subtitle;
+  final String? url;
 
   @override
   Widget build(BuildContext context) {

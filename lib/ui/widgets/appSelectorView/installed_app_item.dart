@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
-  final String name;
-  final String pkgName;
-  final Uint8List icon;
-  final int patchesCount;
-  final Function()? onTap;
-
   const InstalledAppItem({
     Key? key,
     required this.name,
@@ -17,6 +11,11 @@ class InstalledAppItem extends StatefulWidget {
     required this.patchesCount,
     this.onTap,
   }) : super(key: key);
+  final String name;
+  final String pkgName;
+  final Uint8List icon;
+  final int patchesCount;
+  final Function()? onTap;
 
   @override
   State<InstalledAppItem> createState() => _InstalledAppItemState();
@@ -48,7 +47,6 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         widget.name,
@@ -62,8 +60,8 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       const SizedBox(width: 6),
                       Text(
                         widget.patchesCount == 1
-                            ? "${widget.patchesCount} patch"
-                            : "${widget.patchesCount} patches",
+                            ? '${widget.patchesCount} patch'
+                            : '${widget.patchesCount} patches',
                         style: TextStyle(
                           fontSize: 8,
                           color: Theme.of(context).colorScheme.secondary,

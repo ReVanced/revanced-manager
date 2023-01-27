@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class GradientProgressIndicator extends StatefulWidget {
-  final double? progress;
   const GradientProgressIndicator({required this.progress, super.key});
+  final double? progress;
 
   @override
   State<GradientProgressIndicator> createState() =>

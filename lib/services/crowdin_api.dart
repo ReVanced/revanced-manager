@@ -13,9 +13,11 @@ class CrowdinAPI {
 
   Future<void> initialize() async {
     try {
-      _dio = Dio(BaseOptions(
-        baseUrl: 'https://api.crowdin.com/api/v2',
-      ));
+      _dio = Dio(
+        BaseOptions(
+          baseUrl: 'https://api.crowdin.com/api/v2',
+        ),
+      );
 
       _dio.interceptors.add(_dioCacheManager.interceptor);
       _dio.addSentry(
@@ -36,7 +38,7 @@ class CrowdinAPI {
 
   Future<List> getLanguages() async {
     try {
-      var response = await _dio.get(
+      final response = await _dio.get(
         '/projects',
         options: buildCacheOptions(
           const Duration(hours: 6),
@@ -49,7 +51,7 @@ class CrowdinAPI {
           ),
         ),
       );
-      List targetLanguages =
+      final List targetLanguages =
           await response.data['data'][0]['data']['targetLanguages'];
 
       return targetLanguages;

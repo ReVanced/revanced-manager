@@ -6,14 +6,13 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsCard extends StatefulWidget {
-  final String title;
-  final List<dynamic> contributors;
-
   const ContributorsCard({
     Key? key,
     required this.title,
     required this.contributors,
   }) : super(key: key);
+  final String title;
+  final List<dynamic> contributors;
 
   @override
   State<ContributorsCard> createState() => _ContributorsCardState();
