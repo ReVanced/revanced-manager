@@ -70,7 +70,7 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // ReVanced
+    // ReVanced Patcher
     implementation "app.revanced:revanced-patcher:6.4.2"
 
     // Signing & aligning
