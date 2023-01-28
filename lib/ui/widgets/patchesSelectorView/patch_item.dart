@@ -75,24 +75,26 @@ class _PatchItemState extends State<PatchItem> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text(
-                            widget.simpleName,
-                            maxLines: 2,
-                            overflow: TextOverflow.visible,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            widget.version,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Theme.of(context).colorScheme.secondary,
+                          Expanded(
+                              child: Text(
+                              widget.simpleName,
+                              maxLines: 2,
+                              overflow: TextOverflow.visible,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        widget.version,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
