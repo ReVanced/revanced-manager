@@ -2,6 +2,8 @@
 
 The official ReVanced Manager based on Flutter.
 
+> **Note**: This repository branch `public` are meant for user to try new features before they're been merged to [revanced/revanced-manager](https://github.com/revanced/revanced-manager).  DO NOT USE THIS BRANCH FOR PR
+
 > **Warning**: This repository currently has no active maintainer. For that reason, development is stale. Active development continues for [revanced-cli](https://github.com/revanced/revanced-cli).
 
 ## 🔽 Download
