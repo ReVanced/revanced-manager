@@ -103,7 +103,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     horizontal: 12.0,
                   ),
                   child: SearchBar(
-                    showSelectIcon: true,
                     hintText: FlutterI18n.translate(
                       context,
                       'patchesSelectorView.searchBarHint',
@@ -112,12 +111,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       setState(() {
                         _query = searchQuery;
                       });
-                    },
-                    onSelectAll: (value) {
-                      if (value) {
-                        model.selectAllPatcherWarning(context);
-                      }
-                      model.selectAllPatches(value);
                     },
                   ),
                 ),
