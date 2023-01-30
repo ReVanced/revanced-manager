@@ -13,7 +13,7 @@ class ContributorsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ContributorsViewModel>.reactive(
       viewModelBuilder: () => ContributorsViewModel(),
-      onModelReady: (model) => model.getContributors(),
+      onViewModelReady: (model) => model.getContributors(),
       builder: (context, model, child) => Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[

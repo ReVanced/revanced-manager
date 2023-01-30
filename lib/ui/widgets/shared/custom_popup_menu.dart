@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomPopupMenu extends StatelessWidget {
-  final Function(dynamic) onSelected;
-  final Map<int, Widget> children;
-
   const CustomPopupMenu({
     Key? key,
     required this.onSelected,
     required this.children,
   }) : super(key: key);
+  final Function(dynamic) onSelected;
+  final Map<int, Widget> children;
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:io';
+
 import 'package:app_installer/app_installer.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:device_apps/device_apps.dart';
@@ -10,9 +11,9 @@ import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -47,7 +48,7 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestPermission();
-    bool isConnected = await Connectivity().checkConnection();
+    final bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
     }
@@ -67,7 +68,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void navigateToPatcher(PatchedApplication app) async {
+  Future<void> navigateToPatcher(PatchedApplication app) async {
     locator<PatcherViewModel>().selectedApp = app;
     locator<PatcherViewModel>().selectedPatches =
         await _patcherAPI.getAppliedPatches(app.appliedPatches);
@@ -88,13 +89,13 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
-    String? latestVersion = await _managerAPI.getLatestManagerVersion();
-    String currentVersion = await _managerAPI.getCurrentManagerVersion();
+    final String? latestVersion = await _managerAPI.getLatestManagerVersion();
+    final String currentVersion = await _managerAPI.getCurrentManagerVersion();
     if (latestVersion != null) {
       try {
-        int latestVersionInt =
+        final int latestVersionInt =
             int.parse(latestVersion.replaceAll(RegExp('[^0-9]'), ''));
-        int currentVersionInt =
+        final int currentVersionInt =
             int.parse(currentVersion.replaceAll(RegExp('[^0-9]'), ''));
         return latestVersionInt > currentVersionInt;
       } on Exception catch (e, s) {
@@ -108,7 +109,7 @@ class HomeViewModel extends BaseViewModel {
   Future<void> updateManager(BuildContext context) async {
     try {
       _toast.showBottom('homeView.downloadingMessage');
-      File? managerApk = await _managerAPI.downloadManager();
+      final File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
         await flutterLocalNotificationsPlugin.zonedSchedule(
           0,

@@ -1,7 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:animations/animations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/available_updates_card.dart';
@@ -18,7 +18,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       disposeViewModel: false,
-      onModelReady: (model) => model.initialize(context),
+      onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: RefreshIndicator(
@@ -48,7 +48,7 @@ class HomeView extends StatelessWidget {
                         'homeView.updatesSubtitle',
                         child: Text(
                           '',
-                          style: Theme.of(context).textTheme.headline6!,
+                          style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -61,7 +61,7 @@ class HomeView extends StatelessWidget {
                         'homeView.patchedSubtitle',
                         child: Text(
                           '',
-                          style: Theme.of(context).textTheme.headline6!,
+                          style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
                       const SizedBox(height: 8),

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomChip extends StatelessWidget {
-  final Widget label;
-  final bool isSelected;
-  final Function(bool)? onSelected;
-
   const CustomChip({
     Key? key,
     required this.label,
     this.isSelected = false,
     this.onSelected,
   }) : super(key: key);
+  final Widget label;
+  final bool isSelected;
+  final Function(bool)? onSelected;
 
   @override
   Widget build(BuildContext context) {

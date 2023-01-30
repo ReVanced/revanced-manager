@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomSwitch extends StatelessWidget {
-  final ValueChanged<bool> onChanged;
-  final bool value;
-
   const CustomSwitch({
     Key? key,
     required this.onChanged,
     required this.value,
   }) : super(key: key);
+  final ValueChanged<bool> onChanged;
+  final bool value;
 
   @override
   Widget build(BuildContext context) {

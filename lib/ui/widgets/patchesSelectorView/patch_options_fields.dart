@@ -3,8 +3,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OptionsTextField extends StatelessWidget {
-  final String hint;
   const OptionsTextField({Key? key, required this.hint}) : super(key: key);
+  final String hint;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class OptionsTextField extends StatelessWidget {
     final sWidth = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.only(top: 12, bottom: 6),
-      padding: const EdgeInsets.all(0),
+      padding: EdgeInsets.zero,
       child: TextField(
         decoration: InputDecoration(
           constraints: BoxConstraints(
@@ -28,9 +28,9 @@ class OptionsTextField extends StatelessWidget {
 }
 
 class OptionsFilePicker extends StatelessWidget {
-  final String optionName;
   const OptionsFilePicker({Key? key, required this.optionName})
       : super(key: key);
+  final String optionName;
 
   @override
   Widget build(BuildContext context) {

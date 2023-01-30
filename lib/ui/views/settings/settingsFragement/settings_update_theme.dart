@@ -23,9 +23,9 @@ class SUpdateTheme extends BaseViewModel {
     return _managerAPI.getUseDynamicTheme();
   }
 
-  void setUseDynamicTheme(BuildContext context, bool value) async {
+  Future<void> setUseDynamicTheme(BuildContext context, bool value) async {
     await _managerAPI.setUseDynamicTheme(value);
-    int currentTheme = DynamicTheme.of(context)!.themeId;
+    final int currentTheme = DynamicTheme.of(context)!.themeId;
     if (currentTheme.isEven) {
       await DynamicTheme.of(context)!.setTheme(value ? 2 : 0);
     } else {
@@ -38,9 +38,9 @@ class SUpdateTheme extends BaseViewModel {
     return _managerAPI.getUseDarkTheme();
   }
 
-  void setUseDarkTheme(BuildContext context, bool value) async {
+  Future<void> setUseDarkTheme(BuildContext context, bool value) async {
     await _managerAPI.setUseDarkTheme(value);
-    int currentTheme = DynamicTheme.of(context)!.themeId;
+    final int currentTheme = DynamicTheme.of(context)!.themeId;
     if (currentTheme < 2) {
       await DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
     } else {

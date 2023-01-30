@@ -19,9 +19,9 @@ class SManageSources extends BaseViewModel {
   final TextEditingController _intSourceController = TextEditingController();
 
   Future<void> showSourcesDialog(BuildContext context) async {
-    String hostRepository = _managerAPI.getRepoUrl();
-    String patchesRepo = _managerAPI.getPatchesRepo();
-    String integrationsRepo = _managerAPI.getIntegrationsRepo();
+    final String hostRepository = _managerAPI.getRepoUrl();
+    final String patchesRepo = _managerAPI.getPatchesRepo();
+    final String integrationsRepo = _managerAPI.getIntegrationsRepo();
     _hostSourceController.text = hostRepository;
     _orgPatSourceController.text = patchesRepo.split('/')[0];
     _patSourceController.text = patchesRepo.split('/')[1];

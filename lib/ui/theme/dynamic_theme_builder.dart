@@ -7,22 +7,21 @@ import 'package:revanced_manager/theme.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DynamicThemeBuilder extends StatelessWidget {
-  final String title;
-  final Widget home;
-  final Iterable<LocalizationsDelegate> localizationsDelegates;
-
   const DynamicThemeBuilder({
     Key? key,
     required this.title,
     required this.home,
     required this.localizationsDelegates,
   }) : super(key: key);
+  final String title;
+  final Widget home;
+  final Iterable<LocalizationsDelegate> localizationsDelegates;
 
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (lightColorScheme, darkColorScheme) {
-        ThemeData lightDynamicTheme = ThemeData(
+        final ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
           canvasColor: lightColorScheme?.background,
           navigationBarTheme: NavigationBarThemeData(
@@ -45,7 +44,7 @@ class DynamicThemeBuilder extends StatelessWidget {
           toggleableActiveColor: lightColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
         );
-        ThemeData darkDynamicTheme = ThemeData(
+        final ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
           canvasColor: darkColorScheme?.background,
           navigationBarTheme: NavigationBarThemeData(
