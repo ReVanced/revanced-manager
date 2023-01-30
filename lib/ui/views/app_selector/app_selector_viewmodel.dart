@@ -48,7 +48,6 @@ class AppSelectorViewModel extends BaseViewModel {
       patchDate: DateTime.now(),
     );
     locator<PatcherViewModel>().loadLastSelectedPatches();
-    locator<PatcherViewModel>().notifyListeners();
   }
 
   Future<void> selectAppFromStorage(BuildContext context) async {
@@ -86,7 +85,6 @@ class AppSelectorViewModel extends BaseViewModel {
             isFromStorage: true,
           );
           locator<PatcherViewModel>().loadLastSelectedPatches();
-          locator<PatcherViewModel>().notifyListeners();
         }
       }
     } on Exception catch (e, s) {
