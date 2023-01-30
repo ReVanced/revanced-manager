@@ -76,9 +76,9 @@ class SettingsViewModel extends BaseViewModel {
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
             sourceFilePath: outFile.path, destinationFileName: 'selected_patches_$dateTime.json'));
-        locator<Toast>().showBottom('settingsView.exportedPatches');
+        _toast.showBottom('settingsView.exportedPatches');
       } else {
-        locator<Toast>().showBottom('settingsView.noExportFileFound');
+        _toast.showBottom('settingsView.noExportFileFound');
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
@@ -93,20 +93,16 @@ class SettingsViewModel extends BaseViewModel {
       );
       if (result != null && result.files.single.path != null) {
         File inFile = File(result.files.single.path!);
-        final File storedPatchesFile = File(_managerAPI.storedPatchesFile);
-        if (!storedPatchesFile.existsSync()) {
-          storedPatchesFile.createSync(recursive: true);
-        }
-        inFile.copySync(storedPatchesFile.path);
+        inFile.copySync(_managerAPI.storedPatchesFile);
         inFile.delete();
         if (locator<PatcherViewModel>().selectedApp != null) {
           locator<PatcherViewModel>().loadLastSelectedPatches();
         }
-        locator<Toast>().showBottom('settingsView.importedPatches');
+        _toast.showBottom('settingsView.importedPatches');
       }
     } on Exception catch (e, s) {
       await Sentry.captureException(e, stackTrace: s);
-      locator<Toast>().showBottom('settingsView.jsonSelectorErrorMessage');
+      _toast.showBottom('settingsView.jsonSelectorErrorMessage');
     }
   }
 
