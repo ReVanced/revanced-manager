@@ -259,16 +259,8 @@ class PatcherAPI {
     try {
       if (_outFile != null) {
         String newName = _getFileName(appName, version);
-
-        // This is temporary workaround to populate initial file name
-        // ref: https://github.com/Cleveroad/cr_file_saver/issues/7
-        int lastSeparator = _outFile!.path.lastIndexOf('/');
-        String newSourcePath =
-            _outFile!.path.substring(0, lastSeparator + 1) + newName;
-        _outFile!.copySync(newSourcePath);
-
         CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: newSourcePath, destinationFileName: newName));
+            sourceFilePath: _outFile!.path, destinationFileName: newName));
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);
