@@ -75,7 +75,7 @@ class SettingsViewModel extends BaseViewModel {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: outFile.path, destinationFileName: 'selected_patches_$dateTime.json'));
+            sourceFilePath: outFile.path, destinationFileName: 'selected_patches_$dateTime.json',),);
         _toast.showBottom('settingsView.exportedPatches');
       } else {
         _toast.showBottom('settingsView.noExportFileFound');

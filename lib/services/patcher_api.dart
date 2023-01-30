@@ -269,7 +269,7 @@ class PatcherAPI {
       if (_outFile != null) {
         final String newName = _getFileName(appName, version);
         CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: _outFile!.path, destinationFileName: newName));
+            sourceFilePath: _outFile!.path, destinationFileName: newName,),);
       }
     } on Exception catch (e, s) {
       Sentry.captureException(e, stackTrace: s);

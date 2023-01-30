@@ -439,7 +439,9 @@ class ManagerAPI {
 
   Future<Map<String, dynamic>> readSelectedPatchesFile() async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    if (!selectedPatchesFile.existsSync()) return {};
+    if (!selectedPatchesFile.existsSync()) {
+      return {};
+    }
     final String string = selectedPatchesFile.readAsStringSync();
     if (string.trim().isEmpty) {
       return {};
