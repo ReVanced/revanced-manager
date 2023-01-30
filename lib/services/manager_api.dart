@@ -20,8 +20,8 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
-  late String storedPatchesFile = '/selected-patches.json';
   late SharedPreferences _prefs;
+  String storedPatchesFile = '/selected-patches.json';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -424,30 +424,20 @@ class ManagerAPI {
     } else {
       patchesMap[app] = patches;
     }
-    if (selectedPatchesFile.existsSync()) {
-      selectedPatchesFile.createSync(recursive: true);
-    }
     selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
   Future<List<String>> getSelectedPatches(String app) async {
     Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
-    if (patchesMap.isNotEmpty) {
-      final List<String> patches =
-          List.from(patchesMap.putIfAbsent(app, () => List.empty()));
-      return patches;
-    }
-    return List.empty();
+    return List.from(patchesMap.putIfAbsent(app, () => List.empty()));
   }
 
   Future<Map<String, dynamic>> readSelectedPatchesFile() async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    if (selectedPatchesFile.existsSync()) {
-      String string = selectedPatchesFile.readAsStringSync();
-      if (string.trim().isEmpty) return {};
-      return json.decode(string);
-    }
-    return {};
+    if (!selectedPatchesFile.existsSync()) return {};
+    String string = selectedPatchesFile.readAsStringSync();
+    if (string.trim().isEmpty) return {};
+    return jsonDecode(string);
   }
 
   Future<void> resetLastSelectedPatches() async {
