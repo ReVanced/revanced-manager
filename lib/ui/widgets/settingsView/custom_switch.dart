@@ -44,7 +44,7 @@ class CustomSwitch extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: value
                       ? Theme.of(context).colorScheme.primaryContainer
-                      : Colors.white,
+                      : Theme.of(context).colorScheme.surface,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12.withOpacity(0.1),
