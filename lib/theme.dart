@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 var lightCustomColorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue,
-  brightness: Brightness.light,
   primary: const Color(0xff1B73E8),
 );
 

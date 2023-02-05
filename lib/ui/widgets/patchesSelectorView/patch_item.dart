@@ -3,11 +3,24 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
+  PatchItem({
+    Key? key,
+    required this.name,
+    required this.simpleName,
+    required this.description,
+    required this.version,
+    required this.packageVersion,
+    required this.supportedPackageVersions,
+    required this.isUnsupported,
+    required this.isSelected,
+    required this.onChanged,
+    this.child,
+  }) : super(key: key);
   final String name;
   final String simpleName;
   final String description;
@@ -20,20 +33,6 @@ class PatchItem extends StatefulWidget {
   final Widget? child;
   final toast = locator<Toast>();
   final _managerAPI = locator<ManagerAPI>();
-
-  PatchItem(
-      {Key? key,
-      required this.name,
-      required this.simpleName,
-      required this.description,
-      required this.version,
-      required this.packageVersion,
-      required this.supportedPackageVersions,
-      required this.isUnsupported,
-      required this.isSelected,
-      required this.onChanged,
-      this.child})
-      : super(key: key);
 
   @override
   State<PatchItem> createState() => _PatchItemState();
@@ -75,24 +74,26 @@ class _PatchItemState extends State<PatchItem> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text(
-                            widget.simpleName,
-                            maxLines: 2,
-                            overflow: TextOverflow.visible,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            widget.version,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Theme.of(context).colorScheme.secondary,
+                          Expanded(
+                              child: Text(
+                              widget.simpleName,
+                              maxLines: 2,
+                              overflow: TextOverflow.visible,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        widget.version,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -139,38 +140,37 @@ class _PatchItemState extends State<PatchItem> {
                 )
               ],
             ),
-            widget.isUnsupported
-                ? Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: TextButton.icon(
-                          label: I18nText('warning'),
-                          icon: const Icon(Icons.warning, size: 20.0),
-                          onPressed: () => _showUnsupportedWarningDialog(),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: BorderSide(
-                                  width: 1,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
-                            ),
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.transparent,
-                            ),
-                            foregroundColor: MaterialStateProperty.all(
-                              Theme.of(context).colorScheme.secondary,
+            if (widget.isUnsupported)
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: TextButton.icon(
+                      label: I18nText('warning'),
+                      icon: const Icon(Icons.warning, size: 20.0),
+                      onPressed: () => _showUnsupportedWarningDialog(),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
                         ),
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.transparent,
+                        ),
+                        foregroundColor: MaterialStateProperty.all(
+                          Theme.of(context).colorScheme.secondary,
+                        ),
                       ),
-                    ],
-                  )
-                : Container(),
+                    ),
+                  ),
+                ],
+              )
+            else
+              Container(),
             widget.child ?? const SizedBox(),
           ],
         ),

@@ -11,7 +11,7 @@ class ContributorsViewModel extends BaseViewModel {
   List<dynamic> managerContributors = [];
 
   Future<void> getContributors() async {
-    Map<String, List<dynamic>> contributors =
+    final Map<String, List<dynamic>> contributors =
         await _managerAPI.getContributors();
     patcherContributors = contributors[_managerAPI.defaultPatcherRepo] ?? [];
     patchesContributors = contributors[_managerAPI.getPatchesRepo()] ?? [];

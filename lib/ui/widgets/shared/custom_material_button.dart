@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomMaterialButton extends StatelessWidget {
-  final Widget label;
-  final bool isFilled;
-  final bool isExpanded;
-  final Function()? onPressed;
-
   const CustomMaterialButton({
     Key? key,
     required this.label,
@@ -13,6 +8,10 @@ class CustomMaterialButton extends StatelessWidget {
     this.isExpanded = false,
     required this.onPressed,
   }) : super(key: key);
+  final Widget label;
+  final bool isFilled;
+  final bool isExpanded;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,6 @@ class CustomMaterialButton extends StatelessWidget {
             side: isFilled
                 ? BorderSide.none
                 : BorderSide(
-                    width: 1,
                     color: Theme.of(context).colorScheme.primary,
                   ),
           ),
@@ -50,12 +48,6 @@ class CustomMaterialButton extends StatelessWidget {
 
 // ignore: must_be_immutable
 class TimerButton extends StatefulWidget {
-  Widget label;
-  bool isFilled;
-  int seconds;
-  final bool isRunning;
-  final Function()? onTimerEnd;
-
   TimerButton({
     Key? key,
     required this.seconds,
@@ -64,6 +56,11 @@ class TimerButton extends StatefulWidget {
     this.label = const Text(''),
     this.isFilled = true,
   }) : super(key: key);
+  Widget label;
+  bool isFilled;
+  int seconds;
+  final bool isRunning;
+  final Function()? onTimerEnd;
 
   @override
   State<TimerButton> createState() => _TimerButtonState();
@@ -101,7 +98,6 @@ class _TimerButtonState extends State<TimerButton> {
             side: widget.isFilled
                 ? BorderSide.none
                 : BorderSide(
-                    width: 1,
                     color: Theme.of(context).colorScheme.primary,
                   ),
           ),

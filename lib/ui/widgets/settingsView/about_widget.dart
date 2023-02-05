@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/utils/about_info.dart';
-import 'package:flutter/services.dart';
 
 class AboutWidget extends StatefulWidget {
   const AboutWidget({Key? key, this.padding}) : super(key: key);

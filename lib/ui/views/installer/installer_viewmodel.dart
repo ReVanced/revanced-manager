@@ -51,10 +51,8 @@ class InstallerViewModel extends BaseViewModel {
               context,
               'installerView.notificationText',
             ),
-            notificationImportance: AndroidNotificationImportance.Default,
             notificationIcon: const AndroidResource(
               name: 'ic_notification',
-              defType: 'drawable',
             ),
           ),
         ).then((value) => FlutterBackground.enableBackgroundExecution());
@@ -73,10 +71,10 @@ class InstallerViewModel extends BaseViewModel {
       switch (call.method) {
         case 'update':
           if (call.arguments != null) {
-            Map<dynamic, dynamic> arguments = call.arguments;
-            double progress = arguments['progress'];
-            String header = arguments['header'];
-            String log = arguments['log'];
+            final Map<dynamic, dynamic> arguments = call.arguments;
+            final double progress = arguments['progress'];
+            final String header = arguments['header'];
+            final String log = arguments['log'];
             update(progress, header, log);
           }
           break;
@@ -159,13 +157,14 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void installResult(BuildContext context, bool installAsRoot) async {
+  Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
-      bool rootMicroG = installAsRoot && hasMicroG;
-      bool rootFromStorage = installAsRoot && _app.isFromStorage;
-      bool ytWithoutRootMicroG =
+      final bool hasMicroG =
+          _patches.any((p) => p.name.endsWith('microg-support'));
+      final bool rootMicroG = installAsRoot && hasMicroG;
+      final bool rootFromStorage = installAsRoot && _app.isFromStorage;
+      final bool ytWithoutRootMicroG =
           !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
       if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
         return showDialog(

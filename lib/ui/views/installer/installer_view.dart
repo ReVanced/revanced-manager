@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -15,7 +15,7 @@ class InstallerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<InstallerViewModel>.reactive(
-      onModelReady: (model) => model.initialize(context),
+      onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
       builder: (context, model, child) => WillPopScope(
         child: SafeArea(
@@ -48,15 +48,15 @@ class InstallerView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            1: I18nText(
-                              'installerView.exportApkMenuOption',
-                              child: const Text(
-                                '',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          1: I18nText(
+                            'installerView.exportApkMenuOption',
+                            child: const Text(
+                              '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
+                          ),
                           2: I18nText(
                             'installerView.shareLogMenuOption',
                             child: const Text(
@@ -71,9 +71,9 @@ class InstallerView extends StatelessWidget {
                     ),
                   ],
                   bottom: PreferredSize(
-                      preferredSize: const Size(double.infinity, 1.0),
-                      child:
-                          GradientProgressIndicator(progress: model.progress!)),
+                    preferredSize: const Size(double.infinity, 1.0),
+                    child: GradientProgressIndicator(progress: model.progress),
+                  ),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.all(20.0),

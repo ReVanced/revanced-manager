@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 0.0.53+53
+version: 0.0.54+54
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -15,7 +15,7 @@ dependencies:
   app_installer: ^1.1.0
   collection: ^1.16.0
   cross_connectivity: ^3.0.5
-  cr_file_saver: ^0.0.1+2
+  cr_file_saver: ^0.0.2
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps

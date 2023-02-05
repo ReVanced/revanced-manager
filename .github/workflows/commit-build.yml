@@ -49,7 +49,7 @@ jobs:
       - name: Add version to APK
         run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-${{ env.RELEASE_VERSION }}.apk
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: revanced-manager-${{ env.RELEASE_VERSION }}
           path: revanced-manager-${{ env.RELEASE_VERSION }}.apk

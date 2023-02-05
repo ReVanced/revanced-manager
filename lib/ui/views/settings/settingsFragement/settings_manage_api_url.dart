@@ -15,7 +15,7 @@ class SManageApiUrl extends BaseViewModel {
   final TextEditingController _apiUrlController = TextEditingController();
 
   Future<void> showApiUrlDialog(BuildContext context) async {
-    String apiUrl = _managerAPI.getApiUrl();
+    final String apiUrl = _managerAPI.getApiUrl();
     _apiUrlController.text = apiUrl.replaceAll('https://', '');
     return showDialog(
       context: context,
