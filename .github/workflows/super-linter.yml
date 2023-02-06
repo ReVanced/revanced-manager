@@ -1,10 +1,10 @@
 name: Super linter
 
 on:
-  push:
-    branches: [ "github_actions" ]
   pull_request:
-    branches: [ "github_actions" ]
+    branches:
+      - "**"
+      
 jobs:
   run-lint:
     runs-on: ubuntu-latest
@@ -14,6 +14,16 @@ jobs:
         with:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
+        
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: 🛠️ Set up Flutter
+        run: flutter pub get
+        
+      - name: 🧑‍💻 Generate files with Builder
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: 🤖 Task Force Linter
         uses: github/super-linter@v4
