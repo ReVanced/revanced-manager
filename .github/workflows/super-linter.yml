@@ -1,0 +1,22 @@
+name: Super linter
+
+on:
+  push:
+    branches: [ "github_actions" ]
+  pull_request:
+    branches: [ "github_actions" ]
+jobs:
+  run-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📜 Checkout code
+        uses: actions/checkout@v3
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+
+      - name: 🤖 Task Force Linter
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: "github_actions"
