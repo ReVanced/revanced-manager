@@ -23,46 +23,46 @@ class DynamicThemeBuilder extends StatelessWidget {
       builder: (lightColorScheme, darkColorScheme) {
         final ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
-          canvasColor: lightColorScheme?.background,
+          canvasColor: lightColorScheme?.surface,
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: lightColorScheme?.background,
-            indicatorColor: lightColorScheme?.primary.withAlpha(150),
+            backgroundColor: lightColorScheme?.surface,
+            indicatorColor: lightColorScheme?.secondaryContainer,
             labelTextStyle: MaterialStateProperty.all(
               GoogleFonts.roboto(
-                color: lightColorScheme?.secondary,
+                color: lightColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
             iconTheme: MaterialStateProperty.all(
               IconThemeData(
-                color: lightColorScheme?.secondary,
+                color: lightColorScheme?.onSecondaryContainer,
               ),
             ),
           ),
-          scaffoldBackgroundColor: lightColorScheme?.background,
+          scaffoldBackgroundColor: lightColorScheme?.surface,
           colorScheme: lightColorScheme?.harmonized(),
           toggleableActiveColor: lightColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
         );
         final ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
-          canvasColor: darkColorScheme?.background,
+          canvasColor: darkColorScheme?.surface,
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: darkColorScheme?.background,
-            indicatorColor: darkColorScheme?.primary.withOpacity(0.4),
+            backgroundColor: darkColorScheme?.surface,
+            indicatorColor: darkColorScheme?.secondaryContainer,
             labelTextStyle: MaterialStateProperty.all(
               GoogleFonts.roboto(
-                color: darkColorScheme?.secondary,
+                color: darkColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
             iconTheme: MaterialStateProperty.all(
               IconThemeData(
-                color: darkColorScheme?.secondary,
+                color: darkColorScheme?.onSecondaryContainer,
               ),
             ),
           ),
-          scaffoldBackgroundColor: darkColorScheme?.background,
+          scaffoldBackgroundColor: darkColorScheme?.surface,
           colorScheme: darkColorScheme?.harmonized(),
           toggleableActiveColor: darkColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
