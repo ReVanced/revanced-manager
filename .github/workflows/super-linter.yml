@@ -15,6 +15,12 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
         
+      - name: 🛠️ Set up JDK 12
+        uses: actions/setup-java@v3
+        with:
+          java-version: '12'
+          distribution: 'zulu'
+          
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
