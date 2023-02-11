@@ -30,4 +30,9 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: 🤖 Task Force Linter
-        run: flutter analyze
+        uses: EvadeMaster/dartanalyzer-annotations-action@abf84616e000d5f4d1a4a52a82ed7f223e2e39f9
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
+        with:
+          check_name: 'Check code style'
+          commit_sha: ${{ github.event.pull_request.head.sha }}
