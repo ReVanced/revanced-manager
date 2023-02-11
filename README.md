@@ -5,7 +5,7 @@ The official ReVanced Manager based on Flutter.
 > **Warning**: This repository currently has no active maintainer. For that reason, development is stale. Active development continues for [revanced-cli](https://github.com/revanced/revanced-cli). If you are interested in maintaining this repository, please let us know at manager@revanced.app.
 
 ## 🔽 Download
-To download the Alpha version of Manager, go [here](https://github.com/revanced/revanced-manager/releases/latest) and install the provided APK file.
+To download the Alpha version of the Manager, go [here](https://github.com/revanced/revanced-manager/releases/latest) and install the provided APK file.
 
 ## 📝 Prerequisites
 1. Android 8 or higher
@@ -19,7 +19,7 @@ To download the Alpha version of Manager, go [here](https://github.com/revanced/
 For suggestions and bug reports, open an issue [here](https://github.com/revanced/revanced-manager/issues/new/choose).
 
 ## 💭 Discussion
-If you wish to discuss the Manager, a thread has been made under the [#development](https://discord.com/channels/952946952348270622/1002922226443632761) channel in the Discord server, please note that this thread may be temporary and may be removed in the future.
+If you wish to discuss the Manager, a thread has been made under the [#development](https://discord.com/channels/952946952348270622/1002922226443632761) channel in the Discord server, please note that this thread may be removed in the future.
 
 
 ## 🌐 Translation
