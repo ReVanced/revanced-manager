@@ -99,7 +99,7 @@ class _PatchItemState extends State<PatchItem> {
                       Text(
                         widget.description,
                         softWrap: true,
-                        maxLines: 3,
+                        maxLines: 4,
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                           fontSize: 14,
