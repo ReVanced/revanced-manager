@@ -75,7 +75,7 @@ class _PatchItemState extends State<PatchItem> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Expanded(
-                              child: Text(
+                            child: Text(
                               widget.simpleName,
                               maxLines: 2,
                               overflow: TextOverflow.visible,
@@ -99,7 +99,6 @@ class _PatchItemState extends State<PatchItem> {
                       Text(
                         widget.description,
                         softWrap: true,
-                        maxLines: 3,
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                           fontSize: 14,
