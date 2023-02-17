@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Crowdin
+        if: github.repository_owner == 'revanced'
         uses: crowdin/github-action@v1
         with:
           config: crowdin.yml
