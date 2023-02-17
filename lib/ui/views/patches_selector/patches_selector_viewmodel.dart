@@ -25,7 +25,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> initialize() async {
-    getPatchesVersion();
+    getPatchesVersion().whenComplete(() => notifyListeners());
     patches.addAll(
       _patcherAPI.getFilteredPatches(
         locator<PatcherViewModel>().selectedApp!.originalPackageName,
