@@ -1,6 +1,4 @@
-<h1 align="center">
-   💊  ReVanced Manager
-</h1>
+# 💊  ReVanced Manager
 
 Official guide for ReVanced Manager.
 
