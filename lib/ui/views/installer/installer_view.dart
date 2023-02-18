@@ -28,7 +28,7 @@ class InstallerView extends StatelessWidget {
                   title: Text(
                     model.headerLogs,
                     style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline6!.color,
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                   onBackButtonPressed: () => model.onWillPop(context),
