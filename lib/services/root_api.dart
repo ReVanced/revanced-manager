@@ -11,7 +11,7 @@ class RootAPI {
       final bool? isRooted = await Root.isRootAvailable();
       return isRooted != null && isRooted;
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return false;
     }
   }
@@ -25,7 +25,7 @@ class RootAPI {
       }
       return false;
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return false;
     }
   }
@@ -79,7 +79,7 @@ class RootAPI {
         return apps.map((pack) => pack.trim()).toList();
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return List.empty();
     }
     return List.empty();
@@ -126,7 +126,7 @@ class RootAPI {
       await mountApk(packageName, originalFilePath);
       return true;
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return false;
     }
   }

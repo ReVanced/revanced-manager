@@ -180,7 +180,7 @@ class ManagerAPI {
       _revancedAPI.clearAllCache();
       _githubAPI.clearAllCache();
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -197,7 +197,7 @@ class ManagerAPI {
         return await _githubAPI.getPatches(repoName);
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return [];
     }
   }
@@ -214,7 +214,7 @@ class ManagerAPI {
         return await _githubAPI.getLatestReleaseFile('.jar', repoName);
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return null;
     }
   }
@@ -231,7 +231,7 @@ class ManagerAPI {
         return await _githubAPI.getLatestReleaseFile('.apk', repoName);
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return null;
     }
   }

@@ -35,7 +35,7 @@ class CrowdinAPI {
     try {
       await _dioCacheManager.clearAll();
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -59,7 +59,7 @@ class CrowdinAPI {
 
       return targetLanguages;
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return [];
     }
   }

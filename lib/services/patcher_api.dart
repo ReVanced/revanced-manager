@@ -50,7 +50,7 @@ class PatcherAPI {
         _patches = await _managerAPI.getPatches();
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       _patches = List.empty();
     }
   }
@@ -92,7 +92,7 @@ class PatcherAPI {
             }
           }
         } on Exception catch (e, s) {
-          await Sentry.captureException(e, stackTrace: s);
+          Sentry.captureException(e, stackTrace: s).ignore();
           continue;
         }
       }
@@ -171,7 +171,7 @@ class PatcherAPI {
       }
       return originalFilePath;
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return originalFilePath;
     }
   }
@@ -194,7 +194,7 @@ class PatcherAPI {
           selectedPatches.add(settingsPatch);
         }
       } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+        Sentry.captureException(e, stackTrace: s).ignore();
         // ignore
       }
     }
@@ -231,11 +231,11 @@ class PatcherAPI {
             'keyStoreFilePath': _keyStoreFile.path,
           },
         );
-      } on Exception catch (e, s) {
+      } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
         }
-        throw await Sentry.captureException(e, stackTrace: s);
+        rethrow;
       }
     }
   }
@@ -257,7 +257,7 @@ class PatcherAPI {
           return await DeviceApps.isAppInstalled(patchedApp.packageName);
         }
       } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+        Sentry.captureException(e, stackTrace: s).ignore();
         return false;
       }
     }
@@ -268,11 +268,15 @@ class PatcherAPI {
     try {
       if (_outFile != null) {
         final String newName = _getFileName(appName, version);
-        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: _outFile!.path, destinationFileName: newName,),);
+        CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: _outFile!.path,
+            destinationFileName: newName,
+          ),
+        );
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -287,7 +291,7 @@ class PatcherAPI {
         ShareExtend.share(shareFile.path, 'file');
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 

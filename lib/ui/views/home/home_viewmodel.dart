@@ -96,7 +96,7 @@ class HomeViewModel extends BaseViewModel {
             int.parse(currentVersion.replaceAll(RegExp('[^0-9]'), ''));
         return latestVersionInt > currentVersionInt;
       } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+        Sentry.captureException(e, stackTrace: s).ignore();
         return false;
       }
     }
@@ -138,7 +138,7 @@ class HomeViewModel extends BaseViewModel {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       _toast.showBottom('homeView.errorInstallMessage');
     }
   }
