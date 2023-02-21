@@ -42,7 +42,7 @@ class GithubAPI {
         captureFailedRequests: true,
       );
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -50,7 +50,7 @@ class GithubAPI {
     try {
       await _dioCacheManager.clearAll();
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -62,7 +62,7 @@ class GithubAPI {
       );
       return response.data[0];
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return null;
     }
   }
@@ -93,7 +93,7 @@ class GithubAPI {
           )
           .toList();
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return List.empty();
     }
   }
@@ -113,7 +113,7 @@ class GithubAPI {
         }
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return null;
     }
     return null;
@@ -128,7 +128,7 @@ class GithubAPI {
         patches = list.map((patch) => Patch.fromJson(patch)).toList();
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return List.empty();
     }
     return patches;
@@ -143,7 +143,7 @@ class GithubAPI {
         return 'Unknown';
       }
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return '';
     }
   }

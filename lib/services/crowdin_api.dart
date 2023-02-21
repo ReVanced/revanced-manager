@@ -7,11 +7,14 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 @lazySingleton
 class CrowdinAPI {
-  late Dio _dio = Dio();
-  final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
-  final apiKey = Environment.crowdinKEY;
+  CrowdinAPI() {
+    initialize();
+  }
+  Dio _dio = Dio();
+  DioCacheManager get _dioCacheManager => DioCacheManager(CacheConfig());
+  String get apiKey => Environment.crowdinKEY;
 
-  Future<void> initialize() async {
+  void initialize() {
     try {
       _dio = Dio(
         BaseOptions(
@@ -24,7 +27,7 @@ class CrowdinAPI {
         captureFailedRequests: true,
       );
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -32,7 +35,7 @@ class CrowdinAPI {
     try {
       await _dioCacheManager.clearAll();
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
     }
   }
 
@@ -56,7 +59,7 @@ class CrowdinAPI {
 
       return targetLanguages;
     } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+      Sentry.captureException(e, stackTrace: s).ignore();
       return [];
     }
   }
