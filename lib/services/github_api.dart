@@ -13,7 +13,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 @lazySingleton
 class GithubAPI {
   late Dio _dio = Dio();
-  final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
+  final DioCacheManager _dioCacheManager = DioCacheManager(const CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(hours: 6),
     maxStale: const Duration(days: 1),

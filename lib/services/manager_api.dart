@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:device_apps/device_apps.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -17,10 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ManagerAPI {
   final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final GithubAPI _githubAPI = locator<GithubAPI>();
+  final SharedPreferences _prefs = locator<SharedPreferences>();
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
-  late SharedPreferences _prefs;
   String storedPatchesFile = '/selected-patches.json';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
@@ -31,7 +32,6 @@ class ManagerAPI {
   String defaultManagerRepo = 'revanced/revanced-manager';
 
   Future<void> initialize() async {
-    _prefs = await SharedPreferences.getInstance();
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
