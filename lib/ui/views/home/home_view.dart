@@ -34,7 +34,7 @@ class HomeView extends StatelessWidget {
                   child: Text(
                     '',
                     style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline6!.color,
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                 ),
@@ -48,7 +48,7 @@ class HomeView extends StatelessWidget {
                         'homeView.updatesSubtitle',
                         child: Text(
                           '',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -61,7 +61,7 @@ class HomeView extends StatelessWidget {
                         'homeView.patchedSubtitle',
                         child: Text(
                           '',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       const SizedBox(height: 8),
