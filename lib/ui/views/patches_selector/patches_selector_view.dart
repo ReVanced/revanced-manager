@@ -63,7 +63,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               ),
               actions: [
                 Container(
-                  height: 2,
                   margin: const EdgeInsets.only(top: 12, bottom: 12),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
