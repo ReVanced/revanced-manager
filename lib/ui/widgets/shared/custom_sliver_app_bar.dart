@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
-  final Widget title;
-  final List<Widget>? actions;
-  final PreferredSizeWidget? bottom;
-  final bool isMainView;
-  final Function()? onBackButtonPressed;
-
   const CustomSliverAppBar({
     Key? key,
     required this.title,
@@ -15,13 +9,16 @@ class CustomSliverAppBar extends StatelessWidget {
     this.isMainView = false,
     this.onBackButtonPressed,
   }) : super(key: key);
+  final Widget title;
+  final List<Widget>? actions;
+  final PreferredSizeWidget? bottom;
+  final bool isMainView;
+  final Function()? onBackButtonPressed;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
-      snap: false,
-      floating: false,
       expandedHeight: 100.0,
       automaticallyImplyLeading: !isMainView,
       flexibleSpace: FlexibleSpaceBar(

@@ -40,18 +40,18 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   Future<bool> isValidPatchConfig() async {
-    bool needsResourcePatching = await _patcherAPI.needsResourcePatching(
+    final bool needsResourcePatching = await _patcherAPI.needsResourcePatching(
       selectedPatches,
     );
     if (needsResourcePatching && selectedApp != null) {
-      bool isSplit = await _managerAPI.isSplitApk(selectedApp!);
+      final bool isSplit = await _managerAPI.isSplitApk(selectedApp!);
       return !isSplit;
     }
     return true;
   }
 
   Future<void> showPatchConfirmationDialog(BuildContext context) async {
-    bool isValid = await isValidPatchConfig();
+    final bool isValid = await isValidPatchConfig();
     if (isValid) {
       navigateToInstaller();
     } else {
@@ -110,12 +110,11 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
-    List<String> selectedPatches =
+    final List<String> selectedPatches =
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
-    List<Patch> patches =
+    final List<Patch> patches =
         _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
-    this
-        .selectedPatches
+    this.selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     notifyListeners();
   }

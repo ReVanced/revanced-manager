@@ -2,6 +2,8 @@
 
 The official ReVanced Manager based on Flutter.
 
+> **Warning**: This repository currently has no active maintainer. For that reason, development is stale. Active development continues for [revanced-cli](https://github.com/revanced/revanced-cli). If you are interested in maintaining this repository, please let us know at manager@revanced.app.
+
 ## 🔽 Download
 To download the Alpha version of Manager, go [here](https://github.com/revanced/revanced-manager/releases/latest) and install the provided APK file.
 
@@ -28,7 +30,7 @@ If you wish to translate ReVanced Manager, we're accepting translations on [Crow
 ## 🛠️ Building Manager from source
 1. Setup flutter environment for your [platform](https://docs.flutter.dev/get-started/install)
 2. Clone the repository locally
-3. Add your github token in gradle.properties like [this](https://github.com/revanced/revanced-documentation/blob/main/docs/revanced-development/2_building_from_source.md)
+3. Add your github token in gradle.properties like [this](https://github.com/revanced/revanced-manager/blob/docs/docs/5_building-from-source.md)
 4. Open the project in terminal
 5. Run `flutter pub get` in terminal
 6. Then `flutter packages pub run build_runner build --delete-conflicting-outputs` (Must be done on each git pull)

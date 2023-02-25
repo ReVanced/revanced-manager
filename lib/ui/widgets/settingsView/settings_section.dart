@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsSection extends StatelessWidget {
-  final String title;
-  final List<Widget> children;
-
   const SettingsSection({
     Key? key,
     required this.title,
     required this.children,
   }) : super(key: key);
+  final String title;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {

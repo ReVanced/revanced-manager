@@ -7,63 +7,62 @@ import 'package:revanced_manager/theme.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DynamicThemeBuilder extends StatelessWidget {
-  final String title;
-  final Widget home;
-  final Iterable<LocalizationsDelegate> localizationsDelegates;
-
   const DynamicThemeBuilder({
     Key? key,
     required this.title,
     required this.home,
     required this.localizationsDelegates,
   }) : super(key: key);
+  final String title;
+  final Widget home;
+  final Iterable<LocalizationsDelegate> localizationsDelegates;
 
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (lightColorScheme, darkColorScheme) {
-        ThemeData lightDynamicTheme = ThemeData(
+        final ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
-          canvasColor: lightColorScheme?.background,
+          canvasColor: lightColorScheme?.surface,
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: lightColorScheme?.background,
-            indicatorColor: lightColorScheme?.primary.withAlpha(150),
+            backgroundColor: lightColorScheme?.surface,
+            indicatorColor: lightColorScheme?.secondaryContainer,
             labelTextStyle: MaterialStateProperty.all(
               GoogleFonts.roboto(
-                color: lightColorScheme?.secondary,
+                color: lightColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
             iconTheme: MaterialStateProperty.all(
               IconThemeData(
-                color: lightColorScheme?.secondary,
+                color: lightColorScheme?.onSecondaryContainer,
               ),
             ),
           ),
-          scaffoldBackgroundColor: lightColorScheme?.background,
+          scaffoldBackgroundColor: lightColorScheme?.surface,
           colorScheme: lightColorScheme?.harmonized(),
           toggleableActiveColor: lightColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
         );
-        ThemeData darkDynamicTheme = ThemeData(
+        final ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
-          canvasColor: darkColorScheme?.background,
+          canvasColor: darkColorScheme?.surface,
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: darkColorScheme?.background,
-            indicatorColor: darkColorScheme?.primary.withOpacity(0.4),
+            backgroundColor: darkColorScheme?.surface,
+            indicatorColor: darkColorScheme?.secondaryContainer,
             labelTextStyle: MaterialStateProperty.all(
               GoogleFonts.roboto(
-                color: darkColorScheme?.secondary,
+                color: darkColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
             iconTheme: MaterialStateProperty.all(
               IconThemeData(
-                color: darkColorScheme?.secondary,
+                color: darkColorScheme?.onSecondaryContainer,
               ),
             ),
           ),
-          scaffoldBackgroundColor: darkColorScheme?.background,
+          scaffoldBackgroundColor: darkColorScheme?.surface,
           colorScheme: darkColorScheme?.harmonized(),
           toggleableActiveColor: darkColorScheme?.primary,
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),

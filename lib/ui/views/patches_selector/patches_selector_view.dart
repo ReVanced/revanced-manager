@@ -20,7 +20,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PatchesSelectorViewModel>.reactive(
-      onModelReady: (model) => model.initialize(),
+      onViewModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         resizeToAvoidBottomInset: false,
@@ -45,7 +45,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             SliverAppBar(
               pinned: true,
               floating: true,
-              snap: false,
               title: I18nText(
                 'patchesSelectorView.viewTitle',
                 child: Text(
@@ -64,7 +63,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               ),
               actions: [
                 Container(
-                  height: 2,
                   margin: const EdgeInsets.only(top: 12, bottom: 12),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -103,7 +101,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     horizontal: 12.0,
                   ),
                   child: SearchBar(
-                    showSelectIcon: true,
                     hintText: FlutterI18n.translate(
                       context,
                       'patchesSelectorView.searchBarHint',
@@ -112,12 +109,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       setState(() {
                         _query = searchQuery;
                       });
-                    },
-                    onSelectAll: (value) {
-                      if (value) {
-                        model.selectAllPatcherWarning(context);
-                      }
-                      model.selectAllPatches(value);
                     },
                   ),
                 ),
@@ -155,6 +146,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               CustomChip(
                                 label: I18nText('patchesSelectorView.all'),
                                 onSelected: (value) {
+                                  if (value) {
+                                    model.selectAllPatcherWarning(context);
+                                  }
                                   model.selectAllPatches(true);
                                 },
                               ),

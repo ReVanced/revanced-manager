@@ -7,12 +7,14 @@ class SExperimentalUniversalPatches extends StatefulWidget {
   const SExperimentalUniversalPatches({super.key});
 
   @override
-  State<SExperimentalUniversalPatches> createState() => _SExperimentalUniversalPatchesState();
+  State<SExperimentalUniversalPatches> createState() =>
+      _SExperimentalUniversalPatchesState();
 }
 
 final _settingsViewModel = SettingsViewModel();
 
-class _SExperimentalUniversalPatchesState extends State<SExperimentalUniversalPatches> {
+class _SExperimentalUniversalPatchesState
+    extends State<SExperimentalUniversalPatches> {
   @override
   Widget build(BuildContext context) {
     return CustomSwitchTile(

@@ -8,12 +8,11 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class AppInfoView extends StatelessWidget {
-  final PatchedApplication app;
-
   const AppInfoView({
     Key? key,
     required this.app,
   }) : super(key: key);
+  final PatchedApplication app;
 
   @override
   Widget build(BuildContext context) {

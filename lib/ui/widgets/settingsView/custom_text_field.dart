@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  final TextEditingController inputController;
-  final Widget label;
-  final String hint;
-  final Widget? leadingIcon;
-  final Function(String)? onChanged;
-
   const CustomTextField({
     Key? key,
     required this.inputController,
@@ -15,6 +9,11 @@ class CustomTextField extends StatelessWidget {
     this.leadingIcon,
     required this.onChanged,
   }) : super(key: key);
+  final TextEditingController inputController;
+  final Widget label;
+  final String hint;
+  final Widget? leadingIcon;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +44,8 @@ class CustomTextField extends StatelessWidget {
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.primary,
-              width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10),
-            gapPadding: 4.0,
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
@@ -60,14 +57,12 @@ class CustomTextField extends StatelessWidget {
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.error,
-              width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.primary,
-              width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10),
           ),

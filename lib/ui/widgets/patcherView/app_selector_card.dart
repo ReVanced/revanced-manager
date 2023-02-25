@@ -6,12 +6,11 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class AppSelectorCard extends StatelessWidget {
-  final Function() onPressed;
-
   const AppSelectorCard({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -33,40 +32,41 @@ class AppSelectorCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          locator<PatcherViewModel>().selectedApp == null
-              ? I18nText('appSelectorCard.widgetSubtitle')
-              : Row(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 18.0,
-                      child: ClipOval(
-                        child: Image.memory(
-                          locator<PatcherViewModel>().selectedApp == null
-                              ? Uint8List(0)
-                              : locator<PatcherViewModel>().selectedApp!.icon,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+          if (locator<PatcherViewModel>().selectedApp == null)
+            I18nText('appSelectorCard.widgetSubtitle')
+          else
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  height: 18.0,
+                  child: ClipOval(
+                    child: Image.memory(
+                      locator<PatcherViewModel>().selectedApp == null
+                          ? Uint8List(0)
+                          : locator<PatcherViewModel>().selectedApp!.icon,
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                        locator<PatcherViewModel>()
-                        .getAppSelectionString(),
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                  ],
+                  ),
                 ),
-          locator<PatcherViewModel>().selectedApp == null
-              ? Container()
-              : Column(
-                  children: [
-                    const SizedBox(height: 4),
-                    Text(
-                      locator<PatcherViewModel>()
-                          .getRecommendedVersionString(context),
-                    ),
-                  ],
+                const SizedBox(width: 6),
+                Text(
+                  locator<PatcherViewModel>().getAppSelectionString(),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
+              ],
+            ),
+          if (locator<PatcherViewModel>().selectedApp == null)
+            Container()
+          else
+            Column(
+              children: [
+                const SizedBox(height: 4),
+                Text(
+                  locator<PatcherViewModel>()
+                      .getRecommendedVersionString(context),
+                ),
+              ],
+            ),
         ],
       ),
     );
