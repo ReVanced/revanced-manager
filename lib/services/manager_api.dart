@@ -29,11 +29,23 @@ class ManagerAPI {
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
+  String defaultKeyStorePass = 's3cur3p@ssw0rd';
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+  }
+
+  String getKeyStorePass() {
+    return _prefs.getString('keyStorePass') ?? defaultKeyStorePass;
+  }
+
+  Future<void> setKeyStorePassword(String pass) async {
+    if (pass.trim().isEmpty) {
+      pass = defaultKeyStorePass;
+    }
+    await _prefs.setString('keyStorePass', pass);
   }
 
   String getApiUrl() {

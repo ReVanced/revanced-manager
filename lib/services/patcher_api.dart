@@ -229,6 +229,7 @@ class PatcherAPI {
             'cacheDirPath': cacheDir.path,
             'mergeIntegrations': mergeIntegrations,
             'keyStoreFilePath': _keyStoreFile.path,
+            'keyStorePassword': _managerAPI.getKeyStorePass()
           },
         );
       } on Exception catch (e, s) {

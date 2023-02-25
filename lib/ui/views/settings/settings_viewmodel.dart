@@ -1,8 +1,11 @@
 import 'dart:io';
+
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:logcat/logcat.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -62,16 +65,24 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void importKeystore() async {
+  Future<void> importKeystore() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['keystore', 'jks'],
-      );
+      final result = await FilePicker.platform.pickFiles(
+          // allowedExtensions: ['keystore', 'jks'], FilePicker does not allow keystore and jks
+          );
       if (result != null && result.files.single.path != null) {
+        final fileName = result.files.single.name;
+        final extension = p.extension(fileName);
+        const allowedExtensions = ['.keystore', '.jks'];
+        if (!allowedExtensions.contains(extension)) {
+          _toast.showBottom('settingsView.importInvalidKeystore');
+          return;
+        }
+
         await _managerAPI.deleteKeystore();
 
-        final f = File(result.files.single.path!);
+        final path = result.files.single.path!;
+        final f = File(path);
 
         final destinationFile = await _managerAPI.getKeyStoreFile();
         await destinationFile.writeAsBytes(f.readAsBytesSync());
@@ -110,8 +121,12 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: outFile.path, destinationFileName: 'selected_patches_$dateTime.json',),);
+        await CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: outFile.path,
+            destinationFileName: 'selected_patches_$dateTime.json',
+          ),
+        );
         _toast.showBottom('settingsView.exportedPatches');
       } else {
         _toast.showBottom('settingsView.noExportFileFound');

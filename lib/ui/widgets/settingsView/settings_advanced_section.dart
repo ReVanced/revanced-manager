@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_keystore_password.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_api_url.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
@@ -53,6 +54,7 @@ class SAdvancedSection extends StatelessWidget {
           subtitle: I18nText('settingsView.deleteLogsHint'),
           onTap: () => _settingsViewModel.deleteLogs(),
         ),
+        SKeyStorePasswordUI(),
       ],
     );
   }
