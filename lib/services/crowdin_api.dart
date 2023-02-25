@@ -11,7 +11,7 @@ class CrowdinAPI {
     initialize();
   }
   Dio _dio = Dio();
-  DioCacheManager get _dioCacheManager => DioCacheManager(const CacheConfig());
+  DioCacheManager get _dioCacheManager => DioCacheManager(CacheConfig());
   String get apiKey => Environment.crowdinKEY;
 
   void initialize() {

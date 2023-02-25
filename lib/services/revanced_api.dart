@@ -16,7 +16,7 @@ import 'package:timeago/timeago.dart';
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
-  final DioCacheManager _dioCacheManager = DioCacheManager(const CacheConfig());
+  final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
   final Options _cacheOptions = buildCacheOptions(
     const Duration(hours: 6),
     maxStale: const Duration(days: 1),
