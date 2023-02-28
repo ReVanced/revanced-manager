@@ -1,8 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/extensions/extensions.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/available_updates_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
@@ -29,13 +29,10 @@ class HomeView extends StatelessWidget {
             slivers: <Widget>[
               CustomSliverAppBar(
                 isMainView: true,
-                title: I18nText(
-                  'homeView.widgetTitle',
-                  child: Text(
-                    '',
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline6!.color,
-                    ),
+                title: Text(
+                  context.l10n().homeView_widgetTitle,
+                  style: GoogleFonts.inter(
+                    color: Theme.of(context).textTheme.headline6!.color,
                   ),
                 ),
               ),
@@ -44,12 +41,9 @@ class HomeView extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[
-                      I18nText(
-                        'homeView.updatesSubtitle',
-                        child: Text(
-                          '',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
+                      Text(
+                        context.l10n().homeView_updatesSubtitle,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       const SizedBox(height: 10),
                       LatestCommitCard(
@@ -57,18 +51,15 @@ class HomeView extends StatelessWidget {
                             model.showUpdateConfirmationDialog(context),
                       ),
                       const SizedBox(height: 23),
-                      I18nText(
-                        'homeView.patchedSubtitle',
-                        child: Text(
-                          '',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
+                      Text(
+                        context.l10n().homeView_patchedSubtitle,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: <Widget>[
                           CustomChip(
-                            label: I18nText('homeView.installed'),
+                            label: Text(context.l10n().homeView_installed),
                             isSelected: !model.showUpdatableApps,
                             onSelected: (value) {
                               model.toggleUpdatableApps(false);
@@ -76,7 +67,8 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           CustomChip(
-                            label: I18nText('homeView.updatesAvailable'),
+                            label:
+                                Text(context.l10n().homeView_updatesAvailable),
                             isSelected: model.showUpdatableApps,
                             onSelected: (value) {
                               model.toggleUpdatableApps(true);

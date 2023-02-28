@@ -1,0 +1,9 @@
+{
+  "es_MX": [
+    "homeView_updateChangelogTitle",
+    "settingsView_experimentalUniversalPatchesHint",
+    "settingsView_experimentalUniversalPatchesLabel",
+    "settingsView_hostRepositoryLabel",
+    "updateButton"
+  ]
+}

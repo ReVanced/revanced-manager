@@ -1,6 +1,7 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/theme.dart';
@@ -84,7 +85,8 @@ class DynamicThemeBuilder extends StatelessWidget {
             onGenerateRoute: StackedRouter().onGenerateRoute,
             theme: theme,
             home: home,
-            localizationsDelegates: localizationsDelegates,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
           ),
         );
       },
