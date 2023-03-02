@@ -150,7 +150,7 @@ class MainActivity : FlutterActivity() {
                             )
                         )
                     }
-                    patcher.addFiles(listOf(integrations)) {}
+                    patcher.addIntegrations(listOf(integrations)) {}
                 }
 
                 handler.post {
