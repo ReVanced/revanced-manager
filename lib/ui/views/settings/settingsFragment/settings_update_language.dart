@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/main.dart';
 import 'package:revanced_manager/services/crowdin_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
@@ -16,14 +17,23 @@ final _settingViewModel = SettingsViewModel();
 
 class SUpdateLanguage extends BaseViewModel {
   final CrowdinAPI _crowdinAPI = locator<CrowdinAPI>();
-  final SharedPreferences _prefs = locator<SharedPreferences>();
   final Toast _toast = locator<Toast>();
+  late SharedPreferences _prefs;
   String selectedLanguage = 'English';
-  String get selectedLanguageLocale => _prefs.getString('language') ?? 'en_US';
+  String selectedLanguageLocale = prefs.getString('language') ?? 'en_US';
   List languages = [];
+
+  Future<void> initialize() async {
+    _prefs = await SharedPreferences.getInstance();
+    selectedLanguageLocale =
+        _prefs.getString('language') ?? selectedLanguageLocale;
+    notifyListeners();
+  }
 
   Future<void> updateLanguage(BuildContext context, String? value) async {
     if (value != null) {
+      selectedLanguageLocale = value;
+      _prefs = await SharedPreferences.getInstance();
       await _prefs.setString('language', value);
       await FlutterI18n.refresh(context, Locale(value));
       timeago.setLocaleMessages(value, timeago.EnMessages());

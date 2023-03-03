@@ -12,8 +12,6 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - lib/utils/env_class.g.dart
-    - "**/*.locator.dart"
-    - "**/*.router.dart"
 
 linter:
   rules:

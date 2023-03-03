@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
@@ -75,18 +74,14 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await CRFileSaver.saveFileWithDialog(
-          SaveFileDialogParams(
-            sourceFilePath: outFile.path,
-            destinationFileName: 'selected_patches_$dateTime.json',
-          ),
-        );
+        await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
+            sourceFilePath: outFile.path, destinationFileName: 'selected_patches_$dateTime.json',),);
         _toast.showBottom('settingsView.exportedPatches');
       } else {
         _toast.showBottom('settingsView.noExportFileFound');
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -106,7 +101,7 @@ class SettingsViewModel extends BaseViewModel {
         _toast.showBottom('settingsView.importedPatches');
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       _toast.showBottom('settingsView.jsonSelectorErrorMessage');
     }
   }

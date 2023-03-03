@@ -46,7 +46,7 @@ class RevancedAPI {
         captureFailedRequests: true,
       );
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -54,7 +54,7 @@ class RevancedAPI {
     try {
       await _dioCacheManager.clearAll();
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -68,7 +68,7 @@ class RevancedAPI {
         contributors[name] = repo['contributors'];
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       return {};
     }
     return contributors;
@@ -80,7 +80,7 @@ class RevancedAPI {
       final List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       return List.empty();
     }
   }
@@ -98,7 +98,7 @@ class RevancedAPI {
             (t['name'] as String).endsWith(extension),
       );
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
   }
@@ -116,7 +116,7 @@ class RevancedAPI {
         return release['version'];
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;
@@ -133,7 +133,7 @@ class RevancedAPI {
         return await DefaultCacheManager().getSingleFile(url);
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;
@@ -154,7 +154,7 @@ class RevancedAPI {
         return format(timestamp, locale: 'en_short');
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       return null;
     }
     return null;

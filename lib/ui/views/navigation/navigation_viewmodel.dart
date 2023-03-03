@@ -15,9 +15,9 @@ import 'package:stacked/stacked.dart';
 
 @lazySingleton
 class NavigationViewModel extends IndexTrackingViewModel {
-  final prefs = locator<SharedPreferences>();
   Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('permissionsRequested') == null) {
       await prefs.setBool('permissionsRequested', true);
       RootAPI().hasRootPermissions().then(

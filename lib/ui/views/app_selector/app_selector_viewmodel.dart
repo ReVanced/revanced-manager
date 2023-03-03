@@ -88,7 +88,7 @@ class AppSelectorViewModel extends BaseViewModel {
         }
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
       _toast.showBottom('appSelectorView.errorMessage');
     }
   }

@@ -57,7 +57,7 @@ class InstallerViewModel extends BaseViewModel {
           ),
         ).then((value) => FlutterBackground.enableBackgroundExecution());
       } on Exception catch (e, s) {
-        Sentry.captureException(e, stackTrace: s).ignore();
+        await Sentry.captureException(e, stackTrace: s);
         // ignore
       }
     }
@@ -131,13 +131,14 @@ class InstallerViewModel extends BaseViewModel {
             _app.apkFilePath,
             _patches,
           );
-        } on Exception catch (e) {
+        } on Exception catch (e, s) {
           update(
             -100.0,
             'Aborting...',
             'An error occurred! Aborting\nError:\n$e',
           );
-          rethrow;
+          await Sentry.captureException(e, stackTrace: s);
+          throw await Sentry.captureException(e, stackTrace: s);
         }
       } else {
         update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
@@ -145,13 +146,14 @@ class InstallerViewModel extends BaseViewModel {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
           FlutterBackground.disableBackgroundExecution();
-        } on Exception {
-          rethrow;
+        } on Exception catch (e, s) {
+          await Sentry.captureException(e, stackTrace: s);
+          // ignore
         }
       }
       await Wakelock.disable();
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -210,7 +212,7 @@ class InstallerViewModel extends BaseViewModel {
         }
       }
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -218,7 +220,7 @@ class InstallerViewModel extends BaseViewModel {
     try {
       _patcherAPI.exportPatchedFile(_app.name, _app.version);
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -226,7 +228,7 @@ class InstallerViewModel extends BaseViewModel {
     try {
       _patcherAPI.sharePatchedFile(_app.name, _app.version);
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      Sentry.captureException(e, stackTrace: s);
     }
   }
 
@@ -241,7 +243,7 @@ class InstallerViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedPatches.clear();
       locator<PatcherViewModel>().notifyListeners();
     } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s).ignore();
+      await Sentry.captureException(e, stackTrace: s);
     }
   }
 
