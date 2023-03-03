@@ -43,7 +43,6 @@ class MainActivity : FlutterActivity() {
                     val integrationsPath = call.argument<String>("integrationsPath")
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
-                    val mergeIntegrations = call.argument<Boolean>("mergeIntegrations")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     if (patchBundleFilePath != null &&
                         originalFilePath != null &&
@@ -53,7 +52,6 @@ class MainActivity : FlutterActivity() {
                         integrationsPath != null &&
                         selectedPatches != null &&
                         cacheDirPath != null &&
-                        mergeIntegrations != null &&
                         keyStoreFilePath != null
                     ) {
                         runPatcher(
@@ -66,7 +64,6 @@ class MainActivity : FlutterActivity() {
                             integrationsPath,
                             selectedPatches,
                             cacheDirPath,
-                            mergeIntegrations,
                             keyStoreFilePath
                         )
                     } else {
@@ -88,7 +85,6 @@ class MainActivity : FlutterActivity() {
         integrationsPath: String,
         selectedPatches: List<String>,
         cacheDirPath: String,
-        mergeIntegrations: Boolean,
         keyStoreFilePath: String
     ) {
         val originalFile = File(originalFilePath)
@@ -139,19 +135,17 @@ class MainActivity : FlutterActivity() {
                         mapOf("progress" to 0.3, "header" to "", "log" to "")
                     )
                 }
-                if (mergeIntegrations) {
-                    handler.post {
-                        installerChannel.invokeMethod(
-                            "update",
-                            mapOf(
-                                "progress" to 0.4,
-                                "header" to "Merging integrations...",
-                                "log" to "Merging integrations"
-                            )
+                handler.post {
+                    installerChannel.invokeMethod(
+                        "update",
+                        mapOf(
+                            "progress" to 0.4,
+                            "header" to "Merging integrations...",
+                            "log" to "Merging integrations"
                         )
-                    }
-                    patcher.addIntegrations(listOf(integrations)) {}
+                    )
                 }
+                patcher.addIntegrations(listOf(integrations)) {}
 
                 handler.post {
                     installerChannel.invokeMethod(

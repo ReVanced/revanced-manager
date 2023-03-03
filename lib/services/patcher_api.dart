@@ -122,25 +122,6 @@ class PatcherAPI {
         .toList();
   }
 
-  bool dependencyNeedsIntegrations(String name) {
-    return name.contains('integrations') ||
-        _patches.any(
-          (patch) =>
-              patch.name == name &&
-              (patch.dependencies.any(
-                (dep) => dependencyNeedsIntegrations(dep),
-              )),
-        );
-  }
-
-  Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dependencyNeedsIntegrations(dep),
-      ),
-    );
-  }
-
   Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
     return selectedPatches.any(
       (patch) => patch.dependencies.any(
@@ -181,7 +162,6 @@ class PatcherAPI {
     String originalFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final bool mergeIntegrations = await needsIntegrations(selectedPatches);
     final bool includeSettings = await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
@@ -199,10 +179,7 @@ class PatcherAPI {
       }
     }
     final File? patchBundleFile = await _managerAPI.downloadPatches();
-    File? integrationsFile;
-    if (mergeIntegrations) {
-      integrationsFile = await _managerAPI.downloadIntegrations();
-    }
+    final File? integrationsFile = await _managerAPI.downloadIntegrations();
     if (patchBundleFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
@@ -224,10 +201,9 @@ class PatcherAPI {
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
             'outFilePath': _outFile!.path,
-            'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
+            'integrationsPath': integrationsFile!.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
-            'mergeIntegrations': mergeIntegrations,
             'keyStoreFilePath': _keyStoreFile.path,
           },
         );
