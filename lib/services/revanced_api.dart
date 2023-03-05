@@ -4,13 +4,12 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:native_dio_client/native_dio_client.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/utils/check_for_gms.dart';
-import 'package:sentry_dio/sentry_dio.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timeago/timeago.dart';
 
 @lazySingleton
@@ -42,19 +41,20 @@ class RevancedAPI {
         log('ReVanced API: Using CronetEngine + $isGMSInstalled');
       }
       _dio.interceptors.add(_dioCacheManager.interceptor);
-      _dio.addSentry(
-        captureFailedRequests: true,
-      );
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
   Future<void> clearAllCache() async {
     try {
       await _dioCacheManager.clearAll();
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -67,8 +67,10 @@ class RevancedAPI {
         final String name = repo['name'];
         contributors[name] = repo['contributors'];
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return {};
     }
     return contributors;
@@ -79,8 +81,10 @@ class RevancedAPI {
       final response = await _dio.get('/patches', options: _cacheOptions);
       final List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return List.empty();
     }
   }
@@ -97,8 +101,10 @@ class RevancedAPI {
             t['repository'] == repoName &&
             (t['name'] as String).endsWith(extension),
       );
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
   }
@@ -115,8 +121,10 @@ class RevancedAPI {
       if (release != null) {
         return release['version'];
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
     return null;
@@ -132,8 +140,10 @@ class RevancedAPI {
         final String url = release['browser_download_url'];
         return await DefaultCacheManager().getSingleFile(url);
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
     return null;
@@ -153,8 +163,10 @@ class RevancedAPI {
             DateTime.parse(release['timestamp'] as String);
         return format(timestamp, locale: 'en_short');
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
     return null;

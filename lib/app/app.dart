@@ -1,4 +1,3 @@
-import 'package:revanced_manager/services/crowdin_api.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
@@ -38,7 +37,6 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: PatcherAPI),
     LazySingleton(classType: RevancedAPI),
     LazySingleton(classType: GithubAPI),
-    LazySingleton(classType: CrowdinAPI),
     LazySingleton(classType: Toast),
   ],
 )

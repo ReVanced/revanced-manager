@@ -145,8 +145,6 @@
         "exportSectionTitle": "Import & export",
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
-        "sentryLabel": "Sentry logging",
-        "sentryHint": "Send anonymous logs to help us improve ReVanced Manager",
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",

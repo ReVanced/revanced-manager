@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/main.dart';
-import 'package:revanced_manager/services/crowdin_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
@@ -16,7 +15,6 @@ import 'package:timeago/timeago.dart' as timeago;
 final _settingViewModel = SettingsViewModel();
 
 class SUpdateLanguage extends BaseViewModel {
-  final CrowdinAPI _crowdinAPI = locator<CrowdinAPI>();
   final Toast _toast = locator<Toast>();
   late SharedPreferences _prefs;
   String selectedLanguage = 'English';
@@ -43,7 +41,6 @@ class SUpdateLanguage extends BaseViewModel {
   }
 
   Future<void> initLang() async {
-    languages = await _crowdinAPI.getLanguages();
     languages.sort((a, b) => a['name'].compareTo(b['name']));
     notifyListeners();
   }
