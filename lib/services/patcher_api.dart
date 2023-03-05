@@ -13,7 +13,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
 
 @lazySingleton
@@ -49,8 +48,10 @@ class PatcherAPI {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _patches = List.empty();
     }
   }
@@ -91,9 +92,10 @@ class PatcherAPI {
               filteredApps.add(app);
             }
           }
-        } on Exception catch (e, s) {
-          await Sentry.captureException(e, stackTrace: s);
-          continue;
+        } on Exception catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
         }
       }
     }
@@ -151,8 +153,10 @@ class PatcherAPI {
         );
       }
       return originalFilePath;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return originalFilePath;
     }
   }
@@ -173,9 +177,10 @@ class PatcherAPI {
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
         }
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
-        // ignore
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
       }
     }
     final File? patchBundleFile = await _managerAPI.downloadPatches();
@@ -207,11 +212,10 @@ class PatcherAPI {
             'keyStoreFilePath': _keyStoreFile.path,
           },
         );
-      } on Exception catch (e, s) {
+      } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
         }
-        throw await Sentry.captureException(e, stackTrace: s);
       }
     }
   }
@@ -232,8 +236,10 @@ class PatcherAPI {
           await AppInstaller.installApk(_outFile!.path);
           return await DeviceApps.isAppInstalled(patchedApp.packageName);
         }
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return false;
       }
     }
@@ -244,11 +250,17 @@ class PatcherAPI {
     try {
       if (_outFile != null) {
         final String newName = _getFileName(appName, version);
-        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: _outFile!.path, destinationFileName: newName,),);
+        CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: _outFile!.path,
+            destinationFileName: newName,
+          ),
+        );
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -262,8 +274,10 @@ class PatcherAPI {
         final File shareFile = _outFile!.copySync(newPath);
         ShareExtend.share(shareFile.path, 'file');
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 

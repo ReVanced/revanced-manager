@@ -49,8 +49,6 @@ class SettingsView extends StatelessWidget {
                   _settingsDivider,
                   SExportSection(),
                   _settingsDivider,
-                  // SLoggingSection(),
-                  // _settingsDivider,
                   SInfoSection(),
                 ],
               ),
