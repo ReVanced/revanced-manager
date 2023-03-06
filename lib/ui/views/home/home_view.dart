@@ -21,8 +21,6 @@ class HomeView extends StatelessWidget {
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: RefreshIndicator(
-          color: Theme.of(context).colorScheme.secondary,
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           onRefresh: () => model.forceRefresh(context),
           child: CustomScrollView(
             slivers: <Widget>[
@@ -70,10 +68,18 @@ class HomeView extends StatelessWidget {
                             avatar: const Icon(Icons.grid_view),
                             label: I18nText('homeView.installed'),
                             side: BorderSide(
-                              color: model.showUpdatableApps ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.secondaryContainer,
+                              color: model.showUpdatableApps
+                                  ? Theme.of(context).colorScheme.outline
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
                               width: model.showUpdatableApps ? 1 : 1,
                             ),
-                            backgroundColor: model.showUpdatableApps ? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.secondaryContainer,
+                            backgroundColor: model.showUpdatableApps
+                                ? Theme.of(context).colorScheme.background
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
                             onPressed: () {
                               model.toggleUpdatableApps(false);
                             },
@@ -83,10 +89,18 @@ class HomeView extends StatelessWidget {
                             avatar: const Icon(Icons.update),
                             label: I18nText('homeView.updatesAvailable'),
                             side: BorderSide(
-                              color: !model.showUpdatableApps ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.secondaryContainer,
+                              color: !model.showUpdatableApps
+                                  ? Theme.of(context).colorScheme.outline
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
                               width: !model.showUpdatableApps ? 1 : 1,
                             ),
-                            backgroundColor: !model.showUpdatableApps ? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.secondaryContainer,
+                            backgroundColor: !model.showUpdatableApps
+                                ? Theme.of(context).colorScheme.background
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
                             onPressed: () {
                               model.toggleUpdatableApps(true);
                             },
