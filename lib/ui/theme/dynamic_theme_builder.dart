@@ -33,52 +33,6 @@ class DynamicThemeBuilder extends StatelessWidget {
           ),
           colorScheme: lightColorScheme?.harmonized(),
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
-          switchTheme: SwitchThemeData(
-            thumbColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return lightColorScheme?.primary;
-              }
-              return null;
-            }),
-            trackColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return lightColorScheme?.primary;
-              }
-              return null;
-            }),
-          ),
-          radioTheme: RadioThemeData(
-            fillColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return lightColorScheme?.primary;
-              }
-              return null;
-            }),
-          ),
-          checkboxTheme: CheckboxThemeData(
-            fillColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return lightColorScheme?.primary;
-              }
-              return null;
-            }),
-          ),
         );
         final ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
@@ -92,52 +46,6 @@ class DynamicThemeBuilder extends StatelessWidget {
           ),
           colorScheme: darkColorScheme?.harmonized(),
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
-          switchTheme: SwitchThemeData(
-            thumbColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return darkColorScheme?.primary;
-              }
-              return null;
-            }),
-            trackColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return darkColorScheme?.primary;
-              }
-              return null;
-            }),
-          ),
-          radioTheme: RadioThemeData(
-            fillColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return darkColorScheme?.primary;
-              }
-              return null;
-            }),
-          ),
-          checkboxTheme: CheckboxThemeData(
-            fillColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return darkColorScheme?.primary;
-              }
-              return null;
-            }),
-          ),
         );
         return DynamicTheme(
           themeCollection: ThemeCollection(
