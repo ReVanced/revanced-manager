@@ -67,21 +67,31 @@ class HomeView extends StatelessWidget {
                       const SizedBox(height: 8),
                       Row(
                         children: <Widget>[
-                          CustomChip(
+                          ActionChip(
+                            avatar: const Icon(Icons.grid_view),
                             label: I18nText('homeView.installed'),
-                            isSelected: !model.showUpdatableApps,
-                            onSelected: (value) {
+                            side: BorderSide(
+                              color: model.showUpdatableApps ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.secondaryContainer,
+                              width: model.showUpdatableApps ? 1 : 1,
+                            ),
+                            backgroundColor: model.showUpdatableApps ? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.secondaryContainer,
+                            onPressed: () {
                               model.toggleUpdatableApps(false);
                             },
                           ),
                           const SizedBox(width: 10),
-                          CustomChip(
+                          ActionChip(
+                            avatar: const Icon(Icons.update),
                             label: I18nText('homeView.updatesAvailable'),
-                            isSelected: model.showUpdatableApps,
-                            onSelected: (value) {
+                            side: BorderSide(
+                              color: !model.showUpdatableApps ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.secondaryContainer,
+                              width: !model.showUpdatableApps ? 1 : 1,
+                            ),
+                            backgroundColor: !model.showUpdatableApps ? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.secondaryContainer,
+                            onPressed: () {
                               model.toggleUpdatableApps(true);
                             },
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 14),
