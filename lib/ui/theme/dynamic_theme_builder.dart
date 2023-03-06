@@ -23,23 +23,14 @@ class DynamicThemeBuilder extends StatelessWidget {
       builder: (lightColorScheme, darkColorScheme) {
         final ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
-          canvasColor: lightColorScheme?.surface,
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: lightColorScheme?.surface,
-            indicatorColor: lightColorScheme?.secondaryContainer,
             labelTextStyle: MaterialStateProperty.all(
               GoogleFonts.roboto(
                 color: lightColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            iconTheme: MaterialStateProperty.all(
-              IconThemeData(
-                color: lightColorScheme?.onSecondaryContainer,
-              ),
-            ),
           ),
-          scaffoldBackgroundColor: lightColorScheme?.surface,
           colorScheme: lightColorScheme?.harmonized(),
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
           switchTheme: SwitchThemeData(
@@ -91,23 +82,14 @@ class DynamicThemeBuilder extends StatelessWidget {
         );
         final ThemeData darkDynamicTheme = ThemeData(
           useMaterial3: true,
-          canvasColor: darkColorScheme?.surface,
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: darkColorScheme?.surface,
-            indicatorColor: darkColorScheme?.secondaryContainer,
             labelTextStyle: MaterialStateProperty.all(
               GoogleFonts.roboto(
                 color: darkColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            iconTheme: MaterialStateProperty.all(
-              IconThemeData(
-                color: darkColorScheme?.onSecondaryContainer,
-              ),
-            ),
           ),
-          scaffoldBackgroundColor: darkColorScheme?.surface,
           colorScheme: darkColorScheme?.harmonized(),
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
           switchTheme: SwitchThemeData(
