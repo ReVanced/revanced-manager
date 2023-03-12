@@ -85,7 +85,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: "12.x"
+          java-version: "17.x"
           cache: gradle
           
       - uses: subosito/flutter-action@v2
