@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_chip.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -135,27 +134,36 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                         children: [
                           Row(
                             children: [
-                              CustomChip(
-                                label:
-                                    I18nText('patchesSelectorView.recommended'),
-                                onSelected: (value) {
+                              ActionChip(
+                                label: I18nText('patchesSelectorView.recommended'),
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'patchesSelectorView.recommendedTooltip',
+                                ),
+                                onPressed: () {
                                   model.selectRecommendedPatches();
                                 },
                               ),
                               const SizedBox(width: 8),
-                              CustomChip(
+                              ActionChip(
                                 label: I18nText('patchesSelectorView.all'),
-                                onSelected: (value) {
-                                  if (value) {
-                                    model.selectAllPatcherWarning(context);
-                                  }
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'patchesSelectorView.allTooltip',
+                                ),
+                                onPressed: () {
+                                  model.selectAllPatcherWarning(context);
                                   model.selectAllPatches(true);
                                 },
                               ),
                               const SizedBox(width: 8),
-                              CustomChip(
+                              ActionChip(
                                 label: I18nText('patchesSelectorView.none'),
-                                onSelected: (value) {
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'patchesSelectorView.noneTooltip',
+                                ),
+                                onPressed: () {
                                   model.clearPatches();
                                 },
                               ),

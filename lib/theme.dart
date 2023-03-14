@@ -12,7 +12,7 @@ var lightCustomTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: MaterialStateProperty.all(
       TextStyle(
-        color: lightCustomColorScheme.secondary,
+        color: lightCustomColorScheme.onSurface,
         fontWeight: FontWeight.w500,
       ),
     ),
@@ -33,7 +33,7 @@ var darkCustomTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: MaterialStateProperty.all(
       TextStyle(
-        color: darkCustomColorScheme.secondary,
+        color: darkCustomColorScheme.onSurface,
         fontWeight: FontWeight.w500,
       ),
     ),
@@ -41,50 +41,4 @@ var darkCustomTheme = ThemeData(
   canvasColor: const Color(0xff1B1A1D),
   scaffoldBackgroundColor: const Color(0xff1B1A1D),
   textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
-  switchTheme: SwitchThemeData(
-    thumbColor:
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return null;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return const Color(0xffA5CAFF);
-      }
-      return null;
-    }),
-    trackColor:
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return null;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return const Color(0xffA5CAFF);
-      }
-      return null;
-    }),
-  ),
-  radioTheme: RadioThemeData(
-    fillColor:
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return null;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return const Color(0xffA5CAFF);
-      }
-      return null;
-    }),
-  ),
-  checkboxTheme: CheckboxThemeData(
-    fillColor:
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return null;
-      }
-      if (states.contains(MaterialState.selected)) {
-        return const Color(0xffA5CAFF);
-      }
-      return null;
-    }),
-  ),
 );
