@@ -64,9 +64,9 @@ dependencies:
   share_extend: ^2.0.0
   shared_preferences: ^2.0.15
   skeletons: ^0.0.3
-  stacked: ^3.0.0
-  stacked_generator: ^0.8.0
-  stacked_services: ^0.9.3
+  stacked: ^3.2.0
+  stacked_generator: ^1.0.0
+  stacked_services: ^1.0.0
   stacked_themes: ^0.3.9
   timeago: ^3.2.2
   timezone: ^0.8.0
