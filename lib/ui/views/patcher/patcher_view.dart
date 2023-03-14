@@ -34,7 +34,7 @@ class PatcherView extends StatelessWidget {
                 child: Text(
                   '',
                   style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.headline6!.color,
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
               ),

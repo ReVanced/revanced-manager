@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:device_apps/device_apps.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,7 +11,6 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
@@ -98,14 +98,6 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
-  bool isSentryEnabled() {
-    return _prefs.getBool('sentryEnabled') ?? true;
-  }
-
-  Future<void> setSentryStatus(bool value) async {
-    await _prefs.setBool('sentryEnabled', value);
-  }
-
   bool areUniversalPatchesEnabled() {
     return _prefs.getBool('universalPatchesEnabled') ?? false;
   }
@@ -179,8 +171,10 @@ class ManagerAPI {
     try {
       _revancedAPI.clearAllCache();
       _githubAPI.clearAllCache();
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -196,8 +190,10 @@ class ManagerAPI {
       } else {
         return await _githubAPI.getPatches(repoName);
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return [];
     }
   }
@@ -213,8 +209,10 @@ class ManagerAPI {
       } else {
         return await _githubAPI.getLatestReleaseFile('.jar', repoName);
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
   }
@@ -230,8 +228,10 @@ class ManagerAPI {
       } else {
         return await _githubAPI.getLatestReleaseFile('.apk', repoName);
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return null;
     }
   }

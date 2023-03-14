@@ -7,7 +7,6 @@ import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/available_updates_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_chip.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,8 +21,6 @@ class HomeView extends StatelessWidget {
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: RefreshIndicator(
-          color: Theme.of(context).colorScheme.secondary,
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           onRefresh: () => model.forceRefresh(context),
           child: CustomScrollView(
             slivers: <Widget>[
@@ -34,7 +31,7 @@ class HomeView extends StatelessWidget {
                   child: Text(
                     '',
                     style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline6!.color,
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                 ),
@@ -48,7 +45,7 @@ class HomeView extends StatelessWidget {
                         'homeView.updatesSubtitle',
                         child: Text(
                           '',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -61,27 +58,53 @@ class HomeView extends StatelessWidget {
                         'homeView.patchedSubtitle',
                         child: Text(
                           '',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: <Widget>[
-                          CustomChip(
+                          ActionChip(
+                            avatar: const Icon(Icons.grid_view),
                             label: I18nText('homeView.installed'),
-                            isSelected: !model.showUpdatableApps,
-                            onSelected: (value) {
+                            side: BorderSide(
+                              color: model.showUpdatableApps
+                                  ? Theme.of(context).colorScheme.outline
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                              width: model.showUpdatableApps ? 1 : 1,
+                            ),
+                            backgroundColor: model.showUpdatableApps
+                                ? Theme.of(context).colorScheme.background
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                            onPressed: () {
                               model.toggleUpdatableApps(false);
                             },
                           ),
                           const SizedBox(width: 10),
-                          CustomChip(
+                          ActionChip(
+                            avatar: const Icon(Icons.update),
                             label: I18nText('homeView.updatesAvailable'),
-                            isSelected: model.showUpdatableApps,
-                            onSelected: (value) {
+                            side: BorderSide(
+                              color: !model.showUpdatableApps
+                                  ? Theme.of(context).colorScheme.outline
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                              width: !model.showUpdatableApps ? 1 : 1,
+                            ),
+                            backgroundColor: !model.showUpdatableApps
+                                ? Theme.of(context).colorScheme.background
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                            onPressed: () {
                               model.toggleUpdatableApps(true);
                             },
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 14),

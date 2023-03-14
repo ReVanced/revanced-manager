@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -9,9 +10,8 @@ import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_language.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragement/settings_update_theme.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_language.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -26,16 +26,6 @@ class SettingsViewModel extends BaseViewModel {
 
   void navigateToContributors() {
     _navigationService.navigateTo(Routes.contributorsView);
-  }
-
-  bool isSentryEnabled() {
-    return _managerAPI.isSentryEnabled();
-  }
-
-  void useSentry(bool value) {
-    _managerAPI.setSentryStatus(value);
-    _toast.showBottom('settingsView.restartAppForChanges');
-    notifyListeners();
   }
 
   bool areUniversalPatchesEnabled() {
@@ -74,14 +64,20 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: outFile.path, destinationFileName: 'selected_patches_$dateTime.json',),);
+        await CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: outFile.path,
+            destinationFileName: 'selected_patches_$dateTime.json',
+          ),
+        );
         _toast.showBottom('settingsView.exportedPatches');
       } else {
         _toast.showBottom('settingsView.noExportFileFound');
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -100,8 +96,10 @@ class SettingsViewModel extends BaseViewModel {
         }
         _toast.showBottom('settingsView.importedPatches');
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _toast.showBottom('settingsView.jsonSelectorErrorMessage');
     }
   }

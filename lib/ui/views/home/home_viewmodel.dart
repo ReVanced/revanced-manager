@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app_installer/app_installer.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:device_apps/device_apps.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,7 +19,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -95,8 +95,10 @@ class HomeViewModel extends BaseViewModel {
         final int currentVersionInt =
             int.parse(currentVersion.replaceAll(RegExp('[^0-9]'), ''));
         return latestVersionInt > currentVersionInt;
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return false;
       }
     }
@@ -137,8 +139,10 @@ class HomeViewModel extends BaseViewModel {
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _toast.showBottom('homeView.errorInstallMessage');
     }
   }
