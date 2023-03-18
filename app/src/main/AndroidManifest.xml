@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="ReservedSystemPermission" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
     <application
         android:name=".ManagerApplication"
         android:allowBackup="true"
@@ -13,16 +26,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ReVancedManager"
         tools:targetApi="33">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ReVancedManager">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <service android:name=".installer.service.InstallService" />
+        <service android:name=".installer.service.UninstallService" />
+    </application>
 </manifest>
