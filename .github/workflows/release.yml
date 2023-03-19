@@ -52,17 +52,16 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: ./gradlew generateMeta clean --no-daemon
       - name: Setup semantic-release
         run: npm install
       - name: Get release version
         run: npx semantic-release --dry-run
         id: get-next-version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
       - name: Add version to APK
         run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ steps.get-next-version.outputs.new-release-version }}.apk
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
         run: npm exec semantic-release
