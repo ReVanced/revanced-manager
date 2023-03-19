@@ -3,6 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
+import 'package:revanced_manager/ui/widgets/appSelectorView/not_installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart' hide SkeletonLoader;
 
@@ -75,8 +76,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             ),
             SliverToBoxAdapter(
               child: model.noApps
-                  ? Center(
-                      child: I18nText('appSelectorCard.noAppsLabel'),
+                  ? const Center(
+                      child: Text('No apps found.'),
                     )
                   : model.apps.isEmpty
                       ? const AppSkeletonLoader()
@@ -84,22 +85,42 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                           padding: const EdgeInsets.symmetric(horizontal: 12.0)
                               .copyWith(bottom: 80),
                           child: Column(
-                            children: model
-                                .getFilteredApps(_query)
-                                .map(
-                                  (app) => InstalledAppItem(
-                                    name: app.appName,
-                                    pkgName: app.packageName,
-                                    icon: app.icon,
-                                    patchesCount:
-                                        model.patchesCount(app.packageName),
-                                    onTap: () {
-                                      model.selectApp(app);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                )
-                                .toList(),
+                            children: [
+                              ...model
+                                  .getFilteredApps(_query)
+                                  .map(
+                                    (app) => InstalledAppItem(
+                                      name: app.appName,
+                                      pkgName: app.packageName,
+                                      icon: app.icon,
+                                      patchesCount:
+                                          model.patchesCount(app.packageName),
+                                      recommendedVersion:
+                                          model.getRecommendedVersion(
+                                        app.packageName,
+                                      ),
+                                      onTap: () {
+                                        model.selectApp(app);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  )
+                                  .toList(),
+                              ...model
+                                  .getFilteredAppsNames(_query)
+                                  .map(
+                                    (app) => NotInstalledAppItem(
+                                      name: app,
+                                      patchesCount: model.patchesCount(app),
+                                      recommendedVersion:
+                                          model.getRecommendedVersion(app),
+                                      onTap: () {
+                                        model.showDownloadToast();
+                                      },
+                                    ),
+                                  )
+                                  .toList(),
+                            ],
                           ),
                         ),
             ),

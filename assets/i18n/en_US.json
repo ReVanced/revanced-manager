@@ -72,7 +72,8 @@
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
         "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application"
+        "errorMessage": "Unable to use selected application",
+        "downloadToast": "Download function is not available yet"
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",

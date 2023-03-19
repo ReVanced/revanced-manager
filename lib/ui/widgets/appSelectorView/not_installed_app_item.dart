@@ -1,29 +1,24 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
-class InstalledAppItem extends StatefulWidget {
-  const InstalledAppItem({
+class NotInstalledAppItem extends StatefulWidget {
+  const NotInstalledAppItem({
     Key? key,
     required this.name,
-    required this.pkgName,
-    required this.icon,
     required this.patchesCount,
     required this.recommendedVersion,
     this.onTap,
   }) : super(key: key);
   final String name;
-  final String pkgName;
-  final Uint8List icon;
   final int patchesCount;
   final String recommendedVersion;
   final Function()? onTap;
 
   @override
-  State<InstalledAppItem> createState() => _InstalledAppItemState();
+  State<NotInstalledAppItem> createState() => _NotInstalledAppItem();
 }
 
-class _InstalledAppItemState extends State<InstalledAppItem> {
+class _NotInstalledAppItem extends State<NotInstalledAppItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,13 +29,16 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              width: 48,
               height: 48,
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               alignment: Alignment.center,
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Image.memory(widget.icon),
+                child: Icon(
+                  Icons.square_rounded,
+                  color: Colors.grey,
+                  size: 44,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -50,15 +48,14 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                 children: <Widget>[
                   Text(
                     widget.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(widget.pkgName),
+                  const Text('App not installed.'),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Text(
