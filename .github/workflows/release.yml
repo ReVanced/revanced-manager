@@ -58,10 +58,10 @@ jobs:
         run: npx semantic-release --dry-run
         id: get-next-version
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Add version to APK
         run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ steps.get-next-version.outputs.new-release-version }}.apk
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm exec semantic-release
