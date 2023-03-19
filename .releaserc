@@ -16,7 +16,7 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "pubspec.yml"
+          "pubspec.yaml"
         ]
       }
     ],
