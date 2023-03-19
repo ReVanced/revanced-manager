@@ -50,38 +50,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> selectAllPatcherWarning(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: I18nText('warning'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('patchesSelectorView.selectAllPatchesWarningContent'),
-        actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
-            onPressed: () => Navigator.of(context).pop(),
-          )
-        ],
-      ),
-    );
-  }
-
-  void selectAllPatches(bool isSelected) {
-    selectedPatches.clear();
-
-    if (isSelected && _managerAPI.areExperimentalPatchesEnabled() == false) {
-      selectedPatches
-          .addAll(patches.where((element) => isPatchSupported(element)));
-    }
-
-    if (isSelected && _managerAPI.areExperimentalPatchesEnabled()) {
-      selectedPatches.addAll(patches);
-    }
-
-    notifyListeners();
-  }
-
   void selectRecommendedPatches() {
     selectedPatches.clear();
 
