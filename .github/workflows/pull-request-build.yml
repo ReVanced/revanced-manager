@@ -35,7 +35,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: flutter build apk
-        run: ./gradlew generateMeta clean --no-daemon
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
