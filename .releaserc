@@ -7,7 +7,19 @@
     }
   ],
   "plugins": [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalCommits",
+        "releaseRules": [
+          { "type": "style", "release": "patch" },
+          { "type": "refactor", "release": "patch" },
+          { "type": "perf", "release": "patch" },
+          { "type": "BREAKING", "release": "major" },
+          { "type": "BREAKING CHANGE", "release": "major" }
+        ]
+      }
+    ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     "semantic-release-dart",
