@@ -3,7 +3,7 @@ name: Sync Crowdin translations
 on:
   push:
     branches:
-      - "flutter"
+      - "dev"
     paths:
       - "assets/i18n/en_US.json"
       - ".github/workflows/crowdin.yml"
