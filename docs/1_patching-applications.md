@@ -15,7 +15,7 @@
 9. When patching is complete, tap on the `Install` button. You may also tap on the three vertical dots in the top right to share logs or the patched APK.
    > **Warning**: If you close the Manager after patching, the patched APK file will be **automatically deleted from your device**!
 
-## ⏭️ Whats next
+## ⏭️ What's next
 The next section will guide you through managing your installed patched applications.
 
 Continue: [🧰 Managing patched applications](2_managing-patched-applications.md)

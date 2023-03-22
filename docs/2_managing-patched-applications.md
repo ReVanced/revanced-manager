@@ -7,7 +7,7 @@ Here, you will be greeted with buttons to open, uninstall, or repatch the applic
 
  > **Note**: Updating patched apps is currently removed and will be added back at a later date.
 
-## ⏭️ Whats next
+## ⏭️ What's next
 The next section will inform you on how to update ReVanced Manager.
 
 Continue: [🔄 Updating ReVanced Manager](3_updating-revanced-manager.md)
