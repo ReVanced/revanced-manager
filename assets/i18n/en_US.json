@@ -81,8 +81,6 @@
         "doneButton": "Done",
         "recommended": "Recommended",
         "recommendedTooltip": "Select all recommended patches",
-        "all": "All",
-        "allTooltip": "Select all patches",
         "none": "None",
         "noneTooltip": "Deselect all patches",
         "loadPatchesSelection": "Load patches selection",
