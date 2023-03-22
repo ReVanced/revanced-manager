@@ -1,7 +1,6 @@
 # 👶 Setting up
 ## 📝 Requirements
-- Android 8+
-- ARM64 device
+- A device running Android 8 or higher with a processor based on the ARM64 architecture
 
 ## ⬇️ Installation
 - Download and install the [latest ReVanced Manager APK](https://github.com/revanced/revanced-manager/releases/latest)
