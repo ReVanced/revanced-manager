@@ -10,17 +10,42 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "conventionalCommits",
         "releaseRules": [
-          { "type": "style", "release": "patch" },
-          { "type": "refactor", "release": "patch" },
-          { "type": "perf", "release": "patch" },
-          { "type": "BREAKING", "release": "major" },
-          { "type": "BREAKING CHANGE", "release": "major" }
+          {
+            "type": "build",
+            "release": "patch"
+          }
         ]
       }
     ],
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "presetConfig": {
+          "types": [
+            {
+              "type": "build",
+              "section": "Dependency Updates"
+            },
+            {
+              "type": "chore",
+              "section": "Other Changes",
+              "hidden": false
+            },
+            {
+              "type": "perf",
+              "section": "Performance Improvements",
+              "hidden": false
+            },
+            {
+              "type": "refactor",
+              "section": "Code Improvements",
+              "hidden": false
+            }
+          ]
+        }
+      }
+    ],
     "@semantic-release/changelog",
     "semantic-release-dart",
     [
@@ -46,7 +71,12 @@
     [
       "@saithodev/semantic-release-backmerge",
       {
-        "backmergeBranches": [{"from": "main", "to": "dev"}],
+        "backmergeBranches": [
+          {
+            "from": "main",
+            "to": "dev"
+          }
+        ],
         "clearWorkspace": true
       }
     ]
