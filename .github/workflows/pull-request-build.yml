@@ -20,10 +20,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
+          cache: 'gradle'
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
       - name: Install Flutter dependencies
         run: flutter pub get
       - name: Generate files with Builder
