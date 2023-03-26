@@ -59,7 +59,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Add version to APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ steps.get-next-version.outputs.new-release-version }}.apk
+        run: mv $SIGNED_FILE_PATH $(dirname $SIGNED_FILE_PATH)/revanced-manager-${{ steps.get-next-version.outputs.new-release-version }}.apk
+        env:
+          SIGNED_FILE_PATH: ${{steps.sign_apk.outputs.signedFile}}
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
