@@ -23,6 +23,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
+          cache: 'gradle'
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -32,6 +33,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
       - name: Install Flutter dependencies
         run: flutter pub get
       - name: Generate files with Builder
