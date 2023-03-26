@@ -54,7 +54,7 @@ jobs:
       - name: Setup semantic-release
         run: npm ci
       - name: Get release version
-        run: npm exec semantic-release --dry-run
+        run: npm exec -- semantic-release --dry-run
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
