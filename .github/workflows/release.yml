@@ -52,9 +52,9 @@ jobs:
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
       - name: Setup semantic-release
-        run: npm install
+        run: npm ci
       - name: Get release version
-        run: npx semantic-release --dry-run
+        run: npm exec semantic-release --dry-run
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
