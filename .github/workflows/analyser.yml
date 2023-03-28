@@ -1,0 +1,28 @@
+name: Dart analyser
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - name: Install Flutter dependencies
+        run: flutter pub get
+      - name: Generate files with Builder
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Dart Analyse
+        uses: ValentinVignal/action-dart-analyze@v0.15
+        with:
+          fail-on: warning
