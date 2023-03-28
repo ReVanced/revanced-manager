@@ -2,9 +2,9 @@ name: Analyze Code
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "main", "dev" ]
 
 jobs:
   build:
