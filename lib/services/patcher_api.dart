@@ -13,7 +13,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
 
 @lazySingleton
@@ -49,8 +48,10 @@ class PatcherAPI {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _patches = List.empty();
     }
   }
@@ -91,9 +92,10 @@ class PatcherAPI {
               filteredApps.add(app);
             }
           }
-        } on Exception catch (e, s) {
-          await Sentry.captureException(e, stackTrace: s);
-          continue;
+        } on Exception catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
         }
       }
     }
@@ -120,25 +122,6 @@ class PatcherAPI {
     return _patches
         .where((patch) => appliedPatches.contains(patch.name))
         .toList();
-  }
-
-  bool dependencyNeedsIntegrations(String name) {
-    return name.contains('integrations') ||
-        _patches.any(
-          (patch) =>
-              patch.name == name &&
-              (patch.dependencies.any(
-                (dep) => dependencyNeedsIntegrations(dep),
-              )),
-        );
-  }
-
-  Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dependencyNeedsIntegrations(dep),
-      ),
-    );
   }
 
   Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
@@ -170,8 +153,10 @@ class PatcherAPI {
         );
       }
       return originalFilePath;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return originalFilePath;
     }
   }
@@ -181,7 +166,6 @@ class PatcherAPI {
     String originalFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final bool mergeIntegrations = await needsIntegrations(selectedPatches);
     final bool includeSettings = await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
@@ -193,16 +177,14 @@ class PatcherAPI {
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
         }
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
-        // ignore
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
       }
     }
     final File? patchBundleFile = await _managerAPI.downloadPatches();
-    File? integrationsFile;
-    if (mergeIntegrations) {
-      integrationsFile = await _managerAPI.downloadIntegrations();
-    }
+    final File? integrationsFile = await _managerAPI.downloadIntegrations();
     if (patchBundleFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
@@ -224,18 +206,16 @@ class PatcherAPI {
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
             'outFilePath': _outFile!.path,
-            'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
+            'integrationsPath': integrationsFile!.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
-            'mergeIntegrations': mergeIntegrations,
             'keyStoreFilePath': _keyStoreFile.path,
           },
         );
-      } on Exception catch (e, s) {
+      } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
         }
-        throw await Sentry.captureException(e, stackTrace: s);
       }
     }
   }
@@ -256,8 +236,10 @@ class PatcherAPI {
           await AppInstaller.installApk(_outFile!.path);
           return await DeviceApps.isAppInstalled(patchedApp.packageName);
         }
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return false;
       }
     }
@@ -268,11 +250,17 @@ class PatcherAPI {
     try {
       if (_outFile != null) {
         final String newName = _getFileName(appName, version);
-        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-            sourceFilePath: _outFile!.path, destinationFileName: newName,),);
+        CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: _outFile!.path,
+            destinationFileName: newName,
+          ),
+        );
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -286,8 +274,10 @@ class PatcherAPI {
         final File shareFile = _outFile!.copySync(newPath);
         ShareExtend.share(shareFile.path, 'file');
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 

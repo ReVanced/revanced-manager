@@ -52,31 +52,33 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> showPatchConfirmationDialog(BuildContext context) async {
     final bool isValid = await isValidPatchConfig();
-    if (isValid) {
-      navigateToInstaller();
-    } else {
-      return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: I18nText('warning'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('patcherView.patchDialogText'),
-          actions: <Widget>[
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('noButton'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                navigateToInstaller();
-              },
-            )
-          ],
-        ),
-      );
+    if (context.mounted) {
+      if (isValid) {
+        navigateToInstaller();
+      } else {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText('warning'),
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            content: I18nText('patcherView.patchDialogText'),
+            actions: <Widget>[
+              CustomMaterialButton(
+                isFilled: false,
+                label: I18nText('noButton'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              CustomMaterialButton(
+                label: I18nText('yesButton'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  navigateToInstaller();
+                },
+              )
+            ],
+          ),
+        );
+      }
     }
   }
 
@@ -114,7 +116,8 @@ class PatcherViewModel extends BaseViewModel {
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
     final List<Patch> patches =
         _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
-    this.selectedPatches
+    this
+        .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     notifyListeners();
   }

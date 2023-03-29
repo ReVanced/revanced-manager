@@ -152,8 +152,6 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
               Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
             },
           )
         ],

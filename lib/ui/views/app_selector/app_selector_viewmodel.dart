@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_apps/device_apps.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -9,7 +10,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
@@ -87,8 +87,10 @@ class AppSelectorViewModel extends BaseViewModel {
           locator<PatcherViewModel>().loadLastSelectedPatches();
         }
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _toast.showBottom('appSelectorView.errorMessage');
     }
   }

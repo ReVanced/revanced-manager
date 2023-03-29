@@ -41,14 +41,14 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                 child: Text(
                   '',
                   style: TextStyle(
-                    color: Theme.of(context).textTheme.headline6!.color,
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
               ),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Theme.of(context).textTheme.headline6!.color,
+                  color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),

@@ -3,9 +3,8 @@
 </p>
 
 
-### <p align="center">  The official ReVanced Manager based on Flutter</p>
 
-> **Warning**: This repository currently has no active maintainer. For this reason, development is stale. Active development continues for [revanced-cli](https://github.com/revanced/revanced-cli). If you are interested in maintaining this repository, please let us know at manager@revanced.app.
+### <p align="center">  The official ReVanced Manager based on Flutter</p>
 
 ## 🔽 Download
 ReVanced Manager is still in early development. You can obtain the latest version [here](https://github.com/revanced/revanced-manager/releases/latest).

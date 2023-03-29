@@ -28,7 +28,7 @@ class AvailableUpdatesCard extends StatelessWidget {
               child: Text(
                 '',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
               ),
@@ -53,7 +53,7 @@ class AvailableUpdatesCard extends StatelessWidget {
     //                 child: Text(
     //                   '',
     //                   textAlign: TextAlign.center,
-    //                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
+    //                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
     //                         color: Theme.of(context).colorScheme.secondary,
     //                       ),
     //                 ),
