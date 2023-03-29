@@ -3,8 +3,14 @@ name: Analyze Code
 on:
   push:
     branches: [ "main", "dev" ]
+    paths: 
+      - "**.dart"
+      - ".github/workflows/analyze.yml"
   pull_request:
     branches: [ "main", "dev" ]
+    paths: 
+      - "**.dart"
+      - ".github/workflows/analyze.yml"
 
 jobs:
   build:
