@@ -37,7 +37,7 @@ class SAdvancedSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.deleteKeystoreHint'),
-          onTap: () => _showDeleteKeystoneDialog(context),
+          onTap: () => _showDeleteKeystoreDialog(context),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -73,14 +73,14 @@ class SAdvancedSection extends StatelessWidget {
     );
   }
 
-  Future<void> _showDeleteKeystoneDialog(context) {
+  Future<void> _showDeleteKeystoreDialog(context) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('warning'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
-          'settingsView.deleteKeystoneDialogText',
+          'settingsView.deleteKeystoreDialogText',
         ),
         actions: <Widget>[
           CustomMaterialButton(
