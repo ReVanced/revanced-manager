@@ -3,7 +3,7 @@
         "@saithodev/semantic-release-backmerge": "^3.1.0",
         "@semantic-release/changelog": "^6.0.3",
         "@semantic-release/git": "^10.0.1",
-        "semantic-release": "^21.0.0",
+        "semantic-release": "^21.0.1",
         "semantic-release-dart": "^1.0.0-alpha.1",
         "semantic-release-export-data": "^1.0.1"
     }
