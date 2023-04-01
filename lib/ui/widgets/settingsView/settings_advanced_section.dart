@@ -8,6 +8,7 @@ import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 final _settingsViewModel = SettingsViewModel();
 
@@ -36,7 +37,7 @@ class SAdvancedSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.deleteKeystoreHint'),
-          onTap: () => _settingsViewModel.deleteKeystore,
+          onTap: () => _showDeleteKeystoreDialog(context),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -69,6 +70,33 @@ class SAdvancedSection extends StatelessWidget {
           onTap: () => _settingsViewModel.deleteLogs(),
         ),
       ],
+    );
+  }
+
+  Future<void> _showDeleteKeystoreDialog(context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('warning'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText(
+          'settingsView.deleteKeystoreDialogText',
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () => {
+              Navigator.of(context).pop(),
+              _settingsViewModel.deleteKeystore()
+            },
+          )
+        ],
+      ),
     );
   }
 }

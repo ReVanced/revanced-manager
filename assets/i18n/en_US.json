@@ -151,6 +151,7 @@
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
+        "deleteKeystoreDialogText": "Are you sure you want to delete the keystore used to sign patched applications?",
         "deletedKeystore": "Keystore deleted",
         "deleteTempDirLabel": "Delete temporary files",
         "deleteTempDirHint": "Delete unused temporary files",
