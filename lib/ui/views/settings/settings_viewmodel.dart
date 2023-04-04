@@ -17,7 +17,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SettingsViewModel extends BaseViewModel {
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService =
+      locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
 
@@ -62,8 +63,11 @@ class SettingsViewModel extends BaseViewModel {
     try {
       final File outFile = File(_managerAPI.storedPatchesFile);
       if (outFile.existsSync()) {
-        final String dateTime =
-            DateTime.now().toString().replaceAll(' ', '_').split('.').first;
+        final String dateTime = DateTime.now()
+            .toString()
+            .replaceAll(' ', '_')
+            .split('.')
+            .first;
         await CRFileSaver.saveFileWithDialog(
           SaveFileDialogParams(
             sourceFilePath: outFile.path,
@@ -83,7 +87,8 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> importPatches() async {
     try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result =
+          await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
       );
@@ -111,7 +116,7 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<int> getSdkVersion() async {
     final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
-    return info.version.sdkInt ?? -1;
+    return info.version.sdkInt;
   }
 
   Future<void> deleteLogs() async {
