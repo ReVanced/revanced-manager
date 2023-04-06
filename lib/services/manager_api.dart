@@ -33,7 +33,8 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     storedPatchesFile =
-        (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+        (await getApplicationDocumentsDirectory()).path +
+            storedPatchesFile;
   }
 
   String getApiUrl() {
@@ -72,7 +73,8 @@ class ManagerAPI {
   }
 
   String getIntegrationsRepo() {
-    return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
+    return _prefs.getString('integrationsRepo') ??
+        defaultIntegrationsRepo;
   }
 
   Future<void> setIntegrationsRepo(String value) async {
@@ -132,10 +134,13 @@ class ManagerAPI {
 
   List<PatchedApplication> getPatchedApps() {
     final List<String> apps = _prefs.getStringList('patchedApps') ?? [];
-    return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
+    return apps
+        .map((a) => PatchedApplication.fromJson(jsonDecode(a)))
+        .toList();
   }
 
-  Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
+  Future<void> setPatchedApps(
+      List<PatchedApplication> patchedApps) async {
     if (patchedApps.length > 1) {
       patchedApps.sort((a, b) => a.name.compareTo(b.name));
     }
@@ -237,15 +242,18 @@ class ManagerAPI {
   }
 
   Future<File?> downloadManager() async {
-    return await _revancedAPI.getLatestReleaseFile('.apk', defaultManagerRepo);
+    return await _revancedAPI.getLatestReleaseFile(
+        '.apk', defaultManagerRepo);
   }
 
   Future<String?> getLatestPatcherReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime('.gz', defaultPatcherRepo);
+    return await _revancedAPI.getLatestReleaseTime(
+        '.gz', defaultPatcherRepo);
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime('.apk', defaultManagerRepo);
+    return await _revancedAPI.getLatestReleaseTime(
+        '.apk', defaultManagerRepo);
   }
 
   Future<String?> getLatestManagerVersion() async {
@@ -286,10 +294,12 @@ class ManagerAPI {
     final List<PatchedApplication> unsavedApps = [];
     final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
     if (hasRootPermissions) {
-      final List<String> installedApps = await _rootAPI.getInstalledApps();
+      final List<String> installedApps =
+          await _rootAPI.getInstalledApps();
       for (final String packageName in installedApps) {
         if (!patchedApps.any((app) => app.packageName == packageName)) {
-          final ApplicationWithIcon? application = await DeviceApps.getApp(
+          final ApplicationWithIcon? application =
+              await DeviceApps.getApp(
             packageName,
             true,
           ) as ApplicationWithIcon?;
@@ -315,8 +325,10 @@ class ManagerAPI {
     for (final Application app in userApps) {
       if (app.packageName.startsWith('app.revanced') &&
           !app.packageName.startsWith('app.revanced.manager.') &&
-          !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
-        final ApplicationWithIcon? application = await DeviceApps.getApp(
+          !patchedApps
+              .any((uapp) => uapp.packageName == app.packageName)) {
+        final ApplicationWithIcon? application =
+            await DeviceApps.getApp(
           app.packageName,
           true,
         ) as ApplicationWithIcon?;
@@ -359,8 +371,8 @@ class ManagerAPI {
           final int currentInstalledVersionInt = int.parse(
             currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''),
           );
-          final int currentSavedVersionInt =
-              int.parse(currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
+          final int currentSavedVersionInt = int.parse(
+              currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
           if (currentInstalledVersionInt > currentSavedVersionInt) {
             app.hasUpdates = true;
           }
@@ -372,9 +384,11 @@ class ManagerAPI {
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
-    final bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
+    final bool existsNonRoot =
+        await DeviceApps.isAppInstalled(app.packageName);
     if (app.isRooted) {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+      final bool hasRootPermissions =
+          await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         existsRoot = await _rootAPI.isAppInstalled(app.packageName);
       }
@@ -383,7 +397,8 @@ class ManagerAPI {
     return !existsNonRoot;
   }
 
-  Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {
+  Future<bool> hasAppUpdates(
+      String packageName, DateTime patchDate) async {
     final List<String> commits = await _githubAPI.getCommits(
       packageName,
       getPatchesRepo(),
@@ -421,9 +436,11 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  Future<void> setSelectedPatches(String app, List<String> patches) async {
+  Future<void> setSelectedPatches(
+      String app, List<String> patches) async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    final Map<String, dynamic> patchesMap =
+        await readSelectedPatchesFile();
     if (patches.isEmpty) {
       patchesMap.remove(app);
     } else {
@@ -433,7 +450,8 @@ class ManagerAPI {
   }
 
   Future<List<String>> getSelectedPatches(String app) async {
-    final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    final Map<String, dynamic> patchesMap =
+        await readSelectedPatchesFile();
     return List.from(patchesMap.putIfAbsent(app, () => List.empty()));
   }
 

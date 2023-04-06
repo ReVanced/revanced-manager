@@ -20,10 +20,8 @@ dependencies:
       url: https://github.com/ponces/flutter_plugin_device_apps
       ref: revanced-manager
   device_info_plus: ^8.1.0
-  dio: ^4.0.6
-  dio_brotli_transformer: ^1.0.1
-  dio_http_cache_lts: ^0.4.1
-  dynamic_color: ^1.6.2
+  dio: ^5.1.1
+  dynamic_color: ^1.6.3
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
   file_picker:
@@ -52,7 +50,7 @@ dependencies:
     git:
       url: https://github.com/SuaMusica/logcat
       ref: feature/nullSafe
-  native_dio_client: ^0.0.3
+  native_dio_adapter: ^0.1.0
   package_info_plus: ^3.0.3
   path_provider: ^2.0.14
   permission_handler: ^10.2.0
@@ -73,8 +71,9 @@ dependencies:
   url_launcher: ^6.1.10
   wakelock: ^0.6.2
   flutter_dotenv: ^5.0.2
-  pub_release: ^8.0.3
   flutter_markdown: ^0.6.14
+  dio_cache_interceptor: ^3.4.2
+  dio_cache_interceptor_hive_store: ^3.2.1
 
 dev_dependencies:
   json_serializable: ^6.6.1
