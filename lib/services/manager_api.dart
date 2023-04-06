@@ -140,7 +140,8 @@ class ManagerAPI {
   }
 
   Future<void> setPatchedApps(
-      List<PatchedApplication> patchedApps) async {
+    List<PatchedApplication> patchedApps,
+  ) async {
     if (patchedApps.length > 1) {
       patchedApps.sort((a, b) => a.name.compareTo(b.name));
     }
@@ -243,17 +244,23 @@ class ManagerAPI {
 
   Future<File?> downloadManager() async {
     return await _revancedAPI.getLatestReleaseFile(
-        '.apk', defaultManagerRepo);
+      '.apk',
+      defaultManagerRepo,
+    );
   }
 
   Future<String?> getLatestPatcherReleaseTime() async {
     return await _revancedAPI.getLatestReleaseTime(
-        '.gz', defaultPatcherRepo);
+      '.gz',
+      defaultPatcherRepo,
+    );
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
     return await _revancedAPI.getLatestReleaseTime(
-        '.apk', defaultManagerRepo);
+      '.apk',
+      defaultManagerRepo,
+    );
   }
 
   Future<String?> getLatestManagerVersion() async {
@@ -372,7 +379,8 @@ class ManagerAPI {
             currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''),
           );
           final int currentSavedVersionInt = int.parse(
-              currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
+            currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''),
+          );
           if (currentInstalledVersionInt > currentSavedVersionInt) {
             app.hasUpdates = true;
           }
@@ -398,7 +406,9 @@ class ManagerAPI {
   }
 
   Future<bool> hasAppUpdates(
-      String packageName, DateTime patchDate) async {
+    String packageName,
+    DateTime patchDate,
+  ) async {
     final List<String> commits = await _githubAPI.getCommits(
       packageName,
       getPatchesRepo(),
@@ -437,7 +447,9 @@ class ManagerAPI {
   }
 
   Future<void> setSelectedPatches(
-      String app, List<String> patches) async {
+    String app,
+    List<String> patches,
+  ) async {
     final File selectedPatchesFile = File(storedPatchesFile);
     final Map<String, dynamic> patchesMap =
         await readSelectedPatchesFile();

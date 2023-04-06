@@ -10,8 +10,9 @@ environment:
   sdk: ">=2.17.5 <3.0.0"
 
 dependencies:
-  animations: ^2.0.7
+  animations: ^2.0.4
   app_installer: ^1.1.0
+  collection: ^1.16.0
   collection: ^1.16.0
   cross_connectivity: ^3.0.5
   cr_file_saver: ^0.0.2+1
@@ -31,21 +32,22 @@ dependencies:
   flex_color_scheme: ^7.0.0
   flutter:
     sdk: flutter
-  flutter_background: ^1.2.0
+  flutter_background: ^1.1.0
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.32.4
   flutter_local_notifications: ^9.8.0+1
+  flutter_local_notifications: ^9.8.0+1
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.0.4
-  fluttertoast: ^8.2.1
-  font_awesome_flutter: ^10.4.0
+  flutter_svg: ^1.1.1+1
+  fluttertoast: ^8.0.9
+  font_awesome_flutter: ^10.1.0
   get_it: ^7.2.0
-  google_fonts: ^4.0.3
-  http: ^0.13.5
-  injectable: ^2.1.1
+  google_fonts: ^3.0.1
+  http: ^0.13.4
+  injectable: ^1.5.3
   intl: ^0.17.0
-  json_annotation: ^4.8.0
+  json_annotation: ^4.6.0
   logcat:
     git:
       url: https://github.com/SuaMusica/logcat
@@ -60,7 +62,7 @@ dependencies:
       url: https://github.com/gokul1630/root
       ref: main
   share_extend: ^2.0.0
-  shared_preferences: ^2.1.0
+  shared_preferences: ^2.0.15
   skeletons: ^0.0.3
   stacked: ^3.2.0
   stacked_generator: ^1.1.0
@@ -76,13 +78,13 @@ dependencies:
   dio_cache_interceptor_hive_store: ^3.2.1
 
 dev_dependencies:
-  json_serializable: ^6.6.1
+  json_serializable: ^6.3.1
   build_runner: any
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  injectable_generator: ^2.1.5  
+  injectable_generator: ^1.5.4  
 
 
 
