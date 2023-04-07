@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:app_installer/app_installer.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -25,12 +24,14 @@ import 'package:timezone/timezone.dart' as tz;
 
 @lazySingleton
 class HomeViewModel extends BaseViewModel {
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService =
+      locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final GithubAPI _githubAPI = locator<GithubAPI>();
   final Toast _toast = locator<Toast>();
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   DateTime? _lastUpdate;
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
@@ -41,8 +42,17 @@ class HomeViewModel extends BaseViewModel {
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
       ),
-      onSelectNotification: (p) =>
-          DeviceApps.openApp('app.revanced.manager.flutter'),
+      onDidReceiveNotificationResponse: (response) async {
+        if (response.id == 0) {
+          _toast.showBottom('homeView.installingMessage');
+          final File? managerApk = await _managerAPI.downloadManager();
+          if (managerApk != null) {
+            await AppInstaller.installApk(managerApk.path);
+          } else {
+            _toast.showBottom('homeView.errorDownloadMessage');
+          }
+        }
+      },
     );
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -51,6 +61,19 @@ class HomeViewModel extends BaseViewModel {
     final bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
+    }
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await flutterLocalNotificationsPlugin
+            .getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp ??
+        false) {
+      _toast.showBottom('homeView.installingMessage');
+      final File? managerApk = await _managerAPI.downloadManager();
+      if (managerApk != null) {
+        await AppInstaller.installApk(managerApk.path);
+      } else {
+        _toast.showBottom('homeView.errorDownloadMessage');
+      }
     }
     _getPatchedApps();
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
@@ -86,8 +109,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
-    final String? latestVersion = await _managerAPI.getLatestManagerVersion();
-    final String currentVersion = await _managerAPI.getCurrentManagerVersion();
+    final String? latestVersion =
+        await _managerAPI.getLatestManagerVersion();
+    final String currentVersion =
+        await _managerAPI.getCurrentManagerVersion();
     if (latestVersion != null) {
       try {
         final int latestVersionInt =
@@ -151,7 +176,9 @@ class HomeViewModel extends BaseViewModel {
     _toast.showBottom('homeView.updatesDisabled');
   }
 
-  Future<void> showUpdateConfirmationDialog(BuildContext parentContext) {
+  Future<void> showUpdateConfirmationDialog(
+    BuildContext parentContext,
+  ) {
     return showModalBottomSheet(
       context: parentContext,
       isScrollControlled: true,
