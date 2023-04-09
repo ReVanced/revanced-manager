@@ -105,7 +105,7 @@ Future<Map<String, List<dynamic>>> getContributors() async {
     String repoName,
   ) async {
     try {
-      if (repoName == '' || extension == '' ) {
+      if (tools.isEmpty) {
       final response = await _dio.get('/tools', options: _cacheOptions);
       tools = response.data['tools'];
       }
