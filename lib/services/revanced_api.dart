@@ -12,6 +12,12 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:timeago/timeago.dart';
 
+Map<String, List<dynamic>> contributors = {};
+List<dynamic> patches = [];
+String extension = '';
+String repoName = '';
+List<dynamic> tools = [];
+
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
@@ -58,29 +64,34 @@ class RevancedAPI {
     }
   }
 
-  Future<Map<String, List<dynamic>>> getContributors() async {
-    final Map<String, List<dynamic>> contributors = {};
-    try {
+Future<Map<String, List<dynamic>>> getContributors() async {
+  try {
+    if (contributors.isEmpty) {
       final response = await _dio.get('/contributors', options: _cacheOptions);
-      final List<dynamic> repositories = response.data['repositories'];
-      for (final Map<String, dynamic> repo in repositories) {
-        final String name = repo['name'];
-        contributors[name] = repo['contributors'];
+      final List<dynamic>? repositoryList = response.data['repositories'];
+      if (repositoryList != null) {
+        for (final Map<String, dynamic> repository in repositoryList) {
+          final String repositoryName = repository['name'] ?? '';
+          final List<dynamic> contributorsList = repository['contributors'] ?? [];
+          contributors[repositoryName] = contributorsList;
+        }
       }
-    } on Exception catch (e) {
-      if (kDebugMode) {
+    }
+    return contributors;
+  } on Exception catch (e) {
+    if (kDebugMode) {
         print(e);
       }
       return {};
-    }
-    return contributors;
   }
+}
 
   Future<List<Patch>> getPatches() async {
     try {
+      if (patches.isEmpty) {
       final response = await _dio.get('/patches', options: _cacheOptions);
-      final List<dynamic> patches = response.data;
-      return patches.map((patch) => Patch.fromJson(patch)).toList();
+      patches = response.data;}
+    return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -94,8 +105,10 @@ class RevancedAPI {
     String repoName,
   ) async {
     try {
+      if (tools.isEmpty) {
       final response = await _dio.get('/tools', options: _cacheOptions);
-      final List<dynamic> tools = response.data['tools'];
+      tools = response.data['tools'];
+      }
       return tools.firstWhereOrNull(
         (t) =>
             t['repository'] == repoName &&
@@ -109,9 +122,7 @@ class RevancedAPI {
     }
   }
 
-  Future<String?> getLatestReleaseVersion(
-    String extension,
-    String repoName,
+  Future<String?> getLatestReleaseVersion(String extension, String repoName,
   ) async {
     try {
       final Map<String, dynamic>? release = await _getLatestRelease(
