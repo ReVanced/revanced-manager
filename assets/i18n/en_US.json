@@ -169,7 +169,15 @@
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
-        "deletedLogs": "Logs deleted"
+        "deletedLogs": "Logs deleted",
+        "exportKeystoreLabel": "Export keystore",
+        "exportKeystoreHint": "Export keystore used to sign apps",
+        "exportedKeystore": "Keystore exported",
+        "noKeystoreExportFileFound": "No keystore to export",
+        "importKeystoreLabel": "Import keystore",
+        "importKeystoreHint": "Import keystore used to sign apps",
+        "importedKeystore": "Keystore imported",
+        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file"
     },
     "appInfoView": {
         "widgetTitle": "App info",

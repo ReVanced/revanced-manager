@@ -22,6 +22,7 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   String storedPatchesFile = '/selected-patches.json';
+  String keystoreFile = '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -123,7 +124,7 @@ class ManagerAPI {
 
   Future<void> deleteKeystore() async {
     final File keystore = File(
-      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
+      keystoreFile,
     );
     if (await keystore.exists()) {
       await keystore.delete();
