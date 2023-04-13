@@ -1,5 +1,9 @@
 # 🛟 Troubleshooting
 
+Got stuck? Let's fix it together!
+
+**Applicable to the latest version of ReVanced Manager**
+
 ## Table of Content
 
 ### 🚦 Install issues
@@ -9,17 +13,6 @@
 
 ### 🌋 Patching issues
 - [Error code `135` when patching the application](#-error-code-135-when-patching-the-application)
-
-<!-- Note -->
-<!--
-
-The visual guide have a commentary or a note for people needed accessibility
-
--->
-
-Got stuck? Let's fix it together!
-
-**Applicable to the latest version of ReVanced Manager**
 
 ## 🚦 App not installed as package conflicts with an existing package
 That means that you have installed a equivalent or newer version of the application that you're trying to patch, If that seems wrong, **you can uninstall the application to solve the issue!**
