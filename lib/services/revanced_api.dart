@@ -3,13 +3,11 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
+import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:native_dio_client/native_dio_client.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:timeago/timeago.dart';
@@ -17,22 +15,15 @@ import 'package:timeago/timeago.dart';
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
-
-  Future<CacheOptions> getCacheOptions() async {
-    final cacheDir = await path_provider.getTemporaryDirectory();
-    return CacheOptions(
-      store: HiveCacheStore(cacheDir.path),
-      policy: CachePolicy.forceCache,
-      hitCacheOnErrorExcept: [],
-      maxStale: const Duration(days: 1),
-      keyBuilder: (request) =>
-          CacheOptions.defaultCacheKeyBuilder(request),
-    );
-  }
+  final DioCacheManager _dioCacheManager =
+      DioCacheManager(CacheConfig());
+  final Options _cacheOptions = buildCacheOptions(
+    const Duration(hours: 6),
+    maxStale: const Duration(days: 1),
+  );
 
   Future<void> initialize(String apiUrl) async {
     try {
-      final cacheOptions = await getCacheOptions();
       final bool isGMSInstalled = await checkForGMS();
 
       if (!isGMSInstalled) {
@@ -41,28 +32,16 @@ class RevancedAPI {
             baseUrl: apiUrl,
           ),
         );
-        log('ReVanced API: Using default engine');
+        log('ReVanced API: Using default engine + $isGMSInstalled');
       } else {
         _dio = Dio(
           BaseOptions(
             baseUrl: apiUrl,
           ),
         )..httpClientAdapter = NativeAdapter();
-        log('ReVanced API: Using CronetEngine');
+        log('ReVanced API: Using CronetEngine + $isGMSInstalled');
       }
-      _dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (options, handler) async {
-            final key = CacheOptions.defaultCacheKeyBuilder(options);
-            final cache = await cacheOptions.store?.get(key);
-            if (cache != null) {
-              return handler.resolve(cache.toResponse(options));
-            }
-            return handler.next(options);
-          },
-        ),
-      );
-      _dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
+      _dio.interceptors.add(_dioCacheManager.interceptor);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -72,9 +51,7 @@ class RevancedAPI {
 
   Future<void> clearAllCache() async {
     try {
-      await getCacheOptions().then((cacheOptions) async {
-        await cacheOptions.store?.clean();
-      });
+      await _dioCacheManager.clearAll();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -85,7 +62,8 @@ class RevancedAPI {
   Future<Map<String, List<dynamic>>> getContributors() async {
     final Map<String, List<dynamic>> contributors = {};
     try {
-      final response = await _dio.get('/contributors');
+      final response =
+          await _dio.get('/contributors', options: _cacheOptions);
       final List<dynamic> repositories = response.data['repositories'];
       for (final Map<String, dynamic> repo in repositories) {
         final String name = repo['name'];
@@ -102,7 +80,8 @@ class RevancedAPI {
 
   Future<List<Patch>> getPatches() async {
     try {
-      final response = await _dio.get('/patches');
+      final response =
+          await _dio.get('/patches', options: _cacheOptions);
       final List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception catch (e) {
@@ -118,7 +97,7 @@ class RevancedAPI {
     String repoName,
   ) async {
     try {
-      final response = await _dio.get('/tools');
+      final response = await _dio.get('/tools', options: _cacheOptions);
       final List<dynamic> tools = response.data['tools'];
       return tools.firstWhereOrNull(
         (t) =>

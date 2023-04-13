@@ -3,30 +3,21 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
+import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/models/patch.dart';
 
 @lazySingleton
 class GithubAPI {
   late Dio _dio = Dio();
-
-  Future<CacheOptions> getCacheOptions() async {
-    final cacheDir = await getTemporaryDirectory();
-    return CacheOptions(
-      store: HiveCacheStore(cacheDir.path),
-      policy: CachePolicy.forceCache,
-      hitCacheOnErrorExcept: [],
-      maxStale: const Duration(days: 1),
-      keyBuilder: (request) =>
-          CacheOptions.defaultCacheKeyBuilder(request),
-    );
-  }
-
+  final DioCacheManager _dioCacheManager =
+      DioCacheManager(CacheConfig());
+  final Options _cacheOptions = buildCacheOptions(
+    const Duration(hours: 6),
+    maxStale: const Duration(days: 1),
+  );
   final Map<String, String> repoAppPath = {
     'com.google.android.youtube': 'youtube',
     'com.google.android.apps.youtube.music': 'music',
@@ -40,25 +31,13 @@ class GithubAPI {
 
   Future<void> initialize(String repoUrl) async {
     try {
-      final cacheOptions = await getCacheOptions();
       _dio = Dio(
         BaseOptions(
           baseUrl: repoUrl,
         ),
-      )
-        ..interceptors.add(
-          InterceptorsWrapper(
-            onRequest: (options, handler) async {
-              final key = CacheOptions.defaultCacheKeyBuilder(options);
-              final cache = await cacheOptions.store?.get(key);
-              if (cache != null) {
-                return handler.resolve(cache.toResponse(options));
-              }
-              return handler.next(options);
-            },
-          ),
-        )
-        ..interceptors.add(DioCacheInterceptor(options: cacheOptions));
+      );
+
+      _dio.interceptors.add(_dioCacheManager.interceptor);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -68,9 +47,7 @@ class GithubAPI {
 
   Future<void> clearAllCache() async {
     try {
-      await getCacheOptions().then((cacheOptions) async {
-        await cacheOptions.store?.clean();
-      });
+      await _dioCacheManager.clearAll();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -84,6 +61,7 @@ class GithubAPI {
     try {
       final response = await _dio.get(
         '/repos/$repoName/releases',
+        options: _cacheOptions,
       );
       return response.data[0];
     } on Exception catch (e) {
@@ -108,6 +86,7 @@ class GithubAPI {
           'path': path,
           'since': since.toIso8601String(),
         },
+        options: _cacheOptions,
       );
       final List<dynamic> commits = response.data;
       return commits
