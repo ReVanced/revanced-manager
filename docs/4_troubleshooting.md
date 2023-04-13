@@ -1,5 +1,15 @@
 # 🛟 Troubleshooting
 
+## Table of Content
+
+### 🚦 Install issues
+- [App not installed as package conflicts with an existing package](#-app-not-installed-as-package-conflicts-with-an-existing-package)
+- [Non-root install is not possible with the current patches selection](#-non-root-install-is-not-possible-with-the-current-patches-selection)
+- [Signature mismatch when updating the application](#-signature-mismatch-when-updating-the-application)
+
+### 🌋 Patching issues
+- [Error code `135` when patching the application](#-error-code-135-when-patching-the-application)
+
 <!-- Note -->
 <!--
 
