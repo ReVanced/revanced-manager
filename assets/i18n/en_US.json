@@ -6,6 +6,10 @@
     "disabledLabel": "Disabled",
     "yesButton": "Yes",
     "noButton": "No",
+    "rootLabel": "Root",
+    "nonRootLabel": "Non-root",
+    "selectInstallMethod": "Select install method",
+    "selectInstallMethodHint": "Selected patches are compatible with {installMethod} install only. {option} MicroG patch for {otherInstallMethod} install.",
     "warning": "Warning",
     "navigationView": {
         "dashboardTab": "Dashboard",
@@ -104,8 +108,8 @@
         "exportApkMenuOption": "Export APK",
         "shareLogMenuOption": "Share log",
         "installErrorDialogTitle": "Error",
-        "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
-        "installErrorDialogText2": "Non-root install is not possible with the current patches selection.\nRepatch your app or choose root install if you have your device rooted.",
+        "installErrorDialogText1": "Root install is not possible with the current patches selection.\nUnselect MicroG patch to continue.",
+        "installErrorDialogText2": "Non-root install is not possible with the current patches selection.\nSelect MicroG patch to continue.",
         "installErrorDialogText3": "Root install is not possible as the original APK was selected from storage.\nSelect an installed app or choose non-root install.",
         "noExit": "Installer is still running, cannot exit..."
     },

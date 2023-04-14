@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
@@ -7,6 +9,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -16,8 +19,12 @@ class PatcherViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  final Toast _toast = locator<Toast>();
   PatchedApplication? selectedApp;
   List<Patch> selectedPatches = [];
+  late bool hasMicroGPatch = selectedPatches.any(
+    (patch) => patch.name.endsWith('microg-support'),
+  );
 
   void navigateToAppSelector() {
     _navigationService.navigateTo(Routes.appSelectorView);
@@ -52,9 +59,14 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> showPatchConfirmationDialog(BuildContext context) async {
     final bool isValid = await isValidPatchConfig();
+
+    hasMicroGPatch = selectedPatches.any(
+      (patch) => patch.name.endsWith('microg-support'),
+    );
+
     if (context.mounted) {
       if (isValid) {
-        navigateToInstaller();
+        askForInstallationMethod(context);
       } else {
         return showDialog(
           context: context,
@@ -72,13 +84,109 @@ class PatcherViewModel extends BaseViewModel {
                 label: I18nText('yesButton'),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  navigateToInstaller();
+                  askForInstallationMethod(context);
                 },
               )
             ],
           ),
         );
       }
+    }
+  }
+
+  Future<dynamic> askForInstallationMethod(BuildContext context) {
+    if (selectedApp!.packageName.contains('youtube')) {
+      final width = MediaQuery.of(context).size.width;
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('selectInstallMethod'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText(
+            !hasMicroGPatch
+                ? FlutterI18n.translate(
+                    context,
+                    'selectInstallMethodHint',
+                    translationParams: {
+                      'installMethod': 'root',
+                      'option': 'Select',
+                      'otherInstallMethod': 'non-root',
+                    },
+                  )
+                : FlutterI18n.translate(
+                    context,
+                    'selectInstallMethodHint',
+                    translationParams: {
+                      'installMethod': 'non-root',
+                      'option': 'Unselect',
+                      'otherInstallMethod': 'root',
+                    },
+                  ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if (hasMicroGPatch) {
+                  _toast.show(
+                    'installerView.installErrorDialogText1',
+                  );
+                  hasMicroGPatch = true;
+                } else {
+                  Navigator.of(context).pop();
+                  navigateToInstaller();
+                }
+              },
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all<Size>(Size(width, 48)),
+                foregroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary,
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                ),
+              ),
+              child: I18nText('rootLabel'),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all<Size>(Size(width, 48)),
+                foregroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary,
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                ),
+              ),
+              child: I18nText('nonRootLabel'),
+              onPressed: () {
+                if (!hasMicroGPatch) {
+                  _toast.show(
+                    'installerView.installErrorDialogText2',
+                  );
+                  hasMicroGPatch = false;
+                } else {
+                  Navigator.of(context).pop();
+                  navigateToInstaller();
+                }
+              },
+            )
+          ],
+        ),
+      );
+    } else {
+      navigateToInstaller();
+      return Future.value();
     }
   }
 
