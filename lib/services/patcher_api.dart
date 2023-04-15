@@ -210,6 +210,7 @@ class PatcherAPI {
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
+            'keystorePassword': _managerAPI.getKeystorePassword(),
           },
         );
       } on Exception catch (e) {

@@ -23,6 +23,7 @@ class ManagerAPI {
   late SharedPreferences _prefs;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile = '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
+  String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -113,6 +114,14 @@ class ManagerAPI {
 
   Future<void> enableExperimentalPatchesStatus(bool value) async {
     await _prefs.setBool('experimentalPatchesEnabled', value);
+  }
+
+  Future<void> setKeystorePassword(String password) async {
+    await _prefs.setString('keystorePassword', password);
+  }
+
+  String getKeystorePassword() {
+    return _prefs.getString('keystorePassword') ?? defaultKeystorePassword;
   }
 
   Future<void> deleteTempFolder() async {

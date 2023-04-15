@@ -177,7 +177,9 @@
         "importKeystoreLabel": "Import keystore",
         "importKeystoreHint": "Import keystore used to sign apps",
         "importedKeystore": "Keystore imported",
-        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file"
+        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file",
+        "selectKeystorePassword": "Keystore Password",
+        "selectKeystorePasswordHint": "Select keystore password used to sign the apk"
     },
     "appInfoView": {
         "widgetTitle": "App info",
