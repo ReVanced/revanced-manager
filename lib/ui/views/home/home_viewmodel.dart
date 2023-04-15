@@ -105,6 +105,26 @@ class HomeViewModel extends BaseViewModel {
     return false;
   }
 
+  Future<bool> hasPatchesUpdates() async {
+    final String? latestVersion = await _managerAPI.getLatestPatchesVersion();
+    final String? currentVersion = await _managerAPI.getCurrentPatchesVersion();
+    if (latestVersion != null) {
+      try {
+        final int latestVersionInt =
+            int.parse(latestVersion.replaceAll(RegExp('[^0-9]'), ''));
+        final int currentVersionInt =
+            int.parse(currentVersion!.replaceAll(RegExp('[^0-9]'), ''));
+        return latestVersionInt > currentVersionInt;
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        return false;
+      }
+    }
+    return false;
+  }
+
   Future<void> updateManager(BuildContext context) async {
     try {
       _toast.showBottom('homeView.downloadingMessage');

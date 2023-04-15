@@ -50,8 +50,9 @@ class HomeView extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       LatestCommitCard(
-                        onPressed: () =>
+                        onPressedManager: () =>
                             model.showUpdateConfirmationDialog(context),
+                        onPressedPatches: () => model.forceRefresh(context),
                       ),
                       const SizedBox(height: 23),
                       I18nText(

@@ -29,6 +29,10 @@ class ManagerAPI {
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
+  String? patchesVersion = '';
+  bool isDefaultPatchesRepo() {
+    return getPatchesRepo() == 'revanced/revanced-patches';
+  }
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
@@ -265,6 +269,19 @@ class ManagerAPI {
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
+  }
+
+  Future<String?> getCurrentPatchesVersion() async {
+    if (isDefaultPatchesRepo()) {
+      patchesVersion = await getLatestPatchesVersion();
+      // print('Patches version: $patchesVersion');
+      return patchesVersion ?? '0.0.0';
+    } else {
+      // fetch from github
+      patchesVersion =
+          await _githubAPI.getLastestReleaseVersion(getPatchesRepo());
+    }
+    return null;
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
