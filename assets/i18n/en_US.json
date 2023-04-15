@@ -17,6 +17,7 @@
         "settingsTab": "Settings"
     },
     "homeView": {
+        "refreshSuccess": "Refresh successfully",
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",

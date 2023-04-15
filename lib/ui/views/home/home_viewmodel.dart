@@ -200,6 +200,7 @@ class HomeViewModel extends BaseViewModel {
         _lastUpdate!.difference(DateTime.now()).inSeconds > 2) {
       _managerAPI.clearAllData();
     }
+    _toast.showBottom('homeView.refreshSuccess');
     initialize(context);
   }
 }
