@@ -1,0 +1,80 @@
+name: Build
+
+on:
+  pull_request_review:
+    types: [submitted, edited]
+  workflow_dispatch:
+
+# * If Expressions (copy-paste)
+
+# * PULL_REQUEST_REVIEW_IF_EXPRESSION: github.event_name == 'pull_request_review' && contains(fromJson('["changes_requested","approved"]'), github.event.review.state) && contains(fromJson('["collaborator","member","owner"]'), github.event.review.author_association) && endsWith(github.event.review.body, '!build')
+# * SHORT_PULL_REQUEST_REVIEW_IF_EXPRESSION: github.event_name == 'pull_request_review'
+# * BUILD_IF_EXPRESSION: (github.event_name == 'pull_request_review' && contains(fromJson('["changes_requested","approved"]'), github.event.review.state) && contains(fromJson('["collaborator","member","owner"]'), github.event.review.author_association) && endsWith(github.event.review.body, '!build')) || (github.event_name == 'workflow_dispatch')
+
+jobs:
+  build: 
+    name: Build
+    runs-on: ubuntu-latest
+    # If this pull request is approved, reviewer is a member, a collaborator, or an owner, and review body contains `!build`
+    # or if it's manually dispatched in the Actions tab
+    # * Expression of: BUILD_IF_EXPRESSION
+    if: ${{ (github.event_name == 'pull_request_review' && contains(fromJson('["changes_requested","approved"]'), github.event.review.state) && contains(fromJson('["collaborator","member","owner"]'), github.event.review.author_association) && endsWith(github.event.review.body, '!build')) || (github.event_name == 'workflow_dispatch') }}
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      # This condition should be the same as the one in the job
+      # * Expression of: BUILD_IF_EXPRESSION
+      cancel-in-progress: ${{ (github.event_name == 'pull_request_review' && contains(fromJson('["changes_requested","approved"]'), github.event.review.state) && contains(fromJson('["collaborator","member","owner"]'), github.event.review.author_association) && endsWith(github.event.review.body, '!build')) || (github.event_name == 'workflow_dispatch') }}
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Make sure the release step uses its own credentials:
+          # https://github.com/cycjimmy/semantic-release-action#private-packages
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+          cache: 'gradle'
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - name: Install Flutter dependencies
+        run: flutter pub get
+      - name: Generate files with Builder
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Build with Flutter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: flutter build apk
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: revanced-manager
+          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Notify reviewer that run finished
+        uses: peter-evans/create-or-update-comment@v3
+        # * Expression of: SHORT_PULL_REQUEST_REVIEW_IF_EXPRESSION
+        if: ${{ github.event_name == 'pull_request_review' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ✅ [Build run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) is complete.
+            ##### Run ID: ${{ github.run_id }}
+      - name: Notify reviewer that run failed
+        uses: peter-evans/create-or-update-comment@v3
+        # * Expression of: SHORT_PULL_REQUEST_REVIEW_IF_EXPRESSION && failure()
+        if: ${{ github.event_name == 'pull_request_review' && failure() }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ❌ [Build run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed.
+            ##### Run ID: ${{ github.run_id }}
