@@ -47,7 +47,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void selectRecommendedPatches() {
+  void selectDefaultPatches() {
     selectedPatches.clear();
 
     if (_managerAPI.areExperimentalPatchesEnabled() == false) {

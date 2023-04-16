@@ -135,14 +135,13 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                           Row(
                             children: [
                               ActionChip(
-                                label:
-                                    I18nText('patchesSelectorView.recommended'),
+                                label: I18nText('patchesSelectorView.default'),
                                 tooltip: FlutterI18n.translate(
                                   context,
-                                  'patchesSelectorView.recommendedTooltip',
+                                  'patchesSelectorView.defaultTooltip',
                                 ),
                                 onPressed: () {
-                                  model.selectRecommendedPatches();
+                                  model.selectDefaultPatches();
                                 },
                               ),
                               const SizedBox(width: 8),
