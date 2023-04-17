@@ -76,8 +76,17 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             ),
             SliverToBoxAdapter(
               child: model.noApps
-                  ? const Center(
-                      child: Text('No apps found.'),
+                  ? Center(
+                      child: I18nText(
+                        'appSelectorView.noApps',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).textTheme.titleLarge!.color,
+                          ),
+                        ),
+                      ),
                     )
                   : model.apps.isEmpty
                       ? const AppSkeletonLoader()
