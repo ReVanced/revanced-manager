@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_api_url.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_sources.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_keystore_password.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';

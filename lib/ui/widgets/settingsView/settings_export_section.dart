@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
-import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_keystore_password.dart';
+import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 
 final _settingsViewModel = SettingsViewModel();
@@ -72,7 +72,7 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importKeystoreHint'),
-          onTap: () { 
+          onTap: () {
             _settingsViewModel.importKeystore();
             final sManageKeystorePassword = SManageKeystorePassword();
             sManageKeystorePassword.showKeystoreDialog(context);

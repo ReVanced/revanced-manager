@@ -12,7 +12,8 @@ import 'package:stacked/stacked.dart';
 class SManageKeystorePassword extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
-  final TextEditingController _keystorePasswordController = TextEditingController();
+  final TextEditingController _keystorePasswordController =
+      TextEditingController();
 
   Future<void> showKeystoreDialog(BuildContext context) async {
     final String keystorePasswordText = _managerAPI.getKeystorePassword();
@@ -26,7 +27,8 @@ class SManageKeystorePassword extends BaseViewModel {
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
-              onPressed: () =>_keystorePasswordController.text = _managerAPI.defaultKeystorePassword,
+              onPressed: () => _keystorePasswordController.text =
+                  _managerAPI.defaultKeystorePassword,
               color: Theme.of(context).colorScheme.secondary,
             )
           ],
@@ -38,7 +40,7 @@ class SManageKeystorePassword extends BaseViewModel {
               CustomTextField(
                 inputController: _keystorePasswordController,
                 label: I18nText('settingsView.selectKeystorePassword'),
-                hint: "",
+                hint: '',
                 onChanged: (value) => notifyListeners(),
               ),
             ],
@@ -56,7 +58,7 @@ class SManageKeystorePassword extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () {
-              String passwd = _keystorePasswordController.text;
+              final String passwd = _keystorePasswordController.text;
               _managerAPI.setKeystorePassword(passwd);
               Navigator.of(context).pop();
             },
