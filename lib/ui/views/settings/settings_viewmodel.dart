@@ -104,6 +104,46 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
+    Future<void> exportKeystore() async {
+    try {
+      final File outFile = File(_managerAPI.keystoreFile);
+      if (outFile.existsSync()) {
+        final String dateTime =
+            DateTime.now().toString().replaceAll(' ', '_').split('.').first;
+        await CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: outFile.path,
+            destinationFileName: 'keystore_$dateTime.keystore',
+          ),
+        );
+        _toast.showBottom('settingsView.exportedKeystore');
+      } else {
+        _toast.showBottom('settingsView.noKeystoreExportFileFound');
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Future<void> importKeystore() async {
+    try {
+      final FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null && result.files.single.path != null) {
+        final File inFile = File(result.files.single.path!);
+        inFile.copySync(_managerAPI.keystoreFile);
+        
+        _toast.showBottom('settingsView.importedKeystore');
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      _toast.showBottom('settingsView.keystoreSelectorErrorMessage');
+    }
+  }
+
   void resetSelectedPatches() {
     _managerAPI.resetLastSelectedPatches();
     _toast.showBottom('settingsView.resetStoredPatches');
