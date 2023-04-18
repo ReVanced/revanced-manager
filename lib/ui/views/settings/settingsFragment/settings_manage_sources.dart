@@ -154,6 +154,7 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
+              _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
           )
