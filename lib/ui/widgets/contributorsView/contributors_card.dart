@@ -55,6 +55,7 @@ class _ContributorsCardState extends State<ContributorsCard> {
                   Uri.parse(
                     widget.contributors[index]['html_url'],
                   ),
+                  mode: LaunchMode.externalApplication,
                 ),
                 child: FutureBuilder<File?>(
                   future: DefaultCacheManager().getSingleFile(
