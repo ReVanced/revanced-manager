@@ -13,6 +13,7 @@
         "settingsTab": "Settings"
     },
     "homeView": {
+        "refreshSuccess": "Refresh successfully",
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
@@ -72,16 +73,15 @@
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
         "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application"
+        "errorMessage": "Unable to use selected application",
+        "downloadToast": "Download function is not available yet"
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
-        "recommended": "Recommended",
-        "recommendedTooltip": "Select all recommended patches",
-        "all": "All",
-        "allTooltip": "Select all patches",
+        "default": "Default",
+        "defaultTooltip": "Select all default patches",
         "none": "None",
         "noneTooltip": "Deselect all patches",
         "loadPatchesSelection": "Load patches selection",
@@ -169,7 +169,17 @@
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
-        "deletedLogs": "Logs deleted"
+        "deletedLogs": "Logs deleted",
+        "exportKeystoreLabel": "Export keystore",
+        "exportKeystoreHint": "Export keystore used to sign apps",
+        "exportedKeystore": "Keystore exported",
+        "noKeystoreExportFileFound": "No keystore to export",
+        "importKeystoreLabel": "Import keystore",
+        "importKeystoreHint": "Import keystore used to sign apps",
+        "importedKeystore": "Keystore imported",
+        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file",
+        "selectKeystorePassword": "Keystore Password",
+        "selectKeystorePasswordHint": "Select keystore password used to sign the apk"
     },
     "appInfoView": {
         "widgetTitle": "App info",

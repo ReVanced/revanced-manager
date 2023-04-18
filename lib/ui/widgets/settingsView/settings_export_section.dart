@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_keystore_password.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 
 final _settingsViewModel = SettingsViewModel();
@@ -42,6 +43,40 @@ class SExportSection extends StatelessWidget {
           ),
           subtitle: I18nText('settingsView.importPatchesHint'),
           onTap: () => _settingsViewModel.importPatches(),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.exportKeystoreLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.exportKeystoreHint'),
+          onTap: () => _settingsViewModel.exportKeystore(),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.importKeystoreLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.importKeystoreHint'),
+          onTap: () { 
+            _settingsViewModel.importKeystore();
+            final sManageKeystorePassword = SManageKeystorePassword();
+            sManageKeystorePassword.showKeystoreDialog(context);
+          },
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),

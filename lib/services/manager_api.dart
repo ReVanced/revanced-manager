@@ -22,6 +22,8 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   String storedPatchesFile = '/selected-patches.json';
+  String keystoreFile = '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
+  String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -29,6 +31,10 @@ class ManagerAPI {
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
+  String? patchesVersion = '';
+  bool isDefaultPatchesRepo() {
+    return getPatchesRepo() == 'revanced/revanced-patches';
+  }
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
@@ -116,6 +122,14 @@ class ManagerAPI {
     await _prefs.setBool('experimentalPatchesEnabled', value);
   }
 
+  Future<void> setKeystorePassword(String password) async {
+    await _prefs.setString('keystorePassword', password);
+  }
+
+  String getKeystorePassword() {
+    return _prefs.getString('keystorePassword') ?? defaultKeystorePassword;
+  }
+
   Future<void> deleteTempFolder() async {
     final Directory dir = Directory('/data/local/tmp/revanced-manager');
     if (await dir.exists()) {
@@ -125,7 +139,7 @@ class ManagerAPI {
 
   Future<void> deleteKeystore() async {
     final File keystore = File(
-      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
+      keystoreFile,
     );
     if (await keystore.exists()) {
       await keystore.delete();
@@ -280,6 +294,19 @@ class ManagerAPI {
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
+  }
+
+  Future<String?> getCurrentPatchesVersion() async {
+    if (isDefaultPatchesRepo()) {
+      patchesVersion = await getLatestPatchesVersion();
+      // print('Patches version: $patchesVersion');
+      return patchesVersion ?? '0.0.0';
+    } else {
+      // fetch from github
+      patchesVersion =
+          await _githubAPI.getLastestReleaseVersion(getPatchesRepo());
+    }
+    return null;
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
