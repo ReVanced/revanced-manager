@@ -30,6 +30,7 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -48,6 +49,7 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -80,5 +82,12 @@ dependencies {
     // MicroG cronet
     implementation("org.microg:cronet-common:$cronetVersion")
     implementation("org.microg:cronet-native:$cronetVersion")
+
+    // Core libraries
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    // Window
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
 
 }

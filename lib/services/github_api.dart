@@ -13,7 +13,7 @@ import 'package:revanced_manager/models/patch.dart';
 @lazySingleton
 class GithubAPI {
   late Dio _dio = Dio();
-
+  
   final _cacheOptions = CacheOptions(
     store: MemCacheStore(),
     maxStale: const Duration(days: 1),
@@ -73,7 +73,9 @@ class GithubAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> getLatestRelease(String repoName) async {
+  Future<Map<String, dynamic>?> getLatestRelease(
+    String repoName,
+  ) async {
     try {
       final response = await _dio.get(
         '/repos/$repoName/releases',
@@ -119,9 +121,13 @@ class GithubAPI {
     return [];
   }
 
-  Future<File?> getLatestReleaseFile(String extension, String repoName) async {
+  Future<File?> getLatestReleaseFile(
+    String extension,
+    String repoName,
+  ) async {
     try {
-      final Map<String, dynamic>? release = await getLatestRelease(repoName);
+      final Map<String, dynamic>? release =
+          await getLatestRelease(repoName);
       if (release != null) {
         final Map<String, dynamic>? asset =
             (release['assets'] as List<dynamic>).firstWhereOrNull(
@@ -160,7 +166,8 @@ class GithubAPI {
 
   Future<String> getLastestReleaseVersion(String repoName) async {
     try {
-      final Map<String, dynamic>? release = await getLatestRelease(repoName);
+      final Map<String, dynamic>? release =
+          await getLatestRelease(repoName);
       if (release != null) {
         return release['tag_name'];
       } else {

@@ -69,7 +69,8 @@ class PatcherAPI {
         onlyAppsWithLaunchIntent: true,
       );
       for (final pkg in allPackages) {
-        if (!filteredApps.any((app) => app.packageName == pkg.packageName)) {
+        if (!filteredApps
+            .any((app) => app.packageName == pkg.packageName)) {
           final appInfo = await DeviceApps.getApp(
             pkg.packageName,
             true,
@@ -83,7 +84,8 @@ class PatcherAPI {
     for (final Patch patch in _patches) {
       for (final Package package in patch.compatiblePackages) {
         try {
-          if (!filteredApps.any((app) => app.packageName == package.name)) {
+          if (!filteredApps
+              .any((app) => app.packageName == package.name)) {
             final ApplicationWithIcon? app = await DeviceApps.getApp(
               package.name,
               true,
@@ -118,13 +120,17 @@ class PatcherAPI {
     return filteredPatches[packageName];
   }
 
-  Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
+  Future<List<Patch>> getAppliedPatches(
+    List<String> appliedPatches,
+  ) async {
     return _patches
         .where((patch) => appliedPatches.contains(patch.name))
         .toList();
   }
 
-  Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
+  Future<bool> needsResourcePatching(
+    List<Patch> selectedPatches,
+  ) async {
     return selectedPatches.any(
       (patch) => patch.dependencies.any(
         (dep) => dep.contains('resource-'),
@@ -145,7 +151,8 @@ class PatcherAPI {
     String originalFilePath,
   ) async {
     try {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+      final bool hasRootPermissions =
+          await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         originalFilePath = await _rootAPI.getOriginalFilePath(
           packageName,
@@ -166,13 +173,15 @@ class PatcherAPI {
     String originalFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final bool includeSettings = await needsSettingsPatch(selectedPatches);
+    final bool includeSettings =
+        await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
         final Patch? settingsPatch = _patches.firstWhereOrNull(
           (patch) =>
               patch.name.contains('settings') &&
-              patch.compatiblePackages.any((pack) => pack.name == packageName),
+              patch.compatiblePackages
+                  .any((pack) => pack.name == packageName),
         );
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
@@ -184,7 +193,8 @@ class PatcherAPI {
       }
     }
     final File? patchBundleFile = await _managerAPI.downloadPatches();
-    final File? integrationsFile = await _managerAPI.downloadIntegrations();
+    final File? integrationsFile =
+        await _managerAPI.downloadIntegrations();
     if (patchBundleFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
@@ -207,7 +217,8 @@ class PatcherAPI {
             'patchedFilePath': patchedFile.path,
             'outFilePath': _outFile!.path,
             'integrationsPath': integrationsFile!.path,
-            'selectedPatches': selectedPatches.map((p) => p.name).toList(),
+            'selectedPatches':
+                selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
             'keystorePassword': _managerAPI.getKeystorePassword(),
@@ -225,7 +236,8 @@ class PatcherAPI {
     if (_outFile != null) {
       try {
         if (patchedApp.isRooted) {
-          final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+          final bool hasRootPermissions =
+              await _rootAPI.hasRootPermissions();
           if (hasRootPermissions) {
             return _rootAPI.installApp(
               patchedApp.packageName,
@@ -235,7 +247,9 @@ class PatcherAPI {
           }
         } else {
           await AppInstaller.installApk(_outFile!.path);
-          return await DeviceApps.isAppInstalled(patchedApp.packageName);
+          return await DeviceApps.isAppInstalled(
+            patchedApp.packageName,
+          );
         }
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -307,7 +321,8 @@ class PatcherAPI {
   String getRecommendedVersion(String packageName) {
     final Map<String, int> versions = {};
     for (final Patch patch in _patches) {
-      final Package? package = patch.compatiblePackages.firstWhereOrNull(
+      final Package? package =
+          patch.compatiblePackages.firstWhereOrNull(
         (pack) => pack.name == packageName,
       );
       if (package != null) {
@@ -326,7 +341,8 @@ class PatcherAPI {
       versions
         ..clear()
         ..addEntries(entries);
-      versions.removeWhere((key, value) => value != versions.values.last);
+      versions
+          .removeWhere((key, value) => value != versions.values.last);
       return (versions.keys.toList()..sort()).last;
     }
     return '';

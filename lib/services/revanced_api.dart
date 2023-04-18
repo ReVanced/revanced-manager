@@ -15,7 +15,7 @@ import 'package:timeago/timeago.dart';
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
-
+  
   final _cacheOptions = CacheOptions(
     store: MemCacheStore(),
     maxStale: const Duration(days: 1),
@@ -142,7 +142,10 @@ class RevancedAPI {
     return null;
   }
 
-  Future<File?> getLatestReleaseFile(String extension, String repoName) async {
+  Future<File?> getLatestReleaseFile(
+    String extension,
+    String repoName,
+  ) async {
     try {
       final Map<String, dynamic>? release = await _getLatestRelease(
         extension,
