@@ -7,6 +7,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
@@ -116,16 +117,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
     } else {
       return List.empty();
     }
-  }
-
-  bool isPatchSupported(Patch patch) {
-    final PatchedApplication app = locator<PatcherViewModel>().selectedApp!;
-    return patch.compatiblePackages.isEmpty ||
-        patch.compatiblePackages.any(
-          (pack) =>
-              pack.name == app.packageName &&
-              (pack.versions.isEmpty || pack.versions.contains(app.version)),
-        );
   }
 
   void onMenuSelection(value) {

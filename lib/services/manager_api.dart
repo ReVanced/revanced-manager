@@ -11,6 +11,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
@@ -22,7 +23,8 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   String storedPatchesFile = '/selected-patches.json';
-  String keystoreFile = '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
+  String keystoreFile =
+      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
@@ -39,8 +41,7 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     storedPatchesFile =
-        (await getApplicationDocumentsDirectory()).path +
-            storedPatchesFile;
+        (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
 
   String getApiUrl() {
@@ -79,8 +80,7 @@ class ManagerAPI {
   }
 
   String getIntegrationsRepo() {
-    return _prefs.getString('integrationsRepo') ??
-        defaultIntegrationsRepo;
+    return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
   }
 
   Future<void> setIntegrationsRepo(String value) async {
@@ -148,9 +148,7 @@ class ManagerAPI {
 
   List<PatchedApplication> getPatchedApps() {
     final List<String> apps = _prefs.getStringList('patchedApps') ?? [];
-    return apps
-        .map((a) => PatchedApplication.fromJson(jsonDecode(a)))
-        .toList();
+    return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
   }
 
   Future<void> setPatchedApps(
@@ -328,12 +326,10 @@ class ManagerAPI {
     final List<PatchedApplication> unsavedApps = [];
     final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
     if (hasRootPermissions) {
-      final List<String> installedApps =
-          await _rootAPI.getInstalledApps();
+      final List<String> installedApps = await _rootAPI.getInstalledApps();
       for (final String packageName in installedApps) {
         if (!patchedApps.any((app) => app.packageName == packageName)) {
-          final ApplicationWithIcon? application =
-              await DeviceApps.getApp(
+          final ApplicationWithIcon? application = await DeviceApps.getApp(
             packageName,
             true,
           ) as ApplicationWithIcon?;
@@ -359,10 +355,8 @@ class ManagerAPI {
     for (final Application app in userApps) {
       if (app.packageName.startsWith('app.revanced') &&
           !app.packageName.startsWith('app.revanced.manager.') &&
-          !patchedApps
-              .any((uapp) => uapp.packageName == app.packageName)) {
-        final ApplicationWithIcon? application =
-            await DeviceApps.getApp(
+          !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
+        final ApplicationWithIcon? application = await DeviceApps.getApp(
           app.packageName,
           true,
         ) as ApplicationWithIcon?;
@@ -419,11 +413,9 @@ class ManagerAPI {
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
     bool existsRoot = false;
-    final bool existsNonRoot =
-        await DeviceApps.isAppInstalled(app.packageName);
+    final bool existsNonRoot = await DeviceApps.isAppInstalled(app.packageName);
     if (app.isRooted) {
-      final bool hasRootPermissions =
-          await _rootAPI.hasRootPermissions();
+      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         existsRoot = await _rootAPI.isAppInstalled(app.packageName);
       }
@@ -478,8 +470,7 @@ class ManagerAPI {
     List<String> patches,
   ) async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    final Map<String, dynamic> patchesMap =
-        await readSelectedPatchesFile();
+    final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
     if (patches.isEmpty) {
       patchesMap.remove(app);
     } else {
@@ -488,10 +479,33 @@ class ManagerAPI {
     selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
+  // get default patches for app
+  Future<List<String>> getDefaultPatches() async {
+    final List<Patch> patches = await getPatches();
+    final List<String> defaultPatches = [];
+    if (areExperimentalPatchesEnabled() == false) {
+      defaultPatches.addAll(
+        patches
+            .where(
+              (element) =>
+                  element.excluded == false && isPatchSupported(element),
+            )
+            .map((p) => p.name),
+      );
+    } else {
+      defaultPatches.addAll(
+        patches
+            .where((element) => isPatchSupported(element))
+            .map((p) => p.name),
+      );
+    }
+    return defaultPatches;
+  }
+
   Future<List<String>> getSelectedPatches(String app) async {
-    final Map<String, dynamic> patchesMap =
-        await readSelectedPatchesFile();
-    return List.from(patchesMap.putIfAbsent(app, () => List.empty()));
+    final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
+    final List<String> defaultPatches = await getDefaultPatches();
+    return List.from(patchesMap.putIfAbsent(app, () => defaultPatches));
   }
 
   Future<Map<String, dynamic>> readSelectedPatchesFile() async {
