@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:native_dio_client/native_dio_client.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:timeago/timeago.dart';
@@ -15,10 +15,11 @@ import 'package:timeago/timeago.dart';
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
-  final DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
-  final Options _cacheOptions = buildCacheOptions(
-    const Duration(hours: 6),
+
+  final _cacheOptions = CacheOptions(
+    store: MemCacheStore(),
     maxStale: const Duration(days: 1),
+    priority: CachePriority.high,
   );
 
   Future<void> initialize(String apiUrl) async {
@@ -33,14 +34,25 @@ class RevancedAPI {
         );
         log('ReVanced API: Using default engine + $isGMSInstalled');
       } else {
-        _dio = Dio(
-          BaseOptions(
-            baseUrl: apiUrl,
-          ),
-        )..httpClientAdapter = NativeAdapter();
+        if (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) {
+          final CronetEngine androidCronetEngine = await CronetEngine.build(
+            userAgent: 'ReVanced Manager',
+            enableBrotli: true,
+            enableQuic: true,
+          );
+          _dio.httpClientAdapter =
+              NativeAdapter(androidCronetEngine: androidCronetEngine);
+
+          _dio = Dio(
+            BaseOptions(
+              baseUrl: apiUrl,
+            ),
+          );
+        }
+
         log('ReVanced API: Using CronetEngine + $isGMSInstalled');
       }
-      _dio.interceptors.add(_dioCacheManager.interceptor);
+      _dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -50,7 +62,7 @@ class RevancedAPI {
 
   Future<void> clearAllCache() async {
     try {
-      await _dioCacheManager.clearAll();
+      await _cacheOptions.store!.clean();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -61,7 +73,7 @@ class RevancedAPI {
   Future<Map<String, List<dynamic>>> getContributors() async {
     final Map<String, List<dynamic>> contributors = {};
     try {
-      final response = await _dio.get('/contributors', options: _cacheOptions);
+      final response = await _dio.get('/contributors');
       final List<dynamic> repositories = response.data['repositories'];
       for (final Map<String, dynamic> repo in repositories) {
         final String name = repo['name'];
@@ -78,7 +90,7 @@ class RevancedAPI {
 
   Future<List<Patch>> getPatches() async {
     try {
-      final response = await _dio.get('/patches', options: _cacheOptions);
+      final response = await _dio.get('/patches');
       final List<dynamic> patches = response.data;
       return patches.map((patch) => Patch.fromJson(patch)).toList();
     } on Exception catch (e) {
@@ -94,7 +106,7 @@ class RevancedAPI {
     String repoName,
   ) async {
     try {
-      final response = await _dio.get('/tools', options: _cacheOptions);
+      final response = await _dio.get('/tools');
       final List<dynamic> tools = response.data['tools'];
       return tools.firstWhereOrNull(
         (t) =>

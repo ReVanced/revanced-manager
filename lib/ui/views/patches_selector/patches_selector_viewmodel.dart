@@ -1,6 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -9,7 +7,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
@@ -50,39 +47,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> selectAllPatcherWarning(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: I18nText('warning'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('patchesSelectorView.selectAllPatchesWarningContent'),
-        actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
-            onPressed: () => Navigator.of(context).pop(),
-          )
-        ],
-      ),
-    );
-  }
-
-  void selectAllPatches(bool isSelected) {
-    selectedPatches.clear();
-
-    if (isSelected && _managerAPI.areExperimentalPatchesEnabled() == false) {
-      selectedPatches
-          .addAll(patches.where((element) => isPatchSupported(element)));
-    }
-
-    if (isSelected && _managerAPI.areExperimentalPatchesEnabled()) {
-      selectedPatches.addAll(patches);
-    }
-
-    notifyListeners();
-  }
-
-  void selectRecommendedPatches() {
+  void selectDefaultPatches() {
     selectedPatches.clear();
 
     if (_managerAPI.areExperimentalPatchesEnabled() == false) {

@@ -13,6 +13,7 @@
         "settingsTab": "Settings"
     },
     "homeView": {
+        "refreshSuccess": "Refresh successfully",
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
@@ -72,16 +73,15 @@
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
         "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application"
+        "errorMessage": "Unable to use selected application",
+        "downloadToast": "Download function is not available yet"
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
-        "recommended": "Recommended",
-        "recommendedTooltip": "Select all recommended patches",
-        "all": "All",
-        "allTooltip": "Select all patches",
+        "default": "Default",
+        "defaultTooltip": "Select all default patches",
         "none": "None",
         "noneTooltip": "Deselect all patches",
         "loadPatchesSelection": "Load patches selection",
