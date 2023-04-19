@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -15,7 +16,7 @@ import 'package:timeago/timeago.dart';
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
-  
+
   final _cacheOptions = CacheOptions(
     store: MemCacheStore(),
     maxStale: const Duration(days: 1),
@@ -162,6 +163,43 @@ class RevancedAPI {
       return null;
     }
     return null;
+  }
+
+  StreamController<double> managerUpdateProgress = StreamController<double>();
+
+  void updateManagerDownloadProgress(int progress) {
+    managerUpdateProgress.add(progress.toDouble());
+  }
+
+  Stream<double> getManagerUpdateProgress() {
+    return managerUpdateProgress.stream;
+  }
+
+  void disposeManagerUpdateProgress() {
+    managerUpdateProgress.close();
+  }
+
+  Future<File?> downloadManager() async {
+    final Map<String, dynamic>? release = await _getLatestRelease(
+      '.apk',
+      'revanced/revanced-manager',
+    );
+    File? outputFile;
+    await for (final result in DefaultCacheManager().getFileStream(
+      release!['browser_download_url'] as String,
+      withProgress: true,
+    )) {
+      if (result is DownloadProgress) {
+        final totalSize = result.totalSize ?? 10000000;
+        final progress = (result.downloaded / totalSize * 100).round();
+
+        updateManagerDownloadProgress(progress);
+      } else if (result is FileInfo) {
+        // The download is complete; convert the FileInfo object to a File object
+        outputFile = File(result.file.path);
+      }
+    }
+    return outputFile;
   }
 
   Future<String?> getLatestReleaseTime(
