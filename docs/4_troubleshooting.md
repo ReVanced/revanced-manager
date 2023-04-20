@@ -1,58 +1,41 @@
 # 🛟 Troubleshooting
 
-Got stuck? Let's fix it together!
+### 💥 App not installed as package conflicts with an existing package
 
-**Applicable to the latest version of ReVanced Manager**
+It could mean that the app you're trying to patch is already up to date or has been updated since the patch was released. If you think this is incorrect and you still want to patch the app, you can try uninstalling it and then installing the version you want to patch.
 
-## Table of Content
+### 🚫 Non-root install is not possible with the current patches selection
 
-### 🚦 Install issues
-- [App not installed as package conflicts with an existing package](#app-not-installed-as-package-conflicts-with-an-existing-package)
-- [Non-root install is not possible with the current patches selection](#non-root-install-is-not-possible-with-the-current-patches-selection)
-- [Signature mismatch when updating the application](#signature-mismatch-when-updating-the-application)
+Just open up Patcher, select the "Recommended" chip in "Select patches", and you should be good to go!
 
-### 🌋 Patching issues
-- [Error code `135` when patching the application](#error-code-135-when-patching-the-application)
+### 🪢 Signature mismatch when updating the application
 
-## App not installed as package conflicts with an existing package
-That means that you have installed a equivalent or newer version of the application that you're trying to patch, If that seems wrong, **you can uninstall the application to solve the issue!**
+You can try uninstalling the app that you're trying to update and then reinstalling it from ReVanced Manager. This should help ensure that the correct verification key is used when verifying the app *assuming if you don't accidentally delete keystore, I hate when that happens :)*.
 
-## Non-root install is not possible with the current patches selection
+### ❗️Error code `135` or `139` when patching the application
 
-> **Note** <br>
-> This troubleshooting step is applicable to YouTube, and YouTube Music
-
-**You need to go to "Patcher", "Select patches", search for "MicroG Support" and enable them to fix the issue**, *why would that cause issue?* that because YouTube rely on Google Play Service (open-source alternative: MicroG), without them YouTube can't functions properly.
+ReVanced Manager doesn't fully support patching with device that reported as ARM32, sorry for any inconvenience!
 
 <details>
-<summary>✨ Visual guide</summary>
+<summary><h4>⚙️ Alternative solution</h4></summary>
 
-https://user-images.githubusercontent.com/93124920/231701309-a7c383c1-66db-4b9e-9e64-62549cbdff52.mp4
+You can try using [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application, consider reading the first [documentation](https://github.com/revanced/revanced-cli/blob/main/docs/README.md) or ask some questions in our official [Discord server](https://discord.gg/revanced)!
 
-<br>
-
-> **Note** <br>
-> The video show that you need to go to "Select patches", search for "MicroG Support" and enable them to fix the issue.
-
-You're good to go!
+> **Warning**: We don't recommend that you download prebuilt APK from internet as they can be malicious.
 
 </details>
 
-## Signature mismatch when updating the application
-**Uninstall the application that you're trying to update to solve it**, this problem is caused by incorrect verification key being used when verifying the application.
+### 🚨 Patched application from ReVanced Manager crashing
 
-## Error code `135` when patching the application
-**ReVanced Manager doesn't fully support patching with device that reported as ARM32, sorry for any inconvenience!**
+Just follow these steps in ReVanced Manager:
 
-<details>
-<summary>Alternative solution</summary>
+1. Select the app you want to patch
+2. Check if your current version matches the recommended version
+   1. If not, download the recommended APK version and save it to your device
+   2. In select application, press the Floating Action Button called `🗂️ Storage` and locate your downloaded APK
+3. Go to "Select patches" and press the `Recommended` or `Default` chip
 
-You can try using unofficial tools to patch the application, but do note that program marked with "unofficial" means that **we do not provide any support for them**.
-
-- Official: [ReVanced CLI](https://github.com/revanced/revanced-cli) - Any (x64)
-- Unofficial: [ReVanced Builder](https://github.com/reisxd/revanced-builder) - Windows (x64), macOS (x64), Linux (x64)
-
-</details>
+That's it! You should now be good to go.
 
 ## ⏭️ What's next
 The next section will teach you how to build Manager from source.
