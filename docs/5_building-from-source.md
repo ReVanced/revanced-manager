@@ -7,7 +7,7 @@
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```
 
-3. Create a GitHub personal access token with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=Revanced)
+3. Create a GitHub Personal Access Token with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=Revanced)
 
 4. Add your token in `android/gradle.properties`
 
@@ -15,7 +15,7 @@
    gpr.user = YourUsername
    gpr.key = ghp_longrandomkey
    ```
-
+   
 5. Download project packages
 
    ```sh
