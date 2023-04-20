@@ -8,7 +8,7 @@ For bug reports, suggestions, or feature requests, open an issue [here](https://
 
 ## 📖 Table of contents
 
-1. [💼 Prerequisites](0_setting-up.md)
+1. [💼 Prerequisites](0_prerequisites.md)
 2. [🧩 Patching applications](1_patching-applications.md)
 3. [🧰 Managing patched applications](2_managing-patched-applications.md)
 4. [🔄 Updating ReVanced Manager](3_updating-revanced-manager.md)
