@@ -73,9 +73,12 @@
     "appSelectorView": {
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
+        "selectFromStorageButton": "Select from storage",
         "storageButton": "Storage",
         "errorMessage": "Unable to use selected application",
-        "downloadToast": "Download function is not available yet"
+        "downloadToast": "Download function is not available yet",
+        "featureNotAvailable": "Feature not implemented",
+        "featureNotAvailableText": "This feature has not been added yet for non-root. You'll need to select APK files from storage for now."
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",

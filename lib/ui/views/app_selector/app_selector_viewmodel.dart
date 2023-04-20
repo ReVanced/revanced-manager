@@ -93,20 +93,26 @@ class AppSelectorViewModel extends BaseViewModel {
             color: Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Feature not yet implented',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              wordSpacing: 1.5,
+          I18nText(
+            'appSelectorView.featureNotAvailable',
+            child: const Text(
+              '',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                wordSpacing: 1.5,
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          const Text(
-            "This feature has not been added yet for non-root. You'll need to select APK files from storage for now.",
-            style: TextStyle(
-              fontSize: 14,
+          I18nText(
+            'appSelectorView.featureNotAvailableText',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
           ),
           const SizedBox(height: 30),
@@ -122,7 +128,7 @@ class AppSelectorViewModel extends BaseViewModel {
               children: [
                 const Icon(Icons.sd_card),
                 const SizedBox(width: 10),
-                I18nText('Select from storage'),
+                I18nText('appSelectorView.selectFromStorageButton'),
               ],
             ),
           ),
