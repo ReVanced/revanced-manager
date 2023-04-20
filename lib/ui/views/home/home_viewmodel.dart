@@ -117,19 +117,8 @@ class HomeViewModel extends BaseViewModel {
   Future<bool> hasManagerUpdates() async {
     final String? latestVersion = await _managerAPI.getLatestManagerVersion();
     final String currentVersion = await _managerAPI.getCurrentManagerVersion();
-    if (latestVersion != null) {
-      try {
-        final int latestVersionInt =
-            int.parse(latestVersion.replaceAll(RegExp('[^0-9]'), ''));
-        final int currentVersionInt =
-            int.parse(currentVersion.replaceAll(RegExp('[^0-9]'), ''));
-        return latestVersionInt > currentVersionInt;
-      } on Exception catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-        return false;
-      }
+    if (latestVersion != currentVersion) {
+      return true;
     }
     return false;
   }
