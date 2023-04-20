@@ -155,7 +155,9 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
               _toast.showBottom('settingsView.restartAppForChanges');
-              Navigator.of(context)..pop()..pop();
+              Navigator.of(context)
+                ..pop()
+                ..pop();
             },
           )
         ],
