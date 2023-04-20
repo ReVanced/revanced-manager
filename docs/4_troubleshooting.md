@@ -7,17 +7,17 @@ Got stuck? Let's fix it together!
 ## Table of Content
 
 ### 🚦 Install issues
-- [App not installed as package conflicts with an existing package](#-app-not-installed-as-package-conflicts-with-an-existing-package)
-- [Non-root install is not possible with the current patches selection](#-non-root-install-is-not-possible-with-the-current-patches-selection)
-- [Signature mismatch when updating the application](#-signature-mismatch-when-updating-the-application)
+- [App not installed as package conflicts with an existing package](#app-not-installed-as-package-conflicts-with-an-existing-package)
+- [Non-root install is not possible with the current patches selection](#non-root-install-is-not-possible-with-the-current-patches-selection)
+- [Signature mismatch when updating the application](#signature-mismatch-when-updating-the-application)
 
 ### 🌋 Patching issues
-- [Error code `135` when patching the application](#-error-code-135-when-patching-the-application)
+- [Error code `135` when patching the application](#error-code-135-when-patching-the-application)
 
-## 🚦 App not installed as package conflicts with an existing package
+## App not installed as package conflicts with an existing package
 That means that you have installed a equivalent or newer version of the application that you're trying to patch, If that seems wrong, **you can uninstall the application to solve the issue!**
 
-## 🚦 Non-root install is not possible with the current patches selection
+## Non-root install is not possible with the current patches selection
 
 > **Note** <br>
 > This troubleshooting step is applicable to YouTube, and YouTube Music
@@ -38,10 +38,10 @@ You're good to go!
 
 </details>
 
-## 🚦 Signature mismatch when updating the application
+## Signature mismatch when updating the application
 **Uninstall the application that you're trying to update to solve it**, this problem is caused by incorrect verification key being used when verifying the application.
 
-## 🌋 Error code `135` when patching the application
+## Error code `135` when patching the application
 **ReVanced Manager doesn't fully support patching with device that reported as ARM32, sorry for any inconvenience!**
 
 <details>
