@@ -109,8 +109,14 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                         app.packageName,
                                       ),
                                       onTap: () {
-                                        model.selectApp(app);
-                                        Navigator.of(context).pop();
+                                        model.isRooted
+                                            ? model.selectApp(app).then(
+                                                  (_) => Navigator.of(context)
+                                                      .pop(),
+                                                )
+                                            : model.showSelectFromStorageDialog(
+                                                context,
+                                              );
                                       },
                                     ),
                                   )

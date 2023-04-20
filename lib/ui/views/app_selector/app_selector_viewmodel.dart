@@ -4,6 +4,7 @@ import 'package:device_apps/device_apps.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -12,6 +13,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
@@ -22,6 +24,7 @@ class AppSelectorViewModel extends BaseViewModel {
   final List<ApplicationWithIcon> apps = [];
   List<String> allApps = [];
   bool noApps = false;
+  bool isRooted = false;
   int patchesCount(String packageName) {
     return _patcherAPI.getFilteredPatches(packageName).length;
   }
@@ -30,6 +33,7 @@ class AppSelectorViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     patches = await _revancedAPI.getPatches();
+    isRooted = _managerAPI.isRooted;
 
     apps.addAll(
       await _patcherAPI
@@ -72,6 +76,59 @@ class AppSelectorViewModel extends BaseViewModel {
       patchDate: DateTime.now(),
     );
     locator<PatcherViewModel>().loadLastSelectedPatches();
+  }
+
+  Future showSelectFromStorageDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        alignment: Alignment.center,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        children: [
+          const SizedBox(height: 10),
+          Icon(
+            Icons.block,
+            size: 28,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Feature not yet implented',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              wordSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            "This feature has not been added yet for non-root. You'll need to select APK files from storage for now.",
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 30),
+          CustomMaterialButton(
+            onPressed: () => selectAppFromStorage(context).then(
+              (_) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            label: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.sd_card),
+                const SizedBox(width: 10),
+                I18nText('Select from storage'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> selectAppFromStorage(BuildContext context) async {

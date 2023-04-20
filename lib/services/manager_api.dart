@@ -22,6 +22,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
@@ -40,6 +41,7 @@ class ManagerAPI {
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    isRooted = await _rootAPI.isRooted();
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
