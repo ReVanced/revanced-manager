@@ -4,6 +4,7 @@ import 'package:revanced_manager/ui/views/patches_selector/patches_selector_view
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorView extends StatefulWidget {
@@ -135,25 +136,13 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                           Row(
                             children: [
                               ActionChip(
-                                label: I18nText('patchesSelectorView.recommended'),
+                                label: I18nText('patchesSelectorView.default'),
                                 tooltip: FlutterI18n.translate(
                                   context,
-                                  'patchesSelectorView.recommendedTooltip',
+                                  'patchesSelectorView.defaultTooltip',
                                 ),
                                 onPressed: () {
-                                  model.selectRecommendedPatches();
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              ActionChip(
-                                label: I18nText('patchesSelectorView.all'),
-                                tooltip: FlutterI18n.translate(
-                                  context,
-                                  'patchesSelectorView.allTooltip',
-                                ),
-                                onPressed: () {
-                                  model.selectAllPatcherWarning(context);
-                                  model.selectAllPatches(true);
+                                  model.selectDefaultPatches();
                                 },
                               ),
                               const SizedBox(width: 8),
@@ -180,7 +169,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   packageVersion: model.getAppVersion(),
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
-                                  isUnsupported: !model.isPatchSupported(patch),
+                                  isUnsupported: !isPatchSupported(patch),
                                   isSelected: model.isSelected(patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value),

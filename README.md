@@ -2,18 +2,12 @@
 
 The official ReVanced Manager based on Flutter.
 
-> **Warning**: This repository currently has no active maintainer. For that reason, development is stale. Active development continues for [revanced-cli](https://github.com/revanced/revanced-cli). If you are interested in maintaining this repository, please let us know at manager@revanced.app.
-
 ## 🔽 Download
-To download the Alpha version of Manager, go [here](https://github.com/revanced/revanced-manager/releases/latest) and install the provided APK file.
+To download latest Manager, go [here](https://github.com/revanced/revanced-manager/releases/latest) and install the provided APK file.
 
 ## 📝 Prerequisites
 1. Android 8 or higher
 2. Does not work on some armv7 devices
-3. [Vanced MicroG](https://github.com/TeamVanced/VancedMicroG/releases) required for YouTube and YouTube Music (Only for non-root)
-
-## ⚠️ Disclaimer
-*Please note that even though we're releasing the Manager, it is an ALPHA version. There's a big chance that the Manager might not work at all for you.*
 
 ## 🔴 Issues
 For suggestions and bug reports, open an issue [here](https://github.com/revanced/revanced-manager/issues/new/choose).

@@ -17,7 +17,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SettingsViewModel extends BaseViewModel {
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService =
+      locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
 
@@ -62,8 +63,11 @@ class SettingsViewModel extends BaseViewModel {
     try {
       final File outFile = File(_managerAPI.storedPatchesFile);
       if (outFile.existsSync()) {
-        final String dateTime =
-            DateTime.now().toString().replaceAll(' ', '_').split('.').first;
+        final String dateTime = DateTime.now()
+            .toString()
+            .replaceAll(' ', '_')
+            .split('.')
+            .first;
         await CRFileSaver.saveFileWithDialog(
           SaveFileDialogParams(
             sourceFilePath: outFile.path,
@@ -83,7 +87,8 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> importPatches() async {
     try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result =
+          await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
       );
@@ -104,6 +109,46 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
+    Future<void> exportKeystore() async {
+    try {
+      final File outFile = File(_managerAPI.keystoreFile);
+      if (outFile.existsSync()) {
+        final String dateTime =
+            DateTime.now().toString().replaceAll(' ', '_').split('.').first;
+        await CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: outFile.path,
+            destinationFileName: 'keystore_$dateTime.keystore',
+          ),
+        );
+        _toast.showBottom('settingsView.exportedKeystore');
+      } else {
+        _toast.showBottom('settingsView.noKeystoreExportFileFound');
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Future<void> importKeystore() async {
+    try {
+      final FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null && result.files.single.path != null) {
+        final File inFile = File(result.files.single.path!);
+        inFile.copySync(_managerAPI.keystoreFile);
+        
+        _toast.showBottom('settingsView.importedKeystore');
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      _toast.showBottom('settingsView.keystoreSelectorErrorMessage');
+    }
+  }
+
   void resetSelectedPatches() {
     _managerAPI.resetLastSelectedPatches();
     _toast.showBottom('settingsView.resetStoredPatches');
@@ -111,7 +156,7 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<int> getSdkVersion() async {
     final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
-    return info.version.sdkInt ?? -1;
+    return info.version.sdkInt;
   }
 
   Future<void> deleteLogs() async {

@@ -11,7 +11,10 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - lib/utils/env_class.g.dart
+    - lib/app/app.locator.dart
+    - lib/app/app.router.dart
+    - lib/models/patch.g.dart
+    - lib/models/patched_application.g.dart
 
 linter:
   rules:

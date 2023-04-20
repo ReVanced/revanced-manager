@@ -118,13 +118,17 @@ class PatcherAPI {
     return filteredPatches[packageName];
   }
 
-  Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
+  Future<List<Patch>> getAppliedPatches(
+    List<String> appliedPatches,
+  ) async {
     return _patches
         .where((patch) => appliedPatches.contains(patch.name))
         .toList();
   }
 
-  Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
+  Future<bool> needsResourcePatching(
+    List<Patch> selectedPatches,
+  ) async {
     return selectedPatches.any(
       (patch) => patch.dependencies.any(
         (dep) => dep.contains('resource-'),
@@ -210,6 +214,7 @@ class PatcherAPI {
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
+            'keystorePassword': _managerAPI.getKeystorePassword(),
           },
         );
       } on Exception catch (e) {
@@ -234,7 +239,9 @@ class PatcherAPI {
           }
         } else {
           await AppInstaller.installApk(_outFile!.path);
-          return await DeviceApps.isAppInstalled(patchedApp.packageName);
+          return await DeviceApps.isAppInstalled(
+            patchedApp.packageName,
+          );
         }
       } on Exception catch (e) {
         if (kDebugMode) {

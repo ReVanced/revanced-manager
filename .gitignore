@@ -136,3 +136,6 @@ app.*.map.json
 
 Firebase related
 .firebase
+
+# Depdenency directories
+node_modules/
