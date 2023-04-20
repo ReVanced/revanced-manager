@@ -64,5 +64,5 @@ jobs:
           SIGNED_FILE_PATH: ${{steps.sign_apk.outputs.signedFile}}
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
         run: npm exec semantic-release
