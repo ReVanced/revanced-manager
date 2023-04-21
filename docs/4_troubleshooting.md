@@ -7,7 +7,7 @@ This is a collection of errors and fixes for the ReVanced Manager application.
 
 - ### 🚫 Non-root install is not possible with the current patches selection
 
-   Open up Patcher, select the `Recommended` or `Default` chip in `Select patches`.
+   Open up Patcher, select the **Recommended** or **Default** chip in **Select patches**.
 
 - ### 🪢 Signature mismatch when updating the application
 
@@ -28,9 +28,9 @@ This is a collection of errors and fixes for the ReVanced Manager application.
    1. Select the app you want to patch.
    2. Check if your current version matches the recommended version.
       1. If not, download the recommended APK version and save it to your device.
-      2. Tap the `Select an application` card.
-      3. click on the `Storage` button and select the APK through file picker.
-   3. Go to "Select patches" and press the `Recommended` or `Default` chip.
+      2. Tap the **Select an application** card.
+      3. click on the **Storage** button and select the APK through file picker.
+   3. Go to "Select patches" and press the **Recommended** or **Default** chip.
 
    That's it! You should now be good to go.
 
