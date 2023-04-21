@@ -1,4 +1,5 @@
 # 🧩 Patching applications
+
 1. Tap the **Patcher** button in the bottom navigation bar
 2. Tap the **Select an application** card
 3. Here, you have the option to choose between selecting an already-installed app on your device or selecting an APK file from storage.
@@ -20,6 +21,7 @@
    > **Warning**: If you close the Manager after patching, the patched APK file will be **automatically deleted from your device**!
 
 ## ⏭️ What's next
+
 The next section will guide you through managing your installed patched applications.
 
 Continue: [🧰 Managing patched applications](2_managing-patched-applications.md)

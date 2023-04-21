@@ -1,4 +1,5 @@
 # 🛟 Troubleshooting
+
 This is a collection of errors and fixes for the ReVanced Manager application.
 
 - ### 💥 App not installed as package conflicts with an existing package
@@ -35,6 +36,7 @@ This is a collection of errors and fixes for the ReVanced Manager application.
    That's it! You should now be good to go.
 
 ## ⏭️ What's next
+
 The next section will teach you how to build Manager from source.
 
 Continue: [🛠 Building from source](5_building-from-source.md)
