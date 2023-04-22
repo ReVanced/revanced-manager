@@ -20,7 +20,9 @@
    flutter pub get
    ```
 
-5. Delete conflicting outputs (must be run everytime you sync your local repository with the remote's)
+5. Delete conflicting outputs
+
+   > **Note**: must be run everytime you sync your local repository with the remote's
 
    ```sh
    flutter packages pub run build_runner build --delete-conflicting-outputs
