@@ -11,7 +11,7 @@
    * Verify that the selected application is a version supported by ReVanced. [See the list of supported versions for apps here.](https://github.com/revanced/revanced-patches#-patches)
 4. After selecting an application, you will be brought back to the **Patcher** screen again. Tap the **Select patches** card.
 5. Select your desired patches
-   * You can tap the **Recommended** or **Default** chip to select the recommended patches.
+   * You can tap the **Default** chip to select the recommended patches.
    * If you are selecting patches manually, be aware that certain patches are **required** for non-root installations. (e.g. **MicroG Support** patch for YouTube)
    * If you wish to do a rooted installation, you'll need to **deselect** patches mentioned above.
 6. Tap the **Done** button

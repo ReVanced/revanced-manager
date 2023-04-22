@@ -22,7 +22,7 @@
 
 5. Delete conflicting outputs
 
-   > **Note**: must be run everytime you sync your local repository with the remote's
+   > **Note**: Must be run everytime you sync your local repository with the remote's
 
    ```sh
    flutter packages pub run build_runner build --delete-conflicting-outputs
