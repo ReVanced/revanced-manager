@@ -7,28 +7,26 @@
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```
 
-3. Create a GitHub Personal Access Token with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=Revanced)
-
-4. Add your token in `android/gradle.properties`
+3. Create a GitHub PAT with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=Revanced) and add your token in `android/gradle.properties`
 
    ```properties
    gpr.user = YourUsername
    gpr.key = ghp_longrandomkey
    ```
    
-5. Download project packages
+4. Download project packages
 
    ```sh
    flutter pub get
    ```
 
-6. Delete conflicting outputs (must be run everytime you sync your local repository with the remote's)
+5. Delete conflicting outputs (must be run everytime you sync your local repository with the remote's)
 
    ```sh
    flutter packages pub run build_runner build --delete-conflicting-outputs
    ```
 
-7. Build the APK
+6. Build the APK
    ```sh
    flutter build apk
    ```
