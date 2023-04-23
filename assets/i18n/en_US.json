@@ -74,6 +74,7 @@
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
         "selectFromStorageButton": "Select from storage",
+        "continueAnywayButton": "Continue anyway",
         "storageButton": "Storage",
         "errorMessage": "Unable to use selected application",
         "downloadToast": "Download function is not available yet",

@@ -116,6 +116,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                                 )
                                             : model.showSelectFromStorageDialog(
                                                 context,
+                                                app,
                                               );
                                       },
                                     ),
