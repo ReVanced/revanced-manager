@@ -2,26 +2,13 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.7.20"
-}
-
-repositories {
-    mavenCentral()
-    maven("https://jitpack.io")
-    google()
-    maven {
-        url = uri("https://maven.pkg.github.com/revanced/revanced-patcher")
-        credentials {
-            username = (project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")) as String
-            password = (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")) as String
-        }
-    }
+    kotlin("plugin.serialization") version "1.8.20"
 }
 
 android {
     namespace = "app.revanced.manager.compose"
     compileSdk = 33
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion = "33.0.2"
 
     defaultConfig {
         applicationId = "app.revanced.manager.compose"
@@ -49,24 +36,24 @@ android {
 
     buildFeatures.compose = true
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.4.0"
+    composeOptions.kotlinCompilerExtensionVersion = "1.4.6"
 }
 
 dependencies {
 
     // AndroidX Core
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.activity:activity-compose:1.7.1")
 
     // Compose
-    val composeVersion = "1.4.0-alpha05"
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    implementation(platform("androidx.compose:compose-bom:2023.04.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
 
     // Accompanist
-    val accompanistVersion = "0.29.1-alpha"
+    val accompanistVersion = "0.30.1"
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
@@ -74,24 +61,24 @@ dependencies {
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // KotlinX
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     // Material 3
-    implementation("androidx.compose.material3:material3:1.1.0-alpha08")
+    implementation("androidx.compose.material3:material3")
 
 
     // ReVanced
     implementation("app.revanced:revanced-patcher:6.4.3")
 
     // Koin
-    implementation("io.insert-koin:koin-android:3.3.2")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.1")
+    implementation("io.insert-koin:koin-android:3.4.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.4")
 
     // Compose Navigation
-    implementation("dev.olshevski.navigation:reimagined:1.3.1")
+    implementation("dev.olshevski.navigation:reimagined:1.4.0")
 
     // Ktor
-    val ktorVersion = "2.1.3"
+    val ktorVersion = "2.3.0"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
