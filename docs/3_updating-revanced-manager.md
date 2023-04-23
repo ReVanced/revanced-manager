@@ -7,6 +7,6 @@ There are two methods of updating the Manager.
 
 ## ⏭️ What's next
 
-The next section will inform you on methods for troubleshooting Manager.
+The next page will inform you on methods for troubleshooting Manager.
 
 Continue: [🛟 Troubleshooting](4_troubleshooting.md)

@@ -25,6 +25,6 @@ Here's everything you need to patch an application.
 
 ## ⏭️ What's next
 
-The next section will guide you through managing your installed patched applications.
+The next page will guide you through managing your installed patched applications.
 
 Continue: [🧰 Managing patched applications](2_managing-patched-applications.md)

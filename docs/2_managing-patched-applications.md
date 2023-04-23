@@ -11,6 +11,6 @@ Here, you will be greeted with buttons to open, uninstall, or repatch the applic
 
 ## ⏭️ What's next
 
-The next section will inform you on how to update ReVanced Manager.
+The next page will inform you on how to update ReVanced Manager.
 
 Continue: [🔄 Updating ReVanced Manager](3_updating-revanced-manager.md)

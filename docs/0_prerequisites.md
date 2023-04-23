@@ -11,6 +11,6 @@
 
 ## ⏭️ What's next
 
-The next section will guide you through patching an application.
+The next page will guide you through patching an application.
 
 Continue: [🧩 Patching applications](1_patching-applications.md)

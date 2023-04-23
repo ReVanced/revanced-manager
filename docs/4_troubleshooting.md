@@ -37,6 +37,6 @@ Here's everything you need to troubleshoot the manager
 
 ## ⏭️ What's next
 
-The next section will teach you how to build Manager from source.
+The next page will teach you how to build Manager from source.
 
 Continue: [🛠 Building from source](5_building-from-source.md)
