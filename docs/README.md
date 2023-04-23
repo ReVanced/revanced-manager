@@ -2,8 +2,6 @@
 
 The official guide for ReVanced Manager.
 
-For bug reports, suggestions, or feature requests, open an issue [here](https://github.com/revanced/revanced-manager/issues/new/choose). If you wish to discuss the Manager further, a thread has been made under the [#development](https://discord.com/channels/952946952348270622/1002922226443632761) channel in our [Discord server](https://revanced.app/discord).
-
 ## 📖 Table of contents
 
 1. [💼 Prerequisites](0_prerequisites.md)
