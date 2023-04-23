@@ -1,5 +1,5 @@
 # 🧩 Patching applications
-
+Here's everything you need to patch an application.
 
 # 🪜 How to use ReVanced Manager to patch applications 
 

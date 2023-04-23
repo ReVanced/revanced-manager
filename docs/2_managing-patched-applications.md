@@ -1,4 +1,5 @@
 # 🧰 Managing patched applications
+Here's how to manage patched applications.
 
 1. Tap on the **Dashboard** tab in the bottom navigation bar
 2. Select the **Installed** chip

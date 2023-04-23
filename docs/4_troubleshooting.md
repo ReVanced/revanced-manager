@@ -1,6 +1,6 @@
 # 🛟 Troubleshooting
 
-This is a collection of errors and fixes for the ReVanced Manager application.
+Here's everything you need to troubleshoot the manager
 
 - ### 💥 App not installed as package conflicts with an existing package
 

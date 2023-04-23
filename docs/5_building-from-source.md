@@ -1,4 +1,5 @@
 # 🛠 Building from source
+Here's how to build the manager from source.
 
 1. Setup the Flutter environment for your [platform](https://docs.flutter.dev/get-started/install)
 
