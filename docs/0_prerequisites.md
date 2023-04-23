@@ -2,12 +2,12 @@
 
 ## 📝 Requirements
 
-- Device running Android 8 or higher
-- Full app patching capability doesn't work for device that reported as ARMv7
+- Android 8+
+- Any ABI other than ARMv7
 
 ## ⬇️ Installation
 
-- Download and install the [latest ReVanced Manager APK](https://github.com/revanced/revanced-manager/releases/latest)
+- Download and install the latest version of [ReVanced Manager](https://github.com/revanced/revanced-manager/releases/latest)
 
 ## ⏭️ What's next
 

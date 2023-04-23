@@ -3,6 +3,7 @@
 1. Setup the Flutter environment for your [platform](https://docs.flutter.dev/get-started/install)
 
 2. Clone the repository
+
    ```sh
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```

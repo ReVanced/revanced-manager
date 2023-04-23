@@ -1,5 +1,8 @@
 # 🧩 Patching applications
 
+
+# 🪜 How to use ReVanced Manager to patch applications 
+
 1. Tap the **Patcher** button in the bottom navigation bar
 2. Tap the **Select an application** card
 3. Here, you have the option to choose between selecting an already-installed app on your device or selecting an APK file from storage.
