@@ -24,7 +24,7 @@ Here's everything you need to troubleshoot the manager
 
 - ### 🚨 Patched application from ReVanced Manager crashing
 
-   Just follow these steps in ReVanced Manager:
+   Follow these steps in ReVanced Manager:
 
    1. Select the app you want to patch.
    2. Check if your current version matches the recommended version.
