@@ -1,4 +1,5 @@
 # 💼 Prerequisites
+To use ReVanced Manager, a certain requirements must be fullfilled
 
 ## 📝 Requirements
 
