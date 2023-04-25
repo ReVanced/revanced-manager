@@ -15,19 +15,21 @@ import 'package:stacked/stacked.dart';
 
 @lazySingleton
 class NavigationViewModel extends IndexTrackingViewModel {
-  void initialize(BuildContext context) async {
+  Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs =
+        await SharedPreferences.getInstance();
     if (prefs.getBool('permissionsRequested') == null) {
       await prefs.setBool('permissionsRequested', true);
       RootAPI().hasRootPermissions().then(
             (value) => Permission.requestInstallPackages.request().then(
-                  (value) => Permission.ignoreBatteryOptimizations.request(),
+                  (value) =>
+                      Permission.ignoreBatteryOptimizations.request(),
                 ),
           );
     }
     if (prefs.getBool('useDarkTheme') == null) {
-      bool isDark =
+      final bool isDark =
           MediaQuery.of(context).platformBrightness != Brightness.light;
       await prefs.setBool('useDarkTheme', isDark);
       await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
@@ -37,7 +39,8 @@ class NavigationViewModel extends IndexTrackingViewModel {
       SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
         systemNavigationBarIconBrightness:
-            DynamicTheme.of(context)!.theme.brightness == Brightness.light
+            DynamicTheme.of(context)!.theme.brightness ==
+                    Brightness.light
                 ? Brightness.dark
                 : Brightness.light,
       ),

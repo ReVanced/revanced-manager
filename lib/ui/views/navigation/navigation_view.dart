@@ -11,7 +11,7 @@ class NavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NavigationViewModel>.reactive(
-      onModelReady: (model) => model.initialize(context),
+      onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: PageTransitionSwitcher(
@@ -42,7 +42,6 @@ class NavigationView extends StatelessWidget {
                 context,
                 'navigationView.dashboardTab',
               ),
-              tooltip: '',
             ),
             NavigationDestination(
               icon: model.isIndexSelected(1)
@@ -52,7 +51,6 @@ class NavigationView extends StatelessWidget {
                 context,
                 'navigationView.patcherTab',
               ),
-              tooltip: '',
             ),
             NavigationDestination(
               icon: model.isIndexSelected(2)
@@ -62,7 +60,6 @@ class NavigationView extends StatelessWidget {
                 context,
                 'navigationView.settingsTab',
               ),
-              tooltip: '',
             ),
           ],
         ),

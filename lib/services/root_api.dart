@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:root/root.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 class RootAPI {
   final String _managerDirPath = '/data/local/tmp/revanced-manager';
@@ -8,10 +8,12 @@ class RootAPI {
 
   Future<bool> isRooted() async {
     try {
-      bool? isRooted = await Root.isRootAvailable();
+      final bool? isRooted = await Root.isRootAvailable();
       return isRooted != null && isRooted;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return false;
     }
   }
@@ -24,8 +26,10 @@ class RootAPI {
         return isRooted != null && isRooted;
       }
       return false;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return false;
     }
   }
@@ -70,16 +74,18 @@ class RootAPI {
 
   Future<List<String>> getInstalledApps() async {
     try {
-      String? res = await Root.exec(
+      final String? res = await Root.exec(
         cmd: 'ls "$_managerDirPath"',
       );
       if (res != null) {
-        List<String> apps = res.split('\n');
+        final List<String> apps = res.split('\n');
         apps.removeWhere((pack) => pack.isEmpty);
         return apps.map((pack) => pack.trim()).toList();
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return List.empty();
     }
     return List.empty();
@@ -125,19 +131,21 @@ class RootAPI {
       await installApk(packageName, patchedFilePath);
       await mountApk(packageName, originalFilePath);
       return true;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return false;
     }
   }
 
   Future<void> installServiceDScript(String packageName) async {
-    String content = '#!/system/bin/sh\n'
+    final String content = '#!/system/bin/sh\n'
         'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 3; done\n'
         'base_path=$_managerDirPath/$packageName/base.apk\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
-        '[ ! -z \$stock_path ] && mount -o bind \$base_path \$stock_path';
-    String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
+        r'[ ! -z $stock_path ] && mount -o bind $base_path $stock_path';
+    final String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
     await Root.exec(
       cmd: 'echo \'$content\' > "$scriptFilePath"',
     );
@@ -145,10 +153,10 @@ class RootAPI {
   }
 
   Future<void> installPostFsDataScript(String packageName) async {
-    String content = '#!/system/bin/sh\n'
+    final String content = '#!/system/bin/sh\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
-        '[ ! -z \$stock_path ] && umount -l \$stock_path';
-    String scriptFilePath = '$_postFsDataDirPath/$packageName.sh';
+        r'[ ! -z $stock_path ] && umount -l $stock_path';
+    final String scriptFilePath = '$_postFsDataDirPath/$packageName.sh';
     await Root.exec(
       cmd: 'echo \'$content\' > "$scriptFilePath"',
     );
@@ -156,7 +164,7 @@ class RootAPI {
   }
 
   Future<void> installApk(String packageName, String patchedFilePath) async {
-    String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
+    final String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'cp "$patchedFilePath" "$newPatchedFilePath"',
     );
@@ -169,7 +177,7 @@ class RootAPI {
   }
 
   Future<void> mountApk(String packageName, String originalFilePath) async {
-    String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
+    final String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'am force-stop "$packageName"',
     );
@@ -182,7 +190,7 @@ class RootAPI {
   }
 
   Future<bool> isMounted(String packageName) async {
-    String? res = await Root.exec(
+    final String? res = await Root.exec(
       cmd: 'cat /proc/mounts | grep $packageName',
     );
     return res != null && res.isNotEmpty;
@@ -192,7 +200,7 @@ class RootAPI {
     String packageName,
     String originalFilePath,
   ) async {
-    bool isInstalled = await isAppInstalled(packageName);
+    final bool isInstalled = await isAppInstalled(packageName);
     if (isInstalled && await isMounted(packageName)) {
       originalFilePath = '$_managerDirPath/$packageName/original.apk';
       await setPermissions(
@@ -209,7 +217,8 @@ class RootAPI {
     String packageName,
     String originalFilePath,
   ) async {
-    String originalRootPath = '$_managerDirPath/$packageName/original.apk';
+    final String originalRootPath =
+        '$_managerDirPath/$packageName/original.apk';
     await Root.exec(
       cmd: 'mkdir -p "$_managerDirPath/$packageName"',
     );

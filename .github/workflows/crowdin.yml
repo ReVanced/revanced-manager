@@ -3,7 +3,7 @@ name: Sync Crowdin translations
 on:
   push:
     branches:
-      - "flutter"
+      - "dev"
     paths:
       - "assets/i18n/en_US.json"
       - ".github/workflows/crowdin.yml"
@@ -16,13 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Crowdin
-        uses: crowdin/github-action@1.0.4
+        uses: crowdin/github-action@v1
         with:
           config: crowdin.yml
-          upload_translations: true
+          upload_sources: true
+          upload_translations: false
           download_translations: true
           push_translations: true
           create_pull_request: false

@@ -3,7 +3,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class AvailableUpdatesCard extends StatelessWidget {
@@ -29,7 +28,7 @@ class AvailableUpdatesCard extends StatelessWidget {
               child: Text(
                 '',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
               ),
@@ -54,7 +53,7 @@ class AvailableUpdatesCard extends StatelessWidget {
     //                 child: Text(
     //                   '',
     //                   textAlign: TextAlign.center,
-    //                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
+    //                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
     //                         color: Theme.of(context).colorScheme.secondary,
     //                       ),
     //                 ),

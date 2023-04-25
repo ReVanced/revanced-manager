@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_switch.dart';
 
 class CustomSwitchTile extends StatelessWidget {
-  final Widget title;
-  final Widget subtitle;
-  final bool value;
-  final Function(bool) onTap;
-  final EdgeInsetsGeometry? padding;
-
   const CustomSwitchTile({
     Key? key,
     required this.title,
@@ -16,6 +10,11 @@ class CustomSwitchTile extends StatelessWidget {
     required this.onTap,
     this.padding,
   }) : super(key: key);
+  final Widget title;
+  final Widget subtitle;
+  final bool value;
+  final Function(bool) onTap;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {

@@ -1,16 +1,19 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
     "yesButton": "Yes",
     "noButton": "No",
+    "warning": "Warning",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
         "settingsTab": "Settings"
     },
     "homeView": {
+        "refreshSuccess": "Refresh successfully",
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
@@ -20,7 +23,7 @@
         "noInstallations": "No patched applications installed",
         "installed": "Installed",
         "updateDialogTitle": "Update Manager",
-        "updateDialogText": "Are you sure you want to download and update ReVanced Manager?",
+        "updateChangelogTitle": "Changelog",
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
         "downloadingMessage": "Downloading update...",
@@ -45,8 +48,8 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-        "patchDialogTitle": "Warning",
-        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?"
+        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?",
+        "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported. Proceed anyways?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -70,24 +73,29 @@
     "appSelectorView": {
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
+        "selectFromStorageButton": "Select from storage",
         "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application"
+        "errorMessage": "Unable to use selected application",
+        "downloadToast": "Download function is not available yet",
+        "featureNotAvailable": "Feature not implemented",
+        "featureNotAvailableText": "This feature has not been added yet for non-root. You'll need to select APK files from storage for now."
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
+        "default": "Default",
+        "defaultTooltip": "Select all default patches",
+        "none": "None",
+        "noneTooltip": "Deselect all patches",
         "loadPatchesSelection": "Load patches selection",
-        "noSavedPatches": "No saved patches for the selected app\nPress Done to save current selection",
+        "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "selectAllPatchesWarningTitle": "Warning",
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
     },
     "patchItem": {
-        "unsupportedWarningButton": "Warning",
-        "unsupportedDialogTitle": "Warning",
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable experimental toggle in settings to proceed."
+        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed."
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -119,9 +127,9 @@
         "dynamicThemeHint": "Enjoy an experience closer to your device",
         "languageLabel": "Language",
         "englishOption": "English",
-        "frenchOption": "French",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
+        "hostRepositoryLabel": "Repository API",
         "orgPatchesLabel": "Patches organization",
         "sourcesPatchesLabel": "Patches source",
         "orgIntegrationsLabel": "Integrations organization",
@@ -136,20 +144,21 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Experimental universal patches support",
+        "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
         "experimentalPatchesLabel": "Experimental patches support",
         "experimentalPatchesHint": "Enable usage of unsupported patches in any app version",
         "enabledExperimentalPatches": "Experimental patches support enabled",
         "exportSectionTitle": "Import & export",
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
-        "sentryLabel": "Sentry logging",
-        "sentryHint": "Send anonymous logs to help us improve ReVanced Manager",
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
+        "deleteKeystoreDialogText": "Are you sure you want to delete the keystore used to sign patched applications?",
         "deletedKeystore": "Keystore deleted",
         "deleteTempDirLabel": "Delete temporary files",
-        "deleteTempDirHint": "Delete the unused temporary files",
+        "deleteTempDirHint": "Delete unused temporary files",
         "deletedTempDir": "Temporary files deleted",
         "exportPatchesLabel": "Export patches selection",
         "exportPatchesHint": "Export patches selection to a JSON file",
@@ -164,7 +173,17 @@
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
-        "deletedLogs": "Logs deleted"
+        "deletedLogs": "Logs deleted",
+        "exportKeystoreLabel": "Export keystore",
+        "exportKeystoreHint": "Export keystore used to sign apps",
+        "exportedKeystore": "Keystore exported",
+        "noKeystoreExportFileFound": "No keystore to export",
+        "importKeystoreLabel": "Import keystore",
+        "importKeystoreHint": "Import keystore used to sign apps",
+        "importedKeystore": "Keystore imported",
+        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file",
+        "selectKeystorePassword": "Keystore Password",
+        "selectKeystorePasswordHint": "Select keystore password used to sign the apk"
     },
     "appInfoView": {
         "widgetTitle": "App info",

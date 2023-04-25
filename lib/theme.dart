@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 var lightCustomColorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue,
-  brightness: Brightness.light,
   primary: const Color(0xff1B73E8),
 );
 
@@ -13,7 +12,7 @@ var lightCustomTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: MaterialStateProperty.all(
       TextStyle(
-        color: lightCustomColorScheme.secondary,
+        color: lightCustomColorScheme.onSurface,
         fontWeight: FontWeight.w500,
       ),
     ),
@@ -34,13 +33,12 @@ var darkCustomTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: MaterialStateProperty.all(
       TextStyle(
-        color: darkCustomColorScheme.secondary,
+        color: darkCustomColorScheme.onSurface,
         fontWeight: FontWeight.w500,
       ),
     ),
   ),
   canvasColor: const Color(0xff1B1A1D),
   scaffoldBackgroundColor: const Color(0xff1B1A1D),
-  toggleableActiveColor: const Color(0xffA5CAFF),
   textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
 );

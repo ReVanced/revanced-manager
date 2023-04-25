@@ -6,12 +6,11 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class PatchSelectorCard extends StatelessWidget {
-  final Function() onPressed;
-
   const PatchSelectorCard({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +45,12 @@ class PatchSelectorCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 4),
-          locator<PatcherViewModel>().selectedApp == null
-              ? I18nText('patchSelectorCard.widgetSubtitle')
-              : locator<PatcherViewModel>().selectedPatches.isEmpty
-                  ? I18nText('patchSelectorCard.widgetEmptySubtitle')
-                  : Text(_getPatchesSelection()),
+          if (locator<PatcherViewModel>().selectedApp == null)
+            I18nText('patchSelectorCard.widgetSubtitle')
+          else
+            locator<PatcherViewModel>().selectedPatches.isEmpty
+                ? I18nText('patchSelectorCard.widgetEmptySubtitle')
+                : Text(_getPatchesSelection()),
         ],
       ),
     );
@@ -58,7 +58,7 @@ class PatchSelectorCard extends StatelessWidget {
 
   String _getPatchesSelection() {
     String text = '';
-    for (Patch p in locator<PatcherViewModel>().selectedPatches) {
+    for (final Patch p in locator<PatcherViewModel>().selectedPatches) {
       text += '\u2022  ${p.getSimpleName()} (v${p.version})\n';
     }
     return text.substring(0, text.length - 1);

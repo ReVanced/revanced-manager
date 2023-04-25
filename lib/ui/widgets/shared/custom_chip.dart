@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-class DashboardChip extends StatelessWidget {
+class CustomChip extends StatelessWidget {
+  const CustomChip({
+    Key? key,
+    required this.label,
+    this.isSelected = false,
+    this.onSelected,
+  }) : super(key: key);
   final Widget label;
   final bool isSelected;
   final Function(bool)? onSelected;
-
-  const DashboardChip({
-    Key? key,
-    required this.label,
-    required this.isSelected,
-    this.onSelected,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class DashboardChip extends StatelessWidget {
       showCheckmark: false,
       label: label,
       selected: isSelected,
-      labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
+      labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
             color: isSelected
                 ? Theme.of(context).colorScheme.primary
                 : Theme.of(context).colorScheme.secondary,

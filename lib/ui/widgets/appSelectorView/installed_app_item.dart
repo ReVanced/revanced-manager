@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
-  final String name;
-  final String pkgName;
-  final Uint8List icon;
-  final Function()? onTap;
-
   const InstalledAppItem({
     Key? key,
     required this.name,
     required this.pkgName,
     required this.icon,
+    required this.patchesCount,
+    required this.recommendedVersion,
     this.onTap,
   }) : super(key: key);
+  final String name;
+  final String pkgName;
+  final Uint8List icon;
+  final int patchesCount;
+  final String recommendedVersion;
+  final Function()? onTap;
 
   @override
   State<InstalledAppItem> createState() => _InstalledAppItemState();
@@ -56,6 +59,24 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                   ),
                   const SizedBox(height: 4),
                   Text(widget.pkgName),
+                  Row(
+                    children: [
+                      Text(
+                        widget.recommendedVersion.isEmpty
+                            ? 'All versions'
+                            : widget.recommendedVersion,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

@@ -5,13 +5,6 @@ part 'patch.g.dart';
 
 @JsonSerializable()
 class Patch {
-  final String name;
-  final String description;
-  final String version;
-  final bool excluded;
-  final List<String> dependencies;
-  final List<Package> compatiblePackages;
-
   Patch({
     required this.name,
     required this.description,
@@ -22,6 +15,12 @@ class Patch {
   });
 
   factory Patch.fromJson(Map<String, dynamic> json) => _$PatchFromJson(json);
+  final String name;
+  final String description;
+  final String version;
+  final bool excluded;
+  final List<String> dependencies;
+  final List<Package> compatiblePackages;
 
   Map<String, dynamic> toJson() => _$PatchToJson(this);
 
@@ -37,9 +36,6 @@ class Patch {
 
 @JsonSerializable()
 class Package {
-  final String name;
-  final List<String> versions;
-
   Package({
     required this.name,
     required this.versions,
@@ -47,6 +43,8 @@ class Package {
 
   factory Package.fromJson(Map<String, dynamic> json) =>
       _$PackageFromJson(json);
+  final String name;
+  final List<String> versions;
 
   Map toJson() => _$PackageToJson(this);
 }

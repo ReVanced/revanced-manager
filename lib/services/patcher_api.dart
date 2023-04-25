@@ -1,7 +1,10 @@
 import 'dart:io';
+
 import 'package:app_installer/app_installer.dart';
 import 'package:collection/collection.dart';
+import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_apps/device_apps.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,9 +13,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_extend/share_extend.dart';
-import 'package:cr_file_saver/file_saver.dart';
 
 @lazySingleton
 class PatcherAPI {
@@ -24,11 +25,12 @@ class PatcherAPI {
   late Directory _tmpDir;
   late File _keyStoreFile;
   List<Patch> _patches = [];
+  Map filteredPatches = <String, List<Patch>>{};
   File? _outFile;
 
   Future<void> initialize() async {
     await _loadPatches();
-    Directory appCache = await getTemporaryDirectory();
+    final Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
     _tmpDir = Directory('${appCache.path}/patcher');
     _keyStoreFile = File('${_dataDir.path}/revanced-manager.keystore');
@@ -46,19 +48,43 @@ class PatcherAPI {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       _patches = List.empty();
     }
   }
 
-  Future<List<ApplicationWithIcon>> getFilteredInstalledApps() async {
-    List<ApplicationWithIcon> filteredApps = [];
-    for (Patch patch in _patches) {
-      for (Package package in patch.compatiblePackages) {
+  Future<List<ApplicationWithIcon>> getFilteredInstalledApps(
+    bool showUniversalPatches,
+  ) async {
+    final List<ApplicationWithIcon> filteredApps = [];
+    final bool allAppsIncluded =
+        _patches.any((patch) => patch.compatiblePackages.isEmpty) &&
+            showUniversalPatches;
+    if (allAppsIncluded) {
+      final allPackages = await DeviceApps.getInstalledApplications(
+        includeAppIcons: true,
+        onlyAppsWithLaunchIntent: true,
+      );
+      for (final pkg in allPackages) {
+        if (!filteredApps.any((app) => app.packageName == pkg.packageName)) {
+          final appInfo = await DeviceApps.getApp(
+            pkg.packageName,
+            true,
+          ) as ApplicationWithIcon?;
+          if (appInfo != null) {
+            filteredApps.add(appInfo);
+          }
+        }
+      }
+    }
+    for (final Patch patch in _patches) {
+      for (final Package package in patch.compatiblePackages) {
         try {
           if (!filteredApps.any((app) => app.packageName == package.name)) {
-            ApplicationWithIcon? app = await DeviceApps.getApp(
+            final ApplicationWithIcon? app = await DeviceApps.getApp(
               package.name,
               true,
             ) as ApplicationWithIcon?;
@@ -66,49 +92,43 @@ class PatcherAPI {
               filteredApps.add(app);
             }
           }
-        } on Exception catch (e, s) {
-          await Sentry.captureException(e, stackTrace: s);
-          continue;
+        } on Exception catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
         }
       }
     }
     return filteredApps;
   }
 
-  Future<List<Patch>> getFilteredPatches(String packageName) async {
-    return _patches
-        .where((patch) =>
-            !patch.name.contains('settings') &&
-            patch.compatiblePackages.any((pack) => pack.name == packageName))
-        .toList();
+  List<Patch> getFilteredPatches(String packageName) {
+    if (!filteredPatches.keys.contains(packageName)) {
+      final List<Patch> patches = _patches
+          .where(
+            (patch) =>
+                patch.compatiblePackages.isEmpty ||
+                !patch.name.contains('settings') &&
+                    patch.compatiblePackages
+                        .any((pack) => pack.name == packageName),
+          )
+          .toList();
+      filteredPatches[packageName] = patches;
+    }
+    return filteredPatches[packageName];
   }
 
-  Future<List<Patch>> getAppliedPatches(List<String> appliedPatches) async {
+  Future<List<Patch>> getAppliedPatches(
+    List<String> appliedPatches,
+  ) async {
     return _patches
         .where((patch) => appliedPatches.contains(patch.name))
         .toList();
   }
 
-  bool dependencyNeedsIntegrations(String name) {
-    return name.contains('integrations') ||
-        _patches.any(
-          (patch) =>
-              patch.name == name &&
-              (patch.dependencies.any(
-                (dep) => dependencyNeedsIntegrations(dep),
-              )),
-        );
-  }
-
-  Future<bool> needsIntegrations(List<Patch> selectedPatches) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dependencyNeedsIntegrations(dep),
-      ),
-    );
-  }
-
-  Future<bool> needsResourcePatching(List<Patch> selectedPatches) async {
+  Future<bool> needsResourcePatching(
+    List<Patch> selectedPatches,
+  ) async {
     return selectedPatches.any(
       (patch) => patch.dependencies.any(
         (dep) => dep.contains('resource-'),
@@ -129,7 +149,7 @@ class PatcherAPI {
     String originalFilePath,
   ) async {
     try {
-      bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
         originalFilePath = await _rootAPI.getOriginalFilePath(
           packageName,
@@ -137,8 +157,10 @@ class PatcherAPI {
         );
       }
       return originalFilePath;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return originalFilePath;
     }
   }
@@ -148,11 +170,10 @@ class PatcherAPI {
     String originalFilePath,
     List<Patch> selectedPatches,
   ) async {
-    bool mergeIntegrations = await needsIntegrations(selectedPatches);
-    bool includeSettings = await needsSettingsPatch(selectedPatches);
+    final bool includeSettings = await needsSettingsPatch(selectedPatches);
     if (includeSettings) {
       try {
-        Patch? settingsPatch = _patches.firstWhereOrNull(
+        final Patch? settingsPatch = _patches.firstWhereOrNull(
           (patch) =>
               patch.name.contains('settings') &&
               patch.compatiblePackages.any((pack) => pack.name == packageName),
@@ -160,24 +181,22 @@ class PatcherAPI {
         if (settingsPatch != null) {
           selectedPatches.add(settingsPatch);
         }
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
-        // ignore
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
       }
     }
-    File? patchBundleFile = await _managerAPI.downloadPatches();
-    File? integrationsFile;
-    if (mergeIntegrations) {
-      integrationsFile = await _managerAPI.downloadIntegrations();
-    }
+    final File? patchBundleFile = await _managerAPI.downloadPatches();
+    final File? integrationsFile = await _managerAPI.downloadIntegrations();
     if (patchBundleFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
-      Directory workDir = _tmpDir.createTempSync('tmp-');
-      File inputFile = File('${workDir.path}/base.apk');
-      File patchedFile = File('${workDir.path}/patched.apk');
+      final Directory workDir = _tmpDir.createTempSync('tmp-');
+      final File inputFile = File('${workDir.path}/base.apk');
+      final File patchedFile = File('${workDir.path}/patched.apk');
       _outFile = File('${workDir.path}/out.apk');
-      Directory cacheDir = Directory('${workDir.path}/cache');
+      final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
       try {
         await patcherChannel.invokeMethod(
@@ -191,16 +210,17 @@ class PatcherAPI {
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
             'outFilePath': _outFile!.path,
-            'integrationsPath': mergeIntegrations ? integrationsFile!.path : '',
+            'integrationsPath': integrationsFile!.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
-            'mergeIntegrations': mergeIntegrations,
             'keyStoreFilePath': _keyStoreFile.path,
+            'keystorePassword': _managerAPI.getKeystorePassword(),
           },
         );
-      } on Exception catch (e, s) {
-        print(e);
-        throw await Sentry.captureException(e, stackTrace: s);
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
       }
     }
   }
@@ -209,7 +229,7 @@ class PatcherAPI {
     if (_outFile != null) {
       try {
         if (patchedApp.isRooted) {
-          bool hasRootPermissions = await _rootAPI.hasRootPermissions();
+          final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
           if (hasRootPermissions) {
             return _rootAPI.installApp(
               patchedApp.packageName,
@@ -219,83 +239,85 @@ class PatcherAPI {
           }
         } else {
           await AppInstaller.installApk(_outFile!.path);
-          return await DeviceApps.isAppInstalled(patchedApp.packageName);
+          return await DeviceApps.isAppInstalled(
+            patchedApp.packageName,
+          );
         }
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return false;
       }
     }
     return false;
   }
 
-
   void exportPatchedFile(String appName, String version) {
     try {
       if (_outFile != null) {
-        String newName = _getFileName(appName, version);
-
-        // This is temporary workaround to populate initial file name
-        // ref: https://github.com/Cleveroad/cr_file_saver/issues/7
-        int lastSeparator = _outFile!.path.lastIndexOf('/');
-        String newSourcePath = _outFile!.path.substring(0, lastSeparator + 1) + newName;
-        _outFile!.copySync(newSourcePath);
-
-        CRFileSaver.saveFileWithDialog(SaveFileDialogParams(
-          sourceFilePath: newSourcePath,
-          destinationFileName: newName
-        ));
+        final String newName = _getFileName(appName, version);
+        CRFileSaver.saveFileWithDialog(
+          SaveFileDialogParams(
+            sourceFilePath: _outFile!.path,
+            destinationFileName: newName,
+          ),
+        );
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
   void sharePatchedFile(String appName, String version) {
     try {
       if (_outFile != null) {
-        String newName = _getFileName(appName, version);
-        int lastSeparator = _outFile!.path.lastIndexOf('/');
-        String newPath =
+        final String newName = _getFileName(appName, version);
+        final int lastSeparator = _outFile!.path.lastIndexOf('/');
+        final String newPath =
             _outFile!.path.substring(0, lastSeparator + 1) + newName;
-        File shareFile = _outFile!.copySync(newPath);
+        final File shareFile = _outFile!.copySync(newPath);
         ShareExtend.share(shareFile.path, 'file');
       }
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
   String _getFileName(String appName, String version) {
-      String prefix = appName.toLowerCase().replaceAll(' ', '-');
-      String newName = '$prefix-revanced_v$version.apk';
-      return newName;
-
+    final String prefix = appName.toLowerCase().replaceAll(' ', '-');
+    final String newName = '$prefix-revanced_v$version.apk';
+    return newName;
   }
 
   Future<void> sharePatcherLog(String logs) async {
-    Directory appCache = await getTemporaryDirectory();
-    Directory logDir = Directory('${appCache.path}/logs');
+    final Directory appCache = await getTemporaryDirectory();
+    final Directory logDir = Directory('${appCache.path}/logs');
     logDir.createSync();
-    String dateTime = DateTime.now()
+    final String dateTime = DateTime.now()
         .toIso8601String()
         .replaceAll('-', '')
         .replaceAll(':', '')
         .replaceAll('T', '')
         .replaceAll('.', '');
-    File log = File('${logDir.path}/revanced-manager_patcher_$dateTime.log');
+    final File log =
+        File('${logDir.path}/revanced-manager_patcher_$dateTime.log');
     log.writeAsStringSync(logs);
     ShareExtend.share(log.path, 'file');
   }
 
   String getRecommendedVersion(String packageName) {
-    Map<String, int> versions = {};
-    for (Patch patch in _patches) {
-      Package? package = patch.compatiblePackages.firstWhereOrNull(
+    final Map<String, int> versions = {};
+    for (final Patch patch in _patches) {
+      final Package? package = patch.compatiblePackages.firstWhereOrNull(
         (pack) => pack.name == packageName,
       );
       if (package != null) {
-        for (String version in package.versions) {
+        for (final String version in package.versions) {
           versions.update(
             version,
             (value) => versions[version]! + 1,
@@ -305,7 +327,7 @@ class PatcherAPI {
       }
     }
     if (versions.isNotEmpty) {
-      var entries = versions.entries.toList()
+      final entries = versions.entries.toList()
         ..sort((a, b) => a.value.compareTo(b.value));
       versions
         ..clear()

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
@@ -8,6 +10,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/utils/about_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -40,35 +43,71 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   Future<bool> isValidPatchConfig() async {
-    bool needsResourcePatching = await _patcherAPI.needsResourcePatching(
+    final bool needsResourcePatching = await _patcherAPI.needsResourcePatching(
       selectedPatches,
     );
     if (needsResourcePatching && selectedApp != null) {
-      bool isSplit = await _managerAPI.isSplitApk(selectedApp!);
+      final bool isSplit = await _managerAPI.isSplitApk(selectedApp!);
       return !isSplit;
     }
     return true;
   }
 
   Future<void> showPatchConfirmationDialog(BuildContext context) async {
-    bool isValid = await isValidPatchConfig();
-    if (isValid) {
-      navigateToInstaller();
-    } else {
+    final bool isValid = await isValidPatchConfig();
+    if (context.mounted) {
+      if (isValid) {
+        showArmv7WarningDialog(context);
+      } else {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText('warning'),
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            content: I18nText('patcherView.armv7WarningDialogText'),
+            actions: <Widget>[
+              CustomMaterialButton(
+                label: I18nText('noButton'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              CustomMaterialButton(
+                label: I18nText('yesButton'),
+                isFilled: false,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  showArmv7WarningDialog(context);
+                },
+              )
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> showArmv7WarningDialog(BuildContext context) async {
+    final bool armv7 = await AboutInfo.getInfo().then(
+      (info) =>
+          info['arch'] != null &&
+          info['arch']!.contains('armeabi-v7a') &&
+          !info['arch']!.contains('arm64-v8a'),
+    );
+
+    if (context.mounted && armv7) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('patcherView.patchDialogTitle'),
+          title: I18nText('warning'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('patcherView.patchDialogText'),
+          content: I18nText('patcherView.armv7WarningDialogText'),
           actions: <Widget>[
             CustomMaterialButton(
-              isFilled: false,
               label: I18nText('noButton'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             CustomMaterialButton(
               label: I18nText('yesButton'),
+              isFilled: false,
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
@@ -77,6 +116,9 @@ class PatcherViewModel extends BaseViewModel {
           ],
         ),
       );
+    } else {
+      // navigate To Installer
+      navigateToInstaller();
     }
   }
 
@@ -110,11 +152,12 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
-    List<String> selectedPatches =
+    final List<String> selectedPatches =
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
-    List<Patch> patches =
-        await _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
-    this.selectedPatches
+    final List<Patch> patches =
+        _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
+    this
+        .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     notifyListeners();
   }

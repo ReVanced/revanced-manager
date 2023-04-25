@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:device_apps/device_apps.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
@@ -14,7 +15,6 @@ import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -51,16 +51,15 @@ class InstallerViewModel extends BaseViewModel {
               context,
               'installerView.notificationText',
             ),
-            notificationImportance: AndroidNotificationImportance.Default,
             notificationIcon: const AndroidResource(
               name: 'ic_notification',
-              defType: 'drawable',
             ),
           ),
         ).then((value) => FlutterBackground.enableBackgroundExecution());
-      } on Exception catch (e, s) {
-        await Sentry.captureException(e, stackTrace: s);
-        // ignore
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        } // ignore
       }
     }
     await Wakelock.enable();
@@ -73,10 +72,10 @@ class InstallerViewModel extends BaseViewModel {
       switch (call.method) {
         case 'update':
           if (call.arguments != null) {
-            Map<dynamic, dynamic> arguments = call.arguments;
-            double progress = arguments['progress'];
-            String header = arguments['header'];
-            String log = arguments['log'];
+            final Map<dynamic, dynamic> arguments = call.arguments;
+            final double progress = arguments['progress'];
+            final String header = arguments['header'];
+            final String log = arguments['log'];
             update(progress, header, log);
           }
           break;
@@ -133,14 +132,15 @@ class InstallerViewModel extends BaseViewModel {
             _app.apkFilePath,
             _patches,
           );
-        } on Exception catch (e, s) {
+        } on Exception catch (e) {
           update(
             -100.0,
             'Aborting...',
             'An error occurred! Aborting\nError:\n$e',
           );
-          await Sentry.captureException(e, stackTrace: s);
-          throw await Sentry.captureException(e, stackTrace: s);
+          if (kDebugMode) {
+            print(e);
+          }
         }
       } else {
         update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
@@ -148,24 +148,28 @@ class InstallerViewModel extends BaseViewModel {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
           FlutterBackground.disableBackgroundExecution();
-        } on Exception catch (e, s) {
-          await Sentry.captureException(e, stackTrace: s);
-          // ignore
+        } on Exception catch (e) {
+          if (kDebugMode) {
+            print(e);
+          } // ignore
         }
       }
       await Wakelock.disable();
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  void installResult(BuildContext context, bool installAsRoot) async {
+  Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      bool hasMicroG = _patches.any((p) => p.name.endsWith('microg-support'));
-      bool rootMicroG = installAsRoot && hasMicroG;
-      bool rootFromStorage = installAsRoot && _app.isFromStorage;
-      bool ytWithoutRootMicroG =
+      final bool hasMicroG =
+          _patches.any((p) => p.name.endsWith('microg-support'));
+      final bool rootMicroG = installAsRoot && hasMicroG;
+      final bool rootFromStorage = installAsRoot && _app.isFromStorage;
+      final bool ytWithoutRootMicroG =
           !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
       if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
         return showDialog(
@@ -212,24 +216,30 @@ class InstallerViewModel extends BaseViewModel {
           await _managerAPI.savePatchedApp(_app);
         }
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
   void exportResult() {
     try {
       _patcherAPI.exportPatchedFile(_app.name, _app.version);
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
   void shareResult() {
     try {
       _patcherAPI.sharePatchedFile(_app.name, _app.version);
-    } on Exception catch (e, s) {
-      Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -243,8 +253,10 @@ class InstallerViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedApp = null;
       locator<PatcherViewModel>().selectedPatches.clear();
       locator<PatcherViewModel>().notifyListeners();
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -268,7 +280,7 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
-      _toast.show('installerView.noExit');
+      _toast.showBottom('installerView.noExit');
       return false;
     }
     cleanPatcher();

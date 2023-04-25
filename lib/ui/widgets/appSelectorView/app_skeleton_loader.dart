@@ -21,7 +21,6 @@ class AppSkeletonLoader extends StatelessWidget {
                   style: SkeletonAvatarStyle(
                     width: screenWidth * 0.15,
                     height: screenWidth * 0.15,
-                    shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.all(Radius.circular(12)),
                   ),
                 ),

@@ -8,12 +8,11 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class AppInfoView extends StatelessWidget {
-  final PatchedApplication app;
-
   const AppInfoView({
     Key? key,
     required this.app,
   }) : super(key: key);
+  final PatchedApplication app;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class AppInfoView extends StatelessWidget {
                 child: Text(
                   '',
                   style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.headline6!.color,
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
               ),
@@ -52,13 +51,13 @@ class AppInfoView extends StatelessWidget {
                     Text(
                       app.name,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       app.version,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 20),
                     Padding(

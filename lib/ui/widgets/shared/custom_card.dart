@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
+  const CustomCard({
+    Key? key,
+    this.isFilled = true,
+    required this.child,
+    this.onTap,
+    this.padding,
+    this.backgroundColor,
+  }) : super(key: key);
   final bool isFilled;
   final Widget child;
   final Function()? onTap;
   final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
-
-  const CustomCard(
-      {Key? key,
-      this.isFilled = true,
-      required this.child,
-      this.onTap,
-      this.padding,
-      this.backgroundColor})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

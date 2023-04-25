@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomSwitch extends StatelessWidget {
-  final ValueChanged<bool> onChanged;
-  final bool value;
-
   const CustomSwitch({
     Key? key,
     required this.onChanged,
     required this.value,
   }) : super(key: key);
+  final ValueChanged<bool> onChanged;
+  final bool value;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class CustomSwitch extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: value
                       ? Theme.of(context).colorScheme.primaryContainer
-                      : Colors.white,
+                      : Theme.of(context).colorScheme.surface,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12.withOpacity(0.1),
