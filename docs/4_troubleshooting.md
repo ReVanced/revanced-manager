@@ -1,29 +1,42 @@
 # 🛟 Troubleshooting
 
-This is a collection of common errors and fixes for the ReVanced Manager application.
+Here's everything you need to troubleshoot the manager
 
 - ### 💥 App not installed as package conflicts with an existing package
 
-   Remove the previous installation to solve the conflict, then you can try installing the patched application again.
+   Remove the previous installation to solve the conflict.
 
 - ### 🚫 Non-root install is not possible with the current patches selection
 
-   Navigate back to the **Patcher** page, tap the **Select patches** card, and tap the **Recommended** or **Default** chip.
+   Open up Patcher, select the **Default** chip in **Select patches**.
 
-- ### ❗️ Error code `135` or `139` when patching the application
+- ### 🪢 Signature mismatch when updating the application
+
+   Uninstall the app that you're trying to update and then reinstalling it from ReVanced Manager.
+
+- ### ❗️Error code `135` or `139` when patching the application
 
    ReVanced Manager doesn't fully support patching with device that reported as ARM32.
 
-   You can try using ReVanced Manager on other devices, or use the [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application on a computer
+   You can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application.
 
-   > **Warning**: We do **NOT** recommend downloading prebuilt APKs from internet as **they can be malicious**.
+   > **Warning**: We don't recommend that you download prebuilt APK from internet as they can be malicious.
 
-- ### 🚨 Patched application is crashing
+- ### 🚨 Patched application from ReVanced Manager crashing
 
-   You can try following these steps:
+   Follow these steps in ReVanced Manager:
 
-   1. Select the app you want to patch
-   2. Check if your current version matches the recommended version. If that's not the case, download the recommended APK version and save it to your device.
-   3. Tap the **Select an application** card
-   4. Tap the **Storage** button and select the downloaded APK through the file picker
-   5. Tap on the **Select patches** card, and tap the **Recommended** or **Default** chip
+   1. Select the app you want to patch.
+   2. Check if your current version matches the recommended version.
+      1. If not, download the recommended APK version and save it to your device.
+      2. Tap the **Select an application** card.
+      3. click on the **Storage** button and select the APK through file picker.
+   3. Go to "Select patches" and press the **Default** chip.
+
+   That's it! You should now be good to go.
+
+## ⏭️ What's next
+
+The next page will teach you how to build Manager from source.
+
+Continue: [🛠 Building from source](5_building-from-source.md)
