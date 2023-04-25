@@ -4,7 +4,7 @@ To use ReVanced Manager, a certain requirements must be fullfilled
 ## 📝 Requirements
 
 - Android 8+
-- Any ABI other than ARMv7
+- Devices **not** ARMv7
 
 ## ⬇️ Installation
 
