@@ -57,7 +57,7 @@
         "widgetSubtitle": "No application selected",
         "noAppsLabel": "No applications found",
         "currentVersion": "Current",
-        "recommendedVersion": "Supported",
+        "recommendedVersion": "Latest supported",
         "anyVersion": "any"
     },
     "patchSelectorCard": {
