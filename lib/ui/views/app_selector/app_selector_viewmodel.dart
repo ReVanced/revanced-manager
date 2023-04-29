@@ -61,8 +61,8 @@ class AppSelectorViewModel extends BaseViewModel {
     return allApps;
   }
 
-  String getRecommendedVersion(String packageName) {
-    return _patcherAPI.getRecommendedVersion(packageName);
+  String getSuggestedVersion(String packageName) {
+    return _patcherAPI.getSuggestedVersion(packageName);
   }
 
   Future<void> selectApp(ApplicationWithIcon application) async {

@@ -6,12 +6,12 @@ class NotInstalledAppItem extends StatefulWidget {
     Key? key,
     required this.name,
     required this.patchesCount,
-    required this.recommendedVersion,
+    required this.suggestedVersion,
     this.onTap,
   }) : super(key: key);
   final String name;
   final int patchesCount;
-  final String recommendedVersion;
+  final String suggestedVersion;
   final Function()? onTap;
 
   @override
@@ -59,9 +59,9 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                   Row(
                     children: [
                       Text(
-                        widget.recommendedVersion.isEmpty
+                        widget.suggestedVersion.isEmpty
                             ? 'All versions'
-                            : widget.recommendedVersion,
+                            : widget.suggestedVersion,
                       ),
                       const SizedBox(width: 4),
                       Text(

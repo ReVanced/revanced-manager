@@ -104,8 +104,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       icon: app.icon,
                                       patchesCount:
                                           model.patchesCount(app.packageName),
-                                      recommendedVersion:
-                                          model.getRecommendedVersion(
+                                      suggestedVersion:
+                                          model.getSuggestedVersion(
                                         app.packageName,
                                       ),
                                       onTap: () {
@@ -127,8 +127,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                     (app) => NotInstalledAppItem(
                                       name: app,
                                       patchesCount: model.patchesCount(app),
-                                      recommendedVersion:
-                                          model.getRecommendedVersion(app),
+                                      suggestedVersion:
+                                          model.getSuggestedVersion(app),
                                       onTap: () {
                                         model.showDownloadToast();
                                       },

@@ -57,7 +57,7 @@
         "widgetSubtitle": "No application selected",
         "noAppsLabel": "No applications found",
         "currentVersion": "Current",
-        "recommendedVersion": "Suggested",
+        "suggestedVersion": "Suggested",
         "anyVersion": "any"
     },
     "patchSelectorCard": {
@@ -91,7 +91,7 @@
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
+        "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",

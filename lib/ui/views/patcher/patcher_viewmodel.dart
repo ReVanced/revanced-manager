@@ -130,24 +130,24 @@ class PatcherViewModel extends BaseViewModel {
     return text;
   }
 
-  String getRecommendedVersionString(BuildContext context) {
-    String recommendedVersion =
-        _patcherAPI.getRecommendedVersion(selectedApp!.packageName);
-    if (recommendedVersion.isEmpty) {
-      recommendedVersion = FlutterI18n.translate(
+  String getSuggestedVersionString(BuildContext context) {
+    String suggestedVersion =
+        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+    if (suggestedVersion.isEmpty) {
+      suggestedVersion = FlutterI18n.translate(
         context,
         'appSelectorCard.anyVersion',
       );
     } else {
-      recommendedVersion = 'v$recommendedVersion';
+      suggestedVersion = 'v$suggestedVersion';
     }
     return '${FlutterI18n.translate(
       context,
       'appSelectorCard.currentVersion',
     )}: v${selectedApp!.version}\n${FlutterI18n.translate(
       context,
-      'appSelectorCard.recommendedVersion',
-    )}: $recommendedVersion';
+      'appSelectorCard.suggestedVersion',
+    )}: $suggestedVersion';
   }
 
   Future<void> loadLastSelectedPatches() async {

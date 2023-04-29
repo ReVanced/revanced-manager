@@ -310,7 +310,7 @@ class PatcherAPI {
     ShareExtend.share(log.path, 'file');
   }
 
-  String getRecommendedVersion(String packageName) {
+  String getSuggestedVersion(String packageName) {
     final Map<String, int> versions = {};
     for (final Patch patch in _patches) {
       final Package? package = patch.compatiblePackages.firstWhereOrNull(
