@@ -116,7 +116,13 @@ class HomeViewModel extends BaseViewModel {
 
   Future<bool> hasManagerUpdates() async {
     final String? latestVersion = await _managerAPI.getLatestManagerVersion();
-    final String currentVersion = await _managerAPI.getCurrentManagerVersion();
+    String currentVersion = await _managerAPI.getCurrentManagerVersion();
+
+    // add v to current version
+    if (!currentVersion.startsWith('v')) {
+      currentVersion = 'v$currentVersion';
+    }
+
     if (latestVersion != currentVersion) {
       return true;
     }
