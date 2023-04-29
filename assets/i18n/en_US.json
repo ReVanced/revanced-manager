@@ -13,6 +13,7 @@
         "settingsTab": "Settings"
     },
     "homeView": {
+        "refreshSuccess": "Refreshed successfully",
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?"
+        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?",
+        "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported. Proceed anyways?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "No application selected",
         "noAppsLabel": "No applications found",
         "currentVersion": "Current",
-        "recommendedVersion": "Recommended",
+        "suggestedVersion": "Suggested",
         "anyVersion": "any"
     },
     "patchSelectorCard": {
@@ -71,23 +73,25 @@
     "appSelectorView": {
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
+        "selectFromStorageButton": "Select from storage",
         "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application"
+        "errorMessage": "Unable to use selected application",
+        "downloadToast": "Download function is not available yet",
+        "featureNotAvailable": "Feature not implemented",
+        "featureNotAvailableText": "This feature has not been added yet for non-root. You'll need to select APK files from storage for now."
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
-        "recommended": "Recommended",
-        "recommendedTooltip": "Select all recommended patches",
-        "all": "All",
-        "allTooltip": "Select all patches",
+        "default": "Default",
+        "defaultTooltip": "Select all default patches",
         "none": "None",
         "noneTooltip": "Deselect all patches",
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
+        "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
@@ -151,6 +155,7 @@
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
+        "deleteKeystoreDialogText": "Are you sure you want to delete the keystore used to sign patched applications?",
         "deletedKeystore": "Keystore deleted",
         "deleteTempDirLabel": "Delete temporary files",
         "deleteTempDirHint": "Delete unused temporary files",
@@ -168,7 +173,17 @@
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
-        "deletedLogs": "Logs deleted"
+        "deletedLogs": "Logs deleted",
+        "exportKeystoreLabel": "Export keystore",
+        "exportKeystoreHint": "Export keystore used to sign apps",
+        "exportedKeystore": "Keystore exported",
+        "noKeystoreExportFileFound": "No keystore to export",
+        "importKeystoreLabel": "Import keystore",
+        "importKeystoreHint": "Import keystore used to sign apps",
+        "importedKeystore": "Keystore imported",
+        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file",
+        "selectKeystorePassword": "Keystore Password",
+        "selectKeystorePasswordHint": "Select keystore password used to sign the apk"
     },
     "appInfoView": {
         "widgetTitle": "App info",

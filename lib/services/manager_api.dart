@@ -11,6 +11,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
@@ -21,7 +22,11 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
+  String keystoreFile =
+      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
+  String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://releases.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
@@ -29,9 +34,14 @@ class ManagerAPI {
   String defaultIntegrationsRepo = 'revanced/revanced-integrations';
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
+  String? patchesVersion = '';
+  bool isDefaultPatchesRepo() {
+    return getPatchesRepo() == 'revanced/revanced-patches';
+  }
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    isRooted = await _rootAPI.isRooted();
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
@@ -114,6 +124,14 @@ class ManagerAPI {
     await _prefs.setBool('experimentalPatchesEnabled', value);
   }
 
+  Future<void> setKeystorePassword(String password) async {
+    await _prefs.setString('keystorePassword', password);
+  }
+
+  String getKeystorePassword() {
+    return _prefs.getString('keystorePassword') ?? defaultKeystorePassword;
+  }
+
   Future<void> deleteTempFolder() async {
     final Directory dir = Directory('/data/local/tmp/revanced-manager');
     if (await dir.exists()) {
@@ -123,7 +141,7 @@ class ManagerAPI {
 
   Future<void> deleteKeystore() async {
     final File keystore = File(
-      '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore',
+      keystoreFile,
     );
     if (await keystore.exists()) {
       await keystore.delete();
@@ -135,7 +153,9 @@ class ManagerAPI {
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
   }
 
-  Future<void> setPatchedApps(List<PatchedApplication> patchedApps) async {
+  Future<void> setPatchedApps(
+    List<PatchedApplication> patchedApps,
+  ) async {
     if (patchedApps.length > 1) {
       patchedApps.sort((a, b) => a.name.compareTo(b.name));
     }
@@ -237,15 +257,24 @@ class ManagerAPI {
   }
 
   Future<File?> downloadManager() async {
-    return await _revancedAPI.getLatestReleaseFile('.apk', defaultManagerRepo);
+    return await _revancedAPI.getLatestReleaseFile(
+      '.apk',
+      defaultManagerRepo,
+    );
   }
 
   Future<String?> getLatestPatcherReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime('.gz', defaultPatcherRepo);
+    return await _revancedAPI.getLatestReleaseTime(
+      '.gz',
+      defaultPatcherRepo,
+    );
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime('.apk', defaultManagerRepo);
+    return await _revancedAPI.getLatestReleaseTime(
+      '.apk',
+      defaultManagerRepo,
+    );
   }
 
   Future<String?> getLatestManagerVersion() async {
@@ -265,6 +294,19 @@ class ManagerAPI {
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
+  }
+
+  Future<String?> getCurrentPatchesVersion() async {
+    if (isDefaultPatchesRepo()) {
+      patchesVersion = await getLatestPatchesVersion();
+      // print('Patches version: $patchesVersion');
+      return patchesVersion ?? '0.0.0';
+    } else {
+      // fetch from github
+      patchesVersion =
+          await _githubAPI.getLastestReleaseVersion(getPatchesRepo());
+    }
+    return null;
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
@@ -359,8 +401,9 @@ class ManagerAPI {
           final int currentInstalledVersionInt = int.parse(
             currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''),
           );
-          final int currentSavedVersionInt =
-              int.parse(currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''));
+          final int currentSavedVersionInt = int.parse(
+            currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''),
+          );
           if (currentInstalledVersionInt > currentSavedVersionInt) {
             app.hasUpdates = true;
           }
@@ -383,7 +426,10 @@ class ManagerAPI {
     return !existsNonRoot;
   }
 
-  Future<bool> hasAppUpdates(String packageName, DateTime patchDate) async {
+  Future<bool> hasAppUpdates(
+    String packageName,
+    DateTime patchDate,
+  ) async {
     final List<String> commits = await _githubAPI.getCommits(
       packageName,
       getPatchesRepo(),
@@ -421,7 +467,10 @@ class ManagerAPI {
     return app != null && app.isSplit;
   }
 
-  Future<void> setSelectedPatches(String app, List<String> patches) async {
+  Future<void> setSelectedPatches(
+    String app,
+    List<String> patches,
+  ) async {
     final File selectedPatchesFile = File(storedPatchesFile);
     final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
     if (patches.isEmpty) {
@@ -432,9 +481,33 @@ class ManagerAPI {
     selectedPatchesFile.writeAsString(jsonEncode(patchesMap));
   }
 
+  // get default patches for app
+  Future<List<String>> getDefaultPatches() async {
+    final List<Patch> patches = await getPatches();
+    final List<String> defaultPatches = [];
+    if (areExperimentalPatchesEnabled() == false) {
+      defaultPatches.addAll(
+        patches
+            .where(
+              (element) =>
+                  element.excluded == false && isPatchSupported(element),
+            )
+            .map((p) => p.name),
+      );
+    } else {
+      defaultPatches.addAll(
+        patches
+            .where((element) => isPatchSupported(element))
+            .map((p) => p.name),
+      );
+    }
+    return defaultPatches;
+  }
+
   Future<List<String>> getSelectedPatches(String app) async {
     final Map<String, dynamic> patchesMap = await readSelectedPatchesFile();
-    return List.from(patchesMap.putIfAbsent(app, () => List.empty()));
+    final List<String> defaultPatches = await getDefaultPatches();
+    return List.from(patchesMap.putIfAbsent(app, () => defaultPatches));
   }
 
   Future<Map<String, dynamic>> readSelectedPatchesFile() async {

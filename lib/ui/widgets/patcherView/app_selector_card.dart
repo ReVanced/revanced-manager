@@ -63,7 +63,7 @@ class AppSelectorCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   locator<PatcherViewModel>()
-                      .getRecommendedVersionString(context),
+                      .getSuggestedVersionString(context),
                 ),
               ],
             ),
