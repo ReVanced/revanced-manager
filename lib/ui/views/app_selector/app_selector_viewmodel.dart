@@ -78,8 +78,7 @@ class AppSelectorViewModel extends BaseViewModel {
     locator<PatcherViewModel>().loadLastSelectedPatches();
   }
 
-  Future showSelectFromStorageDialog(
-      BuildContext context, ApplicationWithIcon app) async {
+  Future showSelectFromStorageDialog(BuildContext context) async {
     return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
@@ -133,19 +132,18 @@ class AppSelectorViewModel extends BaseViewModel {
               ],
             ),
           ),
+          const SizedBox(height: 10),
           CustomMaterialButton(
             isFilled: false,
-            onPressed: () => selectApp(app).then(
-              (_) {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            ),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
             label: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(width: 10),
-                I18nText('appSelectorView.continueAnywayButton'),
+                I18nText('cancelButton'),
               ],
             ),
           ),
