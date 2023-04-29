@@ -38,7 +38,7 @@
       }
     ],
     "@semantic-release/changelog",
-    "semantic-release-dart",
+    "semantic-release-flutter-plugin",
     [
       "@semantic-release/git",
       {
