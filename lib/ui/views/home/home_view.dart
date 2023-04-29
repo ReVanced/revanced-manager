@@ -17,6 +17,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       disposeViewModel: false,
+      fireOnViewModelReadyOnce: true,
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(

@@ -56,7 +56,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 ],
               ),
               FutureBuilder<bool>(
-                future: locator<HomeViewModel>().hasManagerUpdates(),
+                future: model.hasManagerUpdates(),
                 initialData: false,
                 builder: (context, snapshot) => Opacity(
                   opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
