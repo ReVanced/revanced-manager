@@ -117,7 +117,6 @@ class PatcherViewModel extends BaseViewModel {
         ),
       );
     } else {
-      // navigate To Installer
       navigateToInstaller();
     }
   }
