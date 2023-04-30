@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ReVanced Manager</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="tab_apps">Apps</string>
+    <string name="tab_sources">Sources</string>
+    <string name="no_sources_set">No sources set</string>
+    <string name="no_patched_apps_found">No patched apps found</string>
 </resources>
