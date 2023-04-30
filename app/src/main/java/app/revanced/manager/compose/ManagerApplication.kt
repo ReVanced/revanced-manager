@@ -16,7 +16,6 @@ class ManagerApplication: Application() {
                 preferencesModule,
                 repositoryModule,
                 serviceModule,
-                viewModelModule
             )
         }
     }

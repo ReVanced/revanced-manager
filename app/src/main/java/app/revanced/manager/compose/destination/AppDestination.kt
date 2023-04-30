@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 sealed interface Destination: Parcelable {
 
     @Parcelize
-    object Home: Destination
+    object Dashboard: Destination
 
-} // TODO: Add screens
+}
