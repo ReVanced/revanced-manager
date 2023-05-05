@@ -44,6 +44,8 @@ class MainActivity : FlutterActivity() {
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
+                    val keystorePassword = call.argument<String>("keystorePassword")
+
                     if (patchBundleFilePath != null &&
                         originalFilePath != null &&
                         inputFilePath != null &&
@@ -52,7 +54,8 @@ class MainActivity : FlutterActivity() {
                         integrationsPath != null &&
                         selectedPatches != null &&
                         cacheDirPath != null &&
-                        keyStoreFilePath != null
+                        keyStoreFilePath != null &&
+                        keystorePassword != null
                     ) {
                         runPatcher(
                             result,
@@ -64,7 +67,8 @@ class MainActivity : FlutterActivity() {
                             integrationsPath,
                             selectedPatches,
                             cacheDirPath,
-                            keyStoreFilePath
+                            keyStoreFilePath,
+                            keystorePassword
                         )
                     } else {
                         result.notImplemented()
@@ -85,7 +89,8 @@ class MainActivity : FlutterActivity() {
         integrationsPath: String,
         selectedPatches: List<String>,
         cacheDirPath: String,
-        keyStoreFilePath: String
+        keyStoreFilePath: String,
+        keystorePassword: String
     ) {
         val originalFile = File(originalFilePath)
         val inputFile = File(inputFilePath)
@@ -242,7 +247,7 @@ class MainActivity : FlutterActivity() {
                 // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
 
                 try {
-                    Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+                    Signer("ReVanced", keystorePassword).signApk(patchedFile, outFile, keyStoreFile)
                 } catch (e: Exception) {
                     //log to console
                     print("Error signing apk: ${e.message}")

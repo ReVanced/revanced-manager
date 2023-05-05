@@ -17,6 +17,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       disposeViewModel: false,
+      fireOnViewModelReadyOnce: true,
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
@@ -50,8 +51,9 @@ class HomeView extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       LatestCommitCard(
-                        onPressed: () =>
+                        onPressedManager: () =>
                             model.showUpdateConfirmationDialog(context),
+                        onPressedPatches: () => model.forceRefresh(context),
                       ),
                       const SizedBox(height: 23),
                       I18nText(

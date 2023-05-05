@@ -16,12 +16,12 @@ class UpdateConfirmationDialog extends StatelessWidget {
       expand: false,
       snap: true,
       snapSizes: const [0.5],
-      builder: (context, scrollController) => SingleChildScrollView(
+      builder: (_, scrollController) => SingleChildScrollView(
         controller: scrollController,
         child: SafeArea(
           child: FutureBuilder<Map<String, dynamic>?>(
             future: model.getLatestManagerRelease(),
-            builder: (context, snapshot) {
+            builder: (_, snapshot) {
               if (!snapshot.hasData) {
                 return const SizedBox(
                   height: 300,
@@ -45,7 +45,8 @@ class UpdateConfirmationDialog extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               I18nText(
                                 'homeView.updateDialogTitle',
@@ -62,12 +63,14 @@ class UpdateConfirmationDialog extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.new_releases_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary,
                                   ),
                                   const SizedBox(width: 8.0),
                                   Text(
-                                    snapshot.data!['tag_name'] ?? 'Unknown',
+                                    snapshot.data!['tag_name'] ??
+                                        'Unknown',
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500,
@@ -93,7 +96,8 @@ class UpdateConfirmationDialog extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 24.0, bottom: 12.0),
+                    padding:
+                        const EdgeInsets.only(left: 24.0, bottom: 12.0),
                     child: I18nText(
                       'homeView.updateChangelogTitle',
                       child: Text(
@@ -109,9 +113,12 @@ class UpdateConfirmationDialog extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 24.0),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondaryContainer,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Markdown(

@@ -8,9 +8,11 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 class LatestCommitCard extends StatefulWidget {
   const LatestCommitCard({
     Key? key,
-    required this.onPressed,
+    required this.onPressedManager,
+    required this.onPressedPatches,
   }) : super(key: key);
-  final Function() onPressed;
+  final Function() onPressedManager;
+  final Function() onPressedPatches;
 
   @override
   State<LatestCommitCard> createState() => _LatestCommitCardState();
@@ -21,66 +23,109 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomCard(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        // ReVanced Manager
+        CustomCard(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  I18nText('latestCommitCard.patcherLabel'),
-                  FutureBuilder<String?>(
-                    future: model.getLatestPatcherReleaseTime(),
-                    builder: (context, snapshot) => Text(
-                      snapshot.hasData && snapshot.data!.isNotEmpty
-                          ? FlutterI18n.translate(
-                              context,
-                              'latestCommitCard.timeagoLabel',
-                              translationParams: {'time': snapshot.data!},
-                            )
-                          : FlutterI18n.translate(
-                              context,
-                              'latestCommitCard.loadingLabel',
-                            ),
-                    ),
+                  Row(
+                    children: const <Widget>[
+                      Text('ReVanced Manager'),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: <Widget>[
+                      FutureBuilder<String?>(
+                        future: model.getLatestManagerReleaseTime(),
+                        builder: (context, snapshot) =>
+                            snapshot.hasData && snapshot.data!.isNotEmpty
+                                ? I18nText(
+                                    'latestCommitCard.timeagoLabel',
+                                    translationParams: {'time': snapshot.data!},
+                                  )
+                                : I18nText('latestCommitCard.loadingLabel'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
-              Row(
-                children: <Widget>[
-                  I18nText('latestCommitCard.managerLabel'),
-                  FutureBuilder<String?>(
-                    future: model.getLatestManagerReleaseTime(),
-                    builder: (context, snapshot) =>
-                        snapshot.hasData && snapshot.data!.isNotEmpty
-                            ? I18nText(
-                                'latestCommitCard.timeagoLabel',
-                                translationParams: {'time': snapshot.data!},
-                              )
-                            : I18nText('latestCommitCard.loadingLabel'),
+              FutureBuilder<bool>(
+                future: model.hasManagerUpdates(),
+                initialData: false,
+                builder: (context, snapshot) => Opacity(
+                  opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
+                  child: CustomMaterialButton(
+                    label: I18nText('updateButton'),
+                    onPressed: snapshot.hasData && snapshot.data!
+                        ? widget.onPressedManager
+                        : () => {},
                   ),
-                ],
+                ),
               ),
             ],
           ),
-          FutureBuilder<bool>(
-            future: locator<HomeViewModel>().hasManagerUpdates(),
-            initialData: false,
-            builder: (context, snapshot) => Opacity(
-              opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-              child: CustomMaterialButton(
-                label: I18nText('latestCommitCard.updateButton'),
-                onPressed: snapshot.hasData && snapshot.data!
-                    ? widget.onPressed
-                    : () => {},
+        ),
+
+        const SizedBox(height: 16),
+
+        // ReVanced Patches
+        CustomCard(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: const <Widget>[
+                      Text('ReVanced Patches'),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: <Widget>[
+                      FutureBuilder<String?>(
+                        future: model.getLatestPatcherReleaseTime(),
+                        builder: (context, snapshot) => Text(
+                          snapshot.hasData && snapshot.data!.isNotEmpty
+                              ? FlutterI18n.translate(
+                                  context,
+                                  'latestCommitCard.timeagoLabel',
+                                  translationParams: {'time': snapshot.data!},
+                                )
+                              : FlutterI18n.translate(
+                                  context,
+                                  'latestCommitCard.loadingLabel',
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
+              FutureBuilder<bool>(
+                future: locator<HomeViewModel>().hasPatchesUpdates(),
+                initialData: false,
+                builder: (context, snapshot) => Opacity(
+                  opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
+                  child: CustomMaterialButton(
+                    label: I18nText('updateButton'),
+                    onPressed: snapshot.hasData && snapshot.data!
+                        ? widget.onPressedPatches
+                        : () => {},
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
