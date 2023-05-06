@@ -1,6 +1,26 @@
 <resources>
     <string name="app_name">ReVanced Manager</string>
+    <string name="patcher">Patcher</string>
+    <string name="patches">Patches</string>
+    <string name="integrations">Integrations</string>
+    <string name="cli">CLI</string>
+    <string name="manager">Manager</string>
+
     <string name="dashboard">Dashboard</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+
+    <string name="search_apps">Search apps…</string>
+    <string name="loading_body">Loading…</string>
+
+    <string name="downloading_patches">Downloading patch bundle…</string>
+    <string name="downloading_integrations">Downloading Integrations…</string>
+
+    <string name="contributors">Contributors</string>
+    <string name="appearance">Appearance</string>
+    <string name="dynamic_color">Dynamic color</string>
+    <string name="theme">Theme</string>
+    <string name="storage">Storage</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_sources">Sources</string>
     <string name="no_sources_set">No sources set</string>

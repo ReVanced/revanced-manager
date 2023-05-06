@@ -6,24 +6,38 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import app.revanced.manager.compose.destination.Destination
 import app.revanced.manager.compose.domain.manager.PreferencesManager
+import app.revanced.manager.compose.ui.destination.Destination
+import app.revanced.manager.compose.ui.screen.AppSelectorScreen
 import app.revanced.manager.compose.ui.screen.DashboardScreen
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.compose.ui.theme.Theme
+import app.revanced.manager.compose.util.PM
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     private val prefs: PreferencesManager by inject()
+    private val mainScope = MainScope()
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         installSplashScreen()
+
+        val context = this
+        mainScope.launch(Dispatchers.IO) {
+            PM.loadApps(context)
+        }
+
         setContent {
             ReVancedManagerTheme(
                 darkTheme = prefs.theme == Theme.SYSTEM && isSystemInDarkTheme() || prefs.theme == Theme.DARK,
@@ -34,12 +48,18 @@ class MainActivity : ComponentActivity() {
                 NavBackHandler(navController)
 
                 AnimatedNavHost(
-                    controller = navController,
+                    controller = navController
                 ) { destination ->
                     when (destination) {
-                        is Destination.Dashboard -> {
-                            DashboardScreen()
-                        }
+
+                        is Destination.Dashboard -> { DashboardScreen(
+                            onAppSelectorClick = { navController.navigate(Destination.AppSelector) }
+                        ) }
+
+                        is Destination.AppSelector -> AppSelectorScreen(
+                            onBackClick = { navController.pop() }
+                        )
+
                     }
                 }
             }

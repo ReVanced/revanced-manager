@@ -1,4 +1,4 @@
-package app.revanced.manager.compose.installer.service
+package app.revanced.manager.compose.service
 
 import android.app.Service
 import android.content.Intent
@@ -6,14 +6,14 @@ import android.content.pm.PackageInstaller
 import android.os.Build
 import android.os.IBinder
 
-class InstallService : Service() {
+class UninstallService : Service() {
 
     override fun onStartCommand(
-        intent: Intent, flags: Int, startId: Int
+        intent: Intent,
+        flags: Int,
+        startId: Int
     ): Int {
-        val extraStatus = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)
-        val extraStatusMessage = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
-        when (extraStatus) {
+        when (intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)) {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
                 startActivity(if (Build.VERSION.SDK_INT >= 33) {
                     intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
@@ -25,9 +25,7 @@ class InstallService : Service() {
             }
             else -> {
                 sendBroadcast(Intent().apply {
-                    action = APP_INSTALL_ACTION
-                    putExtra(EXTRA_INSTALL_STATUS, extraStatus)
-                    putExtra(EXTRA_INSTALL_STATUS_MESSAGE, extraStatusMessage)
+                    action = APP_UNINSTALL_ACTION
                 })
             }
         }
@@ -38,10 +36,7 @@ class InstallService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     companion object {
-        const val APP_INSTALL_ACTION = "APP_INSTALL_ACTION"
-
-        const val EXTRA_INSTALL_STATUS = "EXTRA_INSTALL_STATUS"
-        const val EXTRA_INSTALL_STATUS_MESSAGE = "EXTRA_INSTALL_STATUS_MESSAGE"
+        const val APP_UNINSTALL_ACTION = "APP_UNINSTALL_ACTION"
     }
 
 }
