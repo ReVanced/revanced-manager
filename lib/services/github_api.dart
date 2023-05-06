@@ -7,13 +7,12 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:revanced_manager/models/patch.dart';
 
 @lazySingleton
 class GithubAPI {
   late Dio _dio = Dio();
-  
+
   final _cacheOptions = CacheOptions(
     store: MemCacheStore(),
     maxStale: const Duration(days: 1),
@@ -33,22 +32,6 @@ class GithubAPI {
 
   Future<void> initialize(String repoUrl) async {
     try {
-      if (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) {
-        final CronetEngine androidCronetEngine = await CronetEngine.build(
-          userAgent: 'ReVanced Manager',
-          enableBrotli: true,
-          enableQuic: true,
-        );
-        _dio.httpClientAdapter =
-            NativeAdapter(androidCronetEngine: androidCronetEngine);
-
-        _dio = Dio(
-          BaseOptions(
-            baseUrl: repoUrl,
-          ),
-        );
-      }
-
       _dio = Dio(
         BaseOptions(
           baseUrl: repoUrl,
@@ -126,8 +109,7 @@ class GithubAPI {
     String repoName,
   ) async {
     try {
-      final Map<String, dynamic>? release =
-          await getLatestRelease(repoName);
+      final Map<String, dynamic>? release = await getLatestRelease(repoName);
       if (release != null) {
         final Map<String, dynamic>? asset =
             (release['assets'] as List<dynamic>).firstWhereOrNull(
@@ -166,8 +148,7 @@ class GithubAPI {
 
   Future<String> getLastestReleaseVersion(String repoName) async {
     try {
-      final Map<String, dynamic>? release =
-          await getLatestRelease(repoName);
+      final Map<String, dynamic>? release = await getLatestRelease(repoName);
       if (release != null) {
         return release['tag_name'];
       } else {

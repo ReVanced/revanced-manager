@@ -8,9 +8,7 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:revanced_manager/models/patch.dart';
-import 'package:revanced_manager/utils/check_for_gms.dart';
 import 'package:timeago/timeago.dart';
 
 @lazySingleton
@@ -25,34 +23,12 @@ class RevancedAPI {
 
   Future<void> initialize(String apiUrl) async {
     try {
-      final bool isGMSInstalled = await checkForGMS();
+      _dio = Dio(
+        BaseOptions(
+          baseUrl: apiUrl,
+        ),
+      );
 
-      if (!isGMSInstalled) {
-        _dio = Dio(
-          BaseOptions(
-            baseUrl: apiUrl,
-          ),
-        );
-        log('ReVanced API: Using default engine + $isGMSInstalled');
-      } else {
-        if (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) {
-          final CronetEngine androidCronetEngine = await CronetEngine.build(
-            userAgent: 'ReVanced Manager',
-            enableBrotli: true,
-            enableQuic: true,
-          );
-          _dio.httpClientAdapter =
-              NativeAdapter(androidCronetEngine: androidCronetEngine);
-
-          _dio = Dio(
-            BaseOptions(
-              baseUrl: apiUrl,
-            ),
-          );
-        }
-
-        log('ReVanced API: Using CronetEngine + $isGMSInstalled');
-      }
       _dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
     } on Exception catch (e) {
       if (kDebugMode) {

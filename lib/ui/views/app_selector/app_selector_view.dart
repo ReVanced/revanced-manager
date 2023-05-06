@@ -78,7 +78,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
               child: model.noApps
                   ? Center(
                       child: I18nText(
-                        'appSelectorView.noApps',
+                        'appSelectorView.noAppsLabel',
                         child: Text(
                           '',
                           style: TextStyle(
