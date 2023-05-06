@@ -46,28 +46,28 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.paging:paging-common-ktx:3.1.1")
 
     // Compose
-    implementation(platform("androidx.compose:compose-bom:2023.04.01"))
+    implementation(platform("androidx.compose:compose-bom:2023.05.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.paging:paging-common-ktx:3.1.1")
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.material3:material3:1.1.0-rc01")
 
     // Accompanist
-    val accompanistVersion = "0.30.1"
-    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    //val accompanistVersion = "0.30.1"
+    //implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
+    //implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
+    // Coil (async image loading, network image)
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
     // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-
-    // Material 3
-    implementation("androidx.compose.material3:material3")
-
 
     // ReVanced
     implementation("app.revanced:revanced-patcher:7.0.0")
@@ -86,4 +86,5 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
 }

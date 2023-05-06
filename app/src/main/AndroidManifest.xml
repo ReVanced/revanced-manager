@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".installer.service.InstallService" />
-        <service android:name=".installer.service.UninstallService" />
+        <service android:name=".service.InstallService" />
+        <service android:name=".service.UninstallService" />
     </application>
 </manifest>
