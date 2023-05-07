@@ -129,8 +129,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       ),
                     )
                   : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0)
-                          .copyWith(bottom: 80),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 12.0).copyWith(
+                        bottom: MediaQuery.of(context).viewPadding.bottom + 8.0,
+                      ),
                       child: Column(
                         children: [
                           Row(

@@ -92,7 +92,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                       ? const AppSkeletonLoader()
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0)
-                              .copyWith(bottom: 80),
+                              .copyWith(
+                            bottom:
+                                MediaQuery.of(context).viewPadding.bottom + 8.0,
+                          ),
                           child: Column(
                             children: [
                               ...model
