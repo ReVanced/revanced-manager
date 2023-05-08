@@ -45,7 +45,7 @@ class HomeViewModel extends BaseViewModel {
     _latestManagerVersion = await AboutInfo.getInfo().then(
       (value) => value.keys.contains('version') ? value['version']! : '',
     );
-    _latestManagerVersion = await _managerAPI.getCurrentManagerVersion();
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
