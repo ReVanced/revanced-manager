@@ -137,7 +137,6 @@ class AppSelectorViewModel extends BaseViewModel {
             isFilled: false,
             onPressed: () {
               Navigator.pop(context);
-              Navigator.pop(context);
             },
             label: Row(
               mainAxisAlignment: MainAxisAlignment.center,
