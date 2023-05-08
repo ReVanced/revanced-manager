@@ -1,5 +1,4 @@
 buildscript {
-    ext.cronetVersion = '102.5005.125'
     ext.kotlin_version = '1.7.10'
     repositories {
         google()

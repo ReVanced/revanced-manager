@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.0.0+100000000
+version: 1.1.0+100100000
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -56,7 +56,6 @@ dependencies:
   package_info_plus: ^3.0.3
   path_provider: ^2.0.14
   permission_handler: ^10.2.0
-  native_dio_adapter: ^0.1.0
   pull_to_refresh: ^2.0.0
   root:
     git:

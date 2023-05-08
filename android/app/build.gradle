@@ -73,15 +73,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // ReVanced
-    implementation "app.revanced:revanced-patcher:7.0.0"
+    implementation "app.revanced:revanced-patcher:7.1.1"
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android.tools.build:apksig:7.2.2")
-
-    // MicroG cronet
-    implementation("org.microg:cronet-common:$cronetVersion")
-    implementation("org.microg:cronet-native:$cronetVersion")
 
     // Core libraries
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'

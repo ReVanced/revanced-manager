@@ -86,13 +86,11 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   Future<void> showArmv7WarningDialog(BuildContext context) async {
-    final bool armv7 = await AboutInfo.getInfo().then(
-      (info) =>
-          info['arch'] != null &&
-          info['arch']!.contains('armeabi-v7a') &&
-          !info['arch']!.contains('arm64-v8a'),
-    );
-
+    final bool armv7 = await AboutInfo.getInfo().then((info) {
+      final List<String> archs = info['arch'];
+      final supportedAbis = ['arm64-v8a', 'x86', 'x86_64'];
+      return !archs.any((arch) => supportedAbis.contains(arch));
+    });
     if (context.mounted && armv7) {
       return showDialog(
         context: context,
