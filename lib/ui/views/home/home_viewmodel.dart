@@ -42,9 +42,6 @@ class HomeViewModel extends BaseViewModel {
   String? _latestManagerVersion = '';
 
   Future<void> initialize(BuildContext context) async {
-    _latestManagerVersion = await AboutInfo.getInfo().then(
-      (value) => value.keys.contains('version') ? value['version']! : '',
-    );
     _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
@@ -296,6 +293,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<String?> getLatestManagerReleaseTime() {
+    return _managerAPI.getLatestManagerReleaseTime();
+  }
+
+  Future<String?> getLatestManagerVersion() {
     return _managerAPI.getLatestManagerReleaseTime();
   }
 
