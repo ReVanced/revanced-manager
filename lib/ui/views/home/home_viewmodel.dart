@@ -296,10 +296,6 @@ class HomeViewModel extends BaseViewModel {
     return _managerAPI.getLatestManagerReleaseTime();
   }
 
-  Future<String?> getLatestManagerVersion() {
-    return _managerAPI.getLatestManagerReleaseTime();
-  }
-
   Future<void> forceRefresh(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 1));
     if (_lastUpdate == null ||
