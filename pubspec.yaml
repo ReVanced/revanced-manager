@@ -16,8 +16,8 @@ dependencies:
   cross_connectivity: ^3.0.5
   cr_file_saver:
     git:
-      url: https://github.com/dhruvanbhalara/cr_file_saver.git
-      ref: a08326ecb48f581b4b09e2e2665d31ed1704c7af
+      url: https://github.com/dhruvanbhalara/cr_file_saver
+      ref: "fix/incorrect_file_name"
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
