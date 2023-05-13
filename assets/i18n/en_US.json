@@ -50,7 +50,7 @@
         "patchButton": "Patch",
         "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?",
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
-        "versionWarningDialogText": "Patching this version is not recomended and might fail. Proceed anyways?"
+        "versionWarningDialogText": "Patching this version is not recommended and might fail. Proceed anyways?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
