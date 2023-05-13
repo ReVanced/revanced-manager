@@ -111,16 +111,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                           model.getSuggestedVersion(
                                         app.packageName,
                                       ),
-                                      onTap: () {
-                                        model.isRooted
-                                            ? model.selectApp(app).then(
-                                                  (_) => Navigator.of(context)
-                                                      .pop(),
-                                                )
-                                            : model.showSelectFromStorageDialog(
-                                                context,
-                                              );
-                                      },
+                                      onTap: () => model.canSelectInstalled(context, app.packageName),
                                     ),
                                   )
                                   .toList(),

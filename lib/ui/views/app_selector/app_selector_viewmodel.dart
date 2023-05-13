@@ -65,6 +65,14 @@ class AppSelectorViewModel extends BaseViewModel {
     return _patcherAPI.getSuggestedVersion(packageName);
   }
 
+  Future<bool> checkSplitApk(String packageName) async {
+    final app = await DeviceApps.getApp(packageName);
+    if (app != null) {
+      return app.isSplit;
+    }
+    return true;
+  }
+
   Future<void> selectApp(ApplicationWithIcon application) async {
     locator<PatcherViewModel>().selectedApp = PatchedApplication(
       name: application.appName,
@@ -76,6 +84,22 @@ class AppSelectorViewModel extends BaseViewModel {
       patchDate: DateTime.now(),
     );
     locator<PatcherViewModel>().loadLastSelectedPatches();
+  }
+
+  Future<void> canSelectInstalled(
+    BuildContext context,
+    String packageName,
+  ) async {
+    final app =
+        await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
+    if (app != null) {
+      if (await checkSplitApk(packageName) && !isRooted) {
+        return showSelectFromStorageDialog(context);
+      } else if (!await checkSplitApk(packageName) || isRooted) {
+        selectApp(app);
+        Navigator.pop(context);
+      }
+    }
   }
 
   Future showSelectFromStorageDialog(BuildContext context) async {
