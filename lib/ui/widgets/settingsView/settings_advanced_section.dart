@@ -5,6 +5,7 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_api_url.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_bypass_storage_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
@@ -25,6 +26,7 @@ class SAdvancedSection extends StatelessWidget {
         // SManageKeystorePasswordUI(),
         SExperimentalUniversalPatches(),
         SExperimentalPatches(),
+        SBypassStorageDialog(),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(

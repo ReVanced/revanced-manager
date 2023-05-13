@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:device_apps/device_apps.dart';
@@ -93,11 +95,13 @@ class AppSelectorViewModel extends BaseViewModel {
     final app =
         await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
     if (app != null) {
-      if (await checkSplitApk(packageName) && !isRooted) {
-        return showSelectFromStorageDialog(context);
-      } else if (!await checkSplitApk(packageName) || isRooted) {
+      if (!await checkSplitApk(packageName) ||
+          isRooted ||
+          _managerAPI.getBypassSelectFromStorage()) {
         selectApp(app);
         Navigator.pop(context);
+      } else if (await checkSplitApk(packageName) && !isRooted) {
+        return showSelectFromStorageDialog(context);
       }
     }
   }

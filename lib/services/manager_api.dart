@@ -108,6 +108,14 @@ class ManagerAPI {
     await _prefs.setBool('useDarkTheme', value);
   }
 
+  Future<void> setBypassSelectFromStorage(bool value) async {
+    await _prefs.setBool('bypassSelectFromStorage', value);
+  }
+
+  bool getBypassSelectFromStorage() {
+    return _prefs.getBool('bypassSelectFromStorage') ?? false;
+  }
+
   bool areUniversalPatchesEnabled() {
     return _prefs.getBool('universalPatchesEnabled') ?? false;
   }

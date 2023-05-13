@@ -152,6 +152,8 @@
         "exportSectionTitle": "Import & export",
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
+        "bypassSelectFromStorageLabel": "Ignore root requirement for selecting split APK",
+        "bypassSelectFromStorageHint": "Don't display the dialog requiring root on split apk and select the application.",
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
