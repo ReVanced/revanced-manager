@@ -116,7 +116,8 @@ class PatcherViewModel extends BaseViewModel {
         ),
       );
     } else if (_patcherAPI.getSuggestedVersion(selectedApp!.packageName) !=
-        selectedApp!.version) {
+            selectedApp!.version &&
+        !_managerAPI.areExperimentalPatchesEnabled()) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
