@@ -36,24 +36,24 @@ android {
 
     buildFeatures.compose = true
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.4.6"
+    composeOptions.kotlinCompilerExtensionVersion = "1.4.7"
 }
 
 dependencies {
 
     // AndroidX Core
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.activity:activity-compose:1.7.1")
     implementation("androidx.paging:paging-common-ktx:3.1.1")
 
     // Compose
-    implementation(platform("androidx.compose:compose-bom:2023.05.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.05.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.compose.material3:material3:1.1.0-rc01")
+    implementation("androidx.compose.material3:material3")
 
     // Accompanist
     //val accompanistVersion = "0.30.1"
@@ -64,7 +64,7 @@ dependencies {
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // Coil (async image loading, network image)
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.3.0")
 
     // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
