@@ -87,13 +87,17 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   Future<void> showWarningDialogs(BuildContext context) async {
-    final bool armv7 = await AboutInfo.getInfo().then((info) {
+    bool armv7 = await AboutInfo.getInfo().then((info) {
       final List<String> archs = info['arch'];
       final supportedAbis = ['arm64-v8a', 'x86', 'x86_64'];
       return !archs.any((arch) => supportedAbis.contains(arch));
     });
-    if (context.mounted && armv7) {
-      return showDialog(
+    bool correctVer =
+        _patcherAPI.getSuggestedVersion(selectedApp!.packageName) ==
+                selectedApp!.version &&
+            _managerAPI.areExperimentalPatchesEnabled();
+    if (context.mounted && !armv7) {
+      await showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('warning'),
@@ -109,16 +113,15 @@ class PatcherViewModel extends BaseViewModel {
               isFilled: false,
               onPressed: () {
                 Navigator.of(context).pop();
-                navigateToInstaller();
+                armv7 = true;
               },
             )
           ],
         ),
       );
-    } else if (_patcherAPI.getSuggestedVersion(selectedApp!.packageName) !=
-            selectedApp!.version &&
-        !_managerAPI.areExperimentalPatchesEnabled()) {
-      return showDialog(
+    }
+    if (!correctVer) {
+      await showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('warning'),
@@ -134,14 +137,17 @@ class PatcherViewModel extends BaseViewModel {
               isFilled: false,
               onPressed: () {
                 Navigator.of(context).pop();
-                navigateToInstaller();
+                correctVer = true;
               },
             )
           ],
         ),
       );
-    } else {
-      navigateToInstaller();
+    }
+    if (correctVer) {
+      if (armv7) {
+        navigateToInstaller();
+      }
     }
   }
 
