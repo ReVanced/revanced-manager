@@ -55,9 +55,10 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> showPatchConfirmationDialog(BuildContext context) async {
     final bool isValid = await isValidPatchConfig();
+
     if (context.mounted) {
       if (isValid) {
-        showArmv7WarningDialog(context);
+        showWarningDialogs(context);
       } else {
         return showDialog(
           context: context,
@@ -75,7 +76,7 @@ class PatcherViewModel extends BaseViewModel {
                 isFilled: false,
                 onPressed: () {
                   Navigator.of(context).pop();
-                  showArmv7WarningDialog(context);
+                  showWarningDialogs(context);
                 },
               )
             ],
@@ -85,7 +86,7 @@ class PatcherViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> showArmv7WarningDialog(BuildContext context) async {
+  Future<void> showWarningDialogs(BuildContext context) async {
     final bool armv7 = await AboutInfo.getInfo().then((info) {
       final List<String> archs = info['arch'];
       final supportedAbis = ['arm64-v8a', 'x86', 'x86_64'];
@@ -98,6 +99,30 @@ class PatcherViewModel extends BaseViewModel {
           title: I18nText('warning'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('patcherView.armv7WarningDialogText'),
+          actions: <Widget>[
+            CustomMaterialButton(
+              label: I18nText('noButton'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            CustomMaterialButton(
+              label: I18nText('yesButton'),
+              isFilled: false,
+              onPressed: () {
+                Navigator.of(context).pop();
+                navigateToInstaller();
+              },
+            )
+          ],
+        ),
+      );
+    } else if (_patcherAPI.getSuggestedVersion(selectedApp!.packageName) !=
+        selectedApp!.version) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('warning'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText('patcherView.versionWarningDialogText'),
           actions: <Widget>[
             CustomMaterialButton(
               label: I18nText('noButton'),
