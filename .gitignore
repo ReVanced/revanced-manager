@@ -139,3 +139,6 @@ app.*.map.json
 
 # Dependency directories
 node_modules/
+
+# FVM
+.fvm

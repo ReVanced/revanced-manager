@@ -39,9 +39,9 @@ class SocialMediaWidget extends StatelessWidget {
       ),
       expanded: Padding(
         padding: padding ?? EdgeInsets.zero,
-        child: CustomCard(
+        child: const CustomCard(
           child: Column(
-            children: const <Widget>[
+            children: <Widget>[
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.github),
                 title: Text('GitHub'),
