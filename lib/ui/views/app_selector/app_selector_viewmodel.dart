@@ -100,7 +100,7 @@ class AppSelectorViewModel extends BaseViewModel {
           _managerAPI.getBypassSelectFromStorage()) {
         selectApp(app);
         Navigator.pop(context);
-      } else if (await checkSplitApk(packageName) && !isRooted) {
+      } else {
         return showSelectFromStorageDialog(context);
       }
     }
