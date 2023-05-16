@@ -94,7 +94,7 @@ class PatcherViewModel extends BaseViewModel {
     });
     bool correctVer =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName) ==
-                selectedApp!.version &&
+                selectedApp!.version ||
             _managerAPI.areExperimentalPatchesEnabled();
     if (context.mounted && !armv7) {
       await showDialog(
@@ -144,10 +144,8 @@ class PatcherViewModel extends BaseViewModel {
         ),
       );
     }
-    if (correctVer) {
-      if (armv7) {
-        navigateToInstaller();
-      }
+    if (correctVer && armv7) {
+      navigateToInstaller();
     }
   }
 
