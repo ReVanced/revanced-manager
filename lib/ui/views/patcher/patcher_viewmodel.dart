@@ -94,9 +94,7 @@ class PatcherViewModel extends BaseViewModel {
     });
     bool correctVer =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName) ==
-                selectedApp!.version ||
-            _managerAPI.areExperimentalPatchesEnabled() ||
-            _managerAPI.areUniversalPatchesEnabled();
+            selectedApp!.version;
     if (context.mounted && !armv7) {
       await showDialog(
         context: context,
