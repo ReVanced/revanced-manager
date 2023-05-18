@@ -9,7 +9,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
+import app.revanced.manager.compose.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -60,8 +62,8 @@ fun ReVancedManagerTheme(
     )
 }
 
-enum class Theme(val displayName: String) {
-    SYSTEM("System"),
-    LIGHT("Light"),
-    DARK("Dark");
+enum class Theme(val displayName: Int) {
+    SYSTEM(R.string.system),
+    LIGHT(R.string.light),
+    DARK(R.string.dark);
 }

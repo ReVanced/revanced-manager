@@ -11,4 +11,7 @@ sealed interface Destination: Parcelable {
     @Parcelize
     object AppSelector: Destination
 
+    @Parcelize
+    object Settings: Destination
+
 }

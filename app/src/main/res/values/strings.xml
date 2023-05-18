@@ -8,21 +8,55 @@
 
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
-    <string name="about">About</string>
+    <string name="select_app">Select an app</string>
+    <string name="select_patches">Select patches</string>
 
+    <string name="general">General</string>
+    <string name="general_description">General settings</string>
+    <string name="updates">Updates</string>
+    <string name="updates_description">Updates for ReVanced Manager</string>
+    <string name="downloads">Downloads</string>
+    <string name="downloads_description">Manage downloaded content</string>
+    <string name="import_export">Import &amp; export</string>
+    <string name="import_export_description">Import and export settings</string>
+    <string name="about">About</string>
+    <string name="about_description">About ReVanced</string>
+
+    <string name="contributors">Contributors</string>
+    <string name="contributors_description">View the contributors of ReVanced</string>
+    <string name="dynamic_color">Dynamic color</string>
+    <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
+    <string name="theme">Theme</string>
+    <string name="theme_description">Choose between light or dark theme</string>
+    <string name="import_keystore">Import keystore</string>
+    <string name="import_keystore_descripion">Import a custom keystore</string>
+    <string name="export_keystore">Export keystore</string>
+    <string name="export_keystore_description">Export the current keystore</string>
+    
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
-
     <string name="downloading_patches">Downloading patch bundle…</string>
     <string name="downloading_integrations">Downloading Integrations…</string>
 
-    <string name="contributors">Contributors</string>
+    <string name="options">Options</string>
+    <string name="ok">OK</string>
+    <string name="patch">Patch</string>
+    <string name="select_from_storage">Select from storage</string>
+    <string name="search">Search</string>
+    <string name="apply">Apply</string>
+    <string name="help">Help</string>
+    <string name="back">Back</string>
+    <string name="add">Add</string>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
-    <string name="dynamic_color">Dynamic color</string>
-    <string name="theme">Theme</string>
+    <string name="signing">Signing</string>
     <string name="storage">Storage</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_sources">Sources</string>
     <string name="no_sources_set">No sources set</string>
     <string name="no_patched_apps_found">No patched apps found</string>
+    <string name="unsupported_app">Unsupported app</string>
+    <string name="app_not_supported">Some of the patches do not support this app version (%s). The patches only support the following versions: %s.</string>
 </resources>
