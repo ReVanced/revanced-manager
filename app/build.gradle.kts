@@ -56,10 +56,10 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     // Accompanist
-    //val accompanistVersion = "0.30.1"
+    val accompanistVersion = "0.30.1"
     //implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
-    //implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 

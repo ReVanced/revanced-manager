@@ -10,6 +10,7 @@ import app.revanced.manager.compose.domain.manager.PreferencesManager
 import app.revanced.manager.compose.ui.destination.Destination
 import app.revanced.manager.compose.ui.screen.AppSelectorScreen
 import app.revanced.manager.compose.ui.screen.DashboardScreen
+import app.revanced.manager.compose.ui.screen.SettingsScreen
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.compose.ui.theme.Theme
 import app.revanced.manager.compose.util.PM
@@ -52,11 +53,17 @@ class MainActivity : ComponentActivity() {
                 ) { destination ->
                     when (destination) {
 
-                        is Destination.Dashboard -> { DashboardScreen(
+                        is Destination.Dashboard -> DashboardScreen(
+                            onSettingsClick = { navController.navigate(Destination.Settings) },
                             onAppSelectorClick = { navController.navigate(Destination.AppSelector) }
-                        ) }
+                        )
+
+                        is Destination.Settings -> SettingsScreen(
+                            onBackClick = { navController.pop() }
+                        )
 
                         is Destination.AppSelector -> AppSelectorScreen(
+                            onAppClick = {  },
                             onBackClick = { navController.pop() }
                         )
 
