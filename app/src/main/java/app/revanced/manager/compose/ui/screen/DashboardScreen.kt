@@ -7,14 +7,21 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Source
+import androidx.compose.material.icons.outlined.Topic
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -22,6 +29,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.compose.R
@@ -31,35 +39,33 @@ import kotlinx.coroutines.launch
 
 enum class DashboardPage(
     val titleResId: Int,
+    val icon: ImageVector
 ) {
-    DASHBOARD(R.string.tab_apps),
-    SOURCES(R.string.tab_sources),
+    DASHBOARD(R.string.tab_apps, Icons.Outlined.Apps),
+    SOURCES(R.string.tab_sources, Icons.Outlined.Source),
 }
-
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    onAppSelectorClick: () -> Unit
+    onAppSelectorClick: () -> Unit,
+    onSettingsClick: () -> Unit
 ) {
     val pages: Array<DashboardPage> = DashboardPage.values()
 
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
-    AppScaffold(
+    Scaffold(
         topBar = {
             AppTopBar(
-                title = "ReVanced Manager",
+                title = stringResource(R.string.app_name),
                 actions = {
                     IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Outlined.Info, contentDescription = null)
+                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
                     }
-                    IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Outlined.Notifications, contentDescription = null)
-                    }
-                    IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                     }
                 }
             )
@@ -70,7 +76,7 @@ fun DashboardScreen(
                     onAppSelectorClick()
             }
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                Icon(Icons.Default.Add, stringResource(R.string.add))
             }
         }
     ) { paddingValues ->
@@ -80,13 +86,13 @@ fun DashboardScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
                 pages.forEachIndexed { index, page ->
-                    val title = stringResource(id = page.titleResId)
                     Tab(
                         selected = pagerState.currentPage == index,
                         onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                        text = { Text(text = title) },
+                        text = { Text(stringResource(page.titleResId)) },
+                        icon = { Icon(page.icon, null) },
                         selectedContentColor = MaterialTheme.colorScheme.primary,
-                        unselectedContentColor = MaterialTheme.colorScheme.onSurface,
+                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -95,7 +101,6 @@ fun DashboardScreen(
                 pageCount = pages.size,
                 state = pagerState,
                 userScrollEnabled = true,
-                contentPadding = paddingValues,
                 pageContent = { index ->
                     when (pages[index]) {
                         DashboardPage.DASHBOARD -> {
