@@ -14,4 +14,7 @@ sealed interface Destination: Parcelable {
     @Parcelize
     object Settings: Destination
 
+    @Parcelize
+    object PatchesSelector: Destination
+
 }

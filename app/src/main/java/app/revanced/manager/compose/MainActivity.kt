@@ -10,6 +10,7 @@ import app.revanced.manager.compose.domain.manager.PreferencesManager
 import app.revanced.manager.compose.ui.destination.Destination
 import app.revanced.manager.compose.ui.screen.AppSelectorScreen
 import app.revanced.manager.compose.ui.screen.DashboardScreen
+import app.revanced.manager.compose.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.compose.ui.screen.SettingsScreen
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.compose.ui.theme.Theme
@@ -63,7 +64,11 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.AppSelector -> AppSelectorScreen(
-                            onAppClick = {  },
+                            onAppClick = { navController.navigate(Destination.PatchesSelector) },
+                            onBackClick = { navController.pop() }
+                        )
+
+                        is Destination.PatchesSelector -> PatchesSelectorScreen(
                             onBackClick = { navController.pop() }
                         )
 
