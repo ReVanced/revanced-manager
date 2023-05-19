@@ -34,28 +34,36 @@ class ManagerAPI(
         downloadProgress = null
     }
 
-    suspend fun downloadPatchBundle() {
+    suspend fun downloadPatchBundle(): File? {
         try {
             val downloadUrl = revancedRepository.findAsset(ghPatches, ".jar").downloadUrl
             val patchesFile = app.filesDir.resolve("patch-bundles").also { it.mkdirs() }
                 .resolve("patchbundle.jar")
             downloadAsset(downloadUrl, patchesFile)
+
+            return patchesFile
         } catch (e: Exception) {
             Log.e(tag, "Failed to download patch bundle", e)
             app.toast("Failed to download patch bundle")
         }
+
+        return null
     }
 
-    suspend fun downloadIntegrations() {
+    suspend fun downloadIntegrations(): File? {
         try {
             val downloadUrl = revancedRepository.findAsset(ghIntegrations, ".apk").downloadUrl
             val integrationsFile = app.filesDir.resolve("integrations").also { it.mkdirs() }
                 .resolve("integrations.apk")
             downloadAsset(downloadUrl, integrationsFile)
+
+            return integrationsFile
         } catch (e: Exception) {
             Log.e(tag, "Failed to download integrations", e)
             app.toast("Failed to download integrations")
         }
+
+        return null
     }
 }
 

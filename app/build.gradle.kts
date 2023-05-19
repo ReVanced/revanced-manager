@@ -30,6 +30,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    packagingOptions {
+        resources {
+            excludes += "/prebuilt/**"
+        }
+    }
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -43,10 +50,12 @@ dependencies {
 
     // AndroidX Core
     implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.activity:activity-compose:1.7.1")
     implementation("androidx.paging:paging-common-ktx:3.1.1")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Compose
     implementation(platform("androidx.compose:compose-bom:2023.05.01"))
@@ -70,11 +79,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:7.0.0")
+    implementation("app.revanced:revanced-patcher:7.1.0")
 
     // Koin
-    implementation("io.insert-koin:koin-android:3.4.0")
+    val koinVersion = "3.4.0"
+    implementation("io.insert-koin:koin-android:$koinVersion")
     implementation("io.insert-koin:koin-androidx-compose:3.4.4")
+    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
 
     // Compose Navigation
     implementation("dev.olshevski.navigation:reimagined:1.4.0")

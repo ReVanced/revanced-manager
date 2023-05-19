@@ -58,5 +58,15 @@
     <string name="no_sources_set">No sources set</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="unsupported_app">Unsupported app</string>
+    <string name="unsupported_patches">Unsupported patches</string>
     <string name="app_not_supported">Some of the patches do not support this app version (%s). The patches only support the following versions: %s.</string>
+
+    <string name="installer">Installer</string>
+
+    <string name="patcher_step_group_prepare">Preparation</string>
+    <string name="patcher_step_unpack">Unpack Apk</string>
+    <string name="patcher_step_integrations">Merge Integrations</string>
+    <string name="patcher_step_group_patching">Patching</string>
+    <string name="patcher_step_group_saving">Saving</string>
+    <string name="patcher_step_write_patched">Write patched Apk</string>
 </resources>

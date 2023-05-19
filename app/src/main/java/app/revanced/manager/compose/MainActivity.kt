@@ -12,6 +12,7 @@ import app.revanced.manager.compose.ui.screen.AppSelectorScreen
 import app.revanced.manager.compose.ui.screen.DashboardScreen
 import app.revanced.manager.compose.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.compose.ui.screen.SettingsScreen
+import app.revanced.manager.compose.ui.screen.InstallerScreen
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.compose.ui.theme.Theme
 import app.revanced.manager.compose.util.PM
@@ -24,6 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
     private val prefs: PreferencesManager by inject()
@@ -53,7 +56,6 @@ class MainActivity : ComponentActivity() {
                     controller = navController
                 ) { destination ->
                     when (destination) {
-
                         is Destination.Dashboard -> DashboardScreen(
                             onSettingsClick = { navController.navigate(Destination.Settings) },
                             onAppSelectorClick = { navController.navigate(Destination.AppSelector) }
@@ -64,14 +66,29 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.AppSelector -> AppSelectorScreen(
-                            onAppClick = { navController.navigate(Destination.PatchesSelector) },
+                            onAppClick = { navController.navigate(Destination.PatchesSelector(it)) },
                             onBackClick = { navController.pop() }
                         )
 
                         is Destination.PatchesSelector -> PatchesSelectorScreen(
-                            onBackClick = { navController.pop() }
+                            onBackClick = { navController.pop() },
+                            startPatching = {
+                                navController.navigate(
+                                    Destination.Installer(
+                                        destination.input,
+                                        it
+                                    )
+                                )
+                            },
+                            vm = getViewModel { parametersOf(destination.input) }
                         )
 
+                        is Destination.Installer -> InstallerScreen(getViewModel {
+                            parametersOf(
+                                destination.input,
+                                destination.selectedPatches
+                            )
+                        })
                     }
                 }
             }
