@@ -90,7 +90,7 @@ class GithubAPI {
       final List<dynamic> commits = response.data;
       return commits
           .map(
-            (commit) => (commit['commit']['message']).split('\n')[0] +
+            (commit) => commit['commit']['message'].split('\n')[0] +
                 ' - ' +
                 commit['commit']['author']['name'] +
                 '\n' as String,

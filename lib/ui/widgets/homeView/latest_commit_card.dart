@@ -33,8 +33,8 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: const <Widget>[
+                  const Row(
+                    children: <Widget>[
                       Text('ReVanced Manager'),
                     ],
                   ),
@@ -82,8 +82,8 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: const <Widget>[
+                  const Row(
+                    children: <Widget>[
                       Text('ReVanced Patches'),
                     ],
                   ),
