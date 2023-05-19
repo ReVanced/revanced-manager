@@ -108,10 +108,11 @@ class AppSelectorViewModel extends BaseViewModel {
   Future showVersionNotSupportedDialog(
     BuildContext context,
   ) async {
-    final recomendedVersion = await _patcherAPI.getSuggestedVersion(
+    final recommendedVersion = await _patcherAPI.getSuggestedVersion(
         locator<PatcherViewModel>().selectedApp!.packageName);
 
-    if (recomendedVersion != locator<PatcherViewModel>().selectedApp!.version) {
+    if (recommendedVersion !=
+        locator<PatcherViewModel>().selectedApp!.version) {
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -119,7 +120,7 @@ class AppSelectorViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText(
             'patcherView.versionWarningDialogText',
-            translationParams: {"recomendedVer": recomendedVersion},
+            translationParams: {"recommendedVer": recommendedVersion},
           ),
           actions: <Widget>[
             CustomMaterialButton(
