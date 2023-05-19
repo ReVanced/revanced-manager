@@ -1,6 +1,7 @@
 package app.revanced.manager.compose.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,18 +11,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.compose.R
+import app.revanced.manager.compose.patcher.patch.PatchInfo
 import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.component.GroupHeader
-import app.revanced.manager.compose.ui.component.PatchItem
 import app.revanced.manager.compose.ui.viewmodel.PatchesSelectorViewModel
 import kotlinx.coroutines.launch
 
@@ -132,6 +135,43 @@ fun PatchesSelectorScreen(
                 })
         }
     }
+}
+
+@Composable
+fun PatchItem(
+    patch: PatchInfo,
+    onOptionsDialog: () -> Unit,
+    selected: Boolean,
+    onToggle: () -> Unit,
+    supported: Boolean
+) {
+    ListItem(
+        modifier = Modifier
+            .let { if (!supported) it.alpha(0.5f) else it }
+            .clickable(enabled = supported, onClick = onToggle),
+        leadingContent = {
+            Checkbox(
+                checked = selected,
+                onCheckedChange = {
+                    onToggle()
+                },
+                enabled = supported
+            )
+        },
+        headlineContent = {
+            Text(patch.name)
+        },
+        supportingContent = {
+            Text(patch.description ?: "")
+        },
+        trailingContent = {
+            if (patch.options?.isNotEmpty() == true) {
+                IconButton(onClick = onOptionsDialog, enabled = supported) {
+                    Icon(Icons.Outlined.Settings, null)
+                }
+            }
+        }
+    )
 }
 
 @Composable
