@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/not_installed_app_item.dart';
