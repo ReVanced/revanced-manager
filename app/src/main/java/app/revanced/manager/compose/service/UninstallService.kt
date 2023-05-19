@@ -23,6 +23,7 @@ class UninstallService : Service() {
                     this?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 })
             }
+
             else -> {
                 sendBroadcast(Intent().apply {
                     action = APP_UNINSTALL_ACTION

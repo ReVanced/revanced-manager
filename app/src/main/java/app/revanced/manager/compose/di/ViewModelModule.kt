@@ -1,8 +1,11 @@
 package app.revanced.manager.compose.di
 
-import app.revanced.manager.compose.ui.viewmodel.*
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import app.revanced.manager.compose.ui.viewmodel.AppSelectorViewModel
+import app.revanced.manager.compose.ui.viewmodel.InstallerScreenViewModel
+import app.revanced.manager.compose.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.compose.ui.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {

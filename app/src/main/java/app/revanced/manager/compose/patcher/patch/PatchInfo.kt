@@ -32,7 +32,8 @@ data class PatchInfo(
     fun compatibleWith(packageName: String) = compatiblePackages?.any { it.name == packageName } ?: true
 
     fun supportsVersion(versionName: String) =
-        compatiblePackages?.any { compatiblePackages.any { it.versions.isEmpty() || it.versions.any { version -> version == versionName } } } ?: true
+        compatiblePackages?.any { compatiblePackages.any { it.versions.isEmpty() || it.versions.any { version -> version == versionName } } }
+            ?: true
 }
 
 @Parcelize

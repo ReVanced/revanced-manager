@@ -2,21 +2,10 @@ package app.revanced.manager.compose.ui.screen.settings
 
 import android.os.Build
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -69,14 +58,22 @@ fun GeneralSettingsScreen(
                 modifier = Modifier.clickable { showThemePicker = true },
                 headlineContent = { Text(stringResource(R.string.theme)) },
                 supportingContent = { Text(stringResource(R.string.theme_description)) },
-                trailingContent = { Button({ showThemePicker = true }) { Text(stringResource(prefs.theme.displayName)) } }
+                trailingContent = {
+                    Button({
+                        showThemePicker = true
+                    }) { Text(stringResource(prefs.theme.displayName)) }
+                }
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 ListItem(
                     modifier = Modifier.clickable { prefs.dynamicColor = !prefs.dynamicColor },
                     headlineContent = { Text(stringResource(R.string.dynamic_color)) },
                     supportingContent = { Text(stringResource(R.string.dynamic_color_description)) },
-                    trailingContent = { Switch(checked = prefs.dynamicColor, onCheckedChange = { prefs.dynamicColor = it }) }
+                    trailingContent = {
+                        Switch(
+                            checked = prefs.dynamicColor,
+                            onCheckedChange = { prefs.dynamicColor = it })
+                    }
                 )
             }
 

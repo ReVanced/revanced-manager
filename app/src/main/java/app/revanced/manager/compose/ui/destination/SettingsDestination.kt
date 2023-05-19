@@ -3,24 +3,24 @@ package app.revanced.manager.compose.ui.destination
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-sealed interface SettingsDestination: Parcelable {
+sealed interface SettingsDestination : Parcelable {
 
     @Parcelize
-    object Settings: SettingsDestination
+    object Settings : SettingsDestination
 
     @Parcelize
-    object General: SettingsDestination
+    object General : SettingsDestination
 
     @Parcelize
-    object Updates: SettingsDestination
+    object Updates : SettingsDestination
 
     @Parcelize
-    object Downloads: SettingsDestination
+    object Downloads : SettingsDestination
 
     @Parcelize
-    object ImportExport: SettingsDestination
+    object ImportExport : SettingsDestination
 
     @Parcelize
-    object About: SettingsDestination
+    object About : SettingsDestination
 
 }

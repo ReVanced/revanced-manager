@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class PatchesRepository(private val managerAPI: ManagerAPI) {
-    private val patchInformation = MutableSharedFlow<List<PatchInfo>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val patchInformation =
+        MutableSharedFlow<List<PatchInfo>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     private var bundle: PatchBundle? = null
 
     private val scope = CoroutineScope(Job() + Dispatchers.IO)

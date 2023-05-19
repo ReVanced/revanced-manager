@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
@@ -48,12 +49,19 @@ fun AppSelectorScreen(
         SearchBar(
             query = filterText,
             onQueryChange = { filterText = it },
-            onSearch = {  },
+            onSearch = { },
             active = true,
             onActiveChange = { search = it },
             modifier = Modifier.fillMaxSize(),
             placeholder = { Text(stringResource(R.string.search_apps)) },
-            leadingIcon = { IconButton({ search = false }) { Icon(Icons.Default.ArrowBack, stringResource(R.string.back)) } },
+            leadingIcon = {
+                IconButton({ search = false }) {
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        stringResource(R.string.back)
+                    )
+                }
+            },
             shape = SearchBarDefaults.inputFieldShape,
             content = {
                 if (PM.appList.isNotEmpty()) {
@@ -93,7 +101,7 @@ fun AppSelectorScreen(
                 title = stringResource(R.string.select_app),
                 onBackClick = onBackClick,
                 actions = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = { }) {
                         Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
                     }
                     IconButton(onClick = { search = true }) {
@@ -119,7 +127,15 @@ fun AppSelectorScreen(
                             modifier = Modifier.clickable {
                                 pickApkLauncher.launch("*/*")
                             },
-                            leadingContent = { Box(Modifier.size(36.dp), Alignment.Center) { Icon(Icons.Default.Storage, null, modifier = Modifier.size(24.dp)) } },
+                            leadingContent = {
+                                Box(Modifier.size(36.dp), Alignment.Center) {
+                                    Icon(
+                                        Icons.Default.Storage,
+                                        null,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                }
+                            },
                             headlineContent = { Text(stringResource(R.string.select_from_storage)) }
                         )
 
@@ -150,7 +166,10 @@ fun AppSelectorScreen(
                         if (PM.appList.isEmpty()) {
                             item {
                                 Box(Modifier.fillMaxWidth(), Alignment.Center) {
-                                    CircularProgressIndicator(Modifier.padding(vertical = 15.dp).size(24.dp), strokeWidth = 3.dp)
+                                    CircularProgressIndicator(
+                                        Modifier.padding(vertical = 15.dp).size(24.dp),
+                                        strokeWidth = 3.dp
+                                    )
                                 }
                             }
                         }
@@ -164,28 +183,27 @@ fun AppSelectorScreen(
 }
 
 
-
-                /*Row(
-                    modifier = Modifier.horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    FilterChip(
-                        selected = false,
-                        onClick = {},
-                        label = { Text("Patched apps") },
-                        leadingIcon = { Icon(Icons.Default.Check, null) },
-                        enabled = false
-                    )
-                    FilterChip(
-                        selected = false,
-                        onClick = {},
-                        label = { Text("User apps") },
-                        leadingIcon = { Icon(Icons.Default.Android, null) }
-                    )
-                    FilterChip(
-                        selected = filterSystemApps,
-                        onClick = { filterSystemApps = !filterSystemApps },
-                        label = { Text("System apps") },
-                        leadingIcon = { Icon(Icons.Default.Apps, null) }
-                    )
-                }*/
+/*Row(
+    modifier = Modifier.horizontalScroll(rememberScrollState()),
+    horizontalArrangement = Arrangement.spacedBy(10.dp)
+) {
+    FilterChip(
+        selected = false,
+        onClick = {},
+        label = { Text("Patched apps") },
+        leadingIcon = { Icon(Icons.Default.Check, null) },
+        enabled = false
+    )
+    FilterChip(
+        selected = false,
+        onClick = {},
+        label = { Text("User apps") },
+        leadingIcon = { Icon(Icons.Default.Android, null) }
+    )
+    FilterChip(
+        selected = filterSystemApps,
+        onClick = { filterSystemApps = !filterSystemApps },
+        label = { Text("System apps") },
+        leadingIcon = { Icon(Icons.Default.Apps, null) }
+    )
+}*/

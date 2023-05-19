@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PackageInfoFlags
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcelable
@@ -68,7 +67,8 @@ object PM {
         packageInstaller.uninstall(pkg, context.uninstallIntentSender)
     }
 
-    fun getApkInfo(apk: File, context: Context) = context.packageManager.getPackageArchiveInfo(apk.path, 0)!!.let { PackageInfo(it.packageName, it.versionName, apk) }
+    fun getApkInfo(apk: File, context: Context) = context.packageManager.getPackageArchiveInfo(apk.path, 0)!!
+        .let { PackageInfo(it.packageName, it.versionName, apk) }
 }
 
 private fun PackageInstaller.Session.writeApk(apk: File) {

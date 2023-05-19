@@ -1,11 +1,11 @@
 package app.revanced.manager.compose.patcher
 
-import app.revanced.patcher.Patcher
-import app.revanced.patcher.PatcherOptions
-import app.revanced.patcher.logging.Logger
 import android.util.Log
 import app.revanced.manager.compose.patcher.worker.Progress
+import app.revanced.patcher.Patcher
+import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Context
+import app.revanced.patcher.logging.Logger
 import app.revanced.patcher.patch.Patch
 import java.io.Closeable
 import java.io.File
@@ -22,7 +22,8 @@ class Session(
     private val input: File,
     private val onProgress: suspend (Progress) -> Unit = { }
 ) : Closeable {
-    class PatchFailedException(val patchName: String, cause: Throwable?) : Exception("Got exception while executing $patchName", cause)
+    class PatchFailedException(val patchName: String, cause: Throwable?) :
+        Exception("Got exception while executing $patchName", cause)
 
     private val logger = LogcatLogger
     private val temporary = File(cacheDir).resolve("manager").also { it.mkdirs() }

@@ -1,6 +1,9 @@
 package app.revanced.manager.compose.patcher.alignment.zip.structures
 
-import app.revanced.manager.compose.patcher.alignment.zip.*
+import app.revanced.manager.compose.patcher.alignment.zip.putUInt
+import app.revanced.manager.compose.patcher.alignment.zip.putUShort
+import app.revanced.manager.compose.patcher.alignment.zip.readUIntLE
+import app.revanced.manager.compose.patcher.alignment.zip.readUShortLE
 import java.io.DataInput
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
