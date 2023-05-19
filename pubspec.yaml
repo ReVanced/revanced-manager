@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.1.0+100100000
+version: 1.2.0+100200000
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
