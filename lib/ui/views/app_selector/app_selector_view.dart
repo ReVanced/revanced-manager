@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
@@ -92,7 +92,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                       ? const AppSkeletonLoader()
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0)
-                              .copyWith(bottom: 80),
+                              .copyWith(
+                            bottom:
+                                MediaQuery.of(context).viewPadding.bottom + 8.0,
+                          ),
                           child: Column(
                             children: [
                               ...model
@@ -108,16 +111,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                           model.getSuggestedVersion(
                                         app.packageName,
                                       ),
-                                      onTap: () {
-                                        model.isRooted
-                                            ? model.selectApp(app).then(
-                                                  (_) => Navigator.of(context)
-                                                      .pop(),
-                                                )
-                                            : model.showSelectFromStorageDialog(
-                                                context,
-                                              );
-                                      },
+                                      onTap: () => model.canSelectInstalled(context, app.packageName),
                                     ),
                                   )
                                   .toList(),

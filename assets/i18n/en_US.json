@@ -78,7 +78,7 @@
         "errorMessage": "Unable to use selected application",
         "downloadToast": "Download function is not available yet",
         "featureNotAvailable": "Feature not implemented",
-        "featureNotAvailableText": "This feature has not been added yet for non-root. You'll need to select APK files from storage for now."
+        "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",

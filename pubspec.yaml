@@ -7,7 +7,7 @@ publish_to: 'none'
 version: 1.1.0+100100000
 
 environment:
-  sdk: ">=2.17.5 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   animations: ^2.0.7
@@ -16,8 +16,8 @@ dependencies:
   cross_connectivity: ^3.0.5
   cr_file_saver:
     git:
-      url: https://github.com/dhruvanbhalara/cr_file_saver.git
-      ref: a08326ecb48f581b4b09e2e2665d31ed1704c7af
+      url: https://github.com/dhruvanbhalara/cr_file_saver
+      ref: "fix/incorrect_file_name"
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
@@ -36,7 +36,7 @@ dependencies:
     sdk: flutter
   flutter_background: ^1.2.0
   flutter_cache_manager: ^3.3.0
-  flutter_i18n: ^0.32.4
+  flutter_i18n: ^0.33.0
   flutter_local_notifications: ^13.0.0
   flutter_localizations:
     sdk: flutter
@@ -47,7 +47,7 @@ dependencies:
   google_fonts: ^4.0.3
   http: ^0.13.5
   injectable: ^2.1.1
-  intl: ^0.17.0
+  intl: ^0.18.0
   json_annotation: ^4.8.0
   logcat:
     git:
@@ -74,7 +74,6 @@ dependencies:
   wakelock: ^0.6.2
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
-  pub_release: ^8.0.3
   dio_cache_interceptor: ^3.4.0
 
 dev_dependencies:

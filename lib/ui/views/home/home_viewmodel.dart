@@ -39,13 +39,10 @@ class HomeViewModel extends BaseViewModel {
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
   List<PatchedApplication> patchedUpdatableApps = [];
-  String _managerVersion = '';
+  String? _latestManagerVersion = '';
 
   Future<void> initialize(BuildContext context) async {
-    _managerVersion = await AboutInfo.getInfo().then(
-      (value) => value.keys.contains('version') ? value['version']! : '',
-    );
-    _managerVersion = await _managerAPI.getCurrentManagerVersion();
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
@@ -115,7 +112,6 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
-    final String? latestVersion = await _managerAPI.getLatestManagerVersion();
     String currentVersion = await _managerAPI.getCurrentManagerVersion();
 
     // add v to current version
@@ -123,7 +119,7 @@ class HomeViewModel extends BaseViewModel {
       currentVersion = 'v$currentVersion';
     }
 
-    if (latestVersion != currentVersion) {
+    if (_latestManagerVersion != currentVersion) {
       return true;
     }
     return false;
@@ -194,7 +190,7 @@ class HomeViewModel extends BaseViewModel {
                     ),
                     const SizedBox(width: 8.0),
                     Text(
-                      'v$_managerVersion',
+                      'v$_latestManagerVersion',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,

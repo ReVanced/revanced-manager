@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
@@ -129,8 +129,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       ),
                     )
                   : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0)
-                          .copyWith(bottom: 80),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 12.0).copyWith(
+                        bottom: MediaQuery.of(context).viewPadding.bottom + 8.0,
+                      ),
                       child: Column(
                         children: [
                           Row(
