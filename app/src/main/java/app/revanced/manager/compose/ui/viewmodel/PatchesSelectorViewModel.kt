@@ -1,85 +1,61 @@
 package app.revanced.manager.compose.ui.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import app.revanced.manager.compose.patcher.data.repository.PatchesRepository
+import app.revanced.manager.compose.patcher.patch.PatchInfo
+import app.revanced.manager.compose.util.PackageInfo
+import kotlinx.coroutines.flow.map
 
-class PatchesSelectorViewModel: ViewModel() {
-    private val patchesList = listOf(
-        Patch("amogus-patch", "adds amogus to all apps, mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus mogus ",
-            options = listOf(
-                Option(
-                    "amogus"
-                )
-            ),
-            isSupported = true
-        ),
-        Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = true
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(
-                Option(
-                    "amogus"
-                )
-            ),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),Patch("microg-support", "makes microg work",
-            options = listOf(),
-            isSupported = false
-        ),
+class PatchesSelectorViewModel(packageInfo: PackageInfo, patchesRepository: PatchesRepository) :
+    ViewModel() {
+    val bundlesFlow = patchesRepository.getPatchInformation().map { patches ->
+        val supported = mutableListOf<PatchInfo>()
+        val unsupported = mutableListOf<PatchInfo>()
 
-    ).let { it + it + it + it + it }
+        patches.filter { it.compatibleWith(packageInfo.packageName) }.forEach {
+            val targetList = if (it.supportsVersion(packageInfo.packageName)) supported else unsupported
 
-    private val patchesLists = patchesList.groupBy { if (it.isSupported) "supported" else "unsupported" }
+            targetList.add(it)
+        }
 
-    val bundles = listOf(
-        Bundle(
-            name = "offical",
-            patches = patchesLists
-        ),
-        Bundle(
-            name = "extended",
-            patches = patchesLists
-        ),
-        Bundle(
-            name = "balls",
-            patches = patchesLists
-        ),
-    )
+        listOf(
+            Bundle(
+                name = "official",
+                supported, unsupported
+            )
+        )
+    }
 
-    var selectedPatches = mutableStateListOf<Patch>()
+    val selectedPatches = mutableStateListOf<String>()
+
+    fun isSelected(patch: PatchInfo) = selectedPatches.contains(patch.name)
+    fun togglePatch(patch: PatchInfo) {
+        val name = patch.name
+        if (isSelected(patch)) selectedPatches.remove(name) else selectedPatches.add(patch.name)
+    }
 
     data class Bundle(
         val name: String,
-        val patches: Map<String, List<Patch>>
+        val supported: List<PatchInfo>,
+        val unsupported: List<PatchInfo>
     )
 
-    data class Patch(
-        val name: String,
-        val description: String,
-        val options: List<Option>,
-        val isSupported: Boolean
-    )
+    var showOptionsDialog by mutableStateOf(false)
+        private set
+    var showUnsupportedDialog by mutableStateOf(false)
+        private set
 
-    data class Option(
-        val name: String
-    )
+    fun dismissDialogs() {
+        showOptionsDialog = false
+        showUnsupportedDialog = false
+    }
+
+    fun openOptionsDialog() {
+        showOptionsDialog = true
+    }
+
+    fun openUnsupportedDialog() {
+        showUnsupportedDialog = true
+    }
 }

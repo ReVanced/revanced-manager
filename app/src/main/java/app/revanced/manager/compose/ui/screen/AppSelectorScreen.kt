@@ -1,5 +1,7 @@
 package app.revanced.manager.compose.ui.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,14 +24,22 @@ import app.revanced.manager.compose.R
 import app.revanced.manager.compose.ui.component.AppIcon
 import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.component.LoadingIndicator
+import app.revanced.manager.compose.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.compose.util.PM
+import app.revanced.manager.compose.util.PackageInfo
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: () -> Unit,
-    onBackClick: () -> Unit
+    onAppClick: (PackageInfo) -> Unit,
+    onBackClick: () -> Unit,
+    vm: AppSelectorViewModel = getViewModel()
 ) {
+    val pickApkLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { apkUri ->
+        vm.loadSelectedFile(apkUri!!).let(onAppClick)
+    }
+
     var filterText by rememberSaveable { mutableStateOf("") }
     var search by rememberSaveable { mutableStateOf(false) }
 
@@ -61,11 +71,11 @@ fun AppSelectorScreen(
                         ) { app ->
 
                             ListItem(
-                                modifier = Modifier.clickable { onAppClick() },
+                                modifier = Modifier.clickable { onAppClick(PackageInfo(app)) },
                                 leadingContent = { AppIcon(app.icon, null, 36) },
                                 headlineContent = { Text(app.label) },
                                 supportingContent = { Text(app.packageName) },
-                                trailingContent = { Text((PM.testList[app.packageName]?: 0).let { if (it == 1) "$it " + stringResource(R.string.patch) else "$it " + stringResource(R.string.patches) }) }
+                                trailingContent = { Text("420 Patches") }
                             )
 
                         }
@@ -106,7 +116,9 @@ fun AppSelectorScreen(
                     item {
 
                         ListItem(
-                            modifier = Modifier.clickable { },
+                            modifier = Modifier.clickable {
+                                pickApkLauncher.launch("*/*")
+                            },
                             leadingContent = { Box(Modifier.size(36.dp), Alignment.Center) { Icon(Icons.Default.Storage, null, modifier = Modifier.size(24.dp)) } },
                             headlineContent = { Text(stringResource(R.string.select_from_storage)) }
                         )
@@ -124,14 +136,12 @@ fun AppSelectorScreen(
                             val app = list[index]
 
                             ListItem(
-                                modifier = Modifier.clickable { onAppClick() },
+                                modifier = Modifier.clickable { onAppClick(PackageInfo(app)) },
                                 leadingContent = { AppIcon(app.icon, null, 36) },
                                 headlineContent = { Text(app.label) },
                                 supportingContent = { Text(app.packageName) },
                                 trailingContent = {
-                                    Text(
-                                        (PM.testList[app.packageName]?: 0).let { if (it == 1) "$it " + stringResource(R.string.patch) else "$it " + stringResource(R.string.patches) }
-                                    )
+                                    Text("420 Patches")
                                 }
                             )
 
@@ -146,7 +156,6 @@ fun AppSelectorScreen(
                         }
                     }
                 }
-
             } else {
                 LoadingIndicator()
             }

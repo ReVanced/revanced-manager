@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.compose.R
-import app.revanced.manager.compose.ui.component.AppScaffold
 import app.revanced.manager.compose.ui.component.AppTopBar
 import kotlinx.coroutines.launch
 
