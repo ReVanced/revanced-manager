@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_apps/device_apps.dart';
@@ -97,8 +98,44 @@ class AppSelectorViewModel extends BaseViewModel {
         return showSelectFromStorageDialog(context);
       } else if (!await checkSplitApk(packageName) || isRooted) {
         selectApp(app);
+        showVersionNotSupportedDialog(context);
+        locator<PatcherViewModel>().notifyListeners();
         Navigator.pop(context);
       }
+    }
+  }
+
+  Future showVersionNotSupportedDialog(
+    BuildContext context,
+  ) async {
+    final sVer = await _patcherAPI.getSuggestedVersion(
+        locator<PatcherViewModel>().selectedApp!.packageName);
+
+    if (sVer != locator<PatcherViewModel>().selectedApp!.version) {
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('warning'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText('patcherView.versionWarningDialogText'),
+          actions: <Widget>[
+            CustomMaterialButton(
+              label: I18nText('noButton'),
+              onPressed: () {
+                locator<PatcherViewModel>().selectedApp = null;
+                locator<PatcherViewModel>().selectedPatches = [];
+                locator<PatcherViewModel>().notifyListeners();
+                Navigator.pop(context);
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('yesButton'),
+              isFilled: false,
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
     }
   }
 

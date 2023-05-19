@@ -28,8 +28,11 @@ class _AppSelectorViewState extends State<AppSelectorView> {
           label: I18nText('appSelectorView.storageButton'),
           icon: const Icon(Icons.sd_storage),
           onPressed: () {
-            model.selectAppFromStorage(context);
-            Navigator.of(context).pop();
+            model.selectAppFromStorage(context).then((_) {
+              model.showVersionNotSupportedDialog(context);
+              locator<PatcherViewModel>().notifyListeners();
+              Navigator.of(context).pop();
+            });
           },
         ),
         body: CustomScrollView(
@@ -111,7 +114,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                           model.getSuggestedVersion(
                                         app.packageName,
                                       ),
-                                      onTap: () => model.canSelectInstalled(context, app.packageName),
+                                      onTap: () => model.canSelectInstalled(
+                                          context, app.packageName),
                                     ),
                                   )
                                   .toList(),

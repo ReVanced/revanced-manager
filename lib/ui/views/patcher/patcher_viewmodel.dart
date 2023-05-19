@@ -11,11 +11,10 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
-import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 @lazySingleton
-class PatcherViewModel extends BaseViewModel {
+class PatcherViewModel extends ChangeNotifier {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
@@ -92,9 +91,6 @@ class PatcherViewModel extends BaseViewModel {
       final supportedAbis = ['arm64-v8a', 'x86', 'x86_64'];
       return !archs.any((arch) => supportedAbis.contains(arch));
     });
-    bool correctVer =
-        _patcherAPI.getSuggestedVersion(selectedApp!.packageName) ==
-            selectedApp!.version;
     if (context.mounted && !armv7) {
       await showDialog(
         context: context,
@@ -112,38 +108,13 @@ class PatcherViewModel extends BaseViewModel {
               isFilled: false,
               onPressed: () {
                 Navigator.of(context).pop();
-                armv7 = true;
+                navigateToInstaller();
               },
             )
           ],
         ),
       );
-    }
-    if (!correctVer) {
-      await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: I18nText('warning'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('patcherView.versionWarningDialogText'),
-          actions: <Widget>[
-            CustomMaterialButton(
-              label: I18nText('noButton'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
-              isFilled: false,
-              onPressed: () {
-                Navigator.of(context).pop();
-                correctVer = true;
-              },
-            )
-          ],
-        ),
-      );
-    }
-    if (correctVer && armv7) {
+    } else {
       navigateToInstaller();
     }
   }
