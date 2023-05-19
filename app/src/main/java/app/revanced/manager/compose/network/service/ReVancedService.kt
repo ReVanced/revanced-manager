@@ -11,18 +11,10 @@ import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-interface ReVancedService {
-    suspend fun getAssets(): APIResponse<ReVancedReleases>
-
-    suspend fun getContributors(): APIResponse<ReVancedRepositories>
-
-    suspend fun findAsset(repo: String, file: String): PatchesAsset
-}
-
-class ReVancedServiceImpl(
+class ReVancedService(
     private val client: HttpService,
-) : ReVancedService {
-    override suspend fun getAssets(): APIResponse<ReVancedReleases> {
+) {
+    suspend fun getAssets(): APIResponse<ReVancedReleases> {
         return withContext(Dispatchers.IO) {
             client.request {
                 url("$apiUrl/tools")
@@ -30,7 +22,7 @@ class ReVancedServiceImpl(
         }
     }
 
-    override suspend fun getContributors(): APIResponse<ReVancedRepositories> {
+    suspend fun getContributors(): APIResponse<ReVancedRepositories> {
         return withContext(Dispatchers.IO) {
             client.request {
                 url("$apiUrl/contributors")
@@ -38,7 +30,7 @@ class ReVancedServiceImpl(
         }
     }
 
-    override suspend fun findAsset(repo: String, file: String): PatchesAsset {
+    suspend fun findAsset(repo: String, file: String): PatchesAsset {
         val releases = getAssets().getOrNull() ?: throw Exception("Cannot retrieve assets")
         val asset = releases.tools.find { asset ->
             (asset.name.contains(file) && asset.repository.contains(repo))

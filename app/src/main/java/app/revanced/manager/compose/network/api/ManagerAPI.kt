@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import app.revanced.manager.compose.domain.repository.ReVancedRepositoryImpl
+import app.revanced.manager.compose.domain.repository.ReVancedRepository
 import app.revanced.manager.compose.util.ghIntegrations
 import app.revanced.manager.compose.util.ghPatches
 import app.revanced.manager.compose.util.tag
@@ -21,7 +21,7 @@ import java.io.File
 class ManagerAPI(
     private val app: Application,
     private val client: HttpClient,
-    private val revancedRepository: ReVancedRepositoryImpl
+    private val revancedRepository: ReVancedRepository
 ) {
     var downloadProgress: Float? by mutableStateOf(null)
 
