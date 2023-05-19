@@ -6,7 +6,7 @@ import app.revanced.manager.compose.ui.theme.Theme
 
 class SettingsViewModel(
     val prefs: PreferencesManager
-): ViewModel() {
+) : ViewModel() {
 
     fun setTheme(theme: Theme) {
         prefs.theme = theme

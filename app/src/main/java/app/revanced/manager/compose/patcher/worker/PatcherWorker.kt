@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import app.revanced.manager.compose.patcher.data.repository.PatchesRepository
 import app.revanced.manager.compose.patcher.Session
 import app.revanced.manager.compose.patcher.aapt.Aapt
+import app.revanced.manager.compose.patcher.data.repository.PatchesRepository
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString

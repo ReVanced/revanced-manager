@@ -12,8 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.work.*
-import app.revanced.manager.compose.patcher.worker.PatcherWorker
 import app.revanced.manager.compose.patcher.worker.PatcherProgressManager
+import app.revanced.manager.compose.patcher.worker.PatcherWorker
 import app.revanced.manager.compose.patcher.worker.StepGroup
 import app.revanced.manager.compose.service.InstallService
 import app.revanced.manager.compose.service.UninstallService

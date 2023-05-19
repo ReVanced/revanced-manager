@@ -38,12 +38,12 @@ fun ImportExportSettingsScreen(
         ) {
             GroupHeader(stringResource(R.string.signing))
             ListItem(
-                modifier = Modifier.clickable {  },
+                modifier = Modifier.clickable { },
                 headlineContent = { Text(stringResource(R.string.import_keystore)) },
                 supportingContent = { Text(stringResource(R.string.import_keystore_descripion)) }
             )
             ListItem(
-                modifier = Modifier.clickable {  },
+                modifier = Modifier.clickable { },
                 headlineContent = { Text(stringResource(R.string.export_keystore)) },
                 supportingContent = { Text(stringResource(R.string.export_keystore_description)) }
             )

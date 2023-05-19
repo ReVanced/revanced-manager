@@ -1,6 +1,9 @@
 package app.revanced.manager.compose.ui.viewmodel
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import app.revanced.manager.compose.patcher.data.repository.PatchesRepository
 import app.revanced.manager.compose.patcher.patch.PatchInfo

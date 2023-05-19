@@ -2,21 +2,10 @@ package app.revanced.manager.compose.ui.screen.settings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +38,7 @@ fun AboutSettingsScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            
+
             Column(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,9 +71,9 @@ fun AboutSettingsScreen(
                     }
                 }
             }
-            
+
             ListItem(
-                modifier = Modifier.clickable {  },
+                modifier = Modifier.clickable { },
                 headlineContent = { Text(stringResource(R.string.contributors)) },
                 supportingContent = { Text(stringResource(R.string.contributors_description)) }
             )
