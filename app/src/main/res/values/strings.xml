@@ -62,6 +62,10 @@
     <string name="app_not_supported">Some of the patches do not support this app version (%s). The patches only support the following versions: %s.</string>
 
     <string name="installer">Installer</string>
+    <string name="install_app">Install</string>
+    <string name="export_app">Export</string>
+    <string name="export_app_success">Apk exported</string>
+    <string name="sign_fail">Failed to sign Apk: %s</string>
 
     <string name="patcher_step_group_prepare">Preparation</string>
     <string name="patcher_step_unpack">Unpack Apk</string>

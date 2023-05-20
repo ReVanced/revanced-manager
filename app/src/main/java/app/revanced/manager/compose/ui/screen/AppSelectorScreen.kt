@@ -26,6 +26,7 @@ import app.revanced.manager.compose.ui.component.AppIcon
 import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.component.LoadingIndicator
 import app.revanced.manager.compose.ui.viewmodel.AppSelectorViewModel
+import app.revanced.manager.compose.util.APK_MIMETYPE
 import app.revanced.manager.compose.util.PM
 import app.revanced.manager.compose.util.PackageInfo
 import org.koin.androidx.compose.getViewModel
@@ -125,7 +126,7 @@ fun AppSelectorScreen(
 
                         ListItem(
                             modifier = Modifier.clickable {
-                                pickApkLauncher.launch("*/*")
+                                pickApkLauncher.launch(APK_MIMETYPE)
                             },
                             leadingContent = {
                                 Box(Modifier.size(36.dp), Alignment.Center) {
