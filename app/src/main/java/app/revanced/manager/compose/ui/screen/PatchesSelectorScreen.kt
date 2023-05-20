@@ -56,7 +56,7 @@ fun PatchesSelectorScreen(
     }, floatingActionButton = {
         ExtendedFloatingActionButton(text = { Text(stringResource(R.string.patch)) },
             icon = { Icon(Icons.Default.Build, null) },
-            onClick = { startPatching(vm.selectedPatches) })
+            onClick = { startPatching(vm.selectedPatches.toList()) })
     }) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
             TabRow(
