@@ -75,12 +75,20 @@ class MainActivity : ComponentActivity() {
                             vm = getViewModel { parametersOf(destination.input) }
                         )
 
-                        is Destination.Installer -> InstallerScreen(getViewModel {
-                            parametersOf(
-                                destination.input,
-                                destination.selectedPatches
-                            )
-                        })
+                        is Destination.Installer -> InstallerScreen(
+                            onBackClick = {
+                                with(navController) {
+                                    popAll()
+                                    navigate(Destination.Dashboard)
+                                }
+                            },
+                            vm = getViewModel {
+                                parametersOf(
+                                    destination.input,
+                                    destination.selectedPatches
+                                )
+                            }
+                        )
                     }
                 }
             }

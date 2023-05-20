@@ -7,7 +7,6 @@ import androidx.work.workDataOf
 import app.revanced.manager.compose.R
 import app.revanced.manager.compose.patcher.Session
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

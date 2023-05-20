@@ -21,7 +21,8 @@ val viewModelModule = module {
         InstallerScreenViewModel(
             input = it.get(),
             selectedPatches = it.get(),
-            app = get()
+            app = get(),
+            signerService = get(),
         )
     }
 }

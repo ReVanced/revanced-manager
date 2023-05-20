@@ -81,6 +81,10 @@ dependencies {
     // ReVanced
     implementation("app.revanced:revanced-patcher:7.1.0")
 
+    // Signing
+    implementation("com.android.tools.build:apksig:8.1.0-beta02")
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
+
     // Koin
     val koinVersion = "3.4.0"
     implementation("io.insert-koin:koin-android:$koinVersion")

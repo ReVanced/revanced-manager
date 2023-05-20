@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.widget.Toast
 import androidx.core.net.toUri
 
+const val APK_MIMETYPE = "application/vnd.android.package-archive"
 
 fun Context.openUrl(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, url.toUri()).apply {
