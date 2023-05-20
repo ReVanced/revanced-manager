@@ -1,5 +1,6 @@
 package app.revanced.manager.compose.patcher.data.repository
 
+import android.util.Log
 import app.revanced.manager.compose.network.api.ManagerAPI
 import app.revanced.manager.compose.patcher.data.PatchBundle
 import app.revanced.manager.compose.patcher.patch.PatchInfo
@@ -26,9 +27,9 @@ class PatchesRepository(private val managerAPI: ManagerAPI) {
     }
 
     /**
-     * Get the [PatchBundle], loading it if needed.
+     * Load the [PatchBundle] if needed.
      */
-    private suspend fun getBundle() = bundle ?: PatchBundle(
+    private suspend fun loadBundle() = bundle ?: PatchBundle(
         managerAPI.downloadPatchBundle()!!.absolutePath,
         managerAPI.downloadIntegrations()
     ).also {
@@ -36,9 +37,17 @@ class PatchesRepository(private val managerAPI: ManagerAPI) {
     }
 
     suspend fun loadPatchClassesFiltered(packageName: String) =
-        getBundle().loadPatchesFiltered(packageName)
+        loadBundle().loadPatchesFiltered(packageName)
 
-    fun getPatchInformation() = patchInformation.asSharedFlow().also { scope.launch { getBundle() } }
+    fun getPatchInformation() = patchInformation.asSharedFlow().also {
+        scope.launch {
+            try {
+                loadBundle()
+            } catch (e: Throwable) {
+                Log.e("revanced-manager", "Failed to download bundle", e)
+            }
+        }
+    }
 
-    suspend fun getIntegrations() = listOfNotNull(getBundle().integrations)
+    suspend fun getIntegrations() = listOfNotNull(loadBundle().integrations)
 }
