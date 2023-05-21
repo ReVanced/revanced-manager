@@ -174,7 +174,7 @@ fun AboutSettingsScreen(
                         .padding(8.dp)
                         .clickable { onClick() },
                     headlineContent = { Text(title, style = MaterialTheme.typography.titleLarge) },
-                    supportingContent = { Text(description, style = MaterialTheme.typography.bodyMedium) }
+                    supportingContent = { Text(description, style = MaterialTheme.typography.bodyMedium,color = MaterialTheme.colorScheme.outline) }
                 )
             }
         }

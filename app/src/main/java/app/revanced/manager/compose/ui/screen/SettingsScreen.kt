@@ -111,7 +111,7 @@ fun SettingsScreen(
                             ListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
                                 headlineContent = { Text(stringResource(titleDescIcon.first), style = MaterialTheme.typography.titleLarge)  },
-                                supportingContent = { Text(stringResource(titleDescIcon.second), style = MaterialTheme.typography.bodyMedium) },
+                                supportingContent = { Text(stringResource(titleDescIcon.second), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline) },
                                 leadingContent = { Icon(titleDescIcon.third, null) }
                             )
                         }
