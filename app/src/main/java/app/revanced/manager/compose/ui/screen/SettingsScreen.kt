@@ -110,8 +110,8 @@ fun SettingsScreen(
                         settingsSections.forEach { (titleDescIcon, destination) ->
                             ListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
-                                headlineContent = { Text(stringResource(titleDescIcon.first)) },
-                                supportingContent = { Text(stringResource(titleDescIcon.second)) },
+                                headlineContent = { Text(stringResource(titleDescIcon.first), style = MaterialTheme.typography.titleLarge)  },
+                                supportingContent = { Text(stringResource(titleDescIcon.second), style = MaterialTheme.typography.bodyMedium) },
                                 leadingContent = { Icon(titleDescIcon.third, null) }
                             )
                         }
