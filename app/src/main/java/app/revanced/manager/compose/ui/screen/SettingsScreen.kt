@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -25,13 +26,42 @@ import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
+@Stable
 fun SettingsScreen(
     onBackClick: () -> Unit,
     viewModel: SettingsViewModel = getViewModel()
 ) {
-    val navController = rememberNavController<SettingsDestination>(startDestination = SettingsDestination.Settings)
-
+    val navController =
+        rememberNavController<SettingsDestination>(startDestination = SettingsDestination.Settings)
+    val settingsSections = listOf(
+        Triple(
+            R.string.general,
+            R.string.general_description,
+            Icons.Outlined.Settings
+        ) to SettingsDestination.General,
+        Triple(
+            R.string.updates,
+            R.string.updates_description,
+            Icons.Outlined.Update
+        ) to SettingsDestination.Updates,
+        Triple(
+            R.string.downloads,
+            R.string.downloads_description,
+            Icons.Outlined.Download
+        ) to SettingsDestination.Downloads,
+        Triple(
+            R.string.import_export,
+            R.string.import_export_description,
+            Icons.Outlined.SwapVert
+        ) to SettingsDestination.ImportExport,
+        Triple(
+            R.string.about,
+            R.string.about_description,
+            Icons.Outlined.Info
+        ) to SettingsDestination.About,
+    )
     NavBackHandler(navController)
+
 
     AnimatedNavHost(
         controller = navController
@@ -60,14 +90,13 @@ fun SettingsScreen(
             )
 
             is SettingsDestination.Settings -> {
+
+
                 Scaffold(
                     topBar = {
                         AppTopBar(
                             title = stringResource(R.string.settings),
                             onBackClick = onBackClick,
-                            actions = {
-
-                            }
                         )
                     }
                 ) { paddingValues ->
@@ -78,45 +107,17 @@ fun SettingsScreen(
                             .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-
-                        ListItem(
-                            modifier = Modifier.clickable { navController.navigate(SettingsDestination.General) },
-                            leadingContent = { Icon(Icons.Outlined.Settings, null) },
-                            headlineContent = { Text(stringResource(R.string.general)) },
-                            supportingContent = { Text(stringResource(R.string.general_description)) }
-                        )
-
-                        ListItem(
-                            modifier = Modifier.clickable { navController.navigate(SettingsDestination.Updates) },
-                            leadingContent = { Icon(Icons.Outlined.Update, null) },
-                            headlineContent = { Text(stringResource(R.string.updates)) },
-                            supportingContent = { Text(stringResource(R.string.updates_description)) }
-                        )
-
-                        ListItem(
-                            modifier = Modifier.clickable { navController.navigate(SettingsDestination.Downloads) },
-                            leadingContent = { Icon(Icons.Outlined.Download, null) },
-                            headlineContent = { Text(stringResource(R.string.downloads)) },
-                            supportingContent = { Text(stringResource(R.string.downloads_description)) }
-                        )
-
-                        ListItem(
-                            modifier = Modifier.clickable { navController.navigate(SettingsDestination.ImportExport) },
-                            leadingContent = { Icon(Icons.Outlined.ImportExport, null) },
-                            headlineContent = { Text(stringResource(R.string.import_export)) },
-                            supportingContent = { Text(stringResource(R.string.import_export_description)) }
-                        )
-
-                        ListItem(
-                            modifier = Modifier.clickable { navController.navigate(SettingsDestination.About) },
-                            leadingContent = { Icon(Icons.Outlined.Info, null) },
-                            headlineContent = { Text(stringResource(R.string.about)) },
-                            supportingContent = { Text(stringResource(R.string.about_description)) }
-                        )
-
+                        settingsSections.forEach { (titleDescIcon, destination) ->
+                            ListItem(
+                                modifier = Modifier.clickable { navController.navigate(destination) },
+                                headlineContent = { Text(stringResource(titleDescIcon.first)) },
+                                supportingContent = { Text(stringResource(titleDescIcon.second)) },
+                                leadingContent = { Icon(titleDescIcon.third, null) }
+                            )
+                        }
                     }
                 }
             }
         }
-    }
+}
 }
