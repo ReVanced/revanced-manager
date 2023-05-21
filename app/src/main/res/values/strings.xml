@@ -73,4 +73,15 @@
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched Apk</string>
+    <string name="donate">Donate</string>
+    <string name="website">Website</string>
+    <string name="github">GitHub</string>
+    <string name="contact">Contact</string>
+    <string name="version">Version</string>
+    <string name="submit_feedback">Submit issue or feedback</string>
+    <string name="submit_feedback_description">Help us improve this application</string>
+    <string name="developer_options">Developer options</string>
+    <string name="developer_options_description">Options for debugging issues</string>
+    <string name="about_revanced_manager">About ReVanced Manager</string>
+    <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
 </resources>
