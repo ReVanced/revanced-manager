@@ -13,6 +13,7 @@
         "settingsTab": "Settings"
     },
     "homeView": {
+        "refreshSuccess": "Refreshed successfully",
         "widgetTitle": "Dashboard",
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?"
+        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?",
+        "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "No application selected",
         "noAppsLabel": "No applications found",
         "currentVersion": "Current",
-        "recommendedVersion": "Recommended",
+        "suggestedVersion": "Suggested",
         "anyVersion": "any"
     },
     "patchSelectorCard": {
@@ -71,20 +73,25 @@
     "appSelectorView": {
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
+        "selectFromStorageButton": "Select from storage",
         "storageButton": "Storage",
-        "errorMessage": "Unable to use selected application"
+        "errorMessage": "Unable to use selected application",
+        "downloadToast": "Download function is not available yet",
+        "featureNotAvailable": "Feature not implemented",
+        "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "doneButton": "Done",
-        "recommended": "Recommended",
-        "all": "All",
+        "default": "Default",
+        "defaultTooltip": "Select all default patches",
         "none": "None",
+        "noneTooltip": "Deselect all patches",
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "selectAllPatchesWarningContent": "You are about to select all patches, that includes unrecommended patches and can cause unwanted behavior."
+        "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Import & export",
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
-        "sentryLabel": "Sentry logging",
-        "sentryHint": "Send anonymous logs to help us improve ReVanced Manager",
         "restartAppForChanges": "Restart the app to apply changes",
         "deleteKeystoreLabel": "Delete keystore",
         "deleteKeystoreHint": "Delete the keystore used to sign the app",
+        "deleteKeystoreDialogText": "Are you sure you want to delete the keystore used to sign patched applications?",
         "deletedKeystore": "Keystore deleted",
         "deleteTempDirLabel": "Delete temporary files",
         "deleteTempDirHint": "Delete unused temporary files",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
-        "deletedLogs": "Logs deleted"
+        "deletedLogs": "Logs deleted",
+        "exportKeystoreLabel": "Export keystore",
+        "exportKeystoreHint": "Export keystore used to sign apps",
+        "exportedKeystore": "Keystore exported",
+        "noKeystoreExportFileFound": "No keystore to export",
+        "importKeystoreLabel": "Import keystore",
+        "importKeystoreHint": "Import keystore used to sign apps",
+        "importedKeystore": "Keystore imported",
+        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file",
+        "selectKeystorePassword": "Keystore Password",
+        "selectKeystorePasswordHint": "Select keystore password used to sign the apk"
     },
     "appInfoView": {
         "widgetTitle": "App info",

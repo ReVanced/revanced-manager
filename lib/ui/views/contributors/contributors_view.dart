@@ -23,7 +23,7 @@ class ContributorsView extends StatelessWidget {
                 child: Text(
                   '',
                   style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.headline6!.color,
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
               ),
@@ -57,6 +57,7 @@ class ContributorsView extends StatelessWidget {
                       title: 'contributorsView.managerContributors',
                       contributors: model.managerContributors,
                     ),
+                    SizedBox(height: MediaQuery.of(context).viewPadding.bottom)
                   ],
                 ),
               ),

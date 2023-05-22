@@ -9,12 +9,14 @@ class InstalledAppItem extends StatefulWidget {
     required this.pkgName,
     required this.icon,
     required this.patchesCount,
+    required this.suggestedVersion,
     this.onTap,
   }) : super(key: key);
   final String name;
   final String pkgName;
   final Uint8List icon;
   final int patchesCount;
+  final String suggestedVersion;
   final Function()? onTap;
 
   @override
@@ -46,31 +48,35 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Text(
+                    widget.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(widget.pkgName),
                   Row(
-                    children: <Widget>[
+                    children: [
                       Text(
-                        widget.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        widget.suggestedVersion.isEmpty
+                            ? 'All versions'
+                            : widget.suggestedVersion,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 4),
                       Text(
                         widget.patchesCount == 1
-                            ? '${widget.patchesCount} patch'
-                            : '${widget.patchesCount} patches',
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
                         style: TextStyle(
-                          fontSize: 8,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(widget.pkgName),
                 ],
               ),
             ),

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_chip.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorView extends StatefulWidget {
@@ -50,14 +50,14 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 child: Text(
                   '',
                   style: TextStyle(
-                    color: Theme.of(context).textTheme.headline6!.color,
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
               ),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Theme.of(context).textTheme.headline6!.color,
+                  color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -74,7 +74,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   child: Text(
                     model.patchesVersion!,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.headline6!.color,
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                 ),
@@ -129,33 +129,32 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                       ),
                     )
                   : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0)
-                          .copyWith(bottom: 80),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 12.0).copyWith(
+                        bottom: MediaQuery.of(context).viewPadding.bottom + 8.0,
+                      ),
                       child: Column(
                         children: [
                           Row(
                             children: [
-                              CustomChip(
-                                label:
-                                    I18nText('patchesSelectorView.recommended'),
-                                onSelected: (value) {
-                                  model.selectRecommendedPatches();
+                              ActionChip(
+                                label: I18nText('patchesSelectorView.default'),
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'patchesSelectorView.defaultTooltip',
+                                ),
+                                onPressed: () {
+                                  model.selectDefaultPatches();
                                 },
                               ),
                               const SizedBox(width: 8),
-                              CustomChip(
-                                label: I18nText('patchesSelectorView.all'),
-                                onSelected: (value) {
-                                  if (value) {
-                                    model.selectAllPatcherWarning(context);
-                                  }
-                                  model.selectAllPatches(true);
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              CustomChip(
+                              ActionChip(
                                 label: I18nText('patchesSelectorView.none'),
-                                onSelected: (value) {
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'patchesSelectorView.noneTooltip',
+                                ),
+                                onPressed: () {
                                   model.clearPatches();
                                 },
                               ),
@@ -172,7 +171,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   packageVersion: model.getAppVersion(),
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
-                                  isUnsupported: !model.isPatchSupported(patch),
+                                  isUnsupported: !isPatchSupported(patch),
                                   isSelected: model.isSelected(patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value),

@@ -7,7 +7,6 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_switch_tile.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:stacked/stacked.dart';
 
@@ -64,8 +63,8 @@ class SUpdateThemeUI extends StatelessWidget {
     return SettingsSection(
       title: 'settingsView.appearanceSectionTitle',
       children: <Widget>[
-        CustomSwitchTile(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        SwitchListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
             'settingsView.darkThemeLabel',
             child: const Text(
@@ -78,7 +77,7 @@ class SUpdateThemeUI extends StatelessWidget {
           ),
           subtitle: I18nText('settingsView.darkThemeHint'),
           value: SUpdateTheme().getDarkThemeStatus(),
-          onTap: (value) => SUpdateTheme().setUseDarkTheme(
+          onChanged: (value) => SUpdateTheme().setUseDarkTheme(
             context,
             value,
           ),
@@ -88,8 +87,8 @@ class SUpdateThemeUI extends StatelessWidget {
           builder: (context, snapshot) => Visibility(
             visible:
                 snapshot.hasData && snapshot.data! >= ANDROID_12_SDK_VERSION,
-            child: CustomSwitchTile(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SwitchListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
               title: I18nText(
                 'settingsView.dynamicThemeLabel',
                 child: const Text(
@@ -102,11 +101,12 @@ class SUpdateThemeUI extends StatelessWidget {
               ),
               subtitle: I18nText('settingsView.dynamicThemeHint'),
               value: _settingViewModel.sUpdateTheme.getDynamicThemeStatus(),
-              onTap: (value) =>
-                  _settingViewModel.sUpdateTheme.setUseDynamicTheme(
-                context,
-                value,
-              ),
+              onChanged: (value) => {
+                _settingViewModel.sUpdateTheme.setUseDynamicTheme(
+                  context,
+                  value,
+                ),
+              },
             ),
           ),
         ),

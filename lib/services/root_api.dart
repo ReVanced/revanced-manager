@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:root/root.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 class RootAPI {
   final String _managerDirPath = '/data/local/tmp/revanced-manager';
@@ -10,8 +10,10 @@ class RootAPI {
     try {
       final bool? isRooted = await Root.isRootAvailable();
       return isRooted != null && isRooted;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return false;
     }
   }
@@ -24,8 +26,10 @@ class RootAPI {
         return isRooted != null && isRooted;
       }
       return false;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return false;
     }
   }
@@ -78,8 +82,10 @@ class RootAPI {
         apps.removeWhere((pack) => pack.isEmpty);
         return apps.map((pack) => pack.trim()).toList();
       }
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return List.empty();
     }
     return List.empty();
@@ -125,8 +131,10 @@ class RootAPI {
       await installApk(packageName, patchedFilePath);
       await mountApk(packageName, originalFilePath);
       return true;
-    } on Exception catch (e, s) {
-      await Sentry.captureException(e, stackTrace: s);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       return false;
     }
   }

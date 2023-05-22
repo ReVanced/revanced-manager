@@ -20,6 +20,7 @@ class InstallerView extends StatelessWidget {
       builder: (context, model, child) => WillPopScope(
         child: SafeArea(
           top: false,
+          bottom: false,
           child: Scaffold(
             body: CustomScrollView(
               controller: model.scrollController,
@@ -28,7 +29,7 @@ class InstallerView extends StatelessWidget {
                   title: Text(
                     model.headerLogs,
                     style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.headline6!.color,
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                   onBackButtonPressed: () => model.onWillPop(context),
@@ -152,6 +153,11 @@ class InstallerView extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: SizedBox(
+                      height: MediaQuery.of(context).viewPadding.bottom),
                 ),
               ],
             ),

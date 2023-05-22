@@ -33,7 +33,7 @@ class CustomSliverAppBar extends StatelessWidget {
           : IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                color: Theme.of(context).textTheme.headline6!.color,
+                color: Theme.of(context).textTheme.titleLarge!.color,
               ),
               onPressed:
                   onBackButtonPressed ?? () => Navigator.of(context).pop(),

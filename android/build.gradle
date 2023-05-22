@@ -1,6 +1,5 @@
 buildscript {
-    ext.cronetVersion = '102.5005.125'
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '1.7.10'
     repositories {
         google()
         mavenCentral()
@@ -32,6 +31,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
@@ -8,6 +10,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/utils/about_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -52,23 +55,57 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> showPatchConfirmationDialog(BuildContext context) async {
     final bool isValid = await isValidPatchConfig();
-    if (isValid) {
-      navigateToInstaller();
-    } else {
+    if (context.mounted) {
+      if (isValid) {
+        showArmv7WarningDialog(context);
+      } else {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText('warning'),
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            content: I18nText('patcherView.armv7WarningDialogText'),
+            actions: <Widget>[
+              CustomMaterialButton(
+                label: I18nText('noButton'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              CustomMaterialButton(
+                label: I18nText('yesButton'),
+                isFilled: false,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  showArmv7WarningDialog(context);
+                },
+              )
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> showArmv7WarningDialog(BuildContext context) async {
+    final bool armv7 = await AboutInfo.getInfo().then((info) {
+      final List<String> archs = info['arch'];
+      final supportedAbis = ['arm64-v8a', 'x86', 'x86_64'];
+      return !archs.any((arch) => supportedAbis.contains(arch));
+    });
+    if (context.mounted && armv7) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('warning'),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: I18nText('patcherView.patchDialogText'),
+          content: I18nText('patcherView.armv7WarningDialogText'),
           actions: <Widget>[
             CustomMaterialButton(
-              isFilled: false,
               label: I18nText('noButton'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             CustomMaterialButton(
               label: I18nText('yesButton'),
+              isFilled: false,
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
@@ -77,6 +114,8 @@ class PatcherViewModel extends BaseViewModel {
           ],
         ),
       );
+    } else {
+      navigateToInstaller();
     }
   }
 
@@ -88,24 +127,24 @@ class PatcherViewModel extends BaseViewModel {
     return text;
   }
 
-  String getRecommendedVersionString(BuildContext context) {
-    String recommendedVersion =
-        _patcherAPI.getRecommendedVersion(selectedApp!.packageName);
-    if (recommendedVersion.isEmpty) {
-      recommendedVersion = FlutterI18n.translate(
+  String getSuggestedVersionString(BuildContext context) {
+    String suggestedVersion =
+        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+    if (suggestedVersion.isEmpty) {
+      suggestedVersion = FlutterI18n.translate(
         context,
         'appSelectorCard.anyVersion',
       );
     } else {
-      recommendedVersion = 'v$recommendedVersion';
+      suggestedVersion = 'v$suggestedVersion';
     }
     return '${FlutterI18n.translate(
       context,
       'appSelectorCard.currentVersion',
     )}: v${selectedApp!.version}\n${FlutterI18n.translate(
       context,
-      'appSelectorCard.recommendedVersion',
-    )}: $recommendedVersion';
+      'appSelectorCard.suggestedVersion',
+    )}: $suggestedVersion';
   }
 
   Future<void> loadLastSelectedPatches() async {
@@ -114,7 +153,8 @@ class PatcherViewModel extends BaseViewModel {
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
     final List<Patch> patches =
         _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
-    this.selectedPatches
+    this
+        .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
     notifyListeners();
   }

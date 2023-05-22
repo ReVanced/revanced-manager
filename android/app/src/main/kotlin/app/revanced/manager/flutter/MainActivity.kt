@@ -43,8 +43,9 @@ class MainActivity : FlutterActivity() {
                     val integrationsPath = call.argument<String>("integrationsPath")
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
-                    val mergeIntegrations = call.argument<Boolean>("mergeIntegrations")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
+                    val keystorePassword = call.argument<String>("keystorePassword")
+
                     if (patchBundleFilePath != null &&
                         originalFilePath != null &&
                         inputFilePath != null &&
@@ -53,8 +54,8 @@ class MainActivity : FlutterActivity() {
                         integrationsPath != null &&
                         selectedPatches != null &&
                         cacheDirPath != null &&
-                        mergeIntegrations != null &&
-                        keyStoreFilePath != null
+                        keyStoreFilePath != null &&
+                        keystorePassword != null
                     ) {
                         runPatcher(
                             result,
@@ -66,8 +67,8 @@ class MainActivity : FlutterActivity() {
                             integrationsPath,
                             selectedPatches,
                             cacheDirPath,
-                            mergeIntegrations,
-                            keyStoreFilePath
+                            keyStoreFilePath,
+                            keystorePassword
                         )
                     } else {
                         result.notImplemented()
@@ -88,8 +89,8 @@ class MainActivity : FlutterActivity() {
         integrationsPath: String,
         selectedPatches: List<String>,
         cacheDirPath: String,
-        mergeIntegrations: Boolean,
-        keyStoreFilePath: String
+        keyStoreFilePath: String,
+        keystorePassword: String
     ) {
         val originalFile = File(originalFilePath)
         val inputFile = File(inputFilePath)
@@ -139,19 +140,17 @@ class MainActivity : FlutterActivity() {
                         mapOf("progress" to 0.3, "header" to "", "log" to "")
                     )
                 }
-                if (mergeIntegrations) {
-                    handler.post {
-                        installerChannel.invokeMethod(
-                            "update",
-                            mapOf(
-                                "progress" to 0.4,
-                                "header" to "Merging integrations...",
-                                "log" to "Merging integrations"
-                            )
+                handler.post {
+                    installerChannel.invokeMethod(
+                        "update",
+                        mapOf(
+                            "progress" to 0.4,
+                            "header" to "Merging integrations...",
+                            "log" to "Merging integrations"
                         )
-                    }
-                    patcher.addFiles(listOf(integrations)) {}
+                    )
                 }
+                patcher.addIntegrations(listOf(integrations)) {}
 
                 handler.post {
                     installerChannel.invokeMethod(
@@ -248,7 +247,7 @@ class MainActivity : FlutterActivity() {
                 // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
 
                 try {
-                    Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+                    Signer("ReVanced", keystorePassword).signApk(patchedFile, outFile, keyStoreFile)
                 } catch (e: Exception) {
                     //log to console
                     print("Error signing apk: ${e.message}")
