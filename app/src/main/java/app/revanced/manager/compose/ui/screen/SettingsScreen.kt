@@ -41,6 +41,7 @@ import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.destination.SettingsDestination
 import app.revanced.manager.compose.ui.screen.settings.*
 import app.revanced.manager.compose.ui.viewmodel.SettingsViewModel
+import app.revanced.manager.compose.ui.viewmodel.UpdateSettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
 
@@ -99,7 +100,8 @@ fun SettingsScreen(
             )
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = { navController.pop() },
+                navController = navController
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
@@ -112,6 +114,10 @@ fun SettingsScreen(
 
             is SettingsDestination.About -> AboutSettingsScreen(
                 onBackClick = { navController.pop() }
+            )
+
+            is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
+               { navController.pop() },
             )
 
             is SettingsDestination.Settings -> {
@@ -136,7 +142,8 @@ fun SettingsScreen(
                                     context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                         data = Uri.parse("package:${context.packageName}")
                                     })
-                                    showBatteryButton = !pm.isIgnoringBatteryOptimizations(context.packageName)
+                                    showBatteryButton =
+                                        !pm.isIgnoringBatteryOptimizations(context.packageName)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -151,16 +158,36 @@ fun SettingsScreen(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
-                                    Icon(imageVector = Icons.Default.BatteryAlert, contentDescription = null, tint = MaterialTheme.colorScheme.onTertiaryContainer, modifier = Modifier.size(24.dp))
-                                    Text(text = stringResource(R.string.battery_optimization_notification), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                    Icon(
+                                        imageVector = Icons.Default.BatteryAlert,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.battery_optimization_notification),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                                    )
                                 }
                             }
                         }
                         settingsSections.forEach { (titleDescIcon, destination) ->
                             ListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
-                                headlineContent = { Text(stringResource(titleDescIcon.first), style = MaterialTheme.typography.titleLarge)  },
-                                supportingContent = { Text(stringResource(titleDescIcon.second), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline) },
+                                headlineContent = {
+                                    Text(
+                                        stringResource(titleDescIcon.first),
+                                        style = MaterialTheme.typography.titleLarge
+                                    )
+                                },
+                                supportingContent = {
+                                    Text(
+                                        stringResource(titleDescIcon.second),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.outline
+                                    )
+                                },
                                 leadingContent = { Icon(titleDescIcon.third, null) }
                             )
                         }
@@ -168,5 +195,5 @@ fun SettingsScreen(
                 }
             }
         }
-}
+    }
 }
