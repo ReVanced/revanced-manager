@@ -1,12 +1,14 @@
 package app.revanced.manager.compose.network.api
 
 import android.app.Application
+import android.os.Environment
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import app.revanced.manager.compose.domain.repository.ReVancedRepository
 import app.revanced.manager.compose.util.ghIntegrations
+import app.revanced.manager.compose.util.ghManager
 import app.revanced.manager.compose.util.ghPatches
 import app.revanced.manager.compose.util.tag
 import app.revanced.manager.compose.util.toast
@@ -24,11 +26,15 @@ class ManagerAPI(
     private val revancedRepository: ReVancedRepository
 ) {
     var downloadProgress: Float? by mutableStateOf(null)
+    var downloadedSize: Long? by mutableStateOf(null)
+    var totalSize: Long? by mutableStateOf(null)
 
     private suspend fun downloadAsset(downloadUrl: String, saveLocation: File) {
         client.get(downloadUrl) {
-            onDownload { bytesSentTotal, contentLength ->
+            onDownload { bytesSentTotal, contentLength, ->
                 downloadProgress = (bytesSentTotal.toFloat() / contentLength.toFloat())
+                downloadedSize = bytesSentTotal
+                totalSize = contentLength
             }
         }.bodyAsChannel().copyAndClose(saveLocation.writeChannel())
         downloadProgress = null
@@ -65,10 +71,20 @@ class ManagerAPI(
 
         return null
     }
+
+    suspend fun downloadManager(): File? {
+        try {
+            val managerAsset = revancedRepository.findAsset(ghManager, ".apk")
+            val managerFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).also { it.mkdirs() }
+                .resolve("revanced-manager.apk")
+            downloadAsset(managerAsset.downloadUrl, managerFile)
+            println("Downloaded manager at ${managerFile.absolutePath}")
+            return managerFile
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to download manager", e)
+            app.toast("Failed to download manager")
+        }
+        return null
+    }
 }
-
-data class PatchesAsset(
-    val downloadUrl: String, val name: String
-)
-
 class MissingAssetException : Exception()
