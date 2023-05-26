@@ -26,6 +26,7 @@ import app.revanced.manager.compose.patcher.patch.PatchInfo
 import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.component.GroupHeader
 import app.revanced.manager.compose.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.compose.util.PatchesSelection
 import kotlinx.coroutines.launch
 
 const val allowUnsupported = false
@@ -33,7 +34,7 @@ const val allowUnsupported = false
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    startPatching: (List<String>) -> Unit, onBackClick: () -> Unit, vm: PatchesSelectorViewModel
+    startPatching: (PatchesSelection) -> Unit, onBackClick: () -> Unit, vm: PatchesSelectorViewModel
 ) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
@@ -56,7 +57,7 @@ fun PatchesSelectorScreen(
     }, floatingActionButton = {
         ExtendedFloatingActionButton(text = { Text(stringResource(R.string.patch)) },
             icon = { Icon(Icons.Default.Build, null) },
-            onClick = { startPatching(vm.selectedPatches.toList()) })
+            onClick = { startPatching(vm.generateSelection()) })
     }) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
             TabRow(
@@ -80,26 +81,26 @@ fun PatchesSelectorScreen(
                 userScrollEnabled = true,
                 pageContent = { index ->
 
-                    val bundle = bundles[index]
+                    val (bundleName, supportedPatches, unsupportedPatches) = bundles[index]
 
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(
-                            items = bundle.supported
+                            items = supportedPatches
                         ) { patch ->
                             PatchItem(
                                 patch = patch,
                                 onOptionsDialog = vm::openOptionsDialog,
                                 onToggle = {
-                                    vm.togglePatch(patch)
+                                    vm.togglePatch(bundleName, patch)
                                 },
-                                selected = vm.isSelected(patch),
+                                selected = vm.isSelected(bundleName, patch),
                                 supported = true
                             )
                         }
 
-                        if (bundle.unsupported.isNotEmpty()) {
+                        if (unsupportedPatches.isNotEmpty()) {
                             item {
                                 Row(
                                     modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp).padding(end = 10.dp),
@@ -116,16 +117,16 @@ fun PatchesSelectorScreen(
                         }
 
                         items(
-                            items = bundle.unsupported,
+                            items = unsupportedPatches,
                             // key = { it.name }
                         ) { patch ->
                             PatchItem(
                                 patch = patch,
                                 onOptionsDialog = vm::openOptionsDialog,
                                 onToggle = {
-                                    vm.togglePatch(patch)
+                                    vm.togglePatch(bundleName, patch)
                                 },
-                                selected = vm.isSelected(patch),
+                                selected = vm.isSelected(bundleName, patch),
                                 supported = allowUnsupported
                             )
                         }

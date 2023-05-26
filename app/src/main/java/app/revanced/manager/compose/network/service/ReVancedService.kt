@@ -5,7 +5,7 @@ import app.revanced.manager.compose.network.dto.Assets
 import app.revanced.manager.compose.network.dto.ReVancedReleases
 import app.revanced.manager.compose.network.dto.ReVancedRepositories
 import app.revanced.manager.compose.network.utils.APIResponse
-import app.revanced.manager.compose.network.utils.getOrNull
+import app.revanced.manager.compose.network.utils.getOrThrow
 import app.revanced.manager.compose.util.apiURL
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +31,12 @@ class ReVancedService(
     }
 
     suspend fun findAsset(repo: String, file: String): Assets {
-        val releases = getAssets().getOrNull() ?: throw Exception("Cannot retrieve assets")
+        val releases = getAssets().getOrThrow()
+
         val asset = releases.tools.find { asset ->
             (asset.name.contains(file) && asset.repository.contains(repo))
         } ?: throw MissingAssetException()
+
         return Assets(asset.repository, asset.version, asset.timestamp, asset.name,asset.size, asset.downloadUrl, asset.content_type)
     }
 
