@@ -2,6 +2,7 @@ package app.revanced.manager.compose.patcher
 
 import android.util.Log
 import app.revanced.manager.compose.patcher.worker.Progress
+import app.revanced.manager.compose.util.tag
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Context
@@ -82,20 +83,21 @@ class Session(
 }
 
 private object LogcatLogger : Logger {
-    private const val tag = "revanced-patcher"
+    fun String.fmt() = "[Patcher]: $this"
+
     override fun error(msg: String) {
-        Log.e(tag, msg)
+        Log.e(tag, msg.fmt())
     }
 
     override fun warn(msg: String) {
-        Log.w(tag, msg)
+        Log.w(tag, msg.fmt())
     }
 
     override fun info(msg: String) {
-        Log.i(tag, msg)
+        Log.i(tag, msg.fmt())
     }
 
     override fun trace(msg: String) {
-        Log.v(tag, msg)
+        Log.v(tag, msg.fmt())
     }
 }
