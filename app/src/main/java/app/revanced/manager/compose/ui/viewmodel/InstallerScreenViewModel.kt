@@ -27,15 +27,17 @@ import app.revanced.manager.compose.util.PatchesSelection
 import app.revanced.manager.compose.util.toast
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 
 class InstallerScreenViewModel(
     input: PackageInfo,
-    selectedPatches: PatchesSelection,
-    private val app: Application,
-    private val signerService: SignerService
-) : ViewModel() {
+    selectedPatches: PatchesSelection
+) : ViewModel(), KoinComponent {
+    private val signerService: SignerService by inject()
+    private val app: Application by inject()
     var stepGroups by mutableStateOf<List<StepGroup>>(
         PatcherProgressManager.generateGroupsList(
             app,
