@@ -13,13 +13,14 @@
         "settingsTab": "Nastavenia"
     },
     "homeView": {
+        "refreshSuccess": "Úspešne obnovené",
         "widgetTitle": "Hlavný panel",
         "updatesSubtitle": "Aktualizácie",
         "patchedSubtitle": "Zaplátané aplikácie",
         "updatesAvailable": "Dostupné aktualizácie",
         "noUpdates": "Žiadne dostupné aktualizácie",
-        "WIP": "Rozpracované...",
-        "noInstallations": "Žiadne zaplátané aplikácie nie sú nainštalované",
+        "WIP": "Pracuje sa na tom...",
+        "noInstallations": "Zaplátané aplikácie nie sú nainštalované",
         "installed": "Nainštalované",
         "updateDialogTitle": "Aktualizovať Manažéra",
         "updateChangelogTitle": "Zoznam zmien",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Zaplátač",
         "patchButton": "Záplata",
-        "patchDialogText": "Vybrali ste záplatu zdroja a bol detegovaný inštalátor rozdelený na viac súborov, takže môže dôjsť k chybám pri záplatovaní.\nNaozaj chcete pokračovať?"
+        "patchDialogText": "Vybrali ste záplatu zdroja a bol detegovaný inštalátor rozdelený na viac súborov, takže môže dôjsť k chybám pri záplatovaní.\nNaozaj chcete pokračovať?",
+        "armv7WarningDialogText": "Záplatovanie na zariadeniach ARMv7 zatiaľ nie je podporované a môže zlyhať. Pokračovať aj tak?"
     },
     "appSelectorCard": {
         "widgetTitle": "Vyberte aplikáciu",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Nie je vybraná žiadna aplikácia",
         "noAppsLabel": "Nebola nájdená žiadna aplikácia",
         "currentVersion": "Aktuálne",
-        "recommendedVersion": "Odporúčané",
+        "suggestedVersion": "Navrhované",
         "anyVersion": "akákoľvek"
     },
     "patchSelectorCard": {
@@ -71,16 +73,21 @@
     "appSelectorView": {
         "viewTitle": "Vyberte aplikáciu",
         "searchBarHint": "Vyhľadať aplikáciu",
+        "selectFromStorageButton": "Vybrať z úložiska",
         "storageButton": "Úložisko",
-        "errorMessage": "Nie je možné použiť vybranú aplikáciu"
+        "errorMessage": "Nie je možné použiť vybranú aplikáciu",
+        "downloadToast": "Funkcia sťahovania zatiaľ nie je k dispozícii",
+        "featureNotAvailable": "Funkcia nie je implementovaná",
+        "featureNotAvailableText": "Táto aplikácia je rozdelený APK súbor a nemožno ju vybrať. Bohužiaľ, táto funkcia je v súčasnosti k dispozícii len pre rootnuté zariadenia. Aplikáciu však stále môžete nainštalovať tak, že vyberiete jej súbory APK z úložiska zariadenia"
     },
     "patchesSelectorView": {
         "viewTitle": "Vyberte záplaty",
         "searchBarHint": "Vyhľadajte záplaty",
         "doneButton": "Hotovo",
-        "recommended": "Odporúčané",
-        "all": "Všetky",
+        "default": "Predvolené",
+        "defaultTooltip": "Vybrať všetky predvolené záplaty",
         "none": "Žiadne",
+        "noneTooltip": "Zrušiť výber všetkých odporúčaných záplat",
         "loadPatchesSelection": "Načítať výber záplat",
         "noSavedPatches": "Žiadne uložené záplaty pre vybranú aplikáciu\nStlačením tlačidla Hotovo uložíte aktuálny výber.",
         "noPatchesFound": "Neboli nájdené žiadne záplaty pre zvolenú aplikáciu",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Import a export",
         "aboutLabel": "Informácie",
         "snackbarMessage": "Skopírované do schránky",
-        "sentryLabel": "Log Sentry",
-        "sentryHint": "Odoslať anonymné protokoly, ktoré nám pomôžu zlepšiť ReVanced Manager",
         "restartAppForChanges": "Ak chcete použiť zmeny, reštartujte aplikáciu",
         "deleteKeystoreLabel": "Odstrániť úložisko kľúčov",
         "deleteKeystoreHint": "Odstrániť úložisko kľúčov použité na podpísanie aplikácie",
+        "deleteKeystoreDialogText": "Naozaj chcete odstrániť úložisko kľúčov používané na podpisovanie zaplátaných aplikácií?",
         "deletedKeystore": "Úložisko kľúčov odstránené",
         "deleteTempDirLabel": "Odstrániť dočasné súbory",
         "deleteTempDirHint": "Odstrániť nepoužívané dočasné súbory",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Nie je možné použiť vybraný JSON súbor",
         "deleteLogsLabel": "Odstrániť záznamy",
         "deleteLogsHint": "Odstrániť zozbieranané záznamy manažéra",
-        "deletedLogs": "Záznamy odstránené"
+        "deletedLogs": "Záznamy odstránené",
+        "exportKeystoreLabel": "Exportovať úložisko kľúčov",
+        "exportKeystoreHint": "Exportovať úložisko kľúčov používané na podpisovanie aplikácií",
+        "exportedKeystore": "Úložisko kľúčov exportované",
+        "noKeystoreExportFileFound": "Žiadne úložisko kľúčov na export",
+        "importKeystoreLabel": "Importovať úložisko kľúčov",
+        "importKeystoreHint": "Importovať úložisko kľúčov používané na podpisovanie aplikácií",
+        "importedKeystore": "Úložisko kľúčov importované",
+        "keystoreSelectorErrorMessage": "Nie je možné použiť vybraný KEYSTORE súbor",
+        "selectKeystorePassword": "Heslo úložiska kľúčov",
+        "selectKeystorePasswordHint": "Vyberte heslo úložiska kľúčov použité na podpísanie APK"
     },
     "appInfoView": {
         "widgetTitle": "Informácie o aplikácii",

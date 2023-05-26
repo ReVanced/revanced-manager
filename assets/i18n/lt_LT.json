@@ -13,6 +13,7 @@
         "settingsTab": "Nustatymai"
     },
     "homeView": {
+        "refreshSuccess": "Sėkmingai atnaujinta",
         "widgetTitle": "Valdymo skydas",
         "updatesSubtitle": "Atnaujinimai",
         "patchedSubtitle": "Modifikuotos programos",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Modifikuoti",
-        "patchDialogText": "Jūs pasirinkote resource modifikaciją ir padalinta APK instaliacija buvo aptikta, tai modifikavimo klaidos gali atsitikti.\nAr esate tikri kad norite tęsti modifikuoti padalytą APK?"
+        "patchDialogText": "Jūs pasirinkote resource modifikaciją ir padalinta APK instaliacija buvo aptikta, tai modifikavimo klaidos gali atsitikti.\nAr esate tikri kad norite tęsti modifikuoti padalytą APK?",
+        "armv7WarningDialogText": "Modifikavimas ant ARMv7 įrenginių dar nepalikomas ir gali nepavykti. Vis tiek tęsti?"
     },
     "appSelectorCard": {
         "widgetTitle": "Pasirinkite programą",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Nepasirinkta programa",
         "noAppsLabel": "Nerastos jokios programos",
         "currentVersion": "Dabartinė",
-        "recommendedVersion": "Rekomenduojama",
+        "suggestedVersion": "Siūloma",
         "anyVersion": "bet kokia"
     },
     "patchSelectorCard": {
@@ -71,16 +73,21 @@
     "appSelectorView": {
         "viewTitle": "Pasirinkite programą",
         "searchBarHint": "Ieškoti programų",
+        "selectFromStorageButton": "Pasirinkti iš talpyklos",
         "storageButton": "Saugykla",
-        "errorMessage": "Neina naudoti parinktos programos"
+        "errorMessage": "Neina naudoti parinktos programos",
+        "downloadToast": "Atsisiuntimas dar neprieinamas",
+        "featureNotAvailable": "Funkcija dar neįgyvendinta",
+        "featureNotAvailableText": "Ši programa yra padalinta APK ir negali būti pasirinkta. Deja, šiuo metu ši funkcija prieinama tik vartotojams su root prieiga. Tačiau vis tiek galite įdiegti programą pasirinkę jos APK failą iš įrenginio saugyklos"
     },
     "patchesSelectorView": {
         "viewTitle": "Pasirinkti modifikacijas",
         "searchBarHint": "Ieškoti modifikacijų",
         "doneButton": "Atlikta",
-        "recommended": "Rekomenduojama",
-        "all": "Visi",
+        "default": "Numatytos",
+        "defaultTooltip": "Parinkti visas numatytas modifikacijas",
         "none": "Nėra",
+        "noneTooltip": "Panaikinti modifikacijų pasirinkimus",
         "loadPatchesSelection": "Įkelti modifikacijų pasirinkimą",
         "noSavedPatches": "Nėra išsaugotų pasirinktos programos modifikacijų.\nPaspauskite Atlikta, kad išsaugotumėte dabartinį pasirinkimą.",
         "noPatchesFound": "Nerasta modifikacijų pasirinktai programai",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Importuoti ir eksportuoti",
         "aboutLabel": "Apie",
         "snackbarMessage": "Nukopijuota į iškarpinę",
-        "sentryLabel": "Klaidų rinkimo įrankio įrašai",
-        "sentryHint": "Siųsti anoniminius įrašus, kad padėtumėte mums tobulinti ReVanced Manager",
         "restartAppForChanges": "Iš naujo paleiskite programą, kad modifikacijos įsigaliotų",
         "deleteKeystoreLabel": "Ištrinti keystore",
         "deleteKeystoreHint": "Ištrinti keystore kuris naudojamas pasirašyti programą",
+        "deleteKeystoreDialogText": "Ar tikrai norite ištrinti raktų saugyklą, naudojamą modifikuotom programom pasirašyti?",
         "deletedKeystore": "Keystore ištrintas",
         "deleteTempDirLabel": "Ištrinti laikinus failus",
         "deleteTempDirHint": "Ištrinti nenaudojamus laikinus failus",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Neina naudoti pasirinkto JSON failo",
         "deleteLogsLabel": "Ištrinti įrašus",
         "deleteLogsHint": "Ištrinti surinktus Manager įrašus",
-        "deletedLogs": "Įrašai ištrinti"
+        "deletedLogs": "Įrašai ištrinti",
+        "exportKeystoreLabel": "Eksportuoti raktų saugyklą",
+        "exportKeystoreHint": "Eksportuoti raktų saugyklą, kuri naudojama pasirašant programas",
+        "exportedKeystore": "Raktų saugykla eksportuota",
+        "noKeystoreExportFileFound": "Nėra raktų saugyklos",
+        "importKeystoreLabel": "Importuoti raktų saugyklą",
+        "importKeystoreHint": "Importuoti raktų saugyklą, kuri naudojama pasirašant programas",
+        "importedKeystore": "Raktų saugykla importuota",
+        "keystoreSelectorErrorMessage": "Neina naudoti pasirinkto raktų saugyklos failo",
+        "selectKeystorePassword": "Raktų saugyklos slaptažodis",
+        "selectKeystorePasswordHint": "Pasirinkite raktų saugyklos slaptažodį, naudotą pasirašyti programai"
     },
     "appInfoView": {
         "widgetTitle": "Programos informacija",
@@ -177,7 +193,7 @@
         "unpatchButton": "Išimti modifikacijas",
         "unpatchDialogText": "Ar esi tikras kad nori išimti modifikacijas iš šios programos?",
         "rootDialogTitle": "Klaida",
-        "rootDialogText": "Programa buvo įdiegta su supervartotojo leidimais, bet ReVanced Manager neturi leidimų.\nPirmiausia suteikite supervartotojo leidimus.",
+        "rootDialogText": "Programa buvo įdiegta su super vartotojo leidimais, bet ReVanced Manager neturi leidimų.\nPirmiausia suteikite super vartotojo leidimus.",
         "packageNameLabel": "Paketo pavadinimas",
         "originalPackageNameLabel": "Originalus paketo pavadinimas",
         "installTypeLabel": "Įdiegimo tipas",

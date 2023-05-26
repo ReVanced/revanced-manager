@@ -13,13 +13,14 @@
         "settingsTab": "Impostazioni"
     },
     "homeView": {
-        "widgetTitle": "Gestione",
+        "refreshSuccess": "Ricaricato con successo",
+        "widgetTitle": "Bacheca",
         "updatesSubtitle": "Aggiornamenti",
         "patchedSubtitle": "Applicazioni Patchate",
         "updatesAvailable": "Aggiornamenti disponibili",
         "noUpdates": "Nessun aggiornamento disponibile",
         "WIP": "Lavori in corso...",
-        "noInstallations": "Non è stata installata nessuna applicazione modificata",
+        "noInstallations": "Nessuna applicazione patchata è stata installata",
         "installed": "Installate",
         "updateDialogTitle": "Aggiorna Manager",
         "updateChangelogTitle": "Changelog",
@@ -46,8 +47,9 @@
     },
     "patcherView": {
         "widgetTitle": "Patcher",
-        "patchButton": "Applica",
-        "patchDialogText": "Hai selezionato una patch di risorse ed è stato rilevato un file di installazione diviso (Split APK), quindi potrebbero verificarsi errori di patching.\nSei sicuro di voler procedere?"
+        "patchButton": "Patcha",
+        "patchDialogText": "Hai selezionato una patch di risorse ed è stato rilevato un file d'installazione diviso (Split APK), quindi potrebbero verificarsi errori di patching.\nSei sicuro di voler procedere?",
+        "armv7WarningDialogText": "Il patching sui dispositivi ARMv7 non è ancora supportato e potrebbe fallire. Procedere comunque?"
     },
     "appSelectorCard": {
         "widgetTitle": "Seleziona un'applicazione",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Nessuna applicazione selezionata",
         "noAppsLabel": "Nessuna applicazione trovata",
         "currentVersion": "Attuale",
-        "recommendedVersion": "Consigliata",
+        "suggestedVersion": "Suggerito",
         "anyVersion": "qualsiasi"
     },
     "patchSelectorCard": {
@@ -71,20 +73,25 @@
     "appSelectorView": {
         "viewTitle": "Seleziona un'applicazione",
         "searchBarHint": "Cerca applicazioni",
+        "selectFromStorageButton": "Seleziona dalla memoria",
         "storageButton": "Archiviazione",
-        "errorMessage": "Impossibile utilizzare l'applicazione selezionata"
+        "errorMessage": "Impossibile utilizzare l'applicazione selezionata",
+        "downloadToast": "La funzione Download non è ancora disponibile",
+        "featureNotAvailable": "Funzionalità non implementata",
+        "featureNotAvailableText": "Questa applicazione è un APK diviso e non può essere selezionata. Sfortunatamente, questa funzionalità è disponibile solo per gli utenti rootati al momento. Tuttavia, è invece ancora possibile installare l'applicazione selezionando i file APK dalla memoria del dispositivo"
     },
     "patchesSelectorView": {
         "viewTitle": "Seleziona patch",
         "searchBarHint": "Cerca patch",
         "doneButton": "Fatto",
-        "recommended": "Raccomandati",
-        "all": "Tutte",
+        "default": "Predefinito",
+        "defaultTooltip": "Seleziona tutte le patch predefinite",
         "none": "Nessuna",
+        "noneTooltip": "Deseleziona tutte le patch",
         "loadPatchesSelection": "Carica selezione patch",
         "noSavedPatches": "Nessuna patch salvata per l'app selezionata.\nPremi Fatto per salvare la selezione corrente.",
         "noPatchesFound": "Nessuna patch trovata per l'applicazione selezionata",
-        "selectAllPatchesWarningContent": "Stai per selezionare tutte le patch, incluse patch non consigliate che potrebbero causare comportamenti indesiderati."
+        "selectAllPatchesWarningContent": "Stai per selezionare tutte le patch, incluse quelle non suggerite e che potrebbero causare comportamenti anomali."
     },
     "patchItem": {
         "unsupportedDialogText": "La selezione di questa patch potrebbe causare degli errori.\n\nVersione dell'app: {packageVersion}\nVersioni supportate:\n{supportedVersions}",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Importa / Esporta",
         "aboutLabel": "Informazioni",
         "snackbarMessage": "Copiato negli appunti",
-        "sentryLabel": "Log di Sentry",
-        "sentryHint": "Invia log anonimi per aiutarci a migliorare ReVanced Manager",
         "restartAppForChanges": "Riavvia l'app per applicare le modifiche",
         "deleteKeystoreLabel": "Elimina keystore",
         "deleteKeystoreHint": "Elimina il keystore usato per firmare l'applicazione",
+        "deleteKeystoreDialogText": "Sei sicuro di voler eliminare il keystore utilizzato per firmare le applicazioni patchate?",
         "deletedKeystore": "Keystore eliminato",
         "deleteTempDirLabel": "Elimina file temporanei",
         "deleteTempDirHint": "Elimina i file temporanei non utilizzati",
@@ -162,12 +168,22 @@
         "importPatchesHint": "Importa le patch selezionate da un file JSON",
         "importedPatches": "Patch selezionate importate",
         "resetStoredPatchesLabel": "Ripristina le patch",
-        "resetStoredPatchesHint": "Resetta la selezione delle patch memorizzate",
+        "resetStoredPatchesHint": "Ripristina la selezione delle patch memorizzate",
         "resetStoredPatches": "La selezione delle patch è stata resettata",
         "jsonSelectorErrorMessage": "Impossibile utilizzare il file json selezionato",
         "deleteLogsLabel": "Cancella log",
         "deleteLogsHint": "Elimina i log del manager raccolti",
-        "deletedLogs": "Log cancellati"
+        "deletedLogs": "Log cancellati",
+        "exportKeystoreLabel": "Esporta keystore",
+        "exportKeystoreHint": "Esporta keystore utilizzato per firmare le app",
+        "exportedKeystore": "Keystore esportato",
+        "noKeystoreExportFileFound": "Nessun keystore da esportare",
+        "importKeystoreLabel": "Importa keystore",
+        "importKeystoreHint": "Importa keystore usato per firmare le app",
+        "importedKeystore": "Keystore importato",
+        "keystoreSelectorErrorMessage": "Impossibile utilizzare il file KEYSTORE selezionato",
+        "selectKeystorePassword": "Password keystore",
+        "selectKeystorePasswordHint": "Seleziona la password del keystore utilizzato per firmare l'apk"
     },
     "appInfoView": {
         "widgetTitle": "Info app",

@@ -13,6 +13,7 @@
         "settingsTab": "設定"
     },
     "homeView": {
+        "refreshSuccess": "重新整理成功",
         "widgetTitle": "儀表板",
         "updatesSubtitle": "更新",
         "patchedSubtitle": "已修補的應用程式",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "修補工具",
         "patchButton": "修補",
-        "patchDialogText": "已偵測到您使用分割 APK 安裝檔並選取資源修補，如繼續執行可能會發生修補錯誤。\n確定要繼續嗎？"
+        "patchDialogText": "已偵測到您使用分割 APK 安裝檔並選取資源修補，如繼續執行可能會發生修補錯誤。\n確定要繼續嗎？",
+        "armv7WarningDialogText": "尚未支援在 ARMv7 裝置上進行修補，繼續執行可能會失敗。確定要繼續執行？"
     },
     "appSelectorCard": {
         "widgetTitle": "選取應用程式",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "未選取應用程式",
         "noAppsLabel": "找不到應用程式",
         "currentVersion": "目前",
-        "recommendedVersion": "建議",
+        "suggestedVersion": "建議",
         "anyVersion": "任何"
     },
     "patchSelectorCard": {
@@ -71,20 +73,25 @@
     "appSelectorView": {
         "viewTitle": "選取應用程式",
         "searchBarHint": "搜尋應用程式",
+        "selectFromStorageButton": "從儲存空間中選取",
         "storageButton": "儲存空間",
-        "errorMessage": "無法使用所選的應用程式"
+        "errorMessage": "無法使用所選的應用程式",
+        "downloadToast": "下載功能尚不可用",
+        "featureNotAvailable": "功能尚未實作",
+        "featureNotAvailableText": "無法選取分割 APK 檔。此功能僅對 Root 身分者可用，請改為在您的裝置儲存空間中選取 APK 檔，即可繼續安裝。"
     },
     "patchesSelectorView": {
         "viewTitle": "選取修補檔",
         "searchBarHint": "搜尋修補檔",
         "doneButton": "完成",
-        "recommended": "建議",
-        "all": "全部",
+        "default": "預設",
+        "defaultTooltip": "選取全部預設修補檔",
         "none": "無",
+        "noneTooltip": "取消選取修補檔",
         "loadPatchesSelection": "載入修補檔選取",
         "noSavedPatches": "選取的應用程式尚無已儲存的修補檔。\n按下 [完成] 以儲存目前選取。",
         "noPatchesFound": "找不到適合所選應用程式的修補檔",
-        "selectAllPatchesWarningContent": "即將選取所有修補檔——之中包含不推薦的修補檔，且可能造成非預期的結果。"
+        "selectAllPatchesWarningContent": "即將選取所有修補檔——之中包含不建議的修補檔，且可能造成非預期的結果。"
     },
     "patchItem": {
         "unsupportedDialogText": "選取此修補檔可能導致修補錯誤。\n應用程式版本： {packageVersion}\n支援的版本： {supportedVersions}",
@@ -93,7 +100,7 @@
     "installerView": {
         "widgetTitle": "安裝程式",
         "installButton": "安裝",
-        "installRootButton": "以 Root 身分安裝",
+        "installRootButton": "以 Root 模式安裝",
         "openButton": "開啟",
         "shareButton": "分享檔案",
         "notificationTitle": "ReVanced Manager 正在修補",
@@ -135,7 +142,7 @@
         "logsLabel": "記錄檔",
         "logsHint": "分享 Manager 記錄檔",
         "apiURLLabel": "API URL",
-        "apiURLHint": "設定自訂 API URL",
+        "apiURLHint": "設定自訂 API 網址",
         "selectApiURL": "API URL",
         "experimentalUniversalPatchesLabel": "支援實驗性通用型修補檔",
         "experimentalUniversalPatchesHint": "顯示所有可使用通用型修補檔的應用程式，載入應用程式清單的時長可能會變得更慢",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "匯入和匯出",
         "aboutLabel": "關於",
         "snackbarMessage": "已複製到剪貼簿",
-        "sentryLabel": "輸入記錄",
-        "sentryHint": "傳送匿名記錄以協助我們改進 ReVanced Manager",
         "restartAppForChanges": "重新啟動應用程式以套用變更",
         "deleteKeystoreLabel": "刪除金鑰儲存區",
-        "deleteKeystoreHint": "刪除用於登入應用程式的金鑰儲存區",
+        "deleteKeystoreHint": "刪除用於簽署應用程式的金鑰儲存區",
+        "deleteKeystoreDialogText": "確定要刪除用於簽署已修補的應用程式之金鑰儲存區嗎？",
         "deletedKeystore": "已刪除金鑰儲存區",
         "deleteTempDirLabel": "刪除暫存檔案",
         "deleteTempDirHint": "刪除未使用的暫存檔案",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "無法使用已選取的 JSON 檔案",
         "deleteLogsLabel": "刪除記錄檔",
         "deleteLogsHint": "刪除已收集的 Manager 記錄",
-        "deletedLogs": "已刪除記錄檔"
+        "deletedLogs": "已刪除記錄檔",
+        "exportKeystoreLabel": "匯出金鑰儲存區",
+        "exportKeystoreHint": "匯出金鑰儲存區以用於簽署應用程式",
+        "exportedKeystore": "已匯出金鑰儲存區",
+        "noKeystoreExportFileFound": "沒有金鑰儲存區可供匯出",
+        "importKeystoreLabel": "匯入金鑰儲存區",
+        "importKeystoreHint": "匯入金鑰儲存區以用於簽署應用程式",
+        "importedKeystore": "已匯入金鑰儲存區",
+        "keystoreSelectorErrorMessage": "無法使用已選取的 KEYSTORE 檔案",
+        "selectKeystorePassword": "金鑰儲存區密碼",
+        "selectKeystorePasswordHint": "選取金鑰儲存區密碼以用於簽署 APK"
     },
     "appInfoView": {
         "widgetTitle": "應用程式資訊",

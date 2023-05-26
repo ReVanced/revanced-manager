@@ -1,6 +1,7 @@
 {
     "okButton": "ঠিক আছে",
     "cancelButton": "বাতিল",
+    "updateButton": "আপডেট",
     "enabledLabel": "সক্রিয়",
     "disabledLabel": "নিষ্ক্রিয়",
     "yesButton": "হ্যাঁ",
@@ -12,6 +13,7 @@
         "settingsTab": "সেটিংস"
     },
     "homeView": {
+        "refreshSuccess": "সফলভাবে রিফ্রেশ করা হয়েছে",
         "widgetTitle": "ড্যাশবোর্ড",
         "updatesSubtitle": "আপডেটসমূহ",
         "patchedSubtitle": "প্যাচড অ্যাপ্লিকেশনগুলো",
@@ -19,11 +21,11 @@
         "noUpdates": "কোন আপডেট পাওয়া যায়নি",
         "WIP": "কাজ চলছে...",
         "noInstallations": "কোন প্যাচড অ্যাপ্লিকেশন ইনস্টল করা হয়নি",
-        "installed": "ইনস্টল করা",
+        "installed": "ইনস্টল হয়ে গেছে",
         "updateDialogTitle": "Manager আপডেট করুন",
-        "updateDialogText": "আপনি কি নিশ্চিত আপনি ReVanced Manager ডাউনলোড এবং আপডেট করতে চান?",
+        "updateChangelogTitle": "পরিবর্তনসমূহ",
         "notificationTitle": "আপডেট ডাউনলোড হয়েছে",
-        "notificationText": "আপডেট ইনস্টল করতে ট্যাপ করুন",
+        "notificationText": "আপডেট ইনস্টল করতে চাপ দিন",
         "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে...",
         "installingMessage": "আপডেট ইনস্টল করা হচ্ছে...",
         "errorDownloadMessage": "আপডেট ডাউনলোড করতে সফল হয় নি",
@@ -46,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "প্যাচার",
         "patchButton": "প্যাচ",
-        "patchDialogText": "আপনি রিসোর্স প্যাচ নির্বাচন করেছেন এবং একটি split APK সনাক্ত হয়েছে, তাই প্যাচিং ত্রুটিপূর্ণ হতে পারে।\nআপনি কি নিশ্চিতভাবে সামনে এগিয়ে যেতে চান??"
+        "patchDialogText": "আপনি রিসোর্স প্যাচ নির্বাচন করেছেন এবং একটি split APK সনাক্ত হয়েছে, তাই প্যাচিং ত্রুটিপূর্ণ হতে পারে।\nআপনি কি নিশ্চিতভাবে সামনে এগিয়ে যেতে চান??",
+        "armv7WarningDialogText": "ARMv7 ডিভাইসগুলোতে প্যাচিং এখনো সমর্থিত নয় এবং সফল নাও হতে পারে। এগিয়ে যেতে চান?"
     },
     "appSelectorCard": {
         "widgetTitle": "একটি অ্যাপ্লিকেশন নির্বাচন করুন",
@@ -54,11 +57,11 @@
         "widgetSubtitle": "কোনো অ্যাপ্লিকেশন নির্বাচন করা হয়নি",
         "noAppsLabel": "কোন অ্যাপ্লিকেশন পাওয়া যায়নি",
         "currentVersion": "বর্তমান",
-        "recommendedVersion": "প্রস্তাবিত",
-        "anyVersion": "যেকোনো সংস্করণ"
+        "suggestedVersion": "প্রস্তাবিত",
+        "anyVersion": "যেকোনো"
     },
     "patchSelectorCard": {
-        "widgetTitle": "প্যাচ নির্বাচন করুন",
+        "widgetTitle": "প্যাচসমূহ নির্বাচন করুন",
         "widgetTitleSelected": "নির্বাচিত প্যাচসমূহ",
         "widgetSubtitle": "প্রথমে একটি অ্যাপ্লিকেশন নির্বাচন করুন",
         "widgetEmptySubtitle": "কোন প্যাচ নির্বাচন করা হয়নি"
@@ -70,24 +73,29 @@
     "appSelectorView": {
         "viewTitle": "একটি অ্যাপ্লিকেশন নির্বাচন করুন",
         "searchBarHint": "অ্যাপ্লিকেশনগুলি খুঁজুন",
+        "selectFromStorageButton": "স্টোরেজ থেকে নির্বাচন করুন",
         "storageButton": "স্টোরেজ",
-        "errorMessage": "নির্বাচিত অ্যাপ্লিকেশনটি ব্যবহার করা সম্ভব নয়"
+        "errorMessage": "নির্বাচিত অ্যাপ্লিকেশনটি ব্যবহার করা সম্ভব নয়",
+        "downloadToast": "ডাউনলোড ফাংশন এখনো উপলব্ধ হয়নি",
+        "featureNotAvailable": "ফিচার সম্পাদন করা হয়নি",
+        "featureNotAvailableText": "এই অ্যাপটি একটি বিভাজিত এপিকে এবং নির্বাচন করা যাচ্ছে না। দুর্ভাগ্যজনকভাবে এই সুবিধাটি শুধু রুট ব্যবহারকারীদের জন্য এই মুহূর্তে প্রযোজ্য। তবে, তুমি এখনও যন্ত্রের(ডিভাইসের) স্টোরেজ থেকে অ্যাপটি ইন্সটল করতে পারো।"
     },
     "patchesSelectorView": {
         "viewTitle": "প্যাচ নির্বাচন করুন",
         "searchBarHint": "প্যাচ খুঁজুন",
         "doneButton": "সম্পন্ন হয়েছে",
-        "recommended": "প্রস্তাবিত",
-        "all": "সবগুলো",
+        "default": "পূর্ব-নির্ধারিত",
+        "defaultTooltip": "সকল পূর্ব-নির্ধারিত প্যাচ নির্বাচন করুন",
         "none": "একটিও না",
+        "noneTooltip": "সকল প্যাচ অনির্বাচন করুন",
         "loadPatchesSelection": "নির্বাচিত প্যাচ লোড করুন",
-        "noSavedPatches": "নির্বাচিত অ্যাপের জন্য কোন সংরক্ষিত প্যাচ নেই\nবর্তমানে নির্বাচিত প্যাচ সংরক্ষণ করতে সম্পন্ন হয়েছে চাপুন",
+        "noSavedPatches": "নির্বাচিত অ্যাপের জন্য কোন সংরক্ষিত প্যাচ নেই।\nবর্তমানে নির্বাচিত প্যাচ সংরক্ষণ করতে সম্পন্ন হয়েছে চাপুন।",
         "noPatchesFound": "নির্বাচিত অ্যাপের জন্য কোনো প্যাচ পাওয়া যায়নি",
-        "selectAllPatchesWarningContent": "আপনি সকল প্যাচ নির্বাচন করতে যাচ্ছেন, যার মধ্যে কিছু অপ্রস্তাবিত প্যাচও রয়েছে যা অনাকাঙ্ক্ষিত আচরণ করতে পারে।"
+        "selectAllPatchesWarningContent": "আপনি সমস্ত প্যাচ নির্বাচন করতে চলেছেন, যার মধ্যে অপ্রস্তাবিত প্যাচও রয়েছে যা অনাকাঙ্খিত আচরণ করতে পারে।"
     },
     "patchItem": {
         "unsupportedDialogText": "এই প্যাচটি নির্বাচন করলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nঅ্যাপ সংস্করণ: {packageVersion}\nসমর্থিত সংস্করণ:\n{supportedVersions}",
-        "unsupportedPatchVersion": "এই অ্যাপ সংস্করণের জন্য প্যাচ সমর্থিত নয়। এগিয়ে যেতে সেটিংসে পরীক্ষামূলক টগল সক্ষম করুন৷"
+        "unsupportedPatchVersion": "এই অ্যাপ সংস্করণের জন্য প্যাচ সমর্থিত নয়। এগিয়ে যেতে সেটিংসে পরীক্ষামূলক টগল সক্ষম করুন।"
     },
     "installerView": {
         "widgetTitle": "ইনস্টলার",
@@ -96,7 +104,7 @@
         "openButton": "অ্যাপ খুলুন",
         "shareButton": "ফাইল শেয়ার করুন",
         "notificationTitle": "ReVanced Manager প্যাচ করছে",
-        "notificationText": "ইনস্টলারে ফিরে যেতে ট্যাপ করুন",
+        "notificationText": "ইনস্টলারে ফিরে যেতে আলতো চাপুন",
         "shareApkMenuOption": "APK শেয়ার করুন",
         "exportApkMenuOption": "APK রপ্তানি করুন",
         "shareLogMenuOption": "লগ শেয়ার করুন",
@@ -121,6 +129,7 @@
         "englishOption": "English",
         "sourcesLabel": "উৎস",
         "sourcesLabelHint": "আপনার নিজস্ব উৎস সেট করুন",
+        "hostRepositoryLabel": "রিপজিটরি API",
         "orgPatchesLabel": "প্যাচ এর উদ্ভাবক",
         "sourcesPatchesLabel": "প্যাচ এর উৎস",
         "orgIntegrationsLabel": "ইন্ট্রিগেশনের উদ্ভাবক",
@@ -135,17 +144,18 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "আপনার নিজস্ব API URL সেট করুন",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "সার্বজনীন পরীক্ষামূলক প্যাচ সমর্থন",
+        "experimentalUniversalPatchesHint": "সার্বজনীন প্যাচের সাথে ব্যবহার করার জন্য সমস্ত অ্যাপ্লিকেশন প্রদর্শন করুন, অ্যাপের তালিকা ধীরে লোড হতে পারে",
         "experimentalPatchesLabel": "পরীক্ষামূলক প্যাচ সমর্থন",
         "experimentalPatchesHint": "যেকোন অ্যাপ সংস্করণে অসমর্থিত প্যাচ ব্যবহার করতে সক্ষম করুন",
         "enabledExperimentalPatches": "পরীক্ষামূলক প্যাচ সমর্থন সক্রিয় হয়েছে",
         "exportSectionTitle": "আমদানি ও রপ্তানি",
         "aboutLabel": "সম্পর্কিত",
         "snackbarMessage": "ক্লিপবোর্ডে কপি করা হয়েছে",
-        "sentryLabel": "সেন্ট্রি লগিং",
-        "sentryHint": "ReVanced Manager উন্নত করতে আমাদের সাহায্য করতে বেনামী লগ পাঠান",
         "restartAppForChanges": "পরিবর্তনগুলি প্রয়োগ করতে অ্যাপটি পুনরায় চালু করুন",
         "deleteKeystoreLabel": "কীস্টোর মুছুন",
         "deleteKeystoreHint": "প্যাচড অ্যাপ সাইন করতে ব্যবহৃত কীস্টোরটি মুছুন",
+        "deleteKeystoreDialogText": "আপনি কি নিশ্চিত যে আপনি প্যাচ করা অ্যাপ্লিকেশনগুলি সাইন করার জন্য ব্যবহৃত কীস্টোর মুছতে চান?",
         "deletedKeystore": "কীস্টোর মুছে ফেলা হয়েছে",
         "deleteTempDirLabel": "অস্থায়ী ফাইল মুছুন",
         "deleteTempDirHint": "অব্যবহৃত অস্থায়ী ফাইল মুছুন",
@@ -163,7 +173,17 @@
         "jsonSelectorErrorMessage": "নির্বাচিত JSON ফাইল ব্যবহার করা সম্ভব নয়",
         "deleteLogsLabel": "লগ মুছুন",
         "deleteLogsHint": "Manager এর সংগৃহীত লগ মুছুন",
-        "deletedLogs": "লগ মুছে ফেলা হয়েছে"
+        "deletedLogs": "লগ মুছে ফেলা হয়েছে",
+        "exportKeystoreLabel": "কীস্টোর রপ্তানি করুন",
+        "exportKeystoreHint": "অ্যাপগুলো সাইন করার জন্য ব্যবহৃত কীস্টোর রপ্তানি করুন",
+        "exportedKeystore": "কীস্টোর রপ্তানি করা হয়েছে",
+        "noKeystoreExportFileFound": "রপ্তানি করার জন্য কোন কীস্টোর নেই",
+        "importKeystoreLabel": "কীস্টোর আমদানি করুন",
+        "importKeystoreHint": "অ্যাপগুলো স্বাক্ষর করার জন্য ব্যবহৃত কীস্টোর আমদানি করো",
+        "importedKeystore": "কীস্টোর যোগ করা হয়েছে",
+        "keystoreSelectorErrorMessage": "নির্বাচিত কীস্টোর ফাইল ব্যবহার করা সম্ভব নয়",
+        "selectKeystorePassword": "কীস্টোর পাসওয়ার্ড",
+        "selectKeystorePasswordHint": "APK সাইন করতে ব্যবহৃত কিস্টোর পাসওয়ার্ড নির্বাচন করুন"
     },
     "appInfoView": {
         "widgetTitle": "অ্যাপের তথ্য",

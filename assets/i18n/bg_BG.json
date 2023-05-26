@@ -13,6 +13,7 @@
         "settingsTab": "Настройки"
     },
     "homeView": {
+        "refreshSuccess": "Успешно обновяване",
         "widgetTitle": "Табло за управление",
         "updatesSubtitle": "Актуализации",
         "patchedSubtitle": "Модифицирани приложения",
@@ -35,7 +36,7 @@
     "applicationItem": {
         "patchButton": "Модифицирай",
         "infoButton": "Информация",
-        "changelogLabel": "Списък с промените"
+        "changelogLabel": "Списък с промени"
     },
     "latestCommitCard": {
         "loadingLabel": "Зареждане...",
@@ -46,8 +47,9 @@
     },
     "patcherView": {
         "widgetTitle": "Модификатор",
-        "patchButton": "Модифицирай",
-        "patchDialogText": "Избрали сте модификация за ресурси и разделен APK пакет, което може да доведе до грешки при пачването.\nСигурни ли сте, че искате да продължите?"
+        "patchButton": "Модифицирайте",
+        "patchDialogText": "Избрали сте модификация за ресурси и използвате разделен (split) APK файл, което може да доведе до грешки при модифицирането.\nСигурни ли сте, че искате да продължите?",
+        "armv7WarningDialogText": "Все още не се поддържат модификации за ARMv7 устройства. Продължете въпреки това?"
     },
     "appSelectorCard": {
         "widgetTitle": "Изберете приложение",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Няма избрано приложение",
         "noAppsLabel": "Няма намерени приложения",
         "currentVersion": "Текуща",
-        "recommendedVersion": "Препоръчана",
+        "suggestedVersion": "Препоръчана",
         "anyVersion": "всяка"
     },
     "patchSelectorCard": {
@@ -71,20 +73,25 @@
     "appSelectorView": {
         "viewTitle": "Изберете приложение",
         "searchBarHint": "Търсене на приложение",
+        "selectFromStorageButton": "Избери от хранилище",
         "storageButton": "Хранилище",
-        "errorMessage": "Избраното приложение не може да се използва"
+        "errorMessage": "Избраното приложение не може да се използва",
+        "downloadToast": "Функцията за изтегляне все още не е налична",
+        "featureNotAvailable": "Функцията не е внедрена",
+        "featureNotAvailableText": "Това приложение е разделено APK и не може да бъде избрано. За съжаление, тази функция е налична само за потребители с руут. Въпреки това все още можете да инсталирате приложението, като вместо това изберете неговите APK файлове от хранилището на устройството си"
     },
     "patchesSelectorView": {
         "viewTitle": "Изберете модификации",
         "searchBarHint": "Търсене на модификации",
         "doneButton": "Готово",
-        "recommended": "Препоръчано",
-        "all": "Всички",
-        "none": "Нито един",
+        "default": "По подразбиране",
+        "defaultTooltip": "Изберете всички модификации по подразбиране",
+        "none": "Нито една",
+        "noneTooltip": "Отмяна на всички модификации",
         "loadPatchesSelection": "Заредете избраните модификации",
         "noSavedPatches": "Няма запазени модификации за избраното приложение.\nНатиснете Готово за да запазите текущия избор.",
         "noPatchesFound": "Няма налични модификации за избраното приложение",
-        "selectAllPatchesWarningContent": "Напът сте да изберете всички патчове, дори и тези, които не са препоръчителни, а това може да доведе до нежелани промени."
+        "selectAllPatchesWarningContent": "На път сте да изберете всички модификации, включително и тези, които не се препоръчват и това може да доведе до нежелано поведение."
     },
     "patchItem": {
         "unsupportedDialogText": "Изборът на тази модификация може да доведе до грешки.\n\nВерсия: {packageVersion}\nПоддържани версии: {supportedVersions}",
@@ -115,7 +122,7 @@
         "advancedSectionTitle": "Разширени",
         "logsSectionTitle": "Логове",
         "darkThemeLabel": "Тъмен режим",
-        "darkThemeHint": "Добре дошъл на тъмната страна",
+        "darkThemeHint": "Добре дошли на тъмната страна",
         "dynamicThemeLabel": "Материална Тема",
         "dynamicThemeHint": "Насладете се на преживяване по-близо до устройството си",
         "languageLabel": "Език",
@@ -138,18 +145,17 @@
         "apiURLHint": "Конфигурирайте собствен API URL",
         "selectApiURL": "API URL",
         "experimentalUniversalPatchesLabel": "Поддръжка на експериментални модификации",
-        "experimentalUniversalPatchesHint": "Показване на всички приложения за използване с универсални модификации, зареждането на списъкът с приложения може да е по-бавно",
+        "experimentalUniversalPatchesHint": "Показване на всички приложения за използване с универсални модификации, зареждането на списъка с приложения може да е по-бавно",
         "experimentalPatchesLabel": "Поддръжка на експериментални модификации",
         "experimentalPatchesHint": "Разрешете използването на неподдържани модификации във всяка версия на приложението",
         "enabledExperimentalPatches": "Поддръжката на експериментални модификации е активирана",
         "exportSectionTitle": "Импортиране и експортиране",
         "aboutLabel": "Относно",
         "snackbarMessage": "Копирано",
-        "sentryLabel": "Sentry логване",
-        "sentryHint": "Пращайте анонимни логове за да ни помогнете да подобрим ReVanced Manager",
         "restartAppForChanges": "Рестартирайте приложението, за да се приложат промените",
         "deleteKeystoreLabel": "Изтриване на keystore",
         "deleteKeystoreHint": "Изтриване на keystore използван за подписване на приложението",
+        "deleteKeystoreDialogText": "Сигурни ли сте, че искате да изтриете Keystore-a, който е използван за подписване на модифицираните приложения?",
         "deletedKeystore": "Keystore изтрит",
         "deleteTempDirLabel": "Изтриване на временни файлове",
         "deleteTempDirHint": "Изтриване на неизползвани временни файлове",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Избраният JSON файл не може да се изплозва",
         "deleteLogsLabel": "Изтриване на логовете",
         "deleteLogsHint": "Изтриване на събраните логове на мениджърът",
-        "deletedLogs": "Логовете са изтрити"
+        "deletedLogs": "Логовете са изтрити",
+        "exportKeystoreLabel": "Експортирай Keystore-а",
+        "exportKeystoreHint": "Експортирай Keystore използван за подписване на приложенията",
+        "exportedKeystore": "Keystore беше експортиран",
+        "noKeystoreExportFileFound": "Няма Keystore за експортиране",
+        "importKeystoreLabel": "Импортирай Keystore",
+        "importKeystoreHint": "Импортирай Keystore използван за подписване на приложенията",
+        "importedKeystore": "Keystorе е импортиран",
+        "keystoreSelectorErrorMessage": "Избраният KEYSTORE файл не може да бъде използван",
+        "selectKeystorePassword": "Keystore парола",
+        "selectKeystorePasswordHint": "Изберете Keystore парола използвана за подписване на apk файла"
     },
     "appInfoView": {
         "widgetTitle": "Информация за приложението",
@@ -191,7 +207,7 @@
     },
     "contributorsView": {
         "widgetTitle": "Хора, които допринесоха",
-        "patcherContributors": "Допринесли към пачърът",
+        "patcherContributors": "Допринесли към модификациите",
         "patchesContributors": "Допринесли към модификациите",
         "integrationsContributors": "Допринесли към интеграциите",
         "cliContributors": "Допринесли към CLI",

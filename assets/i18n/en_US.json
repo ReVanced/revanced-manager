@@ -87,7 +87,7 @@
         "default": "Default",
         "defaultTooltip": "Select all default patches",
         "none": "None",
-        "noneTooltip": "Deselect all patches",
+        "noneTooltip": "Déselectionner tous les patches",
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",

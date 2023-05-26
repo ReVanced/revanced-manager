@@ -1,6 +1,7 @@
 {
     "okButton": "Oldu",
     "cancelButton": "İmtina",
+    "updateButton": "Güncəllə",
     "enabledLabel": "Fəaldır",
     "disabledLabel": "Sıradan çıxarıldı",
     "yesButton": "Bəli",
@@ -12,6 +13,7 @@
         "settingsTab": "Tənzimləmələr"
     },
     "homeView": {
+        "refreshSuccess": "Uğurla təzələndi",
         "widgetTitle": "İdarəetmə lövhəsi",
         "updatesSubtitle": "Güncəlləmələr",
         "patchedSubtitle": "Yamaqlanmış tətbiqlər",
@@ -21,7 +23,7 @@
         "noInstallations": "Yamaqlanmış tətbiq yoxdur",
         "installed": "Quraşdırıldı",
         "updateDialogTitle": "Güncəlləmə meneceri",
-        "updateDialogText": "ReVanced Meneceri endirmək və güncəlləmə istədiyinizə əminsiniz?",
+        "updateChangelogTitle": "Dəyişiklik jurnalı",
         "notificationTitle": "Güncəlləmə endirildi",
         "notificationText": "Güncəlləməni quraşdırmaq üçün toxunun",
         "downloadingMessage": "Güncəlləmə endirilir...",
@@ -46,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Yamaqlayıcı",
         "patchButton": "Yamaqla",
-        "patchDialogText": "Bir resurs yamağı seçmisiniz və bölünmüş bir APK quraşdırması aşkarlandı, ona görə də yamaq prosesi zamanı xəta baş verə bilər.\nDavam etmək istədiyinizə əminsiniz?"
+        "patchDialogText": "Bir resurs yamağı seçmisiniz və bölünmüş bir APK quraşdırması aşkarlandı, ona görə də yamaq prosesi zamanı xəta baş verə bilər.\nDavam etmək istədiyinizə əminsiniz?",
+        "armv7WarningDialogText": "ARMv7 cihazlarında yamaqlama hələ dəstəklənmir və xəta verə bilər. Yenə də davam edilsin?"
     },
     "appSelectorCard": {
         "widgetTitle": "Bir tətbiq seçin",
@@ -54,7 +57,7 @@
         "widgetSubtitle": "Heç bir tətbiq seçilməyib",
         "noAppsLabel": "Heç bir tətbiq tapılmadı",
         "currentVersion": "Hazırkı",
-        "recommendedVersion": "Tövsiyyə edilən",
+        "suggestedVersion": "Təklif edilən",
         "anyVersion": "istənilən"
     },
     "patchSelectorCard": {
@@ -70,20 +73,25 @@
     "appSelectorView": {
         "viewTitle": "Bir tətbiq seçin",
         "searchBarHint": "Tətbiq axtarın",
+        "selectFromStorageButton": "Anbardan seç",
         "storageButton": "Anbar",
-        "errorMessage": "Seçilmiş tətbiq istifadə edilə bilmir"
+        "errorMessage": "Seçilmiş tətbiq istifadə edilə bilmir",
+        "downloadToast": "Endirmə hələ əlçatmazdır",
+        "featureNotAvailable": "Özəllik tətbiq edilmədi",
+        "featureNotAvailableText": "Bu tətbiq bölünmüş bir APK-dir və seçilə bilməz. Təəssüf ki, hal-hazırda bu özəllik yalnız rootlu istifadəçilər üçün əlçatandır. Ancaq, bunun əvəzinə cihazın anbar sahəsindən APK faylları seçərək tətbiqi quraşdıra bilərsiniz"
     },
     "patchesSelectorView": {
         "viewTitle": "Yamaqları seçin",
         "searchBarHint": "Yamaqları axtarın",
         "doneButton": "Hazırdır",
-        "recommended": "Tövsiyyə edilən",
-        "all": "Hamısı",
+        "default": "İlkin",
+        "defaultTooltip": "Bütün ilkin yamaqları seç",
         "none": "Heç biri",
+        "noneTooltip": "Yamaqların heç birini seçmə",
         "loadPatchesSelection": "Yamaq seçimini yüklə",
-        "noSavedPatches": "Seçilmiş tətbiq üçün saxlanılmış yamaq yoxdur\nHazırkı seçimi saxlamaq üçün \"Hazırdır\"a toxunun",
+        "noSavedPatches": "Seçilmiş tətbiq üçün yadda saxlanılmış yamaq yoxdur.\nHazırkı seçimi yaddansaxlamaq üçün \"Hazırdır\" düyməsinə toxunun.",
         "noPatchesFound": "Seçilmiş tətbiq üçün yamaq tapılmadı",
-        "selectAllPatchesWarningContent": "Tövsiyə edilməyən yamaqları ehtiva edən və istənilməyən davranışlara səbəb ola biləcək bütün yamaqları seçmək üzrəsiniz."
+        "selectAllPatchesWarningContent": "Təklif edilməyən yamaqları ehtiva edən və istənilməyən davranışlara səbəb ola biləcək bütün yamaqları seçmək üzrəsiniz."
     },
     "patchItem": {
         "unsupportedDialogText": "Bu yamağı seçmək, yamaqlama xətalarına səbəb ola bilər.\n\nTətbiq versiyası: {packageVersion} \nDəstəklənən versiyalar:\n{supportedVersions}",
@@ -121,6 +129,7 @@
         "englishOption": "İngiliscə",
         "sourcesLabel": "Mənbələr",
         "sourcesLabelHint": "Özəl mənbələrinizi konfiqurasiya edin",
+        "hostRepositoryLabel": "Depo API",
         "orgPatchesLabel": "Yamaq təşkilatı",
         "sourcesPatchesLabel": "Yamaq mənbəyi",
         "orgIntegrationsLabel": "İnteqrasiya təşkilatı",
@@ -135,20 +144,21 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Özəl API URL-lərinizi konfiqurasiya edin",
         "selectApiURL": "API URL",
+        "experimentalUniversalPatchesLabel": "Təcrübi universal yamaq dəstəyi",
+        "experimentalUniversalPatchesHint": "Universal yamaqlarla istifadə ediləcək bütün tətbiqləri görüntüləyin, tətbiq siyahısının yüklənməsini yavaşlandıra bilər",
         "experimentalPatchesLabel": "Təcrübi yamaq dəstəyi",
         "experimentalPatchesHint": "İstənilən bir tətbiq versiyasında dəstəklənməyən yamaqların istifadəsini fəallaşdır",
         "enabledExperimentalPatches": "Təcrübi yamaq dəstəyi fəaldır",
         "exportSectionTitle": "Daxilə və xaricə köçür",
         "aboutLabel": "Haqqında",
         "snackbarMessage": "Lövhəyə kopyalandı",
-        "sentryLabel": "Keşikçi jurnalı",
-        "sentryHint": "ReVanced Manager-i inkişaf etdirməyimizə kömək etməsi üçün anonim jurnallar göndərin",
         "restartAppForChanges": "Dəyişiklikləri tətbiq etmək üçün tətbiqi yenidən başlat",
         "deleteKeystoreLabel": "Keystore-u sil",
         "deleteKeystoreHint": "Tətbiqi imzalamaq üçün istifadə edilən keystoru-u sil",
+        "deleteKeystoreDialogText": "Yamaqlanmış tətbiqləri imzalamaq üçün istifadə olunan açar anbarını silmək istədiyinizə əminsiniz?",
         "deletedKeystore": "Keystore silindi",
         "deleteTempDirLabel": "Müvəqqəti faylları sil",
-        "deleteTempDirHint": "İstifadə edilməyən müvəqqəti faylları sil",
+        "deleteTempDirHint": "Müvəqqəti faylları sil",
         "deletedTempDir": "Müvəqqəti fayllar silindi",
         "exportPatchesLabel": "Yamaq seçimini xaricə köçür",
         "exportPatchesHint": "Yamaq seçimini JSON faylına köçür",
@@ -163,7 +173,17 @@
         "jsonSelectorErrorMessage": "Seçilmiş JSON faylı istifadə edilə bilmir",
         "deleteLogsLabel": "Jurnalları sil",
         "deleteLogsHint": "Yığılmış menecer jurnallarını sil",
-        "deletedLogs": "Jurnallar silindi"
+        "deletedLogs": "Jurnallar silindi",
+        "exportKeystoreLabel": "Açar mağazasını xaricə köçür",
+        "exportKeystoreHint": "Tətbiqləri imzalamaq üçün istifadə olunan açar mağazasını xaricə köçürün",
+        "exportedKeystore": "Açar mağazası xaricə köçürüldü",
+        "noKeystoreExportFileFound": "Xaricə köçürüləcək açar mağazası yoxdur",
+        "importKeystoreLabel": "Açar mağazasını daxilə köçür",
+        "importKeystoreHint": "Tətbiqləri imzalamaq üçün istifadə olunan açar mağazasını daxilə köçürün",
+        "importedKeystore": "Açar mağazası daxilə köçürüldü",
+        "keystoreSelectorErrorMessage": "Seçilmiş KEYSTORE faylı istifadə edilə bilmir",
+        "selectKeystorePassword": "Açar mağazası parolu",
+        "selectKeystorePasswordHint": "APK-nı imzalamaq üçün istifadə olunan açar mağazasını seçin"
     },
     "appInfoView": {
         "widgetTitle": "Tətbiq məlumatı",

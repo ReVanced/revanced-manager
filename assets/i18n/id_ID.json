@@ -13,6 +13,7 @@
         "settingsTab": "Pengaturan"
     },
     "homeView": {
+        "refreshSuccess": "Berhasil Memuat Ulang",
         "widgetTitle": "Dasbor",
         "updatesSubtitle": "Pembaruan",
         "patchedSubtitle": "Aplikasi yang dimodifikasi",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Pemodifikasi",
         "patchButton": "Modifikasi",
-        "patchDialogText": "Anda telah memilih sumber modifikasi dan pemasangan split APK terdeteksi sehingga kesalahan pemodifikasi dapat terjadi.\nApakah Anda yakin ingin melanjutkan pemasangan split base APK?"
+        "patchDialogText": "Anda telah memilih sumber modifikasi dan pemasangan split APK terdeteksi sehingga kesalahan pemodifikasi dapat terjadi.\nApakah Anda yakin ingin melanjutkan pemasangan split base APK?",
+        "armv7WarningDialogText": "Penambalan pada perangkat ARMv7 belum didukung. Tetap lanjutkan?"
     },
     "appSelectorCard": {
         "widgetTitle": "Pilih aplikasi",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Tidak ada aplikasi yang dipilih",
         "noAppsLabel": "Aplikasi tidak ditemukan",
         "currentVersion": "Saat ini",
-        "recommendedVersion": "Rekomendasi",
+        "suggestedVersion": "Disarankan",
         "anyVersion": "semua"
     },
     "patchSelectorCard": {
@@ -71,16 +73,21 @@
     "appSelectorView": {
         "viewTitle": "Pilih aplikasi",
         "searchBarHint": "Cari aplikasi",
+        "selectFromStorageButton": "Pilih dari Penyimpanan",
         "storageButton": "Penyimpanan",
-        "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih"
+        "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih",
+        "downloadToast": "Fungsi mengunduh belum tersedia",
+        "featureNotAvailable": "Fitur tidak diterapkan",
+        "featureNotAvailableText": "Aplikasi ini adalah APK terpisah dan tidak dapat dipilih. Sayangnya, fitur ini hanya tersedia untuk pengguna yang sudah di-root saat ini. Namun, Anda tetap dapat menginstal aplikasi dengan memilih file APK-nya dari penyimpanan perangkat Anda"
     },
     "patchesSelectorView": {
         "viewTitle": "Pilih modifikasi",
         "searchBarHint": "Cari modifikasi",
         "doneButton": "Selesai",
-        "recommended": "Direkomendasikan",
-        "all": "Semua",
+        "default": "Bawaan",
+        "defaultTooltip": "Pilih semua modifikasi bawaan",
         "none": "Tidak ada",
+        "noneTooltip": "Batalkan semua modifikasi",
         "loadPatchesSelection": "Tidak ada modifikasi yang terpilih",
         "noSavedPatches": "Tidak ada tambalan tersimpan untuk aplikasi terpilih.\nTekan \"Sudah\" untuk menyimpan seleksi saat ini.",
         "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Impor & Ekspor",
         "aboutLabel": "Tentang",
         "snackbarMessage": "Disalin ke papan klip",
-        "sentryLabel": "Log sentry",
-        "sentryHint": "Kirim log anonim untuk membantu kami meningkatkan ReVanced Manager",
         "restartAppForChanges": "Mulai ulang aplikasi untuk menerapkan perubahan",
         "deleteKeystoreLabel": "Hapus penyimpanan kunci",
         "deleteKeystoreHint": "Hapus penyimpanan kunci yang digunakan untuk menandatangani aplikasi",
+        "deleteKeystoreDialogText": "Apakah anda yakin ingin menghapus keystore yang digunakan untuk menandatangani aplikasi yang dimodifikasi?",
         "deletedKeystore": "Penyimpanan kunci dihapus",
         "deleteTempDirLabel": "Hapus berkas sementara",
         "deleteTempDirHint": "Hapus berkas sementara yang tidak dipakai",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Tidak bisa menggunakan berkas JSON tersebut",
         "deleteLogsLabel": "Hapus log",
         "deleteLogsHint": "Hapus log pengelola yang terkumpul",
-        "deletedLogs": "Log dihapus"
+        "deletedLogs": "Log dihapus",
+        "exportKeystoreLabel": "Ekspor keystore",
+        "exportKeystoreHint": "Ekspor keystore digunakan untuk menandatangani aplikasi",
+        "exportedKeystore": "Keystore diekspor",
+        "noKeystoreExportFileFound": "Tidak ada keystore untuk diekspor",
+        "importKeystoreLabel": "Impor keystore",
+        "importKeystoreHint": "Impor keystore yang digunakan untuk menandatangani aplikasi",
+        "importedKeystore": "Keystore diimpor",
+        "keystoreSelectorErrorMessage": "Tidak dapat menggunakan file KEYSTORE yang dipilih",
+        "selectKeystorePassword": "Kata Sandi Keystore",
+        "selectKeystorePasswordHint": "Pilih kata sandi keystore yang digunakan untuk menandatangani apk"
     },
     "appInfoView": {
         "widgetTitle": "Info aplikasi",

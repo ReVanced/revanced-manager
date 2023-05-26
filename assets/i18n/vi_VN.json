@@ -13,6 +13,7 @@
         "settingsTab": "Cài đặt"
     },
     "homeView": {
+        "refreshSuccess": "Đã làm mới thành công",
         "widgetTitle": "Tổng quan",
         "updatesSubtitle": "Các bản cập nhật",
         "patchedSubtitle": "Ứng dụng đã vá",
@@ -47,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Trình vá",
         "patchButton": "Vá",
-        "patchDialogText": "Bạn đã chọn một bản vá và một bản cài đặt APK bóc tách (split APK) được phát hiện nên có thể xảy ra lỗi. Bạn có chắc chắn muốn tiếp tục vá một APK bóc tách không?"
+        "patchDialogText": "Bạn đã chọn một bản vá và một bản cài đặt APK bóc tách (split APK) được phát hiện nên có thể xảy ra lỗi. Bạn có chắc chắn muốn tiếp tục vá một APK bóc tách không?",
+        "armv7WarningDialogText": "Việc vá trên các thiết bị ARMv7 chưa được hỗ trợ và có thể thất bại. Có tiếp tục thực hiện?"
     },
     "appSelectorCard": {
         "widgetTitle": "Chọn một ứng dụng",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Chưa chọn ứng dụng nào",
         "noAppsLabel": "Không tìm thấy ứng dụng nào",
         "currentVersion": "Hiện tại",
-        "recommendedVersion": "Đề xuất",
+        "suggestedVersion": "Được đề xuất",
         "anyVersion": "bất kỳ"
     },
     "patchSelectorCard": {
@@ -71,20 +73,25 @@
     "appSelectorView": {
         "viewTitle": "Chọn một ứng dụng",
         "searchBarHint": "Tìm kiếm ứng dụng",
+        "selectFromStorageButton": "Chọn từ bộ nhớ",
         "storageButton": "Lưu trữ",
-        "errorMessage": "Không thể dùng ứng dụng đã chọn"
+        "errorMessage": "Không thể dùng ứng dụng đã chọn",
+        "downloadToast": "Tính năng tải về chưa khả dụng",
+        "featureNotAvailable": "Tính năng chưa triển khai",
+        "featureNotAvailableText": "Ứng dụng này là một APK tách rời (split APK) và không thể được chọn. Tính năng này chỉ được dùng bởi những mấy đã được root. Tuy vậy, bạn vẫn có thể tải ứng dụng bằng cách chọn tệp APK của ứng dụng đó trong bộ nhớ máy"
     },
     "patchesSelectorView": {
         "viewTitle": "Chọn bản vá",
         "searchBarHint": "Tìm bản vá",
         "doneButton": "Hoàn tất",
-        "recommended": "Khuyến nghị",
-        "all": "Tất cả",
+        "default": "Mặc định",
+        "defaultTooltip": "Chọn tất cả bản vá mặc định",
         "none": "Không có",
+        "noneTooltip": "Bỏ chọn tất cả bản vá",
         "loadPatchesSelection": "Nạp các bản vá được chọn",
         "noSavedPatches": "Không có bản vá cho ứng dụng được chọn\nNhấn Hoàn tất để lưu lựa chọn hiện tại.",
         "noPatchesFound": "Không tìm thấy bản vá cho ứng dụng đã chọn",
-        "selectAllPatchesWarningContent": "Bạn sắp lựa chọn tất cả bản vá, bao gồm những bản vá không được khuyến nghị và có thể gây ra những hành vi không mong muốn."
+        "selectAllPatchesWarningContent": "Bạn chuẩn bị chọn tất cả bản vá, bao gồm cả các bản vá không được đề xuất và có thể gây ra hành vi không mong muốn."
     },
     "patchItem": {
         "unsupportedDialogText": "Chọn bản vá này có thể gây lỗi khi vá.\n\nPhiên bản ứng dụng: {packageVersion}\nPhiên bản được hỗ trợ: {supportedVersions}",
@@ -115,7 +122,7 @@
         "advancedSectionTitle": "Nâng cao",
         "logsSectionTitle": "Nhật ký",
         "darkThemeLabel": "Chế độ tối",
-        "darkThemeHint": "Chào mừng đến với bóng tối",
+        "darkThemeHint": "Chào mừng đến với nền tối",
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Tận hưởng trải nghiệm gần hơn với thiết bị của bạn",
         "languageLabel": "Ngôn ngữ",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Nhập và xuất",
         "aboutLabel": "Giới thiệu",
         "snackbarMessage": "Đã sao chép vào khay nhớ tạm",
-        "sentryLabel": "Nhật ký theo dõi",
-        "sentryHint": "Gửi nhật ký ẩn danh để giúp chúng tôi cải thiện ReVanced Manager",
         "restartAppForChanges": "Khởi động lại ứng dụng để áp dụng thay đổi",
         "deleteKeystoreLabel": "Xóa kho khóa",
         "deleteKeystoreHint": "Xóa kho khóa dùng để ký ứng dụng",
+        "deleteKeystoreDialogText": "Bạn có chắc muốn xóa kho khóa đã dùng để ký ứng dụng đã vá?",
         "deletedKeystore": "Kho khóa đã xóa",
         "deleteTempDirLabel": "Xóa tệp tạm thời",
         "deleteTempDirHint": "Xóa các tệp tạm thời không sử dụng",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Không thể dùng tệp JSON đã chọn",
         "deleteLogsLabel": "Xóa nhật ký",
         "deleteLogsHint": "Xóa nhật ký quản lý đã thu thập",
-        "deletedLogs": "Đã xóa nhật ký"
+        "deletedLogs": "Đã xóa nhật ký",
+        "exportKeystoreLabel": "Xuất kho khóa",
+        "exportKeystoreHint": "Xuất kho khóa đã dùng để ký ứng dụng",
+        "exportedKeystore": "Kho khóa đã được xuất",
+        "noKeystoreExportFileFound": "Không có kho khóa nào được xuất",
+        "importKeystoreLabel": "Nhập kho khóa",
+        "importKeystoreHint": "Nhập kho khóa đã dùng để ký ứng dụng",
+        "importedKeystore": "Kho khóa đã được nhập",
+        "keystoreSelectorErrorMessage": "Không thể sử dụng tập tin KHO KHÓA đã chọn",
+        "selectKeystorePassword": "Mật khẩu kho khóa",
+        "selectKeystorePasswordHint": "Chọn mật khẩu kho khóa được dùng để ký tập tin apk"
     },
     "appInfoView": {
         "widgetTitle": "Thông tin ứng dụng",
@@ -194,7 +210,7 @@
         "patcherContributors": "Người đóng góp Trình vá",
         "patchesContributors": "Người đóng góp Trình vá",
         "integrationsContributors": "Người đóng góp bản tích hợp",
-        "cliContributors": "Người đóng góp CLI",
+        "cliContributors": "Những người đóng góp CLI",
         "managerContributors": "Những người đóng góp Trình quản lý"
     }
 }

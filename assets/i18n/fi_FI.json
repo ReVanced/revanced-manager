@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Peruuta",
+    "updateButton": "Päivitä",
     "enabledLabel": "Käytössä",
     "disabledLabel": "Poistettu käytöstä",
     "yesButton": "Kyllä",
@@ -12,6 +13,7 @@
         "settingsTab": "Asetukset"
     },
     "homeView": {
+        "refreshSuccess": "Päivitys onnistui",
         "widgetTitle": "Hallintapaneeli",
         "updatesSubtitle": "Päivitykset",
         "patchedSubtitle": "Paikatut sovellukset",
@@ -21,7 +23,7 @@
         "noInstallations": "Paikattuja sovelluksia ei ole asennettu",
         "installed": "Asennettu",
         "updateDialogTitle": "Päivitä Manager",
-        "updateDialogText": "Haluatko varmasti ladata ja päivittää ReVanced Managerin?",
+        "updateChangelogTitle": "Muutoshistoria",
         "notificationTitle": "Päivitys ladattu",
         "notificationText": "Asenna päivitys napauttamalla",
         "downloadingMessage": "Ladataan päivitystä...",
@@ -34,7 +36,7 @@
     "applicationItem": {
         "patchButton": "Paikkaa",
         "infoButton": "Info",
-        "changelogLabel": "Muutosloki"
+        "changelogLabel": "Muutoshistoria"
     },
     "latestCommitCard": {
         "loadingLabel": "Ladataan...",
@@ -46,7 +48,8 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Paikkaa",
-        "patchDialogText": "Olet valinnut resurssipaikkauksen ja havaittu asennus on ns. split APK -tyyppinen, joten paikkausvirheet ovat mahdollisia.\nHaluatko varmasti jatkaa ja paikata split APK -asennuksen?"
+        "patchDialogText": "Olet valinnut resurssipaikkauksen ja havaittu asennus on ns. split APK -tyyppinen, joten paikkausvirheet ovat mahdollisia.\nHaluatko varmasti jatkaa ja paikata split APK -asennuksen?",
+        "armv7WarningDialogText": "Paikkausta ei vielä tueta ARMv7-laitteissa. Jatketaanko siitä huolimatta?"
     },
     "appSelectorCard": {
         "widgetTitle": "Valitse sovellus",
@@ -54,7 +57,7 @@
         "widgetSubtitle": "Sovellusta ei ole valittu",
         "noAppsLabel": "Sovelluksia ei löytynyt",
         "currentVersion": "Nykyinen",
-        "recommendedVersion": "Suositeltu",
+        "suggestedVersion": "Ehdotettu",
         "anyVersion": "mikä tahansa"
     },
     "patchSelectorCard": {
@@ -65,25 +68,30 @@
     },
     "socialMediaCard": {
         "widgetTitle": "Somet",
-        "widgetSubtitle": "Löydymme täältä!"
+        "widgetSubtitle": "Olemme verkossa!"
     },
     "appSelectorView": {
         "viewTitle": "Valitse sovellus",
         "searchBarHint": "Hae sovelluksia",
+        "selectFromStorageButton": "Valitse tallennustilasta",
         "storageButton": "Tallennustila",
-        "errorMessage": "Valittua sovellusta ei voida käyttää"
+        "errorMessage": "Valittua sovellusta ei voida käyttää",
+        "downloadToast": "Lataustoiminto ei ole vielä käytettävissä",
+        "featureNotAvailable": "Ominaisuutta ei ole toteutettu",
+        "featureNotAvailableText": "Tämä sovellus on jaettu APK eikä sen valinta ole mahdollista. Valitettavasti ominaisuus on toistaiseksi vain root-käyttäjien käytettävissä. Voit silti edelleen asentaa sovelluksen valitsemalla sen APK-tiedostot sen sijaan laitteesi tallennustilasta."
     },
     "patchesSelectorView": {
         "viewTitle": "Valitse paikkaukset",
         "searchBarHint": "Etsi paikkauksia",
         "doneButton": "Valmis",
-        "recommended": "Suositellut",
-        "all": "Kaikki",
+        "default": "Oletus",
+        "defaultTooltip": "Valitse kaikki oletuspaikkaukset",
         "none": "Ei mitään",
+        "noneTooltip": "Tyhjennä kaikki paikkausvalinnat",
         "loadPatchesSelection": "Lataa paikkausvalikoima",
-        "noSavedPatches": "Paikkauksia ei ole tallennettu valitulle sovellukselle\nTallenna nykyinen valikoima paunamalla Valmis",
+        "noSavedPatches": "Valitulle sovellukselle ei ole tallennettu paikkauksia.\nTallenna nykyinen valinta painamalla Valmis.",
         "noPatchesFound": "Valitulle sovellukselle ei löytynyt paikkauksia",
-        "selectAllPatchesWarningContent": "Olet valitsemassa kaikki paikkaukset ja näihin sisältyy myös ei suositeltavia paikkauksia, jotka saattavat aiheuttaa ei toivottua toimintaa."
+        "selectAllPatchesWarningContent": "Olet valitsemassa kaikki paikkaukset ja näihin sisältyy myös ei-suositeltavia paikkauksia, jotka saattavat aiheuttaa ei-toivottua toimintaa."
     },
     "patchItem": {
         "unsupportedDialogText": "Tämän paikkauksen valinta voi aiheuttaa virheitä.\n\nSovelluksen versio: {packageVersion}\nTuetut versiot: \n{supportedVersions}",
@@ -97,13 +105,13 @@
         "shareButton": "Jaa tiedosto",
         "notificationTitle": "ReVanced Manager suorittaa paikkauksia",
         "notificationText": "Napauta palataksesi hallintasovellukseen",
-        "shareApkMenuOption": "Jaa APK",
+        "shareApkMenuOption": "Jaa APK-tiedosto",
         "exportApkMenuOption": "Vie APK",
         "shareLogMenuOption": "Jaa loki",
         "installErrorDialogTitle": "Virhe",
         "installErrorDialogText1": "Root-asennus ei ole mahdollista nykyisillä paikkausvalinnoilla.\nPaikkaa sovellus uudelleen tai valitse normaali asennus.",
         "installErrorDialogText2": "Nykyisten paikkausvalintojen normaali asennus ei ole mahdollista.\nPaikkaa sovellus uudelleen tai valitse root-asennus, jos laitteesi on rootattu.",
-        "installErrorDialogText3": "Root-asennus ei ole mahdollista, koska tallennusmedialta valittiin alkuperäinen APK.\nValitse asennettu sovellus tai valitse normaali asennus.",
+        "installErrorDialogText3": "Root-asennus ei ole mahdollista, koska alkuperäinen APK-tiedosto valittiin tallennustilasta.\nValitse asennettu sovellus tai käytä roottaamatonta asennusta.",
         "noExit": "Asennus on vielä kesken, eikä poistuminen ole mahdollista..."
     },
     "settingsView": {
@@ -121,6 +129,7 @@
         "englishOption": "Englanti",
         "sourcesLabel": "Lähteet",
         "sourcesLabelHint": "Määritä mukautetut lähteet",
+        "hostRepositoryLabel": "Tietovarasto-API",
         "orgPatchesLabel": "Paikkauksien organisaatio",
         "sourcesPatchesLabel": "Paikkauksien lähde",
         "orgIntegrationsLabel": "Integraatioiden organisaatio",
@@ -135,18 +144,19 @@
         "apiURLLabel": "API URL",
         "apiURLHint": "Määritä oma API URL-osoite",
         "selectApiURL": "API:n URL-osoite",
-        "experimentalPatchesLabel": "Kokeellinen paikkaustuki",
-        "experimentalPatchesHint": "Mahdollistaa paikkausten asennuksen myös ei tuettuihin sovellusversiohin",
-        "enabledExperimentalPatches": "Kokeellinen paikkaustuki on käytössä",
+        "experimentalUniversalPatchesLabel": "Kokeellisten universaalien paikkausten tuki",
+        "experimentalUniversalPatchesHint": "Näytä kaikki sovellukset, jotka käyttävät yleisiä paikkauksia, sovellus listan lataaminen voi olla hitaampi",
+        "experimentalPatchesLabel": "Kokeellisten paikkausten tuki",
+        "experimentalPatchesHint": "Mahdollistaa ei tuettujen paikkausten asennuksen mihin tahansa sovellusversioon",
+        "enabledExperimentalPatches": "Kokeellisten paikkausten tuki on käytössä",
         "exportSectionTitle": "Tuonti/vienti",
         "aboutLabel": "Tietoja",
         "snackbarMessage": "Kopioitu leikepöydälle",
-        "sentryLabel": "Sentry-lokikirjaus",
-        "sentryHint": "Lähetä nimettömiä tietoja auttaaksesi ReVanced Managerin kehityksessä",
         "restartAppForChanges": "Käynnistä sovellus uudestaan muutosten käyttöönottamiseksi",
-        "deleteKeystoreLabel": "Poista avainsäilö",
-        "deleteKeystoreHint": "Poista sovelluksen allekirjoitukseen käytetty avainsäilö",
-        "deletedKeystore": "Avainsäilö poistettiin",
+        "deleteKeystoreLabel": "Poista KeyStore",
+        "deleteKeystoreHint": "Poista sovelluksen allekirjoitukseen käytetty KeyStore",
+        "deleteKeystoreDialogText": "Haluatko varmasti poistaa paikattujen sovellusten allekirjoitukseen käytettävän KeyStoren?",
+        "deletedKeystore": "KeyStore poistettiin",
         "deleteTempDirLabel": "Poista väliaikaistiedostot",
         "deleteTempDirHint": "Poista käyttämättömät väliaikaistiedostot",
         "deletedTempDir": "Väliaikaistiedostot poistettiin",
@@ -163,7 +173,17 @@
         "jsonSelectorErrorMessage": "Valittua JSON-tiedostoa ei voida käyttää",
         "deleteLogsLabel": "Poista lokitiedot",
         "deleteLogsHint": "Poista kerätyt Managerin lokitiedot",
-        "deletedLogs": "Lokitiedot on poistettu"
+        "deletedLogs": "Lokitiedot on poistettu",
+        "exportKeystoreLabel": "Vie KeyStore",
+        "exportKeystoreHint": "Vie sovellusten allekirjoitukseen käytettävä KeyStore",
+        "exportedKeystore": "KeyStore vietiin",
+        "noKeystoreExportFileFound": "Vietävää KeyStorea ei ole",
+        "importKeystoreLabel": "Tuo KeyStore",
+        "importKeystoreHint": "Tuo sovellusten allekirjoitukseen käytettävä KeyStore",
+        "importedKeystore": "KeyStore tuotiin",
+        "keystoreSelectorErrorMessage": "Valittua KeyStore-tiedostoa ei voida käyttää",
+        "selectKeystorePassword": "KeyStoren salasana",
+        "selectKeystorePasswordHint": "Aseta APK-tiedoston allekirjoitukseen käytettävän KeyStoren salasana"
     },
     "appInfoView": {
         "widgetTitle": "Sovelluksen tiedot",
@@ -183,7 +203,7 @@
         "patchedDateHint": "{date} klo {time}",
         "appliedPatchesLabel": "Suoritetut paikkaukset",
         "appliedPatchesHint": "{quantity} suoritettua paikkausta",
-        "updateNotImplemented": "Toimintoa ei ole toteutettu vielä"
+        "updateNotImplemented": "Ominaisuutta ei ole vielä toteutettu"
     },
     "contributorsView": {
         "widgetTitle": "Osallistujat",

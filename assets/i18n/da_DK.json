@@ -13,6 +13,7 @@
         "settingsTab": "Indstillinger"
     },
     "homeView": {
+        "refreshSuccess": "Opdatering succesfuldt",
         "widgetTitle": "Oversigt",
         "updatesSubtitle": "Opdateringer",
         "patchedSubtitle": "Patchede applikationer",
@@ -23,13 +24,13 @@
         "installed": "Installeret",
         "updateDialogTitle": "Opdater Manager",
         "updateChangelogTitle": "Ændringslog",
-        "notificationTitle": "Opdatering downloadet",
-        "notificationText": "Tryk for at installere opdateringen",
-        "downloadingMessage": "Downloader opdatering...",
+        "notificationTitle": "Opdatering hentet",
+        "notificationText": "Tryk her for at installere opdateringen",
+        "downloadingMessage": "Henter opdatering...",
         "installingMessage": "Installerer opdatering...",
-        "errorDownloadMessage": "Kunne ikke downloade opdateringen",
-        "errorInstallMessage": "Kunne ikke installere opdateringen",
-        "noConnection": "Ingen Internetforbindelse",
+        "errorDownloadMessage": "Opdatering kan ikke hentes",
+        "errorInstallMessage": "Opdatering kunne ikke installeres",
+        "noConnection": "Ingen internetforbindelse",
         "updatesDisabled": "Opdatering af en patchet app er i øjeblikket deaktiveret. Repatch appen igen."
     },
     "applicationItem": {
@@ -42,12 +43,13 @@
         "timeagoLabel": "{time} siden",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
-        "updateButton": "Opdater Manager"
+        "updateButton": "Opdatér Manager"
     },
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-        "patchDialogText": "Du har valgt en ressource-patch, og en split APK-installation er blevet opdaget, så patch-fejl kan forekomme.\nEr du sikker på at du vil fortsætte?"
+        "patchDialogText": "Du har valgt en ressource-patch, og en split APK-installation er blevet opdaget, så patch-fejl kan forekomme.\nEr du sikker på at du vil fortsætte?",
+        "armv7WarningDialogText": "Patching på ARMv7-enheder understøttes ikke endnu, og kan fejle. Fortsæt alligevel?"
     },
     "appSelectorCard": {
         "widgetTitle": "Vælg en applikation",
@@ -55,7 +57,7 @@
         "widgetSubtitle": "Ingen applikation valgt",
         "noAppsLabel": "Ingen applikationer fundet",
         "currentVersion": "Nuværende",
-        "recommendedVersion": "Anbefalet",
+        "suggestedVersion": "Anbefalet",
         "anyVersion": "enhver"
     },
     "patchSelectorCard": {
@@ -71,16 +73,21 @@
     "appSelectorView": {
         "viewTitle": "Vælg en applikation",
         "searchBarHint": "Søg efter applikationer",
+        "selectFromStorageButton": "Vælg fra lager",
         "storageButton": "Lager",
-        "errorMessage": "Kunne ikke bruge valgte applikation"
+        "errorMessage": "Kunne ikke bruge valgte applikation",
+        "downloadToast": "Download-funktionen er ikke tilgængelig endnu",
+        "featureNotAvailable": "Funktion ikke implementeret",
+        "featureNotAvailableText": "Denne applikation er en split APK og kan ikke vælges. Desværre er denne funktion kun tilgængelig for rootede brugere i øjeblikket. Du kan dog stadig installere applikationen ved at vælge dens APK filer fra din enheds lagerplads i stedet"
     },
     "patchesSelectorView": {
         "viewTitle": "Vælg patches",
         "searchBarHint": "Søg efter patches",
         "doneButton": "Udført",
-        "recommended": "Anbefalet",
-        "all": "Alle",
+        "default": "Standard",
+        "defaultTooltip": "Vælg alle standard patches",
         "none": "Ingen",
+        "noneTooltip": "Fravælg alle patches",
         "loadPatchesSelection": "Indlæs patches udvælgelse",
         "noSavedPatches": "Ingen gemte patches til den valgte app.\nTryk på Udført for at gemme det aktuelle valg.",
         "noPatchesFound": "Ingen patches fundet til den valgte app",
@@ -145,11 +152,10 @@
         "exportSectionTitle": "Import & eksport",
         "aboutLabel": "Om",
         "snackbarMessage": "Kopieret til udklipsholder",
-        "sentryLabel": "Sentry logning",
-        "sentryHint": "Send anonyme logfiler for at hjælpe os med at forbedre ReVanced Manager",
         "restartAppForChanges": "Genstart appen for at anvende ændringer",
         "deleteKeystoreLabel": "Slet keystore",
         "deleteKeystoreHint": "Slet keystore der bruges til at signere appen",
+        "deleteKeystoreDialogText": "Er du sikker på, at du vil slette den keystore, der bruges til at signere patched applikationer?",
         "deletedKeystore": "Keystore slettet",
         "deleteTempDirLabel": "Slet midlertidige filer",
         "deleteTempDirHint": "Slet ubrugte midlertidige filer",
@@ -167,7 +173,17 @@
         "jsonSelectorErrorMessage": "Kan ikke bruge den valgte JSON-fil",
         "deleteLogsLabel": "Slet logfiler",
         "deleteLogsHint": "Slet indsamlede manager-logfiler",
-        "deletedLogs": "Logfiler slettet"
+        "deletedLogs": "Logfiler slettet",
+        "exportKeystoreLabel": "Eksportér keystore",
+        "exportKeystoreHint": "Eksportér keystore som bruges til at signere apps",
+        "exportedKeystore": "Keystore eksporteret",
+        "noKeystoreExportFileFound": "Ingen keystore at eksportere",
+        "importKeystoreLabel": "Importér keystore",
+        "importKeystoreHint": "Importér keystore der bruges til at signere apps",
+        "importedKeystore": "Keystore importeret",
+        "keystoreSelectorErrorMessage": "Kan ikke bruge den valgte KEYSTORE fil",
+        "selectKeystorePassword": "Keystore Adgangskode",
+        "selectKeystorePasswordHint": "Vælg adgangskode til keystore som bruges til at signere apk'en"
     },
     "appInfoView": {
         "widgetTitle": "Appinfo",
