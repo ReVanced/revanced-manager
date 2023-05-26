@@ -18,8 +18,10 @@ class ManagerApplication : Application() {
                 preferencesModule,
                 repositoryModule,
                 serviceModule,
+                managerModule,
                 workerModule,
                 viewModelModule,
+                databaseModule,
             )
         }
     }

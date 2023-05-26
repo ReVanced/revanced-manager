@@ -14,9 +14,9 @@ sealed interface APIResponse<T> {
     data class Failure<T>(val error: APIFailure) : APIResponse<T>
 }
 
-class APIError(code: HttpStatusCode, body: String?) : Error("HTTP Code $code, Body: $body")
+class APIError(code: HttpStatusCode, body: String?) : Exception("HTTP Code $code, Body: $body")
 
-class APIFailure(error: Throwable, body: String?) : Error(body, error)
+class APIFailure(error: Throwable, body: String?) : Exception(body ?: error.message, error)
 
 inline fun <T, R> APIResponse<T>.fold(
     success: (T) -> R,
@@ -32,7 +32,7 @@ inline fun <T, R> APIResponse<T>.fold(
 
 inline fun <T, R> APIResponse<T>.fold(
     success: (T) -> R,
-    fail: (Error) -> R,
+    fail: (Exception) -> R,
 ): R {
     return when (this) {
         is APIResponse.Success -> success(data)

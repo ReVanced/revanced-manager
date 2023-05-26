@@ -23,6 +23,7 @@ import app.revanced.manager.compose.service.InstallService
 import app.revanced.manager.compose.service.UninstallService
 import app.revanced.manager.compose.util.PM
 import app.revanced.manager.compose.util.PackageInfo
+import app.revanced.manager.compose.util.PatchesSelection
 import app.revanced.manager.compose.util.toast
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -31,11 +32,15 @@ import java.nio.file.Files
 
 class InstallerScreenViewModel(
     input: PackageInfo,
-    selectedPatches: List<String>,
+    selectedPatches: PatchesSelection,
     private val app: Application,
     private val signerService: SignerService
 ) : ViewModel() {
-    var stepGroups by mutableStateOf<List<StepGroup>>(PatcherProgressManager.generateGroupsList(app, selectedPatches))
+    var stepGroups by mutableStateOf<List<StepGroup>>(
+        PatcherProgressManager.generateGroupsList(
+            app,
+            selectedPatches.flatMap { (_, selected) -> selected })
+    )
         private set
 
     val packageName = input.packageName
@@ -54,7 +59,6 @@ class InstallerScreenViewModel(
     private var isInstalling by mutableStateOf(false)
 
     val canInstall by derivedStateOf { patcherStatus == true && !isInstalling }
-
 
     private val patcherWorker =
         OneTimeWorkRequest.Builder(PatcherWorker::class.java) // create Worker

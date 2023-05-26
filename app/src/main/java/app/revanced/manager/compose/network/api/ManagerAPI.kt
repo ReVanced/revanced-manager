@@ -7,11 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import app.revanced.manager.compose.domain.repository.ReVancedRepository
-import app.revanced.manager.compose.util.ghIntegrations
-import app.revanced.manager.compose.util.ghManager
-import app.revanced.manager.compose.util.ghPatches
-import app.revanced.manager.compose.util.tag
-import app.revanced.manager.compose.util.toast
+import app.revanced.manager.compose.util.*
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
@@ -40,36 +36,19 @@ class ManagerAPI(
         downloadProgress = null
     }
 
-    suspend fun downloadPatchBundle(): File? {
-        try {
-            val downloadUrl = revancedRepository.findAsset(ghPatches, ".jar").downloadUrl
-            val patchesFile = app.filesDir.resolve("patch-bundles").also { it.mkdirs() }
-                .resolve("patchbundle.jar")
-            downloadAsset(downloadUrl, patchesFile)
+    private suspend fun patchesAsset() = revancedRepository.findAsset(ghPatches, ".jar")
+    private suspend fun integrationsAsset() = revancedRepository.findAsset(ghIntegrations, ".apk")
 
-            return patchesFile
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to download patch bundle", e)
-            app.toast("Failed to download patch bundle")
-        }
+    suspend fun getLatestBundleVersion() = patchesAsset().version to integrationsAsset().version
 
-        return null
-    }
+    suspend fun downloadBundle(patchBundle: File, integrations: File): Pair<String, String> {
+        val patchBundleAsset = patchesAsset()
+        val integrationsAsset = integrationsAsset()
 
-    suspend fun downloadIntegrations(): File? {
-        try {
-            val downloadUrl = revancedRepository.findAsset(ghIntegrations, ".apk").downloadUrl
-            val integrationsFile = app.filesDir.resolve("integrations").also { it.mkdirs() }
-                .resolve("integrations.apk")
-            downloadAsset(downloadUrl, integrationsFile)
+        downloadAsset(patchBundleAsset.downloadUrl, patchBundle)
+        downloadAsset(integrationsAsset.downloadUrl, integrations)
 
-            return integrationsFile
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to download integrations", e)
-            app.toast("Failed to download integrations")
-        }
-
-        return null
+        return patchBundleAsset.version to integrationsAsset.version
     }
 
     suspend fun downloadManager(): File? {
@@ -87,4 +66,5 @@ class ManagerAPI(
         return null
     }
 }
+
 class MissingAssetException : Exception()

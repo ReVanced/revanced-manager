@@ -4,12 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import app.revanced.manager.compose.domain.repository.BundleRepository
 import app.revanced.manager.compose.patcher.Session
 import app.revanced.manager.compose.patcher.aapt.Aapt
-import app.revanced.manager.compose.patcher.data.repository.PatchesRepository
+import app.revanced.manager.compose.util.PatchesSelection
 import app.revanced.patcher.extensions.PatchExtensions.patchName
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -19,13 +20,13 @@ import java.io.FileNotFoundException
 // TODO: setup wakelock + notification so android doesn't murder us.
 class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineWorker(context, parameters),
     KoinComponent {
-    private val patchesRepository: PatchesRepository by inject()
+    private val bundleRepository: BundleRepository by inject()
 
     @Serializable
     data class Args(
         val input: String,
         val output: String,
-        val selectedPatches: List<String>,
+        val selectedPatches: PatchesSelection,
         val packageName: String,
         val packageVersion: String
     )
@@ -46,12 +47,17 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
             applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
 
         val args = Json.decodeFromString<Args>(inputData.getString(ARGS_KEY)!!)
-        val selected = args.selectedPatches.toSet()
 
-        val patchList = patchesRepository.loadPatchClassesFiltered(args.packageName)
-            .filter { selected.contains(it.patchName) }
+        val bundles = bundleRepository.bundles.value
+        val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
 
-        val progressManager = PatcherProgressManager(applicationContext, args.selectedPatches)
+        val patchList = args.selectedPatches.flatMap { (bundleName, selected) ->
+            bundles[bundleName]?.loadPatchesFiltered(args.packageName)?.filter { selected.contains(it.patchName) }
+                ?: throw IllegalArgumentException("Patch bundle $bundleName does not exist")
+        }
+
+        val progressManager =
+            PatcherProgressManager(applicationContext, args.selectedPatches.flatMap { (_, selected) -> selected })
 
         suspend fun updateProgress(progress: Progress) {
             progressManager.handle(progress)
@@ -64,7 +70,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
             Session(applicationContext.cacheDir.path, frameworkPath, aaptPath, File(args.input)) {
                 updateProgress(it)
             }.use { session ->
-                session.run(File(args.output), patchList, patchesRepository.getIntegrations())
+                session.run(File(args.output), patchList, integrations)
             }
 
             Log.i("revanced-worker", "Patching succeeded")

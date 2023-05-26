@@ -1,5 +1,6 @@
-package app.revanced.manager.compose.patcher.data
+package app.revanced.manager.compose.patcher.patch
 
+import android.util.Log
 import app.revanced.manager.compose.patcher.PatchClass
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
@@ -8,17 +9,21 @@ import dalvik.system.PathClassLoader
 import java.io.File
 
 class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: File?) {
-    constructor(bundleJar: String, integrations: File?) : this(
+    constructor(bundleJar: File, integrations: File?) : this(
         object : Iterable<PatchClass> {
             private val bundle = PatchBundle.Dex(
-                bundleJar,
-                PathClassLoader(bundleJar, Patcher::class.java.classLoader)
+                bundleJar.absolutePath,
+                PathClassLoader(bundleJar.absolutePath, Patcher::class.java.classLoader)
             )
 
             override fun iterator() = bundle.loadPatches().iterator()
         },
         integrations
-    )
+    ) {
+        Log.d("revanced-manager", "Loaded patch bundle: $bundleJar")
+    }
+
+    val patches = loadAllPatches().map(::PatchInfo)
 
     /**
      * @return A list of patches that are compatible with this Apk.

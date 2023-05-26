@@ -55,7 +55,10 @@
     <string name="storage">Storage</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_sources">Sources</string>
-    <string name="no_sources_set">No sources set</string>
+    <string name="reload_sources">Reload all sources</string>
+    <string name="source_download_fail">Failed to download patch bundle: %s</string>
+    <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
+    <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
