@@ -4,11 +4,11 @@ import android.util.Log
 import app.revanced.manager.compose.network.utils.APIError
 import app.revanced.manager.compose.network.utils.APIFailure
 import app.revanced.manager.compose.network.utils.APIResponse
+import app.revanced.manager.compose.util.tag
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 /**
@@ -39,11 +39,11 @@ class HttpService(
                     null
                 }
 
-                Log.e("ReVanced Manager", "Failed to fetch: API error, http status: ${response.status}, body: $body")
+                Log.e(tag, "Failed to fetch: API error, http status: ${response.status}, body: $body")
                 APIResponse.Error(APIError(response.status, body))
             }
         } catch (t: Throwable) {
-            Log.e("ReVanced Manager", "Failed to fetch: error: $t, body: $body")
+            Log.e(tag, "Failed to fetch: error: $t, body: $body")
             APIResponse.Failure(APIFailure(t, body))
         }
         return response

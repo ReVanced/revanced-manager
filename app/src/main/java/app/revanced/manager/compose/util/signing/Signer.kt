@@ -1,6 +1,7 @@
 package app.revanced.manager.compose.util.signing
 
 import android.util.Log
+import app.revanced.manager.compose.util.tag
 import com.android.apksig.ApkSigner
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo
@@ -54,7 +55,7 @@ class Signer(
 
         val ks = File(signingOptions.keyStoreFilePath)
         if (!ks.exists()) newKeystore(ks) else {
-            Log.i("revanced-manager", "Found existing keystore: ${ks.name}")
+            Log.i(tag, "Found existing keystore: ${ks.name}")
         }
 
         val keyStore = KeyStore.getInstance("BKS", "BC")

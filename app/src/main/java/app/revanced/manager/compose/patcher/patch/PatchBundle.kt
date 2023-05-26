@@ -2,6 +2,7 @@ package app.revanced.manager.compose.patcher.patch
 
 import android.util.Log
 import app.revanced.manager.compose.patcher.PatchClass
+import app.revanced.manager.compose.util.tag
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.util.patch.PatchBundle
@@ -20,7 +21,7 @@ class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: Fi
         },
         integrations
     ) {
-        Log.d("revanced-manager", "Loaded patch bundle: $bundleJar")
+        Log.d(tag, "Loaded patch bundle: $bundleJar")
     }
 
     val patches = loadAllPatches().map(::PatchInfo)

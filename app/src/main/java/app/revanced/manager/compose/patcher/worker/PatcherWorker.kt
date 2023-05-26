@@ -8,8 +8,8 @@ import app.revanced.manager.compose.domain.repository.BundleRepository
 import app.revanced.manager.compose.patcher.Session
 import app.revanced.manager.compose.patcher.aapt.Aapt
 import app.revanced.manager.compose.util.PatchesSelection
+import app.revanced.manager.compose.util.tag
 import app.revanced.patcher.extensions.PatchExtensions.patchName
-import kotlinx.coroutines.flow.first
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
@@ -33,11 +33,13 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
 
     companion object {
         const val ARGS_KEY = "args"
+        private const val logPrefix = "[Worker]:"
+        private fun String.logFmt() = "$logPrefix $this"
     }
 
     override suspend fun doWork(): Result {
         if (runAttemptCount > 0) {
-            Log.d("revanced-worker", "Android requested retrying but retrying is disabled.")
+            Log.d(tag, "Android requested retrying but retrying is disabled.".logFmt())
             return Result.failure()
         }
         val aaptPath =
@@ -73,11 +75,11 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
                 session.run(File(args.output), patchList, integrations)
             }
 
-            Log.i("revanced-worker", "Patching succeeded")
+            Log.i(tag, "Patching succeeded".logFmt())
             progressManager.success()
             Result.success(progressManager.groupsToWorkData())
         } catch (e: Throwable) {
-            Log.e("revanced-worker", "Got exception while patching", e)
+            Log.e(tag, "Got exception while patching".logFmt(), e)
             progressManager.failure()
             Result.failure(progressManager.groupsToWorkData())
         }
