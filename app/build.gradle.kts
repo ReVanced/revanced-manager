@@ -90,9 +90,8 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
-
     // ReVanced
-    implementation("app.revanced:revanced-patcher:7.1.0")
+    implementation("app.revanced:revanced-patcher:9.0.0")
 
     // Signing
     implementation("com.android.tools.build:apksig:8.1.0-beta02")
