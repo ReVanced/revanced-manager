@@ -7,9 +7,11 @@ import app.revanced.manager.compose.patcher.patch.PatchInfo
 import app.revanced.manager.compose.util.PackageInfo
 import app.revanced.manager.compose.util.PatchesSelection
 import kotlinx.coroutines.flow.map
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class PatchesSelectorViewModel(packageInfo: PackageInfo, bundleRepository: BundleRepository) : ViewModel() {
-    val bundlesFlow = bundleRepository.bundles.map { bundles ->
+class PatchesSelectorViewModel(packageInfo: PackageInfo) : ViewModel(), KoinComponent {
+    val bundlesFlow = get<BundleRepository>().bundles.map { bundles ->
         bundles.mapValues { (_, bundle) -> bundle.patches }.map { (name, patches) ->
             val supported = mutableListOf<PatchInfo>()
             val unsupported = mutableListOf<PatchInfo>()
