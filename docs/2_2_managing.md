@@ -6,7 +6,7 @@ After patching an application, you may want to manage it. This page will guide y
 
 1. Tap on the **Dashboard** tab in the bottom navigation bar
 2. Select the **Installed** chip
-3. Tap on the **Info** button for the application you want to manage.
+3. Tap on the **Info** button for the application you want to manage
 4. Chose one of the options in the menu that appears to manage the selected application.
 
 ## ⏭️ What's next
