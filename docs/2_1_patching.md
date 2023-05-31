@@ -5,14 +5,14 @@ The following pages will guide you through using ReVanced Manager to patch appli
 ## 🪜 Steps to patch applications
 
 1. Navigate to the **Patcher** tab in the bottom navigation bar
-2. Tap the **Select an application** card
+2. Tap on the **Select an application** card
 3. Choose an application to patch[^1]
    > **Note**: The application version suggested by ReVanced Manager is visible in each application's card. This is important in step 5. below, as most patches are compatible with this version.
 4. Tap the **Select patches** card and select the patches you want to apply[^2]
    > **Warning**: If you see a warning icon next to a patch, it means that the patch is not compatible with the application version you selected in step 3. above. In this case, you should either go back and select a different application version or deselect the patch.
 5. Tap the **Done** button to confirm your selection
 6. Tap the **Patch** button to start patching
-   > **Warning**: The patching process can take anywhere from 2 to 5 minutes depending on your device. Please refrain from exiting switching tabs while the process is still running, otherwise the patching time will increase significantly.
+   > **Warning**: The patching process can take anywhere from 2 to 5 minutes depending on your device. Refrain from exiting ReVanced Manager while the process is still running, otherwise the patching time will increase significantly.
 7. After patching is complete, tap on the **Install** button to install the patched application
    > **Note**: If you have root access on your device, you may have the option to mount the patched application on top of the original application.[^4]
 8. Optionally, you may tap on the three vertical dots in the top right to export the patched application to storage
