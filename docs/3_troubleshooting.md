@@ -8,7 +8,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - ❗️Error code `135`, `139` or `1` when patching the application
 
-  Your device is not supported. Please refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
+  Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
 
   Alternatively you can try to patch the application using [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application.
 
