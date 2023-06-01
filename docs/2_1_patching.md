@@ -16,7 +16,7 @@ The following pages will guide you through using ReVanced Manager to patch appli
 7. After patching is complete, tap on the **Install** button to install the patched application
    > **Note**: If you have root access on your device, you may have the option to mount the patched application on top of the original application.[^4]
    
-   > **Note**: Optionally, you may tap on the three vertical dots in the top right to export the patched application to storage
+   > **Note**: Optionally, you may tap on the three vertical dots in the top right to export the patched application to storage.
 
 [^1]: You may be prompted to select an application from storage in case you have no root access on your device. In this case, select the APK file from your device storage.[^3]
 [^2]: It is suggested to use the default set of patches by tapping on the **Default** chip above the list of patches.

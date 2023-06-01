@@ -10,7 +10,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
 
-  Alternatively you can try to patch the application using [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application.
+  Alternatively, you can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application.
 
 - 🚫 Non-root install is not possible with the current patches selection
 
