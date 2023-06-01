@@ -12,21 +12,21 @@ ReVanced Manager has settings that can be configured to your liking.
 
   Override the API and change the source of ReVanced Patches.
 
-- ### 🧪 Experimental patches support
+- ### 🧪 Experimental ReVanced Patches support
 
   Lift application version constraints from ReVanced Patches. This allows you to patch any version of an application, even if the patch is not explicitly compatible with it.
 
 - ### 🧑‍🔬 Experimental universal support
 
-  This will show or hide patches, which are not meant for any application in particular but rather for all applications but may not work on all applications.
+  This will show or hide ReVanced Patches, which are not meant for any application in particular but rather for all applications but may not work on all applications.
 
-- ### 🔑 Export/ Import/ Delete keystore
+- ### 🔑 Export, import or delete keystore
 
   Manage the keystore used to sign patched applications.
 
-- ### 📄 Export/ Import/ Reset patches selection
+- ### 📄 Export, import or reset ReVanced Patches selection
 
-  Manage the patches selection. This is useful if you want to share your patches selection with others or reset it to the default selection.
+  Manage the ReVanced Patches selection. This is useful if you want to share your ReVanced Patches selection with others or reset it to the default selection.
 
 - ### ℹ️ About
 
