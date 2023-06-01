@@ -18,7 +18,7 @@ The following pages will guide you through using ReVanced Manager to patch appli
    
    > **Note**: Optionally, you may tap on the three vertical dots in the top right to export the patched application to storage
 
-[^1]: You may be prompted to select an application from storage in case you have no root access on your device. In this case, select the APK file from your device storage[^3].
+[^1]: You may be prompted to select an application from storage in case you have no root access on your device. In this case, select the APK file from your device storage.[^3]
 [^2]: It is suggested to use the default set of patches by tapping on the **Default** chip above the list of patches.
 [^3]: You can obtain `.apk` files from sites such as [APKMirror](https://www.apkmirror.com/).
 [^4]: Mounting the patched application on top of the original application will only work if the installed application version matches the version of the application selected in step 3. above.
