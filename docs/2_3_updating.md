@@ -4,7 +4,7 @@ In order to keep up with the latest features and bug fixes, it is recommended to
 
 ## 🪜 Updating steps
 
-1. Navigate to the **Dashboard** tab in the bottom navigation bar
+1. Navigate to the **Dashboard** tab from the bottom navigation bar
 2. Tap on the **Update** button in the **Updates** section
 
 ## ⏭️ What's next

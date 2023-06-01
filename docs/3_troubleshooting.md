@@ -14,11 +14,11 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - 🚫 Non-root install is not possible with the current patches selection
 
-  Select the **Default** chip when chosing patches.
+  Select the **Default** chip when choosing patches.
 
 - 🚨 Patched application crashes on launch
 
-  Select the **Default** chip when chosing patches.
+  Select the **Default** chip when choosing patches.
 
 ## ⏭️ What's next
 

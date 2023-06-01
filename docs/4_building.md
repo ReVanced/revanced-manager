@@ -10,7 +10,7 @@ This page will guide you through building ReVanced Manager from source.
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```
 
-3. Create a GitHub PAT with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=Revanced) and add your token in `android/gradle.properties`
+3. Create a GitHub PAT with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) and add your token in `android/gradle.properties`
 
    ```properties
    gpr.user = YourUsername
@@ -29,7 +29,7 @@ This page will guide you through building ReVanced Manager from source.
    flutter packages pub run build_runner build --delete-conflicting-outputs
    ```
 
-   > **Note**: Must be run everytime you sync your local repository with the remote's
+   > **Note**: Must be run every time you sync your local repository with the remote repository
 
 6. Build the APK
 
