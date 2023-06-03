@@ -17,7 +17,7 @@ import app.revanced.manager.compose.R
 import app.revanced.manager.compose.domain.sources.LocalSource
 import app.revanced.manager.compose.domain.sources.RemoteSource
 import app.revanced.manager.compose.domain.sources.Source
-import app.revanced.manager.compose.ui.viewmodel.SourcesScreenViewModel
+import app.revanced.manager.compose.ui.viewmodel.SourcesViewModel
 import app.revanced.manager.compose.util.uiSafe
 import kotlinx.coroutines.launch
 import java.io.InputStream
@@ -108,7 +108,7 @@ private fun RemoteSourceItem(source: RemoteSource) {
 
     Button(onClick = {
         coroutineScope.launch {
-            uiSafe(androidContext, R.string.source_download_fail, SourcesScreenViewModel.failLogMsg) {
+            uiSafe(androidContext, R.string.source_download_fail, SourcesViewModel.failLogMsg) {
                 source.update()
             }
         }

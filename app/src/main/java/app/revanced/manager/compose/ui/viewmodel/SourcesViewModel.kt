@@ -3,9 +3,6 @@ package app.revanced.manager.compose.ui.viewmodel
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.compose.R
@@ -15,7 +12,7 @@ import app.revanced.manager.compose.util.uiSafe
 import io.ktor.http.*
 import kotlinx.coroutines.launch
 
-class SourcesScreenViewModel(private val app: Application, private val sourceRepository: SourceRepository) : ViewModel() {
+class SourcesViewModel(private val app: Application, private val sourceRepository: SourceRepository) : ViewModel() {
     val sources = sourceRepository.sources
     private val contentResolver: ContentResolver = app.contentResolver
 
