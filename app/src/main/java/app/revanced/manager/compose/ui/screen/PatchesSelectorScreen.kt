@@ -34,7 +34,9 @@ const val allowUnsupported = false
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    startPatching: (PatchesSelection) -> Unit, onBackClick: () -> Unit, vm: PatchesSelectorViewModel
+    onPatchClick: (PatchesSelection) -> Unit,
+    onBackClick: () -> Unit,
+    vm: PatchesSelectorViewModel
 ) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
@@ -57,21 +59,23 @@ fun PatchesSelectorScreen(
     }, floatingActionButton = {
         ExtendedFloatingActionButton(text = { Text(stringResource(R.string.patch)) },
             icon = { Icon(Icons.Default.Build, null) },
-            onClick = { startPatching(vm.generateSelection()) })
+            onClick = { onPatchClick(vm.generateSelection()) })
     }) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
-            ) {
-                bundles.forEachIndexed { index, bundle ->
-                    Tab(
-                        selected = pagerState.currentPage == index,
-                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                        text = { Text(bundle.name) },
-                        selectedContentColor = MaterialTheme.colorScheme.primary,
-                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+            if (bundles.size > 1) {
+                TabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
+                ) {
+                    bundles.forEachIndexed { index, bundle ->
+                        Tab(
+                            selected = pagerState.currentPage == index,
+                            onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                            text = { Text(bundle.name) },
+                            selectedContentColor = MaterialTheme.colorScheme.primary,
+                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
 
@@ -131,9 +135,8 @@ fun PatchesSelectorScreen(
                             )
                         }
                     }
-
-
-                })
+                }
+            )
         }
     }
 }

@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 
                         is Destination.PatchesSelector -> PatchesSelectorScreen(
                             onBackClick = { navController.pop() },
-                            startPatching = {
+                            onPatchClick = {
                                 navController.navigate(
                                     Destination.Installer(
                                         destination.input,
