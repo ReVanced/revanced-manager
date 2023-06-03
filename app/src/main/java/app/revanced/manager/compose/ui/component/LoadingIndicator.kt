@@ -11,10 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.compose.R
 
 @Composable
-fun LoadingIndicator(progress: Float? = null, text: Int? = R.string.loading_body) {
+fun LoadingIndicator(progress: Float? = null, text: Int? = null) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

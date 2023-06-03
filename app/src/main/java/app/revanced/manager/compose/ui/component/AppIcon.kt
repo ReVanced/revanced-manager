@@ -1,6 +1,5 @@
 package app.revanced.manager.compose.ui.component
 
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -11,31 +10,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import app.revanced.manager.compose.util.AppInfo
+import coil.compose.AsyncImage
 
 @Composable
 fun AppIcon(
-    drawable: Drawable?,
+    app: AppInfo,
     contentDescription: String?,
-    size: Int = 48
+    modifier: Modifier = Modifier
 ) {
-    if (drawable == null) {
+    if (app.packageInfo == null) {
         val image = rememberVectorPainter(Icons.Default.Android)
         val colorFilter = ColorFilter.tint(LocalContentColor.current)
 
         Image(
             image,
             contentDescription,
-            Modifier.size(size.dp),
+            Modifier.size(36.dp).then(modifier),
             colorFilter = colorFilter
         )
     } else {
-        val image = rememberAsyncImagePainter(drawable)
-
-        Image(
-            image,
+        AsyncImage(
+            app.packageInfo,
             contentDescription,
-            Modifier.size(size.dp)
+            Modifier.size(36.dp).then(modifier)
         )
     }
 }

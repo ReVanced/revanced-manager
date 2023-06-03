@@ -6,6 +6,7 @@ import android.content.pm.PackageInstaller
 import android.os.Build
 import android.os.IBinder
 
+@Suppress("DEPRECATION")
 class UninstallService : Service() {
 
     override fun onStartCommand(

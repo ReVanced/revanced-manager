@@ -28,6 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReVancedManager"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="33">
 
         <activity

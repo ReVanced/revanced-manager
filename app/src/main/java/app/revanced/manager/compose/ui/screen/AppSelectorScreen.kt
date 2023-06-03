@@ -19,31 +19,43 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.compose.R
 import app.revanced.manager.compose.ui.component.AppIcon
 import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.component.LoadingIndicator
 import app.revanced.manager.compose.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.compose.util.APK_MIMETYPE
-import app.revanced.manager.compose.util.PM
-import app.revanced.manager.compose.util.PackageInfo
+import app.revanced.manager.compose.util.AppInfo
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: (PackageInfo) -> Unit,
+    onAppClick: (AppInfo) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = getViewModel()
 ) {
-    val pickApkLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { apkUri ->
-        vm.loadSelectedFile(apkUri!!).let(onAppClick)
-    }
+    val pickApkLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+            it?.let { apkUri -> onAppClick(vm.loadSelectedFile(apkUri)) }
+        }
 
     var filterText by rememberSaveable { mutableStateOf("") }
     var search by rememberSaveable { mutableStateOf(false) }
+
+    val appList by vm.appList.collectAsStateWithLifecycle(initialValue = emptyList())
+    val filteredAppList = rememberSaveable(appList, filterText) {
+        appList.filter { app ->
+            (vm.loadLabel(app.packageInfo)).contains(
+                filterText,
+                true
+            ) or app.packageName.contains(filterText, true)
+        }
+    }
 
     // TODO: find something better for this
     if (search) {
@@ -63,34 +75,30 @@ fun AppSelectorScreen(
                     )
                 }
             },
-            shape = SearchBarDefaults.inputFieldShape,
             content = {
-                if (PM.appList.isNotEmpty()) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    if (appList.isNotEmpty()) {
                         items(
-                            PM.appList
-                                .filter { app ->
-                                    (app.label.contains(
-                                        filterText,
-                                        true
-                                    ) or app.packageName.contains(filterText, true))
-                                }
+                            items = filteredAppList,
+                            key = { it.packageName }
                         ) { app ->
 
                             ListItem(
-                                modifier = Modifier.clickable { onAppClick(PackageInfo(app)) },
-                                leadingContent = { AppIcon(app.icon, null, 36) },
-                                headlineContent = { Text(app.label) },
+                                modifier = Modifier.clickable {
+                                    app.packageInfo?.let { onAppClick(app) }
+                                },
+                                leadingContent = { AppIcon(app, null) },
+                                headlineContent = { Text(vm.loadLabel(app.packageInfo)) },
                                 supportingContent = { Text(app.packageName) },
-                                trailingContent = { Text("420 Patches") }
+                                trailingContent = if (app.patches > 0) { { Text(pluralStringResource(R.plurals.patches_count, app.patches, app.patches)) } } else null
                             )
 
                         }
+                    } else {
+                        item { LoadingIndicator() }
                     }
-                } else {
-                    LoadingIndicator()
                 }
             }
         )
@@ -112,99 +120,48 @@ fun AppSelectorScreen(
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(paddingValues)
         ) {
-            if (PM.supportedAppList.isNotEmpty()) {
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    item {
-
-                        ListItem(
-                            modifier = Modifier.clickable {
-                                pickApkLauncher.launch(APK_MIMETYPE)
-                            },
-                            leadingContent = {
-                                Box(Modifier.size(36.dp), Alignment.Center) {
-                                    Icon(
-                                        Icons.Default.Storage,
-                                        null,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
-                            },
-                            headlineContent = { Text(stringResource(R.string.select_from_storage)) }
-                        )
-
-                        Divider()
-
-                    }
-
-                    (PM.appList.ifEmpty { PM.supportedAppList }).also { list ->
-                        items(
-                            count = list.size,
-                            key = { list[it].packageName }
-                        ) { index ->
-
-                            val app = list[index]
-
-                            ListItem(
-                                modifier = Modifier.clickable { onAppClick(PackageInfo(app)) },
-                                leadingContent = { AppIcon(app.icon, null, 36) },
-                                headlineContent = { Text(app.label) },
-                                supportingContent = { Text(app.packageName) },
-                                trailingContent = {
-                                    Text("420 Patches")
-                                }
+            item {
+                ListItem(
+                    modifier = Modifier.clickable {
+                        pickApkLauncher.launch(APK_MIMETYPE)
+                    },
+                    leadingContent = {
+                        Box(Modifier.size(36.dp), Alignment.Center) {
+                            Icon(
+                                Icons.Default.Storage,
+                                null,
+                                modifier = Modifier.size(24.dp)
                             )
-
                         }
+                    },
+                    headlineContent = { Text(stringResource(R.string.select_from_storage)) }
+                )
+                Divider()
+            }
 
-                        if (PM.appList.isEmpty()) {
-                            item {
-                                Box(Modifier.fillMaxWidth(), Alignment.Center) {
-                                    CircularProgressIndicator(
-                                        Modifier.padding(vertical = 15.dp).size(24.dp),
-                                        strokeWidth = 3.dp
-                                    )
-                                }
-                            }
-                        }
-                    }
+            if (appList.isNotEmpty()) {
+                items(
+                    items = appList,
+                    key = { it.packageName }
+                ) { app ->
+
+                    ListItem(
+                        modifier = Modifier.clickable {
+                            app.packageInfo?.let { onAppClick(app) }
+                        },
+                        leadingContent = { AppIcon(app, null) },
+                        headlineContent = { Text(vm.loadLabel(app.packageInfo)) },
+                        supportingContent = { Text(app.packageName) },
+                        trailingContent = if (app.patches > 0) { { Text(pluralStringResource(R.plurals.patches_count, app.patches, app.patches)) } } else null
+                    )
+
                 }
             } else {
-                LoadingIndicator()
+                item { LoadingIndicator() }
             }
         }
     }
 }
-
-
-/*Row(
-    modifier = Modifier.horizontalScroll(rememberScrollState()),
-    horizontalArrangement = Arrangement.spacedBy(10.dp)
-) {
-    FilterChip(
-        selected = false,
-        onClick = {},
-        label = { Text("Patched apps") },
-        leadingIcon = { Icon(Icons.Default.Check, null) },
-        enabled = false
-    )
-    FilterChip(
-        selected = false,
-        onClick = {},
-        label = { Text("User apps") },
-        leadingIcon = { Icon(Icons.Default.Android, null) }
-    )
-    FilterChip(
-        selected = filterSystemApps,
-        onClick = { filterSystemApps = !filterSystemApps },
-        label = { Text("System apps") },
-        leadingIcon = { Icon(Icons.Default.Apps, null) }
-    )
-}*/

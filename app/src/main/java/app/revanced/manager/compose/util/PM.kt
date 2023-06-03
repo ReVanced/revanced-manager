@@ -1,74 +1,133 @@
 package app.revanced.manager.compose.util
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
+import android.content.pm.PackageManager.MATCH_UNINSTALLED_PACKAGES
 import android.os.Build
 import android.os.Parcelable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.Immutable
+import app.revanced.manager.compose.domain.repository.SourceRepository
 import app.revanced.manager.compose.service.InstallService
 import app.revanced.manager.compose.service.UninstallService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import java.io.File
 
 private const val byteArraySize = 1024 * 1024 // Because 1,048,576 is not readable
 
+@Immutable
 @Parcelize
-data class PackageInfo(val packageName: String, val version: String, val apk: File) : Parcelable {
-    constructor(appInfo: PM.AppInfo) : this(appInfo.packageName, appInfo.versionName, appInfo.apk)
-}
+data class AppInfo(
+    val packageName: String,
+    val patches: Int,
+    val packageInfo: PackageInfo?,
+    val path: File? = null
+) : Parcelable
 
 @SuppressLint("QueryPermissionsNeeded")
 @Suppress("DEPRECATION")
-object PM {
-    val appList = mutableStateListOf<AppInfo>()
-    val supportedAppList = mutableStateListOf<AppInfo>()
+class PM(
+    private val app: Application,
+    private val sourceRepository: SourceRepository
+) {
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    suspend fun loadApps(context: Context) {
-        val packageManager = context.packageManager
+    private val installedApps = MutableStateFlow(emptyList<AppInfo>())
+    private val compatibleApps = MutableStateFlow(emptyList<AppInfo>())
 
-        val localAppList = mutableListOf<AppInfo>()
+    val appList: StateFlow<List<AppInfo>> = compatibleApps.combine(installedApps) { compatibleApps, installedApps ->
+        if (compatibleApps.isNotEmpty()) {
+            (compatibleApps + installedApps)
+                .distinctBy { it.packageName }
+                .sortedWith(
+                    compareByDescending<AppInfo> {
+                        it.patches
+                    }.thenBy { it.packageInfo?.applicationInfo?.loadLabel(app.packageManager).toString() }.thenBy { it.packageName }
+                )
+        } else {
+            emptyList()
+        }
+    }.stateIn(coroutineScope, SharingStarted.Eagerly, emptyList())
 
-        packageManager.getInstalledApplications(PackageManager.GET_META_DATA).map {
-            AppInfo(
-                it.packageName,
-                "0.69.420",
-                it.loadLabel(packageManager).toString(),
-                it.loadIcon(packageManager),
-                File("h")
-            )
-        }.also { localAppList.addAll(it) }.also { supportedAppList.addAll(it) }
-    }
+    suspend fun getCompatibleApps() {
+        sourceRepository.bundles.collect { bundles ->
+            val compatiblePackages = HashMap<String, Int>()
 
-    @Parcelize
-    data class AppInfo(
-        val packageName: String,
-        val versionName: String,
-        val label: String,
-        val icon: @RawValue Drawable? = null,
-        val apk: File,
-    ) : Parcelable
+            bundles.flatMap { it.value.patches }.forEach {
+                it.compatiblePackages?.forEach { pkg ->
+                    compatiblePackages[pkg.name] = compatiblePackages.getOrDefault(pkg.name, 0) + 1
+                }
+            }
 
-    fun installApp(apks: List<File>, context: Context) {
-        val packageInstaller = context.packageManager.packageInstaller
-        packageInstaller.openSession(packageInstaller.createSession(sessionParams)).use { session ->
-            apks.forEach { apk -> session.writeApk(apk) }
-            session.commit(context.installIntentSender)
+            withContext(Dispatchers.IO) {
+                compatibleApps.emit(
+                    compatiblePackages.keys.map { pkg ->
+                        try {
+                            val packageInfo = app.packageManager.getPackageInfo(pkg, 0)
+                            AppInfo(
+                                pkg,
+                                compatiblePackages[pkg] ?: 0,
+                                packageInfo,
+                                File(packageInfo.applicationInfo.sourceDir)
+                            )
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            AppInfo(
+                                pkg,
+                                compatiblePackages[pkg] ?: 0,
+                                null
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 
-    fun uninstallPackage(pkg: String, context: Context) {
-        val packageInstaller = context.packageManager.packageInstaller
-        packageInstaller.uninstall(pkg, context.uninstallIntentSender)
+    suspend fun getInstalledApps() {
+        installedApps.emit(app.packageManager.getInstalledPackages(MATCH_UNINSTALLED_PACKAGES).map { packageInfo ->
+            AppInfo(
+                packageInfo.packageName,
+                0,
+                packageInfo,
+                File(packageInfo.applicationInfo.sourceDir)
+            )
+        })
     }
 
-    fun getApkInfo(apk: File, context: Context) = context.packageManager.getPackageArchiveInfo(apk.path, 0)!!
-        .let { PackageInfo(it.packageName, it.versionName, apk) }
+    fun installApp(apks: List<File>) {
+        val packageInstaller = app.packageManager.packageInstaller
+        packageInstaller.openSession(packageInstaller.createSession(sessionParams)).use { session ->
+            apks.forEach { apk -> session.writeApk(apk) }
+            session.commit(app.installIntentSender)
+        }
+    }
+
+    fun uninstallPackage(pkg: String) {
+        val packageInstaller = app.packageManager.packageInstaller
+        packageInstaller.uninstall(pkg, app.uninstallIntentSender)
+    }
+
+    fun getApkInfo(apk: File) = app.packageManager.getPackageArchiveInfo(apk.path, 0)!!.let {
+        AppInfo(
+            it.packageName,
+            0,
+            it,
+            apk
+        )
+    }
 }
 
 private fun PackageInstaller.Session.writeApk(apk: File) {

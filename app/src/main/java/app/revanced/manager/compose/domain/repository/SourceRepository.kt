@@ -4,14 +4,17 @@ import android.app.Application
 import android.util.Log
 import app.revanced.manager.compose.data.room.sources.SourceEntity
 import app.revanced.manager.compose.data.room.sources.SourceLocation
-import app.revanced.manager.compose.domain.sources.RemoteSource
 import app.revanced.manager.compose.domain.sources.LocalSource
+import app.revanced.manager.compose.domain.sources.RemoteSource
 import app.revanced.manager.compose.domain.sources.Source
 import app.revanced.manager.compose.util.tag
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -19,6 +22,18 @@ import java.io.InputStream
 
 class SourceRepository(app: Application, private val persistenceRepo: SourcePersistenceRepository) {
     private val sourcesDir = app.dataDir.resolve("sources").also { it.mkdirs() }
+
+    private val _sources: MutableStateFlow<Map<String, Source>> = MutableStateFlow(emptyMap())
+    val sources = _sources.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val bundles = sources.flatMapLatest { sources ->
+        combine(
+            sources.map { (_, source) -> source.bundle }
+        ) { bundles ->
+            sources.keys.zip(bundles).toMap()
+        }
+    }
 
     /**
      * Get the directory of the [Source] with the specified [uid], creating it if needed.
@@ -49,7 +64,7 @@ class SourceRepository(app: Application, private val persistenceRepo: SourcePers
         persistenceRepo.clear()
         _sources.emit(emptyMap())
         sourcesDir.apply {
-            delete()
+            deleteRecursively()
             mkdirs()
         }
 
@@ -58,7 +73,7 @@ class SourceRepository(app: Application, private val persistenceRepo: SourcePers
 
     suspend fun remove(source: Source) = withContext(Dispatchers.Default) {
         persistenceRepo.delete(source.id)
-        directoryOf(source.id).delete()
+        directoryOf(source.id).deleteRecursively()
 
         _sources.update {
             it.filterValues { value ->
@@ -83,9 +98,6 @@ class SourceRepository(app: Application, private val persistenceRepo: SourcePers
         val id = persistenceRepo.create(name, SourceLocation.Remote(apiUrl))
         addSource(name, RemoteSource(id, directoryOf(id)))
     }
-
-    private val _sources: MutableStateFlow<Map<String, Source>> = MutableStateFlow(emptyMap())
-    val sources = _sources.asStateFlow()
 
     suspend fun redownloadRemoteSources() =
         sources.value.values.filterIsInstance<RemoteSource>().forEach { it.downloadLatest() }
