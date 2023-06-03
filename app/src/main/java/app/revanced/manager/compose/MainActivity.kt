@@ -7,24 +7,32 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.compose.domain.manager.PreferencesManager
-import app.revanced.manager.compose.domain.repository.BundleRepository
 import app.revanced.manager.compose.ui.destination.Destination
-import app.revanced.manager.compose.ui.screen.*
+import app.revanced.manager.compose.ui.screen.AppSelectorScreen
+import app.revanced.manager.compose.ui.screen.DashboardScreen
+import app.revanced.manager.compose.ui.screen.InstallerScreen
+import app.revanced.manager.compose.ui.screen.PatchesSelectorScreen
+import app.revanced.manager.compose.ui.screen.SettingsScreen
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.compose.ui.theme.Theme
-import app.revanced.manager.compose.util.PM
-import dev.olshevski.navigation.reimagined.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.koin.androidx.compose.getViewModel
+import app.revanced.manager.compose.ui.viewmodel.MainViewModel
+import coil.Coil
+import coil.ImageLoader
+import dev.olshevski.navigation.reimagined.AnimatedNavHost
+import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.popAll
+import dev.olshevski.navigation.reimagined.rememberNavController
+import me.zhanghai.android.appiconloader.coil.AppIconFetcher
+import me.zhanghai.android.appiconloader.coil.AppIconKeyer
+import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
-    private val prefs: PreferencesManager by inject()
-    private val bundleRepository: BundleRepository by inject()
-    private val mainScope = MainScope()
+    private val prefs: PreferencesManager = get()
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,12 +40,18 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen()
 
-        bundleRepository.onAppStart(this@MainActivity)
+        getViewModel<MainViewModel>()
 
-        val context = this
-        mainScope.launch(Dispatchers.IO) {
-            PM.loadApps(context)
-        }
+        val scale = this.resources.displayMetrics.density
+        val pixels = (36 * scale).roundToInt()
+        Coil.setImageLoader(
+            ImageLoader.Builder(this)
+                .components {
+                    add(AppIconKeyer())
+                    add(AppIconFetcher.Factory(pixels, true, this@MainActivity))
+                }
+                .build()
+        )
 
         setContent {
             ReVancedManagerTheme(

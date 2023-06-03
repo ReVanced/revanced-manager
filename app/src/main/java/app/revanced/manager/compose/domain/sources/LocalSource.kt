@@ -18,8 +18,6 @@ class LocalSource(id: Int, directory: File) : Source(id, directory) {
             }
         }
 
-        withContext(Dispatchers.Main) {
-            _bundle.emit(loadBundle { throw it })
-        }
+        _bundle.emit(loadBundle { throw it })
     }
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageInstaller
 import android.os.Build
 import android.os.IBinder
 
+@Suppress("DEPRECATION")
 class InstallService : Service() {
 
     override fun onStartCommand(

@@ -27,12 +27,13 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/prebuilt/**"
         }
@@ -51,6 +52,10 @@ android {
     composeOptions.kotlinCompilerExtensionVersion = "1.4.7"
 }
 
+kotlin {
+    jvmToolchain(11)
+}
+
 dependencies {
 
     // AndroidX Core
@@ -58,7 +63,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.paging:paging-common-ktx:3.1.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
@@ -78,10 +83,12 @@ dependencies {
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // Coil (async image loading, network image)
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("me.zhanghai.android.appiconloader:appiconloader-coil:1.5.0")
 
     // KotlinX
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
     // Room
     val roomVersion = "2.5.1"
@@ -94,7 +101,7 @@ dependencies {
     implementation("app.revanced:revanced-patcher:9.0.0")
 
     // Signing
-    implementation("com.android.tools.build:apksig:8.1.0-beta02")
+    implementation("com.android.tools.build:apksig:8.2.0-alpha05")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     // Koin

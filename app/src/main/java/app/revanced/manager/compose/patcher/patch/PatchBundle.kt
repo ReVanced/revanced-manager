@@ -42,5 +42,5 @@ class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: Fi
         true
     }
 
-    fun loadAllPatches() = loader.toList()
+    private fun loadAllPatches() = loader.toList()
 }
