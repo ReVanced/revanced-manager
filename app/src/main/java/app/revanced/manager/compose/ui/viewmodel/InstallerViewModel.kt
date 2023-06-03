@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
 import android.net.Uri
 import androidx.compose.runtime.derivedStateOf
@@ -33,7 +32,7 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 
-class InstallerScreenViewModel(
+class InstallerViewModel(
     input: AppInfo,
     selectedPatches: PatchesSelection
 ) : ViewModel(), KoinComponent {

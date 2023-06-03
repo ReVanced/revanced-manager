@@ -33,7 +33,7 @@ import app.revanced.manager.compose.patcher.worker.StepGroup
 import app.revanced.manager.compose.patcher.worker.StepStatus
 import app.revanced.manager.compose.ui.component.AppScaffold
 import app.revanced.manager.compose.ui.component.AppTopBar
-import app.revanced.manager.compose.ui.viewmodel.InstallerScreenViewModel
+import app.revanced.manager.compose.ui.viewmodel.InstallerViewModel
 import app.revanced.manager.compose.util.APK_MIMETYPE
 import kotlin.math.floor
 
@@ -41,7 +41,7 @@ import kotlin.math.floor
 @Composable
 fun InstallerScreen(
     onBackClick: () -> Unit,
-    vm: InstallerScreenViewModel
+    vm: InstallerViewModel
 ) {
     val exportApkLauncher = rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
 

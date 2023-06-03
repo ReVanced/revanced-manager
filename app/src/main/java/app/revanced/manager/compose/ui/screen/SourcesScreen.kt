@@ -10,12 +10,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.compose.R
 import app.revanced.manager.compose.ui.component.sources.NewSourceDialog
 import app.revanced.manager.compose.ui.component.sources.SourceItem
-import app.revanced.manager.compose.ui.viewmodel.SourcesScreenViewModel
+import app.revanced.manager.compose.ui.viewmodel.SourcesViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SourcesScreen(vm: SourcesScreenViewModel = getViewModel()) {
+fun SourcesScreen(vm: SourcesViewModel = getViewModel()) {
     var showNewSourceDialog by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
@@ -39,7 +39,7 @@ fun SourcesScreen(vm: SourcesScreenViewModel = getViewModel()) {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxSize(),
     ) {
         sources.forEach { (name, source) ->
             SourceItem(
