@@ -29,7 +29,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                         text: 'Version: ${snapshot.data!['version']}\n'
                             'Model: ${snapshot.data!['model']}\n'
                             'Android Version: ${snapshot.data!['androidVersion']}\n'
-                            'Supported Arch: ${snapshot.data!['supportedArch']}\n',
+                            'Supported Arch: ${snapshot.data!['supportedArch'].join(", ")}\n',
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
