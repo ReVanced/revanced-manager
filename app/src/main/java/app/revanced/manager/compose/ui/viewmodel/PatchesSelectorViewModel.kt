@@ -1,5 +1,6 @@
 package app.revanced.manager.compose.ui.viewmodel
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
+@Stable
 class PatchesSelectorViewModel(appInfo: AppInfo) : ViewModel(), KoinComponent {
     val bundlesFlow = get<SourceRepository>().bundles.map { bundles ->
         bundles.mapValues { (_, bundle) -> bundle.patches }.map { (name, patches) ->

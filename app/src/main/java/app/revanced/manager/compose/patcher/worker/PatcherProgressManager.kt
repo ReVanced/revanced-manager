@@ -6,6 +6,9 @@ import androidx.work.Data
 import androidx.work.workDataOf
 import app.revanced.manager.compose.R
 import app.revanced.manager.compose.patcher.Session
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -31,7 +34,7 @@ enum class StepStatus {
 class Step(val name: String, val status: StepStatus = StepStatus.WAITING)
 
 @Serializable
-class StepGroup(@StringRes val name: Int, val steps: List<Step>, val status: StepStatus = StepStatus.WAITING)
+class StepGroup(@StringRes val name: Int, val steps: ImmutableList<Step>, val status: StepStatus = StepStatus.WAITING)
 
 class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
     val stepGroups = generateGroupsList(context, selectedPatches)
@@ -53,18 +56,18 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
         fun generateGroupsList(context: Context, selectedPatches: List<String>) = mutableListOf(
             StepGroup(
                 R.string.patcher_step_group_prepare,
-                listOf(
+                persistentListOf(
                     Step(context.getString(R.string.patcher_step_unpack)),
                     Step(context.getString(R.string.patcher_step_integrations))
                 )
             ),
             StepGroup(
                 R.string.patcher_step_group_patching,
-                selectedPatches.map { Step(it) }
+                selectedPatches.map { Step(it) }.toImmutableList()
             ),
             StepGroup(
                 R.string.patcher_step_group_saving,
-                listOf(Step(context.getString(R.string.patcher_step_write_patched)))
+                persistentListOf(Step(context.getString(R.string.patcher_step_write_patched)))
             )
         )
 
@@ -95,7 +98,7 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
 
             StepGroup(group.name, group.steps.toMutableList().mutateIndex(key.stepIndex) { step ->
                 Step(step.name, newStatus)
-            }, newGroupStatus)
+            }.toImmutableList(), newGroupStatus)
         }
 
         val isFinalStep = isLastStepOfGroup && key.groupIndex == stepGroups.size - 1

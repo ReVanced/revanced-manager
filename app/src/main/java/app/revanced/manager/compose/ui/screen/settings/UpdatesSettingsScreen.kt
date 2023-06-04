@@ -1,6 +1,5 @@
 package app.revanced.manager.compose.ui.screen.settings
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +43,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdatesSettingsScreen(
     onBackClick: () -> Unit,
@@ -142,7 +140,6 @@ fun UpdateNotification(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Stable
 fun UpdateProgressScreen(
     onBackClick: () -> Unit,
     vm: UpdateSettingsViewModel = getViewModel()

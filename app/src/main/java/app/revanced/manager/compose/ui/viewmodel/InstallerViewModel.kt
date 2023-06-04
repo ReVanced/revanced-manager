@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageInstaller
 import android.net.Uri
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +33,7 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 
+@Stable
 class InstallerViewModel(
     input: AppInfo,
     selectedPatches: PatchesSelection

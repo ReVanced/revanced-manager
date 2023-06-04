@@ -1,6 +1,7 @@
 package app.revanced.manager.compose.domain.sources
 
 import android.util.Log
+import androidx.compose.runtime.Stable
 import app.revanced.manager.compose.patcher.patch.PatchBundle
 import app.revanced.manager.compose.domain.repository.SourcePersistenceRepository
 import app.revanced.manager.compose.util.tag
@@ -13,6 +14,7 @@ import java.io.File
 /**
  * A [PatchBundle] source.
  */
+@Stable
 sealed class Source(val id: Int, directory: File) : KoinComponent {
     private val configRepository: SourcePersistenceRepository by inject()
     protected companion object {
