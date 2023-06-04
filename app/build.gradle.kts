@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    namespace = "app.revanced.manager.compose"
+    namespace = "app.revanced.manager"
     compileSdk = 33
     buildToolsVersion = "33.0.2"
 
     defaultConfig {
-        applicationId = "app.revanced.manager.compose"
+        applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
