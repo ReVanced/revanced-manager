@@ -27,7 +27,8 @@ import dev.olshevski.navigation.reimagined.rememberNavController
 import me.zhanghai.android.appiconloader.coil.AppIconFetcher
 import me.zhanghai.android.appiconloader.coil.AppIconKeyer
 import org.koin.android.ext.android.get
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.roundToInt
 
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen()
 
-        getViewModel<MainViewModel>()
+        getActivityViewModel<MainViewModel>()
 
         val scale = this.resources.displayMetrics.density
         val pixels = (36 * scale).roundToInt()
