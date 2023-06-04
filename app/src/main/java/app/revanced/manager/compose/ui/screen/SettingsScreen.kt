@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,14 +40,12 @@ import app.revanced.manager.compose.ui.component.AppTopBar
 import app.revanced.manager.compose.ui.destination.SettingsDestination
 import app.revanced.manager.compose.ui.screen.settings.*
 import app.revanced.manager.compose.ui.viewmodel.SettingsViewModel
-import app.revanced.manager.compose.ui.viewmodel.UpdateSettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-@Stable
 fun SettingsScreen(
     onBackClick: () -> Unit,
     viewModel: SettingsViewModel = getViewModel()
