@@ -86,7 +86,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                       Text(
                         snapshot.data!['supportedArch'].length > 1
                             ? 'Supported Archs: ${snapshot.data!['supportedArch'].join(", ")}'
-                            : 'Supported Arch: ${snapshot.data!['supportedArch'].join(", ")}',
+                            : 'Supported Arch: ${snapshot.data!['supportedArch']}',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w300,
