@@ -300,13 +300,11 @@ class ManagerAPI {
     if (isDefaultPatchesRepo()) {
       patchesVersion = await getLatestPatchesVersion();
       // print('Patches version: $patchesVersion');
-      return patchesVersion ?? '0.0.0';
     } else {
       // fetch from github
-      patchesVersion =
-          await _githubAPI.getLastestReleaseVersion(getPatchesRepo());
+      patchesVersion = await _githubAPI.getLastestReleaseVersion(getPatchesRepo());
     }
-    return null;
+    return patchesVersion ?? '0.0.0';
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
