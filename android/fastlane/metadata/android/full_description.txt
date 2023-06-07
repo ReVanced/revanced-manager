@@ -1,0 +1,1 @@
+The ReVanced Manager is an Android application that allows you to modify any Dalvik Android application to add, remove and/or modify existing functionality. It dissassembles the APK locally on your device, makes the required changes using ReVanced Patcher and then assembles it back into an APK again. 

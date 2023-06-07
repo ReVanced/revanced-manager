@@ -29,7 +29,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                         text: 'Version: ${snapshot.data!['version']}\n'
                             'Model: ${snapshot.data!['model']}\n'
                             'Android Version: ${snapshot.data!['androidVersion']}\n'
-                            'Arch: ${snapshot.data!['arch']}\n',
+                            '${snapshot.data!['supportedArch'].length > 1 ? 'Supported Archs' : 'Supported Arch'}: ${snapshot.data!['supportedArch'].join(", ")}\n',
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -84,7 +84,9 @@ class _AboutWidgetState extends State<AboutWidget> {
                         ),
                       ),
                       Text(
-                        'Arch: ${snapshot.data!['arch']}',
+                        snapshot.data!['supportedArch'].length > 1
+                            ? 'Supported Archs: ${snapshot.data!['supportedArch'].join(", ")}'
+                            : 'Supported Arch: ${snapshot.data!['supportedArch']}',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w300,
