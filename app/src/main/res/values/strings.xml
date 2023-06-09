@@ -66,6 +66,9 @@
 
     <string name="installer">Installer</string>
     <string name="install_app">Install</string>
+    <string name="install_app_success">App installed</string>
+    <string name="install_app_fail">Failed to install app: %s</string>
+    <string name="open_app">Open</string>
     <string name="export_app">Export</string>
     <string name="export_app_success">Apk exported</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>

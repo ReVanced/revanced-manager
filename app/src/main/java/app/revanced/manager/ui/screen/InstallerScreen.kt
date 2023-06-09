@@ -15,8 +15,11 @@ import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,6 +47,8 @@ fun InstallerScreen(
     vm: InstallerViewModel
 ) {
     val exportApkLauncher = rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
+    val patcherState by vm.patcherState.observeAsState(vm.initialState)
+    val canInstall by remember { derivedStateOf { patcherState.status == true && (vm.installedPackageName != null || !vm.isInstalling) } }
 
     AppScaffold(
         topBar = {
@@ -66,7 +71,7 @@ fun InstallerScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            vm.stepGroups.forEach {
+            patcherState.stepGroups.forEach {
                 InstallGroup(it)
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -79,16 +84,16 @@ fun InstallerScreen(
             ) {
                 Button(
                     onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                    enabled = vm.canInstall
+                    enabled = canInstall
                 ) {
                     Text(stringResource(R.string.export_app))
                 }
 
                 Button(
-                    onClick = vm::installApk,
-                    enabled = vm.canInstall
+                    onClick = vm::installOrOpen,
+                    enabled = canInstall
                 ) {
-                    Text(stringResource(R.string.install_app))
+                    Text(stringResource(vm.appButtonText))
                 }
             }
         }

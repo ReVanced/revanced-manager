@@ -120,6 +120,11 @@ class PM(
         packageInstaller.uninstall(pkg, app.uninstallIntentSender)
     }
 
+    fun launch(pkg: String) = app.packageManager.getLaunchIntentForPackage(pkg)?.let {
+        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        app.startActivity(it)
+    }
+
     fun getApkInfo(apk: File) = app.packageManager.getPackageArchiveInfo(apk.path, 0)!!.let {
         AppInfo(
             it.packageName,
