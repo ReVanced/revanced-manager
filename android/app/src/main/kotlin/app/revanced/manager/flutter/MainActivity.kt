@@ -271,8 +271,8 @@ class MainActivity : FlutterActivity() {
                         "update",
                         mapOf(
                             "progress" to -100.0,
-                            "header" to "Aborting...",
-                            "log" to "An error occurred! Aborting\nError:\n$stack"
+                            "header" to "Aborted...",
+                            "log" to "An error occurred! Aborted\nError:\n$stack"
                         )
                     )
                 }
