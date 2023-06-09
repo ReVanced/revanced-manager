@@ -5,10 +5,7 @@ import androidx.annotation.StringRes
 import androidx.work.Data
 import androidx.work.workDataOf
 import app.revanced.manager.R
-import app.revanced.manager.patcher.Session
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -34,22 +31,25 @@ enum class StepStatus {
 class Step(val name: String, val status: StepStatus = StepStatus.WAITING)
 
 @Serializable
-class StepGroup(@StringRes val name: Int, val steps: ImmutableList<Step>, val status: StepStatus = StepStatus.WAITING)
+class StepGroup(
+    @StringRes val name: Int,
+    val steps: List<Step>,
+    val status: StepStatus = StepStatus.WAITING
+)
 
 class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
     val stepGroups = generateGroupsList(context, selectedPatches)
 
     companion object {
-        private const val PATCHES = 1
         private const val WORK_DATA_KEY = "progress"
 
         /**
-         * A map of [Session.Progress] to the corresponding position in [stepGroups]
+         * A map of [Progress] to the corresponding position in [stepGroups]
          */
         private val stepKeyMap = mapOf(
             Progress.Unpacking to StepKey(0, 0),
             Progress.Merging to StepKey(0, 1),
-            Progress.PatchingStart to StepKey(PATCHES, 0),
+            Progress.PatchingStart to StepKey(1, 0),
             Progress.Saving to StepKey(2, 0),
         )
 
@@ -63,7 +63,7 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
             ),
             StepGroup(
                 R.string.patcher_step_group_patching,
-                selectedPatches.map { Step(it) }.toImmutableList()
+                selectedPatches.map { Step(it) }
             ),
             StepGroup(
                 R.string.patcher_step_group_saving,
@@ -86,7 +86,8 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
     private fun updateStepStatus(key: StepKey, newStatus: StepStatus) {
         var isLastStepOfGroup = false
         stepGroups.mutateIndex(key.groupIndex) { group ->
-            isLastStepOfGroup = key.stepIndex == group.steps.size - 1
+            isLastStepOfGroup = key.stepIndex == group.steps.lastIndex
+
             val newGroupStatus = when {
                 // This group failed if a step in it failed.
                 newStatus == StepStatus.FAILURE -> StepStatus.FAILURE
@@ -98,37 +99,31 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
 
             StepGroup(group.name, group.steps.toMutableList().mutateIndex(key.stepIndex) { step ->
                 Step(step.name, newStatus)
-            }.toImmutableList(), newGroupStatus)
+            }, newGroupStatus)
         }
 
-        val isFinalStep = isLastStepOfGroup && key.groupIndex == stepGroups.size - 1
+        val isFinalStep = isLastStepOfGroup && key.groupIndex == stepGroups.lastIndex
 
         if (newStatus == StepStatus.COMPLETED) {
             // Move the cursor to the next step.
             currentStep = when {
                 isFinalStep -> null // Final step has been completed.
                 isLastStepOfGroup -> StepKey(key.groupIndex + 1, 0) // Move to the next group.
-                else -> StepKey(key.groupIndex, key.stepIndex + 1) // Move to the next step of this group.
+                else -> StepKey(
+                    key.groupIndex,
+                    key.stepIndex + 1
+                ) // Move to the next step of this group.
             }
         }
     }
 
-    private fun setCurrentStepStatus(newStatus: StepStatus) = currentStep?.let { updateStepStatus(it, newStatus) }
+    private fun setCurrentStepStatus(newStatus: StepStatus) =
+        currentStep?.let { updateStepStatus(it, newStatus) }
 
     private data class StepKey(val groupIndex: Int, val stepIndex: Int)
 
-    fun handle(progress: Progress) {
-        if (progress is Progress.PatchSuccess) {
-            val patchStepKey = StepKey(
-                PATCHES,
-                stepGroups[PATCHES].steps.indexOfFirst { it.name == progress.patchName })
-
-            updateStepStatus(patchStepKey, StepStatus.COMPLETED)
-        } else {
-            currentStep?.let { updateStepStatus(it, StepStatus.COMPLETED) }
-
-            currentStep = stepKeyMap[progress]!!
-        }
+    fun handle(progress: Progress) = success().also {
+        stepKeyMap[progress]?.let { currentStep = it }
     }
 
     fun failure() {

@@ -60,7 +60,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
         }
 
         val progressManager =
-            PatcherProgressManager(applicationContext, args.selectedPatches.flatMap { (_, selected) -> selected })
+            PatcherProgressManager(applicationContext, patchList.map { it.patchName })
 
         suspend fun updateProgress(progress: Progress) {
             progressManager.handle(progress)

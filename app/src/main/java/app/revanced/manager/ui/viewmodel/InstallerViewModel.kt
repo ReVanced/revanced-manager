@@ -12,8 +12,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.work.*
 import app.revanced.manager.R
 import app.revanced.manager.patcher.SignerService
@@ -42,30 +42,18 @@ class InstallerViewModel(
     private val app: Application by inject()
     private val pm: PM by inject()
 
-    var stepGroups by mutableStateOf<List<StepGroup>>(
-        PatcherProgressManager.generateGroupsList(
-            app,
-            selectedPatches.flatMap { (_, selected) -> selected })
-    )
-        private set
-
     val packageName: String = input.packageName
-
-    private val workManager = WorkManager.getInstance(app)
-
-    // TODO: get rid of these and use stepGroups instead.
-    var installStatus by mutableStateOf<Boolean?>(null)
-    var pmStatus by mutableStateOf(-999)
-    var extra by mutableStateOf("")
-
     private val outputFile = File(app.cacheDir, "output.apk")
     private val signedFile = File(app.cacheDir, "signed.apk").also { if (it.exists()) it.delete() }
     private var hasSigned = false
-    private var patcherStatus by mutableStateOf<Boolean?>(null)
-    private var isInstalling by mutableStateOf(false)
 
-    val canInstall by derivedStateOf { patcherStatus == true && !isInstalling }
+    var isInstalling by mutableStateOf(false)
+        private set
+    var installedPackageName by mutableStateOf<String?>(null)
+        private set
+    val appButtonText by derivedStateOf { if (installedPackageName == null) R.string.install_app else R.string.open_app }
 
+    private val workManager = WorkManager.getInstance(app)
     private val patcherWorker =
         OneTimeWorkRequest.Builder(PatcherWorker::class.java) // create Worker
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST).setInputData(
@@ -83,26 +71,41 @@ class InstallerViewModel(
                 )
             ).build()
 
-    private val liveData = workManager.getWorkInfoByIdLiveData(patcherWorker.id) // get LiveData
+    val initialState = PatcherState(
+        status = null,
+        stepGroups = PatcherProgressManager.generateGroupsList(
+            app,
+            selectedPatches.flatMap { (_, selected) -> selected }
+        )
+    )
+    val patcherState =
+        workManager.getWorkInfoByIdLiveData(patcherWorker.id).map { workInfo: WorkInfo ->
+            var status: Boolean? = null
+            val stepGroups = when (workInfo.state) {
+                WorkInfo.State.RUNNING -> workInfo.progress
+                WorkInfo.State.FAILED, WorkInfo.State.SUCCEEDED -> workInfo.outputData.also {
+                    status = workInfo.state == WorkInfo.State.SUCCEEDED
+                }
 
-    private val observer = Observer { workInfo: WorkInfo -> // observer for observing patch status
-        when (workInfo.state) {
-            WorkInfo.State.RUNNING -> workInfo.progress
-            WorkInfo.State.FAILED, WorkInfo.State.SUCCEEDED -> workInfo.outputData.also {
-                patcherStatus = workInfo.state == WorkInfo.State.SUCCEEDED
-            }
+                else -> null
+            }?.let { PatcherProgressManager.groupsFromWorkData(it) }
 
-            else -> null
-        }?.let { PatcherProgressManager.groupsFromWorkData(it) }?.let { stepGroups = it }
-    }
+            PatcherState(status, stepGroups ?: initialState.stepGroups)
+        }
 
     private val installBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 InstallService.APP_INSTALL_ACTION -> {
-                    pmStatus = intent.getIntExtra(InstallService.EXTRA_INSTALL_STATUS, -999)
-                    extra = intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
-                    postInstallStatus()
+                    val pmStatus = intent.getIntExtra(InstallService.EXTRA_INSTALL_STATUS, -999)
+                    val extra = intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
+
+                    if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
+                        app.toast(app.getString(R.string.install_app_success))
+                        installedPackageName = intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
+                    } else {
+                        app.toast(app.getString(R.string.install_app_fail, extra))
+                    }
                 }
 
                 UninstallService.APP_UNINSTALL_ACTION -> {
@@ -113,11 +116,19 @@ class InstallerViewModel(
 
     init {
         workManager.enqueueUniqueWork("patching", ExistingWorkPolicy.KEEP, patcherWorker)
-        liveData.observeForever(observer)
         app.registerReceiver(installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
             addAction(UninstallService.APP_UNINSTALL_ACTION)
         })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        app.unregisterReceiver(installBroadcastReceiver)
+        workManager.cancelWorkById(patcherWorker.id)
+
+        outputFile.delete()
+        signedFile.delete()
     }
 
     private fun signApk(): Boolean {
@@ -141,7 +152,12 @@ class InstallerViewModel(
         }
     }
 
-    fun installApk() {
+    fun installOrOpen() {
+        installedPackageName?.let {
+            pm.launch(it)
+            return
+        }
+
         isInstalling = true
         try {
             if (!signApk()) return
@@ -151,18 +167,6 @@ class InstallerViewModel(
         }
     }
 
-    fun postInstallStatus() {
-        installStatus = pmStatus == PackageInstaller.STATUS_SUCCESS
-    }
 
-    override fun onCleared() {
-        super.onCleared()
-        liveData.removeObserver(observer)
-        app.unregisterReceiver(installBroadcastReceiver)
-        workManager.cancelWorkById(patcherWorker.id)
-        // logs.clear()
-
-        outputFile.delete()
-        signedFile.delete()
-    }
+    data class PatcherState(val status: Boolean?, val stepGroups: List<StepGroup>)
 }
