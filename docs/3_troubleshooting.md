@@ -20,7 +20,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   Select the **Default** chip when choosing patches.
 
-## ### ⏭️ What's next
+## ⏭️ What's next
 
 The next page will teach you how to build ReVanced Manager from source.
 
