@@ -190,7 +190,7 @@ class HomeViewModel extends BaseViewModel {
                     ),
                     const SizedBox(width: 8.0),
                     Text(
-                      '$_latestManagerVersion',
+                      '$_latestManagerVersion'.replaceAll('vv', 'v'),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
