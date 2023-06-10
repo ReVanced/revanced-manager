@@ -19,84 +19,103 @@ class NotInstalledAppItem extends StatefulWidget {
   State<NotInstalledAppItem> createState() => _NotInstalledAppItem();
 }
 
+List<Map<String, dynamic>> _packageDetails = [];
+
 class _NotInstalledAppItem extends State<NotInstalledAppItem> {
   @override
+  void initState() {
+    super.initState();
+    if (!_packageDetails.toString().contains(widget.name)) {
+      getPackageDetails();
+    }
+  }
+
+  Future getPackageDetails() async {
+    final packageInfo = await getPackageInfo(widget.name);
+    if (!_packageDetails.contains(packageInfo)) {
+      _packageDetails.add(packageInfo);
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getPackageInfo(widget.name),
-      builder: (context, snapshot) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: CustomCard(
-            onTap: widget.onTap,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 48,
-                  height: 48,
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  alignment: Alignment.center,
-                  child: (snapshot.hasData)
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(snapshot.data!['image']),
-                        )
-                      : const CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: Icon(
-                            Icons.square_rounded,
-                            color: Colors.grey,
-                            size: 44,
-                          ),
+    final int index = (_packageDetails.toString().contains(widget.name))
+        ? _packageDetails.indexOf(
+            _packageDetails
+                .firstWhere((element) => element['pkgName'] == widget.name),
+          )
+        : -1;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: CustomCard(
+        onTap: widget.onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: 48,
+              height: 48,
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              alignment: Alignment.center,
+              child: (index != -1)
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(_packageDetails[index]['image']),
+                    )
+                  : const CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      child: Icon(
+                        Icons.square_rounded,
+                        color: Colors.grey,
+                        size: 44,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  if (index != -1)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Text(
+                        _packageDetails[index]['name'],
+                        maxLines: 2,
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      if (snapshot.hasData)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            snapshot.data!['name'],
-                            maxLines: 2,
-                            overflow: TextOverflow.visible,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                      ),
+                    ),
+                  Text(widget.name),
+                  const Text('App not installed'),
+                  Row(
+                    children: [
+                      Text(
+                        widget.suggestedVersion.isEmpty
+                            ? 'All versions'
+                            : widget.suggestedVersion,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
-                      Text(widget.name),
-                      const Text('App not installed'),
-                      Row(
-                        children: [
-                          Text(
-                            widget.suggestedVersion.isEmpty
-                                ? 'All versions'
-                                : widget.suggestedVersion,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            widget.patchesCount == 1
-                                ? '• ${widget.patchesCount} patch'
-                                : '• ${widget.patchesCount} patches',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }
