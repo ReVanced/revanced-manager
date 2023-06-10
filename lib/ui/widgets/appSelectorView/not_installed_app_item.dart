@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revanced_manager/services/google_play_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class NotInstalledAppItem extends StatefulWidget {
@@ -21,65 +22,79 @@ class NotInstalledAppItem extends StatefulWidget {
 class _NotInstalledAppItem extends State<NotInstalledAppItem> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: CustomCard(
-        onTap: widget.onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 48,
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              alignment: Alignment.center,
-              child: const CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.square_rounded,
-                  color: Colors.grey,
-                  size: 44,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder(
+      future: getPackageInfo(widget.name),
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          final Map<String, dynamic> data = snapshot.data!;
+          final String pkgName = widget.name;
+          final String iconUrl = data['image'];
+          final String name = data['name'];
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: CustomCard(
+              onTap: widget.onTap,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    widget.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                  Container(
+                    width: 48,
+                    height: 48,
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    alignment: Alignment.center,
+                    child: ClipRRect(
+                        borderRadius:BorderRadius.circular(20),
+                        child: Image.network(iconUrl),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  const Text('App not installed.'),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        widget.suggestedVersion.isEmpty
-                            ? 'All versions'
-                            : widget.suggestedVersion,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.patchesCount == 1
-                            ? '• ${widget.patchesCount} patch'
-                            : '• ${widget.patchesCount} patches',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          name,
+                          maxLines: 2,
+                          overflow: TextOverflow.visible,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 4),
+                        const Text('App not installed'),
+                        Text(pkgName),
+                        Row(
+                          children: [
+                            Text(
+                              widget.suggestedVersion.isEmpty
+                                  ? 'All versions'
+                                  : widget.suggestedVersion,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              widget.patchesCount == 1
+                                  ? '• ${widget.patchesCount} patch'
+                                  : '• ${widget.patchesCount} patches',
+                              style: TextStyle(
+                                color: Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .secondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          );
+        }else{
+          return const SizedBox();
+        }},
     );
   }
 }
