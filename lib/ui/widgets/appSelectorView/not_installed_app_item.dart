@@ -95,9 +95,7 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                   Row(
                     children: [
                       Text(
-                        widget.suggestedVersion.isEmpty
-                            ? 'All versions'
-                            : widget.suggestedVersion,
+                        'Suggested: ${widget.suggestedVersion.isEmpty ? 'All versions' : 'v${widget.suggestedVersion}'}',
                       ),
                       const SizedBox(width: 4),
                       Text(

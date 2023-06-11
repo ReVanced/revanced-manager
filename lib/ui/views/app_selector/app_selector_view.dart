@@ -111,6 +111,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                           model.getSuggestedVersion(
                                         app.packageName,
                                       ),
+                                      installedVersion: app.versionName!,
                                       onTap: () => model.canSelectInstalled(context, app.packageName),
                                     ),
                                   )
