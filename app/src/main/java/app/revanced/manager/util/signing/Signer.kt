@@ -11,24 +11,29 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.ContentSigner
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.math.BigInteger
+import java.nio.file.Path
 import java.security.*
 import java.security.cert.X509Certificate
 import java.util.*
+import kotlin.io.path.exists
+import kotlin.io.path.inputStream
+import kotlin.io.path.name
+import kotlin.io.path.outputStream
 
 class Signer(
     private val signingOptions: SigningOptions
 ) {
     private val passwordCharArray = signingOptions.password.toCharArray()
-    private fun newKeystore(out: File) {
+    private fun newKeystore(out: Path) {
         val (publicKey, privateKey) = createKey()
         val privateKS = KeyStore.getInstance("BKS", "BC")
         privateKS.load(null, passwordCharArray)
         privateKS.setKeyEntry("alias", privateKey, passwordCharArray, arrayOf(publicKey))
-        privateKS.store(FileOutputStream(out), passwordCharArray)
+        out.outputStream().use { stream -> privateKS.store(stream, passwordCharArray) }
     }
+
+    fun regenerateKeystore() = newKeystore(signingOptions.keyStoreFilePath)
 
     private fun createKey(): Pair<X509Certificate, PrivateKey> {
         val gen = KeyPairGenerator.getInstance("RSA")
@@ -53,13 +58,13 @@ class Signer(
     fun signApk(input: File, output: File) {
         Security.addProvider(BouncyCastleProvider())
 
-        val ks = File(signingOptions.keyStoreFilePath)
+        val ks = signingOptions.keyStoreFilePath
         if (!ks.exists()) newKeystore(ks) else {
             Log.i(tag, "Found existing keystore: ${ks.name}")
         }
 
         val keyStore = KeyStore.getInstance("BKS", "BC")
-        FileInputStream(ks).use { fis -> keyStore.load(fis, null) }
+        ks.inputStream().use { stream -> keyStore.load(stream, null) }
         val alias = keyStore.aliases().nextElement()
 
         val config = ApkSigner.SignerConfig.Builder(
