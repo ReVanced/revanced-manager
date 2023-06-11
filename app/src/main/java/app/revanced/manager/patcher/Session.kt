@@ -8,6 +8,8 @@ import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Context
 import app.revanced.patcher.logging.Logger
 import app.revanced.patcher.patch.Patch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
@@ -74,7 +76,9 @@ class Session(
 
         logger.info("Patched apk saved to $aligned")
 
-        Files.move(aligned.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        withContext(Dispatchers.IO) {
+            Files.move(aligned.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
     }
 
     override fun close() {
