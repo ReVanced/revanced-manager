@@ -10,6 +10,7 @@ class InstalledAppItem extends StatefulWidget {
     required this.icon,
     required this.patchesCount,
     required this.suggestedVersion,
+    required this.installedVersion,
     this.onTap,
   }) : super(key: key);
   final String name;
@@ -17,6 +18,7 @@ class InstalledAppItem extends StatefulWidget {
   final Uint8List icon;
   final int patchesCount;
   final String suggestedVersion;
+  final String installedVersion;
   final Function()? onTap;
 
   @override
@@ -59,12 +61,12 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                   ),
                   const SizedBox(height: 4),
                   Text(widget.pkgName),
+                  Text(
+                    'Installed: ${widget.installedVersion.isEmpty ? 'All versions' : 'v${widget.installedVersion}'}',),
                   Row(
                     children: [
                       Text(
-                        widget.suggestedVersion.isEmpty
-                            ? 'All versions'
-                            : widget.suggestedVersion,
+                        'Suggested: ${widget.suggestedVersion.isEmpty ? 'All versions' : 'v${widget.suggestedVersion}'}',
                       ),
                       const SizedBox(width: 4),
                       Text(
