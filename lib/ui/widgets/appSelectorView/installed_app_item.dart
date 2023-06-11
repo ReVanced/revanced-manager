@@ -62,7 +62,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                   const SizedBox(height: 4),
                   Text(widget.pkgName),
                   Text(
-                    'Installed: ${widget.installedVersion.isEmpty ? 'All versions' : 'v${widget.installedVersion}'}',),
+                    'Installed: v${widget.installedVersion}',),
                   Row(
                     children: [
                       Text(
