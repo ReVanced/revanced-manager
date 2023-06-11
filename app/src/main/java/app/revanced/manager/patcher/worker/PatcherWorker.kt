@@ -1,9 +1,20 @@
 package app.revanced.manager.patcher.worker
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.Icon
+import android.os.PowerManager
 import android.util.Log
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import app.revanced.manager.R
 import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.aapt.Aapt
@@ -18,8 +29,8 @@ import org.koin.core.component.inject
 import java.io.File
 import java.io.FileNotFoundException
 
-// TODO: setup wakelock + notification so android doesn't murder us.
-class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineWorker(context, parameters),
+class PatcherWorker(context: Context, parameters: WorkerParameters) :
+    CoroutineWorker(context, parameters),
     KoinComponent {
     private val sourceRepository: SourceRepository by inject()
 
@@ -38,24 +49,70 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
         private fun String.logFmt() = "$logPrefix $this"
     }
 
+    override suspend fun getForegroundInfo() = ForegroundInfo(1, createNotification())
+
+    private fun createNotification(): Notification {
+        val notificationIntent = Intent(applicationContext, PatcherWorker::class.java)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+        val channel = NotificationChannel(
+            "revanced-patcher-patching", "Patching", NotificationManager.IMPORTANCE_HIGH
+        )
+        val notificationManager =
+            ContextCompat.getSystemService(applicationContext, NotificationManager::class.java)
+        notificationManager!!.createNotificationChannel(channel)
+        return Notification.Builder(applicationContext, channel.id)
+            .setContentTitle(applicationContext.getText(R.string.app_name))
+            .setContentText(applicationContext.getText(R.string.patcher_notification_message))
+            .setLargeIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
+            .setSmallIcon(Icon.createWithResource(applicationContext, R.drawable.ic_notification))
+            .setContentIntent(pendingIntent).build()
+    }
+
     override suspend fun doWork(): Result {
         if (runAttemptCount > 0) {
             Log.d(tag, "Android requested retrying but retrying is disabled.".logFmt())
             return Result.failure()
         }
-        val aaptPath =
-            Aapt.binary(applicationContext)?.absolutePath ?: throw FileNotFoundException("Could not resolve aapt.")
-
-        val frameworkPath =
-            applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
 
         val args = Json.decodeFromString<Args>(inputData.getString(ARGS_KEY)!!)
+
+        try {
+            // This does not always show up for some reason.
+            setForeground(getForegroundInfo())
+        } catch (e: Exception) {
+            Log.d(tag, "Failed to set foreground info:", e)
+        }
+
+        val wakeLock: PowerManager.WakeLock =
+            (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "$tag::Patcher").apply {
+                    acquire(10 * 60 * 1000L)
+                    Log.d(tag, "Acquired wakelock.")
+                }
+            }
+
+        return try {
+            runPatcher(args)
+        } finally {
+            wakeLock.release()
+        }
+    }
+
+    private suspend fun runPatcher(args: Args): Result {
+        val aaptPath =
+            Aapt.binary(applicationContext)?.absolutePath
+                ?: throw FileNotFoundException("Could not resolve aapt.")
+
+        val frameworkPath = applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
 
         val bundles = sourceRepository.bundles.first()
         val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
 
         val patchList = args.selectedPatches.flatMap { (bundleName, selected) ->
-            bundles[bundleName]?.loadPatchesFiltered(args.packageName)?.filter { selected.contains(it.patchName) }
+            bundles[bundleName]?.loadPatchesFiltered(args.packageName)
+                ?.filter { selected.contains(it.patchName) }
                 ?: throw IllegalArgumentException("Patch bundle $bundleName does not exist")
         }
 
@@ -70,7 +127,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
         updateProgress(Progress.Unpacking)
 
         return try {
-            Session(applicationContext.cacheDir.path, frameworkPath, aaptPath, File(args.input)) {
+            Session(applicationContext.cacheDir.absolutePath, frameworkPath, aaptPath, File(args.input)) {
                 updateProgress(it)
             }.use { session ->
                 session.run(File(args.output), patchList, integrations)
@@ -79,7 +136,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) : CoroutineW
             Log.i(tag, "Patching succeeded".logFmt())
             progressManager.success()
             Result.success(progressManager.groupsToWorkData())
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Log.e(tag, "Got exception while patching".logFmt(), e)
             progressManager.failure()
             Result.failure(progressManager.groupsToWorkData())
