@@ -4,6 +4,8 @@
     "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
+    "installed":"Installed: {version}",
+    "suggested":"Suggested: {version}",
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",

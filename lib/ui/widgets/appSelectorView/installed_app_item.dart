@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class InstalledAppItem extends StatefulWidget {
   const InstalledAppItem({
@@ -10,6 +11,7 @@ class InstalledAppItem extends StatefulWidget {
     required this.icon,
     required this.patchesCount,
     required this.suggestedVersion,
+    required this.installedVersion,
     this.onTap,
   }) : super(key: key);
   final String name;
@@ -17,6 +19,7 @@ class InstalledAppItem extends StatefulWidget {
   final Uint8List icon;
   final int patchesCount;
   final String suggestedVersion;
+  final String installedVersion;
   final Function()? onTap;
 
   @override
@@ -48,24 +51,36 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    widget.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(widget.pkgName),
                   Row(
                     children: [
                       Text(
-                        widget.suggestedVersion.isEmpty
-                            ? 'All versions'
-                            : widget.suggestedVersion,
+                        widget.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                      const SizedBox(width: 4),
+                      I18nText(widget.installedVersion.isEmpty
+                          ? 'All versions'
+                          : 'v${widget.installedVersion}'),
+                    ],
+                  ),
+                  Text(widget.pkgName),
+                  Row(
+                    children: [
+                      I18nText(
+                        FlutterI18n.translate(
+                          context,
+                          'suggested',
+                          translationParams: {
+                            'version': widget.suggestedVersion.isEmpty
+                                ? 'All versions'
+                                : 'v${widget.suggestedVersion}'
+                          },
+                        ),
                       const SizedBox(width: 4),
                       Text(
                         widget.patchesCount == 1
