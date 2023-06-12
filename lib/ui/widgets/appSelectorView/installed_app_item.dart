@@ -1,7 +1,8 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
   const InstalledAppItem({
@@ -63,9 +64,11 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      I18nText(widget.installedVersion.isEmpty
-                          ? 'All versions'
-                          : 'v${widget.installedVersion}'),
+                      I18nText(
+                        widget.installedVersion.isEmpty
+                            ? 'All versions'
+                            : 'v${widget.installedVersion}',
+                      ),
                     ],
                   ),
                   Text(widget.pkgName),
@@ -81,6 +84,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                 : 'v${widget.suggestedVersion}'
                           },
                         ),
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         widget.patchesCount == 1
