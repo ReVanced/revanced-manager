@@ -17,14 +17,14 @@ import 'package:stacked/stacked.dart';
 class NavigationViewModel extends IndexTrackingViewModel {
   Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
-    final SharedPreferences prefs =
-        await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('permissionsRequested') == null) {
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
       await prefs.setBool('permissionsRequested', true);
       RootAPI().hasRootPermissions().then(
             (value) => Permission.requestInstallPackages.request().then(
-                  (value) =>
-                      Permission.ignoreBatteryOptimizations.request(),
+                  (value) => Permission.ignoreBatteryOptimizations.request(),
                 ),
           );
     }
@@ -39,8 +39,7 @@ class NavigationViewModel extends IndexTrackingViewModel {
       SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
         systemNavigationBarIconBrightness:
-            DynamicTheme.of(context)!.theme.brightness ==
-                    Brightness.light
+            DynamicTheme.of(context)!.theme.brightness == Brightness.light
                 ? Brightness.dark
                 : Brightness.light,
       ),
