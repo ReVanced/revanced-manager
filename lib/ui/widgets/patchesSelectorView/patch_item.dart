@@ -138,7 +138,8 @@ class _PatchItemState extends State<PatchItem> {
                   )
                 ],
               ),
-              if (widget.isUnsupported)
+              if (widget.isUnsupported &&
+                  widget._managerAPI.areExperimentalPatchesEnabled())
                 Row(
                   children: <Widget>[
                     Padding(
