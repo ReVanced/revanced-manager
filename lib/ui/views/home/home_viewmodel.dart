@@ -22,7 +22,6 @@ import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:revanced_manager/utils/about_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -113,6 +112,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<bool> hasManagerUpdates() async {
     String currentVersion = await _managerAPI.getCurrentManagerVersion();
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
 
     // add v to current version
     if (!currentVersion.startsWith('v')) {
