@@ -29,6 +29,7 @@
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
         "downloadingMessage": "Downloading update...",
+        "downloadedMessage": "Update downloaded!",
         "installingMessage": "Installing update...",
         "errorDownloadMessage": "Unable to download update",
         "errorInstallMessage": "Unable to install update",
