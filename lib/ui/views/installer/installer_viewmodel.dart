@@ -135,15 +135,15 @@ class InstallerViewModel extends BaseViewModel {
         } on Exception catch (e) {
           update(
             -100.0,
-            'Aborting...',
-            'An error occurred! Aborting\nError:\n$e',
+            'Aborted...',
+            'An error occurred! Aborted\nError:\n$e',
           );
           if (kDebugMode) {
             print(e);
           }
         }
       } else {
-        update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
+        update(-100.0, 'Aborted...', 'No app or patches selected! Aborted');
       }
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
