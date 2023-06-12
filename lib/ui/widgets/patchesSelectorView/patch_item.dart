@@ -43,135 +43,135 @@ class _PatchItemState extends State<PatchItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: CustomCard(
-        backgroundColor: widget.isUnsupported &&
+      child: Opacity(
+        opacity: widget.isUnsupported &&
                 widget._managerAPI.areExperimentalPatchesEnabled() == false
-            ? Theme.of(context).colorScheme.brightness == Brightness.light
-                ? Colors.grey[400]
-                : Colors.grey[700]
-            : null,
-        onTap: () {
-          setState(() {
-            if (widget.isUnsupported &&
-                !widget._managerAPI.areExperimentalPatchesEnabled()) {
-              widget.isSelected = false;
-              widget.toast.showBottom('patchItem.unsupportedPatchVersion');
-            } else {
-              widget.isSelected = !widget.isSelected;
-            }
-          });
-          widget.onChanged(widget.isSelected);
-        },
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              widget.simpleName,
-                              maxLines: 2,
-                              overflow: TextOverflow.visible,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+            ? 0.5
+            : 1,
+        child: CustomCard(
+          onTap: () {
+            setState(() {
+              if (widget.isUnsupported &&
+                  !widget._managerAPI.areExperimentalPatchesEnabled()) {
+                widget.isSelected = false;
+                widget.toast.showBottom('patchItem.unsupportedPatchVersion');
+              } else {
+                widget.isSelected = !widget.isSelected;
+              }
+            });
+            widget.onChanged(widget.isSelected);
+          },
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(
+                                widget.simpleName,
+                                maxLines: 2,
+                                overflow: TextOverflow.visible,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 1),
+                        Text(
+                          widget.version,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          widget.description,
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Transform.scale(
+                    scale: 1.2,
+                    child: Checkbox(
+                      value: widget.isSelected,
+                      activeColor: Theme.of(context).colorScheme.primary,
+                      checkColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
+                      side: BorderSide(
+                        width: 2.0,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      onChanged: (newValue) {
+                        setState(() {
+                          if (widget.isUnsupported &&
+                              !widget._managerAPI
+                                  .areExperimentalPatchesEnabled()) {
+                            widget.isSelected = false;
+                            widget.toast.showBottom(
+                                'patchItem.unsupportedPatchVersion');
+                          } else {
+                            widget.isSelected = newValue!;
+                          }
+                        });
+                        widget.onChanged(widget.isSelected);
+                      },
+                    ),
+                  )
+                ],
+              ),
+              if (widget.isUnsupported)
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: TextButton.icon(
+                        label: I18nText('warning'),
+                        icon: const Icon(Icons.warning, size: 20.0),
+                        onPressed: () => _showUnsupportedWarningDialog(),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        widget.version,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.description,
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Transform.scale(
-                  scale: 1.2,
-                  child: Checkbox(
-                    value: widget.isSelected,
-                    activeColor: Theme.of(context).colorScheme.primary,
-                    checkColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                    side: BorderSide(
-                      width: 2.0,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    onChanged: (newValue) {
-                      setState(() {
-                        if (widget.isUnsupported &&
-                            !widget._managerAPI
-                                .areExperimentalPatchesEnabled()) {
-                          widget.isSelected = false;
-                          widget.toast
-                              .showBottom('patchItem.unsupportedPatchVersion');
-                        } else {
-                          widget.isSelected = newValue!;
-                        }
-                      });
-                      widget.onChanged(widget.isSelected);
-                    },
-                  ),
-                )
-              ],
-            ),
-            if (widget.isUnsupported)
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: TextButton.icon(
-                      label: I18nText('warning'),
-                      icon: const Icon(Icons.warning, size: 20.0),
-                      onPressed: () => _showUnsupportedWarningDialog(),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.transparent,
+                          ),
+                          foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary,
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.transparent,
-                        ),
-                        foregroundColor: MaterialStateProperty.all(
-                          Theme.of(context).colorScheme.secondary,
-                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            else
-              Container(),
-            widget.child ?? const SizedBox(),
-          ],
+                  ],
+                )
+              else
+                Container(),
+              widget.child ?? const SizedBox(),
+            ],
+          ),
         ),
       ),
     );
