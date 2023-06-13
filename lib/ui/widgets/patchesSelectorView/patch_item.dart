@@ -41,6 +41,7 @@ class PatchItem extends StatefulWidget {
 class _PatchItemState extends State<PatchItem> {
   @override
   Widget build(BuildContext context) {
+    widget.isSelected = widget.isSelected && (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled());
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: CustomCard(
