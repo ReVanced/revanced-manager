@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class NotInstalledAppItem extends StatefulWidget {
@@ -54,12 +55,28 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text('App not installed.'),
-                  const SizedBox(height: 4),
+                  I18nText(
+                    'appSelectorCard.notInstalled',
+                    child: Text(
+                      '',
+                      style: TextStyle(
+                        color:
+                        Theme.of(context).textTheme.titleLarge!.color,
+                      ),
+                    ),
+                  ),
                   Row(
                     children: [
-                      Text(
-                        'Suggested: ${widget.suggestedVersion.isEmpty ? 'All versions' : 'v${widget.suggestedVersion}'}',
+                      I18nText(
+                        FlutterI18n.translate(
+                          context,
+                          'suggested',
+                          translationParams: {
+                            'version': widget.suggestedVersion.isEmpty
+                                ? 'All versions'
+                                : 'v${widget.suggestedVersion}'
+                          },
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(
