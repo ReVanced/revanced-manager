@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:skeletons/skeletons.dart';
 
 class AppSkeletonLoader extends StatelessWidget {
@@ -7,58 +8,63 @@ class AppSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Skeleton(
-      isLoading: true,
-      skeleton: ListView.builder(
-        shrinkWrap: true,
-        itemCount: 7,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
-          child: SkeletonItem(
-            child: Row(
-              children: <Widget>[
-                SkeletonAvatar(
-                  style: SkeletonAvatarStyle(
-                    width: screenWidth * 0.15,
-                    height: screenWidth * 0.15,
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: 7,
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12.0),
+        child: CustomCard(
+          child: Row(
+            children: [
+              SkeletonAvatar(
+                style: SkeletonAvatarStyle(
+                  width: screenWidth * 0.10,
+                  height: screenWidth * 0.10,
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    width: screenWidth * 0.4,
+                    child: SkeletonLine(
+                      style: SkeletonLineStyle(
+                        height: 20,
+                        width: screenWidth * 0.4,
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      color: Colors.white,
-                      height: 34,
-                      width: screenWidth * 0.4,
-                      child: SkeletonParagraph(
-                        style: const SkeletonParagraphStyle(
-                          lines: 1,
-                        ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: screenWidth * 0.6,
+                    child: SkeletonLine(
+                      style: SkeletonLineStyle(
+                        height: 15,
+                        width: screenWidth * 0.6,
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 4),
-                      color: Colors.white,
-                      height: 34,
-                      width: screenWidth * 0.6,
-                      child: SkeletonParagraph(
-                        style: const SkeletonParagraphStyle(
-                          lines: 1,
-                        ),
+                  ),
+                  const SizedBox(height: 5),
+                  SizedBox(
+                    width: screenWidth * 0.5,
+                    child: SkeletonLine(
+                      style: SkeletonLineStyle(
+                        height: 15,
+                        width: screenWidth * 0.5,
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-      ),
-      child: const Center(
-        child: Text('Content'),
       ),
     );
   }
