@@ -67,6 +67,10 @@
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
+    <string name="universal_patches">Universal patches</string>
+    <string name="supported">Supported</string>
+    <string name="universal">Universal</string>
+    <string name="unsupported">Unsupported</string>
     <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following versions: %2$s.</string>
 
     <string name="select_file">Select file</string>
