@@ -65,17 +65,16 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                       ),
                     ),
                   ),
-                  Wrap(
+                  Row(
                     children: [
                       I18nText(
                         'suggested',
+                        translationParams: {
+                          'version' : widget.suggestedVersion.isEmpty
+                              ? FlutterI18n.translate(context, 'appSelectorCard.allVersions')
+                              : 'v${widget.suggestedVersion}',
+                        },
                       ),
-                      if (widget.suggestedVersion.isEmpty)
-                        I18nText(
-                          'appSelectorCard.allVersions',
-                        )
-                      else
-                        Text('v${widget.suggestedVersion}'),
                       const SizedBox(width: 4),
                       Text(
                         widget.patchesCount == 1
