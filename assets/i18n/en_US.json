@@ -5,7 +5,7 @@
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
     "installed":"Installed: {version}",
-    "suggested":"Suggested: {version}",
+    "suggested":"Suggested",
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
@@ -61,7 +61,8 @@
         "notInstalled":"App not installed",
         "currentVersion": "Current",
         "suggestedVersion": "Suggested",
-        "anyVersion": "any"
+        "anyVersion": "any",
+        "allVersions": "All versions"
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",

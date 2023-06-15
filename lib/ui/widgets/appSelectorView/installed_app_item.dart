@@ -72,19 +72,17 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                     ],
                   ),
                   Text(widget.pkgName),
-                  Row(
+                  Wrap(
                     children: [
                       I18nText(
-                        FlutterI18n.translate(
-                          context,
-                          'suggested',
-                          translationParams: {
-                            'version': widget.suggestedVersion.isEmpty
-                                ? 'All versions'
-                                : 'v${widget.suggestedVersion}'
-                          },
-                        ),
+                        'suggested',
                       ),
+                      if (widget.suggestedVersion.isEmpty)
+                        I18nText(
+                          'appSelectorCard.allVersions',
+                        )
+                      else
+                        Text('v${widget.suggestedVersion}'),
                       const SizedBox(width: 4),
                       Text(
                         widget.patchesCount == 1
