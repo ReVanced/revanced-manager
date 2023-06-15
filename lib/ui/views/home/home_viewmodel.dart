@@ -239,10 +239,15 @@ class HomeViewModel extends BaseViewModel {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          LinearProgressIndicator(
-                            value: 1.0,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).colorScheme.secondary,
+                          I18nText(
+                            'homeView.installUpdate',
+                            child: Text(
+                              '',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -266,7 +271,7 @@ class HomeViewModel extends BaseViewModel {
                                   label: I18nText('updateButton'),
                                   onPressed: () async {
                                     await AppInstaller.installApk(
-                                        downloadedApk!.path);
+                                        downloadedApk!.path,);
                                   },
                                 ),
                               ),
