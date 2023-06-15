@@ -5,7 +5,7 @@
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
     "installed":"Installed: {version}",
-    "suggested":"Suggested",
+    "suggested":"Suggested: ",
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
