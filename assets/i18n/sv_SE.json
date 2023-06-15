@@ -54,8 +54,7 @@
         "widgetSubtitle": "Ingen app vald",
         "noAppsLabel": "Inga applikationer hittades",
         "currentVersion": "Nuvarande",
-        "recommendedVersion": "Rekommenderad",
-        "anyVersion": "alla"
+        "recommendedVersion": "Rekommenderad"
     },
     "patchSelectorCard": {
         "widgetTitle": "Välj patchar",

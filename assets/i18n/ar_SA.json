@@ -55,8 +55,7 @@
         "widgetSubtitle": "لم يتم اختيار أي تطبيق",
         "noAppsLabel": "لم يتم العثور على تطبيقات",
         "currentVersion": "الحالي",
-        "recommendedVersion": "موصى به",
-        "anyVersion": "أي"
+        "recommendedVersion": "موصى به"
     },
     "patchSelectorCard": {
         "widgetTitle": "اختر التعديلات",

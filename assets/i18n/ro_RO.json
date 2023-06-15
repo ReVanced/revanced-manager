@@ -55,8 +55,7 @@
         "widgetSubtitle": "Nicio aplicație selectată",
         "noAppsLabel": "Nu s-au găsit aplicații",
         "currentVersion": "Actual",
-        "recommendedVersion": "Recomandat",
-        "anyVersion": "oricare"
+        "recommendedVersion": "Recomandat"
     },
     "patchSelectorCard": {
         "widgetTitle": "Selectați patch-urile",

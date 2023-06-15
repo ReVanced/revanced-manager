@@ -61,7 +61,6 @@
         "notInstalled":"App not installed",
         "currentVersion": "Current",
         "suggestedVersion": "Suggested",
-        "anyVersion": "any",
         "allVersions": "All versions"
     },
     "patchSelectorCard": {

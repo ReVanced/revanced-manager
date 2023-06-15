@@ -55,8 +55,7 @@
         "widgetSubtitle": "Nie je vybraná žiadna aplikácia",
         "noAppsLabel": "Nebola nájdená žiadna aplikácia",
         "currentVersion": "Aktuálne",
-        "recommendedVersion": "Odporúčané",
-        "anyVersion": "akákoľvek"
+        "recommendedVersion": "Odporúčané"
     },
     "patchSelectorCard": {
         "widgetTitle": "Vyberte záplaty",

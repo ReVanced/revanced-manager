@@ -54,8 +54,7 @@
         "widgetSubtitle": "Nincs kiválasztott alkalmazás",
         "noAppsLabel": "Nem találhatóak alkalmazások",
         "currentVersion": "Jelenlegi",
-        "recommendedVersion": "Ajánlott",
-        "anyVersion": "bármely"
+        "recommendedVersion": "Ajánlott"
     },
     "patchSelectorCard": {
         "widgetTitle": "Patchek kiválasztása",

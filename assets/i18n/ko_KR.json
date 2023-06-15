@@ -54,8 +54,7 @@
         "widgetSubtitle": "선택된 앱 없음",
         "noAppsLabel": "앱이 발견되지 않음",
         "currentVersion": "현재 버전",
-        "recommendedVersion": "권장 버전",
-        "anyVersion": "모든 버전"
+        "recommendedVersion": "권장 버전"
     },
     "patchSelectorCard": {
         "widgetTitle": "패치를 선택하세요",

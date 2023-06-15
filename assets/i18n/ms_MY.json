@@ -54,8 +54,7 @@
         "widgetSubtitle": "Tiada aplikasi dipilih",
         "noAppsLabel": "Tiada aplikasi ditemui",
         "currentVersion": "Semasa",
-        "recommendedVersion": "Disyorkan",
-        "anyVersion": "mana-mana"
+        "recommendedVersion": "Disyorkan"
     },
     "patchSelectorCard": {
         "widgetTitle": "Pilih modifikasi",

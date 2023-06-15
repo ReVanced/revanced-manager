@@ -55,8 +55,7 @@
         "widgetSubtitle": "Hiçbir uygulama seçilmedi",
         "noAppsLabel": "Hiçbir uygulama bulunamadı",
         "currentVersion": "Şu anki",
-        "recommendedVersion": "Önerilen",
-        "anyVersion": "herhangi"
+        "recommendedVersion": "Önerilen"
     },
     "patchSelectorCard": {
         "widgetTitle": "Yamaları Seçin",

@@ -55,8 +55,7 @@
         "widgetSubtitle": "Nie wybrano aplikacji",
         "noAppsLabel": "Nie znaleziono aplikacji",
         "currentVersion": "Aktualna",
-        "recommendedVersion": "Zalecana",
-        "anyVersion": "dowolna"
+        "recommendedVersion": "Zalecana"
     },
     "patchSelectorCard": {
         "widgetTitle": "Wybierz łatki",
