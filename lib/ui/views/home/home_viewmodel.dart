@@ -167,45 +167,47 @@ class HomeViewModel extends BaseViewModel {
       _toast.showBottom('homeView.downloadingMessage');
       showDialog(
         context: context,
-        builder: (context) => SimpleDialog(
-          contentPadding: const EdgeInsets.all(16.0),
-          title: I18nText(
-            'homeView.downloadingMessage',
-            child: Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-          ),
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.new_releases_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(width: 8.0),
-                    Text(
-                      '$_latestManagerVersion',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ],
+        builder: (context) => ValueListenableBuilder(
+          valueListenable: downloaded,
+          builder: (context, value, child) {
+            return SimpleDialog(
+              contentPadding: const EdgeInsets.all(16.0),
+              title: I18nText(
+                !value
+                    ? 'homeView.downloadingMessage'
+                    : 'homeView.downloadedMessage',
+                child: Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ),
-                const SizedBox(height: 16.0),
-                ValueListenableBuilder(
-                  valueListenable: downloaded,
-                  builder: (context, value, child) {
-                    if(!value) {
-                      return Column(
+              ),
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.new_releases_outlined,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 8.0),
+                        Text(
+                          '$_latestManagerVersion',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16.0),
+                    if (!value)
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           StreamBuilder<double>(
@@ -232,20 +234,15 @@ class HomeViewModel extends BaseViewModel {
                             ),
                           ),
                         ],
-                      );
-                    } else {
-                      return Column(
+                      ),
+                    if (value)
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          I18nText(
-                            'homeView.downloadedMessage',
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                          LinearProgressIndicator(
+                            value: 1.0,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.secondary,
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -267,21 +264,21 @@ class HomeViewModel extends BaseViewModel {
                                 alignment: Alignment.centerRight,
                                 child: CustomMaterialButton(
                                   label: I18nText('updateButton'),
-                                  onPressed: () async{
-                                    await AppInstaller.installApk(downloadedApk!.path);
+                                  onPressed: () async {
+                                    await AppInstaller.installApk(
+                                        downloadedApk!.path);
                                   },
                                 ),
                               ),
                             ],
                           ),
                         ],
-                      );
-                    }
-                  },
+                      ),
+                  ],
                 ),
               ],
-            ),
-          ],
+            );
+          },
         ),
       );
       final File? managerApk = await downloadManager();
