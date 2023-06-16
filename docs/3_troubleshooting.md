@@ -6,6 +6,10 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   An existing installation of the application you're trying to patch is conflicting with the patched application. Uninstall the existing application before installing the patched application.
 
+- ### ❌ App not installed
+
+  Ensure that you have enough free storage and select "Install anyway" on the Google Play Protect pop-up if applicable.
+
 - ### ❗️Exit code `135` or `139` when patching the application
 
   Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
