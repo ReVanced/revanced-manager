@@ -11,6 +11,6 @@ In order to use ReVanced Manager, certain requirements must be met.
 
 ## ⏭️ What's next
 
-The next page will guide you through patching an application.
+The next page will guide you through installing ReVanced Manager.
 
 Continue: [⬇️ Installation](1_installation.md)
