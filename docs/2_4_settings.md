@@ -37,6 +37,6 @@ ReVanced Manager has settings that can be configured to your liking.
 
 ## ⏭️ What's next
 
-The next page will bring you back to the usage page.
+The next page is the usage page.
 
 Continue: [🛠️ Usage](2_usage.md)
