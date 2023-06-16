@@ -11,6 +11,6 @@ After patching an application, you may want to manage it. This page will guide y
 
 ## ⏭️ What's next
 
-The next page is the usage page.
+The next page will show additional steps to using ReVanced Manager.
 
-Continue: [🛠️ Usage](2_usage.md)
+Continue: [📱 Usage](2_usage.md)
