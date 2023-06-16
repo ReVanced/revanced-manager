@@ -2,23 +2,27 @@
 
 In case you encounter any issues while using ReVanced Manager, please refer to this page for possible solutions.
 
-- ### 💥 App not installed as package conflicts with an existing package
+- 💉 Patching fails with an error
 
-  An existing installation of the application you're trying to patch is conflicting with the patched application. Uninstall the existing application before installing the patched application.
+  Make sure ReVanced Manager is up to date by following [🔄 Updating ReVanced Manager](2_3_updating.md) and select the **Default** button when choosing patches.
+  
+- 💥 App not installed as package conflicts with an existing package
 
-- ### ❗️Error code `135`, `139` or `1` when patching the application
+  An existing installation of the app you're trying to patch is conflicting with the patched app. Uninstall the existing app before installing the patched app.
+
+- ❗️ Error code `135`, `139` or `1` when patching the app
 
   Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
 
-  Alternatively, you can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the application.
+  Alternatively, you can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the app.
 
-- ### 🚫 Non-root install is not possible with the current patches selection
+- 🚫 Non-root install is not possible with the current patches selection
 
-  Select the **Default** chip when choosing patches.
+  Select the **Default** button when choosing patches.
 
-- ### 🚨 Patched application crashes on launch
+- 🚨 Patched app crashes on launch
 
-  Select the **Default** chip when choosing patches.
+  Select the **Default** button when choosing patches.
 
 ## ⏭️ What's next
 
