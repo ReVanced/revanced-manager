@@ -25,6 +25,6 @@ The following pages will guide you through using ReVanced Manager to patch appli
 
 ## ⏭️ What's next
 
-The next page is the usage page.
+The next page will show additional steps to using ReVanced Manager.
 
-Continue: [🛠️ Usage](2_usage.md)
+Continue: [📱 Usage](2_usage.md)
