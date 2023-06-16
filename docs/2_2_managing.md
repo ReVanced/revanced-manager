@@ -11,6 +11,6 @@ After patching an application, you may want to manage it. This page will guide y
 
 ## ⏭️ What's next
 
-The next page will bring you back to the usage page.
+The next page is the usage page.
 
 Continue: [🛠️ Usage](2_usage.md)
