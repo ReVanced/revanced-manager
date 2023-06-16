@@ -9,6 +9,6 @@ In order to keep up with the latest features and bug fixes, it is recommended to
 
 ## ⏭️ What's next
 
-The next page will bring you back to the usage page.
+The next page is the usage page.
 
 Continue: [🛠️ Usage](2_usage.md)
