@@ -23,7 +23,7 @@ ReVanced Manager has settings that can be configured to your liking.
 
   Manage the keystore used to sign patched applications. This is useful if you want to uninstall the ReVanced Manager but want to save the keystore.
 
-- ### Delete temporary files
+- ### 🗑️ Delete temporary files
 
   Deletes unnecessary files. Useful for fixing some issues.
 
