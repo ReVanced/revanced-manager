@@ -6,7 +6,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   An existing installation of the application you're trying to patch is conflicting with the patched application. Uninstall the existing application before installing the patched application.
 
-- ### ❗️Error code `135`, `139` or `1` when patching the application
+- ### ❗️Exit code `135` or `139` when patching the application
 
   Your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
 
@@ -14,11 +14,11 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - ### 🚫 Non-root install is not possible with the current patches selection
 
-  Select the **Default** chip when choosing patches.
+  Select the **Default** button when choosing patches.
 
 - ### 🚨 Patched application crashes on launch
 
-  Select the **Default** chip when choosing patches.
+  Patch the suggested version and select the **Default** button when choosing patches.
 
 ## ⏭️ What's next
 
