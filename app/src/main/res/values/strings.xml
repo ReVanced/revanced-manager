@@ -85,12 +85,20 @@
     <string name="sign_fail">Failed to sign Apk: %s</string>
 
     <string name="patcher_step_group_prepare">Preparation</string>
+    <string name="patcher_step_load_patches">Load patches</string>
     <string name="patcher_step_unpack">Unpack Apk</string>
     <string name="patcher_step_integrations">Merge Integrations</string>
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched Apk</string>
     <string name="patcher_notification_message">Patching in progress…</string>
+
+    <string name="step_completed">completed</string>
+    <string name="step_failed">failed</string>
+    <string name="step_running">running</string>
+
+    <string name="expand_content">expand</string>
+    <string name="collapse_content">collapse</string>
 
     <string name="more">More</string>
     <string name="donate">Donate</string>
