@@ -12,10 +12,12 @@ import java.io.File
 class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: File?) {
     constructor(bundleJar: File, integrations: File?) : this(
         object : Iterable<PatchClass> {
-            private val bundle = PatchBundle.Dex(
-                bundleJar.absolutePath,
-                PathClassLoader(bundleJar.absolutePath, Patcher::class.java.classLoader)
-            )
+            private val bundle = bundleJar.absolutePath.let {
+                PatchBundle.Dex(
+                    it,
+                    PathClassLoader(it, Patcher::class.java.classLoader)
+                )
+            }
 
             override fun iterator() = bundle.loadPatches().iterator()
         },
@@ -24,12 +26,15 @@ class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: Fi
         Log.d(tag, "Loaded patch bundle: $bundleJar")
     }
 
-    val patches = loadAllPatches().map(::PatchInfo)
+    /**
+     * A list containing the metadata of every patch inside this bundle.
+     */
+    val patches = loader.map(::PatchInfo)
 
     /**
-     * @return A list of patches that are compatible with this Apk.
+     * Load all patches compatible with the specified package.
      */
-    fun loadPatchesFiltered(packageName: String) = loader.filter { patch ->
+    fun patchClasses(packageName: String) = loader.filter { patch ->
         val compatiblePackages = patch.compatiblePackages
             ?: // The patch has no compatibility constraints, which means it is universal.
             return@filter true
@@ -41,6 +46,4 @@ class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: Fi
 
         true
     }
-
-    private fun loadAllPatches() = loader.toList()
 }

@@ -120,7 +120,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
 
         return try {
             val patchList = args.selectedPatches.flatMap { (bundleName, selected) ->
-                bundles[bundleName]?.loadPatchesFiltered(args.packageName)
+                bundles[bundleName]?.patchClasses(args.packageName)
                     ?.filter { selected.contains(it.patchName) }
                     ?: throw IllegalArgumentException("Patch bundle $bundleName does not exist")
             }
