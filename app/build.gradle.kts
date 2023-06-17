@@ -102,7 +102,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:9.0.0")
+    implementation("app.revanced:revanced-patcher:11.0.1")
 
     // Signing
     implementation("com.android.tools.build:apksig:8.2.0-alpha05")
