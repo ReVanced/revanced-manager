@@ -5,7 +5,9 @@ import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
@@ -32,12 +34,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.patcher.worker.StepGroup
-import app.revanced.manager.patcher.worker.StepStatus
+import app.revanced.manager.patcher.worker.Step
+import app.revanced.manager.patcher.worker.State
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.viewmodel.InstallerViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import kotlin.math.exp
 import kotlin.math.floor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,9 +50,10 @@ fun InstallerScreen(
     onBackClick: () -> Unit,
     vm: InstallerViewModel
 ) {
-    val exportApkLauncher = rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
+    val exportApkLauncher =
+        rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
     val patcherState by vm.patcherState.observeAsState(vm.initialState)
-    val canInstall by remember { derivedStateOf { patcherState.status == true && (vm.installedPackageName != null || !vm.isInstalling) } }
+    val canInstall by remember { derivedStateOf { patcherState.succeeded == true && (vm.installedPackageName != null || !vm.isInstalling) } }
 
     AppScaffold(
         topBar = {
@@ -71,8 +76,8 @@ fun InstallerScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            patcherState.stepGroups.forEach {
-                InstallGroup(it)
+            patcherState.steps.forEach {
+                InstallStep(it)
             }
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -103,7 +108,7 @@ fun InstallerScreen(
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
 
 @Composable
-fun InstallGroup(group: StepGroup) {
+fun InstallStep(step: Step) {
     var expanded by rememberSaveable { mutableStateOf(true) }
     Column(
         modifier = Modifier
@@ -122,48 +127,39 @@ fun InstallGroup(group: StepGroup) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp)
-                .run { if (expanded) {
-                    background(MaterialTheme.colorScheme.secondaryContainer)
-                } else
-                    background(MaterialTheme.colorScheme.surface)
-                }
+                .background(if (expanded) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface)
         ) {
-            StepIcon(group.status, 24.dp)
+            StepIcon(step.state, 24.dp)
 
-            Text(text = stringResource(group.name), style = MaterialTheme.typography.titleMedium)
+            Text(text = stringResource(step.name), style = MaterialTheme.typography.titleMedium)
 
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(onClick = { expanded = !expanded }) {
-                if (expanded) {
-                    Icon(
-                        imageVector = Icons.Filled.KeyboardArrowUp,
-                        contentDescription = "collapse"
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Filled.KeyboardArrowDown,
-                        contentDescription = "expand"
-                    )
-                }
+            ArrowButton(expanded = expanded) {
+                expanded = !expanded
             }
         }
 
         AnimatedVisibility(visible = expanded) {
+            val scrollState = rememberScrollState()
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background.copy(0.6f))
                     .fillMaxWidth()
+                    .verticalScroll(scrollState)
                     .padding(16.dp)
                     .padding(start = 4.dp)
             ) {
-                group.steps.forEach {
+                step.substeps.forEach {
+                    var messageExpanded by rememberSaveable { mutableStateOf(true) }
+                    val stacktrace = it.message
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        StepIcon(it.status, size = 18.dp)
+                        StepIcon(it.state, size = 18.dp)
 
                         Text(
                             text = it.name,
@@ -171,6 +167,20 @@ fun InstallGroup(group: StepGroup) {
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f, true),
+                        )
+
+                        if (stacktrace != null) {
+                            ArrowButton(expanded = messageExpanded) {
+                                messageExpanded = !messageExpanded
+                            }
+                        }
+                    }
+
+                    AnimatedVisibility(visible = messageExpanded && stacktrace != null) {
+                        Text(
+                            text = stacktrace ?: "",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                 }
@@ -180,31 +190,33 @@ fun InstallGroup(group: StepGroup) {
 }
 
 @Composable
-fun StepIcon(status: StepStatus, size: Dp) {
+fun StepIcon(status: State, size: Dp) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
 
     when (status) {
-        StepStatus.COMPLETED -> Icon(
+        State.COMPLETED -> Icon(
             Icons.Filled.CheckCircle,
-            contentDescription = "success",
+            contentDescription = stringResource(R.string.step_completed),
             tint = MaterialTheme.colorScheme.surfaceTint,
             modifier = Modifier.size(size)
         )
 
-        StepStatus.FAILURE -> Icon(
+        State.FAILED -> Icon(
             Icons.Filled.Cancel,
-            contentDescription = "failed",
+            contentDescription = stringResource(R.string.step_failed),
             tint = MaterialTheme.colorScheme.error,
             modifier = Modifier.size(size)
         )
 
-        StepStatus.WAITING -> CircularProgressIndicator(
+        State.WAITING -> CircularProgressIndicator(
             strokeWidth = strokeWidth,
-            modifier = Modifier
-                .size(size)
-                .semantics {
-                    contentDescription = "waiting"
-                }
+            modifier = stringResource(R.string.step_running).let { description ->
+                Modifier
+                    .size(size)
+                    .semantics {
+                        contentDescription = description
+                    }
+            }
         )
     }
 }

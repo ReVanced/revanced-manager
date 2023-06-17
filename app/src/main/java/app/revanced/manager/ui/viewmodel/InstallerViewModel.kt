@@ -20,16 +20,16 @@ import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.R
 import app.revanced.manager.patcher.worker.PatcherProgressManager
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.patcher.worker.StepGroup
+import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.AppInfo
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.deserialize
+import app.revanced.manager.util.serialize
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -56,26 +56,22 @@ class InstallerViewModel(
     val appButtonText by derivedStateOf { if (installedPackageName == null) R.string.install_app else R.string.open_app }
 
     private val workManager = WorkManager.getInstance(app)
+
     private val patcherWorker =
         OneTimeWorkRequest.Builder(PatcherWorker::class.java) // create Worker
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST).setInputData(
-                workDataOf(
-                    PatcherWorker.ARGS_KEY to
-                            Json.Default.encodeToString(
-                                PatcherWorker.Args(
-                                    input.path!!.absolutePath,
-                                    outputFile.path,
-                                    selectedPatches,
-                                    input.packageName,
-                                    input.packageInfo!!.versionName,
-                                )
-                            )
-                )
+                PatcherWorker.Args(
+                    input.path!!.absolutePath,
+                    outputFile.path,
+                    selectedPatches,
+                    input.packageName,
+                    input.packageInfo!!.versionName,
+                ).serialize()
             ).build()
 
     val initialState = PatcherState(
-        status = null,
-        stepGroups = PatcherProgressManager.generateGroupsList(
+        succeeded = null,
+        steps = PatcherProgressManager.generateSteps(
             app,
             selectedPatches.flatMap { (_, selected) -> selected }
         )
@@ -83,16 +79,16 @@ class InstallerViewModel(
     val patcherState =
         workManager.getWorkInfoByIdLiveData(patcherWorker.id).map { workInfo: WorkInfo ->
             var status: Boolean? = null
-            val stepGroups = when (workInfo.state) {
+            val steps = when (workInfo.state) {
                 WorkInfo.State.RUNNING -> workInfo.progress
                 WorkInfo.State.FAILED, WorkInfo.State.SUCCEEDED -> workInfo.outputData.also {
                     status = workInfo.state == WorkInfo.State.SUCCEEDED
                 }
 
                 else -> null
-            }?.let { PatcherProgressManager.groupsFromWorkData(it) }
+            }?.deserialize<List<Step>>()
 
-            PatcherState(status, stepGroups ?: initialState.stepGroups)
+            PatcherState(status, steps ?: initialState.steps)
         }
 
     private val installBroadcastReceiver = object : BroadcastReceiver() {
@@ -170,6 +166,5 @@ class InstallerViewModel(
         }
     }
 
-
-    data class PatcherState(val status: Boolean?, val stepGroups: List<StepGroup>)
+    data class PatcherState(val succeeded: Boolean?, val steps: List<Step>)
 }

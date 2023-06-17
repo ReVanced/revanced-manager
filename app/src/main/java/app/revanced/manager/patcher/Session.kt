@@ -25,9 +25,6 @@ class Session(
     private val input: File,
     private val onProgress: suspend (Progress) -> Unit = { }
 ) : Closeable {
-    class PatchFailedException(val patchName: String, cause: Throwable?) :
-        Exception("Got exception while executing $patchName", cause)
-
     private val logger = LogcatLogger
     private val temporary = File(cacheDir).resolve("manager").also { it.mkdirs() }
     private val patcher = Patcher(
@@ -48,9 +45,11 @@ class Session(
                 return@forEach
             }
             logger.error("$patch failed:")
-            result.exceptionOrNull()!!.printStackTrace()
+            result.exceptionOrNull()!!.let {
+                logger.error(result.exceptionOrNull()!!.stackTraceToString())
 
-            throw PatchFailedException(patch, result.exceptionOrNull())
+                throw it
+            }
         }
     }
 
