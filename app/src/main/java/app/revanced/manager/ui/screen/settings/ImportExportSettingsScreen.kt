@@ -18,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.domain.manager.KeystoreManager.Companion.DEFAULT
@@ -26,6 +27,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.FileSelector
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.sources.SourceSelector
 import org.koin.androidx.compose.getViewModel
 import org.koin.compose.rememberKoinInject
 
@@ -38,16 +40,38 @@ fun ImportExportSettingsScreen(
     var showImportKeystoreDialog by rememberSaveable { mutableStateOf(false) }
     var showExportKeystoreDialog by rememberSaveable { mutableStateOf(false) }
 
+    vm.selectionAction?.let { action ->
+        val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
+        val launcher = rememberLauncherForActivityResult(action.activityContract) { uri ->
+            if (uri == null) {
+                vm.clearSelectionAction()
+            } else {
+                vm.executeSelectionAction(uri)
+            }
+        }
+
+        if (vm.selectedSource == null) {
+            SourceSelector(sources) {
+                if (it == null) {
+                    vm.clearSelectionAction()
+                } else {
+                    vm.selectSource(it)
+                    launcher.launch(action.activityArg)
+                }
+            }
+        }
+    }
+
     if (showImportKeystoreDialog) {
         ImportKeystoreDialog(
             onDismissRequest = { showImportKeystoreDialog = false },
-            onImport = vm::import
+            onImport = vm::importKeystore
         )
     }
     if (showExportKeystoreDialog) {
         ExportKeystoreDialog(
             onDismissRequest = { showExportKeystoreDialog = false },
-            onExport = vm::export
+            onExport = vm::exportKeystore
         )
     }
 
@@ -81,9 +105,26 @@ fun ImportExportSettingsScreen(
                 description = R.string.export_keystore_description
             )
             GroupItem(
-                onClick = vm::regenerate,
+                onClick = vm::regenerateKeystore,
                 headline = R.string.regenerate_keystore,
                 description = R.string.regenerate_keystore_description
+            )
+
+            GroupHeader(stringResource(R.string.patches_selection))
+            GroupItem(
+                onClick = vm::importSelection,
+                headline = R.string.restore_patches_selection,
+                description = R.string.restore_patches_selection_description
+            )
+            GroupItem(
+                onClick = vm::exportSelection,
+                headline = R.string.backup_patches_selection,
+                description = R.string.backup_patches_selection_description
+            )
+            GroupItem(
+                onClick = vm::resetSelection,
+                headline = R.string.clear_patches_selection,
+                description = R.string.clear_patches_selection_description
             )
         }
     }

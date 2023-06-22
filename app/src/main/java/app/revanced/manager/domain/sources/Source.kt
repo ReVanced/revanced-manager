@@ -15,7 +15,7 @@ import java.io.File
  * A [PatchBundle] source.
  */
 @Stable
-sealed class Source(val id: Int, directory: File) : KoinComponent {
+sealed class Source(val name: String, val uid: Int, directory: File) : KoinComponent {
     private val configRepository: SourcePersistenceRepository by inject()
     protected companion object {
         /**
@@ -35,9 +35,9 @@ sealed class Source(val id: Int, directory: File) : KoinComponent {
      */
     fun hasInstalled() = patchesJar.exists()
 
-    protected suspend fun getVersion() = configRepository.getVersion(id)
+    protected suspend fun getVersion() = configRepository.getVersion(uid)
     protected suspend fun saveVersion(patches: String, integrations: String) =
-        configRepository.updateVersion(id, patches, integrations)
+        configRepository.updateVersion(uid, patches, integrations)
 
     // TODO: Communicate failure states better.
     protected fun loadBundle(onFail: (Throwable) -> Unit = ::logError) = if (!hasInstalled()) emptyPatchBundle

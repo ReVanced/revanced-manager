@@ -8,7 +8,7 @@ import org.koin.core.component.get
 import java.io.File
 
 @Stable
-class RemoteSource(id: Int, directory: File) : Source(id, directory) {
+class RemoteSource(name: String, id: Int, directory: File) : Source(name, id, directory) {
     private val api: ManagerAPI = get()
 
     suspend fun downloadLatest() = withContext(Dispatchers.IO) {

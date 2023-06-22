@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -62,7 +63,7 @@ fun PatchesSelectorScreen(
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
-    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyArray())
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedDialog(
@@ -89,9 +90,15 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(text = { Text(stringResource(R.string.patch)) },
+            ExtendedFloatingActionButton(
+                text = { Text(stringResource(R.string.patch)) },
                 icon = { Icon(Icons.Default.Build, null) },
-                onClick = { onPatchClick(vm.generateSelection()) })
+                onClick = {
+                    coroutineScope.launch {
+                        onPatchClick(vm.getAndSaveSelection())
+                    }
+                }
+            )
         }
     ) { paddingValues ->
         Column(
@@ -121,8 +128,7 @@ fun PatchesSelectorScreen(
                 state = pagerState,
                 userScrollEnabled = true,
                 pageContent = { index ->
-
-                    val (bundleName, supportedPatches, unsupportedPatches, universalPatches) = bundles[index]
+                    val bundle = bundles[index]
 
                     Column {
 
@@ -140,7 +146,7 @@ fun PatchesSelectorScreen(
 
                             FilterChip(
                                 selected = vm.filter and SHOW_UNIVERSAL != 0,
-                                onClick =  { vm.toggleFlag(SHOW_UNIVERSAL) },
+                                onClick = { vm.toggleFlag(SHOW_UNIVERSAL) },
                                 label = { Text(stringResource(R.string.universal)) }
                             )
 
@@ -154,62 +160,58 @@ fun PatchesSelectorScreen(
                         LazyColumn(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            if (supportedPatches.isNotEmpty() && (vm.filter and SHOW_SUPPORTED != 0 || vm.filter == 0)) {
+                            fun LazyListScope.patchList(
+                                patches: List<PatchInfo>,
+                                filterFlag: Int,
+                                supported: Boolean,
+                                header: (@Composable () -> Unit)? = null
+                            ) {
+                                if (patches.isNotEmpty() && (vm.filter and filterFlag) != 0 || vm.filter == 0) {
+                                    header?.let {
+                                        item {
+                                            it()
+                                        }
+                                    }
 
-                                items(
-                                    items = supportedPatches,
-                                    key = { it.name }
-                                ) { patch ->
-                                    PatchItem(
-                                        patch = patch,
-                                        onOptionsDialog = vm::openOptionsDialog,
-                                        onToggle = { vm.togglePatch(bundleName, patch) },
-                                        selected = vm.isSelected(bundleName, patch)
-                                    )
+                                    items(
+                                        items = patches,
+                                        key = { it.name }
+                                    ) { patch ->
+                                        PatchItem(
+                                            patch = patch,
+                                            onOptionsDialog = vm::openOptionsDialog,
+                                            selected = supported && vm.isSelected(bundle.uid, patch),
+                                            onToggle = { vm.togglePatch(bundle.uid, patch) },
+                                            supported = supported
+                                        )
+                                    }
                                 }
                             }
 
-                            if (universalPatches.isNotEmpty() && (vm.filter and SHOW_UNIVERSAL != 0 || vm.filter == 0)) {
-                                item {
-                                    ListHeader(
-                                        title = stringResource(R.string.universal_patches),
-                                        onHelpClick = {  }
-                                    )
-                                }
-
-                                items(
-                                    items = universalPatches,
-                                    key = { it.name }
-                                ) { patch ->
-                                    PatchItem(
-                                        patch = patch,
-                                        onOptionsDialog = vm::openOptionsDialog,
-                                        onToggle = { vm.togglePatch(bundleName, patch) },
-                                        selected = vm.isSelected(bundleName, patch)
-                                    )
-                                }
+                            patchList(
+                                patches = bundle.supported,
+                                filterFlag = SHOW_SUPPORTED,
+                                supported = true
+                            )
+                            patchList(
+                                patches = bundle.universal,
+                                filterFlag = SHOW_UNIVERSAL,
+                                supported = true
+                            ) {
+                                ListHeader(
+                                    title = stringResource(R.string.universal_patches),
+                                    onHelpClick = { }
+                                )
                             }
-
-                            if (unsupportedPatches.isNotEmpty() && (vm.filter and SHOW_UNSUPPORTED != 0 || vm.filter == 0)) {
-                                item {
-                                    ListHeader(
-                                        title = stringResource(R.string.unsupported_patches),
-                                        onHelpClick = { vm.openUnsupportedDialog(unsupportedPatches) }
-                                    )
-                                }
-
-                                items(
-                                    items = unsupportedPatches,
-                                    key = { it.name }
-                                ) { patch ->
-                                    PatchItem(
-                                        patch = patch,
-                                        onOptionsDialog = vm::openOptionsDialog,
-                                        onToggle = { vm.togglePatch(bundleName, patch) },
-                                        selected = vm.isSelected(bundleName, patch),
-                                        supported = allowUnsupported
-                                    )
-                                }
+                            patchList(
+                                patches = bundle.unsupported,
+                                filterFlag = SHOW_UNSUPPORTED,
+                                supported = allowUnsupported
+                            ) {
+                                ListHeader(
+                                    title = stringResource(R.string.unsupported_patches),
+                                    onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                                )
                             }
                         }
                     }
@@ -262,14 +264,16 @@ fun ListHeader(
                 style = MaterialTheme.typography.labelLarge
             )
         },
-        trailingContent = onHelpClick?.let { {
-            IconButton(onClick = onHelpClick) {
-                Icon(
-                    Icons.Outlined.HelpOutline,
-                    stringResource(R.string.help)
-                )
+        trailingContent = onHelpClick?.let {
+            {
+                IconButton(onClick = onHelpClick) {
+                    Icon(
+                        Icons.Outlined.HelpOutline,
+                        stringResource(R.string.help)
+                    )
+                }
             }
-        } }
+        }
     )
 }
 
@@ -286,7 +290,15 @@ fun UnsupportedDialog(
         }
     },
     title = { Text(stringResource(R.string.unsupported_app)) },
-    text = { Text(stringResource(R.string.app_not_supported, appVersion, supportedVersions.joinToString(", "))) }
+    text = {
+        Text(
+            stringResource(
+                R.string.app_not_supported,
+                appVersion,
+                supportedVersions.joinToString(", ")
+            )
+        )
+    }
 )
 
 @Composable

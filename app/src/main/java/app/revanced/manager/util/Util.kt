@@ -16,13 +16,17 @@ import androidx.work.Data
 import androidx.work.workDataOf
 import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 
-typealias PatchesSelection = Map<String, List<String>>
+typealias PatchesSelection = Map<Int, List<String>>
 
 fun Context.openUrl(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, url.toUri()).apply {
@@ -79,6 +83,20 @@ inline fun LifecycleOwner.launchAndRepeatWithViewLifecycle(
         lifecycle.repeatOnLifecycle(minActiveState) {
             block()
         }
+    }
+}
+
+/**
+ * Run [transformer] on the [Iterable] and then [combine] the result using [combiner].
+ * This is used to transform collections that contain [Flow]s into something that is easier to work with.
+ */
+@OptIn(ExperimentalCoroutinesApi::class)
+inline fun <T, reified R, C> Flow<Iterable<T>>.flatMapLatestAndCombine(
+    crossinline combiner: (Array<R>) -> C,
+    crossinline transformer: (T) -> Flow<R>,
+): Flow<C> = flatMapLatest { iterable ->
+    combine(iterable.map(transformer)) {
+        combiner(it)
     }
 }
 

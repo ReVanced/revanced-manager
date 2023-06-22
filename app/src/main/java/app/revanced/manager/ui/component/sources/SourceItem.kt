@@ -24,7 +24,7 @@ import java.io.InputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SourceItem(name: String, source: Source, onDelete: () -> Unit) {
+fun SourceItem(source: Source, onDelete: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     var sheetActive by rememberSaveable { mutableStateOf(false) }
 
@@ -48,7 +48,7 @@ fun SourceItem(name: String, source: Source, onDelete: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = name,
+                    text = source.name,
                     style = MaterialTheme.typography.titleLarge
                 )
 
@@ -81,7 +81,7 @@ fun SourceItem(name: String, source: Source, onDelete: () -> Unit) {
             }
     ) {
         Text(
-            text = name,
+            text = source.name,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(padding)

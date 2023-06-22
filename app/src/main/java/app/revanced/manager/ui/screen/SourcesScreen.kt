@@ -19,7 +19,7 @@ fun SourcesScreen(vm: SourcesViewModel = getViewModel()) {
     var showNewSourceDialog by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    val sources by vm.sources.collectAsStateWithLifecycle()
+    val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
 
     if (showNewSourceDialog) NewSourceDialog(
         onDismissRequest = { showNewSourceDialog = false },
@@ -41,12 +41,11 @@ fun SourcesScreen(vm: SourcesViewModel = getViewModel()) {
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        sources.forEach { (name, source) ->
+        sources.forEach {
             SourceItem(
-                name = name,
-                source = source,
+                source = it,
                 onDelete = {
-                    vm.deleteSource(source)
+                    vm.delete(it)
                 }
             )
         }
