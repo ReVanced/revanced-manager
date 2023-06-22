@@ -39,7 +39,7 @@ class SourcesViewModel(private val app: Application, private val sourceRepositor
 
     suspend fun addRemote(name: String, apiUrl: Url) = sourceRepository.createRemoteSource(name, apiUrl)
 
-    fun deleteSource(source: Source) = viewModelScope.launch { sourceRepository.remove(source) }
+    fun delete(source: Source) = viewModelScope.launch { sourceRepository.remove(source) }
 
     fun deleteAllSources() = viewModelScope.launch {
         sourceRepository.resetConfig()

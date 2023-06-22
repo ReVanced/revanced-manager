@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b40f3b048880f3f3c9361f6d1c4aaea5",
+    "identityHash": "dadad726e82673e2a4c266bf7a7c8af1",
     "entities": [
       {
         "tableName": "sources",
@@ -57,12 +57,106 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "patch_selections",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `source` INTEGER NOT NULL, `package_name` TEXT NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`source`) REFERENCES `sources`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_patch_selections_source_package_name",
+            "unique": true,
+            "columnNames": [
+              "source",
+              "package_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_selections_source_package_name` ON `${TABLE_NAME}` (`source`, `package_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "sources",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "source"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "selected_patches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`selection` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`selection`, `patch_name`), FOREIGN KEY(`selection`) REFERENCES `patch_selections`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "selection",
+            "columnName": "selection",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patchName",
+            "columnName": "patch_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "selection",
+            "patch_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "patch_selections",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "selection"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b40f3b048880f3f3c9361f6d1c4aaea5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dadad726e82673e2a4c266bf7a7c8af1')"
     ]
   }
 }

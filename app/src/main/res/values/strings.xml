@@ -37,6 +37,15 @@
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
+    <string name="patches_selection">Patches selection</string>
+    <string name="restore_patches_selection">Restore patches selections</string>
+    <string name="restore_patches_selection_description">Restore patches selection from a file</string>
+    <string name="restore_patches_selection_fail">Failed to restore patches selection: %s</string>
+    <string name="backup_patches_selection">Backup patches selections</string>
+    <string name="backup_patches_selection_description">Backup patches selection to a file</string>
+    <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
+    <string name="clear_patches_selection">Clear patches selection</string>
+    <string name="clear_patches_selection_description">Clear all patches selection</string>
     
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>

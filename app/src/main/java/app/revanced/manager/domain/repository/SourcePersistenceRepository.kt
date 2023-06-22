@@ -1,19 +1,17 @@
 package app.revanced.manager.domain.repository
 
 import app.revanced.manager.data.room.AppDatabase
+import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.sources.SourceEntity
 import app.revanced.manager.data.room.sources.SourceLocation
 import app.revanced.manager.data.room.sources.VersionInfo
 import app.revanced.manager.util.apiURL
-import kotlin.random.Random
 import io.ktor.http.*
 
 class SourcePersistenceRepository(db: AppDatabase) {
     private val dao = db.sourceDao()
 
     private companion object {
-        fun generateUid() = Random.Default.nextInt()
-
         val defaultSource = SourceEntity(
             uid = generateUid(),
             name = "Official",
