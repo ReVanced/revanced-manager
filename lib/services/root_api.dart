@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:root/root.dart';
 
 class RootAPI {
-  final String _managerDirPath = '/data/local/tmp/revanced-manager';
+  // TODO(ponces): remove in the future, keep it for now during migration.
+  final String _revancedOldDirPath = '/data/local/tmp/revanced-manager';
+  final String _revancedDirPath = '/data/adb/revanced';
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
   final String _serviceDDirPath = '/data/adb/service.d';
 
@@ -40,55 +42,62 @@ class RootAPI {
     seLinux,
     String filePath,
   ) async {
-    if (permissions.isNotEmpty) {
-      await Root.exec(
-        cmd: 'chmod $permissions "$filePath"',
-      );
-    }
-    if (ownerGroup.isNotEmpty) {
-      await Root.exec(
-        cmd: 'chown $ownerGroup "$filePath"',
-      );
-    }
-    if (seLinux.isNotEmpty) {
-      await Root.exec(
-        cmd: 'chcon $seLinux "$filePath"',
-      );
-    }
-  }
-
-  Future<bool> isAppInstalled(String packageName) async {
-    if (packageName.isNotEmpty) {
-      String? res = await Root.exec(
-        cmd: 'ls "$_managerDirPath/$packageName"',
-      );
-      if (res != null && res.isNotEmpty) {
-        res = await Root.exec(
-          cmd: 'ls "$_serviceDDirPath/$packageName.sh"',
-        );
-        return res != null && res.isNotEmpty;
-      }
-    }
-    return false;
-  }
-
-  Future<List<String>> getInstalledApps() async {
     try {
-      final String? res = await Root.exec(
-        cmd: 'ls "$_managerDirPath"',
-      );
-      if (res != null) {
-        final List<String> apps = res.split('\n');
-        apps.removeWhere((pack) => pack.isEmpty);
-        return apps.map((pack) => pack.trim()).toList();
+      if (permissions.isNotEmpty) {
+        await Root.exec(
+          cmd: 'chmod $permissions "$filePath"',
+        );
+      }
+      if (ownerGroup.isNotEmpty) {
+        await Root.exec(
+          cmd: 'chown $ownerGroup "$filePath"',
+        );
+      }
+      if (seLinux.isNotEmpty) {
+        await Root.exec(
+          cmd: 'chcon $seLinux "$filePath"',
+        );
       }
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return List.empty();
     }
-    return List.empty();
+  }
+
+  Future<bool> isAppInstalled(String packageName) async {
+    if (packageName.isNotEmpty) {
+      return fileExists('$_serviceDDirPath/$packageName.sh');
+    }
+    return false;
+  }
+
+  Future<List<String>> getInstalledApps() async {
+    final List<String> apps = List.empty();
+    try {
+      String? res = await Root.exec(
+        cmd: 'ls "$_revancedDirPath"',
+      );
+      if (res != null) {
+        final List<String> list = res.split('\n');
+        list.removeWhere((pack) => pack.isEmpty);
+        apps.addAll(list.map((pack) => pack.trim()).toList());
+      }
+      // TODO(ponces): remove in the future, keep it for now during migration.
+      res = await Root.exec(
+        cmd: 'ls "$_revancedOldDirPath"',
+      );
+      if (res != null) {
+        final List<String> list = res.split('\n');
+        list.removeWhere((pack) => pack.isEmpty);
+        apps.addAll(list.map((pack) => pack.trim()).toList());
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return apps;
   }
 
   Future<void> deleteApp(String packageName, String originalFilePath) async {
@@ -98,8 +107,12 @@ class RootAPI {
     await Root.exec(
       cmd: 'su -mm -c "umount -l $originalFilePath"',
     );
+    // TODO(ponces): remove in the future, keep it for now during migration.
     await Root.exec(
-      cmd: 'rm -rf "$_managerDirPath/$packageName"',
+      cmd: 'rm -rf "$_revancedOldDirPath/$packageName"',
+    );
+    await Root.exec(
+      cmd: 'rm -rf "$_revancedDirPath/$packageName"',
     );
     await Root.exec(
       cmd: 'rm -rf "$_serviceDDirPath/$packageName.sh"',
@@ -117,13 +130,13 @@ class RootAPI {
     try {
       await deleteApp(packageName, originalFilePath);
       await Root.exec(
-        cmd: 'mkdir -p "$_managerDirPath/$packageName"',
+        cmd: 'mkdir -p "$_revancedDirPath/$packageName"',
       );
       await setPermissions(
         '0755',
         'shell:shell',
         '',
-        '$_managerDirPath/$packageName',
+        '$_revancedDirPath/$packageName',
       );
       await saveOriginalFilePath(packageName, originalFilePath);
       await installServiceDScript(packageName);
@@ -142,7 +155,7 @@ class RootAPI {
   Future<void> installServiceDScript(String packageName) async {
     final String content = '#!/system/bin/sh\n'
         'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 3; done\n'
-        'base_path=$_managerDirPath/$packageName/base.apk\n'
+        'base_path=$_revancedDirPath/$packageName/base.apk\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
         r'[ ! -z $stock_path ] && mount -o bind $base_path $stock_path';
     final String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
@@ -164,7 +177,7 @@ class RootAPI {
   }
 
   Future<void> installApk(String packageName, String patchedFilePath) async {
-    final String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
+    final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'cp "$patchedFilePath" "$newPatchedFilePath"',
     );
@@ -177,7 +190,7 @@ class RootAPI {
   }
 
   Future<void> mountApk(String packageName, String originalFilePath) async {
-    final String newPatchedFilePath = '$_managerDirPath/$packageName/base.apk';
+    final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: 'am force-stop "$packageName"',
     );
@@ -196,21 +209,18 @@ class RootAPI {
     return res != null && res.isNotEmpty;
   }
 
-  Future<String> getOriginalFilePath(
-    String packageName,
-    String originalFilePath,
-  ) async {
+  Future<String> getOriginalFilePath(String packageName) async {
+    final String originalPath = '$_revancedDirPath/$packageName/original.apk';
+    final String oldOrigPath = '$_revancedOldDirPath/$packageName/original.apk';
     final bool isInstalled = await isAppInstalled(packageName);
     if (isInstalled && await isMounted(packageName)) {
-      originalFilePath = '$_managerDirPath/$packageName/original.apk';
-      await setPermissions(
-        '0644',
-        'shell:shell',
-        'u:object_r:apk_data_file:s0',
-        originalFilePath,
-      );
+      if (await fileExists(originalPath)) {
+        return originalPath;
+      } else if (await fileExists(oldOrigPath)) {
+        return oldOrigPath;
+      }
     }
-    return originalFilePath;
+    return '';
   }
 
   Future<void> saveOriginalFilePath(
@@ -218,15 +228,15 @@ class RootAPI {
     String originalFilePath,
   ) async {
     final String originalRootPath =
-        '$_managerDirPath/$packageName/original.apk';
+        '$_revancedDirPath/$packageName/original.apk';
     await Root.exec(
-      cmd: 'mkdir -p "$_managerDirPath/$packageName"',
+      cmd: 'mkdir -p "$_revancedDirPath/$packageName"',
     );
     await setPermissions(
       '0755',
       'shell:shell',
       '',
-      '$_managerDirPath/$packageName',
+      '$_revancedDirPath/$packageName',
     );
     await Root.exec(
       cmd: 'cp "$originalFilePath" "$originalRootPath"',
@@ -237,5 +247,19 @@ class RootAPI {
       'u:object_r:apk_data_file:s0',
       originalFilePath,
     );
+  }
+
+  Future<bool> fileExists(String path) async {
+    try {
+      final String? res = await Root.exec(
+        cmd: 'ls $path',
+      );
+      return res != null && res.isNotEmpty;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false;
+    }
   }
 }

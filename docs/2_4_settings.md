@@ -14,15 +14,15 @@ ReVanced Manager has settings that can be configured to your liking.
 
 - ### 🧪 Experimental ReVanced Patches support
 
-  Lift application version constraints from ReVanced Patches. This allows you to patch any version of an application, even if the patch is not explicitly compatible with it.
+  Lift app version constraints from ReVanced Patches. This allows you to patch any version of an app, even if the patch is not explicitly compatible with it.
 
 - ### 🧑‍🔬 Experimental universal support
 
-  This will show or hide ReVanced Patches, which are not meant for any application in particular but rather for all applications but may not work on all applications.
+  This will show or hide ReVanced Patches, which are not meant for any app in particular but rather for all apps but may not work on all apps.
 
 - ### 🔑 Export, import or delete keystore
 
-  Manage the keystore used to sign patched applications.
+  Manage the keystore used to sign patched apps.
 
 - ### 📄 Export, import or reset ReVanced Patches selection
 

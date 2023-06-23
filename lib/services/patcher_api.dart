@@ -144,30 +144,23 @@ class PatcherAPI {
     );
   }
 
-  Future<String> getOriginalFilePath(
-    String packageName,
-    String originalFilePath,
-  ) async {
+  Future<String> getOriginalFilePath(String packageName) async {
     try {
       final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
-        originalFilePath = await _rootAPI.getOriginalFilePath(
-          packageName,
-          originalFilePath,
-        );
+        return await _rootAPI.getOriginalFilePath(packageName);
       }
-      return originalFilePath;
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return originalFilePath;
     }
+    return '';
   }
 
   Future<void> runPatcher(
     String packageName,
-    String originalFilePath,
+    String apkFilePath,
     List<Patch> selectedPatches,
   ) async {
     final bool includeSettings = await needsSettingsPatch(selectedPatches);
@@ -198,15 +191,16 @@ class PatcherAPI {
       _outFile = File('${workDir.path}/out.apk');
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
+      String originalFilePath = await getOriginalFilePath(packageName);
+      if (originalFilePath.isEmpty) {
+        originalFilePath = apkFilePath;
+      }
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
             'patchBundleFilePath': patchBundleFile.path,
-            'originalFilePath': await getOriginalFilePath(
-              packageName,
-              originalFilePath,
-            ),
+            'originalFilePath': originalFilePath,
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
             'outFilePath': _outFile!.path,

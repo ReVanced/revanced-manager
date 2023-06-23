@@ -140,7 +140,7 @@ class RevancedAPI {
     return null;
   }
 
-  StreamController<double> managerUpdateProgress = StreamController<double>();
+  StreamController<double> managerUpdateProgress = StreamController<double>.broadcast();
 
   void updateManagerDownloadProgress(int progress) {
     managerUpdateProgress.add(progress.toDouble());
