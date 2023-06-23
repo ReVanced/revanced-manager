@@ -55,8 +55,7 @@
         "widgetSubtitle": "Не выбрано приложение",
         "noAppsLabel": "Приложения не найдены",
         "currentVersion": "Текущая",
-        "recommendedVersion": "Рекомендуемая",
-        "anyVersion": "любая"
+        "recommendedVersion": "Рекомендуемая"
     },
     "patchSelectorCard": {
         "widgetTitle": "Выберите патчи",

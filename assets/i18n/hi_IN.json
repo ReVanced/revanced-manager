@@ -54,8 +54,7 @@
         "widgetSubtitle": "कोई ऐप्लकैशन चुना हुआ नहीं",
         "noAppsLabel": "कोई एप्लिकेशन नहीं मिला।",
         "currentVersion": "वर्तमान",
-        "recommendedVersion": "अनुशंसित",
-        "anyVersion": "कोई"
+        "recommendedVersion": "अनुशंसित"
     },
     "patchSelectorCard": {
         "widgetTitle": "पैच चुने",

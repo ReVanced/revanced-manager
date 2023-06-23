@@ -54,8 +54,7 @@
         "widgetSubtitle": "کوئی ایپلیکیشن منتخب نہیں",
         "noAppsLabel": "کوئی ایپلیکیشن نہیں ملی",
         "currentVersion": "موجودہ",
-        "recommendedVersion": "تجویز کردہ",
-        "anyVersion": "کوئی بھی"
+        "recommendedVersion": "تجویز کردہ"
     },
     "patchSelectorCard": {
         "widgetTitle": "پیچز منتخب کریں",

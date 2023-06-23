@@ -54,8 +54,7 @@
         "widgetSubtitle": "未选择应用程序",
         "noAppsLabel": "未发现应用程序。",
         "currentVersion": "当前",
-        "recommendedVersion": "推荐",
-        "anyVersion": "任意"
+        "recommendedVersion": "推荐"
     },
     "patchSelectorCard": {
         "widgetTitle": "选择补丁",

@@ -55,8 +55,7 @@
         "widgetSubtitle": "Δεν έχει επιλεχθεί εφαρμογή",
         "noAppsLabel": "Δεν βρέθηκαν εφαρμογές",
         "currentVersion": "Τρέχουσα",
-        "recommendedVersion": "Προτεινόμενη",
-        "anyVersion": "οποιαδήποτε"
+        "recommendedVersion": "Προτεινόμενη"
     },
     "patchSelectorCard": {
         "widgetTitle": "Επιλέξτε τροποποιήσεις",

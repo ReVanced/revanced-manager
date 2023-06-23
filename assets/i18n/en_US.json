@@ -60,9 +60,10 @@
         "widgetTitleSelected": "Selected application",
         "widgetSubtitle": "No application selected",
         "noAppsLabel": "No applications found",
+        "notInstalled":"App not installed",
         "currentVersion": "Current",
         "suggestedVersion": "Suggested",
-        "anyVersion": "any"
+        "allVersions": "All versions"
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",

@@ -54,8 +54,7 @@
         "widgetSubtitle": "Sovellusta ei ole valittu",
         "noAppsLabel": "Sovelluksia ei löytynyt",
         "currentVersion": "Nykyinen",
-        "recommendedVersion": "Suositeltu",
-        "anyVersion": "mikä tahansa"
+        "recommendedVersion": "Suositeltu"
     },
     "patchSelectorCard": {
         "widgetTitle": "Valitse paikkaukset",

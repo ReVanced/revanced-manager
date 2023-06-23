@@ -54,8 +54,7 @@
         "widgetSubtitle": "Nebyla vybrána žádná aplikace",
         "noAppsLabel": "Nebyly nalezeny žádné aplikace",
         "currentVersion": "Aktuální",
-        "recommendedVersion": "Doporučeno",
-        "anyVersion": "jakákoliv"
+        "recommendedVersion": "Doporučeno"
     },
     "patchSelectorCard": {
         "widgetTitle": "Vybrat záplaty",

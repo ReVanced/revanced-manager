@@ -54,8 +54,7 @@
         "widgetSubtitle": "沒有選擇應用程式",
         "noAppsLabel": "找不到應用程式",
         "currentVersion": "目前版本",
-        "recommendedVersion": "推薦版本",
-        "anyVersion": "任何版本"
+        "recommendedVersion": "推薦版本"
     },
     "patchSelectorCard": {
         "widgetTitle": "選擇補丁",

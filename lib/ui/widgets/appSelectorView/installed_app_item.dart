@@ -73,15 +73,12 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                   Row(
                     children: [
                       I18nText(
-                        FlutterI18n.translate(
-                          context,
-                          'suggested',
-                          translationParams: {
-                            'version': widget.suggestedVersion.isEmpty
-                                ? 'All versions'
-                                : 'v${widget.suggestedVersion}'
-                          },
-                        ),
+                        'suggested',
+                        translationParams: {
+                          'version' : widget.suggestedVersion.isEmpty
+                              ? FlutterI18n.translate(context, 'appSelectorCard.allVersions')
+                              : 'v${widget.suggestedVersion}',
+                        },
                       ),
                       const SizedBox(width: 4),
                       Text(
