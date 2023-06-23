@@ -170,6 +170,7 @@ class RevancedAPI {
 
         updateManagerDownloadProgress(progress);
       } else if (result is FileInfo) {
+        disposeManagerUpdateProgress();
         // The download is complete; convert the FileInfo object to a File object
         outputFile = File(result.file.path);
       }
