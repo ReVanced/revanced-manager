@@ -54,8 +54,7 @@
         "widgetSubtitle": "Heç bir tətbiq seçilməyib",
         "noAppsLabel": "Heç bir tətbiq tapılmadı",
         "currentVersion": "Hazırkı",
-        "recommendedVersion": "Tövsiyyə edilən",
-        "anyVersion": "istənilən"
+        "recommendedVersion": "Tövsiyyə edilən"
     },
     "patchSelectorCard": {
         "widgetTitle": "Yamaqları seçin",

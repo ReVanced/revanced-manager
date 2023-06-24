@@ -55,8 +55,7 @@
         "widgetSubtitle": "Nessuna applicazione selezionata",
         "noAppsLabel": "Nessuna applicazione trovata",
         "currentVersion": "Attuale",
-        "recommendedVersion": "Consigliata",
-        "anyVersion": "qualsiasi"
+        "recommendedVersion": "Consigliata"
     },
     "patchSelectorCard": {
         "widgetTitle": "Seleziona patch",

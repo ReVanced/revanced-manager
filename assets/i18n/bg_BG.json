@@ -55,8 +55,7 @@
         "widgetSubtitle": "Няма избрано приложение",
         "noAppsLabel": "Няма намерени приложения",
         "currentVersion": "Текуща",
-        "recommendedVersion": "Препоръчана",
-        "anyVersion": "всяка"
+        "recommendedVersion": "Препоръчана"
     },
     "patchSelectorCard": {
         "widgetTitle": "Изберете модификации",

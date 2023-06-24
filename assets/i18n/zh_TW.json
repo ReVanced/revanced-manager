@@ -55,8 +55,7 @@
         "widgetSubtitle": "未選取應用程式",
         "noAppsLabel": "找不到應用程式",
         "currentVersion": "目前",
-        "recommendedVersion": "建議",
-        "anyVersion": "任何"
+        "recommendedVersion": "建議"
     },
     "patchSelectorCard": {
         "widgetTitle": "選取修補檔",

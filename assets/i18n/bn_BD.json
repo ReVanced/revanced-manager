@@ -54,8 +54,7 @@
         "widgetSubtitle": "কোনো অ্যাপ্লিকেশন নির্বাচন করা হয়নি",
         "noAppsLabel": "কোন অ্যাপ্লিকেশন পাওয়া যায়নি",
         "currentVersion": "বর্তমান",
-        "recommendedVersion": "প্রস্তাবিত",
-        "anyVersion": "যেকোনো সংস্করণ"
+        "recommendedVersion": "প্রস্তাবিত"
     },
     "patchSelectorCard": {
         "widgetTitle": "প্যাচ নির্বাচন করুন",

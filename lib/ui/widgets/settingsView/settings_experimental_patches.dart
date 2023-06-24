@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
 class SExperimentalPatches extends StatefulWidget {
@@ -10,6 +11,7 @@ class SExperimentalPatches extends StatefulWidget {
 }
 
 final _settingsViewModel = SettingsViewModel();
+final List<String> selectedUnsupportedPatches = [];
 
 class _SExperimentalPatchesState extends State<SExperimentalPatches> {
   @override
@@ -32,6 +34,12 @@ class _SExperimentalPatchesState extends State<SExperimentalPatches> {
         setState(() {
           _settingsViewModel.useExperimentalPatches(value);
         });
+        if(!value) {
+          for (final patch in selectedUnsupportedPatches) {
+            PatchesSelectorViewModel().selectedPatches.removeWhere((element) => patch == element.name);
+          }
+          selectedUnsupportedPatches.clear();
+        }
       },
     );
   }

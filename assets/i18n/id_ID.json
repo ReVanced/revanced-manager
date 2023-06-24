@@ -55,8 +55,7 @@
         "widgetSubtitle": "Tidak ada aplikasi yang dipilih",
         "noAppsLabel": "Aplikasi tidak ditemukan",
         "currentVersion": "Saat ini",
-        "recommendedVersion": "Rekomendasi",
-        "anyVersion": "semua"
+        "recommendedVersion": "Rekomendasi"
     },
     "patchSelectorCard": {
         "widgetTitle": "Pilih Modifikasi",

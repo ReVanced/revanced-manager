@@ -55,8 +55,7 @@
         "widgetSubtitle": "Nepasirinkta programa",
         "noAppsLabel": "Nerastos jokios programos",
         "currentVersion": "Dabartinė",
-        "recommendedVersion": "Rekomenduojama",
-        "anyVersion": "bet kokia"
+        "recommendedVersion": "Rekomenduojama"
     },
     "patchSelectorCard": {
         "widgetTitle": "Pasirinkite modifikacijas",

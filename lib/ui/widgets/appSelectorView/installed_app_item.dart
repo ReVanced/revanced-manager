@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
@@ -52,38 +51,34 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        widget.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      I18nText(
-                        widget.installedVersion.isEmpty
-                            ? 'All versions'
-                            : 'v${widget.installedVersion}',
-                      ),
-                    ],
+                  Text(
+                    widget.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   Text(widget.pkgName),
+                  I18nText(
+                    FlutterI18n.translate(
+                      context,
+                      'installed',
+                      translationParams: {
+                        'version':'v${widget.installedVersion}'
+                      },
+                    ),
+                  ),
                   Row(
                     children: [
                       I18nText(
-                        FlutterI18n.translate(
-                          context,
-                          'suggested',
-                          translationParams: {
-                            'version': widget.suggestedVersion.isEmpty
-                                ? 'All versions'
-                                : 'v${widget.suggestedVersion}'
-                          },
-                        ),
+                        'suggested',
+                        translationParams: {
+                          'version' : widget.suggestedVersion.isEmpty
+                              ? FlutterI18n.translate(context, 'appSelectorCard.allVersions')
+                              : 'v${widget.suggestedVersion}',
+                        },
                       ),
                       const SizedBox(width: 4),
                       Text(

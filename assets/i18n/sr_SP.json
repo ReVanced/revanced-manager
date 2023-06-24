@@ -54,8 +54,7 @@
         "widgetSubtitle": "Ниједна апликација није изабрана",
         "noAppsLabel": "Ниједна апликација није пронађена",
         "currentVersion": "Тренутна",
-        "recommendedVersion": "Препоручена",
-        "anyVersion": "било која"
+        "recommendedVersion": "Препоручена"
     },
     "patchSelectorCard": {
         "widgetTitle": "Изаберите печеве",

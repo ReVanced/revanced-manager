@@ -55,8 +55,7 @@
         "widgetSubtitle": "Chưa chọn ứng dụng nào",
         "noAppsLabel": "Không tìm thấy ứng dụng nào",
         "currentVersion": "Hiện tại",
-        "recommendedVersion": "Đề xuất",
-        "anyVersion": "bất kỳ"
+        "recommendedVersion": "Đề xuất"
     },
     "patchSelectorCard": {
         "widgetTitle": "Chọn bản vá",

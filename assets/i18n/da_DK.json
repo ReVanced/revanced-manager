@@ -55,8 +55,7 @@
         "widgetSubtitle": "Ingen applikation valgt",
         "noAppsLabel": "Ingen applikationer fundet",
         "currentVersion": "Nuværende",
-        "recommendedVersion": "Anbefalet",
-        "anyVersion": "enhver"
+        "recommendedVersion": "Anbefalet"
     },
     "patchSelectorCard": {
         "widgetTitle": "Vælg patches",

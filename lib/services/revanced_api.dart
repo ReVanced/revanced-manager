@@ -140,7 +140,7 @@ class RevancedAPI {
     return null;
   }
 
-  StreamController<double> managerUpdateProgress = StreamController<double>();
+  StreamController<double> managerUpdateProgress = StreamController<double>.broadcast();
 
   void updateManagerDownloadProgress(int progress) {
     managerUpdateProgress.add(progress.toDouble());
@@ -170,6 +170,7 @@ class RevancedAPI {
 
         updateManagerDownloadProgress(progress);
       } else if (result is FileInfo) {
+        disposeManagerUpdateProgress();
         // The download is complete; convert the FileInfo object to a File object
         outputFile = File(result.file.path);
       }
