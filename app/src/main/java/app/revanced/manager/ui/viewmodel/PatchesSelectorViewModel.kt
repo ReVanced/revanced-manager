@@ -8,10 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.screen.allowUnsupported
 import app.revanced.manager.util.AppInfo
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.SnapshotStateSet
@@ -31,6 +31,8 @@ class PatchesSelectorViewModel(
     val appInfo: AppInfo
 ) : ViewModel(), KoinComponent {
     private val selectionRepository: PatchSelectionRepository = get()
+    private val prefs: PreferencesManager = get()
+    val allowExperimental get() = prefs.allowExperimental
 
     val bundlesFlow = get<SourceRepository>().sources.flatMapLatestAndCombine(
         combiner = { it }
@@ -82,7 +84,7 @@ class PatchesSelectorViewModel(
         selectedPatches.also {
             selectionRepository.updateSelection(appInfo.packageName, it)
         }.mapValues { it.value.toMutableList() }.apply {
-            if (allowUnsupported) {
+            if (allowExperimental) {
                 return@apply
             }
 
