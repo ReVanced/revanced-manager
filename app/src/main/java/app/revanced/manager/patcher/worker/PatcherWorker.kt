@@ -11,36 +11,39 @@ import android.os.PowerManager
 import android.util.Log
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import app.revanced.manager.R
 import app.revanced.manager.domain.repository.SourceRepository
+import app.revanced.manager.domain.worker.Worker
+import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.util.PatchesSelection
-import app.revanced.manager.util.deserialize
 import app.revanced.manager.util.tag
 import app.revanced.patcher.extensions.PatchExtensions.patchName
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.serialization.Serializable
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 import java.io.FileNotFoundException
 
 class PatcherWorker(context: Context, parameters: WorkerParameters) :
-    CoroutineWorker(context, parameters),
+    Worker<PatcherWorker.Args>(context, parameters),
     KoinComponent {
     private val sourceRepository: SourceRepository by inject()
+    private val workerRepository: WorkerRepository by inject()
 
-    @Serializable
     data class Args(
         val input: String,
         val output: String,
         val selectedPatches: PatchesSelection,
         val packageName: String,
-        val packageVersion: String
+        val packageVersion: String,
+        val progress: MutableStateFlow<ImmutableList<Step>>
     )
 
     companion object {
@@ -75,7 +78,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             return Result.failure()
         }
 
-        val args = inputData.deserialize<Args>()!!
+        val args = workerRepository.claimInput(this)
 
         try {
             // This does not always show up for some reason.
@@ -113,9 +116,11 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         val progressManager =
             PatcherProgressManager(applicationContext, args.selectedPatches.flatMap { it.value })
 
-        suspend fun updateProgress(progress: Progress) {
-            progressManager.handle(progress)
-            setProgress(progressManager.workData())
+        val progressFlow = args.progress
+
+        fun updateProgress(progress: Progress?) {
+            progress?.let { progressManager.handle(it) }
+            progressFlow.value = progressManager.getProgress().toImmutableList()
         }
 
         return try {
@@ -143,11 +148,13 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
 
             Log.i(tag, "Patching succeeded".logFmt())
             progressManager.success()
-            Result.success(progressManager.workData())
+            Result.success()
         } catch (e: Exception) {
             Log.e(tag, "Got exception while patching".logFmt(), e)
             progressManager.failure(e)
-            Result.failure(progressManager.workData())
+            Result.failure()
+        } finally {
+            updateProgress(null)
         }
     }
 }

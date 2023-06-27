@@ -3,10 +3,9 @@ package app.revanced.manager.patcher.worker
 import android.content.Context
 import androidx.annotation.StringRes
 import app.revanced.manager.R
-import app.revanced.manager.util.serialize
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class Progress {
     object Unpacking : Progress()
@@ -18,23 +17,19 @@ sealed class Progress {
     object Saving : Progress()
 }
 
-@Serializable
 enum class State {
     WAITING, COMPLETED, FAILED
 }
 
-@Serializable
 class SubStep(
     val name: String,
     val state: State = State.WAITING,
-    @SerialName("msg")
     val message: String? = null
 )
 
-@Serializable
 class Step(
     @StringRes val name: Int,
-    val substeps: List<SubStep>,
+    val substeps: ImmutableList<SubStep>,
     val state: State = State.WAITING
 )
 
@@ -58,7 +53,7 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
 
             Step(step.name, step.substeps.mapIndexed { index, subStep ->
                 if (index != key.substep) subStep else SubStep(subStep.name, state, message)
-            }, newStepState)
+            }.toImmutableList(), newStepState)
         }
 
         val isFinal = isLastSubStep && key.step == steps.lastIndex
@@ -95,7 +90,7 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
 
     fun success() = updateCurrent(State.COMPLETED)
 
-    fun workData() = steps.serialize()
+    fun getProgress(): List<Step> = steps
 
     companion object {
         /**
@@ -110,7 +105,7 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
 
         private fun generatePatchesStep(selectedPatches: List<String>) = Step(
             R.string.patcher_step_group_patching,
-            selectedPatches.map { SubStep(it) }
+            selectedPatches.map { SubStep(it) }.toImmutableList()
         )
 
         fun generateSteps(context: Context, selectedPatches: List<String>) = mutableListOf(
