@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/manager_api.dart';
+
 
 @lazySingleton
 class GithubAPI {
