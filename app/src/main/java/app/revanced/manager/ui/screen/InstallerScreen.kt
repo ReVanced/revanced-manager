@@ -74,6 +74,7 @@ fun InstallerScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
                 .fillMaxSize()
         ) {
             patcherState.steps.forEach {
@@ -141,13 +142,11 @@ fun InstallStep(step: Step) {
         }
 
         AnimatedVisibility(visible = expanded) {
-            val scrollState = rememberScrollState()
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background.copy(0.6f))
                     .fillMaxWidth()
-                    .verticalScroll(scrollState)
                     .padding(16.dp)
                     .padding(start = 4.dp)
             ) {
