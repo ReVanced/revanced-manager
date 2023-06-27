@@ -51,8 +51,6 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.util.PatchesSelection
 import kotlinx.coroutines.launch
 
-const val allowUnsupported = false
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
@@ -206,7 +204,7 @@ fun PatchesSelectorScreen(
                             patchList(
                                 patches = bundle.unsupported,
                                 filterFlag = SHOW_UNSUPPORTED,
-                                supported = allowUnsupported
+                                supported = vm.allowExperimental
                             ) {
                                 ListHeader(
                                     title = stringResource(R.string.unsupported_patches),

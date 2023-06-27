@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen.settings
 
 import android.os.Build
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -65,24 +66,27 @@ fun GeneralSettingsScreen(
                 }
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ListItem(
-                    modifier = Modifier.clickable { prefs.dynamicColor = !prefs.dynamicColor },
-                    headlineContent = { Text(stringResource(R.string.dynamic_color)) },
-                    supportingContent = { Text(stringResource(R.string.dynamic_color_description)) },
-                    trailingContent = {
-                        Switch(
-                            checked = prefs.dynamicColor,
-                            onCheckedChange = { prefs.dynamicColor = it })
-                    }
+                BooleanItem(
+                    value = prefs.dynamicColor,
+                    onValueChange = { prefs.dynamicColor = it },
+                    headline = R.string.dynamic_color,
+                    description = R.string.dynamic_color_description
                 )
             }
 
+            GroupHeader(stringResource(R.string.patcher))
+            BooleanItem(
+                value = prefs.allowExperimental,
+                onValueChange = { prefs.allowExperimental = it },
+                headline = R.string.experimental_patches,
+                description = R.string.experimental_patches_description
+            )
         }
     }
 }
 
 @Composable
-fun ThemePicker(
+private fun ThemePicker(
     onDismiss: () -> Unit,
     onConfirm: (Theme) -> Unit,
     prefs: PreferencesManager = koinInject()
@@ -96,10 +100,14 @@ fun ThemePicker(
             Column {
                 Theme.values().forEach {
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable { selectedTheme = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { selectedTheme = it },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        RadioButton(selected = selectedTheme == it, onClick = { selectedTheme = it })
+                        RadioButton(
+                            selected = selectedTheme == it,
+                            onClick = { selectedTheme = it })
                         Text(stringResource(it.displayName))
                     }
                 }
@@ -115,3 +123,21 @@ fun ThemePicker(
         }
     )
 }
+
+@Composable
+private fun BooleanItem(
+    value: Boolean,
+    onValueChange: (Boolean) -> Unit,
+    @StringRes headline: Int,
+    @StringRes description: Int
+) = ListItem(
+    modifier = Modifier.clickable { onValueChange(!value) },
+    headlineContent = { Text(stringResource(headline)) },
+    supportingContent = { Text(stringResource(description)) },
+    trailingContent = {
+        Switch(
+            checked = value,
+            onCheckedChange = onValueChange,
+        )
+    }
+)
