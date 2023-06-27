@@ -12,8 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.work.Data
-import androidx.work.workDataOf
 import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,10 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.cbor.Cbor
-import kotlinx.serialization.decodeFromByteArray
-import kotlinx.serialization.encodeToByteArray
 
 typealias PatchesSelection = Map<Int, List<String>>
 
@@ -99,13 +93,3 @@ inline fun <T, reified R, C> Flow<Iterable<T>>.flatMapLatestAndCombine(
         combiner(it)
     }
 }
-
-const val workDataKey = "payload"
-
-@OptIn(ExperimentalSerializationApi::class)
-inline fun <reified T> T.serialize(): Data =
-    workDataOf(workDataKey to Cbor.Default.encodeToByteArray(this))
-
-@OptIn(ExperimentalSerializationApi::class)
-inline fun <reified T> Data.deserialize(): T? =
-    getByteArray(workDataKey)?.let { Cbor.Default.decodeFromByteArray(it) }

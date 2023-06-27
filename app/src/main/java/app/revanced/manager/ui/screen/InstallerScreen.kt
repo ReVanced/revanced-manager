@@ -11,8 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
@@ -33,6 +31,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.patcher.worker.State
@@ -41,7 +40,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.viewmodel.InstallerViewModel
 import app.revanced.manager.util.APK_MIMETYPE
-import kotlin.math.exp
 import kotlin.math.floor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,8 +50,9 @@ fun InstallerScreen(
 ) {
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
-    val patcherState by vm.patcherState.observeAsState(vm.initialState)
-    val canInstall by remember { derivedStateOf { patcherState.succeeded == true && (vm.installedPackageName != null || !vm.isInstalling) } }
+    val patcherState by vm.patcherState.observeAsState(null)
+    val steps by vm.progress.collectAsStateWithLifecycle()
+    val canInstall by remember { derivedStateOf { patcherState == true && (vm.installedPackageName != null || !vm.isInstalling) } }
 
     AppScaffold(
         topBar = {
@@ -77,7 +76,7 @@ fun InstallerScreen(
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
         ) {
-            patcherState.steps.forEach {
+            steps.forEach {
                 InstallStep(it)
             }
             Spacer(modifier = Modifier.weight(1f))

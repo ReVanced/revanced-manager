@@ -18,18 +18,19 @@ import androidx.lifecycle.map
 import androidx.work.*
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.R
+import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.worker.PatcherProgressManager
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.AppInfo
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
-import app.revanced.manager.util.deserialize
-import app.revanced.manager.util.serialize
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -43,6 +44,7 @@ class InstallerViewModel(
     private val keystoreManager: KeystoreManager by inject()
     private val app: Application by inject()
     private val pm: PM by inject()
+    private val workerRepository: WorkerRepository by inject()
 
     val packageName: String = input.packageName
     private val outputFile = File(app.cacheDir, "output.apk")
@@ -57,38 +59,31 @@ class InstallerViewModel(
 
     private val workManager = WorkManager.getInstance(app)
 
-    private val patcherWorker =
-        OneTimeWorkRequest.Builder(PatcherWorker::class.java) // create Worker
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST).setInputData(
-                PatcherWorker.Args(
-                    input.path!!.absolutePath,
-                    outputFile.path,
-                    selectedPatches,
-                    input.packageName,
-                    input.packageInfo!!.versionName,
-                ).serialize()
-            ).build()
+    private val _progress = MutableStateFlow(PatcherProgressManager.generateSteps(
+        app,
+        selectedPatches.flatMap { (_, selected) -> selected }
+    ).toImmutableList())
+    val progress = _progress.asStateFlow()
 
-    val initialState = PatcherState(
-        succeeded = null,
-        steps = PatcherProgressManager.generateSteps(
-            app,
-            selectedPatches.flatMap { (_, selected) -> selected }
+    private val patcherWorkerId =
+        workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
+            "patching", PatcherWorker.Args(
+                input.path!!.absolutePath,
+                outputFile.path,
+                selectedPatches,
+                input.packageName,
+                input.packageInfo!!.versionName,
+                _progress
+            )
         )
-    )
+
     val patcherState =
-        workManager.getWorkInfoByIdLiveData(patcherWorker.id).map { workInfo: WorkInfo ->
-            var status: Boolean? = null
-            val steps = when (workInfo.state) {
-                WorkInfo.State.RUNNING -> workInfo.progress
-                WorkInfo.State.FAILED, WorkInfo.State.SUCCEEDED -> workInfo.outputData.also {
-                    status = workInfo.state == WorkInfo.State.SUCCEEDED
-                }
-
+        workManager.getWorkInfoByIdLiveData(patcherWorkerId).map { workInfo: WorkInfo ->
+            when (workInfo.state) {
+                WorkInfo.State.SUCCEEDED -> true
+                WorkInfo.State.FAILED -> false
                 else -> null
-            }?.deserialize<List<Step>>()
-
-            PatcherState(status, steps ?: initialState.steps)
+            }
         }
 
     private val installBroadcastReceiver = object : BroadcastReceiver() {
@@ -114,7 +109,6 @@ class InstallerViewModel(
     }
 
     init {
-        workManager.enqueueUniqueWork("patching", ExistingWorkPolicy.KEEP, patcherWorker)
         app.registerReceiver(installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
             addAction(UninstallService.APP_UNINSTALL_ACTION)
@@ -124,7 +118,7 @@ class InstallerViewModel(
     override fun onCleared() {
         super.onCleared()
         app.unregisterReceiver(installBroadcastReceiver)
-        workManager.cancelWorkById(patcherWorker.id)
+        workManager.cancelWorkById(patcherWorkerId)
 
         outputFile.delete()
         signedFile.delete()
@@ -165,6 +159,4 @@ class InstallerViewModel(
             isInstalling = false
         }
     }
-
-    data class PatcherState(val succeeded: Boolean?, val steps: List<Step>)
 }
