@@ -22,13 +22,17 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutSettingsScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onContributorsClick: () -> Unit,
 ) {
     val context = LocalContext.current
     val icon = rememberDrawablePainter(context.packageManager.getApplicationIcon(context.packageName))
@@ -52,9 +56,12 @@ fun AboutSettingsScreen(
     )
 
     val listItems = listOf(
-        Triple(stringResource(R.string.submit_feedback), stringResource(R.string.submit_feedback_description), third = { /*TODO*/ }),
-        Triple(stringResource(R.string.contributors), stringResource(R.string.contributors_description), third = { /*TODO*/ }),
-        Triple(stringResource(R.string.developer_options), stringResource(R.string.developer_options_description), third = { /*TODO*/ }),
+        Triple(stringResource(R.string.submit_feedback), stringResource(R.string.submit_feedback_description),
+            third = { /*TODO*/ }),
+        Triple(stringResource(R.string.contributors), stringResource(R.string.contributors_description),
+            third = onContributorsClick),
+        Triple(stringResource(R.string.developer_options), stringResource(R.string.developer_options_description),
+            third = { /*TODO*/ }),
     )
 
     Scaffold(
