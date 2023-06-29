@@ -59,7 +59,7 @@ fun PatchesSelectorScreen(
     vm: PatchesSelectorViewModel
 ) {
     val pagerState = rememberPagerState()
-    val coroutineScope = rememberCoroutineScope()
+    val composableScope = rememberCoroutineScope()
 
     val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyArray())
 
@@ -92,7 +92,7 @@ fun PatchesSelectorScreen(
                 text = { Text(stringResource(R.string.patch)) },
                 icon = { Icon(Icons.Default.Build, null) },
                 onClick = {
-                    coroutineScope.launch {
+                    composableScope.launch {
                         onPatchClick(vm.getAndSaveSelection())
                     }
                 }
@@ -112,7 +112,7 @@ fun PatchesSelectorScreen(
                     bundles.forEachIndexed { index, bundle ->
                         Tab(
                             selected = pagerState.currentPage == index,
-                            onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                            onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                             text = { Text(bundle.name) },
                             selectedContentColor = MaterialTheme.colorScheme.primary,
                             unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant

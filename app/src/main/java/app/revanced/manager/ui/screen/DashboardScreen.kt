@@ -40,7 +40,7 @@ fun DashboardScreen(
     val pages: Array<DashboardPage> = DashboardPage.values()
 
     val pagerState = rememberPagerState()
-    val coroutineScope = rememberCoroutineScope()
+    val composableScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -74,7 +74,7 @@ fun DashboardScreen(
                 pages.forEachIndexed { index, page ->
                     Tab(
                         selected = pagerState.currentPage == index,
-                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                        onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                         text = { Text(stringResource(page.titleResId)) },
                         icon = { Icon(page.icon, null) },
                         selectedContentColor = MaterialTheme.colorScheme.primary,
