@@ -39,7 +39,7 @@ fun AboutSettingsScreen(
 
     val filledButton = listOf(
         Triple(Icons.Outlined.FavoriteBorder, stringResource(R.string.donate)) {
-            context.openUrl("https://github.com/sponsors/ReVanced")
+            context.openUrl("https://revanced.app/donate")
         },
         Triple(Icons.Outlined.Language, stringResource(R.string.website), third = {
             context.openUrl("https://revanced.app")
@@ -51,7 +51,7 @@ fun AboutSettingsScreen(
             context.openUrl("https://revanced.app/github")
         }),
         Triple(Icons.Outlined.MailOutline, stringResource(R.string.contact), third = {
-            context.openUrl("mailto:contact@revanced.app")
+            context.openUrl("mailto:nosupport@revanced.app")
         }),
     )
 
