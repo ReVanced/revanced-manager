@@ -75,12 +75,15 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
         steps[stepKeyMap[Progress.PatchingStart]!!.step] = generatePatchesStep(newList)
     }
 
-    private fun updateCurrent(newState: State, message: String? = null) =
+    private fun updateCurrent(newState: State, message: String? = null) {
         currentStep?.let { update(it, newState, message) }
+    }
 
 
-    fun handle(progress: Progress) = success().also {
-        stepKeyMap[progress]?.let { currentStep = it }
+    fun handle(progress: Progress) = when (val step = stepKeyMap[progress]) {
+        null -> success()
+        currentStep -> {}
+        else -> success().also { currentStep = step }
     }
 
     fun failure(error: Throwable) = updateCurrent(
