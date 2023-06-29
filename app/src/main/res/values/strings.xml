@@ -15,6 +15,8 @@
     <string name="general_description">General settings</string>
     <string name="updates">Updates</string>
     <string name="updates_description">Updates for ReVanced Manager</string>
+    <string name="opensource_licenses">Open source licenses</string>
+    <string name="opensource_licenses_description">View all the libraries used to make this application</string>
     <string name="downloads">Downloads</string>
     <string name="downloads_description">Manage downloaded content</string>
     <string name="import_export">Import &amp; export</string>
