@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.8.21"
+    id("com.mikepenz.aboutlibraries.plugin") version "10.8.0"
 }
 
 android {
@@ -115,6 +116,9 @@ dependencies {
 
     // Compose Navigation
     implementation("dev.olshevski.navigation:reimagined:1.4.0")
+
+    // Licenses
+    implementation("com.mikepenz:aboutlibraries-compose:10.8.0")
 
     // Ktor
     val ktorVersion = "2.3.0"

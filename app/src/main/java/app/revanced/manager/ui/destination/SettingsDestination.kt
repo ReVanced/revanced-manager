@@ -29,4 +29,7 @@ sealed interface SettingsDestination : Parcelable {
     @Parcelize
     object Contributors: SettingsDestination
 
+    @Parcelize
+    object Licenses: SettingsDestination
+
 }

@@ -111,7 +111,8 @@ fun SettingsScreen(
 
             is SettingsDestination.About -> AboutSettingsScreen(
                 onBackClick = { navController.pop() },
-                onContributorsClick = { navController.navigate(SettingsDestination.Contributors) }
+                onContributorsClick = { navController.navigate(SettingsDestination.Contributors) },
+                onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
             is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
@@ -119,6 +120,10 @@ fun SettingsScreen(
             )
 
             is SettingsDestination.Contributors -> ContributorScreen(
+                onBackClick = { navController.pop() },
+            )
+
+            is SettingsDestination.Licenses -> LicensesScreen(
                 onBackClick = { navController.pop() },
             )
 

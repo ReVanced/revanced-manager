@@ -33,6 +33,7 @@ import dev.olshevski.navigation.reimagined.navigate
 fun AboutSettingsScreen(
     onBackClick: () -> Unit,
     onContributorsClick: () -> Unit,
+    onLicensesClick: () -> Unit,
 ) {
     val context = LocalContext.current
     val icon = rememberDrawablePainter(context.packageManager.getApplicationIcon(context.packageName))
@@ -62,6 +63,8 @@ fun AboutSettingsScreen(
             third = onContributorsClick),
         Triple(stringResource(R.string.developer_options), stringResource(R.string.developer_options_description),
             third = { /*TODO*/ }),
+        Triple(stringResource(R.string.opensource_licenses), stringResource(R.string.opensource_licenses_description),
+            third = onLicensesClick)
     )
 
     Scaffold(
@@ -79,7 +82,9 @@ fun AboutSettingsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
