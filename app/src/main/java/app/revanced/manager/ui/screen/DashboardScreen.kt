@@ -2,6 +2,7 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -86,6 +87,7 @@ fun DashboardScreen(
                 pageCount = pages.size,
                 state = pagerState,
                 userScrollEnabled = true,
+                modifier = Modifier.fillMaxSize(),
                 pageContent = { index ->
                     when (pages[index]) {
                         DashboardPage.DASHBOARD -> {
