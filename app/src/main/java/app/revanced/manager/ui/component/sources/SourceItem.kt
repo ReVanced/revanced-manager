@@ -19,13 +19,14 @@ import app.revanced.manager.domain.sources.RemoteSource
 import app.revanced.manager.domain.sources.Source
 import app.revanced.manager.ui.viewmodel.SourcesViewModel
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.InputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SourceItem(source: Source, onDelete: () -> Unit) {
-    val coroutineScope = rememberCoroutineScope()
+fun SourceItem(source: Source, onDelete: () -> Unit, coroutineScope: CoroutineScope) {
+    val composableScope = rememberCoroutineScope()
     var sheetActive by rememberSaveable { mutableStateOf(false) }
 
     val bundle by source.bundle.collectAsStateWithLifecycle()
@@ -53,14 +54,15 @@ fun SourceItem(source: Source, onDelete: () -> Unit) {
                 )
 
                 when (source) {
-                    is RemoteSource -> RemoteSourceItem(source)
-                    is LocalSource -> LocalSourceItem(source)
+                    is RemoteSource -> RemoteSourceItem(source, coroutineScope)
+                    is LocalSource -> LocalSourceItem(source, coroutineScope)
                 }
 
                 Button(
                     onClick = {
-                        coroutineScope.launch {
+                        composableScope.launch {
                             modalSheetState.hide()
+                            sheetActive = false
                             onDelete()
                         }
                     }
@@ -101,8 +103,7 @@ fun SourceItem(source: Source, onDelete: () -> Unit) {
 }
 
 @Composable
-private fun RemoteSourceItem(source: RemoteSource) {
-    val coroutineScope = rememberCoroutineScope()
+private fun RemoteSourceItem(source: RemoteSource, coroutineScope: CoroutineScope) {
     val androidContext = LocalContext.current
     Text(text = "(api url here)")
 
@@ -118,12 +119,16 @@ private fun RemoteSourceItem(source: RemoteSource) {
 }
 
 @Composable
-private fun LocalSourceItem(source: LocalSource) {
-    val coroutineScope = rememberCoroutineScope()
+private fun LocalSourceItem(source: LocalSource, coroutineScope: CoroutineScope) {
     val androidContext = LocalContext.current
     val resolver = remember { androidContext.contentResolver!! }
 
-    fun loadAndReplace(uri: Uri, @StringRes toastMsg: Int, errorLogMsg: String, callback: suspend (InputStream) -> Unit) = coroutineScope.launch {
+    fun loadAndReplace(
+        uri: Uri,
+        @StringRes toastMsg: Int,
+        errorLogMsg: String,
+        callback: suspend (InputStream) -> Unit
+    ) = coroutineScope.launch {
         uiSafe(androidContext, toastMsg, errorLogMsg) {
             resolver.openInputStream(uri)!!.use {
                 callback(it)
@@ -138,7 +143,11 @@ private fun LocalSourceItem(source: LocalSource) {
             }
         },
         onIntegrationsSelection = { uri ->
-            loadAndReplace(uri, R.string.source_replace_integrations_fail, "Failed to replace integrations") {
+            loadAndReplace(
+                uri,
+                R.string.source_replace_integrations_fail,
+                "Failed to replace integrations"
+            ) {
                 source.replace(null, it)
             }
         }

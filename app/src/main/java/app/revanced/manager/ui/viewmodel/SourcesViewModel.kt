@@ -12,7 +12,10 @@ import app.revanced.manager.util.uiSafe
 import io.ktor.http.*
 import kotlinx.coroutines.launch
 
-class SourcesViewModel(private val app: Application, private val sourceRepository: SourceRepository) : ViewModel() {
+class SourcesViewModel(
+    private val app: Application,
+    private val sourceRepository: SourceRepository
+) : ViewModel() {
     val sources = sourceRepository.sources
     private val contentResolver: ContentResolver = app.contentResolver
 
@@ -26,7 +29,7 @@ class SourcesViewModel(private val app: Application, private val sourceRepositor
         }
     }
 
-    suspend fun addLocal(name: String, patchBundle: Uri, integrations: Uri?) {
+    fun addLocal(name: String, patchBundle: Uri, integrations: Uri?) = viewModelScope.launch {
         contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
             val integrationsStream = integrations?.let { contentResolver.openInputStream(it) }
             try {
@@ -37,7 +40,8 @@ class SourcesViewModel(private val app: Application, private val sourceRepositor
         }
     }
 
-    suspend fun addRemote(name: String, apiUrl: Url) = sourceRepository.createRemoteSource(name, apiUrl)
+    fun addRemote(name: String, apiUrl: Url) =
+        viewModelScope.launch { sourceRepository.createRemoteSource(name, apiUrl) }
 
     fun delete(source: Source) = viewModelScope.launch { sourceRepository.remove(source) }
 
