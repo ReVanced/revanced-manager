@@ -64,7 +64,7 @@ class PatcherViewModel extends BaseViewModel {
           builder: (context) => AlertDialog(
             title: I18nText('warning'),
             backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText('patcherView.armv7WarningDialogText'),
+            content: I18nText('patcherView.splitApkWarningDialogText'),
             actions: <Widget>[
               CustomMaterialButton(
                 label: I18nText('noButton'),
