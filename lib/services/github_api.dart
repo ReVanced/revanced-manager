@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/manager_api.dart';
+
 
 @lazySingleton
 class GithubAPI {
@@ -63,7 +65,16 @@ class GithubAPI {
       final response = await _dio.get(
         '/repos/$repoName/releases',
       );
-      return response.data[0];
+      final Map<String, dynamic> releases = response.data[0];
+      int updates = 0;
+      final String currentVersion = await ManagerAPI().getCurrentManagerVersion();
+      while (response.data[updates]['tag_name'] != 'v$currentVersion') {
+        updates++;
+      }
+      for(int i = 1; i < updates; i++){
+        releases.update('body', (value) => value + '\n' + '# '+ response.data[i]['tag_name']+'\n' + response.data[i]['body']);
+      }
+      return releases;
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
