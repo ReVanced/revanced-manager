@@ -20,7 +20,7 @@ import java.io.File
 import java.io.InputStream
 
 class SourceRepository(app: Application, private val persistenceRepo: SourcePersistenceRepository) {
-    private val sourcesDir = app.dataDir.resolve("sources").also { it.mkdirs() }
+    private val sourcesDir = app.filesDir.resolve("sources").also { it.mkdirs() }
 
     private val _sources: MutableStateFlow<Map<Int, Source>> = MutableStateFlow(emptyMap())
     val sources = _sources.map { it.values.toList() }

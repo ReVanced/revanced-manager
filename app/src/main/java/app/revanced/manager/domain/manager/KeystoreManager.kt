@@ -23,7 +23,7 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
         const val FLUTTER_MANAGER_PASSWORD = "s3cur3p@ssw0rd"
     }
 
-    private val keystorePath = app.dataDir.resolve("manager.keystore").toPath()
+    private val keystorePath = app.filesDir.resolve("manager.keystore").toPath()
     private fun options(
         cn: String = prefs.keystoreCommonName!!,
         pass: String = prefs.keystorePass!!
