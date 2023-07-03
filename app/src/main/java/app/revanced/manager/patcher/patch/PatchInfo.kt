@@ -44,6 +44,7 @@ data class CompatiblePackage(
     constructor(pkg: Package) : this(pkg.name, pkg.versions.toList().toImmutableList())
 }
 
-data class Option(val title: String, val key: String, val description: String, val required: Boolean) {
-    constructor(option: PatchOption<*>) : this(option.title, option.key, option.description, option.required)
+@Immutable
+data class Option(val title: String, val key: String, val description: String, val required: Boolean, val type: Class<out PatchOption<*>>, val defaultValue: Any?) {
+    constructor(option: PatchOption<*>) : this(option.title, option.key, option.description, option.required, option::class.java, option.value)
 }

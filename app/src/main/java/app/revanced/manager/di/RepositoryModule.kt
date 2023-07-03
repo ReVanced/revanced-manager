@@ -1,5 +1,6 @@
 package app.revanced.manager.di
 
+import app.revanced.manager.data.platform.FileSystem
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.ReVancedRepository
 import app.revanced.manager.network.api.ManagerAPI
@@ -12,6 +13,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
     singleOf(::ReVancedRepository)
     singleOf(::ManagerAPI)
+    singleOf(::FileSystem)
     singleOf(::SourcePersistenceRepository)
     singleOf(::PatchSelectionRepository)
     singleOf(::SourceRepository)

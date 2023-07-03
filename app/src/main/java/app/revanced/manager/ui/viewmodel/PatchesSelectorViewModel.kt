@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -13,6 +14,7 @@ import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.AppInfo
+import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.SnapshotStateSet
 import app.revanced.manager.util.flatMapLatestAndCombine
@@ -58,9 +60,13 @@ class PatchesSelectorViewModel(
     }
 
     private val selectedPatches = mutableStateMapOf<Int, SnapshotStateSet<String>>()
+    private val patchOptions =
+        mutableStateMapOf<Int, SnapshotStateMap<String, SnapshotStateMap<String, Any?>>>()
 
-    var showOptionsDialog by mutableStateOf(false)
-        private set
+    /**
+     * Show the patch options dialog for this patch.
+     */
+    var optionsDialog by mutableStateOf<Pair<Int, PatchInfo>?>(null)
 
     val compatibleVersions = mutableStateListOf<String>()
 
@@ -118,13 +124,20 @@ class PatchesSelectorViewModel(
         }
     }
 
-    fun dismissDialogs() {
-        showOptionsDialog = false
-        compatibleVersions.clear()
+    fun getOptions(): Options = patchOptions
+    fun getOptions(bundle: Int, patch: PatchInfo) = patchOptions[bundle]?.get(patch.name)
+
+    fun setOption(bundle: Int, patch: PatchInfo, key: String, value: Any?) {
+        patchOptions.getOrCreate(bundle).getOrCreate(patch.name)[key] = value
     }
 
-    fun openOptionsDialog() {
-        showOptionsDialog = true
+    fun unsetOption(bundle: Int, patch: PatchInfo, key: String) {
+        patchOptions[bundle]?.get(patch.name)?.remove(key)
+    }
+
+    fun dismissDialogs() {
+        optionsDialog = null
+        compatibleVersions.clear()
     }
 
     fun openUnsupportedDialog(unsupportedVersions: List<PatchInfo>) {
@@ -148,6 +161,9 @@ class PatchesSelectorViewModel(
         const val SHOW_SUPPORTED = 1 // 2^0
         const val SHOW_UNIVERSAL = 2 // 2^1
         const val SHOW_UNSUPPORTED = 4 // 2^2
+
+        private fun <K, K2, V> SnapshotStateMap<K, SnapshotStateMap<K2, V>>.getOrCreate(key: K) =
+            getOrPut(key, ::mutableStateMapOf)
     }
 
     data class BundleInfo(
