@@ -1,6 +1,7 @@
 package app.revanced.manager.domain.manager
 
 import android.app.Application
+import android.content.Context
 import app.revanced.manager.util.signing.Signer
 import app.revanced.manager.util.signing.SigningOptions
 import java.io.File
@@ -23,7 +24,7 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
         const val FLUTTER_MANAGER_PASSWORD = "s3cur3p@ssw0rd"
     }
 
-    private val keystorePath = app.filesDir.resolve("manager.keystore").toPath()
+    private val keystorePath = app.getDir("signing", Context.MODE_PRIVATE).resolve("manager.keystore").toPath()
     private fun options(
         cn: String = prefs.keystoreCommonName!!,
         pass: String = prefs.keystorePass!!

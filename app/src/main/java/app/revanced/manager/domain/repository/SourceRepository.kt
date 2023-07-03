@@ -1,6 +1,7 @@
 package app.revanced.manager.domain.repository
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import app.revanced.manager.data.room.sources.SourceEntity
 import app.revanced.manager.data.room.sources.SourceLocation
@@ -20,7 +21,7 @@ import java.io.File
 import java.io.InputStream
 
 class SourceRepository(app: Application, private val persistenceRepo: SourcePersistenceRepository) {
-    private val sourcesDir = app.filesDir.resolve("sources").also { it.mkdirs() }
+    private val sourcesDir = app.getDir("sources", Context.MODE_PRIVATE)
 
     private val _sources: MutableStateFlow<Map<Int, Source>> = MutableStateFlow(emptyMap())
     val sources = _sources.map { it.values.toList() }
