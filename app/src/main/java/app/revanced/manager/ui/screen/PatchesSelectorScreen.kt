@@ -13,12 +13,15 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -40,21 +43,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.patches.OptionField
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
+import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onPatchClick: (PatchesSelection) -> Unit,
+    onPatchClick: (PatchesSelection, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
@@ -70,7 +77,15 @@ fun PatchesSelectorScreen(
             onDismissRequest = vm::dismissDialogs
         )
 
-    if (vm.showOptionsDialog) OptionsDialog(onDismissRequest = vm::dismissDialogs, onConfirm = {})
+    vm.optionsDialog?.let { (bundle, patch) ->
+        OptionsDialog(
+            onDismissRequest = vm::dismissDialogs,
+            patch = patch,
+            values = vm.getOptions(bundle, patch),
+            set = { key, value -> vm.setOption(bundle, patch, key, value) },
+            unset = { vm.unsetOption(bundle, patch, it) }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -93,7 +108,8 @@ fun PatchesSelectorScreen(
                 icon = { Icon(Icons.Default.Build, null) },
                 onClick = {
                     composableScope.launch {
-                        onPatchClick(vm.getAndSaveSelection())
+                        // TODO: only allow this if all required options have been set.
+                        onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
                     }
                 }
             )
@@ -112,7 +128,13 @@ fun PatchesSelectorScreen(
                     bundles.forEachIndexed { index, bundle ->
                         Tab(
                             selected = pagerState.currentPage == index,
-                            onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
+                            onClick = {
+                                composableScope.launch {
+                                    pagerState.animateScrollToPage(
+                                        index
+                                    )
+                                }
+                            },
                             text = { Text(bundle.name) },
                             selectedContentColor = MaterialTheme.colorScheme.primary,
                             unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -177,8 +199,13 @@ fun PatchesSelectorScreen(
                                     ) { patch ->
                                         PatchItem(
                                             patch = patch,
-                                            onOptionsDialog = vm::openOptionsDialog,
-                                            selected = supported && vm.isSelected(bundle.uid, patch),
+                                            onOptionsDialog = {
+                                                vm.optionsDialog = bundle.uid to patch
+                                            },
+                                            selected = supported && vm.isSelected(
+                                                bundle.uid,
+                                                patch
+                                            ),
                                             onToggle = { vm.togglePatch(bundle.uid, patch) },
                                             supported = supported
                                         )
@@ -299,24 +326,56 @@ fun UnsupportedDialog(
     }
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionsDialog(
-    onDismissRequest: () -> Unit, onConfirm: () -> Unit
-) = AlertDialog(
+    patch: PatchInfo,
+    values: Map<String, Any?>?,
+    unset: (String) -> Unit,
+    set: (String, Any?) -> Unit,
+    onDismissRequest: () -> Unit,
+) = Dialog(
     onDismissRequest = onDismissRequest,
-    dismissButton = {
-        TextButton(onClick = onDismissRequest) {
-            Text(stringResource(R.string.cancel))
+    properties = DialogProperties(
+        usePlatformDefaultWidth = false,
+        dismissOnBackPress = true
+    )
+) {
+    Scaffold(
+        topBar = {
+            AppTopBar(
+                title = patch.name,
+                onBackClick = onDismissRequest
+            )
         }
-    },
-    confirmButton = {
-        TextButton(onClick = {
-            onConfirm()
-            onDismissRequest()
-        }) {
-            Text(stringResource(R.string.apply))
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
+        ) {
+            patch.options?.forEach {
+                ListItem(
+                    headlineContent = { Text(it.title) },
+                    supportingContent = { Text(it.description) },
+                    overlineContent = {
+                        Button(onClick = { unset(it.key) }) {
+                            Text("reset")
+                        }
+                    },
+                    trailingContent = {
+                        val key = it.key
+                        val value =
+                            if (values == null || !values.contains(key)) it.defaultValue else values[key]
+
+                        OptionField(option = it, value = value, setValue = { set(key, it) })
+                    }
+                )
+            }
+
+            TextButton(onClick = onDismissRequest) {
+                Text(stringResource(R.string.apply))
+            }
         }
-    },
-    title = { Text(stringResource(R.string.options)) },
-    text = { Text("You really thought these would exist?") }
-)
+    }
+}

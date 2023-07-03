@@ -7,7 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FileSelector(mime: String, onSelect: (Uri) -> Unit, content: @Composable () -> Unit) {
+fun ContentSelector(mime: String, onSelect: (Uri) -> Unit, content: @Composable () -> Unit) {
     val activityLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let(onSelect)
     }

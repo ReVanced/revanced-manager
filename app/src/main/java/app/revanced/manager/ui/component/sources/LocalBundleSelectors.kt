@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.ui.component.FileSelector
+import app.revanced.manager.ui.component.ContentSelector
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.JAR_MIMETYPE
 
@@ -15,14 +15,14 @@ fun LocalBundleSelectors(onPatchesSelection: (Uri) -> Unit, onIntegrationsSelect
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        FileSelector(
+        ContentSelector(
             mime = JAR_MIMETYPE,
             onSelect = onPatchesSelection
         ) {
             Text("Patches")
         }
 
-        FileSelector(
+        ContentSelector(
             mime = APK_MIMETYPE,
             onSelect = onIntegrationsSelection
         ) {

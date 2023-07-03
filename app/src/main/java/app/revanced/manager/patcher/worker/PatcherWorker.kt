@@ -19,8 +19,10 @@ import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.aapt.Aapt
+import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
+import app.revanced.patcher.extensions.PatchExtensions.options
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -41,6 +43,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         val input: String,
         val output: String,
         val selectedPatches: PatchesSelection,
+        val options: Options,
         val packageName: String,
         val packageVersion: String,
         val progress: MutableStateFlow<ImmutableList<Step>>
@@ -124,14 +127,31 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         }
 
         return try {
-            val patchList = args.selectedPatches.flatMap { (bundleName, selected) ->
-                bundles[bundleName]?.patchClasses(args.packageName)
-                    ?.filter { selected.contains(it.patchName) }
-                    ?: throw IllegalArgumentException("Patch bundle $bundleName does not exist")
+            // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
+            val selectedBundles = args.selectedPatches.keys
+            val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
+                .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
+
+            // Set all patch options.
+            args.options.forEach { (bundle, configuredPatchOptions) ->
+                val patches = allPatches[bundle] ?: return@forEach
+                configuredPatchOptions.forEach { (patchName, options) ->
+                    patches.single { it.patchName == patchName }.options?.let {
+                        options.forEach { (key, value) ->
+                            it[key] = value
+                        }
+                    }
+                }
             }
 
+            val patches = args.selectedPatches.flatMap { (bundle, selected) ->
+                allPatches[bundle]?.filter { selected.contains(it.patchName) }
+                    ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
+            }
+
+
             // Ensure they are in the correct order so we can track progress properly.
-            progressManager.replacePatchesList(patchList.map { it.patchName })
+            progressManager.replacePatchesList(patches.map { it.patchName })
 
             updateProgress(Progress.Unpacking)
 
@@ -143,7 +163,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             ) {
                 updateProgress(it)
             }.use { session ->
-                session.run(File(args.output), patchList, integrations)
+                session.run(File(args.output), patches, integrations)
             }
 
             Log.i(tag, "Patching succeeded".logFmt())

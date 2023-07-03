@@ -25,7 +25,7 @@ import app.revanced.manager.domain.manager.KeystoreManager.Companion.DEFAULT
 import app.revanced.manager.domain.manager.KeystoreManager.Companion.FLUTTER_MANAGER_PASSWORD
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.FileSelector
+import app.revanced.manager.ui.component.ContentSelector
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.sources.SourceSelector
 import org.koin.androidx.compose.getViewModel
@@ -181,7 +181,7 @@ fun ImportKeystoreDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            FileSelector(
+            ContentSelector(
                 mime = "*/*",
                 onSelect = {
                     onImport(it, cn, pass)
