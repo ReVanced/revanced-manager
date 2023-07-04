@@ -26,7 +26,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.util.PathSaver
+import app.revanced.manager.util.saver.PathSaver
 import java.nio.file.Path
 import kotlin.io.path.isDirectory
 import kotlin.io.path.isRegularFile

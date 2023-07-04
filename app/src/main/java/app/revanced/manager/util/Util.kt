@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.compose.runtime.saveable.Saver
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -20,10 +19,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import java.nio.file.Path
-import kotlin.io.path.Path
 
-typealias PatchesSelection = Map<Int, List<String>>
+typealias PatchesSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
 
 fun Context.openUrl(url: String) {
@@ -97,8 +94,3 @@ inline fun <T, reified R, C> Flow<Iterable<T>>.flatMapLatestAndCombine(
         combiner(it)
     }
 }
-
-val PathSaver = Saver<Path, String>(
-    save = { it.toString() },
-    restore = { Path(it) }
-)
