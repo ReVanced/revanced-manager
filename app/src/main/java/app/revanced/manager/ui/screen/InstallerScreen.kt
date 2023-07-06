@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -48,11 +49,13 @@ fun InstallerScreen(
     onBackClick: () -> Unit,
     vm: InstallerViewModel
 ) {
+    val context = LocalContext.current
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
     val patcherState by vm.patcherState.observeAsState(null)
     val steps by vm.progress.collectAsStateWithLifecycle()
     val canInstall by remember { derivedStateOf { patcherState == true && (vm.installedPackageName != null || !vm.isInstalling) } }
+    var dropdownActive by rememberSaveable { mutableStateOf(false) }
 
     AppScaffold(
         topBar = {
@@ -63,8 +66,18 @@ fun InstallerScreen(
                     IconButton(onClick = {}) {
                         Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { dropdownActive = true }) {
                         Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
+                    }
+                    DropdownMenu(
+                        expanded = dropdownActive,
+                        onDismissRequest = { dropdownActive = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.save_logs)) },
+                            onClick = { vm.exportLogs(context) },
+                            enabled = patcherState != null
+                        )
                     }
                 }
             )

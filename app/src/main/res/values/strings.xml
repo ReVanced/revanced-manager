@@ -97,6 +97,7 @@
     <string name="export_app">Export</string>
     <string name="export_app_success">Apk exported</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>
+    <string name="save_logs">Save logs</string>
 
     <string name="patcher_step_group_prepare">Preparation</string>
     <string name="patcher_step_load_patches">Load patches</string>

@@ -24,6 +24,7 @@ import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
 import app.revanced.patcher.extensions.PatchExtensions.options
 import app.revanced.patcher.extensions.PatchExtensions.patchName
+import app.revanced.patcher.logging.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,7 +47,8 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
         val options: Options,
         val packageName: String,
         val packageVersion: String,
-        val progress: MutableStateFlow<ImmutableList<Step>>
+        val progress: MutableStateFlow<ImmutableList<Step>>,
+        val logger: Logger
     )
 
     companion object {
@@ -159,6 +161,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
                 applicationContext.cacheDir.absolutePath,
                 frameworkPath,
                 aaptPath,
+                args.logger,
                 File(args.input)
             ) {
                 updateProgress(it)

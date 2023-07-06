@@ -22,10 +22,10 @@ class Session(
     cacheDir: String,
     frameworkDir: String,
     aaptPath: String,
+    private val logger: Logger,
     private val input: File,
     private val onProgress: suspend (Progress) -> Unit = { }
 ) : Closeable {
-    private val logger = LogcatLogger
     private val temporary = File(cacheDir).resolve("manager").also { it.mkdirs() }
     private val patcher = Patcher(
         PatcherOptions(
@@ -82,25 +82,5 @@ class Session(
 
     override fun close() {
         temporary.delete()
-    }
-}
-
-private object LogcatLogger : Logger {
-    fun String.fmt() = "[Patcher]: $this"
-
-    override fun error(msg: String) {
-        Log.e(tag, msg.fmt())
-    }
-
-    override fun warn(msg: String) {
-        Log.w(tag, msg.fmt())
-    }
-
-    override fun info(msg: String) {
-        Log.i(tag, msg.fmt())
-    }
-
-    override fun trace(msg: String) {
-        Log.v(tag, msg.fmt())
     }
 }
