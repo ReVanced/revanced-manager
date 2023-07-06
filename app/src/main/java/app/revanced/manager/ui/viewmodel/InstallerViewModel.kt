@@ -15,7 +15,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import androidx.work.*
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.R
 import app.revanced.manager.domain.worker.WorkerRepository
@@ -28,6 +29,7 @@ import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import app.revanced.patcher.logging.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,6 +62,7 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
 
     private val _progress: MutableStateFlow<ImmutableList<Step>>
     private val patcherWorkerId: UUID
+    private val logger = ManagerLogger()
 
     init {
         val (appInfo, patches, options) = input
@@ -77,7 +80,8 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
                     options,
                     packageName,
                     appInfo.packageInfo!!.versionName,
-                    _progress
+                    _progress,
+                    logger
                 )
             )
     }
@@ -120,6 +124,17 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
             addAction(InstallService.APP_INSTALL_ACTION)
             addAction(UninstallService.APP_UNINSTALL_ACTION)
         })
+    }
+
+    fun exportLogs(context: Context) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, logger.export())
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
     }
 
     override fun onCleared() {
@@ -165,5 +180,43 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
         } finally {
             isInstalling = false
         }
+    }
+}
+
+private class ManagerLogger : Logger {
+    private val logs = mutableListOf<Pair<LogLevel, String>>()
+    private fun log(level: LogLevel, msg: String) {
+        level.androidLog(msg)
+        if (level == LogLevel.TRACE) return
+        logs.add(level to msg)
+    }
+
+    fun export() =
+        logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
+
+    override fun trace(msg: String) = log(LogLevel.TRACE, msg)
+    override fun info(msg: String) = log(LogLevel.INFO, msg)
+    override fun warn(msg: String) = log(LogLevel.WARN, msg)
+    override fun error(msg: String) = log(LogLevel.ERROR, msg)
+}
+
+enum class LogLevel {
+    TRACE {
+        override fun androidLog(msg: String) = Log.v(androidTag, msg)
+    },
+    INFO {
+        override fun androidLog(msg: String) = Log.i(androidTag, msg)
+    },
+    WARN {
+        override fun androidLog(msg: String) = Log.w(androidTag, msg)
+    },
+    ERROR {
+        override fun androidLog(msg: String) = Log.e(androidTag, msg)
+    };
+
+    abstract fun androidLog(msg: String): Int
+
+    private companion object {
+        const val androidTag = "ReVanced Patcher"
     }
 }
