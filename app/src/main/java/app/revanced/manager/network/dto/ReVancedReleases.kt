@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class ReVancedReleases(
-    @SerialName("tools") val tools: List<Assets>,
+    @SerialName("tools") val tools: List<Asset>,
 )
 
 @Serializable
-class Assets(
+class Asset(
     @SerialName("repository") val repository: String,
     @SerialName("version") val version: String,
     @SerialName("timestamp") val timestamp: String,

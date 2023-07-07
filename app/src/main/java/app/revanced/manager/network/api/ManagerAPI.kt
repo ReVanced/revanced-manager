@@ -17,7 +17,6 @@ import io.ktor.utils.io.*
 import java.io.File
 
 class ManagerAPI(
-    private val app: Application,
     private val client: HttpClient,
     private val revancedRepository: ReVancedRepository
 ) {
@@ -27,7 +26,7 @@ class ManagerAPI(
 
     private suspend fun downloadAsset(downloadUrl: String, saveLocation: File) {
         client.get(downloadUrl) {
-            onDownload { bytesSentTotal, contentLength, ->
+            onDownload { bytesSentTotal, contentLength ->
                 downloadProgress = (bytesSentTotal.toFloat() / contentLength.toFloat())
                 downloadedSize = bytesSentTotal
                 totalSize = contentLength
@@ -51,19 +50,9 @@ class ManagerAPI(
         return patchBundleAsset.version to integrationsAsset.version
     }
 
-    suspend fun downloadManager(): File? {
-        try {
-            val managerAsset = revancedRepository.findAsset(ghManager, ".apk")
-            val managerFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).also { it.mkdirs() }
-                .resolve("revanced-manager.apk")
-            downloadAsset(managerAsset.downloadUrl, managerFile)
-            println("Downloaded manager at ${managerFile.absolutePath}")
-            return managerFile
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to download manager", e)
-            app.toast("Failed to download manager")
-        }
-        return null
+    suspend fun downloadManager(location: File) {
+        val managerAsset = revancedRepository.findAsset(ghManager, ".apk")
+        downloadAsset(managerAsset.downloadUrl, location)
     }
 }
 

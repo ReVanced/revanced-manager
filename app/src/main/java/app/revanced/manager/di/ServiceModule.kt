@@ -1,5 +1,6 @@
 package app.revanced.manager.di
 
+import app.revanced.manager.network.service.GithubService
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.service.ReVancedService
 import org.koin.core.module.dsl.singleOf
@@ -16,4 +17,5 @@ val serviceModule = module {
 
     single { provideReVancedService(get()) }
     singleOf(::HttpService)
+    singleOf(::GithubService)
 }

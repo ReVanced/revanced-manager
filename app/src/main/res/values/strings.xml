@@ -133,10 +133,13 @@
     <string name="update_notifications">Update notifications</string>
     <string name="update_notifications_description">Dialog on app launch + badges</string>
     <string name="changelog">Changelog</string>
+    <string name="changelog_loading">Loading changelog</string>
+    <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
     <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Tap here to turn off.</string>
     <string name="installing_manager_update">Installing update…</string>
     <string name="downloading_manager_update">Downloading update…</string>
+    <string name="download_manager_failed">Failed to download update: %s</string>
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>

@@ -1,7 +1,7 @@
 package app.revanced.manager.network.service
 
 import app.revanced.manager.network.api.MissingAssetException
-import app.revanced.manager.network.dto.Assets
+import app.revanced.manager.network.dto.Asset
 import app.revanced.manager.network.dto.ReVancedReleases
 import app.revanced.manager.network.dto.ReVancedRepositories
 import app.revanced.manager.network.utils.APIResponse
@@ -30,14 +30,14 @@ class ReVancedService(
         }
     }
 
-    suspend fun findAsset(repo: String, file: String): Assets {
+    suspend fun findAsset(repo: String, file: String): Asset {
         val releases = getAssets().getOrThrow()
 
         val asset = releases.tools.find { asset ->
             (asset.name.contains(file) && asset.repository.contains(repo))
         } ?: throw MissingAssetException()
 
-        return Assets(asset.repository, asset.version, asset.timestamp, asset.name,asset.size, asset.downloadUrl, asset.content_type)
+        return asset
     }
 
     private companion object {
