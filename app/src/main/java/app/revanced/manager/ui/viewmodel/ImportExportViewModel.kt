@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,6 +26,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import kotlin.io.path.deleteExisting
 
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
@@ -39,9 +45,48 @@ class ImportExportViewModel(
         private set
     var selectionAction by mutableStateOf<SelectionAction?>(null)
         private set
+    private var keystoreImportPath by mutableStateOf<Path?>(null)
+    val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
 
-    fun importKeystore(content: Uri, cn: String, pass: String) =
-        keystoreManager.import(cn, pass, contentResolver.openInputStream(content)!!)
+    fun startKeystoreImport(content: Uri) {
+        val path = File.createTempFile("signing", "ks", app.cacheDir).toPath()
+        Files.copy(
+            contentResolver.openInputStream(content)!!,
+            path,
+            StandardCopyOption.REPLACE_EXISTING
+        )
+
+        knownPasswords.forEach {
+            if (tryKeystoreImport(KeystoreManager.DEFAULT, it, path)) {
+                return
+            }
+        }
+
+        keystoreImportPath = path
+    }
+
+    fun cancelKeystoreImport() {
+        keystoreImportPath?.deleteExisting()
+        keystoreImportPath = null
+    }
+
+    fun tryKeystoreImport(cn: String, pass: String) =
+        tryKeystoreImport(cn, pass, keystoreImportPath!!)
+
+    private fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
+        if (keystoreManager.import(cn, pass, path)) {
+            cancelKeystoreImport()
+            return true
+        }
+
+        return false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        cancelKeystoreImport()
+    }
 
     fun exportKeystore(target: Uri) =
         keystoreManager.export(contentResolver.openOutputStream(target)!!)
@@ -119,5 +164,9 @@ class ImportExportViewModel(
                 }
             }
         }
+    }
+
+    private companion object {
+        val knownPasswords = setOf("ReVanced", "s3cur3p@ssw0rd")
     }
 }
