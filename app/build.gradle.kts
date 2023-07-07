@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.8.21"
+    kotlin("plugin.serialization") version "1.8.22"
     id("com.mikepenz.aboutlibraries.plugin") version "10.8.0"
 }
 
@@ -70,7 +70,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Compose
-    implementation(platform("androidx.compose:compose-bom:2023.05.01"))
+    implementation(platform("androidx.compose:compose-bom:2023.06.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.runtime:runtime-livedata")
@@ -96,7 +96,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
     // Room
-    val roomVersion = "2.5.1"
+    val roomVersion = "2.5.2"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
@@ -106,13 +106,13 @@ dependencies {
     implementation("app.revanced:revanced-patcher:11.0.4")
 
     // Signing
-    implementation("com.android.tools.build:apksig:8.2.0-alpha05")
+    implementation("com.android.tools.build:apksig:8.2.0-alpha10")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     // Koin
-    val koinVersion = "3.4.0"
+    val koinVersion = "3.4.2"
     implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.4")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.5")
     implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
 
     // Compose Navigation
@@ -122,7 +122,7 @@ dependencies {
     implementation("com.mikepenz:aboutlibraries-compose:10.8.0")
 
     // Ktor
-    val ktorVersion = "2.3.0"
+    val ktorVersion = "2.3.2"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
