@@ -36,8 +36,12 @@
     <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_descripion">Import a custom keystore</string>
-    <string name="import_keystore_preset_default">Default</string>
-    <string name="import_keystore_preset_flutter">ReVanced Manager (Flutter)</string>
+    <string name="import_keystore_dialog_title">Enter keystore credentials</string>
+    <string name="import_keystore_dialog_description">You\'ll need enter the keystore’s credentials to import it.</string>
+    <string name="import_keystore_dialog_alias_field">Username (Alias)</string>
+    <string name="import_keystore_dialog_password_field">Password</string>
+    <string name="import_keystore_dialog_button">Import</string>
+    <string name="import_keystore_wrong_credentials">Wrong keystore credentials</string>
     <string name="export_keystore">Export keystore</string>
     <string name="export_keystore_description">Export the current keystore</string>
     <string name="regenerate_keystore">Regenerate keystore</string>
@@ -96,6 +100,9 @@
     <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following versions: %2$s.</string>
 
     <string name="select_file">Select file</string>
+
+    <string name="show_password_field">Show password</string>
+    <string name="hide_password_field">Hide password</string>
 
     <string name="installer">Installer</string>
     <string name="install_app">Install</string>

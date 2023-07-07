@@ -11,6 +11,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.ContentSigner
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import java.io.File
+import java.io.InputStream
 import java.math.BigInteger
 import java.nio.file.Path
 import java.security.*
@@ -55,16 +56,33 @@ class Signer(
         return JcaX509CertificateConverter().getCertificate(builder.build(signer)) to pair.private
     }
 
-    fun signApk(input: File, output: File) {
-        Security.addProvider(BouncyCastleProvider())
-
+    private fun loadKeystore(): KeyStore {
         val ks = signingOptions.keyStoreFilePath
         if (!ks.exists()) newKeystore(ks) else {
             Log.i(tag, "Found existing keystore: ${ks.name}")
         }
 
+        Security.addProvider(BouncyCastleProvider())
         val keyStore = KeyStore.getInstance("BKS", "BC")
-        ks.inputStream().use { stream -> keyStore.load(stream, null) }
+        ks.inputStream().use { keyStore.load(it, null) }
+        return keyStore
+    }
+
+    fun canUnlock(): Boolean {
+        val keyStore = loadKeystore()
+        val alias = keyStore.aliases().nextElement()
+
+        try {
+            keyStore.getKey(alias, passwordCharArray)
+        } catch (_: UnrecoverableKeyException) {
+            return false
+        }
+
+        return true
+    }
+
+    fun signApk(input: File, output: File) {
+        val keyStore = loadKeystore()
         val alias = keyStore.aliases().nextElement()
 
         val config = ApkSigner.SignerConfig.Builder(
