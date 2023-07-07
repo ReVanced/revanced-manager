@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import app.revanced.manager.domain.manager.KeystoreManager
@@ -32,8 +33,11 @@ import app.revanced.manager.util.toast
 import app.revanced.patcher.logging.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -146,10 +150,12 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
         signedFile.delete()
     }
 
-    private fun signApk(): Boolean {
+    private suspend fun signApk(): Boolean {
         if (!hasSigned) {
             try {
-                keystoreManager.sign(outputFile, signedFile)
+                withContext(Dispatchers.Default) {
+                    keystoreManager.sign(outputFile, signedFile)
+                }
             } catch (e: Exception) {
                 Log.e(tag, "Got exception while signing", e)
                 app.toast(app.getString(R.string.sign_fail, e::class.simpleName))
@@ -160,22 +166,27 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
         return true
     }
 
-    fun export(uri: Uri?) = uri?.let {
-        if (signApk()) {
-            Files.copy(signedFile.toPath(), app.contentResolver.openOutputStream(it))
-            app.toast(app.getString(R.string.export_app_success))
+    fun export(uri: Uri?) = viewModelScope.launch {
+        uri?.let {
+            if (signApk()) {
+                withContext(Dispatchers.IO) {
+                    app.contentResolver.openOutputStream(it)
+                        .use { stream -> Files.copy(signedFile.toPath(), stream) }
+                }
+                app.toast(app.getString(R.string.export_app_success))
+            }
         }
     }
 
-    fun installOrOpen() {
+    fun installOrOpen() = viewModelScope.launch {
         installedPackageName?.let {
             pm.launch(it)
-            return
+            return@launch
         }
 
         isInstalling = true
         try {
-            if (!signApk()) return
+            if (!signApk()) return@launch
             pm.installApp(listOf(signedFile))
         } finally {
             isInstalling = false
