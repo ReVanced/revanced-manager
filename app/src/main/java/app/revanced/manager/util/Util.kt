@@ -1,6 +1,8 @@
 package app.revanced.manager.util
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.drawable.Drawable
