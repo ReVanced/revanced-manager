@@ -107,7 +107,7 @@ class PM(
         })
     }
 
-    fun installApp(apks: List<File>) {
+    suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller
         packageInstaller.openSession(packageInstaller.createSession(sessionParams)).use { session ->
             apks.forEach { apk -> session.writeApk(apk) }

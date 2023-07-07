@@ -39,7 +39,7 @@ class UpdateProgressViewModel(
         }
     }
 
-    fun installUpdate() {
+    fun installUpdate() = viewModelScope.launch {
         pm.installApp(listOf(location))
     }
 
