@@ -13,6 +13,8 @@
 
     <string name="general">General</string>
     <string name="general_description">General settings</string>
+    <string name="advanced">Advanced</string>
+    <string name="advanced_description">Advanced settings</string>
     <string name="updates">Updates</string>
     <string name="updates_description">Updates for ReVanced Manager</string>
     <string name="opensource_licenses">Open source licenses</string>
@@ -69,6 +71,12 @@
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
+    <string name="device">Device</string>
+    <string name="device_android_version">Android version</string>
+    <string name="device_model">Model</string>
+    <string name="device_architectures">CPU Architectures</string>
+    <string name="device_memory_limit">Memory limits</string>
+    <string name="device_memory_limit_format">Normal: %1$d MB, Large: %2$d MB</string>
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
     <string name="storage">Storage</string>

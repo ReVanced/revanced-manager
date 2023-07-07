@@ -82,6 +82,11 @@ fun SettingsScreen(
             Icons.Outlined.SwapVert
         ) to SettingsDestination.ImportExport,
         Triple(
+            R.string.advanced,
+            R.string.advanced_description,
+            Icons.Outlined.Tune
+        ) to SettingsDestination.Advanced,
+        Triple(
             R.string.about,
             R.string.about_description,
             Icons.Outlined.Info
@@ -97,6 +102,10 @@ fun SettingsScreen(
             is SettingsDestination.General -> GeneralSettingsScreen(
                 onBackClick = { navController.pop() },
                 viewModel = viewModel
+            )
+
+            is SettingsDestination.Advanced -> AdvancedSettingsScreen(
+                onBackClick = { navController.pop() }
             )
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
