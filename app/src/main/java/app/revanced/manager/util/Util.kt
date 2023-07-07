@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 typealias PatchesSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
@@ -94,3 +96,12 @@ inline fun <T, reified R, C> Flow<Iterable<T>>.flatMapLatestAndCombine(
         combiner(it)
     }
 }
+
+val Color.hexCode: String
+    inline get() {
+        val a: Int = (alpha * 255).toInt()
+        val r: Int = (red * 255).toInt()
+        val g: Int = (green * 255).toInt()
+        val b: Int = (blue * 255).toInt()
+        return java.lang.String.format(Locale.getDefault(), "%02X%02X%02X%02X", r, g, b, a)
+    }

@@ -39,6 +39,9 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
+import app.revanced.manager.ui.screen.settings.update.ManagerUpdateChangelog
+import app.revanced.manager.ui.screen.settings.update.UpdateProgressScreen
+import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
@@ -98,7 +101,8 @@ fun SettingsScreen(
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
                 onBackClick = { navController.pop() },
-                navController = navController
+                onChangelogClick = { navController.navigate(SettingsDestination.UpdateChangelog) },
+                onUpdateClick = { navController.navigate(SettingsDestination.UpdateProgress) }
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
@@ -117,6 +121,10 @@ fun SettingsScreen(
 
             is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
                { navController.pop() },
+            )
+
+            is SettingsDestination.UpdateChangelog -> ManagerUpdateChangelog(
+                onBackClick = { navController.pop() },
             )
 
             is SettingsDestination.Contributors -> ContributorScreen(

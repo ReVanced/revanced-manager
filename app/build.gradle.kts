@@ -82,6 +82,7 @@ dependencies {
     //implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-webview:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
@@ -128,4 +129,6 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
+    // Markdown to HTML
+    implementation("org.jetbrains:markdown:0.4.1")
 }
