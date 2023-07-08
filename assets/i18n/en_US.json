@@ -17,7 +17,7 @@
     "homeView": {
         "refreshSuccess": "Refreshed successfully",
         "widgetTitle": "Dashboard",
-        
+
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
 
@@ -211,6 +211,7 @@
 
         "resetStoredPatchesLabel": "Reset patches",
         "resetStoredPatchesHint": "Reset the stored patches selection",
+        "resetStoredPatchesDialogText": "Are you sure you want to reset the stored patches selection?",
         "resetStoredPatches": "Patches selection has been reset",
 
         "deleteLogsLabel": "Delete logs",
