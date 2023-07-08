@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-
 
 @lazySingleton
 class GithubAPI {
@@ -61,6 +59,22 @@ class GithubAPI {
   Future<Map<String, dynamic>?> getLatestRelease(
     String repoName,
   ) async {
+    try {
+      final response = await _dio.get(
+        '/repos/$repoName/releases',
+      );
+      return response.data[0];
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getLatestManagerRelease(
+      String repoName,
+      ) async {
     try {
       final response = await _dio.get(
         '/repos/$repoName/releases',
