@@ -116,5 +116,7 @@ body:
           required: true
         - label: I filled out all of the requested information in this issue properly.
           required: true
-        - label: The issue is related solely to the ReVanced Manager and not related to patching errors or patches
+        - label: The issue is related solely to the ReVanced Manager and not related to patching errors not caused by issues of the ReVanced Manager.
+          required: true
+          - label: The issue is related solely to the ReVanced Manager and not related to issues with patches.
           required: true
