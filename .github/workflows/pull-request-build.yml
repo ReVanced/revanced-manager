@@ -18,7 +18,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'zulu'
           cache: 'gradle'
       - name: Setup Flutter
