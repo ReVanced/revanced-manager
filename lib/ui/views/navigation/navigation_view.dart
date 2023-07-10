@@ -42,6 +42,7 @@ class NavigationView extends StatelessWidget {
                 context,
                 'navigationView.dashboardTab',
               ),
+              tooltip: '',
             ),
             NavigationDestination(
               icon: model.isIndexSelected(1)
@@ -51,6 +52,7 @@ class NavigationView extends StatelessWidget {
                 context,
                 'navigationView.patcherTab',
               ),
+              tooltip: '',
             ),
             NavigationDestination(
               icon: model.isIndexSelected(2)
@@ -60,6 +62,7 @@ class NavigationView extends StatelessWidget {
                 context,
                 'navigationView.settingsTab',
               ),
+              tooltip: '',
             ),
           ],
         ),

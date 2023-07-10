@@ -66,7 +66,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       context,
                       'installed',
                       translationParams: {
-                        'version':'v${widget.installedVersion}'
+                        'version': 'v${widget.installedVersion}'
                       },
                     ),
                   ),
@@ -75,8 +75,11 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       I18nText(
                         'suggested',
                         translationParams: {
-                          'version' : widget.suggestedVersion.isEmpty
-                              ? FlutterI18n.translate(context, 'appSelectorCard.allVersions')
+                          'version': widget.suggestedVersion.isEmpty
+                              ? FlutterI18n.translate(
+                                  context,
+                                  'appSelectorCard.allVersions',
+                                )
                               : 'v${widget.suggestedVersion}',
                         },
                       ),

@@ -112,12 +112,14 @@ class HomeViewModel extends BaseViewModel {
 
   Future<bool> hasManagerUpdates() async {
     String currentVersion = await _managerAPI.getCurrentManagerVersion();
-    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
 
     // add v to current version
     if (!currentVersion.startsWith('v')) {
       currentVersion = 'v$currentVersion';
     }
+
+    _latestManagerVersion =
+        await _managerAPI.getLatestManagerVersion() ?? currentVersion;
 
     if (_latestManagerVersion != currentVersion) {
       return true;
@@ -271,7 +273,8 @@ class HomeViewModel extends BaseViewModel {
                                   label: I18nText('updateButton'),
                                   onPressed: () async {
                                     await AppInstaller.installApk(
-                                        downloadedApk!.path,);
+                                      downloadedApk!.path,
+                                    );
                                   },
                                 ),
                               ),
@@ -345,7 +348,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<Map<String, dynamic>?> getLatestManagerRelease() {
-    return _githubAPI.getLatestRelease(_managerAPI.defaultManagerRepo);
+    return _githubAPI.getLatestManagerRelease(_managerAPI.defaultManagerRepo);
   }
 
   Future<String?> getLatestPatcherReleaseTime() {

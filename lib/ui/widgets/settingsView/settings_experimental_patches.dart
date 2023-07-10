@@ -34,9 +34,11 @@ class _SExperimentalPatchesState extends State<SExperimentalPatches> {
         setState(() {
           _settingsViewModel.useExperimentalPatches(value);
         });
-        if(!value) {
+        if (!value) {
           for (final patch in selectedUnsupportedPatches) {
-            PatchesSelectorViewModel().selectedPatches.removeWhere((element) => patch == element.name);
+            PatchesSelectorViewModel()
+                .selectedPatches
+                .removeWhere((element) => patch == element.name);
           }
           selectedUnsupportedPatches.clear();
         }

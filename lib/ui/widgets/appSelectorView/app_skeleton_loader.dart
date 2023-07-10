@@ -34,7 +34,8 @@ class AppSkeletonLoader extends StatelessWidget {
                       style: SkeletonLineStyle(
                         height: 20,
                         width: screenWidth * 0.4,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
                   ),
@@ -45,7 +46,8 @@ class AppSkeletonLoader extends StatelessWidget {
                       style: SkeletonLineStyle(
                         height: 15,
                         width: screenWidth * 0.6,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
                   ),
@@ -56,7 +58,8 @@ class AppSkeletonLoader extends StatelessWidget {
                       style: SkeletonLineStyle(
                         height: 15,
                         width: screenWidth * 0.5,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
                   ),
