@@ -107,7 +107,7 @@ body:
   - type: checkboxes
     id: acknowledgments
     attributes:
-      label: Acknowledgements
+      label: Acknowledgments
       description: Your issue will be closed if you haven't done these steps.
       options:
         - label: I have searched the existing issues; this is new and no duplicate or related to another open issue.
