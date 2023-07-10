@@ -131,7 +131,8 @@ class _PatchItemState extends State<PatchItem> {
                                   .areExperimentalPatchesEnabled()) {
                             widget.isSelected = false;
                             widget.toast.showBottom(
-                                'patchItem.unsupportedPatchVersion');
+                              'patchItem.unsupportedPatchVersion',
+                            );
                           } else {
                             widget.isSelected = newValue!;
                           }

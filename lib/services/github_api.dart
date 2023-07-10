@@ -88,14 +88,15 @@ class GithubAPI {
       }
       for (int i = 1; i < updates; i++) {
         releases.update(
-            'body',
-            (value) =>
-                value +
-                '\n' +
-                '# ' +
-                response.data[i]['tag_name'] +
-                '\n' +
-                response.data[i]['body']);
+          'body',
+          (value) =>
+              value +
+              '\n' +
+              '# ' +
+              response.data[i]['tag_name'] +
+              '\n' +
+              response.data[i]['body'],
+        );
       }
       return releases;
     } on Exception catch (e) {
