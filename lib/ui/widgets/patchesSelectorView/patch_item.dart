@@ -42,7 +42,9 @@ class PatchItem extends StatefulWidget {
 class _PatchItemState extends State<PatchItem> {
   @override
   Widget build(BuildContext context) {
-    widget.isSelected = widget.isSelected && (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled());
+    widget.isSelected = widget.isSelected &&
+        (!widget.isUnsupported ||
+            widget._managerAPI.areExperimentalPatchesEnabled());
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Opacity(
@@ -117,7 +119,7 @@ class _PatchItemState extends State<PatchItem> {
                       value: widget.isSelected,
                       activeColor: Theme.of(context).colorScheme.primary,
                       checkColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
+                          Theme.of(context).colorScheme.secondaryContainer,
                       side: BorderSide(
                         width: 2.0,
                         color: Theme.of(context).colorScheme.primary,
@@ -128,14 +130,15 @@ class _PatchItemState extends State<PatchItem> {
                               !widget._managerAPI
                                   .areExperimentalPatchesEnabled()) {
                             widget.isSelected = false;
-                            widget.toast
-                                .showBottom('patchItem.unsupportedPatchVersion');
+                            widget.toast.showBottom(
+                                'patchItem.unsupportedPatchVersion');
                           } else {
                             widget.isSelected = newValue!;
                           }
                           if (widget.isUnsupported &&
                               widget.isSelected &&
-                              !selectedUnsupportedPatches.contains(widget.name)) {
+                              !selectedUnsupportedPatches
+                                  .contains(widget.name)) {
                             selectedUnsupportedPatches.add(widget.name);
                           }
                         });

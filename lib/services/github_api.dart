@@ -73,20 +73,29 @@ class GithubAPI {
   }
 
   Future<Map<String, dynamic>?> getLatestManagerRelease(
-      String repoName,
-      ) async {
+    String repoName,
+  ) async {
     try {
       final response = await _dio.get(
         '/repos/$repoName/releases',
       );
       final Map<String, dynamic> releases = response.data[0];
       int updates = 0;
-      final String currentVersion = await ManagerAPI().getCurrentManagerVersion();
+      final String currentVersion =
+          await ManagerAPI().getCurrentManagerVersion();
       while (response.data[updates]['tag_name'] != 'v$currentVersion') {
         updates++;
       }
-      for(int i = 1; i < updates; i++){
-        releases.update('body', (value) => value + '\n' + '# '+ response.data[i]['tag_name']+'\n' + response.data[i]['body']);
+      for (int i = 1; i < updates; i++) {
+        releases.update(
+            'body',
+            (value) =>
+                value +
+                '\n' +
+                '# ' +
+                response.data[i]['tag_name'] +
+                '\n' +
+                response.data[i]['body']);
       }
       return releases;
     } on Exception catch (e) {

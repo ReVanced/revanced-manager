@@ -60,8 +60,7 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                     child: Text(
                       '',
                       style: TextStyle(
-                        color:
-                        Theme.of(context).textTheme.titleLarge!.color,
+                        color: Theme.of(context).textTheme.titleLarge!.color,
                       ),
                     ),
                   ),
@@ -70,8 +69,9 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                       I18nText(
                         'suggested',
                         translationParams: {
-                          'version' : widget.suggestedVersion.isEmpty
-                              ? FlutterI18n.translate(context, 'appSelectorCard.allVersions')
+                          'version': widget.suggestedVersion.isEmpty
+                              ? FlutterI18n.translate(
+                                  context, 'appSelectorCard.allVersions')
                               : 'v${widget.suggestedVersion}',
                         },
                       ),
