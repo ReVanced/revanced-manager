@@ -59,8 +59,8 @@ dependencies:
   pull_to_refresh: ^2.0.0
   root:
     git:
-      url: https://github.com/gokul1630/root
-      ref: main
+      url: https://github.com/EvadeMaster/root
+      ref: 9bcf0dc06b8e2e3ccd5fbd16bc849938e817b36b
   share_extend: ^2.0.0
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
