@@ -7,6 +7,7 @@ import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_man
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_fetch_app_info.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
@@ -23,6 +24,7 @@ class SAdvancedSection extends StatelessWidget {
         SManageApiUrlUI(),
         SManageSourcesUI(),
         // SManageKeystorePasswordUI(),
+        SFetchAppInfo(),
         SExperimentalUniversalPatches(),
         SExperimentalPatches(),
         ListTile(

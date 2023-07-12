@@ -28,6 +28,14 @@ class SettingsViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.contributorsView);
   }
 
+  bool isFetchAppInfoEnabled() {
+    return _managerAPI.isFetchAppInfoEnabled();
+  }
+
+  void toggleFetchAppInfo(bool value) {
+    _managerAPI.setFetchAppInfoStatus(value);
+  }
+
   bool areUniversalPatchesEnabled() {
     return _managerAPI.areUniversalPatchesEnabled();
   }

@@ -28,6 +28,7 @@ class ManagerAPI {
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://releases.revanced.app/';
+  List<String> defaultAppInfoSources = ['Google Play Store', 'APKPure', 'APKMirror'];
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
@@ -57,6 +58,14 @@ class ManagerAPI {
     await _revancedAPI.initialize(url);
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
+  }
+
+  List<String> getAppInfoSources() {
+    return _prefs.getStringList('appInfoSources') ?? defaultAppInfoSources;
+  }
+
+  Future<void> setAppInfoSources(List<String> sources) async {
+    await _prefs.setStringList('appInfoSources', sources);
   }
 
   String getRepoUrl() {
@@ -106,6 +115,14 @@ class ManagerAPI {
 
   Future<void> setUseDarkTheme(bool value) async {
     await _prefs.setBool('useDarkTheme', value);
+  }
+
+  bool isFetchAppInfoEnabled() {
+    return _prefs.getBool('fetchAppInfoEnabled') ?? false;
+  }
+
+  Future<void> setFetchAppInfoStatus(bool value) async {
+    await _prefs.setBool('fetchAppInfoEnabled', value);
   }
 
   bool areUniversalPatchesEnabled() {
