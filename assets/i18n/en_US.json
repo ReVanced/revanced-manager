@@ -168,7 +168,7 @@
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
         "fetchAppInfoLabel": "Fetch app metadata",
-        "fetchAppInfoDialogTitle": "Choose Sources",
+        "fetchAppInfoDialogTitle": "Choose services",
         "fetchAppInfoDialogText": "External services will be used to fetch app metadata. Your IP address will be exposed to these services.",
         "fetchAppInfoLabelHint": "Fetch app icon and name from external sources for apps that are not installed on this device",
         "sourcesIntegrationsLabel": "Integrations source",
