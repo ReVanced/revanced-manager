@@ -75,6 +75,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
   dio_cache_interceptor: ^3.4.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   json_serializable: ^6.6.1

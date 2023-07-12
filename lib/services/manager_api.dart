@@ -64,6 +64,26 @@ class ManagerAPI {
     return _prefs.getStringList('appInfoSources') ?? defaultAppInfoSources;
   }
 
+  List<Map<String, dynamic>> getAppInfo(){
+    final List<Map<String, dynamic>> appInfo = [];
+    final List<String> data = _prefs.getStringList('appInfo') ?? [];
+    for (final String element in data) {
+      final Map<String, dynamic> info = jsonDecode(element);
+      if(!appInfo.contains(info)){
+        appInfo.add(info);
+      }
+    }
+    return appInfo;
+  }
+
+  Future<void> setAppInfo(List<Map<String, dynamic>> info) async{
+    final List<String> data = [];
+    for (final Map<String, dynamic> element in info) {
+      data.add(jsonEncode(element));
+    }
+    await _prefs.setStringList('appInfo', data);
+  }
+
   Future<void> setAppInfoSources(List<String> sources) async {
     await _prefs.setStringList('appInfoSources', sources);
   }

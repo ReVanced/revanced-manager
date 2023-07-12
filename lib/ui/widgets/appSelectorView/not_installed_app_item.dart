@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -33,8 +34,12 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
   @override
   void initState() {
     super.initState();
-    if (fetch && !_packageDetails.toString().contains('${widget.name}}')) {
-      getPackageDetails();
+    if(fetch){
+      _packageDetails = _managerAPI.getAppInfo();
+      if (!_packageDetails.toString().contains('${widget.name}}')) {
+        getPackageDetails();
+        _managerAPI.setAppInfo(_packageDetails);
+      }
     }
   }
 
@@ -48,12 +53,14 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
 
   @override
   Widget build(BuildContext context) {
-    final int index = fetch?(_packageDetails.toString().contains('${widget.name}}'))
-        ? _packageDetails.indexOf(
-            _packageDetails
-                .firstWhere((element) => element['pkgName'] == widget.name),
-          )
-        : -1:-1;
+    final int index = fetch
+        ? (_packageDetails.toString().contains('${widget.name}}'))
+            ? _packageDetails.indexOf(
+                _packageDetails
+                    .firstWhere((element) => element['pkgName'] == widget.name),
+              )
+            : -1
+        : -1;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: CustomCard(
@@ -69,7 +76,19 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
               child: (index != -1)
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network(_packageDetails[index]['image']),
+                      child: CachedNetworkImage(
+                          imageUrl: _packageDetails[index]['image'],
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              SizedBox(
+                                height: 48,
+                                width: 48,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value: progress.progress,
+                                  ),
+                                ),
+                              ),
+                      ),
                     )
                   : const CircleAvatar(
                       backgroundColor: Colors.transparent,
