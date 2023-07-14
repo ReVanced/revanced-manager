@@ -13,15 +13,67 @@ import androidx.core.view.WindowCompat
 import app.revanced.manager.R
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = rv_theme_dark_primary,
+    onPrimary = rv_theme_dark_onPrimary,
+    primaryContainer = rv_theme_dark_primaryContainer,
+    onPrimaryContainer = rv_theme_dark_onPrimaryContainer,
+    secondary = rv_theme_dark_secondary,
+    onSecondary = rv_theme_dark_onSecondary,
+    secondaryContainer = rv_theme_dark_secondaryContainer,
+    onSecondaryContainer = rv_theme_dark_onSecondaryContainer,
+    tertiary = rv_theme_dark_tertiary,
+    onTertiary = rv_theme_dark_onTertiary,
+    tertiaryContainer = rv_theme_dark_tertiaryContainer,
+    onTertiaryContainer = rv_theme_dark_onTertiaryContainer,
+    error = rv_theme_dark_error,
+    errorContainer = rv_theme_dark_errorContainer,
+    onError = rv_theme_dark_onError,
+    onErrorContainer = rv_theme_dark_onErrorContainer,
+    background = rv_theme_dark_background,
+    onBackground = rv_theme_dark_onBackground,
+    surface = rv_theme_dark_surface,
+    onSurface = rv_theme_dark_onSurface,
+    surfaceVariant = rv_theme_dark_surfaceVariant,
+    onSurfaceVariant = rv_theme_dark_onSurfaceVariant,
+    outline = rv_theme_dark_outline,
+    inverseOnSurface = rv_theme_dark_inverseOnSurface,
+    inverseSurface = rv_theme_dark_inverseSurface,
+    inversePrimary = rv_theme_dark_inversePrimary,
+    surfaceTint = rv_theme_dark_surfaceTint,
+    outlineVariant = rv_theme_dark_outlineVariant,
+    scrim = rv_theme_dark_scrim,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = rv_theme_light_primary,
+    onPrimary = rv_theme_light_onPrimary,
+    primaryContainer = rv_theme_light_primaryContainer,
+    onPrimaryContainer = rv_theme_light_onPrimaryContainer,
+    secondary = rv_theme_light_secondary,
+    onSecondary = rv_theme_light_onSecondary,
+    secondaryContainer = rv_theme_light_secondaryContainer,
+    onSecondaryContainer = rv_theme_light_onSecondaryContainer,
+    tertiary = rv_theme_light_tertiary,
+    onTertiary = rv_theme_light_onTertiary,
+    tertiaryContainer = rv_theme_light_tertiaryContainer,
+    onTertiaryContainer = rv_theme_light_onTertiaryContainer,
+    error = rv_theme_light_error,
+    errorContainer = rv_theme_light_errorContainer,
+    onError = rv_theme_light_onError,
+    onErrorContainer = rv_theme_light_onErrorContainer,
+    background = rv_theme_light_background,
+    onBackground = rv_theme_light_onBackground,
+    surface = rv_theme_light_surface,
+    onSurface = rv_theme_light_onSurface,
+    surfaceVariant = rv_theme_light_surfaceVariant,
+    onSurfaceVariant = rv_theme_light_onSurfaceVariant,
+    outline = rv_theme_light_outline,
+    inverseOnSurface = rv_theme_light_inverseOnSurface,
+    inverseSurface = rv_theme_light_inverseSurface,
+    inversePrimary = rv_theme_light_inversePrimary,
+    surfaceTint = rv_theme_light_surfaceTint,
+    outlineVariant = rv_theme_light_outlineVariant,
+    scrim = rv_theme_light_scrim,
 )
 
 @Composable
@@ -33,7 +85,10 @@ fun ReVancedManagerTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme)
+                dynamicDarkColorScheme(context)
+            else
+                dynamicLightColorScheme(context)
         }
 
         darkTheme -> DarkColorScheme
@@ -47,8 +102,8 @@ fun ReVancedManagerTheme(
 
             WindowCompat.setDecorFitsSystemWindows(activity.window, false)
 
-            activity.window.navigationBarColor = colorScheme.background.toArgb()
             activity.window.statusBarColor = Color.Transparent.toArgb()
+            activity.window.navigationBarColor = Color.Transparent.toArgb()
 
             WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = !darkTheme
             WindowCompat.getInsetsController(activity.window, view).isAppearanceLightNavigationBars = !darkTheme
