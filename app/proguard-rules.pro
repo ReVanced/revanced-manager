@@ -48,5 +48,6 @@
 -dontwarn java.awt.**
 -dontwarn javax.**
 -dontwarn org.slf4j.**
+-dontwarn it.skrape.fetcher.*
 
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
