@@ -15,13 +15,10 @@ import androidx.compose.runtime.Immutable
 import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import java.io.File
@@ -43,12 +40,10 @@ class PM(
     private val app: Application,
     private val sourceRepository: SourceRepository
 ) {
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
-
     private val installedApps = MutableStateFlow(emptyList<AppInfo>())
     private val compatibleApps = MutableStateFlow(emptyList<AppInfo>())
 
-    val appList: StateFlow<List<AppInfo>> = compatibleApps.combine(installedApps) { compatibleApps, installedApps ->
+    val appList: Flow<List<AppInfo>> = compatibleApps.combine(installedApps) { compatibleApps, installedApps ->
         if (compatibleApps.isNotEmpty()) {
             (compatibleApps + installedApps)
                 .distinctBy { it.packageName }
@@ -60,7 +55,7 @@ class PM(
         } else {
             emptyList()
         }
-    }.stateIn(coroutineScope, SharingStarted.Eagerly, emptyList())
+    }
 
     suspend fun getCompatibleApps() {
         sourceRepository.bundles.collect { bundles ->
@@ -125,7 +120,7 @@ class PM(
         app.startActivity(it)
     }
 
-    fun getApkInfo(apk: File) = app.packageManager.getPackageArchiveInfo(apk.path, 0)!!.let {
+    fun getApkInfo(apk: File) = app.packageManager.getPackageArchiveInfo(apk.path, 0)?.let {
         AppInfo(
             it.packageName,
             0,

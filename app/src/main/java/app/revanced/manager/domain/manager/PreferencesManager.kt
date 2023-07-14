@@ -15,6 +15,8 @@ class PreferencesManager(
 
     var allowExperimental by booleanPreference("allow_experimental", false)
 
+    var preferSplits by booleanPreference("prefer_splits", false)
+
     var keystoreCommonName by stringPreference("keystore_cn", KeystoreManager.DEFAULT)
     var keystorePass by stringPreference("keystore_pass", KeystoreManager.DEFAULT)
 }

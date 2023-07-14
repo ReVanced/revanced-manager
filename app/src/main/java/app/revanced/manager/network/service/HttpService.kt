@@ -5,11 +5,21 @@ import app.revanced.manager.network.utils.APIError
 import app.revanced.manager.network.utils.APIFailure
 import app.revanced.manager.network.utils.APIResponse
 import app.revanced.manager.util.tag
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
+import io.ktor.client.request.prepareGet
+import io.ktor.client.request.request
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.isSuccess
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.core.isNotEmpty
+import io.ktor.utils.io.core.readBytes
+import it.skrape.core.htmlDocument
 import kotlinx.serialization.json.Json
+import java.io.File
 
 /**
  * @author Aliucord Authors, DiamondMiner88
@@ -48,4 +58,34 @@ class HttpService(
         }
         return response
     }
+
+    suspend fun download(
+        saveLocation: File,
+        builder: HttpRequestBuilder.() -> Unit
+    ) {
+        http.prepareGet(builder).execute { httpResponse ->
+            if (httpResponse.status.isSuccess()) {
+
+                saveLocation.outputStream().use { stream ->
+                    val channel: ByteReadChannel = httpResponse.body()
+                    while (!channel.isClosedForRead) {
+                        val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
+                        while (packet.isNotEmpty) {
+                            val bytes = packet.readBytes()
+                            stream.write(bytes)
+                        }
+                    }
+                }
+
+            } else {
+                throw HttpException(httpResponse.status)
+            }
+        }
+    }
+
+    suspend fun getHtml(builder: HttpRequestBuilder.() -> Unit) = htmlDocument(
+        html = http.get(builder).bodyAsText()
+    )
+
+    class HttpException(status: HttpStatusCode) : Exception("Failed to fetch: http status: $status")
 }

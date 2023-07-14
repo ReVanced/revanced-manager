@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,18 +31,24 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.AppInfo
+import app.revanced.manager.util.toast
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
     onAppClick: (AppInfo) -> Unit,
+    onDownloaderClick: (AppInfo) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = getViewModel()
 ) {
+    val context = LocalContext.current
+
     val pickApkLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let { apkUri -> onAppClick(vm.loadSelectedFile(apkUri)) }
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { apkUri ->
+                vm.loadSelectedFile(apkUri)?.let(onAppClick) ?: context.toast(context.getString(R.string.failed_to_load_apk))
+            }
         }
 
     var filterText by rememberSaveable { mutableStateOf("") }
@@ -55,6 +62,17 @@ fun AppSelectorScreen(
                 true
             ) or app.packageName.contains(filterText, true)
         }
+    }
+
+    var selectedApp: AppInfo? by rememberSaveable { mutableStateOf(null) }
+
+    selectedApp?.let {
+        VersionDialog(
+            selectedApp = it,
+            onDismissRequest = { selectedApp = null },
+            onSelectVersionClick = onDownloaderClick,
+            onContinueClick = onAppClick
+        )
     }
 
     // TODO: find something better for this
@@ -121,7 +139,9 @@ fun AppSelectorScreen(
         }
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(paddingValues)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
             item {
                 ListItem(
@@ -149,9 +169,7 @@ fun AppSelectorScreen(
                 ) { app ->
 
                     ListItem(
-                        modifier = Modifier.clickable {
-                            app.packageInfo?.let { onAppClick(app) }
-                        },
+                        modifier = Modifier.clickable { selectedApp = app },
                         leadingContent = { AppIcon(app, null) },
                         headlineContent = { Text(vm.loadLabel(app.packageInfo)) },
                         supportingContent = { Text(app.packageName) },
@@ -165,3 +183,50 @@ fun AppSelectorScreen(
         }
     }
 }
+
+@Composable
+fun VersionDialog(
+    selectedApp: AppInfo,
+    onDismissRequest: () -> Unit,
+    onSelectVersionClick: (AppInfo) -> Unit,
+    onContinueClick: (AppInfo) -> Unit
+) = if (selectedApp.packageInfo != null) AlertDialog(
+    onDismissRequest = onDismissRequest,
+    title = { Text(stringResource(R.string.continue_with_version)) },
+    text = { Text(stringResource(R.string.version_not_supported, selectedApp.packageInfo.versionName)) },
+    confirmButton = {
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            TextButton(onClick = {
+                onSelectVersionClick(selectedApp)
+                onDismissRequest()
+            }) {
+                Text(stringResource(R.string.download_another_version))
+            }
+            TextButton(onClick = {
+                onContinueClick(selectedApp)
+                onDismissRequest()
+            }) {
+                Text(stringResource(R.string.continue_anyways))
+            }
+        }
+    }
+) else AlertDialog(
+    onDismissRequest = onDismissRequest,
+    title = { Text(stringResource(R.string.download_application)) },
+    text = { Text(stringResource(R.string.app_not_installed)) },
+    confirmButton = {
+        TextButton(onClick = {
+            onDismissRequest()
+        }) {
+            Text(stringResource(R.string.cancel))
+        }
+        TextButton(onClick = {
+            onSelectVersionClick(selectedApp)
+            onDismissRequest()
+        }) {
+            Text(stringResource(R.string.download_app))
+        }
+    }
+)

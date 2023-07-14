@@ -67,12 +67,14 @@ inline fun uiSafe(context: Context, @StringRes toastMsg: Int, logMsg: String, bl
         context.toast(
             context.getString(
                 toastMsg,
-                error.message ?: error.cause?.message ?: error::class.simpleName
+                error.simpleMessage()
             )
         )
         Log.e(tag, logMsg, error)
     }
 }
+
+fun Throwable.simpleMessage() = this.message ?: this.cause?.message ?: this::class.simpleName
 
 inline fun LifecycleOwner.launchAndRepeatWithViewLifecycle(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
