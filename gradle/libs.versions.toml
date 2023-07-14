@@ -24,7 +24,8 @@ devToolsGradlePlugin = "1.8.21-1.0.11"
 aboutLibrariesGradlePlugin = "10.8.0"
 coil = "2.4.0"
 app-icon-loader-coil = "1.5.0"
-skrapeit = "1.1.5"
+skrapeit = "1.2.1"
+
 [libraries]
 # AndroidX Core
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -89,7 +90,9 @@ ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-nego
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 # HTML Scraper
-skrapeit= { group = "it.skrape", name = "skrapeit", version.ref = "skrapeit" }
+skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skrapeit" }
+skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
+
 # Markdown
 markdown = { group = "org.jetbrains", name = "markdown", version.ref = "markdown" }
 
