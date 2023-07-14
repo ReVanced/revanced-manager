@@ -162,21 +162,24 @@ fun PatchesSelectorScreen(
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
                             FilterChip(
-                                selected = vm.filter and SHOW_SUPPORTED != 0,
+                                selected = vm.filter and SHOW_SUPPORTED != 0 && bundle.supported.isNotEmpty(),
                                 onClick = { vm.toggleFlag(SHOW_SUPPORTED) },
-                                label = { Text(stringResource(R.string.supported)) }
+                                label = { Text(stringResource(R.string.supported)) },
+                                enabled = bundle.supported.isNotEmpty()
                             )
 
                             FilterChip(
-                                selected = vm.filter and SHOW_UNIVERSAL != 0,
+                                selected = vm.filter and SHOW_UNIVERSAL != 0 && bundle.universal.isNotEmpty(),
                                 onClick = { vm.toggleFlag(SHOW_UNIVERSAL) },
-                                label = { Text(stringResource(R.string.universal)) }
+                                label = { Text(stringResource(R.string.universal)) },
+                                enabled = bundle.universal.isNotEmpty()
                             )
 
                             FilterChip(
-                                selected = vm.filter and SHOW_UNSUPPORTED != 0,
+                                selected = vm.filter and SHOW_UNSUPPORTED != 0 && bundle.unsupported.isNotEmpty(),
                                 onClick = { vm.toggleFlag(SHOW_UNSUPPORTED) },
-                                label = { Text(stringResource(R.string.unsupported)) }
+                                label = { Text(stringResource(R.string.unsupported)) },
+                                enabled = bundle.unsupported.isNotEmpty()
                             )
                         }
 
