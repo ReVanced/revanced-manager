@@ -1,0 +1,100 @@
+[versions]
+ktx = "1.10.1"
+viewmodel-lifecycle = "2.6.1"
+splash-screen = "1.0.1"
+compose-activity = "1.7.2"
+paging = "3.1.1"
+work-runtime = "2.8.1ō"
+compose-bom = "2023.06.01"
+accompanist = "0.30.1"
+serialization = "1.5.1"
+collection = "0.3.5"
+room-version = "2.5.2"
+patcher = "11.0.4"
+apksign = "8.0.2"
+bcpkix-jdk15on = "1.70"
+koin-version = "3.4.2"
+koin-version-compose = "3.4.5"
+reimagined-navigation = "1.4.0"
+ktor = "2.3.2"
+markdown = "0.4.1"
+androidGradlePlugin = "8.0.2"
+kotlinGradlePlugin = "1.8.21"
+devToolsGradlePlugin = "1.8.21-1.0.11"
+aboutLibrariesGradlePlugin = "10.8.0"
+coil = "2.4.0"
+app-icon-loader-coil = "1.5.0"
+skrapeit = "1.1.5"
+[libraries]
+# AndroidX Core
+androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewmodel-lifecycle" }
+runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
+splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
+work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
+
+# Compose
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+# Coil
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-appiconloader = { group = "me.zhanghai.android.appiconloader", name = "appiconloader-coil", version.ref = "app-icon-loader-coil" }
+
+# Accompanist
+accompanist-drawablepainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
+accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist" }
+
+# Kotlinx
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+kotlinx-collection-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "collection" }
+
+# Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-version" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
+
+# Patcher
+patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "patcher" }
+
+# Signing
+apksign = { group = "com.android.tools.build", name = "apksig", version.ref = "apksign" }
+bcpkix-jdk15on = { group = "org.bouncycastle", name = "bcpkix-jdk15on", version.ref = "bcpkix-jdk15on" }
+
+# Koin
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-version-compose" }
+koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin-version" }
+
+# Compose Navigation
+reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
+
+# about-libraries
+about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "aboutLibrariesGradlePlugin" }
+
+# Ktor
+ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# HTML Scraper
+skrapeit= { group = "it.skrape", name = "skrapeit", version.ref = "skrapeit" }
+# Markdown
+markdown = { group = "org.jetbrains", name = "markdown", version.ref = "markdown" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
+devtools = { id = "com.google.devtools.ksp", version.ref = "devToolsGradlePlugin" }
+about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibrariesGradlePlugin" }
