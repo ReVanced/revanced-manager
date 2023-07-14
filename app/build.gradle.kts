@@ -31,13 +31,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     packaging {
         resources {
             excludes += "/prebuilt/**"
+            excludes += "META-INF/DEPENDENCIES"
         }
     }
 
@@ -46,7 +47,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
 
     buildFeatures.compose = true
@@ -55,7 +56,7 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(11)
 }
 
 dependencies {
@@ -86,6 +87,11 @@ dependencies {
     //implementation("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
     //implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
+    // HTML Scraper
+    implementation("it.skrape:skrapeit:1.1.5") {
+        exclude(group = "xml-apis", module = "xml-apis")
+    }
+
     // Coil (async image loading, network image)
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("me.zhanghai.android.appiconloader:appiconloader-coil:1.5.0")
@@ -106,7 +112,7 @@ dependencies {
     implementation("app.revanced:revanced-patcher:11.0.4")
 
     // Signing
-    implementation("com.android.tools.build:apksig:8.2.0-alpha10")
+    implementation("com.android.tools.build:apksig:8.0.2")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     // Koin

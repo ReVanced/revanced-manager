@@ -3,6 +3,7 @@ package app.revanced.manager.di
 import android.content.Context
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -35,6 +36,9 @@ val httpModule = module {
         }
         install(ContentNegotiation) {
             json(json)
+        }
+        install(HttpTimeout) {
+            socketTimeoutMillis = 10000
         }
     }
 

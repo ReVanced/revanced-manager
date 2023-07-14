@@ -10,6 +10,7 @@
     <string name="settings">Settings</string>
     <string name="select_app">Select an app</string>
     <string name="select_patches">Select patches</string>
+    <string name="select_version">Select version</string>
 
     <string name="general">General</string>
     <string name="general_description">General settings</string>
@@ -56,7 +57,11 @@
     <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
     <string name="clear_patches_selection">Clear patches selection</string>
     <string name="clear_patches_selection_description">Clear all patches selection</string>
-    
+    <string name="prefer_splits">Prefer split apks</string>
+    <string name="prefer_splits_description">Prefer split apks instead of full apks</string>
+    <string name="prefer_universal">Prefer universal apks</string>
+    <string name="prefer_universal_description">Prefer universal instead of arch-specific apks</string>
+
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
     <string name="downloading_patches">Downloading patch bundle…</string>
@@ -71,10 +76,12 @@
     <string name="help">Help</string>
     <string name="back">Back</string>
     <string name="add">Add</string>
+    <string name="delete">Delete</string>
     <string name="system">System</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
+    <string name="downloaded_apps">Downloaded apps</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
     <string name="device_model">Model</string>
@@ -87,6 +94,9 @@
     <string name="tab_apps">Apps</string>
     <string name="tab_sources">Sources</string>
     <string name="reload_sources">Reload all sources</string>
+    <string name="continue_anyways">Continue anyways</string>
+    <string name="download_another_version">Download another version</string>
+    <string name="download_app">Download app</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
@@ -97,7 +107,16 @@
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
-    <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following versions: %2$s.</string>
+    <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following version(s): %2$s.</string>
+    <string name="continue_with_version">Continue with this version?</string>
+    <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
+    <string name="download_application">Download application?</string>
+    <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
+    <string name="failed_to_load_apk">Failed to load apk</string>
+
+    <string name="error_occurred">An error occurred</string>
+    <string name="already_downloaded">Already downloaded</string>
+    <string name="downloading_app">Downloading app… (%1$s MB/%2$s MB)</string>
 
     <string name="select_file">Select file</string>
 

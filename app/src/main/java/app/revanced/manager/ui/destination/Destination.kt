@@ -19,6 +19,9 @@ sealed interface Destination : Parcelable {
     object Settings : Destination
 
     @Parcelize
+    data class AppDownloader(val app: AppInfo) : Destination
+
+    @Parcelize
     data class PatchesSelector(val input: AppInfo) : Destination
 
     @Parcelize
