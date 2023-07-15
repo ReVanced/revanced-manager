@@ -1,16 +1,49 @@
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patched_application.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
-class InstalledAppsCard extends StatelessWidget {
-  InstalledAppsCard({Key? key}) : super(key: key);
+class InstalledAppsCard extends StatefulWidget {
+  const InstalledAppsCard({Key? key}) : super(key: key);
 
-  final List<PatchedApplication> apps =
-      locator<HomeViewModel>().patchedInstalledApps;
+  @override
+  State<InstalledAppsCard> createState() => _InstalledAppsCardState();
+}
+
+class _InstalledAppsCardState extends State<InstalledAppsCard> {
+  List<PatchedApplication> apps = locator<HomeViewModel>().patchedInstalledApps;
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  List<PatchedApplication> patchedApps = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getApps();
+  }
+
+  Future _getApps() async {
+    if (apps.isNotEmpty) {
+      patchedApps = [...apps];
+      for (final element in apps) {
+        await DeviceApps.getApp(element.packageName).then((value) {
+          if (element.version != value?.versionName) {
+            patchedApps.remove(element);
+          }
+        });
+      }
+      if (apps.length != patchedApps.length) {
+        await _managerAPI.setPatchedApps(patchedApps);
+        apps.clear();
+        apps = [...patchedApps];
+      }
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
