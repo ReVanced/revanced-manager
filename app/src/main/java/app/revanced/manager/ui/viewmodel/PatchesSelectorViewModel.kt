@@ -40,10 +40,9 @@ class PatchesSelectorViewModel(
     val appInfo: AppInfo
 ) : ViewModel(), KoinComponent {
     private val selectionRepository: PatchSelectionRepository = get()
-    private val prefs: PreferencesManager = get()
     private val savedStateHandle: SavedStateHandle = get()
-    val allowExperimental get() = prefs.allowExperimental
 
+    val allowExperimental = get<PreferencesManager>().allowExperimental
     val bundlesFlow = get<SourceRepository>().sources.flatMapLatestAndCombine(
         combiner = { it }
     ) { source ->
@@ -121,7 +120,7 @@ class PatchesSelectorViewModel(
                 selectionRepository.updateSelection(appInfo.packageName, it)
             }
         }.mapValues { it.value.toMutableSet() }.apply {
-            if (allowExperimental) {
+            if (allowExperimental.get()) {
                 return@apply
             }
 

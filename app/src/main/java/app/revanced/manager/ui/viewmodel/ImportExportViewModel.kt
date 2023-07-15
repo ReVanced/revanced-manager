@@ -48,17 +48,20 @@ class ImportExportViewModel(
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
 
-    fun startKeystoreImport(content: Uri) {
-        val path = File.createTempFile("signing", "ks", app.cacheDir).toPath()
-        Files.copy(
-            contentResolver.openInputStream(content)!!,
-            path,
-            StandardCopyOption.REPLACE_EXISTING
-        )
+    fun startKeystoreImport(content: Uri) = viewModelScope.launch {
+        val path = withContext(Dispatchers.IO) {
+            File.createTempFile("signing", "ks", app.cacheDir).toPath().also {
+                Files.copy(
+                    contentResolver.openInputStream(content)!!,
+                    it,
+                    StandardCopyOption.REPLACE_EXISTING
+                )
+            }
+        }
 
         knownPasswords.forEach {
             if (tryKeystoreImport(KeystoreManager.DEFAULT, it, path)) {
-                return
+                return@launch
             }
         }
 
@@ -70,10 +73,10 @@ class ImportExportViewModel(
         keystoreImportPath = null
     }
 
-    fun tryKeystoreImport(cn: String, pass: String) =
+    suspend fun tryKeystoreImport(cn: String, pass: String) =
         tryKeystoreImport(cn, pass, keystoreImportPath!!)
 
-    private fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
+    private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
         if (keystoreManager.import(cn, pass, path)) {
             cancelKeystoreImport()
             return true
@@ -88,10 +91,14 @@ class ImportExportViewModel(
         cancelKeystoreImport()
     }
 
-    fun exportKeystore(target: Uri) =
-        keystoreManager.export(contentResolver.openOutputStream(target)!!)
+    fun canExport() = keystoreManager.hasKeystore()
 
-    fun regenerateKeystore() = keystoreManager.regenerate().also {
+    fun exportKeystore(target: Uri) = viewModelScope.launch {
+        keystoreManager.export(contentResolver.openOutputStream(target)!!)
+    }
+
+    fun regenerateKeystore() = viewModelScope.launch {
+        keystoreManager.regenerate()
         app.toast(app.getString(R.string.regenerate_keystore_success))
     }
 

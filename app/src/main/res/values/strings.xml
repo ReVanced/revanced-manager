@@ -45,6 +45,7 @@
     <string name="import_keystore_wrong_credentials">Wrong keystore credentials</string>
     <string name="export_keystore">Export keystore</string>
     <string name="export_keystore_description">Export the current keystore</string>
+    <string name="export_keystore_unavailable">No keystore to export</string>
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>

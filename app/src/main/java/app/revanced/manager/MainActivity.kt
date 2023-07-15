@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.destination.Destination
@@ -56,9 +57,12 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            val theme by prefs.theme.getAsState()
+            val dynamicColor by prefs.dynamicColor.getAsState()
+
             ReVancedManagerTheme(
-                darkTheme = prefs.theme == Theme.SYSTEM && isSystemInDarkTheme() || prefs.theme == Theme.DARK,
-                dynamicColor = prefs.dynamicColor
+                darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
+                dynamicColor = dynamicColor
             ) {
                 val navController =
                     rememberNavController<Destination>(startDestination = Destination.Dashboard)

@@ -4,8 +4,9 @@ import android.app.Application
 import android.content.Context
 import app.revanced.manager.util.signing.Signer
 import app.revanced.manager.util.signing.SigningOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.InputStream
 import java.io.OutputStream
 import java.nio.file.Files
 import java.nio.file.Path
@@ -23,39 +24,46 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
     private val keystorePath =
         app.getDir("signing", Context.MODE_PRIVATE).resolve("manager.keystore").toPath()
 
-    private fun options(
-        cn: String = prefs.keystoreCommonName!!,
-        pass: String = prefs.keystorePass!!,
-    ) = SigningOptions(cn, pass, keystorePath)
-
-    private fun updatePrefs(cn: String, pass: String) {
-        prefs.keystoreCommonName = cn
-        prefs.keystorePass = pass
+    private suspend fun updatePrefs(cn: String, pass: String) = prefs.edit {
+        prefs.keystoreCommonName.value = cn
+        prefs.keystorePass.value = pass
     }
 
-    fun sign(input: File, output: File) = Signer(options()).signApk(input, output)
-
-    init {
-        if (!keystorePath.exists()) {
-            regenerate()
-        }
+    suspend fun sign(input: File, output: File) = withContext(Dispatchers.Default) {
+        Signer(
+            SigningOptions(
+                prefs.keystoreCommonName.get(),
+                prefs.keystorePass.get(),
+                keystorePath
+            )
+        ).signApk(
+            input,
+            output
+        )
     }
 
-    fun regenerate() = Signer(options(DEFAULT, DEFAULT)).regenerateKeystore().also {
+    suspend fun regenerate() = withContext(Dispatchers.Default) {
+        Signer(SigningOptions(DEFAULT, DEFAULT, keystorePath)).regenerateKeystore()
         updatePrefs(DEFAULT, DEFAULT)
     }
 
-    fun import(cn: String, pass: String, keystore: Path): Boolean {
+    suspend fun import(cn: String, pass: String, keystore: Path): Boolean {
         if (!Signer(SigningOptions(cn, pass, keystore)).canUnlock()) {
             return false
         }
-        Files.copy(keystore, keystorePath, StandardCopyOption.REPLACE_EXISTING)
+        withContext(Dispatchers.IO) {
+            Files.copy(keystore, keystorePath, StandardCopyOption.REPLACE_EXISTING)
+        }
 
         updatePrefs(cn, pass)
         return true
     }
 
-    fun export(target: OutputStream) {
-        Files.copy(keystorePath, target)
+    fun hasKeystore() = keystorePath.exists()
+
+    suspend fun export(target: OutputStream) {
+        withContext(Dispatchers.IO) {
+            Files.copy(keystorePath, target)
+        }
     }
 }

@@ -183,6 +183,8 @@ fun PatchesSelectorScreen(
                             )
                         }
 
+                        val allowExperimental by vm.allowExperimental.getAsState()
+
                         LazyColumn(
                             modifier = Modifier.fillMaxSize()
                         ) {
@@ -237,7 +239,7 @@ fun PatchesSelectorScreen(
                             patchList(
                                 patches = bundle.unsupported,
                                 filterFlag = SHOW_UNSUPPORTED,
-                                supported = vm.allowExperimental
+                                supported = allowExperimental
                             ) {
                                 ListHeader(
                                     title = stringResource(R.string.unsupported_patches),

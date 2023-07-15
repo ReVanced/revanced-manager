@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.paging.common.ktx)
     implementation(libs.work.runtime.ktx)
+    implementation(libs.preferences.datastore)
 
     // Compose
     implementation(platform(libs.compose.bom))
