@@ -1,98 +1,133 @@
 package app.revanced.manager.domain.manager.base
 
-import android.content.SharedPreferences
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.core.content.edit
-import kotlin.reflect.KProperty
+import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.revanced.manager.domain.manager.base.BasePreferencesManager.Companion.editor
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
-/**
- * @author Hyperion Authors, zt64
- */
-abstract class BasePreferenceManager(
-    private val prefs: SharedPreferences
-) {
-    protected fun getString(key: String, defaultValue: String?) =
-        prefs.getString(key, defaultValue)!!
+abstract class BasePreferencesManager(private val context: Context, name: String) {
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = name)
+    protected val dataStore get() = context.dataStore
 
-    private fun getBoolean(key: String, defaultValue: Boolean) = prefs.getBoolean(key, defaultValue)
-    private fun getInt(key: String, defaultValue: Int) = prefs.getInt(key, defaultValue)
-    private fun getFloat(key: String, defaultValue: Float) = prefs.getFloat(key, defaultValue)
-    protected inline fun <reified E : Enum<E>> getEnum(key: String, defaultValue: E) =
-        enumValueOf<E>(getString(key, defaultValue.name))
-
-    protected fun putString(key: String, value: String?) = prefs.edit { putString(key, value) }
-    private fun putBoolean(key: String, value: Boolean) = prefs.edit { putBoolean(key, value) }
-    private fun putInt(key: String, value: Int) = prefs.edit { putInt(key, value) }
-    private fun putFloat(key: String, value: Float) = prefs.edit { putFloat(key, value) }
-    protected inline fun <reified E : Enum<E>> putEnum(key: String, value: E) =
-        putString(key, value.name)
-
-    protected class Preference<T>(
-        private val key: String,
-        defaultValue: T,
-        getter: (key: String, defaultValue: T) -> T,
-        private val setter: (key: String, newValue: T) -> Unit
-    ) {
-        @Suppress("RedundantSetter")
-        var value by mutableStateOf(getter(key, defaultValue))
-            private set
-
-        operator fun getValue(thisRef: Any?, property: KProperty<*>) = value
-        operator fun setValue(thisRef: Any?, property: KProperty<*>, newValue: T) {
-            value = newValue
-            setter(key, newValue)
-        }
+    suspend fun preload() {
+        dataStore.data.first()
     }
 
-    protected fun stringPreference(
-        key: String,
-        defaultValue: String?
-    ) = Preference(
-        key = key,
-        defaultValue = defaultValue,
-        getter = ::getString,
-        setter = ::putString
-    )
+    suspend fun edit(block: EditorContext.() -> Unit) = dataStore.editor(block)
 
-    protected fun booleanPreference(
-        key: String,
-        defaultValue: Boolean
-    ) = Preference(
-        key = key,
-        defaultValue = defaultValue,
-        getter = ::getBoolean,
-        setter = ::putBoolean
-    )
+    protected fun stringPreference(key: String, default: String) =
+        StringPreference(dataStore, key, default)
 
-    protected fun intPreference(
-        key: String,
-        defaultValue: Int
-    ) = Preference(
-        key = key,
-        defaultValue = defaultValue,
-        getter = ::getInt,
-        setter = ::putInt
-    )
+    protected fun booleanPreference(key: String, default: Boolean) =
+        BooleanPreference(dataStore, key, default)
 
-    protected fun floatPreference(
-        key: String,
-        defaultValue: Float
-    ) = Preference(
-        key = key,
-        defaultValue = defaultValue,
-        getter = ::getFloat,
-        setter = ::putFloat
-    )
+    protected fun intPreference(key: String, default: Int) = IntPreference(dataStore, key, default)
+
+    protected fun floatPreference(key: String, default: Float) =
+        FloatPreference(dataStore, key, default)
 
     protected inline fun <reified E : Enum<E>> enumPreference(
         key: String,
-        defaultValue: E
-    ) = Preference(
-        key = key,
-        defaultValue = defaultValue,
-        getter = ::getEnum,
-        setter = ::putEnum
-    )
+        default: E
+    ) = EnumPreference(dataStore, key, default, enumValues())
+
+    companion object {
+        suspend inline fun DataStore<Preferences>.editor(crossinline block: EditorContext.() -> Unit) {
+            edit {
+                EditorContext(it).run(block)
+            }
+        }
+    }
+}
+
+class EditorContext(private val prefs: MutablePreferences) {
+    var <T> Preference<T>.value
+        get() = prefs.run { read() }
+        set(value) = prefs.run { write(value) }
+}
+
+abstract class Preference<T>(
+    private val dataStore: DataStore<Preferences>,
+    protected val default: T
+) {
+    internal abstract fun Preferences.read(): T
+    internal abstract fun MutablePreferences.write(value: T)
+
+    val flow = dataStore.data.map { with(it) { read() } ?: default }.distinctUntilChanged()
+
+    suspend fun get() = flow.first()
+    fun getBlocking() = runBlocking { get() }
+    @Composable
+    fun getAsState() = flow.collectAsStateWithLifecycle(initialValue = remember {
+        getBlocking()
+    })
+    suspend fun update(value: T) = dataStore.editor {
+        this@Preference.value = value
+    }
+}
+
+class EnumPreference<E : Enum<E>>(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: E,
+    private val enumValues: Array<E>
+) : Preference<E>(dataStore, default) {
+    private val key = stringPreferencesKey(key)
+    override fun Preferences.read() =
+        this[key]?.let { name ->
+            enumValues.find { it.name == name }
+        } ?: default
+
+    override fun MutablePreferences.write(value: E) {
+        this[key] = value.name
+    }
+}
+
+abstract class BasePreference<T>(dataStore: DataStore<Preferences>, default: T) :
+    Preference<T>(dataStore, default) {
+    protected abstract val key: Preferences.Key<T>
+    override fun Preferences.read() = this[key] ?: default
+    override fun MutablePreferences.write(value: T) {
+        this[key] = value
+    }
+}
+
+class StringPreference(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: String
+) : BasePreference<String>(dataStore, default) {
+    override val key = stringPreferencesKey(key)
+}
+
+class BooleanPreference(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: Boolean
+) : BasePreference<Boolean>(dataStore, default) {
+    override val key = booleanPreferencesKey(key)
+}
+
+class IntPreference(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: Int
+) : BasePreference<Int>(dataStore, default) {
+    override val key = intPreferencesKey(key)
+}
+
+class FloatPreference(
+    dataStore: DataStore<Preferences>,
+    key: String,
+    default: Float
+) : BasePreference<Float>(dataStore, default) {
+    override val key = floatPreferencesKey(key)
 }

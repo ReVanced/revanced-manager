@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.ui.component.AppTopBar
@@ -32,6 +33,7 @@ import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
 import app.revanced.manager.ui.component.sources.SourceSelector
 import app.revanced.manager.util.toast
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +42,8 @@ fun ImportExportSettingsScreen(
     onBackClick: () -> Unit,
     vm: ImportExportViewModel = getViewModel()
 ) {
+    val context = LocalContext.current
+
     val importKeystoreLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {
             it?.let { uri -> vm.startKeystoreImport(uri) }
@@ -74,7 +78,12 @@ fun ImportExportSettingsScreen(
     if (vm.showCredentialsDialog) {
         KeystoreCredentialsDialog(
             onDismissRequest = vm::cancelKeystoreImport,
-            tryImport = vm::tryKeystoreImport
+            onSubmit = { cn, pass ->
+                vm.viewModelScope.launch {
+                    val result = vm.tryKeystoreImport(cn, pass)
+                    if (!result) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                }
+            }
         )
     }
 
@@ -102,6 +111,10 @@ fun ImportExportSettingsScreen(
             )
             GroupItem(
                 onClick = {
+                    if (!vm.canExport()) {
+                        context.toast(context.getString(R.string.export_keystore_unavailable))
+                        return@GroupItem
+                    }
                     exportKeystoreLauncher.launch("Manager.keystore")
                 },
                 headline = R.string.export_keystore,
@@ -144,9 +157,8 @@ private fun GroupItem(onClick: () -> Unit, @StringRes headline: Int, @StringRes 
 @Composable
 fun KeystoreCredentialsDialog(
     onDismissRequest: () -> Unit,
-    tryImport: (String, String) -> Boolean
+    onSubmit: (String, String) -> Unit
 ) {
-    val context = LocalContext.current
     var cn by rememberSaveable { mutableStateOf("") }
     var pass by rememberSaveable { mutableStateOf("") }
 
@@ -155,11 +167,7 @@ fun KeystoreCredentialsDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    if (!tryImport(
-                            cn,
-                            pass
-                        )
-                    ) context.toast(context.getString(R.string.import_keystore_wrong_credentials))
+                    onSubmit(cn, pass)
                 }
             ) {
                 Text(stringResource(R.string.import_keystore_dialog_button))

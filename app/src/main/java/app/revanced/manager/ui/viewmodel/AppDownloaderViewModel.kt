@@ -118,7 +118,7 @@ class AppDownloaderViewModel(
                         ?: appDownloader.downloadApp(
                             version,
                             savePath,
-                            preferSplit = prefs.preferSplits
+                            preferSplit = prefs.preferSplits.get()
                         ).also {
                             downloadedAppRepository.add(
                                 selectedApp.packageName,

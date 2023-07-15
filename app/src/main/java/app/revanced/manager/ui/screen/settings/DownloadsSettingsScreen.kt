@@ -13,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -58,13 +58,10 @@ fun DownloadsSettingsScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            ListItem(
-                modifier = Modifier.clickable { prefs.preferSplits = !prefs.preferSplits },
-                headlineContent = { Text(stringResource(R.string.prefer_splits)) },
-                supportingContent = { Text(stringResource(R.string.prefer_splits_description)) },
-                trailingContent = {
-                    Switch(checked = prefs.preferSplits, onCheckedChange = { prefs.preferSplits = it })
-                }
+            BooleanItem(
+                preference = prefs.preferSplits,
+                headline = R.string.prefer_splits,
+                description = R.string.prefer_splits_description,
             )
 
             GroupHeader(stringResource(R.string.downloaded_apps))

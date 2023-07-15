@@ -15,12 +15,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,6 +33,7 @@ fun GeneralSettingsScreen(
     viewModel: SettingsViewModel
 ) {
     val prefs = viewModel.prefs
+    val coroutineScope = viewModel.viewModelScope
     var showThemePicker by rememberSaveable { mutableStateOf(false) }
 
     if (showThemePicker) {
@@ -53,22 +57,27 @@ fun GeneralSettingsScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-
             GroupHeader(stringResource(R.string.appearance))
+
+            val theme by prefs.theme.getAsState()
             ListItem(
                 modifier = Modifier.clickable { showThemePicker = true },
                 headlineContent = { Text(stringResource(R.string.theme)) },
                 supportingContent = { Text(stringResource(R.string.theme_description)) },
                 trailingContent = {
-                    Button({
-                        showThemePicker = true
-                    }) { Text(stringResource(prefs.theme.displayName)) }
+                    Button(
+                        onClick = {
+                            showThemePicker = true
+                        }
+                    ) {
+                        Text(stringResource(theme.displayName))
+                    }
                 }
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 BooleanItem(
-                    value = prefs.dynamicColor,
-                    onValueChange = { prefs.dynamicColor = it },
+                    preference = prefs.dynamicColor,
+                    coroutineScope = coroutineScope,
                     headline = R.string.dynamic_color,
                     description = R.string.dynamic_color_description
                 )
@@ -76,8 +85,8 @@ fun GeneralSettingsScreen(
 
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
-                value = prefs.allowExperimental,
-                onValueChange = { prefs.allowExperimental = it },
+                preference = prefs.allowExperimental,
+                coroutineScope = coroutineScope,
                 headline = R.string.experimental_patches,
                 description = R.string.experimental_patches_description
             )
@@ -91,7 +100,7 @@ private fun ThemePicker(
     onConfirm: (Theme) -> Unit,
     prefs: PreferencesManager = koinInject()
 ) {
-    var selectedTheme by rememberSaveable { mutableStateOf(prefs.theme) }
+    var selectedTheme by rememberSaveable { mutableStateOf(prefs.theme.getBlocking()) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -123,21 +132,3 @@ private fun ThemePicker(
         }
     )
 }
-
-@Composable
-private fun BooleanItem(
-    value: Boolean,
-    onValueChange: (Boolean) -> Unit,
-    @StringRes headline: Int,
-    @StringRes description: Int
-) = ListItem(
-    modifier = Modifier.clickable { onValueChange(!value) },
-    headlineContent = { Text(stringResource(headline)) },
-    supportingContent = { Text(stringResource(description)) },
-    trailingContent = {
-        Switch(
-            checked = value,
-            onCheckedChange = onValueChange,
-        )
-    }
-)

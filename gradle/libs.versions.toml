@@ -4,6 +4,7 @@ viewmodel-lifecycle = "2.6.1"
 splash-screen = "1.0.1"
 compose-activity = "1.7.2"
 paging = "3.1.1"
+preferences-datastore = "1.0.0"
 work-runtime = "2.8.1ō"
 compose-bom = "2023.06.01"
 accompanist = "0.30.1"
@@ -35,6 +36,7 @@ splash-screen = { group = "androidx.core", name = "core-splashscreen", version.r
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
 paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
+preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
