@@ -84,12 +84,16 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         },
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        widget.patchesCount == 1
-                            ? '• ${widget.patchesCount} patch'
-                            : '• ${widget.patchesCount} patches',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
+                      Flexible(
+                        child: Text(
+                          widget.patchesCount == 1
+                              ? '• ${widget.patchesCount} patch'
+                              : '• ${widget.patchesCount} patches',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
                       ),
                     ],

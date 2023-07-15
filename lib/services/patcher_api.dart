@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:app_installer/app_installer.dart';
 import 'package:collection/collection.dart';
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
+import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -232,10 +232,8 @@ class PatcherAPI {
             );
           }
         } else {
-          await AppInstaller.installApk(_outFile!.path);
-          return await DeviceApps.isAppInstalled(
-            patchedApp.packageName,
-          );
+          final install = await InstallPlugin.installApk(_outFile!.path);
+          return install['isSuccess'];
         }
       } on Exception catch (e) {
         if (kDebugMode) {
