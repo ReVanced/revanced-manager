@@ -14,10 +14,10 @@ class NavigationView extends StatelessWidget {
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
       builder: (context, model, child) => WillPopScope(
-        onWillPop: ()async{
-          if(model.currentIndex == 0){
+        onWillPop: () async {
+          if (model.currentIndex == 0) {
             return true;
-          }else{
+          } else {
             model.setIndex(0);
             return false;
           }
