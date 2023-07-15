@@ -4,14 +4,13 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.4.0+100400000
+version: 1.4.1+100400001
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   animations: ^2.0.7
-  app_installer: ^1.1.0
   collection: ^1.17.0
   cross_connectivity: ^3.0.5
   cr_file_saver:
@@ -59,8 +58,8 @@ dependencies:
   pull_to_refresh: ^2.0.0
   root:
     git:
-      url: https://github.com/gokul1630/root
-      ref: main
+      url: https://github.com/EvadeMaster/root
+      ref: 9bcf0dc06b8e2e3ccd5fbd16bc849938e817b36b
   share_extend: ^2.0.0
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
@@ -75,6 +74,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
   dio_cache_interceptor: ^3.4.0
+  install_plugin: ^2.1.0
 
 dev_dependencies:
   json_serializable: ^6.6.1

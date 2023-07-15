@@ -73,7 +73,7 @@ class RootAPI {
   }
 
   Future<List<String>> getInstalledApps() async {
-    final List<String> apps = List.empty();
+    final List<String> apps = List.empty(growable: true);
     try {
       String? res = await Root.exec(
         cmd: 'ls "$_revancedDirPath"',

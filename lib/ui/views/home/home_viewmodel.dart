@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
 import 'dart:io';
-import 'package:app_installer/app_installer.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
+import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -51,7 +51,7 @@ class HomeViewModel extends BaseViewModel {
           _toast.showBottom('homeView.installingMessage');
           final File? managerApk = await _managerAPI.downloadManager();
           if (managerApk != null) {
-            await AppInstaller.installApk(managerApk.path);
+            await InstallPlugin.installApk(managerApk.path);
           } else {
             _toast.showBottom('homeView.errorDownloadMessage');
           }
@@ -72,7 +72,7 @@ class HomeViewModel extends BaseViewModel {
       _toast.showBottom('homeView.installingMessage');
       final File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
-        await AppInstaller.installApk(managerApk.path);
+        await InstallPlugin.installApk(managerApk.path);
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
@@ -272,7 +272,7 @@ class HomeViewModel extends BaseViewModel {
                                 child: CustomMaterialButton(
                                   label: I18nText('updateButton'),
                                   onPressed: () async {
-                                    await AppInstaller.installApk(
+                                    await InstallPlugin.installApk(
                                       downloadedApk!.path,
                                     );
                                   },
@@ -318,7 +318,7 @@ class HomeViewModel extends BaseViewModel {
         //       UILocalNotificationDateInterpretation.absoluteTime,
         // );
         _toast.showBottom('homeView.installingMessage');
-        await AppInstaller.installApk(managerApk.path);
+        await InstallPlugin.installApk(managerApk.path);
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
