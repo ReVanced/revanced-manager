@@ -77,6 +77,13 @@ class SocialMediaWidget extends StatelessWidget {
                 title: Text('YouTube'),
                 subtitle: Text('youtube.com/revanced'),
                 url: 'https://youtube.com/revanced',
+
+     SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.Revanced),
+                title: Text('Official Site'),
+                subtitle: Text('Official Revanced Site'),
+                url: 'https://revanced.app/',
+              ),
               ),
             ],
           ),
