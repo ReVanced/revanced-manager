@@ -93,8 +93,9 @@ class SManageApiUrl extends BaseViewModel {
             onPressed: () {
               _managerAPI.setApiUrl('');
               _toast.showBottom('settingsView.restartAppForChanges');
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              Navigator.of(context)
+                ..pop()
+                ..pop();
             },
           )
         ],
