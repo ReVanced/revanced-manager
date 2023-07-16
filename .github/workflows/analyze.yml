@@ -1,6 +1,11 @@
 name: Analyze Code
 
 on:
+  push:
+    branches: [ "dev" ]
+    paths: 
+      - "**.dart"
+      - ".github/workflows/analyze.yml"
   pull_request:
     branches: [ "main", "dev" ]
     paths: 
