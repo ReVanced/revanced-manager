@@ -8,6 +8,11 @@ on:
       - ".github/workflows/analyze.yml"
   pull_request:
     branches: [ "main", "dev" ]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
     paths: 
       - "**.dart"
       - ".github/workflows/analyze.yml"
