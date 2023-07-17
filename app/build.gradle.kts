@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.devtools)
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.8.21"
+    kotlin("plugin.serialization") version "1.8.22"
 }
 
 android {
@@ -17,6 +17,9 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "0.0.1"
+        resourceConfigurations.addAll(listOf(
+            "en",
+        ))
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -30,14 +33,27 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
     packaging {
-        resources {
-            excludes += "/prebuilt/**"
-            excludes += "META-INF/DEPENDENCIES"
+        resources.excludes.addAll(listOf(
+            "/prebuilt/**",
+            "META-INF/DEPENDENCIES",
+            "META-INF/**.version",
+            "DebugProbesKt.bin",
+            "kotlin-tooling-metadata.json",
+            "kotlin/**.kotlin_builtins",
+            "org/bouncycastle/pqc/**.properties",
+            "org/bouncycastle/x509/**.properties",
+        }
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 
@@ -46,16 +62,16 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     buildFeatures.compose = true
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.4.7"
+    composeOptions.kotlinCompilerExtensionVersion = "1.4.8"
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 dependencies {
@@ -105,7 +121,7 @@ dependencies {
 
     // Signing
     implementation(libs.apksign)
-    implementation(libs.bcpkix.jdk15on)
+    implementation(libs.bcpkix.jdk18on)
 
     // Koin
     implementation(libs.koin.android)
