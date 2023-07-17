@@ -13,16 +13,16 @@ collection = "0.3.5"
 room-version = "2.5.2"
 patcher = "11.0.4"
 apksign = "8.0.2"
-bcpkix-jdk15on = "1.70"
+bcpkix-jdk18on = "1.75"
 koin-version = "3.4.2"
 koin-version-compose = "3.4.5"
 reimagined-navigation = "1.4.0"
 ktor = "2.3.2"
 markdown = "0.4.1"
 androidGradlePlugin = "8.0.2"
-kotlinGradlePlugin = "1.8.21"
-devToolsGradlePlugin = "1.8.21-1.0.11"
-aboutLibrariesGradlePlugin = "10.8.0"
+kotlinGradlePlugin = "1.8.22"
+devToolsGradlePlugin = "1.8.22-1.0.11"
+aboutLibrariesGradlePlugin = "10.8.2"
 coil = "2.4.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.1"
@@ -71,7 +71,7 @@ patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "pa
 
 # Signing
 apksign = { group = "com.android.tools.build", name = "apksig", version.ref = "apksign" }
-bcpkix-jdk15on = { group = "org.bouncycastle", name = "bcpkix-jdk15on", version.ref = "bcpkix-jdk15on" }
+bcpkix-jdk18on = { group = "org.bouncycastle", name = "bcpkix-jdk18on", version.ref = "bcpkix-jdk18on" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }
