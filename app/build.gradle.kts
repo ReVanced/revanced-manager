@@ -48,7 +48,6 @@ android {
             "META-INF/**.version",
             "DebugProbesKt.bin",
             "kotlin-tooling-metadata.json",
-            "kotlin/**.kotlin_builtins",
             "org/bouncycastle/pqc/**.properties",
             "org/bouncycastle/x509/**.properties",
         ))
