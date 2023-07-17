@@ -51,7 +51,7 @@ android {
             "kotlin/**.kotlin_builtins",
             "org/bouncycastle/pqc/**.properties",
             "org/bouncycastle/x509/**.properties",
-        }
+        ))
         jniLibs {
             useLegacyPackaging = true
         }
