@@ -1,4 +1,4 @@
-package app.revanced.manager.ui.component.sources
+package app.revanced.manager.ui.component.bundle
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

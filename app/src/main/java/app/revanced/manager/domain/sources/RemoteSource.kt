@@ -10,7 +10,6 @@ import java.io.File
 @Stable
 class RemoteSource(name: String, id: Int, directory: File) : Source(name, id, directory) {
     private val api: ManagerAPI = get()
-
     suspend fun downloadLatest() = withContext(Dispatchers.IO) {
         api.downloadBundle(patchesJar, integrations).also { (patchesVer, integrationsVer) ->
             saveVersion(patchesVer, integrationsVer)
