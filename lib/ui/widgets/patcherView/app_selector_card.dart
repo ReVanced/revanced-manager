@@ -35,25 +35,32 @@ class AppSelectorCard extends StatelessWidget {
           if (locator<PatcherViewModel>().selectedApp == null)
             I18nText('appSelectorCard.widgetSubtitle')
           else
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  height: 18.0,
-                  child: ClipOval(
-                    child: Image.memory(
-                      locator<PatcherViewModel>().selectedApp == null
-                          ? Uint8List(0)
-                          : locator<PatcherViewModel>().selectedApp!.icon,
-                      fit: BoxFit.cover,
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Row(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 18.0,
+                      child: ClipOval(
+                        child: Image.memory(
+                          locator<PatcherViewModel>().selectedApp == null
+                              ? Uint8List(0)
+                              : locator<PatcherViewModel>().selectedApp!.icon,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  locator<PatcherViewModel>().getAppSelectionString(),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ],
+                    const SizedBox(width: 6),
+                    SizedBox(
+                      width: constraints.maxWidth - 24,
+                      child: Text(
+                        locator<PatcherViewModel>().getAppSelectionString(),
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           if (locator<PatcherViewModel>().selectedApp == null)
             Container()

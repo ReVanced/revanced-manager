@@ -64,50 +64,53 @@ class HomeView extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        children: <Widget>[
-                          ActionChip(
-                            avatar: const Icon(Icons.grid_view),
-                            label: I18nText('homeView.installed'),
-                            side: BorderSide(
-                              color: model.showUpdatableApps
-                                  ? Theme.of(context).colorScheme.outline
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: <Widget>[
+                            ActionChip(
+                              avatar: const Icon(Icons.grid_view),
+                              label: I18nText('homeView.installed'),
+                              side: BorderSide(
+                                color: model.showUpdatableApps
+                                    ? Theme.of(context).colorScheme.outline
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
+                                width: model.showUpdatableApps ? 1 : 1,
+                              ),
+                              backgroundColor: model.showUpdatableApps
+                                  ? Theme.of(context).colorScheme.background
                                   : Theme.of(context)
                                       .colorScheme
                                       .secondaryContainer,
-                              width: model.showUpdatableApps ? 1 : 1,
+                              onPressed: () {
+                                model.toggleUpdatableApps(false);
+                              },
                             ),
-                            backgroundColor: model.showUpdatableApps
-                                ? Theme.of(context).colorScheme.background
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                            onPressed: () {
-                              model.toggleUpdatableApps(false);
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          ActionChip(
-                            avatar: const Icon(Icons.update),
-                            label: I18nText('homeView.updatesAvailable'),
-                            side: BorderSide(
-                              color: !model.showUpdatableApps
-                                  ? Theme.of(context).colorScheme.outline
+                            const SizedBox(width: 10),
+                            ActionChip(
+                              avatar: const Icon(Icons.update),
+                              label: I18nText('homeView.updatesAvailable'),
+                              side: BorderSide(
+                                color: !model.showUpdatableApps
+                                    ? Theme.of(context).colorScheme.outline
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
+                                width: !model.showUpdatableApps ? 1 : 1,
+                              ),
+                              backgroundColor: !model.showUpdatableApps
+                                  ? Theme.of(context).colorScheme.background
                                   : Theme.of(context)
                                       .colorScheme
                                       .secondaryContainer,
-                              width: !model.showUpdatableApps ? 1 : 1,
+                              onPressed: () {
+                                model.toggleUpdatableApps(true);
+                              },
                             ),
-                            backgroundColor: !model.showUpdatableApps
-                                ? Theme.of(context).colorScheme.background
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                            onPressed: () {
-                              model.toggleUpdatableApps(true);
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 14),
                       PageTransitionSwitcher(

@@ -49,6 +49,8 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                 children: <Widget>[
                   Text(
                     widget.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -59,12 +61,14 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                     'appSelectorCard.notInstalled',
                     child: Text(
                       '',
+                      maxLines: 2,
+                      overflow: TextOverflow.visible,
                       style: TextStyle(
                         color: Theme.of(context).textTheme.titleLarge!.color,
                       ),
                     ),
                   ),
-                  Row(
+                  Wrap(
                     children: [
                       I18nText(
                         'suggested',
@@ -78,16 +82,14 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                         },
                       ),
                       const SizedBox(width: 4),
-                      Flexible(
-                        child: Text(
-                          widget.patchesCount == 1
-                              ? '• ${widget.patchesCount} patch'
-                              : '• ${widget.patchesCount} patches',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],
