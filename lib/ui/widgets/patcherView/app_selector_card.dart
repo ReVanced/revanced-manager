@@ -51,8 +51,7 @@ class AppSelectorCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    SizedBox(
-                      width: constraints.maxWidth - 24,
+                    Flexible(
                       child: Text(
                         locator<PatcherViewModel>().getAppSelectionString(),
                         style: const TextStyle(fontWeight: FontWeight.w600),

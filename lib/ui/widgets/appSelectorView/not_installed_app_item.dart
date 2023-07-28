@@ -49,8 +49,6 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                 children: <Widget>[
                   Text(
                     widget.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -61,8 +59,6 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                     'appSelectorCard.notInstalled',
                     child: Text(
                       '',
-                      maxLines: 2,
-                      overflow: TextOverflow.visible,
                       style: TextStyle(
                         color: Theme.of(context).textTheme.titleLarge!.color,
                       ),

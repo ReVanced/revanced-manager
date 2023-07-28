@@ -69,19 +69,18 @@ class _ApplicationItemState extends State<ApplicationItem>
             hasIcon: false,
             animationDuration: Duration(milliseconds: 450),
           ),
-          header: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 40,
-                    child: Image.memory(widget.icon, height: 40, width: 40),
-                  ),
-                  const SizedBox(width: 4),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: SizedBox(
-                      width: constraints.maxWidth - 180,
+          header: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 40,
+                      child: Image.memory(widget.icon, height: 40, width: 40),
+                    ),
+                    const SizedBox(width: 19),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -106,8 +105,11 @@ class _ApplicationItemState extends State<ApplicationItem>
                         ],
                       ),
                     ),
-                  ),
-                  const Spacer(),
+                  ],
+                ),
+              ),
+              Row(
+                children: [
                   RotationTransition(
                     turns: Tween(begin: 0.0, end: 0.50)
                         .animate(_animationController),
@@ -130,8 +132,8 @@ class _ApplicationItemState extends State<ApplicationItem>
                     ],
                   ),
                 ],
-              );
-            },
+              ),
+            ],
           ),
           collapsed: const SizedBox(),
           expanded: Padding(

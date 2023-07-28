@@ -69,11 +69,6 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         'version': 'v${widget.installedVersion}'
                       },
                     ),
-                    child: const Text(
-                      '',
-                      maxLines: 2,
-                      overflow: TextOverflow.visible,
-                    ),
                   ),
                   Wrap(
                     children: [
