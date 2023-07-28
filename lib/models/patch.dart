@@ -8,7 +8,6 @@ class Patch {
   Patch({
     required this.name,
     required this.description,
-    required this.version,
     required this.excluded,
     required this.dependencies,
     required this.compatiblePackages,
@@ -17,7 +16,6 @@ class Patch {
   factory Patch.fromJson(Map<String, dynamic> json) => _$PatchFromJson(json);
   final String name;
   final String description;
-  final String version;
   final bool excluded;
   final List<String> dependencies;
   final List<Package> compatiblePackages;
