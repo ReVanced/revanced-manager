@@ -260,7 +260,7 @@ class InstallerViewModel extends BaseViewModel {
         exportResult();
         break;
       case 1:
-        exportResult();
+        shareLog();
         break;
     }
   }
