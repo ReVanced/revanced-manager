@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -33,44 +33,6 @@ class InstallerView extends StatelessWidget {
                     ),
                   ),
                   onBackButtonPressed: () => model.onWillPop(context),
-                  actions: <Widget>[
-                    Visibility(
-                      visible: !model.isPatching,
-                      child: CustomPopupMenu(
-                        onSelected: (value) => model.onMenuSelection(value),
-                        children: {
-                          if (!model.hasErrors)
-                            0: I18nText(
-                              'installerView.shareApkMenuOption',
-                              child: const Text(
-                                '',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          1: I18nText(
-                            'installerView.exportApkMenuOption',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          2: I18nText(
-                            'installerView.shareLogMenuOption',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        },
-                      ),
-                    ),
-                  ],
                   bottom: PreferredSize(
                     preferredSize: const Size(double.infinity, 1.0),
                     child: GradientProgressIndicator(progress: model.progress),
@@ -106,6 +68,37 @@ class InstallerView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            Wrap(
+                              children: <Widget>[
+                                Visibility(
+                                  visible:
+                                      !model.isPatching && !model.hasErrors,
+                                  child: IconButton(
+                                    tooltip: FlutterI18n.translate(
+                                      context,
+                                      'installerView.saveApkButtonTooltip',
+                                    ),
+                                    icon: const Icon(Icons.save),
+                                    onPressed: () => model.onButtonPressed(0),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible:
+                                      !model.isPatching && !model.hasErrors,
+                                  child: IconButton(
+                                    tooltip: FlutterI18n.translate(
+                                      context,
+                                      'installerView.shareLogButtonTooltip',
+                                    ),
+                                    icon: const Icon(
+                                      FontAwesomeIcons.solidFileLines,
+                                    ),
+                                    iconSize: 20,
+                                    onPressed: () => model.onButtonPressed(1),
+                                  ),
+                                ),
+                              ],
+                            ),
                             Visibility(
                               visible: model.isInstalled,
                               child: CustomMaterialButton(
@@ -122,8 +115,9 @@ class InstallerView extends StatelessWidget {
                               visible: !model.isInstalled && model.isRooted,
                               child: CustomMaterialButton(
                                 isFilled: false,
-                                label:
-                                    I18nText('installerView.installRootButton'),
+                                label: I18nText(
+                                  'installerView.installRootButton',
+                                ),
                                 isExpanded: true,
                                 onPressed: () => model.installResult(
                                   context,
@@ -134,7 +128,7 @@ class InstallerView extends StatelessWidget {
                             Visibility(
                               visible: !model.isInstalled,
                               child: const SizedBox(
-                                width: 16,
+                                width: 8,
                               ),
                             ),
                             Visibility(
@@ -146,6 +140,18 @@ class InstallerView extends StatelessWidget {
                                   context,
                                   false,
                                 ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: model.isInstalled,
+                              child: CustomMaterialButton(
+                                label: I18nText('installerView.openButton'),
+                                isExpanded: true,
+                                onPressed: () {
+                                  model.openApp();
+                                  model.cleanPatcher();
+                                  Navigator.of(context).pop();
+                                },
                               ),
                             ),
                           ],

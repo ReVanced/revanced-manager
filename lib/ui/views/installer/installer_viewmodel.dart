@@ -188,7 +188,7 @@ class InstallerViewModel extends BaseViewModel {
               CustomMaterialButton(
                 label: I18nText('okButton'),
                 onPressed: () => Navigator.of(context).pop(),
-              )
+              ),
             ],
           ),
         );
@@ -233,16 +233,6 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void shareResult() {
-    try {
-      _patcherAPI.sharePatchedFile(_app.name, _app.version);
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
-
   void shareLog() {
     _patcherAPI.sharePatcherLog(logs);
   }
@@ -264,16 +254,13 @@ class InstallerViewModel extends BaseViewModel {
     DeviceApps.openApp(_app.packageName);
   }
 
-  void onMenuSelection(int value) {
+  void onButtonPressed(int value) {
     switch (value) {
       case 0:
-        shareResult();
+        exportResult();
         break;
       case 1:
         exportResult();
-        break;
-      case 2:
-        shareLog();
         break;
     }
   }
