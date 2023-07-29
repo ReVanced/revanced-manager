@@ -68,36 +68,30 @@ class InstallerView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Wrap(
-                              children: <Widget>[
-                                Visibility(
-                                  visible:
-                                      !model.isPatching && !model.hasErrors,
-                                  child: IconButton(
-                                    tooltip: FlutterI18n.translate(
-                                      context,
-                                      'installerView.saveApkButtonTooltip',
-                                    ),
-                                    icon: const Icon(Icons.save),
-                                    onPressed: () => model.onButtonPressed(0),
-                                  ),
+                            Visibility(
+                              visible: !model.isPatching && !model.hasErrors,
+                              child: IconButton(
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'installerView.saveApkButtonTooltip',
                                 ),
-                                Visibility(
-                                  visible:
-                                      !model.isPatching && !model.hasErrors,
-                                  child: IconButton(
-                                    tooltip: FlutterI18n.translate(
-                                      context,
-                                      'installerView.shareLogButtonTooltip',
-                                    ),
-                                    icon: const Icon(
-                                      FontAwesomeIcons.solidFileLines,
-                                    ),
-                                    iconSize: 20,
-                                    onPressed: () => model.onButtonPressed(1),
-                                  ),
+                                icon: const Icon(Icons.save),
+                                onPressed: () => model.onButtonPressed(0),
+                              ),
+                            ),
+                            Visibility(
+                              visible: !model.isPatching && !model.hasErrors,
+                              child: IconButton(
+                                tooltip: FlutterI18n.translate(
+                                  context,
+                                  'installerView.shareLogButtonTooltip',
                                 ),
-                              ],
+                                icon: const Icon(
+                                  FontAwesomeIcons.solidFileLines,
+                                ),
+                                iconSize: 20,
+                                onPressed: () => model.onButtonPressed(1),
+                              ),
                             ),
                             Visibility(
                               visible: model.isInstalled,
@@ -140,18 +134,6 @@ class InstallerView extends StatelessWidget {
                                   context,
                                   false,
                                 ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: model.isInstalled,
-                              child: CustomMaterialButton(
-                                label: I18nText('installerView.openButton'),
-                                isExpanded: true,
-                                onPressed: () {
-                                  model.openApp();
-                                  model.cleanPatcher();
-                                  Navigator.of(context).pop();
-                                },
                               ),
                             ),
                           ],
