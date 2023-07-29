@@ -14,7 +14,6 @@ class PatchItem extends StatefulWidget {
     required this.name,
     required this.simpleName,
     required this.description,
-    required this.version,
     required this.packageVersion,
     required this.supportedPackageVersions,
     required this.isUnsupported,
@@ -25,7 +24,6 @@ class PatchItem extends StatefulWidget {
   final String name;
   final String simpleName;
   final String description;
-  final String version;
   final String packageVersion;
   final List<String> supportedPackageVersions;
   final bool isUnsupported;
@@ -89,14 +87,6 @@ class _PatchItemState extends State<PatchItem> {
                               ),
                             ),
                           ],
-                        ),
-                        const SizedBox(height: 1),
-                        Text(
-                          widget.version,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
                         ),
                         const SizedBox(height: 4),
                         Text(
