@@ -136,7 +136,7 @@
         "notificationTitle": "ReVanced Manager is patching",
         "notificationText": "Tap to return to the installer",
 
-        "saveApkButtonTooltip": "Share APK",
+        "saveApkButtonTooltip": "Save APK",
         "shareLogButtonTooltip": "Share log",
 
         "installErrorDialogTitle": "Error",
