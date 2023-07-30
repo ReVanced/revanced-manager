@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
@@ -42,6 +43,9 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> initialize(BuildContext context) async {
     _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
+    if(_managerAPI.getPatchesConsent()){
+      await showPatchesConsent(context);
+    }
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
@@ -161,6 +165,81 @@ class HomeViewModel extends BaseViewModel {
       }
       return null;
     }
+  }
+
+  Future<void> showPatchesConsent(BuildContext context) async{
+    final ValueNotifier<bool> autoUpdate = ValueNotifier(true);
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('ReVanced Patches'),
+        content: ValueListenableBuilder(
+          valueListenable: autoUpdate,
+          builder: (context, value, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                I18nText(
+                  'homeView.patchesConsentDialogText',
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: I18nText(
+                    'homeView.patchesConsentDialogText2',
+                    translationParams: {'url': _managerAPI.defaultApiUrl.split('/')[2]},
+                    child: Text(
+                      '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ),
+                ),
+                CheckboxListTile(
+                  value: value,
+                  contentPadding: EdgeInsets.zero,
+                  title: I18nText('homeView.patchesConsentDialogText3',),
+                  subtitle: I18nText('homeView.patchesConsentDialogText3Sub',),
+                  onChanged: (selected) {
+                    autoUpdate.value = selected!;
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+        actions: [
+          CustomMaterialButton(
+            isFilled: false,
+            onPressed: () async {
+              await _managerAPI.setPatchesConsent(false);
+              SystemNavigator.pop();
+            },
+            label: I18nText('quitButton'),
+          ),
+          CustomMaterialButton(
+            onPressed: () async {
+              await _managerAPI.setPatchesConsent(true);
+              await _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
+              Navigator.of(context).pop();
+            },
+            label: I18nText('okButton'),
+          )
+        ],
+      ),
+    );
   }
 
   Future<void> updatePatches(BuildContext context) async {

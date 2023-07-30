@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "quitButton": "Quit App",
     "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
@@ -33,6 +34,11 @@
         "updateDialogTitle": "Update Manager",
         "updatePatchesDialogTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
+
+        "patchesConsentDialogText": "ReVanced Patches need to be downloaded to patch apps.",
+        "patchesConsentDialogText2": "Downloading them from the API {url} may reveal your IP address to the server.",
+        "patchesConsentDialogText3": "Auto update the patches",
+        "patchesConsentDialogText3Sub": "You can still change this in the settings later",
 
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
@@ -188,6 +194,7 @@
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
 
+        "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest stable version",
         "experimentalUniversalPatchesLabel": "Experimental universal patches support",
         "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
         "experimentalPatchesLabel": "Experimental patches support",

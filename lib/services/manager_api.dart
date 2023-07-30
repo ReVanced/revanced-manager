@@ -82,6 +82,22 @@ class ManagerAPI {
     await _prefs.setString('patchesRepo', value);
   }
 
+  bool getPatchesConsent() {
+    return _prefs.getBool('patchesConsent') ?? false;
+  }
+
+  Future<void> setPatchesConsent(bool consent) async {
+    await _prefs.setBool('patchesConsent', consent);
+  }
+
+  bool isPatchesAutoUpdate() {
+    return _prefs.getBool('patchesAutoUpdate') ?? false;
+  }
+
+  Future<void> setPatchesAutoUpdate(bool value) async {
+    await _prefs.setBool('patchesAutoUpdate', value);
+  }
+
   String getIntegrationsRepo() {
     return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
   }
@@ -318,7 +334,7 @@ class ManagerAPI {
 
   Future<String> getCurrentPatchesVersion() async {
     patchesVersion = _prefs.getString('patchesVersion') ?? '0.0.0';
-    if (patchesVersion == '0.0.0') {
+    if (patchesVersion == '0.0.0' || isPatchesAutoUpdate()) {
       patchesVersion = await getLatestPatchesVersion() ?? '0.0.0';
       await setCurrentPatchesVersion(patchesVersion!);
     }
