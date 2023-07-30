@@ -131,6 +131,7 @@
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
 
+    <string name="error_occurred">An error occurred</string>
     <string name="already_downloaded">Already downloaded</string>
 
     <string name="select_file">Select file</string>

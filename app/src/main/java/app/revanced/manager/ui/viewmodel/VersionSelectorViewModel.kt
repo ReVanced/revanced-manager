@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.content.pm.PackageInfo
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.network.downloader.APKMirror
 import app.revanced.manager.network.downloader.AppDownloader
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.util.PM
 import app.revanced.manager.util.mutableStateSetOf
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
@@ -20,16 +22,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
+import org.koin.core.component.inject
 
 class VersionSelectorViewModel(
     val packageName: String
 ) : ViewModel(), KoinComponent {
-    private val downloadedAppRepository: DownloadedAppRepository = get()
-    private val sourceRepository: SourceRepository = get()
+    private val downloadedAppRepository: DownloadedAppRepository by inject()
+    private val sourceRepository: SourceRepository by inject()
+    private val pm: PM by inject()
     private val appDownloader: AppDownloader = APKMirror()
 
-    var isDownloading: Boolean by mutableStateOf(false)
+    var installedApp: PackageInfo? by mutableStateOf(null)
         private set
     var isLoading by mutableStateOf(true)
         private set
@@ -63,6 +66,10 @@ class VersionSelectorViewModel(
     }
 
     init {
+        viewModelScope.launch(Dispatchers.Main) {
+            installedApp = withContext(Dispatchers.IO) { pm.getPackageInfo(packageName) }
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val compatibleVersions = supportedVersions.first()
