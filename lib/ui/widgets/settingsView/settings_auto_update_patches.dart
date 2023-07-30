@@ -10,7 +10,6 @@ class SAutoUpdatePatches extends StatefulWidget {
 }
 
 final _settingsViewModel = SettingsViewModel();
-final List<String> selectedUnsupportedPatches = [];
 
 class _SAutoUpdatePatchesState extends State<SAutoUpdatePatches> {
   @override
