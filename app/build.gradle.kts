@@ -96,6 +96,7 @@ dependencies {
     // Accompanist
     implementation(libs.accompanist.drawablepainter)
     implementation(libs.accompanist.webview)
+    implementation(libs.accompanist.placeholder)
 
     // HTML Scraper
     implementation(libs.skrapeit.dsl)

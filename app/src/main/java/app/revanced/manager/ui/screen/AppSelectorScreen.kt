@@ -26,19 +26,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppIcon
+import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
-import app.revanced.manager.util.AppInfo
 import app.revanced.manager.util.toast
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: (AppInfo) -> Unit,
-    onDownloaderClick: (AppInfo) -> Unit,
+    onAppClick: (packageName: String) -> Unit,
+    onStorageClick: (SelectedApp.Local) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = getViewModel()
 ) {
@@ -47,7 +48,7 @@ fun AppSelectorScreen(
     val pickApkLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { apkUri ->
-                vm.loadSelectedFile(apkUri)?.let(onAppClick) ?: context.toast(context.getString(R.string.failed_to_load_apk))
+                vm.loadSelectedFile(apkUri)?.let(onStorageClick) ?: context.toast(context.getString(R.string.failed_to_load_apk))
             }
         }
 
@@ -62,17 +63,6 @@ fun AppSelectorScreen(
                 true
             ) or app.packageName.contains(filterText, true)
         }
-    }
-
-    var selectedApp: AppInfo? by rememberSaveable { mutableStateOf(null) }
-
-    selectedApp?.let {
-        VersionDialog(
-            selectedApp = it,
-            onDismissRequest = { selectedApp = null },
-            onSelectVersionClick = onDownloaderClick,
-            onContinueClick = onAppClick
-        )
     }
 
     // TODO: find something better for this
@@ -104,13 +94,11 @@ fun AppSelectorScreen(
                         ) { app ->
 
                             ListItem(
-                                modifier = Modifier.clickable {
-                                    app.packageInfo?.let { onAppClick(app) }
-                                },
-                                leadingContent = { AppIcon(app, null) },
-                                headlineContent = { Text(vm.loadLabel(app.packageInfo)) },
+                                modifier = Modifier.clickable { onAppClick(app.packageName) },
+                                leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
+                                headlineContent = { AppLabel(app.packageInfo) },
                                 supportingContent = { Text(app.packageName) },
-                                trailingContent = if (app.patches > 0) { { Text(pluralStringResource(R.plurals.patches_count, app.patches, app.patches)) } } else null
+                                trailingContent = app.patches?.let { { Text(pluralStringResource(R.plurals.patches_count, it, it)) } }
                             )
 
                         }
@@ -169,11 +157,11 @@ fun AppSelectorScreen(
                 ) { app ->
 
                     ListItem(
-                        modifier = Modifier.clickable { selectedApp = app },
-                        leadingContent = { AppIcon(app, null) },
-                        headlineContent = { Text(vm.loadLabel(app.packageInfo)) },
+                        modifier = Modifier.clickable { onAppClick(app.packageName) },
+                        leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
+                        headlineContent = { AppLabel(app.packageInfo) },
                         supportingContent = { Text(app.packageName) },
-                        trailingContent = if (app.patches > 0) { { Text(pluralStringResource(R.plurals.patches_count, app.patches, app.patches)) } } else null
+                        trailingContent = app.patches?.let { { Text(pluralStringResource(R.plurals.patches_count, it, it)) } }
                     )
 
                 }
@@ -183,50 +171,3 @@ fun AppSelectorScreen(
         }
     }
 }
-
-@Composable
-fun VersionDialog(
-    selectedApp: AppInfo,
-    onDismissRequest: () -> Unit,
-    onSelectVersionClick: (AppInfo) -> Unit,
-    onContinueClick: (AppInfo) -> Unit
-) = if (selectedApp.packageInfo != null) AlertDialog(
-    onDismissRequest = onDismissRequest,
-    title = { Text(stringResource(R.string.continue_with_version)) },
-    text = { Text(stringResource(R.string.version_not_supported, selectedApp.packageInfo.versionName)) },
-    confirmButton = {
-        Column(
-            horizontalAlignment = Alignment.End
-        ) {
-            TextButton(onClick = {
-                onSelectVersionClick(selectedApp)
-                onDismissRequest()
-            }) {
-                Text(stringResource(R.string.download_another_version))
-            }
-            TextButton(onClick = {
-                onContinueClick(selectedApp)
-                onDismissRequest()
-            }) {
-                Text(stringResource(R.string.continue_anyways))
-            }
-        }
-    }
-) else AlertDialog(
-    onDismissRequest = onDismissRequest,
-    title = { Text(stringResource(R.string.download_application)) },
-    text = { Text(stringResource(R.string.app_not_installed)) },
-    confirmButton = {
-        TextButton(onClick = {
-            onDismissRequest()
-        }) {
-            Text(stringResource(R.string.cancel))
-        }
-        TextButton(onClick = {
-            onSelectVersionClick(selectedApp)
-            onDismissRequest()
-        }) {
-            Text(stringResource(R.string.download_app))
-        }
-    }
-)

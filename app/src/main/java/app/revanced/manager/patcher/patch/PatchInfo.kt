@@ -29,7 +29,7 @@ data class PatchInfo(
         patch.compatiblePackages?.map { CompatiblePackage(it) }?.toImmutableList(),
         patch.options?.map { Option(it) }?.toImmutableList())
 
-    fun compatibleWith(packageName: String) = compatiblePackages?.any { it.name == packageName } ?: true
+    fun compatibleWith(packageName: String) = compatiblePackages?.any { it.packageName == packageName } ?: true
 
     fun supportsVersion(versionName: String) =
         compatiblePackages?.any { compatiblePackages.any { it.versions.isEmpty() || it.versions.any { version -> version == versionName } } }
@@ -38,7 +38,7 @@ data class PatchInfo(
 
 @Immutable
 data class CompatiblePackage(
-    val name: String,
+    val packageName: String,
     val versions: ImmutableList<String>
 ) {
     constructor(pkg: Package) : this(pkg.name, pkg.versions.toList().toImmutableList())

@@ -17,7 +17,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.util.AppInfo
+import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.SnapshotStateSet
@@ -37,7 +37,7 @@ import org.koin.core.component.get
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
 class PatchesSelectorViewModel(
-    val appInfo: AppInfo
+    val selectedApp: SelectedApp
 ) : ViewModel(), KoinComponent {
     private val selectionRepository: PatchSelectionRepository = get()
     private val savedStateHandle: SavedStateHandle = get()
@@ -52,12 +52,12 @@ class PatchesSelectorViewModel(
             val unsupported = mutableListOf<PatchInfo>()
             val universal = mutableListOf<PatchInfo>()
 
-            bundle.patches.filter { it.compatibleWith(appInfo.packageName) }.forEach {
+            bundle.patches.filter { it.compatibleWith(selectedApp.packageName) }.forEach {
                 val targetList =
-                    if (it.compatiblePackages == null) universal else if (it.supportsVersion(
-                            appInfo.packageInfo!!.versionName
-                        )
-                    ) supported else unsupported
+                    if (it.compatiblePackages == null) universal else if (it.supportsVersion(selectedApp.version))
+                        supported
+                    else
+                        unsupported
 
                 targetList.add(it)
             }
@@ -71,7 +71,7 @@ class PatchesSelectorViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             val bundles = bundlesFlow.first()
             val filteredSelection =
-                selectionRepository.getSelection(appInfo.packageName).mapValues { (uid, patches) ->
+                selectionRepository.getSelection(selectedApp.packageName).mapValues { (uid, patches) ->
                     // Filter out patches that don't exist.
                     val filteredPatches = bundles.singleOrNull { it.uid == uid }
                         ?.let { bundle ->
@@ -117,7 +117,7 @@ class PatchesSelectorViewModel(
     suspend fun getAndSaveSelection(): PatchesSelection =
         selectedPatches.also {
             withContext(Dispatchers.Default) {
-                selectionRepository.updateSelection(appInfo.packageName, it)
+                selectionRepository.updateSelection(selectedApp.packageName, it)
             }
         }.mapValues { it.value.toMutableSet() }.apply {
             if (allowExperimental.get()) {
@@ -150,7 +150,7 @@ class PatchesSelectorViewModel(
         val set = HashSet<String>()
 
         unsupportedVersions.forEach { patch ->
-            patch.compatiblePackages?.find { it.name == appInfo.packageName }
+            patch.compatiblePackages?.find { it.packageName == selectedApp.packageName }
                 ?.let { compatiblePackage ->
                     set.addAll(compatiblePackage.versions)
                 }

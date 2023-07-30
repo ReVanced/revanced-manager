@@ -18,7 +18,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,33 +30,28 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.viewmodel.AppDownloaderViewModel
-import app.revanced.manager.util.AppInfo
+import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppDownloaderScreen(
+fun VersionSelectorScreen(
     onBackClick: () -> Unit,
-    onApkClick: (AppInfo) -> Unit,
-    viewModel: AppDownloaderViewModel
+    onAppClick: (SelectedApp) -> Unit,
+    viewModel: VersionSelectorViewModel
 ) {
-    SideEffect {
-        viewModel.onComplete = onApkClick
-    }
-
-    val downloadProgress by viewModel.appDownloader.downloadProgress.collectAsStateWithLifecycle()
-    val compatibleVersions by viewModel.compatibleVersions.collectAsStateWithLifecycle(emptyMap())
+    val supportedVersions by viewModel.supportedVersions.collectAsStateWithLifecycle(emptyMap())
     val downloadedVersions by viewModel.downloadedVersions.collectAsStateWithLifecycle(emptyList())
 
     val list by remember {
         derivedStateOf {
-            (downloadedVersions + viewModel.availableVersions)
-                .distinct()
+            (downloadedVersions + viewModel.downloadableVersions)
+                .distinctBy { it.version }
                 .sortedWith(
-                    compareByDescending<String> {
-                        downloadedVersions.contains(it)
-                    }.thenByDescending { compatibleVersions[it] }
-                        .thenByDescending { it }
+                    compareByDescending<SelectedApp> {
+                        it is SelectedApp.Local
+                    }.thenByDescending { supportedVersions[it.version] }
+                        .thenByDescending { it.version }
                 )
         }
     }
@@ -92,18 +86,15 @@ fun AppDownloaderScreen(
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                     ) {
-                        list.forEach { version ->
+                        list.forEach { selectedApp ->
                             ListItem(
-                                modifier = Modifier.clickable {
-                                    viewModel.downloadApp(version)
-                                },
-                                headlineContent = { Text(version) },
+                                modifier = Modifier.clickable { onAppClick(selectedApp) },
+                                headlineContent = { Text(selectedApp.version) },
                                 supportingContent =
-                                    if (downloadedVersions.contains(version)) {
+                                    if (selectedApp is SelectedApp.Local) {
                                         { Text(stringResource(R.string.already_downloaded)) }
                                     } else null,
-                                trailingContent = compatibleVersions[version]?.let {
-                                    {
+                                trailingContent = supportedVersions[selectedApp.version]?.let { {
                                         Text(
                                             pluralStringResource(
                                                 R.plurals.patches_count,
@@ -140,10 +131,7 @@ fun AppDownloaderScreen(
                 }
 
                 else -> {
-                    LoadingIndicator(
-                        progress = downloadProgress?.let { (it.first / it.second) },
-                        text = downloadProgress?.let { stringResource(R.string.downloading_app, it.first, it.second) }
-                    )
+                    LoadingIndicator()
                 }
             }
         }

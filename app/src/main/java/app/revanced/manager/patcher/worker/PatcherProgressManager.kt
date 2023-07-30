@@ -3,11 +3,14 @@ package app.revanced.manager.patcher.worker
 import android.content.Context
 import androidx.annotation.StringRes
 import app.revanced.manager.R
+import app.revanced.manager.ui.model.SelectedApp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.StateFlow
 
 sealed class Progress {
+    object Downloading : Progress()
     object Unpacking : Progress()
     object Merging : Progress()
     object PatchingStart : Progress()
@@ -24,23 +27,24 @@ enum class State {
 class SubStep(
     val name: String,
     val state: State = State.WAITING,
-    val message: String? = null
+    val message: String? = null,
+    val progress: StateFlow<Pair<Float, Float>?>? = null
 )
 
 class Step(
     @StringRes val name: Int,
-    val substeps: ImmutableList<SubStep>,
+    val subSteps: ImmutableList<SubStep>,
     val state: State = State.WAITING
 )
 
-class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
-    val steps = generateSteps(context, selectedPatches)
+class PatcherProgressManager(context: Context, selectedPatches: List<String>, selectedApp: SelectedApp, downloadProgress: StateFlow<Pair<Float, Float>?>) {
+    val steps = generateSteps(context, selectedPatches, selectedApp, downloadProgress)
     private var currentStep: StepKey? = StepKey(0, 0)
 
     private fun update(key: StepKey, state: State, message: String? = null) {
         val isLastSubStep: Boolean
         steps[key.step] = steps[key.step].let { step ->
-            isLastSubStep = key.substep == step.substeps.lastIndex
+            isLastSubStep = key.substep == step.subSteps.lastIndex
 
             val newStepState = when {
                 // This step failed because one of its sub-steps failed.
@@ -51,7 +55,7 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
                 else -> step.state
             }
 
-            Step(step.name, step.substeps.mapIndexed { index, subStep ->
+            Step(step.name, step.subSteps.mapIndexed { index, subStep ->
                 if (index != key.substep) subStep else SubStep(subStep.name, state, message)
             }.toImmutableList(), newStepState)
         }
@@ -100,10 +104,11 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
          * A map of [Progress] to the corresponding position in [steps]
          */
         private val stepKeyMap = mapOf(
-            Progress.Unpacking to StepKey(0, 1),
-            Progress.Merging to StepKey(0, 2),
+            //Progress.Downloading to StepKey(0, 1),
+            //Progress.Unpacking to StepKey(0, 2),
+            //Progress.Merging to StepKey(0, 3),
             Progress.PatchingStart to StepKey(1, 0),
-            Progress.Saving to StepKey(2, 0),
+            //Progress.Saving to StepKey(2, 0),
         )
 
         private fun generatePatchesStep(selectedPatches: List<String>) = Step(
@@ -111,14 +116,15 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>) {
             selectedPatches.map { SubStep(it) }.toImmutableList()
         )
 
-        fun generateSteps(context: Context, selectedPatches: List<String>) = mutableListOf(
+        fun generateSteps(context: Context, selectedPatches: List<String>, selectedApp: SelectedApp, downloadProgress: StateFlow<Pair<Float, Float>?>? = null) = mutableListOf(
             Step(
                 R.string.patcher_step_group_prepare,
-                persistentListOf(
+                listOfNotNull(
                     SubStep(context.getString(R.string.patcher_step_load_patches)),
+                    SubStep("Download apk", progress = downloadProgress).takeIf { selectedApp is SelectedApp.Download },
                     SubStep(context.getString(R.string.patcher_step_unpack)),
                     SubStep(context.getString(R.string.patcher_step_integrations))
-                )
+                ).toImmutableList()
             ),
             generatePatchesStep(selectedPatches),
             Step(

@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
@@ -49,6 +50,8 @@ fun InstallerScreen(
     onBackClick: () -> Unit,
     vm: InstallerViewModel
 ) {
+    BackHandler(onBack = onBackClick)
+
     val context = LocalContext.current
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
@@ -142,7 +145,7 @@ fun InstallStep(step: Step) {
                 .padding(start = 16.dp, end = 16.dp)
                 .background(if (expanded) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface)
         ) {
-            StepIcon(step.state, 24.dp)
+            StepIcon(step.state, size = 24.dp)
 
             Text(text = stringResource(step.name), style = MaterialTheme.typography.titleMedium)
 
@@ -162,18 +165,19 @@ fun InstallStep(step: Step) {
                     .padding(16.dp)
                     .padding(start = 4.dp)
             ) {
-                step.substeps.forEach {
+                step.subSteps.forEach { subStep ->
                     var messageExpanded by rememberSaveable { mutableStateOf(true) }
-                    val stacktrace = it.message
+                    val stacktrace = subStep.message
+                    val downloadProgress = subStep.progress?.collectAsStateWithLifecycle()
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        StepIcon(it.state, size = 18.dp)
+                        StepIcon(subStep.state, downloadProgress?.value, size = 18.dp)
 
                         Text(
-                            text = it.name,
+                            text = subStep.name,
                             style = MaterialTheme.typography.titleSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -183,6 +187,13 @@ fun InstallStep(step: Step) {
                         if (stacktrace != null) {
                             ArrowButton(expanded = messageExpanded) {
                                 messageExpanded = !messageExpanded
+                            }
+                        } else {
+                            downloadProgress?.value?.let { (downloaded, total) ->
+                                Text(
+                                    "$downloaded/$total MB",
+                                    style = MaterialTheme.typography.labelSmall
+                                )
                             }
                         }
                     }
@@ -201,7 +212,7 @@ fun InstallStep(step: Step) {
 }
 
 @Composable
-fun StepIcon(status: State, size: Dp) {
+fun StepIcon(status: State, downloadProgress: Pair<Float, Float>? = null, size: Dp) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
 
     when (status) {
@@ -219,15 +230,28 @@ fun StepIcon(status: State, size: Dp) {
             modifier = Modifier.size(size)
         )
 
-        State.WAITING -> CircularProgressIndicator(
-            strokeWidth = strokeWidth,
-            modifier = stringResource(R.string.step_running).let { description ->
-                Modifier
-                    .size(size)
-                    .semantics {
-                        contentDescription = description
+        State.WAITING ->
+            downloadProgress?.let { (downloaded, total) ->
+                CircularProgressIndicator(
+                    progress = downloaded / total,
+                    strokeWidth = strokeWidth,
+                    modifier = stringResource(R.string.step_running).let { description ->
+                        Modifier
+                            .size(size)
+                            .semantics {
+                                contentDescription = description
+                            }
                     }
-            }
-        )
+                )
+            } ?: CircularProgressIndicator(
+                strokeWidth = strokeWidth,
+                modifier = stringResource(R.string.step_running).let { description ->
+                    Modifier
+                        .size(size)
+                        .semantics {
+                            contentDescription = description
+                        }
+                }
+            )
     }
 }
