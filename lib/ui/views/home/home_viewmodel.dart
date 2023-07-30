@@ -43,7 +43,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> initialize(BuildContext context) async {
     _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
-    if(_managerAPI.getPatchesConsent()){
+    if(!_managerAPI.getPatchesConsent()){
       await showPatchesConsent(context);
     }
     await flutterLocalNotificationsPlugin.initialize(
