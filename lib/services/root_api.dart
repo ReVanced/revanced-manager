@@ -209,20 +209,6 @@ class RootAPI {
     return res != null && res.isNotEmpty;
   }
 
-  Future<String> getOriginalFilePath(String packageName) async {
-    final String originalPath = '$_revancedDirPath/$packageName/original.apk';
-    final String oldOrigPath = '$_revancedOldDirPath/$packageName/original.apk';
-    final bool isInstalled = await isAppInstalled(packageName);
-    if (isInstalled && await isMounted(packageName)) {
-      if (await fileExists(originalPath)) {
-        return originalPath;
-      } else if (await fileExists(oldOrigPath)) {
-        return oldOrigPath;
-      }
-    }
-    return '';
-  }
-
   Future<void> saveOriginalFilePath(
     String packageName,
     String originalFilePath,
