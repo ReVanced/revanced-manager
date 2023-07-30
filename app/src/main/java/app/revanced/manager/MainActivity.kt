@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.destination.Destination
-import app.revanced.manager.ui.screen.AppDownloaderScreen
+import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstallerScreen
@@ -83,29 +83,29 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.AppSelector -> AppSelectorScreen(
-                            onAppClick = { navController.navigate(Destination.PatchesSelector(it)) },
-                            onDownloaderClick = { navController.navigate(Destination.AppDownloader(it)) },
+                            onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
+                            onStorageClick = { navController.navigate(Destination.PatchesSelector(it)) },
                             onBackClick = { navController.pop() }
                         )
 
-                        is Destination.AppDownloader -> AppDownloaderScreen(
+                        is Destination.VersionSelector -> VersionSelectorScreen(
                             onBackClick = { navController.pop() },
-                            onApkClick = { navController.navigate(Destination.PatchesSelector(it)) },
-                            viewModel = getViewModel { parametersOf(destination.app) }
+                            onAppClick = { navController.navigate(Destination.PatchesSelector(it)) },
+                            viewModel = getViewModel { parametersOf(destination.packageName) }
                         )
 
                         is Destination.PatchesSelector -> PatchesSelectorScreen(
-                            onBackClick = { navController.popUpTo { it is Destination.AppSelector } },
+                            onBackClick = { navController.pop() },
                             onPatchClick = { patches, options ->
                                 navController.navigate(
                                     Destination.Installer(
-                                        destination.input,
+                                        destination.selectedApp,
                                         patches,
                                         options
                                     )
                                 )
                             },
-                            vm = getViewModel { parametersOf(destination.input) }
+                            vm = getViewModel { parametersOf(destination.selectedApp) }
                         )
 
                         is Destination.Installer -> InstallerScreen(

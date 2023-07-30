@@ -9,16 +9,18 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.MATCH_UNINSTALLED_PACKAGES
+import android.content.pm.PackageManager.NameNotFoundException
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import app.revanced.manager.domain.repository.SourceRepository
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import java.io.File
@@ -29,7 +31,7 @@ private const val byteArraySize = 1024 * 1024 // Because 1,048,576 is not readab
 @Parcelize
 data class AppInfo(
     val packageName: String,
-    val patches: Int,
+    val patches: Int?,
     val packageInfo: PackageInfo?,
     val path: File? = null
 ) : Parcelable
@@ -38,69 +40,65 @@ data class AppInfo(
 @Suppress("DEPRECATION")
 class PM(
     private val app: Application,
-    private val sourceRepository: SourceRepository
+    sourceRepository: SourceRepository
 ) {
-    private val installedApps = MutableStateFlow(emptyList<AppInfo>())
-    private val compatibleApps = MutableStateFlow(emptyList<AppInfo>())
+    private val scope = CoroutineScope(Dispatchers.IO)
 
-    val appList: Flow<List<AppInfo>> = compatibleApps.combine(installedApps) { compatibleApps, installedApps ->
-        if (compatibleApps.isNotEmpty()) {
-            (compatibleApps + installedApps)
+    val appList = sourceRepository.bundles.map { bundles ->
+        val compatibleApps = scope.async {
+            val compatiblePackages = bundles.values
+                .flatMap { it.patches }
+                .flatMap { it.compatiblePackages.orEmpty() }
+                .groupingBy { it.packageName }
+                .eachCount()
+
+            compatiblePackages.keys.map { pkg ->
+                try {
+                    val packageInfo = app.packageManager.getPackageInfo(pkg, 0)
+                    AppInfo(
+                        pkg,
+                        compatiblePackages[pkg],
+                        packageInfo,
+                        File(packageInfo.applicationInfo.sourceDir)
+                    )
+                } catch (e: NameNotFoundException) {
+                    AppInfo(
+                        pkg,
+                        compatiblePackages[pkg],
+                        null
+                    )
+                }
+            }
+        }
+
+        val installedApps = scope.async {
+            app.packageManager.getInstalledPackages(MATCH_UNINSTALLED_PACKAGES).map { packageInfo ->
+                AppInfo(
+                    packageInfo.packageName,
+                    0,
+                    packageInfo,
+                    File(packageInfo.applicationInfo.sourceDir)
+                )
+            }
+        }
+
+        if (compatibleApps.await().isNotEmpty()) {
+            (compatibleApps.await() + installedApps.await())
                 .distinctBy { it.packageName }
                 .sortedWith(
                     compareByDescending<AppInfo> {
                         it.patches
                     }.thenBy { it.packageInfo?.applicationInfo?.loadLabel(app.packageManager).toString() }.thenBy { it.packageName }
                 )
-        } else {
-            emptyList()
+        } else { emptyList() }
+    }.flowOn(Dispatchers.IO)
+
+    fun getPackageInfo(packageName: String): PackageInfo? =
+        try {
+            app.packageManager.getPackageInfo(packageName, 0)
+        } catch (e: NameNotFoundException) {
+            null
         }
-    }
-
-    suspend fun getCompatibleApps() {
-        sourceRepository.bundles.collect { bundles ->
-            val compatiblePackages = HashMap<String, Int>()
-
-            bundles.flatMap { it.value.patches }.forEach {
-                it.compatiblePackages?.forEach { pkg ->
-                    compatiblePackages[pkg.name] = compatiblePackages.getOrDefault(pkg.name, 0) + 1
-                }
-            }
-
-            withContext(Dispatchers.IO) {
-                compatibleApps.emit(
-                    compatiblePackages.keys.map { pkg ->
-                        try {
-                            val packageInfo = app.packageManager.getPackageInfo(pkg, 0)
-                            AppInfo(
-                                pkg,
-                                compatiblePackages[pkg] ?: 0,
-                                packageInfo,
-                                File(packageInfo.applicationInfo.sourceDir)
-                            )
-                        } catch (e: PackageManager.NameNotFoundException) {
-                            AppInfo(
-                                pkg,
-                                compatiblePackages[pkg] ?: 0,
-                                null
-                            )
-                        }
-                    }
-                )
-            }
-        }
-    }
-
-    suspend fun getInstalledApps() {
-        installedApps.emit(app.packageManager.getInstalledPackages(MATCH_UNINSTALLED_PACKAGES).map { packageInfo ->
-            AppInfo(
-                packageInfo.packageName,
-                0,
-                packageInfo,
-                File(packageInfo.applicationInfo.sourceDir)
-            )
-        })
-    }
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller
@@ -118,15 +116,6 @@ class PM(
     fun launch(pkg: String) = app.packageManager.getLaunchIntentForPackage(pkg)?.let {
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         app.startActivity(it)
-    }
-
-    fun getApkInfo(apk: File) = app.packageManager.getPackageArchiveInfo(apk.path, 0)?.let {
-        AppInfo(
-            it.packageName,
-            0,
-            it,
-            apk
-        )
     }
 }
 

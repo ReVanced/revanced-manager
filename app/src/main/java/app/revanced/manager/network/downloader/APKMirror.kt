@@ -12,11 +12,12 @@ import it.skrape.selects.html5.h5
 import it.skrape.selects.html5.input
 import it.skrape.selects.html5.p
 import it.skrape.selects.html5.span
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import org.koin.core.component.inject
 import java.io.File
 
 class APKMirror : AppDownloader, KoinComponent {
@@ -32,11 +33,6 @@ class APKMirror : AppDownloader, KoinComponent {
         val arch: String,
         val link: String
     )
-
-    private val _downloadProgress: MutableStateFlow<Pair<Float, Float>?> = MutableStateFlow(null)
-    override val downloadProgress = _downloadProgress.asStateFlow()
-
-    private val versionMap = HashMap<String, String>()
 
     private suspend fun getAppLink(packageName: String): String {
         val searchResults = httpClient.getHtml { url("$apkMirror/?post_type=app_release&searchtype=app&s=$packageName") }
@@ -92,7 +88,7 @@ class APKMirror : AppDownloader, KoinComponent {
         } ?: throw Exception("App isn't available for download")
     }
 
-    override fun getAvailableVersions(packageName: String, versionFilter: Set<String>) = flow {
+    override fun getAvailableVersions(packageName: String, versionFilter: Set<String>) = flow<AppDownloader.App> {
 
         // Vanced music uses the same package name so we have to hardcode...
         val appCategory = if (packageName == "com.google.android.apps.youtube.music")
@@ -102,9 +98,11 @@ class APKMirror : AppDownloader, KoinComponent {
 
         var page = 1
 
+        val versions = mutableListOf<String>()
+
         while (
             if (versionFilter.isNotEmpty())
-                versionMap.filterKeys { it in versionFilter }.size < versionFilter.size && page <= 7
+                versions.size < versionFilter.size && page <= 7
             else
                 page <= 1
         ) {
@@ -119,33 +117,37 @@ class APKMirror : AppDownloader, KoinComponent {
                         findFirst {
                             children.mapNotNull { element ->
                                 if (element.className.isEmpty()) {
-                                    val version = element.div {
-                                        withClass = "infoSlide"
-                                        findFirst {
-                                            p {
-                                                findFirst {
-                                                    span {
-                                                        withClass = "infoSlide-value"
-                                                        findFirst {
-                                                            text
+
+                                    APKMirrorApp(
+                                        packageName = packageName,
+                                        version = element.div {
+                                            withClass = "infoSlide"
+                                            findFirst {
+                                                p {
+                                                    findFirst {
+                                                        span {
+                                                            withClass = "infoSlide-value"
+                                                            findFirst {
+                                                                text
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
-                                        }
-                                    }
-
-                                    val link = element.findFirst {
-                                        a {
-                                            withClass = "downloadLink"
-                                            findFirst {
-                                                attribute("href")
+                                        }.also {
+                                            if (it in versionFilter)
+                                                versions.add(it)
+                                        },
+                                        downloadLink = element.findFirst {
+                                            a {
+                                                withClass = "downloadLink"
+                                                findFirst {
+                                                    attribute("href")
+                                                }
                                             }
                                         }
-                                    }
+                                    )
 
-                                    versionMap[version] = link
-                                    version
                                 } else null
                             }
                         }
@@ -157,116 +159,125 @@ class APKMirror : AppDownloader, KoinComponent {
         }
     }
 
-    override suspend fun downloadApp(
-        version: String,
-        saveDirectory: File,
-        preferSplit: Boolean
-    ): File {
-        val variants = httpClient.getHtml { url(apkMirror + versionMap[version]) }
-            .div {
-                withClass = "variants-table"
-                findFirst { // list of variants
-                    children.drop(1).map {
-                        Variant(
-                            apkType = it.div {
-                                findFirst {
-                                    span {
-                                        findFirst {
-                                            enumValueOf(text)
+    @Parcelize
+    private class APKMirrorApp(
+        override val packageName: String,
+        override val version: String,
+        private val downloadLink: String,
+    ) : AppDownloader.App, KoinComponent {
+        @IgnoredOnParcel private val httpClient: HttpService by inject()
+
+        override suspend fun download(
+            saveDirectory: File,
+            preferSplit: Boolean,
+            onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit
+        ): File {
+            val variants = httpClient.getHtml { url(apkMirror + downloadLink) }
+                .div {
+                    withClass = "variants-table"
+                    findFirst { // list of variants
+                        children.drop(1).map {
+                            Variant(
+                                apkType = it.div {
+                                    findFirst {
+                                        span {
+                                            findFirst {
+                                                enumValueOf(text)
+                                            }
+                                        }
+                                    }
+                                },
+                                arch = it.div {
+                                    findSecond {
+                                        text
+                                    }
+                                },
+                                link = it.div {
+                                    findFirst {
+                                        a {
+                                            findFirst {
+                                                attribute("href")
+                                            }
                                         }
                                     }
                                 }
-                            },
-                            arch = it.div {
-                                findSecond {
-                                    text
-                                }
-                            },
-                            link = it.div {
-                                findFirst {
-                                    a {
-                                        findFirst {
-                                            attribute("href")
-                                        }
-                                    }
-                                }
+                            )
+                        }
+                    }
+                }
+
+            val orderedAPKTypes = mutableListOf(APKType.APK, APKType.BUNDLE)
+                .also { if (preferSplit) it.reverse() }
+
+            val variant = orderedAPKTypes.firstNotNullOfOrNull { apkType ->
+                supportedArches.firstNotNullOfOrNull { arch ->
+                    variants.find { it.arch == arch && it.apkType == apkType }
+                }
+            } ?: throw Exception("No compatible variant found")
+
+            if (variant.apkType == APKType.BUNDLE) throw Exception("Split apks are not supported yet") // TODO
+
+            val downloadPage = httpClient.getHtml { url(apkMirror + variant.link) }
+                .a {
+                    withClass = "downloadButton"
+                    findFirst {
+                        attribute("href")
+                    }
+                }
+
+            val downloadLink = httpClient.getHtml { url(apkMirror + downloadPage) }
+                .form {
+                    withId = "filedownload"
+                    findFirst {
+                        val apkLink = attribute("action")
+                        val id = input {
+                            withAttribute = "name" to "id"
+                            findFirst {
+                                attribute("value")
                             }
-                        )
-                    }
-                }
-            }
-
-        val orderedAPKTypes = mutableListOf(APKType.APK, APKType.BUNDLE)
-            .also { if (preferSplit) it.reverse() }
-
-        val variant = orderedAPKTypes.firstNotNullOfOrNull { apkType ->
-            supportedArches.firstNotNullOfOrNull { arch ->
-                variants.find { it.arch == arch && it.apkType == apkType }
-            }
-        } ?: throw Exception("No compatible variant found")
-
-        if (variant.apkType == APKType.BUNDLE) TODO("\nSplit apks are not supported yet")
-
-        val downloadPage = httpClient.getHtml { url(apkMirror + variant.link) }
-            .a {
-                withClass = "downloadButton"
-                findFirst {
-                    attribute("href")
-                }
-            }
-
-        val downloadLink = httpClient.getHtml { url(apkMirror + downloadPage) }
-            .form {
-                withId = "filedownload"
-                findFirst {
-                    val apkLink = attribute("action")
-                    val id = input {
-                        withAttribute = "name" to "id"
-                        findFirst {
-                            attribute("value")
                         }
-                    }
-                    val key = input {
-                        withAttribute = "name" to "key"
-                        findFirst {
-                            attribute("value")
+                        val key = input {
+                            withAttribute = "name" to "key"
+                            findFirst {
+                                attribute("value")
+                            }
                         }
+                        "$apkLink?id=$id&key=$key"
                     }
-                    "$apkLink?id=$id&key=$key"
                 }
-            }
 
-        val saveLocation = if (variant.apkType == APKType.BUNDLE)
-            saveDirectory.resolve(version).also { it.mkdirs() }
-        else
-            saveDirectory.resolve("$version.apk")
-
-        try {
-            val downloadLocation = if (variant.apkType == APKType.BUNDLE)
-                saveLocation.resolve("temp.zip")
+            val saveLocation = if (variant.apkType == APKType.BUNDLE)
+                saveDirectory.resolve(version).also { it.mkdirs() }
             else
-                saveLocation
+                saveDirectory.resolve("$version.apk")
 
-            httpClient.download(downloadLocation) {
-                url(apkMirror + downloadLink)
-                onDownload { bytesSentTotal, contentLength ->
-                    _downloadProgress.emit(bytesSentTotal.div(100000).toFloat().div(10) to contentLength.div(100000).toFloat().div(10))
+            try {
+                val downloadLocation = if (variant.apkType == APKType.BUNDLE)
+                    saveLocation.resolve("temp.zip")
+                else
+                    saveLocation
+
+                httpClient.download(downloadLocation) {
+                    url(apkMirror + downloadLink)
+                    onDownload { bytesSentTotal, contentLength ->
+                        onDownload(bytesSentTotal.div(100000).toFloat().div(10) to contentLength.div(100000).toFloat().div(10))
+                    }
                 }
+
+                if (variant.apkType == APKType.BUNDLE) {
+                    // TODO: Extract temp.zip
+
+                    downloadLocation.delete()
+                }
+            } catch (e: Exception) {
+                saveLocation.deleteRecursively()
+                throw e
+            } finally {
+                onDownload(null)
             }
 
-            if (variant.apkType == APKType.BUNDLE) {
-                // TODO: Extract temp.zip
-
-                downloadLocation.delete()
-            }
-        } catch (e: Exception) {
-            saveLocation.deleteRecursively()
-            throw e
-        } finally {
-            _downloadProgress.emit(null)
+            return saveLocation
         }
-
-        return saveLocation
     }
 
     companion object {

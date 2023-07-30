@@ -51,7 +51,7 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
 
-    val packageName: String = input.app.packageName
+    val packageName: String = input.selectedApp.packageName
     private val outputFile = File(app.cacheDir, "output.apk")
     private val signedFile = File(app.cacheDir, "signed.apk").also { if (it.exists()) it.delete() }
     private var hasSigned = false
@@ -69,21 +69,22 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
     private val logger = ManagerLogger()
 
     init {
-        val (appInfo, patches, options) = input
+        val (selectedApp, patches, options) = input
 
         _progress = MutableStateFlow(PatcherProgressManager.generateSteps(
             app,
-            patches.flatMap { (_, selected) -> selected }
+            patches.flatMap { (_, selected) -> selected },
+            input.selectedApp
         ).toImmutableList())
         patcherWorkerId =
             workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
                 "patching", PatcherWorker.Args(
-                    appInfo.path!!.absolutePath,
+                    selectedApp,
                     outputFile.path,
                     patches,
                     options,
                     packageName,
-                    appInfo.packageInfo!!.versionName,
+                    selectedApp.version,
                     _progress,
                     logger
                 )

@@ -1,39 +1,49 @@
 package app.revanced.manager.ui.component
 
+import android.content.pm.PackageInfo
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.unit.dp
-import app.revanced.manager.util.AppInfo
 import coil.compose.AsyncImage
+import com.google.accompanist.placeholder.placeholder
 
 @Composable
 fun AppIcon(
-    app: AppInfo,
+    packageInfo: PackageInfo?,
     contentDescription: String?,
     modifier: Modifier = Modifier
 ) {
-    if (app.packageInfo == null) {
+    var showPlaceHolder by rememberSaveable { mutableStateOf(true) }
+
+    if (packageInfo == null) {
         val image = rememberVectorPainter(Icons.Default.Android)
         val colorFilter = ColorFilter.tint(LocalContentColor.current)
 
         Image(
             image,
             contentDescription,
-            Modifier.size(36.dp).then(modifier),
+            Modifier.placeholder(visible = showPlaceHolder, color = MaterialTheme.colorScheme.inverseOnSurface, shape = RoundedCornerShape(100)).then(modifier),
             colorFilter = colorFilter
         )
+
+        showPlaceHolder = false
     } else {
         AsyncImage(
-            app.packageInfo,
+            packageInfo,
             contentDescription,
-            Modifier.size(36.dp).then(modifier)
+            Modifier.placeholder(visible = showPlaceHolder, color = MaterialTheme.colorScheme.inverseOnSurface, shape = RoundedCornerShape(100)).then(modifier),
+            onSuccess = { showPlaceHolder = false }
         )
     }
 }

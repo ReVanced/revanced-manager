@@ -128,10 +128,10 @@
     <string name="download_application">Download application?</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
     <string name="failed_to_load_apk">Failed to load apk</string>
+    <string name="loading">Loading…</string>
+    <string name="not_installed">Not installed</string>
 
-    <string name="error_occurred">An error occurred</string>
     <string name="already_downloaded">Already downloaded</string>
-    <string name="downloading_app">Downloading app… (%1$s MB/%2$s MB)</string>
 
     <string name="select_file">Select file</string>
 
