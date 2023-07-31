@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -56,7 +57,7 @@ fun AppSelectorScreen(
     var search by rememberSaveable { mutableStateOf(false) }
 
     val appList by vm.appList.collectAsStateWithLifecycle(initialValue = emptyList())
-    val filteredAppList = rememberSaveable(appList, filterText) {
+    val filteredAppList = remember(appList, filterText) {
         appList.filter { app ->
             (vm.loadLabel(app.packageInfo)).contains(
                 filterText,
