@@ -28,7 +28,7 @@ class SAdvancedSection extends StatelessWidget {
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
-            'settingsView.deleteKeystoreLabel',
+            'settingsView.regenerateKeystoreLabel',
             child: const Text(
               '',
               style: TextStyle(
@@ -37,7 +37,7 @@ class SAdvancedSection extends StatelessWidget {
               ),
             ),
           ),
-          subtitle: I18nText('settingsView.deleteKeystoreHint'),
+          subtitle: I18nText('settingsView.regenerateKeystoreHint'),
           onTap: () => _showDeleteKeystoreDialog(context),
         ),
         ListTile(
@@ -78,9 +78,9 @@ class SAdvancedSection extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.deleteKeystoreDialogTitle'),
+        title: I18nText('settingsView.regenerateKeystoreDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('settingsView.deleteKeystoreDialogText'),
+        content: I18nText('settingsView.regenerateKeystoreDialogText'),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,

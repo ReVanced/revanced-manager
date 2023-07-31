@@ -220,12 +220,12 @@
         "deleteLogsHint": "Delete collected manager logs",
         "deletedLogs": "Logs deleted",
 
-        "deleteKeystoreLabel": "Regenerate keystore",
-        "deleteKeystoreHint": "Regenerate the keystore used to sign the app",
+        "regenerateKeystoreLabel": "Regenerate keystore",
+        "regenerateKeystoreHint": "Regenerate the keystore used to sign the app",
 
-        "deleteKeystoreDialogTitle": "Regenerate keystore?",
-        "deleteKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
-        "deletedKeystore": "Keystore regenerated",
+        "regenerateKeystoreDialogTitle": "Regenerate keystore?",
+        "regenerateKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
+        "regeneratedKeystore": "Keystore regenerated",
 
         "exportKeystoreLabel": "Export keystore",
         "exportKeystoreHint": "Export keystore used to sign apps",
