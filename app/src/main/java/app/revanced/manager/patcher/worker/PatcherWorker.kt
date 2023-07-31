@@ -130,12 +130,19 @@ class PatcherWorker(
         val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
 
         val progressManager =
-            PatcherProgressManager(applicationContext, args.selectedPatches.flatMap { it.value }, args.input, downloadProgress)
+            PatcherProgressManager(
+                applicationContext,
+                args.selectedPatches.flatMap { it.value },
+                args.input,
+                downloadProgress
+            )
 
         val progressFlow = args.progress
 
-        fun updateProgress(progress: Progress?) {
-            progress?.let { progressManager.handle(it) }
+        fun updateProgress(advanceCounter: Boolean = true) {
+            if (advanceCounter) {
+                progressManager.success()
+            }
             progressFlow.value = progressManager.getProgress().toImmutableList()
         }
 
@@ -165,12 +172,12 @@ class PatcherWorker(
 
             // Ensure they are in the correct order so we can track progress properly.
             progressManager.replacePatchesList(patches.map { it.patchName })
+            updateProgress() // Loading patches
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
-                    updateProgress(Progress.Downloading)
-
-                    val savePath = applicationContext.filesDir.resolve("downloaded-apps").resolve(args.input.packageName).also { it.mkdirs() }
+                    val savePath = applicationContext.filesDir.resolve("downloaded-apps")
+                        .resolve(args.input.packageName).also { it.mkdirs() }
 
                     selectedApp.app.download(
                         savePath,
@@ -182,13 +189,13 @@ class PatcherWorker(
                             args.input.version,
                             it
                         )
+                        updateProgress() // Downloading
                     }
                 }
+
                 is SelectedApp.Local -> selectedApp.file
                 is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo.sourceDir)
             }
-
-            updateProgress(Progress.Unpacking)
 
             Session(
                 applicationContext.cacheDir.absolutePath,
@@ -196,7 +203,7 @@ class PatcherWorker(
                 aaptPath,
                 args.logger,
                 inputFile,
-                onProgress = { updateProgress(it) }
+                onStepSucceeded = ::updateProgress
             ).use { session ->
                 session.run(File(args.output), patches, integrations)
             }
@@ -209,7 +216,7 @@ class PatcherWorker(
             progressManager.failure(e)
             Result.failure()
         } finally {
-            updateProgress(null)
+            updateProgress(false)
         }
     }
 }

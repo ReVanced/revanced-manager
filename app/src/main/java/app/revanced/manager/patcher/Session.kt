@@ -1,8 +1,5 @@
 package app.revanced.manager.patcher
 
-import android.util.Log
-import app.revanced.manager.patcher.worker.Progress
-import app.revanced.manager.util.tag
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Context
@@ -24,7 +21,7 @@ class Session(
     aaptPath: String,
     private val logger: Logger,
     private val input: File,
-    private val onProgress: suspend (Progress) -> Unit = { }
+    private val onStepSucceeded: suspend () -> Unit
 ) : Closeable {
     private val temporary = File(cacheDir).resolve("manager").also { it.mkdirs() }
     private val patcher = Patcher(
@@ -41,7 +38,7 @@ class Session(
         this.executePatches(true).forEach { (patch, result) ->
             if (result.isSuccess) {
                 logger.info("$patch succeeded")
-                onProgress(Progress.PatchSuccess(patch))
+                onStepSucceeded()
                 return@forEach
             }
             logger.error("$patch failed:")
@@ -54,20 +51,17 @@ class Session(
     }
 
     suspend fun run(output: File, selectedPatches: PatchList, integrations: List<File>) {
-        onProgress(Progress.Merging)
-
+        onStepSucceeded() // Unpacking
         with(patcher) {
             logger.info("Merging integrations")
             addIntegrations(integrations) {}
             addPatches(selectedPatches)
+            onStepSucceeded() // Merging
 
             logger.info("Applying patches...")
-            onProgress(Progress.PatchingStart)
-
             applyPatchesVerbose()
         }
 
-        onProgress(Progress.Saving)
         logger.info("Writing patched files...")
         val result = patcher.save()
 
@@ -78,6 +72,7 @@ class Session(
         withContext(Dispatchers.IO) {
             Files.move(aligned.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
         }
+        onStepSucceeded() // Saving
     }
 
     override fun close() {

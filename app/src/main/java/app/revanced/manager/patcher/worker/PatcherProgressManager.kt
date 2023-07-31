@@ -9,17 +9,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.StateFlow
 
-sealed class Progress {
-    object Downloading : Progress()
-    object Unpacking : Progress()
-    object Merging : Progress()
-    object PatchingStart : Progress()
-
-    data class PatchSuccess(val patchName: String) : Progress()
-
-    object Saving : Progress()
-}
-
 enum class State {
     WAITING, COMPLETED, FAILED
 }
@@ -76,18 +65,11 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>, se
     }
 
     fun replacePatchesList(newList: List<String>) {
-        steps[stepKeyMap[Progress.PatchingStart]!!.step] = generatePatchesStep(newList)
+        steps[1] = generatePatchesStep(newList)
     }
 
     private fun updateCurrent(newState: State, message: String? = null) {
         currentStep?.let { update(it, newState, message) }
-    }
-
-
-    fun handle(progress: Progress) = when (val step = stepKeyMap[progress]) {
-        null -> success()
-        currentStep -> {}
-        else -> success().also { currentStep = step }
     }
 
     fun failure(error: Throwable) = updateCurrent(
@@ -100,17 +82,6 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>, se
     fun getProgress(): List<Step> = steps
 
     companion object {
-        /**
-         * A map of [Progress] to the corresponding position in [steps]
-         */
-        private val stepKeyMap = mapOf(
-            //Progress.Downloading to StepKey(0, 1),
-            //Progress.Unpacking to StepKey(0, 2),
-            //Progress.Merging to StepKey(0, 3),
-            Progress.PatchingStart to StepKey(1, 0),
-            //Progress.Saving to StepKey(2, 0),
-        )
-
         private fun generatePatchesStep(selectedPatches: List<String>) = Step(
             R.string.patcher_step_group_patching,
             selectedPatches.map { SubStep(it) }.toImmutableList()
