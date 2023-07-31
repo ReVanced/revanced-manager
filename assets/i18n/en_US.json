@@ -213,19 +213,19 @@
         "resetStoredPatchesHint": "Reset the stored patches selection",
 
         "resetStoredPatchesDialogTitle": "Reset patches selection?",
-        "resetStoredPatchesDialogText": "Restoring patches selection to default will cause all previously selected patches to be reset.",
+        "resetStoredPatchesDialogText": "Resetting patches selection will remove all selected patches.",
         "resetStoredPatches": "Patches selection has been reset",
 
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
         "deletedLogs": "Logs deleted",
 
-        "deleteKeystoreLabel": "Delete keystore",
-        "deleteKeystoreHint": "Delete the keystore used to sign the app",
+        "deleteKeystoreLabel": "Regenerate keystore",
+        "deleteKeystoreHint": "Regenerate the keystore used to sign the app",
 
-        "deleteKeystoreDialogTitle": "Delete keystore?",
-        "deleteKeystoreDialogText": "Using new keystore will make the manager unable to update patched application that have been signed using old keystore.",
-        "deletedKeystore": "Keystore deleted",
+        "deleteKeystoreDialogTitle": "Regenerate keystore?",
+        "deleteKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
+        "deletedKeystore": "Keystore regenerated",
 
         "exportKeystoreLabel": "Export keystore",
         "exportKeystoreHint": "Export keystore used to sign apps",
