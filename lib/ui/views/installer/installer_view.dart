@@ -70,7 +70,7 @@ class InstallerView extends StatelessWidget {
                           children: <Widget>[
                             Visibility(
                               visible: !model.isPatching && !model.hasErrors,
-                              child: IconButton(
+                              child: IconButton.filledTonal(
                                 tooltip: FlutterI18n.translate(
                                   context,
                                   'installerView.saveApkButtonTooltip',
@@ -81,7 +81,7 @@ class InstallerView extends StatelessWidget {
                             ),
                             Visibility(
                               visible: !model.isPatching && !model.hasErrors,
-                              child: IconButton(
+                              child: IconButton.filledTonal(
                                 tooltip: FlutterI18n.translate(
                                   context,
                                   'installerView.shareLogButtonTooltip',
