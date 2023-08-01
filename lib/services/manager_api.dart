@@ -222,11 +222,8 @@ class ManagerAPI {
   Future<List<Patch>> getPatches() async {
     try {
       final String repoName = getPatchesRepo();
-      if (repoName == defaultPatchesRepo) {
-        return await _revancedAPI.getPatches();
-      } else {
-        return await _githubAPI.getPatches(repoName);
-      }
+      final String currentVersion = await getCurrentPatchesVersion();
+      return await _githubAPI.getPatches(repoName, currentVersion);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);

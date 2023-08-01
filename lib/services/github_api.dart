@@ -224,10 +224,10 @@ class GithubAPI {
     return null;
   }
 
-  Future<List<Patch>> getPatches(String repoName) async {
+  Future<List<Patch>> getPatches(String repoName, String version) async {
     List<Patch> patches = [];
     try {
-      final File? f = await getLatestReleaseFile('.json', repoName);
+      final File? f = await getPatchesReleaseFile('.json', repoName, version);
       if (f != null) {
         final List<dynamic> list = jsonDecode(f.readAsStringSync());
         patches = list.map((patch) => Patch.fromJson(patch)).toList();
