@@ -1,7 +1,13 @@
 name: PR Build
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+      - ready_for_review
+    branches:
+      - "**"
+    tags-ignore:
+      - "v*"
 
 jobs:
   build:
