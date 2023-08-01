@@ -1,11 +1,6 @@
 name: PR Build
 
 on:
-  push:
-    branches-ignore:
-      - main
-    tags-ignore:
-      - "v*"
   pull_request:
 
 jobs:
