@@ -240,7 +240,6 @@
         "widgetTitle": "App info",
         "openButton": "Open",
         "uninstallButton": "Uninstall",
-        "patchButton": "Patch",
         "unpatchButton": "Unpatch",
         "rootDialogTitle": "Error",
 
