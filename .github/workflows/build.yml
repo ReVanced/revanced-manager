@@ -1,13 +1,12 @@
 name: PR Build
 
 on:
-  pull_request:
-    types:
-      - ready_for_review
-    branches:
-      - "**"
+  push:
+    branches-ignore:
+      - main
     tags-ignore:
       - "v*"
+  pull_request:
 
 jobs:
   build:
