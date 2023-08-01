@@ -178,7 +178,7 @@
         "sourcesResetDialogTitle": "Reset",
         "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
         "apiURLResetDialogText": "Are you sure you want to reset API URL to its default value?",
-        "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.",
+        "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
 
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
