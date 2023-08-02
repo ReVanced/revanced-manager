@@ -144,20 +144,6 @@ class PatcherAPI {
     );
   }
 
-  Future<String> getOriginalFilePath(String packageName) async {
-    try {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (hasRootPermissions) {
-        return await _rootAPI.getOriginalFilePath(packageName);
-      }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    return '';
-  }
-
   Future<void> runPatcher(
     String packageName,
     String apkFilePath,
@@ -191,10 +177,7 @@ class PatcherAPI {
       _outFile = File('${workDir.path}/out.apk');
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
-      String originalFilePath = await getOriginalFilePath(packageName);
-      if (originalFilePath.isEmpty) {
-        originalFilePath = apkFilePath;
-      }
+      final String originalFilePath = apkFilePath;
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',

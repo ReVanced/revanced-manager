@@ -102,7 +102,7 @@ class SExportSection extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('warning'),
+        title: I18nText('settingsView.resetStoredPatchesDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'settingsView.resetStoredPatchesDialogText',
