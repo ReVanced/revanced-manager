@@ -36,6 +36,7 @@ class InstallerViewModel extends BaseViewModel {
   bool isPatching = true;
   bool isInstalled = false;
   bool hasErrors = false;
+  bool cancel = false;
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
@@ -162,6 +163,18 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> stopPatcher() async {
+    try {
+      update(-100.0, 'Aborting...', 'Canceling patching process');
+      await _patcherAPI.stopPatcher();
+      update(-100.0, 'Aborted...', 'Press back to exit');
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
@@ -280,10 +293,17 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
-      _toast.showBottom('installerView.noExit');
+      if(!cancel) {
+        cancel = true;
+        _toast.showBottom('installerView.pressBackAgain');
+      } else {
+        await stopPatcher();
+      }
       return false;
     }
-    cleanPatcher();
+    if(!cancel){
+      cleanPatcher();
+    }
     Navigator.of(context).pop();
     return true;
   }

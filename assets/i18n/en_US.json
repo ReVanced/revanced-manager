@@ -130,6 +130,7 @@
         "widgetTitle": "Installer",
         "installButton": "Install",
         "installRootButton": "Install as Root",
+        "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
         "shareButton": "Share file",
         

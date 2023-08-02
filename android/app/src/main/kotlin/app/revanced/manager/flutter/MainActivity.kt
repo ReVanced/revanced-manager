@@ -27,6 +27,7 @@ private const val INSTALLER_CHANNEL = "app.revanced.manager.flutter/installer"
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
+    private var run: Boolean = true
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -57,6 +58,7 @@ class MainActivity : FlutterActivity() {
                         keyStoreFilePath != null &&
                         keystorePassword != null
                     ) {
+                        run = true
                         runPatcher(
                             result,
                             patchBundleFilePath,
@@ -73,6 +75,10 @@ class MainActivity : FlutterActivity() {
                     } else {
                         result.notImplemented()
                     }
+                }
+                "stopPatcher" -> {
+                    run = false
+                    result.success(null)
                 }
                 else -> result.notImplemented()
             }
@@ -101,166 +107,231 @@ class MainActivity : FlutterActivity() {
 
         Thread {
             try {
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.1,
-                            "header" to "",
-                            "log" to "Copying original apk"
-                        )
-                    )
-                }
-                originalFile.copyTo(inputFile, true)
-
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.2,
-                            "header" to "Unpacking apk...",
-                            "log" to "Unpacking input apk"
-                        )
-                    )
-                }
-                val patcher =
-                    Patcher(
-                        PatcherOptions(
-                            inputFile,
-                            cacheDirPath,
-                            Aapt.binary(applicationContext).absolutePath,
-                            cacheDirPath,
-                            logger = ManagerLogger()
-                        )
-                    )
-
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf("progress" to 0.3, "header" to "", "log" to "")
-                    )
-                }
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.4,
-                            "header" to "Merging integrations...",
-                            "log" to "Merging integrations"
-                        )
-                    )
-                }
-                patcher.addIntegrations(listOf(integrations)) {}
-
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.5,
-                            "header" to "Applying patches...",
-                            "log" to ""
-                        )
-                    )
-                }
-
-                val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-                    PatchBundle.Dex(
-                        patchBundleFilePath,
-                        DexClassLoader(
-                            patchBundleFilePath,
-                            cacheDirPath,
-                            null,
-                            javaClass.classLoader
-                        )
-                    ).loadPatches().filter { patch ->
-                        (patch.compatiblePackages?.any { it.name == patcher.context.packageMetadata.packageName } == true || patch.compatiblePackages.isNullOrEmpty()) &&
-                                selectedPatches.any { it == patch.patchName }
-                    }
-                } else {
-                    TODO("VERSION.SDK_INT < CUPCAKE")
-                }
-                patcher.addPatches(patches)
-                patcher.executePatches().forEach { (patch, res) ->
-                    if (res.isSuccess) {
-                        val msg = "Applied $patch"
-                        handler.post {
-                            installerChannel.invokeMethod(
-                                "update",
-                                mapOf(
-                                    "progress" to 0.5,
-                                    "header" to "",
-                                    "log" to msg
-                                )
-                            )
-                        }
-                        return@forEach
-                    }
-                    val msg = "Failed to apply $patch: " + "${res.exceptionOrNull()!!.message ?: res.exceptionOrNull()!!.cause!!::class.simpleName}"
+                while (run) {
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
-                            mapOf("progress" to 0.5, "header" to "", "log" to msg)
+                            mapOf(
+                                "progress" to 0.1,
+                                "header" to "",
+                                "log" to "Copying original apk"
+                            )
                         )
                     }
-                }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.7,
-                            "header" to "Repacking apk...",
-                            "log" to "Repacking patched apk"
-                        )
-                    )
-                }
-                val res = patcher.save()
-                ZipFile(patchedFile).use { file ->
-                    res.dexFiles.forEach {
-                        file.addEntryCompressData(
-                            ZipEntry.createWithName(it.name),
-                            it.stream.readBytes()
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    originalFile.copyTo(inputFile, true)
+
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf(
+                                "progress" to 0.2,
+                                "header" to "Unpacking apk...",
+                                "log" to "Unpacking input apk"
+                            )
                         )
                     }
-                    res.resourceFile?.let {
+
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    val patcher =
+                        Patcher(
+                            PatcherOptions(
+                                inputFile,
+                                cacheDirPath,
+                                Aapt.binary(applicationContext).absolutePath,
+                                cacheDirPath,
+                                logger = ManagerLogger()
+                            )
+                        )
+
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf("progress" to 0.3, "header" to "", "log" to "")
+                        )
+                    }
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf(
+                                "progress" to 0.4,
+                                "header" to "Merging integrations...",
+                                "log" to "Merging integrations"
+                            )
+                        )
+                    }
+
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    patcher.addIntegrations(listOf(integrations)) {}
+
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf(
+                                "progress" to 0.5,
+                                "header" to "Applying patches...",
+                                "log" to ""
+                            )
+                        )
+                    }
+
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                        PatchBundle.Dex(
+                            patchBundleFilePath,
+                            DexClassLoader(
+                                patchBundleFilePath,
+                                cacheDirPath,
+                                null,
+                                javaClass.classLoader
+                            )
+                        ).loadPatches().filter { patch ->
+                            (patch.compatiblePackages?.any { it.name == patcher.context.packageMetadata.packageName } == true || patch.compatiblePackages.isNullOrEmpty()) &&
+                                    selectedPatches.any { it == patch.patchName }
+                        }
+                    } else {
+                        TODO("VERSION.SDK_INT < CUPCAKE")
+                    }
+
+                    if(!run) {
+                        return@Thread
+                    }
+
+                    patcher.addPatches(patches)
+                    patcher.executePatches().forEach { (patch, res) ->
+                        if (res.isSuccess) {
+                            val msg = "Applied $patch"
+                            handler.post {
+                                installerChannel.invokeMethod(
+                                    "update",
+                                    mapOf(
+                                        "progress" to 0.5,
+                                        "header" to "",
+                                        "log" to msg
+                                    )
+                                )
+                            }
+                            if(!run) {
+                                return@Thread
+                            }
+                            return@forEach
+                        }
+                        val msg =
+                            "Failed to apply $patch: " + "${res.exceptionOrNull()!!.message ?: res.exceptionOrNull()!!.cause!!::class.simpleName}"
+                        handler.post {
+                            installerChannel.invokeMethod(
+                                "update",
+                                mapOf("progress" to 0.5, "header" to "", "log" to msg)
+                            )
+                        }
+                        if(!run) {
+                            return@Thread
+                        }
+                    }
+
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf(
+                                "progress" to 0.7,
+                                "header" to "Repacking apk...",
+                                "log" to "Repacking patched apk"
+                            )
+                        )
+                    }
+                    if(!run) {
+                        return@Thread
+                    }
+                    val res = patcher.save()
+                    ZipFile(patchedFile).use { file ->
+                        res.dexFiles.forEach {
+                            if(!run) {
+                                return@Thread
+                            }
+                            file.addEntryCompressData(
+                                ZipEntry.createWithName(it.name),
+                                it.stream.readBytes()
+                            )
+                        }
+                        res.resourceFile?.let {
+                            file.copyEntriesFromFileAligned(
+                                ZipFile(it),
+                                ZipAligner::getEntryAlignment
+                            )
+                        }
                         file.copyEntriesFromFileAligned(
-                            ZipFile(it),
+                            ZipFile(inputFile),
                             ZipAligner::getEntryAlignment
                         )
                     }
-                    file.copyEntriesFromFileAligned(
-                        ZipFile(inputFile),
-                        ZipAligner::getEntryAlignment
-                    )
-                }
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.9,
-                            "header" to "Signing apk...",
-                            "log" to ""
+                    if(!run) {
+                        return@Thread
+                    }
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf(
+                                "progress" to 0.9,
+                                "header" to "Signing apk...",
+                                "log" to ""
+                            )
                         )
-                    )
+                    }
+
+                    // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
+
+                    try {
+                        Signer("ReVanced", keystorePassword).signApk(
+                            patchedFile,
+                            outFile,
+                            keyStoreFile
+                        )
+                    } catch (e: Exception) {
+                        //log to console
+                        print("Error signing apk: ${e.message}")
+                        e.printStackTrace()
+                    }
+
+                    handler.post {
+                        installerChannel.invokeMethod(
+                            "update",
+                            mapOf(
+                                "progress" to 1.0,
+                                "header" to "Finished!",
+                                "log" to "Finished!"
+                            )
+                        )
+                    }
                 }
-
-                // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
-
-                try {
-                    Signer("ReVanced", keystorePassword).signApk(patchedFile, outFile, keyStoreFile)
-                } catch (e: Exception) {
-                    //log to console
-                    print("Error signing apk: ${e.message}")
-                    e.printStackTrace()
-                }
-
+            } catch (e: InterruptedException) {
                 handler.post {
                     installerChannel.invokeMethod(
                         "update",
                         mapOf(
-                            "progress" to 1.0,
-                            "header" to "Finished!",
-                            "log" to "Finished!"
+                            "progress" to -100.0,
+                            "header" to "Aborting...",
+                            "log" to "Canceling patching process"
                         )
                     )
                 }
