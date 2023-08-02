@@ -28,11 +28,11 @@ class SettingsViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.contributorsView);
   }
 
-  bool isPatchesAutoUpdate(){
+  bool isPatchesAutoUpdate() {
     return _managerAPI.isPatchesAutoUpdate();
   }
 
-  void setPatchesAutoUpdate(bool value){
+  void setPatchesAutoUpdate(bool value) {
     _managerAPI.setPatchesAutoUpdate(value);
     notifyListeners();
   }

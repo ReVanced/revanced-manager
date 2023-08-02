@@ -64,7 +64,9 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                     label: I18nText('updateButton'),
                     onPressed: snapshot.hasData && snapshot.data!
                         ? () => widget.model.showUpdateConfirmationDialog(
-                            widget.parentContext, false,)
+                              widget.parentContext,
+                              false,
+                            )
                         : () => {},
                   ),
                 ),
@@ -119,7 +121,9 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                     label: I18nText('updateButton'),
                     onPressed: snapshot.hasData && snapshot.data!
                         ? () => widget.model.showUpdateConfirmationDialog(
-                            widget.parentContext, true,)
+                              widget.parentContext,
+                              true,
+                            )
                         : () => {},
                   ),
                 ),
