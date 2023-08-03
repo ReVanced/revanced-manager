@@ -311,8 +311,6 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
-                // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
-
                 try {
                     Signer("ReVanced", keystorePassword).signApk(
                         patchedFile,
