@@ -48,7 +48,7 @@ class SettingsViewModel extends BaseViewModel {
 
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
-    _toast.showBottom('settingsView.deletedKeystore');
+    _toast.showBottom('settingsView.regeneratedKeystore');
     notifyListeners();
   }
 
