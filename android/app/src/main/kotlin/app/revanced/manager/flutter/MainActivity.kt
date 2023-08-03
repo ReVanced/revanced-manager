@@ -324,17 +324,6 @@ class MainActivity : FlutterActivity() {
                         )
                     }
                 }
-            } catch (e: InterruptedException) {
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to -100.0,
-                            "header" to "Aborting...",
-                            "log" to "Canceling patching process"
-                        )
-                    )
-                }
             } catch (ex: Throwable) {
                 val stack = ex.stackTraceToString()
                 handler.post {

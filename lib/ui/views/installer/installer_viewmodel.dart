@@ -36,6 +36,7 @@ class InstallerViewModel extends BaseViewModel {
   bool isPatching = true;
   bool isInstalled = false;
   bool hasErrors = false;
+  bool isCanceled = false;
   bool cancel = false;
 
   Future<void> initialize(BuildContext context) async {
@@ -165,6 +166,7 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> stopPatcher() async {
     try {
+      isCanceled = true;
       update(-100.0, 'Aborting...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
       update(-100.0, 'Aborted...', 'Press back to exit');
@@ -293,16 +295,20 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
-      if(!cancel) {
+      if (!cancel) {
         cancel = true;
         _toast.showBottom('installerView.pressBackAgain');
-      } else {
+      } else if (!isCanceled) {
         await stopPatcher();
+      } else {
+        _toast.showBottom('installerView.noExit');
       }
       return false;
     }
-    if(!cancel){
+    if (!cancel) {
       cleanPatcher();
+    } else {
+      _patcherAPI.cleanPatcher();
     }
     Navigator.of(context).pop();
     return true;
