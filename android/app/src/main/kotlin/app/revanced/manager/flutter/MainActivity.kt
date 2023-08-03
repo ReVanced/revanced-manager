@@ -326,6 +326,7 @@ class MainActivity : FlutterActivity() {
                         e.printStackTrace()
                     }
 
+                    run = false
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
@@ -338,6 +339,7 @@ class MainActivity : FlutterActivity() {
                     }
                 }
             } catch (ex: Throwable) {
+                run = false
                 val stack = ex.stackTraceToString()
                 handler.post {
                     installerChannel.invokeMethod(
@@ -350,6 +352,7 @@ class MainActivity : FlutterActivity() {
                     )
                 }
             }
+            run = false
             handler.post { result.success(null) }
         }.start()
     }
