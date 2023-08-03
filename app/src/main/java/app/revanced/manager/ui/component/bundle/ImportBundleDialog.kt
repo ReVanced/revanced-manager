@@ -1,24 +1,21 @@
 package app.revanced.manager.ui.component.bundle
 
 import android.net.Uri
+import android.webkit.URLUtil
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -34,20 +31,17 @@ import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.JAR_MIMETYPE
-import app.revanced.manager.util.parseUrlOrNull
-import io.ktor.http.Url
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImportBundleDialog(
     onDismissRequest: () -> Unit,
-    onRemoteSubmit: (String, Url) -> Unit,
-    onLocalSubmit: (String, Uri, Uri?) -> Unit,
-    patchCount: Int = 0,
+    onRemoteSubmit: (String, String, Boolean) -> Unit,
+    onLocalSubmit: (String, Uri, Uri?) -> Unit
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
-    var checked by remember { mutableStateOf(true) }
+    var autoUpdate by rememberSaveable { mutableStateOf(true) }
     var isLocal by rememberSaveable { mutableStateOf(false) }
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var integrations by rememberSaveable { mutableStateOf<Uri?>(null) }
@@ -58,8 +52,10 @@ fun ImportBundleDialog(
     val inputsAreValid by remember {
         derivedStateOf {
             val nameSize = name.length
-            nameSize in 4..19 && if (isLocal) patchBundle != null else {
-                remoteUrl.isNotEmpty() && remoteUrl.parseUrlOrNull() != null
+            when {
+                nameSize !in 1..19 -> false
+                isLocal -> patchBundle != null
+                else -> remoteUrl.isNotEmpty() && URLUtil.isValidUrl(remoteUrl)
             }
         }
     }
@@ -68,19 +64,11 @@ fun ImportBundleDialog(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { patchBundle = it }
         }
-
     val integrationsActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { integrations = it }
         }
 
-    val onPatchLauncherClick = {
-        patchActivityLauncher.launch(JAR_MIMETYPE)
-    }
-
-    val onIntegrationLauncherClick = {
-        integrationsActivityLauncher.launch(APK_MIMETYPE)
-    }
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -100,112 +88,86 @@ fun ImportBundleDialog(
                         )
                     },
                     actions = {
-                        Text(
-                            text = stringResource(R.string.import_),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .padding(end = 16.dp)
-                                .clickable {
-                                    if (inputsAreValid) {
-                                        if (isLocal) {
-                                            onLocalSubmit(name, patchBundle!!, integrations)
-                                        } else {
-                                            onRemoteSubmit(name, remoteUrl.parseUrlOrNull()!!)
-                                        }
-                                    }
+                        TextButton(
+                            enabled = inputsAreValid,
+                            onClick = {
+                                if (isLocal) {
+                                    onLocalSubmit(name, patchBundle!!, integrations)
+                                } else {
+                                    onRemoteSubmit(
+                                        name,
+                                        remoteUrl,
+                                        autoUpdate
+                                    )
                                 }
-                        )
+                            },
+                            modifier = Modifier.padding(end = 16.dp)
+                        ) {
+                            Text(stringResource(R.string.import_))
+                        }
                     }
                 )
             },
         ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState())
+            BaseBundleDialog(
+                modifier = Modifier.padding(paddingValues),
+                isDefault = false,
+                name = name,
+                onNameChange = { name = it },
+                remoteUrl = remoteUrl.takeUnless { isLocal },
+                onRemoteUrlChange = { remoteUrl = it },
+                patchCount = 0,
+                version = null,
+                autoUpdate = autoUpdate,
+                onAutoUpdateChange = { autoUpdate = it },
+                onPatchesClick = {},
+                onBundleTypeClick = { isLocal = !isLocal },
             ) {
-                Column(
-                    modifier = Modifier.padding(
-                        start = 24.dp,
-                        top = 16.dp,
-                        end = 24.dp,
-                    )
-                ) {
-                    BundleTextContent(
-                        name = name,
-                        onNameChange = { name = it },
-                        isLocal = isLocal,
-                        remoteUrl = remoteUrl,
-                        onRemoteUrlChange = { remoteUrl = it },
-                    )
-
-                    if(isLocal) {
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            value = patchBundleText,
-                            onValueChange = {},
-                            label = {
-                                Text("Patches Source File")
-                            },
-                            trailingIcon = {
-                                IconButton(
-                                    onClick = onPatchLauncherClick
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Topic,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                        )
-
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            value = integrationText,
-                            onValueChange = {},
-                            label = {
-                                Text("Integrations Source File")
-                            },
-                            trailingIcon = {
-                                IconButton(onClick = onIntegrationLauncherClick) {
-                                    Icon(
-                                        imageVector = Icons.Default.Topic,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                        )
-                    }
-                }
-
-                Column(
-                    Modifier.padding(
-                        start = 8.dp,
-                        top = 8.dp,
-                        end = 4.dp,
-                    )
-                ) {
-                    BundleInfoContent(
-                        switchChecked = checked,
-                        onCheckedChange = { checked = it },
-                        patchInfoText = stringResource(R.string.no_patches),
-                        patchCount = patchCount,
-                        onArrowClick = {},
-                        tonalButtonContent = {
-                            if (isLocal) {
-                                Text(stringResource(R.string.local))
-                            } else {
-                                Text(stringResource(R.string.remote))
-                            }
+                if (isLocal) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        value = patchBundleText,
+                        onValueChange = {},
+                        label = {
+                            Text("Patches Source File")
                         },
-                        tonalButtonOnClick = { isLocal = !isLocal },
-                        isLocal = isLocal,
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    patchActivityLauncher.launch(JAR_MIMETYPE)
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Topic,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        value = integrationText,
+                        onValueChange = {},
+                        label = {
+                            Text("Integrations Source File")
+                        },
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    integrationsActivityLauncher.launch(APK_MIMETYPE)
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Topic,
+                                    contentDescription = null
+                                )
+                            }
+                        }
                     )
                 }
             }

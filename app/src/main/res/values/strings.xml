@@ -12,11 +12,20 @@
     <string name="select_patches">Select patches</string>
 
     <string name="import_">Import</string>
-    <string name="import_bundle">Import Bundle</string>
+    <string name="import_bundle">Import patch bundle</string>
     <string name="bundle_information">Bundle information</string>
     <string name="bundle_patches">Bundle patches</string>
 
+    <string name="bundle_missing">Missing</string>
+    <string name="bundle_error">Error</string>
+
     <string name="select_version">Select version</string>
+    
+    <string name="auto_updates_dialog_title">Select updates to receive</string>
+    <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
+    <string name="auto_updates_dialog_manager">Manager updates</string>
+    <string name="auto_updates_dialog_patches">Patches</string>
+    <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
     <string name="general_description">General settings</string>
@@ -90,22 +99,30 @@
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
     <string name="downloaded_apps">Downloaded apps</string>
+    <string name="api_url">API URL</string>
+    <string name="api_url_dialog_title">Set custom API URL</string>
+    <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
+    <string name="api_url_dialog_warning">Only use API\'s you trust!</string>
+    <string name="api_url_dialog_save">Set</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
     <string name="device_model">Model</string>
     <string name="device_architectures">CPU Architectures</string>
     <string name="device_memory_limit">Memory limits</string>
     <string name="device_memory_limit_format">Normal: %1$d MB, Large: %2$d MB</string>
+    <string name="patch_bundles_section">Patch bundles</string>
+    <string name="patch_bundles_redownload">Redownload all patch bundles</string>
+    <string name="patch_bundles_reset">Reset patch bundles</string>
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
     <string name="storage">Storage</string>
+    <string name="patches_unavailable">No patches are available. Check your bundles</string>
     <string name="tab_apps">Apps</string>
-    <string name="tab_sources">Sources</string>
+    <string name="tab_bundles">Patch bundles</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
     <string name="remote">Remote</string>
     <string name="local">Local</string>
-    <string name="reload_sources">Reload all sources</string>
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
@@ -181,8 +198,6 @@
     <string name="automatically_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
     <string name="bundle_type_description">Choose the type of bundle you want</string>
-    <string name="patches_version">Patches version</string>
-    <string name="integrations_version">Integrations version</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
     <string name="update_notification">A minor update for ReVanced Manager is available. Click here to update and get the latest features and fixes!</string>
@@ -199,6 +214,7 @@
     <string name="downloading_manager_update">Downloading update…</string>
     <string name="download_manager_failed">Failed to download update: %s</string>
     <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
 </resources>

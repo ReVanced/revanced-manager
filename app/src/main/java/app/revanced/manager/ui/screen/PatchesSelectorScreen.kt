@@ -68,7 +68,7 @@ fun PatchesSelectorScreen(
     val pagerState = rememberPagerState()
     val composableScope = rememberCoroutineScope()
 
-    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyArray())
+    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedDialog(

@@ -9,9 +9,9 @@ import androidx.room.Transaction
 @Dao
 abstract class SelectionDao {
     @Transaction
-    @MapInfo(keyColumn = "source", valueColumn = "patch_name")
+    @MapInfo(keyColumn = "patch_bundle", valueColumn = "patch_name")
     @Query(
-        "SELECT source, patch_name FROM patch_selections" +
+        "SELECT patch_bundle, patch_name FROM patch_selections" +
                 " LEFT JOIN selected_patches ON uid = selected_patches.selection" +
                 " WHERE package_name = :packageName"
     )
@@ -22,18 +22,18 @@ abstract class SelectionDao {
     @Query(
         "SELECT package_name, patch_name FROM patch_selections" +
                 " LEFT JOIN selected_patches ON uid = selected_patches.selection" +
-                " WHERE source = :sourceUid"
+                " WHERE patch_bundle = :bundleUid"
     )
-    abstract suspend fun exportSelection(sourceUid: Int): Map<String, List<String>>
+    abstract suspend fun exportSelection(bundleUid: Int): Map<String, List<String>>
 
-    @Query("SELECT uid FROM patch_selections WHERE source = :sourceUid AND package_name = :packageName")
-    abstract suspend fun getSelectionId(sourceUid: Int, packageName: String): Int?
+    @Query("SELECT uid FROM patch_selections WHERE patch_bundle = :bundleUid AND package_name = :packageName")
+    abstract suspend fun getSelectionId(bundleUid: Int, packageName: String): Int?
 
     @Insert
     abstract suspend fun createSelection(selection: PatchSelection)
 
-    @Query("DELETE FROM patch_selections WHERE source = :uid")
-    abstract suspend fun clearForSource(uid: Int)
+    @Query("DELETE FROM patch_selections WHERE patch_bundle = :uid")
+    abstract suspend fun clearForPatchBundle(uid: Int)
 
     @Query("DELETE FROM patch_selections")
     abstract suspend fun reset()

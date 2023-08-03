@@ -23,33 +23,65 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.bundle.ImportBundleDialog
+import app.revanced.manager.ui.viewmodel.DashboardViewModel
+import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 enum class DashboardPage(
     val titleResId: Int,
     val icon: ImageVector
 ) {
     DASHBOARD(R.string.tab_apps, Icons.Outlined.Apps),
-    SOURCES(R.string.tab_sources, Icons.Outlined.Source),
+    BUNDLES(R.string.tab_bundles, Icons.Outlined.Source),
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
+    vm: DashboardViewModel = getViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
 ) {
+    var showImportBundleDialog by rememberSaveable { mutableStateOf(false) }
     val pages: Array<DashboardPage> = DashboardPage.values()
+    val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val androidContext = LocalContext.current
 
     val pagerState = rememberPagerState()
     val composableScope = rememberCoroutineScope()
+
+    if (showImportBundleDialog) {
+        fun dismiss() {
+            showImportBundleDialog = false
+        }
+
+        ImportBundleDialog(
+            onDismissRequest = ::dismiss,
+            onLocalSubmit = { name, patches, integrations ->
+                dismiss()
+                vm.createLocalSource(name, patches, integrations)
+            },
+            onRemoteSubmit = { name, url, autoUpdate ->
+                dismiss()
+                vm.createRemoteSource(name, url, autoUpdate)
+            },
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -66,10 +98,28 @@ fun DashboardScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                if (pagerState.currentPage == DashboardPage.DASHBOARD.ordinal)
-                    onAppSelectorClick()
-            }
+            FloatingActionButton(
+                onClick = {
+                    when (pagerState.currentPage) {
+                        DashboardPage.DASHBOARD.ordinal -> {
+                            if (availablePatches < 1) {
+                                androidContext.toast(androidContext.getString(R.string.patches_unavailable))
+                                composableScope.launch {
+                                    pagerState.animateScrollToPage(
+                                        DashboardPage.BUNDLES.ordinal
+                                    )
+                                }
+                                return@FloatingActionButton
+                            }
+
+                            onAppSelectorClick()
+                        }
+
+                        DashboardPage.BUNDLES.ordinal -> {
+                            showImportBundleDialog = true
+                        }
+                    }
+                }
             ) {
                 Icon(Icons.Default.Add, stringResource(R.string.add))
             }
@@ -103,8 +153,8 @@ fun DashboardScreen(
                             InstalledAppsScreen()
                         }
 
-                        DashboardPage.SOURCES -> {
-                            SourcesScreen()
+                        DashboardPage.BUNDLES -> {
+                            BundlesScreen()
                         }
                     }
                 }

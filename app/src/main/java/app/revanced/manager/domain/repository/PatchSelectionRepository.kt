@@ -3,15 +3,14 @@ package app.revanced.manager.domain.repository
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.selection.PatchSelection
-import app.revanced.manager.domain.sources.Source
 
 class PatchSelectionRepository(db: AppDatabase) {
     private val dao = db.selectionDao()
 
-    private suspend fun getOrCreateSelection(sourceUid: Int, packageName: String) =
-        dao.getSelectionId(sourceUid, packageName) ?: PatchSelection(
+    private suspend fun getOrCreateSelection(bundleUid: Int, packageName: String) =
+        dao.getSelectionId(bundleUid, packageName) ?: PatchSelection(
             uid = generateUid(),
-            source = sourceUid,
+            patchBundle = bundleUid,
             packageName = packageName
         ).also { dao.createSelection(it) }.uid
 
@@ -28,12 +27,12 @@ class PatchSelectionRepository(db: AppDatabase) {
 
     suspend fun reset() = dao.reset()
 
-    suspend fun export(source: Source): SerializedSelection = dao.exportSelection(source.uid)
+    suspend fun export(bundleUid: Int): SerializedSelection = dao.exportSelection(bundleUid)
 
-    suspend fun import(source: Source, selection: SerializedSelection) {
-        dao.clearForSource(source.uid)
+    suspend fun import(bundleUid: Int, selection: SerializedSelection) {
+        dao.clearForPatchBundle(bundleUid)
         dao.updateSelections(selection.entries.associate { (packageName, patches) ->
-            getOrCreateSelection(source.uid, packageName) to patches.toSet()
+            getOrCreateSelection(bundleUid, packageName) to patches.toSet()
         })
     }
 }

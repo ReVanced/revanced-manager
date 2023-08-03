@@ -14,8 +14,8 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
-import app.revanced.manager.domain.repository.SourceRepository
-import app.revanced.manager.domain.sources.Source
+import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.util.JSON_MIMETYPE
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
@@ -37,11 +37,11 @@ class ImportExportViewModel(
     private val app: Application,
     private val keystoreManager: KeystoreManager,
     private val selectionRepository: PatchSelectionRepository,
-    sourceRepository: SourceRepository
+    patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
     private val contentResolver = app.contentResolver
-    val sources = sourceRepository.sources
-    var selectedSource by mutableStateOf<Source?>(null)
+    val sources = patchBundleRepository.sources
+    var selectedBundle by mutableStateOf<PatchBundleSource?>(null)
         private set
     var selectionAction by mutableStateOf<SelectionAction?>(null)
         private set
@@ -107,20 +107,20 @@ class ImportExportViewModel(
     }
 
     fun executeSelectionAction(target: Uri) = viewModelScope.launch {
-        val source = selectedSource!!
+        val source = selectedBundle!!
         val action = selectionAction!!
         clearSelectionAction()
 
-        action.execute(source, target)
+        action.execute(source.uid, target)
     }
 
-    fun selectSource(source: Source) {
-        selectedSource = source
+    fun selectBundle(bundle: PatchBundleSource) {
+        selectedBundle = bundle
     }
 
     fun clearSelectionAction() {
         selectionAction = null
-        selectedSource = null
+        selectedBundle = null
     }
 
     fun importSelection() = clearSelectionAction().also {
@@ -132,7 +132,7 @@ class ImportExportViewModel(
     }
 
     sealed interface SelectionAction {
-        suspend fun execute(source: Source, location: Uri)
+        suspend fun execute(bundleUid: Int, location: Uri)
         val activityContract: ActivityResultContract<String, Uri?>
         val activityArg: String
     }
@@ -140,7 +140,7 @@ class ImportExportViewModel(
     private inner class Import : SelectionAction {
         override val activityContract = ActivityResultContracts.GetContent()
         override val activityArg = JSON_MIMETYPE
-        override suspend fun execute(source: Source, location: Uri) = uiSafe(
+        override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
             R.string.restore_patches_selection_fail,
             "Failed to restore patches selection"
@@ -151,19 +151,19 @@ class ImportExportViewModel(
                 }
             }
 
-            selectionRepository.import(source, selection)
+            selectionRepository.import(bundleUid, selection)
         }
     }
 
     private inner class Export : SelectionAction {
         override val activityContract = ActivityResultContracts.CreateDocument(JSON_MIMETYPE)
         override val activityArg = "selection.json"
-        override suspend fun execute(source: Source, location: Uri) = uiSafe(
+        override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
             R.string.backup_patches_selection_fail,
             "Failed to backup patches selection"
         ) {
-            val selection = selectionRepository.export(source)
+            val selection = selectionRepository.export(bundleUid)
 
             withContext(Dispatchers.IO) {
                 contentResolver.openOutputStream(location, "wt")!!.use {

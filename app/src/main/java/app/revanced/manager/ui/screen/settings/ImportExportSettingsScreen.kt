@@ -31,7 +31,7 @@ import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
-import app.revanced.manager.ui.component.bundle.SourceSelector
+import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -63,12 +63,12 @@ fun ImportExportSettingsScreen(
             }
         }
 
-        if (vm.selectedSource == null) {
-            SourceSelector(sources) {
+        if (vm.selectedBundle == null) {
+            BundleSelector(sources) {
                 if (it == null) {
                     vm.clearSelectionAction()
                 } else {
-                    vm.selectSource(it)
+                    vm.selectBundle(it)
                     launcher.launch(action.activityArg)
                 }
             }

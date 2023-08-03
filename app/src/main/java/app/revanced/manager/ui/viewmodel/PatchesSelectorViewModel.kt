@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.domain.repository.SourceRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
@@ -43,21 +43,23 @@ class PatchesSelectorViewModel(
     private val savedStateHandle: SavedStateHandle = get()
 
     val allowExperimental = get<PreferencesManager>().allowExperimental
-    val bundlesFlow = get<SourceRepository>().sources.flatMapLatestAndCombine(
-        combiner = { it }
+    val bundlesFlow = get<PatchBundleRepository>().sources.flatMapLatestAndCombine(
+        combiner = { it.filterNotNull() }
     ) { source ->
         // Regenerate bundle information whenever this source updates.
-        source.bundle.map { bundle ->
+        source.state.map { state ->
+            val bundle = state.patchBundleOrNull() ?: return@map null
+
             val supported = mutableListOf<PatchInfo>()
             val unsupported = mutableListOf<PatchInfo>()
             val universal = mutableListOf<PatchInfo>()
 
             bundle.patches.filter { it.compatibleWith(selectedApp.packageName) }.forEach {
-                val targetList =
-                    if (it.compatiblePackages == null) universal else if (it.supportsVersion(selectedApp.version))
-                        supported
-                    else
-                        unsupported
+                val targetList = when {
+                    it.compatiblePackages == null -> universal
+                    it.supportsVersion(selectedApp.version) -> supported
+                    else -> unsupported
+                }
 
                 targetList.add(it)
             }
@@ -66,30 +68,36 @@ class PatchesSelectorViewModel(
         }
     }
 
-    private val selectedPatches: SnapshotStatePatchesSelection by savedStateHandle.saveable(saver = patchesSelectionSaver, init = {
-        val map: SnapshotStatePatchesSelection = mutableStateMapOf()
-        viewModelScope.launch(Dispatchers.Default) {
-            val bundles = bundlesFlow.first()
-            val filteredSelection =
-                selectionRepository.getSelection(selectedApp.packageName).mapValues { (uid, patches) ->
-                    // Filter out patches that don't exist.
-                    val filteredPatches = bundles.singleOrNull { it.uid == uid }
-                        ?.let { bundle ->
-                            val allPatches = bundle.all.map { it.name }
-                            patches.filter { allPatches.contains(it) }
+    private val selectedPatches: SnapshotStatePatchesSelection by savedStateHandle.saveable(
+        saver = patchesSelectionSaver,
+        init = {
+            val map: SnapshotStatePatchesSelection = mutableStateMapOf()
+            viewModelScope.launch(Dispatchers.Default) {
+                val bundles = bundlesFlow.first()
+                val filteredSelection =
+                    selectionRepository.getSelection(selectedApp.packageName)
+                        .mapValues { (uid, patches) ->
+                            // Filter out patches that don't exist.
+                            val filteredPatches = bundles.singleOrNull { it.uid == uid }
+                                ?.let { bundle ->
+                                    val allPatches = bundle.all.map { it.name }
+                                    patches.filter { allPatches.contains(it) }
+                                }
+                                ?: patches
+
+                            filteredPatches.toMutableStateSet()
                         }
-                        ?: patches
 
-                    filteredPatches.toMutableStateSet()
+                withContext(Dispatchers.Main) {
+                    map.putAll(filteredSelection)
                 }
-
-            withContext(Dispatchers.Main) {
-                map.putAll(filteredSelection)
             }
-        }
-        return@saveable map
-    })
-    private val patchOptions: SnapshotStateOptions by savedStateHandle.saveable(saver = optionsSaver, init = ::mutableStateMapOf)
+            return@saveable map
+        })
+    private val patchOptions: SnapshotStateOptions by savedStateHandle.saveable(
+        saver = optionsSaver,
+        init = ::mutableStateMapOf
+    )
 
     /**
      * Show the patch options dialog for this patch.

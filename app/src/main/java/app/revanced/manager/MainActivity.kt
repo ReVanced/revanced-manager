@@ -7,7 +7,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
@@ -28,22 +28,19 @@ import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
 import me.zhanghai.android.appiconloader.coil.AppIconFetcher
 import me.zhanghai.android.appiconloader.coil.AppIconKeyer
-import org.koin.android.ext.android.get
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.roundToInt
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
 class MainActivity : ComponentActivity() {
-    private val prefs: PreferencesManager = get()
-
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        installSplashScreen()
+        val vm: MainViewModel = getActivityViewModel()
 
-        getActivityViewModel<MainViewModel>()
+        installSplashScreen()
 
         val scale = this.resources.displayMetrics.density
         val pixels = (36 * scale).roundToInt()
@@ -57,8 +54,8 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            val theme by prefs.theme.getAsState()
-            val dynamicColor by prefs.dynamicColor.getAsState()
+            val theme by vm.prefs.theme.getAsState()
+            val dynamicColor by vm.prefs.dynamicColor.getAsState()
 
             ReVancedManagerTheme(
                 darkTheme = theme == Theme.SYSTEM && isSystemInDarkTheme() || theme == Theme.DARK,
@@ -68,6 +65,11 @@ class MainActivity : ComponentActivity() {
                     rememberNavController<Destination>(startDestination = Destination.Dashboard)
 
                 NavBackHandler(navController)
+
+                val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
+                if (showAutoUpdatesDialog) {
+                    AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
+                }
 
                 AnimatedNavHost(
                     controller = navController
