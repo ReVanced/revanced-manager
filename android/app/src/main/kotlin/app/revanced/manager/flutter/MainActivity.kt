@@ -27,7 +27,7 @@ private const val INSTALLER_CHANNEL = "app.revanced.manager.flutter/installer"
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
-    private var run: Boolean = true
+    private var cancel: Boolean = false
     private var stopResult: MethodChannel.Result? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
@@ -59,7 +59,7 @@ class MainActivity : FlutterActivity() {
                         keyStoreFilePath != null &&
                         keystorePassword != null
                     ) {
-                        run = true
+                        cancel = false
                         runPatcher(
                             result,
                             patchBundleFilePath,
@@ -78,7 +78,7 @@ class MainActivity : FlutterActivity() {
                     }
                 }
                 "stopPatcher" -> {
-                    run = false
+                    cancel = true
                     stopResult = result
                 }
                 else -> result.notImplemented()
@@ -119,7 +119,7 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
@@ -137,7 +137,7 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
@@ -153,7 +153,7 @@ class MainActivity : FlutterActivity() {
                         )
                     )
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
@@ -175,14 +175,14 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
 
                 patcher.addIntegrations(listOf(integrations)) {}
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
@@ -198,7 +198,7 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
@@ -220,7 +220,7 @@ class MainActivity : FlutterActivity() {
                     TODO("VERSION.SDK_INT < CUPCAKE")
                 }
 
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
@@ -239,7 +239,7 @@ class MainActivity : FlutterActivity() {
                                 )
                             )
                         }
-                        if(!run) {
+                        if(cancel) {
                             handler.post { stopResult!!.success(null) }
                             return@Thread
                         }
@@ -253,7 +253,7 @@ class MainActivity : FlutterActivity() {
                             mapOf("progress" to 0.5, "header" to "", "log" to msg)
                         )
                     }
-                    if(!run) {
+                    if(cancel) {
                         handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
@@ -269,14 +269,14 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
                 val res = patcher.save()
                 ZipFile(patchedFile).use { file ->
                     res.dexFiles.forEach {
-                        if(!run) {
+                        if(cancel) {
                             handler.post { stopResult!!.success(null) }
                             return@Thread
                         }
@@ -296,7 +296,7 @@ class MainActivity : FlutterActivity() {
                         ZipAligner::getEntryAlignment
                     )
                 }
-                if(!run) {
+                if(cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
