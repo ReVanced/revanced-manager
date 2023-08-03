@@ -70,49 +70,66 @@ class _ApplicationItemState extends State<ApplicationItem>
             animationDuration: Duration(milliseconds: 450),
           ),
           header: Row(
-            children: <Widget>[
-              SizedBox(
-                width: 40,
-                child: Image.memory(widget.icon, height: 40, width: 40),
-              ),
-              const SizedBox(width: 4),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.name.length > 12
-                          ? '${widget.name.substring(0, 12)}...'
-                          : widget.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 40,
+                      child: Image.memory(widget.icon, height: 40, width: 40),
+                    ),
+                    const SizedBox(width: 19),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            widget.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            format(widget.patchDate),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(format(widget.patchDate)),
                   ],
                 ),
               ),
-              const Spacer(),
-              RotationTransition(
-                turns:
-                    Tween(begin: 0.0, end: 0.50).animate(_animationController),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.arrow_drop_down),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  CustomMaterialButton(
-                    label: widget.isUpdatableApp
-                        ? I18nText('applicationItem.patchButton')
-                        : I18nText('applicationItem.infoButton'),
-                    onPressed: widget.onPressed,
+              Row(
+                children: [
+                  RotationTransition(
+                    turns: Tween(begin: 0.0, end: 0.50)
+                        .animate(_animationController),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.arrow_drop_down),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      CustomMaterialButton(
+                        label: widget.isUpdatableApp
+                            ? I18nText('applicationItem.patchButton')
+                            : I18nText('applicationItem.infoButton'),
+                        onPressed: widget.onPressed,
+                      ),
+                    ],
                   ),
                 ],
               ),

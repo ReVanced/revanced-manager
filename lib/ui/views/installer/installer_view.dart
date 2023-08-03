@@ -31,6 +31,8 @@ class InstallerView extends StatelessWidget {
                     style: GoogleFonts.inter(
                       color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   onBackButtonPressed: () => model.onWillPop(context),
                   actions: <Widget>[

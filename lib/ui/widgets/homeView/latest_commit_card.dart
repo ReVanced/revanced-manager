@@ -30,30 +30,28 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Row(
-                    children: <Widget>[
-                      Text('ReVanced Manager'),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: <Widget>[
-                      FutureBuilder<String?>(
-                        future: model.getLatestManagerReleaseTime(),
-                        builder: (context, snapshot) =>
-                            snapshot.hasData && snapshot.data!.isNotEmpty
-                                ? I18nText(
-                                    'latestCommitCard.timeagoLabel',
-                                    translationParams: {'time': snapshot.data!},
-                                  )
-                                : I18nText('latestCommitCard.loadingLabel'),
-                      ),
-                    ],
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text('ReVanced Manager'),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: <Widget>[
+                        FutureBuilder<String?>(
+                          future: model.getLatestManagerReleaseTime(),
+                          builder: (context, snapshot) => snapshot.hasData &&
+                                  snapshot.data!.isNotEmpty
+                              ? I18nText(
+                                  'latestCommitCard.timeagoLabel',
+                                  translationParams: {'time': snapshot.data!},
+                                )
+                              : I18nText('latestCommitCard.loadingLabel'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               FutureBuilder<bool>(
                 future: model.hasManagerUpdates(),
@@ -82,35 +80,33 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Row(
-                    children: <Widget>[
-                      Text('ReVanced Patches'),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: <Widget>[
-                      FutureBuilder<String?>(
-                        future: model.getLatestPatchesReleaseTime(),
-                        builder: (context, snapshot) => Text(
-                          snapshot.hasData && snapshot.data!.isNotEmpty
-                              ? FlutterI18n.translate(
-                                  context,
-                                  'latestCommitCard.timeagoLabel',
-                                  translationParams: {'time': snapshot.data!},
-                                )
-                              : FlutterI18n.translate(
-                                  context,
-                                  'latestCommitCard.loadingLabel',
-                                ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text('ReVanced Patches'),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: <Widget>[
+                        FutureBuilder<String?>(
+                          future: model.getLatestPatchesReleaseTime(),
+                          builder: (context, snapshot) => Text(
+                            snapshot.hasData && snapshot.data!.isNotEmpty
+                                ? FlutterI18n.translate(
+                                    context,
+                                    'latestCommitCard.timeagoLabel',
+                                    translationParams: {'time': snapshot.data!},
+                                  )
+                                : FlutterI18n.translate(
+                                    context,
+                                    'latestCommitCard.loadingLabel',
+                                  ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
               FutureBuilder<bool>(
                 future: locator<HomeViewModel>().hasPatchesUpdates(),
