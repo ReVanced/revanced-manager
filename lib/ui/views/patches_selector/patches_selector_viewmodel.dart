@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
-import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
@@ -13,7 +12,6 @@ import 'package:stacked/stacked.dart';
 class PatchesSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final GithubAPI _githubAPI = locator<GithubAPI>();
   final List<Patch> patches = [];
   final List<Patch> selectedPatches =
       locator<PatcherViewModel>().selectedPatches;
@@ -78,17 +76,8 @@ class PatchesSelectorViewModel extends BaseViewModel {
     locator<PatcherViewModel>().notifyListeners();
   }
 
-  Future<String?> getPatchesVersion() async {
-    if (isDefaultPatchesRepo()) {
-      patchesVersion = await _managerAPI.getLatestPatchesVersion();
-      // print('Patches version: $patchesVersion');
-      return patchesVersion ?? '0.0.0';
-    } else {
-      // fetch from github
-      patchesVersion = await _githubAPI
-          .getLastestReleaseVersion(_managerAPI.getPatchesRepo());
-    }
-    return null;
+  Future<void> getPatchesVersion() async {
+    patchesVersion = await _managerAPI.getCurrentPatchesVersion();
   }
 
   List<Patch> getQueriedPatches(String query) {
