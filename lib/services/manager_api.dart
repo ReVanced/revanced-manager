@@ -315,7 +315,7 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
