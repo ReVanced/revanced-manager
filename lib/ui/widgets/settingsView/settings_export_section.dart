@@ -73,10 +73,12 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importKeystoreHint'),
-          onTap: () {
-            _settingsViewModel.importKeystore();
+          onTap: () async{
+            await _settingsViewModel.importKeystore();
             final sManageKeystorePassword = SManageKeystorePassword();
-            sManageKeystorePassword.showKeystoreDialog(context);
+            if(context.mounted){
+              sManageKeystorePassword.showKeystoreDialog(context);
+            }
           },
         ),
         ListTile(
@@ -102,7 +104,7 @@ class SExportSection extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('warning'),
+        title: I18nText('settingsView.resetStoredPatchesDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'settingsView.resetStoredPatchesDialogText',

@@ -101,6 +101,8 @@ class SManageSources extends BaseViewModel {
                 hint: integrationsRepo.split('/')[1],
                 onChanged: (value) => notifyListeners(),
               ),
+              const SizedBox(height: 20),
+              I18nText('settingsView.sourcesUpdateNote')
             ],
           ),
         ),
@@ -126,6 +128,7 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setIntegrationsRepo(
                 '${_orgIntSourceController.text.trim()}/${_intSourceController.text.trim()}',
               );
+              _managerAPI.setCurrentPatchesVersion('0.0.0');
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
@@ -154,6 +157,7 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
+              _managerAPI.setCurrentPatchesVersion('0.0.0');
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context)
                 ..pop()

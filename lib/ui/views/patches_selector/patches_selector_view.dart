@@ -171,7 +171,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                 (patch) => PatchItem(
                                   name: patch.name,
                                   simpleName: patch.getSimpleName(),
-                                  version: patch.version,
                                   description: patch.description,
                                   packageVersion: model.getAppVersion(),
                                   supportedPackageVersions:

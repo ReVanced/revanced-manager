@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "quitButton": "Quit",
     "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
@@ -21,17 +22,21 @@
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched applications",
 
-        "updatesAvailable": "Updates available",
         "noUpdates": "No updates available",
 
         "WIP": "Work in progress...",
 
         "noInstallations": "No patched applications installed",
-        "installed": "Installed",
         "installUpdate": "Continue to install the update?",
 
         "updateDialogTitle": "Update Manager",
+        "updatePatchesDialogTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
+
+        "patchesConsentDialogText": "ReVanced Patches need to be downloaded to patch apps.",
+        "patchesConsentDialogText2": "This will reveal your IP address to {url}.",
+        "patchesConsentDialogText3": "Auto update",
+        "patchesConsentDialogText3Sub": "You can still change this in the settings later",
 
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
@@ -171,6 +176,7 @@
         "sourcesResetDialogTitle": "Reset",
         "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
         "apiURLResetDialogText": "Are you sure you want to reset API URL to its default value?",
+        "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
 
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
@@ -186,6 +192,7 @@
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
 
+        "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Experimental universal patches support",
         "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
         "experimentalPatchesLabel": "Experimental patches support",
@@ -211,17 +218,21 @@
 
         "resetStoredPatchesLabel": "Reset patches",
         "resetStoredPatchesHint": "Reset the stored patches selection",
-        "resetStoredPatchesDialogText": "Are you sure you want to reset the stored patches selection?",
+
+        "resetStoredPatchesDialogTitle": "Reset patches selection?",
+        "resetStoredPatchesDialogText": "Resetting patches selection will remove all selected patches.",
         "resetStoredPatches": "Patches selection has been reset",
 
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
         "deletedLogs": "Logs deleted",
 
-        "deleteKeystoreLabel": "Delete keystore",
-        "deleteKeystoreHint": "Delete the keystore used to sign the app",
-        "deleteKeystoreDialogText": "Are you sure you want to delete the keystore used to sign patched applications?",
-        "deletedKeystore": "Keystore deleted",
+        "regenerateKeystoreLabel": "Regenerate keystore",
+        "regenerateKeystoreHint": "Regenerate the keystore used to sign the app",
+
+        "regenerateKeystoreDialogTitle": "Regenerate keystore?",
+        "regenerateKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
+        "regeneratedKeystore": "Keystore regenerated",
 
         "exportKeystoreLabel": "Export keystore",
         "exportKeystoreHint": "Export keystore used to sign apps",
@@ -242,7 +253,6 @@
         "widgetTitle": "App info",
         "openButton": "Open",
         "uninstallButton": "Uninstall",
-        "patchButton": "Patch",
         "unpatchButton": "Unpatch",
         "rootDialogTitle": "Error",
 

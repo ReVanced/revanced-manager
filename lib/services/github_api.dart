@@ -72,6 +72,39 @@ class GithubAPI {
     }
   }
 
+  Future<Map<String, dynamic>?> getPatchesRelease(
+    String repoName,
+    String version,
+  ) async {
+    try {
+      final response = await _dio.get(
+        '/repos/$repoName/releases/tags/$version',
+      );
+      return response.data;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getLatestPatchesRelease(
+    String repoName,
+  ) async {
+    try {
+      final response = await _dio.get(
+        '/repos/$repoName/releases/latest',
+      );
+      return response.data;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>?> getLatestManagerRelease(
     String repoName,
   ) async {
@@ -164,10 +197,37 @@ class GithubAPI {
     return null;
   }
 
-  Future<List<Patch>> getPatches(String repoName) async {
+  Future<File?> getPatchesReleaseFile(
+    String extension,
+    String repoName,
+    String version,
+  ) async {
+    try {
+      final Map<String, dynamic>? release =
+          await getPatchesRelease(repoName, version);
+      if (release != null) {
+        final Map<String, dynamic>? asset =
+            (release['assets'] as List<dynamic>).firstWhereOrNull(
+          (asset) => (asset['name'] as String).endsWith(extension),
+        );
+        if (asset != null) {
+          return await DefaultCacheManager().getSingleFile(
+            asset['browser_download_url'],
+          );
+        }
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+  Future<List<Patch>> getPatches(String repoName, String version) async {
     List<Patch> patches = [];
     try {
-      final File? f = await getLatestReleaseFile('.json', repoName);
+      final File? f = await getPatchesReleaseFile('.json', repoName, version);
       if (f != null) {
         final List<dynamic> list = jsonDecode(f.readAsStringSync());
         patches = list.map((patch) => Patch.fromJson(patch)).toList();
@@ -179,22 +239,5 @@ class GithubAPI {
     }
 
     return patches;
-  }
-
-  Future<String> getLastestReleaseVersion(String repoName) async {
-    try {
-      final Map<String, dynamic>? release = await getLatestRelease(repoName);
-      if (release != null) {
-        return release['tag_name'];
-      } else {
-        return 'Unknown';
-      }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-
-      return 'Unknown';
-    }
   }
 }

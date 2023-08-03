@@ -1,10 +1,10 @@
 name: revanced_manager
-description: Patch your favourite apps, right on your device.
+description: Patch your favorite apps, right on your device.
 homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.4.3+100400003
+version: 1.5.2+100500002
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

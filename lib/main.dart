@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
@@ -24,7 +23,6 @@ Future main() async {
   await locator<RevancedAPI>().initialize(apiUrl);
   final String repoUrl = locator<ManagerAPI>().getRepoUrl();
   locator<GithubAPI>().initialize(repoUrl);
-  await locator<PatcherAPI>().initialize();
   tz.initializeTimeZones();
   prefs = await SharedPreferences.getInstance();
 
