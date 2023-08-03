@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun BundleInfoListItem(
+fun BundleListItem(
     headlineText: String,
     supportingText: String = "",
     trailingContent: @Composable (() -> Unit)? = null,

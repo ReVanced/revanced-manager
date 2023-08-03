@@ -13,7 +13,7 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import app.revanced.manager.domain.repository.SourceRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import kotlinx.coroutines.CoroutineScope
@@ -40,11 +40,11 @@ data class AppInfo(
 @Suppress("DEPRECATION")
 class PM(
     private val app: Application,
-    sourceRepository: SourceRepository
+    patchBundleRepository: PatchBundleRepository
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    val appList = sourceRepository.bundles.map { bundles ->
+    val appList = patchBundleRepository.bundles.map { bundles ->
         val compatibleApps = scope.async {
             val compatiblePackages = bundles.values
                 .flatMap { it.patches }

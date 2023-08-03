@@ -15,18 +15,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.revanced.manager.domain.sources.Source
+import app.revanced.manager.domain.bundles.PatchBundleSource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SourceSelector(sources: List<Source>, onFinish: (Source?) -> Unit) {
-    LaunchedEffect(sources) {
-        if (sources.size == 1) {
-            onFinish(sources[0])
+fun BundleSelector(bundles: List<PatchBundleSource>, onFinish: (PatchBundleSource?) -> Unit) {
+    LaunchedEffect(bundles) {
+        if (bundles.size == 1) {
+            onFinish(bundles[0])
         }
     }
 
-    if (sources.size < 2) {
+    if (bundles.size < 2) {
         return
     }
 
@@ -50,7 +50,7 @@ fun SourceSelector(sources: List<Source>, onFinish: (Source?) -> Unit) {
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
-            sources.forEach {
+            bundles.forEach {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,

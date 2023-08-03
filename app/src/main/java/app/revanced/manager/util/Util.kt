@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -31,12 +30,6 @@ fun Context.openUrl(url: String) {
 
 fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, duration).show()
-}
-
-fun String.parseUrlOrNull() = try {
-    Url(this)
-} catch (_: Throwable) {
-    null
 }
 
 /**

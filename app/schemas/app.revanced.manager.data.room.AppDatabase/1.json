@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f7e0fef1b937143a8b128e3dbab7c041",
+    "identityHash": "7142188e25ce489eb233aed8fb76e4cc",
     "entities": [
       {
-        "tableName": "sources",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `location` TEXT NOT NULL, `version` TEXT NOT NULL, `integrations_version` TEXT NOT NULL, PRIMARY KEY(`uid`))",
+        "tableName": "patch_bundles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, `version` TEXT, `integrations_version` TEXT, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -21,22 +21,28 @@
             "notNull": true
           },
           {
-            "fieldPath": "location",
-            "columnName": "location",
+            "fieldPath": "source",
+            "columnName": "source",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autoUpdate",
+            "columnName": "auto_update",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "versionInfo.patches",
             "columnName": "version",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "versionInfo.integrations",
             "columnName": "integrations_version",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -47,20 +53,20 @@
         },
         "indices": [
           {
-            "name": "index_sources_name",
+            "name": "index_patch_bundles_name",
             "unique": true,
             "columnNames": [
               "name"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_sources_name` ON `${TABLE_NAME}` (`name`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_bundles_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "patch_selections",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `source` INTEGER NOT NULL, `package_name` TEXT NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`source`) REFERENCES `sources`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `patch_bundle` INTEGER NOT NULL, `package_name` TEXT NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`patch_bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -69,8 +75,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "source",
-            "columnName": "source",
+            "fieldPath": "patchBundle",
+            "columnName": "patch_bundle",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -89,23 +95,23 @@
         },
         "indices": [
           {
-            "name": "index_patch_selections_source_package_name",
+            "name": "index_patch_selections_patch_bundle_package_name",
             "unique": true,
             "columnNames": [
-              "source",
+              "patch_bundle",
               "package_name"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_selections_source_package_name` ON `${TABLE_NAME}` (`source`, `package_name`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_selections_patch_bundle_package_name` ON `${TABLE_NAME}` (`patch_bundle`, `package_name`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "sources",
+            "table": "patch_bundles",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "source"
+              "patch_bundle"
             ],
             "referencedColumns": [
               "uid"
@@ -189,7 +195,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f7e0fef1b937143a8b128e3dbab7c041')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7142188e25ce489eb233aed8fb76e4cc')"
     ]
   }
 }

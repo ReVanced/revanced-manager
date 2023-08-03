@@ -1,19 +1,16 @@
 package app.revanced.manager.data.room
 
 import androidx.room.TypeConverter
-import app.revanced.manager.data.room.sources.SourceLocation
+import app.revanced.manager.data.room.bundles.Source
 import io.ktor.http.*
 import java.io.File
 
 class Converters {
     @TypeConverter
-    fun locationFromString(value: String) = when(value) {
-        SourceLocation.Local.SENTINEL -> SourceLocation.Local
-        else -> SourceLocation.Remote(Url(value))
-    }
+    fun sourceFromString(value: String) = Source.from(value)
 
     @TypeConverter
-    fun locationToString(location: SourceLocation) = location.toString()
+    fun sourceToString(value: Source) = value.toString()
 
     @TypeConverter
     fun fileFromString(value: String) = File(value)

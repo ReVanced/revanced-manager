@@ -16,7 +16,7 @@ import androidx.work.WorkerParameters
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
-import app.revanced.manager.domain.repository.SourceRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.Session
@@ -43,7 +43,7 @@ class PatcherWorker(
     parameters: WorkerParameters
 ) : Worker<PatcherWorker.Args>(context, parameters), KoinComponent {
 
-    private val sourceRepository: SourceRepository by inject()
+    private val patchBundleRepository: PatchBundleRepository by inject()
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
@@ -124,7 +124,7 @@ class PatcherWorker(
         val frameworkPath =
             applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
 
-        val bundles = sourceRepository.bundles.first()
+        val bundles = patchBundleRepository.bundles.first()
         val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
 
         val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)

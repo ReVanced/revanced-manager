@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.repository.DownloadedAppRepository
-import app.revanced.manager.domain.repository.SourceRepository
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.downloader.APKMirror
 import app.revanced.manager.network.downloader.AppDownloader
 import app.revanced.manager.ui.model.SelectedApp
@@ -28,7 +28,7 @@ class VersionSelectorViewModel(
     val packageName: String
 ) : ViewModel(), KoinComponent {
     private val downloadedAppRepository: DownloadedAppRepository by inject()
-    private val sourceRepository: SourceRepository by inject()
+    private val patchBundleRepository: PatchBundleRepository by inject()
     private val pm: PM by inject()
     private val appDownloader: AppDownloader = APKMirror()
 
@@ -41,7 +41,7 @@ class VersionSelectorViewModel(
 
     val downloadableVersions = mutableStateSetOf<SelectedApp.Download>()
 
-    val supportedVersions = sourceRepository.bundles.map { bundles ->
+    val supportedVersions = patchBundleRepository.bundles.map { bundles ->
         var patchesWithoutVersions = 0
 
         bundles.flatMap { (_, bundle) ->
