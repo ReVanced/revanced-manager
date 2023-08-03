@@ -7,7 +7,6 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
-import 'package:revanced_manager/models/patch.dart';
 import 'package:timeago/timeago.dart';
 
 @lazySingleton
@@ -62,19 +61,6 @@ class RevancedAPI {
       return {};
     }
     return contributors;
-  }
-
-  Future<List<Patch>> getPatches() async {
-    try {
-      final response = await _dio.get('/patches');
-      final List<dynamic> patches = response.data;
-      return patches.map((patch) => Patch.fromJson(patch)).toList();
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return List.empty();
-    }
   }
 
   Future<Map<String, dynamic>?> _getLatestRelease(

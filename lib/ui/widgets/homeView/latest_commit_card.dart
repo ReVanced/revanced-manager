@@ -8,11 +8,11 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 class LatestCommitCard extends StatefulWidget {
   const LatestCommitCard({
     Key? key,
-    required this.onPressedManager,
-    required this.onPressedPatches,
+    required this.model,
+    required this.parentContext,
   }) : super(key: key);
-  final Function() onPressedManager;
-  final Function() onPressedPatches;
+  final HomeViewModel model;
+  final BuildContext parentContext;
 
   @override
   State<LatestCommitCard> createState() => _LatestCommitCardState();
@@ -63,7 +63,10 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                   child: CustomMaterialButton(
                     label: I18nText('updateButton'),
                     onPressed: snapshot.hasData && snapshot.data!
-                        ? widget.onPressedManager
+                        ? () => widget.model.showUpdateConfirmationDialog(
+                              widget.parentContext,
+                              false,
+                            )
                         : () => {},
                   ),
                 ),
@@ -91,7 +94,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                   Row(
                     children: <Widget>[
                       FutureBuilder<String?>(
-                        future: model.getLatestPatcherReleaseTime(),
+                        future: model.getLatestPatchesReleaseTime(),
                         builder: (context, snapshot) => Text(
                           snapshot.hasData && snapshot.data!.isNotEmpty
                               ? FlutterI18n.translate(
@@ -117,7 +120,10 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                   child: CustomMaterialButton(
                     label: I18nText('updateButton'),
                     onPressed: snapshot.hasData && snapshot.data!
-                        ? widget.onPressedPatches
+                        ? () => widget.model.showUpdateConfirmationDialog(
+                              widget.parentContext,
+                              true,
+                            )
                         : () => {},
                   ),
                 ),

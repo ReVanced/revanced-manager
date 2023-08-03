@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "quitButton": "Quit",
     "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
@@ -29,7 +30,13 @@
         "installUpdate": "Continue to install the update?",
 
         "updateDialogTitle": "Update Manager",
+        "updatePatchesDialogTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
+
+        "patchesConsentDialogText": "ReVanced Patches need to be downloaded to patch apps.",
+        "patchesConsentDialogText2": "This will reveal your IP address to {url}.",
+        "patchesConsentDialogText3": "Auto update",
+        "patchesConsentDialogText3Sub": "You can still change this in the settings later",
 
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
@@ -169,6 +176,7 @@
         "sourcesResetDialogTitle": "Reset",
         "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
         "apiURLResetDialogText": "Are you sure you want to reset API URL to its default value?",
+        "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
 
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
@@ -184,6 +192,7 @@
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
 
+        "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Experimental universal patches support",
         "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
         "experimentalPatchesLabel": "Experimental patches support",
