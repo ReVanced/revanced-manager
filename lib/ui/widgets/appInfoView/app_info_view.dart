@@ -153,44 +153,6 @@ class AppInfoView extends StatelessWidget {
                                 endIndent: 12.0,
                                 width: 1.0,
                               ),
-                              Expanded(
-                                child: Material(
-                                  type: MaterialType.transparency,
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () {
-                                      model.updateNotImplemented(context);
-                                      // model.navigateToPatcher(app);
-                                      // Navigator.of(context).pop();
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.build_outlined,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        I18nText(
-                                          'appInfoView.patchButton',
-                                          child: Text(
-                                            '',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
                               if (app.isRooted)
                                 VerticalDivider(
                                   color: Theme.of(context).canvasColor,
