@@ -167,7 +167,7 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
-      update(-100.0, 'Aborting...', 'Canceling patching process');
+      update(0.5, 'Aborting...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
       update(-100.0, 'Aborted...', 'Press back to exit');
     } on Exception catch (e) {

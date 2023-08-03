@@ -28,6 +28,7 @@ class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
     private var run: Boolean = true
+    private var stopResult: MethodChannel.Result? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -78,7 +79,7 @@ class MainActivity : FlutterActivity() {
                 }
                 "stopPatcher" -> {
                     run = false
-                    result.success(null)
+                    stopResult = result
                 }
                 else -> result.notImplemented()
             }
@@ -120,6 +121,7 @@ class MainActivity : FlutterActivity() {
                     }
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
@@ -137,6 +139,7 @@ class MainActivity : FlutterActivity() {
                     }
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
@@ -152,6 +155,7 @@ class MainActivity : FlutterActivity() {
                         )
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
@@ -173,12 +177,14 @@ class MainActivity : FlutterActivity() {
                     }
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
                     patcher.addIntegrations(listOf(integrations)) {}
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
@@ -194,6 +200,7 @@ class MainActivity : FlutterActivity() {
                     }
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
@@ -215,6 +222,7 @@ class MainActivity : FlutterActivity() {
                     }
 
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
 
@@ -233,6 +241,7 @@ class MainActivity : FlutterActivity() {
                                 )
                             }
                             if(!run) {
+                                handler.post { stopResult!!.success(null) }
                                 return@Thread
                             }
                             return@forEach
@@ -246,6 +255,7 @@ class MainActivity : FlutterActivity() {
                             )
                         }
                         if(!run) {
+                            handler.post { stopResult!!.success(null) }
                             return@Thread
                         }
                     }
@@ -261,12 +271,14 @@ class MainActivity : FlutterActivity() {
                         )
                     }
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
                     val res = patcher.save()
                     ZipFile(patchedFile).use { file ->
                         res.dexFiles.forEach {
                             if(!run) {
+                                handler.post { stopResult!!.success(null) }
                                 return@Thread
                             }
                             file.addEntryCompressData(
@@ -286,6 +298,7 @@ class MainActivity : FlutterActivity() {
                         )
                     }
                     if(!run) {
+                        handler.post { stopResult!!.success(null) }
                         return@Thread
                     }
                     handler.post {
