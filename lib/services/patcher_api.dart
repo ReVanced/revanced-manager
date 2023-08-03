@@ -202,6 +202,16 @@ class PatcherAPI {
     }
   }
 
+  Future<void> stopPatcher() async {
+    try {
+      await patcherChannel.invokeMethod('stopPatcher');
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
     if (_outFile != null) {
       try {
