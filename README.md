@@ -29,3 +29,8 @@ If you wish to translate ReVanced Manager, we're accepting translations on [Crow
 5. Run `flutter pub get` in terminal
 6. Then `flutter packages pub run build_runner build --delete-conflicting-outputs` (Must be done on each git pull)
 7. To build release apk run `flutter build apk`
+
+## ℹ️ Additional Info. 
+If you wish to know more about the {} processes, Goto:
+
+[Secondary Readme](https://github.com/revanced/revanced-manager/blob/main/docs/README.md) 
