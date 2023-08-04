@@ -81,7 +81,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   List<Patch> getQueriedPatches(String query) {
-    final List<Patch> patch = return patches
+    final List<Patch> patch = patches
         .where(
           (patch) =>
               query.isEmpty ||
