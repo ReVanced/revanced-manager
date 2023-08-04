@@ -13,8 +13,13 @@
 
     <string name="import_">Import</string>
     <string name="import_bundle">Import patch bundle</string>
-    <string name="bundle_information">Bundle information</string>
     <string name="bundle_patches">Bundle patches</string>
+    <string name="patch_bundle_field">Patch bundle</string>
+    <string name="integrations_field">Integrations</string>
+    <string name="file_field_set">Provided</string>
+    <string name="file_field_not_set">Not provided</string>
+
+    <string name="field_not_set">Not set</string>
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
