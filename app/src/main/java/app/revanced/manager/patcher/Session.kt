@@ -28,7 +28,7 @@ class Session(
         PatcherOptions(
             inputFile = input,
             resourceCacheDirectory = temporary.resolve("aapt-resources").path,
-            frameworkFolderLocation = frameworkDir,
+            frameworkDirectory = frameworkDir,
             aaptPath = aaptPath,
             logger = logger,
         )
