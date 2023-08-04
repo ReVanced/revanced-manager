@@ -67,7 +67,7 @@ fun BundleInformationDialog(
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = stringResource(R.string.bundle_information),
+                    title = bundle.name,
                     onBackClick = onDismissRequest,
                     onBackIcon = {
                         Icon(

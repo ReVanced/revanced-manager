@@ -1,10 +1,9 @@
 package app.revanced.manager.ui.component.bundle
 
 import android.net.Uri
-import android.webkit.URLUtil
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.filled.Topic
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,17 +44,9 @@ fun ImportBundleDialog(
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var integrations by rememberSaveable { mutableStateOf<Uri?>(null) }
 
-    val patchBundleText = patchBundle?.toString().orEmpty()
-    val integrationText = integrations?.toString().orEmpty()
-
     val inputsAreValid by remember {
         derivedStateOf {
-            val nameSize = name.length
-            when {
-                nameSize !in 1..19 -> false
-                isLocal -> patchBundle != null
-                else -> remoteUrl.isNotEmpty() && URLUtil.isValidUrl(remoteUrl)
-            }
+            name.isNotEmpty() && if (isLocal) patchBundle != null else remoteUrl.isNotEmpty()
         }
     }
 
@@ -64,10 +54,17 @@ fun ImportBundleDialog(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { patchBundle = it }
         }
+    fun launchPatchActivity() {
+        patchActivityLauncher.launch(JAR_MIMETYPE)
+    }
+
     val integrationsActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { integrations = it }
         }
+    fun launchIntegrationsActivity() {
+        integrationsActivityLauncher.launch(APK_MIMETYPE)
+    }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -123,53 +120,43 @@ fun ImportBundleDialog(
                 onPatchesClick = {},
                 onBundleTypeClick = { isLocal = !isLocal },
             ) {
-                if (isLocal) {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp),
-                        value = patchBundleText,
-                        onValueChange = {},
-                        label = {
-                            Text("Patches Source File")
-                        },
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    patchActivityLauncher.launch(JAR_MIMETYPE)
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Topic,
-                                    contentDescription = null
-                                )
-                            }
+                if (!isLocal) return@BaseBundleDialog
+                
+                BundleListItem(
+                    headlineText = stringResource(R.string.patch_bundle_field),
+                    supportingText = stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set),
+                    trailingContent = {
+                        IconButton(
+                            onClick = ::launchPatchActivity
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Topic,
+                                contentDescription = null
+                            )
                         }
-                    )
+                    },
+                    modifier = Modifier.clickable {
+                        launchPatchActivity()
+                    }
+                )
 
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 16.dp),
-                        value = integrationText,
-                        onValueChange = {},
-                        label = {
-                            Text("Integrations Source File")
-                        },
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    integrationsActivityLauncher.launch(APK_MIMETYPE)
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Topic,
-                                    contentDescription = null
-                                )
-                            }
+                BundleListItem(
+                    headlineText = stringResource(R.string.integrations_field),
+                    supportingText = stringResource(if (integrations != null) R.string.file_field_set else R.string.file_field_not_set),
+                    trailingContent = {
+                        IconButton(
+                            onClick = ::launchIntegrationsActivity
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Topic,
+                                contentDescription = null
+                            )
                         }
-                    )
-                }
+                    },
+                    modifier = Modifier.clickable {
+                        launchIntegrationsActivity()
+                    }
+                )
             }
         }
     }
