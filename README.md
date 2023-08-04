@@ -31,6 +31,16 @@ If you wish to translate ReVanced Manager, we're accepting translations on [Crow
 7. To build release apk run `flutter build apk`
 
 ## ℹ️ Additional Info. 
-If you wish to know more about the {} processes, Goto:
+If you wish to know more about any of the processes involved, you can head over to the [Secondary Readme](https://github.com/revanced/revanced-manager/blob/main/docs/README.md) file.
 
-[Secondary Readme](https://github.com/revanced/revanced-manager/blob/main/docs/README.md) 
+Or, directly jump to one of its sub-files:
+
+0. [💼 Prerequisites](https://github.com/ReVanced/revanced-manager/blob/main/docs/0_prerequisites.md)
+1. [⬇️ Installation](https://github.com/ReVanced/revanced-manager/blob/main/docs/1_installation.md)
+2. [🛠️ Usage](https://github.com/ReVanced/revanced-manager/blob/main/docs/2_usage.md)
+   1. [🧩 Patching apps](https://github.com/ReVanced/revanced-manager/blob/main/docs/2_1_patching.md)
+   2. [🧰 Managing patched apps](https://github.com/ReVanced/revanced-manager/blob/main/docs/2_2_managing.md)
+   3. [🔄 Updating ReVanced Manager](https://github.com/ReVanced/revanced-manager/blob/main/docs/2_3_updating.md)
+   4. [⚙️ Configuring ReVanced Manager](https://github.com/ReVanced/revanced-manager/blob/main/docs/2_4_settings.md)
+3. [🛟 Troubleshooting](https://github.com/ReVanced/revanced-manager/blob/main/docs/3_troubleshooting.md)
+4. [🛠 Building from source](https://github.com/ReVanced/revanced-manager/blob/main/docs/4_building.md)
