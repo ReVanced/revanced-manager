@@ -81,7 +81,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   List<Patch> getQueriedPatches(String query) {
-    return patches
+    final List<Patch> patch = return patches
         .where(
           (patch) =>
               query.isEmpty ||
@@ -90,6 +90,13 @@ class PatchesSelectorViewModel extends BaseViewModel {
               patch.getSimpleName().toLowerCase().contains(query.toLowerCase()),
         )
         .toList();
+    if (_managerAPI.areUniversalPatchesEnabled()) {
+      return patch;
+    } else {
+      return patch
+          .where((patch) => patch.compatiblePackages.isNotEmpty)
+          .toList();
+    }
   }
 
   String getAppVersion() {
