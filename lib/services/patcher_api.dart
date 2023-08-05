@@ -103,16 +103,20 @@ class PatcherAPI {
   }
 
   List<Patch> getFilteredPatches(String packageName) {
-    if (!filteredPatches.keys.contains(packageName)) {
-      final List<Patch> patches = _patches
-          .where(
-            (patch) =>
-                patch.compatiblePackages.isEmpty ||
-                !patch.name.contains('settings') &&
-                    patch.compatiblePackages
-                        .any((pack) => pack.name == packageName),
-          )
+    final List<Patch> patches = _patches
+        .where(
+          (patch) =>
+              patch.compatiblePackages.isEmpty ||
+              !patch.name.contains('settings') &&
+                  patch.compatiblePackages
+                      .any((pack) => pack.name == packageName),
+        )
+        .toList();
+    if (!_managerAPI.areUniversalPatchesEnabled()) {
+      filteredPatches[packageName] = patches
+          .where((patch) => patch.compatiblePackages.isNotEmpty)
           .toList();
+    } else {
       filteredPatches[packageName] = patches;
     }
     return filteredPatches[packageName];
