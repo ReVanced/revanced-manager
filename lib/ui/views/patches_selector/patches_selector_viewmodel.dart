@@ -27,7 +27,13 @@ class PatchesSelectorViewModel extends BaseViewModel {
         locator<PatcherViewModel>().selectedApp!.originalPackageName,
       ),
     );
-    patches.sort((a, b) => a.name.compareTo(b.name));
+    patches.sort((a, b) {
+      if (a.compatiblePackages.isEmpty == b.compatiblePackages.isEmpty) {
+        return a.name.compareTo(b.name);
+      } else {
+        return a.compatiblePackages.isEmpty ? 1 : -1;
+      }
+    });
     notifyListeners();
   }
 

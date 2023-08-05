@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
@@ -16,6 +18,7 @@ class PatchesSelectorView extends StatefulWidget {
 
 class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   String _query = '';
+  final _managerAPI = locator<ManagerAPI>();
 
   @override
   Widget build(BuildContext context) {
@@ -165,10 +168,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                             ],
                           ),
-                          ...model
-                              .getQueriedPatches(_query)
-                              .map(
-                                (patch) => PatchItem(
+                          ...model.getQueriedPatches(_query).map(
+                            (patch) {
+                              if (patch.compatiblePackages.isNotEmpty) {
+                                return PatchItem(
                                   name: patch.name,
                                   simpleName: patch.getSimpleName(),
                                   description: patch.description,
@@ -179,9 +182,45 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   isSelected: model.isSelected(patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                          if (_managerAPI.areUniversalPatchesEnabled())
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child: I18nText(
+                                    'patchesSelectorView.universalPatches',
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                                ...model.getQueriedPatches(_query).map((patch) {
+                                  if (patch.compatiblePackages.isEmpty) {
+                                    return PatchItem(
+                                      name: patch.name,
+                                      simpleName: patch.getSimpleName(),
+                                      description: patch.description,
+                                      packageVersion: model.getAppVersion(),
+                                      supportedPackageVersions:
+                                          model.getSupportedVersions(patch),
+                                      isUnsupported: !isPatchSupported(patch),
+                                      isSelected: model.isSelected(patch),
+                                      onChanged: (value) =>
+                                          model.selectPatch(patch, value),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
+                              ],
+                            ),
+                          const SizedBox(height: 70.0),
                         ],
                       ),
                     ),

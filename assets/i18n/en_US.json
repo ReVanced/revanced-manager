@@ -112,6 +112,7 @@
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
+        "universalPatches": "Universal patches",
 
         "doneButton": "Done",
 
