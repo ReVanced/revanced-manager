@@ -39,9 +39,9 @@ class _SExperimentalPatchesState extends State<SExperimentalPatches> {
         });
         if (!value) {
           _patcherViewModel.selectedPatches
-              .removeWhere((element) => !isPatchSupported(element));
+              .removeWhere((patch) => !isPatchSupported(patch));
           _patchesSelectorViewModel.selectedPatches
-              .removeWhere((element) => !isPatchSupported(element));
+              .removeWhere((patch) => !isPatchSupported(patch));
         }
       },
     );
