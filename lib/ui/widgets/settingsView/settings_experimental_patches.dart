@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 
 class SExperimentalPatches extends StatefulWidget {
   const SExperimentalPatches({super.key});
@@ -11,7 +13,8 @@ class SExperimentalPatches extends StatefulWidget {
 }
 
 final _settingsViewModel = SettingsViewModel();
-final List<String> selectedUnsupportedPatches = [];
+final _patchesSelectorViewModel = PatchesSelectorViewModel();
+final _patcherViewModel = PatcherViewModel();
 
 class _SExperimentalPatchesState extends State<SExperimentalPatches> {
   @override
@@ -35,12 +38,10 @@ class _SExperimentalPatchesState extends State<SExperimentalPatches> {
           _settingsViewModel.useExperimentalPatches(value);
         });
         if (!value) {
-          for (final patch in selectedUnsupportedPatches) {
-            PatchesSelectorViewModel()
-                .selectedPatches
-                .removeWhere((element) => patch == element.name);
-          }
-          selectedUnsupportedPatches.clear();
+          _patcherViewModel.selectedPatches
+              .removeWhere((element) => !isPatchSupported(element));
+          _patchesSelectorViewModel.selectedPatches
+              .removeWhere((element) => !isPatchSupported(element));
         }
       },
     );
