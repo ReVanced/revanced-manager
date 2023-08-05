@@ -174,7 +174,7 @@ class HomeViewModel extends BaseViewModel {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('ReVanced Patches'),
+        title: const Text('Download ReVanced Patches?'),
         content: ValueListenableBuilder(
           valueListenable: autoUpdate,
           builder: (context, value, child) {
