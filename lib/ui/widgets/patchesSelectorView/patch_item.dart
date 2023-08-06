@@ -3,7 +3,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
@@ -125,12 +124,6 @@ class _PatchItemState extends State<PatchItem> {
                             );
                           } else {
                             widget.isSelected = newValue!;
-                          }
-                          if (widget.isUnsupported &&
-                              widget.isSelected &&
-                              !selectedUnsupportedPatches
-                                  .contains(widget.name)) {
-                            selectedUnsupportedPatches.add(widget.name);
                           }
                         });
                         widget.onChanged(widget.isSelected);

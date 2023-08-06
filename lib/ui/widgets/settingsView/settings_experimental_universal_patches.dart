@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+
 class SExperimentalUniversalPatches extends StatefulWidget {
   const SExperimentalUniversalPatches({super.key});
 
@@ -11,6 +14,8 @@ class SExperimentalUniversalPatches extends StatefulWidget {
 }
 
 final _settingsViewModel = SettingsViewModel();
+final _patchesSelectorViewModel = PatchesSelectorViewModel();
+final _patcherViewModel = PatcherViewModel();
 
 class _SExperimentalUniversalPatchesState
     extends State<SExperimentalUniversalPatches> {
@@ -34,6 +39,12 @@ class _SExperimentalUniversalPatchesState
         setState(() {
           _settingsViewModel.showUniversalPatches(value);
         });
+        if (!value) {
+          _patcherViewModel.selectedPatches
+              .removeWhere((patch) => patch.compatiblePackages.isEmpty);
+          _patchesSelectorViewModel.selectedPatches
+              .removeWhere((patch) => patch.compatiblePackages.isEmpty);
+        }
       },
     );
   }
