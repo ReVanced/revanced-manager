@@ -85,7 +85,7 @@ class InstallerViewModel extends BaseViewModel {
     });
   }
 
-  void update(double value, String header, String log) {
+  Future<void> update(double value, String header, String log) async {
     if (value >= 0.0) {
       progress = value;
     }
@@ -97,6 +97,10 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == 1.0) {
       isPatching = false;
       hasErrors = false;
+      await _managerAPI.savePatches(
+        _patcherAPI.getFilteredPatches(_app.packageName),
+        _app.packageName,
+      );
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;

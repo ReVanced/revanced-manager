@@ -175,10 +175,14 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   name: patch.name,
                                   simpleName: patch.getSimpleName(),
                                   description: patch.description,
-                                  packageVersion: model.getAppVersion(),
+                                  packageVersion: model.getAppInfo().version,
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
                                   isUnsupported: !isPatchSupported(patch),
+                                  isNew: model.isPatchNew(
+                                    patch,
+                                    model.getAppInfo().packageName,
+                                  ),
                                   isSelected: model.isSelected(patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value),
@@ -206,10 +210,12 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       name: patch.name,
                                       simpleName: patch.getSimpleName(),
                                       description: patch.description,
-                                      packageVersion: model.getAppVersion(),
+                                      packageVersion:
+                                          model.getAppInfo().version,
                                       supportedPackageVersions:
                                           model.getSupportedVersions(patch),
                                       isUnsupported: !isPatchSupported(patch),
+                                      isNew: false,
                                       isSelected: model.isSelected(patch),
                                       onChanged: (value) =>
                                           model.selectPatch(patch, value),
