@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
-import '../../views/patcher/patcher_viewmodel.dart';
-import '../../views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 
 class SExperimentalUniversalPatches extends StatefulWidget {
   const SExperimentalUniversalPatches({super.key});
