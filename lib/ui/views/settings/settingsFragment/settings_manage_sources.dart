@@ -40,7 +40,7 @@ class SManageSources extends BaseViewModel {
               icon: const Icon(Icons.manage_history_outlined),
               onPressed: () => showResetConfirmationDialog(context),
               color: Theme.of(context).colorScheme.secondary,
-            )
+            ),
           ],
         ),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -102,7 +102,7 @@ class SManageSources extends BaseViewModel {
                 onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 20),
-              I18nText('settingsView.sourcesUpdateNote')
+              I18nText('settingsView.sourcesUpdateNote'),
             ],
           ),
         ),
@@ -132,7 +132,7 @@ class SManageSources extends BaseViewModel {
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
-          )
+          ),
         ],
       ),
     );
@@ -163,7 +163,7 @@ class SManageSources extends BaseViewModel {
                 ..pop()
                 ..pop();
             },
-          )
+          ),
         ],
       ),
     );

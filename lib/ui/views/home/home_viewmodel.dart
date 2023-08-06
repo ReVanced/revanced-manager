@@ -43,7 +43,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> initialize(BuildContext context) async {
     _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
-    if(!_managerAPI.getPatchesConsent()){
+    if (!_managerAPI.getPatchesConsent()) {
       await showPatchesConsent(context);
     }
     await _patcherAPI.initialize();
@@ -168,7 +168,7 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> showPatchesConsent(BuildContext context) async{
+  Future<void> showPatchesConsent(BuildContext context) async {
     final ValueNotifier<bool> autoUpdate = ValueNotifier(true);
     await showDialog(
       context: context,
@@ -197,7 +197,9 @@ class HomeViewModel extends BaseViewModel {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: I18nText(
                     'homeView.patchesConsentDialogText2',
-                    translationParams: {'url': _managerAPI.defaultApiUrl.split('/')[2]},
+                    translationParams: {
+                      'url': _managerAPI.defaultApiUrl.split('/')[2],
+                    },
                     child: Text(
                       '',
                       style: TextStyle(
@@ -211,8 +213,12 @@ class HomeViewModel extends BaseViewModel {
                 CheckboxListTile(
                   value: value,
                   contentPadding: EdgeInsets.zero,
-                  title: I18nText('homeView.patchesConsentDialogText3',),
-                  subtitle: I18nText('homeView.patchesConsentDialogText3Sub',),
+                  title: I18nText(
+                    'homeView.patchesConsentDialogText3',
+                  ),
+                  subtitle: I18nText(
+                    'homeView.patchesConsentDialogText3Sub',
+                  ),
                   onChanged: (selected) {
                     autoUpdate.value = selected!;
                   },
@@ -237,7 +243,7 @@ class HomeViewModel extends BaseViewModel {
               Navigator.of(context).pop();
             },
             label: I18nText('okButton'),
-          )
+          ),
         ],
       ),
     );

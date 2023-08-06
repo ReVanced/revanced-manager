@@ -78,7 +78,7 @@ class PatcherViewModel extends BaseViewModel {
                   Navigator.of(context).pop();
                   showArmv7WarningDialog(context);
                 },
-              )
+              ),
             ],
           ),
         );
@@ -111,7 +111,7 @@ class PatcherViewModel extends BaseViewModel {
                 Navigator.of(context).pop();
                 navigateToInstaller();
               },
-            )
+            ),
           ],
         ),
       );

@@ -33,7 +33,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             label: Row(
               children: <Widget>[
                 I18nText('patchesSelectorView.doneButton'),
-                Text(' (${model.selectedPatches.length})')
+                Text(' (${model.selectedPatches.length})'),
               ],
             ),
             icon: const Icon(Icons.check),

@@ -129,7 +129,7 @@ class _PatchItemState extends State<PatchItem> {
                         widget.onChanged(widget.isSelected);
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
               if (widget.isUnsupported &&
@@ -190,7 +190,7 @@ class _PatchItemState extends State<PatchItem> {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () => Navigator.of(context).pop(),
-          )
+          ),
         ],
       ),
     );

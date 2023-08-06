@@ -64,7 +64,7 @@ class InstalledAppsCard extends StatelessWidget {
                                       Theme.of(context).colorScheme.secondary,
                                 ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

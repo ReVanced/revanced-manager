@@ -203,7 +203,7 @@ class InstallerViewModel extends BaseViewModel {
               CustomMaterialButton(
                 label: I18nText('okButton'),
                 onPressed: () => Navigator.of(context).pop(),
-              )
+              ),
             ],
           ),
         );

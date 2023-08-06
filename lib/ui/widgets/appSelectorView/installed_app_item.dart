@@ -66,7 +66,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       context,
                       'installed',
                       translationParams: {
-                        'version': 'v${widget.installedVersion}'
+                        'version': 'v${widget.installedVersion}',
                       },
                     ),
                   ),
