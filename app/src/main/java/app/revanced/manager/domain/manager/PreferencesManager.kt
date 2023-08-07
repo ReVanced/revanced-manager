@@ -10,7 +10,7 @@ class PreferencesManager(
     val dynamicColor = booleanPreference("dynamic_color", true)
     val theme = enumPreference("theme", Theme.SYSTEM)
 
-    val api = stringPreference("api_url", "https://releases.revanced.app")
+    val api = stringPreference("api_url", "https://api.revanced.app")
 
     val allowExperimental = booleanPreference("allow_experimental", false)
 
