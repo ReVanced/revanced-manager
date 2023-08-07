@@ -10,6 +10,7 @@
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
+    "new": "New",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -130,7 +131,10 @@
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed."
+        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",
+
+        "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
+        "newPatch": "New patch"
     },
     "installerView": {
         "widgetTitle": "Installer",

@@ -15,6 +15,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   final List<Patch> patches = [];
   final List<Patch> selectedPatches =
       locator<PatcherViewModel>().selectedPatches;
+  PatchedApplication? selectedApp = locator<PatcherViewModel>().selectedApp;
   String? patchesVersion = '';
   bool isDefaultPatchesRepo() {
     return _managerAPI.getPatchesRepo() == 'revanced/revanced-patches';
@@ -24,10 +25,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
     getPatchesVersion().whenComplete(() => notifyListeners());
     patches.addAll(
       _patcherAPI.getFilteredPatches(
-        locator<PatcherViewModel>().selectedApp!.originalPackageName,
+        selectedApp!.originalPackageName,
       ),
     );
-    patches.sort((a, b) => a.name.compareTo(b.name));
+    patches.sort((a, b) {
+      if (isPatchNew(a, selectedApp!.packageName) ==
+          isPatchNew(b, selectedApp!.packageName)) {
+        return a.name.compareTo(b.name);
+      } else {
+        return isPatchNew(b, selectedApp!.packageName) ? 1 : -1;
+      }
+    });
     notifyListeners();
   }
 
@@ -99,8 +107,18 @@ class PatchesSelectorViewModel extends BaseViewModel {
     }
   }
 
-  String getAppVersion() {
-    return locator<PatcherViewModel>().selectedApp!.version;
+  PatchedApplication getAppInfo() {
+    return locator<PatcherViewModel>().selectedApp!;
+  }
+
+  bool isPatchNew(Patch patch, String packageName) {
+    final List<Patch> savedPatches = _managerAPI.getSavedPatches(packageName);
+    if (savedPatches.isEmpty) {
+      return false;
+    } else {
+      return !savedPatches
+          .any((p) => p.name == patch.name.toLowerCase().replaceAll(' ', '-'));
+    }
   }
 
   List<String> getSupportedVersions(Patch patch) {
