@@ -4,18 +4,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class ReVancedRepositories(
-    @SerialName("repositories") val repositories: List<ReVancedRepository>,
+data class ReVancedGitRepositories(
+    val repositories: List<ReVancedGitRepository>,
 )
 
 @Serializable
-class ReVancedRepository(
-    @SerialName("name") val name: String,
-    @SerialName("contributors") val contributors: List<ReVancedContributor>,
+data class ReVancedGitRepository(
+    val name: String,
+    val contributors: List<ReVancedContributor>,
 )
 
 @Serializable
-class ReVancedContributor(
-    @SerialName("login") val username: String,
+data class ReVancedContributor(
+    val username: String,
     @SerialName("avatar_url") val avatarUrl: String,
 )

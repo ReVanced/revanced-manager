@@ -2,20 +2,18 @@ package app.revanced.manager.domain.bundles
 
 import androidx.compose.runtime.Stable
 import app.revanced.manager.data.room.bundles.VersionInfo
-import app.revanced.manager.domain.bundles.APIPatchBundle.Companion.toBundleAsset
-import app.revanced.manager.domain.repository.Assets
 import app.revanced.manager.domain.repository.PatchBundlePersistenceRepository
-import app.revanced.manager.domain.repository.ReVancedRepository
-import app.revanced.manager.network.dto.Asset
+import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.network.api.ReVancedAPI.Extensions.findAssetByType
 import app.revanced.manager.network.dto.BundleAsset
 import app.revanced.manager.network.dto.BundleInfo
 import app.revanced.manager.network.service.HttpService
 import app.revanced.manager.network.utils.getOrThrow
-import app.revanced.manager.util.ghIntegrations
-import app.revanced.manager.util.ghPatches
+import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.JAR_MIMETYPE
 import io.ktor.client.request.url
-import io.ktor.http.Url
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -57,7 +55,11 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 
     suspend fun update(): Boolean = withContext(Dispatchers.IO) {
         val info = getLatestInfo()
-        if (hasInstalled() && VersionInfo(info.patches.version, info.integrations.version) == currentVersion()) {
+        if (hasInstalled() && VersionInfo(
+                info.patches.version,
+                info.integrations.version
+            ) == currentVersion()
+        ) {
             return@withContext false
         }
 
@@ -94,18 +96,24 @@ class JsonPatchBundle(name: String, id: Int, directory: File, endpoint: String) 
 
 class APIPatchBundle(name: String, id: Int, directory: File, endpoint: String) :
     RemotePatchBundle(name, id, directory, endpoint) {
-    private val api: ReVancedRepository by inject()
+    private val api: ReVancedAPI by inject()
 
-    override suspend fun getLatestInfo() = api.getAssets().toBundleInfo()
-
-    private companion object {
-        fun Assets.toBundleInfo(): BundleInfo {
-            val patches = find(ghPatches, ".jar")
-            val integrations = find(ghIntegrations, ".apk")
-
-            return BundleInfo(patches.toBundleAsset(), integrations.toBundleAsset())
+    override suspend fun getLatestInfo() = coroutineScope {
+        fun getAssetAsync(repo: String, mime: String) = async(Dispatchers.IO) {
+            api
+                .getRelease(repo)
+                .getOrThrow()
+                .let {
+                    BundleAsset(it.metadata.tag, it.findAssetByType(mime).downloadUrl)
+                }
         }
 
-        fun Asset.toBundleAsset() = BundleAsset(version, downloadUrl)
+        val patches = getAssetAsync("revanced-patches", JAR_MIMETYPE)
+        val integrations = getAssetAsync("revanced-integrations", APK_MIMETYPE)
+
+        BundleInfo(
+            patches.await(),
+            integrations.await()
+        )
     }
 }

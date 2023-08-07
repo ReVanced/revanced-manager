@@ -56,7 +56,7 @@ fun UpdateProgressScreen(
                 ), style = MaterialTheme.typography.headlineMedium
             )
             LinearProgressIndicator(
-                progress = vm.downloadProgress / 100f,
+                progress = vm.downloadProgress,
                 modifier = Modifier
                     .padding(vertical = 16.dp)
                     .fillMaxWidth()
@@ -66,7 +66,7 @@ fun UpdateProgressScreen(
                     vm.totalSize.div(
                         1000000
                     )
-                } MB (${vm.downloadProgress.toInt()}%)" else stringResource(R.string.installing_message),
+                } MB (${vm.downloadProgress.times(100).toInt()}%)" else stringResource(R.string.installing_message),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
