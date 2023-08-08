@@ -118,6 +118,21 @@ class ManagerAPI {
     await _prefs.setStringList('savedPatches-$packageName', patchesJson);
   }
 
+  List<Patch> getUsedPatches(String packageName) {
+    final List<String> patchesJson = _prefs.getStringList('usedPatches-$packageName') ?? [];
+    final List<Patch> patches = patchesJson.map((String patchJson) {
+      return Patch.fromJson(jsonDecode(patchJson));
+    }).toList();
+    return patches;
+  }
+
+  Future<void> setUsedPatches(List<Patch> patches, String packageName) async {
+    final List<String> patchesJson = patches.map((Patch patch) {
+      return jsonEncode(patch.toJson());
+    }).toList();
+    await _prefs.setStringList('usedPatches-$packageName', patchesJson);
+  }
+
   String getIntegrationsRepo() {
     return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
   }
