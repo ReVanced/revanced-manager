@@ -10,6 +10,7 @@
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
+    "new": "New",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -33,10 +34,10 @@
         "updatePatchesDialogTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
 
-        "patchesConsentDialogText": "ReVanced Patches need to be downloaded to patch apps.",
-        "patchesConsentDialogText2": "This will reveal your IP address to {url}.",
-        "patchesConsentDialogText3": "Auto update",
-        "patchesConsentDialogText3Sub": "You can still change this in the settings later",
+        "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
+        "patchesConsentDialogText2": "This will connect you to {url}.",
+        "patchesConsentDialogText3": "Auto update?",
+        "patchesConsentDialogText3Sub": "You can change this in settings at a later time.",
 
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
@@ -112,6 +113,7 @@
     "patchesSelectorView": {
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
+        "universalPatches": "Universal patches",
 
         "doneButton": "Done",
 
@@ -129,7 +131,10 @@
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed."
+        "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",
+
+        "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
+        "newPatch": "New patch"
     },
     "installerView": {
         "widgetTitle": "Installer",

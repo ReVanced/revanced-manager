@@ -95,7 +95,7 @@ class UpdateConfirmationDialog extends StatelessWidget {
                                 ? model.updatePatches(context)
                                 : model.updateManager(context);
                           },
-                        )
+                        ),
                       ],
                     ),
                   ),

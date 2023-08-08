@@ -119,9 +119,9 @@ class SExportSection extends StatelessWidget {
             label: I18nText('yesButton'),
             onPressed: () => {
               Navigator.of(context).pop(),
-              _settingsViewModel.resetSelectedPatches()
+              _settingsViewModel.resetSelectedPatches(),
             },
-          )
+          ),
         ],
       ),
     );

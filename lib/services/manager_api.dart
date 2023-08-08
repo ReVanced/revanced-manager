@@ -28,7 +28,7 @@ class ManagerAPI {
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
-  String defaultApiUrl = 'https://releases.revanced.app/';
+  String defaultApiUrl = 'https://api.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
@@ -36,8 +36,13 @@ class ManagerAPI {
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
+  String? integrationsVersion = '';
   bool isDefaultPatchesRepo() {
     return getPatchesRepo() == 'revanced/revanced-patches';
+  }
+
+  bool isDefaultIntegrationsRepo() {
+    return getIntegrationsRepo() == 'revanced/revanced-integrations';
   }
 
   Future<void> initialize() async {
@@ -96,6 +101,21 @@ class ManagerAPI {
 
   Future<void> setPatchesAutoUpdate(bool value) async {
     await _prefs.setBool('patchesAutoUpdate', value);
+  }
+
+  List<Patch> getSavedPatches(String packageName) {
+    final List<String> patchesJson = _prefs.getStringList('savedPatches-$packageName') ?? [];
+    final List<Patch> patches = patchesJson.map((String patchJson) {
+      return Patch.fromJson(jsonDecode(patchJson));
+    }).toList();
+    return patches;
+  }
+
+  Future<void> savePatches(List<Patch> patches, String packageName) async {
+    final List<String> patchesJson = patches.map((Patch patch) {
+      return jsonEncode(patch.toJson());
+    }).toList();
+    await _prefs.setStringList('savedPatches-$packageName', patchesJson);
   }
 
   String getIntegrationsRepo() {
@@ -252,14 +272,12 @@ class ManagerAPI {
   Future<File?> downloadIntegrations() async {
     try {
       final String repoName = getIntegrationsRepo();
-      if (repoName == defaultIntegrationsRepo) {
-        return await _revancedAPI.getLatestReleaseFile(
-          '.apk',
-          defaultIntegrationsRepo,
-        );
-      } else {
-        return await _githubAPI.getLatestReleaseFile('.apk', repoName);
-      }
+      final String currentVersion = await getCurrentIntegrationsVersion();
+      return await _githubAPI.getPatchesReleaseFile(
+        '.apk',
+        repoName,
+        currentVersion,
+      );
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -308,6 +326,22 @@ class ManagerAPI {
     );
   }
 
+  Future<String?> getLatestIntegrationsVersion() async {
+    if (isDefaultIntegrationsRepo()) {
+      return await _revancedAPI.getLatestReleaseVersion(
+        '.apk',
+        defaultIntegrationsRepo,
+      );
+    } else {
+      final release = await _githubAPI.getLatestRelease(getIntegrationsRepo());
+      if (release != null) {
+        return release['tag_name'];
+      } else {
+        return null;
+      }
+    }
+  }
+
   Future<String?> getLatestPatchesVersion() async {
     if (isDefaultPatchesRepo()) {
       return await _revancedAPI.getLatestReleaseVersion(
@@ -315,7 +349,8 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release = await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+      final release =
+          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
@@ -340,6 +375,19 @@ class ManagerAPI {
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
+  }
+
+  Future<String> getCurrentIntegrationsVersion() async {
+    integrationsVersion = _prefs.getString('integrationsVersion') ?? '0.0.0';
+    if (integrationsVersion == '0.0.0' || isPatchesAutoUpdate()) {
+      integrationsVersion = await getLatestIntegrationsVersion() ?? '0.0.0';
+      await setCurrentIntegrationsVersion(integrationsVersion!);
+    }
+    return integrationsVersion!;
+  }
+
+  Future<void> setCurrentIntegrationsVersion(String version) async {
+    await _prefs.setString('integrationsVersion', version);
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(

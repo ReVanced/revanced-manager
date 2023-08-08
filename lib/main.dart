@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
           },
         ),
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
       ],
     );
   }

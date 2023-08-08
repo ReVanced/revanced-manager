@@ -93,9 +93,9 @@ class SAdvancedSection extends StatelessWidget {
             label: I18nText('yesButton'),
             onPressed: () => {
               Navigator.of(context).pop(),
-              _settingsViewModel.deleteKeystore()
+              _settingsViewModel.deleteKeystore(),
             },
-          )
+          ),
         ],
       ),
     );
