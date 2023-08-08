@@ -104,7 +104,8 @@ class ManagerAPI {
   }
 
   List<Patch> getSavedPatches(String packageName) {
-    final List<String> patchesJson = _prefs.getStringList('savedPatches-$packageName') ?? [];
+    final List<String> patchesJson =
+        _prefs.getStringList('savedPatches-$packageName') ?? [];
     final List<Patch> patches = patchesJson.map((String patchJson) {
       return Patch.fromJson(jsonDecode(patchJson));
     }).toList();
@@ -119,7 +120,8 @@ class ManagerAPI {
   }
 
   List<Patch> getUsedPatches(String packageName) {
-    final List<String> patchesJson = _prefs.getStringList('usedPatches-$packageName') ?? [];
+    final List<String> patchesJson =
+        _prefs.getStringList('usedPatches-$packageName') ?? [];
     final List<Patch> patches = patchesJson.map((String patchJson) {
       return Patch.fromJson(jsonDecode(patchJson));
     }).toList();
