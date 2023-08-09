@@ -416,13 +416,13 @@ class ManagerAPI {
         await setPatchesDownloadURL('', true);
         await setPatchesDownloadURL('', false);
       }
-      await setCurrentPatchesVersion(patchesVersion!);
     }
     return patchesVersion!;
   }
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
+    await downloadPatches();
   }
 
   Future<String> getCurrentIntegrationsVersion() async {
@@ -441,6 +441,7 @@ class ManagerAPI {
 
   Future<void> setCurrentIntegrationsVersion(String version) async {
     await _prefs.setString('integrationsVersion', version);
+    await downloadIntegrations();
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
