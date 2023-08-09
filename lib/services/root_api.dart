@@ -153,6 +153,9 @@ class RootAPI {
   }
 
   Future<void> installServiceDScript(String packageName) async {
+    await Root.exec(
+      cmd: 'mkdir -p "$_serviceDDirPath"',
+    );
     final String content = '#!/system/bin/sh\n'
         'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 3; done\n'
         'base_path=$_revancedDirPath/$packageName/base.apk\n'
@@ -166,6 +169,9 @@ class RootAPI {
   }
 
   Future<void> installPostFsDataScript(String packageName) async {
+    await Root.exec(
+      cmd: 'mkdir -p "$_postFsDataDirPath"',
+    );
     final String content = '#!/system/bin/sh\n'
         'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
         r'[ ! -z $stock_path ] && umount -l $stock_path';
