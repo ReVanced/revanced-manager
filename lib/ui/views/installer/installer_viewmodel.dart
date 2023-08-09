@@ -248,7 +248,6 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
@@ -333,8 +332,8 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void shareLog() {
-    _patcherAPI.sharePatcherLog(logs);
+  void exportLog() {
+    _patcherAPI.exportPatcherLog(logs);
   }
 
   Future<void> cleanPatcher() async {
@@ -360,7 +359,7 @@ class InstallerViewModel extends BaseViewModel {
         exportResult();
         break;
       case 1:
-        shareLog();
+        exportLog();
         break;
     }
   }
