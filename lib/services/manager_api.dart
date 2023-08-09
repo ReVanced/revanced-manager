@@ -422,6 +422,8 @@ class ManagerAPI {
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
+    await setPatchesDownloadURL('value', false);
+    await setPatchesDownloadURL('value', true);
     await downloadPatches();
   }
 
@@ -441,6 +443,7 @@ class ManagerAPI {
 
   Future<void> setCurrentIntegrationsVersion(String version) async {
     await _prefs.setString('integrationsVersion', version);
+    await setIntegrationsDownloadURL('');
     await downloadIntegrations();
   }
 
