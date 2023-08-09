@@ -394,7 +394,7 @@ class ManagerAPI {
     if (patchesVersion == '0.0.0' || isPatchesAutoUpdate()) {
       final String newPatchesVersion =
           await getLatestPatchesVersion() ?? '0.0.0';
-      if (patchesVersion != newPatchesVersion) {
+      if (patchesVersion != newPatchesVersion && newPatchesVersion != '0.0.0') {
         await setCurrentPatchesVersion(newPatchesVersion);
         await setPatchesDownloadURL('', true);
         await setPatchesDownloadURL('', false);
@@ -413,7 +413,7 @@ class ManagerAPI {
     if (integrationsVersion == '0.0.0' || isPatchesAutoUpdate()) {
       final String newIntegrationsVersion =
           await getLatestIntegrationsVersion() ?? '0.0.0';
-      if (integrationsVersion != newIntegrationsVersion) {
+      if (integrationsVersion != newIntegrationsVersion && newIntegrationsVersion != '0.0.0') {
         await setCurrentIntegrationsVersion(newIntegrationsVersion);
         await setIntegrationsDownloadURL('');
       }
