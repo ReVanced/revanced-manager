@@ -159,7 +159,7 @@ class InstallerView extends StatelessWidget {
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: SizedBox(
-                    height: MediaQuery.of(context).viewPadding.bottom,
+                    height: MediaQuery.viewPaddingOf(context).bottom,
                   ),
                 ),
               ],

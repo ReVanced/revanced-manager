@@ -33,7 +33,7 @@ class NavigationViewModel extends IndexTrackingViewModel {
 
     if (prefs.getBool('useDarkTheme') == null) {
       final bool isDark =
-          MediaQuery.of(context).platformBrightness != Brightness.light;
+          MediaQuery.platformBrightnessOf(context) != Brightness.light;
       await prefs.setBool('useDarkTheme', isDark);
       await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
     }
