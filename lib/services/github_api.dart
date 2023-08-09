@@ -241,7 +241,10 @@ class GithubAPI {
   }
 
   Future<List<Patch>> getPatches(
-      String repoName, String version, String url) async {
+    String repoName,
+    String version,
+    String url,
+  ) async {
     List<Patch> patches = [];
     try {
       final File? f = await getPatchesReleaseFile(
