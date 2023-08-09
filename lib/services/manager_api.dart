@@ -413,8 +413,6 @@ class ManagerAPI {
           await getLatestPatchesVersion() ?? '0.0.0';
       if (patchesVersion != newPatchesVersion && newPatchesVersion != '0.0.0') {
         await setCurrentPatchesVersion(newPatchesVersion);
-        await setPatchesDownloadURL('', true);
-        await setPatchesDownloadURL('', false);
       }
     }
     return patchesVersion!;
@@ -435,7 +433,6 @@ class ManagerAPI {
       if (integrationsVersion != newIntegrationsVersion &&
           newIntegrationsVersion != '0.0.0') {
         await setCurrentIntegrationsVersion(newIntegrationsVersion);
-        await setIntegrationsDownloadURL('');
       }
     }
     return integrationsVersion!;
