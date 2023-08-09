@@ -101,6 +101,7 @@ class InstallerViewModel extends BaseViewModel {
         _patcherAPI.getFilteredPatches(_app.packageName),
         _app.packageName,
       );
+      await _managerAPI.setUsedPatches(_patches, _app.packageName);
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;

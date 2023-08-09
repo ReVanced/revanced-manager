@@ -112,7 +112,8 @@ class ManagerAPI {
   }
 
   List<Patch> getSavedPatches(String packageName) {
-    final List<String> patchesJson = _prefs.getStringList('savedPatches-$packageName') ?? [];
+    final List<String> patchesJson =
+        _prefs.getStringList('savedPatches-$packageName') ?? [];
     final List<Patch> patches = patchesJson.map((String patchJson) {
       return Patch.fromJson(jsonDecode(patchJson));
     }).toList();
@@ -132,6 +133,22 @@ class ManagerAPI {
 
   Future<void> setIntegrationsDownloadURL(String value) async {
     await _prefs.setString('integrationsDownloadURL', value);
+  }
+
+  List<Patch> getUsedPatches(String packageName) {
+    final List<String> patchesJson =
+        _prefs.getStringList('usedPatches-$packageName') ?? [];
+    final List<Patch> patches = patchesJson.map((String patchJson) {
+      return Patch.fromJson(jsonDecode(patchJson));
+    }).toList();
+    return patches;
+  }
+
+  Future<void> setUsedPatches(List<Patch> patches, String packageName) async {
+    final List<String> patchesJson = patches.map((Patch patch) {
+      return jsonEncode(patch.toJson());
+    }).toList();
+    await _prefs.setStringList('usedPatches-$packageName', patchesJson);
   }
 
   String getIntegrationsRepo() {

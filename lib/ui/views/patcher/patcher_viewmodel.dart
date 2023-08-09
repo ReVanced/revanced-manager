@@ -22,6 +22,7 @@ class PatcherViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   PatchedApplication? selectedApp;
   List<Patch> selectedPatches = [];
+  List<String> removedPatches = [];
 
   void navigateToAppSelector() {
     _navigationService.navigateTo(Routes.appSelectorView);
@@ -83,6 +84,38 @@ class PatcherViewModel extends BaseViewModel {
           ),
         );
       }
+    }
+  }
+
+  Future<void> showRemovedPatchesDialog(BuildContext context) async {
+    if (removedPatches.isNotEmpty) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: I18nText('notice'),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: I18nText(
+            'patcherView.removedPatchesWarningDialogText',
+            translationParams: {'patches': removedPatches.join('\n')},
+          ),
+          actions: <Widget>[
+            CustomMaterialButton(
+              isFilled: false,
+              label: I18nText('noButton'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            CustomMaterialButton(
+              label: I18nText('yesButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                navigateToInstaller();
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      showArmv7WarningDialog(context);
     }
   }
 
@@ -150,6 +183,7 @@ class PatcherViewModel extends BaseViewModel {
 
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
+    removedPatches.clear();
     final List<String> selectedPatches =
         await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
     final List<Patch> patches =
@@ -164,6 +198,12 @@ class PatcherViewModel extends BaseViewModel {
       this
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
+    }
+    final usedPatches = _managerAPI.getUsedPatches(selectedApp!.originalPackageName);
+    for (final patch in usedPatches){
+      if (!patches.any((p) => p.name == patch.name)){
+        removedPatches.add('\u2022 ${patch.name}');
+      }
     }
     notifyListeners();
   }

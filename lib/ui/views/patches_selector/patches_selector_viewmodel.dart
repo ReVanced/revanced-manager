@@ -117,7 +117,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
       return false;
     } else {
       return !savedPatches
-          .any((p) => p.name == patch.name.toLowerCase().replaceAll(' ', '-'));
+          .any((p) => p.getSimpleName() == patch.getSimpleName());
     }
   }
 
