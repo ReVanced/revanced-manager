@@ -422,8 +422,8 @@ class ManagerAPI {
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
-    await setPatchesDownloadURL('value', false);
-    await setPatchesDownloadURL('value', true);
+    await setPatchesDownloadURL('', false);
+    await setPatchesDownloadURL('', true);
     await downloadPatches();
   }
 
