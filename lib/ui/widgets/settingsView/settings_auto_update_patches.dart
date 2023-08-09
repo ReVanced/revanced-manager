@@ -17,7 +17,7 @@ class _SAutoUpdatePatchesState extends State<SAutoUpdatePatches> {
     return SwitchListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: I18nText(
-        'homeView.patchesConsentDialogText3',
+        'settingsView.autoUpdatePatchesLabel',
         child: const Text(
           '',
           style: TextStyle(

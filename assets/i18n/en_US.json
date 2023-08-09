@@ -200,6 +200,7 @@
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
 
+        "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Experimental universal patches support",
         "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
