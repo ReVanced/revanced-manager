@@ -27,6 +27,8 @@ private const val INSTALLER_CHANNEL = "app.revanced.manager.flutter/installer"
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
+    private var cancel: Boolean = false
+    private var stopResult: MethodChannel.Result? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -57,6 +59,7 @@ class MainActivity : FlutterActivity() {
                         keyStoreFilePath != null &&
                         keystorePassword != null
                     ) {
+                        cancel = false
                         runPatcher(
                             result,
                             patchBundleFilePath,
@@ -73,6 +76,10 @@ class MainActivity : FlutterActivity() {
                     } else {
                         result.notImplemented()
                     }
+                }
+                "stopPatcher" -> {
+                    cancel = true
+                    stopResult = result
                 }
                 else -> result.notImplemented()
             }
@@ -111,6 +118,12 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
+
                 originalFile.copyTo(inputFile, true)
 
                 handler.post {
@@ -123,6 +136,12 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
+
                 val patcher =
                     Patcher(
                         PatcherOptions(
@@ -133,6 +152,11 @@ class MainActivity : FlutterActivity() {
                             logger = ManagerLogger()
                         )
                     )
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
 
                 handler.post {
                     installerChannel.invokeMethod(
@@ -150,7 +174,18 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
+
                 patcher.addIntegrations(listOf(integrations)) {}
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
 
                 handler.post {
                     installerChannel.invokeMethod(
@@ -161,6 +196,11 @@ class MainActivity : FlutterActivity() {
                             "log" to ""
                         )
                     )
+                }
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
                 }
 
                 val patches = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
@@ -179,6 +219,12 @@ class MainActivity : FlutterActivity() {
                 } else {
                     TODO("VERSION.SDK_INT < CUPCAKE")
                 }
+
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
+
                 patcher.addPatches(patches)
                 patcher.executePatches().forEach { (patch, res) ->
                     if (res.isSuccess) {
@@ -193,14 +239,23 @@ class MainActivity : FlutterActivity() {
                                 )
                             )
                         }
+                        if(cancel) {
+                            handler.post { stopResult!!.success(null) }
+                            return@Thread
+                        }
                         return@forEach
                     }
-                    val msg = "Failed to apply $patch: " + "${res.exceptionOrNull()!!.message ?: res.exceptionOrNull()!!.cause!!::class.simpleName}"
+                    val msg =
+                        "Failed to apply $patch: " + "${res.exceptionOrNull()!!.message ?: res.exceptionOrNull()!!.cause!!::class.simpleName}"
                     handler.post {
                         installerChannel.invokeMethod(
                             "update",
                             mapOf("progress" to 0.5, "header" to "", "log" to msg)
                         )
+                    }
+                    if(cancel) {
+                        handler.post { stopResult!!.success(null) }
+                        return@Thread
                     }
                 }
 
@@ -214,9 +269,17 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
                 val res = patcher.save()
                 ZipFile(patchedFile).use { file ->
                     res.dexFiles.forEach {
+                        if(cancel) {
+                            handler.post { stopResult!!.success(null) }
+                            return@Thread
+                        }
                         file.addEntryCompressData(
                             ZipEntry.createWithName(it.name),
                             it.stream.readBytes()
@@ -233,6 +296,10 @@ class MainActivity : FlutterActivity() {
                         ZipAligner::getEntryAlignment
                     )
                 }
+                if(cancel) {
+                    handler.post { stopResult!!.success(null) }
+                    return@Thread
+                }
                 handler.post {
                     installerChannel.invokeMethod(
                         "update",
@@ -244,10 +311,12 @@ class MainActivity : FlutterActivity() {
                     )
                 }
 
-                // Signer("ReVanced", "s3cur3p@ssw0rd").signApk(patchedFile, outFile, keyStoreFile)
-
                 try {
-                    Signer("ReVanced", keystorePassword).signApk(patchedFile, outFile, keyStoreFile)
+                    Signer("ReVanced", keystorePassword).signApk(
+                        patchedFile,
+                        outFile,
+                        keyStoreFile
+                    )
                 } catch (e: Exception) {
                     //log to console
                     print("Error signing apk: ${e.message}")

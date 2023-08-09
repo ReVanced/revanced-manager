@@ -103,16 +103,20 @@ class PatcherAPI {
   }
 
   List<Patch> getFilteredPatches(String packageName) {
-    if (!filteredPatches.keys.contains(packageName)) {
-      final List<Patch> patches = _patches
-          .where(
-            (patch) =>
-                patch.compatiblePackages.isEmpty ||
-                !patch.name.contains('settings') &&
-                    patch.compatiblePackages
-                        .any((pack) => pack.name == packageName),
-          )
+    final List<Patch> patches = _patches
+        .where(
+          (patch) =>
+              patch.compatiblePackages.isEmpty ||
+              !patch.name.contains('settings') &&
+                  patch.compatiblePackages
+                      .any((pack) => pack.name == packageName),
+        )
+        .toList();
+    if (!_managerAPI.areUniversalPatchesEnabled()) {
+      filteredPatches[packageName] = patches
+          .where((patch) => patch.compatiblePackages.isNotEmpty)
           .toList();
+    } else {
       filteredPatches[packageName] = patches;
     }
     return filteredPatches[packageName];
@@ -142,20 +146,6 @@ class PatcherAPI {
         (dep) => dep.contains('settings'),
       ),
     );
-  }
-
-  Future<String> getOriginalFilePath(String packageName) async {
-    try {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (hasRootPermissions) {
-        return await _rootAPI.getOriginalFilePath(packageName);
-      }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    return '';
   }
 
   Future<void> runPatcher(
@@ -191,10 +181,7 @@ class PatcherAPI {
       _outFile = File('${workDir.path}/out.apk');
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
-      String originalFilePath = await getOriginalFilePath(packageName);
-      if (originalFilePath.isEmpty) {
-        originalFilePath = apkFilePath;
-      }
+      final String originalFilePath = apkFilePath;
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',
@@ -215,6 +202,16 @@ class PatcherAPI {
         if (kDebugMode) {
           print(e);
         }
+      }
+    }
+  }
+
+  Future<void> stopPatcher() async {
+    try {
+      await patcherChannel.invokeMethod('stopPatcher');
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
       }
     }
   }

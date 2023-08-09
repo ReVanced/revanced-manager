@@ -3,7 +3,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
@@ -17,6 +16,7 @@ class PatchItem extends StatefulWidget {
     required this.packageVersion,
     required this.supportedPackageVersions,
     required this.isUnsupported,
+    required this.isNew,
     required this.isSelected,
     required this.onChanged,
     this.child,
@@ -27,6 +27,7 @@ class PatchItem extends StatefulWidget {
   final String packageVersion;
   final List<String> supportedPackageVersions;
   final bool isUnsupported;
+  final bool isNew;
   bool isSelected;
   final Function(bool) onChanged;
   final Widget? child;
@@ -126,25 +127,19 @@ class _PatchItemState extends State<PatchItem> {
                           } else {
                             widget.isSelected = newValue!;
                           }
-                          if (widget.isUnsupported &&
-                              widget.isSelected &&
-                              !selectedUnsupportedPatches
-                                  .contains(widget.name)) {
-                            selectedUnsupportedPatches.add(widget.name);
-                          }
                         });
                         widget.onChanged(widget.isSelected);
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
-              if (widget.isUnsupported &&
-                  widget._managerAPI.areExperimentalPatchesEnabled())
-                Row(
-                  children: <Widget>[
+              Row(
+                children: [
+                  if (widget.isUnsupported &&
+                      widget._managerAPI.areExperimentalPatchesEnabled())
                     Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 8, right: 8),
                       child: TextButton.icon(
                         label: I18nText('warning'),
                         icon: const Icon(Icons.warning, size: 20.0),
@@ -167,10 +162,33 @@ class _PatchItemState extends State<PatchItem> {
                         ),
                       ),
                     ),
-                  ],
-                )
-              else
-                Container(),
+                  if (widget.isNew)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: TextButton.icon(
+                        label: I18nText('new'),
+                        icon: const Icon(Icons.star, size: 20.0),
+                        onPressed: () => _showNewPatchDialog(),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.transparent,
+                          ),
+                          foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
+                    )
+                ],
+              ),
               widget.child ?? const SizedBox(),
             ],
           ),
@@ -197,7 +215,26 @@ class _PatchItemState extends State<PatchItem> {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () => Navigator.of(context).pop(),
-          )
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showNewPatchDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('patchItem.newPatch'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText(
+          'patchItem.newPatchDialogText',
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ],
       ),
     );

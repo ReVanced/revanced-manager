@@ -30,7 +30,7 @@ class SManageKeystorePassword extends BaseViewModel {
               onPressed: () => _keystorePasswordController.text =
                   _managerAPI.defaultKeystorePassword,
               color: Theme.of(context).colorScheme.secondary,
-            )
+            ),
           ],
         ),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -62,7 +62,7 @@ class SManageKeystorePassword extends BaseViewModel {
               _managerAPI.setKeystorePassword(passwd);
               Navigator.of(context).pop();
             },
-          )
+          ),
         ],
       ),
     );

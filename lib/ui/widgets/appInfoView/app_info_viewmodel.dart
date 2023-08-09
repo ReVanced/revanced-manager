@@ -74,7 +74,7 @@ class AppInfoViewModel extends BaseViewModel {
             CustomMaterialButton(
               label: I18nText('okButton'),
               onPressed: () => Navigator.of(context).pop(),
-            )
+            ),
           ],
         ),
       );
@@ -103,7 +103,7 @@ class AppInfoViewModel extends BaseViewModel {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
-              )
+              ),
             ],
           ),
         );
@@ -140,7 +140,7 @@ class AppInfoViewModel extends BaseViewModel {
           CustomMaterialButton(
             label: I18nText('okButton'),
             onPressed: () => Navigator.of(context).pop(),
-          )
+          ),
         ],
       ),
     );

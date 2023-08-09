@@ -28,6 +28,15 @@ class SettingsViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.contributorsView);
   }
 
+  bool isPatchesAutoUpdate() {
+    return _managerAPI.isPatchesAutoUpdate();
+  }
+
+  void setPatchesAutoUpdate(bool value) {
+    _managerAPI.setPatchesAutoUpdate(value);
+    notifyListeners();
+  }
+
   bool areUniversalPatchesEnabled() {
     return _managerAPI.areUniversalPatchesEnabled();
   }
@@ -48,7 +57,7 @@ class SettingsViewModel extends BaseViewModel {
 
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
-    _toast.showBottom('settingsView.deletedKeystore');
+    _toast.showBottom('settingsView.regeneratedKeystore');
     notifyListeners();
   }
 

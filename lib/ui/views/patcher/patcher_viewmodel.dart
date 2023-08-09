@@ -11,6 +11,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -77,7 +78,7 @@ class PatcherViewModel extends BaseViewModel {
                   Navigator.of(context).pop();
                   showArmv7WarningDialog(context);
                 },
-              )
+              ),
             ],
           ),
         );
@@ -110,7 +111,7 @@ class PatcherViewModel extends BaseViewModel {
                 Navigator.of(context).pop();
                 navigateToInstaller();
               },
-            )
+            ),
           ],
         ),
       );
@@ -156,6 +157,14 @@ class PatcherViewModel extends BaseViewModel {
     this
         .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
+    if (!_managerAPI.areExperimentalPatchesEnabled()) {
+      this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
+    }
+    if (!_managerAPI.areUniversalPatchesEnabled()) {
+      this
+          .selectedPatches
+          .removeWhere((patch) => patch.compatiblePackages.isEmpty);
+    }
     notifyListeners();
   }
 }
