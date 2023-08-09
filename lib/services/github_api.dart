@@ -6,12 +6,14 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 
 @lazySingleton
 class GithubAPI {
   late Dio _dio = Dio();
+  late final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
   final _cacheOptions = CacheOptions(
     store: MemCacheStore(),
@@ -201,8 +203,14 @@ class GithubAPI {
     String extension,
     String repoName,
     String version,
+    String url,
   ) async {
     try {
+      if (url.isNotEmpty) {
+        return await DefaultCacheManager().getSingleFile(
+          url,
+        );
+      }
       final Map<String, dynamic>? release =
           await getPatchesRelease(repoName, version);
       if (release != null) {
@@ -211,8 +219,16 @@ class GithubAPI {
           (asset) => (asset['name'] as String).endsWith(extension),
         );
         if (asset != null) {
+          final String downloadUrl = asset['browser_download_url'];
+          if (extension == '.apk') {
+            _managerAPI.setIntegrationsDownloadURL(downloadUrl);
+          } else if (extension == '.json') {
+            _managerAPI.setPatchesDownloadURL(downloadUrl, false);
+          } else {
+            _managerAPI.setPatchesDownloadURL(downloadUrl, true);
+          }
           return await DefaultCacheManager().getSingleFile(
-            asset['browser_download_url'],
+            downloadUrl,
           );
         }
       }
@@ -224,10 +240,16 @@ class GithubAPI {
     return null;
   }
 
-  Future<List<Patch>> getPatches(String repoName, String version) async {
+  Future<List<Patch>> getPatches(
+      String repoName, String version, String url) async {
     List<Patch> patches = [];
     try {
-      final File? f = await getPatchesReleaseFile('.json', repoName, version);
+      final File? f = await getPatchesReleaseFile(
+        '.json',
+        repoName,
+        version,
+        url,
+      );
       if (f != null) {
         final List<dynamic> list = jsonDecode(f.readAsStringSync());
         patches = list.map((patch) => Patch.fromJson(patch)).toList();
