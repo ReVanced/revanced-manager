@@ -162,6 +162,86 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> installTypeDialog(BuildContext context) async {
+    final ValueNotifier<int> installType = ValueNotifier(0);
+    if (isRooted) {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: I18nText(
+            'installerView.installType',
+          ),
+          icon: const Icon(Icons.file_download_outlined),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+          content: ValueListenableBuilder(
+            valueListenable: installType,
+            builder: (context, value, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: I18nText(
+                      'installerView.installTypeDescription',
+                      child: Text(
+                        '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  RadioListTile(
+                    title: const Text('Non-root'),
+                    subtitle: const Text('Recommended'),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    value: 0,
+                    groupValue: value,
+                    onChanged: (selected) {
+                      installType.value = selected!;
+                    },
+                  ),
+                  RadioListTile(
+                    title: const Text('Root'),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    value: 1,
+                    groupValue: value,
+                    onChanged: (selected) {
+                      installType.value = selected!;
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            CustomMaterialButton(
+              label: I18nText('cancelButton'),
+              isFilled: false,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('installerView.installButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                installResult(context, installType.value == 1);
+              },
+            )
+          ],
+        ),
+      );
+    } else {
+      installResult(context, false);
+    }
+  }
+
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;

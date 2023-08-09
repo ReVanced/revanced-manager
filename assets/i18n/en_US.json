@@ -128,6 +128,8 @@
     },
     "installerView": {
         "widgetTitle": "Installer",
+        "installType": "Select install type",
+        "installTypeDescription": "Select the installation type to proceed with.",
         "installButton": "Install",
         "installRootButton": "Install as Root",
         "openButton": "Open",
