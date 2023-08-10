@@ -2,7 +2,12 @@ name: PR Build
 
 on:
   pull_request:
-
+    paths: 
+      - "android/**"
+      - "assets/**"
+      - "fastlane/**"
+      - "lib/**"
+      
 jobs:
   build:
     name: Build
