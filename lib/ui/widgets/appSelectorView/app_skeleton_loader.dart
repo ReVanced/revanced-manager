@@ -7,7 +7,7 @@ class AppSkeletonLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.sizeOf(context).width;
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 7,

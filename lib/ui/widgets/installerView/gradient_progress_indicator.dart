@@ -25,7 +25,7 @@ class _GradientProgressIndicatorState extends State<GradientProgressIndicator> {
           ),
         ),
         height: 5,
-        width: MediaQuery.of(context).size.width * widget.progress!,
+        width: MediaQuery.sizeOf(context).width * widget.progress!,
       ),
     );
   }
