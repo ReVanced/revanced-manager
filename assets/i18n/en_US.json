@@ -10,6 +10,7 @@
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
+    "notice": "Notice",
     "new": "New",
     "navigationView": {
         "dashboardTab": "Dashboard",
@@ -71,7 +72,8 @@
 
         "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?",
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
-        "splitApkWarningDialogText": "Patching a split APK is not yet supported and might fail. Proceed anyways?"
+        "splitApkWarningDialogText": "Patching a split APK is not yet supported and might fail. Proceed anyways?",
+        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -198,6 +200,7 @@
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
 
+        "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Experimental universal patches support",
         "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
