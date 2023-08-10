@@ -140,6 +140,8 @@
     },
     "installerView": {
         "widgetTitle": "Installer",
+        "installType": "Select install type",
+        "installTypeDescription": "Select the installation type to proceed with.",
         "installButton": "Install",
         "installRootButton": "Install as Root",
         "pressBackAgain": "Press back again to cancel",
@@ -149,9 +151,8 @@
         "notificationTitle": "ReVanced Manager is patching",
         "notificationText": "Tap to return to the installer",
 
-        "shareApkMenuOption": "Share APK",
-        "exportApkMenuOption": "Export APK",
-        "shareLogMenuOption": "Share log",
+        "exportApkButtonTooltip": "Export patched APK",
+        "exportLogButtonTooltip": "Export log",
 
         "installErrorDialogTitle": "Error",
         "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
