@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,6 +20,40 @@ class InstallerView extends StatelessWidget {
           top: false,
           bottom: false,
           child: Scaffold(
+            floatingActionButton: Visibility(
+              visible: !model.isPatching,
+              child: FloatingActionButton.extended(
+                label: I18nText('installerView.installButton'),
+                icon: const Icon(Icons.file_download_outlined),
+                onPressed: () => model.installTypeDialog(context),
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.endContained,
+            bottomNavigationBar: Visibility(
+              visible: !model.isPatching,
+              child: BottomAppBar(
+                child: Row(
+                  children: <Widget>[
+                    Visibility(
+                      visible: !model.hasErrors,
+                      child: IconButton.filledTonal(
+                        tooltip: FlutterI18n.translate(
+                            context, 'installerView.exportApkButtonTooltip'),
+                        icon: const Icon(Icons.save),
+                        onPressed: () => model.onButtonPressed(0),
+                      ),
+                    ),
+                    IconButton.filledTonal(
+                      tooltip: FlutterI18n.translate(
+                          context, 'installerView.exportLogButtonTooltip'),
+                      icon: const Icon(Icons.post_add),
+                      onPressed: () => model.onButtonPressed(1),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             body: CustomScrollView(
               controller: model.scrollController,
               slivers: <Widget>[
@@ -35,44 +67,6 @@ class InstallerView extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   onBackButtonPressed: () => model.onWillPop(context),
-                  actions: <Widget>[
-                    Visibility(
-                      visible: !model.isPatching,
-                      child: CustomPopupMenu(
-                        onSelected: (value) => model.onMenuSelection(value),
-                        children: {
-                          if (!model.hasErrors)
-                            0: I18nText(
-                              'installerView.shareApkMenuOption',
-                              child: const Text(
-                                '',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          1: I18nText(
-                            'installerView.exportApkMenuOption',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          2: I18nText(
-                            'installerView.shareLogMenuOption',
-                            child: const Text(
-                              '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        },
-                      ),
-                    ),
-                  ],
                   bottom: PreferredSize(
                     preferredSize: const Size(double.infinity, 1.0),
                     child: GradientProgressIndicator(progress: model.progress),
@@ -94,72 +88,6 @@ class InstallerView extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                ),
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Visibility(
-                      visible: !model.isPatching && !model.hasErrors,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0).copyWith(top: 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Visibility(
-                              visible: model.isInstalled,
-                              child: CustomMaterialButton(
-                                label: I18nText('installerView.openButton'),
-                                isExpanded: true,
-                                onPressed: () {
-                                  model.openApp();
-                                  model.cleanPatcher();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: !model.isInstalled && model.isRooted,
-                              child: CustomMaterialButton(
-                                isFilled: false,
-                                label:
-                                    I18nText('installerView.installRootButton'),
-                                isExpanded: true,
-                                onPressed: () => model.installResult(
-                                  context,
-                                  true,
-                                ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: !model.isInstalled,
-                              child: const SizedBox(
-                                width: 16,
-                              ),
-                            ),
-                            Visibility(
-                              visible: !model.isInstalled,
-                              child: CustomMaterialButton(
-                                label: I18nText('installerView.installButton'),
-                                isExpanded: true,
-                                onPressed: () => model.installResult(
-                                  context,
-                                  false,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: SizedBox(
-                    height: MediaQuery.viewPaddingOf(context).bottom,
                   ),
                 ),
               ],
