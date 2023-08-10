@@ -20,7 +20,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'zulu'
-          cache: 'gradle'
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
