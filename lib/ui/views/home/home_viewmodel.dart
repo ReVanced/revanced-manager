@@ -256,9 +256,9 @@ class HomeViewModel extends BaseViewModel {
     final String integrationsVersion =
         await _managerAPI.getLatestIntegrationsVersion() ?? '0.0.0';
     if (patchesVersion != '0.0.0' && integrationsVersion != '0.0.0') {
-      _toast.showBottom('homeView.downloadedMessage');
       await _managerAPI.setCurrentPatchesVersion(patchesVersion);
       await _managerAPI.setCurrentIntegrationsVersion(integrationsVersion);
+      _toast.showBottom('homeView.downloadedMessage');
       forceRefresh(context);
     } else {
       _toast.showBottom('homeView.errorDownloadMessage');

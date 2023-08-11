@@ -129,6 +129,7 @@ class SManageSources extends BaseViewModel {
                 '${_orgIntSourceController.text.trim()}/${_intSourceController.text.trim()}',
               );
               _managerAPI.setCurrentPatchesVersion('0.0.0');
+              _managerAPI.setCurrentIntegrationsVersion('0.0.0');
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
@@ -158,6 +159,7 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
               _managerAPI.setCurrentPatchesVersion('0.0.0');
+              _managerAPI.setCurrentIntegrationsVersion('0.0.0');
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context)
                 ..pop()

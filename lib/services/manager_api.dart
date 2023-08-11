@@ -76,6 +76,14 @@ class ManagerAPI {
     await _prefs.setString('repoUrl', url);
   }
 
+  String getPatchesDownloadURL(bool bundle) {
+    return _prefs.getString('patchesDownloadURL-$bundle') ?? '';
+  }
+
+  Future<void> setPatchesDownloadURL(String value, bool bundle) async {
+    await _prefs.setString('patchesDownloadURL-$bundle', value);
+  }
+
   String getPatchesRepo() {
     return _prefs.getString('patchesRepo') ?? defaultPatchesRepo;
   }
@@ -117,6 +125,14 @@ class ManagerAPI {
       return jsonEncode(patch.toJson());
     }).toList();
     await _prefs.setStringList('savedPatches-$packageName', patchesJson);
+  }
+
+  String getIntegrationsDownloadURL() {
+    return _prefs.getString('integrationsDownloadURL') ?? '';
+  }
+
+  Future<void> setIntegrationsDownloadURL(String value) async {
+    await _prefs.setString('integrationsDownloadURL', value);
   }
 
   List<Patch> getUsedPatches(String packageName) {
@@ -260,7 +276,12 @@ class ManagerAPI {
     try {
       final String repoName = getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
-      return await _githubAPI.getPatches(repoName, currentVersion);
+      final String url = getPatchesDownloadURL(false);
+      return await _githubAPI.getPatches(
+        repoName,
+        currentVersion,
+        url,
+      );
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -273,10 +294,12 @@ class ManagerAPI {
     try {
       final String repoName = getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
+      final String url = getPatchesDownloadURL(true);
       return await _githubAPI.getPatchesReleaseFile(
         '.jar',
         repoName,
         currentVersion,
+        url,
       );
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -290,10 +313,12 @@ class ManagerAPI {
     try {
       final String repoName = getIntegrationsRepo();
       final String currentVersion = await getCurrentIntegrationsVersion();
+      final String url = getIntegrationsDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
         '.apk',
         repoName,
         currentVersion,
+        url,
       );
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -384,27 +409,39 @@ class ManagerAPI {
   Future<String> getCurrentPatchesVersion() async {
     patchesVersion = _prefs.getString('patchesVersion') ?? '0.0.0';
     if (patchesVersion == '0.0.0' || isPatchesAutoUpdate()) {
-      patchesVersion = await getLatestPatchesVersion() ?? '0.0.0';
-      await setCurrentPatchesVersion(patchesVersion!);
+      final String newPatchesVersion =
+          await getLatestPatchesVersion() ?? '0.0.0';
+      if (patchesVersion != newPatchesVersion && newPatchesVersion != '0.0.0') {
+        await setCurrentPatchesVersion(newPatchesVersion);
+      }
     }
     return patchesVersion!;
   }
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
+    await setPatchesDownloadURL('', false);
+    await setPatchesDownloadURL('', true);
+    await downloadPatches();
   }
 
   Future<String> getCurrentIntegrationsVersion() async {
     integrationsVersion = _prefs.getString('integrationsVersion') ?? '0.0.0';
     if (integrationsVersion == '0.0.0' || isPatchesAutoUpdate()) {
-      integrationsVersion = await getLatestIntegrationsVersion() ?? '0.0.0';
-      await setCurrentIntegrationsVersion(integrationsVersion!);
+      final String newIntegrationsVersion =
+          await getLatestIntegrationsVersion() ?? '0.0.0';
+      if (integrationsVersion != newIntegrationsVersion &&
+          newIntegrationsVersion != '0.0.0') {
+        await setCurrentIntegrationsVersion(newIntegrationsVersion);
+      }
     }
     return integrationsVersion!;
   }
 
   Future<void> setCurrentIntegrationsVersion(String version) async {
     await _prefs.setString('integrationsVersion', version);
+    await setIntegrationsDownloadURL('');
+    await downloadIntegrations();
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
