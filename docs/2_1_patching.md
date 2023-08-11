@@ -2,7 +2,7 @@
 
 The following pages will guide you through using ReVanced Manager to patch apps.
 
-## 🪜 Steps to patch apps
+## ✅ Steps to patch apps
 
 1. Navigate to the **Patcher** tab from the bottom navigation bar
 2. Tap on the **Select an app** card

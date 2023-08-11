@@ -11,8 +11,8 @@ This documentation explains how to use [ReVanced Manager](https://github.com/rev
    2. [🧰 Managing patched apps](2_2_managing.md)
    3. [🔄 Updating ReVanced Manager](2_3_updating.md)
    4. [⚙️ Configuring ReVanced Manager](2_4_settings.md)
-3. [🛟 Troubleshooting](3_troubleshooting.md)
-4. [🛠 Building from source](4_building.md)
+3. [❔ Troubleshooting](3_troubleshooting.md)
+4. [🔨 Building from source](4_building.md)
 
 ## ⏭️ Start here
 
