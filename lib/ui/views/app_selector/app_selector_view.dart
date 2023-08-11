@@ -133,6 +133,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                     ),
                                   )
                                   .toList(),
+                              const SizedBox(height: 70.0),
                             ],
                           ),
                         ),
