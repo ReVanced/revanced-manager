@@ -206,8 +206,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                   ),
                   RadioListTile(
-                    title: const Text('Non-root'),
-                    subtitle: const Text('Recommended'),
+                    title: I18nText('installerView.installNonRootType'),
+                    subtitle: I18nText('installerView.installRecommendedType'),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                     value: 0,
                     groupValue: value,
@@ -216,7 +216,7 @@ class InstallerViewModel extends BaseViewModel {
                     },
                   ),
                   RadioListTile(
-                    title: const Text('Root'),
+                    title: I18nText('installerView.installRootType'),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                     value: 1,
                     groupValue: value,

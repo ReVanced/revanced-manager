@@ -142,8 +142,12 @@
         "widgetTitle": "Installer",
         "installType": "Select install type",
         "installTypeDescription": "Select the installation type to proceed with.",
+
         "installButton": "Install",
-        "installRootButton": "Install as Root",
+        "installRootType": "Root",
+        "installNonRootType": "Non-root",
+        "installRecommendedType": "Recommended",
+
         "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
         "shareButton": "Share file",
