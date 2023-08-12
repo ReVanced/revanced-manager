@@ -30,7 +30,7 @@ object Aligning {
             }
 
             file.copyEntriesFromFileAligned(
-                ZipFile(inputFile),
+                ZipFile(inputFile, readonly = true),
                 ZipAligner::getEntryAlignment
             )
         }
