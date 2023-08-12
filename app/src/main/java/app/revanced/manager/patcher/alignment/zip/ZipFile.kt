@@ -5,16 +5,17 @@ import app.revanced.manager.patcher.alignment.zip.structures.ZipEntry
 
 import java.io.Closeable
 import java.io.File
+import java.io.IOException
 import java.io.RandomAccessFile
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 import java.util.zip.CRC32
 import java.util.zip.Deflater
 
-class ZipFile(file: File) : Closeable {
+class ZipFile(file: File, private val readonly: Boolean = false) : Closeable {
     var entries: MutableList<ZipEntry> = mutableListOf()
 
-    private val filePointer: RandomAccessFile = RandomAccessFile(file, "rw")
+    private val filePointer: RandomAccessFile = RandomAccessFile(file, if (readonly) "r" else "rw")
     private var CDNeedsRewrite = false
 
     private val compressionLevel = 5
@@ -32,6 +33,10 @@ class ZipFile(file: File) : Closeable {
 
         //seek back to start for writing
         filePointer.seek(0)
+    }
+
+    private fun assertWritable() {
+        if (readonly) throw IOException("Archive is read-only")
     }
 
     private fun findEndRecord(): ZipEndRecord {
@@ -110,6 +115,8 @@ class ZipFile(file: File) : Closeable {
     }
 
     fun addEntryCompressData(entry: ZipEntry, data: ByteArray) {
+        assertWritable()
+
         val compressor = Deflater(compressionLevel, true)
         compressor.setInput(data)
         compressor.finish()
@@ -136,6 +143,8 @@ class ZipFile(file: File) : Closeable {
     }
 
     private fun addEntryCopyData(entry: ZipEntry, data: ByteBuffer, alignment: Int? = null) {
+        assertWritable()
+
         alignment?.let {
             //calculate where data would end up
             val dataOffset = filePointer.filePointer + entry.LFHSize
@@ -162,6 +171,8 @@ class ZipFile(file: File) : Closeable {
     }
 
     fun copyEntriesFromFileAligned(file: ZipFile, entryAlignment: (entry: ZipEntry) -> Int?) {
+        assertWritable()
+
         for (entry in file.entries) {
             if (entries.any { it.fileName == entry.fileName }) continue //don't add duplicates
 
