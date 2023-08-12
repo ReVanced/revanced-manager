@@ -179,6 +179,7 @@ class InstallerViewModel extends BaseViewModel {
           title: I18nText(
             'installerView.installType',
           ),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
           content: ValueListenableBuilder(
