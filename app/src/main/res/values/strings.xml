@@ -90,6 +90,7 @@
 
     <string name="options">Options</string>
     <string name="ok">OK</string>
+    <string name="reset">Reset</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="search">Search</string>
@@ -156,7 +157,14 @@
     <string name="error_occurred">An error occurred</string>
     <string name="already_downloaded">Already downloaded</string>
 
-    <string name="select_file">Select file</string>
+    <string name="string_option_icon_description">Edit</string>
+    <string name="string_option_menu_description">More options</string>
+    <string name="string_option_placeholder">Value</string>
+
+    <string name="path_selector">Select from storage</string>
+    <string name="path_selector_parent_dir">Previous directory</string>
+    <string name="path_selector_dirs">Directories</string>
+    <string name="path_selector_files">Files</string>
 
     <string name="show_password_field">Show password</string>
     <string name="hide_password_field">Hide password</string>

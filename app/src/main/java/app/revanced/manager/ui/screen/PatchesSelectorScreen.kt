@@ -13,15 +13,13 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -49,7 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.patches.OptionField
+import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -82,8 +80,8 @@ fun PatchesSelectorScreen(
             onDismissRequest = vm::dismissDialogs,
             patch = patch,
             values = vm.getOptions(bundle, patch),
-            set = { key, value -> vm.setOption(bundle, patch, key, value) },
-            unset = { vm.unsetOption(bundle, patch, it) }
+            reset = { vm.resetOptions(bundle, patch) },
+            set = { key, value -> vm.setOption(bundle, patch, key, value) }
         )
     }
 
@@ -336,7 +334,7 @@ fun UnsupportedDialog(
 fun OptionsDialog(
     patch: PatchInfo,
     values: Map<String, Any?>?,
-    unset: (String) -> Unit,
+    reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
 ) = Dialog(
@@ -350,36 +348,26 @@ fun OptionsDialog(
         topBar = {
             AppTopBar(
                 title = patch.name,
-                onBackClick = onDismissRequest
+                onBackClick = onDismissRequest,
+                actions = {
+                    IconButton(onClick = reset) {
+                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    }
+                }
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+        LazyColumn(
+            modifier = Modifier.padding(paddingValues)
         ) {
-            patch.options?.forEach {
-                ListItem(
-                    headlineContent = { Text(it.title) },
-                    supportingContent = { Text(it.description) },
-                    overlineContent = {
-                        Button(onClick = { unset(it.key) }) {
-                            Text("reset")
-                        }
-                    },
-                    trailingContent = {
-                        val key = it.key
-                        val value =
-                            if (values == null || !values.contains(key)) it.defaultValue else values[key]
+            if (patch.options == null) return@LazyColumn
 
-                        OptionField(option = it, value = value, setValue = { set(key, it) })
-                    }
-                )
-            }
+            items(patch.options, key = { it.key }) { option ->
+                val key = option.key
+                val value =
+                    if (values == null || !values.contains(key)) option.defaultValue else values[key]
 
-            TextButton(onClick = onDismissRequest) {
-                Text(stringResource(R.string.apply))
+                OptionItem(option = option, value = value, setValue = { set(key, it) })
             }
         }
     }

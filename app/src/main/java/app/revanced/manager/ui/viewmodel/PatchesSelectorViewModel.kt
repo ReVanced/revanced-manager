@@ -145,8 +145,8 @@ class PatchesSelectorViewModel(
         patchOptions.getOrCreate(bundle).getOrCreate(patch.name)[key] = value
     }
 
-    fun unsetOption(bundle: Int, patch: PatchInfo, key: String) {
-        patchOptions[bundle]?.get(patch.name)?.remove(key)
+    fun resetOptions(bundle: Int, patch: PatchInfo) {
+        patchOptions[bundle]?.remove(patch.name)
     }
 
     fun dismissDialogs() {

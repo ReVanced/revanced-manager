@@ -36,6 +36,13 @@ fun AppScaffold(
 fun AppTopBar(
     title: String,
     onBackClick: (() -> Unit)? = null,
+    backIcon: @Composable (() -> Unit) = @Composable {
+        Icon(
+            imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(
+                R.string.back
+            )
+        )
+    },
     actions: @Composable (RowScope.() -> Unit) = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
@@ -47,10 +54,7 @@ fun AppTopBar(
         navigationIcon = {
             if (onBackClick != null) {
                 IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
-                    )
+                    backIcon()
                 }
             }
         },
