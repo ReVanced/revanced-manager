@@ -39,14 +39,18 @@ class InstallerView extends StatelessWidget {
                       visible: !model.hasErrors,
                       child: IconButton.filledTonal(
                         tooltip: FlutterI18n.translate(
-                            context, 'installerView.exportApkButtonTooltip'),
+                          context,
+                          'installerView.exportApkButtonTooltip',
+                        ),
                         icon: const Icon(Icons.save),
                         onPressed: () => model.onButtonPressed(0),
                       ),
                     ),
                     IconButton.filledTonal(
                       tooltip: FlutterI18n.translate(
-                          context, 'installerView.exportLogButtonTooltip'),
+                        context,
+                        'installerView.exportLogButtonTooltip',
+                      ),
                       icon: const Icon(Icons.post_add),
                       onPressed: () => model.onButtonPressed(1),
                     ),

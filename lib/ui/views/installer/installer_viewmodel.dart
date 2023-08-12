@@ -190,7 +190,9 @@ class InstallerViewModel extends BaseViewModel {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                     child: I18nText(
                       'installerView.installTypeDescription',
                       child: Text(
@@ -240,7 +242,7 @@ class InstallerViewModel extends BaseViewModel {
                 Navigator.of(context).pop();
                 installResult(context, installType.value == 1);
               },
-            )
+            ),
           ],
         ),
       );

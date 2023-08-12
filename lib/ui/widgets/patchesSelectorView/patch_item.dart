@@ -186,7 +186,7 @@ class _PatchItemState extends State<PatchItem> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                 ],
               ),
               widget.child ?? const SizedBox(),
