@@ -134,7 +134,7 @@ class ManagerAPI {
   }
 
   void setPatchesChangeWarning(bool value) {
-    _prefs.setBool('showPatchesChangeWarning', value);
+    _prefs.setBool('showPatchesChangeWarning', !value);
   }
 
   bool isChangingToggleModified() {
@@ -555,7 +555,7 @@ class ManagerAPI {
 
   Future<void> showPatchesChangeWarningDialog(BuildContext context) {
     final ValueNotifier<bool> noShow =
-        ValueNotifier(showPatchesChangeWarning());
+        ValueNotifier(!showPatchesChangeWarning());
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -600,7 +600,7 @@ class ManagerAPI {
             CustomMaterialButton(
               label: I18nText('OK'),
               onPressed: () {
-                setPatchesChangeWarning(!noShow.value);
+                setPatchesChangeWarning(noShow.value);
                 Navigator.of(context).pop();
               },
             ),
