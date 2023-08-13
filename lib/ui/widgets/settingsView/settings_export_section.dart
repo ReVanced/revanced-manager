@@ -73,10 +73,10 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importKeystoreHint'),
-          onTap: () async{
+          onTap: () async {
             await _settingsViewModel.importKeystore();
             final sManageKeystorePassword = SManageKeystorePassword();
-            if(context.mounted){
+            if (context.mounted) {
               sManageKeystorePassword.showKeystoreDialog(context);
             }
           },
