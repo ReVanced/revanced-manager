@@ -191,6 +191,10 @@ class PatcherViewModel extends BaseViewModel {
     this
         .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
+    if (!_managerAPI.isPatchesChangeAllowed()) {
+      this.selectedPatches.clear();
+      this.selectedPatches.addAll(patches.where((patch) => !patch.excluded));
+    }
     if (!_managerAPI.areExperimentalPatchesEnabled()) {
       this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
     }
@@ -198,9 +202,6 @@ class PatcherViewModel extends BaseViewModel {
       this
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
-    }
-    if (!_managerAPI.isPatchesChangeAllowed()) {
-      this.selectedPatches.removeWhere((patch) => patch.excluded);
     }
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.originalPackageName);
     for (final patch in usedPatches){
