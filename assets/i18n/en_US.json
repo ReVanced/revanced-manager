@@ -11,6 +11,7 @@
     "noButton": "No",
     "warning": "Warning",
     "notice": "Notice",
+    "noShowAgain": "Don't show again",
     "new": "New",
     "navigationView": {
         "dashboardTab": "Dashboard",
@@ -136,7 +137,10 @@
         "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",
 
         "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
-        "newPatch": "New patch"
+        "newPatch": "New patch",
+
+        "patchesChangeWarningDialogText": "Only change patches selection if you know what you are doing.\n\nIf you want to change, please enable \"Allow changing selection\" in the settings.",
+        "patchesChangeWarningDialogButton": "Keep current selection"
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -204,6 +208,11 @@
 
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
+
+        "allowPatchesSelectionLabel": "Allow changing selection",
+        "allowPatchesSelectionHint": "Allow changing patches selection to patch apps with your own selection",
+        "allowPatchesSelectionWarningText": "Changing patches selection may cause unwanted behavior and issues in the app.\n\nProceed anyways?",
+        "disablePatchesSelectionWarningText": "You are about to disable the ability to change patches selection.\nYour previous selections will be reset to default.\n\nProceed anyways?",
 
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",

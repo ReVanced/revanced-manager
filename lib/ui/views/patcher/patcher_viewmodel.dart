@@ -199,6 +199,9 @@ class PatcherViewModel extends BaseViewModel {
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
+    if (!_managerAPI.isPatchesChangeAllowed()) {
+      this.selectedPatches.removeWhere((patch) => patch.excluded);
+    }
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.originalPackageName);
     for (final patch in usedPatches){
       if (!patches.any((p) => p.name == patch.name)){

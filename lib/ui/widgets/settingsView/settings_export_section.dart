@@ -43,7 +43,7 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importPatchesHint'),
-          onTap: () => _settingsViewModel.importPatches(),
+          onTap: () => _settingsViewModel.importPatches(context),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
