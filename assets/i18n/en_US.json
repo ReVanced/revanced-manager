@@ -210,7 +210,7 @@
         "logsHint": "Share Manager's logs",
 
         "allowPatchesSelectionLabel": "Allow changing selection",
-        "allowPatchesSelectionHint": "Allow changing patches selection to patch apps with your own selection",
+        "allowPatchesSelectionHint": "Enable the ability to change patch selections in order to patch apps based on your own preferences.",
         "allowPatchesSelectionWarningText": "Changing patches selection may cause unwanted behavior and issues in the app.\n\nProceed anyways?",
         "disablePatchesSelectionWarningText": "You are about to disable the ability to change patches selection.\nYour previous selections will be reset to default.\n\nProceed anyways?",
 
