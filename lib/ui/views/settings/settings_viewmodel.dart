@@ -23,7 +23,8 @@ import 'package:stacked_services/stacked_services.dart';
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final PatchesSelectorViewModel _patchesSelectorViewModel = PatchesSelectorViewModel();
+  final PatchesSelectorViewModel _patchesSelectorViewModel =
+      PatchesSelectorViewModel();
   final PatcherViewModel _patcherViewModel = locator<PatcherViewModel>();
   final Toast _toast = locator<Toast>();
 
@@ -43,11 +44,11 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool isPatchesChangeAllowed() {
-    return _managerAPI.isPatchesChangeAllowed();
+  bool isPatchesChangeEnabled() {
+    return _managerAPI.isPatchesChangeEnabled();
   }
 
-  Future<void> showPatchesChangeAllowDialog(
+  Future<void> showPatchesChangeEnableDialog(
     bool value,
     BuildContext context,
   ) async {
@@ -58,7 +59,7 @@ class SettingsViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),
           content: I18nText(
-            'settingsView.allowPatchesSelectionWarningText',
+            'settingsView.enablePatchesSelectionWarningText',
             child: const Text(
               '',
               style: TextStyle(
@@ -79,7 +80,7 @@ class SettingsViewModel extends BaseViewModel {
               label: I18nText('yesButton'),
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
-                _managerAPI.setPatchesChangeAllowed(true);
+                _managerAPI.setPatchesChangeEnabled(true);
                 Navigator.of(context).pop();
               },
             ),
@@ -115,7 +116,7 @@ class SettingsViewModel extends BaseViewModel {
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
                 _patchesSelectorViewModel.selectDefaultPatches();
-                _managerAPI.setPatchesChangeAllowed(false);
+                _managerAPI.setPatchesChangeEnabled(false);
                 Navigator.of(context).pop();
               },
             ),
@@ -179,7 +180,7 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   Future<void> importPatches(BuildContext context) async {
-    if (isPatchesChangeAllowed()) {
+    if (isPatchesChangeEnabled()) {
       try {
         final FilePickerResult? result = await FilePicker.platform.pickFiles(
           type: FileType.custom,

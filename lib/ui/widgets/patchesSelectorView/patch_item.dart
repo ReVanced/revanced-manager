@@ -19,7 +19,7 @@ class PatchItem extends StatefulWidget {
     required this.isNew,
     required this.isSelected,
     required this.onChanged,
-    required this.isChangeAllowed,
+    required this.isChangeEnabled,
     this.child,
   }) : super(key: key);
   final String name;
@@ -31,7 +31,7 @@ class PatchItem extends StatefulWidget {
   final bool isNew;
   bool isSelected;
   final Function(bool) onChanged;
-  final bool isChangeAllowed;
+  final bool isChangeEnabled;
   final Widget? child;
   final toast = locator<Toast>();
   final _managerAPI = locator<ManagerAPI>();
@@ -60,7 +60,7 @@ class _PatchItemState extends State<PatchItem> {
                   !widget._managerAPI.areExperimentalPatchesEnabled()) {
                 widget.isSelected = false;
                 widget.toast.showBottom('patchItem.unsupportedPatchVersion');
-              } else if (widget.isChangeAllowed) {
+              } else if (widget.isChangeEnabled) {
                 widget.isSelected = !widget.isSelected;
               }
             });
@@ -128,7 +128,7 @@ class _PatchItemState extends State<PatchItem> {
                             widget.toast.showBottom(
                               'patchItem.unsupportedPatchVersion',
                             );
-                          } else if (widget.isChangeAllowed) {
+                          } else if (widget.isChangeEnabled) {
                             widget.isSelected = newValue!;
                           }
                         });

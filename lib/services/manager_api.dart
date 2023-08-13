@@ -110,23 +110,23 @@ class ManagerAPI {
     return _prefs.getBool('patchesAutoUpdate') ?? false;
   }
 
-  bool isPatchesChangeAllowed() {
+  bool isPatchesChangeEnabled() {
     if (getPatchedApps().isNotEmpty && !isChangingToggleModified()) {
       for (final apps in getPatchedApps()) {
         if (getSavedPatches(apps.originalPackageName)
                 .indexWhere((patch) => patch.excluded) !=
             -1) {
           setPatchesChangeWarning(false);
-          setPatchesChangeAllowed(true);
+          setPatchesChangeEnabled(true);
           break;
         }
       }
     }
-    return _prefs.getBool('patchesChangeAllowed') ?? false;
+    return _prefs.getBool('patchesChangeEnabled') ?? false;
   }
 
-  void setPatchesChangeAllowed(bool value) {
-    _prefs.setBool('patchesChangeAllowed', value);
+  void setPatchesChangeEnabled(bool value) {
+    _prefs.setBool('patchesChangeEnabled', value);
   }
 
   bool showPatchesChangeWarning() {

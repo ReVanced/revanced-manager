@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
-class SAllowPatchesSelection extends StatefulWidget {
-  const SAllowPatchesSelection({super.key});
+class SEnablePatchesSelection extends StatefulWidget {
+  const SEnablePatchesSelection({super.key});
 
   @override
-  State<SAllowPatchesSelection> createState() => _SAllowPatchesSelectionState();
+  State<SEnablePatchesSelection> createState() => _SEnablePatchesSelectionState();
 }
 
 final _settingsViewModel = SettingsViewModel();
 
-class _SAllowPatchesSelectionState extends State<SAllowPatchesSelection> {
+class _SEnablePatchesSelectionState extends State<SEnablePatchesSelection> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: I18nText(
-        'settingsView.allowPatchesSelectionLabel',
+        'settingsView.enablePatchesSelectionLabel',
         child: const Text(
           '',
           style: TextStyle(
@@ -26,10 +26,10 @@ class _SAllowPatchesSelectionState extends State<SAllowPatchesSelection> {
           ),
         ),
       ),
-      subtitle: I18nText('settingsView.allowPatchesSelectionHint'),
-      value: _settingsViewModel.isPatchesChangeAllowed(),
+      subtitle: I18nText('settingsView.enablePatchesSelectionHint'),
+      value: _settingsViewModel.isPatchesChangeEnabled(),
       onChanged: (value) async {
-        await _settingsViewModel.showPatchesChangeAllowDialog(value, context);
+        await _settingsViewModel.showPatchesChangeEnableDialog(value, context);
         setState(() {});
       },
     );

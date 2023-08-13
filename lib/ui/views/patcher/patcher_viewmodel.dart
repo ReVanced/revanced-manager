@@ -191,7 +191,7 @@ class PatcherViewModel extends BaseViewModel {
     this
         .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
-    if (!_managerAPI.isPatchesChangeAllowed()) {
+    if (!_managerAPI.isPatchesChangeEnabled()) {
       this.selectedPatches.clear();
       this.selectedPatches.addAll(patches.where((patch) => !patch.excluded));
     }

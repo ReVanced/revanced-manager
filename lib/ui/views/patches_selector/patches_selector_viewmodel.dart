@@ -49,7 +49,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   void selectPatch(Patch patch, bool isSelected, BuildContext context) {
-    if (_managerAPI.isPatchesChangeAllowed()) {
+    if (_managerAPI.isPatchesChangeEnabled()) {
       if (isSelected && !selectedPatches.contains(patch)) {
         selectedPatches.add(patch);
       } else {
@@ -193,7 +193,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> loadSelectedPatches(BuildContext context) async {
-    if (_managerAPI.isPatchesChangeAllowed()) {
+    if (_managerAPI.isPatchesChangeEnabled()) {
       final List<String> selectedPatches = await _managerAPI.getSelectedPatches(
         locator<PatcherViewModel>().selectedApp!.originalPackageName,
       );

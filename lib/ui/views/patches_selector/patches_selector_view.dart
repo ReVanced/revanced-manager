@@ -24,7 +24,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!_managerAPI.isPatchesChangeAllowed() &&
+      if (!_managerAPI.isPatchesChangeEnabled() &&
           _managerAPI.showPatchesChangeWarning()) {
         _managerAPI.showPatchesChangeWarningDialog(context);
       }
@@ -164,7 +164,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   'patchesSelectorView.defaultTooltip',
                                 ),
                                 onPressed: () {
-                                  if (_managerAPI.isPatchesChangeAllowed()) {
+                                  if (_managerAPI.isPatchesChangeEnabled()) {
                                     model.selectDefaultPatches();
                                   } else {
                                     model.showPatchesChangeDialog(context);
@@ -179,7 +179,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   'patchesSelectorView.noneTooltip',
                                 ),
                                 onPressed: () {
-                                  if (_managerAPI.isPatchesChangeAllowed()) {
+                                  if (_managerAPI.isPatchesChangeEnabled()) {
                                     model.clearPatches();
                                   } else {
                                     model.showPatchesChangeDialog(context);
@@ -199,7 +199,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
                                   isUnsupported: !isPatchSupported(patch),
-                                  isChangeAllowed: _managerAPI.isPatchesChangeAllowed(),
+                                  isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
                                   isNew: model.isPatchNew(
                                     patch,
                                     model.getAppInfo().packageName,
@@ -236,7 +236,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       supportedPackageVersions:
                                           model.getSupportedVersions(patch),
                                       isUnsupported: !isPatchSupported(patch),
-                                      isChangeAllowed: _managerAPI.isPatchesChangeAllowed(),
+                                      isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
                                       isNew: false,
                                       isSelected: model.isSelected(patch),
                                       onChanged: (value) => model.selectPatch(
