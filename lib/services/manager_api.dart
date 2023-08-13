@@ -598,7 +598,7 @@ class ManagerAPI {
           ),
           actions: [
             CustomMaterialButton(
-              label: I18nText('OK'),
+              label: I18nText('okButton'),
               onPressed: () {
                 setPatchesChangeWarning(noShow.value);
                 Navigator.of(context).pop();
