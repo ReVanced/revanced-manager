@@ -11,7 +11,7 @@
     "noButton": "No",
     "warning": "Warning",
     "notice": "Notice",
-    "noShowAgain": "Don't show again",
+    "noShowAgain": "Don't show this again",
     "new": "New",
     "navigationView": {
         "dashboardTab": "Dashboard",
@@ -139,8 +139,8 @@
         "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
         "newPatch": "New patch",
 
-        "patchesChangeWarningDialogText": "Only change patches selection if you know what you are doing.\n\nIf you want to change, please enable \"Allow changing selection\" in the settings.",
-        "patchesChangeWarningDialogButton": "Keep current selection"
+        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Allow changing selection\" in the settings.",
+        "patchesChangeWarningDialogButton": "Use default selection"
     },
     "installerView": {
         "widgetTitle": "Installer",
@@ -210,9 +210,9 @@
         "logsHint": "Share Manager's logs",
 
         "allowPatchesSelectionLabel": "Allow changing selection",
-        "allowPatchesSelectionHint": "Enable the ability to change patch selections in order to patch apps based on your own preferences.",
-        "allowPatchesSelectionWarningText": "Changing patches selection may cause unwanted behavior and issues in the app.\n\nProceed anyways?",
-        "disablePatchesSelectionWarningText": "You are about to disable the ability to change patches selection.\nYour previous selections will be reset to default.\n\nProceed anyways?",
+        "allowPatchesSelectionHint": "Allow to change the selection of patches.",
+        "allowPatchesSelectionWarningText": "Changing the default selection of patches may cause unexpected issues.\n\nAllow anyways?",
+        "disablePatchesSelectionWarningText": "You are about to disable the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
 
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
