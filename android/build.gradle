@@ -22,6 +22,7 @@ allprojects {
                 password = (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")) as String
             }
         }
+        mavenLocal()
     }
 }
 
