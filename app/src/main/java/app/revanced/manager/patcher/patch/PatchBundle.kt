@@ -12,14 +12,15 @@ import java.io.File
 class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: File?) {
     constructor(bundleJar: File, integrations: File?) : this(
         object : Iterable<PatchClass> {
-            private val bundle = bundleJar.absolutePath.let {
-                PatchBundle.Dex(
-                    it,
-                    PathClassLoader(it, Patcher::class.java.classLoader)
-                )
+            private fun load(): List<PatchClass> {
+                val path = bundleJar.absolutePath
+                return PatchBundle.Dex(
+                    path,
+                    PathClassLoader(path, Patcher::class.java.classLoader)
+                ).loadPatches()
             }
 
-            override fun iterator() = bundle.loadPatches().iterator()
+            override fun iterator() = load().iterator()
         },
         integrations
     ) {
