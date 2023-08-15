@@ -52,8 +52,7 @@ android {
 
     buildTypes {
         release {
-            shrinkResources false
-            minifyEnabled false
+            resValue "string", "app_name", "ReVanced Manager"
             signingConfig signingConfigs.debug
             ndk {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
@@ -62,8 +61,9 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            resValue "string", "app_name", "ReVanced Manager Debug"
             applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
             ndk {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
             }

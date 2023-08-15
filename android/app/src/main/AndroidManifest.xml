@@ -20,7 +20,7 @@
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
    <application
-        android:label="ReVanced Manager"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:largeHeap="true"
