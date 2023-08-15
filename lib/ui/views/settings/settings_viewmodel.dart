@@ -3,6 +3,8 @@ import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -10,8 +12,10 @@ import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,6 +23,9 @@ import 'package:stacked_services/stacked_services.dart';
 class SettingsViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  final PatchesSelectorViewModel _patchesSelectorViewModel =
+      PatchesSelectorViewModel();
+  final PatcherViewModel _patcherViewModel = locator<PatcherViewModel>();
   final Toast _toast = locator<Toast>();
 
   final SUpdateLanguage sUpdateLanguage = SUpdateLanguage();
@@ -35,6 +42,88 @@ class SettingsViewModel extends BaseViewModel {
   void setPatchesAutoUpdate(bool value) {
     _managerAPI.setPatchesAutoUpdate(value);
     notifyListeners();
+  }
+
+  bool isPatchesChangeEnabled() {
+    return _managerAPI.isPatchesChangeEnabled();
+  }
+
+  Future<void> showPatchesChangeEnableDialog(
+    bool value,
+    BuildContext context,
+  ) async {
+    if (value) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          title: I18nText('warning'),
+          content: I18nText(
+            'settingsView.enablePatchesSelectionWarningText',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          actions: [
+            CustomMaterialButton(
+              isFilled: false,
+              label: I18nText('noButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('yesButton'),
+              onPressed: () {
+                _managerAPI.setChangingToggleModified(true);
+                _managerAPI.setPatchesChangeEnabled(true);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          title: I18nText('warning'),
+          content: I18nText(
+            'settingsView.disablePatchesSelectionWarningText',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          actions: [
+            CustomMaterialButton(
+              isFilled: false,
+              label: I18nText('noButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('yesButton'),
+              onPressed: () {
+                _managerAPI.setChangingToggleModified(true);
+                _patchesSelectorViewModel.selectDefaultPatches();
+                _managerAPI.setPatchesChangeEnabled(false);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   bool areUniversalPatchesEnabled() {
@@ -90,26 +179,30 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> importPatches() async {
-    try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['json'],
-      );
-      if (result != null && result.files.single.path != null) {
-        final File inFile = File(result.files.single.path!);
-        inFile.copySync(_managerAPI.storedPatchesFile);
-        inFile.delete();
-        if (locator<PatcherViewModel>().selectedApp != null) {
-          locator<PatcherViewModel>().loadLastSelectedPatches();
+  Future<void> importPatches(BuildContext context) async {
+    if (isPatchesChangeEnabled()) {
+      try {
+        final FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['json'],
+        );
+        if (result != null && result.files.single.path != null) {
+          final File inFile = File(result.files.single.path!);
+          inFile.copySync(_managerAPI.storedPatchesFile);
+          inFile.delete();
+          if (_patcherViewModel.selectedApp != null) {
+            _patcherViewModel.loadLastSelectedPatches();
+          }
+          _toast.showBottom('settingsView.importedPatches');
         }
-        _toast.showBottom('settingsView.importedPatches');
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        _toast.showBottom('settingsView.jsonSelectorErrorMessage');
       }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      _toast.showBottom('settingsView.jsonSelectorErrorMessage');
+    } else {
+      _managerAPI.showPatchesChangeWarningDialog(context);
     }
   }
 

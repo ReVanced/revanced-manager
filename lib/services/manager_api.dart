@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,6 +13,7 @@ import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart';
@@ -105,6 +108,41 @@ class ManagerAPI {
 
   bool isPatchesAutoUpdate() {
     return _prefs.getBool('patchesAutoUpdate') ?? false;
+  }
+
+  bool isPatchesChangeEnabled() {
+    if (getPatchedApps().isNotEmpty && !isChangingToggleModified()) {
+      for (final apps in getPatchedApps()) {
+        if (getSavedPatches(apps.originalPackageName)
+                .indexWhere((patch) => patch.excluded) !=
+            -1) {
+          setPatchesChangeWarning(false);
+          setPatchesChangeEnabled(true);
+          break;
+        }
+      }
+    }
+    return _prefs.getBool('patchesChangeEnabled') ?? false;
+  }
+
+  void setPatchesChangeEnabled(bool value) {
+    _prefs.setBool('patchesChangeEnabled', value);
+  }
+
+  bool showPatchesChangeWarning() {
+    return _prefs.getBool('showPatchesChangeWarning') ?? true;
+  }
+
+  void setPatchesChangeWarning(bool value) {
+    _prefs.setBool('showPatchesChangeWarning', !value);
+  }
+
+  bool isChangingToggleModified() {
+    return _prefs.getBool('isChangingToggleModified') ?? false;
+  }
+
+  void setChangingToggleModified(bool value) {
+    _prefs.setBool('isChangingToggleModified', value);
   }
 
   Future<void> setPatchesAutoUpdate(bool value) async {
@@ -513,6 +551,63 @@ class ManagerAPI {
       }
     }
     return unsavedApps;
+  }
+
+  Future<void> showPatchesChangeWarningDialog(BuildContext context) {
+    final ValueNotifier<bool> noShow =
+        ValueNotifier(!showPatchesChangeWarning());
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
+        child: AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          title: I18nText('warning'),
+          content: ValueListenableBuilder(
+            valueListenable: noShow,
+            builder: (context, value, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  I18nText(
+                    'patchItem.patchesChangeWarningDialogText',
+                    child: const Text(
+                      '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  CheckboxListTile(
+                    value: value,
+                    contentPadding: EdgeInsets.zero,
+                    title: I18nText(
+                      'noShowAgain',
+                    ),
+                    onChanged: (selected) {
+                      noShow.value = selected!;
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            CustomMaterialButton(
+              label: I18nText('okButton'),
+              onPressed: () {
+                setPatchesChangeWarning(noShow.value);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> reAssessSavedApps() async {

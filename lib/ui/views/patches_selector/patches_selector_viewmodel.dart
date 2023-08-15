@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
@@ -6,6 +8,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
@@ -45,31 +48,70 @@ class PatchesSelectorViewModel extends BaseViewModel {
     );
   }
 
-  void selectPatch(Patch patch, bool isSelected) {
-    if (isSelected && !selectedPatches.contains(patch)) {
-      selectedPatches.add(patch);
+  void selectPatch(Patch patch, bool isSelected, BuildContext context) {
+    if (_managerAPI.isPatchesChangeEnabled()) {
+      if (isSelected && !selectedPatches.contains(patch)) {
+        selectedPatches.add(patch);
+      } else {
+        selectedPatches.remove(patch);
+      }
+      notifyListeners();
     } else {
-      selectedPatches.remove(patch);
+      showPatchesChangeDialog(context);
     }
-    notifyListeners();
+  }
+
+  Future<void> showPatchesChangeDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        title: I18nText('warning'),
+        content: I18nText(
+          'patchItem.patchesChangeWarningDialogText',
+          child: const Text(
+            '',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        actions: [
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('okButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('patchItem.patchesChangeWarningDialogButton'),
+            onPressed: () {
+              Navigator.of(context)
+                ..pop()
+                ..pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void selectDefaultPatches() {
     selectedPatches.clear();
-
-    if (_managerAPI.areExperimentalPatchesEnabled() == false) {
+    if (locator<PatcherViewModel>().selectedApp?.originalPackageName != null) {
       selectedPatches.addAll(
-        patches.where(
-          (element) => element.excluded == false && isPatchSupported(element),
-        ),
+        _patcherAPI
+            .getFilteredPatches(
+              locator<PatcherViewModel>().selectedApp!.originalPackageName,
+            )
+            .where(
+              (element) =>
+                  !element.excluded &&
+                  (_managerAPI.areExperimentalPatchesEnabled() ||
+                      isPatchSupported(element)),
+            ),
       );
     }
-
-    if (_managerAPI.areExperimentalPatchesEnabled()) {
-      selectedPatches
-          .addAll(patches.where((element) => element.excluded == false));
-    }
-
     notifyListeners();
   }
 
@@ -133,10 +175,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
     }
   }
 
-  void onMenuSelection(value) {
+  void onMenuSelection(value, BuildContext context) {
     switch (value) {
       case 0:
-        loadSelectedPatches();
+        loadSelectedPatches(context);
         break;
     }
   }
@@ -150,18 +192,25 @@ class PatchesSelectorViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> loadSelectedPatches() async {
-    final List<String> selectedPatches = await _managerAPI.getSelectedPatches(
-      locator<PatcherViewModel>().selectedApp!.originalPackageName,
-    );
-    if (selectedPatches.isNotEmpty) {
-      this.selectedPatches.clear();
-      this.selectedPatches.addAll(
-            patches.where((patch) => selectedPatches.contains(patch.name)),
-          );
+  Future<void> loadSelectedPatches(BuildContext context) async {
+    if (_managerAPI.isPatchesChangeEnabled()) {
+      final List<String> selectedPatches = await _managerAPI.getSelectedPatches(
+        locator<PatcherViewModel>().selectedApp!.originalPackageName,
+      );
+      if (selectedPatches.isNotEmpty) {
+        this.selectedPatches.clear();
+        this.selectedPatches.addAll(
+              patches.where((patch) => selectedPatches.contains(patch.name)),
+            );
+        if (!_managerAPI.areExperimentalPatchesEnabled()) {
+          this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
+        }
+      } else {
+        locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
+      }
+      notifyListeners();
     } else {
-      locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
+      showPatchesChangeDialog(context);
     }
-    notifyListeners();
   }
 }
