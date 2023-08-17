@@ -34,7 +34,7 @@ jobs:
         releaseDirectory: ./app/build/outputs/apk/release/
         signingKeyBase64: ${{ secrets.TEMP_SIGNING_KEYSTORE }}
         keyStorePassword: ${{ secrets.TEMP_SIGNING_KEYSTORE_PASSWORD }}
-        alias: ${{ env.TEMP_SIGNING_KEY_ALIAS }}
+        alias: ${{ vars.TEMP_SIGNING_KEY_ALIAS }}
         keyPassword: ${{ secrets.TEMP_SIGNING_KEY_PASSWORD }}
 
     - name: Upload APK
