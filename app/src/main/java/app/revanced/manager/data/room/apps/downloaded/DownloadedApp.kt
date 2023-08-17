@@ -1,4 +1,4 @@
-package app.revanced.manager.data.room.apps
+package app.revanced.manager.data.room.apps.downloaded
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
+import app.revanced.manager.ui.screen.AppInfoScreen
 import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
@@ -18,19 +19,14 @@ import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
-import coil.Coil
-import coil.ImageLoader
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
-import me.zhanghai.android.appiconloader.coil.AppIconFetcher
-import me.zhanghai.android.appiconloader.coil.AppIconKeyer
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
-import kotlin.math.roundToInt
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
 class MainActivity : ComponentActivity() {
@@ -41,17 +37,6 @@ class MainActivity : ComponentActivity() {
         val vm: MainViewModel = getActivityViewModel()
 
         installSplashScreen()
-
-        val scale = this.resources.displayMetrics.density
-        val pixels = (36 * scale).roundToInt()
-        Coil.setImageLoader(
-            ImageLoader.Builder(this)
-                .components {
-                    add(AppIconKeyer())
-                    add(AppIconFetcher.Factory(pixels, true, this@MainActivity))
-                }
-                .build()
-        )
 
         setContent {
             val theme by vm.prefs.theme.getAsState()
@@ -77,7 +62,16 @@ class MainActivity : ComponentActivity() {
                     when (destination) {
                         is Destination.Dashboard -> DashboardScreen(
                             onSettingsClick = { navController.navigate(Destination.Settings) },
-                            onAppSelectorClick = { navController.navigate(Destination.AppSelector) }
+                            onAppSelectorClick = { navController.navigate(Destination.AppSelector) },
+                            onAppClick = { installedApp -> navController.navigate(Destination.ApplicationInfo(installedApp)) }
+                        )
+
+                        is Destination.ApplicationInfo -> AppInfoScreen(
+                            onPatchClick = { packageName, patchesSelection ->
+                                navController.navigate(Destination.VersionSelector(packageName, patchesSelection))
+                            },
+                            onBackClick = { navController.pop() },
+                            viewModel = getViewModel { parametersOf(destination.installedApp) }
                         )
 
                         is Destination.Settings -> SettingsScreen(
@@ -92,8 +86,15 @@ class MainActivity : ComponentActivity() {
 
                         is Destination.VersionSelector -> VersionSelectorScreen(
                             onBackClick = { navController.pop() },
-                            onAppClick = { navController.navigate(Destination.PatchesSelector(it)) },
-                            viewModel = getViewModel { parametersOf(destination.packageName) }
+                            onAppClick = { selectedApp ->
+                                navController.navigate(
+                                    Destination.PatchesSelector(
+                                        selectedApp,
+                                        destination.patchesSelection
+                                    )
+                                )
+                            },
+                            viewModel = getViewModel { parametersOf(destination.packageName, destination.patchesSelection) }
                         )
 
                         is Destination.PatchesSelector -> PatchesSelectorScreen(
@@ -107,7 +108,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                 )
                             },
-                            vm = getViewModel { parametersOf(destination.selectedApp) }
+                            vm = getViewModel { parametersOf(destination) }
                         )
 
                         is Destination.Installer -> InstallerScreen(

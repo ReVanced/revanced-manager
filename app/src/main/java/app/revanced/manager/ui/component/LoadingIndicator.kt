@@ -12,18 +12,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingIndicator(progress: Float? = null, text: String? = null) {
+fun LoadingIndicator(
+    modifier: Modifier = Modifier,
+    progress: Float? = null,
+    text: String? = null
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (text != null)
-            Text(text)
-        if (progress == null) {
-            CircularProgressIndicator(modifier = Modifier.padding(vertical = 16.dp))
-        } else {
-            CircularProgressIndicator(progress = progress, modifier = Modifier.padding(vertical = 16.dp))
-        }
+        text?.let { Text(text) }
+
+        progress?.let {
+            CircularProgressIndicator(
+                progress = progress,
+                modifier = Modifier.padding(vertical = 16.dp).then(modifier)
+            )
+        } ?:
+            CircularProgressIndicator(
+                modifier = Modifier.padding(vertical = 16.dp).then(modifier)
+            )
     }
 }

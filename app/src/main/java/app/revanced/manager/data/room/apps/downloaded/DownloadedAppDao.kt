@@ -1,4 +1,4 @@
-package app.revanced.manager.data.room.apps
+package app.revanced.manager.data.room.apps.downloaded
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -7,7 +7,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface AppDao {
+interface DownloadedAppDao {
     @Query("SELECT * FROM downloaded_app")
     fun getAllApps(): Flow<List<DownloadedApp>>
 
