@@ -241,7 +241,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       isSelected: model.isSelected(patch),
                                       onChanged: (value) => model.selectPatch(
                                         patch,
-                                        false,
+                                        value,
                                         context,
                                       ),
                                     );
