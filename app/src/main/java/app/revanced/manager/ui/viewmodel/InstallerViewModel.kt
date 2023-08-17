@@ -18,8 +18,10 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.domain.manager.KeystoreManager
+import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.worker.PatcherProgressManager
 import app.revanced.manager.patcher.worker.PatcherWorker
@@ -50,6 +52,7 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
     private val app: Application by inject()
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
+    private val installedAppReceiver: InstalledAppRepository by inject()
 
     val packageName: String = input.selectedApp.packageName
     private val outputFile = File(app.cacheDir, "output.apk")
@@ -113,6 +116,15 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
                         app.toast(app.getString(R.string.install_app_success))
                         installedPackageName =
                             intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
+                        viewModelScope.launch {
+                            installedAppReceiver.add(
+                                installedPackageName!!,
+                                packageName,
+                                input.selectedApp.version,
+                                InstallType.DEFAULT,
+                                input.selectedPatches
+                            )
+                        }
                     } else {
                         app.toast(app.getString(R.string.install_app_fail, extra))
                     }

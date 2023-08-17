@@ -5,8 +5,12 @@ import app.revanced.manager.di.*
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import kotlinx.coroutines.Dispatchers
+import coil.Coil
+import coil.ImageLoader
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import me.zhanghai.android.appiconloader.coil.AppIconFetcher
+import me.zhanghai.android.appiconloader.coil.AppIconKeyer
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -35,6 +39,16 @@ class ManagerApplication : Application() {
                 databaseModule,
             )
         }
+
+        val pixels = 512
+        Coil.setImageLoader(
+            ImageLoader.Builder(this)
+                .components {
+                    add(AppIconKeyer())
+                    add(AppIconFetcher.Factory(pixels, true, this@ManagerApplication))
+                }
+                .build()
+        )
 
         scope.launch {
             prefs.preload()

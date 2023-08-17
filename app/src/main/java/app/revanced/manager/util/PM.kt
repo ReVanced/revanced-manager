@@ -53,21 +53,18 @@ class PM(
                 .eachCount()
 
             compatiblePackages.keys.map { pkg ->
-                try {
-                    val packageInfo = app.packageManager.getPackageInfo(pkg, 0)
+                getPackageInfo(pkg)?.let { packageInfo ->
                     AppInfo(
                         pkg,
                         compatiblePackages[pkg],
                         packageInfo,
                         File(packageInfo.applicationInfo.sourceDir)
                     )
-                } catch (e: NameNotFoundException) {
-                    AppInfo(
-                        pkg,
-                        compatiblePackages[pkg],
-                        null
-                    )
-                }
+                } ?: AppInfo(
+                    pkg,
+                    compatiblePackages[pkg],
+                    null
+                )
             }
         }
 

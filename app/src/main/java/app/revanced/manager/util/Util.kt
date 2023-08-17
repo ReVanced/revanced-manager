@@ -90,3 +90,11 @@ val Color.hexCode: String
         val b: Int = (blue * 255).toInt()
         return java.lang.String.format(Locale.getDefault(), "%02X%02X%02X%02X", r, g, b, a)
     }
+
+suspend fun <T> Flow<Iterable<T>>.collectEach(block: suspend (T) -> Unit) {
+    this.collect { iterable ->
+        iterable.forEach {
+            block(it)
+        }
+    }
+}

@@ -27,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -89,7 +90,7 @@ fun VersionSelectorScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            viewModel.installedApp?.let { packageInfo ->
+            viewModel.installedApp?.let { (packageInfo, alreadyPatched) ->
                 SelectedApp.Installed(
                     packageName = viewModel.packageName,
                     version = packageInfo.versionName
@@ -98,7 +99,8 @@ fun VersionSelectorScreen(
                         selectedApp = it,
                         selected = selectedVersion == it,
                         onClick = { selectedVersion = it },
-                        patchCount = supportedVersions[it.version]
+                        patchCount = supportedVersions[it.version],
+                        alreadyPatched = alreadyPatched
                     )
                 }
             }
@@ -132,14 +134,13 @@ fun VersionSelectorScreen(
     }
 }
 
-const val alreadyPatched = false
-
 @Composable
 fun SelectedAppItem(
     selectedApp: SelectedApp,
     selected: Boolean,
     onClick: () -> Unit,
-    patchCount: Int?
+    patchCount: Int?,
+    alreadyPatched: Boolean = false
 ) {
     ListItem(
         leadingContent = { RadioButton(selected, null) },
@@ -161,6 +162,11 @@ fun SelectedAppItem(
         trailingContent = patchCount?.let { {
             Text(pluralStringResource(R.plurals.patches_count, it, it))
         } },
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier
+            .clickable(enabled = !alreadyPatched, onClick = onClick)
+            .run {
+                if (alreadyPatched) alpha(0.5f)
+                else this
+            }
     )
 }

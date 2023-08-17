@@ -1,14 +1,14 @@
 package app.revanced.manager.domain.repository
 
 import app.revanced.manager.data.room.AppDatabase
-import app.revanced.manager.data.room.apps.DownloadedApp
+import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
 
 class DownloadedAppRepository(
     db: AppDatabase
 ) {
-    private val dao = db.appDao()
+    private val dao = db.downloadedAppDao()
 
     fun getAll() = dao.getAllApps().distinctUntilChanged()
 

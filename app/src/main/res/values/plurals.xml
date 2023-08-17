@@ -4,4 +4,8 @@
         <item quantity="one">%d Patch</item>
         <item quantity="other">%d Patches</item>
     </plurals>
+    <plurals name="applied_patches">
+        <item quantity="one">%d applied patch</item>
+        <item quantity="other">%d applied patches</item>
+    </plurals>
 </resources>

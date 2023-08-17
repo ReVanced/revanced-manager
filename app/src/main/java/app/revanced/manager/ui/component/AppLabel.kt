@@ -25,7 +25,7 @@ fun AppLabel(
     packageInfo: PackageInfo?,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
-    defaultText: String = stringResource(R.string.not_installed)
+    defaultText: String? = stringResource(R.string.not_installed)
 ) {
     val context = LocalContext.current
 

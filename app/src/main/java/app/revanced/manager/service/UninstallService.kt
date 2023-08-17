@@ -14,7 +14,10 @@ class UninstallService : Service() {
         flags: Int,
         startId: Int
     ): Int {
-        when (intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)) {
+        val extraStatus = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -999)
+        val extraStatusMessage = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
+
+        when (extraStatus) {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
                 startActivity(if (Build.VERSION.SDK_INT >= 33) {
                     intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
@@ -28,6 +31,9 @@ class UninstallService : Service() {
             else -> {
                 sendBroadcast(Intent().apply {
                     action = APP_UNINSTALL_ACTION
+
+                    putExtra(EXTRA_UNINSTALL_STATUS, extraStatus)
+                    putExtra(EXTRA_UNINSTALL_STATUS_MESSAGE, extraStatusMessage)
                 })
             }
         }
@@ -39,6 +45,9 @@ class UninstallService : Service() {
 
     companion object {
         const val APP_UNINSTALL_ACTION = "APP_UNINSTALL_ACTION"
+
+        const val EXTRA_UNINSTALL_STATUS = "EXTRA_UNINSTALL_STATUS"
+        const val EXTRA_UNINSTALL_STATUS_MESSAGE = "EXTRA_INSTALL_STATUS_MESSAGE"
     }
 
 }

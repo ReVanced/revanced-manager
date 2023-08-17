@@ -18,4 +18,5 @@ val repositoryModule = module {
     singleOf(::PatchBundleRepository)
     singleOf(::WorkerRepository)
     singleOf(::DownloadedAppRepository)
+    singleOf(::InstalledAppRepository)
 }
