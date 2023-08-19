@@ -38,7 +38,7 @@ jobs:
         keyPassword: ${{ secrets.TEMP_SIGNING_KEY_PASSWORD }}
 
     - name: Upload APK
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: manager
         path: ${{steps.sign_apk.outputs.signedReleaseFile}}
