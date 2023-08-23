@@ -36,6 +36,8 @@ class InstallerViewModel extends BaseViewModel {
   bool isPatching = true;
   bool isInstalled = false;
   bool hasErrors = false;
+  bool isCanceled = false;
+  bool cancel = false;
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
@@ -83,7 +85,7 @@ class InstallerViewModel extends BaseViewModel {
     });
   }
 
-  void update(double value, String header, String log) {
+  Future<void> update(double value, String header, String log) async {
     if (value >= 0.0) {
       progress = value;
     }
@@ -95,6 +97,11 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == 1.0) {
       isPatching = false;
       hasErrors = false;
+      await _managerAPI.savePatches(
+        _patcherAPI.getFilteredPatches(_app.packageName),
+        _app.packageName,
+      );
+      await _managerAPI.setUsedPatches(_patches, _app.packageName);
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
@@ -135,15 +142,15 @@ class InstallerViewModel extends BaseViewModel {
         } on Exception catch (e) {
           update(
             -100.0,
-            'Aborting...',
-            'An error occurred! Aborting\nError:\n$e',
+            'Aborted...',
+            'An error occurred! Aborted\nError:\n$e',
           );
           if (kDebugMode) {
             print(e);
           }
         }
       } else {
-        update(-100.0, 'Aborting...', 'No app or patches selected! Aborting');
+        update(-100.0, 'Aborted...', 'No app or patches selected! Aborted');
       }
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
@@ -162,11 +169,24 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> stopPatcher() async {
+    try {
+      isCanceled = true;
+      update(0.5, 'Aborting...', 'Canceling patching process');
+      await _patcherAPI.stopPatcher();
+      update(-100.0, 'Aborted...', 'Press back to exit');
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
       final bool hasMicroG =
-          _patches.any((p) => p.name.endsWith('microg-support'));
+          _patches.any((p) => p.name.endsWith('MicroG support'));
       final bool rootMicroG = installAsRoot && hasMicroG;
       final bool rootFromStorage = installAsRoot && _app.isFromStorage;
       final bool ytWithoutRootMicroG =
@@ -188,7 +208,7 @@ class InstallerViewModel extends BaseViewModel {
               CustomMaterialButton(
                 label: I18nText('okButton'),
                 onPressed: () => Navigator.of(context).pop(),
-              )
+              ),
             ],
           ),
         );
@@ -280,10 +300,21 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
-      _toast.showBottom('installerView.noExit');
+      if (!cancel) {
+        cancel = true;
+        _toast.showBottom('installerView.pressBackAgain');
+      } else if (!isCanceled) {
+        await stopPatcher();
+      } else {
+        _toast.showBottom('installerView.noExit');
+      }
       return false;
     }
-    cleanPatcher();
+    if (!cancel) {
+      cleanPatcher();
+    } else {
+      _patcherAPI.cleanPatcher();
+    }
     Navigator.of(context).pop();
     return true;
   }

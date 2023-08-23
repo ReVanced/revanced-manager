@@ -17,8 +17,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SettingsViewModel extends BaseViewModel {
-  final NavigationService _navigationService =
-      locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
 
@@ -27,6 +26,15 @@ class SettingsViewModel extends BaseViewModel {
 
   void navigateToContributors() {
     _navigationService.navigateTo(Routes.contributorsView);
+  }
+
+  bool isPatchesAutoUpdate() {
+    return _managerAPI.isPatchesAutoUpdate();
+  }
+
+  void setPatchesAutoUpdate(bool value) {
+    _managerAPI.setPatchesAutoUpdate(value);
+    notifyListeners();
   }
 
   bool areUniversalPatchesEnabled() {
@@ -49,7 +57,7 @@ class SettingsViewModel extends BaseViewModel {
 
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
-    _toast.showBottom('settingsView.deletedKeystore');
+    _toast.showBottom('settingsView.regeneratedKeystore');
     notifyListeners();
   }
 
@@ -63,11 +71,8 @@ class SettingsViewModel extends BaseViewModel {
     try {
       final File outFile = File(_managerAPI.storedPatchesFile);
       if (outFile.existsSync()) {
-        final String dateTime = DateTime.now()
-            .toString()
-            .replaceAll(' ', '_')
-            .split('.')
-            .first;
+        final String dateTime =
+            DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await CRFileSaver.saveFileWithDialog(
           SaveFileDialogParams(
             sourceFilePath: outFile.path,
@@ -87,8 +92,7 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> importPatches() async {
     try {
-      final FilePickerResult? result =
-          await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
       );
@@ -109,7 +113,7 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
-    Future<void> exportKeystore() async {
+  Future<void> exportKeystore() async {
     try {
       final File outFile = File(_managerAPI.keystoreFile);
       if (outFile.existsSync()) {
@@ -138,7 +142,7 @@ class SettingsViewModel extends BaseViewModel {
       if (result != null && result.files.single.path != null) {
         final File inFile = File(result.files.single.path!);
         inFile.copySync(_managerAPI.keystoreFile);
-        
+
         _toast.showBottom('settingsView.importedKeystore');
       }
     } on Exception catch (e) {

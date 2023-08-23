@@ -11,7 +11,7 @@ class AboutInfo {
       'flavor': kReleaseMode ? 'release' : 'debug',
       'model': info.model,
       'androidVersion': info.version.release,
-      'arch': info.supportedAbis
+      'supportedArch': info.supportedAbis,
     };
   }
 }

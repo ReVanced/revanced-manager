@@ -3,6 +3,7 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_keystore_password.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 final _settingsViewModel = SettingsViewModel();
 
@@ -72,10 +73,12 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importKeystoreHint'),
-          onTap: () {
-            _settingsViewModel.importKeystore();
+          onTap: () async{
+            await _settingsViewModel.importKeystore();
             final sManageKeystorePassword = SManageKeystorePassword();
-            sManageKeystorePassword.showKeystoreDialog(context);
+            if(context.mounted){
+              sManageKeystorePassword.showKeystoreDialog(context);
+            }
           },
         ),
         ListTile(
@@ -91,9 +94,36 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.resetStoredPatchesHint'),
-          onTap: () => _settingsViewModel.resetSelectedPatches(),
+          onTap: () => _showResetStoredPatchesDialog(context),
         ),
       ],
+    );
+  }
+
+  Future<void> _showResetStoredPatchesDialog(context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.resetStoredPatchesDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText(
+          'settingsView.resetStoredPatchesDialogText',
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () => {
+              Navigator.of(context).pop(),
+              _settingsViewModel.resetSelectedPatches(),
+            },
+          ),
+        ],
+      ),
     );
   }
 }

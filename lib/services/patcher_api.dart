@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:app_installer/app_installer.dart';
 import 'package:collection/collection.dart';
 import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
+import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -103,16 +103,20 @@ class PatcherAPI {
   }
 
   List<Patch> getFilteredPatches(String packageName) {
-    if (!filteredPatches.keys.contains(packageName)) {
-      final List<Patch> patches = _patches
-          .where(
-            (patch) =>
-                patch.compatiblePackages.isEmpty ||
-                !patch.name.contains('settings') &&
-                    patch.compatiblePackages
-                        .any((pack) => pack.name == packageName),
-          )
+    final List<Patch> patches = _patches
+        .where(
+          (patch) =>
+              patch.compatiblePackages.isEmpty ||
+              !patch.name.contains('settings') &&
+                  patch.compatiblePackages
+                      .any((pack) => pack.name == packageName),
+        )
+        .toList();
+    if (!_managerAPI.areUniversalPatchesEnabled()) {
+      filteredPatches[packageName] = patches
+          .where((patch) => patch.compatiblePackages.isNotEmpty)
           .toList();
+    } else {
       filteredPatches[packageName] = patches;
     }
     return filteredPatches[packageName];
@@ -144,30 +148,9 @@ class PatcherAPI {
     );
   }
 
-  Future<String> getOriginalFilePath(
-    String packageName,
-    String originalFilePath,
-  ) async {
-    try {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (hasRootPermissions) {
-        originalFilePath = await _rootAPI.getOriginalFilePath(
-          packageName,
-          originalFilePath,
-        );
-      }
-      return originalFilePath;
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return originalFilePath;
-    }
-  }
-
   Future<void> runPatcher(
     String packageName,
-    String originalFilePath,
+    String apkFilePath,
     List<Patch> selectedPatches,
   ) async {
     final bool includeSettings = await needsSettingsPatch(selectedPatches);
@@ -198,15 +181,13 @@ class PatcherAPI {
       _outFile = File('${workDir.path}/out.apk');
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
+      final String originalFilePath = apkFilePath;
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
             'patchBundleFilePath': patchBundleFile.path,
-            'originalFilePath': await getOriginalFilePath(
-              packageName,
-              originalFilePath,
-            ),
+            'originalFilePath': originalFilePath,
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
             'outFilePath': _outFile!.path,
@@ -225,6 +206,16 @@ class PatcherAPI {
     }
   }
 
+  Future<void> stopPatcher() async {
+    try {
+      await patcherChannel.invokeMethod('stopPatcher');
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
     if (_outFile != null) {
       try {
@@ -238,10 +229,8 @@ class PatcherAPI {
             );
           }
         } else {
-          await AppInstaller.installApk(_outFile!.path);
-          return await DeviceApps.isAppInstalled(
-            patchedApp.packageName,
-          );
+          final install = await InstallPlugin.installApk(_outFile!.path);
+          return install['isSuccess'];
         }
       } on Exception catch (e) {
         if (kDebugMode) {

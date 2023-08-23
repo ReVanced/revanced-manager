@@ -30,7 +30,7 @@ class SManageApiUrl extends BaseViewModel {
               icon: const Icon(Icons.manage_history_outlined),
               onPressed: () => showApiUrlResetDialog(context),
               color: Theme.of(context).colorScheme.secondary,
-            )
+            ),
           ],
         ),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -69,7 +69,7 @@ class SManageApiUrl extends BaseViewModel {
               _managerAPI.setApiUrl(apiUrl);
               Navigator.of(context).pop();
             },
-          )
+          ),
         ],
       ),
     );
@@ -93,9 +93,11 @@ class SManageApiUrl extends BaseViewModel {
             onPressed: () {
               _managerAPI.setApiUrl('');
               _toast.showBottom('settingsView.restartAppForChanges');
-              Navigator.of(context).pop();
+              Navigator.of(context)
+                ..pop()
+                ..pop();
             },
-          )
+          ),
         ],
       ),
     );

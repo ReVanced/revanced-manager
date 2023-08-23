@@ -78,7 +78,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
               child: model.noApps
                   ? Center(
                       child: I18nText(
-                        'appSelectorView.noAppsLabel',
+                        'appSelectorCard.noAppsLabel',
                         child: Text(
                           '',
                           style: TextStyle(
@@ -88,7 +88,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                         ),
                       ),
                     )
-                  : model.apps.isEmpty
+                  : model.allApps.isEmpty
                       ? const AppSkeletonLoader()
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0)
@@ -111,7 +111,11 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                           model.getSuggestedVersion(
                                         app.packageName,
                                       ),
-                                      onTap: () => model.canSelectInstalled(context, app.packageName),
+                                      installedVersion: app.versionName!,
+                                      onTap: () => model.canSelectInstalled(
+                                        context,
+                                        app.packageName,
+                                      ),
                                     ),
                                   )
                                   .toList(),

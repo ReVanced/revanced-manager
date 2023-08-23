@@ -31,6 +31,8 @@ class InstallerView extends StatelessWidget {
                     style: GoogleFonts.inter(
                       color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   onBackButtonPressed: () => model.onWillPop(context),
                   actions: <Widget>[
@@ -157,7 +159,8 @@ class InstallerView extends StatelessWidget {
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: SizedBox(
-                      height: MediaQuery.of(context).viewPadding.bottom),
+                    height: MediaQuery.of(context).viewPadding.bottom,
+                  ),
                 ),
               ],
             ),

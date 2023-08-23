@@ -5,6 +5,7 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_api_url.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_auto_update_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
@@ -23,12 +24,13 @@ class SAdvancedSection extends StatelessWidget {
         SManageApiUrlUI(),
         SManageSourcesUI(),
         // SManageKeystorePasswordUI(),
+        SAutoUpdatePatches(),
         SExperimentalUniversalPatches(),
         SExperimentalPatches(),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
-            'settingsView.deleteKeystoreLabel',
+            'settingsView.regenerateKeystoreLabel',
             child: const Text(
               '',
               style: TextStyle(
@@ -37,7 +39,7 @@ class SAdvancedSection extends StatelessWidget {
               ),
             ),
           ),
-          subtitle: I18nText('settingsView.deleteKeystoreHint'),
+          subtitle: I18nText('settingsView.regenerateKeystoreHint'),
           onTap: () => _showDeleteKeystoreDialog(context),
         ),
         ListTile(
@@ -78,11 +80,9 @@ class SAdvancedSection extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('warning'),
+        title: I18nText('settingsView.regenerateKeystoreDialogTitle'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText(
-          'settingsView.deleteKeystoreDialogText',
-        ),
+        content: I18nText('settingsView.regenerateKeystoreDialogText'),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
@@ -93,9 +93,9 @@ class SAdvancedSection extends StatelessWidget {
             label: I18nText('yesButton'),
             onPressed: () => {
               Navigator.of(context).pop(),
-              _settingsViewModel.deleteKeystore()
+              _settingsViewModel.deleteKeystore(),
             },
-          )
+          ),
         ],
       ),
     );

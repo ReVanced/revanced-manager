@@ -13,6 +13,7 @@ import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timeago/timeago.dart';
 
 @lazySingleton
 class ManagerAPI {
@@ -27,7 +28,7 @@ class ManagerAPI {
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
-  String defaultApiUrl = 'https://releases.revanced.app/';
+  String defaultApiUrl = 'https://api.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
@@ -35,8 +36,13 @@ class ManagerAPI {
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
+  String? integrationsVersion = '';
   bool isDefaultPatchesRepo() {
     return getPatchesRepo() == 'revanced/revanced-patches';
+  }
+
+  bool isDefaultIntegrationsRepo() {
+    return getIntegrationsRepo() == 'revanced/revanced-integrations';
   }
 
   Future<void> initialize() async {
@@ -79,6 +85,54 @@ class ManagerAPI {
       value = defaultPatchesRepo;
     }
     await _prefs.setString('patchesRepo', value);
+  }
+
+  bool getPatchesConsent() {
+    return _prefs.getBool('patchesConsent') ?? false;
+  }
+
+  Future<void> setPatchesConsent(bool consent) async {
+    await _prefs.setBool('patchesConsent', consent);
+  }
+
+  bool isPatchesAutoUpdate() {
+    return _prefs.getBool('patchesAutoUpdate') ?? false;
+  }
+
+  Future<void> setPatchesAutoUpdate(bool value) async {
+    await _prefs.setBool('patchesAutoUpdate', value);
+  }
+
+  List<Patch> getSavedPatches(String packageName) {
+    final List<String> patchesJson =
+        _prefs.getStringList('savedPatches-$packageName') ?? [];
+    final List<Patch> patches = patchesJson.map((String patchJson) {
+      return Patch.fromJson(jsonDecode(patchJson));
+    }).toList();
+    return patches;
+  }
+
+  Future<void> savePatches(List<Patch> patches, String packageName) async {
+    final List<String> patchesJson = patches.map((Patch patch) {
+      return jsonEncode(patch.toJson());
+    }).toList();
+    await _prefs.setStringList('savedPatches-$packageName', patchesJson);
+  }
+
+  List<Patch> getUsedPatches(String packageName) {
+    final List<String> patchesJson =
+        _prefs.getStringList('usedPatches-$packageName') ?? [];
+    final List<Patch> patches = patchesJson.map((String patchJson) {
+      return Patch.fromJson(jsonDecode(patchJson));
+    }).toList();
+    return patches;
+  }
+
+  Future<void> setUsedPatches(List<Patch> patches, String packageName) async {
+    final List<String> patchesJson = patches.map((Patch patch) {
+      return jsonEncode(patch.toJson());
+    }).toList();
+    await _prefs.setStringList('usedPatches-$packageName', patchesJson);
   }
 
   String getIntegrationsRepo() {
@@ -205,11 +259,8 @@ class ManagerAPI {
   Future<List<Patch>> getPatches() async {
     try {
       final String repoName = getPatchesRepo();
-      if (repoName == defaultPatchesRepo) {
-        return await _revancedAPI.getPatches();
-      } else {
-        return await _githubAPI.getPatches(repoName);
-      }
+      final String currentVersion = await getCurrentPatchesVersion();
+      return await _githubAPI.getPatches(repoName, currentVersion);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -221,14 +272,12 @@ class ManagerAPI {
   Future<File?> downloadPatches() async {
     try {
       final String repoName = getPatchesRepo();
-      if (repoName == defaultPatchesRepo) {
-        return await _revancedAPI.getLatestReleaseFile(
-          '.jar',
-          defaultPatchesRepo,
-        );
-      } else {
-        return await _githubAPI.getLatestReleaseFile('.jar', repoName);
-      }
+      final String currentVersion = await getCurrentPatchesVersion();
+      return await _githubAPI.getPatchesReleaseFile(
+        '.jar',
+        repoName,
+        currentVersion,
+      );
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -240,14 +289,12 @@ class ManagerAPI {
   Future<File?> downloadIntegrations() async {
     try {
       final String repoName = getIntegrationsRepo();
-      if (repoName == defaultIntegrationsRepo) {
-        return await _revancedAPI.getLatestReleaseFile(
-          '.apk',
-          defaultIntegrationsRepo,
-        );
-      } else {
-        return await _githubAPI.getLatestReleaseFile('.apk', repoName);
-      }
+      final String currentVersion = await getCurrentIntegrationsVersion();
+      return await _githubAPI.getPatchesReleaseFile(
+        '.apk',
+        repoName,
+        currentVersion,
+      );
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -263,11 +310,23 @@ class ManagerAPI {
     );
   }
 
-  Future<String?> getLatestPatcherReleaseTime() async {
-    return await _revancedAPI.getLatestReleaseTime(
-      '.gz',
-      defaultPatcherRepo,
-    );
+  Future<String?> getLatestPatchesReleaseTime() async {
+    if (isDefaultPatchesRepo()) {
+      return await _revancedAPI.getLatestReleaseTime(
+        '.json',
+        defaultPatchesRepo,
+      );
+    } else {
+      final release =
+          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+      if (release != null) {
+        final DateTime timestamp =
+            DateTime.parse(release['created_at'] as String);
+        return format(timestamp, locale: 'en_short');
+      } else {
+        return null;
+      }
+    }
   }
 
   Future<String?> getLatestManagerReleaseTime() async {
@@ -284,11 +343,37 @@ class ManagerAPI {
     );
   }
 
+  Future<String?> getLatestIntegrationsVersion() async {
+    if (isDefaultIntegrationsRepo()) {
+      return await _revancedAPI.getLatestReleaseVersion(
+        '.apk',
+        defaultIntegrationsRepo,
+      );
+    } else {
+      final release = await _githubAPI.getLatestRelease(getIntegrationsRepo());
+      if (release != null) {
+        return release['tag_name'];
+      } else {
+        return null;
+      }
+    }
+  }
+
   Future<String?> getLatestPatchesVersion() async {
-    return await _revancedAPI.getLatestReleaseVersion(
-      '.json',
-      defaultPatchesRepo,
-    );
+    if (isDefaultPatchesRepo()) {
+      return await _revancedAPI.getLatestReleaseVersion(
+        '.json',
+        defaultPatchesRepo,
+      );
+    } else {
+      final release =
+          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+      if (release != null) {
+        return release['tag_name'];
+      } else {
+        return null;
+      }
+    }
   }
 
   Future<String> getCurrentManagerVersion() async {
@@ -296,17 +381,30 @@ class ManagerAPI {
     return packageInfo.version;
   }
 
-  Future<String?> getCurrentPatchesVersion() async {
-    if (isDefaultPatchesRepo()) {
-      patchesVersion = await getLatestPatchesVersion();
-      // print('Patches version: $patchesVersion');
-      return patchesVersion ?? '0.0.0';
-    } else {
-      // fetch from github
-      patchesVersion =
-          await _githubAPI.getLastestReleaseVersion(getPatchesRepo());
+  Future<String> getCurrentPatchesVersion() async {
+    patchesVersion = _prefs.getString('patchesVersion') ?? '0.0.0';
+    if (patchesVersion == '0.0.0' || isPatchesAutoUpdate()) {
+      patchesVersion = await getLatestPatchesVersion() ?? '0.0.0';
+      await setCurrentPatchesVersion(patchesVersion!);
     }
-    return null;
+    return patchesVersion!;
+  }
+
+  Future<void> setCurrentPatchesVersion(String version) async {
+    await _prefs.setString('patchesVersion', version);
+  }
+
+  Future<String> getCurrentIntegrationsVersion() async {
+    integrationsVersion = _prefs.getString('integrationsVersion') ?? '0.0.0';
+    if (integrationsVersion == '0.0.0' || isPatchesAutoUpdate()) {
+      integrationsVersion = await getLatestIntegrationsVersion() ?? '0.0.0';
+      await setCurrentIntegrationsVersion(integrationsVersion!);
+    }
+    return integrationsVersion!;
+  }
+
+  Future<void> setCurrentIntegrationsVersion(String version) async {
+    await _prefs.setString('integrationsVersion', version);
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(

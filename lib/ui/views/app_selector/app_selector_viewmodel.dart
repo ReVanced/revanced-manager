@@ -10,7 +10,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
@@ -19,7 +18,6 @@ import 'package:stacked/stacked.dart';
 class AppSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final Toast _toast = locator<Toast>();
   final List<ApplicationWithIcon> apps = [];
   List<String> allApps = [];
@@ -32,7 +30,7 @@ class AppSelectorViewModel extends BaseViewModel {
   List<Patch> patches = [];
 
   Future<void> initialize() async {
-    patches = await _revancedAPI.getPatches();
+    patches = await _managerAPI.getPatches();
     isRooted = _managerAPI.isRooted;
 
     apps.addAll(
@@ -45,9 +43,7 @@ class AppSelectorViewModel extends BaseViewModel {
           .length
           .compareTo(_patcherAPI.getFilteredPatches(a.packageName).length),
     );
-    noApps = apps.isEmpty;
     getAllApps();
-
     notifyListeners();
   }
 
@@ -57,7 +53,7 @@ class AppSelectorViewModel extends BaseViewModel {
         .toSet()
         .where((name) => !apps.any((app) => app.packageName == name))
         .toList();
-
+    noApps = allApps.isEmpty;
     return allApps;
   }
 

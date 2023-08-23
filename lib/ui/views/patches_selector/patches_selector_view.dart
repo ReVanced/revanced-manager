@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
@@ -16,6 +18,7 @@ class PatchesSelectorView extends StatefulWidget {
 
 class _PatchesSelectorViewState extends State<PatchesSelectorView> {
   String _query = '';
+  final _managerAPI = locator<ManagerAPI>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             label: Row(
               children: <Widget>[
                 I18nText('patchesSelectorView.doneButton'),
-                Text(' (${model.selectedPatches.length})')
+                Text(' (${model.selectedPatches.length})'),
               ],
             ),
             icon: const Icon(Icons.check),
@@ -62,19 +65,24 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               actions: [
-                Container(
-                  margin: const EdgeInsets.only(top: 12, bottom: 12),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                  decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    model.patchesVersion!,
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.titleLarge!.color,
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 12, bottom: 12),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      model.patchesVersion!,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.titleLarge!.color,
+                      ),
                     ),
                   ),
                 ),
@@ -160,24 +168,65 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                             ],
                           ),
-                          ...model
-                              .getQueriedPatches(_query)
-                              .map(
-                                (patch) => PatchItem(
+                          ...model.getQueriedPatches(_query).map(
+                            (patch) {
+                              if (patch.compatiblePackages.isNotEmpty) {
+                                return PatchItem(
                                   name: patch.name,
                                   simpleName: patch.getSimpleName(),
-                                  version: patch.version,
                                   description: patch.description,
-                                  packageVersion: model.getAppVersion(),
+                                  packageVersion: model.getAppInfo().version,
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
                                   isUnsupported: !isPatchSupported(patch),
+                                  isNew: model.isPatchNew(
+                                    patch,
+                                    model.getAppInfo().packageName,
+                                  ),
                                   isSelected: model.isSelected(patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                          if (_managerAPI.areUniversalPatchesEnabled())
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child: I18nText(
+                                    'patchesSelectorView.universalPatches',
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                                ...model.getQueriedPatches(_query).map((patch) {
+                                  if (patch.compatiblePackages.isEmpty) {
+                                    return PatchItem(
+                                      name: patch.name,
+                                      simpleName: patch.getSimpleName(),
+                                      description: patch.description,
+                                      packageVersion:
+                                          model.getAppInfo().version,
+                                      supportedPackageVersions:
+                                          model.getSupportedVersions(patch),
+                                      isUnsupported: !isPatchSupported(patch),
+                                      isNew: false,
+                                      isSelected: model.isSelected(patch),
+                                      onChanged: (value) =>
+                                          model.selectPatch(patch, value),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
+                              ],
+                            ),
+                          const SizedBox(height: 70.0),
                         ],
                       ),
                     ),

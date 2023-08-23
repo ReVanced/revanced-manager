@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
@@ -10,6 +11,7 @@ class InstalledAppItem extends StatefulWidget {
     required this.icon,
     required this.patchesCount,
     required this.suggestedVersion,
+    required this.installedVersion,
     this.onTap,
   }) : super(key: key);
   final String name;
@@ -17,6 +19,7 @@ class InstalledAppItem extends StatefulWidget {
   final Uint8List icon;
   final int patchesCount;
   final String suggestedVersion;
+  final String installedVersion;
   final Function()? onTap;
 
   @override
@@ -57,20 +60,36 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 4),
                   Text(widget.pkgName),
-                  Row(
+                  I18nText(
+                    FlutterI18n.translate(
+                      context,
+                      'installed',
+                      translationParams: {
+                        'version': 'v${widget.installedVersion}',
+                      },
+                    ),
+                  ),
+                  Wrap(
                     children: [
-                      Text(
-                        widget.suggestedVersion.isEmpty
-                            ? 'All versions'
-                            : widget.suggestedVersion,
+                      I18nText(
+                        'suggested',
+                        translationParams: {
+                          'version': widget.suggestedVersion.isEmpty
+                              ? FlutterI18n.translate(
+                                  context,
+                                  'appSelectorCard.allVersions',
+                                )
+                              : 'v${widget.suggestedVersion}',
+                        },
                       ),
                       const SizedBox(width: 4),
                       Text(
                         widget.patchesCount == 1
                             ? '• ${widget.patchesCount} patch'
                             : '• ${widget.patchesCount} patches',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
