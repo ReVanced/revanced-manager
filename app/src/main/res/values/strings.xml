@@ -93,6 +93,8 @@
     <string name="reset">Reset</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
+    <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
+    <string name="type_anything">Type anything to continue</string>
     <string name="search">Search</string>
     <string name="apply">Apply</string>
     <string name="help">Help</string>
