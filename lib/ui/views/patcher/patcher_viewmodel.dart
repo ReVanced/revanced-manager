@@ -14,6 +14,7 @@ import 'package:revanced_manager/utils/about_info.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @lazySingleton
 class PatcherViewModel extends BaseViewModel {
@@ -161,6 +162,41 @@ class PatcherViewModel extends BaseViewModel {
     return text;
   }
 
+  String getCurrentVersionString(BuildContext context) {
+    return '${FlutterI18n.translate(
+      context,
+      'appSelectorCard.currentVersion',
+    )}: v${selectedApp!.version}';
+  }
+
+  Future<void> searchSuggestedVersionOnWeb(BuildContext context) async {
+    //twitter apk version v9.71.0-release0
+    final String search = FlutterI18n.translate(
+      context,
+      'appSelectorCard.search',
+    );
+    final String apk = FlutterI18n.translate(
+      context,
+      'appSelectorCard.apk',
+    );
+    final String version = FlutterI18n.translate(
+      context,
+      'appSelectorCard.version',
+    );
+    final String suggestedVersion =
+        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+    final Uri url =
+        Uri.parse('https://www.google.com/$search?q=${selectedApp!.name}'
+            '+$apk+$version+v+$suggestedVersion');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  String getSuggestedVersion() {
+    return _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+  }
+
   String getSuggestedVersionString(BuildContext context) {
     String suggestedVersion =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
@@ -173,9 +209,6 @@ class PatcherViewModel extends BaseViewModel {
       suggestedVersion = 'v$suggestedVersion';
     }
     return '${FlutterI18n.translate(
-      context,
-      'appSelectorCard.currentVersion',
-    )}: v${selectedApp!.version}\n${FlutterI18n.translate(
       context,
       'appSelectorCard.suggestedVersion',
     )}: $suggestedVersion';
@@ -203,9 +236,10 @@ class PatcherViewModel extends BaseViewModel {
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
-    final usedPatches = _managerAPI.getUsedPatches(selectedApp!.originalPackageName);
-    for (final patch in usedPatches){
-      if (!patches.any((p) => p.name == patch.name)){
+    final usedPatches =
+        _managerAPI.getUsedPatches(selectedApp!.originalPackageName);
+    for (final patch in usedPatches) {
+      if (!patches.any((p) => p.name == patch.name)) {
         removedPatches.add('\u2022 ${patch.name}');
       }
     }

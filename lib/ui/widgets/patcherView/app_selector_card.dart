@@ -61,11 +61,29 @@ class AppSelectorCard extends StatelessWidget {
             Container()
           else
             Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 4),
                 Text(
                   locator<PatcherViewModel>()
-                      .getSuggestedVersionString(context),
+                      .getCurrentVersionString(context),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      locator<PatcherViewModel>()
+                          .getSuggestedVersionString(context),
+                    ),
+                    const SizedBox(width: 20,),
+                    if(locator<PatcherViewModel>().getSuggestedVersion().isNotEmpty)
+                    InkWell(
+                      onTap: (){
+                        locator<PatcherViewModel>()
+                            .searchSuggestedVersionOnWeb(context);
+                      },
+                      child: const Icon(Icons.link),
+                    ),
+                  ],
                 ),
               ],
             ),
