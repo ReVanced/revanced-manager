@@ -8,8 +8,9 @@ class OptionsTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.sizeOf(context);
+    final sHeight = size.height;
+    final sWidth = size.width;
     return Container(
       margin: const EdgeInsets.only(top: 12, bottom: 6),
       padding: EdgeInsets.zero,

@@ -19,6 +19,7 @@ class PatchItem extends StatefulWidget {
     required this.isNew,
     required this.isSelected,
     required this.onChanged,
+    required this.isChangeEnabled,
     this.child,
   }) : super(key: key);
   final String name;
@@ -30,6 +31,7 @@ class PatchItem extends StatefulWidget {
   final bool isNew;
   bool isSelected;
   final Function(bool) onChanged;
+  final bool isChangeEnabled;
   final Widget? child;
   final toast = locator<Toast>();
   final _managerAPI = locator<ManagerAPI>();
@@ -58,11 +60,13 @@ class _PatchItemState extends State<PatchItem> {
                   !widget._managerAPI.areExperimentalPatchesEnabled()) {
                 widget.isSelected = false;
                 widget.toast.showBottom('patchItem.unsupportedPatchVersion');
-              } else {
+              } else if (widget.isChangeEnabled) {
                 widget.isSelected = !widget.isSelected;
               }
             });
-            widget.onChanged(widget.isSelected);
+            if (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled()) {
+              widget.onChanged(widget.isSelected);
+            }
           },
           child: Column(
             children: <Widget>[
@@ -124,11 +128,13 @@ class _PatchItemState extends State<PatchItem> {
                             widget.toast.showBottom(
                               'patchItem.unsupportedPatchVersion',
                             );
-                          } else {
+                          } else if (widget.isChangeEnabled) {
                             widget.isSelected = newValue!;
                           }
                         });
-                        widget.onChanged(widget.isSelected);
+                        if (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled()) {
+                          widget.onChanged(widget.isSelected);
+                        }
                       },
                     ),
                   ),
@@ -186,7 +192,7 @@ class _PatchItemState extends State<PatchItem> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                 ],
               ),
               widget.child ?? const SizedBox(),

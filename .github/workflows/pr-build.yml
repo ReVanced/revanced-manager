@@ -2,7 +2,12 @@ name: PR Build
 
 on:
   pull_request:
-
+    paths: 
+      - ".github/workflows/pr-build.yml"
+      - "android/**"
+      - "assets/**"
+      - "lib/**"
+      
 jobs:
   build:
     name: Build
@@ -20,7 +25,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'zulu'
-          cache: 'gradle'
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -33,9 +37,9 @@ jobs:
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: flutter build apk
+        run: flutter build apk --debug
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk

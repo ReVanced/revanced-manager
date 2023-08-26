@@ -1,4 +1,4 @@
-# 🛟 Troubleshooting
+# ❔ Troubleshooting
 
 In case you encounter any issues while using ReVanced Manager, please refer to this page for possible solutions.
 
@@ -28,4 +28,4 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 The next page will teach you how to build ReVanced Manager from source.
 
-Continue: [🛠️ Building from source](4_building.md)
+Continue: [🔨 Building from source](4_building.md)

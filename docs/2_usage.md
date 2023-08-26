@@ -13,4 +13,4 @@ The following pages will guide you through using ReVanced Manager to patch apps,
 
 The next page will guide you through troubleshooting ReVanced Manager.
 
-Continue: [🛟 Troubleshooting](3_troubleshooting.md)
+Continue: [❔ Troubleshooting](3_troubleshooting.md)

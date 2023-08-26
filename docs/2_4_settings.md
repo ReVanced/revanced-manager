@@ -2,7 +2,7 @@
 
 ReVanced Manager has settings that can be configured to your liking.
 
-## 🪛 Essential settings
+## ⭐ Essential settings
 
 - ### 🔗 API URL
 

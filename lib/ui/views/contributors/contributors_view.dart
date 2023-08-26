@@ -57,7 +57,7 @@ class ContributorsView extends StatelessWidget {
                       title: 'contributorsView.managerContributors',
                       contributors: model.managerContributors,
                     ),
-                    SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
+                    SizedBox(height: MediaQuery.viewPaddingOf(context).bottom),
                   ],
                 ),
               ),

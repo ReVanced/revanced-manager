@@ -30,6 +30,8 @@ class PatcherAPI {
 
   Future<void> initialize() async {
     await _loadPatches();
+    await _managerAPI.downloadPatches();
+    await _managerAPI.downloadIntegrations();
     final Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
     _tmpDir = Directory('${appCache.path}/patcher');
@@ -283,7 +285,7 @@ class PatcherAPI {
     return newName;
   }
 
-  Future<void> sharePatcherLog(String logs) async {
+  Future<void> exportPatcherLog(String logs) async {
     final Directory appCache = await getTemporaryDirectory();
     final Directory logDir = Directory('${appCache.path}/logs');
     logDir.createSync();
@@ -293,10 +295,15 @@ class PatcherAPI {
         .replaceAll(':', '')
         .replaceAll('T', '')
         .replaceAll('.', '');
-    final File log =
-        File('${logDir.path}/revanced-manager_patcher_$dateTime.log');
+    final String fileName = 'revanced-manager_patcher_$dateTime.log';
+    final File log = File('${logDir.path}/$fileName');
     log.writeAsStringSync(logs);
-    ShareExtend.share(log.path, 'file');
+    CRFileSaver.saveFileWithDialog(
+      SaveFileDialogParams(
+        sourceFilePath: log.path,
+        destinationFileName: fileName,
+      ),
+    );
   }
 
   String getSuggestedVersion(String packageName) {

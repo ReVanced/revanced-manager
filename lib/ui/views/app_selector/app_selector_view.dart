@@ -94,7 +94,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                           padding: const EdgeInsets.symmetric(horizontal: 12.0)
                               .copyWith(
                             bottom:
-                                MediaQuery.of(context).viewPadding.bottom + 8.0,
+                                MediaQuery.viewPaddingOf(context).bottom + 8.0,
                           ),
                           child: Column(
                             children: [
@@ -133,6 +133,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                     ),
                                   )
                                   .toList(),
+                              const SizedBox(height: 70.0),
                             ],
                           ),
                         ),

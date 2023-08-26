@@ -43,7 +43,7 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importPatchesHint'),
-          onTap: () => _settingsViewModel.importPatches(),
+          onTap: () => _settingsViewModel.importPatches(context),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -73,10 +73,10 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.importKeystoreHint'),
-          onTap: () async{
+          onTap: () async {
             await _settingsViewModel.importKeystore();
             final sManageKeystorePassword = SManageKeystorePassword();
-            if(context.mounted){
+            if (context.mounted) {
               sManageKeystorePassword.showKeystoreDialog(context);
             }
           },
