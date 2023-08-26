@@ -14,6 +14,7 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
@@ -67,6 +68,28 @@ class AppSelectorViewModel extends BaseViewModel {
       return app.isSplit;
     }
     return true;
+  }
+
+  Future<void> searchSuggestedVersionOnWeb(BuildContext context, String packageName, String appName) async {
+    final String search = FlutterI18n.translate(
+      context,
+      'appSelectorCard.search',
+    );
+    final String apk = FlutterI18n.translate(
+      context,
+      'appSelectorCard.apk',
+    );
+    final String version = FlutterI18n.translate(
+      context,
+      'appSelectorCard.version',
+    );
+    final String suggestedVersion = getSuggestedVersion(packageName);
+    final Uri url =
+        Uri.parse('https://www.google.com/$search?q=$appName'
+            '+$apk+$version+v+$suggestedVersion');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   Future<void> selectApp(ApplicationWithIcon application) async {

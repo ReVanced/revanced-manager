@@ -12,7 +12,7 @@ class InstalledAppItem extends StatefulWidget {
     required this.patchesCount,
     required this.suggestedVersion,
     required this.installedVersion,
-    this.onTap,
+    this.onTap, this.onLinkTap,
   }) : super(key: key);
   final String name;
   final String pkgName;
@@ -21,6 +21,7 @@ class InstalledAppItem extends StatefulWidget {
   final String suggestedVersion;
   final String installedVersion;
   final Function()? onTap;
+  final Function()? onLinkTap;
 
   @override
   State<InstalledAppItem> createState() => _InstalledAppItemState();
@@ -51,14 +52,24 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    widget.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      if(widget.suggestedVersion.isNotEmpty)
+                      InkWell(
+                        onTap: widget.onLinkTap,
+                        child: const Icon(Icons.link),
+                      ),
+                    ],
                   ),
                   Text(widget.pkgName),
                   I18nText(

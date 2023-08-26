@@ -170,7 +170,6 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   Future<void> searchSuggestedVersionOnWeb(BuildContext context) async {
-    //twitter apk version v9.71.0-release0
     final String search = FlutterI18n.translate(
       context,
       'appSelectorCard.search',
@@ -188,7 +187,7 @@ class PatcherViewModel extends BaseViewModel {
     final Uri url =
         Uri.parse('https://www.google.com/$search?q=${selectedApp!.name}'
             '+$apk+$version+v+$suggestedVersion');
-    if (!await launchUrl(url)) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
   }

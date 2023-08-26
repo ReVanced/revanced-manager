@@ -116,6 +116,11 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                         context,
                                         app.packageName,
                                       ),
+                                      onLinkTap: () => model.searchSuggestedVersionOnWeb(
+                                          context,
+                                          app.packageName,
+                                          app.appName,
+                                      ),
                                     ),
                                   )
                                   .toList(),
