@@ -147,7 +147,7 @@ class MainActivity : FlutterActivity() {
                         mapOf(
                             "progress" to 0.1,
                             "header" to "",
-                            "log" to "Copying original apk"
+                            "log" to "Copying original APK"
                         )
                     )
                 }
@@ -169,8 +169,8 @@ class MainActivity : FlutterActivity() {
                         "update",
                         mapOf(
                             "progress" to 0.2,
-                            "header" to "Reading apk...",
-                            "log" to "Reading input apk"
+                            "header" to "Reading APK...",
+                            "log" to "Reading input APK"
                         )
                     )
                 }
@@ -274,7 +274,7 @@ class MainActivity : FlutterActivity() {
                         "update",
                         mapOf(
                             "progress" to 0.7,
-                            "header" to "Repacking apk...",
+                            "header" to "Repacking APK...",
                             "log" to ""
                         )
                     )
@@ -312,7 +312,7 @@ class MainActivity : FlutterActivity() {
                         "update",
                         mapOf(
                             "progress" to 0.9,
-                            "header" to "Signing apk...",
+                            "header" to "Signing APK...",
                             "log" to ""
                         )
                     )
@@ -326,7 +326,7 @@ class MainActivity : FlutterActivity() {
                     )
                 } catch (e: Exception) {
                     //log to console
-                    print("Error signing apk: ${e.message}")
+                    print("Error signing APK: ${e.message}")
                     e.printStackTrace()
                 }
 
