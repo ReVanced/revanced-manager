@@ -71,7 +71,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       },
                     ),
                   ),
-                  Row(
+                  Wrap(
                     children: [
                       GestureDetector(
                         onTap: widget.onLinkTap,
@@ -81,7 +81,8 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                             borderRadius: const BorderRadius.all(Radius.circular(7)),
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: Row(
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               I18nText(
                                 'suggested',

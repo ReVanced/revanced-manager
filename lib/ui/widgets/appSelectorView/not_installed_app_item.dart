@@ -66,16 +66,33 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                   ),
                   Wrap(
                     children: [
-                      I18nText(
-                        'suggested',
-                        translationParams: {
-                          'version': widget.suggestedVersion.isEmpty
-                              ? FlutterI18n.translate(
-                                  context,
-                                  'appSelectorCard.allVersions',
-                                )
-                              : 'v${widget.suggestedVersion}',
-                        },
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade800,
+                            borderRadius: const BorderRadius.all(Radius.circular(7)),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              I18nText(
+                                'suggested',
+                                translationParams: {
+                                  'version': widget.suggestedVersion.isEmpty
+                                      ? FlutterI18n.translate(
+                                    context,
+                                    'appSelectorCard.allVersions',
+                                  )
+                                      : 'v${widget.suggestedVersion}',
+                                },
+                              ),
+                              const SizedBox(width: 4),
+                              // if(widget.suggestedVersion.isNotEmpty)
+                              const Icon(Icons.link, size: 17,),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(
