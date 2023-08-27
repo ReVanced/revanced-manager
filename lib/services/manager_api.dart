@@ -213,6 +213,14 @@ class ManagerAPI {
     await _prefs.setBool('universalPatchesEnabled', value);
   }
 
+  bool getLoadAllApps() {
+    return _prefs.getBool('loadAllApps') ?? false;
+  }
+
+  Future<void> enableLoadAllApps(bool value) async {
+    await _prefs.setBool('loadAllApps', value);
+  }
+
   bool areExperimentalPatchesEnabled() {
     return _prefs.getBool('experimentalPatchesEnabled') ?? false;
   }

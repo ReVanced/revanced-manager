@@ -135,6 +135,15 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool getLoadAllApps() {
+    return _managerAPI.getLoadAllApps();
+  }
+
+  void enableLoadAllApps(bool value) {
+    _managerAPI.enableLoadAllApps(value);
+    notifyListeners();
+  }
+
   bool areExperimentalPatchesEnabled() {
     return _managerAPI.areExperimentalPatchesEnabled();
   }

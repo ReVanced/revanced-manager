@@ -35,7 +35,7 @@ class AppSelectorViewModel extends BaseViewModel {
 
     apps.addAll(
       await _patcherAPI
-          .getFilteredInstalledApps(_managerAPI.areUniversalPatchesEnabled()),
+          .getFilteredInstalledApps(_managerAPI.getLoadAllApps()),
     );
     apps.sort(
       (a, b) => _patcherAPI

@@ -9,6 +9,7 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_enable_patches
 import 'package:revanced_manager/ui/widgets/settingsView/settings_auto_update_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_load_all_apps.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
@@ -28,6 +29,7 @@ class SAdvancedSection extends StatelessWidget {
         SAutoUpdatePatches(),
         SEnablePatchesSelection(),
         SExperimentalUniversalPatches(),
+        SLoadAllApps(),
         SExperimentalPatches(),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
