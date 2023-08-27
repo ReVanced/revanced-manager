@@ -52,24 +52,14 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      if(widget.suggestedVersion.isNotEmpty)
-                      InkWell(
-                        onTap: widget.onLinkTap,
-                        child: const Icon(Icons.link),
-                      ),
-                    ],
+                  Text(
+                    widget.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   Text(widget.pkgName),
                   I18nText(
@@ -81,18 +71,36 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       },
                     ),
                   ),
-                  Wrap(
+                  Row(
                     children: [
-                      I18nText(
-                        'suggested',
-                        translationParams: {
-                          'version': widget.suggestedVersion.isEmpty
-                              ? FlutterI18n.translate(
-                                  context,
-                                  'appSelectorCard.allVersions',
-                                )
-                              : 'v${widget.suggestedVersion}',
-                        },
+                      GestureDetector(
+                        onTap: widget.onLinkTap,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                            borderRadius: const BorderRadius.all(Radius.circular(7)),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          child: Row(
+                            children: [
+                              I18nText(
+                                'suggested',
+                                translationParams: {
+                                  'version': widget.suggestedVersion.isEmpty
+                                      ? FlutterI18n.translate(
+                                    context,
+                                    'appSelectorCard.allVersions',
+                                  )
+                                      : 'v${widget.suggestedVersion}',
+                                },
+                              ),
+                              // if(widget.suggestedVersion.isNotEmpty)
+                                const SizedBox(width: 4),
+                              // if(widget.suggestedVersion.isNotEmpty)
+                                const Icon(Icons.link, size: 17,),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(
