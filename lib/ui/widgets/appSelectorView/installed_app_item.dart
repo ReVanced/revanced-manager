@@ -12,7 +12,8 @@ class InstalledAppItem extends StatefulWidget {
     required this.patchesCount,
     required this.suggestedVersion,
     required this.installedVersion,
-    this.onTap, this.onLinkTap,
+    this.onTap,
+    this.onLinkTap,
   }) : super(key: key);
   final String name;
   final String pkgName;
@@ -77,8 +78,9 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         onTap: widget.onLinkTap,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.grey.shade800,
-                            borderRadius: const BorderRadius.all(Radius.circular(7)),
+                            color: Colors.grey.shade800,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(7)),
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: Wrap(
@@ -89,16 +91,19 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                 translationParams: {
                                   'version': widget.suggestedVersion.isEmpty
                                       ? FlutterI18n.translate(
-                                    context,
-                                    'appSelectorCard.allVersions',
-                                  )
+                                          context,
+                                          'appSelectorCard.allVersions',
+                                        )
                                       : 'v${widget.suggestedVersion}',
                                 },
                               ),
                               // if(widget.suggestedVersion.isNotEmpty)
-                                const SizedBox(width: 4),
+                              const SizedBox(width: 4),
                               // if(widget.suggestedVersion.isNotEmpty)
-                                const Icon(Icons.link, size: 17,),
+                              const Icon(
+                                Icons.link,
+                                size: 17,
+                              ),
                             ],
                           ),
                         ),
