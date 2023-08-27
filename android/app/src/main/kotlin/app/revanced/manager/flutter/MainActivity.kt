@@ -21,13 +21,9 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
-import java.util.logging.SimpleFormatter
 
-private const val PATCHER_CHANNEL = "app.revanced.manager.flutter/patcher"
-private const val INSTALLER_CHANNEL = "app.revanced.manager.flutter/installer"
 
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
@@ -37,9 +33,16 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        val mainChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PATCHER_CHANNEL)
-        installerChannel =
-            MethodChannel(flutterEngine.dartExecutor.binaryMessenger, INSTALLER_CHANNEL)
+
+        val patcherChannel = "app.revanced.manager.flutter/patcher"
+        val installerChannel = "app.revanced.manager.flutter/installer"
+
+        val mainChannel =
+            MethodChannel(flutterEngine.dartExecutor.binaryMessenger, patcherChannel)
+
+        this.installerChannel =
+            MethodChannel(flutterEngine.dartExecutor.binaryMessenger, installerChannel)
+
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
@@ -79,9 +82,7 @@ class MainActivity : FlutterActivity() {
                             keyStoreFilePath,
                             keystorePassword
                         )
-                    } else {
-                        result.notImplemented()
-                    }
+                    } else result.notImplemented()
                 }
 
                 "stopPatcher" -> {
@@ -116,110 +117,94 @@ class MainActivity : FlutterActivity() {
         val cacheDir = File(cacheDirPath)
 
         Thread {
-            try {
-                Logger.getLogger("").apply {
-                    handlers.forEach {
-                        it.close()
-                        removeHandler(it)
-                    }
-                    object : java.util.logging.Handler() {
-                        override fun publish(record: LogRecord) = formatter.format(record).toByteArray().let {
-                            if (record.level.intValue() > Level.INFO.intValue())
-                                System.err.write(it)
-                            else
-                                System.out.write(it)
-                        }
-
-                        override fun flush() {
-                            System.out.flush()
-                            System.err.flush()
-                        }
-
-                        override fun close() = flush()
-                    }.also {
-                        it.level = Level.ALL
-                        it.formatter = SimpleFormatter()
-                    }.let(::addHandler)
-                }
+            fun updateProgress(progress: Double, header: String, log: String) {
                 handler.post {
                     installerChannel.invokeMethod(
                         "update",
                         mapOf(
-                            "progress" to 0.1,
-                            "header" to "",
-                            "log" to "Copying original APK"
+                            "progress" to progress,
+                            "header" to header,
+                            "log" to log
                         )
                     )
                 }
+            }
+
+            fun postStop() = handler.post { stopResult!!.success(null) }
+
+            // Setup logger
+            Logger.getLogger("").apply {
+                handlers.forEach {
+                    it.close()
+                    removeHandler(it)
+                }
+
+                object : java.util.logging.Handler() {
+                    override fun publish(record: LogRecord) =
+                        updateProgress(-1.0, "", record.message)
+
+                    override fun flush() = Unit
+                    override fun close() = flush()
+                }.let(::addHandler)
+            }
+
+            try {
+                updateProgress(0.0, "", "Copying APK")
 
                 if (cancel) {
-                    handler.post { stopResult!!.success(null) }
+                    postStop()
                     return@Thread
                 }
 
                 originalFile.copyTo(inputFile, true)
 
                 if (cancel) {
-                    handler.post { stopResult!!.success(null) }
+                    postStop()
                     return@Thread
                 }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.2,
-                            "header" to "Reading APK...",
-                            "log" to "Reading input APK"
-                        )
-                    )
-                }
+                updateProgress(0.05, "Reading APK...", "Reading APK")
 
-                val patcher =
-                    Patcher(
-                        PatcherOptions(
-                            inputFile,
-                            cacheDir,
-                            Aapt.binary(applicationContext).absolutePath,
-                            cacheDir.path,
-                        )
+                val patcher = Patcher(
+                    PatcherOptions(
+                        inputFile,
+                        cacheDir,
+                        Aapt.binary(applicationContext).absolutePath,
+                        cacheDir.path,
                     )
+                )
 
                 if (cancel) {
-                    handler.post { stopResult!!.success(null) }
+                    postStop()
                     return@Thread
                 }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf("progress" to 0.3, "header" to "Loading patches...", "log" to "Loading patches")
-                    )
-                }
+                updateProgress(0.1, "Loading patches...", "Loading patches")
 
-                val patches =
-                    PatchBundleLoader.Dex(
-                        File(patchBundleFilePath)
-                    ).filter { patch ->
-                        (patch.compatiblePackages?.any { it.name == patcher.context.packageMetadata.packageName } == true || patch.compatiblePackages.isNullOrEmpty()) &&
-                                selectedPatches.any { it == patch.patchName }
-                    }
+                val patches = PatchBundleLoader.Dex(
+                    File(patchBundleFilePath)
+                ).filter { patch ->
+                    val isCompatible = patch.compatiblePackages?.any {
+                        it.name == patcher.context.packageMetadata.packageName
+                    } ?: false
+
+                    val compatibleOrUniversal =
+                        isCompatible || patch.compatiblePackages.isNullOrEmpty()
+
+                    compatibleOrUniversal && selectedPatches.any { it == patch.patchName }
+                }
 
                 if (cancel) {
-                    handler.post { stopResult!!.success(null) }
+                    postStop()
                     return@Thread
                 }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.5,
-                            "header" to "Executing patches...",
-                            "log" to ""
-                        )
-                    )
-                }
+                updateProgress(0.15, "Executing...", "")
+
+                // Update the progress bar every time a patch is executed from 0.15 to 0.7
+                val totalPatchesCount = patches.size
+                val progressStep = 0.55 / totalPatchesCount
+                var progress = 0.15
 
                 patcher.apply {
                     acceptIntegrations(listOf(integrations))
@@ -227,59 +212,34 @@ class MainActivity : FlutterActivity() {
 
                     runBlocking {
                         apply(false).collect { patchResult: PatchResult ->
-                            patchResult.exception?.let {
-                                if (cancel) {
-                                    handler.post { stopResult!!.success(null) }
-                                    this.cancel()
-                                    return@collect
-                                }
-                                StringWriter().use { writer ->
-                                    it.printStackTrace(PrintWriter(writer))
-                                    handler.post {
-                                        installerChannel.invokeMethod(
-                                            "update",
-                                            mapOf("progress" to 0.5, "header" to "", "log" to "${patchResult.patchName} failed: $writer")
-                                        )
-                                    }
-                                }
-                            } ?: run {
-                                if (cancel) {
-                                    handler.post { stopResult!!.success(null) }
-                                    this.cancel()
-                                    return@collect
-                                }
-                                val msg = "${patchResult.patchName} succeeded"
-                                handler.post {
-                                    installerChannel.invokeMethod(
-                                        "update",
-                                        mapOf(
-                                            "progress" to 0.5,
-                                            "header" to "",
-                                            "log" to msg
-                                        )
-                                    )
-                                }
+                            if (cancel) {
+                                handler.post { stopResult!!.success(null) }
+                                this.cancel()
+                                this@apply.close()
+                                return@collect
                             }
+
+                            val msg = patchResult.exception?.let {
+                                val writer = StringWriter()
+                                it.printStackTrace(PrintWriter(writer))
+                                "${patchResult.patchName} failed: $writer"
+                            } ?: run {
+                                "${patchResult.patchName} succeeded"
+                            }
+
+                            updateProgress(progress, "", msg)
+                            progress += progressStep
                         }
                     }
                 }
 
                 if (cancel) {
-                    handler.post { stopResult!!.success(null) }
+                    postStop()
                     patcher.close()
                     return@Thread
                 }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.7,
-                            "header" to "Repacking APK...",
-                            "log" to ""
-                        )
-                    )
-                }
+                updateProgress(0.8, "Building...", "")
 
                 val res = patcher.get()
                 patcher.close()
@@ -287,7 +247,7 @@ class MainActivity : FlutterActivity() {
                 ZipFile(patchedFile).use { file ->
                     res.dexFiles.forEach {
                         if (cancel) {
-                            handler.post { stopResult!!.success(null) }
+                            postStop()
                             return@Thread
                         }
                         file.addEntryCompressData(
@@ -308,92 +268,33 @@ class MainActivity : FlutterActivity() {
                 }
 
                 if (cancel) {
-                    handler.post { stopResult!!.success(null) }
+                    postStop()
                     return@Thread
                 }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 0.9,
-                            "header" to "Signing APK...",
-                            "log" to ""
-                        )
-                    )
-                }
+                updateProgress(0.9, "Signing...", "Signing APK")
 
                 try {
-                    Signer("ReVanced", keystorePassword).signApk(
-                        patchedFile,
-                        outFile,
-                        keyStoreFile
-                    )
+                    Signer("ReVanced", keystorePassword)
+                        .signApk(patchedFile, outFile, keyStoreFile)
                 } catch (e: Exception) {
-                    //log to console
                     print("Error signing APK: ${e.message}")
                     e.printStackTrace()
                 }
 
-                handler.post {
-                    installerChannel.invokeMethod(
-                        "update",
-                        mapOf(
-                            "progress" to 1.0,
-                            "header" to "Finished!",
-                            "log" to "Finished!"
-                        )
-                    )
-                }
+                updateProgress(1.0, "Patched", "Patched")
             } catch (ex: Throwable) {
                 if (!cancel) {
                     val stack = ex.stackTraceToString()
-                    handler.post {
-                        installerChannel.invokeMethod(
-                            "update",
-                            mapOf(
-                                "progress" to -100.0,
-                                "header" to "Aborted...",
-                                "log" to "An error occurred! Aborted\nError:\n$stack"
-                            )
-                        )
-                    }
+                    updateProgress(
+                        -100.0,
+                        "Aborted",
+                        "An error occurred:\n$stack"
+                    )
                 }
             }
+
             handler.post { result.success(null) }
         }.start()
     }
-
-//    inner class ManagerLogger : Logger {
-//        override fun error(msg: String) {
-//            handler.post {
-//                installerChannel
-//                    .invokeMethod(
-//                        "update",
-//                        mapOf("progress" to -1.0, "header" to "", "log" to msg)
-//                    )
-//            }
-//        }
-//
-//        override fun warn(msg: String) {
-//            handler.post {
-//                installerChannel.invokeMethod(
-//                    "update",
-//                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
-//                )
-//            }
-//        }
-//
-//        override fun info(msg: String) {
-//            handler.post {
-//                installerChannel.invokeMethod(
-//                    "update",
-//                    mapOf("progress" to -1.0, "header" to "", "log" to msg)
-//                )
-//            }
-//        }
-//
-//        override fun trace(_msg: String) { /* unused */
-//        }
-//    }
 }
