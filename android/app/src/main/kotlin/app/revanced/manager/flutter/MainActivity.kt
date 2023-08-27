@@ -266,6 +266,7 @@ class MainActivity : FlutterActivity() {
 
                 if (cancel) {
                     handler.post { stopResult!!.success(null) }
+                    patcher.close()
                     return@Thread
                 }
 
@@ -279,8 +280,10 @@ class MainActivity : FlutterActivity() {
                         )
                     )
                 }
+
                 val res = patcher.get()
                 patcher.close()
+
                 ZipFile(patchedFile).use { file ->
                     res.dexFiles.forEach {
                         if (cancel) {
@@ -303,10 +306,12 @@ class MainActivity : FlutterActivity() {
                         ZipAligner::getEntryAlignment
                     )
                 }
+
                 if (cancel) {
                     handler.post { stopResult!!.success(null) }
                     return@Thread
                 }
+
                 handler.post {
                     installerChannel.invokeMethod(
                         "update",
