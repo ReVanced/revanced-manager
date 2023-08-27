@@ -111,17 +111,6 @@ class ManagerAPI {
   }
 
   bool isPatchesChangeEnabled() {
-    if (getPatchedApps().isNotEmpty && !isChangingToggleModified()) {
-      for (final apps in getPatchedApps()) {
-        if (getSavedPatches(apps.originalPackageName)
-                .indexWhere((patch) => patch.excluded) !=
-            -1) {
-          setPatchesChangeWarning(false);
-          setPatchesChangeEnabled(true);
-          break;
-        }
-      }
-    }
     return _prefs.getBool('patchesChangeEnabled') ?? false;
   }
 
