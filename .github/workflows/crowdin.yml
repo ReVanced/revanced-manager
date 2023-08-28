@@ -1,0 +1,41 @@
+name: Crowdin
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - "app/src/res/values/strings.xml"
+      - ".github/workflows/crowdin.yml"
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Crowdin action
+        uses: crowdin/github-action@v1
+        # TODO: Move to Crowdin configuration file
+        with:
+          upload_sources: true
+          upload_translations: false
+          download_translations: true
+          localization_branch_name: crowdin_translations
+          create_pull_request: true
+          pull_request_title: 'chore(translation): sync translation with Crowdin'
+          pull_request_body: 'Lorem, foobarit:tm:!'
+          pull_request_labels: 'translation'
+          pull_request_base_branch_name: 'dev'
+          # TODO: add plurals.xml
+          source: 'app/src/res/values/strings.xml'
+          translation: 'app/src/res/values-%android_code%/strings.xml'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
