@@ -21,7 +21,7 @@ class InstallerView extends StatelessWidget {
           bottom: false,
           child: Scaffold(
             floatingActionButton: Visibility(
-              visible: !model.isPatching,
+              visible: !model.isPatching && !model.hasErrors,
               child: FloatingActionButton.extended(
                 label: I18nText('installerView.installButton'),
                 icon: const Icon(Icons.file_download_outlined),
