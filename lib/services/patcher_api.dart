@@ -81,7 +81,6 @@ class PatcherAPI {
     _universalPatches = getUniversalPatches();
   }
 
-
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps(
     bool showUniversalPatches,
   ) async {
@@ -90,21 +89,13 @@ class PatcherAPI {
         _universalPatches.isNotEmpty &&
             showUniversalPatches;
     if (allAppsIncluded) {
-      final allPackages = await DeviceApps.getInstalledApplications(
+      final appList = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
         onlyAppsWithLaunchIntent: true,
       );
 
-      for (final pkg in allPackages) {
-        if (!filteredApps.any((app) => app.packageName == pkg.packageName)) {
-          final appInfo = await DeviceApps.getApp(
-            pkg.packageName,
-            true,
-          ) as ApplicationWithIcon?;
-          if (appInfo != null) {
-            filteredApps.add(appInfo);
-          }
-        }
+      for(final app in appList) {
+        filteredApps.add(app as ApplicationWithIcon);
       }
     }
     for (final packageName in _compatiblePackages) {
