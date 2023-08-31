@@ -18,13 +18,12 @@ class NavigationViewModel extends IndexTrackingViewModel {
   Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    requestManageExternalStorage();
+    await requestManageExternalStorage();
 
     if (prefs.getBool('permissionsRequested') == null) {
       await Permission.storage.request();
-      await Permission.manageExternalStorage.request();
       await prefs.setBool('permissionsRequested', true);
-      RootAPI().hasRootPermissions().then(
+      await RootAPI().hasRootPermissions().then(
             (value) => Permission.requestInstallPackages.request().then(
                   (value) => Permission.ignoreBatteryOptimizations.request(),
                 ),
