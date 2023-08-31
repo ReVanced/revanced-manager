@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -60,13 +61,13 @@ class APKMirror extends AppDownloader {
   }
 
   @override
-  Stream<AppDownloaderApp> getAvailableVersions(String packageName, Set<String> versionFilter) async* {
+  Stream<APKMirrorApp> getAvailableVersions(String packageName, Set<String> versionFilter) async* {
     // Vanced music uses the same package name so we have to hardcode...
     final String appCategory = (packageName == 'com.google.android.apps.youtube.music') ?
       'youtube-music' :
       (await getAppLink(packageName)).split('/')[3];
 
-    final int page = 1;
+    int page = 1;
     final List<String> versions = <String>[];
 
     while (
@@ -74,14 +75,40 @@ class APKMirror extends AppDownloader {
         versions.length < versionFilter.length && page <= 7 :
         page <= 1
     ) {
-      final downloadedHTML = await http.get(Uri.parse('$_urlAPKMirror/uploads/page/$page/?appcatagory=$appCategory'));
+      final downloadedHTML = await http.get(Uri.parse('$_urlAPKMirror/uploads/page/$page/?appcategory=$appCategory'));
       final Document document = parse(downloadedHTML.body);
       final Element listWidget = document.querySelector('.widget_appmanager_recentpostswidget .listWidget')!;
+      final List<APKMirrorApp> apkMirrorAppList = listWidget.children
+        .map((element) {
+          if (element.className.isEmpty) {
+            final String version = element.querySelector('div.infoSlide p span.infoSlide-value')!.text.trim();
+            if (versionFilter.contains(version)) {
+              versions.add(version);
+            } else {
+              return null;
+            }
+            return APKMirrorApp(
+              packageName: packageName,
+              version: version,
+              downloadLink: element.querySelector('a.downloadLink')!.attributes['href']!,
+            );
+          } else {
+            return null;
+          }
+        })
+        .where((element) => element != null)
+        .toList().cast<APKMirrorApp>();
+
+        for (final apkMirrorApp in apkMirrorAppList) {
+          yield apkMirrorApp;
+        }
+
+      page++;
     }
   }
 }
 
-abstract class APKMirrorApp extends AppDownloaderApp {
+class APKMirrorApp extends AppDownloaderApp {
   APKMirrorApp({
     required this.packageName,
     required this.version,
@@ -155,6 +182,7 @@ abstract class APKMirrorApp extends AppDownloaderApp {
         File('${saveLocation.path}/temp.zip') :
         File(saveLocation.path);
 
+        print('downloading $_urlAPKMirror$downloadLink');
         final response = await http.get(Uri.parse(_urlAPKMirror + downloadLink));
         downloadLocation.writeAsBytesSync(response.bodyBytes);
 
@@ -163,7 +191,7 @@ abstract class APKMirrorApp extends AppDownloaderApp {
 
           downloadLocation.deleteSync();
         }
-    }  on Exception catch (e) {
+    } on Exception catch (e) {
       saveLocation.deleteSync(recursive: true);
       if (kDebugMode) {
         print(e);
@@ -172,9 +200,4 @@ abstract class APKMirrorApp extends AppDownloaderApp {
 
     return saveLocation;
   }
-}
-
-void main() {
-  final downloader = AppDownloader();
-  downloader.getAppLink('com.google.andrfoid.youtube').then((value) => print(value));
 }
