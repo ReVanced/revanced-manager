@@ -1,25 +1,25 @@
 package app.revanced.manager.patcher
 
+import app.revanced.manager.ui.viewmodel.ManagerLogger
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
-import app.revanced.patcher.data.Context
-import app.revanced.patcher.logging.Logger
-import app.revanced.patcher.patch.Patch
+import app.revanced.patcher.patch.PatchClass
+import app.revanced.patcher.patch.PatchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import java.util.logging.Logger
 
-internal typealias PatchClass = Class<out Patch<Context>>
 internal typealias PatchList = List<PatchClass>
 
 class Session(
     cacheDir: String,
     frameworkDir: String,
     aaptPath: String,
-    private val logger: Logger,
+    private val logger: ManagerLogger,
     private val input: File,
     private val onStepSucceeded: suspend () -> Unit
 ) : Closeable {
@@ -27,35 +27,39 @@ class Session(
     private val patcher = Patcher(
         PatcherOptions(
             inputFile = input,
-            resourceCacheDirectory = temporary.resolve("aapt-resources").path,
-            frameworkDirectory = frameworkDir,
-            aaptPath = aaptPath,
-            logger = logger,
+            resourceCachePath = temporary.resolve("aapt-resources"),
+            frameworkFileDirectory = frameworkDir,
+            aaptBinaryPath = aaptPath
         )
     )
 
     private suspend fun Patcher.applyPatchesVerbose() {
-        this.executePatches(true).forEach { (patch, result) ->
-            if (result.isSuccess) {
+        this.apply(true).collect { (patch, exception) ->
+            if (exception == null) {
                 logger.info("$patch succeeded")
                 onStepSucceeded()
-                return@forEach
+                return@collect
             }
             logger.error("$patch failed:")
-            result.exceptionOrNull()!!.let {
-                logger.error(result.exceptionOrNull()!!.stackTraceToString())
-
-                throw it
-            }
+            logger.error(exception.stackTraceToString())
+            throw exception
         }
     }
 
     suspend fun run(output: File, selectedPatches: PatchList, integrations: List<File>) {
         onStepSucceeded() // Unpacking
+        Logger.getLogger("").apply {
+            handlers.forEach {
+                it.close()
+                removeHandler(it)
+            }
+
+            addHandler(logger)
+        }
         with(patcher) {
             logger.info("Merging integrations")
-            addIntegrations(integrations) {}
-            addPatches(selectedPatches)
+            acceptIntegrations(integrations)
+            acceptPatches(selectedPatches)
             onStepSucceeded() // Merging
 
             logger.info("Applying patches...")
@@ -63,7 +67,7 @@ class Session(
         }
 
         logger.info("Writing patched files...")
-        val result = patcher.save()
+        val result = patcher.get()
 
         val aligned = temporary.resolve("aligned.apk").also { Aligning.align(result, input, it) }
 
@@ -77,5 +81,11 @@ class Session(
 
     override fun close() {
         temporary.delete()
+        patcher.close()
+    }
+
+    companion object {
+        operator fun PatchResult.component1() = patchName
+        operator fun PatchResult.component2() = exception
     }
 }

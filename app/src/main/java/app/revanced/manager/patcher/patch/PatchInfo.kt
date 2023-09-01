@@ -1,7 +1,6 @@
 package app.revanced.manager.patcher.patch
 
 import androidx.compose.runtime.Immutable
-import app.revanced.manager.patcher.PatchClass
 import app.revanced.patcher.annotation.Package
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.extensions.PatchExtensions.dependencies
@@ -9,6 +8,7 @@ import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.include
 import app.revanced.patcher.extensions.PatchExtensions.options
 import app.revanced.patcher.extensions.PatchExtensions.patchName
+import app.revanced.patcher.patch.PatchClass
 import app.revanced.patcher.patch.PatchOption
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList

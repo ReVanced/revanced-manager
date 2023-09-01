@@ -1,24 +1,16 @@
 package app.revanced.manager.patcher.patch
 
 import android.util.Log
-import app.revanced.manager.patcher.PatchClass
 import app.revanced.manager.util.tag
-import app.revanced.patcher.Patcher
+import app.revanced.patcher.PatchBundleLoader
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
-import app.revanced.patcher.util.patch.PatchBundle
-import dalvik.system.PathClassLoader
+import app.revanced.patcher.patch.PatchClass
 import java.io.File
 
 class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: File?) {
     constructor(bundleJar: File, integrations: File?) : this(
         object : Iterable<PatchClass> {
-            private fun load(): List<PatchClass> {
-                val path = bundleJar.absolutePath
-                return PatchBundle.Dex(
-                    path,
-                    PathClassLoader(path, Patcher::class.java.classLoader)
-                ).loadPatches()
-            }
+            private fun load(): List<PatchClass> = PatchBundleLoader.Dex(bundleJar)
 
             override fun iterator() = load().iterator()
         },
