@@ -1,4 +1,8 @@
+import java.io.File
+
 pluginManagement {
+    // TODO: remove this once https://github.com/gradle/gradle/issues/23572 is fixed
+    val properties = File(".gradle/gradle.properties").inputStream().use { java.util.Properties().apply { load(it) } }
     repositories {
         gradlePluginPortal()
         google()
@@ -7,14 +11,16 @@ pluginManagement {
         maven {
             url = uri("https://maven.pkg.github.com/revanced/revanced-patcher")
             credentials {
-                username = providers.gradleProperty("gpr.user").orNull ?: System.getenv("GITHUB_ACTOR")
-                password = providers.gradleProperty("gpr.key").orNull ?: System.getenv("GITHUB_TOKEN")
+                username = properties.getProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = properties.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // TODO: remove this once https://github.com/gradle/gradle/issues/23572 is fixed
+    val properties = File(".gradle/gradle.properties").inputStream().use { java.util.Properties().apply { load(it) } }
     repositories {
         google()
         mavenCentral()
@@ -22,8 +28,8 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://maven.pkg.github.com/revanced/revanced-patcher")
             credentials {
-                username = providers.gradleProperty("gpr.user").orNull ?: System.getenv("GITHUB_ACTOR")
-                password = providers.gradleProperty("gpr.key").orNull ?: System.getenv("GITHUB_TOKEN")
+                username = properties.getProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = properties.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
