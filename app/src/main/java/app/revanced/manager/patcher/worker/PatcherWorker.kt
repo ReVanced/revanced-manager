@@ -22,6 +22,7 @@ import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.viewmodel.ManagerLogger
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
@@ -57,7 +58,7 @@ class PatcherWorker(
         val packageName: String,
         val packageVersion: String,
         val progress: MutableStateFlow<ImmutableList<Step>>,
-        val logger: Logger
+        val logger: ManagerLogger
     )
 
     companion object {

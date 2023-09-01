@@ -32,7 +32,6 @@ import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import app.revanced.patcher.logging.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +44,8 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 import java.util.UUID
+import java.util.logging.Level
+import java.util.logging.LogRecord
 
 @Stable
 class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinComponent {
@@ -207,7 +208,8 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
     }
 }
 
-private class ManagerLogger : Logger {
+// TODO: move this to a better place
+class ManagerLogger : java.util.logging.Handler() {
     private val logs = mutableListOf<Pair<LogLevel, String>>()
     private fun log(level: LogLevel, msg: String) {
         level.androidLog(msg)
@@ -218,10 +220,25 @@ private class ManagerLogger : Logger {
     fun export() =
         logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
 
-    override fun trace(msg: String) = log(LogLevel.TRACE, msg)
-    override fun info(msg: String) = log(LogLevel.INFO, msg)
-    override fun warn(msg: String) = log(LogLevel.WARN, msg)
-    override fun error(msg: String) = log(LogLevel.ERROR, msg)
+    fun trace(msg: String) = log(LogLevel.TRACE, msg)
+    fun info(msg: String) = log(LogLevel.INFO, msg)
+    fun warn(msg: String) = log(LogLevel.WARN, msg)
+    fun error(msg: String) = log(LogLevel.ERROR, msg)
+    override fun publish(record: LogRecord) {
+        val msg = record.message
+        val fn = when (record.level) {
+            Level.INFO -> ::info
+            Level.SEVERE -> ::error
+            Level.WARNING -> ::warn
+            else -> ::trace
+        }
+
+        fn(msg)
+    }
+
+    override fun flush() = Unit
+
+    override fun close() = Unit
 }
 
 enum class LogLevel {
