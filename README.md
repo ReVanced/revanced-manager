@@ -1,8 +1,8 @@
 # ReVanced Manager (Compose Rewrite)
 
-[![GitHub license](https://img.shields.io/github/license/revanced/revanced-manager-compose)](/LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/revanced/revanced-manager-compose)](https://github.com/ReVanced/revanced-manager-compose/commits)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/revanced/revanced-manager-compose)](https://github.com/ReVanced/revanced-manager-compose/commits)
+[![GitHub license](https://img.shields.io/github/license/revanced/revanced-manager)](/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/revanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager/commits/compose-dev)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/revanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager-compose/commits/compose-dev)
 
 _(Yet another)_ rewrite of the ReVanced Manager using Kotlin and Jetpack Compose.
 
