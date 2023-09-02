@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - dev
+    paths-ignore:
+      - "**.md"
+      - ".idea/**"
   pull_request:
     branches: 
       - dev
+    paths-ignore:
+      - "**.md"
+      - ".idea/**"
 
 jobs:
   build:
@@ -40,5 +46,5 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: manager
-        path: ${{steps.sign_apk.outputs.signedReleaseFile}}
+        name: revanced-manager
+        path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
