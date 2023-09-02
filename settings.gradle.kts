@@ -1,5 +1,3 @@
-import java.io.File
-
 pluginManagement {
     // TODO: remove this once https://github.com/gradle/gradle/issues/23572 is fixed
     val properties = File(".gradle/gradle.properties").inputStream().use { java.util.Properties().apply { load(it) } }
