@@ -37,7 +37,7 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
       - name: Add version to APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+        run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-${{ env.RELEASE_VERSION }}.apk
 
       - name: Publish release APK
         uses: "marvinpinto/action-automatic-releases@latest"
