@@ -199,7 +199,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
                                   isUnsupported: !isPatchSupported(patch),
-                                  isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
+                                  isChangeEnabled:
+                                      _managerAPI.isPatchesChangeEnabled(),
                                   isNew: model.isPatchNew(
                                     patch,
                                     model.getAppInfo().packageName,
@@ -221,8 +222,23 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 10.0,
                                   ),
-                                  child: I18nText(
-                                    'patchesSelectorView.universalPatches',
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10.0,
+                                      bottom: 10.0,
+                                      left: 5.0,
+                                    ),
+                                    child: I18nText(
+                                      'patchesSelectorView.universalPatches',
+                                      child: Text(
+                                        '',
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 ...model.getQueriedPatches(_query).map((patch) {
@@ -236,7 +252,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       supportedPackageVersions:
                                           model.getSupportedVersions(patch),
                                       isUnsupported: !isPatchSupported(patch),
-                                      isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
+                                      isChangeEnabled:
+                                          _managerAPI.isPatchesChangeEnabled(),
                                       isNew: false,
                                       isSelected: model.isSelected(patch),
                                       onChanged: (value) => model.selectPatch(
