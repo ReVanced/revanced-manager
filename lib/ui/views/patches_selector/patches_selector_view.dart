@@ -199,7 +199,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
                                   isUnsupported: !isPatchSupported(patch),
-                                  isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
+                                  isChangeEnabled:
+                                      _managerAPI.isPatchesChangeEnabled(),
                                   isNew: model.isPatchNew(
                                     patch,
                                     model.getAppInfo().packageName,
@@ -223,8 +224,22 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   ),
                                   child: I18nText(
                                     'patchesSelectorView.universalPatches',
+                                    child: Text(
+                                      '',
+                                      style: TextStyle(
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .fontSize,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .color,
+                                      ),
+                                    ),
                                   ),
                                 ),
+                                const Divider(),
                                 ...model.getQueriedPatches(_query).map((patch) {
                                   if (patch.compatiblePackages.isEmpty) {
                                     return PatchItem(
@@ -236,7 +251,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       supportedPackageVersions:
                                           model.getSupportedVersions(patch),
                                       isUnsupported: !isPatchSupported(patch),
-                                      isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
+                                      isChangeEnabled:
+                                          _managerAPI.isPatchesChangeEnabled(),
                                       isNew: false,
                                       isSelected: model.isSelected(patch),
                                       onChanged: (value) => model.selectPatch(
