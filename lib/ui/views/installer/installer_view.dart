@@ -32,11 +32,11 @@ class InstallerView extends StatelessWidget {
                     ? const Icon(Icons.open_in_new)
                     : const Icon(Icons.file_download_outlined),
                 onPressed: model.isInstalled
-                    ? () => (
+                    ? () => {
                           model.openApp(),
                           model.cleanPatcher(),
-                          Navigator.of(context).pop()
-                        )
+                          Navigator.of(context).pop(),
+                        }
                     : () => model.installTypeDialog(context),
                 elevation: 0,
               ),
