@@ -45,15 +45,18 @@ jobs:
         id: sign_apk
         uses: ilharp/sign-android-release@v1
         with:
-          releaseDir: build/app/outputs/apk/flutter-apk
+          releaseDir: build/app/outputs/apk/debug
           signingKey: ${{ secrets.SIGNING_KEYSTORE }}
           keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      - name: Get SHA short
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Add version to APK
-        run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+        run: mv ${{ steps.sign_apk.outputs.signedFile }} revanced-manager-debug-${{ steps.vars.outputs.sha_short }}.apk
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: ${{ steps.sign_apk.outputs.signedFile }}
+          path: revanced-manager-debug-${{ steps.vars.outputs.sha_short }}.apk
