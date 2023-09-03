@@ -24,7 +24,6 @@ import java.io.StringWriter
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
-
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
@@ -182,7 +181,8 @@ class MainActivity : FlutterActivity() {
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
                 val patches = PatchBundleLoader.Dex(
-                    File(patchBundleFilePath)
+                    File(patchBundleFilePath),
+                    optimizedDexDirectory = cacheDir
                 ).filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
                         it.name == patcher.context.packageMetadata.packageName
