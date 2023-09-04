@@ -141,6 +141,7 @@
     <string name="no_patches">No patches available to view</string>
     <string name="patches_available">%d Patches available, tap to view</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
+    <string name="bundles_selected">%s selected</string>
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
