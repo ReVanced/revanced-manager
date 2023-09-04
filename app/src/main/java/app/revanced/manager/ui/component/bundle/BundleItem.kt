@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.component.bundle
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -28,11 +30,16 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.propsOrNullFlow
 import kotlinx.coroutines.flow.map
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BundleItem(
     bundle: PatchBundleSource,
     onDelete: () -> Unit,
-    onUpdate: () -> Unit
+    onUpdate: () -> Unit,
+    selectable: Boolean,
+    onSelect: () -> Unit,
+    isBundleSelected: Boolean,
+    toggleSelection: (Boolean) -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
@@ -57,9 +64,21 @@ fun BundleItem(
         modifier = Modifier
             .height(64.dp)
             .fillMaxWidth()
-            .clickable {
-                viewBundleDialogPage = true
-            },
+            .combinedClickable(
+                onClick = {
+                    viewBundleDialogPage = true
+                },
+                onLongClick = onSelect,
+            ),
+        leadingContent = {
+            if(selectable) {
+                Checkbox(
+                    checked = isBundleSelected,
+                    onCheckedChange = toggleSelection,
+                )
+            }
+        },
+
         headlineContent = {
             Text(
                 text = bundle.name,

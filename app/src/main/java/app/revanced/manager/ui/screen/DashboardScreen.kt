@@ -8,14 +8,20 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -26,8 +32,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.isDefault
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.bundle.BundleItem
+import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
@@ -51,12 +60,18 @@ fun DashboardScreen(
     onAppClick: (InstalledApp) -> Unit
 ) {
     var showImportBundleDialog by rememberSaveable { mutableStateOf(false) }
+
+    val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val pages: Array<DashboardPage> = DashboardPage.values()
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val androidContext = LocalContext.current
 
     val pagerState = rememberPagerState()
     val composableScope = rememberCoroutineScope()
+
+    LaunchedEffect(pagerState.currentPage) {
+        if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
+    }
 
     if (showImportBundleDialog) {
         fun dismiss() {
@@ -78,21 +93,60 @@ fun DashboardScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.app_name),
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
+            if (bundlesSelectable) {
+                BundleTopBar(
+                    title = stringResource(R.string.bundles_selected, vm.selectedSources.size),
+                    onBackClick = vm::cancelSourceSelection,
+                    onBackIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
+                                vm.cancelSourceSelection()
+                            }
+                        ) {
+                            Icon(
+                                Icons.Outlined.DeleteOutline,
+                                stringResource(R.string.delete)
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                vm.selectedSources.forEach { vm.update(it) }
+                                vm.cancelSourceSelection()
+                            }
+                        ) {
+                            Icon(
+                                Icons.Outlined.Refresh,
+                                stringResource(R.string.refresh)
+                            )
+                        }
                     }
-                    IconButton(onClick = onSettingsClick) {
-                        Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                )
+            } else {
+                AppTopBar(
+                    title = stringResource(R.string.app_name),
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
+                        }
+                        IconButton(onClick = onSettingsClick) {
+                            Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
+                        }
                     }
-                }
-            )
+                )
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
+                    vm.cancelSourceSelection()
+
                     when (pagerState.currentPage) {
                         DashboardPage.DASHBOARD.ordinal -> {
                             if (availablePatches < 1) {
@@ -149,7 +203,38 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES -> {
-                            BundlesScreen()
+
+                            val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                            ) {
+                                sources.forEach {
+
+                                    BundleItem(
+                                        bundle = it,
+                                        onDelete = {
+                                            vm.delete(it)
+                                        },
+                                        onUpdate = {
+                                            vm.update(it)
+                                        },
+                                        selectable = bundlesSelectable,
+                                        onSelect = {
+                                            vm.selectedSources.add(it)
+                                        },
+                                        isBundleSelected = vm.selectedSources.contains(it),
+                                        toggleSelection = { bundleIsNotSelected ->
+                                            if (bundleIsNotSelected) {
+                                                vm.selectedSources.add(it)
+                                            } else {
+                                                vm.selectedSources.remove(it)
+                                            }
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
