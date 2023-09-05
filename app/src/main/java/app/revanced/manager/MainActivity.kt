@@ -34,9 +34,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val vm: MainViewModel = getActivityViewModel()
-
         installSplashScreen()
+
+        val vm: MainViewModel = getActivityViewModel()
 
         setContent {
             val theme by vm.prefs.theme.getAsState()

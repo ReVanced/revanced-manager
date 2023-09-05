@@ -13,8 +13,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.SettingsBackupRestore
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +33,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
@@ -84,6 +87,17 @@ fun AppInfoScreen(
                 )
 
                 Text(viewModel.installedApp.version, style = MaterialTheme.typography.bodySmall)
+
+                if (viewModel.installedApp.installType == InstallType.ROOT) {
+                    Text(
+                        text = if (viewModel.rootInstaller.isAppMounted(viewModel.installedApp.currentPackageName)) {
+                            stringResource(R.string.mounted)
+                        } else {
+                            stringResource(R.string.not_mounted)
+                        },
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
 
             Row(
@@ -98,11 +112,30 @@ fun AppInfoScreen(
                     onClick = viewModel::launch
                 )
 
-                SegmentedButton(
-                    icon = Icons.Outlined.Delete,
-                    text = stringResource(R.string.uninstall),
-                    onClick = viewModel::uninstall
-                )
+                when (viewModel.installedApp.installType) {
+                    InstallType.DEFAULT -> SegmentedButton(
+                        icon = Icons.Outlined.Delete,
+                        text = stringResource(R.string.uninstall),
+                        onClick = viewModel::uninstall
+                    )
+
+                    InstallType.ROOT -> {
+                        SegmentedButton(
+                            icon = Icons.Outlined.SettingsBackupRestore,
+                            text = stringResource(R.string.unpatch),
+                            onClick = viewModel::uninstall,
+                            enabled = viewModel.rootInstaller.hasRootAccess()
+                        )
+
+                        SegmentedButton(
+                            icon = Icons.Outlined.Circle,
+                            text = if (viewModel.isMounted) stringResource(R.string.unmount) else stringResource(R.string.mount),
+                            onClick = viewModel::mountOrUnmount,
+                            enabled = viewModel.rootInstaller.hasRootAccess()
+                        )
+                    }
+
+                }
 
                 SegmentedButton(
                     icon = Icons.Outlined.Update,
@@ -111,7 +144,8 @@ fun AppInfoScreen(
                         viewModel.appliedPatches?.let {
                             onPatchClick(viewModel.installedApp.originalPackageName, it)
                         }
-                    }
+                    },
+                    enabled = viewModel.installedApp.installType != InstallType.ROOT || viewModel.rootInstaller.hasRootAccess()
                 )
             }
 

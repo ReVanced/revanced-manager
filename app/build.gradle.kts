@@ -66,6 +66,7 @@ android {
     }
 
     buildFeatures.compose = true
+    buildFeatures.aidl = true
 
     composeOptions.kotlinCompilerExtensionVersion = "1.5.1"
 }
@@ -123,6 +124,10 @@ dependencies {
     // Signing
     implementation(libs.apksign)
     implementation(libs.bcpkix.jdk18on)
+
+    implementation(libs.libsu.core)
+    implementation(libs.libsu.service)
+    implementation(libs.libsu.nio)
 
     // Koin
     implementation(libs.koin.android)

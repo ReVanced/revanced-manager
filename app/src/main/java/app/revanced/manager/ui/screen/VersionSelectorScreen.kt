@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LoadingIndicator
@@ -78,7 +79,7 @@ fun VersionSelectorScreen(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                text = { Text("Select version") },
+                text = { Text(stringResource(R.string.select_version)) },
                 icon = { Icon(Icons.Default.Check, null) },
                 onClick = { selectedVersion?.let(onAppClick) }
             )
@@ -90,7 +91,7 @@ fun VersionSelectorScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            viewModel.installedApp?.let { (packageInfo, alreadyPatched) ->
+            viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
                     packageName = viewModel.packageName,
                     version = packageInfo.versionName
@@ -100,12 +101,14 @@ fun VersionSelectorScreen(
                         selected = selectedVersion == it,
                         onClick = { selectedVersion = it },
                         patchCount = supportedVersions[it.version],
-                        alreadyPatched = alreadyPatched
+                        enabled =
+                            !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
+                        alreadyPatched = installedApp != null && installedApp.installType != InstallType.ROOT
                     )
                 }
             }
 
-            GroupHeader("Downloadable versions")
+            GroupHeader(stringResource(R.string.downloadable_versions))
 
             list.forEach {
                 SelectedAppItem(
@@ -140,6 +143,7 @@ fun SelectedAppItem(
     selected: Boolean,
     onClick: () -> Unit,
     patchCount: Int?,
+    enabled: Boolean = true,
     alreadyPatched: Boolean = false
 ) {
     ListItem(
@@ -148,9 +152,9 @@ fun SelectedAppItem(
         supportingContent = when (selectedApp) {
             is SelectedApp.Installed ->
                 if (alreadyPatched) {
-                    { Text("Already patched") }
+                    { Text(stringResource(R.string.already_patched)) }
                 } else {
-                    { Text("Installed") }
+                    { Text(stringResource(R.string.installed)) }
                 }
 
             is SelectedApp.Local -> {
@@ -163,9 +167,9 @@ fun SelectedAppItem(
             Text(pluralStringResource(R.plurals.patches_count, it, it))
         } },
         modifier = Modifier
-            .clickable(enabled = !alreadyPatched, onClick = onClick)
+            .clickable(enabled = !alreadyPatched && enabled, onClick = onClick)
             .run {
-                if (alreadyPatched) alpha(0.5f)
+                if (!enabled || alreadyPatched) alpha(0.5f)
                 else this
             }
     )

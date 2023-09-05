@@ -11,22 +11,19 @@ import java.nio.file.Files
 
 class AppSelectorViewModel(
     private val app: Application,
-    pm: PM
+    private val pm: PM
 ) : ViewModel() {
-    private val packageManager = app.packageManager
-
     val appList = pm.appList
 
-    fun loadLabel(app: PackageInfo?) = (app?.applicationInfo?.loadLabel(packageManager) ?: "Not installed").toString()
+    fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 
-    @Suppress("DEPRECATION")
     fun loadSelectedFile(uri: Uri) =
         app.contentResolver.openInputStream(uri)?.use { stream ->
             File(app.cacheDir, "input.apk").also {
                 it.delete()
                 Files.copy(stream, it.toPath())
             }.let { file ->
-                packageManager.getPackageArchiveInfo(file.absolutePath, 0)
+                pm.getPackageInfo(file)
                     ?.let { packageInfo ->
                         SelectedApp.Local(packageName = packageInfo.packageName, version = packageInfo.versionName, file = file)
                     }
