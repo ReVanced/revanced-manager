@@ -30,7 +30,6 @@ class PatcherAPI {
 
   Future<void> initialize() async {
     await _loadPatches();
-    await _managerAPI.downloadPatches();
     await _managerAPI.downloadIntegrations();
     final Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;

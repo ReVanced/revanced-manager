@@ -11,6 +11,9 @@ import app.revanced.patcher.PatchBundleLoader
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
+import app.revanced.patcher.extensions.PatchExtensions.dependencies
+import app.revanced.patcher.extensions.PatchExtensions.description
+import app.revanced.patcher.extensions.PatchExtensions.include
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.patch.PatchResult
 import io.flutter.embedding.android.FlutterActivity
@@ -88,6 +91,29 @@ class MainActivity : FlutterActivity() {
                 "stopPatcher" -> {
                     cancel = true
                     stopResult = result
+                }
+
+                "getPatches" -> {
+                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
+                    if (patchBundleFilePath != null) {
+                        val patches = PatchBundleLoader.Dex(
+                            File(patchBundleFilePath)
+                        ).map { patch ->
+                            val map = HashMap<String, Any>()
+                            map["\"name\""] = "\"${patch.patchName.replace("\"","\\\"")}\""
+                            map["\"description\""] = "\"${patch.description?.replace("\"","\\\"")}\""
+                            map["\"excluded\""] = !patch.include
+                            map["\"dependencies\""] = patch.dependencies?.map { "\"${it.java.patchName}\"" } ?: emptyList<Any>()
+                            map["\"compatiblePackages\""] = patch.compatiblePackages?.map {
+                                val map2 = HashMap<String, Any>()
+                                map2["\"name\""] = "\"${it.name}\""
+                                map2["\"versions\""] = it.versions.map { version -> "\"${version}\"" }
+                                map2
+                            } ?: emptyList<Any>()
+                            map
+                        }
+                        result.success(patches)
+                    } else result.notImplemented()
                 }
 
                 else -> result.notImplemented()

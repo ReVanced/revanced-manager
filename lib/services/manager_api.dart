@@ -11,6 +11,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
@@ -79,12 +80,12 @@ class ManagerAPI {
     await _prefs.setString('repoUrl', url);
   }
 
-  String getPatchesDownloadURL(bool bundle) {
-    return _prefs.getString('patchesDownloadURL-$bundle') ?? '';
+  String getPatchesDownloadURL() {
+    return _prefs.getString('patchesDownloadURL') ?? '';
   }
 
-  Future<void> setPatchesDownloadURL(String value, bool bundle) async {
-    await _prefs.setString('patchesDownloadURL-$bundle', value);
+  Future<void> setPatchesDownloadURL(String value) async {
+    await _prefs.setString('patchesDownloadURL', value);
   }
 
   String getPatchesRepo() {
@@ -300,28 +301,34 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
-    try {
-      final String repoName = getPatchesRepo();
-      final String currentVersion = await getCurrentPatchesVersion();
-      final String url = getPatchesDownloadURL(false);
-      return await _githubAPI.getPatches(
-        repoName,
-        currentVersion,
-        url,
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
+    final File? patchBundleFile = await downloadPatches();
+    if (patchBundleFile != null) {
+      try {
+        final patches = await PatcherAPI.patcherChannel.invokeMethod(
+          'getPatches',
+          {
+            'patchBundleFilePath': patchBundleFile.path,
+          },
+        );
+        final List<Map<String, dynamic>> patchesMap = [];
+        patches.forEach((patch) {
+          patchesMap.add(jsonDecode('$patch'));
+        });
+        return patchesMap.map((patch) => Patch.fromJson(patch)).toList();
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
       }
-      return [];
     }
+    return List.empty();
   }
 
   Future<File?> downloadPatches() async {
     try {
       final String repoName = getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
-      final String url = getPatchesDownloadURL(true);
+      final String url = getPatchesDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
         '.jar',
         repoName,
@@ -447,8 +454,7 @@ class ManagerAPI {
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
-    await setPatchesDownloadURL('', false);
-    await setPatchesDownloadURL('', true);
+    await setPatchesDownloadURL('');
     await downloadPatches();
   }
 
