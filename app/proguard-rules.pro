@@ -49,5 +49,6 @@
 -dontwarn javax.**
 -dontwarn org.slf4j.**
 -dontwarn it.skrape.fetcher.*
+-dontwarn com.google.j2objc.annotations.*
 
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
