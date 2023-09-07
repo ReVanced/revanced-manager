@@ -12,7 +12,7 @@ body:
   - type: textarea
     attributes:
       label: Bug description
-      description:
+      description: |
         - Describe your bug in detail
         - Add steps to reproduce the bug if possible (Step 1. Download some files. Step 2. ...)
         - Add images and videos if possible
