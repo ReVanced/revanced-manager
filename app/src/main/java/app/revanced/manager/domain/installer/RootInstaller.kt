@@ -47,7 +47,8 @@ class RootInstaller(
     }
 
     suspend fun install(
-        apk: File,
+        patchedAPK: File,
+        stockAPK: File,
         packageName: String,
         version: String,
         label: String
@@ -58,6 +59,15 @@ class RootInstaller(
                 val modulePath = "$modulesPath/$packageName-revanced"
 
                 unmount(packageName)
+
+                pm.getPackageInfo(packageName)?.let { packageInfo ->
+                    if (packageInfo.versionName <= version)
+                        Shell.cmd("pm uninstall -k --user 0 $packageName").exec()
+                            .also { if (!it.isSuccess) throw Exception("Failed to uninstall stock app") }
+                }
+
+                Shell.cmd("pm install \"${stockAPK.absolutePath}\"").exec()
+                    .also { if (!it.isSuccess) throw Exception("Failed to install stock app") }
 
                 remoteFS.getFile(modulePath).mkdir()
 
@@ -84,20 +94,20 @@ class RootInstaller(
                     }
                 }
 
-                "$modulePath/$packageName.apk".let { patchedAPK ->
+                "$modulePath/$packageName.apk".let { apkPath ->
 
-                    remoteFS.getFile(apk.absolutePath)
+                    remoteFS.getFile(patchedAPK.absolutePath)
                         .also { if (!it.exists()) throw Exception("File doesn't exist") }
                         .newInputStream().use { inputStream ->
-                        remoteFS.getFile(patchedAPK).newOutputStream().use { outputStream ->
+                        remoteFS.getFile(apkPath).newOutputStream().use { outputStream ->
                             inputStream.copyTo(outputStream)
                         }
                     }
 
                     Shell.cmd(
-                        "chmod 644 $patchedAPK",
-                        "chown system:system $patchedAPK",
-                        "chcon u:object_r:apk_data_file:s0 $patchedAPK",
+                        "chmod 644 $apkPath",
+                        "chown system:system $apkPath",
+                        "chcon u:object_r:apk_data_file:s0 $apkPath",
                         "chmod +x $modulePath/service.sh"
                     ).exec()
                         .let { if (!it.isSuccess) throw Exception("Failed to set file permissions") }
@@ -118,14 +128,6 @@ class RootInstaller(
 
     companion object {
         const val modulesPath = "/data/adb/modules"
-
-        /*val isDeviceRooted =
-            try {
-                Runtime.getRuntime().exec("su --version")
-                true
-            } catch (_: IOException) {
-                false
-            }*/
     }
 }
 

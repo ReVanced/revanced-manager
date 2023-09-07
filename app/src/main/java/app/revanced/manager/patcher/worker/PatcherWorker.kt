@@ -63,7 +63,8 @@ class PatcherWorker(
         val packageVersion: String,
         val progress: MutableStateFlow<ImmutableList<Step>>,
         val logger: ManagerLogger,
-        val selectedApp: SelectedApp
+        val selectedApp: SelectedApp,
+        val setInputFile: (File) -> Unit
     )
 
     companion object {
@@ -210,7 +211,7 @@ class PatcherWorker(
 
                 is SelectedApp.Local -> selectedApp.file
                 is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo.sourceDir)
-            }
+            }.also { args.setInputFile(it) }
 
             Session(
                 applicationContext.cacheDir.absolutePath,

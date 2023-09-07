@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RowScope.SegmentedButton(
     icon: Any,
-    iconDescription: String? = null,
     text: String,
     onClick: () -> Unit,
+    iconDescription: String? = null,
     enabled: Boolean = true
 ) {
     val contentColor = if (enabled)
@@ -57,16 +57,14 @@ fun RowScope.SegmentedButton(
                 is ImageVector -> {
                     Icon(
                         imageVector = icon,
-                        contentDescription = iconDescription,
-                        //tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = iconDescription
                     )
                 }
 
                 is Painter -> {
                     Icon(
                         painter = icon,
-                        contentDescription = iconDescription,
-                        //tint = MaterialTheme.colorScheme.primary
+                        contentDescription = iconDescription
                     )
                 }
             }
@@ -74,7 +72,6 @@ fun RowScope.SegmentedButton(
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
-                //color = MaterialTheme.colorScheme.primary,
                 maxLines = 1,
                 modifier = Modifier.basicMarquee()
             )

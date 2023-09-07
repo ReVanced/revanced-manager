@@ -66,6 +66,7 @@ class InstallerViewModel(
     private val outputFile = File(app.cacheDir, "output.apk")
     private val signedFile = File(app.cacheDir, "signed.apk").also { if (it.exists()) it.delete() }
     private var hasSigned = false
+    var inputFile: File? = null
 
     private var installedApp: InstalledApp? = null
     var isInstalling by mutableStateOf(false)
@@ -90,8 +91,9 @@ class InstallerViewModel(
         _progress = MutableStateFlow(PatcherProgressManager.generateSteps(
             app,
             patches.flatMap { (_, selected) -> selected },
-            input.selectedApp
+            selectedApp
         ).toImmutableList())
+
         patcherWorkerId =
             workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
                 "patching", PatcherWorker.Args(
@@ -103,7 +105,8 @@ class InstallerViewModel(
                     selectedApp.version,
                     _progress,
                     logger,
-                    input.selectedApp
+                    selectedApp,
+                    setInputFile = { inputFile = it }
                 )
             )
     }
@@ -214,11 +217,6 @@ class InstallerViewModel(
     }
 
     fun install(installType: InstallType) = viewModelScope.launch {
-        /*installedPackageName?.let {
-            pm.launch(it)
-            return@launch
-        }*/
-
         isInstalling = true
         try {
             if (!signApk()) return@launch
@@ -234,6 +232,8 @@ class InstallerViewModel(
         }
     }
 
+    fun open() = installedPackageName?.let { pm.launch(it) }
+
     private suspend fun installAsRoot() {
         try {
             val label = with(pm) {
@@ -241,7 +241,13 @@ class InstallerViewModel(
                     ?: throw Exception("Failed to load application info")
             }
 
-            rootInstaller.install(outputFile, packageName, input.selectedApp.version, label)
+            rootInstaller.install(
+                outputFile,
+                inputFile!!,
+                packageName,
+                input.selectedApp.version,
+                label
+            )
 
             rootInstaller.mount(packageName)
 

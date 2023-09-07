@@ -172,6 +172,7 @@
     <string name="unmount">Unmount</string>
     <string name="failed_to_mount">Failed to mount: %s</string>
     <string name="failed_to_unmount">Failed to unmount: %s</string>
+    <string name="unpatch_description">Are you sure you want to unpatch this app?</string>
 
     <string name="error_occurred">An error occurred</string>
     <string name="already_downloaded">Already downloaded</string>
@@ -201,6 +202,7 @@
     <string name="export_app_success">Apk exported</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>
     <string name="save_logs">Save logs</string>
+    <string name="select_install_type">Select installation type</string>
 
     <string name="patcher_step_group_prepare">Preparation</string>
     <string name="patcher_step_load_patches">Load patches</string>

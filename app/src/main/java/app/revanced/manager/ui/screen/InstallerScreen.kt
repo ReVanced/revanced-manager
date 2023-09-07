@@ -120,7 +120,12 @@ fun InstallerScreen(
                 }
 
                 Button(
-                    onClick = { showInstallPicker = true },
+                    onClick = {
+                        if (vm.installedPackageName == null)
+                            showInstallPicker = true
+                        else
+                            vm.open()
+                    },
                     enabled = canInstall
                 ) {
                     Text(stringResource(vm.appButtonText))
@@ -141,7 +146,7 @@ fun InstallPicker(
         onDismissRequest = onDismiss,
         dismissButton = {
             Button(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         },
         confirmButton = {
@@ -150,10 +155,10 @@ fun InstallPicker(
                 onDismiss()
             }
             ) {
-                Text("Install")
+                Text(stringResource(R.string.install_app))
             }
         },
-        title = { Text("Select installation type") },
+        title = { Text(stringResource(R.string.select_install_type)) },
         text = {
             Column {
                 InstallType.values().forEach {
