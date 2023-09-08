@@ -150,10 +150,11 @@ fun InstallPicker(
             }
         },
         confirmButton = {
-            Button(onClick = {
-                onConfirm(selectedInstallType)
-                onDismiss()
-            }
+            Button(
+                onClick = {
+                    onConfirm(selectedInstallType)
+                    onDismiss()
+                }
             ) {
                 Text(stringResource(R.string.install_app))
             }
