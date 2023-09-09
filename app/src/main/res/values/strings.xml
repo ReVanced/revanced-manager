@@ -23,8 +23,6 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
-
-    <string name="select_version">Select version</string>
     
     <string name="auto_updates_dialog_title">Select updates to receive</string>
     <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
@@ -156,9 +154,11 @@
     <string name="failed_to_load_apk">Failed to load apk</string>
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
+    <string name="installed">Installed</string>
 
     <string name="app_info">App info</string>
     <string name="uninstall">Uninstall</string>
+    <string name="unpatch">Unpatch</string>
     <string name="repatch">Repatch</string>
     <string name="install_type">Installation type</string>
     <string name="package_name">Package name</string>
@@ -167,9 +167,20 @@
     <string name="view_applied_patches">View applied patches</string>
     <string name="default_install">Default</string>
     <string name="root_install">Root</string>
+    <string name="mounted">Mounted</string>
+    <string name="not_mounted">Not mounted</string>
+    <string name="mount">Mount</string>
+    <string name="unmount">Unmount</string>
+    <string name="failed_to_mount">Failed to mount: %s</string>
+    <string name="failed_to_unmount">Failed to unmount: %s</string>
+    <string name="unpatch_app">Unpatch app?</string>
+    <string name="unpatch_description">Are you sure you want to unpatch this app?</string>
 
     <string name="error_occurred">An error occurred</string>
     <string name="already_downloaded">Already downloaded</string>
+    <string name="select_version">Select version</string>
+    <string name="downloadable_versions">Downloadable versions</string>
+    <string name="already_patched">Already patched</string>
 
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
@@ -193,6 +204,7 @@
     <string name="export_app_success">Apk exported</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>
     <string name="save_logs">Save logs</string>
+    <string name="select_install_type">Select installation type</string>
 
     <string name="patcher_step_group_prepare">Preparation</string>
     <string name="patcher_step_load_patches">Load patches</string>

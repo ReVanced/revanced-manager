@@ -20,6 +20,8 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
@@ -29,7 +31,9 @@ import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.ui.destination.Destination
+import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
+import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import kotlinx.collections.immutable.ImmutableList
@@ -48,18 +52,23 @@ import java.util.logging.Level
 import java.util.logging.LogRecord
 
 @Stable
-class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinComponent {
+class InstallerViewModel(
+    private val input: Destination.Installer
+) : ViewModel(), KoinComponent {
     private val keystoreManager: KeystoreManager by inject()
     private val app: Application by inject()
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
-    private val installedAppReceiver: InstalledAppRepository by inject()
+    private val installedAppRepository: InstalledAppRepository by inject()
+    private val rootInstaller: RootInstaller by inject()
 
     val packageName: String = input.selectedApp.packageName
     private val outputFile = File(app.cacheDir, "output.apk")
     private val signedFile = File(app.cacheDir, "signed.apk").also { if (it.exists()) it.delete() }
     private var hasSigned = false
+    var inputFile: File? = null
 
+    private var installedApp: InstalledApp? = null
     var isInstalling by mutableStateOf(false)
         private set
     var installedPackageName by mutableStateOf<String?>(null)
@@ -73,13 +82,18 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
     private val logger = ManagerLogger()
 
     init {
+        viewModelScope.launch {
+            installedApp = installedAppRepository.get(packageName)
+        }
+
         val (selectedApp, patches, options) = input
 
         _progress = MutableStateFlow(PatcherProgressManager.generateSteps(
             app,
             patches.flatMap { (_, selected) -> selected },
-            input.selectedApp
+            selectedApp
         ).toImmutableList())
+
         patcherWorkerId =
             workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
                 "patching", PatcherWorker.Args(
@@ -90,7 +104,9 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
                     packageName,
                     selectedApp.version,
                     _progress,
-                    logger
+                    logger,
+                    selectedApp,
+                    setInputFile = { inputFile = it }
                 )
             )
     }
@@ -118,7 +134,7 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
                         installedPackageName =
                             intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
                         viewModelScope.launch {
-                            installedAppReceiver.add(
+                            installedAppRepository.add(
                                 installedPackageName!!,
                                 packageName,
                                 input.selectedApp.version,
@@ -162,6 +178,19 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
 
         outputFile.delete()
         signedFile.delete()
+
+        try {
+            if (input.selectedApp is SelectedApp.Installed) {
+                installedApp?.let {
+                    if (it.installType == InstallType.ROOT) {
+                        rootInstaller.mount(packageName)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to mount", e)
+            app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
+        }
     }
 
     private suspend fun signApk(): Boolean {
@@ -192,18 +221,60 @@ class InstallerViewModel(input: Destination.Installer) : ViewModel(), KoinCompon
         }
     }
 
-    fun installOrOpen() = viewModelScope.launch {
-        installedPackageName?.let {
-            pm.launch(it)
-            return@launch
-        }
-
+    fun install(installType: InstallType) = viewModelScope.launch {
         isInstalling = true
         try {
             if (!signApk()) return@launch
-            pm.installApp(listOf(signedFile))
+
+            when (installType) {
+                InstallType.DEFAULT -> { pm.installApp(listOf(signedFile)) }
+
+                InstallType.ROOT -> { installAsRoot() }
+            }
+
         } finally {
             isInstalling = false
+        }
+    }
+
+    fun open() = installedPackageName?.let { pm.launch(it) }
+
+    private suspend fun installAsRoot() {
+        try {
+            val label = with(pm) {
+                getPackageInfo(signedFile)?.label()
+                    ?: throw Exception("Failed to load application info")
+            }
+
+            rootInstaller.install(
+                outputFile,
+                inputFile,
+                packageName,
+                input.selectedApp.version,
+                label
+            )
+
+            rootInstaller.mount(packageName)
+
+            installedApp?.let { installedAppRepository.delete(it) }
+
+            installedAppRepository.add(
+                packageName,
+                packageName,
+                input.selectedApp.version,
+                InstallType.ROOT,
+                input.selectedPatches
+            )
+
+            installedPackageName = packageName
+
+            app.toast(app.getString(R.string.install_app_success))
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to install as root", e)
+            app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
+            try {
+                rootInstaller.uninstall(packageName)
+            } catch (_: Exception) {  }
         }
     }
 }

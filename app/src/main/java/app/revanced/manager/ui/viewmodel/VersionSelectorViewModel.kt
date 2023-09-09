@@ -7,7 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -35,8 +36,9 @@ class VersionSelectorViewModel(
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val pm: PM by inject()
     private val appDownloader: AppDownloader = APKMirror()
+    val rootInstaller: RootInstaller by inject()
 
-    var installedApp: Pair<PackageInfo, Boolean>? by mutableStateOf(null)
+    var installedApp: Pair<PackageInfo, InstalledApp?>? by mutableStateOf(null)
         private set
     var isLoading by mutableStateOf(true)
         private set
@@ -72,15 +74,11 @@ class VersionSelectorViewModel(
     init {
         viewModelScope.launch(Dispatchers.Main) {
             val packageInfo = async(Dispatchers.IO) { pm.getPackageInfo(packageName) }
-            val alreadyPatched = async(Dispatchers.IO) {
-                installedAppRepository.get(packageName)
-                    ?.let { it.installType == InstallType.DEFAULT }
-                    ?: false
-            }
+            val installedAppDeferred = async(Dispatchers.IO) { installedAppRepository.get(packageName) }
 
             installedApp =
                 packageInfo.await()?.let {
-                    it to alreadyPatched.await()
+                    it to installedAppDeferred.await()
                 }
         }
 

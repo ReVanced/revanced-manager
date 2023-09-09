@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.patcher.worker.State
 import app.revanced.manager.ui.component.AppScaffold
@@ -59,6 +61,13 @@ fun InstallerScreen(
     val steps by vm.progress.collectAsStateWithLifecycle()
     val canInstall by remember { derivedStateOf { patcherState == true && (vm.installedPackageName != null || !vm.isInstalling) } }
     var dropdownActive by rememberSaveable { mutableStateOf(false) }
+    var showInstallPicker by rememberSaveable { mutableStateOf(false) }
+
+    if (showInstallPicker)
+        InstallPicker(
+            onDismiss = { showInstallPicker = false },
+            onConfirm = { vm.install(it) }
+        )
 
     AppScaffold(
         topBar = {
@@ -111,7 +120,12 @@ fun InstallerScreen(
                 }
 
                 Button(
-                    onClick = vm::installOrOpen,
+                    onClick = {
+                        if (vm.installedPackageName == null)
+                            showInstallPicker = true
+                        else
+                            vm.open()
+                    },
                     enabled = canInstall
                 ) {
                     Text(stringResource(vm.appButtonText))
@@ -120,6 +134,51 @@ fun InstallerScreen(
         }
     }
 }
+
+@Composable
+fun InstallPicker(
+    onDismiss: () -> Unit,
+    onConfirm: (InstallType) -> Unit
+) {
+    var selectedInstallType by rememberSaveable { mutableStateOf(InstallType.DEFAULT) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm(selectedInstallType)
+                    onDismiss()
+                }
+            ) {
+                Text(stringResource(R.string.install_app))
+            }
+        },
+        title = { Text(stringResource(R.string.select_install_type)) },
+        text = {
+            Column {
+                InstallType.values().forEach {
+                    ListItem(
+                        modifier = Modifier.clickable { selectedInstallType = it },
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedInstallType == it,
+                                onClick = null
+                            )
+                        },
+                        headlineContent = { Text(stringResource(it.stringResource)) }
+                    )
+                }
+            }
+        }
+    )
+}
+
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
 
