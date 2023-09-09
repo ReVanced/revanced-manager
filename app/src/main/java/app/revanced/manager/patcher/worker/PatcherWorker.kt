@@ -205,8 +205,9 @@ class PatcherWorker(
                             args.input.version,
                             it
                         )
+                        args.setInputFile(it)
                         updateProgress() // Downloading
-                    }.also { args.setInputFile(it) }
+                    }
                 }
 
                 is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
