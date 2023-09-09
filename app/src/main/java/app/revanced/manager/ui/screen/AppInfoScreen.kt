@@ -211,7 +211,7 @@ fun UninstallDialog(
     onConfirm: () -> Unit
 ) = AlertDialog(
     onDismissRequest = onDismiss,
-    title = { Text(stringResource(R.string.unpatch)) },
+    title = { Text(stringResource(R.string.unpatch_app)) },
     text = { Text(stringResource(R.string.unpatch_description)) },
     confirmButton = {
         TextButton(

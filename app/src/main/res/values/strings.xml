@@ -172,6 +172,7 @@
     <string name="unmount">Unmount</string>
     <string name="failed_to_mount">Failed to mount: %s</string>
     <string name="failed_to_unmount">Failed to unmount: %s</string>
+    <string name="unpatch_app">Unpatch app?</string>
     <string name="unpatch_description">Are you sure you want to unpatch this app?</string>
 
     <string name="error_occurred">An error occurred</string>

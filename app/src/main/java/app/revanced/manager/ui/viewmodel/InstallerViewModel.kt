@@ -179,12 +179,17 @@ class InstallerViewModel(
         outputFile.delete()
         signedFile.delete()
 
-        if (input.selectedApp is SelectedApp.Installed) {
-            installedApp?.let {
-                if (it.installType == InstallType.ROOT) {
-                    rootInstaller.mount(packageName)
+        try {
+            if (input.selectedApp is SelectedApp.Installed) {
+                installedApp?.let {
+                    if (it.installType == InstallType.ROOT) {
+                        rootInstaller.mount(packageName)
+                    }
                 }
             }
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to mount", e)
+            app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
         }
     }
 
@@ -243,7 +248,7 @@ class InstallerViewModel(
 
             rootInstaller.install(
                 outputFile,
-                inputFile!!,
+                inputFile,
                 packageName,
                 input.selectedApp.version,
                 label

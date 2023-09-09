@@ -206,12 +206,12 @@ class PatcherWorker(
                             it
                         )
                         updateProgress() // Downloading
-                    }
+                    }.also { args.setInputFile(it) }
                 }
 
-                is SelectedApp.Local -> selectedApp.file
+                is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
                 is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo.sourceDir)
-            }.also { args.setInputFile(it) }
+            }
 
             Session(
                 applicationContext.cacheDir.absolutePath,

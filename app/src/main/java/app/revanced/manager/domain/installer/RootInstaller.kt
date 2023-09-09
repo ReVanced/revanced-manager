@@ -48,7 +48,7 @@ class RootInstaller(
 
     suspend fun install(
         patchedAPK: File,
-        stockAPK: File,
+        stockAPK: File?,
         packageName: String,
         version: String,
         label: String
@@ -60,14 +60,16 @@ class RootInstaller(
 
                 unmount(packageName)
 
-                pm.getPackageInfo(packageName)?.let { packageInfo ->
-                    if (packageInfo.versionName <= version)
-                        Shell.cmd("pm uninstall -k --user 0 $packageName").exec()
-                            .also { if (!it.isSuccess) throw Exception("Failed to uninstall stock app") }
-                }
+                stockAPK?.let { stockApp ->
+                    pm.getPackageInfo(packageName)?.let { packageInfo ->
+                        if (packageInfo.versionName <= version)
+                            Shell.cmd("pm uninstall -k --user 0 $packageName").exec()
+                                .also { if (!it.isSuccess) throw Exception("Failed to uninstall stock app") }
+                    }
 
-                Shell.cmd("pm install \"${stockAPK.absolutePath}\"").exec()
-                    .also { if (!it.isSuccess) throw Exception("Failed to install stock app") }
+                    Shell.cmd("pm install \"${stockApp.absolutePath}\"").exec()
+                        .also { if (!it.isSuccess) throw Exception("Failed to install stock app") }
+                }
 
                 remoteFS.getFile(modulePath).mkdir()
 
@@ -78,18 +80,13 @@ class RootInstaller(
                     assets.open("root/$file").use { inputStream ->
                         remoteFS.getFile("$modulePath/$file").newOutputStream()
                             .use { outputStream ->
-                                val buffer = ByteArray(1024)
-                                var bytesRead: Int
+                                val content = String(inputStream.readBytes())
+                                    .replace("__PKG_NAME__", packageName)
+                                    .replace("__VERSION__", version)
+                                    .replace("__LABEL__", label)
+                                    .toByteArray()
 
-                                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                                    val content = String(buffer, 0, bytesRead)
-                                        .replace("__PKG_NAME__", packageName)
-                                        .replace("__VERSION__", version)
-                                        .replace("__LABEL__", label)
-                                        .toByteArray()
-
-                                    outputStream.write(content)
-                                }
+                                outputStream.write(content)
                             }
                     }
                 }
