@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -26,43 +28,53 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RowScope.SegmentedButton(
     icon: Any,
-    iconDescription: String? = null,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    iconDescription: String? = null,
+    enabled: Boolean = true
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp))
-            .weight(1f)
-            .padding(vertical = 20.dp)
-    ) {
-        when (icon) {
-            is ImageVector -> {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = iconDescription,
-                    tint = MaterialTheme.colorScheme.primary
+    val contentColor = if (enabled)
+        MaterialTheme.colorScheme.primary
+    else
+        MaterialTheme.colorScheme.onSurface.copy(0.38f)
+
+    CompositionLocalProvider(LocalContentColor provides contentColor) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            modifier = Modifier
+                .clickable(enabled = enabled, onClick = onClick)
+                .background(
+                    if (enabled)
+                        MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)
+                    else
+                        MaterialTheme.colorScheme.onSurface.copy(0.12f)
                 )
+                .weight(1f)
+                .padding(vertical = 20.dp)
+        ) {
+            when (icon) {
+                is ImageVector -> {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = iconDescription
+                    )
+                }
+
+                is Painter -> {
+                    Icon(
+                        painter = icon,
+                        contentDescription = iconDescription
+                    )
+                }
             }
 
-            is Painter -> {
-                Icon(
-                    painter = icon,
-                    contentDescription = iconDescription,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            Text(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                modifier = Modifier.basicMarquee()
+            )
         }
-
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
-            maxLines = 1,
-            modifier = Modifier.basicMarquee()
-        )
     }
 }

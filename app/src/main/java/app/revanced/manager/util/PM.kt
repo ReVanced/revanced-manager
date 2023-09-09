@@ -32,8 +32,7 @@ private const val byteArraySize = 1024 * 1024 // Because 1,048,576 is not readab
 data class AppInfo(
     val packageName: String,
     val patches: Int?,
-    val packageInfo: PackageInfo?,
-    val path: File? = null
+    val packageInfo: PackageInfo?
 ) : Parcelable
 
 @SuppressLint("QueryPermissionsNeeded")
@@ -57,8 +56,7 @@ class PM(
                     AppInfo(
                         pkg,
                         compatiblePackages[pkg],
-                        packageInfo,
-                        File(packageInfo.applicationInfo.sourceDir)
+                        packageInfo
                     )
                 } ?: AppInfo(
                     pkg,
@@ -73,8 +71,7 @@ class PM(
                 AppInfo(
                     packageInfo.packageName,
                     0,
-                    packageInfo,
-                    File(packageInfo.applicationInfo.sourceDir)
+                    packageInfo
                 )
             }
         }
@@ -85,9 +82,13 @@ class PM(
                 .sortedWith(
                     compareByDescending<AppInfo> {
                         it.patches
-                    }.thenBy { it.packageInfo?.applicationInfo?.loadLabel(app.packageManager).toString() }.thenBy { it.packageName }
+                    }.thenBy {
+                        it.packageInfo?.label()
+                    }.thenBy { it.packageName }
                 )
-        } else { emptyList() }
+        } else {
+            emptyList()
+        }
     }.flowOn(Dispatchers.IO)
 
     fun getPackageInfo(packageName: String): PackageInfo? =
@@ -96,6 +97,10 @@ class PM(
         } catch (e: NameNotFoundException) {
             null
         }
+
+    fun getPackageInfo(file: File): PackageInfo? = app.packageManager.getPackageArchiveInfo(file.absolutePath, 0)
+
+    fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller
@@ -114,42 +119,42 @@ class PM(
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         app.startActivity(it)
     }
-}
 
-private fun PackageInstaller.Session.writeApk(apk: File) {
-    apk.inputStream().use { inputStream ->
-        openWrite(apk.name, 0, apk.length()).use { outputStream ->
-            inputStream.copyTo(outputStream, byteArraySize)
-            fsync(outputStream)
+    private fun PackageInstaller.Session.writeApk(apk: File) {
+        apk.inputStream().use { inputStream ->
+            openWrite(apk.name, 0, apk.length()).use { outputStream ->
+                inputStream.copyTo(outputStream, byteArraySize)
+                fsync(outputStream)
+            }
         }
     }
+
+    private val intentFlags
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            PendingIntent.FLAG_MUTABLE
+        else
+            0
+
+    private val sessionParams
+        get() = PackageInstaller.SessionParams(
+            PackageInstaller.SessionParams.MODE_FULL_INSTALL
+        ).apply {
+            setInstallReason(PackageManager.INSTALL_REASON_USER)
+        }
+
+    private val Context.installIntentSender
+        get() = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, InstallService::class.java),
+            intentFlags
+        ).intentSender
+
+    private val Context.uninstallIntentSender
+        get() = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, UninstallService::class.java),
+            intentFlags
+        ).intentSender
 }
-
-private val intentFlags
-    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-        PendingIntent.FLAG_MUTABLE
-    else
-        0
-
-private val sessionParams
-    get() = PackageInstaller.SessionParams(
-        PackageInstaller.SessionParams.MODE_FULL_INSTALL
-    ).apply {
-        setInstallReason(PackageManager.INSTALL_REASON_USER)
-    }
-
-private val Context.installIntentSender
-    get() = PendingIntent.getService(
-        this,
-        0,
-        Intent(this, InstallService::class.java),
-        intentFlags
-    ).intentSender
-
-private val Context.uninstallIntentSender
-    get() = PendingIntent.getService(
-        this,
-        0,
-        Intent(this, UninstallService::class.java),
-        intentFlags
-    ).intentSender

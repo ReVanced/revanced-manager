@@ -14,8 +14,11 @@ import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
@@ -29,7 +32,6 @@ import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
 import app.revanced.patcher.extensions.PatchExtensions.options
 import app.revanced.patcher.extensions.PatchExtensions.patchName
-import app.revanced.patcher.logging.Logger
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +51,8 @@ class PatcherWorker(
     private val prefs: PreferencesManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
+    private val installedAppRepository: InstalledAppRepository by inject()
+    private val rootInstaller: RootInstaller by inject()
 
     data class Args(
         val input: SelectedApp,
@@ -58,7 +62,9 @@ class PatcherWorker(
         val packageName: String,
         val packageVersion: String,
         val progress: MutableStateFlow<ImmutableList<Step>>,
-        val logger: ManagerLogger
+        val logger: ManagerLogger,
+        val selectedApp: SelectedApp,
+        val setInputFile: (File) -> Unit
     )
 
     companion object {
@@ -148,6 +154,15 @@ class PatcherWorker(
         }
 
         return try {
+
+            if (args.selectedApp is SelectedApp.Installed) {
+                installedAppRepository.get(args.packageName)?.let {
+                    if (it.installType == InstallType.ROOT) {
+                        rootInstaller.unmount(args.packageName)
+                    }
+                }
+            }
+
             // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
             val selectedBundles = args.selectedPatches.keys
             val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
@@ -190,11 +205,12 @@ class PatcherWorker(
                             args.input.version,
                             it
                         )
+                        args.setInputFile(it)
                         updateProgress() // Downloading
                     }
                 }
 
-                is SelectedApp.Local -> selectedApp.file
+                is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
                 is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo.sourceDir)
             }
 
