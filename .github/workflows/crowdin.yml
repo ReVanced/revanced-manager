@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v4
 
       - name: Crowdin action
