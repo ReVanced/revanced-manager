@@ -25,18 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Check formatting with ktlint
+      - name: Check code style
         uses: ScaCap/action-ktlint@v1.7.3
         with:
           github_token: ${{ secrets.github_token }}
+          android: true
+          fail_on_error: true
+          level: warning
 
-      - name: Analyze code
+      - name: Analyze code with Detekt
         uses: alaegin/Detekt-Action@v1.23.1.1
         with:
           github_token: ${{ secrets.github_token }}
