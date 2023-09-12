@@ -1,0 +1,40 @@
+name: Analyze Code
+
+on:
+  push:
+    branches: [ "dev", "compose-dev" ]
+    paths: 
+      - "**.kt"
+      - "**.kts"
+      - ".github/workflows/analyze.yml"
+  pull_request:
+    branches: [ "main", "dev", "compose-dev" ]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    paths: 
+      - "**.kt"
+      - "**.kts"
+      - ".github/workflows/analyze.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "Static analysis & format check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Analyze code
+        uses: alaegin/Detekt-Action@v1.23.1.1
+        with:
+            github_token: ${{ secrets.github_token }}
+            reviewdog_level: warning
