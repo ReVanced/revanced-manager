@@ -2,7 +2,8 @@ name: Analyze Code
 
 on:
   push:
-    paths: 
+    branches: [ "main", "dev", "compose-dev" ]
+    paths:
       - "**.kt"
       - "**.kts"
       - ".github/workflows/analyze.yml"
@@ -38,4 +39,3 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reviewdog_level: warning
-          detekt_build_upon_default_config: true
