@@ -31,8 +31,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Check formatting with ktlint
+        uses: ScaCap/action-ktlint@v1.7.3
+        with:
+          github_token: ${{ secrets.github_token }}
+
       - name: Analyze code
         uses: alaegin/Detekt-Action@v1.23.1.1
         with:
-            github_token: ${{ secrets.github_token }}
-            reviewdog_level: warning
+          github_token: ${{ secrets.github_token }}
+          reviewdog_level: warning
+          detekt_build_upon_default_config: true
