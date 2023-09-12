@@ -2,7 +2,6 @@ name: Analyze Code
 
 on:
   push:
-    branches: [ "dev", "compose-dev" ]
     paths: 
       - "**.kt"
       - "**.kts"
@@ -18,7 +17,6 @@ on:
       - "**.kt"
       - "**.kts"
       - ".github/workflows/analyze.yml"
-  workflow_dispatch:
 
 jobs:
   build:
