@@ -36,11 +36,11 @@ jobs:
 
       - name: Sign APK
         run: |
-          keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US" 
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore debug.jks app/build/outputs/apk/release/app-release-unsigned.apk androiddebugkey -storepass android -keypass android -signedjar app-release-signed.apk
+          keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore debug.jks app/build/outputs/apk/release/app-release-unsigned.apk androiddebugkey -storepass android -keypass android -signedjar revanced-manager.apk
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: app-release-signed.apk
+          path: revanced-manager.apk
