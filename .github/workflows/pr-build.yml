@@ -34,15 +34,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleRelease --no-daemon
 
+      - name: Generate Keystore
+        run: keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+      
       - name: Sign APK
         id: sign_apk
         uses: ilharp/sign-android-release@v1
         with:
           releaseDir: build/app/outputs/apk/release
-          signingKey: ${{ secrets.SIGNING_KEYSTORE }}
-          keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
-          keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
-          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          signingKey: $(openssl base64 < debug.jks | tr -d '\n')
+          keyStorePassword: android
+          keyAlias: androiddebugkey
+          keyPassword: android
 
       - name: Upload build
         uses: actions/upload-artifact@v3
