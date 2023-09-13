@@ -41,18 +41,16 @@ jobs:
 
       - name: Sign APK
         id: sign_apk
-        uses: r0adkll/sign-android-release@v1
-        env:
-          BUILD_TOOLS_VERSION: 33.0.2
+        uses: ilharp/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ env.base64Key }}
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ env.base64Key }}
           keyStorePassword: android
-          alias: androiddebugkey
+          keyAlias: androiddebugkey
           keyPassword: android
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
+          path: ${{ steps.sign_apk.outputs.signedFile }}
