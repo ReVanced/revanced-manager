@@ -35,20 +35,22 @@ jobs:
         run: ./gradlew assembleRelease --no-daemon
 
       - name: Generate Keystore
-        run: keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-      
+        run: |
+          keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          base64Key=$(openssl base64 < debug.jks | tr -d '\n')
+
       - name: Sign APK
         id: sign_apk
-        uses: ilharp/sign-android-release@v1
+        uses: r0adkll/sign-android-release@v1
         with:
-          releaseDir: build/app/outputs/apk/release
-          signingKey: $(openssl base64 < debug.jks | tr -d '\n')
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ env.base64Key }}
           keyStorePassword: android
-          keyAlias: androiddebugkey
+          alias: androiddebugkey
           keyPassword: android
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: ${{ steps.sign_apk.outputs.signedFile }}
+          path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
