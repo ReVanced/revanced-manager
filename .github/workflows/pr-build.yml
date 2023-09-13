@@ -34,13 +34,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleRelease --no-daemon
 
-      - name: Sign APK
+      - name: Generate Keystore
         run: |
           keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-          apksigner sign --ks debug.jks --ks-key-alias androiddebugkey --ks-pass pass:android --out app/build/outputs/apk/release/app-release-signed.apk app/build/outputs/apk/release/app-release-unsigned.apk
+          base64Key=$(openssl base64 < debug.jks | tr -d '\n')
+
+      - name: Sign APK
+        id: sign_apk
+        uses: r0adkll/sign-android-release@v1
+        env:
+          BUILD_TOOLS_VERSION: 33.0.2
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ env.base64Key }}
+          keyStorePassword: android
+          alias: androiddebugkey
+          keyPassword: android
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: app/build/outputs/apk/release/app-release-signed.apk
+          path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
