@@ -28,7 +28,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
+      
       - name: Build with Gradle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,16 +37,15 @@ jobs:
       - name: Generate Keystore
         run: |
           keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-          ANDROID_SIGNING_KEY=$(openssl base64 < debug.jks | tr -d '\n')
 
       - name: Sign APK
         id: sign_apk
         uses: ilharp/sign-android-release@v1
         with:
           releaseDir: app/build/outputs/apk/release
+          signingKey: $(openssl base64 < debug.jks | tr -d '\n')
           keyStorePassword: android
           keyAlias: androiddebugkey
-          keyPassword: android
 
       - name: Upload build
         uses: actions/upload-artifact@v3
