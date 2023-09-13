@@ -43,7 +43,7 @@ jobs:
         uses: ilharp/sign-android-release@v1
         with:
           releaseDir: app/build/outputs/apk/release
-          signingKey: $(openssl base64 < debug.jks | tr -d '\n')
+          signingKey: $(openssl base64 < debug.jks)
           keyStorePassword: android
           keyAlias: androiddebugkey
           keyPassword: android
