@@ -28,16 +28,20 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        
       - name: Build with Gradle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleRelease --no-daemon
 
+      - name: Generate keystore
+        run: keytool -genkey -v -keystore debugkey.jks -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "O=ReVanced"
+
       - name: Sign APK
-        run: |
-          keytool -genkey -keystore debug.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-          jarsigner -verbose -keystore debug.jks app/build/outputs/apk/release/app-release-unsigned.apk androiddebugkey -storepass android -keypass android -signedjar revanced-manager.apk
+        run: ${{ env.ANDROID_SDK_ROOT }}/build-tools/33.0.1/apksigner sign --verbose --ks debugkey.jks --ks-pass pass:android --key-pass pass:android --out revanced-manager.apk app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Upload build
         uses: actions/upload-artifact@v3
