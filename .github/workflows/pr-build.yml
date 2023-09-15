@@ -31,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleRelease --no-daemon -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/debugkey.jks -Pandroid.injected.signing.store.password=android -Pandroid.injected.signing.key.alias=androiddebugkey -Pandroid.injected.signing.key.password=android
 
-      - name: Rename file
+      - name: Add hash to APK
         run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-${{ github.sha }}.apk
 
       - name: Upload build
