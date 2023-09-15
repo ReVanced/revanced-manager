@@ -28,8 +28,7 @@ jobs:
             ${{ runner.home }}/.gradle/caches
             ${{ runner.home }}/.gradle/wrapper
             .gradle
-            node_modules
-          key: ${{ runner.os }}-gradle-npm-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'package-lock.json') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Set up Java
         run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
