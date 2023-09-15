@@ -29,22 +29,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
-        
-      - name: Build with Gradle
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleRelease --no-daemon
-
       - name: Generate keystore
         run: keytool -genkey -v -keystore debugkey.jks -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "O=ReVanced"
 
-      - name: Sign APK
-        run: ${{ env.ANDROID_SDK_ROOT }}/build-tools/33.0.1/apksigner sign --verbose --ks debugkey.jks --ks-pass pass:android --key-pass pass:android --out revanced-manager.apk app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Build with Gradle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleRelease --no-daemon -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/debugkey.jks -Pandroid.injected.signing.store.password=android -Pandroid.injected.signing.key.alias=androiddebugkey -Pandroid.injected.signing.key.password=android -PenableMinification=false
+
+      - name: Rename file
+        run: mv app/build/outputs/apk/release/app-release.apk app-debug.apk
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: revanced-manager.apk
+          path: app-debug.apk
