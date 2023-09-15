@@ -17,15 +17,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Make sure the release step uses its own credentials:
+          # https://github.com/cycjimmy/semantic-release-action#private-packages
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Set env
         run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Cache
+        uses: actions/cache@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          path: |
+            ${{ runner.home }}/.gradle/caches
+            ${{ runner.home }}/.gradle/wrapper
+            .gradle
+            node_modules
+          key: ${{ runner.os }}-gradle-npm-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'package-lock.json') }}
+
+      - name: Setup Java
+        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
 
       - name: Generate keystore
         run: keytool -genkey -v -keystore debugkey.jks -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "O=ReVanced"
