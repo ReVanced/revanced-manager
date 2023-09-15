@@ -33,10 +33,10 @@ jobs:
         run: ./gradlew assembleRelease --no-daemon -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/debugkey.jks -Pandroid.injected.signing.store.password=android -Pandroid.injected.signing.key.alias=androiddebugkey -Pandroid.injected.signing.key.password=android
 
       - name: Add hash to APK
-        run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-${{ github.sha }}.apk
+        run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-$(git rev-parse --short HEAD).apk
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: revanced-manager-${{ github.sha }}.apk
+          path: revanced-manager-$(git rev-parse --short HEAD).apk
