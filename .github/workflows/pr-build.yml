@@ -21,7 +21,7 @@ jobs:
       - name: Set env
         run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: Cache
+      - name: Set up cache
         uses: actions/cache@v3
         with:
           path: |
@@ -31,7 +31,7 @@ jobs:
             node_modules
           key: ${{ runner.os }}-gradle-npm-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'package-lock.json') }}
 
-      - name: Setup Java
+      - name: Set up Java
         run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
 
       - name: Generate keystore
