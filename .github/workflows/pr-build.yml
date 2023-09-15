@@ -23,12 +23,6 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
       - name: Generate keystore
         run: keytool -genkey -v -keystore debugkey.jks -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "O=ReVanced"
 
