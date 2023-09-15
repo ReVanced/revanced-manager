@@ -16,6 +16,6 @@ data class ReVancedGitRepository(
 
 @Serializable
 data class ReVancedContributor(
-    val username: String,
+    @SerialName("login") val username: String,
     @SerialName("avatar_url") val avatarUrl: String,
 )
