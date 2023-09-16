@@ -27,6 +27,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  List<Patch> patches = [];
   bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
@@ -301,20 +302,24 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
+    if (patches.isNotEmpty) {
+      return patches;
+    }
     final File? patchBundleFile = await downloadPatches();
     if (patchBundleFile != null) {
       try {
-        final patches = await PatcherAPI.patcherChannel.invokeMethod(
+        final patchesObject = await PatcherAPI.patcherChannel.invokeMethod(
           'getPatches',
           {
             'patchBundleFilePath': patchBundleFile.path,
           },
         );
         final List<Map<String, dynamic>> patchesMap = [];
-        patches.forEach((patch) {
+        patchesObject.forEach((patch) {
           patchesMap.add(jsonDecode('$patch'));
         });
-        return patchesMap.map((patch) => Patch.fromJson(patch)).toList();
+        patches = patchesMap.map((patch) => Patch.fromJson(patch)).toList();
+        return patches;
       } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
