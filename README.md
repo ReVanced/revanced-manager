@@ -28,7 +28,7 @@ We're accepting translations on [Crowdin](https://translate.revanced.app).
 
 1. Setup flutter environment for your [platform](https://docs.flutter.dev/get-started/install)
 2. Clone the repository locally
-3. Add your GitHub token in gradle. Properties like [this](/docs/4_building.md)
+3. Add your GitHub token in gradle.properties like [this](/docs/4_building.md)
 4. Open the project in terminal
 5. Run `flutter pub get` in terminal
 6. Then `flutter packages pub run build_runner build --delete-conflicting-outputs` (Must be done on each git pull)
