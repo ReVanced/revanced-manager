@@ -25,6 +25,10 @@ class PatchSelectionRepository(db: AppDatabase) {
             )
         })
 
+    suspend fun clearSelection(packageName: String) {
+        dao.clearForPackage(packageName)
+    }
+
     suspend fun reset() = dao.reset()
 
     suspend fun export(bundleUid: Int): SerializedSelection = dao.exportSelection(bundleUid)

@@ -16,11 +16,14 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -36,7 +39,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
@@ -49,6 +55,7 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.BaseSelectionMode
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
@@ -91,8 +98,35 @@ fun PatchesSelectorScreen(
                 title = stringResource(R.string.select_patches),
                 onBackClick = onBackClick,
                 actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
+                    IconButton(onClick = vm::reset) {
+                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    }
+
+                    var dropdownActive by rememberSaveable {
+                        mutableStateOf(false)
+                    }
+                    // This part should probably be changed
+                    IconButton(onClick = { dropdownActive = true }) {
+                        Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
+                        DropdownMenu(
+                            expanded = dropdownActive,
+                            onDismissRequest = { dropdownActive = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    val str =
+                                        if (vm.baseSelectionMode == BaseSelectionMode.DEFAULT)
+                                            "Use previous selection" else "Discard previous selection"
+
+                                    Text(str)
+                                },
+                                onClick = {
+                                    dropdownActive = false
+                                    vm.switchBaseSelectionMode()
+                                },
+                                enabled = vm.hasPreviousSelection
+                            )
+                        }
                     }
                     IconButton(onClick = { }) {
                         Icon(Icons.Outlined.Search, stringResource(R.string.search))
@@ -105,10 +139,11 @@ fun PatchesSelectorScreen(
                 text = { Text(stringResource(R.string.patch)) },
                 icon = { Icon(Icons.Default.Build, null) },
                 onClick = {
+                    // TODO: only allow this if all required options have been set.
                     composableScope.launch {
-                        // TODO: only allow this if all required options have been set.
-                        onPatchClick(vm.getSelection(), vm.getOptions())
-                        // onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
+                        val selection = vm.getSelection()
+                        vm.saveSelection(selection).join()
+                        onPatchClick(selection, vm.getOptions())
                     }
                 }
             )
