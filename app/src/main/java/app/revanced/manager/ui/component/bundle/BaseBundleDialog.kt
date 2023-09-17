@@ -159,15 +159,12 @@ fun BaseBundleDialog(
         )
     }
 
-
     BundleListItem(
         headlineText = stringResource(R.string.patches),
         supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
         else stringResource(R.string.patches_available, patchCount),
-        modifier = Modifier.clickable {
-            if (patchCount > 0) {
-                onPatchesClick()
-            }
+        modifier = Modifier.clickable(enabled = patchCount > 0) {
+            onPatchesClick()
         }
     ) {
         if (patchCount > 0) {
