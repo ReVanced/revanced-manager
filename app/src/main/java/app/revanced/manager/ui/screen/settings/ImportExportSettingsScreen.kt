@@ -107,7 +107,7 @@ fun ImportExportSettingsScreen(
                     importKeystoreLauncher.launch("*/*")
                 },
                 headline = R.string.import_keystore,
-                description = R.string.import_keystore_descripion
+                description = R.string.import_keystore_description
             )
             GroupItem(
                 onClick = {
