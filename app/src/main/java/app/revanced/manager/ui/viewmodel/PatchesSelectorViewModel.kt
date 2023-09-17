@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -44,8 +43,14 @@ class PatchesSelectorViewModel(
     private val app: Application = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val savedStateHandle: SavedStateHandle = get()
+    private val prefs: PreferencesManager = get()
 
     private val packageName = input.selectedApp.packageName
+
+    var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
+
+    var selectionWarningEnabled by mutableStateOf(true)
+        private set
 
     val allowExperimental = get<PreferencesManager>().allowExperimental
     val bundlesFlow = get<PatchBundleRepository>().sources.flatMapLatestAndCombine(
@@ -72,6 +77,30 @@ class PatchesSelectorViewModel(
             BundleInfo(source.name, source.uid, bundle.patches, supported, unsupported, universal)
         }
     }
+
+    init {
+        viewModelScope.launch {
+            if (prefs.disableSelectionWarning.get()) {
+                selectionWarningEnabled = false
+                return@launch
+            }
+
+            val experimental = allowExperimental.get()
+            fun BundleInfo.hasDefaultPatches(): Boolean {
+                return if (experimental) {
+                    all.any { patch -> patch.include }
+                } else {
+                    listOf(supported, universal).flatten().any {
+                        it.include
+                    }
+                }
+            }
+
+            // Don't show the warning if there are no default patches.
+            selectionWarningEnabled = bundlesFlow.first().any(BundleInfo::hasDefaultPatches)
+        }
+    }
+
 
     var baseSelectionMode by mutableStateOf(BaseSelectionMode.DEFAULT)
         private set
@@ -153,6 +182,23 @@ class PatchesSelectorViewModel(
 
         hasModifiedSelection = true
         patches[patch.name] = !isSelected(bundle, patch)
+    }
+
+    fun confirmSelectionWarning(dismissPermanently: Boolean) {
+        selectionWarningEnabled = false
+
+        pendingSelectionAction?.invoke()
+        pendingSelectionAction = null
+
+        if (!dismissPermanently) return
+
+        viewModelScope.launch {
+            prefs.disableSelectionWarning.update(true)
+        }
+    }
+
+    fun dismissSelectionWarning() {
+        pendingSelectionAction = null
     }
 
     fun reset() {
