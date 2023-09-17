@@ -13,6 +13,7 @@ class PreferencesManager(
     val api = stringPreference("api_url", "https://api.revanced.app")
 
     val allowExperimental = booleanPreference("allow_experimental", false)
+    val allowChangingPatches = booleanPreference("allow_changing_patches", false)
 
     val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)

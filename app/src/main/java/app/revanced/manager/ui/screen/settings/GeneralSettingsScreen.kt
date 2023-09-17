@@ -90,6 +90,13 @@ fun GeneralSettingsScreen(
                 headline = R.string.experimental_patches,
                 description = R.string.experimental_patches_description
             )
+
+            BooleanItem(
+                preference = prefs.allowChangingPatches,
+                coroutineScope = coroutineScope,
+                headline = R.string.changing_patches,
+                description = R.string.changing_patches_description
+            )
         }
     }
 }

@@ -42,6 +42,7 @@ class PatchesSelectorViewModel(
     private val selectionRepository: PatchSelectionRepository = get()
     private val savedStateHandle: SavedStateHandle = get()
 
+    val allowChangingPatches = get<PreferencesManager>().allowChangingPatches
     val allowExperimental = get<PreferencesManager>().allowExperimental
     val bundlesFlow = get<PatchBundleRepository>().sources.flatMapLatestAndCombine(
         combiner = { it.filterNotNull() }
@@ -74,10 +75,14 @@ class PatchesSelectorViewModel(
             val map: SnapshotStatePatchesSelection = mutableStateMapOf()
             viewModelScope.launch(Dispatchers.Default) {
                 val bundles = bundlesFlow.first()
-                val filteredSelection =
-                    (input.patchesSelection
-                        ?: selectionRepository.getSelection(input.selectedApp.packageName))
-                        .mapValues { (uid, patches) ->
+                val previousSelection = selectionRepository.getSelection(input.selectedApp.packageName)
+                if (!allowChangingPatches.get() || previousSelection.isEmpty()) {
+                    // Disabled changing default patches or no previous selection
+                    bundles.forEach { bundle ->
+                        map[bundle.uid] = bundle.supported.filter { it.include }.map { it.name }.toMutableStateSet()
+                    }
+                } else {
+                    val filteredSelection = previousSelection.mapValues { (uid, patches) ->
                             // Filter out patches that don't exist.
                             val filteredPatches = bundles.singleOrNull { it.uid == uid }
                                 ?.let { bundle ->
@@ -89,8 +94,9 @@ class PatchesSelectorViewModel(
                             filteredPatches.toMutableStateSet()
                         }
 
-                withContext(Dispatchers.Main) {
-                    map.putAll(filteredSelection)
+                    withContext(Dispatchers.Main) {
+                        map.putAll(filteredSelection)
+                    }
                 }
             }
             return@saveable map
@@ -99,6 +105,7 @@ class PatchesSelectorViewModel(
         saver = optionsSaver,
         init = ::mutableStateMapOf
     )
+    
 
     /**
      * Show the patch options dialog for this patch.
@@ -121,6 +128,14 @@ class PatchesSelectorViewModel(
         val patches = getOrCreateSelection(bundle)
 
         if (patches.contains(name)) patches.remove(name) else patches.add(name)
+    }
+
+    suspend fun setDefaultPatches() {
+        selectedPatches.clear()
+        
+        bundlesFlow.first().forEach {
+            selectedPatches[it.uid] = it.supported.filter{ it.include }.map{ it.name }.toMutableStateSet()
+        }
     }
 
     suspend fun getAndSaveSelection(): PatchesSelection =

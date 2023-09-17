@@ -36,7 +36,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
@@ -179,6 +182,7 @@ fun PatchesSelectorScreen(
                         }
 
                         val allowExperimental by vm.allowExperimental.getAsState()
+                        val allowChangingPatches by vm.allowChangingPatches.getAsState()
 
                         LazyColumn(
                             modifier = Modifier.fillMaxSize()
@@ -210,7 +214,8 @@ fun PatchesSelectorScreen(
                                                 patch
                                             ),
                                             onToggle = { vm.togglePatch(bundle.uid, patch) },
-                                            supported = supported
+                                            supported = supported,
+                                            allowChangingPatches = allowChangingPatches
                                         )
                                     }
                                 }
@@ -255,29 +260,43 @@ fun PatchItem(
     onOptionsDialog: () -> Unit,
     selected: Boolean,
     onToggle: () -> Unit,
-    supported: Boolean = true
-) = ListItem(
-    modifier = Modifier
-        .let { if (!supported) it.alpha(0.5f) else it }
-        .clickable(enabled = supported, onClick = onToggle)
-        .fillMaxSize(),
-    leadingContent = {
-        Checkbox(
-            checked = selected,
-            onCheckedChange = null,
-            enabled = supported
-        )
-    },
-    headlineContent = { Text(patch.name) },
-    supportingContent = patch.description?.let { { Text(it) } },
-    trailingContent = {
-        if (patch.options?.isNotEmpty() == true) {
-            IconButton(onClick = onOptionsDialog, enabled = supported) {
-                Icon(Icons.Outlined.Settings, null)
+    supported: Boolean = true,
+    allowChangingPatches: Boolean = true
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    ListItem(
+        modifier = Modifier
+            .let { if (!supported) it.alpha(0.5f) else it }
+            .clickable(enabled = supported, onClick = {
+                if (allowChangingPatches) {
+                    onToggle()
+                } else {
+                    showDialog = true
+                }
+            })
+            .fillMaxSize(),
+        leadingContent = {
+            Checkbox(
+                checked = selected,
+                onCheckedChange = null,
+                enabled = supported
+            )
+        },
+        headlineContent = { Text(patch.name) },
+        supportingContent = patch.description?.let { { Text(it) } },
+        trailingContent = {
+            if (patch.options?.isNotEmpty() == true) {
+                IconButton(onClick = onOptionsDialog, enabled = supported) {
+                    Icon(Icons.Outlined.Settings, null)
+                }
             }
         }
+    )
+
+    if (showDialog) {
+        PatchesChangeWarningDialog { showDialog = false }
     }
-)
+}
 
 @Composable
 fun ListHeader(
@@ -372,3 +391,16 @@ fun OptionsDialog(
         }
     }
 }
+
+@Composable
+fun PatchesChangeWarningDialog(
+    onDismissRequest: () -> Unit
+) = AlertDialog(
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+        TextButton(onClick = onDismissRequest) {
+            Text(stringResource(R.string.ok))
+        }
+    },
+    text = { Text(stringResource(R.string.patches_change_warning)) }
+)

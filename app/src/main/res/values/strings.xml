@@ -53,6 +53,8 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="experimental_patches">Allow experimental patches</string>
     <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
+    <string name="changing_patches">Enable changing selection</string>
+    <string name="changing_patches_description">"Enable changing the selection of patches.</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_descripion">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -142,6 +144,7 @@
     <string name="bundles_selected">%s selected</string>
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
+    <string name="patches_change_warning">It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Enable changing selection\" in the settings.</string>
     <string name="universal_patches">Universal patches</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
