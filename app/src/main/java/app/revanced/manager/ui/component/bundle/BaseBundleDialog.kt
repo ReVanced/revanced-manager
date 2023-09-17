@@ -170,10 +170,12 @@ fun BaseBundleDialog(
             }
         }
     ) {
-        Icon(
-            Icons.Outlined.ArrowRight,
-            stringResource(R.string.patches)
-        )
+        if (patchCount > 0) {
+            Icon(
+                Icons.Outlined.ArrowRight,
+                stringResource(R.string.patches)
+            )
+        }
     }
 
     version?.let {
