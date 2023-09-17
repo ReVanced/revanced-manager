@@ -120,6 +120,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                           context,
                                           packageName: app.packageName,
                                           appName: app.appName,
+                                          isInstalled: true,
                                       ),
                                     ),
                                   )

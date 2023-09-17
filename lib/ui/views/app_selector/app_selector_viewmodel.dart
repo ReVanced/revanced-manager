@@ -71,7 +71,7 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   Future<void> searchSuggestedVersionOnWeb(BuildContext context,
-      {required String packageName, required String appName}) async {
+      {required String packageName, required String appName, bool isInstalled = false,}) async {
     final String search = FlutterI18n.translate(
       context,
       'appSelectorCard.search',
@@ -85,8 +85,16 @@ class AppSelectorViewModel extends BaseViewModel {
       'appSelectorCard.version',
     );
     final String suggestedVersion = getSuggestedVersion(packageName);
-    final Uri url = Uri.parse('https://www.google.com/$search?q=$appName'
-        '+$apk+$version+v+$suggestedVersion');
+    String stringUrl;
+    if(isInstalled){
+      stringUrl = 'https://www.google.com/$search?q=$appName'
+          '+$apk';
+    }else{
+      stringUrl = 'https://www.google.com/$search?q=$appName'
+          '+$apk+$version+v+$suggestedVersion';
+    }
+
+    final Uri url = Uri.parse(stringUrl);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
