@@ -68,8 +68,9 @@ class PatchesSelectorViewModel(
         }
     }
 
+    /*
     private val selectedPatches: SnapshotStatePatchesSelection by savedStateHandle.saveable(
-        saver = patchesSelectionSaver,
+        saver = userPatchesSelectionSasver,
         init = {
             val map: SnapshotStatePatchesSelection = mutableStateMapOf()
             viewModelScope.launch(Dispatchers.Default) {
@@ -94,10 +95,52 @@ class PatchesSelectorViewModel(
                 }
             }
             return@saveable map
-        })
+        })*/
+    private val previousPatchSelection: SnapshotStateMap<Int, Set<String>> = mutableStateMapOf()
+    init {
+        viewModelScope.launch(Dispatchers.Default) {
+            // val bundles = bundlesFlow.first()
+            val unfilteredSelection = input.patchesSelection ?: selectionRepository.getSelection(input.selectedApp.packageName)
+            val filteredSelection = unfilteredSelection.mapValues { (_, value) -> value.toSet() }
+            /*
+            val filteredSelection = unfilteredSelection.mapValues { (uid, patches) ->
+                // Filter out patches that don't exist.
+                val filteredPatches = bundles.singleOrNull { it.uid == uid }
+                    ?.let { bundle ->
+                        val allPatches = bundle.all.map { it.name }
+                        patches.filter { allPatches.contains(it) }
+                    }
+                    ?: patches
+                filteredPatches.toSet()
+            }*/
+
+            withContext(Dispatchers.Main) {
+                previousPatchSelection.putAll(filteredSelection)
+            }
+        }
+    }
+
+    private val userSelection: SnapshotStateUserPatchesSelection by savedStateHandle.saveable(
+        saver = userPatchesSelectionSaver,
+        init = ::mutableStateMapOf
+    )
+
     private val patchOptions: SnapshotStateOptions by savedStateHandle.saveable(
         saver = optionsSaver,
         init = ::mutableStateMapOf
+    )
+
+    private val selectors: List<Selector> = listOf(
+        { bundle, patch ->
+            userSelection[bundle]?.get(patch.name)
+        },
+        { bundle, patch ->
+            // previousPatchSelection[bundle]?.contains(patch.name)
+            null
+        },
+        { _, patch ->
+            patch.include
+        }
     )
 
     /**
@@ -111,18 +154,35 @@ class PatchesSelectorViewModel(
         private set
 
     private fun getOrCreateSelection(bundle: Int) =
-        selectedPatches.getOrPut(bundle, ::mutableStateSetOf)
+        userSelection.getOrPut(bundle, ::mutableStateMapOf)
 
     fun isSelected(bundle: Int, patch: PatchInfo) =
-        selectedPatches[bundle]?.contains(patch.name) ?: false
+        selectors.firstNotNullOf { fn -> fn(bundle, patch) }
 
     fun togglePatch(bundle: Int, patch: PatchInfo) {
-        val name = patch.name
         val patches = getOrCreateSelection(bundle)
 
-        if (patches.contains(name)) patches.remove(name) else patches.add(name)
+        patches[patch.name] = !isSelected(bundle, patch)
     }
 
+    suspend fun getSelection(): PatchesSelection {
+        val bundles = bundlesFlow.first()
+        val removeUnsupported = !allowExperimental.get()
+
+        return bundles.associate { bundle ->
+            val included = bundle.all.filter { isSelected(bundle.uid, it) }.map { it.name }.toMutableSet()
+
+            if (removeUnsupported) {
+                val unsupported = bundle.unsupported.map { it.name }.toSet()
+                included.removeAll(unsupported)
+            }
+
+            bundle.uid to included
+        }
+    }
+
+    // TODO: reimplement this.
+    /*
     suspend fun getAndSaveSelection(): PatchesSelection =
         selectedPatches.also {
             withContext(Dispatchers.Default) {
@@ -138,6 +198,7 @@ class PatchesSelectorViewModel(
                 this[it.uid]?.removeAll(it.unsupported.map { patch -> patch.name }.toSet())
             }
         }
+    */
 
     fun getOptions(): Options = patchOptions
     fun getOptions(bundle: Int, patch: PatchInfo) = patchOptions[bundle]?.get(patch.name)
@@ -188,8 +249,8 @@ class PatchesSelectorViewModel(
             )
         )
 
-        private val patchesSelectionSaver: Saver<SnapshotStatePatchesSelection, PatchesSelection> =
-            snapshotStateMapSaver(valueSaver = snapshotStateSetSaver())
+        private val userPatchesSelectionSaver: Saver<SnapshotStateUserPatchesSelection, UserPatchesSelection> =
+            snapshotStateMapSaver(valueSaver = snapshotStateMapSaver())
     }
 
     data class BundleInfo(
@@ -211,3 +272,8 @@ private typealias SnapshotStateOptions = SnapshotStateMap<Int, SnapshotStateMap<
  * [PatchesSelection] but with observable collection types.
  */
 private typealias SnapshotStatePatchesSelection = SnapshotStateMap<Int, SnapshotStateSet<String>>
+
+private typealias UserPatchesSelection = Map<Int, Map<String, Boolean>>
+private typealias SnapshotStateUserPatchesSelection = SnapshotStateMap<Int, SnapshotStateMap<String, Boolean>>
+
+private typealias Selector = (Int, PatchInfo) -> Boolean?

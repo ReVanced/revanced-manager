@@ -107,7 +107,8 @@ fun PatchesSelectorScreen(
                 onClick = {
                     composableScope.launch {
                         // TODO: only allow this if all required options have been set.
-                        onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
+                        onPatchClick(vm.getSelection(), vm.getOptions())
+                        // onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
                     }
                 }
             )
