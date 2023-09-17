@@ -97,12 +97,10 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                       : 'v${widget.suggestedVersion}',
                                 },
                               ),
-                              // if(widget.suggestedVersion.isNotEmpty)
                               const SizedBox(width: 4),
-                              // if(widget.suggestedVersion.isNotEmpty)
                               const Icon(
-                                Icons.link,
-                                size: 17,
+                                Icons.launch,
+                                size: 16,
                               ),
                             ],
                           ),

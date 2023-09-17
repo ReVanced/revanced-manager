@@ -92,7 +92,6 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                                 },
                               ),
                               const SizedBox(width: 4),
-                              // if(widget.suggestedVersion.isNotEmpty)
                               const Icon(
                                 Icons.link,
                                 size: 17,
