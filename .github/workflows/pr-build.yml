@@ -32,10 +32,16 @@ jobs:
       - name: Build with Gradle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleRelease --no-daemon -Pdebug
+        run: ./gradlew assembleRelease --no-daemon -PnoProguard -Psign
+
+      - name: Set env
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Add hash to APK
+        run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-${{ env.COMMIT_HASH }}.apk
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: app/build/outputs/apk/release/*.apk
+          path: revanced-manager-${{ env.COMMIT_HASH }}.apk

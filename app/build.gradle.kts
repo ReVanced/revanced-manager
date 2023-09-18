@@ -1,5 +1,3 @@
-import java.io.ByteArrayOutputStream
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,19 +5,6 @@ plugins {
     alias(libs.plugins.about.libraries)
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.9.0"
-}
-
-val gitHash: String? by lazy {
-    val stdout = ByteArrayOutputStream()
-    try {
-        rootProject.exec {
-            commandLine("git", "rev-parse", "--short", "HEAD")
-            standardOutput = stdout
-        }
-        stdout.toString().trim()
-    } catch (e: Exception) {
-        null
-    }
 }
 
 android {
@@ -33,27 +18,23 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "0.0.1"
-        resourceConfigurations.addAll(listOf(
-            "en",
-        ))
+        resourceConfigurations.addAll(
+            listOf(
+                "en",
+            )
+        )
         vectorDrawables.useSupportLibrary = true
-    }
-
-    base {
-        archivesName = if (project.hasProperty("debug")) {
-            "revanced-manager-${ gitHash ?: "dirty" }"
-        } else {
-            "revanced-manager"
-        }
     }
 
     buildTypes {
         release {
-            if (!project.hasProperty("debug")) {
+            if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            } else {
+            }
+
+            if (project.hasProperty("sign")) {
                 signingConfig = signingConfigs.getByName("debug")
             }
         }
