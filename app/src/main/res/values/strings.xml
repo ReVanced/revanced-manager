@@ -54,7 +54,7 @@
     <string name="experimental_patches">Allow experimental patches</string>
     <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
     <string name="import_keystore">Import keystore</string>
-    <string name="import_keystore_descripion">Import a custom keystore</string>
+    <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
     <string name="import_keystore_dialog_description">You\'ll need enter the keystore’s credentials to import it.</string>
     <string name="import_keystore_dialog_alias_field">Username (Alias)</string>
