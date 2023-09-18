@@ -18,11 +18,9 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "0.0.1"
-        resourceConfigurations.addAll(
-            listOf(
-                "en",
-            )
-        )
+        resourceConfigurations.addAll(listOf(
+            "en",
+        ))
         vectorDrawables.useSupportLibrary = true
     }
 
