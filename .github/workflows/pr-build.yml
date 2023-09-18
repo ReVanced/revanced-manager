@@ -6,9 +6,8 @@ on:
       - ".github/workflows/pr-build.yml"
       - "app/**"
       - "gradle/**"
-      - "build.gradle.kts"
-      - "gradle.properties"
-      - "settings.gradle.kts"
+      - "*.properties"
+      - ".kts"
 
 jobs:
   build:
