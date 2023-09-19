@@ -32,3 +32,24 @@ By using Material 3 and Material You, we are ensuring that the app's user interf
 * **Better performance:** Jetpack Compose uses the power of the Android framework to provide smooth and fast performance, which enhances the user experience.
 * **Modern and efficient UI development:** Jetpack Compose provides a modern and efficient way of building UI, which makes it easier for developers to create beautiful and performant user interfaces.
 
+## 🔽 Download
+
+You can obtain ReVanced Manager by downloading it from either [revanced.app/download](https://revanced.app/download) or [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases)
+
+## 📝 Prerequisites
+
+For a list of prerequisites, refer to [docs/0_prerequisites.md](docs/0_prerequisites.md)
+
+## 🔴 Issues
+
+For suggestions and bug reports, open an issue [here](https://github.com/revanced/revanced-manager/issues/new/choose).
+
+## 🌐 Translation
+
+[![Crowdin](https://badges.crowdin.net/revanced/localized.svg)](https://crowdin.com/project/revanced)
+
+We're accepting translations on [Crowdin](https://translate.revanced.app)
+
+## 🛠️ Building Manager from source
+
+For instructions on how to build ReVanced Manager from source, refer to [docs/4_building.md](docs/4_building.md)
