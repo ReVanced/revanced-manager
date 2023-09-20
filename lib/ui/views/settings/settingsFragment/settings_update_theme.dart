@@ -24,31 +24,24 @@ class SUpdateTheme extends BaseViewModel {
 
   Future<void> setUseDynamicTheme(BuildContext context, bool value) async {
     await _managerAPI.setUseDynamicTheme(value);
-    final int currentTheme = DynamicTheme.of(context)!.themeId;
-    if (currentTheme.isEven) {
-      await DynamicTheme.of(context)!.setTheme(value ? 2 : 0);
-    } else {
-      await DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
-    }
+    final int currentTheme = (DynamicTheme.of(context)!.themeId ~/ 2) * 2;
+    await DynamicTheme.of(context)!.setTheme(currentTheme + (value ? 1 : 0));
     notifyListeners();
   }
 
-  bool getDarkThemeStatus() {
-    return _managerAPI.getUseDarkTheme();
+  int getThemeMode() {
+    return _managerAPI.getThemeMode();
   }
 
-  Future<void> setUseDarkTheme(BuildContext context, bool value) async {
-    await _managerAPI.setUseDarkTheme(value);
-    final int currentTheme = DynamicTheme.of(context)!.themeId;
-    if (currentTheme < 2) {
-      await DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
-    } else {
-      await DynamicTheme.of(context)!.setTheme(value ? 3 : 2);
-    }
+  Future<void> setThemeMode(BuildContext context, int value) async {
+    await _managerAPI.setThemeMode(value);
+    final bool isDynamicTheme = DynamicTheme.of(context)!.themeId.isEven;
+    await DynamicTheme.of(context)!.setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
+    final bool isLight = value != 2 && (value == 1 || DynamicTheme.of(context)!.theme.brightness == Brightness.light);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         systemNavigationBarIconBrightness:
-            value ? Brightness.light : Brightness.dark,
+        isLight ? Brightness.dark : Brightness.light,
       ),
     );
     notifyListeners();
@@ -63,10 +56,10 @@ class SUpdateThemeUI extends StatelessWidget {
     return SettingsSection(
       title: 'settingsView.appearanceSectionTitle',
       children: <Widget>[
-        SwitchListTile(
+        ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
-            'settingsView.darkThemeLabel',
+            'settingsView.themeModeLabel',
             child: const Text(
               '',
               style: TextStyle(
@@ -75,11 +68,24 @@ class SUpdateThemeUI extends StatelessWidget {
               ),
             ),
           ),
-          subtitle: I18nText('settingsView.darkThemeHint'),
-          value: SUpdateTheme().getDarkThemeStatus(),
-          onChanged: (value) => SUpdateTheme().setUseDarkTheme(
-            context,
-            value,
+          subtitle: I18nText('settingsView.themeModeHint'),
+          trailing: DropdownButton<int>(
+            value: SUpdateTheme().getThemeMode(),
+            onChanged: (value) => SUpdateTheme().setThemeMode(context, value!),
+            items: <DropdownMenuItem<int>>[
+              DropdownMenuItem<int>(
+                value: 0,
+                child: I18nText('settingsView.systemThemeLabel'),
+              ),
+              DropdownMenuItem<int>(
+                value: 1,
+                child: I18nText('settingsView.lightThemeLabel'),
+              ),
+              DropdownMenuItem<int>(
+                value: 2,
+                child: I18nText('settingsView.darkThemeLabel'),
+              ),
+            ],
           ),
         ),
         FutureBuilder<int>(

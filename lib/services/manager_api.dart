@@ -197,12 +197,12 @@ class ManagerAPI {
     await _prefs.setBool('useDynamicTheme', value);
   }
 
-  bool getUseDarkTheme() {
-    return _prefs.getBool('useDarkTheme') ?? false;
+  int getThemeMode() {
+    return _prefs.getInt('themeMode') ?? 2;
   }
 
-  Future<void> setUseDarkTheme(bool value) async {
-    await _prefs.setBool('useDarkTheme', value);
+  Future<void> setThemeMode(int value) async {
+    await _prefs.setInt('themeMode', value);
   }
 
   bool areUniversalPatchesEnabled() {

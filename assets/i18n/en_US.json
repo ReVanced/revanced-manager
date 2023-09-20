@@ -178,8 +178,11 @@
         "exportSectionTitle": "Import & export",
         "logsSectionTitle": "Logs",
 
+        "themeModeLabel": "App Theme",
+        "themeModeHint": "Select the theme to use",
+        "systemThemeLabel": "System default",
+        "lightThemeLabel": "Light mode",
         "darkThemeLabel": "Dark mode",
-        "darkThemeHint": "Welcome to the dark side",
 
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Enjoy an experience closer to your device",
