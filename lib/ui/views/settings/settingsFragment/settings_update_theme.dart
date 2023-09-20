@@ -114,7 +114,7 @@ class SUpdateTheme extends BaseViewModel {
             },
           ),
           CustomMaterialButton(
-            isFilled: true,
+            isFilled: false,
             label: I18nText('okButton'),
             onPressed: () {
               Navigator.of(context).pop();
