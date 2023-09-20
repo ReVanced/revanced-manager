@@ -63,24 +63,24 @@ class SUpdateTheme extends BaseViewModel {
   }
 
   Future<void> showThemeDialog(BuildContext context) async {
-    int? currentTheme = getThemeMode();
+    final int originalTheme = getThemeMode();
+    int currentTheme = originalTheme;
 
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.themeModeLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        actions: <Widget>[
-          Column(
+        content: SingleChildScrollView(
+          child: Column(
             children: <Widget>[
               RadioListTile(
                 title: I18nText('settingsView.systemThemeLabel'),
                 value: 0,
                 groupValue: currentTheme,
                 onChanged: (value) => {
-                  currentTheme = value,
-                  setThemeMode(context, value!),
-                  Navigator.of(context).pop(),
+                  currentTheme = value!,
+                  setThemeMode(context, value),
                 },
               ),
               RadioListTile(
@@ -88,9 +88,8 @@ class SUpdateTheme extends BaseViewModel {
                 value: 1,
                 groupValue: currentTheme,
                 onChanged: (value) => {
-                  currentTheme = value,
-                  setThemeMode(context, value!),
-                  Navigator.of(context).pop(),
+                  currentTheme = value!,
+                  setThemeMode(context, value),
                 },
               ),
               RadioListTile(
@@ -98,12 +97,28 @@ class SUpdateTheme extends BaseViewModel {
                 value: 2,
                 groupValue: currentTheme,
                 onChanged: (value) => {
-                  currentTheme = value,
-                  setThemeMode(context, value!),
-                  Navigator.of(context).pop(),
+                  currentTheme = value!,
+                  setThemeMode(context, value),
                 },
               ),
             ],
+          ),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () {
+              setThemeMode(context, originalTheme);
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            isFilled: true,
+            label: I18nText('okButton'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
