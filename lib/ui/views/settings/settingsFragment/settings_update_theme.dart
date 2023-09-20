@@ -8,6 +8,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 final _settingViewModel = SettingsViewModel();
@@ -46,8 +47,71 @@ class SUpdateTheme extends BaseViewModel {
     );
     notifyListeners();
   }
+
+  I18nText getThemeModeName() {
+    final int = getThemeMode();
+    switch (int) {
+      case 0:
+        return I18nText('settingsView.systemThemeLabel');
+      case 1:
+        return I18nText('settingsView.lightThemeLabel');
+      case 2:
+        return I18nText('settingsView.darkThemeLabel');
+      default:
+        return I18nText('settingsView.systemThemeLabel');
+    }
+  }
+
+  Future<void> showThemeDialog(BuildContext context) async {
+    int? currentTheme = getThemeMode();
+
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.themeModeLabel'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        actions: <Widget>[
+          Column(
+            children: <Widget>[
+              RadioListTile(
+                title: I18nText('settingsView.systemThemeLabel'),
+                value: 0,
+                groupValue: currentTheme,
+                onChanged: (value) => {
+                  currentTheme = value,
+                  setThemeMode(context, value!),
+                  Navigator.of(context).pop(),
+                },
+              ),
+              RadioListTile(
+                title: I18nText('settingsView.lightThemeLabel'),
+                value: 1,
+                groupValue: currentTheme,
+                onChanged: (value) => {
+                  currentTheme = value,
+                  setThemeMode(context, value!),
+                  Navigator.of(context).pop(),
+                },
+              ),
+              RadioListTile(
+                title: I18nText('settingsView.darkThemeLabel'),
+                value: 2,
+                groupValue: currentTheme,
+                onChanged: (value) => {
+                  currentTheme = value,
+                  setThemeMode(context, value!),
+                  Navigator.of(context).pop(),
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
+final sUpdateTheme = SUpdateTheme();
 class SUpdateThemeUI extends StatelessWidget {
   const SUpdateThemeUI({super.key});
 
@@ -69,23 +133,9 @@ class SUpdateThemeUI extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.themeModeHint'),
-          trailing: DropdownButton<int>(
-            value: SUpdateTheme().getThemeMode(),
-            onChanged: (value) => SUpdateTheme().setThemeMode(context, value!),
-            items: <DropdownMenuItem<int>>[
-              DropdownMenuItem<int>(
-                value: 0,
-                child: I18nText('settingsView.systemThemeLabel'),
-              ),
-              DropdownMenuItem<int>(
-                value: 1,
-                child: I18nText('settingsView.lightThemeLabel'),
-              ),
-              DropdownMenuItem<int>(
-                value: 2,
-                child: I18nText('settingsView.darkThemeLabel'),
-              ),
-            ],
+          trailing: CustomMaterialButton(
+            label: sUpdateTheme.getThemeModeName(),
+            onPressed: () => { sUpdateTheme.showThemeDialog(context) },
           ),
         ),
         FutureBuilder<int>(
