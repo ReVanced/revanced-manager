@@ -113,7 +113,6 @@ class SUpdateTheme extends BaseViewModel {
             },
           ),
           CustomMaterialButton(
-            isFilled: false,
             label: I18nText('okButton'),
             onPressed: () {
               setThemeMode(context, newTheme.value);
