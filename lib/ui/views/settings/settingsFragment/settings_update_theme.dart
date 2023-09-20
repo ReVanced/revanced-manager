@@ -147,7 +147,6 @@ class SUpdateThemeUI extends StatelessWidget {
               ),
             ),
           ),
-          subtitle: I18nText('settingsView.themeModeHint'),
           trailing: CustomMaterialButton(
             label: sUpdateTheme.getThemeModeName(),
             onPressed: () => { sUpdateTheme.showThemeDialog(context) },
