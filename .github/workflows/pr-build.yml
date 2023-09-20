@@ -1,0 +1,47 @@
+name: Build pull request
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/pr-build.yml"
+      - "app/**"
+      - "gradle/**"
+      - "*.properties"
+      - ".kts"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ runner.home }}/.gradle/caches
+            ${{ runner.home }}/.gradle/wrapper
+            .gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      - name: Set up Java
+        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+
+      - name: Build with Gradle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleRelease --no-daemon -PnoProguard -PsignAsDebug
+
+      - name: Set env
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Add hash to APK
+        run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-${{ env.COMMIT_HASH }}.apk
+
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: revanced-manager
+          path: revanced-manager-${{ env.COMMIT_HASH }}.apk
