@@ -182,52 +182,54 @@ class InstallerViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
-          content: ValueListenableBuilder(
-            valueListenable: installType,
-            builder: (context, value, child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: I18nText(
-                      'installerView.installTypeDescription',
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.secondary,
+          content: SingleChildScrollView(
+            child: ValueListenableBuilder(
+              valueListenable: installType,
+              builder: (context, value, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: I18nText(
+                        'installerView.installTypeDescription',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  RadioListTile(
-                    title: I18nText('installerView.installNonRootType'),
-                    subtitle: I18nText('installerView.installRecommendedType'),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    value: 0,
-                    groupValue: value,
-                    onChanged: (selected) {
-                      installType.value = selected!;
-                    },
-                  ),
-                  RadioListTile(
-                    title: I18nText('installerView.installRootType'),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    value: 1,
-                    groupValue: value,
-                    onChanged: (selected) {
-                      installType.value = selected!;
-                    },
-                  ),
-                ],
-              );
-            },
+                    RadioListTile(
+                      title: I18nText('installerView.installNonRootType'),
+                      subtitle: I18nText('installerView.installRecommendedType'),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      value: 0,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                    RadioListTile(
+                      title: I18nText('installerView.installRootType'),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      value: 1,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           actions: [
             CustomMaterialButton(
