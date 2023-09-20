@@ -4,7 +4,7 @@ In order to keep up with the latest features and bug fixes, it is recommended to
 
 ## ✅ Updating steps
 
-> TODO
+> Currently not implemented
 
 ## ⏭️ What's next
 
