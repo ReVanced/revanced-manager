@@ -32,7 +32,7 @@ android {
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
 
-            if (project.hasProperty("sign")) {
+            if (project.hasProperty("signAsDebug")) {
                 signingConfig = signingConfigs.getByName("debug")
             }
         }
