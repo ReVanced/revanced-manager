@@ -69,40 +69,44 @@ class SUpdateTheme extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.themeModeLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: SingleChildScrollView(
-          child: ValueListenableBuilder(
-            valueListenable: newTheme,
-            builder: (context, value, child) {
-              return Column(
-                children: <Widget>[
-                  RadioListTile(
-                    title: I18nText('settingsView.systemThemeLabel'),
-                    value: 0,
-                    groupValue: value,
-                    onChanged: (value) {
-                      newTheme.value = value!;
-                    },
-                  ),
-                  RadioListTile(
-                    title: I18nText('settingsView.lightThemeLabel'),
-                    value: 1,
-                    groupValue: value,
-                    onChanged: (value) {
-                      newTheme.value = value!;
-                    },
-                  ),
-                  RadioListTile(
-                    title: I18nText('settingsView.darkThemeLabel'),
-                    value: 2,
-                    groupValue: value,
-                    onChanged: (value) {
-                      newTheme.value = value!;
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        content: ValueListenableBuilder(
+          valueListenable: newTheme,
+          builder: (context, value, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                RadioListTile(
+                  title: I18nText('settingsView.systemThemeLabel'),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  value: 0,
+                  groupValue: value,
+                  onChanged: (value) {
+                    newTheme.value = value!;
+                  },
+                ),
+                RadioListTile(
+                  title: I18nText('settingsView.lightThemeLabel'),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  value: 1,
+                  groupValue: value,
+                  onChanged: (value) {
+                    newTheme.value = value!;
+                  },
+                ),
+                RadioListTile(
+                  title: I18nText('settingsView.darkThemeLabel'),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  value: 2,
+                  groupValue: value,
+                  onChanged: (value) {
+                    newTheme.value = value!;
+                  },
+                ),
+              ],
+            );
+          },
         ),
         actions: <Widget>[
           CustomMaterialButton(
