@@ -25,6 +25,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "ReVanced Manager Debug")
+        }
+
         release {
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
@@ -33,6 +38,8 @@ android {
             }
 
             if (project.hasProperty("signAsDebug")) {
+                applicationIdSuffix = ".debug"
+                resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
             }
         }
