@@ -49,8 +49,7 @@ class SUpdateTheme extends BaseViewModel {
   }
 
   I18nText getThemeModeName() {
-    final int = getThemeMode();
-    switch (int) {
+    switch (getThemeMode()) {
       case 0:
         return I18nText('settingsView.systemThemeLabel');
       case 1:
@@ -63,8 +62,7 @@ class SUpdateTheme extends BaseViewModel {
   }
 
   Future<void> showThemeDialog(BuildContext context) async {
-    final int originalTheme = getThemeMode();
-    int currentTheme = originalTheme;
+    final ValueNotifier<int> newTheme = ValueNotifier(getThemeMode());
 
     return showDialog(
       context: context,
@@ -72,36 +70,38 @@ class SUpdateTheme extends BaseViewModel {
         title: I18nText('settingsView.themeModeLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              RadioListTile(
-                title: I18nText('settingsView.systemThemeLabel'),
-                value: 0,
-                groupValue: currentTheme,
-                onChanged: (value) => {
-                  currentTheme = value!,
-                  setThemeMode(context, value),
-                },
-              ),
-              RadioListTile(
-                title: I18nText('settingsView.lightThemeLabel'),
-                value: 1,
-                groupValue: currentTheme,
-                onChanged: (value) => {
-                  currentTheme = value!,
-                  setThemeMode(context, value),
-                },
-              ),
-              RadioListTile(
-                title: I18nText('settingsView.darkThemeLabel'),
-                value: 2,
-                groupValue: currentTheme,
-                onChanged: (value) => {
-                  currentTheme = value!,
-                  setThemeMode(context, value),
-                },
-              ),
-            ],
+          child: ValueListenableBuilder(
+            valueListenable: newTheme,
+            builder: (context, value, child) {
+              return Column(
+                children: <Widget>[
+                  RadioListTile(
+                    title: I18nText('settingsView.systemThemeLabel'),
+                    value: 0,
+                    groupValue: value,
+                    onChanged: (value) {
+                      newTheme.value = value!;
+                    },
+                  ),
+                  RadioListTile(
+                    title: I18nText('settingsView.lightThemeLabel'),
+                    value: 1,
+                    groupValue: value,
+                    onChanged: (value) {
+                      newTheme.value = value!;
+                    },
+                  ),
+                  RadioListTile(
+                    title: I18nText('settingsView.darkThemeLabel'),
+                    value: 2,
+                    groupValue: value,
+                    onChanged: (value) {
+                      newTheme.value = value!;
+                    },
+                  ),
+                ],
+              );
+            },
           ),
         ),
         actions: <Widget>[
@@ -109,7 +109,6 @@ class SUpdateTheme extends BaseViewModel {
             isFilled: false,
             label: I18nText('cancelButton'),
             onPressed: () {
-              setThemeMode(context, originalTheme);
               Navigator.of(context).pop();
             },
           ),
@@ -117,6 +116,7 @@ class SUpdateTheme extends BaseViewModel {
             isFilled: false,
             label: I18nText('okButton'),
             onPressed: () {
+              setThemeMode(context, newTheme.value);
               Navigator.of(context).pop();
             },
           ),
