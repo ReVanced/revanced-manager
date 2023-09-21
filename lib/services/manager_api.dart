@@ -11,6 +11,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
@@ -26,6 +27,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  List<Patch> patches = [];
   bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
@@ -41,11 +43,11 @@ class ManagerAPI {
   String? patchesVersion = '';
   String? integrationsVersion = '';
   bool isDefaultPatchesRepo() {
-    return getPatchesRepo() == 'revanced/revanced-patches';
+    return getPatchesRepo().toLowerCase() == 'revanced/revanced-patches';
   }
 
   bool isDefaultIntegrationsRepo() {
-    return getIntegrationsRepo() == 'revanced/revanced-integrations';
+    return getIntegrationsRepo().toLowerCase() == 'revanced/revanced-integrations';
   }
 
   Future<void> initialize() async {
@@ -79,12 +81,12 @@ class ManagerAPI {
     await _prefs.setString('repoUrl', url);
   }
 
-  String getPatchesDownloadURL(bool bundle) {
-    return _prefs.getString('patchesDownloadURL-$bundle') ?? '';
+  String getPatchesDownloadURL() {
+    return _prefs.getString('patchesDownloadURL') ?? '';
   }
 
-  Future<void> setPatchesDownloadURL(String value, bool bundle) async {
-    await _prefs.setString('patchesDownloadURL-$bundle', value);
+  Future<void> setPatchesDownloadURL(String value) async {
+    await _prefs.setString('patchesDownloadURL', value);
   }
 
   String getPatchesRepo() {
@@ -197,12 +199,12 @@ class ManagerAPI {
     await _prefs.setBool('useDynamicTheme', value);
   }
 
-  bool getUseDarkTheme() {
-    return _prefs.getBool('useDarkTheme') ?? false;
+  int getThemeMode() {
+    return _prefs.getInt('themeMode') ?? 2;
   }
 
-  Future<void> setUseDarkTheme(bool value) async {
-    await _prefs.setBool('useDarkTheme', value);
+  Future<void> setThemeMode(int value) async {
+    await _prefs.setInt('themeMode', value);
   }
 
   bool areUniversalPatchesEnabled() {
@@ -300,28 +302,38 @@ class ManagerAPI {
   }
 
   Future<List<Patch>> getPatches() async {
-    try {
-      final String repoName = getPatchesRepo();
-      final String currentVersion = await getCurrentPatchesVersion();
-      final String url = getPatchesDownloadURL(false);
-      return await _githubAPI.getPatches(
-        repoName,
-        currentVersion,
-        url,
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return [];
+    if (patches.isNotEmpty) {
+      return patches;
     }
+    final File? patchBundleFile = await downloadPatches();
+    if (patchBundleFile != null) {
+      try {
+        final patchesObject = await PatcherAPI.patcherChannel.invokeMethod(
+          'getPatches',
+          {
+            'patchBundleFilePath': patchBundleFile.path,
+          },
+        );
+        final List<Map<String, dynamic>> patchesMap = [];
+        patchesObject.forEach((patch) {
+          patchesMap.add(jsonDecode('$patch'));
+        });
+        patches = patchesMap.map((patch) => Patch.fromJson(patch)).toList();
+        return patches;
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    }
+    return List.empty();
   }
 
   Future<File?> downloadPatches() async {
     try {
       final String repoName = getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
-      final String url = getPatchesDownloadURL(true);
+      final String url = getPatchesDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
         '.jar',
         repoName,
@@ -447,8 +459,7 @@ class ManagerAPI {
 
   Future<void> setCurrentPatchesVersion(String version) async {
     await _prefs.setString('patchesVersion', version);
-    await setPatchesDownloadURL('', false);
-    await setPatchesDownloadURL('', true);
+    await setPatchesDownloadURL('');
     await downloadPatches();
   }
 

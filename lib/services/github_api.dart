@@ -222,10 +222,8 @@ class GithubAPI {
           final String downloadUrl = asset['browser_download_url'];
           if (extension == '.apk') {
             _managerAPI.setIntegrationsDownloadURL(downloadUrl);
-          } else if (extension == '.json') {
-            _managerAPI.setPatchesDownloadURL(downloadUrl, false);
           } else {
-            _managerAPI.setPatchesDownloadURL(downloadUrl, true);
+            _managerAPI.setPatchesDownloadURL(downloadUrl);
           }
           return await DefaultCacheManager().getSingleFile(
             downloadUrl,
