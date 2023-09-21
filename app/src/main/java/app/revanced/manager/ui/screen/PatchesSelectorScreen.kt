@@ -101,16 +101,17 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.Build, null) },
-                onClick = {
-                    composableScope.launch {
-                        // TODO: only allow this if all required options have been set.
-                        onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
+            if (!vm.isSelectionEmpty()) {
+                ExtendedFloatingActionButton(
+                    text = { Text(stringResource(R.string.patch)) },
+                    icon = { Icon(Icons.Default.Build, null) },
+                    onClick = {
+                        composableScope.launch {
+                            onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     ) { paddingValues ->
         Column(
