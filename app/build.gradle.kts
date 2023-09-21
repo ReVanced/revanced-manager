@@ -161,4 +161,7 @@ dependencies {
 
     // Markdown to HTML
     implementation(libs.markdown)
+
+    // Icons
+    implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 }

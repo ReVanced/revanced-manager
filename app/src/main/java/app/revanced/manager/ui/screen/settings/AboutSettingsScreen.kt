@@ -5,9 +5,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.MailOutline
@@ -25,6 +25,14 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Brands
+import compose.icons.fontawesomeicons.brands.Discord
+import compose.icons.fontawesomeicons.brands.Github
+import compose.icons.fontawesomeicons.brands.Reddit
+import compose.icons.fontawesomeicons.brands.Telegram
+import compose.icons.fontawesomeicons.brands.Twitter
+import compose.icons.fontawesomeicons.brands.Youtube
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -48,12 +56,30 @@ fun AboutSettingsScreen(
     )
 
     val outlinedButton = listOf(
-        Triple(Icons.Outlined.Code, stringResource(R.string.github), third = {
+        Triple(FontAwesomeIcons.Brands.Github, stringResource(R.string.github), third = {
             context.openUrl("https://revanced.app/github")
         }),
         Triple(Icons.Outlined.MailOutline, stringResource(R.string.contact), third = {
             context.openUrl("mailto:nosupport@revanced.app")
         }),
+    )
+
+    val socialButtons = listOf(
+        Pair(FontAwesomeIcons.Brands.Discord) {
+            context.openUrl("https://revanced.app/discord")
+        },
+        Pair(FontAwesomeIcons.Brands.Telegram) {
+            context.openUrl("https://t.me/app_revanced")
+        },
+        Pair(FontAwesomeIcons.Brands.Reddit) {
+            context.openUrl("https://reddit.com/r/app_revanced")
+        },
+        Pair(FontAwesomeIcons.Brands.Twitter) {
+            context.openUrl("https://twitter.com/@revancedapp")
+        },
+        Pair(FontAwesomeIcons.Brands.Youtube) {
+            context.openUrl("https://youtube.com/@revancedapp")
+        },
     )
 
     val listItems = listOf(
@@ -126,6 +152,7 @@ fun AboutSettingsScreen(
                         Button(
                             onClick = onClick,
                             modifier = Modifier.padding(end = 8.dp),
+
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
@@ -149,6 +176,25 @@ fun AboutSettingsScreen(
                                     color = MaterialTheme.colorScheme.primary
                                 )
                             }
+                        }
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.padding(top = 12.dp)
+                ) {
+                    socialButtons.forEach { (icon, onClick) ->
+                        IconButton(
+                            onClick = onClick,
+                            modifier = Modifier.padding(end = 8.dp),
+                        ) {
+                            Icon(
+                                icon,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(28.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
                         }
                     }
                 }
