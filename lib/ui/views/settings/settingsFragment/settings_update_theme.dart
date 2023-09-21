@@ -157,6 +157,7 @@ class SUpdateThemeUI extends StatelessWidget {
             label: sUpdateTheme.getThemeModeName(),
             onPressed: () => { sUpdateTheme.showThemeDialog(context) },
           ),
+          onTap: () => { sUpdateTheme.showThemeDialog(context) },
         ),
         FutureBuilder<int>(
           future: _settingViewModel.getSdkVersion(),
