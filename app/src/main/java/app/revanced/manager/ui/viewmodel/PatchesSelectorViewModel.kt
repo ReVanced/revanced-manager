@@ -23,7 +23,6 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
-import app.revanced.manager.util.SnapshotStateSet
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.saver.snapshotStateMapSaver
 import app.revanced.manager.util.toast
@@ -117,22 +116,23 @@ class PatchesSelectorViewModel(
 
     private var hasModifiedSelection = false
 
-    private val userSelection: SnapshotStateUserPatchesSelection by savedStateHandle.saveable(
+    private val userSelection: SnapshotUserPatchesSelection by savedStateHandle.saveable(
         saver = userPatchesSelectionSaver,
         init = ::mutableStateMapOf
     )
 
-    private val patchOptions: SnapshotStateOptions by savedStateHandle.saveable(
+    private val patchOptions: SnapshotOptions by savedStateHandle.saveable(
         saver = optionsSaver,
         init = ::mutableStateMapOf
     )
 
     private val selectors by derivedStateOf<Array<Selector>> {
         arrayOf(
+            // Patches that were explicitly selected
             { bundle, patch ->
-                // Explicit selection
                 userSelection[bundle]?.get(patch.name)
             },
+            // The fallback selection.
             when (baseSelectionMode) {
                 BaseSelectionMode.DEFAULT -> ({ _, patch -> patch.include })
 
@@ -279,7 +279,7 @@ class PatchesSelectorViewModel(
         private fun <K, K2, V> SnapshotStateMap<K, SnapshotStateMap<K2, V>>.getOrCreate(key: K) =
             getOrPut(key, ::mutableStateMapOf)
 
-        private val optionsSaver: Saver<SnapshotStateOptions, Options> = snapshotStateMapSaver(
+        private val optionsSaver: Saver<SnapshotOptions, Options> = snapshotStateMapSaver(
             // Patch name -> Options
             valueSaver = snapshotStateMapSaver(
                 // Option key -> Option value
@@ -287,7 +287,7 @@ class PatchesSelectorViewModel(
             )
         )
 
-        private val userPatchesSelectionSaver: Saver<SnapshotStateUserPatchesSelection, UserPatchesSelection> =
+        private val userPatchesSelectionSaver: Saver<SnapshotUserPatchesSelection, UserPatchesSelection> =
             snapshotStateMapSaver(valueSaver = snapshotStateMapSaver())
     }
 
@@ -317,17 +317,9 @@ class PatchesSelectorViewModel(
     )
 }
 
-/**
- * [Options] but with observable collection types.
- */
-private typealias SnapshotStateOptions = SnapshotStateMap<Int, SnapshotStateMap<String, SnapshotStateMap<String, Any?>>>
-
-/**
- * [PatchesSelection] but with observable collection types.
- */
-private typealias SnapshotStatePatchesSelection = SnapshotStateMap<Int, SnapshotStateSet<String>>
-
-private typealias UserPatchesSelection = Map<Int, Map<String, Boolean>>
-private typealias SnapshotStateUserPatchesSelection = SnapshotStateMap<Int, SnapshotStateMap<String, Boolean>>
-
 private typealias Selector = (Int, PatchInfo) -> Boolean?
+private typealias UserPatchesSelection = Map<Int, Map<String, Boolean>>
+
+// Versions of other types, but utilizing observable collection types instead.
+private typealias SnapshotOptions = SnapshotStateMap<Int, SnapshotStateMap<String, SnapshotStateMap<String, Any?>>>
+private typealias SnapshotUserPatchesSelection = SnapshotStateMap<Int, SnapshotStateMap<String, Boolean>>

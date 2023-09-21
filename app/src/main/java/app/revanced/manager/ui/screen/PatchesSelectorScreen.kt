@@ -320,9 +320,9 @@ fun SelectionWarningDialog(
     AlertDialog(
         onDismissRequest = onCancel,
         confirmButton = {
-            val seenTimer by prefs.selectionWarningCountdown.getAsState()
+            val userHasSeenTimer by prefs.selectionWarningCountdown.getAsState()
 
-            Countdown(start = if (seenTimer) 0 else 3) { timer ->
+            Countdown(start = if (userHasSeenTimer) 0 else 3) { timer ->
                 LaunchedEffect(timer) {
                     if (timer == 0) prefs.selectionWarningCountdown.update(true)
                 }
@@ -378,7 +378,7 @@ fun SelectionWarningDialog(
                             dismissPermanently = it
                         }
                     )
-                    Text("Do not show this again")
+                    Text(stringResource(R.string.permanent_dismiss))
                 }
             }
         }
