@@ -58,7 +58,9 @@ fun AboutSettingsScreen(
 
     val listItems = listOf(
         Triple(stringResource(R.string.submit_feedback), stringResource(R.string.submit_feedback_description),
-            third = { /*TODO*/ }),
+            third = {
+                context.openUrl("https://github.com/ReVanced/revanced-manager/issues/new/choose")
+            }),
         Triple(stringResource(R.string.contributors), stringResource(R.string.contributors_description),
             third = onContributorsClick),
         Triple(stringResource(R.string.developer_options), stringResource(R.string.developer_options_description),
