@@ -124,6 +124,7 @@ class PatchesSelectorViewModel(
     }
 
     fun isSelectionEmpty() = selectedPatches.values.all { it.isEmpty() }
+    
     suspend fun getAndSaveSelection(): PatchesSelection =
         selectedPatches.also {
             withContext(Dispatchers.Default) {
