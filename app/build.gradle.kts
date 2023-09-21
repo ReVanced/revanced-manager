@@ -21,15 +21,27 @@ android {
         resourceConfigurations.addAll(listOf(
             "en",
         ))
-
         vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "ReVanced Manager Debug")
+        }
+
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            if (!project.hasProperty("noProguard")) {
+                isMinifyEnabled = true
+                isShrinkResources = true
+                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            }
+
+            if (project.hasProperty("signAsDebug")) {
+                applicationIdSuffix = ".debug"
+                resValue("string", "app_name", "ReVanced Manager Debug")
+                signingConfig = signingConfigs.getByName("debug")
+            }
         }
     }
 
