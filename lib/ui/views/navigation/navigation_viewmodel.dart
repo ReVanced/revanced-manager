@@ -30,11 +30,8 @@ class NavigationViewModel extends IndexTrackingViewModel {
           );
     }
 
-    if (prefs.getBool('useDarkTheme') == null) {
-      final bool isDark =
-          MediaQuery.platformBrightnessOf(context) != Brightness.light;
-      await prefs.setBool('useDarkTheme', isDark);
-      await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
+    if (prefs.getInt('themeMode') == null) {
+      await prefs.setInt('themeMode', 0);
     }
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
