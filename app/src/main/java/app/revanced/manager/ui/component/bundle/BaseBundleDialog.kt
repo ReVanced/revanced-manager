@@ -159,22 +159,20 @@ fun BaseBundleDialog(
         )
     }
 
-    if (patchCount > 0) {
-        BundleListItem(
-            headlineText = stringResource(R.string.patches),
-            supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
-            else stringResource(R.string.patches_available, patchCount),
-            trailingContent = {
-                if (patchCount > 0) {
-                    IconButton(onClick = onPatchesClick) {
-                        Icon(
-                            Icons.Outlined.ArrowRight,
-                            stringResource(R.string.patches)
-                        )
-                    }
-                }
-            }
-        )
+    BundleListItem(
+        headlineText = stringResource(R.string.patches),
+        supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
+        else stringResource(R.string.patches_available, patchCount),
+        modifier = Modifier.clickable(enabled = patchCount > 0) {
+            onPatchesClick()
+        }
+    ) {
+        if (patchCount > 0) {
+            Icon(
+                Icons.Outlined.ArrowRight,
+                stringResource(R.string.patches)
+            )
+        }
     }
 
     version?.let {
