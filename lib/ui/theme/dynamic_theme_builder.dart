@@ -90,7 +90,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder> with WidgetsB
               4: darkCustomTheme,
               5: darkDynamicTheme,
             },
-            fallbackTheme: brightness == Brightness.light ? lightCustomTheme : darkCustomTheme,
+            fallbackTheme: PlatformDispatcher.instance.platformBrightness == Brightness.light ? lightCustomTheme : darkCustomTheme,
           ),
           builder: (context, theme) => MaterialApp(
                 debugShowCheckedModeBanner: false,
