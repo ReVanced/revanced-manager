@@ -44,6 +44,7 @@ fun Markdown(
             .background(Color.Transparent)
             .then(modifier),
         client = client,
+        captureBackPresses = false,
         onCreated = {
             it.setBackgroundColor(android.graphics.Color.TRANSPARENT)
             it.isVerticalScrollBarEnabled = false
