@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +33,20 @@ class NavigationViewModel extends IndexTrackingViewModel {
 
     if (prefs.getInt('themeMode') == null) {
       await prefs.setInt('themeMode', 0);
+      await DynamicTheme.of(context)!.setTheme(0);
     }
+
+    // Force disable Material You on Android 11 and below
+    if (DynamicTheme.of(context)!.themeId.isOdd) {
+      const int ANDROID_12_SDK_VERSION = 31;
+      final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
+      if (info.version.sdkInt < ANDROID_12_SDK_VERSION) {
+        await prefs.setInt('themeMode', 0);
+        await prefs.setBool('useDynamicTheme', false);
+        await DynamicTheme.of(context)!.setTheme(0);
+      }
+    }
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
