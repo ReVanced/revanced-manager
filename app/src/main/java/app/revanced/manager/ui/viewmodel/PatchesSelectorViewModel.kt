@@ -123,6 +123,7 @@ class PatchesSelectorViewModel(
         if (patches.contains(name)) patches.remove(name) else patches.add(name)
     }
 
+    fun isSelectionEmpty() = selectedPatches.values.all { it.isEmpty() }
     suspend fun getAndSaveSelection(): PatchesSelection =
         selectedPatches.also {
             withContext(Dispatchers.Default) {
