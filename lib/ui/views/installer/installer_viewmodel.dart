@@ -226,7 +226,7 @@ class InstallerViewModel extends BaseViewModel {
                   'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
                   'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
                   'Patches repo: ${_managerAPI.getPatchesRepo()}',
-                  'Integration repo: ${_managerAPI.getIntegrationsRepo()}',
+                  'Integration source: ${_managerAPI.getIntegrationsRepo()}',
 
                   '\n~ Logs',
                   previousLogs,
