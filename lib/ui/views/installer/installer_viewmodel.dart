@@ -176,7 +176,8 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  String generateLog(String logs) {
+  Future<String> formatLogs(String logs) async {
+    final info = await AboutInfo.getInfo();
     return [
       '~ Device Info',
       'ReVanced Manager: ${info['version']}',
@@ -203,8 +204,7 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> patchErrorDialog(BuildContext context, String previousLogs, String error) async {
-    final info = await AboutInfo.getInfo();
-
+    final formattedLogs = await formatLogs(previousLogs);
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -235,7 +235,7 @@ class InstallerViewModel extends BaseViewModel {
               Clipboard.setData(
                 ClipboardData(text: [
                   '```',
-                  generateLog(previousLogs),
+                  formattedLogs,
 
                   '\n~ Exception',
                   error,
@@ -422,8 +422,9 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void exportLog() {
-    _patcherAPI.exportPatcherLog(logs);
+  Future<void> exportLog() async {
+    final formattedLogs = await formatLogs(logs);
+    _patcherAPI.exportPatcherLog(formattedLogs);
   }
 
   Future<void> cleanPatcher() async {
