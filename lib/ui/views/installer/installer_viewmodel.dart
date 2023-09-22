@@ -237,7 +237,7 @@ class InstallerViewModel extends BaseViewModel {
                   '```',
                   formattedLogs,
 
-                  '\n~ Exception',
+                  '\n~ Error',
                   error,
                   '```',
                   ].join('\n'),
