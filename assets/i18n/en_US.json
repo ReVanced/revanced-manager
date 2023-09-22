@@ -163,7 +163,7 @@
         "exportLogButtonTooltip": "Export log",
 
         "patchErrorDialogTitle": "Something went wrong",
-        "patchErrorDialogText": "During patching an exception occurred.",
+        "patchErrorDialogText": "An error occurred while patching.",
         "dismiss": "Dismiss",
         "copyLogs": "Copy logs",
         "copiedToClipboard": "Copied to clipboard",
