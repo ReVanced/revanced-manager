@@ -176,6 +176,32 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
+  String generateLog(String logs) {
+    return [
+      '~ Device Info',
+      'ReVanced Manager: ${info['version']}',
+      'Build: ${info['flavor']}',
+      'Model: ${info['model']}',
+      'Android version: ${info['androidVersion']}',
+      'Supported architectures: ${info['supportedArch'].join(", ")}',
+
+      '\n~ Patch Info',
+      'App: ${_app.packageName} v${_app.version}',
+      'Patches version: ${_managerAPI.patchesVersion}',
+      'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
+
+      '\n~ Settings',
+      'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
+      'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
+      'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
+      'Patches source: ${_managerAPI.getPatchesRepo()}',
+      'Integration source: ${_managerAPI.getIntegrationsRepo()}',
+
+      '\n~ Logs',
+      logs,
+    ].join('\n');
+  }
+
   Future<void> patchErrorDialog(BuildContext context, String previousLogs, String error) async {
     final info = await AboutInfo.getInfo();
 
@@ -209,27 +235,7 @@ class InstallerViewModel extends BaseViewModel {
               Clipboard.setData(
                 ClipboardData(text: [
                   '```',
-                  '~ Device Info',
-                  'ReVanced Manager: ${info['version']}',
-                  'Build: ${info['flavor']}',
-                  'Model: ${info['model']}',
-                  'Android version: ${info['androidVersion']}',
-                  'Supported architectures: ${info['supportedArch'].join(", ")}',
-
-                  '\n~ Patch Info',
-                  'App: ${_app.packageName} v${_app.version}',
-                  'Patches version: ${_managerAPI.patchesVersion}',
-                  'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
-
-                  '\n~ Settings',
-                  'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
-                  'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
-                  'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
-                  'Patches source: ${_managerAPI.getPatchesRepo()}',
-                  'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-
-                  '\n~ Logs',
-                  previousLogs,
+                  generateLog(previousLogs),
 
                   '\n~ Exception',
                   error,
