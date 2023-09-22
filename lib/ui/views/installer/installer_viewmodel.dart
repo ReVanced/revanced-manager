@@ -239,7 +239,7 @@ class InstallerViewModel extends BaseViewModel {
               ),
               _toast.showBottom('installerView.copiedToClipboard'),
             },
-            label: I18nText('installerView.copyException'),
+            label: I18nText('installerView.copyLogs'),
           ),
         ],
       ),
