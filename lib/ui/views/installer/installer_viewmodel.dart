@@ -214,7 +214,7 @@ class InstallerViewModel extends BaseViewModel {
                   'Build: ${info['flavor']}',
                   'Model: ${info['model']}',
                   'Android version: ${info['androidVersion']}',
-                  'Supported Archs: ${info['supportedArch'].join(", ")}',
+                  'Supported architectures: ${info['supportedArch'].join(", ")}',
 
                   '\n~ Patch Info',
                   'App: ${_app.packageName} v${_app.version}',
