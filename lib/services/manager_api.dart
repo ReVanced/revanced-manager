@@ -306,12 +306,20 @@ class ManagerAPI {
       return patches;
     }
     final File? patchBundleFile = await downloadPatches();
+    final Directory appCache = await getTemporaryDirectory();
+    Directory('${appCache.path}/cache').createSync();
+    final Directory workDir =
+    Directory('${appCache.path}/cache').createTempSync('tmp-');
+    final Directory cacheDir = Directory('${workDir.path}/cache');
+    cacheDir.createSync();
+
     if (patchBundleFile != null) {
       try {
         final patchesObject = await PatcherAPI.patcherChannel.invokeMethod(
           'getPatches',
           {
             'patchBundleFilePath': patchBundleFile.path,
+            'cacheDirPath': cacheDir.path,
           },
         );
         final List<Map<String, dynamic>> patchesMap = [];
