@@ -312,7 +312,7 @@ class PatcherAPI {
         .replaceAll(':', '')
         .replaceAll('T', '')
         .replaceAll('.', '');
-    final String fileName = 'revanced-manager_patcher_$dateTime.log';
+    final String fileName = 'revanced-manager_patcher_$dateTime.txt';
     final File log = File('${logDir.path}/$fileName');
     log.writeAsStringSync(logs);
     CRFileSaver.saveFileWithDialog(
