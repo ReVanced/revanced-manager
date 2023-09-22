@@ -218,7 +218,7 @@ class InstallerViewModel extends BaseViewModel {
 
                   '\n~ Patch Info',
                   'App: ${_app.packageName} v${_app.version}',
-                  'Patch Version: ${_managerAPI.patchesVersion}',
+                  'Patches version: ${_managerAPI.patchesVersion}',
                   'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
 
                   '\n~ Settings',
