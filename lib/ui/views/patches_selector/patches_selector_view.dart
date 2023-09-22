@@ -81,7 +81,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   child: Container(
                     margin: const EdgeInsets.only(top: 12, bottom: 12),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                     decoration: BoxDecoration(
                       color: Theme.of(context)
                           .colorScheme
@@ -99,7 +99,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 ),
                 CustomPopupMenu(
                   onSelected: (value) =>
-                      {model.onMenuSelection(value, context)},
+                  {model.onMenuSelection(value, context)},
                   children: {
                     0: I18nText(
                       'patchesSelectorView.loadPatchesSelection',
@@ -114,7 +114,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 ),
               ],
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(64.0),
+                preferredSize: const Size.fromHeight(66.0),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 8.0,
