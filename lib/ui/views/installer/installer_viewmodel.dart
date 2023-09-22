@@ -177,113 +177,92 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> patchErrorDialog(BuildContext context, String previousLogs, String error) async {
-    var showException = false;
     final info = await AboutInfo.getInfo();
 
     await showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: I18nText('installerView.patchErrorDialogTitle'),
-          icon: const Icon(FontAwesomeIcons.triangleExclamation),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          content: showException
-            ? SingleChildScrollView(
-              child: Text(
-                error,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ),
-            )
-            : I18nText(
-              'installerView.patchErrorDialogText',
+      builder: (context) => AlertDialog(
+        title: I18nText('installerView.patchErrorDialogTitle'),
+        icon: const Icon(FontAwesomeIcons.triangleExclamation),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText(
+          'installerView.patchErrorDialogText',
+          child: Text(
+            '',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.error,
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          InkWell(
+            onTap: () => {
+              Navigator.of(context).pop(),
+            },
+            child: I18nText(
+              'installerView.dismiss',
               child: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.error,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          actions: <Widget>[
-            Visibility(
-              visible: showException,
-              child: InkWell(
-                onTap: () => {
-                  Clipboard.setData(
-                    ClipboardData(text: [
-                      '```',
-                      '~ Device Info',
-                      'Manager: ${info['version']}',
-                      'Build: ${info['flavor']}',
-                      'Model: ${info['model']}',
-                      'Android Version: ${info['androidVersion']}',
-                      'Supported Archs: ${info['supportedArch'].join(", ")}',
-                      'Rooted: $isRooted',
+          ),
+          InkWell(
+            onTap: () => {
+              Clipboard.setData(
+                ClipboardData(text: [
+                  '```',
+                  '~ Device Info',
+                  'Manager: ${info['version']}',
+                  'Build: ${info['flavor']}',
+                  'Model: ${info['model']}',
+                  'Android Version: ${info['androidVersion']}',
+                  'Supported Archs: ${info['supportedArch'].join(", ")}',
 
-                      '\n~ Patch Info',
-                      'App: ${_app.packageName} v${_app.version}',
-                      'Patch Version: ${_managerAPI.patchesVersion}',
-                      'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
+                  '\n~ Patch Info',
+                  'App: ${_app.packageName} v${_app.version}',
+                  'Patch Version: ${_managerAPI.patchesVersion}',
+                  'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
 
-                      '\n~ Settings',
-                      'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
-                      'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
-                      'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
+                  '\nSettings',
+                  'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
+                  'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
+                  'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
+                  'Patches repo: ${_managerAPI.getPatchesRepo()}',
+                  'Integration repo: ${_managerAPI.getIntegrationsRepo()}',
 
-                      '\n~ Logs',
-                      previousLogs,
+                  '\n~ Logs',
+                  previousLogs,
 
-                      '\n~ Exception',
-                      error,
-                      '```',
-                      ].join('\n'),
-                    ),
-                  ),
-                  _toast.showBottom('installerView.copiedToClipboard'),
-                },
-                child: I18nText(
-                  'installerView.copyToClipboard',
-                  child: Text(
-                    '',
-                    style: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  '\n~ Exception',
+                  error,
+                  '```',
+                  ].join('\n'),
+                ),
+              ),
+              _toast.showBottom('installerView.copiedToClipboard'),
+            },
+            child: I18nText(
+              'installerView.copyException',
+              child: Text(
+                '',
+                style: TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            Visibility(
-              visible: !showException,
-              child: InkWell(
-                onTap: () => {
-                  setState(() {
-                    showException = true;
-                  }),
-                },
-                child: I18nText(
-                  'installerView.patchErrorViewError',
-                  child: Text(
-                    '',
-                    style: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

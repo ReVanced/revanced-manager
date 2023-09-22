@@ -164,8 +164,8 @@
 
         "patchErrorDialogTitle": "Something went wrong",
         "patchErrorDialogText": "During patching an exception occurred.",
-        "patchErrorViewError": "Show exception",
-        "copyToClipboard": "Copy to clipboard",
+        "dismiss": "Dismiss",
+        "copyException": "Copy exception",
         "copiedToClipboard": "Copied to clipboard",
 
         "installErrorDialogTitle": "Error",
