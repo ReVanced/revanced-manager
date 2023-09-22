@@ -54,7 +54,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(64.0),
+                preferredSize: const Size.fromHeight(66.0),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 8.0,
