@@ -210,7 +210,7 @@ class InstallerViewModel extends BaseViewModel {
                 ClipboardData(text: [
                   '```',
                   '~ Device Info',
-                  'Manager: ${info['version']}',
+                  'ReVanced Manager: ${info['version']}',
                   'Build: ${info['flavor']}',
                   'Model: ${info['model']}',
                   'Android version: ${info['androidVersion']}',
