@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/pr-build.yml"
-      - "app/**"
-      - "gradle/**"
+      - "app/*"
+      - "gradle/*"
       - "*.properties"
       - ".kts"
 
