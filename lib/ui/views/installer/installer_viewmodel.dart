@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -15,6 +16,7 @@ import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/utils/about_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -38,8 +40,10 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
   bool isCanceled = false;
   bool cancel = false;
+  late BuildContext buildContext;
 
   Future<void> initialize(BuildContext context) async {
+    buildContext = context;
     isRooted = await _rootAPI.isRooted();
     if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
@@ -105,6 +109,9 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
+      if (!isCanceled) {
+        patchErrorDialog(buildContext, logs, log);
+      }
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -143,7 +150,7 @@ class InstallerViewModel extends BaseViewModel {
           update(
             -100.0,
             'Aborted...',
-            'An error occurred! Aborted\nError:\n$e',
+            'An error occurred! Aborted',
           );
           if (kDebugMode) {
             print(e);
@@ -168,6 +175,119 @@ class InstallerViewModel extends BaseViewModel {
       }
     }
   }
+
+  Future<void> patchErrorDialog(BuildContext context, String previousLogs, String error) async {
+    var showException = false;
+    final info = await AboutInfo.getInfo();
+
+    await showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: I18nText('installerView.patchErrorDialogTitle'),
+          icon: const Icon(FontAwesomeIcons.triangleExclamation),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          content: showException
+            ? SingleChildScrollView(
+              child: Text(
+                error,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            )
+            : I18nText(
+              'installerView.patchErrorDialogText',
+              child: Text(
+                '',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+          actions: <Widget>[
+            Visibility(
+              visible: showException,
+              child: InkWell(
+                onTap: () => {
+                  Clipboard.setData(
+                    ClipboardData(text: [
+                      '```',
+                      '~ Device Info',
+                      'Manager: ${info['version']}',
+                      'Build: ${info['flavor']}',
+                      'Model: ${info['model']}',
+                      'Android Version: ${info['androidVersion']}',
+                      'Supported Archs: ${info['supportedArch'].join(", ")}',
+                      'Rooted: $isRooted',
+
+                      '\n~ Patch Info',
+                      'App: ${_app.packageName} v${_app.version}',
+                      'Patch Version: ${_managerAPI.patchesVersion}',
+                      'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
+
+                      '\n~ Settings',
+                      'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
+                      'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
+                      'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
+
+                      '\n~ Logs',
+                      previousLogs,
+
+                      '\n~ Exception',
+                      error,
+                      '```',
+                      ].join('\n'),
+                    ),
+                  ),
+                  _toast.showBottom('installerView.copiedToClipboard'),
+                },
+                child: I18nText(
+                  'installerView.copyToClipboard',
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: !showException,
+              child: InkWell(
+                onTap: () => {
+                  setState(() {
+                    showException = true;
+                  }),
+                },
+                child: I18nText(
+                  'installerView.patchErrorViewError',
+                  child: Text(
+                    '',
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 
   Future<void> installTypeDialog(BuildContext context) async {
     final ValueNotifier<int> installType = ValueNotifier(0);

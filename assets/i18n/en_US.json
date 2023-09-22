@@ -162,6 +162,12 @@
         "exportApkButtonTooltip": "Export patched APK",
         "exportLogButtonTooltip": "Export log",
 
+        "patchErrorDialogTitle": "Something went wrong",
+        "patchErrorDialogText": "During patching an exception occurred.",
+        "patchErrorViewError": "Show exception",
+        "copyToClipboard": "Copy to clipboard",
+        "copiedToClipboard": "Copied to clipboard",
+
         "installErrorDialogTitle": "Error",
         "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
         "installErrorDialogText2": "Non-root install is not possible with the current patches selection.\nRepatch your app or choose root install if you have your device rooted.",
