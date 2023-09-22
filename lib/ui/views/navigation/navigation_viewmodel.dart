@@ -31,7 +31,7 @@ class NavigationViewModel extends IndexTrackingViewModel {
           );
     }
 
-    val dynamicTheme = DynamicTheme.of(context)!;
+    final dynamicTheme = DynamicTheme.of(context)!;
     if (prefs.getInt('themeMode') == null) {
       await prefs.setInt('themeMode', 0);
       await dynamicTheme.setTheme(0);
