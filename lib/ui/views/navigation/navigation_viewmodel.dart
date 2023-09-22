@@ -31,19 +31,20 @@ class NavigationViewModel extends IndexTrackingViewModel {
           );
     }
 
+    val dynamicTheme = DynamicTheme.of(context)!;
     if (prefs.getInt('themeMode') == null) {
       await prefs.setInt('themeMode', 0);
-      await DynamicTheme.of(context)!.setTheme(0);
+      await dynamicTheme.setTheme(0);
     }
 
     // Force disable Material You on Android 11 and below
-    if (DynamicTheme.of(context)!.themeId.isOdd) {
+    if (dynamicTheme.themeId.isOdd) {
       const int ANDROID_12_SDK_VERSION = 31;
       final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
       if (info.version.sdkInt < ANDROID_12_SDK_VERSION) {
         await prefs.setInt('themeMode', 0);
         await prefs.setBool('useDynamicTheme', false);
-        await DynamicTheme.of(context)!.setTheme(0);
+        await dynamicTheme.setTheme(0);
       }
     }
 
