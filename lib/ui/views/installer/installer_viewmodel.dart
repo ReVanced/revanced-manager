@@ -197,25 +197,15 @@ class InstallerViewModel extends BaseViewModel {
           ),
         ),
         actions: <Widget>[
-          InkWell(
-            onTap: () => {
+          CustomMaterialButton(
+            isFilled: false,
+            onPressed: () => {
               Navigator.of(context).pop(),
             },
-            child: I18nText(
-              'installerView.dismiss',
-              child: Text(
-                '',
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            label: I18nText('installerView.dismiss'),
           ),
-          InkWell(
-            onTap: () => {
+          CustomMaterialButton(
+            onPressed: () => {
               Clipboard.setData(
                 ClipboardData(text: [
                   '```',
@@ -249,18 +239,7 @@ class InstallerViewModel extends BaseViewModel {
               ),
               _toast.showBottom('installerView.copiedToClipboard'),
             },
-            child: I18nText(
-              'installerView.copyException',
-              child: Text(
-                '',
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            label: I18nText('installerView.copyException'),
           ),
         ],
       ),
