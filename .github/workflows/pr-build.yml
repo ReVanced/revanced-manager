@@ -23,7 +23,7 @@ on:
         - profile
       pr-number:
         required: true
-        description: Pull Request number to build from (No hashtag)
+        description: PR number (No hashtag)
         
 permissions:
   contents: read
