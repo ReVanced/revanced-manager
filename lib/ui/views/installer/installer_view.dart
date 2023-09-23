@@ -60,10 +60,13 @@ class InstallerView extends StatelessWidget {
                         onPressed: () => model.exportResult(),
                       ),
                     ),
-                    CustomMaterialButton(
-                      isFilled: false,
-                      onPressed: () =>  model.copyLogs('installerView.copiedToClipboard'),
-                      label: I18nText('installerView.copyLogs'),
+                    IconButton.filledTonal(
+                      tooltip: FlutterI18n.translate(
+                        context,
+                        'installerView.exportLogButtonTooltip',
+                      ),
+                      icon: const Icon(Icons.post_add),
+                      onPressed: () => model.copyLogs('installerView.copiedToClipboard'),
                     ),
                   ],
                 ),
