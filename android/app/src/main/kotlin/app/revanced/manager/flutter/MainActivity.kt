@@ -94,9 +94,12 @@ class MainActivity : FlutterActivity() {
 
                 "getPatches" -> {
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
+                    val cacheDirPath = call.argument<String>("cacheDirPath")
+
                     if (patchBundleFilePath != null) {
                         val patches = PatchBundleLoader.Dex(
-                            File(patchBundleFilePath)
+                            File(patchBundleFilePath),
+                            optimizedDexDirectory = File(cacheDirPath)
                         ).map { patch ->
                             val map = HashMap<String, Any>()
                             map["\"name\""] = "\"${patch.patchName.replace("\"","\\\"")}\""
