@@ -1,13 +1,40 @@
 name: PR Build
 
 on:
+  push:
+    paths: 
+      - ".github/workflows/pr-build.yml"
   pull_request:
     paths: 
       - ".github/workflows/pr-build.yml"
-      - "android/**"
-      - "assets/**"
-      - "lib/**"
-      
+  workflow_dispatch:
+    inputs:
+      flutter-variant:
+        required: true
+        type: choice
+        description: Flutter variant
+        default: 'release'
+        options: 
+        - stable
+        - beta
+        - dev
+      app-variant:
+        required: true
+        type: choice
+        description: App variant
+        default: 'release'
+        options: 
+        - release
+        - debug
+        - profile
+      pr-number:
+        required: true
+        description: Pull Request number to build from (No hashtag)
+        
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build:
     name: Build
@@ -16,8 +43,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Make sure the release step uses its own credentials:
-          # https://github.com/cycjimmy/semantic-release-action#private-packages
           persist-credentials: false
           fetch-depth: 0
       - name: Setup JDK
@@ -28,7 +53,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: ${{ inputs.flutter-variant }}
           cache: true
       - name: Install Flutter dependencies
         run: flutter pub get
@@ -37,9 +62,54 @@ jobs:
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: flutter build apk --debug
+        run: |
+          if flutter build apk --${{ inputs.app-variant }}; then
+            echo "::set-env name=message::Build Success!"
+          else
+            echo "::set-env name=message::Build Fail!"
+          fi
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager
+          name: revanced-manager-P${{ inputs.pr-number }}-B${{ inputs.app-variant }}-F${{ inputs.flutter-variant }}
           path: build/app/outputs/flutter-apk/app-debug.apk
+          
+  notify-pull-request:
+    name: Notify Pull Request
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Message
+        id: create-message
+        run: |
+          if [[ "${{ needs.build.outputs.build_status }}" == "success" ]]; then
+            echo "message=✅ Build Success!" >> $GITHUB_OUTPUT
+          else
+            echo "message=🚫 Build Fail!" >> $GITHUB_OUTPUT
+          fi
+      - name: Comment on Pull Request ${{ inputs.pr-number }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const message = process.env.message;
+            const pr_number = "${{ inputs.pr-number }}";
+            const app_variant = "${{ inputs.app-variant }}";
+            const flutter_variant = "${{ inputs.flutter-variant }}";
+            const action_url = "${{ github.event.workflow_run.html_url }}";
+
+            const comment = `
+              ${message}
+
+              You can check the details [here](${action_url}).
+
+              - PR: ${pr_number}
+              - App variant: ${app_variant}
+              - Flutter variant: ${flutter_variant}
+            `;
+
+            github.issues.createComment({
+              issue_number: pr_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
