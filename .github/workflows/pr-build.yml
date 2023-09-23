@@ -35,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
+        env: 
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh repo clone ReVanced/revanced-manager
           gh pr checkout ${{ inputs.pr-number }}
