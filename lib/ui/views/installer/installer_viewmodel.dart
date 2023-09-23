@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -40,10 +39,8 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
   bool isCanceled = false;
   bool cancel = false;
-  late BuildContext buildContext;
 
   Future<void> initialize(BuildContext context) async {
-    buildContext = context;
     isRooted = await _rootAPI.isRooted();
     if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
@@ -109,9 +106,6 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
-      if (!isCanceled) {
-        patchErrorDialog(buildContext, logs, log);
-      }
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -176,9 +170,11 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<String> formatLogs(String logs) async {
+  Future<void> copyLogs(String toastMessage) async {
     final info = await AboutInfo.getInfo();
-    return [
+
+    final formattedLogs = [
+      '```',
       '~ Device Info',
       'ReVanced Manager: ${info['version']}',
       'Build: ${info['flavor']}',
@@ -200,58 +196,13 @@ class InstallerViewModel extends BaseViewModel {
 
       '\n~ Logs',
       logs,
-    ].join('\n');
+      '```',
+    ];
+
+    Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
+
+    _toast.showBottom(toastMessage);
   }
-
-  Future<void> patchErrorDialog(BuildContext context, String previousLogs, String error) async {
-    final formattedLogs = await formatLogs(previousLogs);
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: I18nText('installerView.patchErrorDialogTitle'),
-        icon: const Icon(FontAwesomeIcons.triangleExclamation),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText(
-          'installerView.patchErrorDialogText',
-          child: Text(
-            '',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.error,
-            ),
-          ),
-        ),
-        actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            onPressed: () => {
-              Navigator.of(context).pop(),
-            },
-            label: I18nText('installerView.dismiss'),
-          ),
-          CustomMaterialButton(
-            onPressed: () => {
-              Clipboard.setData(
-                ClipboardData(text: [
-                  '```',
-                  formattedLogs,
-
-                  '\n~ Error',
-                  error,
-                  '```',
-                  ].join('\n'),
-                ),
-              ),
-              _toast.showBottom('installerView.copiedToClipboard'),
-            },
-            label: I18nText('installerView.copyLogs'),
-          ),
-        ],
-      ),
-    );
-  }
-
 
   Future<void> installTypeDialog(BuildContext context) async {
     final ValueNotifier<int> installType = ValueNotifier(0);
@@ -422,11 +373,6 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> exportLog() async {
-    final formattedLogs = await formatLogs(logs);
-    _patcherAPI.exportPatcherLog(formattedLogs);
-  }
-
   Future<void> cleanPatcher() async {
     try {
       _patcherAPI.cleanPatcher();
@@ -442,17 +388,6 @@ class InstallerViewModel extends BaseViewModel {
 
   void openApp() {
     DeviceApps.openApp(_app.packageName);
-  }
-
-  void onButtonPressed(int value) {
-    switch (value) {
-      case 0:
-        exportResult();
-        break;
-      case 1:
-        exportLog();
-        break;
-    }
   }
 
   Future<bool> onWillPop(BuildContext context) async {

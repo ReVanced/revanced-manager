@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -56,16 +57,13 @@ class InstallerView extends StatelessWidget {
                           'installerView.exportApkButtonTooltip',
                         ),
                         icon: const Icon(Icons.save),
-                        onPressed: () => model.onButtonPressed(0),
+                        onPressed: () => model.exportResult(),
                       ),
                     ),
-                    IconButton.filledTonal(
-                      tooltip: FlutterI18n.translate(
-                        context,
-                        'installerView.exportLogButtonTooltip',
-                      ),
-                      icon: const Icon(Icons.post_add),
-                      onPressed: () => model.onButtonPressed(1),
+                    CustomMaterialButton(
+                      isFilled: false,
+                      onPressed: () =>  model.copyLogs('installerView.copiedToClipboard'),
+                      label: I18nText('installerView.copyLogs'),
                     ),
                   ],
                 ),
