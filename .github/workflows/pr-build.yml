@@ -1,12 +1,6 @@
 name: PR Build
 
 on:
-  push:
-    paths: 
-      - ".github/workflows/pr-build.yml"
-  pull_request:
-    paths: 
-      - ".github/workflows/pr-build.yml"
   workflow_dispatch:
     inputs:
       flutter-variant:
@@ -40,6 +34,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the repository
+        run: |
+          gh repo clone ReVanced/revanced-manager
+          gh pr checkout ${{ inputs.pr-number }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
