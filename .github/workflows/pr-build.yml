@@ -7,11 +7,12 @@ on:
         required: true
         type: choice
         description: Flutter variant
-        default: 'release'
+        default: 'stable'
         options: 
         - stable
         - beta
         - dev
+        - master
       app-variant:
         required: true
         type: choice
