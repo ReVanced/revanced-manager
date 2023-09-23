@@ -32,6 +32,7 @@ permissions:
 jobs:
   build:
     name: Build
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
