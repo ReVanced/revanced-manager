@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -16,6 +17,7 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
+import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -30,6 +32,7 @@ class InstallerViewModel extends BaseViewModel {
     'app.revanced.manager.flutter/installer',
   );
   final ScrollController scrollController = ScrollController();
+  final ScreenshotCallback screenshotCallback = ScreenshotCallback();
   double? progress = 0.0;
   String logs = '';
   String headerLogs = '';
@@ -42,6 +45,7 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
     if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
         FlutterBackground.initialize(
@@ -65,6 +69,9 @@ class InstallerViewModel extends BaseViewModel {
         } // ignore
       }
     }
+    screenshotCallback.addListener(() {
+      copyLogs('I have detected a screenshot!');
+    });
     await Wakelock.enable();
     await handlePlatformChannelMethods();
     await runPatcher();
@@ -407,7 +414,10 @@ class InstallerViewModel extends BaseViewModel {
     } else {
       _patcherAPI.cleanPatcher();
     }
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     Navigator.of(context).pop();
     return true;
   }
+
+
 }
