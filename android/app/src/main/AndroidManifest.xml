@@ -54,5 +54,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+       <provider
+           android:name=".utils.share.ShareProvider"
+           android:authorities="app.revanced.manager.flutter.provider"
+           android:exported="true">
+       </provider>
     </application>
 </manifest>
