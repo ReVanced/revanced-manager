@@ -26,8 +26,8 @@
     
     <string name="auto_updates_dialog_title">Select updates to receive</string>
     <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
-    <string name="auto_updates_dialog_manager">Manager updates</string>
-    <string name="auto_updates_dialog_patches">Patches</string>
+    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
