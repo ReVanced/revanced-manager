@@ -69,6 +69,8 @@ fun DashboardScreen(
     val pagerState = rememberPagerState()
     val composableScope = rememberCoroutineScope()
 
+    vm.getLegacySettings()
+
     LaunchedEffect(pagerState.currentPage) {
         if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
     }

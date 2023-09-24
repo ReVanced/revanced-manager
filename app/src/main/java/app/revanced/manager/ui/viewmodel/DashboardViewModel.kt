@@ -2,7 +2,9 @@ package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
 import android.content.ContentResolver
+import android.database.Cursor
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,6 +56,25 @@ class DashboardViewModel(
             RemotePatchBundle.updateFailMsg
         ) {
             bundle.update()
+        }
+    }
+
+    fun getLegacySettings() {
+        val contentResolver = contentResolver
+        val contentProviderUri = Uri.parse("content://app.revanced.manager.flutter.provider/settings")
+        val cursor: Cursor? = contentResolver.query(contentProviderUri, null, null, null, null)
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val column = cursor.getColumnIndex("settings")
+                if (column != -1) {
+                    val jsonData = cursor.getString(column)
+                    // Process the JSON data as needed
+
+                    Log.d("Settings", jsonData)
+                }
+            }
+            cursor.close()
         }
     }
 }
