@@ -189,15 +189,15 @@
         "englishOption": "English",
 
         "sourcesLabel": "Sources",
-        "sourcesLabelHint": "Configure your custom sources",
+        "sourcesLabelHint": "Configure your sources",
         "sourcesIntegrationsLabel": "Integrations source",
         "sourcesResetDialogTitle": "Reset",
-        "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
-        "apiURLResetDialogText": "Are you sure you want to reset API URL to its default value?",
+        "sourcesResetDialogText": "Are you sure you want to reset your sources to their default values?",
+        "apiURLResetDialogText": "Are you sure you want to reset your API URL to its default value?",
         "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
 
         "apiURLLabel": "API URL",
-        "apiURLHint": "Configure your custom API URL",
+        "apiURLHint": "Configure your API URL",
         "selectApiURL": "API URL",
         "hostRepositoryLabel": "Repository API",
         "orgPatchesLabel": "Patches organization",
@@ -210,7 +210,7 @@
         "logsLabel": "Share logs",
         "logsHint": "Share ReVanced Manager logs",
 
-        "enablePatchesSelectionLabel": "Allow changing patch selection",
+        "enablePatchesSelectionLabel": "Allow changing patches selection",
         "enablePatchesSelectionHint": "Allow changing the selection of patches",
         "enablePatchesSelectionWarningText": "Changing the default selection of patches may cause unexpected issues.\n\nEnable anyways?",
         "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
@@ -218,9 +218,9 @@
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Show universal patches",
-        "experimentalUniversalPatchesHint": "Display all applications to use with universal patches. Loading list of apps may be slower",
+        "experimentalUniversalPatchesHint": "Display all apps and universal patches (may slow down the app)",
         "experimentalPatchesLabel": "Allow experimental patches",
-        "experimentalPatchesHint": "Enable usage of patches in any app version",
+        "experimentalPatchesHint": "Allow usage of patches in any app version",
         "enabledExperimentalPatches": "Experimental patches enabled",
 
         "aboutLabel": "About",
@@ -259,16 +259,16 @@
         "regeneratedKeystore": "Keystore regenerated",
 
         "exportKeystoreLabel": "Export keystore",
-        "exportKeystoreHint": "Export keystore used to sign apps",
+        "exportKeystoreHint": "Export the keystore used to sign apps",
         "exportedKeystore": "Keystore exported",
         "noKeystoreExportFileFound": "No keystore to export",
 
         "importKeystoreLabel": "Import keystore",
-        "importKeystoreHint": "Import keystore used to sign apps",
+        "importKeystoreHint": "Import a keystore used to sign apps",
         "importedKeystore": "Keystore imported",
 
         "selectKeystorePassword": "Keystore Password",
-        "selectKeystorePasswordHint": "Select keystore password used to sign the APK",
+        "selectKeystorePasswordHint": "Select keystore password used to sign apps",
 
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file"
