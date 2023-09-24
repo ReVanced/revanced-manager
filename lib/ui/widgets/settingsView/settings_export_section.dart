@@ -48,6 +48,21 @@ class SExportSection extends StatelessWidget {
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
+            'settingsView.resetStoredPatchesLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.resetStoredPatchesHint'),
+          onTap: () => _showResetStoredPatchesDialog(context),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
             'settingsView.exportKeystoreLabel',
             child: const Text(
               '',
@@ -84,7 +99,7 @@ class SExportSection extends StatelessWidget {
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
-            'settingsView.resetStoredPatchesLabel',
+            'settingsView.regenerateKeystoreLabel',
             child: const Text(
               '',
               style: TextStyle(
@@ -93,8 +108,8 @@ class SExportSection extends StatelessWidget {
               ),
             ),
           ),
-          subtitle: I18nText('settingsView.resetStoredPatchesHint'),
-          onTap: () => _showResetStoredPatchesDialog(context),
+          subtitle: I18nText('settingsView.regenerateKeystoreHint'),
+          onTap: () => _showDeleteKeystoreDialog(context),
         ),
       ],
     );
@@ -120,6 +135,31 @@ class SExportSection extends StatelessWidget {
             onPressed: () => {
               Navigator.of(context).pop(),
               _settingsViewModel.resetSelectedPatches(),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDeleteKeystoreDialog(context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.regenerateKeystoreDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('settingsView.regenerateKeystoreDialogText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () => {
+              Navigator.of(context).pop(),
+              _settingsViewModel.deleteKeystore(),
             },
           ),
         ],

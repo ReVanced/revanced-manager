@@ -173,10 +173,9 @@
 
         "appearanceSectionTitle": "Appearance",
         "teamSectionTitle": "Team",
-        "infoSectionTitle": "Info",
+        "infoSectionTitle": "Debugging",
         "advancedSectionTitle": "Advanced",
         "exportSectionTitle": "Import & export",
-        "logsSectionTitle": "Logs",
 
         "themeModeLabel": "App theme",
         "systemThemeLabel": "System",
@@ -208,21 +207,21 @@
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
 
-        "logsLabel": "Logs",
-        "logsHint": "Share Manager's logs",
+        "logsLabel": "Share logs",
+        "logsHint": "Share ReVanced Manager logs",
 
-        "enablePatchesSelectionLabel": "Enable changing selection",
-        "enablePatchesSelectionHint": "Enable changing the selection of patches.",
+        "enablePatchesSelectionLabel": "Allow changing patch selection",
+        "enablePatchesSelectionHint": "Allow changing the selection of patches",
         "enablePatchesSelectionWarningText": "Changing the default selection of patches may cause unexpected issues.\n\nEnable anyways?",
         "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
 
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
-        "experimentalUniversalPatchesLabel": "Experimental universal patches support",
-        "experimentalUniversalPatchesHint": "Display all applications to use with universal patches, loading list of apps may be slower",
-        "experimentalPatchesLabel": "Experimental patches support",
-        "experimentalPatchesHint": "Enable usage of unsupported patches in any app version",
-        "enabledExperimentalPatches": "Experimental patches support enabled",
+        "experimentalUniversalPatchesLabel": "Show universal patches",
+        "experimentalUniversalPatchesHint": "Display all applications to use with universal patches. Loading list of apps may be slower",
+        "experimentalPatchesLabel": "Allow experimental patches",
+        "experimentalPatchesHint": "Enable usage of patches in any app version",
+        "enabledExperimentalPatches": "Experimental patches enabled",
 
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
@@ -241,15 +240,15 @@
         "importPatchesHint": "Import patches selection from a JSON file",
         "importedPatches": "Patches selection imported",
 
-        "resetStoredPatchesLabel": "Reset patches",
+        "resetStoredPatchesLabel": "Reset patches selection",
         "resetStoredPatchesHint": "Reset the stored patches selection",
 
         "resetStoredPatchesDialogTitle": "Reset patches selection?",
         "resetStoredPatchesDialogText": "Resetting patches selection will remove all selected patches.",
         "resetStoredPatches": "Patches selection has been reset",
 
-        "deleteLogsLabel": "Delete logs",
-        "deleteLogsHint": "Delete collected manager logs",
+        "deleteLogsLabel": "Clear logs",
+        "deleteLogsHint": "Delete collected ReVanced Manager logs",
         "deletedLogs": "Logs deleted",
 
         "regenerateKeystoreLabel": "Regenerate keystore",
@@ -269,7 +268,7 @@
         "importedKeystore": "Keystore imported",
 
         "selectKeystorePassword": "Keystore Password",
-        "selectKeystorePasswordHint": "Select keystore password used to sign the apk",
+        "selectKeystorePasswordHint": "Select keystore password used to sign the APK",
 
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file"

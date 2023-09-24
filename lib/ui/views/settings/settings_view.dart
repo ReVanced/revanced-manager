@@ -41,13 +41,14 @@ class SettingsView extends StatelessWidget {
               delegate: SliverChildListDelegate.fixed(
                 <Widget>[
                   SUpdateThemeUI(),
-                  // SUpdateLanguageUI(),
                   // _settingsDivider,
-                  STeamSection(),
+                  // SUpdateLanguageUI(),
                   _settingsDivider,
                   SAdvancedSection(),
                   _settingsDivider,
                   SExportSection(),
+                  _settingsDivider,
+                  STeamSection(),
                   _settingsDivider,
                   SInfoSection(),
                 ],

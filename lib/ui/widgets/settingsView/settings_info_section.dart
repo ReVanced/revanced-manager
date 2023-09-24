@@ -29,6 +29,36 @@ class SInfoSection extends StatelessWidget {
           subtitle: I18nText('settingsView.logsHint'),
           onTap: () => _settingsViewModel.exportLogcatLogs(),
         ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.deleteLogsLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.deleteLogsHint'),
+          onTap: () => _settingsViewModel.deleteLogs(),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.deleteTempDirLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.deleteTempDirHint'),
+          onTap: () => _settingsViewModel.deleteTempDir(),
+        ),
         const AboutWidget(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
         ),
