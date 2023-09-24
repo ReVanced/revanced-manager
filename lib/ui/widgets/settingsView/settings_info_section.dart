@@ -12,7 +12,7 @@ class SInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsSection(
-      title: 'settingsView.infoSectionTitle',
+      title: 'settingsView.debugSectionTitle',
       children: <Widget>[
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
