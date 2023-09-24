@@ -252,7 +252,7 @@
         "deletedLogs": "Logs deleted",
 
         "regenerateKeystoreLabel": "Regenerate keystore",
-        "regenerateKeystoreHint": "Regenerate the keystore used to sign the app",
+        "regenerateKeystoreHint": "Regenerate the keystore used to sign apps",
 
         "regenerateKeystoreDialogTitle": "Regenerate keystore?",
         "regenerateKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
