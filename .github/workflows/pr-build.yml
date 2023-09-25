@@ -21,7 +21,6 @@ on:
         options: 
         - release
         - debug
-        - profile
       pr-number:
         required: true
         description: PR number (No hashtag)
