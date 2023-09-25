@@ -161,7 +161,7 @@ class PatchesSelectorViewModel(
         unsupportedVersions.forEach { patch ->
             patch.compatiblePackages?.find { it.packageName == input.selectedApp.packageName }
                 ?.let { compatiblePackage ->
-                    set.addAll(compatiblePackage.versions)
+                    set.addAll(compatiblePackage.versions.orEmpty())
                 }
         }
 

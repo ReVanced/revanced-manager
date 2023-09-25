@@ -1,9 +1,10 @@
 package app.revanced.manager.patcher
 
+import app.revanced.library.ApkUtils
 import app.revanced.manager.ui.viewmodel.ManagerLogger
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
-import app.revanced.patcher.patch.PatchClass
+import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,7 +14,7 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.util.logging.Logger
 
-internal typealias PatchList = List<PatchClass>
+internal typealias PatchList = List<Patch<*>>
 
 class Session(
     cacheDir: String,
@@ -69,7 +70,8 @@ class Session(
         logger.info("Writing patched files...")
         val result = patcher.get()
 
-        val aligned = temporary.resolve("aligned.apk").also { Aligning.align(result, input, it) }
+        val aligned = temporary.resolve("aligned.apk")
+        ApkUtils.copyAligned(input, aligned, result)
 
         logger.info("Patched apk saved to $aligned")
 
@@ -85,7 +87,7 @@ class Session(
     }
 
     companion object {
-        operator fun PatchResult.component1() = patchName
+        operator fun PatchResult.component1() = patch.name
         operator fun PatchResult.component2() = exception
     }
 }

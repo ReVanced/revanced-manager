@@ -59,9 +59,11 @@ class ImportExportViewModel(
             }
         }
 
-        knownPasswords.forEach {
-            if (tryKeystoreImport(KeystoreManager.DEFAULT, it, path)) {
-                return@launch
+        aliases.forEach { alias ->
+            knownPasswords.forEach { pass ->
+                if (tryKeystoreImport(alias, pass, path)) {
+                    return@launch
+                }
             }
         }
 
@@ -174,6 +176,7 @@ class ImportExportViewModel(
     }
 
     private companion object {
-        val knownPasswords = setOf("ReVanced", "s3cur3p@ssw0rd")
+        val knownPasswords = arrayOf("ReVanced", "s3cur3p@ssw0rd")
+        val aliases = arrayOf(KeystoreManager.DEFAULT, "alias", "ReVanced Key")
     }
 }

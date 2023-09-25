@@ -1,50 +1,60 @@
 package app.revanced.manager.patcher.patch
 
 import androidx.compose.runtime.Immutable
-import app.revanced.patcher.annotation.Package
-import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
-import app.revanced.patcher.extensions.PatchExtensions.dependencies
-import app.revanced.patcher.extensions.PatchExtensions.description
-import app.revanced.patcher.extensions.PatchExtensions.include
-import app.revanced.patcher.extensions.PatchExtensions.options
-import app.revanced.patcher.extensions.PatchExtensions.patchName
-import app.revanced.patcher.patch.PatchClass
-import app.revanced.patcher.patch.PatchOption
+import app.revanced.patcher.patch.Patch
+import app.revanced.patcher.patch.options.PatchOption
+import app.revanced.patcher.patch.options.PatchOptions
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 
 data class PatchInfo(
     val name: String,
     val description: String?,
-    val dependencies: ImmutableList<String>?,
     val include: Boolean,
     val compatiblePackages: ImmutableList<CompatiblePackage>?,
     val options: ImmutableList<Option>?
 ) {
-    constructor(patch: PatchClass) : this(
-        patch.patchName,
+    constructor(patch: Patch<*>) : this(
+        patch.name.orEmpty(),
         patch.description,
-        patch.dependencies?.map { it.java.patchName }?.toImmutableList(),
-        patch.include,
+        patch.use,
         patch.compatiblePackages?.map { CompatiblePackage(it) }?.toImmutableList(),
-        patch.options?.map { Option(it) }?.toImmutableList())
+        patch.options.takeUnless(PatchOptions::isEmpty)?.map { (_, option) -> Option(option) }?.toImmutableList()
+    )
 
-    fun compatibleWith(packageName: String) = compatiblePackages?.any { it.packageName == packageName } ?: true
+    fun compatibleWith(packageName: String) =
+        compatiblePackages?.any { it.packageName == packageName } ?: true
 
     fun supportsVersion(versionName: String) =
-        compatiblePackages?.any { compatiblePackages.any { it.versions.isEmpty() || it.versions.any { version -> version == versionName } } }
+        compatiblePackages?.any { it.versions?.takeUnless(Set<String>::isEmpty) == null || it.versions.any { version -> version == versionName } }
             ?: true
 }
 
 @Immutable
 data class CompatiblePackage(
     val packageName: String,
-    val versions: ImmutableList<String>
+    val versions: ImmutableSet<String>?
 ) {
-    constructor(pkg: Package) : this(pkg.name, pkg.versions.toList().toImmutableList())
+    constructor(pkg: Patch.CompatiblePackage) : this(pkg.name, pkg.versions?.toImmutableSet())
 }
 
 @Immutable
-data class Option(val title: String, val key: String, val description: String, val required: Boolean, val type: Class<out PatchOption<*>>, val defaultValue: Any?) {
-    constructor(option: PatchOption<*>) : this(option.title, option.key, option.description, option.required, option::class.java, option.value)
+data class Option(
+    val title: String,
+    val key: String,
+    val description: String,
+    val required: Boolean,
+    val type: Class<out PatchOption<*>>,
+    val defaultValue: Any?
+) {
+    constructor(option: PatchOption<*>) : this(
+        option.title ?: option.key,
+        option.key,
+        option.description.orEmpty(),
+        option.required,
+        option::class.java,
+        option.value
+    )
 }
