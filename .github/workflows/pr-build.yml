@@ -88,30 +88,15 @@ jobs:
           else
             echo "MESSAGE=🚫 Build failed!" >> $GITHUB_OUTPUT
           fi
-      - name: Comment to pull request ${{ inputs.pr-number }}
-        uses: actions/github-script@v6
+      - name: Comment to Pull Request #${{ inputs.pr-number }}
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          script: |
-            const message = process.env.MESSAGE;
-            const short_sha = process.env.COMMIT_HASH;
-            const pr_number = "${{ inputs.pr-number }}";
-            const app_variant = "${{ inputs.app-variant }}";
-            const flutter_variant = "${{ inputs.flutter-variant }}";
-            const action_url = "${{ github.event.workflow_run.html_url }}";
-
-            const comment = `
-              ${message} @ ${short_sha}
-
-              You can check the details [here](${action_url}).
-
-              - PR: ${pr_number}
-              - App variant: ${app_variant}
-              - Flutter variant: ${flutter_variant}
-            `;
-
-            github.issues.createComment({
-              issue_number: pr_number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
+          GITHUB_TOKEN: ${{ secrets.PULL_REQUESTS_WRITE }}
+          message: |
+            ${{ env.MESSAGE }} @ ${{ env.COMMIT_HASH }}
+            
+            You can check the details [here](${{ github.event.workflow_run.html_url }}).
+  
+            - PR: ${{ inputs.pr-number }}
+            - App variant: ${{ inputs.app-variant }}
+            - Flutter variant: ${{ inputs.flutter-variant }}
