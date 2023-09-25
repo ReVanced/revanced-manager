@@ -40,7 +40,7 @@ class LegacySettingsProvider : ContentProvider() {
         val keystoreFile = File(context!!.getExternalFilesDir(null), "/revanced-manager.keystore")
         if (keystoreFile.exists()) {
             val keystoreBytes = keystoreFile.readBytes()
-            val keystoreBase64 = Base64.encodeToString(keystoreBytes, Base64.DEFAULT)
+            val keystoreBase64 = Base64.encodeToString(keystoreBytes, Base64.DEFAULT).replace("\n", "")
             json.put("keystore", keystoreBase64)
         }
 
