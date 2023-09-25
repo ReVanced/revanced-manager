@@ -154,7 +154,7 @@ class InstallerViewModel extends BaseViewModel {
           update(
             -100.0,
             'Aborted...',
-            'An error occurred! Aborted',
+            'An error occurred! Aborted\nError:\n$e',
           );
           if (kDebugMode) {
             print(e);
@@ -348,7 +348,7 @@ class InstallerViewModel extends BaseViewModel {
     try {
       _app.isRooted = installAsRoot;
       final bool hasMicroG =
-          _patches.any((p) => p.name.endsWith('MicroG support'));
+      _patches.any((p) => p.name.endsWith('MicroG support'));
       final bool rootMicroG = installAsRoot && hasMicroG;
       final bool rootFromStorage = installAsRoot && _app.isFromStorage;
       final bool ytWithoutRootMicroG =
@@ -363,8 +363,8 @@ class InstallerViewModel extends BaseViewModel {
               rootMicroG
                   ? 'installerView.installErrorDialogText1'
                   : rootFromStorage
-                      ? 'installerView.installErrorDialogText3'
-                      : 'installerView.installErrorDialogText2',
+                  ? 'installerView.installErrorDialogText3'
+                  : 'installerView.installErrorDialogText2',
             ),
             actions: <Widget>[
               CustomMaterialButton(
@@ -443,7 +443,6 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
       if (!cancel) {
@@ -465,6 +464,4 @@ class InstallerViewModel extends BaseViewModel {
     Navigator.of(context).pop();
     return true;
   }
-
-
 }
