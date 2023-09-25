@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                 val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
 
                 if (showImportLegacySettingsDialog) {
-                    if (isPackageInstalled("app.revanced.manager.flutter") or isPackageInstalled("app.revanced.manager.flutter.debug")) {
+                    if (isPackageInstalled("app.revanced.manager.flutter") || isPackageInstalled("app.revanced.manager.flutter.debug")) {
                         LegacySettingsImportDialog(vm::legacySettingsImportOnDismiss, vm::getLegacySettings)
                     } else {
                         vm.legacySettingsImportOnDismiss()
