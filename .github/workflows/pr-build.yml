@@ -32,7 +32,7 @@ permissions:
 
 jobs:
   build:
-    name: Build
+    name: Build the application
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +40,9 @@ jobs:
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh repo clone ReVanced/revanced-manager
+          gh repo clone validcube/revanced-manager
+          cd revanced-manager
+          gh repo set-default validcube/revanced-manager
           gh pr checkout ${{ inputs.pr-number }}
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-variant }}
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          path: build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk
           
   notify-pull-request:
     name: Notify Pull Request
@@ -81,20 +83,22 @@ jobs:
     steps:
       - name: Set env
         run: |
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          if [[ "${{ needs.build.outputs.build_status }}" == "success" ]]; then
-            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_OUTPUT
+          echo "DATETIME=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_ENV
           else
-            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_OUTPUT
+            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_ENV
           fi
-      - name: Comment to Pull Request #${{ inputs.pr-number }}
+      - name: "Comment to Pull Request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.PULL_REQUESTS_WRITE }}
+          GITHUB_TOKEN: ${{ github.token }}
+          pr_number: ${{ inputs.pr-number }}
+          mode: recreate
           message: |
-            ${{ env.MESSAGE }} @ ${{ env.COMMIT_HASH }}
+            ${{ env.MESSAGE }} @ ${{ env.DATETIME }}
             
-            You can check the details [here](${{ github.event.workflow_run.html_url }}).
+            You can check the details [here](${{ github.event.pull_request.html_url }}).
   
             - PR: ${{ inputs.pr-number }}
             - App variant: ${{ inputs.app-variant }}
