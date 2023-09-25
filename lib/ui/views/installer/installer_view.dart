@@ -56,7 +56,7 @@ class InstallerView extends StatelessWidget {
                           'installerView.exportApkButtonTooltip',
                         ),
                         icon: const Icon(Icons.save),
-                        onPressed: () => model.exportResult(),
+                        onPressed: () => model.onButtonPressed(0),
                       ),
                     ),
                     IconButton.filledTonal(
@@ -65,7 +65,7 @@ class InstallerView extends StatelessWidget {
                         'installerView.exportLogButtonTooltip',
                       ),
                       icon: const Icon(Icons.post_add),
-                      onPressed: () => model.copyLogs('installerView.copiedToClipboard'),
+                      onPressed: () => model.onButtonPressed(1),
                     ),
                   ],
                 ),

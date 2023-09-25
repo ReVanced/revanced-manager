@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -42,10 +42,10 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
   bool isCanceled = false;
   bool cancel = false;
+  bool doNotPopupScreenshotWarning = false;
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
-    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
     if (await Permission.ignoreBatteryOptimizations.isGranted) {
       try {
         FlutterBackground.initialize(
@@ -70,7 +70,10 @@ class InstallerViewModel extends BaseViewModel {
       }
     }
     screenshotCallback.addListener(() {
-      copyLogs('I have detected a screenshot!');
+      if (!doNotPopupScreenshotWarning) {
+        doNotPopupScreenshotWarning = true;
+        screenshotDetected(context);
+      }
     });
     await Wakelock.enable();
     await handlePlatformChannelMethods();
@@ -177,7 +180,7 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> copyLogs(String toastMessage) async {
+  Future<void> copyLogs() async {
     final info = await AboutInfo.getInfo();
 
     final formattedLogs = [
@@ -207,8 +210,40 @@ class InstallerViewModel extends BaseViewModel {
     ];
 
     Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
+    _toast.showBottom('installerView.copiedToClipboard');
+  }
 
-    _toast.showBottom(toastMessage);
+  Future<void> screenshotDetected(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText(
+          'warning',
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        icon: const Icon(FontAwesomeIcons.triangleExclamation),
+        content: SingleChildScrollView(
+          child: I18nText('installerView.screenshotDetected'),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () {
+              copyLogs();
+              doNotPopupScreenshotWarning = false;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> installTypeDialog(BuildContext context) async {
@@ -397,6 +432,18 @@ class InstallerViewModel extends BaseViewModel {
     DeviceApps.openApp(_app.packageName);
   }
 
+  void onButtonPressed(int value) {
+    switch (value) {
+      case 0:
+        exportResult();
+        break;
+      case 1:
+        copyLogs();
+        break;
+    }
+  }
+
+
   Future<bool> onWillPop(BuildContext context) async {
     if (isPatching) {
       if (!cancel) {
@@ -414,7 +461,7 @@ class InstallerViewModel extends BaseViewModel {
     } else {
       _patcherAPI.cleanPatcher();
     }
-    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+    screenshotCallback.dispose();
     Navigator.of(context).pop();
     return true;
   }

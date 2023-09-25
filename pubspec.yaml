@@ -76,7 +76,6 @@ dependencies:
   dio_cache_interceptor: ^3.4.0
   install_plugin: ^2.1.0
   screenshot_callback: ^3.0.1
-  flutter_windowmanager: ^0.2.0
 
 dev_dependencies:
   json_serializable: ^6.6.1
