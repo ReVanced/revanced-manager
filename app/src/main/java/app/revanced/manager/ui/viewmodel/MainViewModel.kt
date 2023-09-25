@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
@@ -60,15 +59,11 @@ class MainViewModel(
                 val column = cursor.getColumnIndex("settings")
                 if (column != -1) {
                     val jsonData = JSONObject(cursor.getString(column))
-
-                    // Process the JSON data as needed
-                    // loop through keys
                     val keysIterator = jsonData.keys()
                     while (keysIterator.hasNext()) {
                         try {
                             val key = keysIterator.next()
                             val value = jsonData.get(key)
-                            if (key != "patchedApps") Log.d("SettingsTest", "$key = $value")
 
                             when (key) {
                                 "themeMode" -> {
@@ -122,7 +117,7 @@ class MainViewModel(
                                 }
                             }
                         } catch (e: Exception) {
-                            Log.e("SettingsTest", "Error importing settings", e)
+                            e.printStackTrace()
                         }
                     }
                 }
