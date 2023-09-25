@@ -348,7 +348,7 @@ class InstallerViewModel extends BaseViewModel {
     try {
       _app.isRooted = installAsRoot;
       final bool hasMicroG =
-      _patches.any((p) => p.name.endsWith('MicroG support'));
+          _patches.any((p) => p.name.endsWith('MicroG support'));
       final bool rootMicroG = installAsRoot && hasMicroG;
       final bool rootFromStorage = installAsRoot && _app.isFromStorage;
       final bool ytWithoutRootMicroG =
@@ -363,8 +363,8 @@ class InstallerViewModel extends BaseViewModel {
               rootMicroG
                   ? 'installerView.installErrorDialogText1'
                   : rootFromStorage
-                  ? 'installerView.installErrorDialogText3'
-                  : 'installerView.installErrorDialogText2',
+                      ? 'installerView.installErrorDialogText3'
+                      : 'installerView.installErrorDialogText2',
             ),
             actions: <Widget>[
               CustomMaterialButton(
