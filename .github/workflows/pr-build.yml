@@ -72,7 +72,7 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-${{ env.COMMIT_HASH }}-P${{ inputs.pr-number }}-B${{ inputs.app-variant }}-F${{ inputs.flutter-variant }}
+          name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-variant }}
           path: build/app/outputs/flutter-apk/app-debug.apk
           
   notify-pull-request:
