@@ -84,11 +84,11 @@ jobs:
         run: |
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           if [[ "${{ needs.build.outputs.build_status }}" == "success" ]]; then
-            echo "MESSAGE=✅ Build Success!" >> $GITHUB_OUTPUT
+            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_OUTPUT
           else
-            echo "MESSAGE=🚫 Build Fail!" >> $GITHUB_OUTPUT
+            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_OUTPUT
           fi
-      - name: Comment on Pull Request ${{ inputs.pr-number }}
+      - name: Comment to pull request ${{ inputs.pr-number }}
         uses: actions/github-script@v6
         with:
           script: |
