@@ -27,13 +27,6 @@ import java.io.StringWriter
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
-import android.content.ContentResolver
-import android.content.Context
-import android.database.Cursor
-import android.net.Uri
-
-import android.util.Log
-
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
@@ -45,21 +38,6 @@ class MainActivity : FlutterActivity() {
 
         val patcherChannel = "app.revanced.manager.flutter/patcher"
         val installerChannel = "app.revanced.manager.flutter/installer"
-
-        val contentProviderUri = Uri.parse("content://app.revanced.manager.flutter.provider/settings")
-        val contentResolver: ContentResolver = context.contentResolver
-        val cursor: Cursor? = contentResolver.query(contentProviderUri, null, null, null, null)
-
-        Log.d("app.revanced.manager.flutter.debug", "byhithere")
-        if (cursor != null) {
-            Log.d("app.revanced.manager.flutter.debug", "test2")
-            if (cursor.moveToFirst()) {
-                val helloValue = cursor.getString(cursor.getColumnIndex("settings"))
-                // Process the retrieved "hello" value
-                Log.d("testing2", helloValue)
-            }
-            cursor.close()
-        }
 
         val mainChannel =
             MethodChannel(flutterEngine.dartExecutor.binaryMessenger, patcherChannel)

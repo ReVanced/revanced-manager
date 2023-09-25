@@ -7,11 +7,11 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
+import android.util.Base64
 import org.json.JSONObject
+import java.io.File
 
-import android.util.Log
-
-class ShareProvider : ContentProvider() {
+class LegacySettingsProvider : ContentProvider() {
     private val authority = "app.revanced.manager.flutter.provider"
     private val URI_CODE_SETTINGS = 1
 
@@ -27,18 +27,30 @@ class ShareProvider : ContentProvider() {
         val json = JSONObject()
 
         // Default Data
-
-        // TODO: load default data
+        json.put("keystorePassword", "s3cur3p@ssw0rd")
 
         // Load Shared Preferences
         val sharedPreferences = context!!.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
         val allEntries: Map<String, *> = sharedPreferences.getAll()
         for ((key, value) in allEntries.entries) {
-            Log.d("map values", key + ": " + value.toString())
             json.put(key.replace("flutter.", ""), value)
         }
 
-        // TODO: Load keystore
+        // Load keystore
+        val keystoreFile = File(context!!.getExternalFilesDir(null), "/revanced-manager.keystore")
+        if (keystoreFile.exists()) {
+            val keystoreBytes = keystoreFile.readBytes()
+            val keystoreBase64 = Base64.encodeToString(keystoreBytes, Base64.DEFAULT)
+            json.put("keystore", keystoreBase64)
+        }
+
+        // Load saved patches
+        val storedPatchesFile = File(context!!.filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json")
+        if (storedPatchesFile.exists()) {
+            val patchesBytes = storedPatchesFile.readBytes()
+            val patches = String(patchesBytes, Charsets.UTF_8)
+            json.put("savedPatches", patches)
+        }
 
         return json.toString()
     }

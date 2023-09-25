@@ -55,7 +55,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
        <provider
-           android:name=".utils.share.ShareProvider"
+           android:name=".utils.share.LegacySettingsProvider"
            android:authorities="app.revanced.manager.flutter.provider"
            android:exported="true">
        </provider>
