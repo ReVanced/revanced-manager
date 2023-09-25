@@ -33,7 +33,7 @@ class LegacySettingsProvider : ContentProvider() {
         val sharedPreferences = context!!.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
         val allEntries: Map<String, *> = sharedPreferences.getAll()
         for ((key, value) in allEntries.entries) {
-            json.put(key.replace("flutter.", ""), value)
+            json.put(key.replace("flutter.", ""), if (value is Boolean) if (value) 1 else 0 else value)
         }
 
         // Load keystore
