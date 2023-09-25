@@ -40,9 +40,9 @@ jobs:
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh repo clone validcube/revanced-manager
+          gh repo clone ReVanced/revanced-manager
           cd revanced-manager
-          gh repo set-default validcube/revanced-manager
+          gh repo set-default ReVanced/revanced-manager
           gh pr checkout ${{ inputs.pr-number }}
       - name: Checkout
         uses: actions/checkout@v4
