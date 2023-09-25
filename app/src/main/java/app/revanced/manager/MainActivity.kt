@@ -60,6 +60,8 @@ class MainActivity : ComponentActivity() {
                 if (showImportLegacySettingsDialog) {
                     if (isPackageInstalled("app.revanced.manager.flutter")) {
                         LegacySettingsImportDialog(vm::legacySettingsImportOnDismiss, vm::getLegacySettings)
+                    } else {
+                        vm.legacySettingsImportOnDismiss()
                     }
                 } else if (showAutoUpdatesDialog) {
                     AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
