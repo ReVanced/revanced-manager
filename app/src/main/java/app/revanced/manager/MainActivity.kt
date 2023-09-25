@@ -1,5 +1,7 @@
 package app.revanced.manager
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,14 +10,15 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.component.AutoUpdatesDialog
+import app.revanced.manager.ui.component.LegacySettingsImportDialog
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.screen.AppInfoScreen
-import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstallerScreen
 import app.revanced.manager.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.ui.screen.SettingsScreen
+import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
@@ -51,8 +54,14 @@ class MainActivity : ComponentActivity() {
 
                 NavBackHandler(navController)
 
+                val showImportLegacySettingsDialog by vm.prefs.showImportLegacySettingsDialog.getAsState()
                 val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
-                if (showAutoUpdatesDialog) {
+
+                if (showImportLegacySettingsDialog) {
+                    if (isPackageInstalled("app.revanced.manager.flutter")) {
+                        LegacySettingsImportDialog(vm::legacySettingsImportOnDismiss, vm::getLegacySettings)
+                    }
+                } else if (showAutoUpdatesDialog) {
                     AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
                 }
 
@@ -118,6 +127,19 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION") packageManager.getPackageInfo(packageName, 0)
+            }
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 }
