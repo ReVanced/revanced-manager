@@ -12,15 +12,23 @@ ReVanced Manager has settings that can be configured to your liking.
 
   Override the API and change the source of ReVanced Patches.
 
-- ### 🧪 Experimental ReVanced Patches support
+- ### 🆕 Auto update patches
+  
+  Automatically fetch the latest ReVanced Patches.
 
-  Lift app version constraints from ReVanced Patches. This allows you to patch any version of an app, even if the patch is not explicitly compatible with it.
+- ### 🪛 Allow changing patches selection
 
-- ### 🧑‍🔬 Experimental universal support
+  Allows the user to change the patches selection from the default selection.
+
+- ### 🔍 Version compatibility check
+
+  Constrains ReVanced Patches to supported app versions. Disable this to patch any version of an app, even if the patch is not explicitly compatible with it.
+
+- ### 🧑‍🔬 Show universal patches
 
   This will show or hide ReVanced Patches, which are not meant for any app in particular but rather for all apps but may not work on all apps.
 
-- ### 🔑 Export, import or delete keystore
+- ### 🔑 Export, import or regenerate keystore
 
   Manage the keystore used to sign patched apps.
 
