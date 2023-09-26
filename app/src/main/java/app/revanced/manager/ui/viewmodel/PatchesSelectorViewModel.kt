@@ -57,7 +57,7 @@ class PatchesSelectorViewModel(
             bundle.patches.filter { it.compatibleWith(input.selectedApp.packageName) }.forEach {
                 val targetList = when {
                     it.compatiblePackages == null -> universal
-                    it.supportsVersion(input.selectedApp.version) -> supported
+                    it.supportsVersion(input.selectedApp.packageName, input.selectedApp.version) -> supported
                     else -> unsupported
                 }
 

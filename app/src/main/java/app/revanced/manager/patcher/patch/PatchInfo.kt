@@ -3,7 +3,6 @@ package app.revanced.manager.patcher.patch
 import androidx.compose.runtime.Immutable
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.options.PatchOption
-import app.revanced.patcher.patch.options.PatchOptions
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
@@ -21,15 +20,23 @@ data class PatchInfo(
         patch.description,
         patch.use,
         patch.compatiblePackages?.map { CompatiblePackage(it) }?.toImmutableList(),
-        patch.options.takeUnless(PatchOptions::isEmpty)?.map { (_, option) -> Option(option) }?.toImmutableList()
+        patch.options.map { (_, option) -> Option(option) }.ifEmpty { null }?.toImmutableList()
     )
 
     fun compatibleWith(packageName: String) =
         compatiblePackages?.any { it.packageName == packageName } ?: true
 
-    fun supportsVersion(versionName: String) =
-        compatiblePackages?.any { it.versions?.takeUnless(Set<String>::isEmpty) == null || it.versions.any { version -> version == versionName } }
-            ?: true
+    fun supportsVersion(packageName: String, versionName: String): Boolean {
+        val packages = compatiblePackages ?: return true // Universal patch
+
+        return packages.any { pkg ->
+            if (pkg.packageName != packageName) {
+                return@any false
+            }
+
+            pkg.versions == null || pkg.versions.contains(versionName)
+        }
+    }
 }
 
 @Immutable
@@ -37,7 +44,10 @@ data class CompatiblePackage(
     val packageName: String,
     val versions: ImmutableSet<String>?
 ) {
-    constructor(pkg: Patch.CompatiblePackage) : this(pkg.name, pkg.versions?.toImmutableSet())
+    constructor(pkg: Patch.CompatiblePackage) : this(
+        pkg.name,
+        pkg.versions?.toImmutableSet()
+    )
 }
 
 @Immutable
