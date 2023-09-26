@@ -34,16 +34,16 @@ class ExportSettingsViewModel extends BaseViewModel {
     final Map<String, dynamic> data = {};
 
     data['themeMode'] = _managerAPI.getThemeMode();
-    data['useDynamicTheme'] = _managerAPI.getUseDynamicTheme();
+    data['useDynamicTheme'] = _managerAPI.getUseDynamicTheme() ? 1 : 0;
 
     data['apiUrl'] = _managerAPI.getApiUrl();
     data['patchesRepo'] = _managerAPI.getPatchesRepo();
     data['integrationsRepo'] = _managerAPI.getIntegrationsRepo();
 
-    data['patchesAutoUpdate'] = _managerAPI.isPatchesAutoUpdate();
-    data['patchesChangeEnabled'] = _managerAPI.isPatchesChangeEnabled();
-    data['universalPatchesEnabled'] = _managerAPI.areUniversalPatchesEnabled();
-    data['experimentalPatchesEnabled'] = _managerAPI.areExperimentalPatchesEnabled();
+    data['patchesAutoUpdate'] = _managerAPI.isPatchesAutoUpdate() ? 1 : 0;
+    data['patchesChangeEnabled'] = _managerAPI.isPatchesChangeEnabled() ? 1 : 0;
+    data['universalPatchesEnabled'] = _managerAPI.areUniversalPatchesEnabled() ? 1 : 0;
+    data['experimentalPatchesEnabled'] = _managerAPI.areExperimentalPatchesEnabled() ? 1 : 0;
 
     data['keystorePassword'] = _managerAPI.getKeystorePassword();
 
