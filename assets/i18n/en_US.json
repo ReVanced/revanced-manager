@@ -218,7 +218,7 @@
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Show universal patches",
-        "experimentalUniversalPatchesHint": "Display all apps and universal patches (may slow down the app)",
+        "experimentalUniversalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
         "versionCompatibilityCheckLabel": "Version compatibility check",
         "versionCompatibilityCheckHint": "Restricts patches to supported versions",
 
