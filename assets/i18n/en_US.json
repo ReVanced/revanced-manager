@@ -134,7 +134,7 @@
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
-        "unsupportedPatchVersion": "Patch is not supported for this app version. Disable the compatibility check in settings to proceed.",
+        "unsupportedPatchVersion": "Patch is not supported for this app version.",
 
         "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
         "newPatch": "New patch",
