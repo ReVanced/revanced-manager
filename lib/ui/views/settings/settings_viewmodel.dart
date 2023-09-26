@@ -135,8 +135,8 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool areVersionCompatibilityCheckEnabled() {
-    return _managerAPI.areVersionCompatibilityCheckEnabled();
+  bool isVersionCompatibilityCheckEnabled() {
+    return _managerAPI.isVersionCompatibilityCheckEnabled();
   }
 
   void useVersionCompatibilityCheck(bool value) {

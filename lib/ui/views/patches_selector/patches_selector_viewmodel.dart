@@ -107,7 +107,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
             .where(
               (element) =>
                   !element.excluded &&
-                  (_managerAPI.areVersionCompatibilityCheckEnabled() ||
+                  (_managerAPI.isVersionCompatibilityCheckEnabled() ||
                       isPatchSupported(element)),
             ),
       );
@@ -202,7 +202,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
         this.selectedPatches.addAll(
               patches.where((patch) => selectedPatches.contains(patch.name)),
             );
-        if (!_managerAPI.areVersionCompatibilityCheckEnabled()) {
+        if (!_managerAPI.isVersionCompatibilityCheckEnabled()) {
           this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
         }
       } else {

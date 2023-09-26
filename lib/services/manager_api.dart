@@ -215,7 +215,7 @@ class ManagerAPI {
     await _prefs.setBool('universalPatchesEnabled', value);
   }
 
-  bool areVersionCompatibilityCheckEnabled() {
+  bool isVersionCompatibilityCheckEnabled() {
     return _prefs.getBool('versionCompatibilityCheckEnabled') ?? false;
   }
 
@@ -723,7 +723,7 @@ class ManagerAPI {
   Future<List<String>> getDefaultPatches() async {
     final List<Patch> patches = await getPatches();
     final List<String> defaultPatches = [];
-    if (areVersionCompatibilityCheckEnabled() == false) {
+    if (isVersionCompatibilityCheckEnabled() == false) {
       defaultPatches.addAll(
         patches
             .where(

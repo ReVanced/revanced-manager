@@ -32,7 +32,7 @@ class _SVersionCompatibilityCheckState extends State<SVersionCompatibilityCheck>
         ),
       ),
       subtitle: I18nText('settingsView.versionCompatibilityCheckHint'),
-      value: _settingsViewModel.areVersionCompatibilityCheckEnabled(),
+      value: _settingsViewModel.isVersionCompatibilityCheckEnabled(),
       onChanged: (value) {
         setState(() {
           _settingsViewModel.useVersionCompatibilityCheck(value);
