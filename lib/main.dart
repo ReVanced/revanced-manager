@@ -8,6 +8,7 @@ import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
+import 'package:revanced_manager/ui/views/export_settings/export_settings_view.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_themes/stacked_themes.dart';
@@ -15,6 +16,14 @@ import 'package:timezone/data/latest.dart' as tz;
 
 late SharedPreferences prefs;
 Future main() async {
+  initialize(const NavigationView());
+}
+
+Future mainExportSettings() async {
+  initialize(const ExportSettingsView());
+}
+
+Future initialize(Widget homeView) async {
   await ThemeManager.initialise();
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,11 +35,12 @@ Future main() async {
   tz.initializeTimeZones();
   prefs = await SharedPreferences.getInstance();
 
-  runApp(const MyApp());
+  runApp(MyApp(homeView: homeView));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.homeView}) : super(key: key);
+  final Widget homeView;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +52,7 @@ class MyApp extends StatelessWidget {
 
     return DynamicThemeBuilder(
       title: 'ReVanced Manager',
-      home: const NavigationView(),
+      home: homeView,
       localizationsDelegates: [
         FlutterI18nDelegate(
           translationLoader: FileTranslationLoader(

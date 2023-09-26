@@ -304,5 +304,11 @@
         "integrationsContributors": "Integrations contributors",
         "cliContributors": "CLI contributors",
         "managerContributors": "Manager contributors"
+    },
+    "exportSettingsView": {
+        "widgetTitle": "Export settings",
+        "description": "Would you like to export your settings to the latest version of ReVanced Manager?",
+        "exportButton": "Export",
+        "dismissButton": "No thanks"
     }
 }
