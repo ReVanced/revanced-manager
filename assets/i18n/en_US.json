@@ -139,7 +139,7 @@
         "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
         "newPatch": "New patch",
 
-        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Enable changing selection\" in the settings.",
+        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Allow changing patches selection\" in the settings.",
         "patchesChangeWarningDialogButton": "Use default selection"
     },
     "installerView": {
