@@ -57,7 +57,11 @@ class PatchesSelectorViewModel(
             bundle.patches.filter { it.compatibleWith(input.selectedApp.packageName) }.forEach {
                 val targetList = when {
                     it.compatiblePackages == null -> universal
-                    it.supportsVersion(input.selectedApp.packageName, input.selectedApp.version) -> supported
+                    it.supportsVersion(
+                        input.selectedApp.packageName,
+                        input.selectedApp.version
+                    ) -> supported
+
                     else -> unsupported
                 }
 
@@ -155,17 +159,10 @@ class PatchesSelectorViewModel(
         compatibleVersions.clear()
     }
 
-    fun openUnsupportedDialog(unsupportedVersions: List<PatchInfo>) {
-        val set = HashSet<String>()
-
-        unsupportedVersions.forEach { patch ->
-            patch.compatiblePackages?.find { it.packageName == input.selectedApp.packageName }
-                ?.let { compatiblePackage ->
-                    set.addAll(compatiblePackage.versions.orEmpty())
-                }
-        }
-
-        compatibleVersions.addAll(set)
+    fun openUnsupportedDialog(unsupportedPatches: List<PatchInfo>) {
+        compatibleVersions.addAll(unsupportedPatches.flatMap { patch ->
+            patch.compatiblePackages?.find { it.packageName == input.selectedApp.packageName }?.versions.orEmpty()
+        })
     }
 
     fun toggleFlag(flag: Int) {
