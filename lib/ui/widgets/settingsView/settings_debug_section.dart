@@ -6,8 +6,8 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 
 final _settingsViewModel = SettingsViewModel();
 
-class SInfoSection extends StatelessWidget {
-  const SInfoSection({super.key});
+class SDebugSection extends StatelessWidget {
+  const SDebugSection({super.key});
 
   @override
   Widget build(BuildContext context) {
