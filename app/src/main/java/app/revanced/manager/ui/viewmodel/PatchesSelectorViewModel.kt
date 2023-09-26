@@ -87,12 +87,13 @@ class PatchesSelectorViewModel(
             val experimental = allowExperimental.get()
             fun BundleInfo.hasDefaultPatches(): Boolean {
                 return if (experimental) {
-                    all.any { patch -> patch.include }
+                    all.asSequence()
                 } else {
-                    listOf(supported, universal).flatten().any {
-                        it.include
+                    sequence {
+                        yieldAll(supported)
+                        yieldAll(universal)
                     }
-                }
+                }.any { it.include }
             }
 
             // Don't show the warning if there are no default patches.

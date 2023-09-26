@@ -335,7 +335,7 @@ fun SelectionWarningDialog(
                         if (timer == 0) stringResource(R.string.continue_) else stringResource(
                             R.string.selection_warning_continue_countdown, timer
                         )
-                    Text(text)
+                    Text(text, color = MaterialTheme.colorScheme.error)
                 }
             }
         },
