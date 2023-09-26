@@ -30,10 +30,6 @@
     <string name="auto_updates_dialog_patches">Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
-    <string name="legacy_settings_import_dialog_title">Import settings</string>
-    <string name="legacy_settings_import_dialog_description">Would you like to import your settings from the previous version of ReVanced Manager?</string>
-    <string name="legacy_settings_import_dialog_dismiss">No thanks</string>
-
     <string name="general">General</string>
     <string name="general_description">General settings</string>
     <string name="advanced">Advanced</string>

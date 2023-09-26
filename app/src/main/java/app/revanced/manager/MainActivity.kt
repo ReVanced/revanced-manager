@@ -1,16 +1,19 @@
 package app.revanced.manager
 
-import android.content.pm.PackageManager
-import android.os.Build
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.component.AutoUpdatesDialog
-import app.revanced.manager.ui.component.LegacySettingsImportDialog
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.screen.AppInfoScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
@@ -41,6 +44,17 @@ class MainActivity : ComponentActivity() {
 
         val vm: MainViewModel = getActivityViewModel()
 
+        vm.launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (result.data != null) {
+                    val jsonData = result.data!!.getStringExtra("data")!!
+                    vm.applyLegacySettings(jsonData)
+                }
+            }
+        }
+
         setContent {
             val theme by vm.prefs.theme.getAsState()
             val dynamicColor by vm.prefs.dynamicColor.getAsState()
@@ -54,17 +68,16 @@ class MainActivity : ComponentActivity() {
 
                 NavBackHandler(navController)
 
-                val showImportLegacySettingsDialog by vm.prefs.showImportLegacySettingsDialog.getAsState()
                 val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
 
-                if (showImportLegacySettingsDialog) {
-                    if (isPackageInstalled("app.revanced.manager.flutter") || isPackageInstalled("app.revanced.manager.flutter.debug")) {
-                        LegacySettingsImportDialog(vm::legacySettingsImportOnDismiss, vm::getLegacySettings)
-                    } else {
-                        vm.legacySettingsImportOnDismiss()
+                if (showAutoUpdatesDialog) {
+                    var launchedActivity by rememberSaveable { mutableStateOf(false) }
+                    if (!launchedActivity) {
+                        launchedActivity = true
+                        vm.launchLegacyActivity()
                     }
-                } else if (showAutoUpdatesDialog) {
                     AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
+
                 }
 
                 AnimatedNavHost(
@@ -129,19 +142,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun isPackageInstalled(packageName: String): Boolean {
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
-            } else {
-                @Suppress("DEPRECATION") packageManager.getPackageInfo(packageName, 0)
-            }
-            true
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
         }
     }
 }

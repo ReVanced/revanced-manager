@@ -21,6 +21,4 @@ class PreferencesManager(
 
     val showAutoUpdatesDialog = booleanPreference("show_auto_updates_dialog", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
-
-    val showImportLegacySettingsDialog = booleanPreference("show_import_legacy_settings_dialog", true)
 }
