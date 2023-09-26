@@ -74,7 +74,7 @@ fun AboutSettingsScreen(
             context.openUrl("https://reddit.com/r/app_revanced")
         },
         Pair(FontAwesomeIcons.Brands.Twitter) {
-            context.openUrl("https://twitter.com/@revancedapp")
+            context.openUrl("https://x.com/@revancedapp")
         },
         Pair(FontAwesomeIcons.Brands.Youtube) {
             context.openUrl("https://youtube.com/@revancedapp")
