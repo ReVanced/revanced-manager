@@ -149,46 +149,11 @@ class PatcherAPI {
         .toList();
   }
 
-  Future<bool> needsResourcePatching(
-    List<Patch> selectedPatches,
-  ) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dep.contains('resource-'),
-      ),
-    );
-  }
-
-  Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dep.contains('settings'),
-      ),
-    );
-  }
-
   Future<void> runPatcher(
     String packageName,
     String apkFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final bool includeSettings = await needsSettingsPatch(selectedPatches);
-    if (includeSettings) {
-      try {
-        final Patch? settingsPatch = _patches.firstWhereOrNull(
-          (patch) =>
-              patch.name.contains('settings') &&
-              patch.compatiblePackages.any((pack) => pack.name == packageName),
-        );
-        if (settingsPatch != null) {
-          selectedPatches.add(settingsPatch);
-        }
-      } on Exception catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-      }
-    }
     final File? patchBundleFile = await _managerAPI.downloadPatches();
     final File? integrationsFile = await _managerAPI.downloadIntegrations();
     if (patchBundleFile != null) {

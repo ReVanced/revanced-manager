@@ -315,18 +315,16 @@ class ManagerAPI {
 
     if (patchBundleFile != null) {
       try {
-        final patchesObject = await PatcherAPI.patcherChannel.invokeMethod(
+        final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
           'getPatches',
           {
             'patchBundleFilePath': patchBundleFile.path,
             'cacheDirPath': cacheDir.path,
           },
         );
-        final List<Map<String, dynamic>> patchesMap = [];
-        patchesObject.forEach((patch) {
-          patchesMap.add(jsonDecode('$patch'));
-        });
-        patches = patchesMap.map((patch) => Patch.fromJson(patch)).toList();
+
+        final List<dynamic> patchesJsonList = jsonDecode(patchesJson);
+        patches = patchesJsonList.map((patchJson) => Patch.fromJson(patchJson)).toList();
         return patches;
       } on Exception catch (e) {
         if (kDebugMode) {

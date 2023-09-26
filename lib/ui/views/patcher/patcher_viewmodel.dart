@@ -44,49 +44,6 @@ class PatcherViewModel extends BaseViewModel {
     return selectedApp == null;
   }
 
-  Future<bool> isValidPatchConfig() async {
-    final bool needsResourcePatching = await _patcherAPI.needsResourcePatching(
-      selectedPatches,
-    );
-    if (needsResourcePatching && selectedApp != null) {
-      final bool isSplit = await _managerAPI.isSplitApk(selectedApp!);
-      return !isSplit;
-    }
-    return true;
-  }
-
-  Future<void> showPatchConfirmationDialog(BuildContext context) async {
-    final bool isValid = await isValidPatchConfig();
-    if (context.mounted) {
-      if (isValid) {
-        showArmv7WarningDialog(context);
-      } else {
-        return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: I18nText('warning'),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText('patcherView.splitApkWarningDialogText'),
-            actions: <Widget>[
-              CustomMaterialButton(
-                label: I18nText('noButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              CustomMaterialButton(
-                label: I18nText('yesButton'),
-                isFilled: false,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  showArmv7WarningDialog(context);
-                },
-              ),
-            ],
-          ),
-        );
-      }
-    }
-  }
-
   Future<void> showRemovedPatchesDialog(BuildContext context) async {
     if (removedPatches.isNotEmpty) {
       return showDialog(
@@ -115,7 +72,7 @@ class PatcherViewModel extends BaseViewModel {
         ),
       );
     } else {
-      showArmv7WarningDialog(context);
+      showArmv7WarningDialog(context); // TODO(aabed): Find out why this is here
     }
   }
 
