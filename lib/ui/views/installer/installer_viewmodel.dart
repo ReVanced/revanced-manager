@@ -41,7 +41,7 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
   bool isCanceled = false;
   bool cancel = false;
-  bool doNotPopupScreenshotWarning = false;
+  bool showPopupScreenshotWarning = true;
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
@@ -69,8 +69,8 @@ class InstallerViewModel extends BaseViewModel {
       }
     }
     screenshotCallback.addListener(() {
-      if (!doNotPopupScreenshotWarning) {
-        doNotPopupScreenshotWarning = true;
+      if (showPopupScreenshotWarning) {
+        showPopupScreenshotWarning = false;
         screenshotDetected(context);
       }
     });
@@ -236,7 +236,7 @@ class InstallerViewModel extends BaseViewModel {
             label: I18nText('yesButton'),
             onPressed: () {
               copyLogs();
-              doNotPopupScreenshotWarning = false;
+              showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
           ),
