@@ -3,17 +3,56 @@ package app.revanced.manager.flutter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Base64
 import org.json.JSONObject
+import java.io.ByteArrayInputStream
 import java.io.File
-
-import android.util.Log
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
+import java.security.MessageDigest
 
 class ExportSettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val composeFingerprint = ""
 
+        // Get the package name of the app that started the activity
+        val packageName = getCallingPackage()!!
+
+        // Get the signature of the app that matches the package name
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        val signatures = packageInfo.signatures
+
+        // Loop through each signature and print its properties
+        for (signature in signatures) {
+            // Get the raw certificate data
+            val rawCert = signature.toByteArray()
+
+            // Generate an X509Certificate from the data
+            val certFactory = CertificateFactory.getInstance("X509")
+            val x509Cert = certFactory.generateCertificate(ByteArrayInputStream(rawCert)) as X509Certificate
+
+            // Get the SHA256 fingerprint
+            val fingerprint = MessageDigest.getInstance("SHA256").digest(x509Cert.encoded).joinToString("") {
+                "%02x".format(it)
+            }
+
+            if (fingerprint == composeFingerprint) {
+                sendData()
+            }
+        }
+
+        // Send data back
+        val resultIntent = Intent()
+        setResult(Activity.RESULT_CANCELED)
+        finish()
+    }
+
+    fun sendData() {
+        // Create JSON Object
         val json = JSONObject()
 
         // Default Data
@@ -47,7 +86,6 @@ class ExportSettingsActivity : Activity() {
         }
 
         // Send data back
-        Log.e("ExportSettingsActivity", json.toString())
         val resultIntent = Intent()
         resultIntent.putExtra("data", json.toString())
         setResult(Activity.RESULT_OK, resultIntent)
