@@ -163,7 +163,7 @@
         "exportLogButtonTooltip": "Export log",
 
         "screenshotDetected": "A screenshot has been detected. If you are trying to share the log, please share a text copy instead.\n\nCopy log to clipboard?",
-        "copiedToClipboard": "Copied logs to clipboard",
+        "copiedToClipboard": "Copied log to clipboard",
 
         "installErrorDialogTitle": "Error",
         "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
