@@ -14,10 +14,12 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.security.MessageDigest
 
+import android.util.Log
+
 class ExportSettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val composeFingerprint = ""
+        val revancedFingerprint = "b6362c6ea7888efd15c0800f480786ad0f5b133b4f84e12d46afba5f9eac1223"
 
         // Get the package name of the app that started the activity
         val packageName = getCallingPackage()!!
@@ -40,7 +42,7 @@ class ExportSettingsActivity : Activity() {
                 "%02x".format(it)
             }
 
-            if (fingerprint == composeFingerprint) {
+            if (fingerprint == revancedFingerprint) {
                 sendData()
             }
         }
