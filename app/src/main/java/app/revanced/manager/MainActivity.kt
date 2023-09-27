@@ -8,10 +8,10 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getActivityViewModel()
+        lateinit var launchedActivityState: MutableState<Int>
 
         vm.launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -52,6 +53,8 @@ class MainActivity : ComponentActivity() {
                     val jsonData = result.data!!.getStringExtra("data")!!
                     vm.applyLegacySettings(jsonData)
                 }
+            } else {
+                launchedActivityState.value = 2
             }
         }
 
@@ -71,13 +74,15 @@ class MainActivity : ComponentActivity() {
                 val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
 
                 if (showAutoUpdatesDialog) {
-                    var launchedActivity by rememberSaveable { mutableStateOf(false) }
-                    if (!launchedActivity) {
-                        launchedActivity = true
-                        vm.launchLegacyActivity()
+                    launchedActivityState = rememberSaveable { mutableStateOf(0) }
+                    if (launchedActivityState.value == 0) {
+                        launchedActivityState.value = 1
+                        if (!vm.launchLegacyActivity()) {
+                            launchedActivityState.value = 2
+                        }
+                    } else if (launchedActivityState.value == 2) {
+                        AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
                     }
-                    AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
-
                 }
 
                 AnimatedNavHost(

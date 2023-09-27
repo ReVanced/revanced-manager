@@ -43,16 +43,17 @@ class MainViewModel(
         }
     }
 
-    fun launchLegacyActivity() = viewModelScope.launch {
-        try {
+    fun launchLegacyActivity(): Boolean {
+        return try {
             val intent = Intent()
             intent.setClassName(
                 "app.revanced.manager.flutter",
                 "app.revanced.manager.flutter.ExportSettingsActivity"
             )
             launcher.launch(intent)
+            true
         } catch (e: Exception) {
-            e.printStackTrace()
+            false
         }
     }
 
