@@ -10,26 +10,23 @@ class ExportSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _exportSettingsViewModel.init(context);
-    return Material(
-        child: AlertDialog(
-          title: I18nText('exportSettingsView.widgetTitle'),
-          content: I18nText('exportSettingsView.description'),
-          icon: const Icon(Icons.update),
-          actions: <Widget> [
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('exportSettingsView.dismissButton'),
-              onPressed: _exportSettingsViewModel.deny,
-            ),
-            CustomMaterialButton(
-              label: I18nText('exportSettingsView.exportButton'),
-              onPressed: () async {
-                await _exportSettingsViewModel.accept();
-              },
-            ),
-          ],
+    return AlertDialog(
+      title: I18nText('exportSettingsView.widgetTitle'),
+      content: I18nText('exportSettingsView.description'),
+      icon: const Icon(Icons.update),
+      actions: <Widget> [
+        CustomMaterialButton(
+          isFilled: false,
+          label: I18nText('exportSettingsView.dismissButton'),
+          onPressed: _exportSettingsViewModel.deny,
         ),
+        CustomMaterialButton(
+          label: I18nText('exportSettingsView.exportButton'),
+          onPressed: () async {
+            await _exportSettingsViewModel.accept();
+          },
+        ),
+      ],
     );
   }
 }

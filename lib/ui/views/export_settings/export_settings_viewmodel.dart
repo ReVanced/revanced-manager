@@ -15,19 +15,6 @@ class ExportSettingsViewModel extends BaseViewModel {
   final _channel = const MethodChannel('app.revanced.manager.flutter/settings');
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
-  void init(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness:
-        DynamicTheme.of(context)!.theme.brightness == Brightness.light
-            ? Brightness.dark
-            : Brightness.light,
-      ),
-    );
-  }
-
   Future<void> accept() async {
     final externalDir = await getExternalStorageDirectory();
 

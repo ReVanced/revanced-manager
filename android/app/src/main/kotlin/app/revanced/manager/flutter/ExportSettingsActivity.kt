@@ -3,6 +3,7 @@ package app.revanced.manager.flutter
 import android.app.Activity
 import android.content.Intent
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.TransparencyMode
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.Serializable
@@ -36,5 +37,9 @@ class ExportSettingsActivity : FlutterActivity() {
 
     override fun getDartEntrypointFunctionName(): String {
         return "mainExportSettings"
+    }
+
+    override fun getTransparencyMode(): TransparencyMode {
+        return TransparencyMode.transparent
     }
 }
