@@ -14,8 +14,6 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.security.MessageDigest
 
-import android.util.Log
-
 class ExportSettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
