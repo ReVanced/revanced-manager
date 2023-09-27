@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -221,7 +220,7 @@ class InstallerViewModel extends BaseViewModel {
           'warning',
         ),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        icon: const Icon(FontAwesomeIcons.triangleExclamation),
+        icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
           child: I18nText('installerView.screenshotDetected'),
         ),
