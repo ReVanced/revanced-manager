@@ -1,45 +1,56 @@
 package app.revanced.manager.flutter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.TransparencyMode
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
-import java.io.Serializable
+import android.os.Bundle
+import android.util.Base64
+import org.json.JSONObject
+import java.io.File
 
-class ExportSettingsActivity : FlutterActivity() {
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        super.configureFlutterEngine(flutterEngine)
+import android.util.Log
 
-        val settingsChannel = "app.revanced.manager.flutter/settings"
+class ExportSettingsActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        val mainChannel =
-            MethodChannel(flutterEngine.dartExecutor.binaryMessenger, settingsChannel)
+        val json = JSONObject()
 
-        mainChannel.setMethodCallHandler { call, result ->
-            when (call.method) {
-                "accept" -> {
-                    val data = call.argument<String>("data")
-                    val resultIntent = Intent()
-                    resultIntent.putExtra("data", data as Serializable)
-                    setResult(Activity.RESULT_OK, resultIntent)
-                    finish()
-                }
-                "deny" -> {
-                    setResult(Activity.RESULT_CANCELED)
-                    finish()
-                }
-                else -> result.notImplemented()
-            }
+        // Default Data
+        json.put("keystorePassword", "s3cur3p@ssw0rd")
+
+        // Load Shared Preferences
+        val sharedPreferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
+        val allEntries: Map<String, *> = sharedPreferences.getAll()
+        for ((key, value) in allEntries.entries) {
+            json.put(
+                key.replace("flutter.", ""),
+                if (value is Boolean) if (value) 1 else 0 else value
+            )
         }
-    }
 
-    override fun getDartEntrypointFunctionName(): String {
-        return "mainExportSettings"
-    }
+        // Load keystore
+        val keystoreFile = File(getExternalFilesDir(null), "/revanced-manager.keystore")
+        if (keystoreFile.exists()) {
+            val keystoreBytes = keystoreFile.readBytes()
+            val keystoreBase64 =
+                Base64.encodeToString(keystoreBytes, Base64.DEFAULT).replace("\n", "")
+            json.put("keystore", keystoreBase64)
+        }
 
-    override fun getTransparencyMode(): TransparencyMode {
-        return TransparencyMode.transparent
+        // Load saved patches
+        val storedPatchesFile = File(filesDir.parentFile.absolutePath, "/app_flutter/selected-patches.json")
+        if (storedPatchesFile.exists()) {
+            val patchesBytes = storedPatchesFile.readBytes()
+            val patches = String(patchesBytes, Charsets.UTF_8)
+            json.put("patches", patches)
+        }
+
+        // Send data back
+        Log.e("ExportSettingsActivity", json.toString())
+        val resultIntent = Intent()
+        resultIntent.putExtra("data", json.toString())
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 }
