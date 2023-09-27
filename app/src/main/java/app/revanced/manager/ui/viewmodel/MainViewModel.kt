@@ -79,7 +79,8 @@ class MainViewModel(
                         prefs.dynamicColor.update(value == 1)
                     }
                     "apiUrl" -> {
-                        prefs.api.update(value as String)
+                        val url = value as String
+                        prefs.api.update(url.removeSuffix("/"))
                     }
                     "experimentalPatchesEnabled" -> {
                         prefs.allowExperimental.update(value == 1)
@@ -110,7 +111,7 @@ class MainViewModel(
                         val keystoreBytes = Base64.decode(value as String, Base64.DEFAULT)
                         keystorePath.toFile().writeBytes(keystoreBytes)
                     }
-                    "savedPatches" -> {
+                    "patches" -> {
                         val bundleUid = patchBundleRepository.sources.first().first().uid
                         val selection = Json.decodeFromString<SerializedSelection>(value as String)
                         patchSelectionRepository.import(bundleUid, selection)
