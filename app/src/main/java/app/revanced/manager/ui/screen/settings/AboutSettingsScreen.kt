@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.destination.SettingsDestination
+import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import compose.icons.FontAwesomeIcons
@@ -32,8 +32,7 @@ import compose.icons.fontawesomeicons.brands.Reddit
 import compose.icons.fontawesomeicons.brands.Telegram
 import compose.icons.fontawesomeicons.brands.Twitter
 import compose.icons.fontawesomeicons.brands.Youtube
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +40,7 @@ fun AboutSettingsScreen(
     onBackClick: () -> Unit,
     onContributorsClick: () -> Unit,
     onLicensesClick: () -> Unit,
+    viewModel: AboutViewModel = getViewModel()
 ) {
     val context = LocalContext.current
     val icon = rememberDrawablePainter(context.packageManager.getApplicationIcon(context.packageName))
@@ -63,23 +63,22 @@ fun AboutSettingsScreen(
         }),
     )
 
-    val socialButtons = listOf(
-        Pair(FontAwesomeIcons.Brands.Discord) {
-            context.openUrl("https://revanced.app/discord")
-        },
-        Pair(FontAwesomeIcons.Brands.Telegram) {
-            context.openUrl("https://t.me/app_revanced")
-        },
-        Pair(FontAwesomeIcons.Brands.Reddit) {
-            context.openUrl("https://reddit.com/r/app_revanced")
-        },
-        Pair(FontAwesomeIcons.Brands.Twitter) {
-            context.openUrl("https://x.com/@revancedapp")
-        },
-        Pair(FontAwesomeIcons.Brands.Youtube) {
-            context.openUrl("https://youtube.com/@revancedapp")
-        },
+    val socialIcons = mapOf(
+        "Contact" to Icons.Outlined.MailOutline,
+        "Discord" to FontAwesomeIcons.Brands.Discord, 
+        "Donate" to Icons.Outlined.FavoriteBorder,
+        "GitHub" to FontAwesomeIcons.Brands.Github,
+        "Reddit" to FontAwesomeIcons.Brands.Reddit,
+        "Telegram" to FontAwesomeIcons.Brands.Telegram,
+        "Twitter" to FontAwesomeIcons.Brands.Twitter,
+        "YouTube" to FontAwesomeIcons.Brands.Youtube,
     )
+
+    val socialButtons = viewModel.socials.map {
+        Pair(socialIcons[it.name] ?: Icons.Outlined.Language) {
+            context.openUrl(it.url)
+        }
+    }
 
     val listItems = listOf(
         Triple(stringResource(R.string.submit_feedback), stringResource(R.string.submit_feedback_description),

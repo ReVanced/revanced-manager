@@ -1,9 +1,10 @@
 package app.revanced.manager.network.service
 
-import app.revanced.manager.network.dto.ReVancedLatestRelease
 import app.revanced.manager.network.dto.ReVancedGitRepositories
+import app.revanced.manager.network.dto.ReVancedLatestRelease
+import app.revanced.manager.network.dto.ReVancedSocials
 import app.revanced.manager.network.utils.APIResponse
-import io.ktor.client.request.*
+import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -21,6 +22,13 @@ class ReVancedService(
         withContext(Dispatchers.IO) {
             client.request {
                 url("$api/contributors")
+            }
+        }
+
+    suspend fun getSocials(api: String): APIResponse<ReVancedSocials> =
+        withContext(Dispatchers.IO) {
+            client.request {
+                url("$api/v2/socials")
             }
         }
 }
