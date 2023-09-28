@@ -81,10 +81,10 @@ jobs:
       - name: Set env
         run: |
           echo "DATETIME=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
-          if [[ "${{ needs.build.result }}" == "success" ]]; then
-            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_ENV
-          else
+          if [[ "${{ needs.build.result }}" == "failure" ]]; then
             echo "MESSAGE=🚫 Build failed!" >> $GITHUB_ENV
+          else
+            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_ENV
           fi
       - name: "Comment to Pull Request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
@@ -95,7 +95,7 @@ jobs:
           message: |
             ${{ env.MESSAGE }} @ ${{ env.DATETIME }}
             
-            You can check the details [here](${{ github.event.pull_request.html_url }}).
+            You can check the details [here](${{ github.event.workflow_run.html_url }}).
   
             - PR: ${{ inputs.pr-number }}
             - App variant: ${{ inputs.app-variant }}
