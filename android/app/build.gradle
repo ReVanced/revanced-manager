@@ -70,6 +70,16 @@ android {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
             }
         }
+        profile {
+            shrinkResources false
+            minifyEnabled false
+            resValue "string", "app_name", "ReVanced Manager Profile"
+            applicationIdSuffix ".profile"
+            signingConfig signingConfigs.debug
+            ndk {
+                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
+            }
+        }
     }
 
     packagingOptions {
