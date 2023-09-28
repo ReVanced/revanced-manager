@@ -36,7 +36,7 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
+      - name: Checkout the PR
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -44,6 +44,10 @@ jobs:
           cd revanced-manager
           gh repo set-default ReVanced/revanced-manager
           gh pr checkout ${{ inputs.pr-number }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
