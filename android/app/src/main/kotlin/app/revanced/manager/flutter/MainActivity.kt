@@ -180,8 +180,11 @@ class MainActivity : FlutterActivity() {
                 }
 
                 object : java.util.logging.Handler() {
-                    override fun publish(record: LogRecord) =
+                    override fun publish(record: LogRecord) {
+                        if (record.loggerName?.startsWith("app.revanced") != true) return
+
                         updateProgress(-1.0, "", record.message)
+                    }
 
                     override fun flush() = Unit
                     override fun close() = flush()
