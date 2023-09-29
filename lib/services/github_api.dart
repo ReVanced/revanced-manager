@@ -51,6 +51,7 @@ class GithubAPI {
   Future<void> clearAllCache() async {
     try {
       await _cacheOptions.store!.clean();
+      await DefaultCacheManager().emptyCache();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -142,38 +143,6 @@ class GithubAPI {
     }
   }
 
-  Future<List<String>> getCommits(
-    String packageName,
-    String repoName,
-    DateTime since,
-  ) async {
-    final String path =
-        'src/main/kotlin/app/revanced/patches/${repoAppPath[packageName]}';
-    try {
-      final response = await _dio.get(
-        '/repos/$repoName/commits',
-        queryParameters: {
-          'path': path,
-          'since': since.toIso8601String(),
-        },
-      );
-      final List<dynamic> commits = response.data;
-      return commits
-          .map(
-            (commit) => commit['commit']['message'].split('\n')[0] +
-                ' - ' +
-                commit['commit']['author']['name'] +
-                '\n' as String,
-          )
-          .toList();
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    return [];
-  }
-
   Future<File?> getLatestReleaseFile(
     String extension,
     String repoName,
@@ -236,31 +205,5 @@ class GithubAPI {
       }
     }
     return null;
-  }
-
-  Future<List<Patch>> getPatches(
-    String repoName,
-    String version,
-    String url,
-  ) async {
-    List<Patch> patches = [];
-    try {
-      final File? f = await getPatchesReleaseFile(
-        '.json',
-        repoName,
-        version,
-        url,
-      );
-      if (f != null) {
-        final List<dynamic> list = jsonDecode(f.readAsStringSync());
-        patches = list.map((patch) => Patch.fromJson(patch)).toList();
-      }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-
-    return patches;
   }
 }

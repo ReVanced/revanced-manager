@@ -56,9 +56,7 @@
         "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
     },
     "applicationItem": {
-        "patchButton": "Patch",
-        "infoButton": "Info",
-        "changelogLabel": "Changelog"
+        "infoButton": "Info"
     },
     "latestCommitCard": {
         "loadingLabel": "Loading...",

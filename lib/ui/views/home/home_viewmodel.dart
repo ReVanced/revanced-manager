@@ -37,15 +37,15 @@ class HomeViewModel extends BaseViewModel {
   DateTime? _lastUpdate;
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
-  List<PatchedApplication> patchedUpdatableApps = [];
   String? _latestManagerVersion = '';
   File? downloadedApk;
 
   Future<void> initialize(BuildContext context) async {
-    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     if (!_managerAPI.getPatchesConsent()) {
       await showPatchesConsent(context);
     }
+
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     await _patcherAPI.initialize();
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
@@ -83,7 +83,6 @@ class HomeViewModel extends BaseViewModel {
       }
     }
     _getPatchedApps();
-    _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
   void navigateToAppInfo(PatchedApplication app) {
@@ -108,10 +107,6 @@ class HomeViewModel extends BaseViewModel {
 
   void _getPatchedApps() {
     patchedInstalledApps = _managerAPI.getPatchedApps().toList();
-    patchedUpdatableApps = _managerAPI
-        .getPatchedApps()
-        .where((app) => app.hasUpdates == true)
-        .toList();
     notifyListeners();
   }
 

@@ -16,9 +16,7 @@ class PatchedApplication {
     required this.patchDate,
     this.isRooted = false,
     this.isFromStorage = false,
-    this.hasUpdates = false,
     this.appliedPatches = const [],
-    this.changelog = const [],
   });
 
   factory PatchedApplication.fromJson(Map<String, dynamic> json) =>
@@ -36,9 +34,7 @@ class PatchedApplication {
   DateTime patchDate;
   bool isRooted;
   bool isFromStorage;
-  bool hasUpdates;
   List<String> appliedPatches;
-  List<String> changelog;
 
   Map<String, dynamic> toJson() => _$PatchedApplicationToJson(this);
 
