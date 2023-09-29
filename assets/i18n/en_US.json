@@ -159,10 +159,6 @@
         "exportApkButtonTooltip": "Export patched APK",
         "exportLogButtonTooltip": "Export log",
 
-        "installErrorDialogTitle": "Error",
-        "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
-        "installErrorDialogText2": "Non-root install is not possible with the current patches selection.\nRepatch your app or choose root install if you have your device rooted.",
-        "installErrorDialogText3": "Root install is not possible as the original APK was selected from storage.\nSelect an installed app or choose non-root install.",
         "noExit": "Installer is still running, cannot exit..."
     },
     "settingsView": {

@@ -147,17 +147,7 @@ class AppInfoViewModel extends BaseViewModel {
   }
 
   String getAppliedPatchesString(List<String> appliedPatches) {
-    final List<String> names = appliedPatches
-        .map(
-          (p) => p
-              .replaceAll('-', ' ')
-              .split('-')
-              .join(' ')
-              .toTitleCase()
-              .replaceFirst('Microg', 'MicroG'),
-        )
-        .toList();
-    return '\u2022 ${names.join('\n\u2022 ')}';
+    return '\u2022 ${appliedPatches.join('\n\u2022 ')}';
   }
 
   void openApp(PatchedApplication app) {
