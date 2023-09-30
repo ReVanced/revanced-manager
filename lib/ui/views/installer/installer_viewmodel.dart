@@ -294,6 +294,8 @@ class InstallerViewModel extends BaseViewModel {
           await _managerAPI.savePatchedApp(_app);
 
           update(1.0, 'Installed!', 'Installed!');
+        } else {
+          // TODO(aabed): Show error message.
         }
     } on Exception catch (e) {
       if (kDebugMode) {
