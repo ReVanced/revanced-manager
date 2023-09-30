@@ -70,28 +70,13 @@ class AppSelectorViewModel extends BaseViewModel {
     return true;
   }
 
-  Future<void> searchSuggestedVersionOnWeb(BuildContext context,
-      {required String packageName, required String appName, bool isInstalled = false,}) async {
-    final String search = FlutterI18n.translate(
-      context,
-      'appSelectorCard.search',
-    );
-    final String apk = FlutterI18n.translate(
-      context,
-      'appSelectorCard.apk',
-    );
-    final String version = FlutterI18n.translate(
-      context,
-      'appSelectorCard.version',
-    );
+  Future<void> searchSuggestedVersionOnWeb(
+      {required String packageName,}) async {
     final String suggestedVersion = getSuggestedVersion(packageName);
-    String stringUrl;
-    if(isInstalled){
-      stringUrl = 'https://www.google.com/$search?q=$appName'
-          '+$apk';
-    }else{
-      stringUrl = 'https://www.google.com/$search?q=$appName'
-          '+$apk+$version+v+$suggestedVersion';
+    String stringUrl = 'https://www.google.com/search?q=$packageName'
+        '+apk';
+    if(suggestedVersion.isNotEmpty) {
+      stringUrl = '$stringUrl+version+v+$suggestedVersion';
     }
 
     final Uri url = Uri.parse(stringUrl);

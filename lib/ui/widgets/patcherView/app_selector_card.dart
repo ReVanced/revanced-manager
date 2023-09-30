@@ -79,7 +79,7 @@ class AppSelectorCard extends StatelessWidget {
                     InkWell(
                       onTap: (){
                         locator<PatcherViewModel>()
-                            .searchSuggestedVersionOnWeb(context);
+                            .searchSuggestedVersionOnWeb();
                       },
                       child: const Icon(Icons.link),
                     ),

@@ -169,24 +169,17 @@ class PatcherViewModel extends BaseViewModel {
     )}: v${selectedApp!.version}';
   }
 
-  Future<void> searchSuggestedVersionOnWeb(BuildContext context) async {
-    final String search = FlutterI18n.translate(
-      context,
-      'appSelectorCard.search',
-    );
-    final String apk = FlutterI18n.translate(
-      context,
-      'appSelectorCard.apk',
-    );
-    final String version = FlutterI18n.translate(
-      context,
-      'appSelectorCard.version',
-    );
+  Future<void> searchSuggestedVersionOnWeb() async {
     final String suggestedVersion =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
-    final Uri url =
-        Uri.parse('https://www.google.com/$search?q=${selectedApp!.name}'
-            '+$apk+$version+v+$suggestedVersion');
+
+    String stringUrl = 'https://www.google.com/search?q=${selectedApp!.packageName}'
+        '+apk';
+    if(suggestedVersion.isNotEmpty) {
+      stringUrl = '$stringUrl+version+v+$suggestedVersion';
+    }
+
+    final Uri url = Uri.parse(stringUrl);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }

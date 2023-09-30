@@ -86,10 +86,7 @@
 
         "currentVersion": "Current",
         "suggestedVersion": "Suggested",
-        "allVersions": "All versions",
-        "search": "search",
-        "apk": "apk",
-        "version": "version"
+        "allVersions": "All versions"
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
