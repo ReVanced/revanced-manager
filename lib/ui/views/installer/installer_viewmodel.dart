@@ -279,7 +279,6 @@ class InstallerViewModel extends BaseViewModel {
         );
         isInstalled = await _patcherAPI.installPatchedFile(_app);
         if (isInstalled) {
-          update(1.0, 'Installed!', 'Installed!');
           _app.isFromStorage = false;
           _app.patchDate = DateTime.now();
           _app.appliedPatches = _patches.map((p) => p.name).toList();
@@ -293,6 +292,8 @@ class InstallerViewModel extends BaseViewModel {
           }
 
           await _managerAPI.savePatchedApp(_app);
+
+          update(1.0, 'Installed!', 'Installed!');
         }
     } on Exception catch (e) {
       if (kDebugMode) {
