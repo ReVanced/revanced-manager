@@ -81,7 +81,8 @@ class HomeViewModel extends BaseViewModel {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
     }
-    _getPatchedApps();
+
+    _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
   void navigateToAppInfo(PatchedApplication app) {

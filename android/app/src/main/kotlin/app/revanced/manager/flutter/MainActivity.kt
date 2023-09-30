@@ -94,7 +94,6 @@ class MainActivity : FlutterActivity() {
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")!!
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
-
                     JSONArray().apply {
                         try {
                             PatchBundleLoader.Dex(
