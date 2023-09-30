@@ -285,7 +285,7 @@ class InstallerViewModel extends BaseViewModel {
 
           // In case a patch changed the app name or package name,
           // update the app info.
-          final app = await DeviceApps.getAppFromStorage(_app.apkFilePath);
+          final app = await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
           if (app != null) {
             _app.name = app.appName;
             _app.packageName = app.packageName;
