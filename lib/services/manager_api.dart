@@ -520,7 +520,6 @@ class ManagerAPI {
             PatchedApplication(
               name: application.appName,
               packageName: application.packageName,
-              originalPackageName: application.packageName,
               version: application.versionName!,
               apkFilePath: application.apkFilePath,
               icon: application.icon,

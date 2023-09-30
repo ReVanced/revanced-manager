@@ -226,22 +226,6 @@ class AppInfoView extends StatelessWidget {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),
                       title: I18nText(
-                        'appInfoView.originalPackageNameLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      subtitle: Text(app.originalPackageName),
-                    ),
-                    const SizedBox(height: 4),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 20.0),
-                      title: I18nText(
                         'appInfoView.installTypeLabel',
                         child: const Text(
                           '',

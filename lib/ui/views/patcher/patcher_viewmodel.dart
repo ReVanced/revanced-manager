@@ -142,9 +142,9 @@ class PatcherViewModel extends BaseViewModel {
     this.selectedPatches.clear();
     removedPatches.clear();
     final List<String> selectedPatches =
-        await _managerAPI.getSelectedPatches(selectedApp!.originalPackageName);
+        await _managerAPI.getSelectedPatches(selectedApp!.packageName);
     final List<Patch> patches =
-        _patcherAPI.getFilteredPatches(selectedApp!.originalPackageName);
+        _patcherAPI.getFilteredPatches(selectedApp!.packageName);
     this
         .selectedPatches
         .addAll(patches.where((patch) => selectedPatches.contains(patch.name)));
@@ -160,7 +160,7 @@ class PatcherViewModel extends BaseViewModel {
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
-    final usedPatches = _managerAPI.getUsedPatches(selectedApp!.originalPackageName);
+    final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
     for (final patch in usedPatches){
       if (!patches.any((p) => p.name == patch.name)){
         removedPatches.add('\u2022 ${patch.name}');

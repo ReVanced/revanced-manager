@@ -278,7 +278,6 @@
         "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
 
         "packageNameLabel": "Package name",
-        "originalPackageNameLabel": "Original package name",
         "installTypeLabel": "Installation type",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",

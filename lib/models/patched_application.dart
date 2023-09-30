@@ -9,7 +9,6 @@ class PatchedApplication {
   PatchedApplication({
     required this.name,
     required this.packageName,
-    required this.originalPackageName,
     required this.version,
     required this.apkFilePath,
     required this.icon,
@@ -23,7 +22,6 @@ class PatchedApplication {
       _$PatchedApplicationFromJson(json);
   String name;
   String packageName;
-  String originalPackageName;
   String version;
   final String apkFilePath;
   @JsonKey(
