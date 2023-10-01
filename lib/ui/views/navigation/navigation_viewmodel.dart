@@ -39,9 +39,9 @@ class NavigationViewModel extends IndexTrackingViewModel {
 
     // Force disable Material You on Android 11 and below
     if (dynamicTheme.themeId.isOdd) {
-      const int ANDROID_12_SDK_VERSION = 31;
+      const int android12SdkVersion = 31;
       final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
-      if (info.version.sdkInt < ANDROID_12_SDK_VERSION) {
+      if (info.version.sdkInt < android12SdkVersion) {
         await prefs.setInt('themeMode', 0);
         await prefs.setBool('useDynamicTheme', false);
         await dynamicTheme.setTheme(0);
