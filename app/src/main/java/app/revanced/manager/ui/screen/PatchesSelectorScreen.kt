@@ -92,9 +92,6 @@ fun PatchesSelectorScreen(
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
-                    }
-                    IconButton(onClick = { }) {
                         Icon(Icons.Outlined.Search, stringResource(R.string.search))
                     }
                 }
@@ -294,7 +291,7 @@ fun ListHeader(
         },
         trailingContent = onHelpClick?.let {
             {
-                IconButton(onClick = onHelpClick) {
+                IconButton(onClick = it) {
                     Icon(
                         Icons.Outlined.HelpOutline,
                         stringResource(R.string.help)
