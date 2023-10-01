@@ -16,11 +16,15 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -35,26 +39,36 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.BaseSelectionMode
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import kotlinx.coroutines.launch
+import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -85,12 +99,49 @@ fun PatchesSelectorScreen(
         )
     }
 
+    vm.pendingSelectionAction?.let {
+        SelectionWarningDialog(
+            onCancel = vm::dismissSelectionWarning,
+            onConfirm = vm::confirmSelectionWarning
+        )
+    }
+
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.select_patches),
                 onBackClick = onBackClick,
                 actions = {
+                    IconButton(onClick = vm::reset) {
+                        Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
+                    }
+
+                    var dropdownActive by rememberSaveable {
+                        mutableStateOf(false)
+                    }
+                    // This part should probably be changed
+                    IconButton(onClick = { dropdownActive = true }) {
+                        Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
+                        DropdownMenu(
+                            expanded = dropdownActive,
+                            onDismissRequest = { dropdownActive = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    val id =
+                                        if (vm.baseSelectionMode == BaseSelectionMode.DEFAULT)
+                                            R.string.menu_opt_selection_mode_previous else R.string.menu_opt_selection_mode_default
+
+                                    Text(stringResource(id))
+                                },
+                                onClick = {
+                                    dropdownActive = false
+                                    vm.switchBaseSelectionMode()
+                                },
+                                enabled = vm.hasPreviousSelection
+                            )
+                        }
+                    }
                     IconButton(onClick = { }) {
                         Icon(Icons.Outlined.Search, stringResource(R.string.search))
                     }
@@ -102,9 +153,11 @@ fun PatchesSelectorScreen(
                 text = { Text(stringResource(R.string.patch)) },
                 icon = { Icon(Icons.Default.Build, null) },
                 onClick = {
+                    // TODO: only allow this if all required options have been set.
                     composableScope.launch {
-                        // TODO: only allow this if all required options have been set.
-                        onPatchClick(vm.getAndSaveSelection(), vm.getOptions())
+                        val selection = vm.getSelection()
+                        vm.saveSelection(selection).join()
+                        onPatchClick(selection, vm.getOptions())
                     }
                 }
             )
@@ -206,7 +259,15 @@ fun PatchesSelectorScreen(
                                                 bundle.uid,
                                                 patch
                                             ),
-                                            onToggle = { vm.togglePatch(bundle.uid, patch) },
+                                            onToggle = {
+                                                if (vm.selectionWarningEnabled) {
+                                                    vm.pendingSelectionAction = {
+                                                        vm.togglePatch(bundle.uid, patch)
+                                                    }
+                                                } else {
+                                                    vm.togglePatch(bundle.uid, patch)
+                                                }
+                                            },
                                             supported = supported
                                         )
                                     }
@@ -244,6 +305,84 @@ fun PatchesSelectorScreen(
             )
         }
     }
+}
+
+@Composable
+fun SelectionWarningDialog(
+    onCancel: () -> Unit,
+    onConfirm: (Boolean) -> Unit
+) {
+    val prefs: PreferencesManager = rememberKoinInject()
+    var dismissPermanently by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    AlertDialog(
+        onDismissRequest = onCancel,
+        confirmButton = {
+            val enableCountdown by prefs.enableSelectionWarningCountdown.getAsState()
+
+            Countdown(start = if (enableCountdown) 3 else 0) { timer ->
+                LaunchedEffect(timer) {
+                    if (timer == 0) prefs.enableSelectionWarningCountdown.update(false)
+                }
+
+                TextButton(
+                    onClick = { onConfirm(dismissPermanently) },
+                    enabled = timer == 0
+                ) {
+                    val text =
+                        if (timer == 0) stringResource(R.string.continue_) else stringResource(
+                            R.string.selection_warning_continue_countdown, timer
+                        )
+                    Text(text, color = MaterialTheme.colorScheme.error)
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onCancel) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        icon = {
+            Icon(Icons.Outlined.WarningAmber, null)
+        },
+        title = {
+            Text(
+                text = stringResource(R.string.selection_warning_title),
+                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = stringResource(R.string.selection_warning_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(0.dp),
+                    modifier = Modifier.clickable {
+                        dismissPermanently = !dismissPermanently
+                    }
+                ) {
+                    Checkbox(
+                        checked = dismissPermanently,
+                        onCheckedChange = {
+                            dismissPermanently = it
+                        }
+                    )
+                    Text(stringResource(R.string.permanent_dismiss))
+                }
+            }
+        }
+    )
 }
 
 @Composable
