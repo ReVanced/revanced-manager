@@ -104,14 +104,14 @@ class PatchesSelectorViewModel(
     var baseSelectionMode by mutableStateOf(BaseSelectionMode.DEFAULT)
         private set
 
-    private val previousPatchSelection: SnapshotStateMap<Int, Set<String>> = mutableStateMapOf()
+    private val previousPatchesSelection: SnapshotStateMap<Int, Set<String>> = mutableStateMapOf()
 
     init {
         viewModelScope.launch(Dispatchers.Default) { loadPreviousSelection() }
     }
 
     val hasPreviousSelection by derivedStateOf {
-        previousPatchSelection.filterValues(Set<String>::isNotEmpty).isNotEmpty()
+        previousPatchesSelection.filterValues(Set<String>::isNotEmpty).isNotEmpty()
     }
 
     private var hasModifiedSelection = false
@@ -137,7 +137,7 @@ class PatchesSelectorViewModel(
                 BaseSelectionMode.DEFAULT -> ({ _, patch -> patch.include })
 
                 BaseSelectionMode.PREVIOUS -> ({ bundle, patch ->
-                    previousPatchSelection[bundle]?.contains(patch.name) ?: false
+                    previousPatchesSelection[bundle]?.contains(patch.name) ?: false
                 })
             }
         )
@@ -159,7 +159,7 @@ class PatchesSelectorViewModel(
         )).mapValues { (_, value) -> value.toSet() }
 
         withContext(Dispatchers.Main) {
-            previousPatchSelection.putAll(selection)
+            previousPatchesSelection.putAll(selection)
         }
     }
 
