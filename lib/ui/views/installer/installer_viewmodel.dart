@@ -182,52 +182,53 @@ class InstallerViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
-          content: ValueListenableBuilder(
-            valueListenable: installType,
-            builder: (context, value, child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: I18nText(
-                      'installerView.installTypeDescription',
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.secondary,
+          content: SingleChildScrollView(
+            child: ValueListenableBuilder(
+              valueListenable: installType,
+              builder: (context, value, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: I18nText(
+                        'installerView.installTypeDescription',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  RadioListTile(
-                    title: I18nText('installerView.installNonRootType'),
-                    subtitle: I18nText('installerView.installRecommendedType'),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    value: 0,
-                    groupValue: value,
-                    onChanged: (selected) {
-                      installType.value = selected!;
-                    },
-                  ),
-                  RadioListTile(
-                    title: I18nText('installerView.installRootType'),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    value: 1,
-                    groupValue: value,
-                    onChanged: (selected) {
-                      installType.value = selected!;
-                    },
-                  ),
-                ],
-              );
-            },
+                    RadioListTile(
+                      title: I18nText('installerView.installNonRootType'),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      value: 0,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                    RadioListTile(
+                      title: I18nText('installerView.installRootType'),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      value: 1,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           actions: [
             CustomMaterialButton(
@@ -268,34 +269,6 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      final bool hasMicroG =
-          _patches.any((p) => p.name.endsWith('MicroG support'));
-      final bool rootMicroG = installAsRoot && hasMicroG;
-      final bool rootFromStorage = installAsRoot && _app.isFromStorage;
-      final bool ytWithoutRootMicroG =
-          !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
-      if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
-        return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: I18nText('installerView.installErrorDialogTitle'),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText(
-              rootMicroG
-                  ? 'installerView.installErrorDialogText1'
-                  : rootFromStorage
-                      ? 'installerView.installErrorDialogText3'
-                      : 'installerView.installErrorDialogText2',
-            ),
-            actions: <Widget>[
-              CustomMaterialButton(
-                label: I18nText('okButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      } else {
         update(
           1.0,
           'Installing...',
@@ -305,20 +278,24 @@ class InstallerViewModel extends BaseViewModel {
         );
         isInstalled = await _patcherAPI.installPatchedFile(_app);
         if (isInstalled) {
-          update(1.0, 'Installed!', 'Installed!');
           _app.isFromStorage = false;
           _app.patchDate = DateTime.now();
           _app.appliedPatches = _patches.map((p) => p.name).toList();
-          if (hasMicroG) {
-            _app.name += ' ReVanced';
-            _app.packageName = _app.packageName.replaceFirst(
-              'com.google.',
-              'app.revanced.',
-            );
+
+          // In case a patch changed the app name or package name,
+          // update the app info.
+          final app = await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+          if (app != null) {
+            _app.name = app.appName;
+            _app.packageName = app.packageName;
           }
+
           await _managerAPI.savePatchedApp(_app);
+
+          update(1.0, 'Installed!', 'Installed!');
+        } else {
+          // TODO(aabed): Show error message.
         }
-      }
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);

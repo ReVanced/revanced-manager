@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,25 +19,35 @@ class NavigationViewModel extends IndexTrackingViewModel {
   Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    requestManageExternalStorage();
+    await requestManageExternalStorage();
 
     if (prefs.getBool('permissionsRequested') == null) {
       await Permission.storage.request();
-      await Permission.manageExternalStorage.request();
       await prefs.setBool('permissionsRequested', true);
-      RootAPI().hasRootPermissions().then(
+      await RootAPI().hasRootPermissions().then(
             (value) => Permission.requestInstallPackages.request().then(
                   (value) => Permission.ignoreBatteryOptimizations.request(),
                 ),
           );
     }
 
-    if (prefs.getBool('useDarkTheme') == null) {
-      final bool isDark =
-          MediaQuery.platformBrightnessOf(context) != Brightness.light;
-      await prefs.setBool('useDarkTheme', isDark);
-      await DynamicTheme.of(context)!.setTheme(isDark ? 1 : 0);
+    final dynamicTheme = DynamicTheme.of(context)!;
+    if (prefs.getInt('themeMode') == null) {
+      await prefs.setInt('themeMode', 0);
+      await dynamicTheme.setTheme(0);
     }
+
+    // Force disable Material You on Android 11 and below
+    if (dynamicTheme.themeId.isOdd) {
+      const int android12SdkVersion = 31;
+      final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
+      if (info.version.sdkInt < android12SdkVersion) {
+        await prefs.setInt('themeMode', 0);
+        await prefs.setBool('useDynamicTheme', false);
+        await dynamicTheme.setTheme(0);
+      }
+    }
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(

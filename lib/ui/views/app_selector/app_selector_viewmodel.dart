@@ -89,7 +89,6 @@ class AppSelectorViewModel extends BaseViewModel {
     locator<PatcherViewModel>().selectedApp = PatchedApplication(
       name: application.appName,
       packageName: application.packageName,
-      originalPackageName: application.packageName,
       version: application.versionName!,
       apkFilePath: application.apkFilePath,
       icon: application.icon,
@@ -106,10 +105,14 @@ class AppSelectorViewModel extends BaseViewModel {
         await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
     if (app != null) {
       if (await checkSplitApk(packageName) && !isRooted) {
-        return showSelectFromStorageDialog(context);
+        if (context.mounted) {
+          return showSelectFromStorageDialog(context);
+        }
       } else if (!await checkSplitApk(packageName) || isRooted) {
         selectApp(app);
-        Navigator.pop(context);
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
       }
     }
   }
@@ -214,7 +217,6 @@ class AppSelectorViewModel extends BaseViewModel {
           locator<PatcherViewModel>().selectedApp = PatchedApplication(
             name: application.appName,
             packageName: application.packageName,
-            originalPackageName: application.packageName,
             version: application.versionName!,
             apkFilePath: result.files.single.path!,
             icon: application.icon,

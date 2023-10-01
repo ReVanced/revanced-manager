@@ -1,5 +1,5 @@
 name: 🐞 Bug report
-description: Report a very clearly broken issue.
+description: Create a new bug report.
 title: 'bug: <title>'
 labels: [bug]
 body:
@@ -8,53 +8,20 @@ body:
       value: |
         # ReVanced Manager bug report
 
-        Important to note that your issue may have already been reported before. Please check for existing issues [here](https://github.com/revanced/revanced-manager/labels/bug).
-
-  - type: dropdown
-    attributes:
-      label: Type
-      options:
-        - Error while running the manager
-        - Error at runtime
-        - Cosmetic
-        - Other
-    validations:
-      required: true
+        Please check for existing issues [here](https://github.com/revanced/revanced-manager/labels/bug) before creating a new one.
   - type: textarea
     attributes:
       label: Bug description
-      description: How did you find the bug? Any additional details that might help?
+      description: |
+        - Describe your bug in detail
+        - Add steps to reproduce the bug if possible (Step 1. Download some files. Step 2. ...)
+        - Add images and videos if possible
+        - List selected patches if applicable
     validations:
       required: true
   - type: textarea
     attributes:
-      label: Steps to reproduce
-      description: Add the steps to reproduce this bug, including your environment.
-      placeholder: Step 1. Download some files. Step 2. ...
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Android version
-      description: Android version used.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Manager version
-      description: Manager version used.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Target package name
-      description: App you tried to patch.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Target package version.
-      description: Version of the app you tried to patch.
+      label: Version of ReVanced Manager and version & name of application you tried to patch
     validations:
       required: true
   - type: dropdown
@@ -64,57 +31,31 @@ body:
         - Non-root
         - Root
     validations:
-      required: true
+      required: false
   - type: textarea
     attributes:
-      label: Patches selected.
-      description: Patches you selected for the app.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Device logs (exported using Manager settings).
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so there is no need for backticks.
+      label: Device logs
+      description: Export logs in ReVanced Manager settings.
       render: shell
     validations:
       required: true
   - type: textarea
     attributes:
-      label: Installer logs (exported using Installer menu option) [unneeded if the issue is not during patching].
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so there is no need for backticks.
+      label: Patcher logs
+      description: Export logs in "Patcher" screen.
       render: shell
-    validations:
-      required: false
-  - type: textarea
-    attributes:
-      label: Screenshots or video
-      description: Add screenshots or videos that show the bug here.
-      placeholder: Drag and drop the screenshots/videos into this box.
-    validations:
-      required: false
-  - type: textarea
-    attributes:
-      label: Solution
-      description: If applicable, add a possible solution.
-    validations:
-      required: false
-  - type: textarea
-    attributes:
-      label: Additional context
-      description: Add additional context here.
     validations:
       required: false
   - type: checkboxes
-    id: acknowledgments
     attributes:
-      label: Acknowledgments
-      description: Your issue will be closed if you haven't done these steps.
+      label: Acknowledgements
+      description: Your issue will be closed if you don't follow the checklist below!
       options:
-        - label: I have searched the existing issues; this is new and no duplicate or related to another open issue.
+        - label: This request is not a duplicate of an existing issue.
           required: true
-        - label: I have written a short but informative title.
+        - label: I have chosen an appropriate title.
           required: true
-        - label: I properly filled out all of the requested information in this issue.
+        - label: All requested information has been provided properly.
           required: true
-        - label: The issue is solely related to ReVanced Manager and not caused by patches.
+        - label: The issue is solely related to the ReVanced Manager
           required: true

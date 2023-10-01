@@ -8,6 +8,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 final _settingViewModel = SettingsViewModel();
@@ -24,37 +25,114 @@ class SUpdateTheme extends BaseViewModel {
 
   Future<void> setUseDynamicTheme(BuildContext context, bool value) async {
     await _managerAPI.setUseDynamicTheme(value);
-    final int currentTheme = DynamicTheme.of(context)!.themeId;
-    if (currentTheme.isEven) {
-      await DynamicTheme.of(context)!.setTheme(value ? 2 : 0);
-    } else {
-      await DynamicTheme.of(context)!.setTheme(value ? 3 : 1);
-    }
+    final int currentTheme = (DynamicTheme.of(context)!.themeId ~/ 2) * 2;
+    await DynamicTheme.of(context)!.setTheme(currentTheme + (value ? 1 : 0));
     notifyListeners();
   }
 
-  bool getDarkThemeStatus() {
-    return _managerAPI.getUseDarkTheme();
+  int getThemeMode() {
+    return _managerAPI.getThemeMode();
   }
 
-  Future<void> setUseDarkTheme(BuildContext context, bool value) async {
-    await _managerAPI.setUseDarkTheme(value);
-    final int currentTheme = DynamicTheme.of(context)!.themeId;
-    if (currentTheme < 2) {
-      await DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
-    } else {
-      await DynamicTheme.of(context)!.setTheme(value ? 3 : 2);
-    }
+  Future<void> setThemeMode(BuildContext context, int value) async {
+    await _managerAPI.setThemeMode(value);
+    final bool isDynamicTheme = DynamicTheme.of(context)!.themeId.isEven;
+    await DynamicTheme.of(context)!.setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
+    final bool isLight = value != 2 && (value == 1 || DynamicTheme.of(context)!.theme.brightness == Brightness.light);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         systemNavigationBarIconBrightness:
-            value ? Brightness.light : Brightness.dark,
+        isLight ? Brightness.dark : Brightness.light,
       ),
     );
     notifyListeners();
   }
+
+  I18nText getThemeModeName() {
+    switch (getThemeMode()) {
+      case 0:
+        return I18nText('settingsView.systemThemeLabel');
+      case 1:
+        return I18nText('settingsView.lightThemeLabel');
+      case 2:
+        return I18nText('settingsView.darkThemeLabel');
+      default:
+        return I18nText('settingsView.systemThemeLabel');
+    }
+  }
+
+  Future<void> showThemeDialog(BuildContext context) async {
+    final ValueNotifier<int> newTheme = ValueNotifier(getThemeMode());
+
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('settingsView.themeModeLabel'),
+        icon: const Icon(Icons.palette),
+        contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: SingleChildScrollView(
+          child: ValueListenableBuilder(
+            valueListenable: newTheme,
+            builder: (context, value, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  RadioListTile(
+                    title: I18nText('settingsView.systemThemeLabel'),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    value: 0,
+                    groupValue: value,
+                    onChanged: (value) {
+                      newTheme.value = value!;
+                    },
+                  ),
+                  RadioListTile(
+                    title: I18nText('settingsView.lightThemeLabel'),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    value: 1,
+                    groupValue: value,
+                    onChanged: (value) {
+                      newTheme.value = value!;
+                    },
+                  ),
+                  RadioListTile(
+                    title: I18nText('settingsView.darkThemeLabel'),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    value: 2,
+                    groupValue: value,
+                    onChanged: (value) {
+                      newTheme.value = value!;
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () {
+              setThemeMode(context, newTheme.value);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
 
+final sUpdateTheme = SUpdateTheme();
 class SUpdateThemeUI extends StatelessWidget {
   const SUpdateThemeUI({super.key});
 
@@ -63,10 +141,10 @@ class SUpdateThemeUI extends StatelessWidget {
     return SettingsSection(
       title: 'settingsView.appearanceSectionTitle',
       children: <Widget>[
-        SwitchListTile(
+        ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: I18nText(
-            'settingsView.darkThemeLabel',
+            'settingsView.themeModeLabel',
             child: const Text(
               '',
               style: TextStyle(
@@ -75,12 +153,11 @@ class SUpdateThemeUI extends StatelessWidget {
               ),
             ),
           ),
-          subtitle: I18nText('settingsView.darkThemeHint'),
-          value: SUpdateTheme().getDarkThemeStatus(),
-          onChanged: (value) => SUpdateTheme().setUseDarkTheme(
-            context,
-            value,
+          trailing: CustomMaterialButton(
+            label: sUpdateTheme.getThemeModeName(),
+            onPressed: () => { sUpdateTheme.showThemeDialog(context) },
           ),
+          onTap: () => { sUpdateTheme.showThemeDialog(context) },
         ),
         FutureBuilder<int>(
           future: _settingViewModel.getSdkVersion(),

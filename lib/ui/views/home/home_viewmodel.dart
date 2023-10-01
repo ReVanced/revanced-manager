@@ -37,7 +37,6 @@ class HomeViewModel extends BaseViewModel {
   DateTime? _lastUpdate;
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
-  List<PatchedApplication> patchedUpdatableApps = [];
   String? _latestManagerVersion = '';
   File? downloadedApk;
 
@@ -82,7 +81,7 @@ class HomeViewModel extends BaseViewModel {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
     }
-    _getPatchedApps();
+
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
@@ -108,10 +107,6 @@ class HomeViewModel extends BaseViewModel {
 
   void _getPatchedApps() {
     patchedInstalledApps = _managerAPI.getPatchedApps().toList();
-    patchedUpdatableApps = _managerAPI
-        .getPatchedApps()
-        .where((app) => app.hasUpdates == true)
-        .toList();
     notifyListeners();
   }
 
@@ -469,11 +464,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> forceRefresh(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (_lastUpdate == null ||
-        _lastUpdate!.difference(DateTime.now()).inSeconds > 2) {
-      _managerAPI.clearAllData();
-    }
+    _managerAPI.clearAllData();
     _toast.showBottom('homeView.refreshSuccess');
     initialize(context);
   }

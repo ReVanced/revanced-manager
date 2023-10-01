@@ -1,52 +1,42 @@
 name: ⭐ Feature request
-description: Create a detailed feature request.
+description: Create a new feature request.
 title: 'feat: <title>'
 labels: [feature-request]
 body:
-  - type: dropdown
+  - type: markdown
     attributes:
-      label: Type
-      options:
-        - Functionality
-        - Cosmetic
-        - Other
-    validations:
-      required: true
+      value: |
+        # ReVanced Manager feature request
+
+        Please check for existing feature requests [here](https://github.com/revanced/revanced-manager/labels/bug) before creating a new one.
   - type: textarea
     attributes:
-      label: Issue
-      description: What is the current problem. Why does it require a feature request?
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Feature
-      description: Describe your feature in detail. How does it solve the issue?
+      label: Feature description
+      description: Describe your feature in detail.
     validations:
       required: true
   - type: textarea
     attributes:
       label: Motivation
-      description: Why should your feature should be considered?
+      description: Explain why the lack of it is a problem.
     validations:
       required: true
   - type: textarea
     attributes:
       label: Additional context
-      description: Add additional context here.
+      description: In case there is something else you want to add.
     validations:
       required: false
   - type: checkboxes
-    id: acknowledgements
     attributes:
       label: Acknowledgements
-      description: Your issue will be closed if you haven't done these steps.
+      description: Your issue will be closed if you don't follow the checklist below!
       options:
-        - label: I have searched the existing issues and this is a new and no duplicate or related to another open issue.
+        - label: This request is not a duplicate of an existing issue.
           required: true
-        - label: I have written a short but informative title.
+        - label: I have chosen an appropriate title.
           required: true
-        - label: I filled out all of the requested information in this issue properly.
+        - label: All requested information has been provided properly.
           required: true
-        - label: The issue is related solely to the ReVanced Manager 
+        - label: The issue is solely related to the ReVanced Manager
           required: true

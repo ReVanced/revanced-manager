@@ -52,6 +52,8 @@ android {
 
     buildTypes {
         release {
+            shrinkResources false
+            minifyEnabled false
             resValue "string", "app_name", "ReVanced Manager"
             signingConfig signingConfigs.debug
             ndk {
@@ -83,10 +85,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // ReVanced
-    implementation "app.revanced:revanced-patcher:11.0.4"
+    implementation "app.revanced:revanced-patcher:15.0.3"
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android.tools.build:apksig:7.2.2")
-
 }
