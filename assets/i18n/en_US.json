@@ -145,9 +145,8 @@
         "installTypeDescription": "Select the installation type to proceed with.",
 
         "installButton": "Install",
-        "installRootType": "Root",
-        "installNonRootType": "Non-root",
-        "installRecommendedType": "Recommended",
+        "installRootType": "Mount",
+        "installNonRootType": "Normal",
 
         "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
