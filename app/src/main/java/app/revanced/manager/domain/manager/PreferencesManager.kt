@@ -21,4 +21,7 @@ class PreferencesManager(
 
     val showAutoUpdatesDialog = booleanPreference("show_auto_updates_dialog", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
+
+    val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
+    val enableSelectionWarningCountdown = booleanPreference("enable_selection_warning_countdown", true)
 }
