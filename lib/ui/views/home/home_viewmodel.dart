@@ -464,11 +464,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> forceRefresh(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (_lastUpdate == null ||
-        _lastUpdate!.difference(DateTime.now()).inSeconds > 2) {
-      _managerAPI.clearAllData();
-    }
+    _managerAPI.clearAllData();
     _toast.showBottom('homeView.refreshSuccess');
     initialize(context);
   }

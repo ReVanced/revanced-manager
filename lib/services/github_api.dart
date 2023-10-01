@@ -38,7 +38,6 @@ class GithubAPI {
   Future<void> clearAllCache() async {
     try {
       await _cacheOptions.store!.clean();
-      await DefaultCacheManager().emptyCache();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
