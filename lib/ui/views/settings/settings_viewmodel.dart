@@ -71,16 +71,16 @@ class SettingsViewModel extends BaseViewModel {
           actions: [
             CustomMaterialButton(
               isFilled: false,
-              label: I18nText('noButton'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            CustomMaterialButton(
               label: I18nText('yesButton'),
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
                 _managerAPI.setPatchesChangeEnabled(true);
+                Navigator.of(context).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('noButton'),
+              onPressed: () {
                 Navigator.of(context).pop();
               },
             ),

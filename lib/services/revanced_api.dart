@@ -7,11 +7,14 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:timeago/timeago.dart';
 
 @lazySingleton
 class RevancedAPI {
   late Dio _dio = Dio();
+
+  final Lock getToolsLock = Lock();
 
   final _cacheOptions = CacheOptions(
     store: MemCacheStore(),
@@ -66,21 +69,23 @@ class RevancedAPI {
   Future<Map<String, dynamic>?> _getLatestRelease(
     String extension,
     String repoName,
-  ) async {
-    try {
-      final response = await _dio.get('/tools');
-      final List<dynamic> tools = response.data['tools'];
-      return tools.firstWhereOrNull(
-        (t) =>
-            t['repository'] == repoName &&
-            (t['name'] as String).endsWith(extension),
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
+  ) {
+    return getToolsLock.synchronized(() async {
+      try {
+        final response = await _dio.get('/tools');
+        final List<dynamic> tools = response.data['tools'];
+        return tools.firstWhereOrNull(
+          (t) =>
+              t['repository'] == repoName &&
+              (t['name'] as String).endsWith(extension),
+        );
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        return null;
       }
-      return null;
-    }
+    });
   }
 
   Future<String?> getLatestReleaseVersion(

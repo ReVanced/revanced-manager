@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.10.2+101000200
+version: 1.10.3+101000300
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -76,6 +76,7 @@ dependencies:
   dio_cache_interceptor: ^3.4.0
   install_plugin: ^2.1.0
   screenshot_callback: ^3.0.1
+  synchronized: ^3.1.0
 
 dev_dependencies:
   json_serializable: ^6.6.1

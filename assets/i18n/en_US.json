@@ -23,13 +23,13 @@
         "widgetTitle": "Dashboard",
 
         "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Patched applications",
+        "patchedSubtitle": "Patched apps",
 
         "noUpdates": "No updates available",
 
         "WIP": "Work in progress...",
 
-        "noInstallations": "No patched applications installed",
+        "noInstallations": "No patched apps installed",
         "installUpdate": "Continue to install the update?",
 
         "updateDialogTitle": "Update Manager",
@@ -56,9 +56,7 @@
         "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
     },
     "applicationItem": {
-        "patchButton": "Patch",
-        "infoButton": "Info",
-        "changelogLabel": "Changelog"
+        "infoButton": "Info"
     },
     "latestCommitCard": {
         "loadingLabel": "Loading...",
@@ -71,9 +69,8 @@
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
 
-        "patchDialogText": "You have selected a resource patch and a split APK installation has been detected, so patching errors may occur.\nAre you sure you want to proceed?",
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
-        "splitApkWarningDialogText": "Patching a split APK is not yet supported and might fail. Proceed anyways?",
+
         "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?"
     },
     "appSelectorCard": {
@@ -148,9 +145,8 @@
         "installTypeDescription": "Select the installation type to proceed with.",
 
         "installButton": "Install",
-        "installRootType": "Root",
-        "installNonRootType": "Non-root",
-        "installRecommendedType": "Recommended",
+        "installRootType": "Mount",
+        "installNonRootType": "Normal",
 
         "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
@@ -165,10 +161,6 @@
         "screenshotDetected": "A screenshot has been detected. If you are trying to share the log, please share a text copy instead.\n\nCopy log to clipboard?",
         "copiedToClipboard": "Copied log to clipboard",
 
-        "installErrorDialogTitle": "Error",
-        "installErrorDialogText1": "Root install is not possible with the current patches selection.\nRepatch your app or choose non-root install.",
-        "installErrorDialogText2": "Non-root install is not possible with the current patches selection.\nRepatch your app or choose root install if you have your device rooted.",
-        "installErrorDialogText3": "Root install is not possible as the original APK was selected from storage.\nSelect an installed app or choose non-root install.",
         "noExit": "Installer is still running, cannot exit..."
     },
     "settingsView": {
@@ -288,7 +280,6 @@
         "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
 
         "packageNameLabel": "Package name",
-        "originalPackageNameLabel": "Original package name",
         "installTypeLabel": "Installation type",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",

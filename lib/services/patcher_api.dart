@@ -28,7 +28,7 @@ class PatcherAPI {
   List<Patch> _universalPatches = [];
   List<String> _compatiblePackages = [];
   Map filteredPatches = <String, List<Patch>>{};
-  File? _outFile;
+  File? outFile;
 
   Future<void> initialize() async {
     await _loadPatches();
@@ -149,46 +149,11 @@ class PatcherAPI {
         .toList();
   }
 
-  Future<bool> needsResourcePatching(
-    List<Patch> selectedPatches,
-  ) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dep.contains('resource-'),
-      ),
-    );
-  }
-
-  Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dep.contains('settings'),
-      ),
-    );
-  }
-
   Future<void> runPatcher(
     String packageName,
     String apkFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final bool includeSettings = await needsSettingsPatch(selectedPatches);
-    if (includeSettings) {
-      try {
-        final Patch? settingsPatch = _patches.firstWhereOrNull(
-          (patch) =>
-              patch.name.contains('settings') &&
-              patch.compatiblePackages.any((pack) => pack.name == packageName),
-        );
-        if (settingsPatch != null) {
-          selectedPatches.add(settingsPatch);
-        }
-      } on Exception catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-      }
-    }
     final File? patchBundleFile = await _managerAPI.downloadPatches();
     final File? integrationsFile = await _managerAPI.downloadIntegrations();
     if (patchBundleFile != null) {
@@ -197,7 +162,7 @@ class PatcherAPI {
       final Directory workDir = _tmpDir.createTempSync('tmp-');
       final File inputFile = File('${workDir.path}/base.apk');
       final File patchedFile = File('${workDir.path}/patched.apk');
-      _outFile = File('${workDir.path}/out.apk');
+      outFile = File('${workDir.path}/out.apk');
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
       final String originalFilePath = apkFilePath;
@@ -209,7 +174,7 @@ class PatcherAPI {
             'originalFilePath': originalFilePath,
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
-            'outFilePath': _outFile!.path,
+            'outFilePath': outFile!.path,
             'integrationsPath': integrationsFile!.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
@@ -236,7 +201,7 @@ class PatcherAPI {
   }
 
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
-    if (_outFile != null) {
+    if (outFile != null) {
       try {
         if (patchedApp.isRooted) {
           final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
@@ -244,11 +209,11 @@ class PatcherAPI {
             return _rootAPI.installApp(
               patchedApp.packageName,
               patchedApp.apkFilePath,
-              _outFile!.path,
+              outFile!.path,
             );
           }
         } else {
-          final install = await InstallPlugin.installApk(_outFile!.path);
+          final install = await InstallPlugin.installApk(outFile!.path);
           return install['isSuccess'];
         }
       } on Exception catch (e) {
@@ -263,11 +228,11 @@ class PatcherAPI {
 
   void exportPatchedFile(String appName, String version) {
     try {
-      if (_outFile != null) {
+      if (outFile != null) {
         final String newName = _getFileName(appName, version);
         CRFileSaver.saveFileWithDialog(
           SaveFileDialogParams(
-            sourceFilePath: _outFile!.path,
+            sourceFilePath: outFile!.path,
             destinationFileName: newName,
           ),
         );
@@ -281,12 +246,12 @@ class PatcherAPI {
 
   void sharePatchedFile(String appName, String version) {
     try {
-      if (_outFile != null) {
+      if (outFile != null) {
         final String newName = _getFileName(appName, version);
-        final int lastSeparator = _outFile!.path.lastIndexOf('/');
+        final int lastSeparator = outFile!.path.lastIndexOf('/');
         final String newPath =
-            _outFile!.path.substring(0, lastSeparator + 1) + newName;
-        final File shareFile = _outFile!.copySync(newPath);
+            outFile!.path.substring(0, lastSeparator + 1) + newName;
+        final File shareFile = outFile!.copySync(newPath);
         ShareExtend.share(shareFile.path, 'file');
       }
     } on Exception catch (e) {
