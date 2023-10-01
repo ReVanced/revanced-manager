@@ -128,11 +128,11 @@ fun PatchesSelectorScreen(
                         ) {
                             DropdownMenuItem(
                                 text = {
-                                    val str =
+                                    val id =
                                         if (vm.baseSelectionMode == BaseSelectionMode.DEFAULT)
-                                            "Use previous selection" else "Discard previous selection"
+                                            R.string.menu_opt_selection_mode_previous else R.string.menu_opt_selection_mode_default
 
-                                    Text(str)
+                                    Text(stringResource(id))
                                 },
                                 onClick = {
                                     dropdownActive = false
@@ -320,11 +320,11 @@ fun SelectionWarningDialog(
     AlertDialog(
         onDismissRequest = onCancel,
         confirmButton = {
-            val userHasSeenTimer by prefs.selectionWarningCountdown.getAsState()
+            val enableCountdown by prefs.enableSelectionWarningCountdown.getAsState()
 
-            Countdown(start = if (userHasSeenTimer) 0 else 3) { timer ->
+            Countdown(start = if (enableCountdown) 3 else 0) { timer ->
                 LaunchedEffect(timer) {
-                    if (timer == 0) prefs.selectionWarningCountdown.update(true)
+                    if (timer == 0) prefs.enableSelectionWarningCountdown.update(false)
                 }
 
                 TextButton(
