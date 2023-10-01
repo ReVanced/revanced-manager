@@ -101,7 +101,6 @@ class PatchesSelectorViewModel(
         }
     }
 
-
     var baseSelectionMode by mutableStateOf(BaseSelectionMode.DEFAULT)
         private set
 
