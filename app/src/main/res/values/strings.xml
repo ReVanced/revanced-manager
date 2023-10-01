@@ -143,6 +143,12 @@
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
+    <string name="menu_opt_selection_mode_default">Use default selection</string>
+    <string name="menu_opt_selection_mode_previous">Use previous selection</string>
+    <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
+    <string name="selection_warning_title">Stop using defaults?</string>
+    <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
+    <string name="selection_warning_continue_countdown">Continue (%ds)</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
@@ -223,6 +229,8 @@
     <string name="collapse_content">collapse</string>
 
     <string name="more">More</string>
+    <string name="continue_">Continue</string>
+    <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>
