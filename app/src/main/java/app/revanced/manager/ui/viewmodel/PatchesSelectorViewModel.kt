@@ -116,8 +116,8 @@ class PatchesSelectorViewModel(
 
     private var hasModifiedSelection = false
 
-    private val userSelection: SnapshotUserPatchesSelection by savedStateHandle.saveable(
-        saver = userPatchesSelectionSaver,
+    private val explicitPatchesSelection: SnapshotExplicitPatchesSelection by savedStateHandle.saveable(
+        saver = explicitPatchesSelectionSaver,
         init = ::mutableStateMapOf
     )
 
@@ -130,7 +130,7 @@ class PatchesSelectorViewModel(
         arrayOf(
             // Patches that were explicitly selected
             { bundle, patch ->
-                userSelection[bundle]?.get(patch.name)
+                explicitPatchesSelection[bundle]?.get(patch.name)
             },
             // The fallback selection.
             when (baseSelectionMode) {
@@ -172,7 +172,7 @@ class PatchesSelectorViewModel(
     }
 
     private fun getOrCreateSelection(bundle: Int) =
-        userSelection.getOrPut(bundle, ::mutableStateMapOf)
+        explicitPatchesSelection.getOrPut(bundle, ::mutableStateMapOf)
 
     fun isSelected(bundle: Int, patch: PatchInfo) =
         selectors.firstNotNullOf { fn -> fn(bundle, patch) }
@@ -204,7 +204,7 @@ class PatchesSelectorViewModel(
     fun reset() {
         patchOptions.clear()
         baseSelectionMode = BaseSelectionMode.DEFAULT
-        userSelection.clear()
+        explicitPatchesSelection.clear()
         hasModifiedSelection = false
         app.toast(app.getString(R.string.patch_selection_reset_toast))
     }
@@ -287,7 +287,7 @@ class PatchesSelectorViewModel(
             )
         )
 
-        private val userPatchesSelectionSaver: Saver<SnapshotUserPatchesSelection, UserPatchesSelection> =
+        private val explicitPatchesSelectionSaver: Saver<SnapshotExplicitPatchesSelection, ExplicitPatchesSelection> =
             snapshotStateMapSaver(valueSaver = snapshotStateMapSaver())
     }
 
@@ -318,8 +318,8 @@ class PatchesSelectorViewModel(
 }
 
 private typealias Selector = (Int, PatchInfo) -> Boolean?
-private typealias UserPatchesSelection = Map<Int, Map<String, Boolean>>
+private typealias ExplicitPatchesSelection = Map<Int, Map<String, Boolean>>
 
 // Versions of other types, but utilizing observable collection types instead.
 private typealias SnapshotOptions = SnapshotStateMap<Int, SnapshotStateMap<String, SnapshotStateMap<String, Any?>>>
-private typealias SnapshotUserPatchesSelection = SnapshotStateMap<Int, SnapshotStateMap<String, Boolean>>
+private typealias SnapshotExplicitPatchesSelection = SnapshotStateMap<Int, SnapshotStateMap<String, Boolean>>
