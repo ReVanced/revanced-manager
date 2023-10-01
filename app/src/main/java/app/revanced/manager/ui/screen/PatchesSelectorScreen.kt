@@ -430,7 +430,7 @@ fun ListHeader(
         },
         trailingContent = onHelpClick?.let {
             {
-                IconButton(onClick = onHelpClick) {
+                IconButton(onClick = it) {
                     Icon(
                         Icons.Outlined.HelpOutline,
                         stringResource(R.string.help)
