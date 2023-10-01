@@ -42,6 +42,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+       <activity
+           android:name=".ExportSettingsActivity"
+           android:exported="true">
+       </activity>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
