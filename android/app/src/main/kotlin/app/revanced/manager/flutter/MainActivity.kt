@@ -8,6 +8,7 @@ import app.revanced.manager.flutter.utils.signing.Signer
 import app.revanced.manager.flutter.utils.zip.ZipFile
 import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import app.revanced.patcher.PatchBundleLoader
+import app.revanced.patcher.PatchSet
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.PatchResult
@@ -31,6 +32,8 @@ class MainActivity : FlutterActivity() {
     private var cancel: Boolean = false
     private var stopResult: MethodChannel.Result? = null
 
+    private lateinit var patches: PatchSet
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
@@ -46,7 +49,6 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
-                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
                     val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val patchedFilePath = call.argument<String>("patchedFilePath")
@@ -57,7 +59,7 @@ class MainActivity : FlutterActivity() {
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
 
-                    if (patchBundleFilePath != null &&
+                    if (
                         originalFilePath != null &&
                         inputFilePath != null &&
                         patchedFilePath != null &&
@@ -71,7 +73,6 @@ class MainActivity : FlutterActivity() {
                         cancel = false
                         runPatcher(
                             result,
-                            patchBundleFilePath,
                             originalFilePath,
                             inputFilePath,
                             patchedFilePath,
@@ -94,17 +95,19 @@ class MainActivity : FlutterActivity() {
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")!!
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
+                    try {
+                        patches = PatchBundleLoader.Dex(
+                            File(patchBundleFilePath),
+                            optimizedDexDirectory = File(cacheDirPath)
+                        )
+                    } catch (ex: Exception) {
+                        return@setMethodCallHandler result.notImplemented()
+                    } catch (err: Error) {
+                        return@setMethodCallHandler result.notImplemented()
+                    }
+
                     JSONArray().apply {
-                        try {
-                            PatchBundleLoader.Dex(
-                                File(patchBundleFilePath),
-                                optimizedDexDirectory = File(cacheDirPath)
-                            )
-                        } catch (ex: Exception) {
-                            return@setMethodCallHandler result.notImplemented()
-                        } catch (err: Error) {
-                            return@setMethodCallHandler result.notImplemented()
-                        }.forEach {
+                        patches.forEach {
                             JSONObject().apply {
                                 put("name", it.name)
                                 put("description", it.description)
@@ -136,7 +139,6 @@ class MainActivity : FlutterActivity() {
 
     private fun runPatcher(
         result: MethodChannel.Result,
-        patchBundleFilePath: String,
         originalFilePath: String,
         inputFilePath: String,
         patchedFilePath: String,
@@ -223,10 +225,7 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
-                val patches = PatchBundleLoader.Dex(
-                    File(patchBundleFilePath),
-                    optimizedDexDirectory = cacheDir
-                ).filter { patch ->
+                val patches = patches.filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
                         it.name == patcher.context.packageMetadata.packageName
                     } ?: false
