@@ -154,8 +154,8 @@ class _PatchItemState extends State<PatchItem> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    if (!widget.isUnsupported &&
-                            !widget._managerAPI.areExperimentalPatchesEnabled())
+                    if (widget.isUnsupported &&
+                            widget._managerAPI.areExperimentalPatchesEnabled())
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: TextButton.icon(
@@ -180,7 +180,7 @@ class _PatchItemState extends State<PatchItem> {
                           ),
                         ),
                       ),
-                    if (!widget.isNew)
+                    if (widget.isNew)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: TextButton.icon(
