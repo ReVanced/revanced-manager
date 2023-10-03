@@ -49,7 +49,6 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
-                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
                     val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val patchedFilePath = call.argument<String>("patchedFilePath")
@@ -60,13 +59,17 @@ class MainActivity : FlutterActivity() {
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
 
-                    if (patchBundleFilePath != null &&
+                    // Map<PatchName, Pair<OptionKey, OptionValue>>
+                    val options = call.argument<Map<String, Pair<String, Any?>>>("options")
+
+                    if (
                         originalFilePath != null &&
                         inputFilePath != null &&
                         patchedFilePath != null &&
                         outFilePath != null &&
                         integrationsPath != null &&
                         selectedPatches != null &&
+                        options != null &&
                         cacheDirPath != null &&
                         keyStoreFilePath != null &&
                         keystorePassword != null
@@ -80,6 +83,7 @@ class MainActivity : FlutterActivity() {
                             outFilePath,
                             integrationsPath,
                             selectedPatches,
+                            options,
                             cacheDirPath,
                             keyStoreFilePath,
                             keystorePassword
@@ -128,6 +132,28 @@ class MainActivity : FlutterActivity() {
                                         put(compatiblePackageJson)
                                     }
                                 })
+                                put("options", JSONArray().apply {
+                                    it.options.values.forEach { option ->
+                                        val optionJson = JSONObject().apply option@{
+                                            put("key", option.key)
+                                            put("title", option.title)
+                                            put("description", option.description)
+                                            put("required", option.required)
+
+                                            when (val value = option.value) {
+                                                null -> put("value", null)
+                                                is Array<*> -> put("value", JSONArray().apply {
+
+                                                    value.forEach { put(it) }
+                                                })
+                                                else -> put("value", option.value)
+                                            }
+
+                                            put("optionClassType", option::class.simpleName)
+                                        }
+                                        put(optionJson)
+                                    }
+                                })
                             }.let(::put)
                         }
                     }.toString().let(result::success)
@@ -146,6 +172,7 @@ class MainActivity : FlutterActivity() {
         outFilePath: String,
         integrationsPath: String,
         selectedPatches: List<String>,
+        options: Map<String, Pair<String, Any?>>,
         cacheDirPath: String,
         keyStoreFilePath: String,
         keystorePassword: String
@@ -235,6 +262,10 @@ class MainActivity : FlutterActivity() {
                         isCompatible || patch.compatiblePackages.isNullOrEmpty()
 
                     compatibleOrUniversal && selectedPatches.any { it == patch.name }
+                }.onEach { patch ->
+                    options[patch.name]?.let { (key, value) ->
+                        patch.options[key] = value
+                    }
                 }
 
                 if (cancel) {

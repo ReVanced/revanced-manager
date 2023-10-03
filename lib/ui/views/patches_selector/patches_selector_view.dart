@@ -205,6 +205,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     patch,
                                     model.getAppInfo().packageName,
                                   ),
+                                  hasOptions: patch.options.isNotEmpty,
                                   isSelected: model.isSelected(patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value, context),
@@ -255,6 +256,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       isChangeEnabled:
                                           _managerAPI.isPatchesChangeEnabled(),
                                       isNew: false,
+                                      hasOptions: patch.options.isNotEmpty,
                                       isSelected: model.isSelected(patch),
                                       onChanged: (value) => model.selectPatch(
                                         patch,

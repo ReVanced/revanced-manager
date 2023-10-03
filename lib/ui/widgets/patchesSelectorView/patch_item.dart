@@ -17,6 +17,7 @@ class PatchItem extends StatefulWidget {
     required this.supportedPackageVersions,
     required this.isUnsupported,
     required this.isNew,
+    required this.hasOptions,
     required this.isSelected,
     required this.onChanged,
     required this.isChangeEnabled,
@@ -29,6 +30,7 @@ class PatchItem extends StatefulWidget {
   final List<String> supportedPackageVersions;
   final bool isUnsupported;
   final bool isNew;
+  final bool hasOptions;
   bool isSelected;
   final Function(bool) onChanged;
   final bool isChangeEnabled;
@@ -64,7 +66,8 @@ class _PatchItemState extends State<PatchItem> {
                 widget.isSelected = !widget.isSelected;
               }
             });
-            if (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled()) {
+            if (!widget.isUnsupported ||
+                widget._managerAPI.areExperimentalPatchesEnabled()) {
               widget.onChanged(widget.isSelected);
             }
           },
@@ -132,7 +135,9 @@ class _PatchItemState extends State<PatchItem> {
                             widget.isSelected = newValue!;
                           }
                         });
-                        if (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled()) {
+                        if (!widget.isUnsupported ||
+                            widget._managerAPI
+                                .areExperimentalPatchesEnabled()) {
                           widget.onChanged(widget.isSelected);
                         }
                       },
@@ -140,10 +145,11 @@ class _PatchItemState extends State<PatchItem> {
                   ),
                 ],
               ),
-              Row(
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   if (widget.isUnsupported &&
-                      widget._managerAPI.areExperimentalPatchesEnabled())
+                          widget._managerAPI.areExperimentalPatchesEnabled())
                     Padding(
                       padding: const EdgeInsets.only(top: 8, right: 8),
                       child: TextButton.icon(
@@ -170,10 +176,36 @@ class _PatchItemState extends State<PatchItem> {
                     ),
                   if (widget.isNew)
                     Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(right: 8, top: 8),
                       child: TextButton.icon(
                         label: I18nText('new'),
                         icon: const Icon(Icons.star, size: 20.0),
+                        onPressed: () => _showNewPatchDialog(),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                            Colors.transparent,
+                          ),
+                          foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (widget.hasOptions)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: TextButton.icon(
+                        label: I18nText('hasOptions'),
+                        icon: const Icon(Icons.settings, size: 20.0),
+                        // TODO(aabed): Show options popup
                         onPressed: () => _showNewPatchDialog(),
                         style: ButtonStyle(
                           shape: MaterialStateProperty.all(
