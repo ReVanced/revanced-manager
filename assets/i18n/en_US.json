@@ -130,6 +130,9 @@
 
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
+    "patchOptionsView": {
+        "viewTitle": "Patch options"
+    },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
         "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",

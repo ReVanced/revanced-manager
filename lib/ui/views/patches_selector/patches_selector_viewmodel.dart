@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -11,10 +12,12 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class PatchesSelectorViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  final NavigationService _navigationService = locator<NavigationService>();
   final List<Patch> patches = [];
   final List<Patch> selectedPatches =
       locator<PatcherViewModel>().selectedPatches;
@@ -46,6 +49,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return selectedPatches.any(
       (element) => element.name == patch.name,
     );
+  }
+
+  void navigateToPatchOptions(List<Option> setOptions) {
+    _managerAPI.options = setOptions;
+    _navigationService.navigateToPatchOptionsView();
   }
 
   void selectPatch(Patch patch, bool isSelected, BuildContext context) {

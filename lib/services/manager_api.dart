@@ -28,6 +28,7 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
+  List<Option> options = [];
   bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =

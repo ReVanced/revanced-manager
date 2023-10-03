@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
@@ -17,9 +18,10 @@ class PatchItem extends StatefulWidget {
     required this.supportedPackageVersions,
     required this.isUnsupported,
     required this.isNew,
-    required this.hasOptions,
+    required this.options,
     required this.isSelected,
     required this.onChanged,
+    required this.navigateToOptions,
     required this.isChangeEnabled,
     this.child,
   }) : super(key: key);
@@ -30,9 +32,10 @@ class PatchItem extends StatefulWidget {
   final List<String> supportedPackageVersions;
   final bool isUnsupported;
   final bool isNew;
-  final bool hasOptions;
+  final List<Option> options;
   bool isSelected;
   final Function(bool) onChanged;
+  final void Function(List<Option>) navigateToOptions;
   final bool isChangeEnabled;
   final Widget? child;
   final toast = locator<Toast>();
@@ -145,87 +148,90 @@ class _PatchItemState extends State<PatchItem> {
                   ),
                 ],
               ),
-              Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  if (widget.isUnsupported &&
-                          widget._managerAPI.areExperimentalPatchesEnabled())
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, right: 8),
-                      child: TextButton.icon(
-                        label: I18nText('warning'),
-                        icon: const Icon(Icons.warning, size: 20.0),
-                        onPressed: () => _showUnsupportedWarningDialog(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    if (!widget.isUnsupported &&
+                            !widget._managerAPI.areExperimentalPatchesEnabled())
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: TextButton.icon(
+                          label: I18nText('warning'),
+                          icon: const Icon(Icons.warning, size: 20.0),
+                          onPressed: () => _showUnsupportedWarningDialog(),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
                             ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.transparent,
-                          ),
-                          foregroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary,
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.transparent,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.secondary,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  if (widget.isNew)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8, top: 8),
-                      child: TextButton.icon(
-                        label: I18nText('new'),
-                        icon: const Icon(Icons.star, size: 20.0),
-                        onPressed: () => _showNewPatchDialog(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
+                    if (!widget.isNew)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: TextButton.icon(
+                          label: I18nText('new'),
+                          icon: const Icon(Icons.star, size: 20.0),
+                          onPressed: () => _showNewPatchDialog(),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
                             ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.transparent,
-                          ),
-                          foregroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary,
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.transparent,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.secondary,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  if (widget.hasOptions)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: TextButton.icon(
-                        label: I18nText('hasOptions'),
-                        icon: const Icon(Icons.settings, size: 20.0),
-                        // TODO(aabed): Show options popup
-                        onPressed: () => _showNewPatchDialog(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
+                    if (widget.options.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: TextButton.icon(
+                          label: I18nText('hasOptions'),
+                          icon: const Icon(Icons.settings, size: 20.0),
+                          onPressed: () => widget.navigateToOptions(widget.options),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
                             ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.transparent,
-                          ),
-                          foregroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary,
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.transparent,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.secondary,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
               widget.child ?? const SizedBox(),
             ],
