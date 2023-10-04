@@ -28,7 +28,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     getPatchesVersion().whenComplete(() => notifyListeners());
     patches.addAll(
       _patcherAPI.getFilteredPatches(
-        selectedApp!.originalPackageName,
+        selectedApp!.packageName,
       ),
     );
     patches.sort((a, b) {
@@ -98,11 +98,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   void selectDefaultPatches() {
     selectedPatches.clear();
-    if (locator<PatcherViewModel>().selectedApp?.originalPackageName != null) {
+    if (locator<PatcherViewModel>().selectedApp?.packageName != null) {
       selectedPatches.addAll(
         _patcherAPI
             .getFilteredPatches(
-              locator<PatcherViewModel>().selectedApp!.originalPackageName,
+              locator<PatcherViewModel>().selectedApp!.packageName,
             )
             .where(
               (element) =>
@@ -187,7 +187,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     final List<String> selectedPatches =
         this.selectedPatches.map((patch) => patch.name).toList();
     await _managerAPI.setSelectedPatches(
-      locator<PatcherViewModel>().selectedApp!.originalPackageName,
+      locator<PatcherViewModel>().selectedApp!.packageName,
       selectedPatches,
     );
   }
@@ -195,7 +195,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   Future<void> loadSelectedPatches(BuildContext context) async {
     if (_managerAPI.isPatchesChangeEnabled()) {
       final List<String> selectedPatches = await _managerAPI.getSelectedPatches(
-        locator<PatcherViewModel>().selectedApp!.originalPackageName,
+        locator<PatcherViewModel>().selectedApp!.packageName,
       );
       if (selectedPatches.isNotEmpty) {
         this.selectedPatches.clear();

@@ -42,6 +42,7 @@ class ManagerAPI {
   String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
   String? integrationsVersion = '';
+
   bool isDefaultPatchesRepo() {
     return getPatchesRepo().toLowerCase() == 'revanced/revanced-patches';
   }
@@ -316,18 +317,18 @@ class ManagerAPI {
 
     if (patchBundleFile != null) {
       try {
-        final patchesObject = await PatcherAPI.patcherChannel.invokeMethod(
+        final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
           'getPatches',
           {
             'patchBundleFilePath': patchBundleFile.path,
             'cacheDirPath': cacheDir.path,
           },
         );
-        final List<Map<String, dynamic>> patchesMap = [];
-        patchesObject.forEach((patch) {
-          patchesMap.add(jsonDecode('$patch'));
-        });
-        patches = patchesMap.map((patch) => Patch.fromJson(patch)).toList();
+
+        final List<dynamic> patchesJsonList = jsonDecode(patchesJson);
+        patches = patchesJsonList
+            .map((patchJson) => Patch.fromJson(patchJson))
+            .toList();
         return patches;
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -504,62 +505,33 @@ class ManagerAPI {
     return toRemove;
   }
 
-  Future<List<PatchedApplication>> getUnsavedApps(
-    List<PatchedApplication> patchedApps,
-  ) async {
-    final List<PatchedApplication> unsavedApps = [];
+  Future<List<PatchedApplication>> getMountedApps() async {
+    final List<PatchedApplication> mountedApps = [];
     final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
     if (hasRootPermissions) {
       final List<String> installedApps = await _rootAPI.getInstalledApps();
       for (final String packageName in installedApps) {
-        if (!patchedApps.any((app) => app.packageName == packageName)) {
-          final ApplicationWithIcon? application = await DeviceApps.getApp(
-            packageName,
-            true,
-          ) as ApplicationWithIcon?;
-          if (application != null) {
-            unsavedApps.add(
-              PatchedApplication(
-                name: application.appName,
-                packageName: application.packageName,
-                originalPackageName: application.packageName,
-                version: application.versionName!,
-                apkFilePath: application.apkFilePath,
-                icon: application.icon,
-                patchDate: DateTime.now(),
-                isRooted: true,
-              ),
-            );
-          }
-        }
-      }
-    }
-    final List<Application> userApps =
-        await DeviceApps.getInstalledApplications();
-    for (final Application app in userApps) {
-      if (app.packageName.startsWith('app.revanced') &&
-          !app.packageName.startsWith('app.revanced.manager.') &&
-          !patchedApps.any((uapp) => uapp.packageName == app.packageName)) {
         final ApplicationWithIcon? application = await DeviceApps.getApp(
-          app.packageName,
+          packageName,
           true,
         ) as ApplicationWithIcon?;
         if (application != null) {
-          unsavedApps.add(
+          mountedApps.add(
             PatchedApplication(
               name: application.appName,
               packageName: application.packageName,
-              originalPackageName: application.packageName,
               version: application.versionName!,
               apkFilePath: application.apkFilePath,
               icon: application.icon,
               patchDate: DateTime.now(),
+              isRooted: true,
             ),
           );
         }
       }
     }
-    return unsavedApps;
+
+    return mountedApps;
   }
 
   Future<void> showPatchesChangeWarningDialog(BuildContext context) {
@@ -621,34 +593,20 @@ class ManagerAPI {
 
   Future<void> reAssessSavedApps() async {
     final List<PatchedApplication> patchedApps = getPatchedApps();
-    final List<PatchedApplication> unsavedApps =
-        await getUnsavedApps(patchedApps);
-    patchedApps.addAll(unsavedApps);
+
+    // Remove apps that are not installed anymore.
     final List<PatchedApplication> toRemove =
-        await getAppsToRemove(patchedApps);
+    await getAppsToRemove(patchedApps);
     patchedApps.removeWhere((a) => toRemove.contains(a));
-    for (final PatchedApplication app in patchedApps) {
-      app.hasUpdates =
-          await hasAppUpdates(app.originalPackageName, app.patchDate);
-      app.changelog =
-          await getAppChangelog(app.originalPackageName, app.patchDate);
-      if (!app.hasUpdates) {
-        final String? currentInstalledVersion =
-            (await DeviceApps.getApp(app.packageName))?.versionName;
-        if (currentInstalledVersion != null) {
-          final String currentSavedVersion = app.version;
-          final int currentInstalledVersionInt = int.parse(
-            currentInstalledVersion.replaceAll(RegExp('[^0-9]'), ''),
-          );
-          final int currentSavedVersionInt = int.parse(
-            currentSavedVersion.replaceAll(RegExp('[^0-9]'), ''),
-          );
-          if (currentInstalledVersionInt > currentSavedVersionInt) {
-            app.hasUpdates = true;
-          }
-        }
-      }
-    }
+
+    // Determine all apps that are installed by mounting.
+    final List<PatchedApplication> mountedApps = await getMountedApps();
+    mountedApps.removeWhere(
+      (app) => patchedApps
+          .any((patchedApp) => patchedApp.packageName == app.packageName),
+    );
+    patchedApps.addAll(mountedApps);
+
     await setPatchedApps(patchedApps);
   }
 
@@ -663,37 +621,6 @@ class ManagerAPI {
       return !existsRoot || !existsNonRoot;
     }
     return !existsNonRoot;
-  }
-
-  Future<bool> hasAppUpdates(
-    String packageName,
-    DateTime patchDate,
-  ) async {
-    final List<String> commits = await _githubAPI.getCommits(
-      packageName,
-      getPatchesRepo(),
-      patchDate,
-    );
-    return commits.isNotEmpty;
-  }
-
-  Future<List<String>> getAppChangelog(
-    String packageName,
-    DateTime patchDate,
-  ) async {
-    List<String> newCommits = await _githubAPI.getCommits(
-      packageName,
-      getPatchesRepo(),
-      patchDate,
-    );
-    if (newCommits.isEmpty) {
-      newCommits = await _githubAPI.getCommits(
-        packageName,
-        getPatchesRepo(),
-        patchDate,
-      );
-    }
-    return newCommits;
   }
 
   Future<bool> isSplitApk(PatchedApplication patchedApp) async {
@@ -763,6 +690,8 @@ class ManagerAPI {
 
   Future<void> resetLastSelectedPatches() async {
     final File selectedPatchesFile = File(storedPatchesFile);
-    selectedPatchesFile.deleteSync();
+    if (selectedPatchesFile.existsSync()) {
+      selectedPatchesFile.deleteSync();
+    }
   }
 }
