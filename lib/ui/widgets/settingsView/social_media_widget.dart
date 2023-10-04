@@ -43,6 +43,12 @@ class SocialMediaWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SocialMediaItem(
+                icon: FaIcon(FontAwesomeIcons.globe),
+                title: Text('Website'),
+                subtitle: Text('revanced.app'),
+                url: 'https://revanced.app',
+              ),
+              SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.github),
                 title: Text('GitHub'),
                 subtitle: Text('github.com/revanced'),
