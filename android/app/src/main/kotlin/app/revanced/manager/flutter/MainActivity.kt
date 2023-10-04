@@ -330,7 +330,7 @@ class MainActivity : FlutterActivity() {
                     val stack = ex.stackTraceToString()
                     updateProgress(
                         -100.0,
-                        "Aborted",
+                        "Failed",
                         "An error occurred:\n$stack"
                     )
                 }
