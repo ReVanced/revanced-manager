@@ -130,28 +130,28 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     try {
-      update(0.0, 'Initializing...', 'Initializing installer');
-      if (_patches.isNotEmpty) {
-        try {
-          update(0.1, '', 'Creating working directory');
-          await _patcherAPI.runPatcher(
-            _app.packageName,
-            _app.apkFilePath,
-            _patches,
-          );
-        } on Exception catch (e) {
-          update(
-            -100.0,
-            'Aborted...',
-            'An error occurred! Aborted\nError:\n$e',
-          );
-          if (kDebugMode) {
-            print(e);
-          }
-        }
-      } else {
-        update(-100.0, 'Aborted...', 'No app or patches selected! Aborted');
+      await _patcherAPI.runPatcher(
+        _app.packageName,
+        _app.apkFilePath,
+        _patches,
+      );
+    } on Exception catch (e) {
+      update(
+        -100.0,
+        'Failed...',
+        'Something went wrong:\n$e',
+      );
+      if (kDebugMode) {
+        print(e);
       }
+    }
+
+    // Necessary to reset the state of patches by reloading them
+    // in a later patching process.
+    _managerAPI.patches.clear();
+    await _patcherAPI.loadPatches();
+
+    try {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
           FlutterBackground.disableBackgroundExecution();
@@ -209,7 +209,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     RadioListTile(
                       title: I18nText('installerView.installNonRootType'),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       value: 0,
                       groupValue: value,
                       onChanged: (selected) {
@@ -218,7 +219,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     RadioListTile(
                       title: I18nText('installerView.installRootType'),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       value: 1,
                       groupValue: value,
                       onChanged: (selected) {
@@ -256,9 +258,9 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
-      update(0.5, 'Aborting...', 'Canceling patching process');
+      update(0.5, 'Canceling...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
-      update(-100.0, 'Aborted...', 'Press back to exit');
+      update(-100.0, 'Canceled...', 'Press back to exit');
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -269,33 +271,34 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-        update(
-          1.0,
-          'Installing...',
-          _app.isRooted
-              ? 'Installing patched file using root method'
-              : 'Installing patched file using nonroot method',
-        );
-        isInstalled = await _patcherAPI.installPatchedFile(_app);
-        if (isInstalled) {
-          _app.isFromStorage = false;
-          _app.patchDate = DateTime.now();
-          _app.appliedPatches = _patches.map((p) => p.name).toList();
+      update(
+        1.0,
+        'Installing...',
+        _app.isRooted
+            ? 'Installing patched file using root method'
+            : 'Installing patched file using nonroot method',
+      );
+      isInstalled = await _patcherAPI.installPatchedFile(_app);
+      if (isInstalled) {
+        _app.isFromStorage = false;
+        _app.patchDate = DateTime.now();
+        _app.appliedPatches = _patches.map((p) => p.name).toList();
 
-          // In case a patch changed the app name or package name,
-          // update the app info.
-          final app = await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
-          if (app != null) {
-            _app.name = app.appName;
-            _app.packageName = app.packageName;
-          }
-
-          await _managerAPI.savePatchedApp(_app);
-
-          update(1.0, 'Installed!', 'Installed!');
-        } else {
-          // TODO(aabed): Show error message.
+        // In case a patch changed the app name or package name,
+        // update the app info.
+        final app =
+            await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+        if (app != null) {
+          _app.name = app.appName;
+          _app.packageName = app.packageName;
         }
+
+        await _managerAPI.savePatchedApp(_app);
+
+        update(1.0, 'Installed!', 'Installed!');
+      } else {
+        // TODO(aabed): Show error message.
+      }
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);

@@ -31,7 +31,7 @@ class PatcherAPI {
   File? outFile;
 
   Future<void> initialize() async {
-    await _loadPatches();
+    await loadPatches();
     await _managerAPI.downloadIntegrations();
     final Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
@@ -59,12 +59,10 @@ class PatcherAPI {
   }
 
   List<Patch> getUniversalPatches() {
-    return _patches
-        .where((patch) => patch.compatiblePackages.isEmpty)
-        .toList();
+    return _patches.where((patch) => patch.compatiblePackages.isEmpty).toList();
   }
 
-  Future<void> _loadPatches() async {
+  Future<void> loadPatches() async {
     try {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
@@ -85,15 +83,14 @@ class PatcherAPI {
   ) async {
     final List<ApplicationWithIcon> filteredApps = [];
     final bool allAppsIncluded =
-        _universalPatches.isNotEmpty &&
-            showUniversalPatches;
+        _universalPatches.isNotEmpty && showUniversalPatches;
     if (allAppsIncluded) {
       final appList = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
         onlyAppsWithLaunchIntent: true,
       );
 
-      for(final app in appList) {
+      for (final app in appList) {
         filteredApps.add(app as ApplicationWithIcon);
       }
     }
@@ -154,9 +151,9 @@ class PatcherAPI {
     String apkFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final File? patchBundleFile = await _managerAPI.downloadPatches();
     final File? integrationsFile = await _managerAPI.downloadIntegrations();
-    if (patchBundleFile != null) {
+
+    if (integrationsFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
       final Directory workDir = _tmpDir.createTempSync('tmp-');
@@ -170,12 +167,11 @@ class PatcherAPI {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
-            'patchBundleFilePath': patchBundleFile.path,
             'originalFilePath': originalFilePath,
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
             'outFilePath': outFile!.path,
-            'integrationsPath': integrationsFile!.path,
+            'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
