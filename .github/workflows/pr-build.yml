@@ -3,10 +3,10 @@ name: PR Build
 on:
   workflow_dispatch:
     inputs:
-      flutter-variant:
+      flutter-branch:
         required: true
         type: choice
-        description: Flutter variant
+        description: Flutter branch
         default: 'stable'
         options: 
         - stable
@@ -57,7 +57,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ inputs.flutter-variant }}
+          channel: ${{ inputs.flutter-branch }}
           cache: true
       - name: Install Flutter dependencies
         run: flutter pub get
@@ -74,7 +74,7 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-variant }}
+          name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-branch }}
           path: build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk
           
   notify-pull-request:
@@ -103,4 +103,4 @@ jobs:
   
             - PR: ${{ inputs.pr-number }}
             - App variant: ${{ inputs.app-variant }}
-            - Flutter variant: ${{ inputs.flutter-variant }}
+            - Flutter branch: ${{ inputs.flutter-branch }}
