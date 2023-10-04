@@ -111,6 +111,7 @@ class SExportSection extends StatelessWidget {
           subtitle: I18nText('settingsView.regenerateKeystoreHint'),
           onTap: () => _showDeleteKeystoreDialog(context),
         ),
+        // SManageKeystorePasswordUI(),
       ],
     );
   }

@@ -26,7 +26,6 @@ class SAdvancedSection extends StatelessWidget {
         SUniversalPatches(),
         SManageSourcesUI(),
         SManageApiUrlUI(),
-        // SManageKeystorePasswordUI(),
       ],
     );
   }
