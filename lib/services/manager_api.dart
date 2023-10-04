@@ -47,7 +47,8 @@ class ManagerAPI {
   }
 
   bool isDefaultIntegrationsRepo() {
-    return getIntegrationsRepo().toLowerCase() == 'revanced/revanced-integrations';
+    return getIntegrationsRepo().toLowerCase() ==
+        'revanced/revanced-integrations';
   }
 
   Future<void> initialize() async {
@@ -216,7 +217,7 @@ class ManagerAPI {
   }
 
   bool isVersionCompatibilityCheckEnabled() {
-    return _prefs.getBool('versionCompatibilityCheckEnabled') ?? false;
+    return _prefs.getBool('versionCompatibilityCheckEnabled') ?? true;
   }
 
   Future<void> enableVersionCompatibilityCheckStatus(bool value) async {
@@ -309,7 +310,7 @@ class ManagerAPI {
     final Directory appCache = await getTemporaryDirectory();
     Directory('${appCache.path}/cache').createSync();
     final Directory workDir =
-    Directory('${appCache.path}/cache').createTempSync('tmp-');
+        Directory('${appCache.path}/cache').createTempSync('tmp-');
     final Directory cacheDir = Directory('${workDir.path}/cache');
     cacheDir.createSync();
 
