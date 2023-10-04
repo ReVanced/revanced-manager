@@ -11,12 +11,11 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteO
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.domain.repository.SerializedSelection
+import app.revanced.manager.network.dto.LegacySettings
 import app.revanced.manager.ui.theme.Theme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import org.json.JSONObject
 
 class MainViewModel(
     private val app: Application,
@@ -58,69 +57,54 @@ class MainViewModel(
     }
 
     fun applyLegacySettings(data: String) = viewModelScope.launch {
-        prefs.showAutoUpdatesDialog.update(false)
-        val jsonData = JSONObject(data)
-        val keysIterator = jsonData.keys()
-        while (keysIterator.hasNext()) {
-            try {
-                val key = keysIterator.next()
-                val value = jsonData.get(key)
+        val json = Json { ignoreUnknownKeys = true }
+        val settings = json.decodeFromString<LegacySettings>(data)
 
-                when (key) {
-                    "themeMode" -> {
-                        val themeMap = mapOf(
-                            0 to Theme.SYSTEM,
-                            1 to Theme.LIGHT,
-                            2 to Theme.DARK
-                        )
-                        val theme = themeMap[value as Int]!!
-                        prefs.theme.update(theme)
-                    }
-                    "useDynamicTheme" -> {
-                        prefs.dynamicColor.update(value == 1)
-                    }
-                    "apiUrl" -> {
-                        val url = value as String
-                        prefs.api.update(url.removeSuffix("/"))
-                    }
-                    "experimentalPatchesEnabled" -> {
-                        prefs.allowExperimental.update(value == 1)
-                    }
-                    "patchesAutoUpdate" -> {
-                        with(patchBundleRepository) {
-                            sources
-                                .first()
-                                .find { it.uid == 0 }
-                                ?.asRemoteOrNull
-                                ?.setAutoUpdate(value == 1)
+        settings.themeMode?.let { theme ->
+            val themeMap = mapOf(
+                0 to Theme.SYSTEM,
+                1 to Theme.LIGHT,
+                2 to Theme.DARK
+            )
+            prefs.theme.update(themeMap[theme]!!)
+        }
+        settings.useDynamicTheme?.let { dynamicColor ->
+            prefs.dynamicColor.update(dynamicColor == 1)
+        }
+        settings.apiUrl?.let { api ->
+            prefs.api.update(api.removeSuffix("/"))
+        }
+        settings.experimentalPatchesEnabled?.let { allowExperimental ->
+            prefs.allowExperimental.update(allowExperimental == 1)
+        }
+        settings.patchesAutoUpdate?.let { autoUpdate ->
+            with(patchBundleRepository) {
+                sources
+                    .first()
+                    .find { it.uid == 0 }
+                    ?.asRemoteOrNull
+                    ?.setAutoUpdate(autoUpdate == 1)
 
-                            updateCheck()
-                        }
-                    }
-                    "patchesChangeEnabled" -> {
-                        // TODO: Implement setting
-                    }
-                    "showPatchesChangeWarning" -> {
-                        // TODO: Implement setting
-                    }
-                    "keystore" -> {
-                        prefs.keystoreCommonName.update("ReVanced")
-                        prefs.keystorePass.update(jsonData.get("keystorePassword") as String)
-
-                        val keystorePath = app.getDir("signing", Context.MODE_PRIVATE)
-                            .resolve("manager.keystore").toPath()
-                        val keystoreBytes = Base64.decode(value as String, Base64.DEFAULT)
-                        keystorePath.toFile().writeBytes(keystoreBytes)
-                    }
-                    "patches" -> {
-                        val bundleUid = patchBundleRepository.sources.first().first().uid
-                        val selection = Json.decodeFromString<SerializedSelection>(value as String)
-                        patchSelectionRepository.import(bundleUid, selection)
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+                updateCheck()
             }
         }
+        settings.patchesChangeEnabled?.let {
+            // TODO: Implement setting
+        }
+        settings.showPatchesChangeWarning?.let {
+            // TODO: Implement setting
+        }
+        settings.keystore?.let { keystore ->
+            prefs.keystoreCommonName.update("ReVanced")
+            prefs.keystorePass.update(settings.keystorePassword)
+            val keystorePath = app.getDir("signing", Context.MODE_PRIVATE)
+                .resolve("manager.keystore").toPath()
+            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
+            keystorePath.toFile().writeBytes(keystoreBytes)
+        }
+        settings.patches?.let { selection ->
+            patchSelectionRepository.import(0, selection)
+        }
+        prefs.showAutoUpdatesDialog.update(false)
     }
 }
