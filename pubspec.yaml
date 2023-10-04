@@ -92,6 +92,7 @@ flutter:
   uses-material-design: true
   fonts:
     - family: CustomIcon
-    - asset: fonts/custom-icons.ttf
+      fonts:
+        - asset: fonts/custom-icons.ttf
   assets:
     - assets/i18n/
