@@ -7,7 +7,7 @@ import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_enable_patches_selection.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_auto_update_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_version_compatibility_check.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 
 final _settingsViewModel = SettingsViewModel();
@@ -23,7 +23,7 @@ class SAdvancedSection extends StatelessWidget {
         SAutoUpdatePatches(),
         SEnablePatchesSelection(),
         SVersionCompatibilityCheck(),
-        SExperimentalUniversalPatches(),
+        SUniversalPatches(),
         SManageSourcesUI(),
         SManageApiUrlUI(),
         // SManageKeystorePasswordUI(),
