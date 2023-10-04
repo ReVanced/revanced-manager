@@ -194,7 +194,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                 return PatchItem(
                                   name: patch.name,
                                   simpleName: patch.getSimpleName(),
-                                  description: patch.description,
+                                  description: patch.description ?? '',
                                   packageVersion: model.getAppInfo().version,
                                   supportedPackageVersions:
                                       model.getSupportedVersions(patch),
@@ -246,7 +246,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     return PatchItem(
                                       name: patch.name,
                                       simpleName: patch.getSimpleName(),
-                                      description: patch.description,
+                                      description: patch.description ?? '',
                                       packageVersion:
                                           model.getAppInfo().version,
                                       supportedPackageVersions:

@@ -28,10 +28,10 @@ class PatcherAPI {
   List<Patch> _universalPatches = [];
   List<String> _compatiblePackages = [];
   Map filteredPatches = <String, List<Patch>>{};
-  File? _outFile;
+  File? outFile;
 
   Future<void> initialize() async {
-    await _loadPatches();
+    await loadPatches();
     await _managerAPI.downloadIntegrations();
     final Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
@@ -59,12 +59,10 @@ class PatcherAPI {
   }
 
   List<Patch> getUniversalPatches() {
-    return _patches
-        .where((patch) => patch.compatiblePackages.isEmpty)
-        .toList();
+    return _patches.where((patch) => patch.compatiblePackages.isEmpty).toList();
   }
 
-  Future<void> _loadPatches() async {
+  Future<void> loadPatches() async {
     try {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
@@ -85,15 +83,14 @@ class PatcherAPI {
   ) async {
     final List<ApplicationWithIcon> filteredApps = [];
     final bool allAppsIncluded =
-        _universalPatches.isNotEmpty &&
-            showUniversalPatches;
+        _universalPatches.isNotEmpty && showUniversalPatches;
     if (allAppsIncluded) {
       final appList = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
         onlyAppsWithLaunchIntent: true,
       );
 
-      for(final app in appList) {
+      for (final app in appList) {
         filteredApps.add(app as ApplicationWithIcon);
       }
     }
@@ -149,55 +146,20 @@ class PatcherAPI {
         .toList();
   }
 
-  Future<bool> needsResourcePatching(
-    List<Patch> selectedPatches,
-  ) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dep.contains('resource-'),
-      ),
-    );
-  }
-
-  Future<bool> needsSettingsPatch(List<Patch> selectedPatches) async {
-    return selectedPatches.any(
-      (patch) => patch.dependencies.any(
-        (dep) => dep.contains('settings'),
-      ),
-    );
-  }
-
   Future<void> runPatcher(
     String packageName,
     String apkFilePath,
     List<Patch> selectedPatches,
   ) async {
-    final bool includeSettings = await needsSettingsPatch(selectedPatches);
-    if (includeSettings) {
-      try {
-        final Patch? settingsPatch = _patches.firstWhereOrNull(
-          (patch) =>
-              patch.name.contains('settings') &&
-              patch.compatiblePackages.any((pack) => pack.name == packageName),
-        );
-        if (settingsPatch != null) {
-          selectedPatches.add(settingsPatch);
-        }
-      } on Exception catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-      }
-    }
-    final File? patchBundleFile = await _managerAPI.downloadPatches();
     final File? integrationsFile = await _managerAPI.downloadIntegrations();
-    if (patchBundleFile != null) {
+
+    if (integrationsFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
       final Directory workDir = _tmpDir.createTempSync('tmp-');
       final File inputFile = File('${workDir.path}/base.apk');
       final File patchedFile = File('${workDir.path}/patched.apk');
-      _outFile = File('${workDir.path}/out.apk');
+      outFile = File('${workDir.path}/out.apk');
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
       final String originalFilePath = apkFilePath;
@@ -205,12 +167,11 @@ class PatcherAPI {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
-            'patchBundleFilePath': patchBundleFile.path,
             'originalFilePath': originalFilePath,
             'inputFilePath': inputFile.path,
             'patchedFilePath': patchedFile.path,
-            'outFilePath': _outFile!.path,
-            'integrationsPath': integrationsFile!.path,
+            'outFilePath': outFile!.path,
+            'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'cacheDirPath': cacheDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
@@ -236,7 +197,7 @@ class PatcherAPI {
   }
 
   Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
-    if (_outFile != null) {
+    if (outFile != null) {
       try {
         if (patchedApp.isRooted) {
           final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
@@ -244,11 +205,11 @@ class PatcherAPI {
             return _rootAPI.installApp(
               patchedApp.packageName,
               patchedApp.apkFilePath,
-              _outFile!.path,
+              outFile!.path,
             );
           }
         } else {
-          final install = await InstallPlugin.installApk(_outFile!.path);
+          final install = await InstallPlugin.installApk(outFile!.path);
           return install['isSuccess'];
         }
       } on Exception catch (e) {
@@ -263,11 +224,11 @@ class PatcherAPI {
 
   void exportPatchedFile(String appName, String version) {
     try {
-      if (_outFile != null) {
+      if (outFile != null) {
         final String newName = _getFileName(appName, version);
         CRFileSaver.saveFileWithDialog(
           SaveFileDialogParams(
-            sourceFilePath: _outFile!.path,
+            sourceFilePath: outFile!.path,
             destinationFileName: newName,
           ),
         );
@@ -281,12 +242,12 @@ class PatcherAPI {
 
   void sharePatchedFile(String appName, String version) {
     try {
-      if (_outFile != null) {
+      if (outFile != null) {
         final String newName = _getFileName(appName, version);
-        final int lastSeparator = _outFile!.path.lastIndexOf('/');
+        final int lastSeparator = outFile!.path.lastIndexOf('/');
         final String newPath =
-            _outFile!.path.substring(0, lastSeparator + 1) + newName;
-        final File shareFile = _outFile!.copySync(newPath);
+            outFile!.path.substring(0, lastSeparator + 1) + newName;
+        final File shareFile = outFile!.copySync(newPath);
         ShareExtend.share(shareFile.path, 'file');
       }
     } on Exception catch (e) {

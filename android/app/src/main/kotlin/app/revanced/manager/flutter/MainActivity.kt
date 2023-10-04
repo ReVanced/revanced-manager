@@ -8,22 +8,21 @@ import app.revanced.manager.flutter.utils.signing.Signer
 import app.revanced.manager.flutter.utils.zip.ZipFile
 import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import app.revanced.patcher.PatchBundleLoader
+import app.revanced.patcher.PatchSet
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
-import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
-import app.revanced.patcher.extensions.PatchExtensions.dependencies
-import app.revanced.patcher.extensions.PatchExtensions.description
-import app.revanced.patcher.extensions.PatchExtensions.include
-import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.patch.PatchResult
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.lang.Error
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
@@ -32,6 +31,8 @@ class MainActivity : FlutterActivity() {
     private lateinit var installerChannel: MethodChannel
     private var cancel: Boolean = false
     private var stopResult: MethodChannel.Result? = null
+
+    private lateinit var patches: PatchSet
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -48,7 +49,6 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
-                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
                     val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val patchedFilePath = call.argument<String>("patchedFilePath")
@@ -59,7 +59,7 @@ class MainActivity : FlutterActivity() {
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
 
-                    if (patchBundleFilePath != null &&
+                    if (
                         originalFilePath != null &&
                         inputFilePath != null &&
                         patchedFilePath != null &&
@@ -73,7 +73,6 @@ class MainActivity : FlutterActivity() {
                         cancel = false
                         runPatcher(
                             result,
-                            patchBundleFilePath,
                             originalFilePath,
                             inputFilePath,
                             patchedFilePath,
@@ -93,29 +92,44 @@ class MainActivity : FlutterActivity() {
                 }
 
                 "getPatches" -> {
-                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
-                    val cacheDirPath = call.argument<String>("cacheDirPath")
+                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")!!
+                    val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
-                    if (patchBundleFilePath != null) {
-                        val patches = PatchBundleLoader.Dex(
+                    try {
+                        patches = PatchBundleLoader.Dex(
                             File(patchBundleFilePath),
                             optimizedDexDirectory = File(cacheDirPath)
-                        ).map { patch ->
-                            val map = HashMap<String, Any>()
-                            map["\"name\""] = "\"${patch.patchName.replace("\"","\\\"")}\""
-                            map["\"description\""] = "\"${patch.description?.replace("\"","\\\"")}\""
-                            map["\"excluded\""] = !patch.include
-                            map["\"dependencies\""] = patch.dependencies?.map { "\"${it.java.patchName}\"" } ?: emptyList<Any>()
-                            map["\"compatiblePackages\""] = patch.compatiblePackages?.map {
-                                val map2 = HashMap<String, Any>()
-                                map2["\"name\""] = "\"${it.name}\""
-                                map2["\"versions\""] = it.versions.map { version -> "\"${version}\"" }
-                                map2
-                            } ?: emptyList<Any>()
-                            map
+                        )
+                    } catch (ex: Exception) {
+                        return@setMethodCallHandler result.notImplemented()
+                    } catch (err: Error) {
+                        return@setMethodCallHandler result.notImplemented()
+                    }
+
+                    JSONArray().apply {
+                        patches.forEach {
+                            JSONObject().apply {
+                                put("name", it.name)
+                                put("description", it.description)
+                                put("excluded", !it.use)
+                                put("compatiblePackages", JSONArray().apply {
+                                    it.compatiblePackages?.forEach { compatiblePackage ->
+                                        val compatiblePackageJson = JSONObject().apply {
+                                            put("name", compatiblePackage.name)
+                                            put(
+                                                "versions",
+                                                JSONArray().apply {
+                                                    compatiblePackage.versions?.forEach { version ->
+                                                        put(version)
+                                                    }
+                                                })
+                                        }
+                                        put(compatiblePackageJson)
+                                    }
+                                })
+                            }.let(::put)
                         }
-                        result.success(patches)
-                    } else result.notImplemented()
+                    }.toString().let(result::success)
                 }
 
                 else -> result.notImplemented()
@@ -125,7 +139,6 @@ class MainActivity : FlutterActivity() {
 
     private fun runPatcher(
         result: MethodChannel.Result,
-        patchBundleFilePath: String,
         originalFilePath: String,
         inputFilePath: String,
         patchedFilePath: String,
@@ -168,8 +181,11 @@ class MainActivity : FlutterActivity() {
                 }
 
                 object : java.util.logging.Handler() {
-                    override fun publish(record: LogRecord) =
+                    override fun publish(record: LogRecord) {
+                        if (record.loggerName?.startsWith("app.revanced") != true) return
+
                         updateProgress(-1.0, "", record.message)
+                    }
 
                     override fun flush() = Unit
                     override fun close() = flush()
@@ -209,10 +225,7 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
-                val patches = PatchBundleLoader.Dex(
-                    File(patchBundleFilePath),
-                    optimizedDexDirectory = cacheDir
-                ).filter { patch ->
+                val patches = patches.filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
                         it.name == patcher.context.packageMetadata.packageName
                     } ?: false
@@ -220,7 +233,7 @@ class MainActivity : FlutterActivity() {
                     val compatibleOrUniversal =
                         isCompatible || patch.compatiblePackages.isNullOrEmpty()
 
-                    compatibleOrUniversal && selectedPatches.any { it == patch.patchName }
+                    compatibleOrUniversal && selectedPatches.any { it == patch.name }
                 }
 
                 if (cancel) {
@@ -251,9 +264,9 @@ class MainActivity : FlutterActivity() {
                             val msg = patchResult.exception?.let {
                                 val writer = StringWriter()
                                 it.printStackTrace(PrintWriter(writer))
-                                "${patchResult.patchName} failed: $writer"
+                                "${patchResult.patch.name} failed: $writer"
                             } ?: run {
-                                "${patchResult.patchName} succeeded"
+                                "${patchResult.patch.name} succeeded"
                             }
 
                             updateProgress(progress, "", msg)
@@ -317,7 +330,7 @@ class MainActivity : FlutterActivity() {
                     val stack = ex.stackTraceToString()
                     updateProgress(
                         -100.0,
-                        "Aborted",
+                        "Failed",
                         "An error occurred:\n$stack"
                     )
                 }

@@ -130,28 +130,28 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     try {
-      update(0.0, 'Initializing...', 'Initializing installer');
-      if (_patches.isNotEmpty) {
-        try {
-          update(0.1, '', 'Creating working directory');
-          await _patcherAPI.runPatcher(
-            _app.packageName,
-            _app.apkFilePath,
-            _patches,
-          );
-        } on Exception catch (e) {
-          update(
-            -100.0,
-            'Aborted...',
-            'An error occurred! Aborted\nError:\n$e',
-          );
-          if (kDebugMode) {
-            print(e);
-          }
-        }
-      } else {
-        update(-100.0, 'Aborted...', 'No app or patches selected! Aborted');
+      await _patcherAPI.runPatcher(
+        _app.packageName,
+        _app.apkFilePath,
+        _patches,
+      );
+    } on Exception catch (e) {
+      update(
+        -100.0,
+        'Failed...',
+        'Something went wrong:\n$e',
+      );
+      if (kDebugMode) {
+        print(e);
       }
+    }
+
+    // Necessary to reset the state of patches by reloading them
+    // in a later patching process.
+    _managerAPI.patches.clear();
+    await _patcherAPI.loadPatches();
+
+    try {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
           FlutterBackground.disableBackgroundExecution();
@@ -209,8 +209,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     RadioListTile(
                       title: I18nText('installerView.installNonRootType'),
-                      subtitle: I18nText('installerView.installRecommendedType'),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       value: 0,
                       groupValue: value,
                       onChanged: (selected) {
@@ -219,7 +219,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     RadioListTile(
                       title: I18nText('installerView.installRootType'),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       value: 1,
                       groupValue: value,
                       onChanged: (selected) {
@@ -257,9 +258,9 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
-      update(0.5, 'Aborting...', 'Canceling patching process');
+      update(0.5, 'Canceling...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
-      update(-100.0, 'Aborted...', 'Press back to exit');
+      update(-100.0, 'Canceled...', 'Press back to exit');
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -270,56 +271,33 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      final bool hasMicroG =
-          _patches.any((p) => p.name.endsWith('MicroG support'));
-      final bool rootMicroG = installAsRoot && hasMicroG;
-      final bool rootFromStorage = installAsRoot && _app.isFromStorage;
-      final bool ytWithoutRootMicroG =
-          !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
-      if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
-        return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: I18nText('installerView.installErrorDialogTitle'),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText(
-              rootMicroG
-                  ? 'installerView.installErrorDialogText1'
-                  : rootFromStorage
-                      ? 'installerView.installErrorDialogText3'
-                      : 'installerView.installErrorDialogText2',
-            ),
-            actions: <Widget>[
-              CustomMaterialButton(
-                label: I18nText('okButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      } else {
-        update(
-          1.0,
-          'Installing...',
-          _app.isRooted
-              ? 'Installing patched file using root method'
-              : 'Installing patched file using nonroot method',
-        );
-        isInstalled = await _patcherAPI.installPatchedFile(_app);
-        if (isInstalled) {
-          update(1.0, 'Installed!', 'Installed!');
-          _app.isFromStorage = false;
-          _app.patchDate = DateTime.now();
-          _app.appliedPatches = _patches.map((p) => p.name).toList();
-          if (hasMicroG) {
-            _app.name += ' ReVanced';
-            _app.packageName = _app.packageName.replaceFirst(
-              'com.google.',
-              'app.revanced.',
-            );
-          }
-          await _managerAPI.savePatchedApp(_app);
+      update(
+        1.0,
+        'Installing...',
+        _app.isRooted
+            ? 'Installing patched file using root method'
+            : 'Installing patched file using nonroot method',
+      );
+      isInstalled = await _patcherAPI.installPatchedFile(_app);
+      if (isInstalled) {
+        _app.isFromStorage = false;
+        _app.patchDate = DateTime.now();
+        _app.appliedPatches = _patches.map((p) => p.name).toList();
+
+        // In case a patch changed the app name or package name,
+        // update the app info.
+        final app =
+            await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+        if (app != null) {
+          _app.name = app.appName;
+          _app.packageName = app.packageName;
         }
+
+        await _managerAPI.savePatchedApp(_app);
+
+        update(1.0, 'Installed!', 'Installed!');
+      } else {
+        // TODO(aabed): Show error message.
       }
     } on Exception catch (e) {
       if (kDebugMode) {
