@@ -59,7 +59,7 @@ class Option {
   final String key;
   final String title;
   final String description;
-  final dynamic value;
+  dynamic value;
   final bool required;
   final String optionClassType;
 
