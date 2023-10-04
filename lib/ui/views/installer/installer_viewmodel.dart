@@ -95,8 +95,6 @@ class InstallerViewModel extends BaseViewModel {
       isInstalled = false;
       hasErrors = false;
     } else if (value == 1.0) {
-      _managerAPI.patches.clear();
-
       isPatching = false;
       hasErrors = false;
       await _managerAPI.savePatches(
@@ -132,7 +130,6 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     try {
-      update(0.1, '', 'Creating working directory');
       await _patcherAPI.runPatcher(
         _app.packageName,
         _app.apkFilePath,
@@ -148,6 +145,12 @@ class InstallerViewModel extends BaseViewModel {
         print(e);
       }
     }
+
+    // Necessary to reset the state of patches by reloading them
+    // in a later patching process.
+    // TODO(Benjamin): Fix this not working
+    _managerAPI.patches.clear();
+    await _managerAPI.getPatches();
 
     try {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
