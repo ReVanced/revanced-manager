@@ -40,8 +40,7 @@ class ExportSettingsActivity : Activity() {
             val keystoreFile = File(getExternalFilesDir(null), "/revanced-manager.keystore")
             if (keystoreFile.exists()) {
                 val keystoreBytes = keystoreFile.readBytes()
-                val keystoreBase64 =
-                    Base64.encodeToString(keystoreBytes, Base64.DEFAULT).replace("\n", "")
+                val keystoreBase64 = Base64.encodeToString(keystoreBytes, Base64.DEFAULT)
                 json.put("keystore", keystoreBase64)
             }
 
@@ -50,7 +49,7 @@ class ExportSettingsActivity : Activity() {
             if (storedPatchesFile.exists()) {
                 val patchesBytes = storedPatchesFile.readBytes()
                 val patches = String(patchesBytes, Charsets.UTF_8)
-                json.put("patches", patches)
+                json.put("patches", JSONObject(patches))
             }
 
             // Send data back
