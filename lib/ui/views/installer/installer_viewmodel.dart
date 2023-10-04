@@ -148,9 +148,8 @@ class InstallerViewModel extends BaseViewModel {
 
     // Necessary to reset the state of patches by reloading them
     // in a later patching process.
-    // TODO(Benjamin): Fix this not working
     _managerAPI.patches.clear();
-    await _managerAPI.getPatches();
+    await _patcherAPI.loadPatches();
 
     try {
       if (FlutterBackground.isBackgroundExecutionEnabled) {

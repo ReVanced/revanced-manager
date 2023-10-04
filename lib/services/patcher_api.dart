@@ -31,7 +31,7 @@ class PatcherAPI {
   File? outFile;
 
   Future<void> initialize() async {
-    await _loadPatches();
+    await loadPatches();
     await _managerAPI.downloadIntegrations();
     final Directory appCache = await getTemporaryDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
@@ -62,7 +62,7 @@ class PatcherAPI {
     return _patches.where((patch) => patch.compatiblePackages.isEmpty).toList();
   }
 
-  Future<void> _loadPatches() async {
+  Future<void> loadPatches() async {
     try {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
