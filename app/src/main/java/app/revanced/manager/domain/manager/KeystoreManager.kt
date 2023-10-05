@@ -58,6 +58,7 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
 
     suspend fun import(cn: String, pass: String, keystore: InputStream): Boolean {
         val keystoreData = keystore.readBytes()
+
         try {
             val ks = ApkSigner.readKeyStore(ByteArrayInputStream(keystoreData), null)
 
