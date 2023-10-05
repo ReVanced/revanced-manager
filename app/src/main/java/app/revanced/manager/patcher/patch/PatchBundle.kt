@@ -3,16 +3,15 @@ package app.revanced.manager.patcher.patch
 import android.util.Log
 import app.revanced.manager.util.tag
 import app.revanced.patcher.PatchBundleLoader
-import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
-import app.revanced.patcher.patch.PatchClass
+import app.revanced.patcher.patch.Patch
 import java.io.File
 
-class PatchBundle(private val loader: Iterable<PatchClass>, val integrations: File?) {
+class PatchBundle(private val loader: Iterable<Patch<*>>, val integrations: File?) {
     constructor(bundleJar: File, integrations: File?) : this(
-        object : Iterable<PatchClass> {
-            private fun load(): List<PatchClass> = PatchBundleLoader.Dex(bundleJar)
+        object : Iterable<Patch<*>> {
+            private fun load(): Iterable<Patch<*>> = PatchBundleLoader.Dex(bundleJar, optimizedDexDirectory = null)
 
-            override fun iterator() = load().iterator()
+            override fun iterator(): Iterator<Patch<*>> = load().iterator()
         },
         integrations
     ) {

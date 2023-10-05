@@ -30,8 +30,6 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
-import app.revanced.patcher.extensions.PatchExtensions.options
-import app.revanced.patcher.extensions.PatchExtensions.patchName
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -172,22 +170,21 @@ class PatcherWorker(
             args.options.forEach { (bundle, configuredPatchOptions) ->
                 val patches = allPatches[bundle] ?: return@forEach
                 configuredPatchOptions.forEach { (patchName, options) ->
-                    patches.single { it.patchName == patchName }.options?.let {
-                        options.forEach { (key, value) ->
-                            it[key] = value
-                        }
+                    val patchOptions = patches.single { it.name == patchName }.options
+                    options.forEach { (key, value) ->
+                        patchOptions[key] = value
                     }
                 }
             }
 
             val patches = args.selectedPatches.flatMap { (bundle, selected) ->
-                allPatches[bundle]?.filter { selected.contains(it.patchName) }
+                allPatches[bundle]?.filter { selected.contains(it.name) }
                     ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
             }
 
 
             // Ensure they are in the correct order so we can track progress properly.
-            progressManager.replacePatchesList(patches.map { it.patchName })
+            progressManager.replacePatchesList(patches.map { it.name.orEmpty() })
             updateProgress() // Loading patches
 
             val inputFile = when (val selectedApp = args.input) {
