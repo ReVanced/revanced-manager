@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
+import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
@@ -21,6 +22,7 @@ class MainViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
+    private val keystoreManager: KeystoreManager,
     val prefs: PreferencesManager
 ) : ViewModel() {
     lateinit var launcher: ActivityResultLauncher<Intent>
@@ -92,12 +94,12 @@ class MainViewModel(
             prefs.disableSelectionWarning.update(disableSelectionWarning)
         }
         settings.keystore?.let { keystore ->
-            prefs.keystoreCommonName.update("ReVanced")
-            prefs.keystorePass.update(settings.keystorePassword)
-            val keystorePath = app.getDir("signing", Context.MODE_PRIVATE)
-                .resolve("manager.keystore").toPath()
-            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
-            keystorePath.toFile().writeBytes(keystoreBytes)
+            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)                                  
+            keystoreManager.import(
+                "ReVanced",
+                settings.keystorePassword,
+                keystoreBytes.inputStream()
+            )
         }
         settings.patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
