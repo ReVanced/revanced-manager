@@ -71,6 +71,7 @@ fun AboutSettingsScreen(
         "Reddit" to FontAwesomeIcons.Brands.Reddit,
         "Telegram" to FontAwesomeIcons.Brands.Telegram,
         "Twitter" to FontAwesomeIcons.Brands.Twitter,
+        "X" to FontAwesomeIcons.Brands.Twitter,
         "YouTube" to FontAwesomeIcons.Brands.Youtube,
     )
 
