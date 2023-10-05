@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -155,9 +154,6 @@ fun AppSelectorScreen(
                 title = stringResource(R.string.select_app),
                 onBackClick = onBackClick,
                 actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
-                    }
                     IconButton(onClick = { search = true }) {
                         Icon(Icons.Outlined.Search, stringResource(R.string.search))
                     }

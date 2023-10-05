@@ -11,9 +11,8 @@ accompanist = "0.30.1"
 serialization = "1.6.0"
 collection = "0.3.5"
 room-version = "2.5.2"
-patcher = "14.2.1"
-apksign = "8.1.1"
-bcpkix-jdk18on = "1.76"
+revanced-patcher = "16.0.1"
+revanced-library = "1.1.1"
 koin-version = "3.4.3"
 koin-version-compose = "3.4.6"
 reimagined-navigation = "1.4.0"
@@ -68,11 +67,8 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-ver
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
 
 # Patcher
-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "patcher" }
-
-# Signing
-apksign = { group = "com.android.tools.build", name = "apksig", version.ref = "apksign" }
-bcpkix-jdk18on = { group = "org.bouncycastle", name = "bcpkix-jdk18on", version.ref = "bcpkix-jdk18on" }
+revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "revanced-patcher" }
+revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }

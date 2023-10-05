@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -75,9 +74,6 @@ fun InstallerScreen(
                 title = stringResource(R.string.installer),
                 onBackClick = onBackClick,
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
-                    }
                     IconButton(onClick = { dropdownActive = true }) {
                         Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
                     }
