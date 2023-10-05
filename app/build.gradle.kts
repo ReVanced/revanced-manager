@@ -131,11 +131,8 @@ dependencies {
     ksp(libs.room.compiler)
 
     // ReVanced
-    implementation(libs.patcher)
-
-    // Signing
-    implementation(libs.apksign)
-    implementation(libs.bcpkix.jdk18on)
+    implementation(libs.revanced.patcher)
+    implementation(libs.revanced.library)
 
     implementation(libs.libsu.core)
     implementation(libs.libsu.service)

@@ -54,8 +54,8 @@ class VersionSelectorViewModel(
             bundle.patches.flatMap { patch ->
                 patch.compatiblePackages.orEmpty()
                     .filter { it.packageName == packageName }
-                    .onEach { if (it.versions.isEmpty()) patchesWithoutVersions++ }
-                    .flatMap { it.versions }
+                    .onEach { if (it.versions == null) patchesWithoutVersions++ }
+                    .flatMap { it.versions.orEmpty() }
             }
         }.groupingBy { it }
             .eachCount()
