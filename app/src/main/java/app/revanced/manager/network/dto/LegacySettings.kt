@@ -12,7 +12,6 @@ data class LegacySettings(
     val experimentalPatchesEnabled: Boolean? = null,
     val patchesAutoUpdate: Boolean? = null,
     val patchesChangeEnabled: Boolean? = null,
-    val showPatchesChangeWarning: Boolean? = null,
     val keystore: String? = null,
     val patches: SerializedSelection? = null,
 )

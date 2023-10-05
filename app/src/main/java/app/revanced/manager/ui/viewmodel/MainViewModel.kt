@@ -88,11 +88,8 @@ class MainViewModel(
                 updateCheck()
             }
         }
-        settings.patchesChangeEnabled?.let {
-            // TODO: Implement setting
-        }
-        settings.showPatchesChangeWarning?.let {
-            // TODO: Implement setting
+        settings.patchesChangeEnabled?.let { disableSelectionWarning ->
+            prefs.disableSelectionWarning.update(disableSelectionWarning)
         }
         settings.keystore?.let { keystore ->
             prefs.keystoreCommonName.update("ReVanced")
