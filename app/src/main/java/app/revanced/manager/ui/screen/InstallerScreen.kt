@@ -206,7 +206,7 @@ fun InstallStep(step: Step) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            ArrowButton(expanded = expanded) {
+            ArrowButton(modifier = Modifier.size(24.dp), expanded = expanded) {
                 expanded = !expanded
             }
         }
@@ -239,7 +239,10 @@ fun InstallStep(step: Step) {
                         )
 
                         if (stacktrace != null) {
-                            ArrowButton(expanded = messageExpanded) {
+                            ArrowButton(
+                                modifier = Modifier.size(24.dp),
+                                expanded = messageExpanded
+                            ) {
                                 messageExpanded = !messageExpanded
                             }
                         } else {

@@ -13,15 +13,17 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
 @Composable
-fun ArrowButton(expanded: Boolean, onClick: () -> Unit) {
+fun ArrowButton(modifier: Modifier = Modifier, expanded: Boolean,onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         val description = if (expanded) R.string.collapse_content else R.string.expand_content
-        val rotation by animateFloatAsState(targetValue = if (expanded) 0f else 180f)
+        val rotation by animateFloatAsState(targetValue = if (expanded) 0f else 180f, label = "rotation")
 
         Icon(
             imageVector = Icons.Filled.KeyboardArrowUp,
             contentDescription = stringResource(description),
-            modifier = Modifier.rotate(rotation)
+            modifier = Modifier
+                .rotate(rotation)
+                .then(modifier)
         )
     }
 }
