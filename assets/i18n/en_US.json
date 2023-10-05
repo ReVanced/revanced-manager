@@ -158,6 +158,9 @@
         "exportApkButtonTooltip": "Export patched APK",
         "exportLogButtonTooltip": "Export log",
 
+        "screenshotDetected": "A screenshot has been detected. If you are trying to share the log, please share a text copy instead.\n\nCopy log to clipboard?",
+        "copiedToClipboard": "Copied log to clipboard",
+
         "noExit": "Installer is still running, cannot exit..."
     },
     "settingsView": {
