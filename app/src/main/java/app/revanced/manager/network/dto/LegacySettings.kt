@@ -7,12 +7,12 @@ import kotlinx.serialization.Serializable
 data class LegacySettings(
     val keystorePassword: String,
     val themeMode: Int? = null,
-    val useDynamicTheme: Int? = null,
+    val useDynamicTheme: Boolean? = null,
     val apiUrl: String? = null,
-    val experimentalPatchesEnabled: Int? = null,
-    val patchesAutoUpdate: Int? = null,
-    val patchesChangeEnabled: Int? = null,
-    val showPatchesChangeWarning: Int? = null,
+    val experimentalPatchesEnabled: Boolean? = null,
+    val patchesAutoUpdate: Boolean? = null,
+    val patchesChangeEnabled: Boolean? = null,
+    val showPatchesChangeWarning: Boolean? = null,
     val keystore: String? = null,
     val patches: SerializedSelection? = null,
 )

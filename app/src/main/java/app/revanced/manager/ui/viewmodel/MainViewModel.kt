@@ -69,13 +69,13 @@ class MainViewModel(
             prefs.theme.update(themeMap[theme]!!)
         }
         settings.useDynamicTheme?.let { dynamicColor ->
-            prefs.dynamicColor.update(dynamicColor == 1)
+            prefs.dynamicColor.update(dynamicColor)
         }
         settings.apiUrl?.let { api ->
             prefs.api.update(api.removeSuffix("/"))
         }
         settings.experimentalPatchesEnabled?.let { allowExperimental ->
-            prefs.allowExperimental.update(allowExperimental == 1)
+            prefs.allowExperimental.update(allowExperimental)
         }
         settings.patchesAutoUpdate?.let { autoUpdate ->
             with(patchBundleRepository) {
@@ -83,7 +83,7 @@ class MainViewModel(
                     .first()
                     .find { it.uid == 0 }
                     ?.asRemoteOrNull
-                    ?.setAutoUpdate(autoUpdate == 1)
+                    ?.setAutoUpdate(autoUpdate)
 
                 updateCheck()
             }
