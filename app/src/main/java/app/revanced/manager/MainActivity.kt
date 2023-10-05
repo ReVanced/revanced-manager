@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getActivityViewModel()
-        lateinit var launchedActivityState: MutableState<Int>
+        lateinit var legacyActivity: MutableState<LegacyActivity>
 
         vm.launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     vm.applyLegacySettings(jsonData)
                 }
             } else {
-                launchedActivityState.value = 2
+                legacyActivity.value = LegacyActivity.FAILED
             }
         }
 
@@ -74,13 +74,13 @@ class MainActivity : ComponentActivity() {
                 val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
 
                 if (showAutoUpdatesDialog) {
-                    launchedActivityState = rememberSaveable { mutableStateOf(0) }
-                    if (launchedActivityState.value == 0) {
-                        launchedActivityState.value = 1
+                    legacyActivity = rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
+                    if (legacyActivity.value == LegacyActivity.NOT_LAUNCHED) {
+                        legacyActivity.value = LegacyActivity.LAUNCHED
                         if (!vm.launchLegacyActivity()) {
-                            launchedActivityState.value = 2
+                            legacyActivity.value = LegacyActivity.FAILED
                         }
-                    } else if (launchedActivityState.value == 2) {
+                    } else if (legacyActivity.value == LegacyActivity.FAILED) {
                         AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
                     }
                 }
@@ -149,4 +149,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private enum class LegacyActivity {
+        NOT_LAUNCHED,
+        LAUNCHED,
+        FAILED
+    }
 }
+
+
