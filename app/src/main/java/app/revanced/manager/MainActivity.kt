@@ -158,5 +158,3 @@ class MainActivity : ComponentActivity() {
         FAILED
     }
 }
-
-
