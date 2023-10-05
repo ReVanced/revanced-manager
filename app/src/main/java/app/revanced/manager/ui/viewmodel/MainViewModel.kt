@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.util.Base64
 import androidx.activity.result.ActivityResultLauncher
@@ -12,10 +11,11 @@ import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.network.dto.LegacySettings
+import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.ui.theme.Theme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 class MainViewModel(
@@ -94,7 +94,7 @@ class MainViewModel(
             prefs.disableSelectionWarning.update(disableSelectionWarning)
         }
         settings.keystore?.let { keystore ->
-            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)                                  
+            val keystoreBytes = Base64.decode(keystore, Base64.DEFAULT)
             keystoreManager.import(
                 "ReVanced",
                 settings.keystorePassword,
@@ -107,3 +107,16 @@ class MainViewModel(
         prefs.showAutoUpdatesDialog.update(false)
     }
 }
+
+@Serializable
+data class LegacySettings(
+    val keystorePassword: String,
+    val themeMode: Int? = null,
+    val useDynamicTheme: Boolean? = null,
+    val apiUrl: String? = null,
+    val experimentalPatchesEnabled: Boolean? = null,
+    val patchesAutoUpdate: Boolean? = null,
+    val patchesChangeEnabled: Boolean? = null,
+    val keystore: String? = null,
+    val patches: SerializedSelection? = null,
+)
