@@ -6,13 +6,12 @@ import app.revanced.library.ApkSigner
 import app.revanced.library.ApkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayInputStream
 import java.io.File
+import java.io.InputStream
 import java.io.OutputStream
 import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.security.UnrecoverableKeyException
-import kotlin.io.path.inputStream
 
 class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
     companion object Constants {
@@ -57,11 +56,10 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
         updatePrefs(DEFAULT, DEFAULT)
     }
 
-    suspend fun import(cn: String, pass: String, keystore: Path): Boolean {
+    suspend fun import(cn: String, pass: String, keystore: InputStream): Boolean {
+        val keystoreData = keystore.readBytes()
         try {
-            val ks = keystore.inputStream().use {
-                ApkSigner.readKeyStore(it, null)
-            }
+            val ks = ApkSigner.readKeyStore(ByteArrayInputStream(keystoreData), null)
 
             ApkSigner.readKeyCertificatePair(ks, cn, pass)
         } catch (_: UnrecoverableKeyException) {
@@ -71,7 +69,7 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
         }
 
         withContext(Dispatchers.IO) {
-            Files.copy(keystore, keystorePath.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            Files.write(keystorePath.toPath(), keystoreData)
         }
 
         updatePrefs(cn, pass)

@@ -31,6 +31,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import kotlin.io.path.deleteExisting
+import kotlin.io.path.inputStream
 
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
@@ -79,9 +80,11 @@ class ImportExportViewModel(
         tryKeystoreImport(cn, pass, keystoreImportPath!!)
 
     private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
-        if (keystoreManager.import(cn, pass, path)) {
-            cancelKeystoreImport()
-            return true
+        path.inputStream().use { stream ->
+            if (keystoreManager.import(cn, pass, stream)) {
+                cancelKeystoreImport()
+                return true
+            }
         }
 
         return false
