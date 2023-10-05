@@ -17,6 +17,7 @@ class AdvancedSettingsViewModel(
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
     val apiUrl = prefs.api
+    val allowExperimental = prefs.allowExperimental
 
     fun setApiUrl(value: String) = viewModelScope.launch(Dispatchers.Default) {
         if (value == apiUrl.get()) return@launch

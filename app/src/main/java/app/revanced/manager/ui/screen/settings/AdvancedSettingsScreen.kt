@@ -32,9 +32,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -83,6 +85,14 @@ fun AdvancedSettingsScreen(
                 modifier = Modifier.clickable {
                     showApiUrlDialog = true
                 }
+            )
+
+            GroupHeader(stringResource(R.string.patcher))
+            BooleanItem(
+                preference = vm.allowExperimental,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.experimental_patches,
+                description = R.string.experimental_patches_description
             )
 
             GroupHeader(stringResource(R.string.patch_bundles_section))

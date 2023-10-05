@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen.settings
 
 import android.os.Build
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -23,7 +22,6 @@ import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
-import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,14 +80,6 @@ fun GeneralSettingsScreen(
                     description = R.string.dynamic_color_description
                 )
             }
-
-            GroupHeader(stringResource(R.string.patcher))
-            BooleanItem(
-                preference = prefs.allowExperimental,
-                coroutineScope = coroutineScope,
-                headline = R.string.experimental_patches,
-                description = R.string.experimental_patches_description
-            )
         }
     }
 }
@@ -123,10 +113,12 @@ private fun ThemePicker(
             }
         },
         confirmButton = {
-            Button(onClick = {
-                onConfirm(selectedTheme)
-                onDismiss()
-            }) {
+            Button(
+                onClick = {
+                    onConfirm(selectedTheme)
+                    onDismiss()
+                }
+            ) {
                 Text(stringResource(R.string.apply))
             }
         }
