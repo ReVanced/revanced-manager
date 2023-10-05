@@ -1,11 +1,14 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.util.Base64
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -13,13 +16,13 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.ui.theme.Theme
+import app.revanced.manager.util.toast
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 class MainViewModel(
-    private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
     private val keystoreManager: KeystoreManager,
@@ -44,7 +47,7 @@ class MainViewModel(
         }
     }
 
-    fun launchLegacyActivity(): Boolean {
+    fun launchLegacyActivity(context: Context): Boolean {
         return try {
             val intent = Intent()
             intent.setClassName(
@@ -54,6 +57,13 @@ class MainViewModel(
             launcher.launch(intent)
             true
         } catch (e: Exception) {
+            if (e !is ActivityNotFoundException) {
+                context.toast(
+                    context.getString(
+                        R.string.legacy_import_failed
+                    )
+                )
+            }
             false
         }
     }

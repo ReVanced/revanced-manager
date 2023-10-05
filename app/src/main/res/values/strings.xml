@@ -24,6 +24,8 @@
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
     
+    <string name="legacy_import_failed">Could not import legacy settings</string>
+
     <string name="auto_updates_dialog_title">Select updates to receive</string>
     <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
     <string name="auto_updates_dialog_manager">ReVanced Manager</string>

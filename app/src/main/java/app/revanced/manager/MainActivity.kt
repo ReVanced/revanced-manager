@@ -25,6 +25,7 @@ import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
+import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
                 }
             } else {
                 legacyActivity.value = LegacyActivity.FAILED
+                toast(getString(R.string.legacy_import_failed))
             }
         }
 
@@ -77,7 +79,7 @@ class MainActivity : ComponentActivity() {
                     legacyActivity = rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
                     if (legacyActivity.value == LegacyActivity.NOT_LAUNCHED) {
                         legacyActivity.value = LegacyActivity.LAUNCHED
-                        if (!vm.launchLegacyActivity()) {
+                        if (!vm.launchLegacyActivity(this)) {
                             legacyActivity.value = LegacyActivity.FAILED
                         }
                     } else if (legacyActivity.value == LegacyActivity.FAILED) {
