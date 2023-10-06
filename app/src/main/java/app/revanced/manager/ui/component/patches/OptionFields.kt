@@ -29,7 +29,6 @@ import app.revanced.manager.R
 import app.revanced.manager.data.platform.FileSystem
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.util.toast
-import app.revanced.patcher.patch.options.PatchOption
 import app.revanced.patcher.patch.options.types.*
 import org.koin.compose.rememberKoinInject
 
@@ -196,8 +195,8 @@ fun OptionItem(option: Option, value: Any?, setValue: (Any?) -> Unit) {
     val implementation = remember(option.type) {
         when (option.type) {
             // These are the only two types that are currently used by the official patches.
-            StringOption::class.java -> StringOption
-            BooleanOption::class.java -> BooleanOption
+            StringPatchOption::class.java -> StringOption
+            BooleanPatchOption::class.java -> BooleanOption
             else -> UnknownOption
         }
     }
