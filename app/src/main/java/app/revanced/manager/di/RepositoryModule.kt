@@ -11,7 +11,6 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     singleOf(::ReVancedAPI)
-    singleOf(::GithubRepository)
     singleOf(::Filesystem) {
         createdAtStart()
     }
