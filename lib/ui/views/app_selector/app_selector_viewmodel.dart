@@ -224,7 +224,8 @@ class AppSelectorViewModel extends BaseViewModel {
           (app) =>
               query.isEmpty ||
               query.length < 2 ||
-              app.appName.toLowerCase().contains(query.toLowerCase()),
+              app.appName.toLowerCase().contains(query.toLowerCase()) ||
+              app.packageName.toLowerCase().contains(query.toLowerCase()),
         )
         .toList();
   }
