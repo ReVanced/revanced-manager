@@ -19,6 +19,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
@@ -57,16 +58,22 @@ class InstallerViewModel(
 ) : ViewModel(), KoinComponent {
     private val keystoreManager: KeystoreManager by inject()
     private val app: Application by inject()
+    private val fs: Filesystem by inject()
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
     val packageName: String = input.selectedApp.packageName
-    private val outputFile = File(app.cacheDir, "output.apk")
-    private val signedFile = File(app.cacheDir, "signed.apk").also { if (it.exists()) it.delete() }
+    private val tempDir = fs.tempDir.resolve("installer").also {
+        it.deleteRecursively()
+        it.mkdirs()
+    }
+
+    private val outputFile = tempDir.resolve("output.apk")
+    private val signedFile = tempDir.resolve("signed.apk")
     private var hasSigned = false
-    var inputFile: File? = null
+    private var inputFile: File? = null
 
     private var installedApp: InstalledApp? = null
     var isInstalling by mutableStateOf(false)
@@ -82,6 +89,8 @@ class InstallerViewModel(
     private val logger = ManagerLogger()
 
     init {
+        // TODO: navigate away when system-initiated process death is detected because it is not possible to recover from it.
+
         viewModelScope.launch {
             installedApp = installedAppRepository.get(packageName)
         }
@@ -101,11 +110,8 @@ class InstallerViewModel(
                     outputFile.path,
                     patches,
                     options,
-                    packageName,
-                    selectedApp.version,
                     _progress,
                     logger,
-                    selectedApp,
                     setInputFile = { inputFile = it }
                 )
             )
@@ -176,8 +182,14 @@ class InstallerViewModel(
         app.unregisterReceiver(installBroadcastReceiver)
         workManager.cancelWorkById(patcherWorkerId)
 
-        outputFile.delete()
-        signedFile.delete()
+        when (val selectedApp = input.selectedApp) {
+            is SelectedApp.Local -> {
+                if (selectedApp.shouldDelete) selectedApp.file.delete()
+            }
+            else -> {}
+        }
+
+        tempDir.deleteRecursively()
 
         try {
             if (input.selectedApp is SelectedApp.Installed) {
