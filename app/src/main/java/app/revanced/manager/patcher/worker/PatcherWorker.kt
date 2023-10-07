@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -49,6 +50,7 @@ class PatcherWorker(
     private val prefs: PreferencesManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
+    private val fs: Filesystem by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
@@ -57,13 +59,12 @@ class PatcherWorker(
         val output: String,
         val selectedPatches: PatchesSelection,
         val options: Options,
-        val packageName: String,
-        val packageVersion: String,
         val progress: MutableStateFlow<ImmutableList<Step>>,
         val logger: ManagerLogger,
-        val selectedApp: SelectedApp,
         val setInputFile: (File) -> Unit
-    )
+    ) {
+        val packageName get() = input.packageName
+    }
 
     companion object {
         private const val logPrefix = "[Worker]:"
@@ -153,7 +154,7 @@ class PatcherWorker(
 
         return try {
 
-            if (args.selectedApp is SelectedApp.Installed) {
+            if (args.input is SelectedApp.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
                     if (it.installType == InstallType.ROOT) {
                         rootInstaller.unmount(args.packageName)
@@ -212,7 +213,7 @@ class PatcherWorker(
             }
 
             Session(
-                applicationContext.cacheDir.absolutePath,
+                fs.tempDir.absolutePath,
                 frameworkPath,
                 aaptPath,
                 args.logger,

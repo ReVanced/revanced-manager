@@ -68,7 +68,7 @@ class VersionSelectorViewModel(
     }
 
     val downloadedVersions = downloadedAppRepository.getAll().map { downloadedApps ->
-        downloadedApps.filter { it.packageName == packageName }.map { SelectedApp.Local(it.packageName, it.version, it.file) }
+        downloadedApps.filter { it.packageName == packageName }.map { SelectedApp.Local(it.packageName, it.version, it.file, false) }
     }
 
     init {

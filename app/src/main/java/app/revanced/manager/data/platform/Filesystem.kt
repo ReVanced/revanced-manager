@@ -9,8 +9,17 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import app.revanced.manager.util.RequestManageStorageContract
 
-class FileSystem(private val app: Application) {
+class Filesystem(private val app: Application) {
     val contentResolver = app.contentResolver // TODO: move Content Resolver operations to here.
+
+    /**
+     * A directory that gets cleared when the app restarts.
+     * Do not store paths to this directory in a parcel.
+     */
+    val tempDir = app.cacheDir.resolve("ephemeral").apply {
+        deleteRecursively()
+        mkdirs()
+    }
 
     fun externalFilesDir() = Environment.getExternalStorageDirectory().toPath()
 

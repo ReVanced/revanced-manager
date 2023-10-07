@@ -13,20 +13,27 @@ class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM
 ) : ViewModel() {
+    private val inputFile = File(app.cacheDir, "input.apk").also {
+        it.delete()
+    }
     val appList = pm.appList
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 
     fun loadSelectedFile(uri: Uri) =
         app.contentResolver.openInputStream(uri)?.use { stream ->
-            File(app.cacheDir, "input.apk").also {
-                it.delete()
-                Files.copy(stream, it.toPath())
-            }.let { file ->
-                pm.getPackageInfo(file)
-                    ?.let { packageInfo ->
-                        SelectedApp.Local(packageName = packageInfo.packageName, version = packageInfo.versionName, file = file)
-                    }
+            with(inputFile) {
+                delete()
+                Files.copy(stream, toPath())
+
+                pm.getPackageInfo(this)?.let { packageInfo ->
+                    SelectedApp.Local(
+                        packageName = packageInfo.packageName,
+                        version = packageInfo.versionName,
+                        file = this,
+                        shouldDelete = true
+                    )
+                }
             }
         }
 }

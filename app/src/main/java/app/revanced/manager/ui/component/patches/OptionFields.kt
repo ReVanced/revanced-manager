@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
-import app.revanced.manager.data.platform.FileSystem
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.util.toast
 import app.revanced.patcher.patch.options.types.*
@@ -61,7 +61,7 @@ private fun StringOptionDialog(
         mutableStateOf(value.orEmpty())
     }
 
-    val fs: FileSystem = rememberKoinInject()
+    val fs: Filesystem = rememberKoinInject()
     val (contract, permissionName) = fs.permissionContract()
     val permissionLauncher = rememberLauncherForActivityResult(contract = contract) {
         showFileDialog = it
