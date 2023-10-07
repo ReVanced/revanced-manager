@@ -15,6 +15,8 @@ import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/utils/about_info.dart';
+import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -29,6 +31,7 @@ class InstallerViewModel extends BaseViewModel {
     'app.revanced.manager.flutter/installer',
   );
   final ScrollController scrollController = ScrollController();
+  final ScreenshotCallback screenshotCallback = ScreenshotCallback();
   double? progress = 0.0;
   String logs = '';
   String headerLogs = '';
@@ -38,6 +41,7 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
   bool isCanceled = false;
   bool cancel = false;
+  bool showPopupScreenshotWarning = true;
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
@@ -64,6 +68,12 @@ class InstallerViewModel extends BaseViewModel {
         } // ignore
       }
     }
+    screenshotCallback.addListener(() {
+      if (showPopupScreenshotWarning) {
+        showPopupScreenshotWarning = false;
+        screenshotDetected(context);
+      }
+    });
     await Wakelock.enable();
     await handlePlatformChannelMethods();
     await runPatcher();
@@ -167,6 +177,72 @@ class InstallerViewModel extends BaseViewModel {
         print(e);
       }
     }
+  }
+
+  Future<void> copyLogs() async {
+    final info = await AboutInfo.getInfo();
+
+    final formattedLogs = [
+      '```',
+      '~ Device Info',
+      'ReVanced Manager: ${info['version']}',
+      'Build: ${info['flavor']}',
+      'Model: ${info['model']}',
+      'Android version: ${info['androidVersion']}',
+      'Supported architectures: ${info['supportedArch'].join(", ")}',
+
+      '\n~ Patch Info',
+      'App: ${_app.packageName} v${_app.version}',
+      'Patches version: ${_managerAPI.patchesVersion}',
+      'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
+
+      '\n~ Settings',
+      'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
+      'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
+      'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
+      'Patches source: ${_managerAPI.getPatchesRepo()}',
+      'Integration source: ${_managerAPI.getIntegrationsRepo()}',
+
+      '\n~ Logs',
+      logs,
+      '```',
+    ];
+
+    Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
+    _toast.showBottom('installerView.copiedToClipboard');
+  }
+
+  Future<void> screenshotDetected(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText(
+          'warning',
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        icon: const Icon(Icons.warning),
+        content: SingleChildScrollView(
+          child: I18nText('installerView.screenshotDetected'),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () {
+              copyLogs();
+              showPopupScreenshotWarning = true;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> installTypeDialog(BuildContext context) async {
@@ -316,10 +392,6 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  void exportLog() {
-    _patcherAPI.exportPatcherLog(logs);
-  }
-
   Future<void> cleanPatcher() async {
     try {
       _patcherAPI.cleanPatcher();
@@ -343,7 +415,7 @@ class InstallerViewModel extends BaseViewModel {
         exportResult();
         break;
       case 1:
-        exportLog();
+        copyLogs();
         break;
     }
   }
@@ -365,6 +437,7 @@ class InstallerViewModel extends BaseViewModel {
     } else {
       _patcherAPI.cleanPatcher();
     }
+    screenshotCallback.dispose();
     Navigator.of(context).pop();
     return true;
   }
