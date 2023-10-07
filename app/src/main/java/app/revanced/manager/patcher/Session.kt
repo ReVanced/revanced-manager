@@ -24,15 +24,16 @@ class Session(
     private val input: File,
     private val onStepSucceeded: suspend () -> Unit
 ) : Closeable {
-    private val temporary = File(cacheDir).resolve("manager").also { it.mkdirs() }
+    private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
     private val patcher = Patcher(
         PatcherOptions(
             inputFile = input,
-            resourceCachePath = temporary.resolve("aapt-resources"),
+            resourceCachePath = tempDir.resolve("aapt-resources"),
             frameworkFileDirectory = frameworkDir,
             aaptBinaryPath = aaptPath
         )
     )
+
 
     private suspend fun Patcher.applyPatchesVerbose() {
         this.apply(true).collect { (patch, exception) ->
@@ -70,7 +71,7 @@ class Session(
         logger.info("Writing patched files...")
         val result = patcher.get()
 
-        val aligned = temporary.resolve("aligned.apk")
+        val aligned = tempDir.resolve("aligned.apk")
         ApkUtils.copyAligned(input, aligned, result)
 
         logger.info("Patched apk saved to $aligned")
@@ -82,7 +83,7 @@ class Session(
     }
 
     override fun close() {
-        temporary.delete()
+        tempDir.deleteRecursively()
         patcher.close()
     }
 
