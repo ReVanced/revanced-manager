@@ -74,7 +74,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-branch }}
-          path: build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk
+          path: | 
+            build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk
+            build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk.sha1
           
   notify-pull-request:
     name: Notify Pull Request
