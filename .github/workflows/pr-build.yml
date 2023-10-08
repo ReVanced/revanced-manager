@@ -13,10 +13,10 @@ on:
         - beta
         - dev
         - master
-      app-variant:
+      app-flavour:
         required: true
         type: choice
-        description: App variant
+        description: App flavour
         default: 'release'
         options: 
         - release
@@ -66,17 +66,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build apk --${{ inputs.app-variant }};
+          flutter build apk --${{ inputs.app-flavour }};
       - name: Set env
         run: |
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-variant }}-${{ inputs.flutter-branch }}
+          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
           path: | 
-            build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk
-            build/app/outputs/flutter-apk/app-${{ inputs.app-variant }}.apk.sha1
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
           
   notify-pull-request:
     name: Notify Pull Request
@@ -102,5 +102,5 @@ jobs:
             
             You can check the details [here](${{ github.event.workflow_run.html_url }}).
   
-            - App variant: ${{ inputs.app-variant }}
+            - App flavour: ${{ inputs.app-flavour }}
             - Flutter branch: ${{ inputs.flutter-branch }}
