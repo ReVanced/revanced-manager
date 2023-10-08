@@ -58,7 +58,6 @@ class PatchSelectorCard extends StatelessWidget {
 
   String _getPatchesSelection() {
     String text = '';
-    // Nope, I'm not gonna question about sorting "lexicographically", work.
     final List<Patch> patches = locator<PatcherViewModel>().selectedPatches;
     patches.sort((a, b) => a.getSimpleName().compareTo(b.getSimpleName()));
 
