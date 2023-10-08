@@ -58,7 +58,11 @@ class PatchSelectorCard extends StatelessWidget {
 
   String _getPatchesSelection() {
     String text = '';
-    for (final Patch p in locator<PatcherViewModel>().selectedPatches) {
+    // Nope, I'm not gonna question about sorting "lexicographically", work.
+    final List<Patch> patches = locator<PatcherViewModel>().selectedPatches;
+    patches.sort((a, b) => a.getSimpleName().compareTo(b.getSimpleName()));
+
+    for (final Patch p in patches) {
       text += '\u2022  ${p.getSimpleName()}\n';
     }
     return text.substring(0, text.length - 1);
