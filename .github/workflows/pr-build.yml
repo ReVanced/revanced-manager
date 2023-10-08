@@ -33,7 +33,6 @@ permissions:
 jobs:
   build:
     name: Build the application
-    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the PR
