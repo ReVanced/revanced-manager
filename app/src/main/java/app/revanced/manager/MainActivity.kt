@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getActivityViewModel()
-        lateinit var legacyActivity: MutableState<LegacyActivity>
+        lateinit var rememberLauncherForActivityResult: MutableState<LegacyActivity>
 
         vm.launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     vm.applyLegacySettings(jsonData)
                 }
             } else {
-                legacyActivity.value = LegacyActivity.FAILED
+                rememberLauncherForActivityResult.value = LegacyActivity.FAILED
                 toast(getString(R.string.legacy_import_failed))
             }
         }
@@ -76,13 +76,13 @@ class MainActivity : ComponentActivity() {
                 val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
 
                 if (showAutoUpdatesDialog) {
-                    legacyActivity = rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
-                    if (legacyActivity.value == LegacyActivity.NOT_LAUNCHED) {
-                        legacyActivity.value = LegacyActivity.LAUNCHED
+                    rememberLauncherForActivityResult = rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
+                    if (rememberLauncherForActivityResult.value == LegacyActivity.NOT_LAUNCHED) {
+                        rememberLauncherForActivityResult.value = LegacyActivity.LAUNCHED
                         if (!vm.launchLegacyActivity(this)) {
-                            legacyActivity.value = LegacyActivity.FAILED
+                            rememberLauncherForActivityResult.value = LegacyActivity.FAILED
                         }
-                    } else if (legacyActivity.value == LegacyActivity.FAILED) {
+                    } else if (rememberLauncherForActivityResult.value == LegacyActivity.FAILED) {
                         AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
                     }
                 }
