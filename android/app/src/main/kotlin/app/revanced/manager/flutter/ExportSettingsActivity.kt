@@ -30,18 +30,14 @@ class ExportSettingsActivity : Activity() {
             val sharedPreferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
             val allEntries: Map<String, *> = sharedPreferences.getAll()
             for ((key, value) in allEntries.entries) {
-                json.put(
-                    key.replace("flutter.", ""),
-                    if (value is Boolean) if (value) 1 else 0 else value
-                )
+                json.put(key.replace("flutter.", ""), value)
             }
 
             // Load keystore
             val keystoreFile = File(getExternalFilesDir(null), "/revanced-manager.keystore")
             if (keystoreFile.exists()) {
                 val keystoreBytes = keystoreFile.readBytes()
-                val keystoreBase64 =
-                    Base64.encodeToString(keystoreBytes, Base64.DEFAULT).replace("\n", "")
+                val keystoreBase64 = Base64.encodeToString(keystoreBytes, Base64.DEFAULT)
                 json.put("keystore", keystoreBase64)
             }
 
@@ -50,7 +46,7 @@ class ExportSettingsActivity : Activity() {
             if (storedPatchesFile.exists()) {
                 val patchesBytes = storedPatchesFile.readBytes()
                 val patches = String(patchesBytes, Charsets.UTF_8)
-                json.put("patches", patches)
+                json.put("patches", JSONObject(patches))
             }
 
             // Send data back
