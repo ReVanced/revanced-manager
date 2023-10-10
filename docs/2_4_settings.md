@@ -16,7 +16,7 @@ ReVanced Manager has settings that can be configured to your liking.
   
   Automatically fetch the latest ReVanced Patches.
 
-- ### 🪛 Allow changing patches selection
+- ### 🪛 Allow changing patch selections
 
   Allows the user to change the patches selection from the default selection.
 
@@ -32,9 +32,9 @@ ReVanced Manager has settings that can be configured to your liking.
 
   Manage the keystore used to sign patched apps.
 
-- ### 📄 Export, import or reset ReVanced Patches selection
+- ### 📄 Export, import or reset ReVanced Patch selections
 
-  Manage the ReVanced Patches selection. This is useful if you want to share your ReVanced Patches selection with others or reset it to the default selection.
+  Manage the ReVanced Patch selections. This is useful if you want to share your ReVanced Patch selections with others or reset it to the default selection.
 
 - ### ℹ️ About
 
