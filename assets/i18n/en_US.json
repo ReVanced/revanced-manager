@@ -124,7 +124,7 @@
         "noneTooltip": "Deselect all patches",
 
         "loadPatchesSelection": "Load patches selection",
-        "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
+        "noSavedPatches": "No saved patches for the selected app.\nPress Done to save the current selection.",
         "noPatchesFound": "No patches found for the selected app",
 
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
@@ -136,7 +136,7 @@
         "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
         "newPatch": "New patch",
 
-        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Allow changing patches selection\" in the settings.",
+        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Allow changing patch selections\" in the settings.",
         "patchesChangeWarningDialogButton": "Use default selection"
     },
     "installerView": {
@@ -202,7 +202,7 @@
         "logsLabel": "Share logs",
         "logsHint": "Share ReVanced Manager logs",
 
-        "enablePatchesSelectionLabel": "Allow changing patches selection",
+        "enablePatchesSelectionLabel": "Allow changing patch selections",
         "enablePatchesSelectionHint": "Allow changing the selection of patches",
         "enablePatchesSelectionWarningText": "Changing the default selection of patches may cause unexpected issues.\n\nEnable anyways?",
         "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
@@ -222,21 +222,21 @@
         "deleteTempDirHint": "Delete unused temporary files",
         "deletedTempDir": "Temporary files deleted",
 
-        "exportPatchesLabel": "Export patches selection",
-        "exportPatchesHint": "Export patches selection to a JSON file",
-        "exportedPatches": "Patches selection exported",
-        "noExportFileFound": "No patches selection to export",
+        "exportPatchesLabel": "Export patch selections",
+        "exportPatchesHint": "Export patch selections to a JSON file",
+        "exportedPatches": "Patch selections exported",
+        "noExportFileFound": "No patch selections to export",
 
-        "importPatchesLabel": "Import patches selection",
-        "importPatchesHint": "Import patches selection from a JSON file",
-        "importedPatches": "Patches selection imported",
+        "importPatchesLabel": "Import patch selections",
+        "importPatchesHint": "Import patch selections from a JSON file",
+        "importedPatches": "Patch selections imported",
 
-        "resetStoredPatchesLabel": "Reset patches selection",
-        "resetStoredPatchesHint": "Reset the stored patches selection",
+        "resetStoredPatchesLabel": "Reset patch selections",
+        "resetStoredPatchesHint": "Reset the stored patch selections",
 
-        "resetStoredPatchesDialogTitle": "Reset patches selection?",
-        "resetStoredPatchesDialogText": "Resetting patches selection will remove all selected patches.",
-        "resetStoredPatches": "Patches selection has been reset",
+        "resetStoredPatchesDialogTitle": "Reset patch selections?",
+        "resetStoredPatchesDialogText": "The default selection of patches will be restored.",
+        "resetStoredPatches": "Patch selections have been reset",
 
         "deleteLogsLabel": "Clear logs",
         "deleteLogsHint": "Delete collected ReVanced Manager logs",
@@ -246,7 +246,7 @@
         "regenerateKeystoreHint": "Regenerate the keystore used to sign apps",
 
         "regenerateKeystoreDialogTitle": "Regenerate keystore?",
-        "regenerateKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
+        "regenerateKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to be updated.",
         "regeneratedKeystore": "Keystore regenerated",
 
         "exportKeystoreLabel": "Export keystore",
