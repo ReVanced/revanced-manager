@@ -9,7 +9,7 @@ class Patch {
     required this.description,
     required this.excluded,
     required this.compatiblePackages,
-    required this.options
+    required this.options,
   });
 
   factory Patch.fromJson(Map<String, dynamic> json) => _$PatchFromJson(json);
@@ -53,8 +53,7 @@ class Option {
     required this.optionClassType,
   });
 
-  factory Option.fromJson(Map<String, dynamic> json) =>
-      _$OptionFromJson(json);
+  factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
 
   final String key;
   final String title;

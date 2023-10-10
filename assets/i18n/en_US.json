@@ -10,10 +10,12 @@
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
-    "hasOptions": "Options",
+    "options": "Options",
     "notice": "Notice",
     "noShowAgain": "Don't show this again",
     "new": "New",
+    "add": "Add",
+    "remove": "Remove",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -72,7 +74,8 @@
 
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
 
-        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?"
+        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?",
+        "requiredOptionDialogText" : "The selected app has some selected patches which contain required options that needs to be set in order to patch the app.\n\nProceed to set the options?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -127,6 +130,7 @@
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
+        "setRequiredOption": "The followings patches require options that need to be set:\n\n{patches}",
 
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
@@ -135,13 +139,20 @@
         "saveOptions": "Save",
 
         "addOption": "Add option",
+        "deselectPatch": "Deselect patch",
         "tooltip": "More input options",
         "selectFilePath": "Select file path",
-        "selectFolder": "Select folder"
+        "selectFolder": "Select folder",
+        "selectOption": "Select option",
+
+        "requiredOption": "This option is required",
+        "unsupportedOption": "This option is not supported",
+        "requiredOptionNull": "The patch requires the following options to be set:\n\n{options}"
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
         "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",
+        "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
 
         "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
         "newPatch": "New patch",

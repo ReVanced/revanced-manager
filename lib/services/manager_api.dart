@@ -28,7 +28,10 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
+  List<Option> modifiedOptions = [];
   List<Option> options = [];
+  Patch? selectedPatch;
+  BuildContext? ctx;
   bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
@@ -181,6 +184,26 @@ class ManagerAPI {
       return jsonEncode(patch.toJson());
     }).toList();
     await _prefs.setStringList('usedPatches-$packageName', patchesJson);
+  }
+
+  Option? getPatchOption(String packageName, String patchName, String key) {
+    final String? optionJson =
+        _prefs.getString('patchOption-$packageName-$patchName-$key');
+    if (optionJson != null) {
+      final Option option = Option.fromJson(jsonDecode(optionJson));
+      return option;
+    } else {
+      return null;
+    }
+  }
+
+  void setPatchOption(Option option, String patchName, String packageName) {
+    final String optionJson = jsonEncode(option.toJson());
+    _prefs.setString('patchOption-$packageName-$patchName-${option.key}', optionJson);
+  }
+
+  void clearPatchOption(String packageName, String patchName, String key) {
+    _prefs.remove('patchOption-$packageName-$patchName-$key');
   }
 
   String getIntegrationsRepo() {

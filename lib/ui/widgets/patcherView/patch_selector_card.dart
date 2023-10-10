@@ -59,7 +59,7 @@ class PatchSelectorCard extends StatelessWidget {
   String _getPatchesSelection() {
     String text = '';
     for (final Patch p in locator<PatcherViewModel>().selectedPatches) {
-      text += '\u2022  ${p.getSimpleName()}\n';
+      text += '•  ${p.getSimpleName()}\n';
     }
     return text.substring(0, text.length - 1);
   }

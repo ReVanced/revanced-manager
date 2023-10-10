@@ -22,7 +22,6 @@ import org.json.JSONObject
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.lang.Error
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
@@ -55,12 +54,10 @@ class MainActivity : FlutterActivity() {
                     val outFilePath = call.argument<String>("outFilePath")
                     val integrationsPath = call.argument<String>("integrationsPath")
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
+                    val options = call.argument<Map<String, Map<String, Any>>>("options")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
-
-                    // Map<PatchName, Pair<OptionKey, OptionValue>>
-                    val options = call.argument<Map<String, Pair<String, Any?>>>("options")
 
                     if (
                         originalFilePath != null &&
@@ -172,7 +169,7 @@ class MainActivity : FlutterActivity() {
         outFilePath: String,
         integrationsPath: String,
         selectedPatches: List<String>,
-        options: Map<String, Pair<String, Any?>>,
+        options: Map<String, Map<String, Any>>,
         cacheDirPath: String,
         keyStoreFilePath: String,
         keystorePassword: String
@@ -210,7 +207,7 @@ class MainActivity : FlutterActivity() {
 
                 object : java.util.logging.Handler() {
                     override fun publish(record: LogRecord) {
-                        if (record.loggerName?.startsWith("app.revanced") != true) return
+                        if (record.loggerName?.startsWith("app.revanced") != true || cancel) return
 
                         updateProgress(-1.0, "", record.message)
                     }
@@ -263,7 +260,7 @@ class MainActivity : FlutterActivity() {
 
                     compatibleOrUniversal && selectedPatches.any { it == patch.name }
                 }.onEach { patch ->
-                    options[patch.name]?.let { (key, value) ->
+                    options[patch.name]?.forEach { (key, value) ->
                         patch.options[key] = value
                     }
                 }

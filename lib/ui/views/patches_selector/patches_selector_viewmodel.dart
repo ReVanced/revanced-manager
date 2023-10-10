@@ -19,6 +19,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final NavigationService _navigationService = locator<NavigationService>();
   final List<Patch> patches = [];
+  final List<Patch> currentSelection = [];
   final List<Patch> selectedPatches =
       locator<PatcherViewModel>().selectedPatches;
   PatchedApplication? selectedApp = locator<PatcherViewModel>().selectedApp;
@@ -34,14 +35,21 @@ class PatchesSelectorViewModel extends BaseViewModel {
         selectedApp!.packageName,
       ),
     );
+    final List<Option> requiredNullOptions =
+        getNullRequiredOptions(patches, selectedApp!.packageName);
     patches.sort((a, b) {
-      if (isPatchNew(a, selectedApp!.packageName) ==
+      if (b.options.any((option) => requiredNullOptions.contains(option)) &&
+          a.options.isEmpty) {
+        return 1;
+      } else if (isPatchNew(a, selectedApp!.packageName) ==
           isPatchNew(b, selectedApp!.packageName)) {
         return a.name.compareTo(b.name);
       } else {
         return isPatchNew(b, selectedApp!.packageName) ? 1 : -1;
       }
     });
+    currentSelection.clear();
+    currentSelection.addAll(selectedPatches);
     notifyListeners();
   }
 
@@ -51,9 +59,58 @@ class PatchesSelectorViewModel extends BaseViewModel {
     );
   }
 
-  void navigateToPatchOptions(List<Option> setOptions) {
+  void navigateToPatchOptions(List<Option> setOptions, Patch patch) {
     _managerAPI.options = setOptions;
+    _managerAPI.selectedPatch = patch;
+    _managerAPI.modifiedOptions.clear();
     _navigationService.navigateToPatchOptionsView();
+  }
+
+  bool areRequiredOptionsNull(BuildContext context) {
+    final List<String> patchesWithNullRequiredOptions = [];
+    final List<Option> requiredNullOptions =
+        getNullRequiredOptions(selectedPatches, selectedApp!.packageName);
+    if (requiredNullOptions.isNotEmpty) {
+      for (final patch in selectedPatches) {
+        for (final patchOption in patch.options) {
+          if (requiredNullOptions.contains(patchOption)) {
+            patchesWithNullRequiredOptions.add(patch.name);
+            break;
+          }
+        }
+      }
+      showSetRequiredOption(context, patchesWithNullRequiredOptions);
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> showSetRequiredOption(
+    BuildContext context,
+    List<String> patches,
+  ) async {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('notice'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText(
+          'patchesSelectorView.setRequiredOption',
+          translationParams: {
+            'patches': patches.map((patch) => '• $patch').join('\n'),
+          },
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => {
+              Navigator.of(context).pop(),
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void selectPatch(Patch patch, bool isSelected, BuildContext context) {
@@ -131,7 +188,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
     saveSelectedPatches();
+    if (_managerAPI.ctx != null) {
+      Navigator.pop(_managerAPI.ctx!);
+      _managerAPI.ctx = null;
+    }
     locator<PatcherViewModel>().notifyListeners();
+  }
+
+  void resetSelection() {
+    selectedPatches.clear();
+    selectedPatches.addAll(currentSelection);
+    notifyListeners();
   }
 
   Future<void> getPatchesVersion() async {

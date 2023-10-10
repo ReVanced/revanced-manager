@@ -21,6 +21,7 @@ class PatcherViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   PatchedApplication? selectedApp;
+  BuildContext? ctx;
   List<Patch> selectedPatches = [];
   List<String> removedPatches = [];
 
@@ -44,9 +45,9 @@ class PatcherViewModel extends BaseViewModel {
     return selectedApp == null;
   }
 
-  Future<void> showRemovedPatchesDialog(BuildContext context) async {
-    if (removedPatches.isNotEmpty) {
-      return showDialog(
+  bool showRemovedPatchesDialog(BuildContext context) {
+    if (removedPatches.isEmpty) {
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('notice'),
@@ -59,21 +60,58 @@ class PatcherViewModel extends BaseViewModel {
             CustomMaterialButton(
               isFilled: false,
               label: I18nText('noButton'),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
             CustomMaterialButton(
               label: I18nText('yesButton'),
               onPressed: () {
                 Navigator.of(context).pop();
-                navigateToInstaller();
+                showArmv7WarningDialog(context);
               },
             ),
           ],
         ),
       );
-    } else {
-      showArmv7WarningDialog(context); // TODO(aabed): Find out why this is here
+      return false;
     }
+    return true;
+  }
+
+  bool checkRequiredPatchOption(BuildContext context) {
+    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName).isNotEmpty) {
+      showRequiredOptionDialog(context);
+      return false;
+    }
+    return true;
+  }
+
+  void showRequiredOptionDialog([context]) {
+    showDialog(
+      context: context ?? ctx,
+      builder: (context) => AlertDialog(
+        title: I18nText('notice'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('patcherView.requiredOptionDialogText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('cancelButton'),
+            onPressed: () => {
+              Navigator.of(context).pop(),
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => {
+              Navigator.pop(context),
+              navigateToPatchesSelector(),
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> showArmv7WarningDialog(BuildContext context) async {
@@ -163,7 +201,10 @@ class PatcherViewModel extends BaseViewModel {
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
     for (final patch in usedPatches){
       if (!patches.any((p) => p.name == patch.name)){
-        removedPatches.add('\u2022 ${patch.name}');
+        removedPatches.add('• ${patch.name}');
+        for (final option in patch.options) {
+          _managerAPI.clearPatchOption(selectedApp!.packageName, patch.name, option.key);
+        }
       }
     }
     notifyListeners();

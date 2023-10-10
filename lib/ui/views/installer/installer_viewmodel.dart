@@ -105,8 +105,6 @@ class InstallerViewModel extends BaseViewModel {
       isInstalled = false;
       hasErrors = false;
     } else if (value == 1.0) {
-      _managerAPI.patches.clear();
-
       isPatching = false;
       hasErrors = false;
       await _managerAPI.savePatches(

@@ -147,6 +147,19 @@ class PatcherAPI {
       String apkFilePath,
       List<Patch> selectedPatches,) async {
     final File? integrationsFile = await _managerAPI.downloadIntegrations();
+    final Map<String, Map<String, dynamic>> options = {};
+    for (final patch in selectedPatches) {
+      if (patch.options.isNotEmpty) {
+        final Map<String, dynamic> patchOptions = {};
+        for (final option in patch.options) {
+          final patchOption = _managerAPI.getPatchOption(packageName, patch.name, option.key);
+          if (patchOption != null) {
+            patchOptions[patchOption.key] = patchOption.value;
+          }
+        }
+        options[patch.name] = patchOptions;
+      }
+    }
 
     if (integrationsFile != null) {
       _dataDir.createSync();
@@ -168,7 +181,7 @@ class PatcherAPI {
             'outFilePath': outFile!.path,
             'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
-            'options': null, // TODO(aabed): send options
+            'options': options,
             'cacheDirPath': cacheDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
             'keystorePassword': _managerAPI.getKeystorePassword(),

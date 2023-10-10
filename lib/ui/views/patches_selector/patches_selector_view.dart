@@ -37,7 +37,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       onViewModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
-        resizeToAvoidBottomInset: false,
         floatingActionButton: Visibility(
           visible: model.patches.isNotEmpty,
           child: FloatingActionButton.extended(
@@ -49,8 +48,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             ),
             icon: const Icon(Icons.check),
             onPressed: () {
-              model.selectPatches();
-              Navigator.of(context).pop();
+              if (!model.areRequiredOptionsNull(context)) {
+                model.selectPatches();
+                Navigator.of(context).pop();
+              }
             },
           ),
         ),
@@ -73,7 +74,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   Icons.arrow_back,
                   color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  model.resetSelection();
+                  Navigator.of(context).pop();
+                },
               ),
               actions: [
                 FittedBox(
@@ -205,9 +209,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     patch,
                                     model.getAppInfo().packageName,
                                   ),
+                                  hasUnsupportedPatchOption: hasUnsupportedRequiredOption(patch.options, patch),
                                   options: patch.options,
                                   isSelected: model.isSelected(patch),
-                                  navigateToOptions: (options) => model.navigateToPatchOptions(options),
+                                  navigateToOptions: (options) => model.navigateToPatchOptions(options, patch),
                                   onChanged: (value) =>
                                       model.selectPatch(patch, value, context),
                                 );
@@ -257,9 +262,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       isChangeEnabled:
                                           _managerAPI.isPatchesChangeEnabled(),
                                       isNew: false,
+                                      hasUnsupportedPatchOption: hasUnsupportedRequiredOption(patch.options, patch),
                                       options: patch.options,
                                       isSelected: model.isSelected(patch),
-                                      navigateToOptions: (options) => model.navigateToPatchOptions(options),
+                                      navigateToOptions: (options) => model.navigateToPatchOptions(options, patch),
                                       onChanged: (value) => model.selectPatch(
                                         patch,
                                         value,

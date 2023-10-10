@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/views/patch_options/patch_options_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchOptionsView extends StatelessWidget {
@@ -15,62 +15,108 @@ class PatchOptionsView extends StatelessWidget {
     return ViewModelBuilder<PatchOptionsViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchOptionsViewModel(),
-      builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => {
-            // TODO(aabed): Implement save options
-          },
-          label: I18nText('patchOptionsView.saveOptions'),
-          icon: const Icon(Icons.save),
-        ),
-        resizeToAvoidBottomInset: false,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            CustomSliverAppBar(
-              title: I18nText(
-                'patchOptionsView.viewTitle',
-                child: Text(
-                  '',
-                  style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
+      builder: (context, model, child) => GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () async {
+              final bool saved = model.saveOptions(context);
+              if (saved && context.mounted) {
+                Navigator.pop(context);
+              }
+            },
+            label: I18nText('patchOptionsView.saveOptions'),
+            icon: const Icon(Icons.save),
+          ),
+          body: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                title: I18nText(
+                  'patchOptionsView.viewTitle',
+                  child: Text(
+                    '',
+                    style: GoogleFonts.inter(
+                      color: Theme.of(context).textTheme.titleLarge!.color,
+                    ),
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      model.resetOptions();
+                    },
+                    icon: const Icon(
+                      Icons.history,
+                    ),
+                  ),
+                ],
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      for (final Option option in model.visibleOptions)
+                        if (option.optionClassType == 'StringPatchOption' ||
+                            option.optionClassType == 'IntPatchOption')
+                          IntAndStringPatchOption(
+                            patchOption: option,
+                            removeOption: (option) {
+                              model.removeOption(option);
+                            },
+                            onChanged: (value, option) {
+                              model.modifyOptions(value, option);
+                            },
+                          )
+                        else if (option.optionClassType == 'BooleanPatchOption')
+                          BooleanPatchOption(
+                            patchOption: option,
+                            removeOption: (option) {
+                              model.removeOption(option);
+                            },
+                            onChanged: (value, option) {
+                              model.modifyOptions(value, option);
+                            },
+                          )
+                        else if (option.optionClassType ==
+                                'StringListPatchOption' ||
+                            option.optionClassType == 'IntListPatchOption' ||
+                            option.optionClassType == 'LongListPatchOption')
+                          IntStringLongListPatchOption(
+                            patchOption: option,
+                            removeOption: (option) {
+                              model.removeOption(option);
+                            },
+                            onChanged: (value, option) {
+                              model.modifyOptions(value, option);
+                            },
+                          )
+                        else
+                          UnsupportedPatchOption(
+                            patchOption: option,
+                          ),
+                      if (model.visibleOptions.length != model.options.length)
+                        CustomMaterialButton(
+                          onPressed: () {
+                            model.showAddOptionDialog(context);
+                          },
+                          label: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.add),
+                              I18nText('patchOptionsView.addOption'),
+                            ],
+                          ),
+                        ),
+                      const SizedBox(
+                        height: 80,
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    for (final Option option
-                        in model.options.where((option) => option.required))
-                      if (option.optionClassType == 'StringPatchOption')
-                        StringPatchOption(
-                          patchOption: option,
-                        )
-                      else if (option.optionClassType == 'BooleanPatchOption')
-                        BooleanPatchOption(
-                          patchOption: option,
-                        )
-                      else if (option.optionClassType == 'ListPatchOption')
-                        ListPatchOption(
-                          patchOption: option,
-                        ),
-                    FilledButton.icon(
-                      onPressed: () {
-                        // TODO(aabed): Implement add option using dialog
-                      },
-                      icon: const Icon(Icons.add),
-                      label: I18nText('patchOptionsView.addOption'),
-                    ),
-                    const SizedBox(
-                      height: 80,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

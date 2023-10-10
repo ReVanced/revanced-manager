@@ -18,6 +18,7 @@ class PatchItem extends StatefulWidget {
     required this.supportedPackageVersions,
     required this.isUnsupported,
     required this.isNew,
+    required this.hasUnsupportedPatchOption,
     required this.options,
     required this.isSelected,
     required this.onChanged,
@@ -32,6 +33,7 @@ class PatchItem extends StatefulWidget {
   final List<String> supportedPackageVersions;
   final bool isUnsupported;
   final bool isNew;
+  final bool hasUnsupportedPatchOption;
   final List<Option> options;
   bool isSelected;
   final Function(bool) onChanged;
@@ -50,7 +52,8 @@ class _PatchItemState extends State<PatchItem> {
   Widget build(BuildContext context) {
     widget.isSelected = widget.isSelected &&
         (!widget.isUnsupported ||
-            widget._managerAPI.areExperimentalPatchesEnabled());
+            widget._managerAPI.areExperimentalPatchesEnabled()) &&
+        !widget.hasUnsupportedPatchOption;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Opacity(
@@ -60,15 +63,20 @@ class _PatchItemState extends State<PatchItem> {
             : 1,
         child: CustomCard(
           onTap: () {
-            setState(() {
-              if (widget.isUnsupported &&
-                  !widget._managerAPI.areExperimentalPatchesEnabled()) {
-                widget.isSelected = false;
-                widget.toast.showBottom('patchItem.unsupportedPatchVersion');
-              } else if (widget.isChangeEnabled) {
-                widget.isSelected = !widget.isSelected;
+            if (widget.isUnsupported &&
+                !widget._managerAPI.areExperimentalPatchesEnabled()) {
+              widget.isSelected = false;
+              widget.toast.showBottom('patchItem.unsupportedPatchVersion');
+            } else if (widget.isChangeEnabled) {
+              if (!widget.isSelected) {
+                if (widget.hasUnsupportedPatchOption) {
+                  _showUnsupportedRequiredOptionDialog();
+                  return;
+                }
               }
-            });
+              widget.isSelected = !widget.isSelected;
+              setState(() {});
+            }
             if (!widget.isUnsupported ||
                 widget._managerAPI.areExperimentalPatchesEnabled()) {
               widget.onChanged(widget.isSelected);
@@ -126,18 +134,23 @@ class _PatchItemState extends State<PatchItem> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       onChanged: (newValue) {
-                        setState(() {
-                          if (widget.isUnsupported &&
-                              !widget._managerAPI
-                                  .areExperimentalPatchesEnabled()) {
-                            widget.isSelected = false;
-                            widget.toast.showBottom(
-                              'patchItem.unsupportedPatchVersion',
-                            );
-                          } else if (widget.isChangeEnabled) {
-                            widget.isSelected = newValue!;
+                        if (widget.isUnsupported &&
+                            !widget._managerAPI
+                                .areExperimentalPatchesEnabled()) {
+                          widget.isSelected = false;
+                          widget.toast.showBottom(
+                            'patchItem.unsupportedPatchVersion',
+                          );
+                        } else if (widget.isChangeEnabled) {
+                          if (!widget.isSelected) {
+                            if (widget.hasUnsupportedPatchOption) {
+                              _showUnsupportedRequiredOptionDialog();
+                              return;
+                            }
                           }
-                        });
+                          widget.isSelected = newValue!;
+                          setState(() {});
+                        }
                         if (!widget.isUnsupported ||
                             widget._managerAPI
                                 .areExperimentalPatchesEnabled()) {
@@ -155,19 +168,23 @@ class _PatchItemState extends State<PatchItem> {
                   runSpacing: 8,
                   children: [
                     if (widget.isUnsupported &&
-                            widget._managerAPI.areExperimentalPatchesEnabled())
+                        widget._managerAPI.areExperimentalPatchesEnabled())
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: TextButton.icon(
-                          label: I18nText('warning'),
+                        child: IconButton(
                           icon: const Icon(Icons.warning, size: 20.0),
+                          tooltip: FlutterI18n.translate(
+                            context,
+                            'warning',
+                          ),
                           onPressed: () => _showUnsupportedWarningDialog(),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 side: BorderSide(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                             ),
@@ -183,16 +200,20 @@ class _PatchItemState extends State<PatchItem> {
                     if (widget.isNew)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: TextButton.icon(
-                          label: I18nText('new'),
+                        child: IconButton(
                           icon: const Icon(Icons.star, size: 20.0),
+                          tooltip: FlutterI18n.translate(
+                            context,
+                            'new',
+                          ),
                           onPressed: () => _showNewPatchDialog(),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 side: BorderSide(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                             ),
@@ -208,16 +229,21 @@ class _PatchItemState extends State<PatchItem> {
                     if (widget.options.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: TextButton.icon(
-                          label: I18nText('hasOptions'),
+                        child: IconButton(
                           icon: const Icon(Icons.settings, size: 20.0),
-                          onPressed: () => widget.navigateToOptions(widget.options),
+                          tooltip: FlutterI18n.translate(
+                            context,
+                            'options',
+                          ),
+                          onPressed: () =>
+                              widget.navigateToOptions(widget.options),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 side: BorderSide(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                             ),
@@ -252,8 +278,27 @@ class _PatchItemState extends State<PatchItem> {
           translationParams: {
             'packageVersion': widget.packageVersion,
             'supportedVersions':
-                '\u2022 ${widget.supportedPackageVersions.reversed.join('\n\u2022 ')}',
+                '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
           },
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showUnsupportedRequiredOptionDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('notice'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText(
+          'patchItem.unsupportedRequiredOption',
         ),
         actions: <Widget>[
           CustomMaterialButton(
