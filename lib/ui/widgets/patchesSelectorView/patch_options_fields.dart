@@ -254,8 +254,7 @@ class PatchOption extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              patchOption.title +
-                                  (patchOption.required ? ' *' : ''),
+                              patchOption.title,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
