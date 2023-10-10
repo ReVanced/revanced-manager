@@ -59,7 +59,7 @@ class PatchOptionsViewModel extends BaseViewModel {
   bool saveOptions(BuildContext context) {
     final List<Option> requiredNullOptions = [];
     for (final Option option in options) {
-      if (visibleOptions.any((vOption) => vOption.key != option.key)) {
+      if (!visibleOptions.any((vOption) => vOption.key == option.key)) {
         _managerAPI.clearPatchOption(selectedApp, _managerAPI.selectedPatch!.name, option.key);
       }
     }
