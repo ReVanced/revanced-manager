@@ -46,7 +46,7 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   bool showRemovedPatchesDialog(BuildContext context) {
-    if (removedPatches.isEmpty) {
+    if (removedPatches.isNotEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
