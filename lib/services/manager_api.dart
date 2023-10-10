@@ -46,6 +46,7 @@ class ManagerAPI {
   String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
   String? integrationsVersion = '';
+  late final Directory cacheDir;
 
   bool isDefaultPatchesRepo() {
     return getPatchesRepo().toLowerCase() == 'revanced/revanced-patches';
@@ -61,6 +62,12 @@ class ManagerAPI {
     isRooted = await _rootAPI.isRooted();
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+    final Directory appCache = await getTemporaryDirectory();
+    Directory('${appCache.path}/cache').createSync();
+    final Directory workDir =
+        Directory('${appCache.path}/cache').createTempSync('tmp-');
+    cacheDir = Directory('${workDir.path}/cache');
+    cacheDir.createSync();
   }
 
   String getApiUrl() {
@@ -199,7 +206,10 @@ class ManagerAPI {
 
   void setPatchOption(Option option, String patchName, String packageName) {
     final String optionJson = jsonEncode(option.toJson());
-    _prefs.setString('patchOption-$packageName-$patchName-${option.key}', optionJson);
+    _prefs.setString(
+      'patchOption-$packageName-$patchName-${option.key}',
+      optionJson,
+    );
   }
 
   void clearPatchOption(String packageName, String patchName, String key) {
@@ -331,36 +341,42 @@ class ManagerAPI {
     if (patches.isNotEmpty) {
       return patches;
     }
+    try {
+      await loadPatches();
+      final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
+        'getPatches',
+      );
+      final List<dynamic> patchesJsonList = jsonDecode(patchesJson);
+      patches = patchesJsonList
+          .map((patchJson) => Patch.fromJson(patchJson))
+          .toList();
+      return patches;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return List.empty();
+  }
+
+  Future<void> loadPatches() async {
     final File? patchBundleFile = await downloadPatches();
-    final Directory appCache = await getTemporaryDirectory();
-    Directory('${appCache.path}/cache').createSync();
-    final Directory workDir =
-        Directory('${appCache.path}/cache').createTempSync('tmp-');
-    final Directory cacheDir = Directory('${workDir.path}/cache');
-    cacheDir.createSync();
 
     if (patchBundleFile != null) {
       try {
-        final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
-          'getPatches',
+        await PatcherAPI.patcherChannel.invokeMethod(
+          'loadPatches',
           {
             'patchBundleFilePath': patchBundleFile.path,
             'cacheDirPath': cacheDir.path,
           },
         );
-
-        final List<dynamic> patchesJsonList = jsonDecode(patchesJson);
-        patches = patchesJsonList
-            .map((patchJson) => Patch.fromJson(patchJson))
-            .toList();
-        return patches;
       } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
         }
       }
     }
-    return List.empty();
   }
 
   Future<File?> downloadPatches() async {
@@ -620,7 +636,7 @@ class ManagerAPI {
 
     // Remove apps that are not installed anymore.
     final List<PatchedApplication> toRemove =
-    await getAppsToRemove(patchedApps);
+        await getAppsToRemove(patchedApps);
     patchedApps.removeWhere((a) => toRemove.contains(a));
 
     // Determine all apps that are installed by mounting.

@@ -171,6 +171,7 @@ class PatcherAPI {
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
       final String originalFilePath = apkFilePath;
+      await _managerAPI.loadPatches();
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',
@@ -194,6 +195,18 @@ class PatcherAPI {
       }
     }
 }
+
+  Future<void> clearPatches() async {
+    try {
+      await patcherChannel.invokeMethod(
+        'clearPatches',
+      );
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 
 Future<void> stopPatcher() async {
   try {
