@@ -75,7 +75,7 @@
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
 
         "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?",
-        "requiredOptionDialogText" : "The selected app has some selected patches which contain required options that needs to be set in order to patch the app.\n\nProceed to set the options?"
+        "requiredOptionDialogText" : "Before continuing, some patch options have to be set.\n\nProceed?"
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -130,7 +130,7 @@
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "setRequiredOption": "The followings patches require options that need to be set:\n\n{patches}",
+        "setRequiredOption": "Some required patch options have not been set yet:\n\n{patches}\n\nPlease set them before continuing.",
 
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
@@ -147,7 +147,7 @@
 
         "requiredOption": "This option is required",
         "unsupportedOption": "This option is not supported",
-        "requiredOptionNull": "The patch requires the following options to be set:\n\n{options}"
+        "requiredOptionNull": "The following options have to be set:\n\n{options}"
     },
     "patchItem": {
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
