@@ -343,6 +343,7 @@ class ManagerAPI {
     }
     try {
       await loadPatches();
+
       final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
         'getPatches',
       );

@@ -171,7 +171,7 @@ class PatcherAPI {
       final Directory cacheDir = Directory('${workDir.path}/cache');
       cacheDir.createSync();
       final String originalFilePath = apkFilePath;
-      await _managerAPI.loadPatches();
+
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',

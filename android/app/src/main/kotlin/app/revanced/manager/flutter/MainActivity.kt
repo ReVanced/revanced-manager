@@ -97,6 +97,7 @@ class MainActivity : FlutterActivity() {
 
                 "loadPatches" -> {
                     if (patches != null) return@setMethodCallHandler result.success(null)
+
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")!!
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
@@ -105,6 +106,7 @@ class MainActivity : FlutterActivity() {
                             File(patchBundleFilePath),
                             optimizedDexDirectory = File(cacheDirPath)
                         )
+
                         result.success(null)
                     } catch (ex: Exception) {
                         return@setMethodCallHandler result.notImplemented()
@@ -115,7 +117,7 @@ class MainActivity : FlutterActivity() {
 
                 "getPatches" -> {
                     JSONArray().apply {
-                        patches?.forEach {
+                        patches!!.forEach {
                             JSONObject().apply {
                                 put("name", it.name)
                                 put("description", it.description)
@@ -246,6 +248,7 @@ class MainActivity : FlutterActivity() {
                         cacheDir,
                         Aapt.binary(applicationContext).absolutePath,
                         cacheDir.path,
+                        true // TODO: Add option to disable this
                     )
                 )
 
@@ -256,7 +259,7 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
-                val patches = patches?.filter { patch ->
+                val patches = patches!!.filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
                         it.name == patcher.context.packageMetadata.packageName
                     } ?: false
@@ -265,7 +268,7 @@ class MainActivity : FlutterActivity() {
                         isCompatible || patch.compatiblePackages.isNullOrEmpty()
 
                     compatibleOrUniversal && selectedPatches.any { it == patch.name }
-                }?.onEach { patch ->
+                }.onEach { patch ->
                     options[patch.name]?.forEach { (key, value) ->
                         patch.options[key] = value
                     }
@@ -279,13 +282,13 @@ class MainActivity : FlutterActivity() {
                 updateProgress(0.15, "Executing...", "")
 
                 // Update the progress bar every time a patch is executed from 0.15 to 0.7
-                val totalPatchesCount = patches!!.size
+                val totalPatchesCount = patches.size
                 val progressStep = 0.55 / totalPatchesCount
                 var progress = 0.15
 
                 patcher.apply {
                     acceptIntegrations(listOf(integrations))
-                    acceptPatches(patches!!)
+                    acceptPatches(patches)
 
                     runBlocking {
                         apply(false).collect { patchResult: PatchResult ->
