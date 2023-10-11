@@ -5,6 +5,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -60,14 +61,16 @@ class PatchOptionsViewModel extends BaseViewModel {
     final List<Option> requiredNullOptions = [];
     for (final Option option in options) {
       if (!visibleOptions.any((vOption) => vOption.key == option.key)) {
-        _managerAPI.clearPatchOption(selectedApp, _managerAPI.selectedPatch!.name, option.key);
+        _managerAPI.clearPatchOption(
+            selectedApp, _managerAPI.selectedPatch!.name, option.key);
       }
     }
     for (final Option option in visibleOptions) {
       if (option.required && option.value == null) {
         requiredNullOptions.add(option);
       } else {
-        _managerAPI.setPatchOption(option, _managerAPI.selectedPatch!.name, selectedApp);
+        _managerAPI.setPatchOption(
+            option, _managerAPI.selectedPatch!.name, selectedApp);
       }
     }
     if (requiredNullOptions.isNotEmpty) {
@@ -116,7 +119,8 @@ class PatchOptionsViewModel extends BaseViewModel {
 
   void resetOptions() {
     _managerAPI.modifiedOptions.clear();
-    visibleOptions = getDefaultOptions().where((option) => option.required).toList();
+    visibleOptions =
+        getDefaultOptions().where((option) => option.required).toList();
     notifyListeners();
   }
 
@@ -130,7 +134,7 @@ class PatchOptionsViewModel extends BaseViewModel {
           mainAxisSize: MainAxisSize.min,
           children: [
             I18nText(
-              'patchOptionsView.addOption',
+              'patchOptionsView.addOptions',
             ),
             Text(
               '',
@@ -143,57 +147,51 @@ class PatchOptionsViewModel extends BaseViewModel {
         ),
         actions: [
           CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+            label: I18nText('okButton'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
         ],
         contentPadding: const EdgeInsets.all(8),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        content: Wrap(
+          spacing: 14,
+          runSpacing: 14,
           children: options
               .where(
             (option) =>
                 !visibleOptions.any((vOption) => vOption.key == option.key),
           )
               .map((e) {
-            return Column(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        addOption(e);
-                        Navigator.pop(context);
-                      },
-                      child: ListTile(
-                        title: Text(
-                          e.title,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        subtitle: Text(
-                          e.description,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
-                          ),
-                        ),
+            return CustomCard(
+              padding: const EdgeInsets.all(4),
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              onTap: () {
+                addOption(e);
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      e.title,
+                      style: const TextStyle(
+                        fontSize: 16,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 4),
+                    Text(
+                      e.description,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                    )
+                  ],
                 ),
-              ],
+              ),
             );
           }).toList(),
         ),
@@ -230,7 +228,8 @@ Future<void> showRequiredOptionNullDialog(
                   .remove(managerAPI.selectedPatch);
               locator<PatcherViewModel>().notifyListeners();
               for (final option in options) {
-                managerAPI.clearPatchOption(selectedApp, managerAPI.selectedPatch!.name, option.key);
+                managerAPI.clearPatchOption(
+                    selectedApp, managerAPI.selectedPatch!.name, option.key);
               }
               Navigator.of(context)
                 ..pop()

@@ -95,7 +95,11 @@ class PatchOptionsView extends StatelessWidget {
                           UnsupportedPatchOption(
                             patchOption: option,
                           ),
-                      if (model.visibleOptions.length != model.options.length)
+                      if (model.visibleOptions.length !=
+                          model.options.length) ...[
+                        const SizedBox(
+                          height: 8,
+                        ),
                         CustomMaterialButton(
                           onPressed: () {
                             model.showAddOptionDialog(context);
@@ -104,10 +108,11 @@ class PatchOptionsView extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const Icon(Icons.add),
-                              I18nText('patchOptionsView.addOption'),
+                              I18nText('patchOptionsView.addOptions'),
                             ],
                           ),
                         ),
+                      ],
                       const SizedBox(
                         height: 80,
                       ),

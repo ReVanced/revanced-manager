@@ -729,6 +729,10 @@ class ManagerAPI {
     return jsonDecode(string);
   }
 
+  void resetAllOptions() {
+    // TODO(aabed): Implement this method.
+  }
+
   Future<void> resetLastSelectedPatches() async {
     final File selectedPatchesFile = File(storedPatchesFile);
     if (selectedPatchesFile.existsSync()) {

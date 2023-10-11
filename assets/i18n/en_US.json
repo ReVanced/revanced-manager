@@ -75,7 +75,7 @@
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
 
         "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?",
-        "requiredOptionDialogText" : "Before continuing, some patch options have to be set.\n\nProceed?"
+        "requiredOptionDialogText" : "Some patch options have to be set."
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
@@ -130,7 +130,7 @@
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "setRequiredOption": "Some required patch options have not been set yet:\n\n{patches}\n\nPlease set them before continuing.",
+        "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing.",
 
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
@@ -138,7 +138,7 @@
         "viewTitle": "Patch options",
         "saveOptions": "Save",
 
-        "addOption": "Add option",
+        "addOptions": "Add options",
         "deselectPatch": "Deselect patch",
         "tooltip": "More input options",
         "selectFilePath": "Select file path",
@@ -260,9 +260,16 @@
         "resetStoredPatchesLabel": "Reset patches",
         "resetStoredPatchesHint": "Reset the stored patches selection",
 
+        "resetStoredOptionsLabel": "Reset options",
+        "resetStoredOptionsHint": "Reset all patch options",
+
         "resetStoredPatchesDialogTitle": "Reset patches selection?",
         "resetStoredPatchesDialogText": "Resetting patches selection will remove all selected patches.",
         "resetStoredPatches": "Patches selection has been reset",
+
+        "resetStoredOptionsDialogTitle": "Reset options?",
+        "resetStoredOptionsDialogText": "Resetting options will remove all saved options.",
+        "resetStoredOptions": "Options have been reset",
 
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
