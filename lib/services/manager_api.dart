@@ -732,7 +732,6 @@ class ManagerAPI {
   void resetAllOptions() {
     _prefs.getKeys().where((key) => key.startsWith('patchOption-')).forEach(
       (key) {
-        print(key);
         _prefs.remove(key);
       },
     );
