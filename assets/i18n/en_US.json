@@ -13,7 +13,6 @@
     "options": "Options",
     "notice": "Notice",
     "noShowAgain": "Don't show this again",
-    "new": "New",
     "add": "Add",
     "remove": "Remove",
     "navigationView": {
@@ -118,6 +117,8 @@
         "viewTitle": "Select patches",
         "searchBarHint": "Search patches",
         "universalPatches": "Universal patches",
+        "newPatches": "New patches",
+        "patches": "Patches",
 
         "doneButton": "Done",
 
@@ -153,9 +154,6 @@
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
         "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",
         "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
-
-        "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
-        "newPatch": "New patch",
 
         "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Enable changing selection\" in the settings.",
         "patchesChangeWarningDialogButton": "Use default selection"

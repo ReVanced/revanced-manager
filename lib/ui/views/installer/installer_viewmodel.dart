@@ -139,8 +139,6 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> runPatcher() async {
-    // Make sure the patches are loaded before running the patcher.
-    await _managerAPI.loadPatches();
 
     try {
       await _patcherAPI.runPatcher(
@@ -161,7 +159,8 @@ class InstallerViewModel extends BaseViewModel {
 
     // Necessary to reset the state of patches so that they
     // can be reloaded again.
-    await _patcherAPI.clearPatches();
+   _managerAPI.patches.clear();
+    await _patcherAPI.loadPatches();
 
     try {
       if (FlutterBackground.isBackgroundExecutionEnabled) {

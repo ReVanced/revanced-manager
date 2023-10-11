@@ -41,11 +41,8 @@ class PatchesSelectorViewModel extends BaseViewModel {
       if (b.options.any((option) => requiredNullOptions.contains(option)) &&
           a.options.isEmpty) {
         return 1;
-      } else if (isPatchNew(a, selectedApp!.packageName) ==
-          isPatchNew(b, selectedApp!.packageName)) {
-        return a.name.compareTo(b.name);
       } else {
-        return isPatchNew(b, selectedApp!.packageName) ? 1 : -1;
+        return a.name.compareTo(b.name);
       }
     });
     currentSelection.clear();
@@ -228,14 +225,21 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return locator<PatcherViewModel>().selectedApp!;
   }
 
-  bool isPatchNew(Patch patch, String packageName) {
-    final List<Patch> savedPatches = _managerAPI.getSavedPatches(packageName);
+  bool isPatchNew(Patch patch) {
+    final List<Patch> savedPatches =
+        _managerAPI.getSavedPatches(selectedApp!.packageName);
     if (savedPatches.isEmpty) {
       return false;
     } else {
       return !savedPatches
           .any((p) => p.getSimpleName() == patch.getSimpleName());
     }
+  }
+
+  bool newPatchExists() {
+    return patches.any(
+      (patch) => isPatchNew(patch),
+    );
   }
 
   List<String> getSupportedVersions(Patch patch) {

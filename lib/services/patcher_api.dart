@@ -196,18 +196,6 @@ class PatcherAPI {
     }
 }
 
-  Future<void> clearPatches() async {
-    try {
-      await patcherChannel.invokeMethod(
-        'clearPatches',
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
-
 Future<void> stopPatcher() async {
   try {
     await patcherChannel.invokeMethod('stopPatcher');

@@ -31,7 +31,7 @@ class MainActivity : FlutterActivity() {
     private var cancel: Boolean = false
     private var stopResult: MethodChannel.Result? = null
 
-    private var patches: PatchSet? = null
+    private lateinit var patches: PatchSet
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -93,11 +93,7 @@ class MainActivity : FlutterActivity() {
                     stopResult = result
                 }
 
-                "clearPatches" -> patches = null
-
-                "loadPatches" -> {
-                    if (patches != null) return@setMethodCallHandler result.success(null)
-
+                "getPatches" -> {
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")!!
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
@@ -106,18 +102,14 @@ class MainActivity : FlutterActivity() {
                             File(patchBundleFilePath),
                             optimizedDexDirectory = File(cacheDirPath)
                         )
-
-                        result.success(null)
                     } catch (ex: Exception) {
                         return@setMethodCallHandler result.notImplemented()
                     } catch (err: Error) {
                         return@setMethodCallHandler result.notImplemented()
                     }
-                }
 
-                "getPatches" -> {
                     JSONArray().apply {
-                        patches!!.forEach {
+                        patches.forEach {
                             JSONObject().apply {
                                 put("name", it.name)
                                 put("description", it.description)
@@ -259,7 +251,7 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
-                val patches = patches!!.filter { patch ->
+                val patches = patches.filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
                         it.name == patcher.context.packageMetadata.packageName
                     } ?: false
