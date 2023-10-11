@@ -1,14 +1,11 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Application
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.util.Base64
-import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -16,7 +13,6 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.ui.theme.Theme
-import app.revanced.manager.util.toast
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -28,10 +24,19 @@ class MainViewModel(
     private val keystoreManager: KeystoreManager,
     val prefs: PreferencesManager
 ) : ViewModel() {
-    lateinit var launcher: ActivityResultLauncher<Intent>
+    fun launchActivity(launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) = viewModelScope.launch {
+        val intent = Intent().apply {
+            setClassName(
+                "app.revanced.manager.flutter",
+                "app.revanced.manager.flutter.ExportSettingsActivity"
+            )
+        }
+
+        launcher.launch(intent)
+    }
 
     fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
-        prefs.showAutoUpdatesDialog.update(false)
+        prefs.firstLaunch.update(false)
 
         prefs.managerAutoUpdates.update(manager)
         if (patches) {
@@ -44,27 +49,6 @@ class MainViewModel(
 
                 updateCheck()
             }
-        }
-    }
-
-    fun launchLegacyActivity(context: Context): Boolean {
-        return try {
-            val intent = Intent()
-            intent.setClassName(
-                "app.revanced.manager.flutter",
-                "app.revanced.manager.flutter.ExportSettingsActivity"
-            )
-            launcher.launch(intent)
-            true
-        } catch (e: Exception) {
-            if (e !is ActivityNotFoundException) {
-                context.toast(
-                    context.getString(
-                        R.string.legacy_import_failed
-                    )
-                )
-            }
-            false
         }
     }
 
@@ -114,19 +98,19 @@ class MainViewModel(
         settings.patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
         }
-        prefs.showAutoUpdatesDialog.update(false)
+        prefs.firstLaunch.update(false)
     }
-}
 
-@Serializable
-data class LegacySettings(
-    val keystorePassword: String,
-    val themeMode: Int? = null,
-    val useDynamicTheme: Boolean? = null,
-    val apiUrl: String? = null,
-    val experimentalPatchesEnabled: Boolean? = null,
-    val patchesAutoUpdate: Boolean? = null,
-    val patchesChangeEnabled: Boolean? = null,
-    val keystore: String? = null,
-    val patches: SerializedSelection? = null,
-)
+    @Serializable
+    private data class LegacySettings(
+        val keystorePassword: String,
+        val themeMode: Int? = null,
+        val useDynamicTheme: Boolean? = null,
+        val apiUrl: String? = null,
+        val experimentalPatchesEnabled: Boolean? = null,
+        val patchesAutoUpdate: Boolean? = null,
+        val patchesChangeEnabled: Boolean? = null,
+        val keystore: String? = null,
+        val patches: SerializedSelection? = null,
+    )
+}

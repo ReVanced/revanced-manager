@@ -1,14 +1,16 @@
 package app.revanced.manager
 
-import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -44,21 +46,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getActivityViewModel()
-        lateinit var rememberLauncherForActivityResult: MutableState<LegacyActivity>
-
-        vm.launcher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                if (result.data != null) {
-                    val jsonData = result.data!!.getStringExtra("data")!!
-                    vm.applyLegacySettings(jsonData)
-                }
-            } else {
-                rememberLauncherForActivityResult.value = LegacyActivity.FAILED
-                toast(getString(R.string.legacy_import_failed))
-            }
-        }
 
         setContent {
             val theme by vm.prefs.theme.getAsState()
@@ -73,16 +60,43 @@ class MainActivity : ComponentActivity() {
 
                 NavBackHandler(navController)
 
-                val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
+                val firstLaunch by vm.prefs.firstLaunch.getAsState()
 
-                if (showAutoUpdatesDialog) {
-                    rememberLauncherForActivityResult = rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
-                    if (rememberLauncherForActivityResult.value == LegacyActivity.NOT_LAUNCHED) {
-                        rememberLauncherForActivityResult.value = LegacyActivity.LAUNCHED
-                        if (!vm.launchLegacyActivity(this)) {
-                            rememberLauncherForActivityResult.value = LegacyActivity.FAILED
+                if (firstLaunch) {
+                    val showAutoUpdatesDialog = rememberSaveable { mutableStateOf(false) }
+                    if (!showAutoUpdatesDialog.value) {
+                        val launcher = rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.StartActivityForResult()
+                        ) { result: ActivityResult ->
+                            if (result.resultCode == RESULT_OK) {
+                                if (result.data != null) {
+                                    val jsonData = result.data!!.getStringExtra("data")!!
+                                    vm.applyLegacySettings(jsonData)
+                                }
+                            } else {
+                                showAutoUpdatesDialog.value = true
+                                toast(getString(R.string.legacy_import_failed))
+                            }
                         }
-                    } else if (rememberLauncherForActivityResult.value == LegacyActivity.FAILED) {
+
+                        val intent = Intent().apply {
+                            setClassName(
+                                "app.revanced.manager.flutter",
+                                "app.revanced.manager.flutter.ExportSettingsActivity"
+                            )
+                        }
+
+                        LaunchedEffect(Unit) {
+                            try {
+                                launcher.launch(intent)
+                            } catch (e: Exception) {
+                                if (e !is ActivityNotFoundException) {
+                                    toast(getString(R.string.legacy_import_failed))
+                                }
+                                showAutoUpdatesDialog.value = true
+                            }
+                        }
+                    } else {
                         AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
                     }
                 }
@@ -150,11 +164,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private enum class LegacyActivity {
-        NOT_LAUNCHED,
-        LAUNCHED,
-        FAILED
     }
 }
