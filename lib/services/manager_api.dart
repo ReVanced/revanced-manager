@@ -730,7 +730,12 @@ class ManagerAPI {
   }
 
   void resetAllOptions() {
-    // TODO(aabed): Implement this method.
+    _prefs.getKeys().where((key) => key.startsWith('patchOption-')).forEach(
+      (key) {
+        print(key);
+        _prefs.remove(key);
+      },
+    );
   }
 
   Future<void> resetLastSelectedPatches() async {
