@@ -8,11 +8,11 @@ The following pages will guide you through using ReVanced Manager to patch apps.
 2. Tap on the **Select an app** card
 3. Choose an app to patch[^1]
 
-   > [!INFORMATION]  
+   > [!NOTE]  
    > The suggested version is visible in each app's card.
 4. Tap on the **Select patches** card and select the patches you want to apply[^2].
 
-   > [!INFORMATION]  
+   > [!NOTE]  
    > Some patches have options that can or must be configured by tapping on ⚙️ icon next to the patch name.
 
    >[!WARNING]  
@@ -23,7 +23,7 @@ The following pages will guide you through using ReVanced Manager to patch apps.
    > The patching process may take ~5 minutes. Exiting the app may cancel patching or increase the time it takes to patch.
 6. Tap on the **Install** button
 
-   > [!INFORMATION]  
+   > [!NOTE]  
    > If you are rooted, you can mount the patched app on top of the original app.[^3]
    > Optionally, you may export the patched app to storage using the option in the bottom left corner.
 

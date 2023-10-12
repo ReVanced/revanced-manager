@@ -15,14 +15,14 @@ ReVanced Manager has settings that can be configured to your liking.
 - ### 🧪 Experimental ReVanced Patches support
 
   Disable checking for the version of the app when applying ReVanced Patches.
-  
+
   > [!WARNING]  
   > This may cause issues if the ReVanced Patches are not compatible with the app version.
 
 - ### 🧑‍🔬 Experimental universal support
 
   This will show or hide ReVanced Patches, which are not meant for any app in particular but apply to all apps
- 
+
   > [!WARNING]  
   > Because the patches generalize the app, they may not work on all apps.
 
@@ -34,7 +34,7 @@ ReVanced Manager has settings that can be configured to your liking.
   - 📄 ReVanced Patches selection
   - ⚙️ Options
 
-  > [!INFORMATION]  
+  > [!NOTE]  
   > This is particularly useful if you want to backup or reset your settings.
 
 - ### ❓ About
