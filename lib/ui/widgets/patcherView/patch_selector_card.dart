@@ -61,7 +61,7 @@ class PatchSelectorCard extends StatelessWidget {
     final List<Patch> selectedPatches = locator<PatcherViewModel>().selectedPatches;
     selectedPatches.sort((a, b) => a.name.compareTo(b.name));
     for (final Patch p in selectedPatches) {
-      text += '\u2022  ${p.getSimpleName()}\n';
+      text += '•  ${p.getSimpleName()}\n';
     }
     return text.substring(0, text.length - 1);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
@@ -16,11 +17,12 @@ class PatchItem extends StatefulWidget {
     required this.packageVersion,
     required this.supportedPackageVersions,
     required this.isUnsupported,
-    required this.isNew,
+    required this.hasUnsupportedPatchOption,
+    required this.options,
     required this.isSelected,
     required this.onChanged,
+    required this.navigateToOptions,
     required this.isChangeEnabled,
-    this.child,
   }) : super(key: key);
   final String name;
   final String simpleName;
@@ -28,11 +30,12 @@ class PatchItem extends StatefulWidget {
   final String packageVersion;
   final List<String> supportedPackageVersions;
   final bool isUnsupported;
-  final bool isNew;
+  final bool hasUnsupportedPatchOption;
+  final List<Option> options;
   bool isSelected;
   final Function(bool) onChanged;
+  final void Function(List<Option>) navigateToOptions;
   final bool isChangeEnabled;
-  final Widget? child;
   final toast = locator<Toast>();
   final _managerAPI = locator<ManagerAPI>();
 
@@ -45,7 +48,8 @@ class _PatchItemState extends State<PatchItem> {
   Widget build(BuildContext context) {
     widget.isSelected = widget.isSelected &&
         (!widget.isUnsupported ||
-            widget._managerAPI.areExperimentalPatchesEnabled());
+            widget._managerAPI.areExperimentalPatchesEnabled()) &&
+        !widget.hasUnsupportedPatchOption;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Opacity(
@@ -54,148 +58,150 @@ class _PatchItemState extends State<PatchItem> {
             ? 0.5
             : 1,
         child: CustomCard(
+          padding: EdgeInsets.only(
+            top: 12,
+            bottom: 16,
+            left: 8.0,
+            right: widget.options.isNotEmpty ? 4.0 : 8.0,
+          ),
           onTap: () {
-            setState(() {
-              if (widget.isUnsupported &&
-                  !widget._managerAPI.areExperimentalPatchesEnabled()) {
-                widget.isSelected = false;
-                widget.toast.showBottom('patchItem.unsupportedPatchVersion');
-              } else if (widget.isChangeEnabled) {
-                widget.isSelected = !widget.isSelected;
+            if (widget.isUnsupported &&
+                !widget._managerAPI.areExperimentalPatchesEnabled()) {
+              widget.isSelected = false;
+              widget.toast.showBottom('patchItem.unsupportedPatchVersion');
+            } else if (widget.isChangeEnabled) {
+              if (!widget.isSelected) {
+                if (widget.hasUnsupportedPatchOption) {
+                  _showUnsupportedRequiredOptionDialog();
+                  return;
+                }
               }
-            });
-            if (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled()) {
+              widget.isSelected = !widget.isSelected;
+              setState(() {});
+            }
+            if (!widget.isUnsupported ||
+                widget._managerAPI.areExperimentalPatchesEnabled()) {
               widget.onChanged(widget.isSelected);
             }
           },
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                widget.simpleName,
-                                maxLines: 2,
-                                overflow: TextOverflow.visible,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          widget.description,
-                          softWrap: true,
-                          overflow: TextOverflow.visible,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Transform.scale(
+                scale: 1.2,
+                child: Checkbox(
+                  value: widget.isSelected,
+                  activeColor: Theme.of(context).colorScheme.primary,
+                  checkColor: Theme.of(context).colorScheme.secondaryContainer,
+                  side: BorderSide(
+                    width: 2.0,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  Transform.scale(
-                    scale: 1.2,
-                    child: Checkbox(
-                      value: widget.isSelected,
-                      activeColor: Theme.of(context).colorScheme.primary,
-                      checkColor:
-                          Theme.of(context).colorScheme.secondaryContainer,
-                      side: BorderSide(
-                        width: 2.0,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      onChanged: (newValue) {
-                        setState(() {
-                          if (widget.isUnsupported &&
-                              !widget._managerAPI
-                                  .areExperimentalPatchesEnabled()) {
-                            widget.isSelected = false;
-                            widget.toast.showBottom(
-                              'patchItem.unsupportedPatchVersion',
-                            );
-                          } else if (widget.isChangeEnabled) {
-                            widget.isSelected = newValue!;
-                          }
-                        });
-                        if (!widget.isUnsupported || widget._managerAPI.areExperimentalPatchesEnabled()) {
-                          widget.onChanged(widget.isSelected);
+                  onChanged: (newValue) {
+                    if (widget.isUnsupported &&
+                        !widget._managerAPI.areExperimentalPatchesEnabled()) {
+                      widget.isSelected = false;
+                      widget.toast.showBottom(
+                        'patchItem.unsupportedPatchVersion',
+                      );
+                    } else if (widget.isChangeEnabled) {
+                      if (!widget.isSelected) {
+                        if (widget.hasUnsupportedPatchOption) {
+                          _showUnsupportedRequiredOptionDialog();
+                          return;
                         }
-                      },
-                    ),
+                      }
+                      widget.isSelected = newValue!;
+                      setState(() {});
+                    }
+                    if (!widget.isUnsupported ||
+                        widget._managerAPI.areExperimentalPatchesEnabled()) {
+                      widget.onChanged(widget.isSelected);
+                    }
+                  },
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.simpleName,
+                        maxLines: 2,
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        widget.description,
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                        ),
+                      ),
+                      if (widget.description.isNotEmpty)
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 4,
+                            children: [
+                              if (widget.isUnsupported &&
+                                  widget._managerAPI
+                                      .areExperimentalPatchesEnabled())
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: TextButton.icon(
+                                    label: I18nText('warning'),
+                                    icon: const Icon(
+                                      Icons.warning_amber_outlined,
+                                      size: 20.0,
+                                    ),
+                                    onPressed: () =>
+                                        _showUnsupportedWarningDialog(),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
+                                        ),
+                                      ),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        Colors.transparent,
+                                      ),
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                        Theme.of(context).colorScheme.secondary,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
-                ],
+                ),
               ),
-              Row(
-                children: [
-                  if (widget.isUnsupported &&
-                      widget._managerAPI.areExperimentalPatchesEnabled())
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, right: 8),
-                      child: TextButton.icon(
-                        label: I18nText('warning'),
-                        icon: const Icon(Icons.warning, size: 20.0),
-                        onPressed: () => _showUnsupportedWarningDialog(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.transparent,
-                          ),
-                          foregroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  if (widget.isNew)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: TextButton.icon(
-                        label: I18nText('new'),
-                        icon: const Icon(Icons.star, size: 20.0),
-                        onPressed: () => _showNewPatchDialog(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.transparent,
-                          ),
-                          foregroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              widget.child ?? const SizedBox(),
+              if (widget.options.isNotEmpty)
+                IconButton(
+                  icon: const Icon(Icons.settings_outlined),
+                  onPressed: () => widget.navigateToOptions(widget.options),
+                ),
             ],
           ),
         ),
@@ -214,7 +220,7 @@ class _PatchItemState extends State<PatchItem> {
           translationParams: {
             'packageVersion': widget.packageVersion,
             'supportedVersions':
-                '\u2022 ${widget.supportedPackageVersions.reversed.join('\n\u2022 ')}',
+                '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
           },
         ),
         actions: <Widget>[
@@ -227,14 +233,14 @@ class _PatchItemState extends State<PatchItem> {
     );
   }
 
-  Future<void> _showNewPatchDialog() {
+  Future<void> _showUnsupportedRequiredOptionDialog() {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('patchItem.newPatch'),
+        title: I18nText('notice'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
-          'patchItem.newPatchDialogText',
+          'patchItem.unsupportedRequiredOption',
         ),
         actions: <Widget>[
           CustomMaterialButton(

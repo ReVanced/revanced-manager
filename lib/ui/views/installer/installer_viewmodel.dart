@@ -139,6 +139,7 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> runPatcher() async {
+
     try {
       await _patcherAPI.runPatcher(
         _app.packageName,
@@ -156,9 +157,9 @@ class InstallerViewModel extends BaseViewModel {
       }
     }
 
-    // Necessary to reset the state of patches by reloading them
-    // in a later patching process.
-    _managerAPI.patches.clear();
+    // Necessary to reset the state of patches so that they
+    // can be reloaded again.
+   _managerAPI.patches.clear();
     await _patcherAPI.loadPatches();
 
     try {

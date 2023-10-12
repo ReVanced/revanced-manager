@@ -22,7 +22,6 @@ import org.json.JSONObject
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.lang.Error
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
@@ -55,6 +54,7 @@ class MainActivity : FlutterActivity() {
                     val outFilePath = call.argument<String>("outFilePath")
                     val integrationsPath = call.argument<String>("integrationsPath")
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
+                    val options = call.argument<Map<String, Map<String, Any>>>("options")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
@@ -66,6 +66,7 @@ class MainActivity : FlutterActivity() {
                         outFilePath != null &&
                         integrationsPath != null &&
                         selectedPatches != null &&
+                        options != null &&
                         cacheDirPath != null &&
                         keyStoreFilePath != null &&
                         keystorePassword != null
@@ -79,6 +80,7 @@ class MainActivity : FlutterActivity() {
                             outFilePath,
                             integrationsPath,
                             selectedPatches,
+                            options,
                             cacheDirPath,
                             keyStoreFilePath,
                             keystorePassword
@@ -127,6 +129,28 @@ class MainActivity : FlutterActivity() {
                                         put(compatiblePackageJson)
                                     }
                                 })
+                                put("options", JSONArray().apply {
+                                    it.options.values.forEach { option ->
+                                        val optionJson = JSONObject().apply option@{
+                                            put("key", option.key)
+                                            put("title", option.title)
+                                            put("description", option.description)
+                                            put("required", option.required)
+
+                                            when (val value = option.value) {
+                                                null -> put("value", null)
+                                                is Array<*> -> put("value", JSONArray().apply {
+
+                                                    value.forEach { put(it) }
+                                                })
+                                                else -> put("value", option.value)
+                                            }
+
+                                            put("optionClassType", option::class.simpleName)
+                                        }
+                                        put(optionJson)
+                                    }
+                                })
                             }.let(::put)
                         }
                     }.toString().let(result::success)
@@ -145,6 +169,7 @@ class MainActivity : FlutterActivity() {
         outFilePath: String,
         integrationsPath: String,
         selectedPatches: List<String>,
+        options: Map<String, Map<String, Any>>,
         cacheDirPath: String,
         keyStoreFilePath: String,
         keystorePassword: String
@@ -182,7 +207,7 @@ class MainActivity : FlutterActivity() {
 
                 object : java.util.logging.Handler() {
                     override fun publish(record: LogRecord) {
-                        if (record.loggerName?.startsWith("app.revanced") != true) return
+                        if (record.loggerName?.startsWith("app.revanced") != true || cancel) return
 
                         updateProgress(-1.0, "", record.message)
                     }
@@ -215,6 +240,7 @@ class MainActivity : FlutterActivity() {
                         cacheDir,
                         Aapt.binary(applicationContext).absolutePath,
                         cacheDir.path,
+                        true // TODO: Add option to disable this
                     )
                 )
 
@@ -234,6 +260,10 @@ class MainActivity : FlutterActivity() {
                         isCompatible || patch.compatiblePackages.isNullOrEmpty()
 
                     compatibleOrUniversal && selectedPatches.any { it == patch.name }
+                }.onEach { patch ->
+                    options[patch.name]?.forEach { (key, value) ->
+                        patch.options[key] = value
+                    }
                 }
 
                 if (cancel) {

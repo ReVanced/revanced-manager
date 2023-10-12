@@ -22,7 +22,14 @@ class PatcherView extends StatelessWidget {
           child: FloatingActionButton.extended(
             label: I18nText('patcherView.patchButton'),
             icon: const Icon(Icons.build),
-            onPressed: () => model.showRemovedPatchesDialog(context),
+            onPressed: () async{
+              if (model.checkRequiredPatchOption(context)) {
+                final bool proceed = model.showRemovedPatchesDialog(context);
+                if (proceed && context.mounted) {
+                  model.showArmv7WarningDialog(context);
+                }
+              }
+            },
           ),
         ),
         body: CustomScrollView(
@@ -45,7 +52,10 @@ class PatcherView extends StatelessWidget {
                 delegate: SliverChildListDelegate.fixed(
                   <Widget>[
                     AppSelectorCard(
-                      onPressed: () => model.navigateToAppSelector(),
+                      onPressed: () => {
+                        model.navigateToAppSelector(),
+                        model.ctx = context,
+                      },
                     ),
                     const SizedBox(height: 16),
                     Opacity(

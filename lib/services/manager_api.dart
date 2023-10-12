@@ -28,6 +28,10 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
+  List<Option> modifiedOptions = [];
+  List<Option> options = [];
+  Patch? selectedPatch;
+  BuildContext? ctx;
   bool isRooted = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
@@ -182,6 +186,29 @@ class ManagerAPI {
     await _prefs.setStringList('usedPatches-$packageName', patchesJson);
   }
 
+  Option? getPatchOption(String packageName, String patchName, String key) {
+    final String? optionJson =
+        _prefs.getString('patchOption-$packageName-$patchName-$key');
+    if (optionJson != null) {
+      final Option option = Option.fromJson(jsonDecode(optionJson));
+      return option;
+    } else {
+      return null;
+    }
+  }
+
+  void setPatchOption(Option option, String patchName, String packageName) {
+    final String optionJson = jsonEncode(option.toJson());
+    _prefs.setString(
+      'patchOption-$packageName-$patchName-${option.key}',
+      optionJson,
+    );
+  }
+
+  void clearPatchOption(String packageName, String patchName, String key) {
+    _prefs.remove('patchOption-$packageName-$patchName-$key');
+  }
+
   String getIntegrationsRepo() {
     return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
   }
@@ -314,7 +341,6 @@ class ManagerAPI {
         Directory('${appCache.path}/cache').createTempSync('tmp-');
     final Directory cacheDir = Directory('${workDir.path}/cache');
     cacheDir.createSync();
-
     if (patchBundleFile != null) {
       try {
         final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
@@ -324,7 +350,6 @@ class ManagerAPI {
             'cacheDirPath': cacheDir.path,
           },
         );
-
         final List<dynamic> patchesJsonList = jsonDecode(patchesJson);
         patches = patchesJsonList
             .map((patchJson) => Patch.fromJson(patchJson))
@@ -336,6 +361,7 @@ class ManagerAPI {
         }
       }
     }
+
     return List.empty();
   }
 
@@ -596,7 +622,7 @@ class ManagerAPI {
 
     // Remove apps that are not installed anymore.
     final List<PatchedApplication> toRemove =
-    await getAppsToRemove(patchedApps);
+        await getAppsToRemove(patchedApps);
     patchedApps.removeWhere((a) => toRemove.contains(a));
 
     // Determine all apps that are installed by mounting.
@@ -686,6 +712,14 @@ class ManagerAPI {
       return {};
     }
     return jsonDecode(string);
+  }
+
+  void resetAllOptions() {
+    _prefs.getKeys().where((key) => key.startsWith('patchOption-')).forEach(
+      (key) {
+        _prefs.remove(key);
+      },
+    );
   }
 
   Future<void> resetLastSelectedPatches() async {
