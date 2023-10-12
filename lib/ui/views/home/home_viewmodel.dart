@@ -34,7 +34,6 @@ class HomeViewModel extends BaseViewModel {
   final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  DateTime? _lastUpdate;
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
   String? _latestManagerVersion = '';
