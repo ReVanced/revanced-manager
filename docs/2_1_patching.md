@@ -10,7 +10,10 @@ The following pages will guide you through using ReVanced Manager to patch apps.
 
    > [!INFORMATION]  
    > The suggested version is visible in each app's card.
-4. Tap on the **Select patches** card and select the patches you want to apply[^2]
+4. Tap on the **Select patches** card and select the patches you want to apply[^2].
+
+   > [!INFORMATION]  
+   > Some patches have options that can or must be configured by tapping on ⚙️ icon next to the patch name.
 
    >[!WARNING]  
    > If you see a warning you can click on it for more information.

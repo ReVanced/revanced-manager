@@ -32,6 +32,7 @@ ReVanced Manager has settings that can be configured to your liking.
 
   - 🔑 Keystore
   - 📄 ReVanced Patches selection
+  - ⚙️ Options
 
   > [!INFORMATION]  
   > This is particularly useful if you want to backup or reset your settings.
