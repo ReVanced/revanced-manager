@@ -1,9 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.content.Intent
 import android.util.Base64
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
@@ -24,17 +21,6 @@ class MainViewModel(
     private val keystoreManager: KeystoreManager,
     val prefs: PreferencesManager
 ) : ViewModel() {
-    fun launchActivity(launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) = viewModelScope.launch {
-        val intent = Intent().apply {
-            setClassName(
-                "app.revanced.manager.flutter",
-                "app.revanced.manager.flutter.ExportSettingsActivity"
-            )
-        }
-
-        launcher.launch(intent)
-    }
-
     fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
