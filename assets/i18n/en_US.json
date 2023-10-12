@@ -5,8 +5,8 @@
     "updateButton": "Update",
     "enabledLabel": "Enabled",
     "disabledLabel": "Disabled",
-    "installed":"Installed: {version}",
-    "suggested":"Suggested: {version}",
+    "installed": "Installed: {version}",
+    "suggested": "Suggested: {version}",
     "yesButton": "Yes",
     "noButton": "No",
     "warning": "Warning",
@@ -23,37 +23,26 @@
     "homeView": {
         "refreshSuccess": "Refreshed successfully",
         "widgetTitle": "Dashboard",
-
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched apps",
-
         "noUpdates": "No updates available",
-
         "WIP": "Work in progress...",
-
         "noInstallations": "No patched apps installed",
         "installUpdate": "Continue to install the update?",
-
         "updateDialogTitle": "Update Manager",
         "updatePatchesDialogTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
-
         "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
         "patchesConsentDialogText2": "This will connect you to {url}.",
         "patchesConsentDialogText3": "Auto update?",
         "patchesConsentDialogText3Sub": "You can change this in settings at a later time.",
-
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
-
         "downloadingMessage": "Downloading update...",
         "downloadedMessage": "Update downloaded!",
-
         "installingMessage": "Installing update...",
-
         "errorDownloadMessage": "Unable to download update",
         "errorInstallMessage": "Unable to install update",
-
         "noConnection": "No internet connection",
         "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
     },
@@ -70,20 +59,16 @@
     "patcherView": {
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
-
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
-
         "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?",
-        "requiredOptionDialogText" : "Some patch options have to be set."
+        "requiredOptionDialogText": "Some patch options have to be set."
     },
     "appSelectorCard": {
         "widgetTitle": "Select an application",
         "widgetTitleSelected": "Selected application",
         "widgetSubtitle": "No application selected",
-
         "noAppsLabel": "No applications found",
-        "notInstalled":"App not installed",
-
+        "notInstalled": "App not installed",
         "currentVersion": "Current",
         "suggestedVersion": "Suggested",
         "allVersions": "All versions"
@@ -91,7 +76,6 @@
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
         "widgetTitleSelected": "Selected patches",
-
         "widgetSubtitle": "Select an application first",
         "widgetEmptySubtitle": "No patches selected"
     },
@@ -102,14 +86,10 @@
     "appSelectorView": {
         "viewTitle": "Select an application",
         "searchBarHint": "Search applications",
-
         "storageButton": "Storage",
         "selectFromStorageButton": "Select from storage",
-        
         "errorMessage": "Unable to use selected application",
-
         "downloadToast": "Download function is not available yet",
-
         "featureNotAvailable": "Feature not implemented",
         "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
     },
@@ -119,33 +99,26 @@
         "universalPatches": "Universal patches",
         "newPatches": "New patches",
         "patches": "Patches",
-
         "doneButton": "Done",
-
         "default": "Default",
         "defaultTooltip": "Select all default patches",
-
         "none": "None",
         "noneTooltip": "Deselect all patches",
-
         "loadPatchesSelection": "Load patches selection",
         "noSavedPatches": "No saved patches for the selected app.\nPress Done to save current selection.",
         "noPatchesFound": "No patches found for the selected app",
         "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing.",
-
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
     "patchOptionsView": {
         "viewTitle": "Patch options",
         "saveOptions": "Save",
-
         "addOptions": "Add options",
         "deselectPatch": "Deselect patch",
         "tooltip": "More input options",
         "selectFilePath": "Select file path",
         "selectFolder": "Select folder",
         "selectOption": "Select option",
-
         "requiredOption": "This option is required",
         "unsupportedOption": "This option is not supported",
         "requiredOptionNull": "The following options have to be set:\n\n{options}"
@@ -154,7 +127,6 @@
         "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
         "unsupportedPatchVersion": "Patch is not supported for this app version. Enable the experimental toggle in settings to proceed.",
         "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
-
         "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Enable changing selection\" in the settings.",
         "patchesChangeWarningDialogButton": "Use default selection"
     },
@@ -162,47 +134,36 @@
         "widgetTitle": "Installer",
         "installType": "Select install type",
         "installTypeDescription": "Select the installation type to proceed with.",
-
         "installButton": "Install",
         "installRootType": "Mount",
         "installNonRootType": "Normal",
-
         "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
         "shareButton": "Share file",
-        
         "notificationTitle": "ReVanced Manager is patching",
         "notificationText": "Tap to return to the installer",
-
         "exportApkButtonTooltip": "Export patched APK",
         "exportLogButtonTooltip": "Export log",
-
         "screenshotDetected": "A screenshot has been detected. If you are trying to share the log, please share a text copy instead.\n\nCopy log to clipboard?",
         "copiedToClipboard": "Copied log to clipboard",
-
         "noExit": "Installer is still running, cannot exit..."
     },
     "settingsView": {
         "widgetTitle": "Settings",
-
         "appearanceSectionTitle": "Appearance",
         "teamSectionTitle": "Team",
         "infoSectionTitle": "Info",
         "advancedSectionTitle": "Advanced",
         "exportSectionTitle": "Import & export",
         "logsSectionTitle": "Logs",
-
         "themeModeLabel": "App theme",
         "systemThemeLabel": "System",
         "lightThemeLabel": "Light",
         "darkThemeLabel": "Dark",
-
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Enjoy an experience closer to your device",
-
         "languageLabel": "Language",
         "englishOption": "English",
-
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
         "sourcesIntegrationsLabel": "Integrations source",
@@ -210,7 +171,6 @@
         "sourcesResetDialogText": "Are you sure you want to reset custom sources to their default values?",
         "apiURLResetDialogText": "Are you sure you want to reset API URL to its default value?",
         "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
-
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your custom API URL",
         "selectApiURL": "API URL",
@@ -218,18 +178,14 @@
         "orgPatchesLabel": "Patches organization",
         "sourcesPatchesLabel": "Patches source",
         "orgIntegrationsLabel": "Integrations organization",
-        
         "contributorsLabel": "Contributors",
         "contributorsHint": "A list of contributors of ReVanced",
-
         "logsLabel": "Logs",
         "logsHint": "Share Manager's logs",
-
         "enablePatchesSelectionLabel": "Enable changing selection",
         "enablePatchesSelectionHint": "Enable changing the selection of patches.",
         "enablePatchesSelectionWarningText": "Changing the default selection of patches may cause unexpected issues.\n\nEnable anyways?",
         "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
-
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
         "experimentalUniversalPatchesLabel": "Experimental universal patches support",
@@ -237,61 +193,46 @@
         "experimentalPatchesLabel": "Experimental patches support",
         "experimentalPatchesHint": "Enable usage of unsupported patches in any app version",
         "enabledExperimentalPatches": "Experimental patches support enabled",
-
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
         "restartAppForChanges": "Restart the app to apply changes",
-
         "deleteTempDirLabel": "Delete temporary files",
         "deleteTempDirHint": "Delete unused temporary files",
         "deletedTempDir": "Temporary files deleted",
-
         "exportPatchesLabel": "Export patches selection",
         "exportPatchesHint": "Export patches selection to a JSON file",
         "exportedPatches": "Patches selection exported",
         "noExportFileFound": "No patches selection to export",
-
         "importPatchesLabel": "Import patches selection",
         "importPatchesHint": "Import patches selection from a JSON file",
         "importedPatches": "Patches selection imported",
-
         "resetStoredPatchesLabel": "Reset patches",
         "resetStoredPatchesHint": "Reset the stored patches selection",
-
         "resetStoredOptionsLabel": "Reset options",
         "resetStoredOptionsHint": "Reset all patch options",
-
         "resetStoredPatchesDialogTitle": "Reset patches selection?",
         "resetStoredPatchesDialogText": "Resetting patches selection will remove all selected patches.",
         "resetStoredPatches": "Patches selection has been reset",
-
         "resetStoredOptionsDialogTitle": "Reset options?",
         "resetStoredOptionsDialogText": "Resetting options will remove all saved options.",
         "resetStoredOptions": "Options have been reset",
-
         "deleteLogsLabel": "Delete logs",
         "deleteLogsHint": "Delete collected manager logs",
         "deletedLogs": "Logs deleted",
-
         "regenerateKeystoreLabel": "Regenerate keystore",
         "regenerateKeystoreHint": "Regenerate the keystore used to sign the app",
-
         "regenerateKeystoreDialogTitle": "Regenerate keystore?",
         "regenerateKeystoreDialogText": "Patched apps signed with the old keystore will no longer be able to update.",
         "regeneratedKeystore": "Keystore regenerated",
-
         "exportKeystoreLabel": "Export keystore",
         "exportKeystoreHint": "Export keystore used to sign apps",
         "exportedKeystore": "Keystore exported",
         "noKeystoreExportFileFound": "No keystore to export",
-
         "importKeystoreLabel": "Import keystore",
         "importKeystoreHint": "Import keystore used to sign apps",
         "importedKeystore": "Keystore imported",
-
         "selectKeystorePassword": "Keystore Password",
         "selectKeystorePasswordHint": "Select keystore password used to sign the apk",
-
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
         "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file"
     },
@@ -301,20 +242,16 @@
         "uninstallButton": "Uninstall",
         "unpatchButton": "Unpatch",
         "rootDialogTitle": "Error",
-
         "unpatchDialogText": "Are you sure you want to unpatch this app?",
         "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
-
         "packageNameLabel": "Package name",
         "installTypeLabel": "Installation type",
         "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Non-root",
         "patchedDateLabel": "Patched date",
         "appliedPatchesLabel": "Applied patches",
-
         "patchedDateHint": "{date} at {time}",
         "appliedPatchesHint": "{quantity} applied patches",
-        
         "updateNotImplemented": "This feature has not been implemented yet"
     },
     "contributorsView": {
