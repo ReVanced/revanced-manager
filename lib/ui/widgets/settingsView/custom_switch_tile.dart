@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_switch.dart';
 
 class CustomSwitchTile extends StatelessWidget {
   const CustomSwitchTile({
@@ -23,7 +22,7 @@ class CustomSwitchTile extends StatelessWidget {
       title: title,
       subtitle: subtitle,
       onTap: () => onTap(!value),
-      trailing: CustomSwitch(
+      trailing: Switch(
         value: value,
         onChanged: onTap,
       ),
