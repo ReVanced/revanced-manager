@@ -255,15 +255,14 @@
 
         "resetStoredPatchesLabel": "Reset patch selections",
         "resetStoredPatchesHint": "Reset the stored patch selections",
-        "resetStoredOptionsLabel": "Reset options",
-        "resetStoredOptionsHint": "Reset all patch options",
-
-        "resetStoredPatchesDialogTitle": "Reset patches selection?",
+        "resetStoredPatchesDialogTitle": "Reset patch selections?",
         "resetStoredPatchesDialogText": "The default selection of patches will be restored..",
         "resetStoredPatches": "Patch selections have been reset",
 
-        "resetStoredOptionsDialogTitle": "Reset options?",
-        "resetStoredOptionsDialogText": "Resetting options will remove all saved options.",
+        "resetStoredOptionsLabel": "Reset patch options",
+        "resetStoredOptionsHint": "Reset all patch options",
+        "resetStoredOptionsDialogTitle": "Reset patch options?",
+        "resetStoredOptionsDialogText": "Resetting patch options will remove all saved options.",
         "resetStoredOptions": "Options have been reset",
 
         "deleteLogsLabel": "Clear logs",
