@@ -186,10 +186,9 @@ class PatchOptionsViewModel extends BaseViewModel {
                       e.description,
                       style: TextStyle(
                         fontSize: 14,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
