@@ -36,7 +36,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -99,12 +98,15 @@ fun PatchesSelectorScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
                 Text(
-                    text = "Filter",
+                    text = stringResource(R.string.patches_selector_sheet_filter_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                Text(text = "Compatibility", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = stringResource(R.string.patches_selector_sheet_filter_compat_title),
+                    style = MaterialTheme.typography.titleMedium
+                )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -128,36 +130,34 @@ fun PatchesSelectorScreen(
                         label = { Text(stringResource(R.string.unsupported)) },
                     )
                 }
-
-
-                Divider()
-
-                // TODO: figure out how to get rid of the padding.
-                ListItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            enabled = vm.hasPreviousSelection,
-                            onClick = vm::switchBaseSelectionMode
-                        ),
-                    leadingContent = {
-                            Switch(
-                                checked = vm.baseSelectionMode == BaseSelectionMode.PREVIOUS,
-                                onCheckedChange = {
-                                    vm.switchBaseSelectionMode()
-                                },
-                                enabled = vm.hasPreviousSelection
-                            )
-                    },
-                    headlineContent = {
-                        Text(
-                            "Use previous selection",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                )
             }
+
+            Divider()
+
+            ListItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        enabled = vm.hasPreviousSelection,
+                        onClick = vm::switchBaseSelectionMode
+                    ),
+                leadingContent = {
+                    Checkbox(
+                        checked = vm.baseSelectionMode == BaseSelectionMode.PREVIOUS,
+                        onCheckedChange = {
+                            vm.switchBaseSelectionMode()
+                        },
+                        enabled = vm.hasPreviousSelection
+                    )
+                },
+                headlineContent = {
+                    Text(
+                        "Use previous selection",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            )
         }
     }
 

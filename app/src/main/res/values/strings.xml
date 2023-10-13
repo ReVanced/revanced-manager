@@ -187,6 +187,9 @@
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
 
+    <string name="patches_selector_sheet_filter_title">Filter</string>
+    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
+
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
     <string name="string_option_placeholder">Value</string>
