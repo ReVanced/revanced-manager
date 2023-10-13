@@ -143,8 +143,6 @@
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
-    <string name="menu_opt_selection_mode_default">Use default selection</string>
-    <string name="menu_opt_selection_mode_previous">Use previous selection</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
@@ -152,6 +150,7 @@
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
+    <string name="search_patches">Patch name</string>
     <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
@@ -187,6 +186,9 @@
     <string name="select_version">Select version</string>
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
+
+    <string name="patches_selector_sheet_filter_title">Filter</string>
+    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
