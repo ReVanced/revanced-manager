@@ -1,24 +1,36 @@
 package app.revanced.manager
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.screen.AppInfoScreen
-import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstallerScreen
 import app.revanced.manager.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.ui.screen.SettingsScreen
+import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
+import app.revanced.manager.util.tag
+import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
@@ -51,9 +63,48 @@ class MainActivity : ComponentActivity() {
 
                 NavBackHandler(navController)
 
-                val showAutoUpdatesDialog by vm.prefs.showAutoUpdatesDialog.getAsState()
-                if (showAutoUpdatesDialog) {
-                    AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
+                val firstLaunch by vm.prefs.firstLaunch.getAsState()
+
+                if (firstLaunch) {
+                    var legacyActivityState by rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
+                    if (legacyActivityState == LegacyActivity.NOT_LAUNCHED) {
+                        val launcher = rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.StartActivityForResult()
+                        ) { result: ActivityResult ->
+                            if (result.resultCode == RESULT_OK) {
+                                if (result.data != null) {
+                                    val jsonData = result.data!!.getStringExtra("data")!!
+                                    vm.applyLegacySettings(jsonData)
+                                }
+                            } else {
+                                legacyActivityState = LegacyActivity.FAILED
+                                toast(getString(R.string.legacy_import_failed))
+                            }
+                        }
+
+                        val intent = Intent().apply {
+                            setClassName(
+                                "app.revanced.manager.flutter",
+                                "app.revanced.manager.flutter.ExportSettingsActivity"
+                            )
+                        }
+
+                        LaunchedEffect(Unit) {
+                            try {
+                                launcher.launch(intent)
+                            } catch (e: Exception) {
+                                if (e !is ActivityNotFoundException) {
+                                    toast(getString(R.string.legacy_import_failed))
+                                    Log.e(tag, "Failed to launch legacy import activity: $e")
+                                }
+                                legacyActivityState = LegacyActivity.FAILED
+                            }
+                        }
+
+                        legacyActivityState = LegacyActivity.LAUNCHED
+                    } else if (legacyActivityState == LegacyActivity.FAILED){
+                        AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
+                    }
                 }
 
                 AnimatedNavHost(
@@ -119,5 +170,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private enum class LegacyActivity {
+        NOT_LAUNCHED,
+        LAUNCHED,
+        FAILED
     }
 }
