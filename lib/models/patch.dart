@@ -12,7 +12,15 @@ class Patch {
     required this.options,
   });
 
-  factory Patch.fromJson(Map<String, dynamic> json) => _$PatchFromJson(json);
+  factory Patch.fromJson(Map<String, dynamic> json) {
+    // See: https://github.com/ReVanced/revanced-manager/issues/1364#issuecomment-1760414618
+    if (json['options'] == null) {
+      json['options'] = [];
+    }
+
+    return _$PatchFromJson(json);
+  }
+
   final String name;
   final String? description;
   final bool excluded;

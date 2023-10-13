@@ -155,9 +155,6 @@
         "unsupportedPatchVersion": "Patch is not supported for this app version.",
         "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
 
-        "newPatchDialogText": "This is a new patch that has been added since the last time you have patched this app.",
-        "newPatch": "New patch",
-
         "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Allow changing patch selections\" in the settings.",
         "patchesChangeWarningDialogButton": "Use default selection"
     },
@@ -261,8 +258,8 @@
         "resetStoredOptionsLabel": "Reset options",
         "resetStoredOptionsHint": "Reset all patch options",
 
-        "resetStoredPatchesDialogTitle": "Reset patch selections?",
-        "resetStoredPatchesDialogText": "The default selection of patches will be restored.",
+        "resetStoredPatchesDialogTitle": "Reset patches selection?",
+        "resetStoredPatchesDialogText": "The default selection of patches will be restored..",
         "resetStoredPatches": "Patch selections have been reset",
 
         "resetStoredOptionsDialogTitle": "Reset options?",
