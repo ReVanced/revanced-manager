@@ -136,6 +136,7 @@
         "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
     },
     "patchOptionsView": {
+        "resetOptionsTooltip": "Reset options",
         "viewTitle": "Patch options",
         "saveOptions": "Save",
 
