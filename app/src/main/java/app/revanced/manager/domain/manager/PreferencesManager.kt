@@ -19,7 +19,7 @@ class PreferencesManager(
 
     val preferSplits = booleanPreference("prefer_splits", false)
 
-    val showAutoUpdatesDialog = booleanPreference("show_auto_updates_dialog", true)
+    val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
 
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
