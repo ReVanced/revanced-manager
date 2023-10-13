@@ -22,13 +22,13 @@ ReVanced Manager has settings that can be configured to your liking.
   > [!WARNING]  
   > Because the patches generalize the app, they may not work on all apps.
 
-- ### 🔗 API URL
-
-  API to use to fetch updates and ReVanced Patches from.
-
 - ### 🧬 Sources
 
-  Override the API and download ReVanced Patches from a different source.  
+  Override the API and download ReVanced Patches from a different source.
+
+- ### 🔗 API URL
+
+  API to use to fetch updates and ReVanced Patches from.  
 
 - ### 💾 Imports & Exports
 
