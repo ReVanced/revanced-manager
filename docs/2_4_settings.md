@@ -4,41 +4,53 @@ ReVanced Manager has settings that can be configured to your liking.
 
 ## ⭐ Essential settings
 
-- ### 🔗 API URL
+-   ### 🔗 API URL
 
-  Specify the URL of the API to use. This is used to fetch ReVanced Patches and update ReVanced Manager.
+    API to use to fetch updates and ReVanced Patches from.
 
-- ### 🧬 Sources
+-   ### 🧬 Sources
 
-  Override the API and change the source of ReVanced Patches.
+    Override the API and download ReVanced Patches from a different source.
 
-- ### 🆕 Auto update patches
-  
-  Automatically fetch the latest ReVanced Patches.
+-   ### 🪛 Allow changing patch selections
 
-- ### 🪛 Allow changing patch selections
+    Allows the user to change the patches selection from the default selection.
 
-  Allows the user to change the patches selection from the default selection.
+-   ### 🧪 Experimental ReVanced Patches support
 
-- ### 🔍 Version compatibility check
+    Disable checking for the version of the app when applying ReVanced Patches.
 
-  Constrains ReVanced Patches to supported app versions. Disable this to patch any version of an app, even if the patch is not explicitly compatible with it.
+    > [!WARNING]  
+    > This may cause issues if the ReVanced Patches are not compatible with the app version.
 
-- ### 🧑‍🔬 Show universal patches
+-   ### 🧑‍🔬 Show universal patches
 
-  This will show or hide ReVanced Patches, which are not meant for any app in particular but rather for all apps but may not work on all apps.
+    This will show or hide ReVanced Patches, which are not meant for any app in particular but apply to all apps.
 
-- ### 🔑 Export, import or regenerate keystore
+    > [!WARNING]  
+    > Because the patches generalize the app, they may not work on all apps.
 
-  Manage the keystore used to sign patched apps.
+    ### 🔍 Version compatibility check
 
-- ### 📄 Export, import or reset ReVanced Patch selections
+    Constrains ReVanced Patches to supported app versions. Disable this to patch any version of an app.
 
-  Manage the ReVanced Patch selections. This is useful if you want to share your ReVanced Patch selections with others or reset it to the default selection.
+    > [!WARNING]
+    > Disabling this may cause issues if the ReVanced Patches are not compatible with the app version.
 
-- ### ℹ️ About
+-   ### 💾 Imports & Exports
 
-  View information about your device and ReVanced Manager. This includes the version of ReVanced Manager and supported architectures of your device.
+    You can import, export or reset the following settings:
+
+    -   🔑 Keystore
+    -   📄 ReVanced Patches selection
+    -   ⚙️ Options
+
+    > [!NOTE]  
+    > This is particularly useful if you want to backup or reset your settings.
+
+-   ### ❓ About
+
+    View information about your device and ReVanced Manager. This includes the version of ReVanced Manager and supported architectures of your device.
 
 ## ⏭️ What's next
 

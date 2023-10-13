@@ -37,7 +37,6 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       onViewModelReady: (model) => model.initialize(),
       viewModelBuilder: () => PatchesSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
-        resizeToAvoidBottomInset: false,
         floatingActionButton: Visibility(
           visible: model.patches.isNotEmpty,
           child: FloatingActionButton.extended(
@@ -49,8 +48,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             ),
             icon: const Icon(Icons.check),
             onPressed: () {
-              model.selectPatches();
-              Navigator.of(context).pop();
+              if (!model.areRequiredOptionsNull(context)) {
+                model.selectPatches();
+                Navigator.of(context).pop();
+              }
             },
           ),
         ),
@@ -73,7 +74,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   Icons.arrow_back,
                   color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  model.resetSelection();
+                  Navigator.of(context).pop();
+                },
               ),
               actions: [
                 FittedBox(
@@ -81,7 +85,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   child: Container(
                     margin: const EdgeInsets.only(top: 12, bottom: 12),
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                     decoration: BoxDecoration(
                       color: Theme.of(context)
                           .colorScheme
@@ -99,7 +103,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 ),
                 CustomPopupMenu(
                   onSelected: (value) =>
-                  {model.onMenuSelection(value, context)},
+                      {model.onMenuSelection(value, context)},
                   children: {
                     0: I18nText(
                       'patchesSelectorView.loadPatchesSelection',
@@ -188,6 +192,93 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                             ],
                           ),
+                          if (model.newPatchExists())
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10.0,
+                                      bottom: 10.0,
+                                      left: 5.0,
+                                    ),
+                                    child: I18nText(
+                                      'patchesSelectorView.newPatches',
+                                      child: Text(
+                                        '',
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                ...model.getQueriedPatches(_query).map((patch) {
+                                  if (model.isPatchNew(patch)) {
+                                    return PatchItem(
+                                      name: patch.name,
+                                      simpleName: patch.getSimpleName(),
+                                      description: patch.description ?? '',
+                                      packageVersion:
+                                          model.getAppInfo().version,
+                                      supportedPackageVersions:
+                                          model.getSupportedVersions(patch),
+                                      isUnsupported: !isPatchSupported(patch),
+                                      isChangeEnabled:
+                                          _managerAPI.isPatchesChangeEnabled(),
+                                      hasUnsupportedPatchOption:
+                                          hasUnsupportedRequiredOption(
+                                        patch.options,
+                                        patch,
+                                      ),
+                                      options: patch.options,
+                                      isSelected: model.isSelected(patch),
+                                      navigateToOptions: (options) =>
+                                          model.navigateToPatchOptions(
+                                        options,
+                                        patch,
+                                      ),
+                                      onChanged: (value) => model.selectPatch(
+                                        patch,
+                                        value,
+                                        context,
+                                      ),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10.0,
+                                      bottom: 10.0,
+                                      left: 5.0,
+                                    ),
+                                    child: I18nText(
+                                      'patchesSelectorView.patches',
+                                      child: Text(
+                                        '',
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ...model.getQueriedPatches(_query).map(
                             (patch) {
                               if (patch.compatiblePackages.isNotEmpty) {
@@ -201,13 +292,21 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                   isUnsupported: !isPatchSupported(patch),
                                   isChangeEnabled:
                                       _managerAPI.isPatchesChangeEnabled(),
-                                  isNew: model.isPatchNew(
-                                    patch,
-                                    model.getAppInfo().packageName,
-                                  ),
+                                  hasUnsupportedPatchOption:
+                                      hasUnsupportedRequiredOption(
+                                          patch.options, patch),
+                                  options: patch.options,
                                   isSelected: model.isSelected(patch),
-                                  onChanged: (value) =>
-                                      model.selectPatch(patch, value, context),
+                                  navigateToOptions: (options) =>
+                                      model.navigateToPatchOptions(
+                                    options,
+                                    patch,
+                                  ),
+                                  onChanged: (value) => model.selectPatch(
+                                    patch,
+                                    value,
+                                    context,
+                                  ),
                                 );
                               } else {
                                 return Container();
@@ -254,8 +353,18 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       isUnsupported: !isPatchSupported(patch),
                                       isChangeEnabled:
                                           _managerAPI.isPatchesChangeEnabled(),
-                                      isNew: false,
+                                      hasUnsupportedPatchOption:
+                                          hasUnsupportedRequiredOption(
+                                        patch.options,
+                                        patch,
+                                      ),
+                                      options: patch.options,
                                       isSelected: model.isSelected(patch),
+                                      navigateToOptions: (options) =>
+                                          model.navigateToPatchOptions(
+                                        options,
+                                        patch,
+                                      ),
                                       onChanged: (value) => model.selectPatch(
                                         patch,
                                         value,

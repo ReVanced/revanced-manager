@@ -8,6 +8,7 @@ import app.revanced.manager.flutter.utils.signing.Signer
 import app.revanced.manager.flutter.utils.zip.ZipFile
 import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import app.revanced.patcher.PatchBundleLoader
+import app.revanced.patcher.PatchSet
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.PatchResult
@@ -21,7 +22,6 @@ import org.json.JSONObject
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.lang.Error
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
@@ -30,6 +30,8 @@ class MainActivity : FlutterActivity() {
     private lateinit var installerChannel: MethodChannel
     private var cancel: Boolean = false
     private var stopResult: MethodChannel.Result? = null
+
+    private lateinit var patches: PatchSet
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -46,24 +48,25 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
-                    val patchBundleFilePath = call.argument<String>("patchBundleFilePath")
                     val originalFilePath = call.argument<String>("originalFilePath")
                     val inputFilePath = call.argument<String>("inputFilePath")
                     val patchedFilePath = call.argument<String>("patchedFilePath")
                     val outFilePath = call.argument<String>("outFilePath")
                     val integrationsPath = call.argument<String>("integrationsPath")
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
+                    val options = call.argument<Map<String, Map<String, Any>>>("options")
                     val cacheDirPath = call.argument<String>("cacheDirPath")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
 
-                    if (patchBundleFilePath != null &&
+                    if (
                         originalFilePath != null &&
                         inputFilePath != null &&
                         patchedFilePath != null &&
                         outFilePath != null &&
                         integrationsPath != null &&
                         selectedPatches != null &&
+                        options != null &&
                         cacheDirPath != null &&
                         keyStoreFilePath != null &&
                         keystorePassword != null
@@ -71,13 +74,13 @@ class MainActivity : FlutterActivity() {
                         cancel = false
                         runPatcher(
                             result,
-                            patchBundleFilePath,
                             originalFilePath,
                             inputFilePath,
                             patchedFilePath,
                             outFilePath,
                             integrationsPath,
                             selectedPatches,
+                            options,
                             cacheDirPath,
                             keyStoreFilePath,
                             keystorePassword
@@ -94,17 +97,19 @@ class MainActivity : FlutterActivity() {
                     val patchBundleFilePath = call.argument<String>("patchBundleFilePath")!!
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
+                    try {
+                        patches = PatchBundleLoader.Dex(
+                            File(patchBundleFilePath),
+                            optimizedDexDirectory = File(cacheDirPath)
+                        )
+                    } catch (ex: Exception) {
+                        return@setMethodCallHandler result.notImplemented()
+                    } catch (err: Error) {
+                        return@setMethodCallHandler result.notImplemented()
+                    }
+
                     JSONArray().apply {
-                        try {
-                            PatchBundleLoader.Dex(
-                                File(patchBundleFilePath),
-                                optimizedDexDirectory = File(cacheDirPath)
-                            )
-                        } catch (ex: Exception) {
-                            return@setMethodCallHandler result.notImplemented()
-                        } catch (err: Error) {
-                            return@setMethodCallHandler result.notImplemented()
-                        }.forEach {
+                        patches.forEach {
                             JSONObject().apply {
                                 put("name", it.name)
                                 put("description", it.description)
@@ -124,6 +129,28 @@ class MainActivity : FlutterActivity() {
                                         put(compatiblePackageJson)
                                     }
                                 })
+                                put("options", JSONArray().apply {
+                                    it.options.values.forEach { option ->
+                                        val optionJson = JSONObject().apply option@{
+                                            put("key", option.key)
+                                            put("title", option.title)
+                                            put("description", option.description)
+                                            put("required", option.required)
+
+                                            when (val value = option.value) {
+                                                null -> put("value", null)
+                                                is Array<*> -> put("value", JSONArray().apply {
+
+                                                    value.forEach { put(it) }
+                                                })
+                                                else -> put("value", option.value)
+                                            }
+
+                                            put("optionClassType", option::class.simpleName)
+                                        }
+                                        put(optionJson)
+                                    }
+                                })
                             }.let(::put)
                         }
                     }.toString().let(result::success)
@@ -136,13 +163,13 @@ class MainActivity : FlutterActivity() {
 
     private fun runPatcher(
         result: MethodChannel.Result,
-        patchBundleFilePath: String,
         originalFilePath: String,
         inputFilePath: String,
         patchedFilePath: String,
         outFilePath: String,
         integrationsPath: String,
         selectedPatches: List<String>,
+        options: Map<String, Map<String, Any>>,
         cacheDirPath: String,
         keyStoreFilePath: String,
         keystorePassword: String
@@ -180,7 +207,7 @@ class MainActivity : FlutterActivity() {
 
                 object : java.util.logging.Handler() {
                     override fun publish(record: LogRecord) {
-                        if (record.loggerName?.startsWith("app.revanced") != true) return
+                        if (record.loggerName?.startsWith("app.revanced") != true || cancel) return
 
                         updateProgress(-1.0, "", record.message)
                     }
@@ -213,6 +240,7 @@ class MainActivity : FlutterActivity() {
                         cacheDir,
                         Aapt.binary(applicationContext).absolutePath,
                         cacheDir.path,
+                        true // TODO: Add option to disable this
                     )
                 )
 
@@ -223,10 +251,7 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
-                val patches = PatchBundleLoader.Dex(
-                    File(patchBundleFilePath),
-                    optimizedDexDirectory = cacheDir
-                ).filter { patch ->
+                val patches = patches.filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
                         it.name == patcher.context.packageMetadata.packageName
                     } ?: false
@@ -235,6 +260,10 @@ class MainActivity : FlutterActivity() {
                         isCompatible || patch.compatiblePackages.isNullOrEmpty()
 
                     compatibleOrUniversal && selectedPatches.any { it == patch.name }
+                }.onEach { patch ->
+                    options[patch.name]?.forEach { (key, value) ->
+                        patch.options[key] = value
+                    }
                 }
 
                 if (cancel) {
@@ -331,7 +360,7 @@ class MainActivity : FlutterActivity() {
                     val stack = ex.stackTraceToString()
                     updateProgress(
                         -100.0,
-                        "Aborted",
+                        "Failed",
                         "An error occurred:\n$stack"
                     )
                 }

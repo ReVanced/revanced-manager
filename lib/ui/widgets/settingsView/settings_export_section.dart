@@ -58,7 +58,32 @@ class SExportSection extends StatelessWidget {
             ),
           ),
           subtitle: I18nText('settingsView.resetStoredPatchesHint'),
-          onTap: () => _showResetStoredPatchesDialog(context),
+          onTap: () => _showResetDialog(
+            context,
+            'settingsView.resetStoredPatchesDialogTitle',
+            'settingsView.resetStoredPatchesDialogText',
+            _settingsViewModel.resetSelectedPatches,
+          ),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.resetStoredOptionsLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          subtitle: I18nText('settingsView.resetStoredOptionsHint'),
+          onTap: () => _showResetDialog(
+            context,
+            'settingsView.resetStoredOptionsDialogTitle',
+            'settingsView.resetStoredOptionsDialogText',
+            _settingsViewModel.resetAllOptions,
+          ),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -116,15 +141,18 @@ class SExportSection extends StatelessWidget {
     );
   }
 
-  Future<void> _showResetStoredPatchesDialog(context) {
+  Future<void> _showResetDialog(
+    context,
+    dialogTitle,
+    dialogText,
+    dialogAction,
+  ) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.resetStoredPatchesDialogTitle'),
+        title: I18nText(dialogTitle),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText(
-          'settingsView.resetStoredPatchesDialogText',
-        ),
+        content: I18nText(dialogText),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
@@ -135,7 +163,7 @@ class SExportSection extends StatelessWidget {
             label: I18nText('yesButton'),
             onPressed: () => {
               Navigator.of(context).pop(),
-              _settingsViewModel.resetSelectedPatches(),
+              dialogAction(),
             },
           ),
         ],
