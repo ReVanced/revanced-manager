@@ -198,9 +198,9 @@ class InstallerViewModel extends BaseViewModel {
       'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
 
       '\n~ Settings',
-      'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
-      'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
-      'Enabled experimental patches: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
+      'Allow changing patch selections: ${_managerAPI.isPatchesChangeEnabled()}',
+      'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
+      'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
 
