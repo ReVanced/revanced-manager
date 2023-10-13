@@ -12,7 +12,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
@@ -98,8 +97,9 @@ class AppSelectorViewModel extends BaseViewModel {
         if (context.mounted) {
           Navigator.pop(context);
         }
-        final List<Option> requiredNullOptions = getNullRequiredOptions(locator<PatcherViewModel>().selectedPatches, packageName);
-        if(requiredNullOptions.isNotEmpty){
+        final List<Option> requiredNullOptions = getNullRequiredOptions(
+            locator<PatcherViewModel>().selectedPatches, packageName);
+        if (requiredNullOptions.isNotEmpty) {
           locator<PatcherViewModel>().showRequiredOptionDialog();
         }
       }
@@ -144,14 +144,14 @@ class AppSelectorViewModel extends BaseViewModel {
             ),
           ),
           const SizedBox(height: 30),
-          CustomMaterialButton(
+          FilledButton(
             onPressed: () => selectAppFromStorage(context).then(
               (_) {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
             ),
-            label: Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.sd_card),
@@ -161,12 +161,11 @@ class AppSelectorViewModel extends BaseViewModel {
             ),
           ),
           const SizedBox(height: 10),
-          CustomMaterialButton(
-            isFilled: false,
+          TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            label: Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(width: 10),

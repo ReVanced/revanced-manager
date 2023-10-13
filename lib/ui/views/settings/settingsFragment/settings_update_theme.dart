@@ -8,7 +8,6 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 final _settingViewModel = SettingsViewModel();
@@ -37,12 +36,15 @@ class SUpdateTheme extends BaseViewModel {
   Future<void> setThemeMode(BuildContext context, int value) async {
     await _managerAPI.setThemeMode(value);
     final bool isDynamicTheme = DynamicTheme.of(context)!.themeId.isEven;
-    await DynamicTheme.of(context)!.setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
-    final bool isLight = value != 2 && (value == 1 || DynamicTheme.of(context)!.theme.brightness == Brightness.light);
+    await DynamicTheme.of(context)!
+        .setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
+    final bool isLight = value != 2 &&
+        (value == 1 ||
+            DynamicTheme.of(context)!.theme.brightness == Brightness.light);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         systemNavigationBarIconBrightness:
-        isLight ? Brightness.dark : Brightness.light,
+            isLight ? Brightness.dark : Brightness.light,
       ),
     );
     notifyListeners();
@@ -112,19 +114,18 @@ class SUpdateTheme extends BaseViewModel {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               setThemeMode(context, newTheme.value);
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -133,6 +134,7 @@ class SUpdateTheme extends BaseViewModel {
 }
 
 final sUpdateTheme = SUpdateTheme();
+
 class SUpdateThemeUI extends StatelessWidget {
   const SUpdateThemeUI({super.key});
 
@@ -153,11 +155,15 @@ class SUpdateThemeUI extends StatelessWidget {
               ),
             ),
           ),
-          trailing: CustomMaterialButton(
-            label: sUpdateTheme.getThemeModeName(),
-            onPressed: () => { sUpdateTheme.showThemeDialog(context) },
+          trailing: FilledButton(
+            child: sUpdateTheme.getThemeModeName(),
+            onPressed: () {
+              sUpdateTheme.showThemeDialog(context);
+            },
           ),
-          onTap: () => { sUpdateTheme.showThemeDialog(context) },
+          onTap: () {
+            sUpdateTheme.showThemeDialog(context);
+          },
         ),
         FutureBuilder<int>(
           future: _settingViewModel.getSdkVersion(),

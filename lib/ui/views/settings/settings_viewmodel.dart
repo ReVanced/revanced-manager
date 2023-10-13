@@ -15,7 +15,6 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -69,20 +68,19 @@ class SettingsViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('yesButton'),
+            TextButton(
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
                 _managerAPI.setPatchesChangeEnabled(true);
                 Navigator.of(context).pop();
               },
+              child: I18nText('yesButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('noButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: I18nText('noButton'),
             ),
           ],
         ),
@@ -104,21 +102,20 @@ class SettingsViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('noButton'),
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: I18nText('noButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
+            FilledButton(
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
                 _patchesSelectorViewModel.selectDefaultPatches();
                 _managerAPI.setPatchesChangeEnabled(false);
                 Navigator.of(context).pop();
               },
+              child: I18nText('yesButton'),
             ),
           ],
         ),

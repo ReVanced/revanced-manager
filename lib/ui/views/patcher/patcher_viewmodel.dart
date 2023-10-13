@@ -9,7 +9,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
@@ -57,19 +56,18 @@ class PatcherViewModel extends BaseViewModel {
             translationParams: {'patches': removedPatches.join('\n')},
           ),
           actions: <Widget>[
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('noButton'),
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: I18nText('noButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 showArmv7WarningDialog(context);
               },
+              child: I18nText('yesButton'),
             ),
           ],
         ),
@@ -80,7 +78,8 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   bool checkRequiredPatchOption(BuildContext context) {
-    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName).isNotEmpty) {
+    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName)
+        .isNotEmpty) {
       showRequiredOptionDialog(context);
       return false;
     }
@@ -95,19 +94,18 @@ class PatcherViewModel extends BaseViewModel {
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('patcherView.requiredOptionDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => {
               Navigator.pop(context),
               navigateToPatchesSelector(),
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -128,17 +126,18 @@ class PatcherViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('patcherView.armv7WarningDialogText'),
           actions: <Widget>[
-            CustomMaterialButton(
-              label: I18nText('noButton'),
-              onPressed: () => Navigator.of(context).pop(),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: I18nText('noButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
               },
+              child: I18nText('yesButton'),
             ),
           ],
         ),
@@ -199,11 +198,12 @@ class PatcherViewModel extends BaseViewModel {
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
-    for (final patch in usedPatches){
-      if (!patches.any((p) => p.name == patch.name)){
+    for (final patch in usedPatches) {
+      if (!patches.any((p) => p.name == patch.name)) {
         removedPatches.add('• ${patch.name}');
         for (final option in patch.options) {
-          _managerAPI.clearPatchOption(selectedApp!.packageName, patch.name, option.key);
+          _managerAPI.clearPatchOption(
+              selectedApp!.packageName, patch.name, option.key);
         }
       }
     }

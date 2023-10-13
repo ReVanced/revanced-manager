@@ -14,7 +14,6 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
@@ -139,7 +138,6 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> runPatcher() async {
-
     try {
       await _patcherAPI.runPatcher(
         _app.packageName,
@@ -159,7 +157,7 @@ class InstallerViewModel extends BaseViewModel {
 
     // Necessary to reset the state of patches so that they
     // can be reloaded again.
-   _managerAPI.patches.clear();
+    _managerAPI.patches.clear();
     await _patcherAPI.loadPatches();
 
     try {
@@ -191,19 +189,16 @@ class InstallerViewModel extends BaseViewModel {
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
-
       '\n~ Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches: ${_patches.map((p) => p.name).toList().join(", ")}',
-
       '\n~ Settings',
       'Enabled changing patches: ${_managerAPI.isPatchesChangeEnabled()}',
       'Enabled universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Enabled experimental patches: ${_managerAPI.areExperimentalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-
       '\n~ Logs',
       logs,
       '```',
@@ -226,20 +221,19 @@ class InstallerViewModel extends BaseViewModel {
           child: I18nText('installerView.screenshotDetected'),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               copyLogs();
               showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
@@ -310,19 +304,18 @@ class InstallerViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              label: I18nText('cancelButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: I18nText('cancelButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 installResult(context, installType.value == 1);
               },
+              child: I18nText('installerView.installButton'),
             ),
           ],
         ),

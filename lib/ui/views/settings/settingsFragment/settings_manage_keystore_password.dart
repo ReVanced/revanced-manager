@@ -6,7 +6,6 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class SManageKeystorePassword extends BaseViewModel {
@@ -47,21 +46,20 @@ class SManageKeystorePassword extends BaseViewModel {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               _keystorePasswordController.clear();
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               final String passwd = _keystorePasswordController.text;
               _managerAPI.setKeystorePassword(passwd);
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),

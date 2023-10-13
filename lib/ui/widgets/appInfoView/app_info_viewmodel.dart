@@ -12,7 +12,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class AppInfoViewModel extends BaseViewModel {
@@ -70,9 +69,11 @@ class AppInfoViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('appInfoView.rootDialogText'),
           actions: <Widget>[
-            CustomMaterialButton(
-              label: I18nText('okButton'),
-              onPressed: () => Navigator.of(context).pop(),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: I18nText('okButton'),
             ),
           ],
         ),
@@ -90,18 +91,20 @@ class AppInfoViewModel extends BaseViewModel {
               'appInfoView.unpatchDialogText',
             ),
             actions: <Widget>[
-              CustomMaterialButton(
-                isFilled: false,
-                label: I18nText('noButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              CustomMaterialButton(
-                label: I18nText('yesButton'),
+              TextButton(
                 onPressed: () {
-                  uninstallApp(context, app, onlyUnpatch);
-                  Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
+                child: I18nText('noButton'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  uninstallApp(context, app, onlyUnpatch);
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                },
+                child: I18nText('yesButton'),
               ),
             ],
           ),
@@ -136,9 +139,11 @@ class AppInfoViewModel extends BaseViewModel {
           child: Text(getAppliedPatchesString(app.appliedPatches)),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
-            onPressed: () => Navigator.of(context).pop(),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: I18nText('okButton'),
           ),
         ],
       ),

@@ -10,7 +10,6 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_enable_patches
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_experimental_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 final _settingsViewModel = SettingsViewModel();
 
@@ -86,17 +85,18 @@ class SAdvancedSection extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.regenerateKeystoreDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
-            onPressed: () => {
-              Navigator.of(context).pop(),
-              _settingsViewModel.deleteKeystore(),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
             },
+            child: I18nText('noButton'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _settingsViewModel.deleteKeystore();
+            },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
