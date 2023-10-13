@@ -35,7 +35,7 @@ ReVanced Manager has settings that can be configured to your liking.
   You can import, export or reset the following settings:
 
   - 🔑 Keystore
-  - 📄 ReVanced Patches selection
+  - 📄 ReVanced Patch selections
   - ⚙️ Patch options
 
   > [!NOTE]  
