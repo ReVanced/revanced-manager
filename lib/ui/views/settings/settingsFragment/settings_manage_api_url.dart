@@ -5,7 +5,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:stacked/stacked.dart';
 
@@ -36,15 +35,17 @@ class SManageApiUrl extends BaseViewModel {
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.api_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
+              TextField(
+                controller: _apiUrlController,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: apiUrl,
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.selectApiURL',
+                  ),
                 ),
-                inputController: _apiUrlController,
-                label: I18nText('settingsView.selectApiURL'),
-                hint: apiUrl,
-                onChanged: (value) => notifyListeners(),
               ),
             ],
           ),

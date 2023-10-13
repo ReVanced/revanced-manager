@@ -5,7 +5,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:stacked/stacked.dart';
 
@@ -46,59 +45,69 @@ class SManageSources extends BaseViewModel {
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.extension_outlined,
-                  color: Colors.transparent,
+              TextField(
+                controller: _hostSourceController,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: hostRepository,
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.hostRepositoryLabel',
+                  ),
                 ),
-                inputController: _hostSourceController,
-                label: I18nText('settingsView.hostRepositoryLabel'),
-                hint: hostRepository,
-                onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 20),
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.extension_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
+              TextField(
+                controller: _orgPatSourceController,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: patchesRepo.split('/')[0],
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.orgPatchesLabel',
+                  ),
                 ),
-                inputController: _orgPatSourceController,
-                label: I18nText('settingsView.orgPatchesLabel'),
-                hint: patchesRepo.split('/')[0],
-                onChanged: (value) => notifyListeners(),
               ),
-              const SizedBox(height: 8),
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.extension_outlined,
-                  color: Colors.transparent,
+              const SizedBox(height: 15),
+              TextField(
+                controller: _patSourceController,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: patchesRepo.split('/')[1],
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.sourcesPatchesLabel',
+                  ),
                 ),
-                inputController: _patSourceController,
-                label: I18nText('settingsView.sourcesPatchesLabel'),
-                hint: patchesRepo.split('/')[1],
-                onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 20),
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.merge_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
+              TextField(
+                controller: _orgIntSourceController,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: integrationsRepo.split('/')[0],
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.orgIntegrationsLabel',
+                  ),
                 ),
-                inputController: _orgIntSourceController,
-                label: I18nText('settingsView.orgIntegrationsLabel'),
-                hint: integrationsRepo.split('/')[0],
-                onChanged: (value) => notifyListeners(),
               ),
-              const SizedBox(height: 8),
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.merge_outlined,
-                  color: Colors.transparent,
+              const SizedBox(height: 15),
+              TextField(
+                controller: _intSourceController,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: integrationsRepo.split('/')[1],
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.sourcesIntegrationsLabel',
+                  ),
                 ),
-                inputController: _intSourceController,
-                label: I18nText('settingsView.sourcesIntegrationsLabel'),
-                hint: integrationsRepo.split('/')[1],
-                onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 20),
               I18nText('settingsView.sourcesUpdateNote'),
