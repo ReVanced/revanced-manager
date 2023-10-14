@@ -167,8 +167,6 @@ class PatchesSelectorViewModel(
         }
     }
 
-    fun isSelectionEmpty() = selectedPatches.values.all { it.isEmpty() }
-
     fun switchBaseSelectionMode() = viewModelScope.launch {
         baseSelectionMode = if (baseSelectionMode == BaseSelectionMode.DEFAULT) {
             BaseSelectionMode.PREVIOUS
@@ -176,6 +174,20 @@ class PatchesSelectorViewModel(
             BaseSelectionMode.DEFAULT
         }
     }
+
+    private suspend fun patchesAvailable(bundle: BundleInfo): List<PatchInfo> {
+        val patches = (bundle.supported + bundle.universal).toMutableList()
+        val removeUnsupported = !allowExperimental.get()
+        if (!removeUnsupported) patches += bundle.unsupported
+        return patches
+    }
+
+    suspend fun isSelectionNotEmpty() =
+        bundlesFlow.first().any { bundle ->
+            patchesAvailable(bundle).any { patch ->
+                isSelected(bundle.uid, patch)
+            }
+        }
 
     private fun getOrCreateSelection(bundle: Int) =
         explicitPatchesSelection.getOrPut(bundle, ::mutableStateMapOf)
