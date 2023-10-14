@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5515d164bc8f713201506d42a02d337f",
+    "identityHash": "371c7a84b122a2de8b660b35e6e9ce14",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -160,7 +160,7 @@
       },
       {
         "tableName": "downloaded_app",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `file` TEXT NOT NULL, PRIMARY KEY(`package_name`, `version`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `version` TEXT NOT NULL, `directory` TEXT NOT NULL, PRIMARY KEY(`package_name`, `version`))",
         "fields": [
           {
             "fieldPath": "packageName",
@@ -175,8 +175,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "file",
-            "columnName": "file",
+            "fieldPath": "directory",
+            "columnName": "directory",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -300,7 +300,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5515d164bc8f713201506d42a02d337f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '371c7a84b122a2de8b660b35e6e9ce14')"
     ]
   }
 }

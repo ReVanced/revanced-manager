@@ -190,19 +190,11 @@ class PatcherWorker(
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
-                    val savePath = applicationContext.filesDir.resolve("downloaded-apps")
-                        .resolve(args.input.packageName).also { it.mkdirs() }
-
-                    selectedApp.app.download(
-                        savePath,
+                    downloadedAppRepository.download(
+                        selectedApp.app,
                         prefs.preferSplits.get(),
                         onDownload = { downloadProgress.emit(it) }
                     ).also {
-                        downloadedAppRepository.add(
-                            args.input.packageName,
-                            args.input.version,
-                            it
-                        )
                         args.setInputFile(it)
                         updateProgress() // Downloading
                     }

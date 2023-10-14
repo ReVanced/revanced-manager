@@ -171,7 +171,7 @@ class APKMirror : AppDownloader, KoinComponent {
             saveDirectory: File,
             preferSplit: Boolean,
             onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit
-        ): File {
+        ) {
             val variants = httpClient.getHtml { url(apkMirror + downloadLink) }
                 .div {
                     withClass = "variants-table"
@@ -246,18 +246,10 @@ class APKMirror : AppDownloader, KoinComponent {
                     }
                 }
 
-            val saveLocation = if (variant.apkType == APKType.BUNDLE)
-                saveDirectory.resolve(version).also { it.mkdirs() }
-            else
-                saveDirectory.resolve("$version.apk")
+            val targetFile = saveDirectory.resolve("base.apk")
 
             try {
-                val downloadLocation = if (variant.apkType == APKType.BUNDLE)
-                    saveLocation.resolve("temp.zip")
-                else
-                    saveLocation
-
-                httpClient.download(downloadLocation) {
+                httpClient.download(targetFile) {
                     url(apkMirror + downloadLink)
                     onDownload { bytesSentTotal, contentLength ->
                         onDownload(bytesSentTotal.div(100000).toFloat().div(10) to contentLength.div(100000).toFloat().div(10))
@@ -267,16 +259,11 @@ class APKMirror : AppDownloader, KoinComponent {
                 if (variant.apkType == APKType.BUNDLE) {
                     // TODO: Extract temp.zip
 
-                    downloadLocation.delete()
+                    targetFile.delete()
                 }
-            } catch (e: Exception) {
-                saveLocation.deleteRecursively()
-                throw e
             } finally {
                 onDownload(null)
             }
-
-            return saveLocation
         }
     }
 

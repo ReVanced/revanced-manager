@@ -11,5 +11,5 @@ import java.io.File
 data class DownloadedApp(
     @ColumnInfo(name = "package_name") val packageName: String,
     @ColumnInfo(name = "version") val version: String,
-    @ColumnInfo(name = "file") val file: File,
+    @ColumnInfo(name = "directory") val directory: File,
 )
