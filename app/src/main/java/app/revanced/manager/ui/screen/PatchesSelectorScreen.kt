@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -88,9 +87,13 @@ fun PatchesSelectorScreen(
         mutableStateOf(null)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    var showPatchButton by remember { mutableStateOf(true) }
 
     val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    var showPatchButton by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        showPatchButton = vm.isSelectionNotEmpty()
+    }
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -327,7 +330,7 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
-            if (showPatchButton) {
+            if(showPatchButton) {
                 ExtendedFloatingActionButton(
                     text = {
                         Text(stringResource(R.string.patch))
