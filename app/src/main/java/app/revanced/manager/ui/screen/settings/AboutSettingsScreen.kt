@@ -24,6 +24,7 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SettingsDestination
+import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import dev.olshevski.navigation.reimagined.NavController
@@ -57,15 +58,15 @@ fun AboutSettingsScreen(
         }),
     )
 
-    val listItems = listOf(
+    val listItems = listOfNotNull(
         Triple(stringResource(R.string.submit_feedback), stringResource(R.string.submit_feedback_description),
             third = {
                 context.openUrl("https://github.com/ReVanced/revanced-manager/issues/new/choose")
             }),
         Triple(stringResource(R.string.contributors), stringResource(R.string.contributors_description),
-            third = onContributorsClick),
+            third = onContributorsClick).takeIf { context.isDebuggable },
         Triple(stringResource(R.string.developer_options), stringResource(R.string.developer_options_description),
-            third = { /*TODO*/ }),
+            third = { /*TODO*/ }).takeIf { context.isDebuggable },
         Triple(stringResource(R.string.opensource_licenses), stringResource(R.string.opensource_licenses_description),
             third = onLicensesClick)
     )

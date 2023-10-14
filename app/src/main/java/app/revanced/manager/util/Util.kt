@@ -2,6 +2,7 @@ package app.revanced.manager.util
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -21,6 +22,8 @@ import java.util.Locale
 
 typealias PatchesSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
+
+val Context.isDebuggable get() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
 
 fun Context.openUrl(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, url.toUri()).apply {
