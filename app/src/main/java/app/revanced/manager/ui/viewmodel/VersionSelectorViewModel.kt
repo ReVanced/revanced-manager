@@ -54,8 +54,8 @@ class VersionSelectorViewModel(
             bundle.patches.flatMap { patch ->
                 patch.compatiblePackages.orEmpty()
                     .filter { it.packageName == packageName }
-                    .onEach { if (it.versions.isEmpty()) patchesWithoutVersions++ }
-                    .flatMap { it.versions }
+                    .onEach { if (it.versions == null) patchesWithoutVersions++ }
+                    .flatMap { it.versions.orEmpty() }
             }
         }.groupingBy { it }
             .eachCount()
@@ -68,7 +68,7 @@ class VersionSelectorViewModel(
     }
 
     val downloadedVersions = downloadedAppRepository.getAll().map { downloadedApps ->
-        downloadedApps.filter { it.packageName == packageName }.map { SelectedApp.Local(it.packageName, it.version, it.file) }
+        downloadedApps.filter { it.packageName == packageName }.map { SelectedApp.Local(it.packageName, it.version, downloadedAppRepository.getApkFileForApp(it), false) }
     }
 
     init {

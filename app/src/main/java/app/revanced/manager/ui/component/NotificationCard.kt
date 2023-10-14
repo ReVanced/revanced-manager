@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,13 +26,13 @@ fun NotificationCard(
     color: Color,
     icon: ImageVector,
     text: String,
-    content: @Composable () -> Unit
+    content: (@Composable () -> Unit)? = null,
 ) {
     Card(
+        colors = CardDefaults.cardColors(containerColor = color),
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(28.dp))
-            .background(color)
     ) {
         Row(
             modifier = Modifier
@@ -47,11 +49,11 @@ fun NotificationCard(
                 contentDescription = null,
             )
             Text(
-                modifier = Modifier.width(220.dp),
+                modifier = if (content != null) Modifier.width(220.dp) else Modifier,
                 text = text,
                 style = MaterialTheme.typography.bodyMedium
             )
-            content()
+            content?.invoke()
         }
     }
 }

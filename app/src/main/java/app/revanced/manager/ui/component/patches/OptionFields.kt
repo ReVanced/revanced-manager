@@ -26,10 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
-import app.revanced.manager.data.platform.FileSystem
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.util.toast
-import app.revanced.patcher.patch.PatchOption
+import app.revanced.patcher.patch.options.types.*
 import org.koin.compose.rememberKoinInject
 
 // Composable functions do not support function references, so we have to use composable lambdas instead.
@@ -61,7 +61,7 @@ private fun StringOptionDialog(
         mutableStateOf(value.orEmpty())
     }
 
-    val fs: FileSystem = rememberKoinInject()
+    val fs: Filesystem = rememberKoinInject()
     val (contract, permissionName) = fs.permissionContract()
     val permissionLauncher = rememberLauncherForActivityResult(contract = contract) {
         showFileDialog = it
@@ -195,8 +195,8 @@ fun OptionItem(option: Option, value: Any?, setValue: (Any?) -> Unit) {
     val implementation = remember(option.type) {
         when (option.type) {
             // These are the only two types that are currently used by the official patches.
-            PatchOption.StringOption::class.java -> StringOption
-            PatchOption.BooleanOption::class.java -> BooleanOption
+            StringPatchOption::class.java -> StringOption
+            BooleanPatchOption::class.java -> BooleanOption
             else -> UnknownOption
         }
     }

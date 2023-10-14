@@ -91,21 +91,6 @@ fun ManagerUpdateChangelog(
                         color = MaterialTheme.colorScheme.outline,
                     )
                 }
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.FileDownload,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Text(
-                        vm.formattedDownloadCount,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.outline,
-                    )
-                }
             }
             Markdown(
                 vm.changelogHtml,

@@ -31,6 +31,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import kotlin.io.path.deleteExisting
+import kotlin.io.path.inputStream
 
 @OptIn(ExperimentalSerializationApi::class)
 class ImportExportViewModel(
@@ -59,9 +60,11 @@ class ImportExportViewModel(
             }
         }
 
-        knownPasswords.forEach {
-            if (tryKeystoreImport(KeystoreManager.DEFAULT, it, path)) {
-                return@launch
+        aliases.forEach { alias ->
+            knownPasswords.forEach { pass ->
+                if (tryKeystoreImport(alias, pass, path)) {
+                    return@launch
+                }
             }
         }
 
@@ -77,9 +80,11 @@ class ImportExportViewModel(
         tryKeystoreImport(cn, pass, keystoreImportPath!!)
 
     private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
-        if (keystoreManager.import(cn, pass, path)) {
-            cancelKeystoreImport()
-            return true
+        path.inputStream().use { stream ->
+            if (keystoreManager.import(cn, pass, stream)) {
+                cancelKeystoreImport()
+                return true
+            }
         }
 
         return false
@@ -174,6 +179,7 @@ class ImportExportViewModel(
     }
 
     private companion object {
-        val knownPasswords = setOf("ReVanced", "s3cur3p@ssw0rd")
+        val knownPasswords = arrayOf("ReVanced", "s3cur3p@ssw0rd")
+        val aliases = arrayOf(KeystoreManager.DEFAULT, "alias", "ReVanced Key")
     }
 }

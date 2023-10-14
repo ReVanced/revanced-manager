@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
@@ -132,9 +131,6 @@ fun DashboardScreen(
                 AppTopBar(
                     title = stringResource(R.string.app_name),
                     actions = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
-                        }
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }

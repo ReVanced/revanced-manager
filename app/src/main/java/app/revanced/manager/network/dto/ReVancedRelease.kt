@@ -21,7 +21,8 @@ data class ReVancedReleaseMeta(
     val draft: Boolean,
     val prerelease: Boolean,
     @SerialName("created_at") val createdAt: String,
-    @SerialName("published_at") val publishedAt: String
+    @SerialName("published_at") val publishedAt: String,
+    val body: String,
 )
 
 @Serializable
