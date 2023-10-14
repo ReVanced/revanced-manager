@@ -1,5 +1,7 @@
 package app.revanced.manager.flutter
 
+import android.app.SearchManager
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import app.revanced.manager.flutter.utils.Aapt
@@ -38,6 +40,17 @@ class MainActivity : FlutterActivity() {
 
         val patcherChannel = "app.revanced.manager.flutter/patcher"
         val installerChannel = "app.revanced.manager.flutter/installer"
+        val openBrowserChannel = "app.revanced.manager.flutter/browser"
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, openBrowserChannel).setMethodCallHandler { call, result ->
+            if (call.method == "openBrowser") {
+                val searchQuery = call.argument<String>("query")
+                openBrowser(searchQuery)
+                result.success(null)
+            } else {
+                result.notImplemented()
+            }
+        }
 
         val mainChannel =
             MethodChannel(flutterEngine.dartExecutor.binaryMessenger, patcherChannel)
@@ -160,6 +173,16 @@ class MainActivity : FlutterActivity() {
             }
         }
     }
+
+    fun openBrowser(query: String?) {
+        val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
+            putExtra(SearchManager.QUERY, query)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
 
     private fun runPatcher(
         result: MethodChannel.Result,

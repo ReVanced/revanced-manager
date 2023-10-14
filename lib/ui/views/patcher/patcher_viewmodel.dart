@@ -1,6 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -168,15 +172,10 @@ class PatcherViewModel extends BaseViewModel {
     final String suggestedVersion =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
 
-    String stringUrl = 'https://www.google.com/search?q=${selectedApp!.packageName}'
-        '+apk';
     if(suggestedVersion.isNotEmpty) {
-      stringUrl = '$stringUrl+version+v+$suggestedVersion';
-    }
-
-    final Uri url = Uri.parse(stringUrl);
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
+      await openDefaultBrowser('${selectedApp!.packageName} apk version v$suggestedVersion');
+    }else{
+      await openDefaultBrowser('${selectedApp!.packageName} apk');
     }
   }
 
@@ -201,6 +200,20 @@ class PatcherViewModel extends BaseViewModel {
     )}: $suggestedVersion';
   }
 
+  Future<void> openDefaultBrowser(String query) async {
+    if (Platform.isAndroid) {
+      try {
+        const platform = MethodChannel('app.revanced.manager.flutter/browser');
+        await platform.invokeMethod('openBrowser', {'query': query});
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    } else {
+      throw 'Platform not supported';
+    }
+  }
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
     removedPatches.clear();

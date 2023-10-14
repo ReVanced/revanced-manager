@@ -4,6 +4,7 @@ import 'package:device_apps/device_apps.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -74,15 +75,26 @@ class AppSelectorViewModel extends BaseViewModel {
   Future<void> searchSuggestedVersionOnWeb(
       {required String packageName,}) async {
     final String suggestedVersion = getSuggestedVersion(packageName);
-    String stringUrl = 'https://www.google.com/search?q=$packageName'
-        '+apk';
-    if(suggestedVersion.isNotEmpty) {
-      stringUrl = '$stringUrl+version+v+$suggestedVersion';
-    }
 
-    final Uri url = Uri.parse(stringUrl);
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
+    if(suggestedVersion.isNotEmpty) {
+      await openDefaultBrowser('$packageName apk version v$suggestedVersion');
+    }else{
+      await openDefaultBrowser('$packageName apk');
+    }
+  }
+
+  Future<void> openDefaultBrowser(String query) async {
+    if (Platform.isAndroid) {
+      try {
+        const platform = MethodChannel('app.revanced.manager.flutter/browser');
+        await platform.invokeMethod('openBrowser', {'query': query});
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    } else {
+      throw 'Platform not supported';
     }
   }
 
