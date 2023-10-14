@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -75,9 +74,6 @@ fun InstallerScreen(
                 title = stringResource(R.string.installer),
                 onBackClick = onBackClick,
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Outlined.HelpOutline, stringResource(R.string.help))
-                    }
                     IconButton(onClick = { dropdownActive = true }) {
                         Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
                     }
@@ -210,7 +206,7 @@ fun InstallStep(step: Step) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            ArrowButton(expanded = expanded) {
+            ArrowButton(modifier = Modifier.size(24.dp), expanded = expanded) {
                 expanded = !expanded
             }
         }
@@ -222,7 +218,6 @@ fun InstallStep(step: Step) {
                     .background(MaterialTheme.colorScheme.background.copy(0.6f))
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .padding(start = 4.dp)
             ) {
                 step.subSteps.forEach { subStep ->
                     var messageExpanded by rememberSaveable { mutableStateOf(true) }
@@ -233,7 +228,7 @@ fun InstallStep(step: Step) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        StepIcon(subStep.state, downloadProgress?.value, size = 18.dp)
+                        StepIcon(subStep.state, downloadProgress?.value, size = 24.dp)
 
                         Text(
                             text = subStep.name,
@@ -244,7 +239,10 @@ fun InstallStep(step: Step) {
                         )
 
                         if (stacktrace != null) {
-                            ArrowButton(expanded = messageExpanded) {
+                            ArrowButton(
+                                modifier = Modifier.size(24.dp),
+                                expanded = messageExpanded
+                            ) {
                                 messageExpanded = !messageExpanded
                             }
                         } else {

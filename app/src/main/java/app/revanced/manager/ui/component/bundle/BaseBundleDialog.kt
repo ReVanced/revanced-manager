@@ -22,10 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.util.isDebuggable
 
 @Composable
 fun BaseBundleDialog(
@@ -159,22 +161,18 @@ fun BaseBundleDialog(
         )
     }
 
-    if (patchCount > 0) {
-        BundleListItem(
-            headlineText = stringResource(R.string.patches),
-            supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
-            else stringResource(R.string.patches_available, patchCount),
-            trailingContent = {
-                if (patchCount > 0) {
-                    IconButton(onClick = onPatchesClick) {
-                        Icon(
-                            Icons.Outlined.ArrowRight,
-                            stringResource(R.string.patches)
-                        )
-                    }
-                }
-            }
-        )
+    val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
+    BundleListItem(
+        headlineText = stringResource(R.string.patches),
+        supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
+        else stringResource(R.string.patches_available, patchCount),
+        modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
+    ) {
+        if (patchesClickable)
+            Icon(
+                Icons.Outlined.ArrowRight,
+                stringResource(R.string.patches)
+            )
     }
 
     version?.let {

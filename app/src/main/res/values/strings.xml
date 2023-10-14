@@ -11,6 +11,8 @@
     <string name="select_app">Select an app</string>
     <string name="select_patches">Select patches</string>
 
+    <string name="unsupported_architecture_warning">Patching on ARMv7 devices is not yet supported and will most likely fail.</string>
+
     <string name="import_">Import</string>
     <string name="import_bundle">Import patch bundle</string>
     <string name="bundle_patches">Bundle patches</string>
@@ -24,10 +26,12 @@
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
     
+    <string name="legacy_import_failed">Could not import legacy settings</string>
+
     <string name="auto_updates_dialog_title">Select updates to receive</string>
     <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
-    <string name="auto_updates_dialog_manager">Manager updates</string>
-    <string name="auto_updates_dialog_patches">Patches</string>
+    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
+    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
@@ -143,9 +147,14 @@
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
+    <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
+    <string name="selection_warning_title">Stop using defaults?</string>
+    <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
+    <string name="selection_warning_continue_countdown">Continue (%ds)</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
+    <string name="search_patches">Patch name</string>
     <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
@@ -181,6 +190,9 @@
     <string name="select_version">Select version</string>
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
+
+    <string name="patches_selector_sheet_filter_title">Filter</string>
+    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
@@ -223,6 +235,8 @@
     <string name="collapse_content">collapse</string>
 
     <string name="more">More</string>
+    <string name="continue_">Continue</string>
+    <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>

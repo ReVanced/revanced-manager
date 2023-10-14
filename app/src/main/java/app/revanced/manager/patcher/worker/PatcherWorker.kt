@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -30,8 +31,6 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
-import app.revanced.patcher.extensions.PatchExtensions.options
-import app.revanced.patcher.extensions.PatchExtensions.patchName
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,6 +50,7 @@ class PatcherWorker(
     private val prefs: PreferencesManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
+    private val fs: Filesystem by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
@@ -59,13 +59,12 @@ class PatcherWorker(
         val output: String,
         val selectedPatches: PatchesSelection,
         val options: Options,
-        val packageName: String,
-        val packageVersion: String,
         val progress: MutableStateFlow<ImmutableList<Step>>,
         val logger: ManagerLogger,
-        val selectedApp: SelectedApp,
         val setInputFile: (File) -> Unit
-    )
+    ) {
+        val packageName get() = input.packageName
+    }
 
     companion object {
         private const val logPrefix = "[Worker]:"
@@ -155,7 +154,7 @@ class PatcherWorker(
 
         return try {
 
-            if (args.selectedApp is SelectedApp.Installed) {
+            if (args.input is SelectedApp.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
                     if (it.installType == InstallType.ROOT) {
                         rootInstaller.unmount(args.packageName)
@@ -172,39 +171,30 @@ class PatcherWorker(
             args.options.forEach { (bundle, configuredPatchOptions) ->
                 val patches = allPatches[bundle] ?: return@forEach
                 configuredPatchOptions.forEach { (patchName, options) ->
-                    patches.single { it.patchName == patchName }.options?.let {
-                        options.forEach { (key, value) ->
-                            it[key] = value
-                        }
+                    val patchOptions = patches.single { it.name == patchName }.options
+                    options.forEach { (key, value) ->
+                        patchOptions[key] = value
                     }
                 }
             }
 
             val patches = args.selectedPatches.flatMap { (bundle, selected) ->
-                allPatches[bundle]?.filter { selected.contains(it.patchName) }
+                allPatches[bundle]?.filter { selected.contains(it.name) }
                     ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
             }
 
 
             // Ensure they are in the correct order so we can track progress properly.
-            progressManager.replacePatchesList(patches.map { it.patchName })
+            progressManager.replacePatchesList(patches.map { it.name.orEmpty() })
             updateProgress() // Loading patches
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
-                    val savePath = applicationContext.filesDir.resolve("downloaded-apps")
-                        .resolve(args.input.packageName).also { it.mkdirs() }
-
-                    selectedApp.app.download(
-                        savePath,
+                    downloadedAppRepository.download(
+                        selectedApp.app,
                         prefs.preferSplits.get(),
                         onDownload = { downloadProgress.emit(it) }
                     ).also {
-                        downloadedAppRepository.add(
-                            args.input.packageName,
-                            args.input.version,
-                            it
-                        )
                         args.setInputFile(it)
                         updateProgress() // Downloading
                     }
@@ -215,7 +205,7 @@ class PatcherWorker(
             }
 
             Session(
-                applicationContext.cacheDir.absolutePath,
+                fs.tempDir.absolutePath,
                 frameworkPath,
                 aaptPath,
                 args.logger,

@@ -22,7 +22,6 @@ interface AppDownloader {
             saveDirectory: File,
             preferSplit: Boolean,
             onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit = {}
-        ): File
+        )
     }
-
 }
