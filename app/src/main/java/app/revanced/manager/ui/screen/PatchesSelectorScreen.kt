@@ -327,7 +327,7 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
-            AnimatedVisibility(visible = showPatchButton) {
+            if (showPatchButton) {
                 ExtendedFloatingActionButton(
                     text = {
                         Text(stringResource(R.string.patch))
