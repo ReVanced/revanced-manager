@@ -19,7 +19,7 @@ class DownloadManager {
   );
 
   Future<void> initialize() async {
-    _userAgent = 'RevancedManager/${await _managerAPI.getCurrentManagerVersion()}';
+    _userAgent = 'Revanced-Manager/${await _managerAPI.getCurrentManagerVersion()}';
   }
 
   Dio initDio(String url) {
