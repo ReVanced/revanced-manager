@@ -16,5 +16,5 @@ class Converters {
     fun fileFromString(value: String) = File(value)
 
     @TypeConverter
-    fun fileToString(file: File): String = file.absolutePath
+    fun fileToString(file: File): String = file.path
 }
