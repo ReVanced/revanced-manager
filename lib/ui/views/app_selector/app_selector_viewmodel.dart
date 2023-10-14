@@ -13,6 +13,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -94,7 +95,7 @@ class AppSelectorViewModel extends BaseViewModel {
       icon: application.icon,
       patchDate: DateTime.now(),
     );
-    locator<PatcherViewModel>().loadLastSelectedPatches();
+    await locator<PatcherViewModel>().loadLastSelectedPatches();
   }
 
   Future<void> canSelectInstalled(
@@ -109,9 +110,13 @@ class AppSelectorViewModel extends BaseViewModel {
           return showSelectFromStorageDialog(context);
         }
       } else if (!await checkSplitApk(packageName) || isRooted) {
-        selectApp(app);
+        await selectApp(app);
         if (context.mounted) {
           Navigator.pop(context);
+        }
+        final List<Option> requiredNullOptions = getNullRequiredOptions(locator<PatcherViewModel>().selectedPatches, packageName);
+        if(requiredNullOptions.isNotEmpty){
+          locator<PatcherViewModel>().showRequiredOptionDialog();
         }
       }
     }
@@ -240,7 +245,8 @@ class AppSelectorViewModel extends BaseViewModel {
           (app) =>
               query.isEmpty ||
               query.length < 2 ||
-              app.appName.toLowerCase().contains(query.toLowerCase()),
+              app.appName.toLowerCase().contains(query.toLowerCase()) ||
+              app.packageName.toLowerCase().contains(query.toLowerCase()),
         )
         .toList();
   }

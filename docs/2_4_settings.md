@@ -6,29 +6,38 @@ ReVanced Manager has settings that can be configured to your liking.
 
 - ### 🔗 API URL
 
-  Specify the URL of the API to use. This is used to fetch ReVanced Patches and update ReVanced Manager.
+  API to use to fetch updates and ReVanced Patches from.
 
 - ### 🧬 Sources
 
-  Override the API and change the source of ReVanced Patches.
+  Override the API and download ReVanced Patches from a different source.
 
 - ### 🧪 Experimental ReVanced Patches support
 
-  Lift app version constraints from ReVanced Patches. This allows you to patch any version of an app, even if the patch is not explicitly compatible with it.
+  Disable checking for the version of the app when applying ReVanced Patches.
+
+  > [!WARNING]  
+  > This may cause issues if the ReVanced Patches are not compatible with the app version.
 
 - ### 🧑‍🔬 Experimental universal support
 
-  This will show or hide ReVanced Patches, which are not meant for any app in particular but rather for all apps but may not work on all apps.
+  This will show or hide ReVanced Patches, which are not meant for any app in particular but apply to all apps
 
-- ### 🔑 Export, import or delete keystore
+  > [!WARNING]  
+  > Because the patches generalize the app, they may not work on all apps.
 
-  Manage the keystore used to sign patched apps.
+- ### 💾 Imports & Exports
 
-- ### 📄 Export, import or reset ReVanced Patches selection
+  You can import, export or reset the following settings:
 
-  Manage the ReVanced Patches selection. This is useful if you want to share your ReVanced Patches selection with others or reset it to the default selection.
+  - 🔑 Keystore
+  - 📄 ReVanced Patches selection
+  - ⚙️ Options
 
-- ### ℹ️ About
+  > [!NOTE]  
+  > This is particularly useful if you want to backup or reset your settings.
+
+- ### ❓ About
 
   View information about your device and ReVanced Manager. This includes the version of ReVanced Manager and supported architectures of your device.
 

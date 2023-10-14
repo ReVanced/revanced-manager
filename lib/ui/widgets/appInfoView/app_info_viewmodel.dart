@@ -146,7 +146,7 @@ class AppInfoViewModel extends BaseViewModel {
   }
 
   String getAppliedPatchesString(List<String> appliedPatches) {
-    return '\u2022 ${appliedPatches.join('\n\u2022 ')}';
+    return '• ${appliedPatches.join('\n• ')}';
   }
 
   void openApp(PatchedApplication app) {

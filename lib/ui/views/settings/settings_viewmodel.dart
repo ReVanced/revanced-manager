@@ -246,6 +246,11 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
+  void resetAllOptions() {
+    _managerAPI.resetAllOptions();
+    _toast.showBottom('settingsView.resetStoredOptions');
+  }
+
   void resetSelectedPatches() {
     _managerAPI.resetLastSelectedPatches();
     _toast.showBottom('settingsView.resetStoredPatches');
