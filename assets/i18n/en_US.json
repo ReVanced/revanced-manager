@@ -254,7 +254,7 @@
         "resetStoredPatchesLabel": "Reset patch selection",
         "resetStoredPatchesHint": "Reset the stored patch selection",
         "resetStoredPatchesDialogTitle": "Reset patch selection?",
-        "resetStoredPatchesDialogText": "The default selection of patches will be restored..",
+        "resetStoredPatchesDialogText": "The default selection of patches will be restored.",
         "resetStoredPatches": "Patch selection has been reset",
 
         "resetStoredOptionsLabel": "Reset patch options",
