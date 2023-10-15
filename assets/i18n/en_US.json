@@ -153,7 +153,7 @@
         "unsupportedPatchVersion": "Patch is not supported for this app version.",
         "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
 
-        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Allow changing patch selections\" in the settings.",
+        "patchesChangeWarningDialogText": "It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou'll need to turn on \"Allow changing patch selection\" in settings before changing any patch selection.",
         "patchesChangeWarningDialogButton": "Use default selection"
     },
     "installerView": {
