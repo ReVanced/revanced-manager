@@ -1,5 +1,5 @@
 {
-    "okButton": "",
+    "okButton": "OK",
     "cancelButton": "Avbryt",
     "quitButton": "Avsluta",
     "updateButton": "Uppdatera",
@@ -17,7 +17,7 @@
     "remove": "Ta bort",
     "navigationView": {
         "dashboardTab": "Kontrollpanel",
-        "patcherTab": "",
+        "patcherTab": "Patcher",
         "settingsTab": "Inställningar"
     },
     "homeView": {
@@ -47,18 +47,18 @@
         "updatesDisabled": "Uppdatering av en patchad app är för närvarande inaktiverad. Patcha appen igen."
     },
     "applicationItem": {
-        "infoButton": ""
+        "infoButton": "Info"
     },
     "latestCommitCard": {
         "loadingLabel": "Laddar...",
         "timeagoLabel": "{time} sedan",
-        "patcherLabel": "",
+        "patcherLabel": "Patcher: ",
         "managerLabel": "Hanterare: ",
         "updateButton": "Uppdateringshanterare"
     },
     "patcherView": {
-        "widgetTitle": "",
-        "patchButton": "",
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
         "armv7WarningDialogText": "Patchning på ARMv7-enheter stöds inte ännu och det är med stor sannolikhet att det kommer att misslyckas. Fortsätta ändå?",
         "removedPatchesWarningDialogText": "Följande patchar har tagits bort sedan du senast använde dem.\n\n{patches}\n\nFortsätt ändå?",
         "requiredOptionDialogText": "Vissa patchalternativ måste anges."
@@ -136,7 +136,7 @@
         "installTypeDescription": "Välj vilken typ av installation du vill fortsätta med.",
         "installButton": "Installera",
         "installRootType": "Montera",
-        "installNonRootType": "",
+        "installNonRootType": "Normal",
         "pressBackAgain": "Tryck igen på bakåt för att avbryta",
         "openButton": "Öppna",
         "shareButton": "Dela fil",
@@ -151,16 +151,16 @@
     "settingsView": {
         "widgetTitle": "Inställningar",
         "appearanceSectionTitle": "Utseende",
-        "teamSectionTitle": "",
-        "infoSectionTitle": "",
+        "teamSectionTitle": "Team",
+        "infoSectionTitle": "Info",
         "advancedSectionTitle": "Avancerat",
         "exportSectionTitle": "Importera och exportera",
         "logsSectionTitle": "Loggar",
         "themeModeLabel": "Apptema",
-        "systemThemeLabel": "",
+        "systemThemeLabel": "System",
         "lightThemeLabel": "Ljust",
         "darkThemeLabel": "Mörkt läge",
-        "dynamicThemeLabel": "",
+        "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Njut av en upplevelse närmare din enhet",
         "languageLabel": "Språk",
         "englishOption": "Engelska",
@@ -240,13 +240,13 @@
         "widgetTitle": "Appinfo",
         "openButton": "Öppna",
         "uninstallButton": "Avinstallera",
-        "unpatchButton": "",
+        "unpatchButton": "Unpatch",
         "rootDialogTitle": "Fel",
         "unpatchDialogText": "Är du säker på att du vill unpatcha denna app?",
         "rootDialogText": "Appen installerades med superanvändarbehörigheter, men ReVanced Manager har för närvarande inga behörigheter. Bevilja superanvändarbehörigheter först.",
         "packageNameLabel": "Paketnamn",
         "installTypeLabel": "Installationstyp",
-        "rootTypeLabel": "",
+        "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Icke-root",
         "patchedDateLabel": "Patchat datum",
         "appliedPatchesLabel": "Tillämpade patchar",
