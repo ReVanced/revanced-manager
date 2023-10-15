@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "dismissButton": "Dismiss",
     "quitButton": "Quit",
     "updateButton": "Update",
     "enabledLabel": "Enabled",
