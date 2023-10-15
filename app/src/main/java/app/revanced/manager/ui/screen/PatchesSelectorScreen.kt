@@ -79,14 +79,18 @@ fun PatchesSelectorScreen(
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
-    val pagerState = rememberPagerState()
+    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        bundles.size
+    }
     val composableScope = rememberCoroutineScope()
     var search: String? by rememberSaveable {
         mutableStateOf(null)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-
-    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -358,7 +362,6 @@ fun PatchesSelectorScreen(
             }
 
             HorizontalPager(
-                pageCount = bundles.size,
                 state = pagerState,
                 userScrollEnabled = true,
                 pageContent = { index ->
