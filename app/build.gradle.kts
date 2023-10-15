@@ -9,13 +9,13 @@ plugins {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 33
+    compileSdk = 34
     buildToolsVersion = "33.0.2"
 
     defaultConfig {
         applicationId = "app.revanced.manager"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
         resourceConfigurations.addAll(listOf(

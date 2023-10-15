@@ -65,7 +65,12 @@ fun DashboardScreen(
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val androidContext = LocalContext.current
 
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = DashboardPage.DASHBOARD.ordinal,
+        initialPageOffsetFraction = 0f
+    ) {
+        DashboardPage.values().size
+    }
     val composableScope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState.currentPage) {
@@ -186,7 +191,6 @@ fun DashboardScreen(
             }
 
             HorizontalPager(
-                pageCount = pages.size,
                 state = pagerState,
                 userScrollEnabled = true,
                 modifier = Modifier.fillMaxSize(),
