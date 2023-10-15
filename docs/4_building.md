@@ -31,7 +31,8 @@ This page will guide you through building ReVanced Manager from source.
    flutter packages pub run build_runner build --delete-conflicting-outputs
    ```
 
-   > **Note**: Must be run every time you sync your local repository with the remote repository.
+   > [!Note]
+   > Must be run every time you sync your local repository with the remote repository.
 
 7. Build the APK
 

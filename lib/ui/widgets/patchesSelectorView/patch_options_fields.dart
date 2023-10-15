@@ -77,7 +77,7 @@ class IntAndStringPatchOption extends StatelessWidget {
               if (patchOption.required && value == null) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
+                  children: [
                     const SizedBox(height: 8),
                     I18nText(
                       'patchOptionsView.requiredOption',
@@ -139,11 +139,16 @@ class IntStringLongListPatchOption extends StatelessWidget {
                     value: e.toString(),
                     optionType: type,
                     onChanged: (newValue) {
-                      values[index] = type == 'StringListPatchOption' ? newValue : type == 'IntListPatchOption' ? int.parse(newValue) : num.parse(newValue);
+                      values[index] = type == 'StringListPatchOption'
+                          ? newValue
+                          : type == 'IntListPatchOption'
+                              ? int.parse(newValue)
+                              : num.parse(newValue);
                       onChanged(values, patchOption);
                     },
                     removeValue: (value) {
-                      patchOptionValue.value = List.from(patchOptionValue.value)..removeAt(index);
+                      patchOptionValue.value = List.from(patchOptionValue.value)
+                        ..removeAt(index);
                       values.removeAt(index);
                       onChanged(values, patchOption);
                     },
@@ -154,35 +159,37 @@ class IntStringLongListPatchOption extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton(
-                onPressed: () {
-                  if (type == 'StringListPatchOption') {
-                    patchOptionValue.value = List.from(patchOptionValue.value)..add('');
-                    values.add('');
-                  } else {
-                    patchOptionValue.value = List.from(patchOptionValue.value)..add(0);
-                    values.add(0);
-                  }
-                  onChanged(values, patchOption);
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.add, size: 20),
-                    I18nText(
-                      'add',
-                      child: const Text(
-                        '',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () {
+                if (type == 'StringListPatchOption') {
+                  patchOptionValue.value = List.from(patchOptionValue.value)
+                    ..add('');
+                  values.add('');
+                } else {
+                  patchOptionValue.value = List.from(patchOptionValue.value)
+                    ..add(0);
+                  values.add(0);
+                }
+                onChanged(values, patchOption);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.add, size: 20),
+                  I18nText(
+                    'add',
+                    child: const Text(
+                      '',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
           ),
         ],
       ),
@@ -239,7 +246,6 @@ class PatchOption extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CustomCard(
-        onTap: () {},
         child: Row(
           children: [
             Expanded(

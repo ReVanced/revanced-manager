@@ -91,5 +91,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: CustomIcon
+      fonts:
+        - asset: fonts/custom-icons.ttf
   assets:
     - assets/i18n/
