@@ -190,7 +190,7 @@ class PatcherViewModel extends BaseViewModel {
       this.selectedPatches.clear();
       this.selectedPatches.addAll(patches.where((patch) => !patch.excluded));
     }
-    if (!_managerAPI.areExperimentalPatchesEnabled()) {
+    if (!_managerAPI.isVersionCompatibilityCheckEnabled()) {
       this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
     }
     if (!_managerAPI.areUniversalPatchesEnabled()) {

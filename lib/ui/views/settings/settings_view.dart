@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_advanced_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_debug_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_export_section.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_info_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_team_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -46,15 +46,16 @@ class SettingsView extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     children: const [
                       SUpdateThemeUI(),
-                      // SUpdateLanguageUI(),
                       // _settingsDivider,
-                      STeamSection(),
+                      // SUpdateLanguageUI(),
                       _settingsDivider,
                       SAdvancedSection(),
                       _settingsDivider,
                       SExportSection(),
                       _settingsDivider,
-                      SInfoSection(),
+                      STeamSection(),
+                      _settingsDivider,
+                      SDebugSection(),
                     ],
                   ),
                 ],

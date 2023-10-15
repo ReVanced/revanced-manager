@@ -4,6 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/social_media_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
+import 'package:revanced_manager/ui/widgets/shared/custom_icon.dart';
 
 class SocialMediaWidget extends StatelessWidget {
   const SocialMediaWidget({
@@ -42,6 +43,12 @@ class SocialMediaWidget extends StatelessWidget {
         child: const CustomCard(
           child: Column(
             children: <Widget>[
+              SocialMediaItem(
+                icon: Icon(CustomIcon.revancedIcon),
+                title: Text('Website'),
+                subtitle: Text('revanced.app'),
+                url: 'https://revanced.app',
+              ),
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.github),
                 title: Text('GitHub'),
