@@ -71,13 +71,14 @@ class AppSelectorViewModel extends BaseViewModel {
     return true;
   }
 
-  Future<void> searchSuggestedVersionOnWeb(
-      {required String packageName,}) async {
+  Future<void> searchSuggestedVersionOnWeb({
+    required String packageName,
+  }) async {
     final String suggestedVersion = getSuggestedVersion(packageName);
 
-    if(suggestedVersion.isNotEmpty) {
+    if (suggestedVersion.isNotEmpty) {
       await openDefaultBrowser('$packageName apk version v$suggestedVersion');
-    }else{
+    } else {
       await openDefaultBrowser('$packageName apk');
     }
   }
@@ -125,8 +126,11 @@ class AppSelectorViewModel extends BaseViewModel {
         if (context.mounted) {
           Navigator.pop(context);
         }
-        final List<Option> requiredNullOptions = getNullRequiredOptions(locator<PatcherViewModel>().selectedPatches, packageName);
-        if(requiredNullOptions.isNotEmpty){
+        final List<Option> requiredNullOptions = getNullRequiredOptions(
+          locator<PatcherViewModel>().selectedPatches,
+          packageName,
+        );
+        if (requiredNullOptions.isNotEmpty) {
           locator<PatcherViewModel>().showRequiredOptionDialog();
         }
       }

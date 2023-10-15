@@ -84,7 +84,8 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   bool checkRequiredPatchOption(BuildContext context) {
-    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName).isNotEmpty) {
+    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName)
+        .isNotEmpty) {
       showRequiredOptionDialog(context);
       return false;
     }
@@ -171,9 +172,10 @@ class PatcherViewModel extends BaseViewModel {
     final String suggestedVersion =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
 
-    if(suggestedVersion.isNotEmpty) {
-      await openDefaultBrowser('${selectedApp!.packageName} apk version v$suggestedVersion');
-    }else{
+    if (suggestedVersion.isNotEmpty) {
+      await openDefaultBrowser(
+          '${selectedApp!.packageName} apk version v$suggestedVersion');
+    } else {
       await openDefaultBrowser('${selectedApp!.packageName} apk');
     }
   }
@@ -213,6 +215,7 @@ class PatcherViewModel extends BaseViewModel {
       throw 'Platform not supported';
     }
   }
+
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
     removedPatches.clear();
@@ -236,11 +239,12 @@ class PatcherViewModel extends BaseViewModel {
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
-    for (final patch in usedPatches){
-      if (!patches.any((p) => p.name == patch.name)){
+    for (final patch in usedPatches) {
+      if (!patches.any((p) => p.name == patch.name)) {
         removedPatches.add('• ${patch.name}');
         for (final option in patch.options) {
-          _managerAPI.clearPatchOption(selectedApp!.packageName, patch.name, option.key);
+          _managerAPI.clearPatchOption(
+              selectedApp!.packageName, patch.name, option.key);
         }
       }
     }

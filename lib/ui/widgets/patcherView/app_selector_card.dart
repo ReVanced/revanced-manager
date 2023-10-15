@@ -65,8 +65,7 @@ class AppSelectorCard extends StatelessWidget {
               children: [
                 const SizedBox(height: 4),
                 Text(
-                  locator<PatcherViewModel>()
-                      .getCurrentVersionString(context),
+                  locator<PatcherViewModel>().getCurrentVersionString(context),
                 ),
                 Row(
                   children: [
@@ -74,15 +73,19 @@ class AppSelectorCard extends StatelessWidget {
                       locator<PatcherViewModel>()
                           .getSuggestedVersionString(context),
                     ),
-                    const SizedBox(width: 20,),
-                    if(locator<PatcherViewModel>().getSuggestedVersion().isNotEmpty)
-                    InkWell(
-                      onTap: (){
-                        locator<PatcherViewModel>()
-                            .searchSuggestedVersionOnWeb();
-                      },
-                      child: const Icon(Icons.link),
+                    const SizedBox(
+                      width: 20,
                     ),
+                    if (locator<PatcherViewModel>()
+                        .getSuggestedVersion()
+                        .isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          locator<PatcherViewModel>()
+                              .searchSuggestedVersionOnWeb();
+                        },
+                        child: const Icon(Icons.link),
+                      ),
                   ],
                 ),
               ],

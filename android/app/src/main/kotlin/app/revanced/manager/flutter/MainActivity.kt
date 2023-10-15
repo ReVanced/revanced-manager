@@ -183,7 +183,6 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-
     private fun runPatcher(
         result: MethodChannel.Result,
         originalFilePath: String,
