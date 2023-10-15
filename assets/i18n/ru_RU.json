@@ -115,10 +115,10 @@
         "saveOptions": "Сохранить",
         "addOptions": "Добавить параметры",
         "deselectPatch": "Снять выделение с патча",
-        "tooltip": "",
-        "selectFilePath": "",
-        "selectFolder": "",
-        "selectOption": "",
+        "tooltip": "More input options",
+        "selectFilePath": "Select file path",
+        "selectFolder": "Select folder",
+        "selectOption": "Select option",
         "requiredOption": "Эта опция обязательна",
         "unsupportedOption": "Эта опция не поддерживается",
         "requiredOptionNull": "Следующие опции должны быть установлены:\n\n{options}"
@@ -126,8 +126,8 @@
     "patchItem": {
         "unsupportedDialogText": "Выбор этого патча может привести к ошибкам во время патча.\n\nВерсия приложения: {packageVersion}\nПоддерживаемые версии:\n{supportedVersions}",
         "unsupportedPatchVersion": "Патч не поддерживается для этой версии приложения. Чтобы продолжить, включите опцию экспериментальной поддержки в настройках.",
-        "unsupportedRequiredOption": "",
-        "patchesChangeWarningDialogText": "",
+        "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
+        "patchesChangeWarningDialogText": "It is recommended to use the default selection of patches because changing it may cause unexpected issues.\n\nIf you know what you are doing, you can enable \"Enable changing selection\" in the settings.",
         "patchesChangeWarningDialogButton": "Использовать стандартный выбор"
     },
     "installerView": {
