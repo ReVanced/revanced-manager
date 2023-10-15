@@ -28,8 +28,7 @@ class CustomCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding:
-              padding ?? const EdgeInsets.only(top: 20.0, bottom: 20, left: 10),
+          padding: padding ?? const EdgeInsets.all(20.0),
           child: child,
         ),
       ),
