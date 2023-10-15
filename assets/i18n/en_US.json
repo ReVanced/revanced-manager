@@ -283,11 +283,11 @@
         "importKeystoreHint": "Import a keystore used to sign apps",
         "importedKeystore": "Keystore imported",
 
-        "selectKeystorePassword": "Keystore Password",
+        "selectKeystorePassword": "Keystore password",
         "selectKeystorePasswordHint": "Select keystore password used to sign apps",
 
         "jsonSelectorErrorMessage": "Unable to use selected JSON file",
-        "keystoreSelectorErrorMessage": "Unable to use selected KEYSTORE file"
+        "keystoreSelectorErrorMessage": "Unable to use selected keystore file"
     },
     "appInfoView": {
         "widgetTitle": "App info",
