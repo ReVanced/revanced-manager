@@ -4,9 +4,9 @@ ReVanced Manager has settings that can be configured to your liking.
 
 ## 🎛️ Essential settings
 
-- ### 🪛 Allow changing patch selections
+- ### 🪛 Allow changing patch selection
 
-  Allows the user to change the patch selections from the default selections.
+  Allows the user to change the patch selection from the default selection.
 
 - ### 🔍 Version compatibility check
 
@@ -35,7 +35,7 @@ ReVanced Manager has settings that can be configured to your liking.
   You can import, export or reset the following settings:
 
   - 🔑 Keystore
-  - 📄 Patch selections
+  - 📄 Patch selection
   - ⚙️ Patch options
 
   > [!NOTE]  

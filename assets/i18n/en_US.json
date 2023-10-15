@@ -128,12 +128,10 @@
         "none": "None",
         "noneTooltip": "Deselect all patches",
 
-        "loadPatchesSelection": "Load patches selection",
-        "noSavedPatches": "No saved patches for the selected app.\nPress Done to save the current selection.",
+        "loadPatchesSelection": "Load patch selection",
+        "noSavedPatches": "No saved patch selection for the selected app.\nPress Done to save the current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing.",
-
-        "selectAllPatchesWarningContent": "You are about to select all patches, that includes non-suggested patches and can cause unwanted behavior."
+        "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing."
     },
     "patchOptionsView": {
         "viewTitle": "Patch options",
@@ -224,9 +222,9 @@
         "logsLabel": "Share logs",
         "logsHint": "Share ReVanced Manager logs",
 
-        "enablePatchesSelectionLabel": "Allow changing patch selections",
+        "enablePatchesSelectionLabel": "Allow changing patch selection",
         "enablePatchesSelectionHint": "Allow changing the selection of patches",
-        "enablePatchesSelectionWarningText": "Changing the default selection of patches may cause unexpected issues.\n\nEnable anyways?",
+        "enablePatchesSelectionWarningText": "Changing the selection of patches may cause unexpected issues.\n\nEnable anyways?",
         "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
 
         "autoUpdatePatchesLabel": "Auto update patches",
@@ -244,20 +242,20 @@
         "deleteTempDirHint": "Delete unused temporary files",
         "deletedTempDir": "Temporary files deleted",
 
-        "exportPatchesLabel": "Export patch selections",
-        "exportPatchesHint": "Export patch selections to a JSON file",
-        "exportedPatches": "Patch selections exported",
-        "noExportFileFound": "No patch selections to export",
+        "exportPatchesLabel": "Export patch selection",
+        "exportPatchesHint": "Export patch selection to a JSON file",
+        "exportedPatches": "Patch selection exported",
+        "noExportFileFound": "No patch selection to export",
 
-        "importPatchesLabel": "Import patch selections",
-        "importPatchesHint": "Import patch selections from a JSON file",
-        "importedPatches": "Patch selections imported",
+        "importPatchesLabel": "Import patch selection",
+        "importPatchesHint": "Import patch selection from a JSON file",
+        "importedPatches": "Patch selection imported",
 
-        "resetStoredPatchesLabel": "Reset patch selections",
-        "resetStoredPatchesHint": "Reset the stored patch selections",
-        "resetStoredPatchesDialogTitle": "Reset patch selections?",
+        "resetStoredPatchesLabel": "Reset patch selection",
+        "resetStoredPatchesHint": "Reset the stored patch selection",
+        "resetStoredPatchesDialogTitle": "Reset patch selection?",
         "resetStoredPatchesDialogText": "The default selection of patches will be restored..",
-        "resetStoredPatches": "Patch selections have been reset",
+        "resetStoredPatches": "Patch selection has been reset",
 
         "resetStoredOptionsLabel": "Reset patch options",
         "resetStoredOptionsHint": "Reset all patch options",
