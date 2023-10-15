@@ -44,15 +44,15 @@ import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.SegmentedButton
-import app.revanced.manager.ui.viewmodel.AppInfoViewModel
+import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
 import app.revanced.manager.util.PatchesSelection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppInfoScreen(
+fun InstalledAppInfoScreen(
     onPatchClick: (packageName: String, patchesSelection: PatchesSelection) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: AppInfoViewModel
+    viewModel: InstalledAppInfoViewModel
 ) {
     SideEffect {
         viewModel.onBackClick = onBackClick

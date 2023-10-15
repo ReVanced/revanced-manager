@@ -24,7 +24,6 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -63,7 +62,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.BaseSelectionMode
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
@@ -75,7 +73,7 @@ import org.koin.compose.rememberKoinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onPatchClick: (PatchesSelection, Options) -> Unit,
+    onPatchClick: (PatchesSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
@@ -135,39 +133,12 @@ fun PatchesSelectorScreen(
                     )
                 }
             }
-
-            Divider()
-
-            ListItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        enabled = vm.hasPreviousSelection,
-                        onClick = vm::switchBaseSelectionMode
-                    ),
-                leadingContent = {
-                    Checkbox(
-                        checked = vm.baseSelectionMode == BaseSelectionMode.PREVIOUS,
-                        onCheckedChange = {
-                            vm.switchBaseSelectionMode()
-                        },
-                        enabled = vm.hasPreviousSelection
-                    )
-                },
-                headlineContent = {
-                    Text(
-                        "Use previous selection",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            )
         }
     }
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedDialog(
-            appVersion = vm.input.selectedApp.version,
+            appVersion = vm.input.app.version,
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
@@ -188,8 +159,6 @@ fun PatchesSelectorScreen(
             onConfirm = vm::confirmSelectionWarning
         )
     }
-
-    val allowExperimental by vm.allowExperimental.getAsState()
 
     fun LazyListScope.patchList(
         uid: Int,
@@ -219,13 +188,13 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
-                        if (vm.selectionWarningEnabled) {
-                            vm.pendingSelectionAction = {
+                            if (vm.selectionWarningEnabled) {
+                                vm.pendingSelectionAction = {
+                                    vm.togglePatch(uid, patch)
+                                }
+                            } else {
                                 vm.togglePatch(uid, patch)
                             }
-                        } else {
-                            vm.togglePatch(uid, patch)
-                        }
                     },
                     supported = supported
                 )
@@ -280,7 +249,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!allowExperimental) return@LazyColumn
+                if (!vm.allowExperimental) return@LazyColumn
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -325,9 +294,9 @@ fun PatchesSelectorScreen(
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     composableScope.launch {
-                        val selection = vm.getSelection()
-                        vm.saveSelection(selection).join()
-                        onPatchClick(selection, vm.getOptions())
+                        // val selection = vm.getSelection()
+                        // vm.saveSelection(selection).join()
+                        onPatchClick(vm.getSelection(), vm.getOptions())
                     }
                 }
             )
@@ -390,7 +359,7 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
                             filterFlag = SHOW_UNSUPPORTED,
-                            supported = allowExperimental
+                            supported = vm.allowExperimental
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),
