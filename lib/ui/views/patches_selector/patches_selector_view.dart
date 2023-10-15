@@ -62,12 +62,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               floating: true,
               title: I18nText(
                 'patchesSelectorView.viewTitle',
-                child: Text(
-                  '',
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
-                ),
+              ),
+              titleTextStyle: TextStyle(
+                fontSize: 22.0,
+                color: Theme.of(context).textTheme.titleLarge!.color,
               ),
               leading: IconButton(
                 icon: Icon(
@@ -80,24 +78,19 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 },
               ),
               actions: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 12, bottom: 12),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .tertiary
-                          .withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      model.patchesVersion!,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.titleLarge!.color,
-                      ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    model.patchesVersion!,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                 ),
@@ -294,7 +287,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       _managerAPI.isPatchesChangeEnabled(),
                                   hasUnsupportedPatchOption:
                                       hasUnsupportedRequiredOption(
-                                          patch.options, patch),
+                                    patch.options,
+                                    patch,
+                                  ),
                                   options: patch.options,
                                   isSelected: model.isSelected(patch),
                                   navigateToOptions: (options) =>
