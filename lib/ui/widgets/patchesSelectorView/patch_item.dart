@@ -48,12 +48,13 @@ class _PatchItemState extends State<PatchItem> {
   Widget build(BuildContext context) {
     widget.isSelected = widget.isSelected &&
         (!widget.isUnsupported ||
-            widget._managerAPI.isVersionCompatibilityCheckEnabled()) && !widget.hasUnsupportedPatchOption;
+            !widget._managerAPI.isVersionCompatibilityCheckEnabled()) &&
+        !widget.hasUnsupportedPatchOption;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Opacity(
         opacity: widget.isUnsupported &&
-                widget._managerAPI.isVersionCompatibilityCheckEnabled() == false
+                widget._managerAPI.isVersionCompatibilityCheckEnabled() == true
             ? 0.5
             : 1,
         child: CustomCard(
@@ -65,7 +66,7 @@ class _PatchItemState extends State<PatchItem> {
           ),
           onTap: () {
             if (widget.isUnsupported &&
-                !widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
+                widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
               widget.isSelected = false;
               widget.toast.showBottom('patchItem.unsupportedPatchVersion');
             } else if (widget.isChangeEnabled) {
@@ -79,7 +80,7 @@ class _PatchItemState extends State<PatchItem> {
               setState(() {});
             }
             if (!widget.isUnsupported ||
-                widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
+                !widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
               widget.onChanged(widget.isSelected);
             }
           },
@@ -98,7 +99,8 @@ class _PatchItemState extends State<PatchItem> {
                   ),
                   onChanged: (newValue) {
                     if (widget.isUnsupported &&
-                        !widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
+                        widget._managerAPI
+                            .isVersionCompatibilityCheckEnabled()) {
                       widget.isSelected = false;
                       widget.toast.showBottom(
                         'patchItem.unsupportedPatchVersion',
@@ -114,7 +116,8 @@ class _PatchItemState extends State<PatchItem> {
                       setState(() {});
                     }
                     if (!widget.isUnsupported ||
-                        widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
+                        !widget._managerAPI
+                            .isVersionCompatibilityCheckEnabled()) {
                       widget.onChanged(widget.isSelected);
                     }
                   },
@@ -154,7 +157,7 @@ class _PatchItemState extends State<PatchItem> {
                             runSpacing: 4,
                             children: [
                               if (widget.isUnsupported &&
-                                  widget._managerAPI
+                                  !widget._managerAPI
                                       .isVersionCompatibilityCheckEnabled())
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),

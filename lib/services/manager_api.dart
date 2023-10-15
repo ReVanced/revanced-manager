@@ -677,7 +677,7 @@ class ManagerAPI {
   Future<List<String>> getDefaultPatches() async {
     final List<Patch> patches = await getPatches();
     final List<String> defaultPatches = [];
-    if (isVersionCompatibilityCheckEnabled() == false) {
+    if (isVersionCompatibilityCheckEnabled() == true) {
       defaultPatches.addAll(
         patches
             .where(
