@@ -206,7 +206,7 @@
         "sourcesResetDialogTitle": "Reset",
         "sourcesResetDialogText": "Are you sure you want to reset your sources to their default values?",
         "apiURLResetDialogText": "Are you sure you want to reset your API URL to its default value?",
-        "sourcesUpdateNote": "Note: ReVanced Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
+        "sourcesUpdateNote": "Note: Patches will be updated to the latest version automatically.\n\nThis will reveal your IP address to the server.",
 
         "apiURLLabel": "API URL",
         "apiURLHint": "Configure your API URL",
@@ -228,7 +228,7 @@
         "disablePatchesSelectionWarningText": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
 
         "autoUpdatePatchesLabel": "Auto update patches",
-        "autoUpdatePatchesHint": "Automatically update ReVanced Patches to the latest version",
+        "autoUpdatePatchesHint": "Automatically update patches to the latest version",
         "universalPatchesLabel": "Show universal patches",
         "universalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
         "versionCompatibilityCheckLabel": "Version compatibility check",
