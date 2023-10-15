@@ -17,7 +17,7 @@
     "remove": "Remover",
     "navigationView": {
         "dashboardTab": "Painel",
-        "patcherTab": "",
+        "patcherTab": "Patcher",
         "settingsTab": "Configurações"
     },
     "homeView": {
@@ -52,13 +52,13 @@
     "latestCommitCard": {
         "loadingLabel": "Carregando...",
         "timeagoLabel": "há {time}",
-        "patcherLabel": "",
+        "patcherLabel": "Patcher: ",
         "managerLabel": "Gerenciador: ",
         "updateButton": "Atualizar o Gerenciador"
     },
     "patcherView": {
-        "widgetTitle": "",
-        "patchButton": "",
+        "widgetTitle": "Patcher",
+        "patchButton": "Patch",
         "armv7WarningDialogText": "Patching em dispositivos ARMv7 ainda não é suportado e pode falhar. Deseja continuar mesmo assim?",
         "removedPatchesWarningDialogText": "Os seguintes patches foram removidos desde a última vez que você usou.\n\n{patches}\n\nContinuar mesmo assim?",
         "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas."
@@ -98,7 +98,7 @@
         "searchBarHint": "Buscar patches",
         "universalPatches": "Patches universais",
         "newPatches": "Novos patches",
-        "patches": "",
+        "patches": "Patches",
         "doneButton": "Concluído",
         "default": "Padrão",
         "defaultTooltip": "Selecionar todos os patches padrões",
@@ -136,7 +136,7 @@
         "installTypeDescription": "Selecione o tipo de instalação a ser executado.",
         "installButton": "Instalar",
         "installRootType": "Montar",
-        "installNonRootType": "",
+        "installNonRootType": "Normal",
         "pressBackAgain": "Pressione voltar mais uma vez para cancelar",
         "openButton": "Abrir",
         "shareButton": "Compartilhar arquivo",
@@ -160,7 +160,7 @@
         "systemThemeLabel": "Sistema",
         "lightThemeLabel": "Claro",
         "darkThemeLabel": "Modo escuro",
-        "dynamicThemeLabel": "",
+        "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Aproveite uma experiência mais próxima do tema de seu dispositivo",
         "languageLabel": "Idioma",
         "englishOption": "Inglês",
@@ -246,7 +246,7 @@
         "rootDialogText": "O aplicativo foi instalado com permissões de superusuário, mas atualmente o ReVanced Manager não tem permissões.\nPor favor, conceda as permissões de superusuário primeiro.",
         "packageNameLabel": "Nome do pacote",
         "installTypeLabel": "Tipo de instalação",
-        "rootTypeLabel": "",
+        "rootTypeLabel": "Root",
         "nonRootTypeLabel": "Não-root",
         "patchedDateLabel": "Data de patcheamento",
         "appliedPatchesLabel": "Patches aplicados",
