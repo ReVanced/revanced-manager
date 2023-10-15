@@ -72,7 +72,10 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                         onTap: widget.onLinkTap,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade800,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withOpacity(0.4),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(7)),
                           ),
