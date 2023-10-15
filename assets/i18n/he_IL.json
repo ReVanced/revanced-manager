@@ -246,7 +246,7 @@
         "rootDialogText": "האפליקציה הותקנה עם הרשאות משתמש-על, אך כרגע למנהל המחודש אין הרשאות.\nאנא הענק תחילה הרשאות משתמש-על.",
         "packageNameLabel": "שם חבילה",
         "installTypeLabel": "סוג התקנה",
-        "rootTypeLabel": "",
+        "rootTypeLabel": "Root",
         "nonRootTypeLabel": "ללא Root",
         "patchedDateLabel": "תאריך תיקון",
         "appliedPatchesLabel": "תיקונים הוחלו",
