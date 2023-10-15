@@ -147,7 +147,7 @@ class PatchOptionsViewModel extends BaseViewModel {
         ),
         actions: [
           CustomMaterialButton(
-            label: I18nText('dismissButton'),
+            label: I18nText('cancelButton'),
             onPressed: () {
               Navigator.of(context).pop();
             },
