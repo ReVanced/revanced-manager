@@ -25,19 +25,18 @@ import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.bundleInfoFlow
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
-import app.revanced.manager.util.SnapshotStateSet
-import app.revanced.manager.util.mutableStateSetOf
+import app.revanced.manager.util.saver.nullableSaver
+import app.revanced.manager.util.saver.persistentMapSaver
+import app.revanced.manager.util.saver.persistentSetSaver
 import app.revanced.manager.util.saver.snapshotStateMapSaver
-import app.revanced.manager.util.saver.snapshotStateSetSaver
-import app.revanced.manager.util.toMutableStateSet
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import kotlinx.collections.immutable.*
 import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
@@ -54,6 +53,7 @@ class PatchesSelectorViewModel(
 
     var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
 
+    // TODO: this should be hoisted to the parent screen
     var selectionWarningEnabled by mutableStateOf(true)
         private set
 
@@ -76,26 +76,21 @@ class PatchesSelectorViewModel(
     }
 
     private var hasModifiedSelection = false
+    private var customPatchesSelection: PersistentPatchesSelection? by savedStateHandle.saveable(
+        key = "selection",
+        stateSaver = patchesSaver,
+    ) {
+        mutableStateOf(input.currentSelection?.toPersistentPatchesSelection())
+    }
 
-    private var wrappedCustomPatchesSelection: Optional<SnapshotPatchesSelection> by savedStateHandle.saveable(
-        stateSaver = nullablePatchesSaver,
-        init = {
-            val currentSelection =
-                input.currentSelection?.mapValuesTo(mutableStateMapOf()) { (_, set) -> set.toMutableStateSet() }
-            mutableStateOf(Optional.ofNullable(currentSelection))
-        }
-    )
-
-    private var customPatchesSelection
-        get() = wrappedCustomPatchesSelection.getOrNull()
-        set(value) {
-            wrappedCustomPatchesSelection = Optional.ofNullable(value)
-        }
-
-    private val patchOptions: SnapshotOptions by savedStateHandle.saveable(
+    private val patchOptions: PersistentOptions by savedStateHandle.saveable(
         saver = optionsSaver,
-        init = ::mutableStateMapOf
-    )
+    ) {
+        // Convert Options to PersistentOptions
+        input.options.mapValuesTo(mutableStateMapOf()) { (_, allPatches) ->
+            allPatches.mapValues { (_, options) -> options.toPersistentMap() }.toPersistentMap()
+        }
+    }
 
     /**
      * Show the patch options dialog for this patch.
@@ -107,41 +102,30 @@ class PatchesSelectorViewModel(
     var filter by mutableIntStateOf(SHOW_SUPPORTED or SHOW_UNIVERSAL or SHOW_UNSUPPORTED)
         private set
 
-    fun isSelected(bundle: Int, patch: PatchInfo): Boolean {
-        return customPatchesSelection?.let {
-            it[bundle]?.contains(patch.name)
-        } ?: when {
-            !patch.include -> false
-            !allowExperimental && !patch.supportsVersion(
-                packageName,
-                input.app.version
-            ) -> false
 
-            else -> true
-        }
+    private suspend fun generateDefaultSelection(): PersistentPatchesSelection {
+        val bundles = bundlesFlow.first()
+        val generatedSelection = SelectionState.Default.patches(bundles, allowExperimental)
+
+        return generatedSelection.toPersistentPatchesSelection()
     }
 
-    private suspend fun getOrCreateCustomPatchesSelection() =
-        customPatchesSelection.let { patches ->
-            if (patches != null) patches else {
-                val bundles = bundlesFlow.first()
-                val generatedSelection = SelectionState.Default.patches(bundles, allowExperimental)
-
-                generatedSelection.mapValuesTo(
-                    mutableStateMapOf()
-                ) { (_, patches) ->
-                    patches.toMutableStateSet()
-                }.also { map ->
-                    customPatchesSelection = map
-                }
-            }
-        }
+    fun isSelected(bundle: Int, patch: PatchInfo) = customPatchesSelection?.let { selection ->
+        selection[bundle]?.contains(patch.name) ?: false
+    } ?: patch.include
 
     fun togglePatch(bundle: Int, patch: PatchInfo) = viewModelScope.launch {
-        val patches = getOrCreateCustomPatchesSelection().getOrPut(bundle, ::mutableStateSetOf)
-
         hasModifiedSelection = true
-        if (patch.name in patches) patches.remove(patch.name) else patches.add(patch.name)
+
+        val selection = customPatchesSelection ?: generateDefaultSelection()
+        val newPatches = selection[bundle]?.let { patches ->
+            if (patch.name in patches)
+                patches.remove(patch.name)
+            else
+                patches.add(patch.name)
+        } ?: persistentSetOf(patch.name)
+
+        customPatchesSelection = selection.put(bundle, newPatches)
     }
 
     fun confirmSelectionWarning(dismissPermanently: Boolean) {
@@ -163,50 +147,40 @@ class PatchesSelectorViewModel(
 
     fun reset() {
         patchOptions.clear()
-        // baseSelectionMode = BaseSelectionMode.DEFAULT
         customPatchesSelection = null
         hasModifiedSelection = false
         app.toast(app.getString(R.string.patch_selection_reset_toast))
     }
 
-    fun getSelection(): PatchesSelection? {
-        return customPatchesSelection?.mapValuesTo(mutableMapOf()) { (_, v) -> v.toMutableSet() }
-        /*
-        val bundles = bundlesFlow.first()
+    fun getCustomSelection(): PatchesSelection? {
+        // Convert persistent collections to standard hash collections because persistent collections are not parcelable.
 
-        return bundles.associate { bundle ->
-            val included =
-                bundle.all.filter { isSelected(bundle.uid, it) }.map { it.name }.toMutableSet()
-
-            if (!allowExperimental) {
-                val unsupported = bundle.unsupported.map { it.name }.toSet()
-                included.removeAll(unsupported)
-            }
-
-            bundle.uid to included
-        }*/
+        return customPatchesSelection?.mapValues { (_, v) -> v.toSet() }
     }
 
-    suspend fun saveSelection(selection: PatchesSelection) =
-        viewModelScope.launch(Dispatchers.Default) {
-            // TODO: implement
-            /*
-            when {
-                hasModifiedSelection -> selectionRepository.updateSelection(packageName, selection)
-                baseSelectionMode == BaseSelectionMode.DEFAULT -> selectionRepository.clearSelection(
-                    packageName
-                )
+    fun getOptions(): Options {
+        // Convert the collection for the same reasons as in getCustomSelection()
 
-                else -> {}
-            }
-            */
+        return patchOptions.mapValues { (_, allPatches) -> allPatches.mapValues { (_, options) -> options.toMap() } }
+    }
+
+    suspend fun saveSelection() =
+        viewModelScope.launch(Dispatchers.Default) {
+            customPatchesSelection?.let { selectionRepository.updateSelection(packageName, it) }
+                ?: selectionRepository.clearSelection(packageName)
         }
 
-    fun getOptions(): Options = patchOptions
     fun getOptions(bundle: Int, patch: PatchInfo) = patchOptions[bundle]?.get(patch.name)
 
     fun setOption(bundle: Int, patch: PatchInfo, key: String, value: Any?) {
-        patchOptions.getOrCreate(bundle).getOrCreate(patch.name)[key] = value
+        // All patches
+        val patchesToOpts = patchOptions.getOrElse(bundle, ::persistentMapOf)
+        // The key-value options of an individual patch
+        val patchToOpts = patchesToOpts
+            .getOrElse(patch.name, ::persistentMapOf)
+            .put(key, value)
+
+        patchOptions[bundle] = patchesToOpts.put(patch.name, patchToOpts)
     }
 
     fun resetOptions(bundle: Int, patch: PatchInfo) {
@@ -233,39 +207,22 @@ class PatchesSelectorViewModel(
         const val SHOW_UNIVERSAL = 2 // 2^1
         const val SHOW_UNSUPPORTED = 4 // 2^2
 
-        private fun <K, K2, V> SnapshotStateMap<K, SnapshotStateMap<K2, V>>.getOrCreate(key: K) =
-            getOrPut(key, ::mutableStateMapOf)
-
-        private val optionsSaver: Saver<SnapshotOptions, Options> = snapshotStateMapSaver(
+        private val optionsSaver: Saver<PersistentOptions, Options> = snapshotStateMapSaver(
             // Patch name -> Options
-            valueSaver = snapshotStateMapSaver(
+            valueSaver = persistentMapSaver(
                 // Option key -> Option value
-                valueSaver = snapshotStateMapSaver()
+                valueSaver = persistentMapSaver()
             )
         )
 
-        private val patchesSaver: Saver<SnapshotPatchesSelection, PatchesSelection> =
-            snapshotStateMapSaver(valueSaver = snapshotStateSetSaver())
-
-        // i have no idea if this is actually necessary
-        private val nullablePatchesSaver: Saver<Optional<SnapshotPatchesSelection>, Optional<PatchesSelection>> =
-            Saver(
-                save = { value ->
-                    val patches = value.getOrNull() ?: return@Saver Optional.empty()
-                    val saved = with(patchesSaver) {
-                        save(patches)
-                    }
-                    saved?.let {
-                        Optional.of(it)
-                    }
-                },
-                restore = {
-                    Optional.ofNullable(it.getOrNull()?.let(patchesSaver::restore))
-                }
-            )
+        private val patchesSaver: Saver<PersistentPatchesSelection?, Optional<PatchesSelection>> =
+            nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
 }
 
-// Versions of other types, but utilizing observable collection types instead.
-private typealias SnapshotOptions = SnapshotStateMap<Int, SnapshotStateMap<String, SnapshotStateMap<String, Any?>>>
-private typealias SnapshotPatchesSelection = SnapshotStateMap<Int, SnapshotStateSet<String>>
+// Versions of other types, but utilizing persistent/observable collection types.
+private typealias PersistentOptions = SnapshotStateMap<Int, PersistentMap<String, PersistentMap<String, Any?>>>
+private typealias PersistentPatchesSelection = PersistentMap<Int, PersistentSet<String>>
+
+private fun PatchesSelection.toPersistentPatchesSelection(): PersistentPatchesSelection =
+    mapValues { (_, v) -> v.toPersistentSet() }.toPersistentMap()

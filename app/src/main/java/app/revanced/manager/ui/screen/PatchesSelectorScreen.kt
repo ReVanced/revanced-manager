@@ -15,10 +15,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WarningAmber
@@ -289,14 +289,13 @@ fun PatchesSelectorScreen(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.Build, null) },
+                text = { Text(stringResource(R.string.save)) },
+                icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     composableScope.launch {
-                        // val selection = vm.getSelection()
-                        // vm.saveSelection(selection).join()
-                        onPatchClick(vm.getSelection(), vm.getOptions())
+                        vm.saveSelection().join()
+                        onPatchClick(vm.getCustomSelection(), vm.getOptions())
                     }
                 }
             )
