@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "dismissButton": "Dismiss",
     "quitButton": "Quit",
     "updateButton": "Update",
     "enabledLabel": "Enabled",
@@ -134,6 +135,7 @@
         "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing."
     },
     "patchOptionsView": {
+        "resetOptionsTooltip": "Reset patch options",
         "viewTitle": "Patch options",
         "saveOptions": "Save",
 
