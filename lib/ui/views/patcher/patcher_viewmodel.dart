@@ -80,7 +80,8 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   bool checkRequiredPatchOption(BuildContext context) {
-    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName).isNotEmpty) {
+    if (getNullRequiredOptions(selectedPatches, selectedApp!.packageName)
+        .isNotEmpty) {
       showRequiredOptionDialog(context);
       return false;
     }
@@ -190,7 +191,7 @@ class PatcherViewModel extends BaseViewModel {
       this.selectedPatches.clear();
       this.selectedPatches.addAll(patches.where((patch) => !patch.excluded));
     }
-    if (!_managerAPI.isVersionCompatibilityCheckEnabled()) {
+    if (_managerAPI.isVersionCompatibilityCheckEnabled()) {
       this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
     }
     if (!_managerAPI.areUniversalPatchesEnabled()) {
@@ -199,11 +200,12 @@ class PatcherViewModel extends BaseViewModel {
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
-    for (final patch in usedPatches){
-      if (!patches.any((p) => p.name == patch.name)){
+    for (final patch in usedPatches) {
+      if (!patches.any((p) => p.name == patch.name)) {
         removedPatches.add('• ${patch.name}');
         for (final option in patch.options) {
-          _managerAPI.clearPatchOption(selectedApp!.packageName, patch.name, option.key);
+          _managerAPI.clearPatchOption(
+              selectedApp!.packageName, patch.name, option.key);
         }
       }
     }

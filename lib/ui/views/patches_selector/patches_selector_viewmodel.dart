@@ -169,7 +169,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
             .where(
               (element) =>
                   !element.excluded &&
-                  (_managerAPI.isVersionCompatibilityCheckEnabled() ||
+                  (!_managerAPI.isVersionCompatibilityCheckEnabled() ||
                       isPatchSupported(element)),
             ),
       );
@@ -209,7 +209,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
               query.isEmpty ||
               query.length < 2 ||
               patch.name.toLowerCase().contains(query.toLowerCase()) ||
-              patch.name.replaceAll(RegExp(r'[^\w\s]+'), '').toLowerCase().contains(query.toLowerCase()),
+              patch.name
+                  .replaceAll(RegExp(r'[^\w\s]+'), '')
+                  .toLowerCase()
+                  .contains(query.toLowerCase()),
         )
         .toList();
     if (_managerAPI.areUniversalPatchesEnabled()) {
@@ -281,7 +284,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
         this.selectedPatches.addAll(
               patches.where((patch) => selectedPatches.contains(patch.name)),
             );
-        if (!_managerAPI.isVersionCompatibilityCheckEnabled()) {
+        if (_managerAPI.isVersionCompatibilityCheckEnabled()) {
           this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
         }
       } else {
