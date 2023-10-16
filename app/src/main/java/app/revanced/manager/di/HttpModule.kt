@@ -4,7 +4,6 @@ import android.content.Context
 import app.revanced.manager.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.plugins.BrowserUserAgent
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.contentnegotiation.*
