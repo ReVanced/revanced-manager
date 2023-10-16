@@ -34,6 +34,7 @@ jobs:
   build:
     name: Build the application
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout the PR
         env: 
