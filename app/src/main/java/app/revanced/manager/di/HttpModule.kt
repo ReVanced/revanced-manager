@@ -1,9 +1,11 @@
 package app.revanced.manager.di
 
 import android.content.Context
+import app.revanced.manager.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -39,6 +41,9 @@ val httpModule = module {
         }
         install(HttpTimeout) {
             socketTimeoutMillis = 10000
+        }
+        install(UserAgent) {
+            agent = "ReVanced-Manager/${BuildConfig.VERSION_CODE}"
         }
     }
 
