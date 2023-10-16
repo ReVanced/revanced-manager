@@ -44,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -56,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
@@ -91,7 +93,10 @@ fun PatchesSelectorScreen(
         mutableStateOf(null)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-
+    var showPatchButton by remember { mutableStateOf(true) }
+    LaunchedEffect(Unit) {
+        showPatchButton = vm.isSelectionNotEmpty()
+    }
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -222,10 +227,17 @@ fun PatchesSelectorScreen(
                         if (vm.selectionWarningEnabled) {
                             vm.pendingSelectionAction = {
                                 vm.togglePatch(uid, patch)
+                                vm.viewModelScope.launch {
+                                    showPatchButton = vm.isSelectionNotEmpty()
+                                }
                             }
                         } else {
                             vm.togglePatch(uid, patch)
+                            vm.viewModelScope.launch {
+                                showPatchButton = vm.isSelectionNotEmpty()
+                            }
                         }
+
                     },
                     supported = supported
                 )
@@ -296,6 +308,7 @@ fun PatchesSelectorScreen(
         }
     }
 
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -319,18 +332,22 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.Build, null) },
-                onClick = {
-                    // TODO: only allow this if all required options have been set.
-                    composableScope.launch {
-                        val selection = vm.getSelection()
-                        vm.saveSelection(selection).join()
-                        onPatchClick(selection, vm.getOptions())
+            if(showPatchButton) {
+                ExtendedFloatingActionButton(
+                    text = {
+                        Text(stringResource(R.string.patch))
+                    },
+                    icon = { Icon(Icons.Default.Build, null) },
+                    onClick = {
+                        // TODO: only allow this if all required options have been set.
+                        composableScope.launch {
+                            val selection = vm.getSelection()
+                            vm.saveSelection(selection).join()
+                            onPatchClick(selection, vm.getOptions())
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     ) { paddingValues ->
         Column(
