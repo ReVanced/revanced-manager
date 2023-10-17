@@ -1,8 +1,11 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.content.pm.PackageInfo
 import android.os.Parcelable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,8 +18,11 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
+import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -25,11 +31,20 @@ import org.koin.core.component.get
 class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     val bundlesRepo: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
+    private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
 
     var selectedApp by savedStateHandle.saveable {
         mutableStateOf(input.app)
+    }
+        private set
+
+    var selectedAppInfo: PackageInfo? by mutableStateOf(null)
+        private set
+
+    init {
+        invalidateSelectedAppInfo()
     }
 
     var patchOptions: Options by savedStateHandle.saveable {
@@ -55,6 +70,16 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         }
 
         selection
+    }
+
+    private fun invalidateSelectedAppInfo() = viewModelScope.launch {
+        val info = when (val app = selectedApp) {
+            is SelectedApp.Download -> null
+            is SelectedApp.Local -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.file) }
+            is SelectedApp.Installed -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.packageName) }
+        }
+
+        selectedAppInfo = info
     }
 
     fun getCustomPatchesOrNull(

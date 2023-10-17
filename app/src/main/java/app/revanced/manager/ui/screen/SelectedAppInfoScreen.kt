@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import android.content.pm.PackageInfo
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.SelectedApp
@@ -71,6 +73,8 @@ fun SelectedAppInfoScreen(
                     )
                 },
                 onBackClick = onBackClick,
+                packageName = vm.selectedApp.packageName,
+                packageInfo = vm.selectedAppInfo,
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
@@ -100,6 +104,8 @@ private fun SelectedAppInfoScreen(
     onPatchClick: () -> Unit,
     onSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
+    packageName: String,
+    packageInfo: PackageInfo?,
 ) {
     Scaffold(
         topBar = {
@@ -114,6 +120,8 @@ private fun SelectedAppInfoScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            AppInfo(packageInfo, placeholderLabel = packageName)
+
             PageItem(R.string.patch, R.string.patcher, onPatchClick)
             PageItem(R.string.patches_selection, R.string.patcher, onSelectorClick)
         }
