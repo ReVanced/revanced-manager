@@ -18,7 +18,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -74,7 +74,7 @@ class InstallerViewModel extends BaseViewModel {
         screenshotDetected(context);
       }
     });
-    await Wakelock.enable();
+    await WakelockPlus.enable();
     await handlePlatformChannelMethods();
     await runPatcher();
   }
@@ -172,7 +172,7 @@ class InstallerViewModel extends BaseViewModel {
           } // ignore
         }
       }
-      await Wakelock.disable();
+      await WakelockPlus.disable();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
