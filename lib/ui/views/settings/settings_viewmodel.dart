@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -182,12 +181,13 @@ class SettingsViewModel extends BaseViewModel {
   Future<void> importPatches(BuildContext context) async {
     if (isPatchesChangeEnabled()) {
       try {
-        final FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['json'],
+        final String? result = await FlutterFileDialog.pickFile(
+          params: const OpenFileDialogParams(
+            fileExtensionsFilter: ['json'],
+          ),
         );
-        if (result != null && result.files.single.path != null) {
-          final File inFile = File(result.files.single.path!);
+        if (result != null) {
+          final File inFile = File(result);
           inFile.copySync(_managerAPI.storedPatchesFile);
           inFile.delete();
           if (_patcherViewModel.selectedApp != null) {
@@ -231,9 +231,9 @@ class SettingsViewModel extends BaseViewModel {
 
   Future<void> importKeystore() async {
     try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles();
-      if (result != null && result.files.single.path != null) {
-        final File inFile = File(result.files.single.path!);
+      final String? result = await FlutterFileDialog.pickFile();
+      if (result != null) {
+        final File inFile = File(result);
         inFile.copySync(_managerAPI.keystoreFile);
 
         _toast.showBottom('settingsView.importedKeystore');
