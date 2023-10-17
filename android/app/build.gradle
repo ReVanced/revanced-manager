@@ -30,12 +30,12 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '11'
+    kotlin {
+        jvmToolchain(17)
     }
 
     sourceSets {
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId "app.revanced.manager.flutter"
         minSdkVersion 26
-        targetSdkVersion 33
+        targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -75,6 +75,7 @@ android {
     packagingOptions {
         exclude '/prebuilt/**'
     }
+    namespace 'app.revanced.manager.flutter'
 }
 
 flutter {
