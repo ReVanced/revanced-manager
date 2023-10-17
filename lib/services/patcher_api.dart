@@ -13,7 +13,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 
 @lazySingleton
 class PatcherAPI {
@@ -258,7 +258,7 @@ void sharePatchedFile(String appName, String version) {
       final String newPath =
           outFile!.path.substring(0, lastSeparator + 1) + newName;
       final File shareFile = outFile!.copySync(newPath);
-      ShareExtend.share(shareFile.path, 'file');
+      Share.shareXFiles([XFile(shareFile.path)]);
     }
   } on Exception catch (e) {
     if (kDebugMode) {

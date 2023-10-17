@@ -15,7 +15,7 @@ import 'package:revanced_manager/ui/views/patches_selector/patches_selector_view
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_language.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -284,6 +284,6 @@ class SettingsViewModel extends BaseViewModel {
         File('${logDir.path}/revanced-manager_logcat_$dateTime.log');
     final String logs = await Logcat.execute();
     logcat.writeAsStringSync(logs);
-    ShareExtend.share(logcat.path, 'file');
+    await Share.shareXFiles([XFile(logcat.path)]);
   }
 }
