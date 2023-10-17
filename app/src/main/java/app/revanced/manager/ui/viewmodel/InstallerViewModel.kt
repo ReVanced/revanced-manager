@@ -97,11 +97,13 @@ class InstallerViewModel(
 
         val (selectedApp, patches, options) = input
 
-        _progress = MutableStateFlow(PatcherProgressManager.generateSteps(
-            app,
-            patches.flatMap { (_, selected) -> selected },
-            selectedApp
-        ).toImmutableList())
+        _progress = MutableStateFlow(
+            PatcherProgressManager.generateSteps(
+                app,
+                patches.flatMap { (_, selected) -> selected },
+                selectedApp
+            ).toImmutableList()
+        )
 
         patcherWorkerId =
             workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
@@ -186,23 +188,24 @@ class InstallerViewModel(
             is SelectedApp.Local -> {
                 if (selectedApp.shouldDelete) selectedApp.file.delete()
             }
+
+            is SelectedApp.Installed -> {
+                try {
+                    installedApp?.let {
+                        if (it.installType == InstallType.ROOT) {
+                            rootInstaller.mount(packageName)
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(tag, "Failed to mount", e)
+                    app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
+                }
+            }
+
             else -> {}
         }
 
         tempDir.deleteRecursively()
-
-        try {
-            if (input.selectedApp is SelectedApp.Installed) {
-                installedApp?.let {
-                    if (it.installType == InstallType.ROOT) {
-                        rootInstaller.mount(packageName)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to mount", e)
-            app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
-        }
     }
 
     private suspend fun signApk(): Boolean {
@@ -239,9 +242,13 @@ class InstallerViewModel(
             if (!signApk()) return@launch
 
             when (installType) {
-                InstallType.DEFAULT -> { pm.installApp(listOf(signedFile)) }
+                InstallType.DEFAULT -> {
+                    pm.installApp(listOf(signedFile))
+                }
 
-                InstallType.ROOT -> { installAsRoot() }
+                InstallType.ROOT -> {
+                    installAsRoot()
+                }
             }
 
         } finally {
@@ -286,7 +293,8 @@ class InstallerViewModel(
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
             try {
                 rootInstaller.uninstall(packageName)
-            } catch (_: Exception) {  }
+            } catch (_: Exception) {
+            }
         }
     }
 }
