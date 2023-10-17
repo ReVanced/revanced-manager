@@ -73,7 +73,7 @@ import org.koin.compose.rememberKoinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onPatchClick: (PatchesSelection?, Options) -> Unit,
+    onSave: (PatchesSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
@@ -295,7 +295,7 @@ fun PatchesSelectorScreen(
                     // TODO: only allow this if all required options have been set.
                     composableScope.launch {
                         vm.saveSelection().join()
-                        onPatchClick(vm.getCustomSelection(), vm.getOptions())
+                        onSave(vm.getCustomSelection(), vm.getOptions())
                     }
                 }
             )

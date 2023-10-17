@@ -74,7 +74,7 @@ fun SelectedAppInfoScreen(
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
-                onPatchClick = { patches, options ->
+                onSave = { patches, options ->
                     vm.setNullablePatches(patches)
                     vm.patchOptions = options
                     navController.pop()
@@ -100,7 +100,6 @@ private fun SelectedAppInfoScreen(
     onPatchClick: () -> Unit,
     onSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
-    // vm: SelectedAppInfoViewModel,
 ) {
     Scaffold(
         topBar = {
