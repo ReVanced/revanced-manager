@@ -234,7 +234,7 @@
         "universalPatchesLabel": "Show universal patches",
         "universalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
         "versionCompatibilityCheckLabel": "Version compatibility check",
-        "versionCompatibilityCheckHint": "Restricts patches to supported versions",
+        "versionCompatibilityCheckHint": "Restricts patches to supported app versions",
 
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
