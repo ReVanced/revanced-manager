@@ -54,9 +54,9 @@ dependencies:
   permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
   root:
-    git:
-      url: https://github.com/EvadeMaster/root
-      ref: 82803aa40f63cddff81c3e4d27ce8ce3e7c83f60
+    git: # switch back to EvadeMaster fork once https://github.com/validcube/root/pull/1 is merged
+      url: https://github.com/BenjaminHalko/root
+      ref: main
   share_extend: ^2.0.0
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
@@ -73,7 +73,10 @@ dependencies:
     git: # remove once https://github.com/hui-z/flutter_install_plugin/pull/67 is merged
       url: https://github.com/BenjaminHalko/flutter_install_plugin
       ref: master
-  screenshot_callback: ^3.0.1
+  screenshot_callback:
+    git: # remove once https://github.com/flutter-moum/flutter_screenshot_callback/pull/81 is merged
+      url: https://github.com/BenjaminHalko/flutter_screenshot_callback
+      ref: master
   synchronized: ^3.1.0
   connectivity_plus: ^5.0.1
   flutter_file_dialog: ^3.0.2
