@@ -23,14 +23,13 @@ import app.revanced.manager.ui.screen.InstalledAppInfoScreen
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstallerScreen
-import app.revanced.manager.ui.screen.PatchesSelectorScreen
 import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
-import app.revanced.manager.ui.viewmodel.KoinShallExplode
 import app.revanced.manager.ui.viewmodel.MainViewModel
+import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
@@ -39,10 +38,9 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
-import org.koin.androidx.compose.getViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.compose.getViewModel as getComposeViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel as getAndroidViewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
 
 class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi
@@ -51,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen()
 
-        val vm: MainViewModel = getActivityViewModel()
+        val vm: MainViewModel = getAndroidViewModel()
 
         setContent {
             val theme by vm.prefs.theme.getAsState()
@@ -136,7 +134,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             },
                             onBackClick = { navController.pop() },
-                            viewModel = getViewModel { parametersOf(destination.installedApp) }
+                            viewModel = getComposeViewModel { parametersOf(destination.installedApp) }
                         )
 
                         is Destination.Settings -> SettingsScreen(
@@ -145,7 +143,13 @@ class MainActivity : ComponentActivity() {
 
                         is Destination.AppSelector -> AppSelectorScreen(
                             onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
-                            onStorageClick = { /* navController.navigate(Destination.PatchesSelector(it)) */ },
+                            onStorageClick = {
+                                navController.navigate(
+                                    Destination.SelectedApplicationInfo(
+                                        it
+                                    )
+                                )
+                            },
                             onBackClick = { navController.pop() }
                         )
 
@@ -157,15 +161,9 @@ class MainActivity : ComponentActivity() {
                                         selectedApp,
                                         destination.patchesSelection,
                                     )
-                                    /*
-                                    Destination.PatchesSelector(
-                                        selectedApp,
-                                        destination.patchesSelection
-                                    )
-                                    */
                                 )
                             },
-                            viewModel = getViewModel {
+                            viewModel = getComposeViewModel {
                                 parametersOf(
                                     destination.packageName,
                                     destination.patchesSelection
@@ -182,9 +180,9 @@ class MainActivity : ComponentActivity() {
                                 )
                             },
                             onBackClick = navController::pop,
-                            vm = getViewModel {
+                            vm = getComposeViewModel {
                                 parametersOf(
-                                    KoinShallExplode(
+                                    SelectedAppInfoViewModel.Params(
                                         destination.selectedApp,
                                         destination.patchesSelection
                                     )
@@ -192,25 +190,9 @@ class MainActivity : ComponentActivity() {
                             }
                         )
 
-                        /*
-                        is Destination.PatchesSelector -> PatchesSelectorScreen(
-                            onBackClick = { navController.pop() },
-                            onPatchClick = { patches, options ->
-                                navController.navigate(
-                                    Destination.Installer(
-                                        destination.selectedApp,
-                                        patches,
-                                        options
-                                    )
-                                )
-                            },
-                            vm = getViewModel { parametersOf(destination) }
-                        )
-                        */
-
                         is Destination.Installer -> InstallerScreen(
                             onBackClick = { navController.popUpTo { it is Destination.Dashboard } },
-                            vm = getViewModel { parametersOf(destination) }
+                            vm = getComposeViewModel { parametersOf(destination) }
                         )
                     }
                 }

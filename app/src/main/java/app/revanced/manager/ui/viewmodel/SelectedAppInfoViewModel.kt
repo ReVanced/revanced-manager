@@ -21,13 +21,8 @@ import kotlinx.parcelize.Parcelize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
-data class KoinShallExplode(
-    val app:SelectedApp,
-    val patches: PatchesSelection?
-)
-
 @OptIn(SavedStateHandleSaveableApi::class)
-class SelectedAppInfoViewModel(input: KoinShallExplode) : ViewModel(), KoinComponent {
+class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     val bundlesRepo: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val savedStateHandle: SavedStateHandle = get()
@@ -71,25 +66,20 @@ class SelectedAppInfoViewModel(input: KoinShallExplode) : ViewModel(), KoinCompo
     fun setNullablePatches(selection: PatchesSelection?) {
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
     }
+
+    data class Params(
+        val app: SelectedApp,
+        val patches: PatchesSelection?,
+    )
 }
 
 sealed interface SelectionState : Parcelable {
     fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchesSelection
 
-    /*
-    @Parcelize
-    data object Pending : SelectionState {
-        override fun patches(
-            bundles: List<BundleInfo>,
-            allowUnsupported: Boolean
-        ): PatchesSelection = emptyMap()
-    }
-     */
-
     @Parcelize
     data class Customized(val patchesSelection: PatchesSelection) : SelectionState {
         override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
-            idkWhatToCallThis(
+            createPatchesSelection(
                 bundles,
                 allowUnsupported
             ) { uid, patch -> patchesSelection[uid]?.contains(patch.name) ?: false }
@@ -98,11 +88,11 @@ sealed interface SelectionState : Parcelable {
     @Parcelize
     data object Default : SelectionState {
         override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
-            idkWhatToCallThis(bundles, allowUnsupported) { _, patch -> patch.include }
+            createPatchesSelection(bundles, allowUnsupported) { _, patch -> patch.include }
     }
 }
 
-private inline fun idkWhatToCallThis(
+private inline fun createPatchesSelection(
     bundles: List<BundleInfo>,
     allowUnsupported: Boolean,
     condition: (Int, PatchInfo) -> Boolean

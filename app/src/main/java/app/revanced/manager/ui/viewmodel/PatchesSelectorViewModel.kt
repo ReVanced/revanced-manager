@@ -20,8 +20,8 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
-import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo
+import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.bundleInfoFlow
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
@@ -40,16 +40,14 @@ import java.util.Optional
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchesSelectorViewModel(
-    // TODO: maybe don't tie this to the destination
-    val input: SelectedAppInfoDestination.PatchesSelector
-) : ViewModel(), KoinComponent {
+class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     private val app: Application = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
 
     private val packageName = input.app.packageName
+    val appVersion = input.app.version
 
     var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
 
@@ -218,6 +216,12 @@ class PatchesSelectorViewModel(
         private val patchesSaver: Saver<PersistentPatchesSelection?, Optional<PatchesSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
+
+    data class Params(
+        val app: SelectedApp,
+        val currentSelection: PatchesSelection?,
+        val options: Options,
+    )
 }
 
 // Versions of other types, but utilizing persistent/observable collection types.
