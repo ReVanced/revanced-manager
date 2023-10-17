@@ -13,8 +13,8 @@ dependencies:
   animations: ^2.0.7
   collection: ^1.17.0
   device_apps:
-    git:
-      url: https://github.com/ponces/flutter_plugin_device_apps
+    git: # switch back to ponces fork once https://github.com/ponces/flutter_plugin_device_apps/pull/1 is merged
+      url: https://github.com/BenjaminHalko/flutter_plugin_device_apps
       ref: revanced-manager
   device_info_plus: ^9.1.0
   dynamic_color: ^1.6.3
@@ -24,14 +24,20 @@ dependencies:
   flex_color_scheme: ^7.0.1
   flutter:
     sdk: flutter
-  flutter_background: ^1.2.0
+  flutter_background:
+    git: # remove once https://github.com/JulianAssmann/flutter_background/pull/79 is merged
+      url: https://github.com/BenjaminHalko/flutter_background
+      ref: specify-namespace
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.34.0
   flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.4
-  fluttertoast: ^8.2.1
+  fluttertoast:
+    git: # remove once the next fluttertoast version is release (> 8.2.2)
+      url: https://github.com/ponnamkarthik/FlutterToast
+      ref: f4e7b4e1afc8c760eb5bac80f6a2e299906d83ca
   font_awesome_flutter: ^10.4.0
   get_it: ^7.6.4
   google_fonts: ^6.1.0
@@ -41,8 +47,8 @@ dependencies:
   json_annotation: ^4.8.0
   logcat:
     git:
-      url: https://github.com/SuaMusica/logcat
-      ref: feature/nullSafe
+      url: https://github.com/BenjaminHalko/logcat
+      ref: master
   package_info_plus: ^4.2.0
   path_provider: ^2.0.14
   permission_handler: ^11.0.1
@@ -57,14 +63,16 @@ dependencies:
   stacked: ^3.2.0
   stacked_generator: ^1.1.0
   stacked_services: ^1.0.0
-  stacked_themes: ^0.3.10
   timeago: ^3.3.0
   timezone: ^0.9.0
   url_launcher: ^6.1.10
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
   dio_cache_interceptor: ^3.4.0
-  install_plugin: ^2.1.0
+  install_plugin:
+    git: # remove once https://github.com/hui-z/flutter_install_plugin/pull/67 is merged
+      url: https://github.com/BenjaminHalko/flutter_install_plugin
+      ref: master
   screenshot_callback: ^3.0.1
   synchronized: ^3.1.0
   connectivity_plus: ^5.0.1
@@ -78,7 +86,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  injectable_generator: ^2.1.5  
+  injectable_generator: ^2.1.5
 
 
 
