@@ -12,7 +12,6 @@ environment:
 dependencies:
   animations: ^2.0.7
   collection: ^1.17.0
-  cross_connectivity: ^3.0.5
   cr_file_saver:
     git:
       url: https://github.com/dhruvanbhalara/cr_file_saver
@@ -77,6 +76,7 @@ dependencies:
   install_plugin: ^2.1.0
   screenshot_callback: ^3.0.1
   synchronized: ^3.1.0
+  connectivity_plus: ^5.0.1
 
 dev_dependencies:
   json_serializable: ^6.6.1
