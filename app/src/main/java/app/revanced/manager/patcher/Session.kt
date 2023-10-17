@@ -30,7 +30,8 @@ class Session(
             inputFile = input,
             resourceCachePath = tempDir.resolve("aapt-resources"),
             frameworkFileDirectory = frameworkDir,
-            aaptBinaryPath = aaptPath
+            aaptBinaryPath = aaptPath,
+            multithreadingDexFileWriter = false
         )
     )
 
