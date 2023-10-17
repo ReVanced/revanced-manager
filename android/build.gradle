@@ -22,12 +22,12 @@ allprojects {
     }
 }
 
-rootProject.layout.buildDirectory = '../build'
+rootProject.buildDir = '../build'
 subprojects {
-    project.layout.buildDirectory = "${rootProject.layout.buildDirectory}/${project.name}"
+    project.layout.buildDirectory = "${rootProject.buildDir}/${project.name}"
     project.evaluationDependsOn(':app')
 }
 
 tasks.register("clean", Delete) {
-    delete rootProject.layout.buildDirectory
+    delete rootProject.buildDir
 }
