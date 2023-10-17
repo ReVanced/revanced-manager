@@ -71,10 +71,16 @@ android {
             }
         }
     }
-
     packagingOptions {
-        exclude '/prebuilt/**'
+        jniLibs {
+            useLegacyPackaging true
+            excludes += ['/prebuilt/**']
+        }
+        resources {
+            excludes += ['/prebuilt/**']
+        }
     }
+
     namespace 'app.revanced.manager.flutter'
 }
 
