@@ -80,6 +80,10 @@ android {
     namespace 'app.revanced.manager.flutter'
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 flutter {
     source '../..'
 }
