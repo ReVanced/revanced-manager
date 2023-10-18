@@ -22,12 +22,13 @@ allprojects {
     }
 }
 
-rootProject.buildDir = '../build'
+layout.buildDirectory.set(file("../build"))
+var root = layout.buildDirectory.get().asFile.absolutePath
 subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.layout.buildDirectory.set(file("$root/${project.name}"))
     project.evaluationDependsOn(':app')
 }
 
 tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    delete layout.buildDirectory
 }
