@@ -190,7 +190,7 @@ class InstallerViewModel extends BaseViewModel {
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
-      'Roo: ${isRooted ? 'Yes' : 'No'}',
+      Root permissions: ${isRooted ? 'Yes' : 'No'}',
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
