@@ -54,9 +54,9 @@ dependencies:
   permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
   root:
-    git: # switch back to EvadeMaster fork once https://github.com/validcube/root/pull/1 is merged
-      url: https://github.com/BenjaminHalko/root
-      ref: main
+    git:
+      url: https://github.com/validcube/root
+      ref: 68e5678a535a2a3344828a14a39017fa74b9098c
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
   stacked: ^3.2.0
