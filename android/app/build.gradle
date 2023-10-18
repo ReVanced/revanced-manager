@@ -33,15 +33,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-
-    kotlin {
-        jvmToolchain(17)
+    kotlinOptions {
+        jvmTarget = '17'
     }
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
     defaultConfig {
         applicationId "app.revanced.manager.flutter"
         minSdkVersion 26
@@ -49,7 +46,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
     buildTypes {
         release {
             shrinkResources false
