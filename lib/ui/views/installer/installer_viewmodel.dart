@@ -139,7 +139,6 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> runPatcher() async {
-
     try {
       await _patcherAPI.runPatcher(
         _app.packageName,
@@ -159,7 +158,7 @@ class InstallerViewModel extends BaseViewModel {
 
     // Necessary to reset the state of patches so that they
     // can be reloaded again.
-   _managerAPI.patches.clear();
+    _managerAPI.patches.clear();
     await _patcherAPI.loadPatches();
 
     try {
@@ -191,19 +190,17 @@ class InstallerViewModel extends BaseViewModel {
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
-
+      'Roo: ${isRooted ? 'Yes' : 'No'}',
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${o.value}').join(", ")}]')).toList().join(", ")}',
-
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-
       '\n- Logs',
       logs,
       '```',
