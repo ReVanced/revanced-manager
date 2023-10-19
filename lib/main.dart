@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
@@ -19,6 +20,7 @@ Future main() async {
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await locator<ManagerAPI>().initialize();
+  await locator<DownloadManager>().initialize();
   final String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
   final String repoUrl = locator<ManagerAPI>().getRepoUrl();

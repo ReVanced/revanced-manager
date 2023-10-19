@@ -135,12 +135,12 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool areExperimentalPatchesEnabled() {
-    return _managerAPI.areExperimentalPatchesEnabled();
+  bool isVersionCompatibilityCheckEnabled() {
+    return _managerAPI.isVersionCompatibilityCheckEnabled();
   }
 
-  void useExperimentalPatches(bool value) {
-    _managerAPI.enableExperimentalPatchesStatus(value);
+  void useVersionCompatibilityCheck(bool value) {
+    _managerAPI.enableVersionCompatibilityCheckStatus(value);
     notifyListeners();
   }
 

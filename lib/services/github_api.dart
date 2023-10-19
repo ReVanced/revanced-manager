@@ -1,48 +1,24 @@
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 
 @lazySingleton
 class GithubAPI {
-  late Dio _dio = Dio();
+  late final Dio _dio;
   late final ManagerAPI _managerAPI = locator<ManagerAPI>();
-
-  final _cacheOptions = CacheOptions(
-    store: MemCacheStore(),
-    maxStale: const Duration(days: 1),
-    priority: CachePriority.high,
-  );
+  late final DownloadManager _downloadManager = locator<DownloadManager>();
 
   Future<void> initialize(String repoUrl) async {
-    try {
-      _dio = Dio(
-        BaseOptions(
-          baseUrl: repoUrl,
-        ),
-      );
-
-      _dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+    _dio = _downloadManager.initDio(repoUrl);
   }
 
   Future<void> clearAllCache() async {
-    try {
-      await _cacheOptions.store!.clean();
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+    await _downloadManager.clearAllCache();
   }
 
   Future<Map<String, dynamic>?> getLatestRelease(
@@ -104,7 +80,7 @@ class GithubAPI {
       final Map<String, dynamic> releases = response.data[0];
       int updates = 0;
       final String currentVersion =
-          await ManagerAPI().getCurrentManagerVersion();
+          await _managerAPI.getCurrentManagerVersion();
       while (response.data[updates]['tag_name'] != 'v$currentVersion') {
         updates++;
       }
@@ -141,7 +117,7 @@ class GithubAPI {
           (asset) => (asset['name'] as String).endsWith(extension),
         );
         if (asset != null) {
-          return await DefaultCacheManager().getSingleFile(
+          return await _downloadManager.getSingleFile(
             asset['browser_download_url'],
           );
         }
@@ -162,7 +138,7 @@ class GithubAPI {
   ) async {
     try {
       if (url.isNotEmpty) {
-        return await DefaultCacheManager().getSingleFile(
+        return await _downloadManager.getSingleFile(
           url,
         );
       }
@@ -180,7 +156,7 @@ class GithubAPI {
           } else {
             _managerAPI.setPatchesDownloadURL(downloadUrl);
           }
-          return await DefaultCacheManager().getSingleFile(
+          return await _downloadManager.getSingleFile(
             downloadUrl,
           );
         }

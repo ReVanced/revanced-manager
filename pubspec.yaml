@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.12.1+101200100
+version: 1.13.1+101300100
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -91,5 +91,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: CustomIcon
+      fonts:
+        - asset: fonts/custom-icons.ttf
   assets:
     - assets/i18n/

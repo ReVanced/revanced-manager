@@ -147,7 +147,7 @@ class PatchOptionsViewModel extends BaseViewModel {
         ),
         actions: [
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: I18nText('cancelButton'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -165,7 +165,7 @@ class PatchOptionsViewModel extends BaseViewModel {
               .map((e) {
             return CustomCard(
               padding: const EdgeInsets.all(4),
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               onTap: () {
                 addOption(e);
                 Navigator.pop(context);
@@ -186,9 +186,9 @@ class PatchOptionsViewModel extends BaseViewModel {
                       e.description,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -5,24 +5,24 @@ import 'package:revanced_manager/ui/views/patches_selector/patches_selector_view
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 
-class SExperimentalPatches extends StatefulWidget {
-  const SExperimentalPatches({super.key});
+class SVersionCompatibilityCheck extends StatefulWidget {
+  const SVersionCompatibilityCheck({super.key});
 
   @override
-  State<SExperimentalPatches> createState() => _SExperimentalPatchesState();
+  State<SVersionCompatibilityCheck> createState() => _SVersionCompatibilityCheckState();
 }
 
 final _settingsViewModel = SettingsViewModel();
 final _patchesSelectorViewModel = PatchesSelectorViewModel();
 final _patcherViewModel = PatcherViewModel();
 
-class _SExperimentalPatchesState extends State<SExperimentalPatches> {
+class _SVersionCompatibilityCheckState extends State<SVersionCompatibilityCheck> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: I18nText(
-        'settingsView.experimentalPatchesLabel',
+        'settingsView.versionCompatibilityCheckLabel',
         child: const Text(
           '',
           style: TextStyle(
@@ -31,11 +31,11 @@ class _SExperimentalPatchesState extends State<SExperimentalPatches> {
           ),
         ),
       ),
-      subtitle: I18nText('settingsView.experimentalPatchesHint'),
-      value: _settingsViewModel.areExperimentalPatchesEnabled(),
+      subtitle: I18nText('settingsView.versionCompatibilityCheckHint'),
+      value: _settingsViewModel.isVersionCompatibilityCheckEnabled(),
       onChanged: (value) {
         setState(() {
-          _settingsViewModel.useExperimentalPatches(value);
+          _settingsViewModel.useVersionCompatibilityCheck(value);
         });
         if (!value) {
           _patcherViewModel.selectedPatches

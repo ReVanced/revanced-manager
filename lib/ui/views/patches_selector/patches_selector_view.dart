@@ -4,7 +4,6 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_popup_menu.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
@@ -62,12 +61,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
               floating: true,
               title: I18nText(
                 'patchesSelectorView.viewTitle',
-                child: Text(
-                  '',
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
-                ),
+              ),
+              titleTextStyle: TextStyle(
+                fontSize: 22.0,
+                color: Theme.of(context).textTheme.titleLarge!.color,
               ),
               leading: IconButton(
                 icon: Icon(
@@ -80,41 +77,34 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                 },
               ),
               actions: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 12, bottom: 12),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .tertiary
-                          .withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      model.patchesVersion!,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.titleLarge!.color,
-                      ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    model.patchesVersion!,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.titleLarge!.color,
                     ),
                   ),
                 ),
-                CustomPopupMenu(
-                  onSelected: (value) =>
-                      {model.onMenuSelection(value, context)},
-                  children: {
-                    0: I18nText(
-                      'patchesSelectorView.loadPatchesSelection',
-                      child: const Text(
-                        '',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                PopupMenuButton(
+                  onSelected: (value) {
+                    model.onMenuSelection(value, context);
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    PopupMenuItem(
+                      value: 0,
+                      child: I18nText(
+                        'patchesSelectorView.loadPatchesSelection',
                       ),
                     ),
-                  },
+                  ],
                 ),
               ],
               bottom: PreferredSize(
@@ -294,7 +284,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                       _managerAPI.isPatchesChangeEnabled(),
                                   hasUnsupportedPatchOption:
                                       hasUnsupportedRequiredOption(
-                                          patch.options, patch),
+                                    patch.options,
+                                    patch,
+                                  ),
                                   options: patch.options,
                                   isSelected: model.isSelected(patch),
                                   navigateToOptions: (options) =>

@@ -244,12 +244,12 @@ class ManagerAPI {
     await _prefs.setBool('universalPatchesEnabled', value);
   }
 
-  bool areExperimentalPatchesEnabled() {
-    return _prefs.getBool('experimentalPatchesEnabled') ?? false;
+  bool isVersionCompatibilityCheckEnabled() {
+    return _prefs.getBool('versionCompatibilityCheckEnabled') ?? true;
   }
 
-  Future<void> enableExperimentalPatchesStatus(bool value) async {
-    await _prefs.setBool('experimentalPatchesEnabled', value);
+  Future<void> enableVersionCompatibilityCheckStatus(bool value) async {
+    await _prefs.setBool('versionCompatibilityCheckEnabled', value);
   }
 
   Future<void> setKeystorePassword(String password) async {
@@ -677,7 +677,7 @@ class ManagerAPI {
   Future<List<String>> getDefaultPatches() async {
     final List<Patch> patches = await getPatches();
     final List<String> defaultPatches = [];
-    if (areExperimentalPatchesEnabled() == false) {
+    if (isVersionCompatibilityCheckEnabled() == true) {
       defaultPatches.addAll(
         patches
             .where(

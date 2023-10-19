@@ -48,6 +48,10 @@ class PatchOptionsView extends StatelessWidget {
                     icon: const Icon(
                       Icons.history,
                     ),
+                    tooltip: FlutterI18n.translate(
+                      context,
+                      'patchOptionsView.resetOptionsTooltip',
+                    ),
                   ),
                 ],
               ),

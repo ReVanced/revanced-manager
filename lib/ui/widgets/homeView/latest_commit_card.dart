@@ -75,7 +75,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
 
         const SizedBox(height: 16),
 
-        // ReVanced Patches
+        // Patches
         CustomCard(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,7 +84,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('ReVanced Patches'),
+                    const Text('Patches'),
                     const SizedBox(height: 4),
                     Row(
                       children: <Widget>[

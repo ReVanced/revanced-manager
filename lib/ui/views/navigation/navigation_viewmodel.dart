@@ -19,7 +19,6 @@ class NavigationViewModel extends IndexTrackingViewModel {
   Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await requestManageExternalStorage();
 
     if (prefs.getBool('permissionsRequested') == null) {
       await Permission.storage.request();
@@ -58,17 +57,6 @@ class NavigationViewModel extends IndexTrackingViewModel {
                 : Brightness.light,
       ),
     );
-  }
-
-  Future<void> requestManageExternalStorage() async {
-    final manageExternalStorageStatus =
-        await Permission.manageExternalStorage.status;
-    if (manageExternalStorageStatus.isDenied) {
-      await Permission.manageExternalStorage.request();
-    }
-    if (manageExternalStorageStatus.isPermanentlyDenied) {
-      await openAppSettings();
-    }
   }
 
   Widget getViewForIndex(int index) {
