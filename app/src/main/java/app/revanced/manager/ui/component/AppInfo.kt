@@ -16,7 +16,7 @@ fun AppInfo(appInfo: PackageInfo?, placeholderLabel: String? = null, extraConten
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp),
+            .padding(horizontal = 24.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AppIcon(
@@ -29,6 +29,7 @@ fun AppInfo(appInfo: PackageInfo?, placeholderLabel: String? = null, extraConten
 
         AppLabel(
             appInfo,
+            modifier = Modifier.padding(top = 16.dp),
             style = MaterialTheme.typography.titleLarge,
             defaultText = placeholderLabel
         )

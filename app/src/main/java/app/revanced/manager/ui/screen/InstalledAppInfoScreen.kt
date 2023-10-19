@@ -82,7 +82,7 @@ fun InstalledAppInfoScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             AppInfo(viewModel.appInfo)  {
-                Text(viewModel.installedApp.version, style = MaterialTheme.typography.bodySmall)
+                Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
 
                 if (viewModel.installedApp.installType == InstallType.ROOT) {
                     Text(

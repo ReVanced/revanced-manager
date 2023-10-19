@@ -21,8 +21,9 @@ import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
+import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
+import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.model.bundleInfoFlow
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.saver.nullableSaver
@@ -66,7 +67,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
                 return@launch
             }
 
-            fun BundleInfo.hasDefaultPatches() = sequence(allowExperimental).any { it.include }
+            fun BundleInfo.hasDefaultPatches() = patchSequence(allowExperimental).any { it.include }
 
             // Don't show the warning if there are no default patches.
             selectionWarningEnabled = bundlesFlow.first().any(BundleInfo::hasDefaultPatches)
@@ -103,7 +104,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     private suspend fun generateDefaultSelection(): PersistentPatchesSelection {
         val bundles = bundlesFlow.first()
-        val generatedSelection = SelectionState.Default.patches(bundles, allowExperimental)
+        val generatedSelection =
+            bundles.toPatchSelection(allowExperimental) { _, patch -> patch.include }
 
         return generatedSelection.toPersistentPatchesSelection()
     }

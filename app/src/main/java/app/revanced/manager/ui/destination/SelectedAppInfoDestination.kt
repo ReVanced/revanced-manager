@@ -13,4 +13,7 @@ sealed interface SelectedAppInfoDestination : Parcelable {
 
     @Parcelize
     data class PatchesSelector(val app: SelectedApp, val currentSelection: PatchesSelection?, val options: @RawValue Options) : SelectedAppInfoDestination
+
+    @Parcelize
+    data object VersionSelector: SelectedAppInfoDestination
 }

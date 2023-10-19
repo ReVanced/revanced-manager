@@ -16,6 +16,7 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
+import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
@@ -51,7 +52,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         mutableStateOf(emptyMap())
     }
 
-    var selectionState by savedStateHandle.saveable {
+    private var selectionState by savedStateHandle.saveable {
         if (input.patches != null) {
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
         }
@@ -72,6 +73,11 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         selection
     }
 
+    fun changeSelectedApp(new: SelectedApp) {
+        selectedApp = new
+        invalidateSelectedAppInfo()
+    }
+
     private fun invalidateSelectedAppInfo() = viewModelScope.launch {
         val info = when (val app = selectedApp) {
             is SelectedApp.Download -> null
@@ -81,6 +87,9 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 
         selectedAppInfo = info
     }
+
+    fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
+        selectionState.patches(bundles, allowUnsupported)
 
     fun getCustomPatchesOrNull(
         bundles: List<BundleInfo>,
@@ -98,40 +107,23 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     )
 }
 
-sealed interface SelectionState : Parcelable {
+private sealed interface SelectionState : Parcelable {
     fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchesSelection
 
     @Parcelize
     data class Customized(val patchesSelection: PatchesSelection) : SelectionState {
         override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
-            createPatchesSelection(
-                bundles,
+            bundles.toPatchSelection(
                 allowUnsupported
-            ) { uid, patch -> patchesSelection[uid]?.contains(patch.name) ?: false }
+            ) { uid, patch ->
+                patchesSelection[uid]?.contains(patch.name) ?: false
+            }
     }
 
     @Parcelize
     data object Default : SelectionState {
         override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
-            createPatchesSelection(bundles, allowUnsupported) { _, patch -> patch.include }
+            bundles.toPatchSelection(allowUnsupported) { _, patch -> patch.include }
     }
 }
 
-private inline fun createPatchesSelection(
-    bundles: List<BundleInfo>,
-    allowUnsupported: Boolean,
-    condition: (Int, PatchInfo) -> Boolean
-) = bundles.associate { bundle ->
-    val patches =
-        bundle.sequence(allowUnsupported)
-            .mapNotNullTo(mutableSetOf()) { patch ->
-                patch.name.takeIf {
-                    condition(
-                        bundle.uid,
-                        patch
-                    )
-                }
-            }
-
-    bundle.uid to patches
-}

@@ -20,18 +20,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
+import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.model.bundleInfoFlow
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
+import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
@@ -50,12 +52,24 @@ fun SelectedAppInfoScreen(
     val allowExperimental by vm.prefs.allowExperimental.getAsState()
     val patches by remember {
         derivedStateOf {
-            vm.selectionState.patches(bundles, allowExperimental)
+            vm.getPatches(bundles, allowExperimental)
+        }
+    }
+    val selectedPatchCount by remember {
+        derivedStateOf {
+            patches.values.sumOf { it.size }
+        }
+    }
+    val availablePatchCount by remember {
+        derivedStateOf {
+            bundles.sumOf { it.patchCount }
         }
     }
 
     val navController =
         rememberNavController<SelectedAppInfoDestination>(startDestination = SelectedAppInfoDestination.Main)
+
+    NavBackHandler(controller = navController)
 
     AnimatedNavHost(controller = navController) { destination ->
         when (destination) {
@@ -67,7 +81,7 @@ fun SelectedAppInfoScreen(
                         vm.patchOptions
                     )
                 },
-                onSelectorClick = {
+                onPatchSelectorClick = {
                     navController.navigate(
                         SelectedAppInfoDestination.PatchesSelector(
                             vm.selectedApp,
@@ -79,11 +93,24 @@ fun SelectedAppInfoScreen(
                         )
                     )
                 },
+                onVersionSelectorClick = {
+                    navController.navigate(SelectedAppInfoDestination.VersionSelector)
+                },
                 onBackClick = onBackClick,
-                patchCount = patches.values.sumOf { it.size },
+                availablePatchCount = availablePatchCount,
+                selectedPatchCount = selectedPatchCount,
                 packageName = vm.selectedApp.packageName,
                 version = vm.selectedApp.version,
                 packageInfo = vm.selectedAppInfo,
+            )
+
+            is SelectedAppInfoDestination.VersionSelector -> VersionSelectorScreen(
+                onBackClick = navController::pop,
+                onAppClick = {
+                    vm.changeSelectedApp(it)
+                    navController.pop()
+                },
+                viewModel = getViewModel { parametersOf(vm.selectedApp.packageName) }
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
@@ -111,9 +138,11 @@ fun SelectedAppInfoScreen(
 @Composable
 private fun SelectedAppInfoScreen(
     onPatchClick: () -> Unit,
-    onSelectorClick: () -> Unit,
+    onPatchSelectorClick: () -> Unit,
+    onVersionSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
-    patchCount: Int,
+    availablePatchCount: Int,
+    selectedPatchCount: Int,
     packageName: String,
     version: String,
     packageInfo: PackageInfo?,
@@ -132,11 +161,32 @@ private fun SelectedAppInfoScreen(
                 .padding(paddingValues)
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
-                Text(version, style = MaterialTheme.typography.bodySmall)
+                Text(
+                    stringResource(R.string.selected_app_meta, version, availablePatchCount),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
 
             PageItem(R.string.patch, stringResource(R.string.patch_item_description), onPatchClick)
-            PageItem(R.string.patch_selector_item, stringResource(R.string.patch_selector_item_description, patchCount), onSelectorClick)
+
+            Text(
+                stringResource(R.string.advanced),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+            )
+
+            PageItem(
+                R.string.patch_selector_item,
+                stringResource(R.string.patch_selector_item_description, selectedPatchCount),
+                onPatchSelectorClick
+            )
+            PageItem(
+                R.string.version_selector_item,
+                stringResource(R.string.version_selector_item_description, version),
+                onVersionSelectorClick
+            )
         }
     }
 }
@@ -144,9 +194,23 @@ private fun SelectedAppInfoScreen(
 @Composable
 private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit) {
     ListItem(
-        modifier = Modifier.clickable(onClick = onClick),
-        headlineContent = { Text(stringResource(title)) },
-        supportingContent = { Text(description) },
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(start = 8.dp),
+        headlineContent = {
+            Text(
+                stringResource(title),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        supportingContent = {
+            Text(
+                description,
+                color = MaterialTheme.colorScheme.outline,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
         trailingContent = {
             Icon(Icons.Outlined.ArrowRight, null)
         }
