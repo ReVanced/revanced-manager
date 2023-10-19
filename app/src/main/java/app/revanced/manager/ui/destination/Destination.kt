@@ -14,7 +14,7 @@ sealed interface Destination : Parcelable {
     object Dashboard : Destination
 
     @Parcelize
-    data class ApplicationInfo(val installedApp: InstalledApp) : Destination
+    data class InstalledApplicationInfo(val installedApp: InstalledApp) : Destination
 
     @Parcelize
     object AppSelector : Destination
@@ -26,7 +26,7 @@ sealed interface Destination : Parcelable {
     data class VersionSelector(val packageName: String, val patchesSelection: PatchesSelection? = null) : Destination
 
     @Parcelize
-    data class PatchesSelector(val selectedApp: SelectedApp, val patchesSelection: PatchesSelection? = null) : Destination
+    data class SelectedApplicationInfo(val selectedApp: SelectedApp, val patchesSelection: PatchesSelection? = null) : Destination
 
     @Parcelize
     data class Installer(val selectedApp: SelectedApp, val selectedPatches: PatchesSelection, val options: @RawValue Options) : Destination
