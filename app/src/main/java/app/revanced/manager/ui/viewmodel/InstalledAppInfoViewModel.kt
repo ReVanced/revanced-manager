@@ -30,7 +30,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AppInfoViewModel(
+class InstalledAppInfoViewModel(
     val installedApp: InstalledApp
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
