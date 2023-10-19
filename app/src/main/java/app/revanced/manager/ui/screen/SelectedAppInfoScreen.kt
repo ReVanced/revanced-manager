@@ -85,7 +85,7 @@ fun SelectedAppInfoScreen(
                     navController.navigate(
                         SelectedAppInfoDestination.PatchesSelector(
                             vm.selectedApp,
-                            vm.getCustomPatchesOrNull(
+                            vm.getCustomPatches(
                                 bundles,
                                 allowExperimental
                             ),
@@ -107,7 +107,7 @@ fun SelectedAppInfoScreen(
             is SelectedAppInfoDestination.VersionSelector -> VersionSelectorScreen(
                 onBackClick = navController::pop,
                 onAppClick = {
-                    vm.changeSelectedApp(it)
+                    vm.setSelectedApp(it)
                     navController.pop()
                 },
                 viewModel = getViewModel { parametersOf(vm.selectedApp.packageName) }
@@ -115,7 +115,7 @@ fun SelectedAppInfoScreen(
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
                 onSave = { patches, options ->
-                    vm.setNullablePatches(patches)
+                    vm.setCustomPatches(patches)
                     vm.patchOptions = options
                     navController.pop()
                 },

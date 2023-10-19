@@ -14,7 +14,6 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
@@ -73,7 +72,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         selection
     }
 
-    fun changeSelectedApp(new: SelectedApp) {
+    fun setSelectedApp(new: SelectedApp) {
         selectedApp = new
         invalidateSelectedAppInfo()
     }
@@ -91,13 +90,13 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
         selectionState.patches(bundles, allowUnsupported)
 
-    fun getCustomPatchesOrNull(
+    fun getCustomPatches(
         bundles: List<BundleInfo>,
         allowUnsupported: Boolean
     ): PatchesSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
-    fun setNullablePatches(selection: PatchesSelection?) {
+    fun setCustomPatches(selection: PatchesSelection?) {
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
     }
 
