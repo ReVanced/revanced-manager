@@ -17,22 +17,41 @@ final _settingViewModel = SettingsViewModel();
 class SUpdateLanguage extends BaseViewModel {
   final Toast _toast = locator<Toast>();
   late SharedPreferences _prefs;
-  String selectedLanguage = 'English';
-  String selectedLanguageLocale = prefs.getString('language') ?? 'en_US';
-  List languages = [];
+  String selectedLanguage = prefs.getString('language') ?? 'English';
+  String selectedLanguageLocale = prefs.getString('languageCode') ?? 'en_US';
+  List languages = [
+    {'name': 'English', 'locale': 'en_US'},
+    {'name': 'Français', 'locale': 'fr_FR'},
+    {'name': 'Deutsch', 'locale': 'de_DE'},
+    {'name': 'Español', 'locale': 'es_ES'},
+    {'name': 'Italiano', 'locale': 'it_IT'},
+    {'name': 'Português', 'locale': 'pt_PT'},
+    {'name': 'Polski', 'locale': 'pl_PL'},
+    {'name': 'Nederlands', 'locale': 'nl_NL'},
+    {'name': 'Русский', 'locale': 'ru_RU'},
+    {'name': '日本語', 'locale': 'ja_JP'},
+    {'name': '한국어', 'locale': 'ko_KR'},
+    {'name': '中文', 'locale': 'zh_CN'},
+    {'name': '中文（台灣）', 'locale': 'zh_TW'},
+  ];
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     selectedLanguageLocale =
-        _prefs.getString('language') ?? selectedLanguageLocale;
+        _prefs.getString('languageCode') ?? selectedLanguageLocale;
     notifyListeners();
   }
 
   Future<void> updateLanguage(BuildContext context, String? value) async {
     if (value != null) {
+      final languageName =
+          languages.firstWhere((element) => element['locale'] == value)['name'];
       selectedLanguageLocale = value;
+      selectedLanguage = languageName;
+
       _prefs = await SharedPreferences.getInstance();
-      await _prefs.setString('language', value);
+      await _prefs.setString('language', languageName);
+      await _prefs.setString('languageCode', value);
       await FlutterI18n.refresh(context, Locale(value));
       timeago.setLocaleMessages(value, timeago.EnMessages());
       locator<NavigationViewModel>().notifyListeners();
@@ -53,26 +72,21 @@ class SUpdateLanguage extends BaseViewModel {
         title: I18nText('settingsView.languageLabel'),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         children: [
-          SizedBox(
-            height: 500,
-            child: ListView.builder(
-              itemCount: languages.length,
-              itemBuilder: (context, index) {
-                return RadioListTile<String>(
-                  title: Text(languages[index]['name']),
-                  subtitle: Text(languages[index]['locale']),
-                  value: languages[index]['locale'],
-                  groupValue: selectedLanguageLocale,
-                  onChanged: (value) {
-                    selectedLanguage = languages[index]['name'];
-                    _toast.showBottom('settingsView.restartAppForChanges');
-                    updateLanguage(context, value);
-                    Navigator.pop(context);
-                  },
+          for (var language in languages)
+            SimpleDialogOption(
+              child: Text(language['name']),
+              onPressed: () async {
+                await updateLanguage(context, language['locale']);
+                _toast.showBottom(
+                  FlutterI18n.translate(
+                    context,
+                    'settingsView.languageChanged',
+                    translationParams: {'language': language['name']},
+                  ),
                 );
+                Navigator.pop(context);
               },
             ),
-          ),
         ],
       ),
     );
@@ -84,12 +98,15 @@ class SUpdateLanguageUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SettingsTileDialog(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      title: 'settingsView.languageLabel',
-      subtitle: _settingViewModel.sUpdateLanguage.selectedLanguage,
-      onTap: () =>
-          _settingViewModel.sUpdateLanguage.showLanguagesDialog(context),
+    return ViewModelBuilder<SUpdateLanguage>.reactive(
+      viewModelBuilder: () => SUpdateLanguage(),
+      onViewModelReady: (model) => model.initialize(),
+      builder: (context, model, child) => SettingsTileDialog(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        title: 'settingsView.languageLabel',
+        subtitle: model.selectedLanguage,
+        onTap: () => model.showLanguagesDialog(context),
+      ),
     );
   }
 }

@@ -163,6 +163,7 @@
         "dynamicThemeLabel": "Material You",
         "dynamicThemeHint": "Enjoy an experience closer to your device",
         "languageLabel": "Language",
+        "languageChanged": "Language changed",
         "englishOption": "English",
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your custom sources",
