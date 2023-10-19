@@ -25,6 +25,10 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+
+    <string name="patch_item_description">Start patching the application</string>
+    <string name="patch_selector_item">Patch selection and options</string>
+    <string name="patch_selector_item_description">%d patches selected</string>
     
     <string name="legacy_import_failed">Could not import legacy settings</string>
 

@@ -11,9 +11,11 @@ import androidx.compose.material.icons.outlined.ArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -46,6 +48,11 @@ fun SelectedAppInfoScreen(
         vm.bundlesRepo.bundleInfoFlow(vm.selectedApp.packageName, vm.selectedApp.version)
     }.collectAsStateWithLifecycle(initialValue = emptyList())
     val allowExperimental by vm.prefs.allowExperimental.getAsState()
+    val patches by remember {
+        derivedStateOf {
+            vm.selectionState.patches(bundles, allowExperimental)
+        }
+    }
 
     val navController =
         rememberNavController<SelectedAppInfoDestination>(startDestination = SelectedAppInfoDestination.Main)
@@ -56,7 +63,7 @@ fun SelectedAppInfoScreen(
                 onPatchClick = {
                     onPatchClick(
                         vm.selectedApp,
-                        vm.selectionState.patches(bundles, allowExperimental),
+                        patches,
                         vm.patchOptions
                     )
                 },
@@ -73,7 +80,9 @@ fun SelectedAppInfoScreen(
                     )
                 },
                 onBackClick = onBackClick,
+                patchCount = patches.values.sumOf { it.size },
                 packageName = vm.selectedApp.packageName,
+                version = vm.selectedApp.version,
                 packageInfo = vm.selectedAppInfo,
             )
 
@@ -104,7 +113,9 @@ private fun SelectedAppInfoScreen(
     onPatchClick: () -> Unit,
     onSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
+    patchCount: Int,
     packageName: String,
+    version: String,
     packageInfo: PackageInfo?,
 ) {
     Scaffold(
@@ -120,20 +131,22 @@ private fun SelectedAppInfoScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            AppInfo(packageInfo, placeholderLabel = packageName)
+            AppInfo(packageInfo, placeholderLabel = packageName) {
+                Text(version, style = MaterialTheme.typography.bodySmall)
+            }
 
-            PageItem(R.string.patch, R.string.patcher, onPatchClick)
-            PageItem(R.string.patches_selection, R.string.patcher, onSelectorClick)
+            PageItem(R.string.patch, stringResource(R.string.patch_item_description), onPatchClick)
+            PageItem(R.string.patch_selector_item, stringResource(R.string.patch_selector_item_description, patchCount), onSelectorClick)
         }
     }
 }
 
 @Composable
-private fun PageItem(@StringRes title: Int, @StringRes description: Int, onClick: () -> Unit) {
+private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit) {
     ListItem(
         modifier = Modifier.clickable(onClick = onClick),
         headlineContent = { Text(stringResource(title)) },
-        supportingContent = { Text(stringResource(description)) },
+        supportingContent = { Text(description) },
         trailingContent = {
             Icon(Icons.Outlined.ArrowRight, null)
         }
