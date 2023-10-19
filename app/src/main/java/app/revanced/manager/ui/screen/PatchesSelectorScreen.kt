@@ -41,8 +41,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -89,6 +91,9 @@ fun PatchesSelectorScreen(
         mutableStateOf(null)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    val showPatchButton by remember {
+        derivedStateOf { vm.selectionIsValid(bundles) }
+    }
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -188,13 +193,13 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
-                            if (vm.selectionWarningEnabled) {
-                                vm.pendingSelectionAction = {
-                                    vm.togglePatch(uid, patch)
-                                }
-                            } else {
+                        if (vm.selectionWarningEnabled) {
+                            vm.pendingSelectionAction = {
                                 vm.togglePatch(uid, patch)
                             }
+                        } else {
+                            vm.togglePatch(uid, patch)
+                        }
                     },
                     supported = supported
                 )
@@ -265,6 +270,7 @@ fun PatchesSelectorScreen(
         }
     }
 
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -288,13 +294,15 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
+            if (!showPatchButton) return@Scaffold
+
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     composableScope.launch {
-                        vm.saveSelection().join()
+                        vm.saveSelection()
                         onSave(vm.getCustomSelection(), vm.getOptions())
                     }
                 }

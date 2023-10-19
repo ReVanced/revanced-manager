@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.withContext
 import java.util.Optional
 
 @Stable
@@ -101,13 +102,18 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     var filter by mutableIntStateOf(SHOW_SUPPORTED or SHOW_UNIVERSAL or SHOW_UNSUPPORTED)
         private set
 
-
     private suspend fun generateDefaultSelection(): PersistentPatchesSelection {
         val bundles = bundlesFlow.first()
         val generatedSelection =
             bundles.toPatchSelection(allowExperimental) { _, patch -> patch.include }
 
         return generatedSelection.toPersistentPatchesSelection()
+    }
+
+    fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
+        bundle.patchSequence(allowExperimental).any { patch ->
+            isSelected(bundle.uid, patch)
+        }
     }
 
     fun isSelected(bundle: Int, patch: PatchInfo) = customPatchesSelection?.let { selection ->
@@ -164,11 +170,10 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         return patchOptions.mapValues { (_, allPatches) -> allPatches.mapValues { (_, options) -> options.toMap() } }
     }
 
-    suspend fun saveSelection() =
-        viewModelScope.launch(Dispatchers.Default) {
-            customPatchesSelection?.let { selectionRepository.updateSelection(packageName, it) }
-                ?: selectionRepository.clearSelection(packageName)
-        }
+    suspend fun saveSelection() = withContext(Dispatchers.Default) {
+        customPatchesSelection?.let { selectionRepository.updateSelection(packageName, it) }
+            ?: selectionRepository.clearSelection(packageName)
+    }
 
     fun getOptions(bundle: Int, patch: PatchInfo) = patchOptions[bundle]?.get(patch.name)
 

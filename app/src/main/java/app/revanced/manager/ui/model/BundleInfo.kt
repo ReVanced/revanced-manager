@@ -2,6 +2,7 @@ package app.revanced.manager.ui.model
 
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
+import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.flatMapLatestAndCombine
 import kotlinx.coroutines.flow.map
 
@@ -33,7 +34,7 @@ data class BundleInfo(
     }
 
     companion object Extensions {
-        inline fun Iterable<BundleInfo>.toPatchSelection(allowUnsupported: Boolean, condition: (Int, PatchInfo) -> Boolean) = this.associate { bundle ->
+        inline fun Iterable<BundleInfo>.toPatchSelection(allowUnsupported: Boolean, condition: (Int, PatchInfo) -> Boolean): PatchesSelection = this.associate { bundle ->
                 val patches =
                     bundle.patchSequence(allowUnsupported)
                         .mapNotNullTo(mutableSetOf()) { patch ->
