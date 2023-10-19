@@ -142,7 +142,7 @@ class InstallerViewModel(
                         installedPackageName =
                             intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
                         viewModelScope.launch {
-                            installedAppRepository.add(
+                            installedAppRepository.addOrUpdate(
                                 installedPackageName!!,
                                 packageName,
                                 input.selectedApp.version,
@@ -277,7 +277,7 @@ class InstallerViewModel(
 
             installedApp?.let { installedAppRepository.delete(it) }
 
-            installedAppRepository.add(
+            installedAppRepository.addOrUpdate(
                 packageName,
                 packageName,
                 input.selectedApp.version,
