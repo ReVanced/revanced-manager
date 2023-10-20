@@ -53,7 +53,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
 
-    // TODO: this should be hoisted to the parent screen
     var selectionWarningEnabled by mutableStateOf(true)
         private set
 
