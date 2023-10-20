@@ -10,8 +10,10 @@ import java.nio.file.StandardCopyOption
 class LocalPatchBundle(name: String, id: Int, directory: File) : PatchBundleSource(name, id, directory) {
     suspend fun replace(patches: InputStream? = null, integrations: InputStream? = null) {
         withContext(Dispatchers.IO) {
-            patches?.let {
-                Files.copy(it, patchesFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            patches?.let { inputStream ->
+                patchBundleOutputStream().use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
             }
             integrations?.let {
                 Files.copy(it, this@LocalPatchBundle.integrationsFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
