@@ -6,7 +6,9 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.PowerManager
 import android.util.Log
 import android.view.WindowManager
@@ -71,7 +73,12 @@ class PatcherWorker(
         private fun String.logFmt() = "$logPrefix $this"
     }
 
-    override suspend fun getForegroundInfo() = ForegroundInfo(1, createNotification())
+    override suspend fun getForegroundInfo() =
+        ForegroundInfo(
+            1,
+            createNotification(),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0
+        )
 
     private fun createNotification(): Notification {
         val notificationIntent = Intent(applicationContext, PatcherWorker::class.java)

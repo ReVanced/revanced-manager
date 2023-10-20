@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
@@ -83,8 +84,10 @@ class InstalledAppInfoViewModel(
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 UninstallService.APP_UNINSTALL_ACTION -> {
-                    val extraStatus = intent.getIntExtra(UninstallService.EXTRA_UNINSTALL_STATUS, -999)
-                    val extraStatusMessage = intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
+                    val extraStatus =
+                        intent.getIntExtra(UninstallService.EXTRA_UNINSTALL_STATUS, -999)
+                    val extraStatusMessage =
+                        intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
 
                     if (extraStatus == PackageInstaller.STATUS_SUCCESS) {
                         viewModelScope.launch {
@@ -113,9 +116,11 @@ class InstalledAppInfoViewModel(
             }
         }
 
-        app.registerReceiver(
+        ContextCompat.registerReceiver(
+            app,
             uninstallBroadcastReceiver,
-            IntentFilter(UninstallService.APP_UNINSTALL_ACTION)
+            IntentFilter(UninstallService.APP_UNINSTALL_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED
         )
     }
 
