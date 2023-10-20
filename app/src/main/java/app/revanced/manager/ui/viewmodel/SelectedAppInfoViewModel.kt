@@ -35,13 +35,18 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
 
-    var selectedApp by savedStateHandle.saveable {
+    private var _selectedApp by savedStateHandle.saveable {
         mutableStateOf(input.app)
     }
-        private set
+
+    var selectedApp
+        get() = _selectedApp
+        set(value) {
+            invalidateSelectedAppInfo()
+            _selectedApp = value
+        }
 
     var selectedAppInfo: PackageInfo? by mutableStateOf(null)
-        private set
 
     init {
         invalidateSelectedAppInfo()
@@ -70,11 +75,6 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         }
 
         selection
-    }
-
-    fun setSelectedApp(new: SelectedApp) {
-        selectedApp = new
-        invalidateSelectedAppInfo()
     }
 
     private fun invalidateSelectedAppInfo() = viewModelScope.launch {

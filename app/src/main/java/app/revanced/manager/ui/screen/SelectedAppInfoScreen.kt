@@ -107,7 +107,7 @@ fun SelectedAppInfoScreen(
             is SelectedAppInfoDestination.VersionSelector -> VersionSelectorScreen(
                 onBackClick = navController::pop,
                 onAppClick = {
-                    vm.setSelectedApp(it)
+                    vm.selectedApp = it
                     navController.pop()
                 },
                 viewModel = getViewModel { parametersOf(vm.selectedApp.packageName) }
