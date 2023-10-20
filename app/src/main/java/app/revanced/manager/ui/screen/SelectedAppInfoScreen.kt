@@ -19,6 +19,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,6 +33,7 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
@@ -46,6 +48,7 @@ fun SelectedAppInfoScreen(
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
+    val context = LocalContext.current
     val bundles by remember(vm.selectedApp.packageName, vm.selectedApp.version) {
         vm.bundlesRepo.bundleInfoFlow(vm.selectedApp.packageName, vm.selectedApp.version)
     }.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -74,7 +77,12 @@ fun SelectedAppInfoScreen(
     AnimatedNavHost(controller = navController) { destination ->
         when (destination) {
             is SelectedAppInfoDestination.Main -> SelectedAppInfoScreen(
-                onPatchClick = {
+                onPatchClick = patchClick@{
+                    if (selectedPatchCount == 0) {
+                        context.toast(context.getString(R.string.no_patches_selected))
+
+                        return@patchClick
+                    }
                     onPatchClick(
                         vm.selectedApp,
                         patches,

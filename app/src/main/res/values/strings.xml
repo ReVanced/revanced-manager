@@ -31,6 +31,7 @@
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patch selection and options</string>
     <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="no_patches_selected">No patches selected</string>
     
     <string name="version_selector_item">Change version</string>
     <string name="version_selector_item_description">%s selected</string>
