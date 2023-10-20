@@ -191,16 +191,19 @@ class InstallerViewModel extends BaseViewModel {
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
       Root permissions: ${isRooted ? 'Yes' : 'No'}',
+      
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${o.value}').join(", ")}]')).toList().join(", ")}',
+      
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
+      
       '\n- Logs',
       logs,
       '```',
