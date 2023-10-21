@@ -45,16 +45,8 @@
 # 👋 Contributing guidelines
 This document describes how to contribute to ReVanced Manager.
 
-## 💬 Community Engagement rules
-We pledge to create a nice enviroment to everyone in the ReVanced community,
-please follow these rules so we can help reach our goal!
-
-1. 🤗 **Be friendly**: If there's a disagreement, don't approach them with aggressive tone!
-2. 💬 **Be informative**: If you thinks that the additions or deletion of something is a bad idea, try to be desciptive of why you think this is a bad idea!
-3. 📜 **Follow GitHub Community Guidelines**: These 2 steps above are sufficient enough, but it's recommended that you read the [GitHub's Community Guidelines](https://docs.github.com/en/site-policy/github-terms/github-community-guidelines)
-
 ## 📖 Resources to help you get started
-* The [documentation](/docs/README.md) provides the steps by steps tutorial to compile ReVanced Manager from scratch
+* The [documentation](/docs/README.md) provides steps to build ReVanced Manager from source
 * [Our backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
 * [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
 
@@ -71,7 +63,6 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 [Bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new).
 
 ## 📝 How to contribute
-
 > [!NOTE]
 > It's worth noting that we recommended that you discuss your changes with 
 > the maintainers of ReVanced Manager before contributing. 
@@ -86,7 +77,7 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 ## 🤚 I want to contribute but don't know how to code
 Even if you don't know how to code, you can still help us by
-translate the ReVanced Manager application at Crowdin, or spread loves around the community!
+translate the ReVanced Manager application at Crowdin!
 
 <!-- TODO: Crowdin after release!!! -->
 
