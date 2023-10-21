@@ -71,13 +71,13 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 1. Fork the repository and create your branch from `dev`
 2. Make sure that the commit name are clear and concise as possible and commit your changes.
-   If you have never contributed to this repository before, it's recommended to follow the rules in the [documentation](/docs/README.md)
+   If you have never contributed to this repository before, it's recommended to read the overview in the [documentation for developers](/docs/developers/README.md)
 3. Open a pull request to the `dev` branch and reference issues that your pull request closes
 4. The maintainers of ReVanced Manager will review and provide suggestions. 
    Once your pull request is approved and merged, it will be included in the next release of ReVanced Manager
 
 ## 🤚 I want to contribute but don't know how to code
 Even if you don't know how to code, you can still help us by
-translate the ReVanced Manager application at [Crowdin](https://translate.revanced.app/)!
+translate the ReVanced Manager application at [Crowdin](https://translate.revanced.app/).
 
-❤️ Thank you for considering contributing to ReVanced Manager
+❤️ Thank you for considering contributing to ReVanced Manager.

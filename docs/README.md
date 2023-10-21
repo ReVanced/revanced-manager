@@ -1,9 +1,7 @@
 # 💊 ReVanced Manager
-
 This documentation explains how to use [ReVanced Manager](https://github.com/revanced/revanced-manager).
 
 ## 📖 Table of contents
-
 0. [💼 Prerequisites](0_prerequisites.md)
 1. [⬇️ Installation](1_installation.md)
 2. [🛠️ Usage](2_usage.md)
@@ -12,10 +10,11 @@ This documentation explains how to use [ReVanced Manager](https://github.com/rev
    3. [🔄 Updating ReVanced Manager](2_3_updating.md)
    4. [⚙️ Configuring ReVanced Manager](2_4_settings.md)
 3. [❔ Troubleshooting](3_troubleshooting.md)
-4. [🔨 Building from source](4_building.md)
+
+## 👋 Developer version
+Are you a contributors? Consider checking out developer version of the [documentation](/developers/README.md).
 
 ## ⏭️ Start here
-
 The next page will tell you about the prerequisites for using ReVanced Manager.
 
 Continue: [💼 Prerequisites](0_prerequisites.md)
