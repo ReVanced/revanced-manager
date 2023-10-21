@@ -63,7 +63,7 @@ You can obtain ReVanced Manager by downloading it from either [revanced.app/down
 Step on how to compile & use the application are available [here](/docs/README.md).
 
 ## 👋 Contributing
-You can find the contributing guidelines [here](/CONTRIBUTING.md), Thanks for consider contributing to ReVanced Manager!
+You can find the contribution guidelines [here](/CONTRIBUTING.md), Thanks for consider contributing to ReVanced Manager!
 
 ## 🔴 Issues
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new/choose) with ReVanced Manager Compose label.

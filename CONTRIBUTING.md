@@ -42,7 +42,7 @@
    Continuing the legacy of Vanced
 </p>
 
-# 👋 Contributing guidelines
+# 👋 Contribution guidelines
 This document describes how to contribute to ReVanced Manager.
 
 ## 📖 Resources to help you get started
