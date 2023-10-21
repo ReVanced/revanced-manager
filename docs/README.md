@@ -1,5 +1,5 @@
 # 💊 ReVanced Manager
-This documentation explains how to use [ReVanced Manager](https://github.com/revanced/revanced-manager).
+This documentation explains how to use [ReVanced Manager](https://github.com/ReVanced/revanced-manager).
 
 ## 📖 Table of contents
 0. [💼 Prerequisites](0_prerequisites.md)
