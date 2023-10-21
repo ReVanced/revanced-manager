@@ -78,8 +78,6 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 ## 🤚 I want to contribute but don't know how to code
 Even if you don't know how to code, you can still help us by
-translate the ReVanced Manager application at Crowdin!
-
-<!-- TODO: Crowdin after release!!! -->
+translate the ReVanced Manager application at [Crowdin](https://translate.revanced.app/)!
 
 ❤️ Thank you for considering contributing to ReVanced Manager
