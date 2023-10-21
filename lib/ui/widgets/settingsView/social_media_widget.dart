@@ -52,8 +52,8 @@ class SocialMediaWidget extends StatelessWidget {
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.github),
                 title: Text('GitHub'),
-                subtitle: Text('github.com/revanced'),
-                url: 'https://github.com/revanced',
+                subtitle: Text('github.com/ReVanced'),
+                url: 'https://github.com/ReVanced',
               ),
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.discord),
@@ -74,10 +74,10 @@ class SocialMediaWidget extends StatelessWidget {
                 url: 'https://reddit.com/r/revancedapp',
               ),
               SocialMediaItem(
-                icon: FaIcon(FontAwesomeIcons.twitter),
-                title: Text('Twitter'),
+                icon: FaIcon(FontAwesomeIcons.xTwitter),
+                title: Text('X'),
                 subtitle: Text('@revancedapp'),
-                url: 'https://twitter.com/revancedapp',
+                url: 'https://x.com/revancedapp',
               ),
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.youtube),

@@ -1,6 +1,7 @@
 {
     "okButton": "OK",
     "cancelButton": "Cancel",
+    "dismissButton": "Dismiss",
     "quitButton": "Quit",
     "updateButton": "Update",
     "enabledLabel": "Enabled",
@@ -134,6 +135,7 @@
         "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing."
     },
     "patchOptionsView": {
+        "resetOptionsTooltip": "Reset patch options",
         "viewTitle": "Patch options",
         "saveOptions": "Save",
 
@@ -232,7 +234,7 @@
         "universalPatchesLabel": "Show universal patches",
         "universalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
         "versionCompatibilityCheckLabel": "Version compatibility check",
-        "versionCompatibilityCheckHint": "Restricts patches to supported versions",
+        "versionCompatibilityCheckHint": "Restricts patches to supported app versions",
 
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
