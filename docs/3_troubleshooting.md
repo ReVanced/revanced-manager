@@ -1,4 +1,5 @@
 # ❔ Troubleshooting
+
 In case you encounter any issues while using ReVanced Manager, please refer to this page for possible solutions.
 
 - 💉 Patching fails with an error
