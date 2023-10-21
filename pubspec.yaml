@@ -41,7 +41,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.4
   fluttertoast: ^8.2.1
-  font_awesome_flutter: ^10.4.0
+  font_awesome_flutter: ^10.6.0
   get_it: 7.2.0
   google_fonts: ^4.0.3
   http: ^0.13.5
