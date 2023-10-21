@@ -52,8 +52,8 @@ class SocialMediaWidget extends StatelessWidget {
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.github),
                 title: Text('GitHub'),
-                subtitle: Text('github.com/revanced'),
-                url: 'https://github.com/revanced',
+                subtitle: Text('github.com/ReVanced'),
+                url: 'https://github.com/ReVanced',
               ),
               SocialMediaItem(
                 icon: FaIcon(FontAwesomeIcons.discord),
