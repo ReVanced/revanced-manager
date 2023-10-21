@@ -1,5 +1,3 @@
-<!-- TODO: Push assets --->
-
 <p align="center">
   <picture>
     <source
@@ -44,37 +42,18 @@
    Continuing the legacy of Vanced
 </p>
 
-# 💊 ReVanced Manager (Compose)
-
-> ![IMPORTANT]
-> This is a rewrite of ReVanced Manager in Kotlin Compose.
-
-ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications
-
-[![GitHub license](https://img.shields.io/github/license/ReVanced/revanced-manager)](../../blob/main/LICENSE)
+# 💊 ReVanced Manager
 [![GitHub last commit](https://img.shields.io/github/last-commit/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager/commits/compose-dev)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager-compose/commits/compose-dev)
 
-## 🔽 Download
+ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications
 
+## 🔽 Download
 You can obtain ReVanced Manager by downloading it from either [revanced.app/download](https://revanced.app/download) or [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases)
 
-<!-- TODO: Out of Scope, Documentation --->
+## 📄 Documentation
+Step on how to use the application and compile are available [here](/docs/README.md).
 
 ## 🔴 Issues
-
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new/choose) with ReVanced Manager Compose label.
 
-## 🛠️ Building Manager from source
-
-1. Clone the ReVanced Manager's repository and move into project's root directory.
-2. Create a GitHub personal access token with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced).
-3. Add your GitHub username and the token to `gradle.properties`.
-   ```properties
-   gpr.user = YourUsername
-   gpr.key = ghp_longrandomkey
-   ```
-5. Compile the APK.
-   ```bash
-   gradlew assembleRelease
-   ```
