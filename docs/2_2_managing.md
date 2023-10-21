@@ -1,11 +1,10 @@
 # 🧰 Managing patched apps
-
 After patching an app, you may want to manage it. This page will guide you through managing patched apps.
 
 ## ✅ Steps to manage patched apps
-
 1. Navigate to the Apps tab from the top navigation bar
 2. Select the app you want to manage
+<!-- What happen to this? @BenjaminHalko -->
 3. 
 ## ⏭️ What's next
 
