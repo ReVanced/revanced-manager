@@ -67,7 +67,7 @@ Everything else can be found here.
 Step on how to use the application are available [here](/docs/README.md).
 
 ### 👋 Contributing
-You can find the contribution guidelines [here](/CONTRIBUTING.md), Thanks for consider contributing to ReVanced Manager!
+Thanks for consider contributing to ReVanced Manager, you can find the contribution guidelines [here](/CONTRIBUTING.md).
 
 ### 🔴 Issues
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
