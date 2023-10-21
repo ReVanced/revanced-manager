@@ -6,6 +6,7 @@
       srcset="assets/revanced-headline/revanced-headline-vertical-dark.svg"
     >
     <img 
+      width="256px"
       src="assets/revanced-headline/revanced-headline-vertical-light.svg"
     >
   </picture>
