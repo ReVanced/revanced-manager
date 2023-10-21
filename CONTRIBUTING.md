@@ -52,7 +52,7 @@ This document describes how to contribute to ReVanced Manager.
 
 ## 🙏 Submitting a feature request
 Features can be requested by opening an issue using the
-[Feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new).
+[Feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=feature-request&projects=&template=feature-issue.yml&title=feat%3A+%3Ctitle%3E).
 
 > [!NOTE]
 > We may rejected your request at the discretion of maintainers,
@@ -60,7 +60,7 @@ Features can be requested by opening an issue using the
 
 ## 🐞 Submitting a bug report
 If you encounter a bug while using the ReVanced Manager app, open an issue using the
-[Bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new).
+[Bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
 ## 📝 How to contribute
 > [!NOTE]
