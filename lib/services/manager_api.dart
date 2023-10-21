@@ -284,8 +284,13 @@ class ManagerAPI {
   Future<void> setPatchedAppHistory(
     List<PatchedApplication> patchedAppHistory,
   ) async {
-    if (patchedAppHistory.length > 10) {
-      // remove oldest app and delete app.outFilePath
+    patchedAppHistory.sort((a, b) => b.patchDate.compareTo(a.patchDate));
+    while (patchedAppHistory.length > 3) {
+      final File file = File(patchedAppHistory[3].outFilePath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+      patchedAppHistory.removeAt(3);
     }
 
     await _prefs.setStringList(
