@@ -6,7 +6,7 @@ We use [Jetpack Compose](https://developer.android.com/jetpack/compose) to
 build beautiful and performant user interfaces using declarative programming. 
 It provides a unified and efficient way of building UI that is well-integrated with the Android framework. 
 
-## 🌲 Structure
+## 📂 Structure
 We structure our code to use MVVM (Model-View-ViewModel) architecture for easier maintenance of the code. 
 
 * **Model**: responsible for retrieving & storing data as well as performing calculations and other operations
