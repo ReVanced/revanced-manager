@@ -11,8 +11,10 @@ class AppInfoView extends StatelessWidget {
   const AppInfoView({
     Key? key,
     required this.app,
+    required this.isInstalled,
   }) : super(key: key);
   final PatchedApplication app;
+  final bool isInstalled;
 
   @override
   Widget build(BuildContext context) {
@@ -74,20 +76,26 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => model.openApp(app),
+                                    onTap: () => isInstalled
+                                      ? model.openApp(app)
+                                      : model.installApp(context, app),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          Icons.open_in_new_outlined,
+                                          isInstalled
+                                              ? Icons.open_in_new_outlined
+                                              : Icons.download_outlined,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
                                         I18nText(
-                                          'appInfoView.openButton',
+                                          isInstalled
+                                              ? 'appInfoView.openButton'
+                                              : 'appInfoView.installButton',
                                           child: Text(
                                             '',
                                             style: TextStyle(
@@ -114,24 +122,30 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => model.showUninstallDialog(
-                                      context,
-                                      app,
-                                      false,
-                                    ),
+                                    onTap: () => isInstalled
+                                      ? model.showUninstallDialog(
+                                          context,
+                                          app,
+                                          false,
+                                        )
+                                      : model.exportApp(app),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          Icons.delete_outline,
+                                          isInstalled
+                                              ? Icons.delete_outline
+                                              : Icons.save,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
                                         I18nText(
-                                          'appInfoView.uninstallButton',
+                                          isInstalled
+                                              ? 'appInfoView.uninstallButton'
+                                              : 'appInfoView.exportButton',
                                           child: Text(
                                             '',
                                             style: TextStyle(

@@ -276,6 +276,42 @@ class ManagerAPI {
     }
   }
 
+  List<PatchedApplication> getPatchedAppHistory() {
+    final List<String> apps = _prefs.getStringList('patchedAppHistory') ?? [];
+    return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
+  }
+
+  Future<void> setPatchedAppHistory(
+    List<PatchedApplication> patchedAppHistory,
+  ) async {
+    if (patchedAppHistory.length > 10) {
+      // remove oldest app and delete app.outFilePath
+    }
+
+    await _prefs.setStringList(
+      'patchedAppHistory',
+      patchedAppHistory.map((a) => json.encode(a.toJson())).toList(),
+    );
+  }
+
+  Future<void> savePatchedAppHistory(PatchedApplication app, File outFile) async {
+    final List<PatchedApplication> patchedAppHistory = getPatchedAppHistory();
+    patchedAppHistory.removeWhere((a) => a.packageName == app.packageName);
+    final Directory appCache = await getTemporaryDirectory();
+    app.outFilePath = outFile.copySync('${appCache.path}/${app.packageName}.apk').path;
+    final ApplicationWithIcon? installed = await DeviceApps.getApp(
+      app.packageName,
+      true,
+    ) as ApplicationWithIcon?;
+    if (installed != null) {
+      app.name = installed.appName;
+      app.version = installed.versionName!;
+      app.icon = installed.icon;
+    }
+    patchedAppHistory.add(app);
+    await setPatchedAppHistory(patchedAppHistory);
+  }
+
   List<PatchedApplication> getPatchedApps() {
     final List<String> apps = _prefs.getStringList('patchedApps') ?? [];
     return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
@@ -727,5 +763,90 @@ class ManagerAPI {
     if (selectedPatchesFile.existsSync()) {
       selectedPatchesFile.deleteSync();
     }
+  }
+
+  Future<bool> installTypeDialog(BuildContext context) async {
+    final ValueNotifier<int> installType = ValueNotifier(0);
+    if (isRooted) {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: I18nText(
+            'installerView.installType',
+          ),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          icon: const Icon(Icons.file_download_outlined),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+          content: SingleChildScrollView(
+            child: ValueListenableBuilder(
+              valueListenable: installType,
+              builder: (context, value, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: I18nText(
+                        'installerView.installTypeDescription',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      title: I18nText('installerView.installNonRootType'),
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16),
+                      value: 0,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                    RadioListTile(
+                      title: I18nText('installerView.installRootType'),
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16),
+                      value: 1,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          actions: [
+            CustomMaterialButton(
+              label: I18nText('cancelButton'),
+              isFilled: false,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('installerView.installButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                return installType.value == 1;
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    return false;
   }
 }

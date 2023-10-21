@@ -21,6 +21,23 @@ class AppInfoViewModel extends BaseViewModel {
   final RootAPI _rootAPI = RootAPI();
   final Toast _toast = locator<Toast>();
 
+  Future<void> installApp(
+    BuildContext context,
+    PatchedApplication app,
+  ) async {
+    app.isRooted = await _managerAPI.installTypeDialog(context);
+    final bool isInstalled = await _patcherAPI.installPatchedFile(app);
+    if (isInstalled) {
+      locator<HomeViewModel>().initialize(context);
+    }
+  }
+
+  Future<void> exportApp(
+    PatchedApplication app,
+  ) async {
+    _patcherAPI.exportPatchedFile(app);
+  }
+
   Future<void> uninstallApp(
     BuildContext context,
     PatchedApplication app,

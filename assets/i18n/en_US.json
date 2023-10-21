@@ -26,12 +26,14 @@
         "widgetTitle": "Dashboard",
 
         "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Patched apps",
+        "patchHistorySubtitle": "Patch History",
+        "patchedSubtitle": "Installed apps",
 
         "noUpdates": "No updates available",
 
         "WIP": "Work in progress...",
 
+        "noHistory": "No patch history available",
         "noInstallations": "No patched apps installed",
         "installUpdate": "Continue to install the update?",
 
@@ -294,8 +296,10 @@
     "appInfoView": {
         "widgetTitle": "App info",
         "openButton": "Open",
+        "installButton": "Install",
         "uninstallButton": "Uninstall",
         "unpatchButton": "Unpatch",
+        "exportButton": "Export",
         "rootDialogTitle": "Error",
 
         "unpatchDialogText": "Are you sure you want to unpatch this app?",

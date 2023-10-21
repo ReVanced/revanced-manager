@@ -9,28 +9,15 @@ import 'package:revanced_manager/ui/widgets/shared/application_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 //ignore: must_be_immutable
-class InstalledAppsCard extends StatelessWidget {
-  InstalledAppsCard({Key? key}) : super(key: key);
+class PatchHistoryCard extends StatelessWidget {
+  PatchHistoryCard({Key? key}) : super(key: key);
 
-  List<PatchedApplication> apps = locator<HomeViewModel>().patchedInstalledApps;
-  final ManagerAPI _managerAPI = locator<ManagerAPI>();
+  List<PatchedApplication> apps = locator<HomeViewModel>().patchedAppHistory;
   List<PatchedApplication> patchedApps = [];
 
   Future _getApps() async {
     if (apps.isNotEmpty) {
       patchedApps = [...apps];
-      for (final element in apps) {
-        await DeviceApps.getApp(element.packageName).then((value) {
-          if (element.version != value?.versionName) {
-            patchedApps.remove(element);
-          }
-        });
-      }
-      if (apps.length != patchedApps.length) {
-        await _managerAPI.setPatchedApps(patchedApps);
-        apps.clear();
-        apps = [...patchedApps];
-      }
     }
   }
 
@@ -47,12 +34,12 @@ class InstalledAppsCard extends StatelessWidget {
                       children: <Widget>[
                         Icon(
                           size: 40,
-                          Icons.file_download_off,
+                          Icons.update_disabled,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                         const SizedBox(height: 16),
                         I18nText(
-                          'homeView.noInstallations',
+                          'homeView.noHistory',
                           child: Text(
                             '',
                             textAlign: TextAlign.center,
@@ -80,7 +67,7 @@ class InstalledAppsCard extends StatelessWidget {
                           name: app.name,
                           patchDate: app.patchDate,
                           onPressed: () =>
-                              locator<HomeViewModel>().navigateToAppInfo(app, true),
+                              locator<HomeViewModel>().navigateToAppInfo(app, false),
                         ),
                       )
                       .toList(),

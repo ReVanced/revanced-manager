@@ -207,7 +207,7 @@ Future<void> stopPatcher() async {
 }
 
 Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
-  if (outFile != null) {
+  if (patchedApp.outFilePath != null) {
     try {
       if (patchedApp.isRooted) {
         final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
@@ -215,11 +215,11 @@ Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
           return _rootAPI.installApp(
             patchedApp.packageName,
             patchedApp.apkFilePath,
-            outFile!.path,
+            patchedApp.outFilePath!,
           );
         }
       } else {
-        final install = await InstallPlugin.installApk(outFile!.path);
+        final install = await InstallPlugin.installApk(patchedApp.outFilePath!);
         return install['isSuccess'];
       }
     } on Exception catch (e) {
@@ -232,13 +232,13 @@ Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
   return false;
 }
 
-void exportPatchedFile(String appName, String version) {
+void exportPatchedFile(PatchedApplication app) {
   try {
-    if (outFile != null) {
-      final String newName = _getFileName(appName, version);
+    if (app.outFilePath != '') {
+      final String newName = _getFileName(app.name, app.version);
       CRFileSaver.saveFileWithDialog(
         SaveFileDialogParams(
-          sourceFilePath: outFile!.path,
+          sourceFilePath: app.outFilePath,
           destinationFileName: newName,
         ),
       );
@@ -250,14 +250,14 @@ void exportPatchedFile(String appName, String version) {
   }
 }
 
-void sharePatchedFile(String appName, String version) {
+void sharePatchedFile(PatchedApplication app) {
   try {
-    if (outFile != null) {
-      final String newName = _getFileName(appName, version);
-      final int lastSeparator = outFile!.path.lastIndexOf('/');
+    if (app.outFilePath != '') {
+      final String newName = _getFileName(app.name, app.version);
+      final int lastSeparator = app.outFilePath.lastIndexOf('/');
       final String newPath =
-          outFile!.path.substring(0, lastSeparator + 1) + newName;
-      final File shareFile = outFile!.copySync(newPath);
+          app.outFilePath.substring(0, lastSeparator + 1) + newName;
+      final File shareFile = File(app.outFilePath).copySync(newPath);
       ShareExtend.share(shareFile.path, 'file');
     }
   } on Exception catch (e) {

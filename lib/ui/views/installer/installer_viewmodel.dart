@@ -13,6 +13,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
@@ -76,7 +77,7 @@ class InstallerViewModel extends BaseViewModel {
     });
     await Wakelock.enable();
     await handlePlatformChannelMethods();
-    await runPatcher();
+    await runPatcher(context);
   }
 
   Future<dynamic> handlePlatformChannelMethods() async {
@@ -138,13 +139,16 @@ class InstallerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> runPatcher() async {
+  Future<void> runPatcher(BuildContext context) async {
     try {
       await _patcherAPI.runPatcher(
         _app.packageName,
         _app.apkFilePath,
         _patches,
       );
+      _app.appliedPatches = _patches.map((p) => p.name).toList();
+      await _managerAPI.savePatchedAppHistory(_app, _patcherAPI.outFile!);
+      locator<HomeViewModel>().initialize(context);
     } on Exception catch (e) {
       update(
         -100.0,
@@ -246,92 +250,6 @@ class InstallerViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> installTypeDialog(BuildContext context) async {
-    final ValueNotifier<int> installType = ValueNotifier(0);
-    if (isRooted) {
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          title: I18nText(
-            'installerView.installType',
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          icon: const Icon(Icons.file_download_outlined),
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
-          content: SingleChildScrollView(
-            child: ValueListenableBuilder(
-              valueListenable: installType,
-              builder: (context, value, child) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                      child: I18nText(
-                        'installerView.installTypeDescription',
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                    RadioListTile(
-                      title: I18nText('installerView.installNonRootType'),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                      value: 0,
-                      groupValue: value,
-                      onChanged: (selected) {
-                        installType.value = selected!;
-                      },
-                    ),
-                    RadioListTile(
-                      title: I18nText('installerView.installRootType'),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                      value: 1,
-                      groupValue: value,
-                      onChanged: (selected) {
-                        installType.value = selected!;
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          actions: [
-            CustomMaterialButton(
-              label: I18nText('cancelButton'),
-              isFilled: false,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                installResult(context, installType.value == 1);
-              },
-            ),
-          ],
-        ),
-      );
-    } else {
-      installResult(context, false);
-    }
-  }
-
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
@@ -345,9 +263,9 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> installResult(BuildContext context, bool installAsRoot) async {
+  Future<void> installResult(BuildContext context) async {
     try {
-      _app.isRooted = installAsRoot;
+      _app.isRooted = await _managerAPI.installTypeDialog(context);
       update(
         1.0,
         'Installing...',
@@ -359,19 +277,17 @@ class InstallerViewModel extends BaseViewModel {
       if (isInstalled) {
         _app.isFromStorage = false;
         _app.patchDate = DateTime.now();
-        _app.appliedPatches = _patches.map((p) => p.name).toList();
 
         // In case a patch changed the app name or package name,
         // update the app info.
         final app =
-            await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+        await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
         if (app != null) {
           _app.name = app.appName;
           _app.packageName = app.packageName;
         }
-
         await _managerAPI.savePatchedApp(_app);
-
+        locator<HomeViewModel>().initialize(context);
         update(1.0, 'Installed!', 'Installed!');
       } else {
         // TODO(aabed): Show error message.
@@ -385,7 +301,7 @@ class InstallerViewModel extends BaseViewModel {
 
   void exportResult() {
     try {
-      _patcherAPI.exportPatchedFile(_app.name, _app.version);
+      _patcherAPI.exportPatchedFile(_app);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
