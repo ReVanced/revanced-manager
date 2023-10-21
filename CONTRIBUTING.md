@@ -14,7 +14,7 @@
   <a href="https://revanced.app/">
        <img height="24px" src="assets/revanced-logo/revanced-logo-round.svg" />
    </a>&nbsp;&nbsp;&nbsp;
-   <a href="https://github.com/revanced">
+   <a href="https://github.com/ReVanced">
        <picture>
            <source height="24px" media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/dMMmCrW/Git-Hub-Mark.png" />
            <img height="24px" src="https://i.ibb.co/9wV3HGF/Git-Hub-Mark-Light.png" />
