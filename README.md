@@ -63,14 +63,14 @@ You can obtain ReVanced Manager by downloading it from either [revanced.app/down
 ## 🌱 Miscellaneous
 Anything else can be found here.
 
-## 📄 Documentation
+### 📄 Documentation
 Step on how to use the application are available [here](/docs/README.md).
 
-## 👋 Contributing
+### 👋 Contributing
 You can find the contribution guidelines [here](/CONTRIBUTING.md), Thanks for consider contributing to ReVanced Manager!
 
-## 🔴 Issues
+### 🔴 Issues
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
-## ⚖️ License
+### ⚖️ License
 ReVanced Manager adopt the [GNU General Public License 3.0](/LICENSE), [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3): You may copy, distribute and modify the software as long as you track changes/dates in source files. Any modifications to or software including (via compiler) GPL-licensed code must also be made available under the GPL along with build & install instructions.
