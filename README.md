@@ -70,11 +70,10 @@ You can find the contribution guidelines [here](/CONTRIBUTING.md), Thanks for co
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
 ## ⚖️ License
+<!-- Remove when #1412 -->
 > [!IMPORTANT]
 > The license is not yet adopted, wait for https://github.com/ReVanced/revanced-manager/issues/1412
 > License might changes!!
+<!-- End of Removal marking -->
 
-We adopt the [GNU General Public License 3.0](/LICENSE) [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3): You may copy, distribute and modify the software as long as you track changes/dates in source files. Any modifications to or software including (via compiler) GPL-licensed code must also be made available under the GPL along with build & install instructions.
-
-> [!NOTE]
-> This is not legal advice
+ReVanced Manager adopt the [GNU General Public License 3.0](/LICENSE), [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3): You may copy, distribute and modify the software as long as you track changes/dates in source files. Any modifications to or software including (via compiler) GPL-licensed code must also be made available under the GPL along with build & install instructions.
