@@ -48,24 +48,24 @@ This document describes how to contribute to ReVanced Manager.
 
 ## 📖 Resources to help you get started
 * The [documentation](/docs/README.md) provides steps to build ReVanced Manager from source
-* [Our backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
+* Our [backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
 * [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
 
 ## 🙏 Submitting a feature request
 Features can be requested by opening an issue using the
-[Feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=feature-request&projects=&template=feature-issue.yml&title=feat%3A+%3Ctitle%3E).
+[feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=feature-request&projects=&template=feature-issue.yml&title=feat%3A+%3Ctitle%3E).
 
 > [!NOTE]
-> We may rejected your request at the discretion of maintainers,
-> please provides good motivation for a request to be accepted.
+> We may reject your request at the discretion of ReVanced Manager's maintainers,
+> please provide good motivation for a request to be accepted.
 
 ## 🐞 Submitting a bug report
 If you encounter a bug while using the ReVanced Manager app, open an issue using the
-[Bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
+[bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
 ## 📝 How to contribute
 > [!NOTE]
-> It's worth noting that we recommended that you discuss your changes with 
+> It's worth noting that we recommend that you discuss your changes with 
 > the maintainers of ReVanced Manager before contributing. 
 > This will help you determine whether your change is acceptable.
 
@@ -77,7 +77,7 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
    Once your pull request is approved and merged, it will be included in the next release of ReVanced Manager
 
 ## 🤚 I want to contribute but don't know how to code
-Even if you don't know how to code, you can still help us by
-translate the ReVanced Manager application at [Crowdin](https://translate.revanced.app/).
+Even if you don't know how to code, you can still contribute by 
+translating the ReVanced Manager application on our [Crowdin](https://translate.revanced.app/).
 
 ❤️ Thank you for considering contributing to ReVanced Manager.

@@ -1,7 +1,9 @@
 # 🧩 Patching apps
+
 The following pages will guide you through using ReVanced Manager to patch apps.
 
 ## ✅ Steps to patch apps
+
 1. Navigate to the Apps tab from the top navigation bar
 2. Tap the + button in the bottom right corner
 3. Choose an app to patch[^1]
@@ -17,6 +19,7 @@ The following pages will guide you through using ReVanced Manager to patch apps.
 [^3]: Mounting the patched app on top of the original app will only work if the installed app version matches the version of the app selected in step 4. above.
 
 ## ⏭️ What's next
+
 The next page will bring you back to the usage page.
 
 Continue: [🛠️ Usage](2_usage.md)
