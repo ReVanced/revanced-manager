@@ -3,7 +3,7 @@ In order to compile ReVanced Manager, certain requirements must be met.
 
 ## 📝 Prerequisites
 * Kotlin IDE such as [Android Studio](https://developer.android.com/studio)
-* Understanding of [Android](https://android.com) OS and [Kotlin](https://kotlinlang.org/) language
+* Understanding of [Android](https://android.com) development, [Kotlin](https://kotlinlang.org/) language and [Jetpack Compose](https://developer.android.com/jetpack/compose).
 * At least Java Development Kit version 17 of any vendors
 
 ## 🏃 Prepare the environment
