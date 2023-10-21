@@ -42,18 +42,44 @@
    Continuing the legacy of Vanced
 </p>
 
-# 💊 ReVanced Manager
-[![GitHub last commit](https://img.shields.io/github/last-commit/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager/commits/compose-dev)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager-compose/commits/compose-dev)
+# 📙 Contributing guidelines
+This document describes how to contribute to ReVanced Manager.
 
-ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications
+## 📖 Resources to help you get started
+* The [documentation](/docs/README.md) provides the steps by steps tutorial to compile ReVanced Manager from scratch
+* [Our backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
+* [Issues](https://github.com/ReVanced/revanced-patches/issues) are where we keep track of bugs and feature requests
 
-## 🔽 Download
-You can obtain ReVanced Manager by downloading it from either [revanced.app/download](https://revanced.app/download) or [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases)
+## 🙏 Submitting a feature request
+Features can be requested by opening an issue using the
+[Feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new).
 
-## 📄 Documentation
-Step on how to use the application and compile are available [here](/docs/README.md).
+> [!NOTE]
+> We may rejected your request at the discretion of maintainers,
+> please provides good motivation for a request to be accepted.
 
-## 🔴 Issues
-For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new/choose) with ReVanced Manager Compose label.
+## 🐞 Submitting a bug report
+If you encounter a bug while using the ReVanced Manager app, open an issue using the
+[Bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new).
 
+## 📝 How to contribute
+
+> [!NOTE]
+> It's worth noting that we recommended that you discuss your changes with 
+> the maintainers of ReVanced Manager before contributing. 
+> This will help you determine whether your change is acceptable.
+
+1. Fork the repository and create your branch from `dev`
+2. Make sure that the commit name are clear and concise as possible and commit your changes.
+   If you have never contributed to this repository before, it's recommended to follow the rules in the [documentation](/docs/README.md)
+3. Open a pull request to the `dev` branch and reference issues with `fix: #No.` if needed.
+4. The maintainers of ReVanced Manager will review and provide suggestions. 
+   Once your PR is approved and merged, it will be included in the next release of ReVanced Manager
+
+## 🤚 I want to contribute but don't know how to code
+
+We accept translation at Crowdin
+
+<!-- TODO: Crowdin after release!!! -->
+
+❤️ Thank you for considering contributing to ReVanced Manager
