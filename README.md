@@ -48,17 +48,20 @@
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager-compose/commits/compose-dev)
 
 ## ❓ About
-ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications
+ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications.
 
-## 💪 Features
+### 💪 Features
 We provide the some of the features are:
 * 📱 ReVanced Patcher that fit in your pocket!
-* 🤗 Friendly & initutive UI to help you manage your patched applications!
-* 🛠️ Lot's of customisation to patch using 3rd-party sources and integration!
+* 🤗 Friendly & intuitive UI to help you manage your patched applications!
+* 🛠️ Lots of customization to patch using 3rd-party sources and integration!
 * ✨ And a lot more!
 
-## 🔽 Download
+### 🔽 Download
 You can obtain ReVanced Manager by downloading it from either [revanced.app/download](https://revanced.app/download) or [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases)
+
+## 🌱 Miscellaneous
+Anything else can be found here.
 
 ## 📄 Documentation
 Step on how to compile & use the application are available [here](/docs/README.md).
@@ -70,10 +73,4 @@ You can find the contribution guidelines [here](/CONTRIBUTING.md), Thanks for co
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
 ## ⚖️ License
-<!-- Remove when #1412 -->
-> [!IMPORTANT]
-> The license is not yet adopted, wait for https://github.com/ReVanced/revanced-manager/issues/1412
-> License might changes!!
-<!-- End of Removal marking -->
-
 ReVanced Manager adopt the [GNU General Public License 3.0](/LICENSE), [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3): You may copy, distribute and modify the software as long as you track changes/dates in source files. Any modifications to or software including (via compiler) GPL-licensed code must also be made available under the GPL along with build & install instructions.
