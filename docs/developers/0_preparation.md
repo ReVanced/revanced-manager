@@ -15,7 +15,7 @@ In order to compile ReVanced Manager, certain requirements must be met.
 2. Build the APK
    Release variant:
    ```sh
-   ./gradlew assembleRelease -Psign
+   gradlew assembleRelease -Psign
    ```
 
 ## ⏭️ What's next
