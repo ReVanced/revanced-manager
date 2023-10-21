@@ -32,7 +32,7 @@ format for our commit message.
 Example:
 * `feat`: translation settings
 * `fix`(**settings**): NullPointerException when exporting logs
-* `refactor`: optimise sub-optimal code
+* `refactor`: optimize sub-optimal code
 * `perf`(**api**): reduces network latency
 * `docs`(**developer**): concise wording
 * `build`: bump version to v1.9.3
