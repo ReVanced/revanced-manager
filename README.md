@@ -46,13 +46,24 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager/commits/compose-dev)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager/compose-dev)](https://github.com/ReVanced/revanced-manager-compose/commits/compose-dev)
 
+## ❓ About
 ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications
+
+## 💪 Features
+We provide the some of the features are:
+* 📱 ReVanced Patcher that fit in your pocket!
+* 🤗 Friendly & initutive UI to help you manage your patched applications!
+* 🛠️ Lot's of customisation to patch using 3rd-party sources and integration!
+* ✨ And a lot more!
 
 ## 🔽 Download
 You can obtain ReVanced Manager by downloading it from either [revanced.app/download](https://revanced.app/download) or [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases)
 
 ## 📄 Documentation
 Step on how to use the application and compile are available [here](/docs/README.md).
+
+## 👋 Contributing
+You can find the contributing guidelines [here](/CONTRIBUTING.md), Thanks for consider contributing to ReVanced Manager!
 
 ## 🔴 Issues
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/new/choose) with ReVanced Manager Compose label.

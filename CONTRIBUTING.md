@@ -42,13 +42,21 @@
    Continuing the legacy of Vanced
 </p>
 
-# 📙 Contributing guidelines
+# 👋 Contributing guidelines
 This document describes how to contribute to ReVanced Manager.
+
+## 💬 Community Engagement rules
+We pledge to create a nice enviroment to everyone in the ReVanced community,
+please follow these rules so we can help reach our goal!
+
+1. 🤗 **Be friendly**: If there's a disagreement, don't approach them with aggressive tone!
+2. 💬 **Be informative**: If you thinks that the additions or deletion of something is a bad idea, try to be desciptive of why you think this is a bad idea!
+3. 📜 **Follow GitHub Community Guidelines**: These 2 steps above are sufficient enough, but it's recommended that you read the [GitHub's Community Guidelines](https://docs.github.com/en/site-policy/github-terms/github-community-guidelines)
 
 ## 📖 Resources to help you get started
 * The [documentation](/docs/README.md) provides the steps by steps tutorial to compile ReVanced Manager from scratch
 * [Our backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
-* [Issues](https://github.com/ReVanced/revanced-patches/issues) are where we keep track of bugs and feature requests
+* [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
 
 ## 🙏 Submitting a feature request
 Features can be requested by opening an issue using the
@@ -77,8 +85,8 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
    Once your PR is approved and merged, it will be included in the next release of ReVanced Manager
 
 ## 🤚 I want to contribute but don't know how to code
-
-We accept translation at Crowdin
+Even if you don't know how to code, you can still help us by
+translate the ReVanced Manager application at Crowdin, or spread loves around the community!
 
 <!-- TODO: Crowdin after release!!! -->
 
