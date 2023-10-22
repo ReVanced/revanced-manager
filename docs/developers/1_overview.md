@@ -9,7 +9,6 @@ It provides a unified and efficient way of building UI that is well-integrated w
 ## 📂 Structure
 We structure our code to use [MVVM architecture](https://developer.android.com/topic/libraries/architecture/viewmodel) for easier maintenance of the code. 
 
-
 ## 🧑‍💻 Code readability
 In order to maintain readability of the code, It's highly recommend that you follow 
 https://developer.android.com/jetpack/compose/api-guidelines style guide to maintain
