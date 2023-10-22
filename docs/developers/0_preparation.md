@@ -13,7 +13,7 @@ In order to compile ReVanced Manager, certain requirements must be met.
    ```
 2. Build the APK
    ```sh
-   gradlew assembleRelease -Psign
+   gradlew assembleRelease
    ```
 
 ## ⏭️ What's next
