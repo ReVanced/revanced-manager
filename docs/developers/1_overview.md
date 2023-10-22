@@ -22,13 +22,3 @@ app's user interface is consistent, customizable, accessible, and engaging for o
 ## 📃 Commit message
 At ReVanced, we follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0) 
 format for our commit message. 
-
-`type`(**optional: scope**): message
-
-Example:
-* `feat`: translation settings
-* `fix`(**settings**): NullPointerException when exporting logs
-* `refactor`: optimize sub-optimal code
-* `perf`(**api**): reduces network latency
-* `docs`(**developer**): correct grammatical mistak
-* `build`: bump version to v1.9.3
