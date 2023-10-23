@@ -11,7 +11,7 @@ In order to compile ReVanced Manager, certain requirements must be met.
    ```sh
    git clone https://github.com/ReVanced/revanced-manager.git && cd revanced-manager
    ```
-2. Build the APK
+2. Build the application
    ```sh
    gradlew assembleRelease
    ```

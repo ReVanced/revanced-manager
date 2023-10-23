@@ -14,7 +14,7 @@ This documentation explains how to use [ReVanced Manager](https://github.com/ReV
 3. [❔ Troubleshooting](3_troubleshooting.md)
 
 ## 👋 Developer version
-Interested in contributing? Consider checking out developer version of the [documentation](/developers/README.md).
+Interested in contributing? Consider checking out the developer [documentation](/developers/README.md)
 
 ## ⏭️ Start here
 

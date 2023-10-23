@@ -65,11 +65,11 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 ## 📝 How to contribute
 > [!NOTE]
-> It's worth noting that we recommend that you discuss your changes with 
+> We recommend that you discuss your changes with 
 > the maintainers of ReVanced Manager before contributing. 
 > This will help you determine whether your change is acceptable.
 
-1. Fork the repository and create your branch from `dev`
+1. Fork the repository and create a new branch based off the `dev` branch
 2. Make sure that the commit name are clear and concise as possible and commit your changes.
    If you have never contributed to this repository before, it's recommended to read the overview in the [documentation for developers](/docs/developers/README.md)
 3. Open a pull request to the `dev` branch and reference issues that your pull request closes
@@ -78,6 +78,6 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 ## 🤚 I want to contribute but don't know how to code
 Even if you don't know how to code, you can still contribute by 
-translating the ReVanced Manager application on our [Crowdin](https://translate.revanced.app/).
+translating ReVanced Manager on [Crowdin](https://translate.revanced.app/).
 
 ❤️ Thank you for considering contributing to ReVanced Manager.
