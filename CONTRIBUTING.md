@@ -44,14 +44,17 @@
 </p>
 
 # 👋 Contribution guidelines
+
 This document describes how to contribute to ReVanced Manager.
 
 ## 📖 Resources to help you get started
+
 * The [documentation](/docs/README.md) provides steps to build ReVanced Manager from source
 * Our [backlog](https://github.com/orgs/ReVanced/projects/12) is where we keep track of what we're working on
 * [Issues](https://github.com/ReVanced/revanced-manager/issues) are where we keep track of bugs and feature requests
 
 ## 🙏 Submitting a feature request
+
 Features can be requested by opening an issue using the
 [feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=feature-request&projects=&template=feature-issue.yml&title=feat%3A+%3Ctitle%3E).
 
@@ -60,10 +63,12 @@ Features can be requested by opening an issue using the
 > please provide good motivation for a request to be accepted.
 
 ## 🐞 Submitting a bug report
+
 If you encounter a bug while using the ReVanced Manager app, open an issue using the
 [bug report issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=bug&projects=&template=bug-issue.yml&title=bug%3A+%3Ctitle%3E).
 
 ## 📝 How to contribute
+
 > [!NOTE]
 > We recommend that you discuss your changes with 
 > the maintainers of ReVanced Manager before contributing. 
@@ -77,6 +82,7 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
    Once your pull request is approved and merged, it will be included in the next release of ReVanced Manager
 
 ## 🤚 I want to contribute but don't know how to code
+
 Even if you don't know how to code, you can still contribute by 
 translating ReVanced Manager on [Crowdin](https://translate.revanced.app/).
 

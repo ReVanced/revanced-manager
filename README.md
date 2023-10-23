@@ -51,6 +51,7 @@
 ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications.
 
 ### 💪 Features
+
 We provide the some of the features are:
 
 * 📱 **Portable**: ReVanced Patcher that fit in your pocket!
@@ -59,18 +60,23 @@ We provide the some of the features are:
 * ✨ And a **lot more!**
 
 ### 🔽 Download
+
 You can obtain ReVanced Manager by downloading it from either [ReVanced site](https://revanced.app/download) or [GitHub Releases](https://github.com/ReVanced/revanced-manager/releases).
 
 ## 🌱 Miscellaneous
 
 ### 📄 Documentation
+
 Documentation on how to use the application is available [here](/docs/README.md).
 
 ### 👋 Contributing
+
 Thank you for considering contributing to ReVanced Manager, you can find the contribution guidelines [here](/CONTRIBUTING.md).
 
 ### 🔴 Issues
+
 For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/choose).
 
 ## ⚖️ License
+
 ReVanced Manager adopts the [GNU General Public License 3.0](/LICENSE), [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3): You may copy, distribute and modify the software as long as you track changes/dates in source files. Any modifications to or software including (via compiler) GPL-licensed code must also be made available under the GPL along with build & install instructions.
