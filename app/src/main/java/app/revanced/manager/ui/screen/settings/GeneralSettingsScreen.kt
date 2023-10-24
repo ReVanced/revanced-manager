@@ -64,7 +64,7 @@ fun GeneralSettingsScreen(
                 headlineContent = stringResource(R.string.theme),
                 supportingContent = stringResource(R.string.theme_description),
                 trailingContent = {
-                    Button(
+                    FilledTonalButton(
                         onClick = {
                             showThemePicker = true
                         }
