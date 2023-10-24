@@ -15,7 +15,9 @@ import app.revanced.patcher.patch.PatchResult
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
@@ -143,6 +145,7 @@ class MainActivity : FlutterActivity() {
 
                                                     value.forEach { put(it) }
                                                 })
+
                                                 else -> put("value", option.value)
                                             }
 
@@ -161,6 +164,7 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    @OptIn(InternalCoroutinesApi::class)
     private fun runPatcher(
         result: MethodChannel.Result,
         originalFilePath: String,
@@ -283,12 +287,12 @@ class MainActivity : FlutterActivity() {
                     acceptPatches(patches)
 
                     runBlocking {
-                        apply(false).collect { patchResult: PatchResult ->
+                        apply(false).collect(FlowCollector { patchResult: PatchResult ->
                             if (cancel) {
                                 handler.post { stopResult!!.success(null) }
                                 this.cancel()
                                 this@apply.close()
-                                return@collect
+                                return@FlowCollector
                             }
 
                             val msg = patchResult.exception?.let {
@@ -301,7 +305,7 @@ class MainActivity : FlutterActivity() {
 
                             updateProgress(progress, "", msg)
                             progress += progressStep
-                        }
+                        })
                     }
                 }
 
