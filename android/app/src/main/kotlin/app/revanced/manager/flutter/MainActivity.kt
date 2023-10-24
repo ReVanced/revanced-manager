@@ -27,6 +27,7 @@ import java.io.StringWriter
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
+
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var installerChannel: MethodChannel
@@ -133,25 +134,34 @@ class MainActivity : FlutterActivity() {
                                 })
                                 put("options", JSONArray().apply {
                                     it.options.values.forEach { option ->
-                                        val optionJson = JSONObject().apply option@{
+                                        JSONObject().apply {
                                             put("key", option.key)
                                             put("title", option.title)
                                             put("description", option.description)
                                             put("required", option.required)
 
-                                            when (val value = option.value) {
-                                                null -> put("value", null)
-                                                is Array<*> -> put("value", JSONArray().apply {
-
+                                            fun JSONObject.putValue(
+                                                value: Any?,
+                                                key: String = "value"
+                                            ) = if (value is Array<*>) put(
+                                                key,
+                                                JSONArray().apply {
                                                     value.forEach { put(it) }
                                                 })
+                                            else put(key, value)
 
-                                                else -> put("value", option.value)
-                                            }
+                                            putValue(option.default)
 
-                                            put("optionClassType", option::class.simpleName)
-                                        }
-                                        put(optionJson)
+                                            option.values?.let { values ->
+                                                put("values",
+                                                    JSONObject().apply {
+                                                        values.forEach { (key, value) ->
+                                                            putValue(value, key)
+                                                        }
+                                                    })
+                                            } ?: put("values", null)
+                                            put("valueType", option.valueType)
+                                        }.let(::put)
                                     }
                                 })
                             }.let(::put)

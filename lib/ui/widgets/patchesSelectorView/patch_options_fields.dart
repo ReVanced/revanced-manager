@@ -65,7 +65,8 @@ class IntAndStringPatchOption extends StatelessWidget {
         children: [
           TextFieldForPatchOption(
             value: patchOption.value,
-            optionType: patchOption.optionClassType,
+            values: patchOption.values,
+            optionType: patchOption.valueType,
             onChanged: (value) {
               patchOptionValue.value = value;
               onChanged(value, patchOption);
@@ -119,7 +120,7 @@ class IntStringLongListPatchOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String type = patchOption.optionClassType;
+    final String type = patchOption.valueType;
     final List<dynamic> values = patchOption.value ?? [];
     final ValueNotifier patchOptionValue = ValueNotifier(values);
     return PatchOption(
@@ -137,6 +138,7 @@ class IntStringLongListPatchOption extends StatelessWidget {
                   final e = values[index];
                   return TextFieldForPatchOption(
                     value: e.toString(),
+                    values: patchOption.values,
                     optionType: type,
                     onChanged: (newValue) {
                       values[index] = type == 'StringListPatchOption'
@@ -203,6 +205,7 @@ class IntStringLongListPatchOption extends StatelessWidget {
 
 class UnsupportedPatchOption extends StatelessWidget {
   const UnsupportedPatchOption({super.key, required this.patchOption});
+
   final Option patchOption;
 
   @override
@@ -302,12 +305,14 @@ class TextFieldForPatchOption extends StatefulWidget {
   const TextFieldForPatchOption({
     super.key,
     required this.value,
+    required this.values,
     this.removeValue,
     required this.onChanged,
     required this.optionType,
   });
 
   final String? value;
+  final Map<String, dynamic>? values;
   final String optionType;
   final void Function(dynamic value)? removeValue;
   final void Function(dynamic value) onChanged;
@@ -319,75 +324,132 @@ class TextFieldForPatchOption extends StatefulWidget {
 
 class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
   final TextEditingController controller = TextEditingController();
+  String? selectedKey;
+  bool manualInput = false;
+  String? defaultValue;
+
   @override
   Widget build(BuildContext context) {
+    // find the entry key with the value that matches widget.value
+    if (selectedKey == null) {
+      if (widget.values?.isNotEmpty ?? false) {
+        for (final entry in widget.values!.entries) {
+          if (entry.value == widget.value) {
+            selectedKey = entry.key;
+            break;
+          }
+        }
+      }
+    }
+
     final bool isStringOption = widget.optionType.contains('String');
     final bool isListOption = widget.optionType.contains('List');
-    controller.text = widget.value ?? '';
-    return TextFormField(
-      inputFormatters: [
-        if (widget.optionType.contains('Int'))
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-        if (widget.optionType.contains('Long'))
-          FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*\.?[0-9]*')),
-      ],
-      controller: controller,
-      keyboardType: isStringOption ? TextInputType.text : TextInputType.number,
-      decoration: InputDecoration(
-        suffixIcon: PopupMenuButton(
-          tooltip: FlutterI18n.translate(
-            context,
-            'patchOptionsView.tooltip',
+    defaultValue ??= controller.text = widget.value ?? '';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.values?.isNotEmpty ?? false)
+          DropdownButton<String>(
+            value: selectedKey,
+            items: widget.values?.entries
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e.key,
+                    child: Text('${e.key} (${e.value})'),
+                  ),
+                )
+                .toList()
+              ?..add(
+                DropdownMenuItem(
+                  value: '',
+                  child: I18nText('patchOptionsView.customValue'),
+                ),
+              ),
+            onChanged: (value) {
+              if (value == '') {
+                controller.text = defaultValue!;
+                manualInput = true;
+              } else {
+                controller.text = widget.values![value].toString();
+                manualInput = false;
+              }
+
+              widget.onChanged(controller.text);
+
+              setState(() {
+                selectedKey = value;
+              });
+            },
           ),
-          itemBuilder: (BuildContext context) {
-            return [
-              if (isListOption)
-                PopupMenuItem(
-                  value: 'remove',
-                  child: I18nText('remove'),
+        if (manualInput || (widget.values?.isEmpty ?? true))
+          TextFormField(
+            inputFormatters: [
+              if (widget.optionType.contains('Int'))
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              if (widget.optionType.contains('Long'))
+                FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*\.?[0-9]*')),
+            ],
+            controller: controller,
+            keyboardType:
+                isStringOption ? TextInputType.text : TextInputType.number,
+            decoration: InputDecoration(
+              suffixIcon: PopupMenuButton(
+                tooltip: FlutterI18n.translate(
+                  context,
+                  'patchOptionsView.tooltip',
                 ),
-              if (isStringOption && !isListOption) ...[
-                PopupMenuItem(
-                  value: 'patchOptionsView.selectFilePath',
-                  child: I18nText('patchOptionsView.selectFilePath'),
-                ),
-                PopupMenuItem(
-                  value: 'patchOptionsView.selectFolder',
-                  child: I18nText('patchOptionsView.selectFolder'),
-                ),
-              ],
-            ];
-          },
-          onSelected: (String selection) async {
-            switch (selection) {
-              case 'patchOptionsView.selectFilePath':
-                final result = await FilePicker.platform.pickFiles();
-                if (result != null && result.files.single.path != null) {
-                  controller.text = result.files.single.path.toString();
-                  widget.onChanged(controller.text);
-                }
-                break;
-              case 'patchOptionsView.selectFolder':
-                final result = await FilePicker.platform.getDirectoryPath();
-                if (result != null) {
-                  controller.text = result;
-                  widget.onChanged(controller.text);
-                }
-                break;
-              case 'remove':
-                widget.removeValue!(widget.value);
-                break;
-            }
-          },
-        ),
-        hintStyle: TextStyle(
-          fontSize: 14,
-          color: Theme.of(context).colorScheme.onSecondaryContainer,
-        ),
-      ),
-      onChanged: (String value) {
-        widget.onChanged(value);
-      },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    if (isListOption)
+                      PopupMenuItem(
+                        value: 'remove',
+                        child: I18nText('remove'),
+                      ),
+                    if (isStringOption && !isListOption) ...[
+                      PopupMenuItem(
+                        value: 'patchOptionsView.selectFilePath',
+                        child: I18nText('patchOptionsView.selectFilePath'),
+                      ),
+                      PopupMenuItem(
+                        value: 'patchOptionsView.selectFolder',
+                        child: I18nText('patchOptionsView.selectFolder'),
+                      ),
+                    ],
+                  ];
+                },
+                onSelected: (String selection) async {
+                  switch (selection) {
+                    case 'patchOptionsView.selectFilePath':
+                      final result = await FilePicker.platform.pickFiles();
+                      if (result != null && result.files.single.path != null) {
+                        controller.text = result.files.single.path.toString();
+                        widget.onChanged(controller.text);
+                      }
+                      break;
+                    case 'patchOptionsView.selectFolder':
+                      final result =
+                          await FilePicker.platform.getDirectoryPath();
+                      if (result != null) {
+                        controller.text = result;
+                        widget.onChanged(controller.text);
+                      }
+                      break;
+                    case 'remove':
+                      widget.removeValue!(widget.value);
+                      break;
+                  }
+                },
+              ),
+              hintStyle: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+              ),
+            ),
+            onChanged: (String value) {
+              widget.onChanged(value);
+            },
+          ),
+      ],
     );
   }
 }

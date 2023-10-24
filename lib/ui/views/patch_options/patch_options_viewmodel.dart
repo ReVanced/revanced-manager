@@ -89,7 +89,8 @@ class PatchOptionsViewModel extends BaseViewModel {
     final Option modifiedOption = Option(
       title: option.title,
       description: option.description,
-      optionClassType: option.optionClassType,
+      values: option.values,
+      valueType: option.valueType,
       value: value,
       required: option.required,
       key: option.key,
@@ -107,7 +108,8 @@ class PatchOptionsViewModel extends BaseViewModel {
       final Option defaultOption = Option(
         title: option.title,
         description: option.description,
-        optionClassType: option.optionClassType,
+        values: option.values,
+        valueType: option.valueType,
         value: option.value is List ? option.value.toList() : option.value,
         required: option.required,
         key: option.key,
