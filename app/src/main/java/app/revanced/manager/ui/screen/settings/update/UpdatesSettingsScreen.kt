@@ -10,16 +10,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.CustomListItem
 import app.revanced.manager.ui.component.NotificationCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,24 +67,13 @@ fun UpdatesSettingsScreen(
             )
 
             listItems.forEach { (title, description, onClick) ->
-                ListItem(
+                CustomListItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(horizontal = 8.dp)
                         .clickable { onClick() },
-                    headlineContent = {
-                        Text(
-                            title,
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    },
-                    supportingContent = {
-                        Text(
-                            description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.outline
-                        )
-                    }
+                    headlineContent = title,
+                    supportingContent = description
                 )
             }
         }

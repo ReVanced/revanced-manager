@@ -27,6 +27,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import app.revanced.manager.ui.component.CustomListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -196,19 +197,12 @@ fun AboutSettingsScreen(
             }
 
             listItems.forEach { (title, description, onClick) ->
-                ListItem(
+                CustomListItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
                         .clickable { onClick() },
-                    headlineContent = { Text(title, style = MaterialTheme.typography.titleLarge) },
-                    supportingContent = {
-                        Text(
-                            description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.outline
-                        )
-                    }
+                    headlineContent = title,
+                    supportingContent = description
                 )
             }
         }
