@@ -93,7 +93,7 @@ fun ManagerUpdateChangelog(
                 }
             }
             Markdown(
-                vm.changelogHtml,
+                vm.markdown,
             )
         }
     }
