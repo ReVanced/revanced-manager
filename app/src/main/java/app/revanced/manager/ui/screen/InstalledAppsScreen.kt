@@ -37,7 +37,7 @@ fun InstalledAppsScreen(
     val installedApps by viewModel.apps.collectAsStateWithLifecycle(initialValue = null)
 
     Column {
-        if (Aapt.supportsDevice()) {
+        if (!Aapt.supportsDevice()) {
             NotificationCard(
                 isWarning = true,
                 icon = Icons.Outlined.WarningAmber,
