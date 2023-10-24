@@ -148,7 +148,7 @@ private fun NotificationCardInstance(
 ) {
     if (onClick != null) {
         Card(
-            onClick = { onClick },
+            onClick = onClick,
             colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer)),
             modifier = Modifier
                 .fillMaxWidth()
