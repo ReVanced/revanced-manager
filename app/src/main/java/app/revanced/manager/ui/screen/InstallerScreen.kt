@@ -80,7 +80,7 @@ fun InstallerScreen(
             AnimatedVisibility(patcherState != null) {
                 BottomAppBar(
                     actions = {
-                        AnimatedVisibility(canInstall) {
+                        if (canInstall) {
                             IconButton(onClick = { exportApkLauncher.launch("${vm.packageName}.apk") }) {
                                 Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                             }
@@ -90,7 +90,7 @@ fun InstallerScreen(
                         }
                     },
                     floatingActionButton = {
-                        AnimatedVisibility(canInstall) {
+                        if (canInstall) {
                             ExtendedFloatingActionButton(
                                 text = { Text(stringResource(vm.appButtonText)) },
                                 icon = { Icon(Icons.Outlined.InstallMobile, "") },
