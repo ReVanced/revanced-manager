@@ -66,7 +66,7 @@ fun ManagerUpdateChangelog(
                 )
                 Text(
                     vm.changelog.version.removePrefix("v"),
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -83,7 +83,8 @@ fun ManagerUpdateChangelog(
                     Icon(
                         imageVector = Icons.Outlined.Sell,
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.outline,
                     )
                     Text(
                         vm.changelog.version,
