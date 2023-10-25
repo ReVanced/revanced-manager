@@ -1,4 +1,4 @@
- <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -49,10 +49,6 @@
 
         <service android:name=".service.InstallService" />
         <service android:name=".service.UninstallService" />
-        <service
-            android:name="androidx.work.impl.foreground.SystemForegroundService"
-            android:foregroundServiceType="dataSync"
-            tools:node="merge" />
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
