@@ -13,6 +13,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -162,10 +163,10 @@ class InstallerViewModel(
     }
 
     init {
-        app.registerReceiver(installBroadcastReceiver, IntentFilter().apply {
+        ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
             addAction(UninstallService.APP_UNINSTALL_ACTION)
-        })
+        }, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     fun exportLogs(context: Context) {
