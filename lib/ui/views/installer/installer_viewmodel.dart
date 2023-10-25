@@ -183,7 +183,6 @@ class InstallerViewModel extends BaseViewModel {
     final info = await AboutInfo.getInfo();
 
     final formattedLogs = [
-      '```',
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
       'Build: ${info['flavor']}',
@@ -206,7 +205,6 @@ class InstallerViewModel extends BaseViewModel {
       
       '\n- Logs',
       logs,
-      '```',
     ];
 
     Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));

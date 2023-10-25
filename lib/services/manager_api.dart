@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:device_apps/device_apps.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
@@ -33,6 +34,7 @@ class ManagerAPI {
   Patch? selectedPatch;
   BuildContext? ctx;
   bool isRooted = false;
+  bool isDynamicThemeAvailable = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
@@ -59,8 +61,14 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
+    isDynamicThemeAvailable = (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+  }
+
+  Future<int> getSdkVersion() async {
+    final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
+    return info.version.sdkInt;
   }
 
   String getApiUrl() {
