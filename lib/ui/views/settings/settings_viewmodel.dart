@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cr_file_saver/file_saver.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_language.dart';
-import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:stacked/stacked.dart';
@@ -29,7 +27,6 @@ class SettingsViewModel extends BaseViewModel {
   final Toast _toast = locator<Toast>();
 
   final SUpdateLanguage sUpdateLanguage = SUpdateLanguage();
-  final SUpdateTheme sUpdateTheme = SUpdateTheme();
 
   void navigateToContributors() {
     _navigationService.navigateTo(Routes.contributorsView);
@@ -254,11 +251,6 @@ class SettingsViewModel extends BaseViewModel {
   void resetSelectedPatches() {
     _managerAPI.resetLastSelectedPatches();
     _toast.showBottom('settingsView.resetStoredPatches');
-  }
-
-  Future<int> getSdkVersion() async {
-    final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
-    return info.version.sdkInt;
   }
 
   Future<void> deleteLogs() async {
