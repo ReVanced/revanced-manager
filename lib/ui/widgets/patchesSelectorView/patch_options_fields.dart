@@ -59,6 +59,18 @@ class IntAndStringPatchOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ValueNotifier patchOptionValue = ValueNotifier(patchOption.value);
+    String getKey() {
+      if (patchOption.value != null && patchOption.values != null) {
+        final List values = patchOption.values!.entries
+            .where((e) => e.value == patchOption.value)
+            .toList();
+        if (values.isNotEmpty) {
+          return values.first.key;
+        }
+      }
+      return '';
+    }
+
     return PatchOption(
       widget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +79,7 @@ class IntAndStringPatchOption extends StatelessWidget {
             value: patchOption.value,
             values: patchOption.values,
             optionType: patchOption.valueType,
+            selectedKey: getKey(),
             onChanged: (value) {
               patchOptionValue.value = value;
               onChanged(value, patchOption);
@@ -120,6 +133,16 @@ class IntStringLongListPatchOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String getKey(dynamic value) {
+      if (value != null && patchOption.values != null) {
+        return patchOption.values!.entries
+            .where((e) => e.value == value)
+            .first
+            .key;
+      }
+      return '';
+    }
+
     final String type = patchOption.valueType;
     final List<dynamic> values = patchOption.value ?? [];
     final ValueNotifier patchOptionValue = ValueNotifier(values);
@@ -140,10 +163,11 @@ class IntStringLongListPatchOption extends StatelessWidget {
                     value: e.toString(),
                     values: patchOption.values,
                     optionType: type,
+                    selectedKey: getKey(e),
                     onChanged: (newValue) {
-                      values[index] = type == 'StringListPatchOption'
+                      values[index] = type == 'StringArray'
                           ? newValue
-                          : type == 'IntListPatchOption'
+                          : type == 'IntArray'
                               ? int.parse(newValue)
                               : num.parse(newValue);
                       onChanged(values, patchOption);
@@ -309,11 +333,13 @@ class TextFieldForPatchOption extends StatefulWidget {
     this.removeValue,
     required this.onChanged,
     required this.optionType,
+    required this.selectedKey,
   });
 
   final String? value;
   final Map<String, dynamic>? values;
   final String optionType;
+  final String selectedKey;
   final void Function(dynamic value)? removeValue;
   final void Function(dynamic value) onChanged;
 
@@ -325,63 +351,81 @@ class TextFieldForPatchOption extends StatefulWidget {
 class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
   final TextEditingController controller = TextEditingController();
   String? selectedKey;
-  bool manualInput = false;
   String? defaultValue;
 
   @override
   Widget build(BuildContext context) {
-    // find the entry key with the value that matches widget.value
-    if (selectedKey == null) {
-      if (widget.values?.isNotEmpty ?? false) {
-        for (final entry in widget.values!.entries) {
-          if (entry.value == widget.value) {
-            selectedKey = entry.key;
-            break;
-          }
-        }
-      }
-    }
-
     final bool isStringOption = widget.optionType.contains('String');
     final bool isListOption = widget.optionType.contains('List');
-    defaultValue ??= controller.text = widget.value ?? '';
+    controller.text = widget.value ?? '';
+    defaultValue ??= controller.text;
+    selectedKey ??= widget.selectedKey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.values?.isNotEmpty ?? false)
           DropdownButton<String>(
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+            borderRadius: BorderRadius.circular(4),
+            dropdownColor: Theme.of(context).colorScheme.secondaryContainer,
+            isExpanded: true,
             value: selectedKey,
-            items: widget.values?.entries
+            items: widget.values!.entries
                 .map(
                   (e) => DropdownMenuItem(
                     value: e.key,
-                    child: Text('${e.key} (${e.value})'),
+                    child: RichText(
+                      text: TextSpan(
+                        text: e.key,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: ' ${e.value}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withOpacity(0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 )
                 .toList()
-              ?..add(
+              ..add(
                 DropdownMenuItem(
                   value: '',
-                  child: I18nText('patchOptionsView.customValue'),
+                  child: I18nText(
+                    'patchOptionsView.customValue',
+                    child: const Text(
+                      '',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             onChanged: (value) {
               if (value == '') {
                 controller.text = defaultValue!;
-                manualInput = true;
               } else {
                 controller.text = widget.values![value].toString();
-                manualInput = false;
               }
-
               widget.onChanged(controller.text);
-
               setState(() {
                 selectedKey = value;
               });
             },
           ),
-        if (manualInput || (widget.values?.isEmpty ?? true))
+        if (selectedKey == '' || (widget.values?.isEmpty ?? true))
           TextFormField(
             inputFormatters: [
               if (widget.optionType.contains('Int'))
