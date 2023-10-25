@@ -18,8 +18,11 @@ import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.core.isNotEmpty
 import io.ktor.utils.io.core.readBytes
 import it.skrape.core.htmlDocument
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.io.OutputStream
 
 /**
  * @author Aliucord Authors, DiamondMiner88
@@ -49,7 +52,10 @@ class HttpService(
                     null
                 }
 
-                Log.e(tag, "Failed to fetch: API error, http status: ${response.status}, body: $body")
+                Log.e(
+                    tag,
+                    "Failed to fetch: API error, http status: ${response.status}, body: $body"
+                )
                 APIResponse.Error(APIError(response.status, body))
             }
         } catch (t: Throwable) {
@@ -59,20 +65,19 @@ class HttpService(
         return response
     }
 
-    suspend fun download(
-        saveLocation: File,
+    suspend fun streamTo(
+        outputStream: OutputStream,
         builder: HttpRequestBuilder.() -> Unit
     ) {
         http.prepareGet(builder).execute { httpResponse ->
             if (httpResponse.status.isSuccess()) {
-
-                saveLocation.outputStream().use { stream ->
-                    val channel: ByteReadChannel = httpResponse.body()
+                val channel: ByteReadChannel = httpResponse.body()
+                withContext(Dispatchers.IO) {
                     while (!channel.isClosedForRead) {
                         val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
                         while (packet.isNotEmpty) {
                             val bytes = packet.readBytes()
-                            stream.write(bytes)
+                            outputStream.write(bytes)
                         }
                     }
                 }
@@ -82,6 +87,11 @@ class HttpService(
             }
         }
     }
+
+    suspend fun download(
+        saveLocation: File,
+        builder: HttpRequestBuilder.() -> Unit
+    ) = saveLocation.outputStream().use { streamTo(it, builder) }
 
     suspend fun getHtml(builder: HttpRequestBuilder.() -> Unit) = htmlDocument(
         html = http.get(builder).bodyAsText()

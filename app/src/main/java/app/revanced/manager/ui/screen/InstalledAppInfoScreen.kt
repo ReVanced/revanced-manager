@@ -41,18 +41,19 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppIcon
+import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.SegmentedButton
-import app.revanced.manager.ui.viewmodel.AppInfoViewModel
+import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
 import app.revanced.manager.util.PatchesSelection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppInfoScreen(
+fun InstalledAppInfoScreen(
     onPatchClick: (packageName: String, patchesSelection: PatchesSelection) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: AppInfoViewModel
+    viewModel: InstalledAppInfoViewModel
 ) {
     SideEffect {
         viewModel.onBackClick = onBackClick
@@ -80,27 +81,8 @@ fun AppInfoScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                AppIcon(
-                    viewModel.appInfo,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(bottom = 5.dp)
-                )
-
-                AppLabel(
-                    viewModel.appInfo,
-                    style = MaterialTheme.typography.titleLarge,
-                    defaultText = null
-                )
-
-                Text(viewModel.installedApp.version, style = MaterialTheme.typography.bodySmall)
+            AppInfo(viewModel.appInfo)  {
+                Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
 
                 if (viewModel.installedApp.installType == InstallType.ROOT) {
                     Text(

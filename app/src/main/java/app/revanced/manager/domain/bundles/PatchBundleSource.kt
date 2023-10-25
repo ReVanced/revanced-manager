@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import java.io.File
+import java.io.OutputStream
 
 /**
  * A [PatchBundle] source.
@@ -22,6 +23,16 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
      * Returns true if the bundle has been downloaded to local storage.
      */
     fun hasInstalled() = patchesFile.exists()
+
+    protected fun patchBundleOutputStream(): OutputStream = with(patchesFile) {
+        // Android 14+ requires dex containers to be readonly.
+        try {
+            setWritable(true, true)
+            outputStream()
+        } finally {
+            setReadOnly()
+        }
+    }
 
     private fun load(): State {
         if (!hasInstalled()) return State.Missing
@@ -40,7 +51,7 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
     sealed interface State {
         fun patchBundleOrNull(): PatchBundle? = null
 
-        object Missing : State
+        data object Missing : State
         data class Failed(val throwable: Throwable) : State
         data class Loaded(val bundle: PatchBundle) : State {
             override fun patchBundleOrNull() = bundle
