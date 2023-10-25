@@ -6,46 +6,98 @@ import 'package:flutter/services.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:stacked/stacked.dart';
 
-final _settingViewModel = SettingsViewModel();
+class SUpdateThemeUI extends StatefulWidget {
+  const SUpdateThemeUI({super.key});
 
-// ignore: constant_identifier_names
-const int ANDROID_12_SDK_VERSION = 31;
+  @override
+  State<SUpdateThemeUI> createState() => _SUpdateThemeUIState();
+}
 
-class SUpdateTheme extends BaseViewModel {
-  final ManagerAPI _managerAPI = locator<ManagerAPI>();
+class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
+  final ManagerAPI managerAPI = locator<ManagerAPI>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsSection(
+      title: 'settingsView.appearanceSectionTitle',
+      children: <Widget>[
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: I18nText(
+            'settingsView.themeModeLabel',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          trailing: CustomMaterialButton(
+            label: getThemeModeName(),
+            onPressed: () => {showThemeDialog(context)},
+          ),
+          onTap: () => {showThemeDialog(context)},
+        ),
+        if (managerAPI.isDynamicThemeAvailable)
+          SwitchListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+            title: I18nText(
+              'settingsView.dynamicThemeLabel',
+              child: const Text(
+                '',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            subtitle: I18nText('settingsView.dynamicThemeHint'),
+            value: getDynamicThemeStatus(),
+            onChanged: (value) => {
+              setUseDynamicTheme(
+                context,
+                value,
+              ),
+            },
+          ),
+      ],
+    );
+  }
 
   bool getDynamicThemeStatus() {
-    return _managerAPI.getUseDynamicTheme();
+    return managerAPI.getUseDynamicTheme();
   }
 
   Future<void> setUseDynamicTheme(BuildContext context, bool value) async {
-    await _managerAPI.setUseDynamicTheme(value);
+    await managerAPI.setUseDynamicTheme(value);
     final int currentTheme = (DynamicTheme.of(context)!.themeId ~/ 2) * 2;
     await DynamicTheme.of(context)!.setTheme(currentTheme + (value ? 1 : 0));
-    notifyListeners();
+    setState(() {});
   }
 
   int getThemeMode() {
-    return _managerAPI.getThemeMode();
+    return managerAPI.getThemeMode();
   }
 
   Future<void> setThemeMode(BuildContext context, int value) async {
-    await _managerAPI.setThemeMode(value);
+    await managerAPI.setThemeMode(value);
     final bool isDynamicTheme = DynamicTheme.of(context)!.themeId.isEven;
-    await DynamicTheme.of(context)!.setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
-    final bool isLight = value != 2 && (value == 1 || DynamicTheme.of(context)!.theme.brightness == Brightness.light);
+    await DynamicTheme.of(context)!
+        .setTheme(value * 2 + (isDynamicTheme ? 0 : 1));
+    final bool isLight = value != 2 &&
+        (value == 1 ||
+            DynamicTheme.of(context)!.theme.brightness == Brightness.light);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         systemNavigationBarIconBrightness:
-        isLight ? Brightness.dark : Brightness.light,
+            isLight ? Brightness.dark : Brightness.light,
       ),
     );
-    notifyListeners();
+    setState(() {});
   }
 
   I18nText getThemeModeName() {
@@ -128,66 +180,6 @@ class SUpdateTheme extends BaseViewModel {
           ),
         ],
       ),
-    );
-  }
-}
-
-final sUpdateTheme = SUpdateTheme();
-class SUpdateThemeUI extends StatelessWidget {
-  const SUpdateThemeUI({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SettingsSection(
-      title: 'settingsView.appearanceSectionTitle',
-      children: <Widget>[
-        ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: I18nText(
-            'settingsView.themeModeLabel',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          trailing: CustomMaterialButton(
-            label: sUpdateTheme.getThemeModeName(),
-            onPressed: () => { sUpdateTheme.showThemeDialog(context) },
-          ),
-          onTap: () => { sUpdateTheme.showThemeDialog(context) },
-        ),
-        FutureBuilder<int>(
-          future: _settingViewModel.getSdkVersion(),
-          builder: (context, snapshot) => Visibility(
-            visible:
-                snapshot.hasData && snapshot.data! >= ANDROID_12_SDK_VERSION,
-            child: SwitchListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-              title: I18nText(
-                'settingsView.dynamicThemeLabel',
-                child: const Text(
-                  '',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              subtitle: I18nText('settingsView.dynamicThemeHint'),
-              value: _settingViewModel.sUpdateTheme.getDynamicThemeStatus(),
-              onChanged: (value) => {
-                _settingViewModel.sUpdateTheme.setUseDynamicTheme(
-                  context,
-                  value,
-                ),
-              },
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
