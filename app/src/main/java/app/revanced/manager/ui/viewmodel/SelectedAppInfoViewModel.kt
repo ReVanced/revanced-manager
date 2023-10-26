@@ -42,8 +42,8 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     var selectedApp
         get() = _selectedApp
         set(value) {
-            invalidateSelectedAppInfo()
             _selectedApp = value
+            invalidateSelectedAppInfo()
         }
 
     var selectedAppInfo: PackageInfo? by mutableStateOf(null)
