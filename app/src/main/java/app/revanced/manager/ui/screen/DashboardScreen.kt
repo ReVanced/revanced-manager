@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -203,6 +204,13 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES -> {
+                            BackHandler {
+                                if (bundlesSelectable) vm.cancelSourceSelection() else composableScope.launch {
+                                    pagerState.animateScrollToPage(
+                                        DashboardPage.DASHBOARD.ordinal
+                                    )
+                                }
+                            }
 
                             val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
 
