@@ -61,8 +61,8 @@ class PatchOptionsView extends StatelessWidget {
                   child: Column(
                     children: [
                       for (final Option option in model.visibleOptions)
-                        if (option.optionClassType == 'StringPatchOption' ||
-                            option.optionClassType == 'IntPatchOption')
+                        if (option.valueType == 'String' ||
+                            option.valueType == 'Int')
                           IntAndStringPatchOption(
                             patchOption: option,
                             removeOption: (option) {
@@ -72,7 +72,7 @@ class PatchOptionsView extends StatelessWidget {
                               model.modifyOptions(value, option);
                             },
                           )
-                        else if (option.optionClassType == 'BooleanPatchOption')
+                        else if (option.valueType == 'Boolean')
                           BooleanPatchOption(
                             patchOption: option,
                             removeOption: (option) {
@@ -82,10 +82,10 @@ class PatchOptionsView extends StatelessWidget {
                               model.modifyOptions(value, option);
                             },
                           )
-                        else if (option.optionClassType ==
-                                'StringListPatchOption' ||
-                            option.optionClassType == 'IntListPatchOption' ||
-                            option.optionClassType == 'LongListPatchOption')
+                        else if (option.valueType ==
+                                'StringArray' ||
+                            option.valueType == 'IntArray' ||
+                            option.valueType == 'LongArray')
                           IntStringLongListPatchOption(
                             patchOption: option,
                             removeOption: (option) {
