@@ -9,7 +9,10 @@ import java.io.File
 class PatchBundle(private val loader: Iterable<Patch<*>>, val integrations: File?) {
     constructor(bundleJar: File, integrations: File?) : this(
         object : Iterable<Patch<*>> {
-            private fun load(): Iterable<Patch<*>> = PatchBundleLoader.Dex(bundleJar, optimizedDexDirectory = null)
+            private fun load(): Iterable<Patch<*>> {
+                bundleJar.setReadOnly()
+                return PatchBundleLoader.Dex(bundleJar, optimizedDexDirectory = null)
+            }
 
             override fun iterator(): Iterator<Patch<*>> = load().iterator()
         },
