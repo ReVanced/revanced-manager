@@ -79,7 +79,6 @@ class ManagerAPI {
     if (url.isEmpty || url == ' ') {
       url = defaultApiUrl;
     }
-    await _revancedAPI.initialize(url);
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
   }
