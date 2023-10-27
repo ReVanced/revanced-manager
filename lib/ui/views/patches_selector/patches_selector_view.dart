@@ -3,9 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
-import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorView extends StatefulWidget {
@@ -182,187 +180,39 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                             ],
                           ),
-                          if (model.newPatchExists())
+                          if (model.getQueriedPatches(_query).any((patch) => model.isPatchNew(patch)))
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                      top: 10.0,
-                                      bottom: 10.0,
-                                      left: 5.0,
-                                    ),
-                                    child: I18nText(
-                                      'patchesSelectorView.newPatches',
-                                      child: Text(
-                                        '',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                model.getPatchCategory(context, 'patchesSelectorView.newPatches'),
                                 ...model.getQueriedPatches(_query).map((patch) {
                                   if (model.isPatchNew(patch)) {
-                                    return PatchItem(
-                                      name: patch.name,
-                                      simpleName: patch.getSimpleName(),
-                                      description: patch.description ?? '',
-                                      packageVersion:
-                                          model.getAppInfo().version,
-                                      supportedPackageVersions:
-                                          model.getSupportedVersions(patch),
-                                      isUnsupported: !isPatchSupported(patch),
-                                      isChangeEnabled:
-                                          _managerAPI.isPatchesChangeEnabled(),
-                                      hasUnsupportedPatchOption:
-                                          hasUnsupportedRequiredOption(
-                                        patch.options,
-                                        patch,
-                                      ),
-                                      options: patch.options,
-                                      isSelected: model.isSelected(patch),
-                                      navigateToOptions: (options) =>
-                                          model.navigateToPatchOptions(
-                                        options,
-                                        patch,
-                                      ),
-                                      onChanged: (value) => model.selectPatch(
-                                        patch,
-                                        value,
-                                        context,
-                                      ),
-                                    );
+                                    return model.getPatchItem(context, patch);
                                   } else {
                                     return Container();
                                   }
                                 }),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                      top: 10.0,
-                                      bottom: 10.0,
-                                      left: 5.0,
-                                    ),
-                                    child: I18nText(
-                                      'patchesSelectorView.patches',
-                                      child: Text(
-                                        '',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                if (model.getQueriedPatches(_query).any((patch) => !model.isPatchNew(patch) && patch.compatiblePackages.isNotEmpty))
+                                  model.getPatchCategory(context, 'patchesSelectorView.patches'),
                               ],
                             ),
                           ...model.getQueriedPatches(_query).map(
                             (patch) {
-                              if (patch.compatiblePackages.isNotEmpty) {
-                                return PatchItem(
-                                  name: patch.name,
-                                  simpleName: patch.getSimpleName(),
-                                  description: patch.description ?? '',
-                                  packageVersion: model.getAppInfo().version,
-                                  supportedPackageVersions:
-                                      model.getSupportedVersions(patch),
-                                  isUnsupported: !isPatchSupported(patch),
-                                  isChangeEnabled:
-                                      _managerAPI.isPatchesChangeEnabled(),
-                                  hasUnsupportedPatchOption:
-                                      hasUnsupportedRequiredOption(
-                                    patch.options,
-                                    patch,
-                                  ),
-                                  options: patch.options,
-                                  isSelected: model.isSelected(patch),
-                                  navigateToOptions: (options) =>
-                                      model.navigateToPatchOptions(
-                                    options,
-                                    patch,
-                                  ),
-                                  onChanged: (value) => model.selectPatch(
-                                    patch,
-                                    value,
-                                    context,
-                                  ),
-                                );
+                              if (patch.compatiblePackages.isNotEmpty && !model.isPatchNew(patch)) {
+                                return model.getPatchItem(context, patch);
                               } else {
                                 return Container();
                               }
                             },
                           ),
-                          if (_managerAPI.areUniversalPatchesEnabled())
+                          if (model.getQueriedPatches(_query).any((patch) => patch.compatiblePackages.isEmpty))
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                      top: 10.0,
-                                      bottom: 10.0,
-                                      left: 5.0,
-                                    ),
-                                    child: I18nText(
-                                      'patchesSelectorView.universalPatches',
-                                      child: Text(
-                                        '',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                model.getPatchCategory(context, 'patchesSelectorView.universalPatches'),
                                 ...model.getQueriedPatches(_query).map((patch) {
-                                  if (patch.compatiblePackages.isEmpty) {
-                                    return PatchItem(
-                                      name: patch.name,
-                                      simpleName: patch.getSimpleName(),
-                                      description: patch.description ?? '',
-                                      packageVersion:
-                                          model.getAppInfo().version,
-                                      supportedPackageVersions:
-                                          model.getSupportedVersions(patch),
-                                      isUnsupported: !isPatchSupported(patch),
-                                      isChangeEnabled:
-                                          _managerAPI.isPatchesChangeEnabled(),
-                                      hasUnsupportedPatchOption:
-                                          hasUnsupportedRequiredOption(
-                                        patch.options,
-                                        patch,
-                                      ),
-                                      options: patch.options,
-                                      isSelected: model.isSelected(patch),
-                                      navigateToOptions: (options) =>
-                                          model.navigateToPatchOptions(
-                                        options,
-                                        patch,
-                                      ),
-                                      onChanged: (value) => model.selectPatch(
-                                        patch,
-                                        value,
-                                        context,
-                                      ),
-                                    );
+                                  if (patch.compatiblePackages.isEmpty && !model.isPatchNew(patch)) {
+                                    return model.getPatchItem(context, patch);
                                   } else {
                                     return Container();
                                   }
