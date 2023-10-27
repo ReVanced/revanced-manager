@@ -9,6 +9,11 @@ data class ReVancedLatestRelease(
 )
 
 @Serializable
+data class ReVancedReleases(
+    val releases: List<ReVancedRelease>
+)
+
+@Serializable
 data class ReVancedRelease(
     val metadata: ReVancedReleaseMeta,
     val assets: List<Asset>
