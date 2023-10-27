@@ -26,7 +26,12 @@ class Step(
     val state: State = State.WAITING
 )
 
-class PatcherProgressManager(context: Context, selectedPatches: List<String>, selectedApp: SelectedApp, downloadProgress: StateFlow<Pair<Float, Float>?>) {
+class PatcherProgressManager(
+    context: Context,
+    selectedPatches: List<String>,
+    selectedApp: SelectedApp,
+    downloadProgress: StateFlow<Pair<Float, Float>?>
+) {
     val steps = generateSteps(context, selectedPatches, selectedApp, downloadProgress)
     private var currentStep: StepKey? = StepKey(0, 0)
 
@@ -87,12 +92,20 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>, se
             selectedPatches.map { SubStep(it) }.toImmutableList()
         )
 
-        fun generateSteps(context: Context, selectedPatches: List<String>, selectedApp: SelectedApp, downloadProgress: StateFlow<Pair<Float, Float>?>? = null) = mutableListOf(
+        fun generateSteps(
+            context: Context,
+            selectedPatches: List<String>,
+            selectedApp: SelectedApp,
+            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
+        ) = mutableListOf(
             Step(
                 R.string.patcher_step_group_prepare,
                 listOfNotNull(
                     SubStep(context.getString(R.string.patcher_step_load_patches)),
-                    SubStep("Download apk", progress = downloadProgress).takeIf { selectedApp is SelectedApp.Download },
+                    SubStep(
+                        "Download apk",
+                        progress = downloadProgress
+                    ).takeIf { selectedApp is SelectedApp.Download },
                     SubStep(context.getString(R.string.patcher_step_unpack)),
                     SubStep(context.getString(R.string.patcher_step_integrations))
                 ).toImmutableList()
@@ -100,7 +113,10 @@ class PatcherProgressManager(context: Context, selectedPatches: List<String>, se
             generatePatchesStep(selectedPatches),
             Step(
                 R.string.patcher_step_group_saving,
-                persistentListOf(SubStep(context.getString(R.string.patcher_step_write_patched)))
+                persistentListOf(
+                    SubStep(context.getString(R.string.patcher_step_write_patched)),
+                    SubStep(context.getString(R.string.patcher_step_sign_apk))
+                )
             )
         )
     }

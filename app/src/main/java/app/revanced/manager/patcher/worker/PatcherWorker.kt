@@ -19,6 +19,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.installer.RootInstaller
+import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
@@ -50,6 +51,7 @@ class PatcherWorker(
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
+    private val keystoreManager: KeystoreManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
     private val fs: Filesystem by inject()
@@ -159,6 +161,8 @@ class PatcherWorker(
             progressFlow.value = progressManager.getProgress().toImmutableList()
         }
 
+        val patchedApk = fs.tempDir.resolve("patched.apk")
+
         return try {
 
             if (args.input is SelectedApp.Installed) {
@@ -219,8 +223,11 @@ class PatcherWorker(
                 inputFile,
                 onStepSucceeded = ::updateProgress
             ).use { session ->
-                session.run(File(args.output), patches, integrations)
+                session.run(patchedApk, patches, integrations)
             }
+
+            keystoreManager.sign(patchedApk, File(args.output))
+            updateProgress() // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
             progressManager.success()
@@ -231,6 +238,7 @@ class PatcherWorker(
             Result.failure()
         } finally {
             updateProgress(false)
+            patchedApk.delete()
         }
     }
 }

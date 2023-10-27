@@ -24,7 +24,6 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
-import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.worker.PatcherProgressManager
@@ -57,7 +56,6 @@ import java.util.logging.LogRecord
 class InstallerViewModel(
     private val input: Destination.Installer
 ) : ViewModel(), KoinComponent {
-    private val keystoreManager: KeystoreManager by inject()
     private val app: Application by inject()
     private val fs: Filesystem by inject()
     private val pm: PM by inject()
@@ -72,8 +70,6 @@ class InstallerViewModel(
     }
 
     private val outputFile = tempDir.resolve("output.apk")
-    private val signedFile = tempDir.resolve("signed.apk")
-    private var hasSigned = false
     private var inputFile: File? = null
 
     private var installedApp: InstalledApp? = null
@@ -209,42 +205,22 @@ class InstallerViewModel(
         tempDir.deleteRecursively()
     }
 
-    private suspend fun signApk(): Boolean {
-        if (!hasSigned) {
-            try {
-                withContext(Dispatchers.Default) {
-                    keystoreManager.sign(outputFile, signedFile)
-                }
-            } catch (e: Exception) {
-                Log.e(tag, "Got exception while signing", e)
-                app.toast(app.getString(R.string.sign_fail, e::class.simpleName))
-                return false
-            }
-        }
-
-        return true
-    }
-
     fun export(uri: Uri?) = viewModelScope.launch {
         uri?.let {
-            if (signApk()) {
-                withContext(Dispatchers.IO) {
-                    app.contentResolver.openOutputStream(it)
-                        .use { stream -> Files.copy(signedFile.toPath(), stream) }
-                }
-                app.toast(app.getString(R.string.export_app_success))
+            withContext(Dispatchers.IO) {
+                app.contentResolver.openOutputStream(it)
+                    .use { stream -> Files.copy(outputFile.toPath(), stream) }
             }
+            app.toast(app.getString(R.string.export_app_success))
         }
     }
 
     fun install(installType: InstallType) = viewModelScope.launch {
         isInstalling = true
         try {
-            if (!signApk()) return@launch
-
             when (installType) {
                 InstallType.DEFAULT -> {
-                    pm.installApp(listOf(signedFile))
+                    pm.installApp(listOf(outputFile))
                 }
 
                 InstallType.ROOT -> {
@@ -262,7 +238,7 @@ class InstallerViewModel(
     private suspend fun installAsRoot() {
         try {
             val label = with(pm) {
-                getPackageInfo(signedFile)?.label()
+                getPackageInfo(outputFile)?.label()
                     ?: throw Exception("Failed to load application info")
             }
 
