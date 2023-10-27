@@ -39,7 +39,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
-import app.revanced.manager.ui.screen.settings.update.ManagerUpdateChangelog
+import app.revanced.manager.ui.screen.settings.update.UpdateChangelog
 import app.revanced.manager.ui.screen.settings.update.UpdateProgressScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
@@ -132,7 +132,7 @@ fun SettingsScreen(
                 onBackClick = { navController.pop() },
             )
 
-            is SettingsDestination.UpdateChangelog -> ManagerUpdateChangelog(
+            is SettingsDestination.UpdateChangelog -> UpdateChangelog(
                 onBackClick = { navController.pop() },
             )
 

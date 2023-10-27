@@ -10,7 +10,7 @@ import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 
-class ManagerUpdateChangelogViewModel(
+class UpdateChangelogViewModel(
     private val api: ReVancedAPI,
     private val app: Application,
 ) : ViewModel() {
