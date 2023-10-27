@@ -16,7 +16,11 @@ fun Markdown(
 
     Markdown(
         content = markdown,
-        colors = markdownColor(text = MaterialTheme.colorScheme.onSurfaceVariant),
+        colors = markdownColor(
+            text = MaterialTheme.colorScheme.onSurfaceVariant,
+            codeBackground = MaterialTheme.colorScheme.secondaryContainer,
+            codeText = MaterialTheme.colorScheme.onSecondaryContainer
+        ),
         typography = markdownTypography(
             h1 = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
             h2 = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
