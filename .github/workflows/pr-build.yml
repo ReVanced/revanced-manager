@@ -68,8 +68,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           flutter build apk --${{ inputs.app-flavour }};
-      - name: Set env
-        run: |
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Upload build
         uses: actions/upload-artifact@v3
@@ -81,16 +79,16 @@ jobs:
           
   notify-pull-request:
     name: Notify Pull Request
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Setup
         run: |
           echo "DATETIME=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
-          if [[ "${{ needs.build.result }}" == "failure" ]]; then
-            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_ENV
-          else
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
             echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_ENV
+          else
+            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_ENV
           fi
       - name: "Comment to Pull Request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
