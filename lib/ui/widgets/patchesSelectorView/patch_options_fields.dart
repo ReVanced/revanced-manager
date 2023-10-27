@@ -512,17 +512,16 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                 onSelected: (String selection) async {
                   switch (selection) {
                     case 'patchOptionsView.selectFilePath':
-                      final result = await FilePicker.platform.pickFiles();
-                      if (result != null && result.files.single.path != null) {
-                        controller.text = result.files.single.path.toString();
+                      final String? result = await FlutterFileDialog.pickFile();
+                      if (result != null) {
+                        controller.text = result;
                         widget.onChanged(controller.text);
                       }
                       break;
                     case 'patchOptionsView.selectFolder':
-                      final result =
-                          await FilePicker.platform.getDirectoryPath();
+                      final DirectoryLocation? result = await FlutterFileDialog.pickDirectory();
                       if (result != null) {
-                        controller.text = result;
+                        controller.text = result.toString();
                         widget.onChanged(controller.text);
                       }
                       break;
