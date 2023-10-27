@@ -45,12 +45,13 @@ jobs:
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
-          
           gh repo clone ${{ github.repository }}
           cd revanced-manager
           gh repo set-default ${{ github.repository }}
           gh pr checkout ${{ inputs.pr-number }}
+          
+          echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
       - name: Checkout
         uses: actions/checkout@v4
@@ -82,11 +83,10 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build pk --${{ inputs.app-flavour }};
+          flutter build apk --${{ inputs.app-flavour }};
           
-      - name: Prepare to comment & upload artefacts
+      - name: Prepare to comment
         run: |
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
             echo "MESSAGE=✅ The CI has sucessfully built ReVanced Manager at ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           else
@@ -107,7 +107,7 @@ jobs:
             You can check the details on run ID [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
 
             ### ⚙️ Overview
-            - App flavour: ${{ inputs.app-flavour }}
+            - App flavor: ${{ inputs.app-flavour }}
             - Flutter branch: ${{ inputs.flutter-branch }}
             - Flutter cache: ${{ inputs.flutter-cache }}
             - Start time: ${{ env.DATETIME }}
@@ -115,6 +115,7 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
+          error: true
           name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
           path: | 
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
