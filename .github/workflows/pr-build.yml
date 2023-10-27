@@ -3,93 +3,96 @@ name: PR Build
 on:
   workflow_dispatch:
     inputs:
+      # Flutter
       flutter-branch:
-        required: true
-        type: choice
         description: Flutter branch
+        type: choice
         default: 'stable'
         options: 
-        - stable
-        - beta
-        - dev
-        - master
+          - stable
+          - beta
+          - dev
+          - master
+      flutter-cache:
+        description: Cache
+        type: boolean
+        default: true
+      # Application configuration
       app-flavour:
-        required: true
-        type: choice
         description: App flavour
         default: 'release'
+        type: choice
         options: 
-        - release
-        - debug
-        - profile
+          - release
+          - debug
+          - profile
+      # Pull Request
       pr-number:
-        required: true
         description: PR number (No hashtag)
-        
-permissions:
-  contents: read
-  pull-requests: write
+        required: true
 
+run-name: "Build PR ${{ inputs.pr-number }}"
+        
 jobs:
   build:
     name: Build the application
     runs-on: ubuntu-latest
-    continue-on-error: true
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout the PR
+      - name: Setup
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh repo clone ReVanced/revanced-manager
+          echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
+          
+          gh repo clone ${{ github.repository }}
           cd revanced-manager
-          gh repo set-default ReVanced/revanced-manager
+          gh repo set-default ${{ github.repository }}
           gh pr checkout ${{ inputs.pr-number }}
+          
       - name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'zulu'
           cache: gradle
+          
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: ${{ inputs.flutter-branch }}
-          cache: true
+          cache: ${{ inputs.flutter-cache }}
+          
       - name: Install Flutter dependencies
         run: flutter pub get
+        
       - name: Generate files with Builder
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
+        
       - name: Build with Flutter
-        env:
+        continue-on-error: true
+        id: flutter-build
+        env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build apk --${{ inputs.app-flavour }};
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-      - name: Upload build
-        uses: actions/upload-artifact@v3
-        with:
-          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
-          path: | 
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
+          flutter build pk --${{ inputs.app-flavour }};
           
-  notify-pull-request:
-    name: Notify Pull Request
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup
+      - name: Prepare to comment & upload artefacts
         run: |
-          echo "DATETIME=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
-          if [[ "${{ needs.build.result }}" == "success" ]]; then
-            echo "MESSAGE=✅ Build succeeded!" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
+            echo "MESSAGE=✅ The CI has sucessfully built ReVanced Manager at ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           else
-            echo "MESSAGE=🚫 Build failed!" >> $GITHUB_ENV
+            echo "MESSAGE=🚫 The CI has unable to build ReVanced Manager at ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           fi
+          
       - name: "Comment to Pull Request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
         with:
@@ -97,9 +100,22 @@ jobs:
           pr_number: ${{ inputs.pr-number }}
           mode: recreate
           message: |
-            ${{ env.MESSAGE }} @ ${{ env.DATETIME }}
+            ## ⚒️ ReVanced PR Build workflow
             
-            You can check the details [here](${{ github.event.workflow_run.html_url }}).
-  
+            ${{ env.MESSAGE }}
+            
+            You can check the details on run ID [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
+
+            ### ⚙️ Overview
             - App flavour: ${{ inputs.app-flavour }}
             - Flutter branch: ${{ inputs.flutter-branch }}
+            - Flutter cache: ${{ inputs.flutter-cache }}
+            - Start time: ${{ env.DATETIME }}
+
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
+          path: | 
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
