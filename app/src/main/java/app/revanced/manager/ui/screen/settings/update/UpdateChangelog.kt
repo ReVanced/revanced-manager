@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Campaign
+import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Markdown
 import app.revanced.manager.ui.viewmodel.UpdateChangelogViewModel
+import app.revanced.manager.util.formatNumber
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +61,11 @@ fun UpdateChangelog(
                     key = { it.version }
                 ) { changelog ->
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Changelog(changelog.body, changelog.version)
+                        Changelog(
+                            markdown = changelog.body,
+                            version = changelog.version,
+                            downloadCount = changelog.downloadCount.formatNumber()
+                        )
                         if (changelog != lastChangelog) {
                             Divider(
                                 modifier = Modifier.padding(top = 32.dp),
@@ -83,7 +89,8 @@ fun UpdateChangelog(
 @Composable
 private fun Changelog(
     markdown: String,
-    version: String
+    version: String,
+    downloadCount: String
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(
@@ -123,6 +130,22 @@ private fun Changelog(
                 )
                 Text(
                     version,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.outline,
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.FileDownload,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.outline,
+                )
+                Text(
+                    downloadCount,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.outline,
                 )

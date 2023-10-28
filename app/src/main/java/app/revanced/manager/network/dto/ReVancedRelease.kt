@@ -33,6 +33,7 @@ data class ReVancedReleaseMeta(
 @Serializable
 data class Asset(
     val name: String,
+    @SerialName("download_count") val downloadCount: Int,
     @SerialName("browser_download_url") val downloadUrl: String,
     @SerialName("content_type") val contentType: String
 )

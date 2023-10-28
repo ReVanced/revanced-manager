@@ -3,6 +3,11 @@ package app.revanced.manager.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.icu.number.Notation
+import android.icu.number.NumberFormatter
+import android.icu.number.Precision
+import android.icu.text.CompactDecimalFormat
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -107,5 +112,23 @@ suspend fun <T> Flow<Iterable<T>>.collectEach(block: suspend (T) -> Unit) {
         iterable.forEach {
             block(it)
         }
+    }
+}
+
+fun Int.formatNumber(): String {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        NumberFormatter.with()
+            .notation(Notation.compactShort())
+            .decimal(NumberFormatter.DecimalSeparatorDisplay.ALWAYS)
+            .precision(Precision.fixedFraction(1))
+            .locale(Locale.getDefault())
+            .format(this)
+            .toString()
+    } else {
+        val compact = CompactDecimalFormat.getInstance(
+            Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT
+        )
+        compact.maximumFractionDigits = 1
+        compact.format(this)
     }
 }

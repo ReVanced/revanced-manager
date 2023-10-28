@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.network.api.ReVancedAPI.Extensions.findAssetByType
 import app.revanced.manager.network.utils.getOrThrow
+import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 
@@ -17,6 +19,7 @@ class UpdateChangelogViewModel(
     var changelogs = mutableStateListOf(
         Changelog(
             "...",
+            0,
             app.getString(R.string.changelog_loading),
         )
     )
@@ -26,7 +29,13 @@ class UpdateChangelogViewModel(
             uiSafe(app, R.string.changelog_download_fail, "Failed to download changelog") {
                 api.getReleases("revanced-manager").getOrThrow().let { releases ->
                     changelogs.clear()
-                    changelogs.addAll(releases.map { Changelog(it.metadata.tag, it.metadata.body) })
+                    changelogs.addAll(releases.map { release ->
+                        Changelog(
+                            release.metadata.tag,
+                            release.findAssetByType(APK_MIMETYPE).downloadCount,
+                            release.metadata.body
+                        )
+                    })
                 }
             }
         }
@@ -34,6 +43,7 @@ class UpdateChangelogViewModel(
 
     data class Changelog(
         val version: String,
+        val downloadCount: Int,
         val body: String,
     )
 }
