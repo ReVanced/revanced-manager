@@ -26,6 +26,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Locale
 
 typealias PatchesSelection = Map<Int, Set<String>>
@@ -130,5 +135,33 @@ fun Int.formatNumber(): String {
         )
         compact.maximumFractionDigits = 1
         compact.format(this)
+    }
+}
+
+fun String.relativeTime(): String {
+    try {
+        val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
+        val inputDateTime = ZonedDateTime.parse(this)
+        val duration = Duration.between(inputDateTime, currentTime)
+
+        return when {
+            duration.toMinutes() < 1 -> "Just now"
+            duration.toMinutes() < 60 -> "${duration.toMinutes()}m ago"
+            duration.toHours() < 24 -> "${duration.toHours()}h ago"
+            duration.toDays() < 30 -> "${duration.toDays()}d ago"
+            else -> {
+                val formatter = DateTimeFormatter.ofPattern("MMM d")
+                val formattedDate = inputDateTime.format(formatter)
+                if (inputDateTime.year != currentTime.year) {
+                    val yearFormatter = DateTimeFormatter.ofPattern(", yyyy")
+                    val formattedYear = inputDateTime.format(yearFormatter)
+                    "$formattedDate$formattedYear"
+                } else {
+                    formattedDate
+                }
+            }
+        }
+    } catch (e: DateTimeParseException) {
+        return "Invalid Date"
     }
 }

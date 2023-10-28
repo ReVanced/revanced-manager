@@ -20,6 +20,7 @@ class ChangelogsViewModel(
         Changelog(
             "...",
             0,
+            "...",
             app.getString(R.string.changelog_loading),
         )
     )
@@ -33,6 +34,7 @@ class ChangelogsViewModel(
                         Changelog(
                             release.metadata.tag,
                             release.findAssetByType(APK_MIMETYPE).downloadCount,
+                            release.metadata.publishedAt,
                             release.metadata.body
                         )
                     })
@@ -44,6 +46,7 @@ class ChangelogsViewModel(
     data class Changelog(
         val version: String,
         val downloadCount: Int,
+        val publishDate: String,
         val body: String,
     )
 }

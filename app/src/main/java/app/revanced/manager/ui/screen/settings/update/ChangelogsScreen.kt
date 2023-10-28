@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Campaign
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.Sell
@@ -31,6 +32,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Markdown
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import app.revanced.manager.util.formatNumber
+import app.revanced.manager.util.relativeTime
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +68,8 @@ fun ChangelogsScreen(
                         Changelog(
                             markdown = changelog.body,
                             version = changelog.version,
-                            downloadCount = changelog.downloadCount.formatNumber()
+                            downloadCount = changelog.downloadCount.formatNumber(),
+                            publishDate = changelog.publishDate.relativeTime()
                         )
                         if (changelog != lastChangelog) {
                             Divider(
@@ -92,7 +95,8 @@ fun ChangelogsScreen(
 private fun Changelog(
     markdown: String,
     version: String,
-    downloadCount: String
+    downloadCount: String,
+    publishDate: String
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(
@@ -127,6 +131,10 @@ private fun Changelog(
             Tag(
                 Icons.Outlined.FileDownload,
                 downloadCount
+            )
+            Tag(
+                Icons.Outlined.CalendarToday,
+                publishDate
             )
         }
     }
