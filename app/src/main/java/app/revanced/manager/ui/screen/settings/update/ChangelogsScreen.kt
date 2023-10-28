@@ -66,7 +66,7 @@ fun ChangelogsScreen(
                 ) { changelog ->
                     Column(modifier = Modifier.padding(16.dp)) {
                         Changelog(
-                            markdown = changelog.body,
+                            markdown = changelog.body.replace("`", ""), // https://github.com/mikepenz/multiplatform-markdown-renderer/issues/79
                             version = changelog.version,
                             downloadCount = changelog.downloadCount.formatNumber(),
                             publishDate = changelog.publishDate.relativeTime()
