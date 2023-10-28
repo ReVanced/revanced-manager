@@ -88,9 +88,9 @@ jobs:
       - name: Prepare to comment
         run: |
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ The CI has sucessfully built ReVanced Manager at ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
+            echo "MESSAGE=✅ ReVanced Manager ${{ env.COMMIT_HASH }} build succeeded." >> $GITHUB_ENV
           else
-            echo "MESSAGE=🚫 The CI has unable to build ReVanced Manager at ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
+            echo "MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
           fi
           
       - name: "Comment to Pull Request #${{ inputs.pr-number }}"
@@ -104,7 +104,7 @@ jobs:
             
             ${{ env.MESSAGE }}
             
-            You can check the details on run ID [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
+            You can see more details in run [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
 
             ### ⚙️ Overview
             - App flavor: ${{ inputs.app-flavour }}
