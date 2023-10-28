@@ -12,7 +12,7 @@ This page will guide you through building ReVanced Manager from source.
 
 3. Create a GitHub personal access token with the `read:packages` scope [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced)
 
-4. Add your GitHub username and the token to `~/android/gradle.properties`
+4. Add your GitHub username and the token to `./android/gradle.properties`
 
    ```properties
    gpr.user = YourUsername
