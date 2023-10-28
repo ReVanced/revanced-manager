@@ -12,71 +12,75 @@ environment:
 dependencies:
   animations: ^2.0.7
   collection: ^1.17.0
-  cross_connectivity: ^3.0.5
-  cr_file_saver:
-    git:
-      url: https://github.com/dhruvanbhalara/cr_file_saver
-      ref: "fix/incorrect_file_name"
   device_apps:
-    git:
-      url: https://github.com/ponces/flutter_plugin_device_apps
+    git: # switch back to ponces fork once https://github.com/ponces/flutter_plugin_device_apps/pull/1 is merged
+      url: https://github.com/BenjaminHalko/flutter_plugin_device_apps
       ref: revanced-manager
-  device_info_plus: ^8.1.0
+  device_info_plus: ^9.1.0
   dynamic_color: ^1.6.3
   dio: ^5.0.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker:
-    git:
-      url: https://github.com/alexmercerind/flutter_file_picker
-      ref: master
   flex_color_scheme: ^7.0.1
   flutter:
     sdk: flutter
-  flutter_background: ^1.2.0
+  flutter_background:
+    git: # remove once https://github.com/JulianAssmann/flutter_background/pull/79 is merged
+      url: https://github.com/BenjaminHalko/flutter_background
+      ref: specify-namespace
   flutter_cache_manager: ^3.3.0
-  flutter_i18n: ^0.33.0
-  flutter_local_notifications: ^13.0.0
+  flutter_i18n: ^0.34.0
+  flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.4
-  fluttertoast: ^8.2.1
-  font_awesome_flutter: ^10.6.0
-  get_it: 7.2.0
-  google_fonts: ^4.0.3
-  http: ^0.13.5
+  fluttertoast:
+    git: # remove once the next fluttertoast version is release (> 8.2.2)
+      url: https://github.com/ponnamkarthik/FlutterToast
+      ref: f4e7b4e1afc8c760eb5bac80f6a2e299906d83ca
+  font_awesome_flutter: ^10.4.0
+  get_it: ^7.6.4
+  google_fonts: ^6.1.0
+  http: ^1.1.0
   injectable: ^2.1.1
   intl: ^0.18.0
   json_annotation: ^4.8.0
   logcat:
     git:
-      url: https://github.com/SuaMusica/logcat
-      ref: feature/nullSafe
-  package_info_plus: ^3.0.3
+      url: https://github.com/BenjaminHalko/logcat
+      ref: master
+  package_info_plus: ^4.2.0
   path_provider: ^2.0.14
-  permission_handler: ^10.2.0
+  permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
   root:
     git:
-      url: https://github.com/EvadeMaster/root
-      ref: 82803aa40f63cddff81c3e4d27ce8ce3e7c83f60
-  share_extend: ^2.0.0
+      url: https://github.com/validcube/root
+      ref: 68e5678a535a2a3344828a14a39017fa74b9098c
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
   stacked: ^3.2.0
   stacked_generator: ^1.1.0
   stacked_services: ^1.0.0
-  stacked_themes: ^0.3.10
   timeago: ^3.3.0
   timezone: ^0.9.0
   url_launcher: ^6.1.10
-  wakelock: ^0.6.2
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
   dio_cache_interceptor: ^3.4.0
-  install_plugin: ^2.1.0
-  screenshot_callback: ^3.0.1
+  install_plugin:
+    git: # remove once https://github.com/hui-z/flutter_install_plugin/pull/67 is merged
+      url: https://github.com/BenjaminHalko/flutter_install_plugin
+      ref: master
+  screenshot_callback:
+    git: # remove once https://github.com/flutter-moum/flutter_screenshot_callback/pull/81 is merged
+      url: https://github.com/BenjaminHalko/flutter_screenshot_callback
+      ref: master
   synchronized: ^3.1.0
+  connectivity_plus: ^5.0.1
+  flutter_file_dialog: ^3.0.2
+  wakelock_plus: ^1.1.3
+  share_plus: ^7.2.1
 
 dev_dependencies:
   json_serializable: ^6.6.1
@@ -85,7 +89,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  injectable_generator: ^2.1.5  
+  injectable_generator: ^2.1.5
 
 
 

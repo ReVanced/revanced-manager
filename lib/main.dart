@@ -11,12 +11,10 @@ import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 late SharedPreferences prefs;
 Future main() async {
-  await ThemeManager.initialise();
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await locator<ManagerAPI>().initialize();
