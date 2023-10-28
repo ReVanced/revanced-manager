@@ -235,6 +235,7 @@
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched Apk</string>
+    <string name="patcher_step_sign_apk">Sign Apk</string>
     <string name="patcher_notification_message">Patching in progress…</string>
 
     <string name="step_completed">completed</string>
