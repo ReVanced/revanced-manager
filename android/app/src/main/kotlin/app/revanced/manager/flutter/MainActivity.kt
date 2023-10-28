@@ -101,8 +101,10 @@ class MainActivity : FlutterActivity() {
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
                     try {
+                        val patchBundleFile = File(patchBundleFilePath)
+                        patchBundleFile.setWritable(false)
                         patches = PatchBundleLoader.Dex(
-                            File(patchBundleFilePath),
+                            patchBundleFile,
                             optimizedDexDirectory = File(cacheDirPath)
                         )
                     } catch (ex: Exception) {
