@@ -27,15 +27,15 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Markdown
-import app.revanced.manager.ui.viewmodel.UpdateChangelogViewModel
+import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import app.revanced.manager.util.formatNumber
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateChangelog(
+fun ChangelogsScreen(
     onBackClick: () -> Unit,
-    vm: UpdateChangelogViewModel = getViewModel()
+    vm: ChangelogsViewModel = getViewModel()
 ) {
     val changelogs = vm.changelogs
     val lastChangelog = changelogs.lastOrNull()

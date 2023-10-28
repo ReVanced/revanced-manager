@@ -12,7 +12,7 @@ import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.launch
 
-class UpdateChangelogViewModel(
+class ChangelogsViewModel(
     private val api: ReVancedAPI,
     private val app: Application,
 ) : ViewModel() {
