@@ -156,6 +156,6 @@ dependencies {
     implementation(libs.ktor.content.negotiation)
     implementation(libs.ktor.serialization)
 
-    // Markdown to HTML
+    // Markdown
     implementation(libs.markdown)
 }
