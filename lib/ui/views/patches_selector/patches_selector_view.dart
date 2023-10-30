@@ -192,7 +192,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     return Container();
                                   }
                                 }),
-                                model.getPatchCategory(context, 'patchesSelectorView.patches'),
+                                if (model.getQueriedPatches(_query).any((patch) => !model.isPatchNew(patch)))
+                                  model.getPatchCategory(context, 'patchesSelectorView.patches'),
                               ],
                             ),
                           ...model.getQueriedPatches(_query).map(
