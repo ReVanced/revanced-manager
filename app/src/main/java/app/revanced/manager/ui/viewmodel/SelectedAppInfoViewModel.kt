@@ -59,7 +59,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     var patchOptions: Options by savedStateHandle.saveable {
         val state = mutableStateOf<Options>(emptyMap())
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
             state.value = optionsRepository.getOptions(selectedApp.packageName)
@@ -100,6 +100,8 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         selectedAppInfo = info
     }
 
+    fun getOptionsFiltered(bundles: List<BundleInfo>) = patchOptions.filtered(bundles)
+
     fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
         selectionState.patches(bundles, allowUnsupported)
 
@@ -109,9 +111,10 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     ): PatchesSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
-    fun updateConfiguration(selection: PatchesSelection?, options: Options) {
+    fun updateConfiguration(selection: PatchesSelection?, options: Options, bundles: List<BundleInfo>) {
+        val filteredOptions = options.filtered(bundles)
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
-        patchOptions = options
+        patchOptions = filteredOptions
 
         if (!persistConfiguration) return
 
@@ -120,7 +123,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
             selection?.let { selectionRepository.updateSelection(packageName, it) }
                 ?: selectionRepository.clearSelection(packageName)
 
-            optionsRepository.saveOptions(packageName, options)
+            optionsRepository.saveOptions(packageName, filteredOptions)
         }
     }
 
@@ -128,6 +131,35 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         val app: SelectedApp,
         val patches: PatchesSelection?,
     )
+
+    private companion object {
+        /**
+         * Returns a copy with all nonexistent options removed.
+         */
+        private fun Options.filtered(bundles: List<BundleInfo>): Options {
+            val new = mutableMapOf<Int, Map<String, Map<String, Any?>>>()
+
+            bundles.forEach { bundle ->
+                val options = this[bundle.uid] ?: return@forEach
+
+                val patches = bundle.all.associateBy { it.name }
+
+                new[bundle.uid] = mutableMapOf<String, Map<String, Any?>>().also { newBundleOptions ->
+                    options.forEach patch@{ (patchName, values) ->
+                        // Get all valid option keys for the patch.
+                        val validOptionKeys =
+                            patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
+
+                        newBundleOptions[patchName] = values.filterKeys { key ->
+                            key in validOptionKeys
+                        }
+                    }
+                }
+            }
+
+            return new
+        }
+    }
 }
 
 private sealed interface SelectionState : Parcelable {
