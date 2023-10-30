@@ -16,6 +16,7 @@ import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.util.JSON_MIMETYPE
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
@@ -38,16 +39,31 @@ class ImportExportViewModel(
     private val app: Application,
     private val keystoreManager: KeystoreManager,
     private val selectionRepository: PatchSelectionRepository,
+    private val optionsRepository: PatchOptionsRepository,
     patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
     private val contentResolver = app.contentResolver
-    val sources = patchBundleRepository.sources
+    val patchBundles = patchBundleRepository.sources
     var selectedBundle by mutableStateOf<PatchBundleSource?>(null)
         private set
     var selectionAction by mutableStateOf<SelectionAction?>(null)
         private set
     private var keystoreImportPath by mutableStateOf<Path?>(null)
     val showCredentialsDialog by derivedStateOf { keystoreImportPath != null }
+
+    val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
+
+    fun clearOptionsForPackage(packageName: String) = viewModelScope.launch {
+        optionsRepository.clearOptionsForPackage(packageName)
+    }
+
+    fun clearOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
+        optionsRepository.clearOptionsForPatchBundle(patchBundle.uid)
+    }
+
+    fun resetOptions() = viewModelScope.launch {
+        optionsRepository.reset()
+    }
 
     fun startKeystoreImport(content: Uri) = viewModelScope.launch {
         val path = withContext(Dispatchers.IO) {

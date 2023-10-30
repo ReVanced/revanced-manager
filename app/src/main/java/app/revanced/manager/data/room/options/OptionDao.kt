@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.MapInfo
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class OptionDao {
@@ -19,6 +20,9 @@ abstract class OptionDao {
 
     @Query("SELECT uid FROM option_groups WHERE patch_bundle = :bundleUid AND package_name = :packageName")
     abstract suspend fun getGroupId(bundleUid: Int, packageName: String): Int?
+
+    @Query("SELECT package_name FROM option_groups")
+    abstract fun getPackagesWithOptions(): Flow<List<String>>
 
     @Insert
     abstract suspend fun createOptionGroup(group: OptionGroup)
@@ -40,7 +44,7 @@ abstract class OptionDao {
 
     @Transaction
     open suspend fun updateOptions(options: Map<Int, List<Option>>) =
-        options.map { (groupId, options) ->
+        options.forEach { (groupId, options) ->
             clearGroup(groupId)
             insertOptions(options)
         }

@@ -3,8 +3,8 @@ package app.revanced.manager.domain.repository
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.options.Option
 import app.revanced.manager.data.room.options.OptionGroup
-import app.revanced.manager.data.room.selection.PatchSelection
 import app.revanced.manager.util.Options
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
@@ -54,10 +54,10 @@ class PatchOptionsRepository(db: AppDatabase) {
             }
         })
 
-    suspend fun clearOptions(packageName: String) {
-        dao.clearForPackage(packageName)
-    }
+    fun getPackagesWithSavedOptions() = dao.getPackagesWithOptions().map { it.toSet() }
 
+    suspend fun clearOptionsForPackage(packageName: String) = dao.clearForPackage(packageName)
+    suspend fun clearOptionsForPatchBundle(uid: Int) = dao.clearForPatchBundle(uid)
     suspend fun reset() = dao.reset()
 
     private companion object {
