@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
@@ -23,10 +23,10 @@ class InstallerView extends StatelessWidget {
             floatingActionButton: Visibility(
               visible: !model.isPatching && !model.hasErrors,
               child: FloatingActionButton.extended(
-                label: I18nText(
+                label: Text(
                   model.isInstalled
-                      ? 'installerView.openButton'
-                      : 'installerView.installButton',
+                      ? t.installerView.openButton
+                      : t.installerView.installButton,
                 ),
                 icon: model.isInstalled
                     ? const Icon(Icons.open_in_new)
@@ -51,19 +51,13 @@ class InstallerView extends StatelessWidget {
                     Visibility(
                       visible: !model.hasErrors,
                       child: IconButton.filledTonal(
-                        tooltip: FlutterI18n.translate(
-                          context,
-                          'installerView.exportApkButtonTooltip',
-                        ),
+                        tooltip: t.installerView.exportApkButtonTooltip,
                         icon: const Icon(Icons.save),
                         onPressed: () => model.onButtonPressed(0),
                       ),
                     ),
                     IconButton.filledTonal(
-                      tooltip: FlutterI18n.translate(
-                        context,
-                        'installerView.exportLogButtonTooltip',
-                      ),
+                      tooltip: t.installerView.exportLogButtonTooltip,
                       icon: const Icon(Icons.post_add),
                       onPressed: () => model.onButtonPressed(1),
                     ),

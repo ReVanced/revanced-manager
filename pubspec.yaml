@@ -29,7 +29,6 @@ dependencies:
       url: https://github.com/BenjaminHalko/flutter_background
       ref: specify-namespace
   flutter_cache_manager: ^3.3.0
-  flutter_i18n: ^0.34.0
   flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
@@ -81,6 +80,8 @@ dependencies:
   flutter_file_dialog: ^3.0.2
   wakelock_plus: ^1.1.3
   share_plus: ^7.2.1
+  slang: ^3.25.0
+  slang_flutter: ^3.25.0
 
 dev_dependencies:
   json_serializable: ^6.6.1
@@ -101,3 +102,5 @@ flutter:
         - asset: fonts/custom-icons.ttf
   assets:
     - assets/i18n/
+flutter_localizations: # add this
+    sdk: flutter

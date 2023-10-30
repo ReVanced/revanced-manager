@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -49,14 +49,8 @@ class InstallerViewModel extends BaseViewModel {
       try {
         FlutterBackground.initialize(
           androidConfig: FlutterBackgroundAndroidConfig(
-            notificationTitle: FlutterI18n.translate(
-              context,
-              'installerView.notificationTitle',
-            ),
-            notificationText: FlutterI18n.translate(
-              context,
-              'installerView.notificationText',
-            ),
+            notificationTitle: t.installerView.notificationTitle,
+            notificationText: t.installerView.notificationText,
             notificationIcon: const AndroidResource(
               name: 'ic_notification',
             ),
@@ -198,7 +192,6 @@ class InstallerViewModel extends BaseViewModel {
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
       'Root permissions: ${isRooted ? 'Yes' : 'No'}',
-      
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
@@ -210,37 +203,36 @@ class InstallerViewModel extends BaseViewModel {
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-      
       '\n- Logs',
       logs,
     ];
 
     Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
-    _toast.showBottom('installerView.copiedToClipboard');
+    _toast.showBottom(t.installerView.copiedToClipboard);
   }
 
   Future<void> screenshotDetected(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText(
-          'warning',
+        title: Text(
+          t.warning,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
-          child: I18nText('installerView.screenshotDetected'),
+          child: Text(t.installerView.screenshotDetected),
         ),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('noButton'),
+            label: Text(t.noButton),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CustomMaterialButton(
-            label: I18nText('yesButton'),
+            label: Text(t.yesButton),
             onPressed: () {
               copyLogs();
               showPopupScreenshotWarning = true;
@@ -259,8 +251,8 @@ class InstallerViewModel extends BaseViewModel {
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: I18nText(
-            'installerView.installType',
+          title: Text(
+            t.installerView.installType,
           ),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
@@ -278,20 +270,17 @@ class InstallerViewModel extends BaseViewModel {
                         horizontal: 20,
                         vertical: 10,
                       ),
-                      child: I18nText(
-                        'installerView.installTypeDescription',
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                      child: Text(
+                        t.installerView.installTypeDescription,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),
                     RadioListTile(
-                      title: I18nText('installerView.installNonRootType'),
+                      title: Text(t.installerView.installNonRootType),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
                       value: 0,
@@ -301,7 +290,7 @@ class InstallerViewModel extends BaseViewModel {
                       },
                     ),
                     RadioListTile(
-                      title: I18nText('installerView.installRootType'),
+                      title: Text(t.installerView.installRootType),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
                       value: 1,
@@ -317,14 +306,14 @@ class InstallerViewModel extends BaseViewModel {
           ),
           actions: [
             CustomMaterialButton(
-              label: I18nText('cancelButton'),
+              label: Text(t.cancelButton),
               isFilled: false,
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
+              label: Text(t.installerView.installButton),
               onPressed: () {
                 Navigator.of(context).pop();
                 installResult(context, installType.value == 1);
@@ -431,11 +420,11 @@ class InstallerViewModel extends BaseViewModel {
     if (isPatching) {
       if (!cancel) {
         cancel = true;
-        _toast.showBottom('installerView.pressBackAgain');
+        _toast.showBottom(t.installerView.pressBackAgain);
       } else if (!isCanceled) {
         await stopPatcher();
       } else {
-        _toast.showBottom('installerView.noExit');
+        _toast.showBottom(t.installerView.noExit);
       }
       return false;
     }

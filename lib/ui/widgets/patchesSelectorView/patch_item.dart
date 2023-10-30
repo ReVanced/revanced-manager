@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
@@ -162,7 +162,7 @@ class _PatchItemState extends State<PatchItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: TextButton.icon(
-                                    label: I18nText('warning'),
+                                    label: Text(t.warning),
                                     icon: const Icon(
                                       Icons.warning_amber_outlined,
                                       size: 20.0,
@@ -215,19 +215,18 @@ class _PatchItemState extends State<PatchItem> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('warning'),
+        title: Text(t.warning),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText(
-          'patchItem.unsupportedDialogText',
-          translationParams: {
-            'packageVersion': widget.packageVersion,
-            'supportedVersions':
+        content: Text(
+          t.patchItem.unsupportedDialogText(
+            packageVersion: widget.packageVersion,
+            supportedVersions:
                 '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
-          },
+          ),
         ),
         actions: <Widget>[
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -239,14 +238,14 @@ class _PatchItemState extends State<PatchItem> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('notice'),
+        title: Text(t.notice),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText(
-          'patchItem.unsupportedRequiredOption',
+        content: Text(
+          t.patchItem.unsupportedRequiredOption,
         ),
         actions: <Widget>[
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],

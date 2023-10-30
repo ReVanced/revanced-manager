@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/contributorsView/contributors_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
@@ -18,13 +18,10 @@ class ContributorsView extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             CustomSliverAppBar(
-              title: I18nText(
-                'contributorsView.widgetTitle',
-                child: Text(
-                  '',
-                  style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
+              title: Text(
+                t.contributorsView.widgetTitle,
+                style: GoogleFonts.inter(
+                  color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
               ),
             ),

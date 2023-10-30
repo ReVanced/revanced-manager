@@ -1,46 +1,46 @@
 {
-    "okButton": "OK",
-    "cancelButton": "Cancel",
-    "dismissButton": "Dismiss",
-    "quitButton": "Quit",
-    "updateButton": "Update",
-    "enabledLabel": "Enabled",
-    "disabledLabel": "Disabled",
-    "installed":"Installed: {version}",
-    "suggested":"Suggested: {version}",
-    "yesButton": "Yes",
-    "noButton": "No",
-    "warning": "Warning",
-    "options": "Options",
-    "notice": "Notice",
-    "noShowAgain": "Don't show this again",
-    "add": "Add",
-    "remove": "Remove",
+    "okButton": "ठीक है",
+    "cancelButton": "रद्द करें",
+    "dismissButton": "रद्द करें",
+    "quitButton": "बाहर निकलें",
+    "updateButton": "अपडेट करें",
+    "enabledLabel": "सक्रिय",
+    "disabledLabel": "निष्क्रिय",
+    "installed":"स्थापित ${version}",
+    "suggested":"सुझाव ${version}",
+    "yesButton": "हाँ",
+    "noButton": "नहीं",
+    "warning": "चेतावनी",
+    "options": "विकल्प",
+    "notice": "नोटिस",
+    "noShowAgain": "फिर से न दिखाएं",
+    "add": "जोड़ें",
+    "remove": "हटाएं",
     "navigationView": {
-        "dashboardTab": "Dashboard",
-        "patcherTab": "Patcher",
-        "settingsTab": "Settings"
+        "dashboardTab": "डैशबोर्ड",
+        "patcherTab": "पैचर",
+        "settingsTab": "सेटिंग्स"
     },
     "homeView": {
-        "refreshSuccess": "Refreshed successfully",
-        "widgetTitle": "Dashboard",
+        "refreshSuccess": "रिफ़्रेश किया गया",
+        "widgetTitle": "डैशबोर्ड",
 
-        "updatesSubtitle": "Updates",
-        "patchedSubtitle": "Patched apps",
+        "updatesSubtitle": "अपडेट",
+        "patchedSubtitle": "पैच किया गया",
 
-        "noUpdates": "No updates available",
+        "noUpdates": "कोई अपडेट नहीं",
 
-        "WIP": "Work in progress...",
+        "WIP": "वर्तमान में काम जारी है",
 
-        "noInstallations": "No patched apps installed",
-        "installUpdate": "Continue to install the update?",
+        "noInstallations": "कोई स्थापना नहीं",
+        "installUpdate": "अपडेट स्थापित करें",
 
-        "updateDialogTitle": "Update Manager",
-        "updatePatchesDialogTitle": "Update ReVanced Patches",
-        "updateChangelogTitle": "Changelog",
+        "updateDialogTitle": "अपडेट डाउनलोड करें",
+        "updatePatchesDialogTitle": "पैच अपडेट करें",
+        "updateChangelogTitle": "अपडेट चेंजलॉग",
 
         "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
-        "patchesConsentDialogText2": "This will connect you to {url}.",
+        "patchesConsentDialogText2": "This will connect you to ${url}.",
         "patchesConsentDialogText3": "Auto update?",
         "patchesConsentDialogText3Sub": "You can change this in settings at a later time.",
 
@@ -63,7 +63,7 @@
     },
     "latestCommitCard": {
         "loadingLabel": "Loading...",
-        "timeagoLabel": "{time} ago",
+        "timeagoLabel": "${time} ago",
         "patcherLabel": "Patcher: ",
         "managerLabel": "Manager: ",
         "updateButton": "Update Manager"
@@ -74,7 +74,7 @@
 
         "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
 
-        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?",
+        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n${patches}\n\nProceed anyways?",
         "requiredOptionDialogText" : "Some patch options have to be set."
     },
     "appSelectorCard": {
@@ -111,8 +111,6 @@
 
         "downloadToast": "Download function is not available yet",
 
-        "requireSuggestedAppVersionDialogText": "The version of the app you have selected does not match the suggested version. Please select the app that matches the suggested version.\n\nSelected version: v{selected}\nSuggested version: v{suggested}\n\n.To proceed anyway, disable \"Require suggested app version\" in the settings.",
-
         "featureNotAvailable": "Feature not implemented",
         "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
     },
@@ -125,7 +123,7 @@
 
         "doneButton": "Done",
 
-        "default": "Default",
+        "defaultText": "defaultText",
         "defaultTooltip": "Select all default patches",
 
         "none": "None",
@@ -134,7 +132,7 @@
         "loadPatchesSelection": "Load patch selection",
         "noSavedPatches": "No saved patch selection for the selected app.\nPress Done to save the current selection.",
         "noPatchesFound": "No patches found for the selected app",
-        "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing."
+        "setRequiredOption": "Some patches require options to be set:\n\n${patches}\n\nPlease set them before continuing."
     },
     "patchOptionsView": {
         "customValue": "Custom value",
@@ -151,10 +149,10 @@
 
         "requiredOption": "This option is required",
         "unsupportedOption": "This option is not supported",
-        "requiredOptionNull": "The following options have to be set:\n\n{options}"
+        "requiredOptionNull": "The following options have to be set:\n\n${options}"
     },
     "patchItem": {
-        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: {packageVersion}\nSupported versions:\n{supportedVersions}",
+        "unsupportedDialogText": "Selecting this patch may result in patching errors.\n\nApp version: ${packageVersion}\nSupported versions:\n${supportedVersions}",
         "unsupportedPatchVersion": "Patch is not supported for this app version.",
         "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
 
@@ -203,7 +201,7 @@
         "dynamicThemeHint": "Enjoy an experience closer to your device",
 
         "languageLabel": "Language",
-        "englishOption": "English",
+        "languageUpdated": "Language updated",
 
         "sourcesLabel": "Sources",
         "sourcesLabelHint": "Configure your sources",
@@ -236,12 +234,8 @@
         "autoUpdatePatchesHint": "Automatically update patches to the latest version",
         "universalPatchesLabel": "Show universal patches",
         "universalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
-
         "versionCompatibilityCheckLabel": "Version compatibility check",
         "versionCompatibilityCheckHint": "Restricts patches to supported app versions",
-        "requireSuggestedAppVersionLabel": "Require suggested app version",
-        "requireSuggestedAppVersionHint": "Enforce selection of suggested app version",
-        "requireSuggestedAppVersionDialogText": "Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?",
 
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
@@ -315,8 +309,8 @@
         "patchedDateLabel": "Patched date",
         "appliedPatchesLabel": "Applied patches",
 
-        "patchedDateHint": "{date} at {time}",
-        "appliedPatchesHint": "{quantity} applied patches",
+        "patchedDateHint": "${date} at ${time}",
+        "appliedPatchesHint": "${quantity} applied patches",
         
         "updateNotImplemented": "This feature has not been implemented yet"
     },

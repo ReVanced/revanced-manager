@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -18,6 +15,7 @@ Future main() async {
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await locator<ManagerAPI>().initialize();
+
   await locator<DownloadManager>().initialize();
   final String apiUrl = locator<ManagerAPI>().getApiUrl();
   await locator<RevancedAPI>().initialize(apiUrl);
@@ -26,7 +24,11 @@ Future main() async {
   tz.initializeTimeZones();
   prefs = await SharedPreferences.getInstance();
 
-  runApp(const MyApp());
+  final managerAPI = locator<ManagerAPI>();
+  final locale = managerAPI.getLocale();
+  LocaleSettings.setLocaleRaw(locale);
+
+  runApp(TranslationProvider(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,32 +36,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String rawLocale = prefs.getString('language') ?? 'en_US';
-    // String replaceLocale = rawLocale.replaceAll('_', '-');
-    // List<String> localeList = replaceLocale.split('-');
-    // Locale locale = Locale(localeList[0], localeList[1]);
-    const Locale locale = Locale('en', 'US');
-
-    return DynamicThemeBuilder(
+    return const DynamicThemeBuilder(
       title: 'ReVanced Manager',
-      home: const NavigationView(),
-      localizationsDelegates: [
-        FlutterI18nDelegate(
-          translationLoader: FileTranslationLoader(
-            fallbackFile: 'en_US',
-            forcedLocale: locale,
-            basePath: 'assets/i18n',
-            useCountryCode: true,
-          ),
-          missingTranslationHandler: (key, locale) {
-            log(
-              '--> Missing translation: key: $key, languageCode: ${locale?.languageCode}',
-            );
-          },
-        ),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
+      home: NavigationView(),
     );
   }
 }
