@@ -2,6 +2,7 @@ package app.revanced.manager.domain.repository
 
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.options.Option
+import app.revanced.manager.data.room.options.OptionGroup
 import app.revanced.manager.data.room.selection.PatchSelection
 import app.revanced.manager.util.Options
 import kotlinx.serialization.encodeToString
@@ -16,7 +17,7 @@ class PatchOptionsRepository(db: AppDatabase) {
     private val dao = db.optionDao()
 
     private suspend fun getOrCreateGroup(bundleUid: Int, packageName: String) =
-        dao.getGroupId(bundleUid, packageName) ?: PatchSelection(
+        dao.getGroupId(bundleUid, packageName) ?: OptionGroup(
             uid = AppDatabase.generateUid(),
             patchBundle = bundleUid,
             packageName = packageName

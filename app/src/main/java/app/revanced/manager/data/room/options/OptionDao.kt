@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.MapInfo
 import androidx.room.Query
 import androidx.room.Transaction
-import app.revanced.manager.data.room.selection.PatchSelection
 
 @Dao
 abstract class OptionDao {
@@ -22,7 +21,7 @@ abstract class OptionDao {
     abstract suspend fun getGroupId(bundleUid: Int, packageName: String): Int?
 
     @Insert
-    abstract suspend fun createOptionGroup(selection: PatchSelection)
+    abstract suspend fun createOptionGroup(group: OptionGroup)
 
     @Query("DELETE FROM option_groups WHERE patch_bundle = :uid")
     abstract suspend fun clearForPatchBundle(uid: Int)
@@ -41,8 +40,8 @@ abstract class OptionDao {
 
     @Transaction
     open suspend fun updateOptions(options: Map<Int, List<Option>>) =
-        options.map { (uid, options) ->
-            clearGroup(uid)
+        options.map { (groupId, options) ->
+            clearGroup(groupId)
             insertOptions(options)
         }
 }

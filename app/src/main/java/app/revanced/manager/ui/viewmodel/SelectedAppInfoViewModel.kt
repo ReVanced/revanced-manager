@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.ui.model.BundleInfo
 import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
@@ -31,9 +32,12 @@ import org.koin.core.component.get
 class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     val bundlesRepo: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
+    private val optionsRepository: PatchOptionsRepository = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
     val prefs: PreferencesManager = get()
+
+    private val persistConfiguration = input.patches == null
 
     private var _selectedApp by savedStateHandle.saveable {
         mutableStateOf(input.app)
@@ -53,8 +57,17 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     }
 
     var patchOptions: Options by savedStateHandle.saveable {
-        mutableStateOf(emptyMap())
+        val state = mutableStateOf<Options>(emptyMap())
+
+        viewModelScope.launch {
+            if (!persistConfiguration) return@launch // TODO: save options for patched apps.
+
+            state.value = optionsRepository.getOptions(selectedApp.packageName)
+        }
+
+        state
     }
+        private set
 
     private var selectionState by savedStateHandle.saveable {
         if (input.patches != null) {
@@ -96,8 +109,19 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     ): PatchesSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
-    fun setCustomPatches(selection: PatchesSelection?) {
+    fun updateConfiguration(selection: PatchesSelection?, options: Options) {
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
+        patchOptions = options
+
+        if (!persistConfiguration) return
+
+        val packageName = selectedApp.packageName
+        viewModelScope.launch(Dispatchers.Default) {
+            selection?.let { selectionRepository.updateSelection(packageName, it) }
+                ?: selectionRepository.clearSelection(packageName)
+
+            optionsRepository.saveOptions(packageName, options)
+        }
     }
 
     data class Params(

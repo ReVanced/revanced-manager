@@ -123,8 +123,7 @@ fun SelectedAppInfoScreen(
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
                 onSave = { patches, options ->
-                    vm.setCustomPatches(patches)
-                    vm.patchOptions = options
+                    vm.updateConfiguration(patches, options)
                     navController.pop()
                 },
                 onBackClick = navController::pop,
@@ -133,7 +132,7 @@ fun SelectedAppInfoScreen(
                         PatchesSelectorViewModel.Params(
                             destination.app,
                             destination.currentSelection,
-                            destination.options
+                            destination.options,
                         )
                     )
                 }
