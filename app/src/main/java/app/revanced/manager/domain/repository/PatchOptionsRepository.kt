@@ -55,7 +55,8 @@ class PatchOptionsRepository(db: AppDatabase) {
             }
         })
 
-    fun getPackagesWithSavedOptions() = dao.getPackagesWithOptions().map(Iterable<String>::toSet).distinctUntilChanged()
+    fun getPackagesWithSavedOptions() =
+        dao.getPackagesWithOptions().map(Iterable<String>::toSet).distinctUntilChanged()
 
     suspend fun clearOptionsForPackage(packageName: String) = dao.clearForPackage(packageName)
     suspend fun clearOptionsForPatchBundle(uid: Int) = dao.clearForPatchBundle(uid)
