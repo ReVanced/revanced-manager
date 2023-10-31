@@ -36,13 +36,13 @@ dependencies:
   flutter_background: ^1.2.0
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.33.0
-  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.4
   fluttertoast: ^8.2.1
   font_awesome_flutter: ^10.6.0
-  get_it: 7.2.0
+  get_it: ^7.6.4
   google_fonts: ^4.0.3
   http: ^0.13.5
   injectable: ^2.1.1
@@ -54,7 +54,7 @@ dependencies:
       ref: feature/nullSafe
   package_info_plus: ^3.0.3
   path_provider: ^2.0.14
-  permission_handler: ^10.2.0
+  permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
   root:
     git:
@@ -82,7 +82,7 @@ dev_dependencies:
   json_serializable: ^6.6.1
   build_runner: any
   flutter_launcher_icons: ^0.13.0
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
   injectable_generator: ^2.1.5  
