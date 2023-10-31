@@ -101,7 +101,7 @@ fun SelectedAppInfoScreen(
                                 bundles,
                                 allowExperimental
                             ),
-                            vm.patchOptions
+                            vm.options
                         )
                     )
                 },

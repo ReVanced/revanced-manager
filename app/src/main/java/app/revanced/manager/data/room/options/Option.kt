@@ -18,5 +18,6 @@ data class Option(
     @ColumnInfo(name = "group") val group: Int,
     @ColumnInfo(name = "patch_name") val patchName: String,
     @ColumnInfo(name = "key") val key: String,
+    // Encoded as Json.
     @ColumnInfo(name = "value") val value: String,
 )

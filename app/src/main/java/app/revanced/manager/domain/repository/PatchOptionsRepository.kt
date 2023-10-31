@@ -27,24 +27,24 @@ class PatchOptionsRepository(db: AppDatabase) {
         val options = dao.getOptions(packageName)
         // Bundle -> Patches
         return buildMap<Int, MutableMap<String, MutableMap<String, Any?>>>(options.size) {
-            options.forEach { (sourceUid, bundleOptions) ->
+            options.forEach { (sourceUid, optionList) ->
                 // Patches -> Patch options
-                this[sourceUid] = bundleOptions.fold(mutableMapOf()) { map, option ->
-                    val optionsForPatch = map.getOrPut(option.patchName, ::mutableMapOf)
+                this[sourceUid] = optionList.fold(mutableMapOf()) { bundlePatchOptions, option ->
+                    val patchOptions = bundlePatchOptions.getOrPut(option.patchName, ::mutableMapOf)
 
-                    optionsForPatch[option.key] = deserialize(option.value)
+                    patchOptions[option.key] = deserialize(option.value)
 
-                    map
+                    bundlePatchOptions
                 }
             }
         }
     }
 
     suspend fun saveOptions(packageName: String, options: Options) =
-        dao.updateOptions(options.entries.associate { (sourceUid, bundleOptions) ->
+        dao.updateOptions(options.entries.associate { (sourceUid, bundlePatchOptions) ->
             val groupId = getOrCreateGroup(sourceUid, packageName)
 
-            groupId to bundleOptions.flatMap { (patchName, patchOptions) ->
+            groupId to bundlePatchOptions.flatMap { (patchName, patchOptions) ->
                 patchOptions.mapNotNull { (key, value) ->
                     val serialized = serialize(value)
                         ?: return@mapNotNull null // Don't save options that we can't serialize.

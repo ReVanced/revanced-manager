@@ -56,7 +56,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         invalidateSelectedAppInfo()
     }
 
-    var patchOptions: Options by savedStateHandle.saveable {
+    var options: Options by savedStateHandle.saveable {
         val state = mutableStateOf<Options>(emptyMap())
 
         viewModelScope.launch(Dispatchers.Default) {
@@ -100,7 +100,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         selectedAppInfo = info
     }
 
-    fun getOptionsFiltered(bundles: List<BundleInfo>) = patchOptions.filtered(bundles)
+    fun getOptionsFiltered(bundles: List<BundleInfo>) = options.filtered(bundles)
 
     fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
         selectionState.patches(bundles, allowUnsupported)
@@ -111,10 +111,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     ): PatchesSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
-    fun updateConfiguration(selection: PatchesSelection?, options: Options, bundles: List<BundleInfo>) {
-        val filteredOptions = options.filtered(bundles)
+    fun updateConfiguration(
+        selection: PatchesSelection?,
+        options: Options,
+        bundles: List<BundleInfo>
+    ) {
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
-        patchOptions = filteredOptions
+
+        val filteredOptions = options.filtered(bundles)
+        this.options = filteredOptions
 
         if (!persistConfiguration) return
 
@@ -136,28 +141,24 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         /**
          * Returns a copy with all nonexistent options removed.
          */
-        private fun Options.filtered(bundles: List<BundleInfo>): Options {
-            val new = mutableMapOf<Int, Map<String, Map<String, Any?>>>()
-
-            bundles.forEach { bundle ->
-                val options = this[bundle.uid] ?: return@forEach
+        private fun Options.filtered(bundles: List<BundleInfo>): Options = buildMap options@{
+            bundles.forEach bundles@{ bundle ->
+                val bundleOptions = this@filtered[bundle.uid] ?: return@bundles
 
                 val patches = bundle.all.associateBy { it.name }
 
-                new[bundle.uid] = mutableMapOf<String, Map<String, Any?>>().also { newBundleOptions ->
-                    options.forEach patch@{ (patchName, values) ->
+                this@options[bundle.uid] = buildMap bundleOptions@{
+                    bundleOptions.forEach patch@{ (patchName, values) ->
                         // Get all valid option keys for the patch.
                         val validOptionKeys =
                             patches[patchName]?.options?.map { it.key }?.toSet() ?: return@patch
 
-                        newBundleOptions[patchName] = values.filterKeys { key ->
+                        this@bundleOptions[patchName] = values.filterKeys { key ->
                             key in validOptionKeys
                         }
                     }
                 }
             }
-
-            return new
         }
     }
 }
