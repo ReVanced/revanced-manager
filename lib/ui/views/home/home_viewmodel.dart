@@ -64,7 +64,7 @@ class HomeViewModel extends BaseViewModel {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+        ?.requestNotificationsPermission();
     final bool isConnected = await Connectivity().checkConnection();
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
