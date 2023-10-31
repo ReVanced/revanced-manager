@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:device_apps/device_apps.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -181,13 +181,14 @@ class AppSelectorViewModel extends BaseViewModel {
 
   Future<void> selectAppFromStorage(BuildContext context) async {
     try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['apk'],
+      final String? result = await FlutterFileDialog.pickFile(
+        params: const OpenFileDialogParams(
+          fileExtensionsFilter: ['apk'],
+        ),
       );
-      if (result != null && result.files.single.path != null) {
-        final File apkFile = File(result.files.single.path!);
-        final List<String> pathSplit = result.files.single.path!.split('/');
+      if (result != null) {
+        final File apkFile = File(result);
+        final List<String> pathSplit = result.split('/');
         pathSplit.removeLast();
         final Directory filePickerCacheDir = Directory(pathSplit.join('/'));
         final Iterable<File> deletableFiles =
@@ -207,7 +208,7 @@ class AppSelectorViewModel extends BaseViewModel {
             name: application.appName,
             packageName: application.packageName,
             version: application.versionName!,
-            apkFilePath: result.files.single.path!,
+            apkFilePath: result,
             icon: application.icon,
             patchDate: DateTime.now(),
             isFromStorage: true,

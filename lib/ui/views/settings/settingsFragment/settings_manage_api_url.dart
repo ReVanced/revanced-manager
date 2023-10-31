@@ -67,6 +67,7 @@ class SManageApiUrl extends BaseViewModel {
                 apiUrl = 'https://$apiUrl';
               }
               _managerAPI.setApiUrl(apiUrl);
+              _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
           ),
