@@ -4,6 +4,7 @@ import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.options.Option
 import app.revanced.manager.data.room.options.OptionGroup
 import app.revanced.manager.util.Options
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -54,7 +55,7 @@ class PatchOptionsRepository(db: AppDatabase) {
             }
         })
 
-    fun getPackagesWithSavedOptions() = dao.getPackagesWithOptions().map(Iterable<String>::toSet)
+    fun getPackagesWithSavedOptions() = dao.getPackagesWithOptions().map(Iterable<String>::toSet).distinctUntilChanged()
 
     suspend fun clearOptionsForPackage(packageName: String) = dao.clearForPackage(packageName)
     suspend fun clearOptionsForPatchBundle(uid: Int) = dao.clearForPatchBundle(uid)
