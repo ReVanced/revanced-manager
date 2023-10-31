@@ -28,9 +28,9 @@ class PatchOptionsRepository(db: AppDatabase) {
         val options = dao.getOptions(packageName)
         // Bundle -> Patches
         return buildMap<Int, MutableMap<String, MutableMap<String, Any?>>>(options.size) {
-            options.forEach { (sourceUid, optionList) ->
+            options.forEach { (sourceUid, bundlePatchOptionsList) ->
                 // Patches -> Patch options
-                this[sourceUid] = optionList.fold(mutableMapOf()) { bundlePatchOptions, option ->
+                this[sourceUid] = bundlePatchOptionsList.fold(mutableMapOf()) { bundlePatchOptions, option ->
                     val patchOptions = bundlePatchOptions.getOrPut(option.patchName, ::mutableMapOf)
 
                     patchOptions[option.key] = deserialize(option.value)
