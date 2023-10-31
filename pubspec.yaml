@@ -84,8 +84,9 @@ dependencies:
   slang_flutter: ^3.25.0
 
 dev_dependencies:
-  json_serializable: ^6.6.1
   build_runner: any
+  slang_build_runner: any
+  json_serializable: ^6.6.1
   flutter_launcher_icons: ^0.13.0
   flutter_lints: ^2.0.1
   flutter_test:
