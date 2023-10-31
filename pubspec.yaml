@@ -85,7 +85,6 @@ dependencies:
 
 dev_dependencies:
   build_runner: any
-  slang_build_runner: any
   json_serializable: ^6.6.1
   flutter_launcher_icons: ^0.13.0
   flutter_lints: ^2.0.1
