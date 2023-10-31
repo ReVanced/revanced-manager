@@ -3,12 +3,12 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsTileDialog extends StatelessWidget {
   const SettingsTileDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.onTap,
     this.padding,
-  }) : super(key: key);
+  });
   final String title;
   final String subtitle;
   final Function()? onTap;

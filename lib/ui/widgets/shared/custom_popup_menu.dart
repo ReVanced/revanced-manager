@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomPopupMenu extends StatelessWidget {
   const CustomPopupMenu({
-    Key? key,
+    super.key,
     required this.onSelected,
     required this.children,
-  }) : super(key: key);
+  });
   final Function(dynamic) onSelected;
   final Map<int, Widget> children;
 

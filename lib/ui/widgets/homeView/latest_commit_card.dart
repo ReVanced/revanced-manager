@@ -7,10 +7,10 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
   const LatestCommitCard({
-    Key? key,
+    super.key,
     required this.model,
     required this.parentContext,
-  }) : super(key: key);
+  });
   final HomeViewModel model;
   final BuildContext parentContext;
 

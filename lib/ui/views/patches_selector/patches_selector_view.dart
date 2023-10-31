@@ -9,7 +9,7 @@ import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorView extends StatefulWidget {
-  const PatchesSelectorView({Key? key}) : super(key: key);
+  const PatchesSelectorView({super.key});
 
   @override
   State<PatchesSelectorView> createState() => _PatchesSelectorViewState();

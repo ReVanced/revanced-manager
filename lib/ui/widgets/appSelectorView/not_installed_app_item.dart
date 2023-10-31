@@ -4,12 +4,12 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class NotInstalledAppItem extends StatefulWidget {
   const NotInstalledAppItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.patchesCount,
     required this.suggestedVersion,
     this.onTap,
-  }) : super(key: key);
+  });
   final String name;
   final int patchesCount;
   final String suggestedVersion;

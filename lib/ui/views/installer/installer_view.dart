@@ -8,7 +8,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
-  const InstallerView({Key? key}) : super(key: key);
+  const InstallerView({super.key});
 
   @override
   Widget build(BuildContext context) {
