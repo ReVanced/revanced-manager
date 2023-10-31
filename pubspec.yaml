@@ -104,4 +104,4 @@ flutter:
   assets:
     - assets/i18n/
 flutter_localizations: # add this
-    sdk: flutter
+  sdk: flutter
