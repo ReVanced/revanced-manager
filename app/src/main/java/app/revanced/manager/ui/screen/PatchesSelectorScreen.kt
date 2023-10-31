@@ -301,10 +301,7 @@ fun PatchesSelectorScreen(
                 icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
                     // TODO: only allow this if all required options have been set.
-                    composableScope.launch {
-                        vm.saveSelection()
-                        onSave(vm.getCustomSelection(), vm.getOptions())
-                    }
+                    onSave(vm.getCustomSelection(), vm.getOptions())
                 }
             )
         }

@@ -6,7 +6,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -53,8 +57,10 @@ fun ImportExportSettingsScreen(
             it?.let(vm::exportKeystore)
         }
 
+    val patchBundles by vm.patchBundles.collectAsStateWithLifecycle(initialValue = emptyList())
+    val packagesWithOptions by vm.packagesWithOptions.collectAsStateWithLifecycle(initialValue = emptySet())
+
     vm.selectionAction?.let { action ->
-        val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
         val launcher = rememberLauncherForActivityResult(action.activityContract) { uri ->
             if (uri == null) {
                 vm.clearSelectionAction()
@@ -64,7 +70,7 @@ fun ImportExportSettingsScreen(
         }
 
         if (vm.selectedBundle == null) {
-            BundleSelector(sources) {
+            BundleSelector(patchBundles) {
                 if (it == null) {
                     vm.clearSelectionAction()
                 } else {
@@ -137,11 +143,110 @@ fun ImportExportSettingsScreen(
                 headline = R.string.backup_patches_selection,
                 description = R.string.backup_patches_selection_description
             )
+            // TODO: allow resetting selection for specific bundle or package name.
             GroupItem(
                 onClick = vm::resetSelection,
                 headline = R.string.clear_patches_selection,
                 description = R.string.clear_patches_selection_description
             )
+
+            var showPackageSelector by rememberSaveable {
+                mutableStateOf(false)
+            }
+            var showBundleSelector by rememberSaveable {
+                mutableStateOf(false)
+            }
+
+            if (showPackageSelector)
+                PackageSelector(packages = packagesWithOptions) { selected ->
+                    selected?.let(vm::clearOptionsForPackage)
+
+                    showPackageSelector = false
+                }
+
+            if (showBundleSelector)
+                BundleSelector(bundles = patchBundles) { bundle ->
+                    bundle?.let(vm::clearOptionsForBundle)
+
+                    showBundleSelector = false
+                }
+
+            GroupHeader(stringResource(R.string.patch_options))
+            // TODO: patch options import/export.
+            GroupItem(
+                onClick = { showPackageSelector = true },
+                headline = R.string.patch_options_clear_package,
+                description = R.string.patch_options_clear_package_description
+            )
+            if (patchBundles.size > 1)
+                GroupItem(
+                    onClick = { showBundleSelector = true },
+                    headline = R.string.patch_options_clear_bundle,
+                    description = R.string.patch_options_clear_bundle_description,
+                )
+            GroupItem(
+                onClick = vm::resetOptions,
+                headline = R.string.patch_options_clear_all,
+                description = R.string.patch_options_clear_all_description,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PackageSelector(packages: Set<String>, onFinish: (String?) -> Unit) {
+    val context = LocalContext.current
+
+    val noPackages = packages.isEmpty()
+
+    LaunchedEffect(noPackages) {
+        if (noPackages) {
+            context.toast("No packages available.")
+            onFinish(null)
+        }
+    }
+
+    if (noPackages) return
+
+    ModalBottomSheet(
+        onDismissRequest = { onFinish(null) }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .height(48.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Select package",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            packages.forEach {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .height(48.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            onFinish(it)
+                        }
+                ) {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
         }
     }
 }

@@ -49,7 +49,7 @@ abstract class SelectionDao {
 
     @Transaction
     open suspend fun updateSelections(selections: Map<Int, Set<String>>) =
-        selections.map { (selectionUid, patches) ->
+        selections.forEach { (selectionUid, patches) ->
             clearSelection(selectionUid)
             selectPatches(patches.map { SelectedPatch(selectionUid, it) })
         }

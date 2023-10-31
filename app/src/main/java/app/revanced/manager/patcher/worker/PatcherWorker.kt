@@ -179,11 +179,11 @@ class PatcherWorker(
                 .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
 
             // Set all patch options.
-            args.options.forEach { (bundle, configuredPatchOptions) ->
+            args.options.forEach { (bundle, bundlePatchOptions) ->
                 val patches = allPatches[bundle] ?: return@forEach
-                configuredPatchOptions.forEach { (patchName, options) ->
+                bundlePatchOptions.forEach { (patchName, configuredPatchOptions) ->
                     val patchOptions = patches.single { it.name == patchName }.options
-                    options.forEach { (key, value) ->
+                    configuredPatchOptions.forEach { (key, value) ->
                         patchOptions[key] = value
                     }
                 }
