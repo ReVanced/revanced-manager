@@ -90,6 +90,13 @@
     <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
     <string name="clear_patches_selection">Clear patches selection</string>
     <string name="clear_patches_selection_description">Clear all patches selection</string>
+    <string name="patch_options">Patch options</string>
+    <string name="patch_options_clear_package">Clear patch options for package</string>
+    <string name="patch_options_clear_package_description">Resets patch options for a single package</string>
+    <string name="patch_options_clear_bundle">Clear patch options for bundle</string>
+    <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
+    <string name="patch_options_clear_all">Clear all patch options</string>
+    <string name="patch_options_clear_all_description">Resets all patch options</string>
     <string name="prefer_splits">Prefer split apks</string>
     <string name="prefer_splits_description">Prefer split apks instead of full apks</string>
     <string name="prefer_universal">Prefer universal apks</string>
