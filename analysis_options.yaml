@@ -119,7 +119,6 @@ linter:
     - prefer_single_quotes
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables
-    - prefer_void_to_null
     - provide_deprecation_message
     - recursive_getters
     - sized_box_for_whitespace
