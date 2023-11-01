@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,12 +67,20 @@ fun DownloadsSettingsScreen(
 
             GroupHeader(stringResource(R.string.downloaded_apps))
 
-            downloadedApps.forEach {
+            downloadedApps.forEach { app ->
+                val selected = app in viewModel.selection
+
                 ListItem(
-                    modifier = Modifier.clickable { viewModel.toggleItem(it) },
-                    headlineContent = { Text(it.packageName) },
-                    supportingContent = { Text(it.version) },
-                    tonalElevation = if (viewModel.selection.contains(it)) 8.dp else 0.dp
+                    modifier = Modifier.clickable { viewModel.toggleItem(app) },
+                    headlineContent = { Text(app.packageName) },
+                    leadingContent = (@Composable {
+                        Checkbox(
+                            checked = selected,
+                            onCheckedChange = { viewModel.toggleItem(app) }
+                        )
+                    }).takeIf { viewModel.selection.isNotEmpty() },
+                    supportingContent = { Text(app.version) },
+                    tonalElevation = if (selected) 8.dp else 0.dp
                 )
             }
         }

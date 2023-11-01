@@ -19,14 +19,14 @@ class InstalledAppRepository(
     suspend fun getAppliedPatches(packageName: String): PatchesSelection =
         dao.getPatchesSelection(packageName).mapValues { (_, patches) -> patches.toSet() }
 
-    suspend fun add(
+    suspend fun addOrUpdate(
         currentPackageName: String,
         originalPackageName: String,
         version: String,
         installType: InstallType,
         patchesSelection: PatchesSelection
     ) {
-        dao.insertApp(
+        dao.upsertApp(
             InstalledApp(
                 currentPackageName = currentPackageName,
                 originalPackageName = originalPackageName,

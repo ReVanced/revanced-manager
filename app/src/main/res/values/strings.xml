@@ -25,6 +25,16 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+
+    <string name="selected_app_meta">%1s • %2d available patches</string>
+
+    <string name="patch_item_description">Start patching the application</string>
+    <string name="patch_selector_item">Patch selection and options</string>
+    <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="no_patches_selected">No patches selected</string>
+    
+    <string name="version_selector_item">Change version</string>
+    <string name="version_selector_item_description">%s selected</string>
     
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
@@ -225,6 +235,7 @@
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched Apk</string>
+    <string name="patcher_step_sign_apk">Sign Apk</string>
     <string name="patcher_notification_message">Patching in progress…</string>
 
     <string name="step_completed">completed</string>

@@ -15,16 +15,15 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -42,8 +41,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -63,7 +64,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.BaseSelectionMode
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
@@ -75,18 +75,25 @@ import org.koin.compose.rememberKoinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onPatchClick: (PatchesSelection, Options) -> Unit,
+    onSave: (PatchesSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
-    val pagerState = rememberPagerState()
+    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        bundles.size
+    }
     val composableScope = rememberCoroutineScope()
     var search: String? by rememberSaveable {
         mutableStateOf(null)
     }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-
-    val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val showPatchButton by remember {
+        derivedStateOf { vm.selectionIsValid(bundles) }
+    }
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -131,39 +138,12 @@ fun PatchesSelectorScreen(
                     )
                 }
             }
-
-            Divider()
-
-            ListItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        enabled = vm.hasPreviousSelection,
-                        onClick = vm::switchBaseSelectionMode
-                    ),
-                leadingContent = {
-                    Checkbox(
-                        checked = vm.baseSelectionMode == BaseSelectionMode.PREVIOUS,
-                        onCheckedChange = {
-                            vm.switchBaseSelectionMode()
-                        },
-                        enabled = vm.hasPreviousSelection
-                    )
-                },
-                headlineContent = {
-                    Text(
-                        "Use previous selection",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            )
         }
     }
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedDialog(
-            appVersion = vm.input.selectedApp.version,
+            appVersion = vm.appVersion,
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
@@ -184,8 +164,6 @@ fun PatchesSelectorScreen(
             onConfirm = vm::confirmSelectionWarning
         )
     }
-
-    val allowExperimental by vm.allowExperimental.getAsState()
 
     fun LazyListScope.patchList(
         uid: Int,
@@ -276,7 +254,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!allowExperimental) return@LazyColumn
+                if (!vm.allowExperimental) return@LazyColumn
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -291,6 +269,7 @@ fun PatchesSelectorScreen(
             }
         }
     }
+
 
     Scaffold(
         topBar = {
@@ -315,15 +294,16 @@ fun PatchesSelectorScreen(
             )
         },
         floatingActionButton = {
+            if (!showPatchButton) return@Scaffold
+
             ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.Build, null) },
+                text = { Text(stringResource(R.string.save)) },
+                icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     composableScope.launch {
-                        val selection = vm.getSelection()
-                        vm.saveSelection(selection).join()
-                        onPatchClick(selection, vm.getOptions())
+                        vm.saveSelection()
+                        onSave(vm.getCustomSelection(), vm.getOptions())
                     }
                 }
             )
@@ -358,7 +338,6 @@ fun PatchesSelectorScreen(
             }
 
             HorizontalPager(
-                pageCount = bundles.size,
                 state = pagerState,
                 userScrollEnabled = true,
                 pageContent = { index ->
@@ -387,7 +366,7 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
                             filterFlag = SHOW_UNSUPPORTED,
-                            supported = allowExperimental
+                            supported = vm.allowExperimental
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),

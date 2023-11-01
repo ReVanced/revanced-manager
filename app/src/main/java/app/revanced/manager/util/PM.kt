@@ -98,7 +98,18 @@ class PM(
             null
         }
 
-    fun getPackageInfo(file: File): PackageInfo? = app.packageManager.getPackageArchiveInfo(file.absolutePath, 0)
+    fun getPackageInfo(file: File): PackageInfo? {
+        val path = file.absolutePath
+        val pkgInfo = app.packageManager.getPackageArchiveInfo(path, 0) ?: return null
+
+        // This is needed in order to load label and icon.
+        pkgInfo.applicationInfo.apply {
+            sourceDir = path
+            publicSourceDir = path
+        }
+
+        return pkgInfo
+    }
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
