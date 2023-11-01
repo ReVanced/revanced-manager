@@ -59,10 +59,10 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     var options: Options by savedStateHandle.saveable {
         val state = mutableStateOf<Options>(emptyMap())
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            state.value = withContext(Dispatchers.Default) { optionsRepository.getOptions() }
+            state.value = withContext(Dispatchers.Default) { optionsRepository.getOptions(selectedApp.packageName) }
         }
 
         state
