@@ -39,6 +39,7 @@ import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
+import app.revanced.manager.ui.component.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -253,10 +254,10 @@ private fun PackageSelector(packages: Set<String>, onFinish: (String?) -> Unit) 
 
 @Composable
 private fun GroupItem(onClick: () -> Unit, @StringRes headline: Int, @StringRes description: Int) =
-    ListItem(
+    SettingsListItem(
         modifier = Modifier.clickable { onClick() },
-        headlineContent = { Text(stringResource(headline)) },
-        supportingContent = { Text(stringResource(description)) }
+        headlineContent = stringResource(headline),
+        supportingContent = stringResource(description)
     )
 
 @Composable
