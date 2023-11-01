@@ -39,7 +39,7 @@ import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.SettingsListItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

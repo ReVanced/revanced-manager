@@ -1,4 +1,4 @@
-package app.revanced.manager.ui.component
+package app.revanced.manager.ui.component.settings
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ListItemColors
@@ -37,7 +37,7 @@ fun SettingsListItem(
                 text = supportingContent,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
-            ) else null
+            )
     },
     leadingContent = leadingContent,
     trailingContent = trailingContent,
