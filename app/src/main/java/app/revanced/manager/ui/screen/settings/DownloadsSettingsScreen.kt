@@ -12,9 +12,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.getViewModel
@@ -70,16 +69,16 @@ fun DownloadsSettingsScreen(
             downloadedApps.forEach { app ->
                 val selected = app in viewModel.selection
 
-                ListItem(
+                SettingsListItem(
                     modifier = Modifier.clickable { viewModel.toggleItem(app) },
-                    headlineContent = { Text(app.packageName) },
+                    headlineContent = app.packageName,
                     leadingContent = (@Composable {
                         Checkbox(
                             checked = selected,
                             onCheckedChange = { viewModel.toggleItem(app) }
                         )
                     }).takeIf { viewModel.selection.isNotEmpty() },
-                    supportingContent = { Text(app.version) },
+                    supportingContent = app.version,
                     tonalElevation = if (selected) 8.dp else 0.dp
                 )
             }

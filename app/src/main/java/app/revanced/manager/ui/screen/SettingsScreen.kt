@@ -45,9 +45,10 @@ import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
+import app.revanced.manager.ui.component.SettingsListItem
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
@@ -157,8 +158,7 @@ fun SettingsScreen(
                         modifier = Modifier
                             .padding(paddingValues)
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
                             Card(
@@ -197,21 +197,10 @@ fun SettingsScreen(
                             }
                         }
                         settingsSections.forEach { (titleDescIcon, destination) ->
-                            ListItem(
+                            SettingsListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
-                                headlineContent = {
-                                    Text(
-                                        stringResource(titleDescIcon.first),
-                                        style = MaterialTheme.typography.titleLarge
-                                    )
-                                },
-                                supportingContent = {
-                                    Text(
-                                        stringResource(titleDescIcon.second),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.outline
-                                    )
-                                },
+                                headlineContent = stringResource(titleDescIcon.first),
+                                supportingContent = stringResource(titleDescIcon.second),
                                 leadingContent = { Icon(titleDescIcon.third, null) }
                             )
                         }

@@ -18,6 +18,6 @@ fun GroupHeader(
         text = title,
         color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.labelLarge,
-        modifier = Modifier.padding(16.dp).semantics { heading() }.then(modifier)
+        modifier = Modifier.padding(24.dp).semantics { heading() }.then(modifier)
     )
 }

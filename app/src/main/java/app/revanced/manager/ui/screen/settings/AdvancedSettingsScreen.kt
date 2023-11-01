@@ -14,7 +14,6 @@ import androidx.compose.material.icons.outlined.Http
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -36,6 +35,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import org.koin.androidx.compose.getViewModel
@@ -79,9 +79,9 @@ fun AdvancedSettingsScreen(
                     it?.let(vm::setApiUrl)
                 }
             }
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.api_url)) },
-                supportingContent = { Text(apiUrl) },
+            SettingsListItem(
+                headlineContent = stringResource(R.string.api_url),
+                supportingContent = apiUrl,
                 modifier = Modifier.clickable {
                     showApiUrlDialog = true
                 }
@@ -96,35 +96,35 @@ fun AdvancedSettingsScreen(
             )
 
             GroupHeader(stringResource(R.string.patch_bundles_section))
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.patch_bundles_redownload)) },
+            SettingsListItem(
+                headlineContent = stringResource(R.string.patch_bundles_redownload),
                 modifier = Modifier.clickable {
                     vm.redownloadBundles()
                 }
             )
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.patch_bundles_reset)) },
+            SettingsListItem(
+                headlineContent = stringResource(R.string.patch_bundles_reset),
                 modifier = Modifier.clickable {
                     vm.resetBundles()
                 }
             )
 
             GroupHeader(stringResource(R.string.device))
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.device_model)) },
-                supportingContent = { Text(Build.MODEL) }
+            SettingsListItem(
+                headlineContent = stringResource(R.string.device_model),
+                supportingContent = Build.MODEL
             )
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.device_android_version)) },
-                supportingContent = { Text(Build.VERSION.RELEASE) }
+            SettingsListItem(
+                headlineContent = stringResource(R.string.device_android_version),
+                supportingContent = Build.VERSION.RELEASE
             )
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.device_architectures)) },
-                supportingContent = { Text(Build.SUPPORTED_ABIS.joinToString(", ")) }
+            SettingsListItem(
+                headlineContent = stringResource(R.string.device_architectures),
+                supportingContent = Build.SUPPORTED_ABIS.joinToString(", ")
             )
-            ListItem(
-                headlineContent = { Text(stringResource(R.string.device_memory_limit)) },
-                supportingContent = { Text(memoryLimit) }
+            SettingsListItem(
+                headlineContent = stringResource(R.string.device_memory_limit),
+                supportingContent = memoryLimit
             )
         }
     }

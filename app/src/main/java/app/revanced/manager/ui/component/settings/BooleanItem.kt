@@ -2,15 +2,14 @@ package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.domain.manager.base.Preference
+import app.revanced.manager.ui.component.SettingsListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -37,10 +36,10 @@ fun BooleanItem(
     onValueChange: (Boolean) -> Unit,
     @StringRes headline: Int,
     @StringRes description: Int
-) = ListItem(
+) = SettingsListItem(
     modifier = Modifier.clickable { onValueChange(!value) },
-    headlineContent = { Text(stringResource(headline)) },
-    supportingContent = { Text(stringResource(description)) },
+    headlineContent = stringResource(headline),
+    supportingContent = stringResource(description),
     trailingContent = {
         Switch(
             checked = value,
