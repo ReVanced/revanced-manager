@@ -11,4 +11,5 @@ data class ReVancedSocials(
 data class ReVancedSocial(
     val name: String,
     val url: String,
+    val preferred: Boolean,
 )

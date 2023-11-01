@@ -22,7 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -36,7 +38,7 @@ import compose.icons.fontawesomeicons.brands.Twitter
 import compose.icons.fontawesomeicons.brands.Youtube
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AboutSettingsScreen(
     onBackClick: () -> Unit,
@@ -50,24 +52,6 @@ fun AboutSettingsScreen(
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
-    val filledButton = listOf(
-        Triple(Icons.Outlined.FavoriteBorder, stringResource(R.string.donate)) {
-            context.openUrl("https://revanced.app/donate")
-        },
-        Triple(Icons.Outlined.Language, stringResource(R.string.website), third = {
-            context.openUrl("https://revanced.app")
-        }),
-    )
-
-    val outlinedButton = listOf(
-        Triple(FontAwesomeIcons.Brands.Github, stringResource(R.string.github), third = {
-            context.openUrl("https://revanced.app/github")
-        }),
-        Triple(Icons.Outlined.MailOutline, stringResource(R.string.contact), third = {
-            context.openUrl("mailto:nosupport@revanced.app")
-        }),
-    )
-
     val socialIcons = mapOf(
         "Contact" to Icons.Outlined.MailOutline,
         "Discord" to FontAwesomeIcons.Brands.Discord, 
@@ -80,7 +64,13 @@ fun AboutSettingsScreen(
         "YouTube" to FontAwesomeIcons.Brands.Youtube,
     )
 
-    val socialButtons = viewModel.socials.map {
+    val outlinedButton = viewModel.socials.filter(ReVancedSocial::preferred).map {
+        Triple(socialIcons[it.name] ?: Icons.Outlined.Language, it.name, third = {
+            context.openUrl(it.url)
+        })
+    }
+
+    val socialButtons = viewModel.socials.filterNot(ReVancedSocial::preferred).map {
         Pair(socialIcons[it.name] ?: Icons.Outlined.Language) {
             context.openUrl(it.url)
         }
@@ -134,36 +124,11 @@ fun AboutSettingsScreen(
                     text = stringResource(R.string.version) + " " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")",
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Row(
-                    modifier = Modifier.padding(top = 12.dp)
-                ) {
-                    filledButton.forEach { (icon, text, onClick) ->
-                        FilledTonalButton(
-                            onClick = onClick,
-                            modifier = Modifier.padding(end = 8.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(
-                                    icon,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(28.dp)
-                                        .padding(end = 8.dp),
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-                                Text(
-                                    text,
-                                    style = MaterialTheme.typography.labelLarge,
-                                )
-                            }
-                        }
-                    }
-                }
 
-                Row(
-                    modifier = Modifier.padding(top = 12.dp)
+                FlowRow(
+                    modifier = Modifier.padding(top = 12.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
                 ) {
                     outlinedButton.forEach { (icon, text, onClick) ->
                         Button(
@@ -197,8 +162,9 @@ fun AboutSettingsScreen(
                     }
                 }
 
-                Row(
-                    modifier = Modifier.padding(top = 12.dp)
+                FlowRow(
+                    modifier = Modifier.padding(top = 12.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     socialButtons.forEach { (icon, onClick) ->
                         IconButton(
