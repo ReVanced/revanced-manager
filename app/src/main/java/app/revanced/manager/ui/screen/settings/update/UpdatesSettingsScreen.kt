@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.CustomListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
