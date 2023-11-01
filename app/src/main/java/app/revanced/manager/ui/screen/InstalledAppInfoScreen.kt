@@ -38,7 +38,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
 import app.revanced.manager.util.PatchesSelection
@@ -143,7 +143,7 @@ fun InstalledAppInfoScreen(
             Column(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
-                CustomListItem(
+                SettingsListItem(
                     modifier = Modifier.clickable {  },
                     headlineContent = stringResource(R.string.applied_patches),
                     supportingContent = 
@@ -157,19 +157,19 @@ fun InstalledAppInfoScreen(
                     trailingContent = { Icon(Icons.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
                 )
 
-                CustomListItem(
+                SettingsListItem(
                     headlineContent = stringResource(R.string.package_name),
                     supportingContent = viewModel.installedApp.currentPackageName
                 )
 
                 if (viewModel.installedApp.originalPackageName != viewModel.installedApp.currentPackageName) {
-                    CustomListItem(
+                    SettingsListItem(
                         headlineContent = stringResource(R.string.original_package_name),
                         supportingContent = viewModel.installedApp.originalPackageName
                     )
                 }
 
-                CustomListItem(
+                SettingsListItem(
                     headlineContent = stringResource(R.string.install_type),
                     supportingContent = stringResource(viewModel.installedApp.installType.stringResource)
                 )

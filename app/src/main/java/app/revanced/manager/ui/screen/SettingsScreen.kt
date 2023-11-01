@@ -45,7 +45,7 @@ import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -197,7 +197,7 @@ fun SettingsScreen(
                             }
                         }
                         settingsSections.forEach { (titleDescIcon, destination) ->
-                            CustomListItem(
+                            SettingsListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
                                 headlineContent = stringResource(titleDescIcon.first),
                                 supportingContent = stringResource(titleDescIcon.second),

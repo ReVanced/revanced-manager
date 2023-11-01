@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ListItem
 
 @Composable
-fun CustomListItem(
+fun SettingsListItem(
     headlineContent: String,
     modifier: Modifier = Modifier,
     overlineContent: @Composable (() -> Unit)? = null,

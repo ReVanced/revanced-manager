@@ -35,7 +35,7 @@ import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -149,7 +149,7 @@ fun ImportExportSettingsScreen(
 
 @Composable
 private fun GroupItem(onClick: () -> Unit, @StringRes headline: Int, @StringRes description: Int) =
-    CustomListItem(
+    SettingsListItem(
         modifier = Modifier.clickable { onClick() },
         headlineContent = stringResource(headline),
         supportingContent = stringResource(description)

@@ -35,7 +35,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import org.koin.androidx.compose.getViewModel
@@ -79,7 +79,7 @@ fun AdvancedSettingsScreen(
                     it?.let(vm::setApiUrl)
                 }
             }
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.api_url),
                 supportingContent = apiUrl,
                 modifier = Modifier.clickable {
@@ -96,13 +96,13 @@ fun AdvancedSettingsScreen(
             )
 
             GroupHeader(stringResource(R.string.patch_bundles_section))
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.patch_bundles_redownload),
                 modifier = Modifier.clickable {
                     vm.redownloadBundles()
                 }
             )
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.patch_bundles_reset),
                 modifier = Modifier.clickable {
                     vm.resetBundles()
@@ -110,19 +110,19 @@ fun AdvancedSettingsScreen(
             )
 
             GroupHeader(stringResource(R.string.device))
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.device_model),
                 supportingContent = Build.MODEL
             )
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.device_android_version),
                 supportingContent = Build.VERSION.RELEASE
             )
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.device_architectures),
                 supportingContent = Build.SUPPORTED_ABIS.joinToString(", ")
             )
-            CustomListItem(
+            SettingsListItem(
                 headlineContent = stringResource(R.string.device_memory_limit),
                 supportingContent = memoryLimit
             )

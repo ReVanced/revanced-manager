@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +75,7 @@ fun UpdatesSettingsScreen(
             )
 
             listItems.forEach { (title, description, onClick) ->
-                CustomListItem(
+                SettingsListItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp)

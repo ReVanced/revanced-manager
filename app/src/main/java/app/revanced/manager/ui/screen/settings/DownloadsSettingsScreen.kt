@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.getViewModel
@@ -69,7 +69,7 @@ fun DownloadsSettingsScreen(
             downloadedApps.forEach { app ->
                 val selected = app in viewModel.selection
 
-                CustomListItem(
+                SettingsListItem(
                     modifier = Modifier.clickable { viewModel.toggleItem(app) },
                     headlineContent = app.packageName,
                     leadingContent = (@Composable {

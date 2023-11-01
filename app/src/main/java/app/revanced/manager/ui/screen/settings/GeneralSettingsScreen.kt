@@ -23,7 +23,7 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import org.koin.compose.koinInject
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +59,7 @@ fun GeneralSettingsScreen(
             GroupHeader(stringResource(R.string.appearance))
 
             val theme by prefs.theme.getAsState()
-            CustomListItem(
+            SettingsListItem(
                 modifier = Modifier.clickable { showThemePicker = true },
                 headlineContent = stringResource(R.string.theme),
                 supportingContent = stringResource(R.string.theme_description),

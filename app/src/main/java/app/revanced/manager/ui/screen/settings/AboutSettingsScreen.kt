@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.CustomListItem
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -199,7 +199,7 @@ fun AboutSettingsScreen(
             }
             Column {
                 listItems.forEach { (title, description, onClick) ->
-                    CustomListItem(
+                    SettingsListItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onClick() },
