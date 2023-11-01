@@ -33,6 +33,9 @@ fun NotificationCard(
     icon: ImageVector,
     actions: (@Composable () -> Unit)?
 ) {
+    val color =
+        if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+
     NotificationCardInstance(isWarning = isWarning) {
         Column(
             modifier = Modifier.padding(if (title != null) 20.dp else 16.dp),
@@ -43,7 +46,7 @@ fun NotificationCard(
                     modifier = Modifier.size(36.dp),
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = color,
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -51,12 +54,12 @@ fun NotificationCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
-                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = color,
                     )
                     Text(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = color,
                     )
                 }
             } else {
@@ -65,12 +68,12 @@ fun NotificationCard(
                         modifier = Modifier.size(24.dp),
                         imageVector = icon,
                         contentDescription = null,
-                        tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = color,
                     )
                     Text(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = color,
                     )
                 }
             }
@@ -88,6 +91,9 @@ fun NotificationCard(
     onDismiss: (() -> Unit)? = null,
     primaryAction: (() -> Unit)? = null
 ) {
+    val color =
+        if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+
     NotificationCardInstance(isWarning = isWarning, onClick = primaryAction) {
         Row(
             modifier = Modifier
@@ -100,7 +106,7 @@ fun NotificationCard(
                 modifier = Modifier.size(if (title != null) 36.dp else 24.dp),
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                tint = color,
             )
             if (title != null) {
                 Column(
@@ -110,12 +116,12 @@ fun NotificationCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
-                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = color,
                     )
                     Text(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = color,
                     )
                 }
             } else {
@@ -123,7 +129,7 @@ fun NotificationCard(
                     modifier = Modifier.weight(1f),
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                    color = color,
                 )
             }
             if (onDismiss != null) {
@@ -131,7 +137,7 @@ fun NotificationCard(
                     Icon(
                         imageVector = Icons.Outlined.Close,
                         contentDescription = stringResource(R.string.close),
-                        tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = color,
                     )
                 }
             }
@@ -144,28 +150,29 @@ fun NotificationCard(
 private fun NotificationCardInstance(
     isWarning: Boolean = false,
     onClick: (() -> Unit)? = null,
-    content: (@Composable () -> Unit),
+    content: @Composable () -> Unit,
 ) {
+    val colors =
+        CardDefaults.cardColors(containerColor = if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)
+    val modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clip(RoundedCornerShape(24.dp))
+
     if (onClick != null) {
         Card(
             onClick = onClick,
-            colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(RoundedCornerShape(24.dp))
+            colors = colors,
+            modifier = modifier
         ) {
-            content.invoke()
+            content()
         }
     } else {
         Card(
-            colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(RoundedCornerShape(24.dp))
+            colors = colors,
+            modifier = modifier,
         ) {
-            content.invoke()
+            content()
         }
     }
 }

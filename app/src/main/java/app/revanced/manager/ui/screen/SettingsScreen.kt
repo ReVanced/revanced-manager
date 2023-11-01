@@ -8,11 +8,8 @@ import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.NotificationCard
@@ -40,7 +36,7 @@ import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.SettingsListItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)

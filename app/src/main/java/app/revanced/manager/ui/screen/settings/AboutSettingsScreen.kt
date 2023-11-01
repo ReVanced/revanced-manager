@@ -3,7 +3,6 @@ package app.revanced.manager.ui.screen.settings
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.SettingsListItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter

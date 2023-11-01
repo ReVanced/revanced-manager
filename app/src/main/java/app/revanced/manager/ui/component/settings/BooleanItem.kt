@@ -9,7 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.domain.manager.base.Preference
-import app.revanced.manager.ui.component.SettingsListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

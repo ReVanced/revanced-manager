@@ -23,7 +23,7 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import org.koin.compose.koinInject
-import app.revanced.manager.ui.component.SettingsListItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
