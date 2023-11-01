@@ -137,6 +137,7 @@
         "setRequiredOption": "Some patches require options to be set:\n\n{patches}\n\nPlease set them before continuing."
     },
     "patchOptionsView": {
+        "customValue": "Custom value",
         "resetOptionsTooltip": "Reset patch options",
         "viewTitle": "Patch options",
         "saveOptions": "Save",
