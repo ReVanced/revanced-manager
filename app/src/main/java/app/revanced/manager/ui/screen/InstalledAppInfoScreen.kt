@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -21,7 +19,6 @@ import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
@@ -40,10 +36,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppInfo
-import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.SettingsListItem
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
 import app.revanced.manager.util.PatchesSelection
@@ -148,38 +143,35 @@ fun InstalledAppInfoScreen(
             Column(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
-                ListItem(
+                SettingsListItem(
                     modifier = Modifier.clickable {  },
-                    headlineContent = { Text(stringResource(R.string.applied_patches)) },
-                    supportingContent = {
-                        Text(
+                    headlineContent = stringResource(R.string.applied_patches),
+                    supportingContent = 
                             (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
                                 pluralStringResource(
                                     id = R.plurals.applied_patches,
                                     it,
                                     it
                                 )
-                            }
-                        )
-                    },
+                            },
                     trailingContent = { Icon(Icons.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
                 )
 
-                ListItem(
-                    headlineContent = { Text(stringResource(R.string.package_name)) },
-                    supportingContent = { Text(viewModel.installedApp.currentPackageName) }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.package_name),
+                    supportingContent = viewModel.installedApp.currentPackageName
                 )
 
                 if (viewModel.installedApp.originalPackageName != viewModel.installedApp.currentPackageName) {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.original_package_name)) },
-                        supportingContent = { Text(viewModel.installedApp.originalPackageName) }
+                    SettingsListItem(
+                        headlineContent = stringResource(R.string.original_package_name),
+                        supportingContent = viewModel.installedApp.originalPackageName
                     )
                 }
 
-                ListItem(
-                    headlineContent = { Text(stringResource(R.string.install_type)) },
-                    supportingContent = { Text(stringResource(viewModel.installedApp.installType.stringResource)) }
+                SettingsListItem(
+                    headlineContent = stringResource(R.string.install_type),
+                    supportingContent = stringResource(viewModel.installedApp.installType.stringResource)
                 )
             }
 

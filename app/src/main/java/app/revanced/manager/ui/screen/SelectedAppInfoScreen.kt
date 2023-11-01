@@ -49,9 +49,13 @@ fun SelectedAppInfoScreen(
     vm: SelectedAppInfoViewModel
 ) {
     val context = LocalContext.current
-    val bundles by remember(vm.selectedApp.packageName, vm.selectedApp.version) {
-        vm.bundlesRepo.bundleInfoFlow(vm.selectedApp.packageName, vm.selectedApp.version)
+
+    val packageName = vm.selectedApp.packageName
+    val version = vm.selectedApp.version
+    val bundles by remember(packageName, version) {
+        vm.bundlesRepo.bundleInfoFlow(packageName, version)
     }.collectAsStateWithLifecycle(initialValue = emptyList())
+
     val allowExperimental by vm.prefs.allowExperimental.getAsState()
     val patches by remember {
         derivedStateOf {
@@ -86,7 +90,7 @@ fun SelectedAppInfoScreen(
                     onPatchClick(
                         vm.selectedApp,
                         patches,
-                        vm.patchOptions
+                        vm.getOptionsFiltered(bundles)
                     )
                 },
                 onPatchSelectorClick = {
@@ -97,7 +101,7 @@ fun SelectedAppInfoScreen(
                                 bundles,
                                 allowExperimental
                             ),
-                            vm.patchOptions
+                            vm.options
                         )
                     )
                 },
@@ -107,8 +111,8 @@ fun SelectedAppInfoScreen(
                 onBackClick = onBackClick,
                 availablePatchCount = availablePatchCount,
                 selectedPatchCount = selectedPatchCount,
-                packageName = vm.selectedApp.packageName,
-                version = vm.selectedApp.version,
+                packageName = packageName,
+                version = version,
                 packageInfo = vm.selectedAppInfo,
             )
 
@@ -118,13 +122,12 @@ fun SelectedAppInfoScreen(
                     vm.selectedApp = it
                     navController.pop()
                 },
-                viewModel = getViewModel { parametersOf(vm.selectedApp.packageName) }
+                viewModel = getViewModel { parametersOf(packageName) }
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
                 onSave = { patches, options ->
-                    vm.setCustomPatches(patches)
-                    vm.patchOptions = options
+                    vm.updateConfiguration(patches, options, bundles)
                     navController.pop()
                 },
                 onBackClick = navController::pop,
@@ -133,7 +136,7 @@ fun SelectedAppInfoScreen(
                         PatchesSelectorViewModel.Params(
                             destination.app,
                             destination.currentSelection,
-                            destination.options
+                            destination.options,
                         )
                     )
                 }

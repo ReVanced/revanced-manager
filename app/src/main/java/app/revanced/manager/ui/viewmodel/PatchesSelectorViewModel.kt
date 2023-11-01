@@ -17,7 +17,6 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.model.BundleInfo
@@ -31,20 +30,17 @@ import app.revanced.manager.util.saver.persistentMapSaver
 import app.revanced.manager.util.saver.persistentSetSaver
 import app.revanced.manager.util.saver.snapshotStateMapSaver
 import app.revanced.manager.util.toast
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
-import kotlinx.coroutines.withContext
 import java.util.Optional
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
 class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     private val app: Application = get()
-    private val selectionRepository: PatchSelectionRepository = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()
 
@@ -167,11 +163,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         // Convert the collection for the same reasons as in getCustomSelection()
 
         return patchOptions.mapValues { (_, allPatches) -> allPatches.mapValues { (_, options) -> options.toMap() } }
-    }
-
-    suspend fun saveSelection() = withContext(Dispatchers.Default) {
-        customPatchesSelection?.let { selectionRepository.updateSelection(packageName, it) }
-            ?: selectionRepository.clearSelection(packageName)
     }
 
     fun getOptions(bundle: Int, patch: PatchInfo) = patchOptions[bundle]?.get(patch.name)

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,24 +70,13 @@ fun UpdatesSettingsScreen(
             )
 
             listItems.forEach { (title, description, onClick) ->
-                ListItem(
+                SettingsListItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(horizontal = 8.dp)
                         .clickable { onClick() },
-                    headlineContent = {
-                        Text(
-                            title,
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    },
-                    supportingContent = {
-                        Text(
-                            description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.outline
-                        )
-                    }
+                    headlineContent = title,
+                    supportingContent = description
                 )
             }
         }
