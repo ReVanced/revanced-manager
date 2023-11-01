@@ -43,7 +43,7 @@ fun NotificationCard(
                     modifier = Modifier.size(36.dp),
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -51,12 +51,12 @@ fun NotificationCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
-                        color = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             } else {
@@ -65,12 +65,12 @@ fun NotificationCard(
                         modifier = Modifier.size(24.dp),
                         imageVector = icon,
                         contentDescription = null,
-                        tint = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
@@ -100,7 +100,7 @@ fun NotificationCard(
                 modifier = Modifier.size(if (title != null) 36.dp else 24.dp),
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
             )
             if (title != null) {
                 Column(
@@ -110,12 +110,12 @@ fun NotificationCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
-                        color = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
                         text = text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             } else {
@@ -123,7 +123,7 @@ fun NotificationCard(
                     modifier = Modifier.weight(1f),
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                    color = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
             if (onDismiss != null) {
@@ -131,7 +131,7 @@ fun NotificationCard(
                     Icon(
                         imageVector = Icons.Outlined.Close,
                         contentDescription = stringResource(R.string.close),
-                        tint = if (isWarning) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
@@ -149,7 +149,7 @@ private fun NotificationCardInstance(
     if (onClick != null) {
         Card(
             onClick = onClick,
-            colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer)),
+            colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -159,7 +159,7 @@ private fun NotificationCardInstance(
         }
     } else {
         Card(
-            colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer)),
+            colors = CardDefaults.cardColors(containerColor = (if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
