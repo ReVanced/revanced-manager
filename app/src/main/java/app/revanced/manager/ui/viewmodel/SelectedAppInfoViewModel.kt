@@ -62,7 +62,8 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            state.value = withContext(Dispatchers.Default) { optionsRepository.getOptions(selectedApp.packageName) }
+            val packageName = selectedApp.packageName
+            state.value = withContext(Dispatchers.Default) { optionsRepository.getOptions(packageName) }
         }
 
         state
