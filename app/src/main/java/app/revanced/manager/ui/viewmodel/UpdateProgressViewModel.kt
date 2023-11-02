@@ -46,7 +46,7 @@ class UpdateProgressViewModel(
         uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
             withContext(Dispatchers.IO) {
                 val asset = reVancedAPI
-                    .getRelease("revanced-manager")
+                    .getLatestRelease("revanced-manager")
                     .getOrThrow()
                     .findAssetByType(APK_MIMETYPE)
 
