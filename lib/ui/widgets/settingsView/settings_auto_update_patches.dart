@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
 class SAutoUpdatePatches extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SAutoUpdatePatchesState extends State<SAutoUpdatePatches> {
       subtitle: I18nText('settingsView.autoUpdatePatchesHint'),
       value: _settingsViewModel.isPatchesAutoUpdate(),
       onChanged: (value) {
+        hapticSwitch(value);
         setState(() {
           _settingsViewModel.setPatchesAutoUpdate(value);
         });

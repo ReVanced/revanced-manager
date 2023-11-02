@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
@@ -34,6 +35,7 @@ class _SVersionCompatibilityCheckState extends State<SVersionCompatibilityCheck>
       subtitle: I18nText('settingsView.versionCompatibilityCheckHint'),
       value: _settingsViewModel.isVersionCompatibilityCheckEnabled(),
       onChanged: (value) {
+        hapticSwitch(value);
         setState(() {
           _settingsViewModel.useVersionCompatibilityCheck(value);
         });

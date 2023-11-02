@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
 class SEnablePatchesSelection extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SEnablePatchesSelectionState extends State<SEnablePatchesSelection> {
       subtitle: I18nText('settingsView.enablePatchesSelectionHint'),
       value: _settingsViewModel.isPatchesChangeEnabled(),
       onChanged: (value) async {
+        hapticSwitch(value);
         await _settingsViewModel.showPatchesChangeEnableDialog(value, context);
         setState(() {});
       },

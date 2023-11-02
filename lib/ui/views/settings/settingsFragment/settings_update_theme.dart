@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
@@ -58,6 +59,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
             subtitle: I18nText('settingsView.dynamicThemeHint'),
             value: getDynamicThemeStatus(),
             onChanged: (value) => {
+              hapticSwitch(value),
               setUseDynamicTheme(
                 context,
                 value,
@@ -137,6 +139,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                     value: 0,
                     groupValue: value,
                     onChanged: (value) {
+                      hapticRadio();
                       newTheme.value = value!;
                     },
                   ),
@@ -146,6 +149,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                     value: 1,
                     groupValue: value,
                     onChanged: (value) {
+                      hapticRadio();
                       newTheme.value = value!;
                     },
                   ),
@@ -155,6 +159,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                     value: 2,
                     groupValue: value,
                     onChanged: (value) {
+                      hapticRadio();
                       newTheme.value = value!;
                     },
                   ),
