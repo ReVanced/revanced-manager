@@ -93,7 +93,7 @@ skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skra
 skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
 
 # Markdown
-markdown = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
+markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
 
 # LibSU
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }

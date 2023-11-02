@@ -157,5 +157,5 @@ dependencies {
     implementation(libs.ktor.serialization)
 
     // Markdown
-    implementation(libs.markdown)
+    implementation(libs.markdown.renderer)
 }
