@@ -232,7 +232,7 @@ class InstallerViewModel(
                     app.contentResolver.openOutputStream(it)
                         .use { stream -> Files.copy(signedFile.toPath(), stream) }
                 }
-                app.toast(app.getString(R.string.export_apk_success))
+                app.toast(app.getString(R.string.save_apk_success))
             }
         }
     }
