@@ -24,10 +24,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
+import app.revanced.manager.ui.component.hapticSwitch
 import app.revanced.manager.util.toast
 import app.revanced.patcher.patch.options.types.*
 import org.koin.compose.rememberKoinInject
@@ -176,9 +178,9 @@ private val BooleanOption: OptionImpl = { option, value, setValue ->
 
     OptionListItem(
         option = option,
-        onClick = { setValue(!current) }
+        onClick = hapticSwitch(current) { setValue(!current) },
     ) {
-        Switch(checked = current, onCheckedChange = setValue)
+        Switch(checked = current, onCheckedChange = hapticSwitch { setValue(it) })
     }
 }
 

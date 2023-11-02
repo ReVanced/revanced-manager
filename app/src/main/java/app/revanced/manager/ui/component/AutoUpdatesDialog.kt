@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -67,14 +68,14 @@ fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
                     headline = R.string.auto_updates_dialog_manager,
                     icon = Icons.Outlined.Update,
                     checked = managerEnabled,
-                    onCheckedChange = { managerEnabled = it }
+                    onCheckedChange = hapticCheckbox { managerEnabled = it }
                 )
                 Divider()
                 AutoUpdatesItem(
                     headline = R.string.auto_updates_dialog_patches,
                     icon = Icons.Outlined.Source,
                     checked = patchesEnabled,
-                    onCheckedChange = { patchesEnabled = it }
+                    onCheckedChange = hapticCheckbox { patchesEnabled = it }
                 )
 
                 Text(

@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.screen
 
+import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,6 +52,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -62,6 +64,8 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
+import app.revanced.manager.ui.component.hapticCheckbox
+import app.revanced.manager.ui.component.hapticCheckboxToggle
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -386,6 +390,7 @@ fun SelectionWarningDialog(
     var dismissPermanently by rememberSaveable {
         mutableStateOf(false)
     }
+    val disableCheckbox = hapticCheckbox { dismissPermanently = !dismissPermanently }
 
     AlertDialog(
         onDismissRequest = onCancel,
@@ -438,15 +443,11 @@ fun SelectionWarningDialog(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    modifier = Modifier.clickable {
-                        dismissPermanently = !dismissPermanently
-                    }
+                    modifier = Modifier.clickable { disableCheckbox(false) }
                 ) {
                     Checkbox(
                         checked = dismissPermanently,
-                        onCheckedChange = {
-                            dismissPermanently = it
-                        }
+                        onCheckedChange = hapticCheckbox { dismissPermanently = it }
                     )
                     Text(stringResource(R.string.permanent_dismiss))
                 }
@@ -462,28 +463,31 @@ fun PatchItem(
     selected: Boolean,
     onToggle: () -> Unit,
     supported: Boolean = true
-) = ListItem(
-    modifier = Modifier
-        .let { if (!supported) it.alpha(0.5f) else it }
-        .clickable(enabled = supported, onClick = onToggle)
-        .fillMaxSize(),
-    leadingContent = {
-        Checkbox(
-            checked = selected,
-            onCheckedChange = { onToggle() },
-            enabled = supported
-        )
-    },
-    headlineContent = { Text(patch.name) },
-    supportingContent = patch.description?.let { { Text(it) } },
-    trailingContent = {
-        if (patch.options?.isNotEmpty() == true) {
-            IconButton(onClick = onOptionsDialog, enabled = supported) {
-                Icon(Icons.Outlined.Settings, null)
+) {
+    val haptic = hapticCheckboxToggle { onToggle() }
+    return ListItem(
+        modifier = Modifier
+            .let { if (!supported) it.alpha(0.5f) else it }
+            .clickable(enabled = supported, onClick = haptic)
+            .fillMaxSize(),
+        leadingContent = {
+            Checkbox(
+                checked = selected,
+                onCheckedChange = { haptic() },
+                enabled = supported
+            )
+        },
+        headlineContent = { Text(patch.name) },
+        supportingContent = patch.description?.let { { Text(it) } },
+        trailingContent = {
+            if (patch.options?.isNotEmpty() == true) {
+                IconButton(onClick = onOptionsDialog, enabled = supported) {
+                    Icon(Icons.Outlined.Settings, null)
+                }
             }
         }
-    }
-)
+    )
+}
 
 @Composable
 fun ListHeader(

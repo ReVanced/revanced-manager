@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.propsOrNullFlow
+import app.revanced.manager.ui.component.hapticCheckbox
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -65,16 +67,14 @@ fun BundleItem(
             .height(64.dp)
             .fillMaxWidth()
             .combinedClickable(
-                onClick = {
-                    viewBundleDialogPage = true
-                },
-                onLongClick = onSelect,
+                onClick = { viewBundleDialogPage = true },
+                onLongClick = { onSelect() },
             ),
         leadingContent = {
             if(selectable) {
                 Checkbox(
                     checked = isBundleSelected,
-                    onCheckedChange = toggleSelection,
+                    onCheckedChange = hapticCheckbox { toggleSelection(it) },
                 )
             }
         },

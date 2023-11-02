@@ -7,8 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.domain.manager.base.Preference
+import app.revanced.manager.ui.component.hapticSwitch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -23,7 +25,7 @@ fun BooleanItem(
 
     BooleanItem(
         value = value,
-        onValueChange = { coroutineScope.launch { preference.update(it) } },
+        onValueChange = hapticSwitch { coroutineScope.launch { preference.update(it) } },
         headline = headline,
         description = description
     )

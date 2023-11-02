@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.hapticSwitch
 import app.revanced.manager.util.isDebuggable
 
 @Composable
@@ -115,17 +116,18 @@ fun BaseBundleDialog(
     extraFields()
 
     if (remoteUrl != null) {
+        val autoUpdateClickable = hapticSwitch(autoUpdate) { onAutoUpdateChange(!autoUpdate) }
         BundleListItem(
             headlineText = stringResource(R.string.automatically_update),
             supportingText = stringResource(R.string.automatically_update_description),
             trailingContent = {
                 Switch(
                     checked = autoUpdate,
-                    onCheckedChange = onAutoUpdateChange
+                    onCheckedChange = hapticSwitch { onAutoUpdateChange(it) }
                 )
             },
             modifier = Modifier.clickable {
-                onAutoUpdateChange(!autoUpdate)
+                autoUpdateClickable()
             }
         )
     }
