@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -69,7 +71,7 @@ fun ChangelogsScreen(
                             markdown = changelog.body.replace("`", ""), // https://github.com/mikepenz/multiplatform-markdown-renderer/issues/79
                             version = changelog.version,
                             downloadCount = changelog.downloadCount.formatNumber(),
-                            publishDate = changelog.publishDate.relativeTime()
+                            publishDate = changelog.publishDate.relativeTime(LocalContext.current)
                         )
                         if (changelog != lastChangelog) {
                             Divider(
@@ -82,7 +84,7 @@ fun ChangelogsScreen(
             } else {
                 item {
                     Text(
-                        text = "No changelogs found",
+                        text = stringResource(id = R.string.no_changelogs_found),
                         style = MaterialTheme.typography.titleLarge
                     )
                 }

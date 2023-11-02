@@ -17,6 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import app.revanced.manager.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -138,17 +139,17 @@ fun Int.formatNumber(): String {
     }
 }
 
-fun String.relativeTime(): String {
+fun String.relativeTime(context: Context): String {
     try {
         val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
         val inputDateTime = ZonedDateTime.parse(this)
         val duration = Duration.between(inputDateTime, currentTime)
 
         return when {
-            duration.toMinutes() < 1 -> "Just now"
-            duration.toMinutes() < 60 -> "${duration.toMinutes()}m ago"
-            duration.toHours() < 24 -> "${duration.toHours()}h ago"
-            duration.toDays() < 30 -> "${duration.toDays()}d ago"
+            duration.toMinutes() < 1 -> context.getString(R.string.just_now)
+            duration.toMinutes() < 60 -> context.getString(R.string.minutes_ago, duration.toMinutes().toString())
+            duration.toHours() < 24 -> context.getString(R.string.hours_ago, duration.toHours().toString())
+            duration.toDays() < 30 -> context.getString(R.string.days_ago, duration.toDays().toString())
             else -> {
                 val formatter = DateTimeFormatter.ofPattern("MMM d")
                 val formattedDate = inputDateTime.format(formatter)
@@ -162,6 +163,6 @@ fun String.relativeTime(): String {
             }
         }
     } catch (e: DateTimeParseException) {
-        return "Invalid Date"
+        return context.getString(R.string.invalid_date)
     }
 }
