@@ -13,7 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.InstallMobile
+import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.*
@@ -93,7 +93,7 @@ fun InstallerScreen(
                         if (canInstall) {
                             ExtendedFloatingActionButton(
                                 text = { Text(stringResource(vm.appButtonText)) },
-                                icon = { Icon(Icons.Outlined.InstallMobile, "") },
+                                icon = { Icon(Icons.Outlined.FileDownload, stringResource(id = R.string.install_app)) },
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                                 onClick = {
