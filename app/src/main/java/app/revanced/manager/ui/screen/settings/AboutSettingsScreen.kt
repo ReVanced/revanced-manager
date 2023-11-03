@@ -184,8 +184,7 @@ fun AboutSettingsScreen(
                             Icon(
                                 icon,
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(28.dp),
+                                modifier = Modifier.size(28.dp),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
