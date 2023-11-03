@@ -60,25 +60,24 @@ fun ChangelogsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = if (changelogs.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
         ) {
-            if (!changelogs.isNullOrEmpty()) {
-                val lastChangelog = changelogs.last()
-
-                items(
-                    changelogs,
-                    key = { it.version }
-                ) { changelog ->
-                    ChangelogItem(changelog, lastChangelog)
-                }
-            } else if (changelogs == null) {
+            if (changelogs == null) {
                 item {
                     LoadingIndicator()
                 }
-            } else {
+            } else if (changelogs.isEmpty()) {
                 item {
                     Text(
                         text = stringResource(id = R.string.no_changelogs_found),
                         style = MaterialTheme.typography.titleLarge
                     )
+                }
+            } else {
+                val lastChangelog = changelogs.last()
+                items(
+                    changelogs,
+                    key = { it.version }
+                ) { changelog ->
+                    ChangelogItem(changelog, lastChangelog)
                 }
             }
         }
