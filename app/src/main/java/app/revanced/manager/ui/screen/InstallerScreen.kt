@@ -13,7 +13,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.FileDownload
+import androidx.compose.material.icons.outlined.PostAdd
+import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -36,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.patcher.worker.State
+import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
@@ -59,7 +61,6 @@ fun InstallerScreen(
     val patcherState by vm.patcherState.observeAsState(null)
     val steps by vm.progress.collectAsStateWithLifecycle()
     val canInstall by remember { derivedStateOf { patcherState == true && (vm.installedPackageName != null || !vm.isInstalling) } }
-    var dropdownActive by rememberSaveable { mutableStateOf(false) }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
 
     if (showInstallPicker)
@@ -72,23 +73,40 @@ fun InstallerScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.installer),
-                onBackClick = onBackClick,
-                actions = {
-                    IconButton(onClick = { dropdownActive = true }) {
-                        Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
-                    }
-                    DropdownMenu(
-                        expanded = dropdownActive,
-                        onDismissRequest = { dropdownActive = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.save_logs)) },
-                            onClick = { vm.exportLogs(context) },
-                            enabled = patcherState != null
-                        )
-                    }
-                }
+                onBackClick = onBackClick
             )
+        },
+        bottomBar = {
+            AnimatedVisibility(patcherState != null) {
+                BottomAppBar(
+                    actions = {
+                        if (canInstall) {
+                            IconButton(onClick = { exportApkLauncher.launch("${vm.packageName}.apk") }) {
+                                Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
+                            }
+                        }
+                        IconButton(onClick = { vm.exportLogs(context) }) {
+                            Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
+                        }
+                    },
+                    floatingActionButton = {
+                        if (canInstall) {
+                            ExtendedFloatingActionButton(
+                                text = { Text(stringResource(vm.appButtonText)) },
+                                icon = { Icon(Icons.Outlined.FileDownload, stringResource(id = R.string.install_app)) },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                                onClick = {
+                                    if (vm.installedPackageName == null)
+                                        showInstallPicker = true
+                                    else
+                                        vm.open()
+                                }
+                            )
+                        }
+                    }
+                )
+            }
         }
     ) { paddingValues ->
         Column(
@@ -99,33 +117,6 @@ fun InstallerScreen(
         ) {
             steps.forEach {
                 InstallStep(it)
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-            ) {
-                Button(
-                    onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                    enabled = canInstall
-                ) {
-                    Text(stringResource(R.string.export_app))
-                }
-
-                Button(
-                    onClick = {
-                        if (vm.installedPackageName == null)
-                            showInstallPicker = true
-                        else
-                            vm.open()
-                    },
-                    enabled = canInstall
-                ) {
-                    Text(stringResource(vm.appButtonText))
-                }
             }
         }
     }

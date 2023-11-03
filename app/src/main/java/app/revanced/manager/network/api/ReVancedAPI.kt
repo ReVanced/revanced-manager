@@ -13,7 +13,9 @@ class ReVancedAPI(
 
     suspend fun getContributors() = service.getContributors(apiUrl()).transform { it.repositories }
 
-    suspend fun getRelease(name: String) = service.getRelease(apiUrl(), name).transform { it.release }
+    suspend fun getLatestRelease(name: String) = service.getLatestRelease(apiUrl(), name).transform { it.release }
+
+    suspend fun getReleases(name: String) = service.getReleases(apiUrl(), name).transform { it.releases }
 
     suspend fun getSocials() = service.getSocials(apiUrl()).transform { it.socials }
 

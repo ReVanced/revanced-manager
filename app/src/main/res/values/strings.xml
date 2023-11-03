@@ -90,6 +90,13 @@
     <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
     <string name="clear_patches_selection">Clear patches selection</string>
     <string name="clear_patches_selection_description">Clear all patches selection</string>
+    <string name="patch_options">Patch options</string>
+    <string name="patch_options_clear_package">Clear patch options for package</string>
+    <string name="patch_options_clear_package_description">Resets patch options for a single package</string>
+    <string name="patch_options_clear_bundle">Clear patch options for bundle</string>
+    <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
+    <string name="patch_options_clear_all">Clear all patch options</string>
+    <string name="patch_options_clear_all_description">Resets all patch options</string>
     <string name="prefer_splits">Prefer split apks</string>
     <string name="prefer_splits_description">Prefer split apks instead of full apks</string>
     <string name="prefer_universal">Prefer universal apks</string>
@@ -222,8 +229,8 @@
     <string name="install_app_fail">Failed to install app: %s</string>
     <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
     <string name="open_app">Open</string>
-    <string name="export_app">Export</string>
-    <string name="export_app_success">Apk exported</string>
+    <string name="save_apk">Save APK</string>
+    <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>
     <string name="save_logs">Save logs</string>
     <string name="select_install_type">Select installation type</string>
@@ -247,6 +254,7 @@
 
     <string name="more">More</string>
     <string name="continue_">Continue</string>
+    <string name="dismiss">Dismiss</string>
     <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
@@ -274,7 +282,7 @@
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
-    <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Tap here to turn off.</string>
+    <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off.</string>
     <string name="installing_manager_update">Installing update…</string>
     <string name="downloading_manager_update">Downloading update…</string>
     <string name="download_manager_failed">Failed to download update: %s</string>
@@ -282,4 +290,11 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
+    <string name="no_changelogs_found">No changelogs found</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">%sm ago</string>
+    <string name="hours_ago">%sh ago</string>
+    <string name="days_ago">%sd ago</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="disable_battery_optimization">Disable battery optimization</string>
 </resources>

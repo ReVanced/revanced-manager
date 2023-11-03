@@ -156,8 +156,8 @@ dependencies {
     implementation(libs.ktor.content.negotiation)
     implementation(libs.ktor.serialization)
 
-    // Markdown to HTML
-    implementation(libs.markdown)
+    // Markdown
+    implementation(libs.markdown.renderer)
 
     // Icons
     implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
