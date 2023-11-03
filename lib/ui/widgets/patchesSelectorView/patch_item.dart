@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
@@ -76,6 +77,7 @@ class _PatchItemState extends State<PatchItem> {
                   return;
                 }
               }
+              hapticCheckbox();
               widget.isSelected = !widget.isSelected;
               setState(() {});
             }
@@ -112,6 +114,7 @@ class _PatchItemState extends State<PatchItem> {
                           return;
                         }
                       }
+                      hapticCheckbox();
                       widget.isSelected = newValue!;
                       setState(() {});
                     }

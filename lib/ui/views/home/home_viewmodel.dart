@@ -14,6 +14,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
@@ -214,6 +215,7 @@ class HomeViewModel extends BaseViewModel {
                     'homeView.patchesConsentDialogText3Sub',
                   ),
                   onChanged: (selected) {
+                    hapticCheckbox();
                     autoUpdate.value = selected!;
                   },
                 ),

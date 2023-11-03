@@ -12,10 +12,10 @@ void hapticCheckbox() {
   HapticFeedback.lightImpact();
 }
 
-void hapticButton() {
+void hapticRadio() {
   HapticFeedback.lightImpact();
 }
 
-void hapticRadio() {
+void hapticButton() {
   HapticFeedback.lightImpact();
 }

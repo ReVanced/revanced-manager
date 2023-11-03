@@ -12,6 +12,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
@@ -604,6 +605,7 @@ class ManagerAPI {
                       'noShowAgain',
                     ),
                     onChanged: (selected) {
+                      hapticCheckbox();
                       noShow.value = selected!;
                     },
                   ),
