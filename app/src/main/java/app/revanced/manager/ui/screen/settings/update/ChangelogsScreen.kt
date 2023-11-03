@@ -17,7 +17,6 @@ import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.Markdown
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import app.revanced.manager.util.formatNumber
@@ -44,7 +44,6 @@ fun ChangelogsScreen(
     vm: ChangelogsViewModel = getViewModel()
 ) {
     val changelogs = vm.changelogs
-    val lastChangelog = changelogs.lastOrNull()
 
     Scaffold(
         topBar = {
@@ -59,27 +58,20 @@ fun ChangelogsScreen(
                 .padding(paddingValues)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = if (changelogs.isEmpty()) Arrangement.Center else Arrangement.Top
+            verticalArrangement = if (changelogs.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
         ) {
-            if (changelogs.isNotEmpty()) {
+            if (!changelogs.isNullOrEmpty()) {
+                val lastChangelog = changelogs.last()
+
                 items(
                     changelogs,
                     key = { it.version }
                 ) { changelog ->
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Changelog(
-                            markdown = changelog.body.replace("`", ""), // https://github.com/mikepenz/multiplatform-markdown-renderer/issues/79
-                            version = changelog.version,
-                            downloadCount = changelog.downloadCount.formatNumber(),
-                            publishDate = changelog.publishDate.relativeTime(LocalContext.current)
-                        )
-                        if (changelog != lastChangelog) {
-                            Divider(
-                                modifier = Modifier.padding(top = 32.dp),
-                                color = MaterialTheme.colorScheme.outlineVariant
-                            )
-                        }
-                    }
+                    ChangelogItem(changelog, lastChangelog)
+                }
+            } else if (changelogs == null) {
+                item {
+                    LoadingIndicator()
                 }
             } else {
                 item {
@@ -89,6 +81,27 @@ fun ChangelogsScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ChangelogItem(
+    changelog: ChangelogsViewModel.Changelog,
+    lastChangelog: ChangelogsViewModel.Changelog
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Changelog(
+            markdown = changelog.body.replace("`", ""),
+            version = changelog.version,
+            downloadCount = changelog.downloadCount.formatNumber(),
+            publishDate = changelog.publishDate.relativeTime(LocalContext.current)
+        )
+        if (changelog != lastChangelog) {
+            Divider(
+                modifier = Modifier.padding(top = 32.dp),
+                color = MaterialTheme.colorScheme.outlineVariant
+            )
         }
     }
 }
