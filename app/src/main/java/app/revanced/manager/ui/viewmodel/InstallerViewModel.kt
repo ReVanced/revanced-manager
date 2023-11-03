@@ -211,7 +211,7 @@ class InstallerViewModel(
                 app.contentResolver.openOutputStream(it)
                     .use { stream -> Files.copy(outputFile.toPath(), stream) }
             }
-            app.toast(app.getString(R.string.export_app_success))
+            app.toast(app.getString(R.string.save_apk_success))
         }
     }
 
