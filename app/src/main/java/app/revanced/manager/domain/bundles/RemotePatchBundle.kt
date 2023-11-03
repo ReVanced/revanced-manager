@@ -104,7 +104,7 @@ class APIPatchBundle(name: String, id: Int, directory: File, endpoint: String) :
     override suspend fun getLatestInfo() = coroutineScope {
         fun getAssetAsync(repo: String, mime: String) = async(Dispatchers.IO) {
             api
-                .getRelease(repo)
+                .getLatestRelease(repo)
                 .getOrThrow()
                 .let {
                     BundleAsset(it.metadata.tag, it.findAssetByType(mime).downloadUrl)

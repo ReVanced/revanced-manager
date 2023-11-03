@@ -9,6 +9,11 @@ data class ReVancedLatestRelease(
 )
 
 @Serializable
+data class ReVancedReleases(
+    val releases: List<ReVancedRelease>
+)
+
+@Serializable
 data class ReVancedRelease(
     val metadata: ReVancedReleaseMeta,
     val assets: List<Asset>
@@ -28,6 +33,7 @@ data class ReVancedReleaseMeta(
 @Serializable
 data class Asset(
     val name: String,
+    @SerialName("download_count") val downloadCount: Int,
     @SerialName("browser_download_url") val downloadUrl: String,
     @SerialName("content_type") val contentType: String
 )

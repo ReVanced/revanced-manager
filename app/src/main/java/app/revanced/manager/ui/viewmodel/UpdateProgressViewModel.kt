@@ -43,10 +43,10 @@ class UpdateProgressViewModel(
 
     private val location = File.createTempFile("updater", ".apk", app.cacheDir)
     private val job = viewModelScope.launch {
-        uiSafe(app, R.string.download_manager_failed, "Failed to download manager") {
+        uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
             withContext(Dispatchers.IO) {
                 val asset = reVancedAPI
-                    .getRelease("revanced-manager")
+                    .getLatestRelease("revanced-manager")
                     .getOrThrow()
                     .findAssetByType(APK_MIMETYPE)
 
