@@ -17,7 +17,7 @@ koin-version = "3.4.3"
 koin-version-compose = "3.4.6"
 reimagined-navigation = "1.5.0"
 ktor = "2.3.3"
-markdown = "0.5.0"
+markdown-renderer = "0.8.0"
 androidGradlePlugin = "8.1.2"
 kotlinGradlePlugin = "1.9.10"
 devToolsGradlePlugin = "1.9.10-1.0.13"
@@ -93,7 +93,7 @@ skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skra
 skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
 
 # Markdown
-markdown = { group = "org.jetbrains", name = "markdown", version.ref = "markdown" }
+markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
 
 # LibSU
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }

@@ -290,5 +290,11 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
+    <string name="no_changelogs_found">No changelogs found</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">%sm ago</string>
+    <string name="hours_ago">%sh ago</string>
+    <string name="days_ago">%sd ago</string>
+    <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
 </resources>
