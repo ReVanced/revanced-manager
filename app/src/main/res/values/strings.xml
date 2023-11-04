@@ -229,8 +229,8 @@
     <string name="install_app_fail">Failed to install app: %s</string>
     <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
     <string name="open_app">Open</string>
-    <string name="export_app">Export</string>
-    <string name="export_app_success">Apk exported</string>
+    <string name="save_apk">Save APK</string>
+    <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>
     <string name="save_logs">Save logs</string>
     <string name="select_install_type">Select installation type</string>
@@ -290,6 +290,12 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
+    <string name="no_changelogs_found">No changelogs found</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">%sm ago</string>
+    <string name="hours_ago">%sh ago</string>
+    <string name="days_ago">%sd ago</string>
+    <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
 
     <string name="failed_to_check_updates">Failed to check for updates</string>
