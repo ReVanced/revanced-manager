@@ -3,6 +3,7 @@ package app.revanced.manager.ui.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.network.utils.getOrNull
@@ -15,7 +16,7 @@ class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) { reVancedAPI.getSocials().getOrNull() }?.let(
+            withContext(Dispatchers.IO) { reVancedAPI.getSocials("https://api.revanced.app").getOrNull() }?.let(
                 socials::addAll
             )
         }

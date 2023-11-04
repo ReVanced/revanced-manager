@@ -17,7 +17,7 @@ class ReVancedAPI(
 
     suspend fun getReleases(name: String) = service.getReleases(apiUrl(), name).transform { it.releases }
 
-    suspend fun getSocials() = service.getSocials(apiUrl()).transform { it.socials }
+    suspend fun getSocials(api: String? = null) = service.getSocials(api ?: apiUrl()).transform { it.socials }
 
     companion object Extensions {
         fun ReVancedRelease.findAssetByType(mime: String) = assets.singleOrNull { it.contentType == mime } ?: throw MissingAssetException(mime)
