@@ -146,6 +146,9 @@ dependencies {
     // Compose Navigation
     implementation(libs.reimagined.navigation)
 
+    // Pager Indicators
+    implementation(libs.dotsindicator)
+
     // Licenses
     implementation(libs.about.libraries)
 
