@@ -273,6 +273,12 @@
     <string name="bundle_type_description">Choose the type of bundle you want</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
+    <string name="update_available">An update is available</string>
+    <string name="current_version">Current version: %s</string>
+    <string name="new_version">New version: %s</string>
+    <string name="ready_to_install_update">Ready to install update</string>
+    <string name="update_completed">Update installed</string>
+    <string name="install_update_manager_failed">Failed to install update</string>
     <string name="update_notification">A minor update for ReVanced Manager is available. Click here to update and get the latest features and fixes!</string>
     <string name="update_channel">Update channel</string>
     <string name="update_channel_description">Stable</string>

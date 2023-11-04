@@ -31,7 +31,7 @@ import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
-import app.revanced.manager.ui.screen.settings.update.UpdateProgressScreen
+import app.revanced.manager.ui.screen.settings.update.UpdateScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
@@ -120,7 +120,7 @@ fun SettingsScreen(
                 onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
-            is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
+            is SettingsDestination.UpdateProgress -> UpdateScreen(
                 onBackClick = { navController.pop() },
             )
 
