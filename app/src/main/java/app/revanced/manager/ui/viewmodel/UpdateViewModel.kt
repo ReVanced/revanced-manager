@@ -122,10 +122,10 @@ class UpdateViewModel(
     }
 
     init {
-        app.registerReceiver(installBroadcastReceiver, IntentFilter().apply {
+        ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
             addAction(UninstallService.APP_UNINSTALL_ACTION)
-        }, Context.RECEIVER_NOT_EXPORTED)
+        }, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     override fun onCleared() {
