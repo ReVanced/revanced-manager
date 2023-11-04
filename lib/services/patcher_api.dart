@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:injectable/injectable.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,7 +13,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 
 @lazySingleton
 class PatcherAPI {
@@ -236,10 +236,10 @@ void exportPatchedFile(String appName, String version) {
   try {
     if (outFile != null) {
       final String newName = _getFileName(appName, version);
-      CRFileSaver.saveFileWithDialog(
-        SaveFileDialogParams(
+      FlutterFileDialog.saveFile(
+        params: SaveFileDialogParams(
           sourceFilePath: outFile!.path,
-          destinationFileName: newName,
+          fileName: newName,
         ),
       );
     }
@@ -258,7 +258,7 @@ void sharePatchedFile(String appName, String version) {
       final String newPath =
           outFile!.path.substring(0, lastSeparator + 1) + newName;
       final File shareFile = outFile!.copySync(newPath);
-      ShareExtend.share(shareFile.path, 'file');
+      Share.shareXFiles([XFile(shareFile.path)]);
     }
   } on Exception catch (e) {
     if (kDebugMode) {
@@ -286,10 +286,10 @@ Future<void> exportPatcherLog(String logs) async {
   final String fileName = 'revanced-manager_patcher_$dateTime.txt';
   final File log = File('${logDir.path}/$fileName');
   log.writeAsStringSync(logs);
-  CRFileSaver.saveFileWithDialog(
-    SaveFileDialogParams(
+  FlutterFileDialog.saveFile(
+    params: SaveFileDialogParams(
       sourceFilePath: log.path,
-      destinationFileName: fileName,
+      fileName: fileName,
     ),
   );
 }

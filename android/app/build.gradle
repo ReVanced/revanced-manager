@@ -26,30 +26,26 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
     defaultConfig {
         applicationId "app.revanced.manager.flutter"
-        minSdkVersion 26
-        targetSdkVersion 33
+        minSdk 26
+        targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
     buildTypes {
         release {
             shrinkResources false
@@ -71,10 +67,21 @@ android {
             }
         }
     }
-
     packagingOptions {
-        exclude '/prebuilt/**'
+        jniLibs {
+            useLegacyPackaging true
+            excludes += ['/prebuilt/**']
+        }
+        resources {
+            excludes += ['/prebuilt/**']
+        }
     }
+
+    namespace 'app.revanced.manager.flutter'
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 flutter {
@@ -85,7 +92,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // ReVanced
-    implementation "app.revanced:revanced-patcher:17.0.0"
+    implementation "app.revanced:revanced-patcher:19.0.0"
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
