@@ -43,10 +43,17 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
+    startDestination: SettingsDestination? = null,
     viewModel: SettingsViewModel = getViewModel()
 ) {
     val navController =
-        rememberNavController<SettingsDestination>(startDestination = SettingsDestination.Settings)
+        rememberNavController(startDestination = startDestination ?: SettingsDestination.Settings)
+
+    val backClick: () -> Unit = {
+        if (navController.backstack.entries.size == 1)
+            onBackClick()
+        else navController.pop()
+    }
 
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -92,48 +99,48 @@ fun SettingsScreen(
         when (destination) {
 
             is SettingsDestination.General -> GeneralSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 viewModel = viewModel
             )
 
             is SettingsDestination.Advanced -> AdvancedSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onChangelogClick = { navController.navigate(SettingsDestination.UpdateChangelog) },
                 onUpdateClick = { navController.navigate(SettingsDestination.UpdateProgress) }
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.ImportExport -> ImportExportSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.About -> AboutSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onContributorsClick = { navController.navigate(SettingsDestination.Contributors) },
                 onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
             is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.UpdateChangelog -> ManagerUpdateChangelog(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Contributors -> ContributorScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Licenses -> LicensesScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Settings -> {
@@ -141,7 +148,7 @@ fun SettingsScreen(
                     topBar = {
                         AppTopBar(
                             title = stringResource(R.string.settings),
-                            onBackClick = onBackClick,
+                            onBackClick = backClick,
                         )
                     }
                 ) { paddingValues ->
