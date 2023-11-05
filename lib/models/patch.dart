@@ -73,11 +73,14 @@ class Option {
 
   static void _migrateV17ToV19(Map<String, dynamic> json) {
     if (json['valueType'] == null) {
-      json['valueType'] = json['optionClassType']
-          .replace('PatchOption', '')
-          .replace('List', 'Array');
+      final type = json['optionClassType'];
+      if (type is String) {
+        json['valueType'] = type
+            .replaceAll('PatchOption', '')
+            .replaceAll('List', 'Array');
 
-      json['optionClassType'] = null;
+        json['optionClassType'] = null;
+      }
     }
   }
 
