@@ -42,18 +42,20 @@ class MainViewModel(
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
 
-    init { viewModelScope.launch { checkForUpdates() } }
+    init {
+        viewModelScope.launch { checkForUpdates() }
+    }
 
-    fun dismissUpdateDialog() { updatedManagerVersion = null }
+    fun dismissUpdateDialog() {
+        updatedManagerVersion = null
+    }
 
     private suspend fun checkForUpdates() {
+        if (!prefs.managerAutoUpdates.get()) return
+
         try {
-            if (prefs.managerAutoUpdates.get()) {
-                reVancedAPI.getRelease("revanced-manager").getOrThrow().metadata.tag.let {
-                    if(it != Build.VERSION.RELEASE) {
-                        updatedManagerVersion = it
-                    }
-                }
+            reVancedAPI.getLatestRelease("revanced-manager").getOrThrow().let { release ->
+                updatedManagerVersion = release.metadata.tag.takeIf { it != Build.VERSION.RELEASE }
             }
         } catch (e: Exception) {
             app.toast(app.getString(R.string.failed_to_check_updates))
@@ -65,7 +67,7 @@ class MainViewModel(
 
         prefs.managerAutoUpdates.update(manager)
 
-        if(manager) checkForUpdates()
+        if (manager) checkForUpdates()
 
         if (patches) {
             with(patchBundleRepository) {
@@ -81,35 +83,33 @@ class MainViewModel(
     }
 
     fun importLegacySettings(componentActivity: ComponentActivity) {
-        val firstLaunch = prefs.firstLaunch.getBlocking()
+        if (!prefs.firstLaunch.getBlocking()) return
 
-        if (firstLaunch) {
-            try {
-                val launcher = componentActivity.registerForActivityResult(
-                    ActivityResultContracts.StartActivityForResult()
-                ) { result: ActivityResult ->
-                    if (result.resultCode == ComponentActivity.RESULT_OK) {
-                        result.data?.getStringExtra("data")?.let {
-                            applyLegacySettings(it)
-                        } ?: app.toast(app.getString(R.string.legacy_import_failed))
-                    } else {
-                        app.toast(app.getString(R.string.legacy_import_failed))
-                    }
-                }
-
-                val intent = Intent().apply {
-                    setClassName(
-                        "app.revanced.manager.flutter",
-                        "app.revanced.manager.flutter.ExportSettingsActivity"
-                    )
-                }
-
-                launcher.launch(intent)
-            } catch (e: Exception) {
-                if (e !is ActivityNotFoundException) {
+        try {
+            val launcher = componentActivity.registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) { result: ActivityResult ->
+                if (result.resultCode == ComponentActivity.RESULT_OK) {
+                    result.data?.getStringExtra("data")?.let {
+                        applyLegacySettings(it)
+                    } ?: app.toast(app.getString(R.string.legacy_import_failed))
+                } else {
                     app.toast(app.getString(R.string.legacy_import_failed))
-                    Log.e(tag, "Failed to launch legacy import activity: $e")
                 }
+            }
+
+            val intent = Intent().apply {
+                setClassName(
+                    "app.revanced.manager.flutter",
+                    "app.revanced.manager.flutter.ExportSettingsActivity"
+                )
+            }
+
+            launcher.launch(intent)
+        } catch (e: Exception) {
+            if (e !is ActivityNotFoundException) {
+                app.toast(app.getString(R.string.legacy_import_failed))
+                Log.e(tag, "Failed to launch legacy import activity: $e")
             }
         }
     }

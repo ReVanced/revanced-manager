@@ -43,11 +43,10 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
-    startDestination: SettingsDestination? = null,
+    startDestination: SettingsDestination,
     viewModel: SettingsViewModel = getViewModel()
 ) {
-    val navController =
-        rememberNavController(startDestination = startDestination ?: SettingsDestination.Settings)
+    val navController = rememberNavController(startDestination)
 
     val backClick: () -> Unit = {
         if (navController.backstack.entries.size == 1)

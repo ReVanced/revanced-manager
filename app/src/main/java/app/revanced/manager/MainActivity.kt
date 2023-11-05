@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
                         },
                         dismissButton = {
                             TextButton(onClick = vm::dismissUpdateDialog) {
-                                Text(stringResource(R.string.not_now))
+                                Text(stringResource(R.string.dismiss_temporary))
                             }
                         },
                         icon = { Icon(Icons.Outlined.Update, null) },

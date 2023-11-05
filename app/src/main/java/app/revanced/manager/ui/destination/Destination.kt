@@ -20,7 +20,7 @@ sealed interface Destination : Parcelable {
     data object AppSelector : Destination
 
     @Parcelize
-    data class Settings(val startDestination: SettingsDestination? = null) : Destination
+    data class Settings(val startDestination: SettingsDestination = SettingsDestination.Settings) : Destination
 
     @Parcelize
     data class VersionSelector(val packageName: String, val patchesSelection: PatchesSelection? = null) : Destination
