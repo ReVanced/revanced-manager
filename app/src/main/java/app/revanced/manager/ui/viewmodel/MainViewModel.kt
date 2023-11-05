@@ -1,15 +1,32 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.app.Application
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.os.Build
 import android.util.Base64
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.R
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
+import app.revanced.manager.network.api.ReVancedAPI
+import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.ui.theme.Theme
+import app.revanced.manager.util.tag
+import app.revanced.manager.util.toast
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -19,12 +36,42 @@ class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
     private val keystoreManager: KeystoreManager,
+    private val reVancedAPI: ReVancedAPI,
+    private val app: Application,
+    private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager
 ) : ViewModel() {
+    var updatedManagerVersion: String? by mutableStateOf(null)
+        private set
+
+    init {
+        viewModelScope.launch { checkForManagerUpdates() }
+    }
+
+    fun dismissUpdateDialog() {
+        updatedManagerVersion = null
+    }
+
+    private suspend fun checkForManagerUpdates() {
+        if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
+
+        try {
+            reVancedAPI.getLatestRelease("revanced-manager").getOrThrow().let { release ->
+                updatedManagerVersion = release.metadata.tag.takeIf { it != Build.VERSION.RELEASE }
+            }
+        } catch (e: Exception) {
+            app.toast(app.getString(R.string.failed_to_check_updates))
+            Log.e(tag, "Failed to check for updates", e)
+        }
+    }
+
     fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
         prefs.managerAutoUpdates.update(manager)
+
+        if (manager) checkForManagerUpdates()
+
         if (patches) {
             with(patchBundleRepository) {
                 sources
@@ -38,7 +85,39 @@ class MainViewModel(
         }
     }
 
-    fun applyLegacySettings(data: String) = viewModelScope.launch {
+    fun importLegacySettings(componentActivity: ComponentActivity) {
+        if (!prefs.firstLaunch.getBlocking()) return
+
+        try {
+            val launcher = componentActivity.registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) { result: ActivityResult ->
+                if (result.resultCode == ComponentActivity.RESULT_OK) {
+                    result.data?.getStringExtra("data")?.let {
+                        applyLegacySettings(it)
+                    } ?: app.toast(app.getString(R.string.legacy_import_failed))
+                } else {
+                    app.toast(app.getString(R.string.legacy_import_failed))
+                }
+            }
+
+            val intent = Intent().apply {
+                setClassName(
+                    "app.revanced.manager.flutter",
+                    "app.revanced.manager.flutter.ExportSettingsActivity"
+                )
+            }
+
+            launcher.launch(intent)
+        } catch (e: Exception) {
+            if (e !is ActivityNotFoundException) {
+                app.toast(app.getString(R.string.legacy_import_failed))
+                Log.e(tag, "Failed to launch legacy import activity: $e")
+            }
+        }
+    }
+
+    private fun applyLegacySettings(data: String) = viewModelScope.launch {
         val json = Json { ignoreUnknownKeys = true }
         val settings = json.decodeFromString<LegacySettings>(data)
 
@@ -48,7 +127,7 @@ class MainViewModel(
                 1 to Theme.LIGHT,
                 2 to Theme.DARK
             )
-            prefs.theme.update(themeMap[theme]!!)
+            prefs.theme.update(themeMap[theme] ?: Theme.SYSTEM)
         }
         settings.useDynamicTheme?.let { dynamicColor ->
             prefs.dynamicColor.update(dynamicColor)
@@ -84,7 +163,6 @@ class MainViewModel(
         settings.patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
         }
-        prefs.firstLaunch.update(false)
     }
 
     @Serializable

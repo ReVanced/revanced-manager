@@ -297,4 +297,9 @@
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
+
+    <string name="failed_to_check_updates">Failed to check for updates</string>
+    <string name="dismiss_temporary">Not now</string>
+    <string name="update_available">New update available</string>
+    <string name="update_available_description">A new version (%s) is available for download.</string>
 </resources>
