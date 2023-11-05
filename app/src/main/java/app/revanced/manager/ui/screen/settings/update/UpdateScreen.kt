@@ -149,10 +149,9 @@ fun UpdateScreen(
                         )
                     }
                 }
-
             }
-            Divider()
-            if (vm.changelog != null) {
+            vm.changelog?.let { changelog ->
+                Divider()
                 val scrollState = rememberScrollState()
                 Column(
                     modifier = Modifier
@@ -176,18 +175,14 @@ fun UpdateScreen(
                         )
                 ) {
                     Changelog(
-                        markdown = vm.changelog!!.body.replace(
-                            "`",
-                            ""
-                        ) + "\n" + vm.changelog!!.body.replace("`", ""),
-                        version = vm.changelog!!.version,
-                        downloadCount = vm.changelog!!.downloadCount.formatNumber(),
-                        publishDate = vm.changelog!!.publishDate.relativeTime(LocalContext.current)
+                        markdown = changelog.body.replace("`", ""),
+                        version = changelog.version,
+                        downloadCount = changelog.downloadCount.formatNumber(),
+                        publishDate = changelog.publishDate.relativeTime(LocalContext.current)
                     )
                 }
-            }
+            } ?: Spacer(modifier = Modifier.weight(1f))
             Row(
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (vm.state == State.DOWNLOADING || vm.state == State.CAN_INSTALL) {
