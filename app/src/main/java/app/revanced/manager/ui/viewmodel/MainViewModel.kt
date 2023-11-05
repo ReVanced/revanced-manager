@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -37,21 +38,22 @@ class MainViewModel(
     private val keystoreManager: KeystoreManager,
     private val reVancedAPI: ReVancedAPI,
     private val app: Application,
+    private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager
 ) : ViewModel() {
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
 
     init {
-        viewModelScope.launch { checkForUpdates() }
+        viewModelScope.launch { checkForManagerUpdates() }
     }
 
     fun dismissUpdateDialog() {
         updatedManagerVersion = null
     }
 
-    private suspend fun checkForUpdates() {
-        if (!prefs.managerAutoUpdates.get()) return
+    private suspend fun checkForManagerUpdates() {
+        if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
         try {
             reVancedAPI.getLatestRelease("revanced-manager").getOrThrow().let { release ->
@@ -59,6 +61,7 @@ class MainViewModel(
             }
         } catch (e: Exception) {
             app.toast(app.getString(R.string.failed_to_check_updates))
+            Log.e(tag, "Failed to check for updates", e)
         }
     }
 
@@ -67,7 +70,7 @@ class MainViewModel(
 
         prefs.managerAutoUpdates.update(manager)
 
-        if (manager) checkForUpdates()
+        if (manager) checkForManagerUpdates()
 
         if (patches) {
             with(patchBundleRepository) {
@@ -160,7 +163,6 @@ class MainViewModel(
         settings.patches?.let { selection ->
             patchSelectionRepository.import(0, selection)
         }
-        prefs.firstLaunch.update(false)
     }
 
     @Serializable
