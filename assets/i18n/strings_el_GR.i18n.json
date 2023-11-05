@@ -1,0 +1,146 @@
+{
+  "okButton": "Εντάξει",
+  "cancelButton": "Ακύρωση",
+  "updateButton": "Ενημέρωση",
+  "yesButton": "Ναι",
+  "noButton": "Όχι",
+  "warning": "Προειδοποίηση",
+  "navigationView": {
+    "dashboardTab": "Πίνακας Ελέγχου",
+    "patcherTab": "Τροποποιητής",
+    "settingsTab": "Ρυθμίσεις"
+  },
+  "homeView": {
+    "widgetTitle": "Πίνακας Ελέγχου",
+    "updatesSubtitle": "Ενημερώσεις",
+    "patchedSubtitle": "Τροποποιημένες Εφαρμογές",
+    "noInstallations": "Δεν έχουν εγκατασταθεί τροποποιημένες εφαρμογές",
+    "updateDialogTitle": "Ενημέρωση του Manager",
+    "updateChangelogTitle": "Τι νέο υπάρχει",
+    "downloadingMessage": "Λήψη ενημέρωσης...",
+    "installingMessage": "Εγκατάσταση ενημέρωσης...",
+    "errorDownloadMessage": "Αδυναμία λήψης ενημέρωσης",
+    "errorInstallMessage": "Αδυναμία εγκατάστασης ενημέρωσης",
+    "noConnection": "Δεν υπάρχει σύνδεση στο διαδίκτυο",
+    "updatesDisabled": "Η ενημέρωση τροποποιημένης εφαρμογής είναι ανενεργή προς το παρόν. Τροποποιήστε την εφαρμογή εκ νέου."
+  },
+  "applicationItem": {
+    "infoButton": "Πληροφορίες"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Φόρτωση..."
+  },
+  "patcherView": {
+    "widgetTitle": "Τροποποιητής",
+    "patchButton": "Τροποποίηση"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Επιλέξτε μια εφαρμογή",
+    "widgetTitleSelected": "Επιλεγμένη εφαρμογή",
+    "widgetSubtitle": "Δεν έχει επιλεχθεί εφαρμογή",
+    "noAppsLabel": "Δεν βρέθηκαν εφαρμογές",
+    "currentVersion": "Τρέχουσα"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Επιλέξτε τροποποιήσεις",
+    "widgetTitleSelected": "Επιλεγμένες τροποποιήσεις",
+    "widgetSubtitle": "Επιλέξτε πρώτα μια εφαρμογή",
+    "widgetEmptySubtitle": "Δεν επιλέχθηκαν τροποποιήσεις"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Κοινωνικά Δίκτυα",
+    "widgetSubtitle": "Είμαστε ενεργοί!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Επιλέξτε μια εφαρμογή",
+    "searchBarHint": "Αναζήτηση εφαρμογών",
+    "storageButton": "Αποθηκευτικός χώρος",
+    "errorMessage": "Αδυναμία χρήσης της επιλεγμένης εφαρμογής"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Επιλέξτε τροποποιήσεις",
+    "searchBarHint": "Αναζήτηση τροποποιήσεων",
+    "doneButton": "Τέλος",
+    "none": "Κανένα",
+    "loadPatchesSelection": "Φόρτωση επιλεγμένων τροποποιήσεων",
+    "noSavedPatches": "Δεν υπάρχουν αποθηκευμένες τροποποιήσεις για την εφαρμογή που επιλέξατε.\nΠατήστε «Τέλος» για να αποθηκεύσετε τις τωρινές επιλογές σας.",
+    "noPatchesFound": "Δε βρέθηκαν τροποποιήσεις για την επιλεγμένη εφαρμογή"
+  },
+  "installerView": {
+    "installButton": "Εγκατάσταση",
+    "openButton": "Άνοιγμα",
+    "notificationTitle": "Το ReVanced Manager πραγματοποιεί τροποποίηση",
+    "notificationText": "Πατήστε για να επιστρέψετε στο πρόγραμμα εγκατάστασης",
+    "noExit": "Το πρόγραμμα εγκατάστασης εκτελείται ακόμη, αδυναμία εξόδου..."
+  },
+  "settingsView": {
+    "widgetTitle": "Ρυθμίσεις",
+    "appearanceSectionTitle": "Εμφάνιση",
+    "teamSectionTitle": "Ομάδα",
+    "advancedSectionTitle": "Για Προχωρημένους",
+    "darkThemeLabel": "Σκουρόχρωμη λειτουργία",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Εμφάνιση που ταιριάζει με τη δική σας συσκευή",
+    "languageLabel": "Γλώσσα",
+    "sourcesLabel": "Πηγές",
+    "sourcesLabelHint": "Διαμορφώστε τις δικές σας προσαρμοσμένες πηγές",
+    "hostRepositoryLabel": "Αποθετήριο API",
+    "orgPatchesLabel": "Οργάνωση τροποποιήσεων",
+    "sourcesPatchesLabel": "Πηγή τροποποιήσεων",
+    "orgIntegrationsLabel": "Οργάνωση ενσωματώσεων",
+    "sourcesIntegrationsLabel": "Πηγή ενσωματώσεων",
+    "sourcesResetDialogTitle": "Επαναφορά",
+    "sourcesResetDialogText": "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τις προσαρμοσμένες πηγές στις προεπιλεγμένες τιμές τους;",
+    "apiURLResetDialogText": "Είστε βέβαιοι ότι θέλετε να επαναφέρετε το API URL στην προεπιλεγμένη τιμή του;",
+    "contributorsLabel": "Συνεισφέροντες",
+    "contributorsHint": "Λίστα με όσους έχουν συμβάλει στο ReVanced",
+    "logsLabel": "Αρχεία καταγραφής",
+    "logsHint": "Κοινή χρήση αρχείων καταγραφής του ReVanced Manager",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Διαμορφώστε το δικό σας προσαρμοσμένο API URL",
+    "selectApiURL": "Διεύθυνση URL API",
+    "exportSectionTitle": "Εισαγωγή & εξαγωγή",
+    "aboutLabel": "Σχετικά με",
+    "snackbarMessage": "Αντιγράφηκε στο πρόχειρο",
+    "restartAppForChanges": "Επανεκκινήστε την εφαρμογή για να εφαρμόσετε αλλαγές",
+    "regenerateKeystoreLabel": "Διαγραφή κλειδιών",
+    "regenerateKeystoreHint": "Διαγράψτε το κλειδί που χρησιμοποιείται για την υπογραφή της εφαρμογής",
+    "regeneratedKeystore": "Το κλειδί διαγράφηκε",
+    "deleteTempDirLabel": "Διαγραφή προσωρινών αρχείων",
+    "deleteTempDirHint": "Διαγραφή των αχρησιμοποίητων προσωρινών αρχείων",
+    "deletedTempDir": "Τα προσωρινά αρχεία διαγράφηκαν",
+    "exportPatchesLabel": "Εξαγωγή των επιλεγμένων τροποποιήσεων",
+    "exportPatchesHint": "Εξαγωγή των επιλεγμένων τροποποιήσεων σε ένα αρχείο JSON",
+    "exportedPatches": "Η εξαγωγή των επιλεγμένων τροποποιήσεων ολοκληρώθηκε",
+    "noExportFileFound": "Δεν υπάρχει επιλογή τροποποιήσεων για εξαγωγή",
+    "importPatchesLabel": "Εισαγωγή των επιλεγμένων τροποποιήσεων",
+    "importPatchesHint": "Εισαγωγή των επιλεγμένων τροποποιήσεων από ένα αρχείο JSON",
+    "importedPatches": "Η εισαγωγή των επιλεγμένων τροποποιήσεων ολοκληρώθηκε",
+    "resetStoredPatchesLabel": "Επαναφορά τροποποιήσεων",
+    "resetStoredPatchesHint": "Επαναφορά των αποθηκευμένων επιλογών τροποποιήσεων",
+    "resetStoredPatches": "Η επαναφορά των επιλεγμένων τροποποιήσεων ολοκληρώθηκε",
+    "jsonSelectorErrorMessage": "Αδυναμία χρήσης του συγκεκριμένου αρχείου JSON",
+    "deleteLogsLabel": "Διαγραφή αρχείων καταγραφής",
+    "deleteLogsHint": "Διαγραφή των αρχείων καταγραφής που έχει συλλέξει το ReVanced Manager",
+    "deletedLogs": "Τα αρχεία καταγραφής έχουν διαγραφεί"
+  },
+  "appInfoView": {
+    "widgetTitle": "Πληροφορίες εφαρμογής",
+    "openButton": "Άνοιγμα",
+    "uninstallButton": "Απεγκατάσταση",
+    "unpatchButton": "Κατάργηση Τροποποιήσεων",
+    "unpatchDialogText": "Είστε βέβαιοι ότι θέλετε να καταργήσετε τις τροποποιήσεις για αυτήν την εφαρμογή;",
+    "rootDialogTitle": "Σφάλμα",
+    "rootDialogText": "Η εφαρμογή εγκαταστάθηκε με πρόσβαση root, αλλά αυτή τη στιγμή το ReVanced Manager δεν έχει πρόσβαση root.\nΠαρακαλώ παραχωρήστε πρόσβαση root.",
+    "packageNameLabel": "Όνομα πακέτου",
+    "installTypeLabel": "Τύπος εγκατάστασης",
+    "rootTypeLabel": "Μέσω root",
+    "nonRootTypeLabel": "Χωρίς root",
+    "patchedDateLabel": "Ημερομηνία τροποποίησης",
+    "appliedPatchesLabel": "Τροποποιήσεις που έχουν εφαρμοστεί",
+    "updateNotImplemented": "Αυτή η δυνατότητα δεν είναι ακόμα διαθέσιμη"
+  },
+  "contributorsView": {
+    "widgetTitle": "Συνεισφέροντες"
+  }
+}

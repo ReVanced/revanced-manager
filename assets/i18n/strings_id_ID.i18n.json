@@ -1,0 +1,146 @@
+{
+  "okButton": "Oke",
+  "cancelButton": "Batal",
+  "updateButton": "Perbarui",
+  "yesButton": "Ya",
+  "noButton": "Tidak",
+  "warning": "Peringatan",
+  "navigationView": {
+    "dashboardTab": "Dasbor",
+    "patcherTab": "Pemodifikasi",
+    "settingsTab": "Pengaturan"
+  },
+  "homeView": {
+    "widgetTitle": "Dasbor",
+    "updatesSubtitle": "Pembaruan",
+    "patchedSubtitle": "Aplikasi yang dimodifikasi",
+    "noInstallations": "Tidak ada aplikasi termodifikasi yang terpasang",
+    "updateDialogTitle": "Perbarui Manager",
+    "updateChangelogTitle": "Catatan perubahan",
+    "downloadingMessage": "Mengunduh pembaruan...",
+    "installingMessage": "Memasang pembaruan...",
+    "errorDownloadMessage": "Tidak dapat mengunduh pembaruan",
+    "errorInstallMessage": "Tidak dapat memasang pembaruan",
+    "noConnection": "Tidak ada koneksi internet",
+    "updatesDisabled": "Memperbarui aplikasi yang dimodifikasi saat ini dinonaktifkan. Pasang ulang aplikasi lagi."
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Memuat..."
+  },
+  "patcherView": {
+    "widgetTitle": "Pemodifikasi",
+    "patchButton": "Modifikasi"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Pilih aplikasi",
+    "widgetTitleSelected": "Aplikasi terpilih",
+    "widgetSubtitle": "Tidak ada aplikasi yang dipilih",
+    "noAppsLabel": "Aplikasi tidak ditemukan",
+    "currentVersion": "Saat ini"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Pilih Modifikasi",
+    "widgetTitleSelected": "Modifikasi terpilih",
+    "widgetSubtitle": "Pilih aplikasi terlebih dahulu",
+    "widgetEmptySubtitle": "Tidak ada modifikasi yang terpilih"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Media Sosial",
+    "widgetSubtitle": "Ikuti kami!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Pilih aplikasi",
+    "searchBarHint": "Cari aplikasi",
+    "storageButton": "Penyimpanan",
+    "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Pilih modifikasi",
+    "searchBarHint": "Cari modifikasi",
+    "doneButton": "Selesai",
+    "none": "Tidak ada",
+    "loadPatchesSelection": "Tidak ada modifikasi yang terpilih",
+    "noSavedPatches": "Tidak ada tambalan tersimpan untuk aplikasi terpilih.\nTekan \"Sudah\" untuk menyimpan seleksi saat ini.",
+    "noPatchesFound": "Modifikasi tidak ditemukan untuk aplikasi terpilih"
+  },
+  "installerView": {
+    "installButton": "Pasang",
+    "openButton": "Buka",
+    "notificationTitle": "ReVanced Manager sedang memodifikasi",
+    "notificationText": "Ketuk untuk kembali ke pemasang",
+    "noExit": "Pemasangan masih berjalan, tidak bisa keluar..."
+  },
+  "settingsView": {
+    "widgetTitle": "Pengaturan",
+    "appearanceSectionTitle": "Tampilan",
+    "teamSectionTitle": "Tim",
+    "advancedSectionTitle": "Lanjutan",
+    "darkThemeLabel": "Mode gelap",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Nikmati pengalaman lebih dekat ke perangkat Anda",
+    "languageLabel": "Bahasa",
+    "sourcesLabel": "Sumber",
+    "sourcesLabelHint": "Konfigurasi sumber kustom Anda",
+    "hostRepositoryLabel": "API Repositori",
+    "orgPatchesLabel": "Organisasi Modifikasi",
+    "sourcesPatchesLabel": "Sumber Modifikasi",
+    "orgIntegrationsLabel": "Organisasi Intergrasi",
+    "sourcesIntegrationsLabel": "Sumber Integrasi",
+    "sourcesResetDialogTitle": "Atur ulang",
+    "sourcesResetDialogText": "Apakah Anda yakin ingin mengatur ulang sumber kustom ke bawaannya?",
+    "apiURLResetDialogText": "Apakah Anda yakin ingin mengatur ulang URL API ke bawaan?",
+    "contributorsLabel": "Kontributor",
+    "contributorsHint": "Daftar kontributor ReVanced",
+    "logsLabel": "Log",
+    "logsHint": "Bagikan log manager",
+    "apiURLLabel": "URL API",
+    "apiURLHint": "Konfigurasi URL API kustom Anda",
+    "selectApiURL": "URL API",
+    "exportSectionTitle": "Impor & Ekspor",
+    "aboutLabel": "Tentang",
+    "snackbarMessage": "Disalin ke papan klip",
+    "restartAppForChanges": "Mulai ulang aplikasi untuk menerapkan perubahan",
+    "regenerateKeystoreLabel": "Hapus penyimpanan kunci",
+    "regenerateKeystoreHint": "Hapus penyimpanan kunci yang digunakan untuk menandatangani aplikasi",
+    "regeneratedKeystore": "Penyimpanan kunci dihapus",
+    "deleteTempDirLabel": "Hapus berkas sementara",
+    "deleteTempDirHint": "Hapus berkas sementara yang tidak dipakai",
+    "deletedTempDir": "Berkas sementara dihapus",
+    "exportPatchesLabel": "Ekspor modifikasi terpilih",
+    "exportPatchesHint": "Ekspor modifikasi terpilih ke file JSON",
+    "exportedPatches": "Modifikasi terpilih telah diekspor",
+    "noExportFileFound": "Tidak ada modifikasi terpilih untuk diekspor",
+    "importPatchesLabel": "Impor modifikasi terpilih",
+    "importPatchesHint": "Impor modifikasi terpilih dari file JSON",
+    "importedPatches": "Modifikasi terpilih telah diimpor",
+    "resetStoredPatchesLabel": "Kembalikan modifikasi",
+    "resetStoredPatchesHint": "Kembalikan modifikasi terpilih yang telah disimpan",
+    "resetStoredPatches": "Modifikasi terpilih telah dikembalikan",
+    "jsonSelectorErrorMessage": "Tidak bisa menggunakan berkas JSON tersebut",
+    "deleteLogsLabel": "Hapus log",
+    "deleteLogsHint": "Hapus log pengelola yang terkumpul",
+    "deletedLogs": "Log dihapus"
+  },
+  "appInfoView": {
+    "widgetTitle": "Info aplikasi",
+    "openButton": "Buka",
+    "uninstallButton": "Copot",
+    "unpatchButton": "Memulihkan",
+    "unpatchDialogText": "Apakah Anda yakin ingin memulihkan aplikasi ini?",
+    "rootDialogTitle": "Kesalahan",
+    "rootDialogText": "App telah diinstal dengan izin superuser, tapi saat ini ReVanced Manager tidak memiliki izin. Mohon izinkan superuser.",
+    "packageNameLabel": "Nama paket",
+    "installTypeLabel": "Tipe pemasangan",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Non-root",
+    "patchedDateLabel": "Tanggal Termodifikasi",
+    "appliedPatchesLabel": "Modifikasi Terpasang",
+    "updateNotImplemented": "Fitur ini belum diimplementasikan"
+  },
+  "contributorsView": {
+    "widgetTitle": "Kontributor"
+  }
+}

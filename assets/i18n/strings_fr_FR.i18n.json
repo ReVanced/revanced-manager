@@ -1,0 +1,146 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Annuler",
+  "updateButton": "Mise à jour",
+  "yesButton": "Oui",
+  "noButton": "Non",
+  "warning": "Avertissement",
+  "navigationView": {
+    "dashboardTab": "Tableau de bord",
+    "patcherTab": "Patcheur",
+    "settingsTab": "Paramètres"
+  },
+  "homeView": {
+    "widgetTitle": "Tableau de bord",
+    "updatesSubtitle": "Mises à jour",
+    "patchedSubtitle": "Applications patchées",
+    "noInstallations": "Aucune application patchée n'est installée",
+    "updateDialogTitle": "Mettre à jour le Manager",
+    "updateChangelogTitle": "Liste des changements",
+    "downloadingMessage": "Téléchargement de la mise à jour...",
+    "installingMessage": "Installation de la mise à jour...",
+    "errorDownloadMessage": "Impossible de télécharger la mise à jour",
+    "errorInstallMessage": "Impossible d'installer la mise à jour",
+    "noConnection": "Aucune connexion Internet",
+    "updatesDisabled": "Mettre à jour une application patchée est actuellement désactivé. Réappliquez à nouveau le patch."
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Chargement..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcheur",
+    "patchButton": "Patch"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Sélectionner une application",
+    "widgetTitleSelected": "Application sélectionnée",
+    "widgetSubtitle": "Aucune application sélectionnée",
+    "noAppsLabel": "Aucune application trouvée",
+    "currentVersion": "Version actuelle"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Sélectionner les patchs",
+    "widgetTitleSelected": "Patchs sélectionnés",
+    "widgetSubtitle": "Choisissez d'abord une application",
+    "widgetEmptySubtitle": "Aucun patch n'est sélectionné"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Réseaux sociaux",
+    "widgetSubtitle": "Nous sommes en ligne !"
+  },
+  "appSelectorView": {
+    "viewTitle": "Sélectionner une application",
+    "searchBarHint": "Rechercher une application",
+    "storageButton": "Stockage",
+    "errorMessage": "Impossible d'utiliser l'application sélectionnée"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Sélectionner les patchs",
+    "searchBarHint": "Rechercher des patchs",
+    "doneButton": "Terminé",
+    "none": "Aucun",
+    "loadPatchesSelection": "Charger les patchs sélectionnés",
+    "noSavedPatches": "Aucun patch enregistré pour l'application sélectionnée.\nAppuyez sur Terminé pour enregistrer la sélection actuelle.",
+    "noPatchesFound": "Aucun patch n'a été trouvé pour l'application sélectionnée"
+  },
+  "installerView": {
+    "installButton": "Installer",
+    "openButton": "Ouvrir",
+    "notificationTitle": "ReVanced Manager est en train de patcher",
+    "notificationText": "Appuyer pour revenir à l’installateur",
+    "noExit": "L'installateur est toujours en fonctionnement, impossible de quitter..."
+  },
+  "settingsView": {
+    "widgetTitle": "Réglages",
+    "appearanceSectionTitle": "Apparence",
+    "teamSectionTitle": "Équipe",
+    "advancedSectionTitle": "Avancé",
+    "darkThemeLabel": "Mode sombre",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Profitez d'une expérience plus proche de votre appareil",
+    "languageLabel": "Langue",
+    "sourcesLabel": "Sources",
+    "sourcesLabelHint": "Configurer vos sources personnalisées",
+    "hostRepositoryLabel": "Dépôt de l'API",
+    "orgPatchesLabel": "Organisation des patchs",
+    "sourcesPatchesLabel": "Source des patches",
+    "orgIntegrationsLabel": "Organisme d'intégration",
+    "sourcesIntegrationsLabel": "Source des intégrations",
+    "sourcesResetDialogTitle": "Réinitialiser",
+    "sourcesResetDialogText": "Êtes-vous sûr de vouloir réinitialiser les sources personnalisées à leur valeur par défaut ?",
+    "apiURLResetDialogText": "Êtes-vous sûr de vouloir réinitialiser l'URL d'API à sa valeur par défaut ?",
+    "contributorsLabel": "Contributeurs",
+    "contributorsHint": "Liste des contributeurs de ReVanced",
+    "logsLabel": "Journal",
+    "logsHint": "Partager les journaux du Manager",
+    "apiURLLabel": "URL de l'API",
+    "apiURLHint": "Configurez l'URL de votre API personnalisée",
+    "selectApiURL": "URL de l'API",
+    "exportSectionTitle": "Importer & exporter",
+    "aboutLabel": "À propos",
+    "snackbarMessage": "Copié dans le presse-papier",
+    "restartAppForChanges": "Redémarrez l'application pour appliquer les changements",
+    "regenerateKeystoreLabel": "Supprimer le magasin de clés",
+    "regenerateKeystoreHint": "Supprimer le magasin de clés utilisé pour signer l'application",
+    "regeneratedKeystore": "Magasin de clés supprimé",
+    "deleteTempDirLabel": "Supprimer les fichiers temporaires",
+    "deleteTempDirHint": "Supprimer les fichiers temporaires inutilisés",
+    "deletedTempDir": "Fichiers temporaires supprimés",
+    "exportPatchesLabel": "Exporter la sélection de patchs",
+    "exportPatchesHint": "Exporter la sélection de patchs vers un fichier JSON",
+    "exportedPatches": "Sélection de patchs exportée",
+    "noExportFileFound": "Aucune sélection de patchs à exporter",
+    "importPatchesLabel": "Importer une sélection de patchs",
+    "importPatchesHint": "Importer une sélection de patchs depuis un fichier JSON",
+    "importedPatches": "Sélection de patchs importée",
+    "resetStoredPatchesLabel": "Réinitialiser les patches",
+    "resetStoredPatchesHint": "Réinitialiser la sélection des patches sauvegardés",
+    "resetStoredPatches": "La sélection des patches a été réinitialisée",
+    "jsonSelectorErrorMessage": "Impossible d'utiliser le fichier JSON sélectionné",
+    "deleteLogsLabel": "Supprimer les journaux",
+    "deleteLogsHint": "Supprimer les journaux du gestionnaire collectés",
+    "deletedLogs": "Journaux supprimés"
+  },
+  "appInfoView": {
+    "widgetTitle": "Infos concernant l'application",
+    "openButton": "Ouvrir",
+    "uninstallButton": "Désinstaller",
+    "unpatchButton": "Dépatcher",
+    "unpatchDialogText": "Êtes-vous sûr de vouloir dépatcher cette application?",
+    "rootDialogTitle": "Erreur",
+    "rootDialogText": "L'application a été installée avec les permissions d'accès à la racine, mais ReVanced Manager n'a actuellement aucune permissions.\nVeuillez d'abord accorder l'accès à la racine.",
+    "packageNameLabel": "Nom du paquet",
+    "installTypeLabel": "Type d'installation",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Non-root",
+    "patchedDateLabel": "Date du patch",
+    "appliedPatchesLabel": "Patchs appliqués",
+    "updateNotImplemented": "Cette fonction n'a pas encore été implémentée"
+  },
+  "contributorsView": {
+    "widgetTitle": "Contributeurs"
+  }
+}

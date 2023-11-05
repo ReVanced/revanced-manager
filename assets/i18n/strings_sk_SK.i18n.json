@@ -1,0 +1,146 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Zrušiť",
+  "updateButton": "Aktualizovať",
+  "yesButton": "Áno",
+  "noButton": "Nie",
+  "warning": "Upozornenie",
+  "navigationView": {
+    "dashboardTab": "Hlavný panel",
+    "patcherTab": "Zaplátač",
+    "settingsTab": "Nastavenia"
+  },
+  "homeView": {
+    "widgetTitle": "Hlavný panel",
+    "updatesSubtitle": "Aktualizácie",
+    "patchedSubtitle": "Zaplátané aplikácie",
+    "noInstallations": "Žiadne zaplátané aplikácie nie sú nainštalované",
+    "updateDialogTitle": "Aktualizovať Manažéra",
+    "updateChangelogTitle": "Zoznam zmien",
+    "downloadingMessage": "Sťahovanie aktualizácie...",
+    "installingMessage": "Inštalujú sa aktualizácie...",
+    "errorDownloadMessage": "Nepodarilo sa stiahnuť aktualizáciu",
+    "errorInstallMessage": "Nepodarilo sa nainštalovať aktualizáciu",
+    "noConnection": "Žiadne pripojenie na internet",
+    "updatesDisabled": "Aktualizácia zaplátanej aplikácie je v súčasnosti zakázaná. Znovu zaplátajte aplikáciu."
+  },
+  "applicationItem": {
+    "infoButton": "Informácie"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Načítava sa..."
+  },
+  "patcherView": {
+    "widgetTitle": "Zaplátač",
+    "patchButton": "Záplata"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Vyberte aplikáciu",
+    "widgetTitleSelected": "Vybraná aplikácia",
+    "widgetSubtitle": "Nie je vybraná žiadna aplikácia",
+    "noAppsLabel": "Nebola nájdená žiadna aplikácia",
+    "currentVersion": "Aktuálne"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Vyberte záplaty",
+    "widgetTitleSelected": "Zvolené záplaty",
+    "widgetSubtitle": "Najskôr vyberte aplikáciu",
+    "widgetEmptySubtitle": "Nie sú vybrané žiadne záplaty"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sociálne siete",
+    "widgetSubtitle": "Sme opäť online!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Vyberte aplikáciu",
+    "searchBarHint": "Vyhľadať aplikáciu",
+    "storageButton": "Úložisko",
+    "errorMessage": "Nie je možné použiť vybranú aplikáciu"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Vyberte záplaty",
+    "searchBarHint": "Vyhľadajte záplaty",
+    "doneButton": "Hotovo",
+    "none": "Žiadne",
+    "loadPatchesSelection": "Načítať výber záplat",
+    "noSavedPatches": "Žiadne uložené záplaty pre vybranú aplikáciu\nStlačením tlačidla Hotovo uložíte aktuálny výber.",
+    "noPatchesFound": "Neboli nájdené žiadne záplaty pre zvolenú aplikáciu"
+  },
+  "installerView": {
+    "installButton": "Inštalovať",
+    "openButton": "Otvoriť",
+    "notificationTitle": "ReVanced manažér zapláta",
+    "notificationText": "Stlačte pre vrátenie na inštalátor",
+    "noExit": "Inštalátor je stále spustený, nedá sa ukončiť..."
+  },
+  "settingsView": {
+    "widgetTitle": "Nastavenia",
+    "appearanceSectionTitle": "Vzhľad",
+    "teamSectionTitle": "Tím",
+    "advancedSectionTitle": "Pokročilé",
+    "darkThemeLabel": "Tmavý režim",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Užite si tému bližíe prispôsobenú vášmu zariadeniu",
+    "languageLabel": "Jazyk",
+    "sourcesLabel": "Zdroje",
+    "sourcesLabelHint": "Nastavte vlastné zdroje",
+    "hostRepositoryLabel": "API repozitára",
+    "orgPatchesLabel": "Autor záplaty",
+    "sourcesPatchesLabel": "Zdroj záplaty",
+    "orgIntegrationsLabel": "Autor integrácie",
+    "sourcesIntegrationsLabel": "Zdroj integrácie",
+    "sourcesResetDialogTitle": "Resetovať",
+    "sourcesResetDialogText": "Ste si istý, že chcete obnoviť základné nastavenie vlastných zdrojov?",
+    "apiURLResetDialogText": "Ste si istý, že chcete obnoviť základné nastavenie API URL?",
+    "contributorsLabel": "Prispievatelia",
+    "contributorsHint": "Zoznam prispievateľov projektu ReVanced",
+    "logsLabel": "Záznamy",
+    "logsHint": "Zdieľať záznamy manažéra",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Nastaviť vlastnú API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Import a export",
+    "aboutLabel": "Informácie",
+    "snackbarMessage": "Skopírované do schránky",
+    "restartAppForChanges": "Ak chcete použiť zmeny, reštartujte aplikáciu",
+    "regenerateKeystoreLabel": "Odstrániť úložisko kľúčov",
+    "regenerateKeystoreHint": "Odstrániť úložisko kľúčov použité na podpísanie aplikácie",
+    "regeneratedKeystore": "Úložisko kľúčov odstránené",
+    "deleteTempDirLabel": "Odstrániť dočasné súbory",
+    "deleteTempDirHint": "Odstrániť nepoužívané dočasné súbory",
+    "deletedTempDir": "Dočasné súbory odstránené",
+    "exportPatchesLabel": "Exportovať vybrané záplaty",
+    "exportPatchesHint": "Exportovať výber záplat do súboru JSON",
+    "exportedPatches": "Výber záplat exportovaný",
+    "noExportFileFound": "Žiadne záplaty na export",
+    "importPatchesLabel": "Načítať výber záplat",
+    "importPatchesHint": "Importovať výber záplat zo súboru JSON",
+    "importedPatches": "Výber záplat importovaný",
+    "resetStoredPatchesLabel": "Resetovať záplaty",
+    "resetStoredPatchesHint": "Resetovať výber uložených záplat",
+    "resetStoredPatches": "Výber záplat bol zresetovaný",
+    "jsonSelectorErrorMessage": "Nie je možné použiť vybraný JSON súbor",
+    "deleteLogsLabel": "Odstrániť záznamy",
+    "deleteLogsHint": "Odstrániť zozbieranané záznamy manažéra",
+    "deletedLogs": "Záznamy odstránené"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informácie o aplikácii",
+    "openButton": "Otvoriť",
+    "uninstallButton": "Odinštalovať",
+    "unpatchButton": "Odstrániť záplaty",
+    "unpatchDialogText": "Určite chcete odstrániť záplaty z tejto aplikácie?",
+    "rootDialogTitle": "Chyba",
+    "rootDialogText": "Aplikácia bola nainštalovaná s oprávneniami superpoužívateľa, ale v súčasnosti ReVanced Manažér nemá žiadne oprávnenia. Najskôr mu udeľte oprávnenia superužívateľa.",
+    "packageNameLabel": "Názov balíka",
+    "installTypeLabel": "Spôsob inštalácie",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Bez rootu",
+    "patchedDateLabel": "Dátum záplaty",
+    "appliedPatchesLabel": "Použité záplaty",
+    "updateNotImplemented": "Táto funkcia ešte nebola implementovaná"
+  },
+  "contributorsView": {
+    "widgetTitle": "Prispievatelia"
+  }
+}

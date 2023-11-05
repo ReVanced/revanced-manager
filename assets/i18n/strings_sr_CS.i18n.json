@@ -1,0 +1,143 @@
+{
+  "okButton": "U redu",
+  "cancelButton": "Otkaži",
+  "yesButton": "Da",
+  "noButton": "Ne",
+  "warning": "Upozorenje",
+  "navigationView": {
+    "dashboardTab": "Komandna tabla",
+    "patcherTab": "Patcher",
+    "settingsTab": "Podešavanja"
+  },
+  "homeView": {
+    "widgetTitle": "Komandna tabla",
+    "updatesSubtitle": "Ažuriranja",
+    "patchedSubtitle": "Pečovane aplikacije",
+    "noInstallations": "Nema instaliranih pečovanih aplikacija",
+    "updateDialogTitle": "Ažuriraj Manager",
+    "downloadingMessage": "Preuzimanje ažuriranja...",
+    "installingMessage": "Instaliranje ažuriranja...",
+    "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
+    "errorInstallMessage": "Nije moguće instalirati ažuriranje",
+    "noConnection": "Nema internet veze",
+    "updatesDisabled": "Ažuriranje pečovane aplikacije je trenutno onemogućeno.\nPonovo pečujte aplikaciju."
+  },
+  "applicationItem": {
+    "infoButton": "Informacije"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Učitavanje..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Pečuj"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Izaberite aplikaciju",
+    "widgetTitleSelected": "Izabrana aplikacija",
+    "widgetSubtitle": "Nijedna aplikacija nije izabrana",
+    "noAppsLabel": "Nijedna aplikacija nije pronađena",
+    "currentVersion": "Trenutna"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Izaberite pečeve",
+    "widgetTitleSelected": "Izabrani pečevi",
+    "widgetSubtitle": "Prvo izaberite aplikaciju",
+    "widgetEmptySubtitle": "Nema izabranih pečeva"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Društvene mreže",
+    "widgetSubtitle": "Na mreži smo!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Izaberite aplikaciju",
+    "searchBarHint": "Pretražite aplikacije",
+    "storageButton": "Skladište",
+    "errorMessage": "Nije moguće koristiti izabranu aplikaciju"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Izaberite pečeve",
+    "searchBarHint": "Pretražite pečeve",
+    "doneButton": "Gotovo",
+    "none": "Nijedan",
+    "loadPatchesSelection": "Učitajte izbor pečeva",
+    "noSavedPatches": "Nema sačuvanih pečeva za izabranu aplikaciju\nPritisnite „Gotovo” da sačuvate trenutni izbor",
+    "noPatchesFound": "Nisu pronađeni pečevi za izabranu aplikaciju"
+  },
+  "installerView": {
+    "installButton": "Instaliraj",
+    "openButton": "Otvori",
+    "notificationTitle": "ReVanced Manager pečuje",
+    "notificationText": "Dodirnite da biste se vratili na program za instalaciju",
+    "noExit": "Program za instalaciju je još uvek otvoren, nije moguće izaći..."
+  },
+  "settingsView": {
+    "widgetTitle": "Podešavanja",
+    "appearanceSectionTitle": "Izgled",
+    "teamSectionTitle": "Tim",
+    "advancedSectionTitle": "Napredno",
+    "darkThemeLabel": "Tamni režim",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Uživajte u iskustvu prilagođenom vašem uređaju",
+    "languageLabel": "Jezik",
+    "sourcesLabel": "Izvori",
+    "sourcesLabelHint": "Podesite svoje prilagođene izvore",
+    "orgPatchesLabel": "Organizacija za pečeve",
+    "sourcesPatchesLabel": "Izvor pečeva",
+    "orgIntegrationsLabel": "Organizacija za integracije",
+    "sourcesIntegrationsLabel": "Izvor integracija",
+    "sourcesResetDialogTitle": "Resetuj",
+    "sourcesResetDialogText": "Da li ste sigurni da želite da resetujete prilagođene izvore na njihove podrazumevane vrednosti?",
+    "apiURLResetDialogText": "Da li ste sigurni da želite da resetujete API URL na njegovu podrazumevanu vrednost?",
+    "contributorsLabel": "Saradnici",
+    "contributorsHint": "Lista saradnika ReVanced",
+    "logsLabel": "Evidencije",
+    "logsHint": "Deli Manager evidencije",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Podesite svoj prilagođeni API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Uvoz i izvoz",
+    "aboutLabel": "O aplikaciji",
+    "snackbarMessage": "Kopirano u privremenu memoriju",
+    "restartAppForChanges": "Ponovo pokrenite aplikaciju da biste primenili promene",
+    "regenerateKeystoreLabel": "Izbrišite skladište ključeva",
+    "regenerateKeystoreHint": "Izbrišite skladište ključeva korišćeno za potpisivanje aplikacije",
+    "regeneratedKeystore": "Skladište ključeva je izbrisano",
+    "deleteTempDirLabel": "Izbrišite privremene datoteke",
+    "deleteTempDirHint": "Izbrišite nekorišćene privremene datoteke",
+    "deletedTempDir": "Privremene datoteke su izbrisane",
+    "exportPatchesLabel": "Izvezite izbor pečeva",
+    "exportPatchesHint": "Izvezite izbor pečeva u JSON datoteku",
+    "exportedPatches": "Izbor pečeva je izvezen",
+    "noExportFileFound": "Nema izbora pečeva za izvoz",
+    "importPatchesLabel": "Uvezite izbor pečeva",
+    "importPatchesHint": "Uvezite izbor pečeva iz JSON datoteke",
+    "importedPatches": "Izbor pečeva je uvezen",
+    "resetStoredPatchesLabel": "Resetujte pečeve",
+    "resetStoredPatchesHint": "Resetujte izbor sačuvanih pečeva",
+    "resetStoredPatches": "Izbor pečeva je resetovan",
+    "jsonSelectorErrorMessage": "Nije moguće koristiti izabranu JSON datoteku",
+    "deleteLogsLabel": "Izbrišite evidencije",
+    "deleteLogsHint": "Izbrišite prikupljene Manager evidencije",
+    "deletedLogs": "Evidencije su izbrisane"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informacije o aplikaciji",
+    "openButton": "Otvori",
+    "uninstallButton": "Deinstaliraj",
+    "unpatchButton": "Ukloni peč",
+    "unpatchDialogText": "Da li ste sigurni da želite da uklonite peč za ovu aplikaciju?",
+    "rootDialogTitle": "Greška",
+    "rootDialogText": "Aplikacija je instalirana sa dozvolama superkorisnika, ali trenutno ReVanced Manager nema dozvole.\nPrvo dodelite dozvole superkorisnika.",
+    "packageNameLabel": "Naziv paketa",
+    "installTypeLabel": "Tip instalacije",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Non-root",
+    "patchedDateLabel": "Datum pečovanja",
+    "appliedPatchesLabel": "Primenjeni pečevi",
+    "updateNotImplemented": "Ova funkcija još uvek nije implementirana"
+  },
+  "contributorsView": {
+    "widgetTitle": "Saradnici"
+  }
+}

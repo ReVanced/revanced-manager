@@ -1,0 +1,146 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Anuluj",
+  "updateButton": "Aktualizuj",
+  "yesButton": "Tak",
+  "noButton": "Nie",
+  "warning": "Ostrzeżenie",
+  "navigationView": {
+    "dashboardTab": "Panel główny",
+    "patcherTab": "Patcher",
+    "settingsTab": "Ustawienia"
+  },
+  "homeView": {
+    "widgetTitle": "Panel główny",
+    "updatesSubtitle": "Aktualizacje",
+    "patchedSubtitle": "Zaktualizowane aplikacje",
+    "noInstallations": "Nie zainstalowano żadnych zmodyfikowanych aplikacji",
+    "updateDialogTitle": "Zaktualizuj Managera",
+    "updateChangelogTitle": "Lista zmian",
+    "downloadingMessage": "Pobieranie aktualizacji...",
+    "installingMessage": "Instalowanie aktualizacji...",
+    "errorDownloadMessage": "Nie udało się pobrać aktualizacji",
+    "errorInstallMessage": "Nie udało się zainstalować aktualizacji",
+    "noConnection": "Brak połączenia z internetem",
+    "updatesDisabled": "Aktualizowanie załatanej aplikacji jest obecnie niemożliwe. Spróbuj załatać aplikację jeszcze raz."
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Ładowanie..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Łataj"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Wybierz aplikację",
+    "widgetTitleSelected": "Wybrana aplikacja",
+    "widgetSubtitle": "Nie wybrano aplikacji",
+    "noAppsLabel": "Nie znaleziono aplikacji",
+    "currentVersion": "Aktualna"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Wybierz łatki",
+    "widgetTitleSelected": "Wybrane łatki",
+    "widgetSubtitle": "Najpierw wybierz aplikację",
+    "widgetEmptySubtitle": "Nie wybrano żadnych łatek"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Media społecznościowe",
+    "widgetSubtitle": "Jesteśmy online!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Wybierz aplikację",
+    "searchBarHint": "Wyszukaj aplikacje",
+    "storageButton": "Pamięć",
+    "errorMessage": "Nie można użyć wybranej aplikacji"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Wybierz łatki",
+    "searchBarHint": "Wyszukaj łatki",
+    "doneButton": "Gotowe",
+    "none": "Żadne",
+    "loadPatchesSelection": "Załaduj wybrane łatki",
+    "noSavedPatches": "Brak zapisanych łatek dla wybranej aplikacji.\nNaciśnij Gotowe, aby zapisać bieżący wybór.",
+    "noPatchesFound": "Nie znaleziono żadnych łatek dla wybranej aplikacji"
+  },
+  "installerView": {
+    "installButton": "Zainstaluj",
+    "openButton": "Otwórz",
+    "notificationTitle": "ReVanced Manager patchuje",
+    "notificationText": "Dotknij, aby powrócić do instalatora",
+    "noExit": "Instalator jest nadal uruchomiony, nie można zakończyć jego działania..."
+  },
+  "settingsView": {
+    "widgetTitle": "Ustawienia",
+    "appearanceSectionTitle": "Wygląd",
+    "teamSectionTitle": "Zespół",
+    "advancedSectionTitle": "Zaawansowane",
+    "darkThemeLabel": "Tryb ciemny",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
+    "languageLabel": "Język",
+    "sourcesLabel": "Źródła",
+    "sourcesLabelHint": "Skonfiguruj własne źródła",
+    "hostRepositoryLabel": "Repozytorium API",
+    "orgPatchesLabel": "Organizacja łatek",
+    "sourcesPatchesLabel": "Źródło łatek",
+    "orgIntegrationsLabel": "Organizacja integracji",
+    "sourcesIntegrationsLabel": "Źródło integracji",
+    "sourcesResetDialogTitle": "Zresetuj",
+    "sourcesResetDialogText": "Czy na pewno chcesz przywrócić niestandardowe źródła do wartości domyślnych?",
+    "apiURLResetDialogText": "Czy jesteś pewien, że chcesz przywrócić wszystkie adresy API do domyślnych wartości?",
+    "contributorsLabel": "Współtwórcy",
+    "contributorsHint": "Lista współtwórców ReVanced",
+    "logsLabel": "Logi",
+    "logsHint": "Udostępnij logi menedżera",
+    "apiURLLabel": "Adres API",
+    "apiURLHint": "Ustaw własny adres API",
+    "selectApiURL": "Adres API",
+    "exportSectionTitle": "Import i eksport",
+    "aboutLabel": "O Aplikacji",
+    "snackbarMessage": "Skopiowano do schowka",
+    "restartAppForChanges": "Zrestartuj aplikację, aby zastosować zmiany",
+    "regenerateKeystoreLabel": "Usuń klucz",
+    "regenerateKeystoreHint": "Usuń klucz używany do podpisywania aplikacji",
+    "regeneratedKeystore": "Klucz usunięty",
+    "deleteTempDirLabel": "Usuń pliki tymczasowe",
+    "deleteTempDirHint": "Usuń nieużywane pliki tymczasowe",
+    "deletedTempDir": "Pliki tymczasowe zostały usunięte",
+    "exportPatchesLabel": "Eksportuj wybrane łatki",
+    "exportPatchesHint": "Eksportuj wybrane łatki do pliku JSON",
+    "exportedPatches": "Wyeksportowano wybór łatek",
+    "noExportFileFound": "Brak wybranych łatek do wyeksportowania",
+    "importPatchesLabel": "Importuj wybrane łatki",
+    "importPatchesHint": "Importuj wybrane łatki z pliku JSON",
+    "importedPatches": "Zaimportowano wybrane łatki",
+    "resetStoredPatchesLabel": "Resetuj łatki",
+    "resetStoredPatchesHint": "Zresetuj wybrane przechowywane łatki",
+    "resetStoredPatches": "Wybrane łatki zostały zresetowane",
+    "jsonSelectorErrorMessage": "Nie można użyć wybranego pliku JSON",
+    "deleteLogsLabel": "Usuń logi",
+    "deleteLogsHint": "Usuń logi zebrane przez menadżera",
+    "deletedLogs": "Logi usunięte"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informacje o aplikacji",
+    "openButton": "Otwórz",
+    "uninstallButton": "Odinstaluj",
+    "unpatchButton": "Usuń aktualizację",
+    "unpatchDialogText": "Czy na pewno chcesz usunąć łatki z tej aplikacji?",
+    "rootDialogTitle": "Błąd",
+    "rootDialogText": "Aplikacja została zainstalowana z uprawnieniami superużytkownika, ale obecnie ReVanced Manager nie ma uprawnień.\nProszę najpierw przyznać uprawnienia superużytkownika.",
+    "packageNameLabel": "Nazwa pakietu",
+    "installTypeLabel": "Typ instalacji",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Bez roota",
+    "patchedDateLabel": "Data modyfikacji",
+    "appliedPatchesLabel": "Zastosowane łatki",
+    "updateNotImplemented": "Ta funkcja nie została jeszcze zaimplementowana"
+  },
+  "contributorsView": {
+    "widgetTitle": "Współtwórcy"
+  }
+}

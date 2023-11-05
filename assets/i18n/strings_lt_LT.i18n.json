@@ -1,0 +1,146 @@
+{
+  "okButton": "Gerai",
+  "cancelButton": "Atšaukti",
+  "updateButton": "Atnaujinti",
+  "yesButton": "Taip",
+  "noButton": "Ne",
+  "warning": "Įspėjimas",
+  "navigationView": {
+    "dashboardTab": "Valdymo skydas",
+    "patcherTab": "Patcher",
+    "settingsTab": "Nustatymai"
+  },
+  "homeView": {
+    "widgetTitle": "Valdymo skydas",
+    "updatesSubtitle": "Atnaujinimai",
+    "patchedSubtitle": "Modifikuotos programos",
+    "noInstallations": "Nėra įdiegtų modifikuotų programų",
+    "updateDialogTitle": "Atnaujinti Manager",
+    "updateChangelogTitle": "Pakeitimų sąrašas",
+    "downloadingMessage": "Atsiunčiamas atnaujinimas...",
+    "installingMessage": "Įdiegiamas atnaujinimas...",
+    "errorDownloadMessage": "Nepavyksta atsisiųsti atnaujinimo",
+    "errorInstallMessage": "Nepavyksta įdiegti atnaujinimo",
+    "noConnection": "Nėra interneto ryšio",
+    "updatesDisabled": "Modifikuotų programų atnaujinimas šiuo metu išjungtas. Vėl modifikuokite programą."
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Kraunama..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Modifikuoti"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Pasirinkite programą",
+    "widgetTitleSelected": "Pasirinkta programa",
+    "widgetSubtitle": "Nepasirinkta programa",
+    "noAppsLabel": "Nerastos jokios programos",
+    "currentVersion": "Dabartinė"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Pasirinkite modifikacijas",
+    "widgetTitleSelected": "Pasirinktos modifikacijos",
+    "widgetSubtitle": "Pirmiausia pasirinkite programą",
+    "widgetEmptySubtitle": "Nepasirinkta jokių modifikacijų"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Socialiniai tinklai",
+    "widgetSubtitle": "Mes esame internete!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Pasirinkite programą",
+    "searchBarHint": "Ieškoti programų",
+    "storageButton": "Saugykla",
+    "errorMessage": "Neina naudoti parinktos programos"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Pasirinkti modifikacijas",
+    "searchBarHint": "Ieškoti modifikacijų",
+    "doneButton": "Atlikta",
+    "none": "Nėra",
+    "loadPatchesSelection": "Įkelti modifikacijų pasirinkimą",
+    "noSavedPatches": "Nėra išsaugotų pasirinktos programos modifikacijų.\nPaspauskite Atlikta, kad išsaugotumėte dabartinį pasirinkimą.",
+    "noPatchesFound": "Nerasta modifikacijų pasirinktai programai"
+  },
+  "installerView": {
+    "installButton": "Įdiegti",
+    "openButton": "Atidaryti",
+    "notificationTitle": "ReVanced Manager modifikuoja programą",
+    "notificationText": "Paspauskite sugrįžti į įdiegėją",
+    "noExit": "Diegimo programa vis dar veikia, negalima išeiti..."
+  },
+  "settingsView": {
+    "widgetTitle": "Nustatymai",
+    "appearanceSectionTitle": "Išvaizda",
+    "teamSectionTitle": "Komanda",
+    "advancedSectionTitle": "Išplėstiniai nustatymai",
+    "darkThemeLabel": "Tamsus rėžimas",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Mėgaukis patirtimi artimiau tavo įrenginiui",
+    "languageLabel": "Kalba",
+    "sourcesLabel": "Šaltiniai",
+    "sourcesLabelHint": "Sukonfigūruoti tavo nurodytus šaltinius",
+    "hostRepositoryLabel": "API saugykla",
+    "orgPatchesLabel": "Modifikacijų organizacija",
+    "sourcesPatchesLabel": "Modifikacijų šaltinis",
+    "orgIntegrationsLabel": "Integracijų organizacija",
+    "sourcesIntegrationsLabel": "Integracijų šaltinis",
+    "sourcesResetDialogTitle": "Nustatyti iš naujo",
+    "sourcesResetDialogText": "Ar esi tikras kad nori iš naujo nustatyti šaltinius į jų numatytas reikšmes?",
+    "apiURLResetDialogText": "Ar esi tikras kad nori iš naujo nustatyti API URL adresą į numatytą reikšmę?",
+    "contributorsLabel": "Prisidėjusieji žmonės",
+    "contributorsHint": "Žmonės prisidėję prie ReVanced",
+    "logsLabel": "Įrašai",
+    "logsHint": "Bendrinti Manager įrašus",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Sukonfigūruoti tavo nurodytus API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Importuoti ir eksportuoti",
+    "aboutLabel": "Apie",
+    "snackbarMessage": "Nukopijuota į iškarpinę",
+    "restartAppForChanges": "Iš naujo paleiskite programą, kad modifikacijos įsigaliotų",
+    "regenerateKeystoreLabel": "Ištrinti keystore",
+    "regenerateKeystoreHint": "Ištrinti keystore kuris naudojamas pasirašyti programą",
+    "regeneratedKeystore": "Keystore ištrintas",
+    "deleteTempDirLabel": "Ištrinti laikinus failus",
+    "deleteTempDirHint": "Ištrinti nenaudojamus laikinus failus",
+    "deletedTempDir": "Laikini failai ištrinti",
+    "exportPatchesLabel": "Eksportuoti modifikacijų pasirinkimą",
+    "exportPatchesHint": "Eksportuoti modifikacijų pasirinkimą į JSON failą",
+    "exportedPatches": "Modifikacijų pasirinkimai eksportuoti",
+    "noExportFileFound": "Nėra pasirinktų modifikacijų eksportuoti",
+    "importPatchesLabel": "Įkelti modifikacijų pasirinkimą",
+    "importPatchesHint": "Įkelti modifikacijų pasirinkimą iš JSON failo",
+    "importedPatches": "Modifikacijų pasirinkimai įkelti",
+    "resetStoredPatchesLabel": "Atstatyti modifikacijas",
+    "resetStoredPatchesHint": "Atstatyti išsaugotą modifikacijų pasirinkimą",
+    "resetStoredPatches": "Modifikacijų pasirinkimas buvo atstatytas",
+    "jsonSelectorErrorMessage": "Neina naudoti pasirinkto JSON failo",
+    "deleteLogsLabel": "Ištrinti įrašus",
+    "deleteLogsHint": "Ištrinti surinktus Manager įrašus",
+    "deletedLogs": "Įrašai ištrinti"
+  },
+  "appInfoView": {
+    "widgetTitle": "Programos informacija",
+    "openButton": "Atidaryti",
+    "uninstallButton": "Išdiegti",
+    "unpatchButton": "Išimti modifikacijas",
+    "unpatchDialogText": "Ar esi tikras kad nori išimti modifikacijas iš šios programos?",
+    "rootDialogTitle": "Klaida",
+    "rootDialogText": "Programa buvo įdiegta su supervartotojo leidimais, bet ReVanced Manager neturi leidimų.\nPirmiausia suteikite supervartotojo leidimus.",
+    "packageNameLabel": "Paketo pavadinimas",
+    "installTypeLabel": "Įdiegimo tipas",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Ne root",
+    "patchedDateLabel": "Modifikavimo data",
+    "appliedPatchesLabel": "Uždėtos modifikacijos",
+    "updateNotImplemented": "Ši funkcija dar neįgyvendinta"
+  },
+  "contributorsView": {
+    "widgetTitle": "Prisidėjusieji žmonės"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "okButton": "Tamam",
+  "cancelButton": "İptal",
+  "updateButton": "Güncelleme",
+  "yesButton": "Evet",
+  "noButton": "Hayır",
+  "warning": "Uyarı",
+  "navigationView": {
+    "dashboardTab": "Kontrol Paneli",
+    "patcherTab": "Yamalayıcı",
+    "settingsTab": "Ayarlar"
+  },
+  "homeView": {
+    "widgetTitle": "Kontrol Paneli",
+    "updatesSubtitle": "Güncellemeler",
+    "patchedSubtitle": "Yamalanmış uygulamalar",
+    "noInstallations": "Yamalanmış uygulama bulunmamaktadır",
+    "updateDialogTitle": "Manager'ı güncelle",
+    "updateChangelogTitle": "Değişiklik Notları",
+    "downloadingMessage": "Güncelleme indiriliyor...",
+    "installingMessage": "Güncelleme yükleniyor...",
+    "errorDownloadMessage": "Güncelleme indirilemiyor",
+    "errorInstallMessage": "Güncelleme kurulamıyor",
+    "noConnection": "İnternet bağlantısı yok",
+    "updatesDisabled": "Yamalanmış uygulamayı güncelleme şuan devre dışı. Uygulamayı tekrar yamalayın."
+  },
+  "applicationItem": {
+    "infoButton": "Bilgi"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Yükleniyor..."
+  },
+  "patcherView": {
+    "widgetTitle": "Yamalayıcı",
+    "patchButton": "Yama"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Bir uygulama seçin",
+    "widgetTitleSelected": "Seçilen Uygulama",
+    "widgetSubtitle": "Hiçbir uygulama seçilmedi",
+    "noAppsLabel": "Hiçbir uygulama bulunamadı",
+    "currentVersion": "Şu anki"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Yamaları Seçin",
+    "widgetTitleSelected": "Seçilen yamalar",
+    "widgetSubtitle": "Önce bir uygulama seçin",
+    "widgetEmptySubtitle": "Hiçbir yama seçilmedi"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sosyal Medyalar",
+    "widgetSubtitle": "Çevrimiçiyiz!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Bir uygulama seçin",
+    "searchBarHint": "Uygulamaları arayın",
+    "storageButton": "Depolama",
+    "errorMessage": "Seçili uygulama kullanılamıyor"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Yamaları Seçin",
+    "searchBarHint": "Yama arayın",
+    "doneButton": "Hazır",
+    "none": "Hiçbiri",
+    "loadPatchesSelection": "Yama seçimlerini yükle",
+    "noSavedPatches": "Seçilen uygulama için kaydedilmiş yama yok.\nMevcut seçimi kaydetmek için Tamam'a tıklayın.",
+    "noPatchesFound": "Seçili uygulama için yama bulunamadı"
+  },
+  "installerView": {
+    "installButton": "Yükle",
+    "openButton": "Aç",
+    "notificationTitle": "ReVanced Manager yamalıyor",
+    "notificationText": "Yükleyiciye dönmek için tıklayın",
+    "noExit": "Yükleyici hâlâ çalışıyor, çıkış yapılamaz..."
+  },
+  "settingsView": {
+    "widgetTitle": "Ayarlar",
+    "appearanceSectionTitle": "Görünüm",
+    "teamSectionTitle": "Ekip",
+    "advancedSectionTitle": "Gelişmiş",
+    "darkThemeLabel": "Karanlık mod",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Cihazınıza yakın bir deneyimin keyfini çıkarın",
+    "languageLabel": "Dil",
+    "sourcesLabel": "Kaynaklar",
+    "sourcesLabelHint": "Özel kaynaklarınızı yapılandırın",
+    "hostRepositoryLabel": "Depo API",
+    "orgPatchesLabel": "Yama organizasyonu",
+    "sourcesPatchesLabel": "Yama kaynağı",
+    "orgIntegrationsLabel": "Entegrasyon organizasyonu",
+    "sourcesIntegrationsLabel": "Entegrasyon kaynağı",
+    "sourcesResetDialogTitle": "Sıfırla",
+    "sourcesResetDialogText": "Özel kaynakları varsayılan ayarlarına geri döndürmek istediğinize emin misiniz?",
+    "apiURLResetDialogText": "API URL'sini varsayılan değerine sıfırlamak istediğinizden emin misiniz?",
+    "contributorsLabel": "Katkıda bulunanlar",
+    "contributorsHint": "ReVanced'a katkıda bulunanların listesi",
+    "logsLabel": "Kayıtlar",
+    "logsHint": "Manager'in günlüklerini paylaş",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Özel API URL'inizi yapılandırın",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "İçe & dışa aktar",
+    "aboutLabel": "Hakkında",
+    "snackbarMessage": "Panoya kopyalandı",
+    "restartAppForChanges": "Değişiklikleri uygulamak için uygulamayı yeniden başlatın",
+    "regenerateKeystoreLabel": "Keystore'u sil",
+    "regenerateKeystoreHint": "Uygulamayı imzalamak için kullanılan keystore'u silin",
+    "regeneratedKeystore": "Keystore silindi",
+    "deleteTempDirLabel": "Geçici dosyaları sil",
+    "deleteTempDirHint": "Kullanılmayan geçici dosyaları sil",
+    "deletedTempDir": "Geçici dosyalar silindi",
+    "exportPatchesLabel": "Yama seçimini dışa aktar",
+    "exportPatchesHint": "Yama seçimini bir JSON dosyasına aktar",
+    "exportedPatches": "Yama seçimi dışa aktarıldı",
+    "noExportFileFound": "Dışa aktarılacak bir yama seçimi yok",
+    "importPatchesLabel": "Yama seçimini içe aktar",
+    "importPatchesHint": "Yama seçimini bir JSON dosyasından aktar",
+    "importedPatches": "Yama seçimi içe aktarıldı",
+    "resetStoredPatchesLabel": "Yamaları sıfırla",
+    "resetStoredPatchesHint": "Seçilmiş yamaları sıfırla",
+    "resetStoredPatches": "Yama seçilimi sıfırlandı",
+    "jsonSelectorErrorMessage": "Seçilen JSON dosyası kullanılamıyor",
+    "deleteLogsLabel": "Günlükleri sil",
+    "deleteLogsHint": "Toplanan yönetici günlüklerini sil",
+    "deletedLogs": "Günlükler silindi"
+  },
+  "appInfoView": {
+    "widgetTitle": "Uygulama bilgisi",
+    "openButton": "Aç",
+    "uninstallButton": "Kaldır",
+    "unpatchButton": "Yamayı kaldır",
+    "unpatchDialogText": "Bu uygulamanın yamasını kaldırmak istediğinizden emin misiniz?",
+    "rootDialogTitle": "Hata",
+    "rootDialogText": "Uygulama SuperUser yetkileri ile yüklendi, fakat ReVanced Manager şu an yetkilere sahip değil. Lütfen önce SuperUser yetkilerini verin.",
+    "packageNameLabel": "Paket adı",
+    "installTypeLabel": "Kurulum tipi",
+    "rootTypeLabel": "Kök",
+    "nonRootTypeLabel": "Köksüz",
+    "patchedDateLabel": "Yamalandığı tarih",
+    "appliedPatchesLabel": "Uygulanan yamalar",
+    "updateNotImplemented": "Bu özellik henüz uygulanmadı"
+  },
+  "contributorsView": {
+    "widgetTitle": "Katkıda Bulunanlar"
+  }
+}

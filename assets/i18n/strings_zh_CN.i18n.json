@@ -1,0 +1,143 @@
+{
+  "okButton": "确定",
+  "cancelButton": "取消",
+  "yesButton": "是",
+  "noButton": "否",
+  "warning": "警告",
+  "navigationView": {
+    "dashboardTab": "控制面板",
+    "patcherTab": "修补器",
+    "settingsTab": "设置"
+  },
+  "homeView": {
+    "widgetTitle": "控制面板",
+    "updatesSubtitle": "更新",
+    "patchedSubtitle": "已补丁的应用程序",
+    "noInstallations": "未安装任何已打补丁程序",
+    "updateDialogTitle": "更新管理器",
+    "downloadingMessage": "正在下载更新...",
+    "installingMessage": "正在安装更新...",
+    "errorDownloadMessage": "无法下载更新",
+    "errorInstallMessage": "无法安装更新",
+    "noConnection": "无网络连接",
+    "updatesDisabled": "更新已打补丁的应用功能当前已禁用。请重新为该应用打补丁。"
+  },
+  "applicationItem": {
+    "infoButton": "信息"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "加载中..."
+  },
+  "patcherView": {
+    "widgetTitle": "补丁程序",
+    "patchButton": "补丁"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "选择应用",
+    "widgetTitleSelected": "已选择应用程序",
+    "widgetSubtitle": "未选择应用程序",
+    "noAppsLabel": "未发现应用程序。",
+    "currentVersion": "当前"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "选择补丁",
+    "widgetTitleSelected": "已选补丁",
+    "widgetSubtitle": "请先选择一个应用程序",
+    "widgetEmptySubtitle": "未选择补丁"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "社交媒体",
+    "widgetSubtitle": "我们也在线上哦！"
+  },
+  "appSelectorView": {
+    "viewTitle": "请先选择一个应用程序",
+    "searchBarHint": "搜索应用程序",
+    "storageButton": "存储空间",
+    "errorMessage": "无法使用所选应用程序。"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "选择补丁",
+    "searchBarHint": "搜索补丁",
+    "doneButton": "完成",
+    "none": "无",
+    "loadPatchesSelection": "读取补丁选定项",
+    "noSavedPatches": "所选应用没有保存的补丁\n按完成保存当前选定项",
+    "noPatchesFound": "未找到适用于所选应用程序的补丁"
+  },
+  "installerView": {
+    "installButton": "安装",
+    "openButton": "开启",
+    "notificationTitle": "ReVanced 管理器正在修补中",
+    "notificationText": "点击返回到安装器",
+    "noExit": "安装程序仍在运行，无法退出..."
+  },
+  "settingsView": {
+    "widgetTitle": "设置",
+    "appearanceSectionTitle": "外观",
+    "teamSectionTitle": "团队",
+    "advancedSectionTitle": "高级",
+    "darkThemeLabel": "深色模式",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "享受以您的设备为主的最佳体验",
+    "languageLabel": "语言",
+    "sourcesLabel": "源",
+    "sourcesLabelHint": "配置您的自定义源",
+    "orgPatchesLabel": "补丁组织",
+    "sourcesPatchesLabel": "补丁源",
+    "orgIntegrationsLabel": "集成组织",
+    "sourcesIntegrationsLabel": "集成源",
+    "sourcesResetDialogTitle": "重置",
+    "sourcesResetDialogText": "您确定要重置所有源为默认值吗？",
+    "apiURLResetDialogText": "您确定要重置 API URL 为默认值吗？",
+    "contributorsLabel": "贡献者",
+    "contributorsHint": "ReVanced 贡献者列表",
+    "logsLabel": "日志",
+    "logsHint": "分享Manager日志",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "配置您的自定义API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "导入 & 导出",
+    "aboutLabel": "关于",
+    "snackbarMessage": "已复制到剪贴板",
+    "restartAppForChanges": "重启应用以生效",
+    "regenerateKeystoreLabel": "删除密钥存储",
+    "regenerateKeystoreHint": "删除用于签名应用的密钥存储",
+    "regeneratedKeystore": "密钥存储已删除",
+    "deleteTempDirLabel": "删除临时文件",
+    "deleteTempDirHint": "删除未使用的临时文件",
+    "deletedTempDir": "临时文件已删除",
+    "exportPatchesLabel": "导出选择的补丁",
+    "exportPatchesHint": "将选择的补丁导出到 JSON 文件",
+    "exportedPatches": "导出选择的修补程序",
+    "noExportFileFound": "没有选择要导出的补丁",
+    "importPatchesLabel": "导出选择的补丁",
+    "importPatchesHint": "将选择的补丁导出到 JSON 文件",
+    "importedPatches": "导入选择的补丁",
+    "resetStoredPatchesLabel": "重置补丁",
+    "resetStoredPatchesHint": "重置保存的补丁选项",
+    "resetStoredPatches": "补丁选择已重置",
+    "jsonSelectorErrorMessage": "无法使用所选的 json 文件",
+    "deleteLogsLabel": "删除日志",
+    "deleteLogsHint": "删除收集到的管理器日志",
+    "deletedLogs": "日志已删除"
+  },
+  "appInfoView": {
+    "widgetTitle": "应用信息",
+    "openButton": "打开",
+    "uninstallButton": "卸载",
+    "unpatchButton": "取消修补",
+    "unpatchDialogText": "确定要取消修补此应用吗？",
+    "rootDialogTitle": "错误",
+    "rootDialogText": "应用已经安装了超级用户权限，但是目前ReVictic 管理器没有权限。\n请先授予超级用户权限。",
+    "packageNameLabel": "包名",
+    "installTypeLabel": "安装类型",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "非 root",
+    "patchedDateLabel": "修补日期",
+    "appliedPatchesLabel": "应用的补丁",
+    "updateNotImplemented": "此功能尚未实现"
+  },
+  "contributorsView": {
+    "widgetTitle": "贡献者"
+  }
+}

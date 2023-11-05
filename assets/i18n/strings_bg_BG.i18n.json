@@ -1,0 +1,146 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Отказ",
+  "updateButton": "Актуализация",
+  "yesButton": "Да",
+  "noButton": "Не",
+  "warning": "Внимание",
+  "navigationView": {
+    "dashboardTab": "Табло за управление",
+    "patcherTab": "Пачър",
+    "settingsTab": "Настройки"
+  },
+  "homeView": {
+    "widgetTitle": "Табло за управление",
+    "updatesSubtitle": "Актуализации",
+    "patchedSubtitle": "Модифицирани приложения",
+    "noInstallations": "Няма инсталирани модифицирани приложения",
+    "updateDialogTitle": "Обнови ReVanced Manager",
+    "updateChangelogTitle": "Списък с промени",
+    "downloadingMessage": "Изтегляне на актуализация...",
+    "installingMessage": "Инсталиране на актуализация...",
+    "errorDownloadMessage": "Свалянето на актуализацията не беше успешно",
+    "errorInstallMessage": "Инсталирането на актуализацията не беше успешно",
+    "noConnection": "Няма връзка с интернет",
+    "updatesDisabled": "Актуализацията на модифицирани приложения в момента не работи. Модифицирайте приложението наново."
+  },
+  "applicationItem": {
+    "infoButton": "Информация"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Зареждане..."
+  },
+  "patcherView": {
+    "widgetTitle": "Модификатор",
+    "patchButton": "Модифицирай"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Изберете приложение",
+    "widgetTitleSelected": "Избрано приложение",
+    "widgetSubtitle": "Няма избрано приложение",
+    "noAppsLabel": "Няма намерени приложения",
+    "currentVersion": "Текуща"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Изберете модификации",
+    "widgetTitleSelected": "Избрани модификации",
+    "widgetSubtitle": "Първо изберете приложение",
+    "widgetEmptySubtitle": "Няма избрани модификации"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Социални мрежи",
+    "widgetSubtitle": "Открийте ни онлайн!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Изберете приложение",
+    "searchBarHint": "Търсене на приложение",
+    "storageButton": "Хранилище",
+    "errorMessage": "Избраното приложение не може да се използва"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Изберете модификации",
+    "searchBarHint": "Търсене на модификации",
+    "doneButton": "Готово",
+    "none": "Нито един",
+    "loadPatchesSelection": "Заредете избраните модификации",
+    "noSavedPatches": "Няма запазени модификации за избраното приложение.\nНатиснете Готово за да запазите текущия избор.",
+    "noPatchesFound": "Няма налични модификации за избраното приложение"
+  },
+  "installerView": {
+    "installButton": "Инсталиране",
+    "openButton": "Отвори",
+    "notificationTitle": "ReVanced Мениджър модифицира",
+    "notificationText": "Натиснете за да се върнете при инсталатора",
+    "noExit": "Инсталаторът все още работи, не може да излезе..."
+  },
+  "settingsView": {
+    "widgetTitle": "Настройки",
+    "appearanceSectionTitle": "Облик",
+    "teamSectionTitle": "Екип",
+    "advancedSectionTitle": "Разширени",
+    "darkThemeLabel": "Тъмен режим",
+    "dynamicThemeLabel": "Материална Тема",
+    "dynamicThemeHint": "Насладете се на преживяване по-близо до устройството си",
+    "languageLabel": "Език",
+    "sourcesLabel": "Източници",
+    "sourcesLabelHint": "Конфигурирайте собствени източници",
+    "hostRepositoryLabel": "API на хранилището",
+    "orgPatchesLabel": "Организация на модификациите",
+    "sourcesPatchesLabel": "Източник на модификациите",
+    "orgIntegrationsLabel": "Организация на интеграциите",
+    "sourcesIntegrationsLabel": "Източник на интеграциите",
+    "sourcesResetDialogTitle": "Нулиране",
+    "sourcesResetDialogText": "Искате ли да възстановите източниците до стойностите им по подразбиране?",
+    "apiURLResetDialogText": "Искате ли да възстановите АРI URL до стойността му по подразбиране?",
+    "contributorsLabel": "Хора, които допринесоха",
+    "contributorsHint": "Списък с хората, допринесли за ReVanced",
+    "logsLabel": "Логове",
+    "logsHint": "Сподели логовете на мениджъра",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Конфигурирайте собствен API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Импортиране и експортиране",
+    "aboutLabel": "Относно",
+    "snackbarMessage": "Копирано",
+    "restartAppForChanges": "Рестартирайте приложението, за да се приложат промените",
+    "regenerateKeystoreLabel": "Изтриване на keystore",
+    "regenerateKeystoreHint": "Изтриване на keystore използван за подписване на приложението",
+    "regeneratedKeystore": "Keystore изтрит",
+    "deleteTempDirLabel": "Изтриване на временни файлове",
+    "deleteTempDirHint": "Изтриване на неизползвани временни файлове",
+    "deletedTempDir": "Временните файлове са изтрити",
+    "exportPatchesLabel": "Експортиране на избраните модификации",
+    "exportPatchesHint": "Експортиране на избраните модификации като JSON файл",
+    "exportedPatches": "Избраните модификации са експортирани",
+    "noExportFileFound": "Няма избрани модификации за експортиране",
+    "importPatchesLabel": "Импортиране на избраните модификации",
+    "importPatchesHint": "Импортиране на избраните модификации от JSON файл",
+    "importedPatches": "Избраните модификации са импортирани",
+    "resetStoredPatchesLabel": "Нулиране на модификациите",
+    "resetStoredPatchesHint": "Нулиране на избраните запазени модификации",
+    "resetStoredPatches": "Избраните модификации са нулирани",
+    "jsonSelectorErrorMessage": "Избраният JSON файл не може да се изплозва",
+    "deleteLogsLabel": "Изтриване на логовете",
+    "deleteLogsHint": "Изтриване на събраните логове на мениджърът",
+    "deletedLogs": "Логовете са изтрити"
+  },
+  "appInfoView": {
+    "widgetTitle": "Информация за приложението",
+    "openButton": "Отвори",
+    "uninstallButton": "Деинсталирай",
+    "unpatchButton": "Премахнете модификации",
+    "unpatchDialogText": "Сигурни ли сте че искате да премахнете модификациите?",
+    "rootDialogTitle": "Грешка",
+    "rootDialogText": "Приложението е инсталирано с superuser разрешения, но в момента ReVanced Manager няма разрешения. Моля, първо дайте superuser разрешения.",
+    "packageNameLabel": "Име на пакета",
+    "installTypeLabel": "Тип инсталация",
+    "rootTypeLabel": "Вариант с root достъп",
+    "nonRootTypeLabel": "Без root",
+    "patchedDateLabel": "Дата на модификацията",
+    "appliedPatchesLabel": "Приложени модификации",
+    "updateNotImplemented": "Тази функция все още не е внедрена"
+  },
+  "contributorsView": {
+    "widgetTitle": "Хора, които допринесоха"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "okButton": "Đồng ý",
+  "cancelButton": "Hủy",
+  "updateButton": "Cập nhật",
+  "yesButton": "Có",
+  "noButton": "Không",
+  "warning": "Cảnh báo",
+  "navigationView": {
+    "dashboardTab": "Tổng quan",
+    "patcherTab": "Trình vá",
+    "settingsTab": "Cài đặt"
+  },
+  "homeView": {
+    "widgetTitle": "Tổng quan",
+    "updatesSubtitle": "Các bản cập nhật",
+    "patchedSubtitle": "Ứng dụng đã vá",
+    "noInstallations": "Không có ứng dụng đã vá nào được cài đặt",
+    "updateDialogTitle": "Update Manager",
+    "updateChangelogTitle": "Nhật ký thay đổi",
+    "downloadingMessage": "Đang tải xuống bản cập nhật...",
+    "installingMessage": "Đang cài đặt bản cập nhật...",
+    "errorDownloadMessage": "Không thể tải về bản cập nhật",
+    "errorInstallMessage": "Không thể cài đặt bản cập nhật",
+    "noConnection": "Không có kết nối mạng",
+    "updatesDisabled": "Cập nhật một ứng dụng đã được vá hiện đang tắt. Vá lại ứng dụng một lần nữa."
+  },
+  "applicationItem": {
+    "infoButton": "Thông tin"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Đang tải..."
+  },
+  "patcherView": {
+    "widgetTitle": "Trình vá",
+    "patchButton": "Vá"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Chọn một ứng dụng",
+    "widgetTitleSelected": "Ứng dụng đã chọn",
+    "widgetSubtitle": "Chưa chọn ứng dụng nào",
+    "noAppsLabel": "Không tìm thấy ứng dụng nào",
+    "currentVersion": "Hiện tại"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Chọn bản vá",
+    "widgetTitleSelected": "Các bản vá đã chọn",
+    "widgetSubtitle": "Chọn một ứng dụng trước",
+    "widgetEmptySubtitle": "Chưa chọn bản vá nào"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Mạng xã hội",
+    "widgetSubtitle": "Chúng tôi đang trực tuyến!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Chọn một ứng dụng",
+    "searchBarHint": "Tìm kiếm ứng dụng",
+    "storageButton": "Lưu trữ",
+    "errorMessage": "Không thể dùng ứng dụng đã chọn"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Chọn bản vá",
+    "searchBarHint": "Tìm bản vá",
+    "doneButton": "Hoàn tất",
+    "none": "Không có",
+    "loadPatchesSelection": "Nạp các bản vá được chọn",
+    "noSavedPatches": "Không có bản vá cho ứng dụng được chọn\nNhấn Hoàn tất để lưu lựa chọn hiện tại.",
+    "noPatchesFound": "Không tìm thấy bản vá cho ứng dụng đã chọn"
+  },
+  "installerView": {
+    "installButton": "Cài đặt",
+    "openButton": "Mở",
+    "notificationTitle": "ReVanced Manager đang vá",
+    "notificationText": "Nhấn để trở lại trình cài đặt",
+    "noExit": "Trình cài đặt vẫn đang chạy, không thể thoát..."
+  },
+  "settingsView": {
+    "widgetTitle": "Cài đặt",
+    "appearanceSectionTitle": "Giao diện",
+    "teamSectionTitle": "Đội ngũ",
+    "advancedSectionTitle": "Nâng cao",
+    "darkThemeLabel": "Chế độ tối",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Tận hưởng trải nghiệm gần hơn với thiết bị của bạn",
+    "languageLabel": "Ngôn ngữ",
+    "sourcesLabel": "Nguồn",
+    "sourcesLabelHint": "Cấu hình nguồn tùy chỉnh của bạn",
+    "hostRepositoryLabel": "API Kho lưu trữ",
+    "orgPatchesLabel": "Tác giả bản vá",
+    "sourcesPatchesLabel": "Nguồn bản vá",
+    "orgIntegrationsLabel": "Tác giá bản tích hợp",
+    "sourcesIntegrationsLabel": "Nguồn tích hợp",
+    "sourcesResetDialogTitle": "Đặt lại",
+    "sourcesResetDialogText": "Bạn có chắc chắn muốn đặt lại các nguồn tùy chỉnh về lại giá trị mặc định của chúng không?",
+    "apiURLResetDialogText": "Bạn có chắc bạn muốn đặt lại API URL về giá trị mặc định của nó không?",
+    "contributorsLabel": "Những người đóng góp",
+    "contributorsHint": "Danh sách những người đóng góp cho ReVanced",
+    "logsLabel": "Nhật ký",
+    "logsHint": "Chia sẻ nhật ký Trình quản lý",
+    "apiURLLabel": "Địa chỉ URL của API",
+    "apiURLHint": "Cấu hình API URL tùy chỉnh của bạn",
+    "selectApiURL": "Địa chỉ URL của API",
+    "exportSectionTitle": "Nhập và xuất",
+    "aboutLabel": "Giới thiệu",
+    "snackbarMessage": "Đã sao chép vào khay nhớ tạm",
+    "restartAppForChanges": "Khởi động lại ứng dụng để áp dụng thay đổi",
+    "regenerateKeystoreLabel": "Xóa kho khóa",
+    "regenerateKeystoreHint": "Xóa kho khóa dùng để ký ứng dụng",
+    "regeneratedKeystore": "Kho khóa đã xóa",
+    "deleteTempDirLabel": "Xóa tệp tạm thời",
+    "deleteTempDirHint": "Xóa các tệp tạm thời không sử dụng",
+    "deletedTempDir": "Đã xóa các tệp tạm thời",
+    "exportPatchesLabel": "Xuất các bản vá được chọn",
+    "exportPatchesHint": "Xuất các bản vá được chọn sang tệp JSON",
+    "exportedPatches": "Đã xuất các bản vá được chọn",
+    "noExportFileFound": "Không có bản vá được chọn để xuất",
+    "importPatchesLabel": "Nhập các bản vá được chọn",
+    "importPatchesHint": "Nhập các bản vá được chọn từ tệp JSON",
+    "importedPatches": "Đã nhập các bản vá được chọn",
+    "resetStoredPatchesLabel": "Cài lại các bản vá",
+    "resetStoredPatchesHint": "Cài lại các bản vá được chọn đã lưu",
+    "resetStoredPatches": "Các bản vá lựa chọn đã được cài lại",
+    "jsonSelectorErrorMessage": "Không thể dùng tệp JSON đã chọn",
+    "deleteLogsLabel": "Xóa nhật ký",
+    "deleteLogsHint": "Xóa nhật ký quản lý đã thu thập",
+    "deletedLogs": "Đã xóa nhật ký"
+  },
+  "appInfoView": {
+    "widgetTitle": "Thông tin ứng dụng",
+    "openButton": "Mở",
+    "uninstallButton": "Gỡ cài đặt",
+    "unpatchButton": "Hủy vá",
+    "unpatchDialogText": "Bạn có chắc muốn hủy vá ứng dụng này không?",
+    "rootDialogTitle": "Lỗi",
+    "rootDialogText": "Ứng dụng đã cài đặt với quyền siêu người dùng, nhưng hiện tại ReVanced không có quyền đó.\nVui lòng cấp quyền siêu người dùng trước.",
+    "packageNameLabel": "Tên gói",
+    "installTypeLabel": "Kiểu cài đặt",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Chưa-root",
+    "patchedDateLabel": "Ngày vá",
+    "appliedPatchesLabel": "Các bản vá đã áp dụng",
+    "updateNotImplemented": "Tính năng này chưa được triển khai"
+  },
+  "contributorsView": {
+    "widgetTitle": "Những người đóng góp"
+  }
+}

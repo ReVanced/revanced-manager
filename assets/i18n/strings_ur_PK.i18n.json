@@ -1,0 +1,143 @@
+{
+  "okButton": "ٹھیک ہے",
+  "cancelButton": "منسوخ",
+  "yesButton": "ہاں",
+  "noButton": "نہیں",
+  "warning": "وارننگ",
+  "navigationView": {
+    "dashboardTab": "ڈیش بورڈ",
+    "patcherTab": "پیچر",
+    "settingsTab": "سیٹنگز"
+  },
+  "homeView": {
+    "widgetTitle": "ڈیش بورڈ",
+    "updatesSubtitle": "اپڈیٹس",
+    "patchedSubtitle": "پیچ شدہ ایپلی کیشنز",
+    "noInstallations": "کوئی پیچ شدہ ایپلیکیشن انسٹاللڈ نہیں",
+    "updateDialogTitle": "مینیجر اپ ڈیٹ کریں",
+    "downloadingMessage": "اپ ڈیٹ ڈونلوڈ ہو رہی ہے...",
+    "installingMessage": "اپ ڈیٹ انسٹال ہو رہی ہے...",
+    "errorDownloadMessage": "اپ ڈیٹ ڈونلوڈ نہیں ہو سکی",
+    "errorInstallMessage": "اپ ڈیٹ انسٹال نہیں ہو سکی",
+    "noConnection": "انٹرنیٹ کنکشن میسر نہیں",
+    "updatesDisabled": "پیچیدہ ایپلیکیشن کو اپ ڈیٹ کرنا فلحال بند ہے. پھر سے ری پیچ کریں."
+  },
+  "applicationItem": {
+    "infoButton": "معلومات"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "لوڈ ہو رہا ہے..."
+  },
+  "patcherView": {
+    "widgetTitle": "پیچر",
+    "patchButton": "پیچ"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "اپلیکیشن منتخب کریں",
+    "widgetTitleSelected": "منتخب ایپلیکیشن",
+    "widgetSubtitle": "کوئی ایپلیکیشن منتخب نہیں",
+    "noAppsLabel": "کوئی ایپلیکیشن نہیں ملی",
+    "currentVersion": "موجودہ"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "پیچز منتخب کریں",
+    "widgetTitleSelected": "منتخب شدہ پیچز",
+    "widgetSubtitle": "پہلے ایک ایپ منتخب کریں",
+    "widgetEmptySubtitle": "کوئی پیوند منتخب نہیں"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "سماجی",
+    "widgetSubtitle": "ہم آن لائن ہیں!"
+  },
+  "appSelectorView": {
+    "viewTitle": "اپلیکیشن منتخب کریں",
+    "searchBarHint": "ایپلیکیشنز تلاش کریں",
+    "storageButton": "سٹوریج",
+    "errorMessage": "منتخب شدہ ایپلیکیشن استمعال نہیں ہو سکتی"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "پیوند چونیں",
+    "searchBarHint": "پیوند ڈھونڈیں",
+    "doneButton": "ہو گیا",
+    "none": "کوئی نہیں",
+    "loadPatchesSelection": "منتخب کردہ پیوند لوڈ کریں",
+    "noSavedPatches": "منتخب کردہ ایپ کے لیے کوئی پیوند محفوظ نہیں ہیں\nموجودہ انتخاب کو محفوظ کرنے کے لیے \"ہو گیا\" دبائیں",
+    "noPatchesFound": "منتخب کردہ ایپ کے کوئی پیوند نہیں ملے"
+  },
+  "installerView": {
+    "installButton": "انسٹال",
+    "openButton": "کھولئے",
+    "notificationTitle": "ریواںسڈ مینیجر پیچ کر رہا ہے",
+    "notificationText": "انسٹالر پر واپس جانے کے لیے ٹیپ کریں",
+    "noExit": "انسٹالر چل رہا ہے، باہر نہیں جا سکتے..."
+  },
+  "settingsView": {
+    "widgetTitle": "سیٹنگز",
+    "appearanceSectionTitle": "شکل و صورت",
+    "teamSectionTitle": "ٹیم",
+    "advancedSectionTitle": "اعلیٰ درجے کی",
+    "darkThemeLabel": "سیاہ موڈ",
+    "dynamicThemeLabel": "میٹریل یوں",
+    "dynamicThemeHint": "اپنے آلے کی طرح کے تجربے سے لطف لیں",
+    "languageLabel": "زبان",
+    "sourcesLabel": "ذرائع",
+    "sourcesLabelHint": "اپنے حسب ضرورت ذرائع کو ترتیب دیں",
+    "orgPatchesLabel": "پیچز کی تنظیم",
+    "sourcesPatchesLabel": "پیچز کا ذریع",
+    "orgIntegrationsLabel": "انٹیگریشن کی تنظیم",
+    "sourcesIntegrationsLabel": "انٹیگریشن کا ذریعہ",
+    "sourcesResetDialogTitle": "دوبارہ ترتیب دیں",
+    "sourcesResetDialogText": "کیا آپ واقعی حسب ضرورت ذرائع کو ان کے اصلی اعداد پر دوبارہ واپس لانا چاہتے ہیں؟",
+    "apiURLResetDialogText": "کیا آپ واقعی API URL کو اس کے اصلی حالت میں دوبارہ واپس لانا چاہتے ہیں؟",
+    "contributorsLabel": "تعاون کرنے والے",
+    "contributorsHint": "ریواںسڈ میں تعاون کرنے والوں کی فہرست",
+    "logsLabel": "لاگز",
+    "logsHint": "مینیجر کے لاگز کا اشتراک کریں",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "اپنے حسب ضرورت API URL کو ترتیب دیں",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "درآمد اور برآمد",
+    "aboutLabel": "متعلق",
+    "snackbarMessage": "کلپ بورڈ میں کاپی ہو گیا",
+    "restartAppForChanges": "تبدیلیاں دیکھنے کیلیئے اپلی کیشن کو دوبارہ چلائیں",
+    "regenerateKeystoreLabel": "ڈیلیٹ کی سٹور",
+    "regenerateKeystoreHint": "ایپ پر دستخط کرنے کے لیے استعمال ہونے والے کی اسٹور کو ڈیلیٹ کریں",
+    "regeneratedKeystore": "کی اسٹور حذف ہو گیا ہے",
+    "deleteTempDirLabel": "عارضی فائلوں کو حذف کریں",
+    "deleteTempDirHint": "غیر استعمال شدہ عارضی فائلوں کو حذف کریں",
+    "deletedTempDir": "عارضی فائلیں حذف کردی گئی",
+    "exportPatchesLabel": "منتخب پیوندوں کو برآمد کریں",
+    "exportPatchesHint": "JSON فائل سے پیوند کا انتخاب برآمد کریں",
+    "exportedPatches": "منتخب پیوندوں کی برآمد ہو گئی ہیں",
+    "noExportFileFound": "کوئی منتخب پیوند برآمد کرنے کے لئے نہیں",
+    "importPatchesLabel": "پیوندوں کا انتخاب درآمد کیجئے",
+    "importPatchesHint": "JSON فائل سے پیچزکا انتخاب درآمد کریں",
+    "importedPatches": "منتخب پیوندوں کی درآمد ہو گئی ہیں",
+    "resetStoredPatchesLabel": "پیوند ریسٹ کریں",
+    "resetStoredPatchesHint": "سٹورڈ شدہ پیوند کے انتخاب کو دوبارہ ری سیٹ کیجئے",
+    "resetStoredPatches": "پیوندوں کے انتخاب کو ری سیٹ کردیا گیا ہے",
+    "jsonSelectorErrorMessage": "منتخب کردہ JSON فائل استعمال نہیں کی جا سکی",
+    "deleteLogsLabel": "ڈیلیٹ لاگز",
+    "deleteLogsHint": "جمع کردہ مینیجر لاگز کو ڈیلیٹ کیجئے کریں",
+    "deletedLogs": "دیلیٹڈ لاگز"
+  },
+  "appInfoView": {
+    "widgetTitle": "ایپ کی معلومات",
+    "openButton": "کھولیں",
+    "uninstallButton": "ان انسٹال",
+    "unpatchButton": "انپیچ",
+    "unpatchDialogText": "کیا آپ واقعی اس ایپ کو انپیچ کرنا چاہتے ہیں؟",
+    "rootDialogTitle": "خرابی",
+    "rootDialogText": "ایپ سپر یوزر کی اجازت کے ساتھ انسٹال کی گئی تھی، لیکن فی الحال ریواںسڈ مینیجر کے پاس کوئی اجازت نہیں ہے۔\nبراہ مہربانی پہلے سپر یوزر کو اجازت دیں۔",
+    "packageNameLabel": "پیکیج کا نام",
+    "installTypeLabel": "انسٹالیشن کی قسم",
+    "rootTypeLabel": "روٹ",
+    "nonRootTypeLabel": "نان روٹ",
+    "patchedDateLabel": "پیچ ہونے کی تاریخ",
+    "appliedPatchesLabel": "لاگو پیچز",
+    "updateNotImplemented": "اس خصوصیت کو ابھی تک نافذ نہیں کیا گیا ہے"
+  },
+  "contributorsView": {
+    "widgetTitle": "تعاون کرنے والے"
+  }
+}

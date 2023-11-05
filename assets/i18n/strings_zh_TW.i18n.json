@@ -1,0 +1,146 @@
+{
+  "okButton": "確定",
+  "cancelButton": "取消",
+  "updateButton": "更新",
+  "yesButton": "是",
+  "noButton": "否",
+  "warning": "警告",
+  "navigationView": {
+    "dashboardTab": "儀表板",
+    "patcherTab": "修補工具",
+    "settingsTab": "設定"
+  },
+  "homeView": {
+    "widgetTitle": "儀表板",
+    "updatesSubtitle": "更新",
+    "patchedSubtitle": "已修補的應用程式",
+    "noInstallations": "沒有安裝已修補的應用程式",
+    "updateDialogTitle": "更新 Manager",
+    "updateChangelogTitle": "更新日誌",
+    "downloadingMessage": "正在下載更新...",
+    "installingMessage": "正在安裝更新...",
+    "errorDownloadMessage": "無法下載更新",
+    "errorInstallMessage": "無法安裝更新",
+    "noConnection": "沒有網際網路連線",
+    "updatesDisabled": "現已停用更新已修補的應用程式。請再次重新修補應用程式。"
+  },
+  "applicationItem": {
+    "infoButton": "資訊"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "正在載入..."
+  },
+  "patcherView": {
+    "widgetTitle": "修補工具",
+    "patchButton": "修補"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "選取應用程式",
+    "widgetTitleSelected": "已選取的應用程式",
+    "widgetSubtitle": "未選取應用程式",
+    "noAppsLabel": "找不到應用程式",
+    "currentVersion": "目前"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "選取修補檔",
+    "widgetTitleSelected": "已選取的修補檔",
+    "widgetSubtitle": "請先選取應用程式",
+    "widgetEmptySubtitle": "未選取修補檔"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "社群媒體",
+    "widgetSubtitle": "掃榻以待，歡迎造訪！"
+  },
+  "appSelectorView": {
+    "viewTitle": "選取應用程式",
+    "searchBarHint": "搜尋應用程式",
+    "storageButton": "儲存空間",
+    "errorMessage": "無法使用所選的應用程式"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "選取修補檔",
+    "searchBarHint": "搜尋修補檔",
+    "doneButton": "完成",
+    "none": "無",
+    "loadPatchesSelection": "載入修補檔選取",
+    "noSavedPatches": "選取的應用程式尚無已儲存的修補檔。\n按下 [完成] 以儲存目前選取。",
+    "noPatchesFound": "找不到適合所選應用程式的修補檔"
+  },
+  "installerView": {
+    "installButton": "安裝",
+    "openButton": "開啟",
+    "notificationTitle": "ReVanced Manager 正在修補",
+    "notificationText": "輕觸以返回安裝程式",
+    "noExit": "安裝程式仍在執行，無法結束..."
+  },
+  "settingsView": {
+    "widgetTitle": "設定",
+    "appearanceSectionTitle": "外觀",
+    "teamSectionTitle": "團隊",
+    "advancedSectionTitle": "進階",
+    "darkThemeLabel": "深色模式",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "享受更貼近您裝置的使用體驗",
+    "languageLabel": "語言",
+    "sourcesLabel": "來源",
+    "sourcesLabelHint": "設定自訂來源",
+    "hostRepositoryLabel": "儲存庫 API",
+    "orgPatchesLabel": "修補檔組織",
+    "sourcesPatchesLabel": "修補檔來源",
+    "orgIntegrationsLabel": "整合組織",
+    "sourcesIntegrationsLabel": "整合來源",
+    "sourcesResetDialogTitle": "重設",
+    "sourcesResetDialogText": "確定要重設自訂資源至預設值嗎？",
+    "apiURLResetDialogText": "確定要重設自訂 API URL 至預設值嗎？",
+    "contributorsLabel": "貢獻者",
+    "contributorsHint": "ReVanced 貢獻者列表",
+    "logsLabel": "記錄檔",
+    "logsHint": "分享 Manager 記錄檔",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "設定自訂 API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "匯入和匯出",
+    "aboutLabel": "關於",
+    "snackbarMessage": "已複製到剪貼簿",
+    "restartAppForChanges": "重新啟動應用程式以套用變更",
+    "regenerateKeystoreLabel": "刪除金鑰儲存區",
+    "regenerateKeystoreHint": "刪除用於登入應用程式的金鑰儲存區",
+    "regeneratedKeystore": "已刪除金鑰儲存區",
+    "deleteTempDirLabel": "刪除暫存檔案",
+    "deleteTempDirHint": "刪除未使用的暫存檔案",
+    "deletedTempDir": "暫存檔案目錄",
+    "exportPatchesLabel": "匯出修補檔項目",
+    "exportPatchesHint": "匯出修補檔項目到 JSON 檔案",
+    "exportedPatches": "已匯出修補檔項目",
+    "noExportFileFound": "沒有可匯出的修補檔項目",
+    "importPatchesLabel": "匯入修補檔項目",
+    "importPatchesHint": "從 JSON 檔案匯入修補檔項目",
+    "importedPatches": "已匯入修補檔項目",
+    "resetStoredPatchesLabel": "重設修補檔",
+    "resetStoredPatchesHint": "重設已儲存的修補檔選取",
+    "resetStoredPatches": "已重設修補檔選取",
+    "jsonSelectorErrorMessage": "無法使用已選取的 JSON 檔案",
+    "deleteLogsLabel": "刪除記錄檔",
+    "deleteLogsHint": "刪除已收集的 Manager 記錄",
+    "deletedLogs": "已刪除記錄檔"
+  },
+  "appInfoView": {
+    "widgetTitle": "應用程式資訊",
+    "openButton": "開啟",
+    "uninstallButton": "解除安裝",
+    "unpatchButton": "取消修補",
+    "unpatchDialogText": "確定要取消修補此應用程式嗎？",
+    "rootDialogTitle": "錯誤",
+    "rootDialogText": "應用程式是以超級使用者權限完成安裝，然而 ReVanced Manager 目前尚未取得該權限。\n請先授予超級使用者權限。",
+    "packageNameLabel": "套件名稱",
+    "installTypeLabel": "安裝類型",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "無 Root",
+    "patchedDateLabel": "修補日期",
+    "appliedPatchesLabel": "已套用修補檔",
+    "updateNotImplemented": "這項功能尚未實作"
+  },
+  "contributorsView": {
+    "widgetTitle": "貢獻者"
+  }
+}

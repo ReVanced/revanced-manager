@@ -1,0 +1,143 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Peruuta",
+  "yesButton": "Kyllä",
+  "noButton": "Ei",
+  "warning": "Varoitus",
+  "navigationView": {
+    "dashboardTab": "Hallinta",
+    "patcherTab": "Patcher",
+    "settingsTab": "Asetukset"
+  },
+  "homeView": {
+    "widgetTitle": "Hallintapaneeli",
+    "updatesSubtitle": "Päivitykset",
+    "patchedSubtitle": "Paikatut sovellukset",
+    "noInstallations": "Paikattuja sovelluksia ei ole asennettu",
+    "updateDialogTitle": "Päivitä Manager",
+    "downloadingMessage": "Ladataan päivitystä...",
+    "installingMessage": "Asennetaan päivitystä...",
+    "errorDownloadMessage": "Päivityksen lataus epäonnistui",
+    "errorInstallMessage": "Päivityksen asennus epäonnistui",
+    "noConnection": "Ei internetyhteyttä",
+    "updatesDisabled": "Paikatun sovelluksen päivitys ei tällä hetkellä ole käytössä. Paikkaa sovellus uudelleen."
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Ladataan..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Paikkaa"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Valitse sovellus",
+    "widgetTitleSelected": "Valittu sovellus",
+    "widgetSubtitle": "Sovellusta ei ole valittu",
+    "noAppsLabel": "Sovelluksia ei löytynyt",
+    "currentVersion": "Nykyinen"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Valitse paikkaukset",
+    "widgetTitleSelected": "Valitut paikkaukset",
+    "widgetSubtitle": "Valitse ensin sovellus",
+    "widgetEmptySubtitle": "Paikkauksia ei ole valittu"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Somet",
+    "widgetSubtitle": "Löydymme täältä!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Valitse sovellus",
+    "searchBarHint": "Hae sovelluksia",
+    "storageButton": "Tallennustila",
+    "errorMessage": "Valittua sovellusta ei voida käyttää"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Valitse paikkaukset",
+    "searchBarHint": "Etsi paikkauksia",
+    "doneButton": "Valmis",
+    "none": "Ei mitään",
+    "loadPatchesSelection": "Lataa paikkausvalikoima",
+    "noSavedPatches": "Paikkauksia ei ole tallennettu valitulle sovellukselle\nTallenna nykyinen valikoima paunamalla Valmis",
+    "noPatchesFound": "Valitulle sovellukselle ei löytynyt paikkauksia"
+  },
+  "installerView": {
+    "installButton": "Asenna",
+    "openButton": "Avaa",
+    "notificationTitle": "ReVanced Manager suorittaa paikkauksia",
+    "notificationText": "Napauta palataksesi hallintasovellukseen",
+    "noExit": "Asennus on vielä kesken, eikä poistuminen ole mahdollista..."
+  },
+  "settingsView": {
+    "widgetTitle": "Asetukset",
+    "appearanceSectionTitle": "Ulkoasu",
+    "teamSectionTitle": "Tiimi",
+    "advancedSectionTitle": "Lisäasetukset",
+    "darkThemeLabel": "Tumma tila",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Nauti kokemuksesta, joka on lähempänä laitettasi",
+    "languageLabel": "Kieli",
+    "sourcesLabel": "Lähteet",
+    "sourcesLabelHint": "Määritä mukautetut lähteet",
+    "orgPatchesLabel": "Paikkauksien organisaatio",
+    "sourcesPatchesLabel": "Paikkauksien lähde",
+    "orgIntegrationsLabel": "Integraatioiden organisaatio",
+    "sourcesIntegrationsLabel": "Integraatioiden lähde",
+    "sourcesResetDialogTitle": "Palauta",
+    "sourcesResetDialogText": "Haluatko varmasti palauttaa nämä asetukset oletusarvoihin?",
+    "apiURLResetDialogText": "Haluatko varmasti palauttaa API URL-osoitteen oletusarvoon?",
+    "contributorsLabel": "Osallistujat",
+    "contributorsHint": "Listaus ReVancedin kehitykseen osallistuneista",
+    "logsLabel": "Lokit",
+    "logsHint": "Jaa Managerin lokitiedot",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Määritä oma API URL-osoite",
+    "selectApiURL": "API:n URL-osoite",
+    "exportSectionTitle": "Tuonti/vienti",
+    "aboutLabel": "Tietoja",
+    "snackbarMessage": "Kopioitu leikepöydälle",
+    "restartAppForChanges": "Käynnistä sovellus uudestaan muutosten käyttöönottamiseksi",
+    "regenerateKeystoreLabel": "Poista avainsäilö",
+    "regenerateKeystoreHint": "Poista sovelluksen allekirjoitukseen käytetty avainsäilö",
+    "regeneratedKeystore": "Avainsäilö poistettiin",
+    "deleteTempDirLabel": "Poista väliaikaistiedostot",
+    "deleteTempDirHint": "Poista käyttämättömät väliaikaistiedostot",
+    "deletedTempDir": "Väliaikaistiedostot poistettiin",
+    "exportPatchesLabel": "Vie paikkausvalikoima",
+    "exportPatchesHint": "Vie paikkausvalikoima JSON-tiedostona",
+    "exportedPatches": "Paikkausvalikoima vietiin",
+    "noExportFileFound": "Vietävää paikkausvalikoimaa ei ole",
+    "importPatchesLabel": "Tuo paikkausvalikoima",
+    "importPatchesHint": "Tuo paikkausvalikoima JSON-tiedostosta",
+    "importedPatches": "Paikkausvalikoima tuotiin",
+    "resetStoredPatchesLabel": "Palauta paikkaukset",
+    "resetStoredPatchesHint": "Palauta tallennettu paikkausvalikoima",
+    "resetStoredPatches": "Paikkausvalikoima palautettiin",
+    "jsonSelectorErrorMessage": "Valittua JSON-tiedostoa ei voida käyttää",
+    "deleteLogsLabel": "Poista lokitiedot",
+    "deleteLogsHint": "Poista kerätyt Managerin lokitiedot",
+    "deletedLogs": "Lokitiedot on poistettu"
+  },
+  "appInfoView": {
+    "widgetTitle": "Sovelluksen tiedot",
+    "openButton": "Avaa",
+    "uninstallButton": "Poista asennus",
+    "unpatchButton": "Poista paikkaus",
+    "unpatchDialogText": "Haluatko varmasti poistaa sovelluksen paikkauksen?",
+    "rootDialogTitle": "Virhe",
+    "rootDialogText": "Sovellus on asennettu superuser-käyttöoikeudella, mutta ReVanced Managerilla ei tällä hetkellä ole käyttöoikeutta.\nMyönnä superuser-käyttöoikeus ensin.",
+    "packageNameLabel": "Paketin nimi",
+    "installTypeLabel": "Asennustyyppi",
+    "rootTypeLabel": "Rootattu",
+    "nonRootTypeLabel": "Normaali",
+    "patchedDateLabel": "Paikkausaika",
+    "appliedPatchesLabel": "Suoritetut paikkaukset",
+    "updateNotImplemented": "Toimintoa ei ole toteutettu vielä"
+  },
+  "contributorsView": {
+    "widgetTitle": "Osallistujat"
+  }
+}

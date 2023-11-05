@@ -1,0 +1,146 @@
+{
+  "okButton": "Sawa",
+  "cancelButton": "Ghairi",
+  "updateButton": "Sasisho",
+  "yesButton": "Ndiyo",
+  "noButton": "Hapana",
+  "warning": "Onyo",
+  "navigationView": {
+    "dashboardTab": "Dashibodi",
+    "patcherTab": "Kirekebishaji",
+    "settingsTab": "Mpangilio"
+  },
+  "homeView": {
+    "widgetTitle": "Dashibodi",
+    "updatesSubtitle": "Sasisho",
+    "patchedSubtitle": "Programu zilizo na viraka",
+    "noInstallations": "Hakuna programu zilizo na viraka zilizosakinishwa",
+    "updateDialogTitle": "Kidhibiti cha Usasishaji",
+    "updateChangelogTitle": "Changelog",
+    "downloadingMessage": "Inapakua sasisho...",
+    "installingMessage": "Inasakinisha sasisho...",
+    "errorDownloadMessage": "Imeshindwa kupakua sasisho",
+    "errorInstallMessage": "Imeshindwa kusakinisha sasisho",
+    "noConnection": "Hakuna muunganisho wa mtandao",
+    "updatesDisabled": "Kusasisha programu iliyobanwa kumezimwa kwa sasa. Rekebisha programu tena."
+  },
+  "applicationItem": {
+    "infoButton": "Taarifa"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Inapakia..."
+  },
+  "patcherView": {
+    "widgetTitle": "Kirekebishaji",
+    "patchButton": "Rekebisha"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Chagua programu",
+    "widgetTitleSelected": "Programu imechaguliwa",
+    "widgetSubtitle": "Hakuna programu iliyochaguliwa",
+    "noAppsLabel": "Hakuna programu zilizopatikana",
+    "currentVersion": "Sasa"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Chagua viraka",
+    "widgetTitleSelected": "Viraka vilivyochaguliwa",
+    "widgetSubtitle": "Chagua programu kwanza",
+    "widgetEmptySubtitle": "Hakuna viraka vilivyochaguliwa"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Mtandao wa kijamii",
+    "widgetSubtitle": "Tuko mtandaoni!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Chagua programu",
+    "searchBarHint": "Tafuta programu",
+    "storageButton": "Hifadhi",
+    "errorMessage": "Haiwezi kutumia programu iliyochaguliwa"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Chagua viraka",
+    "searchBarHint": "Tafuta viraka",
+    "doneButton": "Imekamilika",
+    "none": "Hakuna",
+    "loadPatchesSelection": "Ingiza Uteuzi wa viraka",
+    "noSavedPatches": "Hakuna viraka vilivyohifadhiwa kwa programu iliyochaguliwa.\nBonyeza Nimemaliza ili kuhifadhi chaguo la sasa.",
+    "noPatchesFound": "Hakuna viraka vilivyopatikana kwa programu iliyochaguliwa"
+  },
+  "installerView": {
+    "installButton": "Sakinisha",
+    "openButton": "Fungua",
+    "notificationTitle": "Revanced Manager inatia viraka",
+    "notificationText": "Gusa ili urudi kwa kisakinishi",
+    "noExit": "Kisakinishi bado kinafanya kazi, hakiwezi kutoka..."
+  },
+  "settingsView": {
+    "widgetTitle": "Mipangilio",
+    "appearanceSectionTitle": "Mwonekano",
+    "teamSectionTitle": "Timu",
+    "advancedSectionTitle": "Ziada",
+    "darkThemeLabel": "Hali ya giza",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Furahia matumizi karibu na kifaa chako",
+    "languageLabel": "Lugha",
+    "sourcesLabel": "Vyanzo",
+    "sourcesLabelHint": "Sanidi vyanzo vyako maalum",
+    "hostRepositoryLabel": "HIfadhi ya API",
+    "orgPatchesLabel": "Shirika la viraka",
+    "sourcesPatchesLabel": "Chanzo cha viraka",
+    "orgIntegrationsLabel": "Shirika la ujumuishaji",
+    "sourcesIntegrationsLabel": "Chanzo cha ujumuishaji",
+    "sourcesResetDialogTitle": "Anzisha",
+    "sourcesResetDialogText": "Je, una uhakika unataka kuweka upya vyanzo maalum kwa thamani zao chaguomsingi?",
+    "apiURLResetDialogText": "Je, una uhakika unataka kuweka upya URL ya API hadi thamani yake chaguomsingi?",
+    "contributorsLabel": "Wachangiaji",
+    "contributorsHint": "Orodha ya wachangiaji wa Revanced",
+    "logsLabel": "Kumbukumbu",
+    "logsHint": "Gawa kumbukumbu za meneja",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Sanidi URL yako ya API maalum",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Kuagiza na kuuza nje",
+    "aboutLabel": "Kuhusu",
+    "snackbarMessage": "Imenakiliwa kwenye ubao wa kunakili",
+    "restartAppForChanges": "Anzisha tena programu ili kutekeleza mabadiliko",
+    "regenerateKeystoreLabel": "Futa Duka la Ufunguo",
+    "regenerateKeystoreHint": "Futa Duka la Ufunguo iliyotumika kusaini programu",
+    "regeneratedKeystore": "Duka la ufunguo imefutwa",
+    "deleteTempDirLabel": "Futa faili za muda",
+    "deleteTempDirHint": "Futa faili za muda ambazo hazijatumiwa",
+    "deletedTempDir": "Faili za muda zimefutwa",
+    "exportPatchesLabel": "Hamisha uteuzi wa viraka",
+    "exportPatchesHint": "Hamisha uteuzi wa viraka kwenye faili ya JSON",
+    "exportedPatches": "Uteuzi wa viraka umehamishwa",
+    "noExportFileFound": "Hakuna viraka vilivyochaguliwa kuhamishwa",
+    "importPatchesLabel": "Ingiza uteuzi wa viraka",
+    "importPatchesHint": "Ingiza uteuzi wa viraka kutoka kwa faili ya JSON",
+    "importedPatches": "Uteuzi wa viraka umeingizwa",
+    "resetStoredPatchesLabel": "Weka upya viraka",
+    "resetStoredPatchesHint": "Weka upya uteuzi wa viraka vilivyohifadhiwa",
+    "resetStoredPatches": "Uteuzi wa viraka umewekwa upya",
+    "jsonSelectorErrorMessage": "Imeshindwa kutumia faili ya JSON iliyochaguliwa",
+    "deleteLogsLabel": "Futa kumbukumbu",
+    "deleteLogsHint": "Futa kumbukumbu za wasimamizi zilizokusanywa",
+    "deletedLogs": "Kumbukumbu zimefutwa"
+  },
+  "appInfoView": {
+    "widgetTitle": "Maelezo ya programu",
+    "openButton": "Fungua",
+    "uninstallButton": "Sanidua",
+    "unpatchButton": "Ondoa kibandiko",
+    "unpatchDialogText": "Je, una uhakika unataka kubandua programu hii?",
+    "rootDialogTitle": "Hitilafu",
+    "rootDialogText": "Programu ilisakinishwa kwa ruhusa za mtumiaji mkuu, lakini kwa sasa ReVanced Manager haina ruhusa..\nTafadhali toa ruhusa za mtumiaji mkuu kwanza.",
+    "packageNameLabel": "Jina la kifurushi",
+    "installTypeLabel": "Aina ya usakinishaji",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Sio mtumiaji mkuu",
+    "patchedDateLabel": "Tarehe iliyowekwa viraka",
+    "appliedPatchesLabel": "Viraka vilivyotumika",
+    "updateNotImplemented": "Kipengele hiki bado hakijatekelezwa"
+  },
+  "contributorsView": {
+    "widgetTitle": "Wachangiaji"
+  }
+}

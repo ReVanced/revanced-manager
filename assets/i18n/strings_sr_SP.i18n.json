@@ -1,0 +1,143 @@
+{
+  "okButton": "У реду",
+  "cancelButton": "Откажи",
+  "yesButton": "Да",
+  "noButton": "Не",
+  "warning": "Упозорење",
+  "navigationView": {
+    "dashboardTab": "Командна табла",
+    "patcherTab": "Patcher",
+    "settingsTab": "Подешавања"
+  },
+  "homeView": {
+    "widgetTitle": "Командна табла",
+    "updatesSubtitle": "Ажурирања",
+    "patchedSubtitle": "Печоване апликације",
+    "noInstallations": "Нема инсталираних печованих апликација",
+    "updateDialogTitle": "Ажурирај Manager",
+    "downloadingMessage": "Преузимање ажурирања...",
+    "installingMessage": "Инсталирање ажурирања...",
+    "errorDownloadMessage": "Није могуће преузети ажурирање",
+    "errorInstallMessage": "Није могуће инсталирати ажурирање",
+    "noConnection": "Нема интернет везе",
+    "updatesDisabled": "Ажурирање печоване апликације је тренутно онемогућено.\nПоново печујте апликацију."
+  },
+  "applicationItem": {
+    "infoButton": "Информације"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Учитавање..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Печуј"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Изаберите апликацију",
+    "widgetTitleSelected": "Изабрана апликација",
+    "widgetSubtitle": "Ниједна апликација није изабрана",
+    "noAppsLabel": "Ниједна апликација није пронађена",
+    "currentVersion": "Тренутна"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Изаберите печеве",
+    "widgetTitleSelected": "Изабрани печеви",
+    "widgetSubtitle": "Прво изаберите апликацију",
+    "widgetEmptySubtitle": "Нема изабраних печева"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Друштвене мреже",
+    "widgetSubtitle": "На мрежи смо!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Изаберите апликацију",
+    "searchBarHint": "Претражите апликације",
+    "storageButton": "Складиште",
+    "errorMessage": "Није могуће користити изабрану апликацију"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Изаберите печеве",
+    "searchBarHint": "Претражите печеве",
+    "doneButton": "Готово",
+    "none": "Ниједан",
+    "loadPatchesSelection": "Учитајте избор печева",
+    "noSavedPatches": "Нема сачуваних печева за изабрану апликацију\nПритисните „Готово” да сачувате тренутни избор",
+    "noPatchesFound": "Нису пронађени печеви за изабрану апликацију"
+  },
+  "installerView": {
+    "installButton": "Инсталирај",
+    "openButton": "Отвори",
+    "notificationTitle": "ReVanced Manager печује",
+    "notificationText": "Додирните да бисте се вратили на програм за инсталацију",
+    "noExit": "Програм за инсталацију је још увек отворен, није могуће изаћи..."
+  },
+  "settingsView": {
+    "widgetTitle": "Подешавања",
+    "appearanceSectionTitle": "Изглед",
+    "teamSectionTitle": "Тим",
+    "advancedSectionTitle": "Напредно",
+    "darkThemeLabel": "Тамни режим",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Уживајте у искуству прилагођеном вашем уређају",
+    "languageLabel": "Језик",
+    "sourcesLabel": "Извори",
+    "sourcesLabelHint": "Подесите своје прилагођене изворе",
+    "orgPatchesLabel": "Организација за печеве",
+    "sourcesPatchesLabel": "Извор печева",
+    "orgIntegrationsLabel": "Организација за интеграције",
+    "sourcesIntegrationsLabel": "Извор интеграција",
+    "sourcesResetDialogTitle": "Ресетуј",
+    "sourcesResetDialogText": "Да ли сте сигурни да желите да ресетујете прилагођене изворе на њихове подразумеване вредности?",
+    "apiURLResetDialogText": "Да ли сте сигурни да желите да ресетујете АPI URL на његову подразумевану вредност?",
+    "contributorsLabel": "Сарадници",
+    "contributorsHint": "Листа сарадника ReVanced",
+    "logsLabel": "Евиденције",
+    "logsHint": "Дели Manager евиденције",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Подесите свој прилагођени API URL",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Увоз и извоз",
+    "aboutLabel": "О апликацији",
+    "snackbarMessage": "Копирано у привремену меморију",
+    "restartAppForChanges": "Поново покрените апликацију да бисте применили промене",
+    "regenerateKeystoreLabel": "Избришите складиште кључева",
+    "regenerateKeystoreHint": "Избришите складиште кључева коришћено за потписивање апликације",
+    "regeneratedKeystore": "Складиште кључева је избрисано",
+    "deleteTempDirLabel": "Избришите привремене датотеке",
+    "deleteTempDirHint": "Избришите некоришћене привремене датотеке",
+    "deletedTempDir": "Привремене датотеке су избрисане",
+    "exportPatchesLabel": "Извезите избор печева",
+    "exportPatchesHint": "Извезите избор печева у JSON датотеку",
+    "exportedPatches": "Избор печева је извезен",
+    "noExportFileFound": "Нема избора печева за извоз",
+    "importPatchesLabel": "Увезите избор печева",
+    "importPatchesHint": "Увезите избор печева из JSON датотеке",
+    "importedPatches": "Избор печева је увезен",
+    "resetStoredPatchesLabel": "Ресетујте печеве",
+    "resetStoredPatchesHint": "Ресетујте избор сачуваних печева",
+    "resetStoredPatches": "Избор печева је ресетован",
+    "jsonSelectorErrorMessage": "Није могуће користити изабрану JSON датотеку",
+    "deleteLogsLabel": "Избришите евиденције",
+    "deleteLogsHint": "Избришите прикупљене Manager евиденције",
+    "deletedLogs": "Евиденције су избрисане"
+  },
+  "appInfoView": {
+    "widgetTitle": "Информације о апликацији",
+    "openButton": "Отвори",
+    "uninstallButton": "Деинсталирај",
+    "unpatchButton": "Уклони печ",
+    "unpatchDialogText": "Да ли сте сигурни да желите да уклоните печ за ову апликацију?",
+    "rootDialogTitle": "Грешка",
+    "rootDialogText": "Апликација је инсталирана са дозволама суперкорисника, али тренутно ReVanced Manager нема дозволе.\nПрво доделите дозволе суперкорисника.",
+    "packageNameLabel": "Назив пакета",
+    "installTypeLabel": "Тип инсталације",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Non-root",
+    "patchedDateLabel": "Датум печовања",
+    "appliedPatchesLabel": "Примењени печеви",
+    "updateNotImplemented": "Ова функција још увек није имплементирана"
+  },
+  "contributorsView": {
+    "widgetTitle": "Сарадници"
+  }
+}

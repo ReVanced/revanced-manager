@@ -1,0 +1,143 @@
+{
+  "okButton": "Oldu",
+  "cancelButton": "İmtina",
+  "yesButton": "Bəli",
+  "noButton": "Xeyr",
+  "warning": "Xәbәrdarlıq",
+  "navigationView": {
+    "dashboardTab": "İdarəetmə lövhəsi",
+    "patcherTab": "Yamaqlayıcı",
+    "settingsTab": "Tənzimləmələr"
+  },
+  "homeView": {
+    "widgetTitle": "İdarəetmə lövhəsi",
+    "updatesSubtitle": "Güncəlləmələr",
+    "patchedSubtitle": "Yamaqlanmış tətbiqlər",
+    "noInstallations": "Yamaqlanmış tətbiq yoxdur",
+    "updateDialogTitle": "Güncəlləmə meneceri",
+    "downloadingMessage": "Güncəlləmə endirilir...",
+    "installingMessage": "Güncəlləmə quraşdırılır...",
+    "errorDownloadMessage": "Güncəlləmə endirilə bilmir",
+    "errorInstallMessage": "Güncəlləmə quraşdırıla bilmir",
+    "noConnection": "İnternet bağlantısı yoxdur",
+    "updatesDisabled": "Yamaqlanmış bir tətbiqin güncəllənməsi hazırda sıradan çıxarılıb. Tətbiqi yenidən yamaqlayın."
+  },
+  "applicationItem": {
+    "infoButton": "Məlumat"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Yüklənir..."
+  },
+  "patcherView": {
+    "widgetTitle": "Yamaqlayıcı",
+    "patchButton": "Yamaqla"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Bir tətbiq seçin",
+    "widgetTitleSelected": "Seçilmiş tətbiq",
+    "widgetSubtitle": "Heç bir tətbiq seçilməyib",
+    "noAppsLabel": "Heç bir tətbiq tapılmadı",
+    "currentVersion": "Hazırkı"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Yamaqları seçin",
+    "widgetTitleSelected": "Seçilmiş yamaqlar",
+    "widgetSubtitle": "Əvvəlcə bir tətbiq seçin",
+    "widgetEmptySubtitle": "Heç bir yamaq seçilməyib"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sosial",
+    "widgetSubtitle": "Xətdəyik!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Bir tətbiq seçin",
+    "searchBarHint": "Tətbiq axtarın",
+    "storageButton": "Anbar",
+    "errorMessage": "Seçilmiş tətbiq istifadə edilə bilmir"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Yamaqları seçin",
+    "searchBarHint": "Yamaqları axtarın",
+    "doneButton": "Hazırdır",
+    "none": "Heç biri",
+    "loadPatchesSelection": "Yamaq seçimini yüklə",
+    "noSavedPatches": "Seçilmiş tətbiq üçün saxlanılmış yamaq yoxdur\nHazırkı seçimi saxlamaq üçün \"Hazırdır\"a toxunun",
+    "noPatchesFound": "Seçilmiş tətbiq üçün yamaq tapılmadı"
+  },
+  "installerView": {
+    "installButton": "Quraşdır",
+    "openButton": "Aç",
+    "notificationTitle": "ReVanced Menecer yamaqlayır",
+    "notificationText": "Quraşdırıcıya geri qayıtmaq üçün toxunun",
+    "noExit": "Quraşdırıcı hələ də işləyir, çıxış edilə bilməz..."
+  },
+  "settingsView": {
+    "widgetTitle": "Tənzimləmələr",
+    "appearanceSectionTitle": "Görünüş",
+    "teamSectionTitle": "Komanda",
+    "advancedSectionTitle": "Qabaqcıl",
+    "darkThemeLabel": "Qaranlıq rejim",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Cihazınıza yaxın bir təcrübədən həzz alın",
+    "languageLabel": "Dil",
+    "sourcesLabel": "Mənbələr",
+    "sourcesLabelHint": "Özəl mənbələrinizi konfiqurasiya edin",
+    "orgPatchesLabel": "Yamaq təşkilatı",
+    "sourcesPatchesLabel": "Yamaq mənbəyi",
+    "orgIntegrationsLabel": "İnteqrasiya təşkilatı",
+    "sourcesIntegrationsLabel": "İnteqrasiya mənbəyi",
+    "sourcesResetDialogTitle": "Sıfırla",
+    "sourcesResetDialogText": "Özəl mənbələri ilkin dəyərlərinə sıfırlamaq istədiyinizə əminsiniz?",
+    "apiURLResetDialogText": "API URL-ni ilkin dəyərinə sıfırlamaq istədiyinizə əminsiz?",
+    "contributorsLabel": "Töhfə verənlər",
+    "contributorsHint": "ReVanced-ə töhfə verənlərin siyahısı",
+    "logsLabel": "Jurnallar",
+    "logsHint": "Menecerin jurnallarını paylaş",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Özəl API URL-lərinizi konfiqurasiya edin",
+    "selectApiURL": "API URL",
+    "exportSectionTitle": "Daxilə və xaricə köçür",
+    "aboutLabel": "Haqqında",
+    "snackbarMessage": "Lövhəyə kopyalandı",
+    "restartAppForChanges": "Dəyişiklikləri tətbiq etmək üçün tətbiqi yenidən başlat",
+    "regenerateKeystoreLabel": "Keystore-u sil",
+    "regenerateKeystoreHint": "Tətbiqi imzalamaq üçün istifadə edilən keystoru-u sil",
+    "regeneratedKeystore": "Keystore silindi",
+    "deleteTempDirLabel": "Müvəqqəti faylları sil",
+    "deleteTempDirHint": "İstifadə edilməyən müvəqqəti faylları sil",
+    "deletedTempDir": "Müvəqqəti fayllar silindi",
+    "exportPatchesLabel": "Yamaq seçimini xaricə köçür",
+    "exportPatchesHint": "Yamaq seçimini JSON faylına köçür",
+    "exportedPatches": "Yamaq seçimi xaricə köçürüldü",
+    "noExportFileFound": "Xaricə köçürüləcək yamaq seçimi yoxdur",
+    "importPatchesLabel": "Yamaq seçimini daxilə köçür",
+    "importPatchesHint": "Yamaq seçimini JSON faylından köçür",
+    "importedPatches": "Yamaq seçimi daxilə köçürüldü",
+    "resetStoredPatchesLabel": "Yamaqları sıfırla",
+    "resetStoredPatchesHint": "Saxlanılmış yamaq seçimini sıfırla",
+    "resetStoredPatches": "Yamaq seçimi sıfırlandı",
+    "jsonSelectorErrorMessage": "Seçilmiş JSON faylı istifadə edilə bilmir",
+    "deleteLogsLabel": "Jurnalları sil",
+    "deleteLogsHint": "Yığılmış menecer jurnallarını sil",
+    "deletedLogs": "Jurnallar silindi"
+  },
+  "appInfoView": {
+    "widgetTitle": "Tətbiq məlumatı",
+    "openButton": "Aç",
+    "uninstallButton": "Sil",
+    "unpatchButton": "Yamağı götür",
+    "unpatchDialogText": "Yamağı götürmək istədiyinizə əminsiniz?",
+    "rootDialogTitle": "Xəta",
+    "rootDialogText": "Tətbiq, superuser icazələri ilə quraşdırıldı, ancaq hazırda ReVanced Manager-in heç bir icazəsi yoxdur.\nZəhmət olmasa əvvəlcə superuser icazələrini verin.",
+    "packageNameLabel": "Paket adı",
+    "installTypeLabel": "Quraşdırma növü",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Root-suz",
+    "patchedDateLabel": "Yamaqlama tarixi",
+    "appliedPatchesLabel": "Tətbiq edilmiş yamaqlar",
+    "updateNotImplemented": "Bu özəllik hələ tətbiq olunmayıb"
+  },
+  "contributorsView": {
+    "widgetTitle": "Töhfə verənlər"
+  }
+}

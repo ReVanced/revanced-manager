@@ -1,0 +1,146 @@
+{
+  "okButton": "موافق",
+  "cancelButton": "إلغاء",
+  "updateButton": "تحديث",
+  "yesButton": "نعم",
+  "noButton": "لا",
+  "warning": "تحذير",
+  "navigationView": {
+    "dashboardTab": "لوحة التحكم",
+    "patcherTab": "لوحة التعديل",
+    "settingsTab": "الإعدادات"
+  },
+  "homeView": {
+    "widgetTitle": "لوحة التحكم",
+    "updatesSubtitle": "تحديثات",
+    "patchedSubtitle": "التطبيقات المعدلة",
+    "noInstallations": "لا توجد تطبيقات معدلة مثبتة",
+    "updateDialogTitle": "تحديث المدير",
+    "updateChangelogTitle": "سجل التغييرات",
+    "downloadingMessage": "جاري تحميل التحديث...",
+    "installingMessage": "جاري تثبيت التحديث...",
+    "errorDownloadMessage": "تعذر تحميل التحديث",
+    "errorInstallMessage": "تعذّر تثبيت التحديث",
+    "noConnection": "لا يوجد اتصال بالإنترنت",
+    "updatesDisabled": "تحديث تطبيق تم تعديله معطل حاليًا. أعد تعديل التطبيق مرة أخرى."
+  },
+  "applicationItem": {
+    "infoButton": "معلومات"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "جاري التحميل..."
+  },
+  "patcherView": {
+    "widgetTitle": "المُعَّدِّل",
+    "patchButton": "تعديل"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "إختر تطبيقًا",
+    "widgetTitleSelected": "التطبيق المحدد",
+    "widgetSubtitle": "لم يتم اختيار أي تطبيق",
+    "noAppsLabel": "لم يتم العثور على تطبيقات",
+    "currentVersion": "الحالي"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "اختر التعديلات",
+    "widgetTitleSelected": "التعديلات التي تم اختيارها",
+    "widgetSubtitle": "اختر تطبيق أولاً",
+    "widgetEmptySubtitle": "لم يتم تحديد أي تعديلات"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "وسائل التواصل",
+    "widgetSubtitle": "تابعونا!"
+  },
+  "appSelectorView": {
+    "viewTitle": "إختر تطبيقًا",
+    "searchBarHint": "البحث عن التطبيقات",
+    "storageButton": "التخزين",
+    "errorMessage": "لا يمكن استخدام التطبيق المحدد"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "اختر التعديلات",
+    "searchBarHint": "البحث عن التعديلات",
+    "doneButton": "تم",
+    "none": "بدون",
+    "loadPatchesSelection": "تحميل التعديلات المحددة",
+    "noSavedPatches": "لا توجد تعديلات محفوظة للتطبيق المختار.\nاضغط على تم لحفظ الاختيار الحالي.",
+    "noPatchesFound": "لم يتم العثور على تعديلات للتطبيق المحدد"
+  },
+  "installerView": {
+    "installButton": "تثبيت",
+    "openButton": "فتح",
+    "notificationTitle": "ReVanced Manager يقوم بعملية التعديل",
+    "notificationText": "انقر للعودة إلى المثبت",
+    "noExit": "المثبت لا يزال قيد التشغيل، لا يمكن الخروج..."
+  },
+  "settingsView": {
+    "widgetTitle": "الإعدادات",
+    "appearanceSectionTitle": "المظهر",
+    "teamSectionTitle": "الفريق",
+    "advancedSectionTitle": "إعدادات متقدمة",
+    "darkThemeLabel": "الوضع الداكن",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "استمتع بتجربة أقرب إلى جهازك",
+    "languageLabel": "اللغة",
+    "sourcesLabel": "المصادر",
+    "sourcesLabelHint": "تكوين مصادرك المخصصة",
+    "hostRepositoryLabel": "مستودع API",
+    "orgPatchesLabel": "تنظيم التعديلات",
+    "sourcesPatchesLabel": "مصدر التعديلات",
+    "orgIntegrationsLabel": "تنظيم الدمج",
+    "sourcesIntegrationsLabel": "مصدر الـدمج",
+    "sourcesResetDialogTitle": "إعادة التعيين",
+    "sourcesResetDialogText": "هل تريد بالتأكيد إعادة تعيين المصادر المخصصة إلى قيمها الافتراضية؟",
+    "apiURLResetDialogText": "هل أنت متأكد من أنك تريد إعادة رابط API إلى القيم الافتراضية؟",
+    "contributorsLabel": "المساهمون",
+    "contributorsHint": "قائمة المساهمين في ReVanced",
+    "logsLabel": "السجلات",
+    "logsHint": "مشاركة سجلات المدير",
+    "apiURLLabel": "رابط API",
+    "apiURLHint": "تكوين رابط API الخاص بك",
+    "selectApiURL": "رابط API",
+    "exportSectionTitle": "استيراد و تصدير",
+    "aboutLabel": "عن التطبيق",
+    "snackbarMessage": "نُسِخ إلى الحافظة",
+    "restartAppForChanges": "إعادة تشغيل التطبيق لتطبيق التغييرات",
+    "regenerateKeystoreLabel": "حذف ملف تخزين المفاتيح",
+    "regenerateKeystoreHint": "حذف ملف تخزين المفاتيح المستخدم للتوقيع على التطبيق",
+    "regeneratedKeystore": "تم حذف مِلَفّ تخزين المفاتيح",
+    "deleteTempDirLabel": "حذف الملفات المؤقتة",
+    "deleteTempDirHint": "حذف الملفات المؤقتة غير المستخدمة",
+    "deletedTempDir": "تم حذف الملفات المؤقتة",
+    "exportPatchesLabel": "تصدير التعديلات المحددة",
+    "exportPatchesHint": "تصدير التعديلات المحددة إلى مِلَفّ JSON",
+    "exportedPatches": "تم تصدير التعديلات المحددة",
+    "noExportFileFound": "لا يوجد تعديلات محددة للتصدير",
+    "importPatchesLabel": "استيراد التعديلات المحددة",
+    "importPatchesHint": "استيراد التعديلات المحددة من مِلَفّ JSON",
+    "importedPatches": "تم استيراد التعديلات المحددة",
+    "resetStoredPatchesLabel": "إعادة تعيين التعديلات",
+    "resetStoredPatchesHint": "إعادة تعيين التعديلات المحددة المخزنة",
+    "resetStoredPatches": "تم إعادة تعيين التعديلات المحددة",
+    "jsonSelectorErrorMessage": "تعذر استخدام مِلَفّ JSON المحدد",
+    "deleteLogsLabel": "حذف السجلات",
+    "deleteLogsHint": "حذف سجلات المدير التي تم جمعها",
+    "deletedLogs": "تم حذف السجلات"
+  },
+  "appInfoView": {
+    "widgetTitle": "معلومات التطبيق",
+    "openButton": "فتح",
+    "uninstallButton": "إلغاء التثبيت",
+    "unpatchButton": "إلغاء التعديل",
+    "unpatchDialogText": "هل أنت متأكد من إلغاء تعديل هذا التطبيق؟",
+    "rootDialogTitle": "خطأ",
+    "rootDialogText": "تم تثبيت التطبيق بأذونات المستخدم المتميز، لكن ReVanced Manager ليس لديه أذونات حاليًا.\nالرجاء منح أذونات المستخدم المتميز أولاً.",
+    "packageNameLabel": "اسم الحُزْمَة",
+    "installTypeLabel": "نوع التثبيت",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "بدون Root",
+    "patchedDateLabel": "تاريخ التعديل",
+    "appliedPatchesLabel": "التعديلات المطبقة",
+    "updateNotImplemented": "لم يتم تنفيذ هذه الميزة بعد"
+  },
+  "contributorsView": {
+    "widgetTitle": "المساهمون"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "okButton": "Rendben",
+  "cancelButton": "Mégse",
+  "yesButton": "Igen",
+  "noButton": "Nem",
+  "warning": "Figyelmeztetés",
+  "navigationView": {
+    "dashboardTab": "Irányítópult",
+    "patcherTab": "Patchelő",
+    "settingsTab": "Beállítások"
+  },
+  "homeView": {
+    "widgetTitle": "Irányítópult",
+    "updatesSubtitle": "Frissítések",
+    "patchedSubtitle": "Patchelt alkalmazások",
+    "noInstallations": "Nincs telepítve patchelt alkalmazás",
+    "updateDialogTitle": "Frissítéskezelő",
+    "downloadingMessage": "Frissítés letöltése...",
+    "installingMessage": "Frissítés telepítése...",
+    "errorDownloadMessage": "Frissítés letöltése sikertelen",
+    "errorInstallMessage": "Frissítés telepítése sikertelen",
+    "noConnection": "Nincs internetkapcsolat",
+    "updatesDisabled": "A patchelt alkalmazások frissítése jelenleg nem lehetséges, ehelyett újra kell patchelni."
+  },
+  "applicationItem": {
+    "infoButton": "Infó"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Betöltés..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patchelő",
+    "patchButton": "Patch"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Alkalmazás kiválasztása",
+    "widgetTitleSelected": "Kiválasztott alkalmazás",
+    "widgetSubtitle": "Nincs kiválasztott alkalmazás",
+    "noAppsLabel": "Nem találhatóak alkalmazások",
+    "currentVersion": "Jelenlegi"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Patchek kiválasztása",
+    "widgetTitleSelected": "Kiválasztott patchek",
+    "widgetSubtitle": "Először válassz egy alkalmazást",
+    "widgetEmptySubtitle": "Nem választottál patch-et"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Közösségi oldalak",
+    "widgetSubtitle": "Online vagyunk!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Válasszon egy alkalmazást",
+    "searchBarHint": "Alkalmazások keresése",
+    "storageButton": "Tárhely",
+    "errorMessage": "A kiválasztott alkalmazás nem használható"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Patchek kiválasztása",
+    "searchBarHint": "Patchek keresése",
+    "doneButton": "Kész",
+    "none": "Semmi",
+    "loadPatchesSelection": "Korábbi kiválasztás betöltése",
+    "noSavedPatches": "Ehhez az alkalmazáshoz nem tartozik egy mentett kiválasztás sem\nNyomd meg a Kész gombot hogy elmentsd a jelenlegi listát",
+    "noPatchesFound": "A kiválasztott alkalmazáshoz nem találhatóak patchek"
+  },
+  "installerView": {
+    "installButton": "Telepítés",
+    "openButton": "Megnyitás",
+    "notificationTitle": "A ReVanced Manager jelenleg patchel",
+    "notificationText": "Koppints a telepítőhöz való visszalépéshez",
+    "noExit": "A telepítő még fut, most nem lehet visszalépni..."
+  },
+  "settingsView": {
+    "widgetTitle": "Beállítások",
+    "appearanceSectionTitle": "Megjelenés",
+    "teamSectionTitle": "Csapat",
+    "advancedSectionTitle": "Haladó",
+    "darkThemeLabel": "Sötét mód",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Élvezd az eszközödhöz közelibb élményt",
+    "languageLabel": "Nyelv",
+    "sourcesLabel": "Források",
+    "sourcesLabelHint": "Állítsd be egyedi forrásaid",
+    "orgPatchesLabel": "Patchek - szervezet",
+    "sourcesPatchesLabel": "Patchek - forrás",
+    "orgIntegrationsLabel": "Integrációk - szervezet",
+    "sourcesIntegrationsLabel": "Integrációk - forrás",
+    "sourcesResetDialogTitle": "Visszaállítás",
+    "sourcesResetDialogText": "Biztos, hogy visszaállítod az egyéni forrásokat az alap értékekre?",
+    "apiURLResetDialogText": "Biztos, hogy visszaállítod az API URL-t az eredeti értékre?",
+    "contributorsLabel": "Közreműködők",
+    "contributorsHint": "A ReVanced közreműködőinek listája",
+    "logsLabel": "Naplók",
+    "logsHint": "Manager naplófájlok megosztása",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "Itt állíthatod be az API címét",
+    "selectApiURL": "API címe",
+    "exportSectionTitle": "Importálás & exportálás",
+    "aboutLabel": "Rólunk",
+    "snackbarMessage": "Vágólapra másolva",
+    "restartAppForChanges": "Indítsd újra az alkalmazást a változások alkalmazásához",
+    "regenerateKeystoreLabel": "Kulcstartó törlése",
+    "regenerateKeystoreHint": "Törli az alkalmazás aláírásához használt kulcstartót",
+    "regeneratedKeystore": "Kulcstartó törölve",
+    "deleteTempDirLabel": "Ideiglenes fájlok törlése",
+    "deleteTempDirHint": "Felesleges átmeneti fájlok törlése",
+    "deletedTempDir": "Ideiglenes fájlok törölve",
+    "exportPatchesLabel": "Kiválasztások exportálása",
+    "exportPatchesHint": "Az összes korábbi kiválasztás mentáse JSON fájlba",
+    "exportedPatches": "Sikeres exportálás",
+    "noExportFileFound": "Nincs mit exportálni",
+    "importPatchesLabel": "Kiválasztások importálása",
+    "importPatchesHint": "Korábban kiválasztott lista betöltése JSON fájlból",
+    "importedPatches": "Sikeres importálás",
+    "resetStoredPatchesLabel": "Korábbi kiválasztások törlése",
+    "resetStoredPatchesHint": "Minden korábban mentett kiválasztást töröl",
+    "resetStoredPatches": "A kiválasztott patchek listája alaphelyzetbe állítva",
+    "jsonSelectorErrorMessage": "A kiválasztott JSON nem hasznalható",
+    "deleteLogsLabel": "Naplók törlése",
+    "deleteLogsHint": "A managerben összegyűjtott naplófájlok törlése",
+    "deletedLogs": "Naplók törölve"
+  },
+  "appInfoView": {
+    "widgetTitle": "Alkalmazás információ",
+    "openButton": "Megnyitás",
+    "uninstallButton": "Eltávolítás",
+    "unpatchButton": "Patch törlése",
+    "unpatchDialogText": "Biztos, hogy törölni akarod a patcheket?",
+    "rootDialogTitle": "Hiba",
+    "rootDialogText": "A patchelt alkalmazás root jogosultsággal lett telepítve, de a Managernek már nincs ilyen jogosultsága.\nKérlek, engedélyezd a root hozzáférést a Managernek.",
+    "packageNameLabel": "Csomagnév",
+    "installTypeLabel": "Telepítés módja",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Non-root",
+    "patchedDateLabel": "Patchelve",
+    "appliedPatchesLabel": "Alkalmazott patchek",
+    "updateNotImplemented": "Ez a funkció még nem készült el"
+  },
+  "contributorsView": {
+    "widgetTitle": "Közreműködők"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "okButton": "Aceitar",
+  "cancelButton": "Cancelar",
+  "yesButton": "Sim",
+  "noButton": "Não",
+  "warning": "Atenção",
+  "navigationView": {
+    "dashboardTab": "Painel",
+    "patcherTab": "Patcher",
+    "settingsTab": "Configurações"
+  },
+  "homeView": {
+    "widgetTitle": "Painel",
+    "updatesSubtitle": "Atualizações",
+    "patchedSubtitle": "Aplicativos modificados",
+    "noInstallations": "Nenhum aplicativo modificado instalado",
+    "updateDialogTitle": "Atualizar o Manager",
+    "downloadingMessage": "Baixando atualização...",
+    "installingMessage": "Instalando atualização...",
+    "errorDownloadMessage": "Não foi possível baixar a atualização",
+    "errorInstallMessage": "Não foi possível instalar a atualização",
+    "noConnection": "Sem conexão com a internet",
+    "updatesDisabled": "A opção de atualização de um aplicativo modificado está temporariamente desabilitada. Refaça o \"patch\" do aplicativo e tente novamente."
+  },
+  "applicationItem": {
+    "infoButton": "Info"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Carregando..."
+  },
+  "patcherView": {
+    "widgetTitle": "Patcher",
+    "patchButton": "Patch"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Selecione um app",
+    "widgetTitleSelected": "Aplicativo selecionado",
+    "widgetSubtitle": "Nenhum aplicativo selecionado",
+    "noAppsLabel": "Nenhum app foi encontrado",
+    "currentVersion": "Atual"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Selecionar patches",
+    "widgetTitleSelected": "Patches selecionados",
+    "widgetSubtitle": "Escolha um aplicativo primeiro",
+    "widgetEmptySubtitle": "Nenhum patch selecionado"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Mídias sociais",
+    "widgetSubtitle": "Nós estamos online!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Selecione um app",
+    "searchBarHint": "Procurar aplicativos",
+    "storageButton": "Armazenamento",
+    "errorMessage": "Não foi possível usar o app selecionado"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Selecionar patches",
+    "searchBarHint": "Buscar patches",
+    "doneButton": "Concluído",
+    "none": "Nenhum",
+    "loadPatchesSelection": "Carregar seleção de patches",
+    "noSavedPatches": "Sem patches salvados para o app selecionado\nAperte Feito para salvar a seleção atual",
+    "noPatchesFound": "Nenhum patch encontrado para o aplicativo selecionado"
+  },
+  "installerView": {
+    "installButton": "Instalar",
+    "openButton": "Abrir",
+    "notificationTitle": "ReVanced manager está aplicando os patches",
+    "notificationText": "Toque para voltar ao instalador",
+    "noExit": "O instalador ainda está trabalhando, não é possível sair..."
+  },
+  "settingsView": {
+    "widgetTitle": "Configurações",
+    "appearanceSectionTitle": "Aparência",
+    "teamSectionTitle": "Time",
+    "advancedSectionTitle": "Avançado",
+    "darkThemeLabel": "Modo escuro",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Aproveite uma experiência mais próxima do tema de seu dispositivo",
+    "languageLabel": "Idioma",
+    "sourcesLabel": "Fontes",
+    "sourcesLabelHint": "Configure sua URL de API customizada",
+    "orgPatchesLabel": "Organização de Patches",
+    "sourcesPatchesLabel": "Fonte dos Patches",
+    "orgIntegrationsLabel": "Organização das Integrações",
+    "sourcesIntegrationsLabel": "Fonte das Integrações",
+    "sourcesResetDialogTitle": "Redefinir",
+    "sourcesResetDialogText": "Você tem certeza que quer resetar as fontes personalizadas para o padrão?",
+    "apiURLResetDialogText": "Tem certeza de que deseja redefinir a URL da API para seu valor padrão?",
+    "contributorsLabel": "Contribuidores",
+    "contributorsHint": "Uma lista de contribuidores do ReVanced",
+    "logsLabel": "Registros",
+    "logsHint": "Compartilhar logs do Manager",
+    "apiURLLabel": "URL da API",
+    "apiURLHint": "Configure sua URL de API customizada",
+    "selectApiURL": "URL da API",
+    "exportSectionTitle": "Importar & Exportar",
+    "aboutLabel": "Sobre",
+    "snackbarMessage": "Copiado para a área de transferência",
+    "restartAppForChanges": "Reinicie o app para aplicar as mudanças",
+    "regenerateKeystoreLabel": "Apagar registro de chaves",
+    "regenerateKeystoreHint": "Apagar o registro de chaves usado para assinar o app",
+    "regeneratedKeystore": "Registro de chaves apagado",
+    "deleteTempDirLabel": "Apagar arquivos temporários",
+    "deleteTempDirHint": "Apagar os arquivos temporários inutilizados",
+    "deletedTempDir": "Arquivos temporários apagados",
+    "exportPatchesLabel": "Exportar seleção de patches",
+    "exportPatchesHint": "Exportar a seleção de patches para um arquivo JSON",
+    "exportedPatches": "Seleção de patches exportadas",
+    "noExportFileFound": "Nenhuma seleção de patches para exportar",
+    "importPatchesLabel": "Importar seleção de patches",
+    "importPatchesHint": "Importar a seleção de patches de um arquivo JSON",
+    "importedPatches": "Seleção de patches importadas",
+    "resetStoredPatchesLabel": "Redefinir patches",
+    "resetStoredPatchesHint": "Redefinir a seleção de patches armazenados",
+    "resetStoredPatches": "A seleção de patches foi redefinida",
+    "jsonSelectorErrorMessage": "Não é possível usar o arquivo JSON selecionado",
+    "deleteLogsLabel": "Apagar registros",
+    "deleteLogsHint": "Apagar registros coletados pelo administrador",
+    "deletedLogs": "Registros apagados"
+  },
+  "appInfoView": {
+    "widgetTitle": "Inform. do app",
+    "openButton": "Abrir",
+    "uninstallButton": "Desisntalar",
+    "unpatchButton": "Remover patches",
+    "unpatchDialogText": "Você tem certeza que deseja remover os patches deste aplicativo?",
+    "rootDialogTitle": "Erro",
+    "rootDialogText": "O aplicativo foi instalado com permissões de superusuário, mas atualmente o ReVanced Manager não tem permissões.\nPor favor, conceda permissões de superusuário primeiro.",
+    "packageNameLabel": "Nome do pacote",
+    "installTypeLabel": "Tipo de instalação",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Não-root",
+    "patchedDateLabel": "Data de patcheamento",
+    "appliedPatchesLabel": "Patches aplicados",
+    "updateNotImplemented": "Esta função ainda não foi implementada"
+  },
+  "contributorsView": {
+    "widgetTitle": "Contribuidores"
+  }
+}

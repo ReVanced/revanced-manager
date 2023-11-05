@@ -1,0 +1,143 @@
+{
+  "okButton": "確定",
+  "cancelButton": "取消",
+  "yesButton": "是",
+  "noButton": "否",
+  "warning": "警告",
+  "navigationView": {
+    "dashboardTab": "儀表板",
+    "patcherTab": "修補器",
+    "settingsTab": "設定"
+  },
+  "homeView": {
+    "widgetTitle": "儀表板",
+    "updatesSubtitle": "更新",
+    "patchedSubtitle": "已修改的應用",
+    "noInstallations": "仲未安裝過修改版應用",
+    "updateDialogTitle": "更新管理器",
+    "downloadingMessage": "下載更新中",
+    "installingMessage": "安裝更新中",
+    "errorDownloadMessage": "下載唔到更新",
+    "errorInstallMessage": "安裝更新失敗",
+    "noConnection": "沒有網路連線",
+    "updatesDisabled": "更新已修補的應用暫時已被禁用。請重新修補應用。"
+  },
+  "applicationItem": {
+    "infoButton": "資訊"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "載入中……"
+  },
+  "patcherView": {
+    "widgetTitle": "修補器",
+    "patchButton": "修補"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "選擇應用程式",
+    "widgetTitleSelected": "已選擇應用",
+    "widgetSubtitle": "沒有選擇應用程式",
+    "noAppsLabel": "找不到應用程式",
+    "currentVersion": "目前版本"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "選擇補丁",
+    "widgetTitleSelected": "揀咗嘅補丁",
+    "widgetSubtitle": "請先選擇應用程式",
+    "widgetEmptySubtitle": "沒有選擇補丁"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "社交",
+    "widgetSubtitle": "我哋上線啦！"
+  },
+  "appSelectorView": {
+    "viewTitle": "選擇應用程式",
+    "searchBarHint": "搜尋應用程式",
+    "storageButton": "儲存空間",
+    "errorMessage": "不能使用所選應用程式"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "選擇補丁",
+    "searchBarHint": "搜尋補丁",
+    "doneButton": "完成",
+    "none": "無",
+    "loadPatchesSelection": "加載選擇的補丁",
+    "noSavedPatches": "該已選程序沒有已存補丁\n按完成為存入該選項",
+    "noPatchesFound": "沒有此應用程式的補丁"
+  },
+  "installerView": {
+    "installButton": "安裝",
+    "openButton": "打開",
+    "notificationTitle": "ReVanced 管理器正在修補中",
+    "notificationText": "點按即可返回安裝程式",
+    "noExit": "安裝程序正在進行中，不可退出"
+  },
+  "settingsView": {
+    "widgetTitle": "設定",
+    "appearanceSectionTitle": "主題",
+    "teamSectionTitle": "團隊",
+    "advancedSectionTitle": "進階選項",
+    "darkThemeLabel": "暗黑模式",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "享受一個更貼近你裝置嘅體驗",
+    "languageLabel": "語言",
+    "sourcesLabel": "來源",
+    "sourcesLabelHint": "配置自定義來源",
+    "orgPatchesLabel": "修補檔組織",
+    "sourcesPatchesLabel": "修補檔來源",
+    "orgIntegrationsLabel": "項目整合組織",
+    "sourcesIntegrationsLabel": "項目整合來源",
+    "sourcesResetDialogTitle": "重設",
+    "sourcesResetDialogText": "確定要重設自定義來源至預設值？",
+    "apiURLResetDialogText": "確定要重設 API URL 至預設值？",
+    "contributorsLabel": "貢獻者",
+    "contributorsHint": "ReVanced 貢獻者列表",
+    "logsLabel": "日誌",
+    "logsHint": "分享經理記錄",
+    "apiURLLabel": "API URL",
+    "apiURLHint": "配置自定義來源",
+    "selectApiURL": "API 网址",
+    "exportSectionTitle": "匯入/匯出",
+    "aboutLabel": "關於",
+    "snackbarMessage": "已複製到剪貼簿",
+    "restartAppForChanges": "重啓應用以套用變更",
+    "regenerateKeystoreLabel": "刪除 keystore",
+    "regenerateKeystoreHint": "刪除登入程序已用的 keystore",
+    "regeneratedKeystore": "已刪除 keystore",
+    "deleteTempDirLabel": "刪除暫時文件",
+    "deleteTempDirHint": "刪除無用暫時文件",
+    "deletedTempDir": "暫時文件已刪除",
+    "exportPatchesLabel": "導出選擇的補丁",
+    "exportPatchesHint": "導出補丁選項到 JSON 文件",
+    "exportedPatches": "補丁選項已導出",
+    "noExportFileFound": "無補丁選綫導出",
+    "importPatchesLabel": "導入選擇的補丁",
+    "importPatchesHint": "從 JSON 文件導入補丁選項",
+    "importedPatches": "補丁選項已導入",
+    "resetStoredPatchesLabel": "重設補丁",
+    "resetStoredPatchesHint": "重設已保存的補丁選擇",
+    "resetStoredPatches": "補丁選擇已重置",
+    "jsonSelectorErrorMessage": "無法使用選取的 JSON 文件",
+    "deleteLogsLabel": "刪除日志文件",
+    "deleteLogsHint": "刪除已收集到的 Manager 日志",
+    "deletedLogs": "日志已被刪除"
+  },
+  "appInfoView": {
+    "widgetTitle": "應用程式資訊",
+    "openButton": "打開",
+    "uninstallButton": "解除安裝",
+    "unpatchButton": "取消修補",
+    "unpatchDialogText": "確定要取消修補此應用程式？",
+    "rootDialogTitle": "錯誤",
+    "rootDialogText": "程序已用 superuser 權限安裝完畢，但是目前 ReVanced Manager 還未授權.\n請讓ReVanced Manager 授權 superuser",
+    "packageNameLabel": "應用程式名稱",
+    "installTypeLabel": "安裝方式",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "冇 Root",
+    "patchedDateLabel": "修補日期",
+    "appliedPatchesLabel": "已套用修補檔",
+    "updateNotImplemented": "該功能還未開發"
+  },
+  "contributorsView": {
+    "widgetTitle": "貢獻者"
+  }
+}

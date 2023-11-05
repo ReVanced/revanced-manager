@@ -1,0 +1,143 @@
+{
+  "okButton": "Ok",
+  "cancelButton": "Cancelar",
+  "yesButton": "Si",
+  "noButton": "No",
+  "warning": "Advertencia",
+  "navigationView": {
+    "dashboardTab": "Panel de control",
+    "patcherTab": "Aplicador de parches",
+    "settingsTab": "Ajustes"
+  },
+  "homeView": {
+    "widgetTitle": "Panel de control",
+    "updatesSubtitle": "Actualizaciones",
+    "patchedSubtitle": "Aplicaciones parcheadas",
+    "noInstallations": "No hay aplicaciones parcheadas instaladas",
+    "updateDialogTitle": "Actualizar administrador",
+    "downloadingMessage": "Descargando actualización...",
+    "installingMessage": "Instalando actualización...",
+    "errorDownloadMessage": "No se pudo descargar la actualización",
+    "errorInstallMessage": "Error al instalar la actualización",
+    "noConnection": "Sin conexión a internet",
+    "updatesDisabled": "La actualización de una aplicación parcheada está deshabilitada. Vuelve a parchear la aplicación."
+  },
+  "applicationItem": {
+    "infoButton": "Información"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Cargando..."
+  },
+  "patcherView": {
+    "widgetTitle": "Parcheador",
+    "patchButton": "Parchear"
+  },
+  "appSelectorCard": {
+    "widgetTitle": "Selecciona una aplicación",
+    "widgetTitleSelected": "Aplicación seleccionada",
+    "widgetSubtitle": "Ninguna aplicación seleccionada",
+    "noAppsLabel": "No se encontraron aplicaciones",
+    "currentVersion": "Versión actual"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Seleccionar parches",
+    "widgetTitleSelected": "Parches seleccionados",
+    "widgetSubtitle": "Seleccione primero una aplicación",
+    "widgetEmptySubtitle": "Ningún parche seleccionado"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Redes sociales",
+    "widgetSubtitle": "¡Estamos en línea!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Selecciona una aplicación",
+    "searchBarHint": "Buscar aplicaciones",
+    "storageButton": "Almacenamiento",
+    "errorMessage": "No se puede usar la aplicación seleccionada"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Selecciona parches",
+    "searchBarHint": "Buscar parches",
+    "doneButton": "Completado",
+    "none": "Ninguno",
+    "loadPatchesSelection": "Cargar parches seleccionados",
+    "noSavedPatches": "No hay parches guardados para la aplicacion seleccionada\nPresiona Listo para guardar la seleccion actual",
+    "noPatchesFound": "No se encontraron parches para la aplicación seleccionada"
+  },
+  "installerView": {
+    "installButton": "Instalar",
+    "openButton": "Abrir",
+    "notificationTitle": "ReVanced Manager está parcheando",
+    "notificationText": "Pulsa para volver al instalador",
+    "noExit": "El instalador se está ejecutando, no puedes salir..."
+  },
+  "settingsView": {
+    "widgetTitle": "Ajustes",
+    "appearanceSectionTitle": "Apariencia",
+    "teamSectionTitle": "Equipo",
+    "advancedSectionTitle": "Avanzado",
+    "darkThemeLabel": "Modo oscuro",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "Disfruta de una experiencia más cercana a tu dispositivo",
+    "languageLabel": "Idioma",
+    "sourcesLabel": "Fuentes",
+    "sourcesLabelHint": "Configura tus fuentes personalizadas",
+    "orgPatchesLabel": "Organización de parches",
+    "sourcesPatchesLabel": "Fuente de los parches",
+    "orgIntegrationsLabel": "Organización de integraciones",
+    "sourcesIntegrationsLabel": "Fuente de integraciones",
+    "sourcesResetDialogTitle": "Reiniciar",
+    "sourcesResetDialogText": "¿Esta seguro de reiniciar las fuentes personalizadas a su valor predeterminado?",
+    "apiURLResetDialogText": "¿Esta seguro de restablecer la URL de la API a su valor predeterminado?",
+    "contributorsLabel": "Contribuidores",
+    "contributorsHint": "Lista de contribuidores de ReVanced",
+    "logsLabel": "Registros",
+    "logsHint": "Compartir registros de la aplicación",
+    "apiURLLabel": "URL API",
+    "apiURLHint": "Configure la URL personalizada de la API",
+    "selectApiURL": "URL de la API",
+    "exportSectionTitle": "Importar y Exportar",
+    "aboutLabel": "Acerca de",
+    "snackbarMessage": "Copiado al portapapeles",
+    "restartAppForChanges": "Reinicie la aplicación para aplicar los cambios",
+    "regenerateKeystoreLabel": "Eliminar keystore",
+    "regenerateKeystoreHint": "Eliminar el keystore usado para firmar la app",
+    "regeneratedKeystore": "Keystore eliminado",
+    "deleteTempDirLabel": "Borrar archivos temporales",
+    "deleteTempDirHint": "Eliminar archivos temporales sin utilizar",
+    "deletedTempDir": "Archivos temporales eliminados",
+    "exportPatchesLabel": "Exportar la selección de parches",
+    "exportPatchesHint": "Exportar selección de parches a un archivo JSON",
+    "exportedPatches": "Selección de parches exportada",
+    "noExportFileFound": "No hay selección de parches para exportar",
+    "importPatchesLabel": "Importar selección de parches",
+    "importPatchesHint": "Importar selección de parches desde un archivo JSON",
+    "importedPatches": "Selección de parches importada",
+    "resetStoredPatchesLabel": "Restablecer parches",
+    "resetStoredPatchesHint": "Restablecer la selección de parches almacenados",
+    "resetStoredPatches": "Se ha restablecido la selección de parches",
+    "jsonSelectorErrorMessage": "No se puede utilizar el archivo JSON seleccionado",
+    "deleteLogsLabel": "Eliminar registros",
+    "deleteLogsHint": "Borrar los registros del administrador",
+    "deletedLogs": "Registros eliminados"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informacion de la applicacion",
+    "openButton": "Abrir",
+    "uninstallButton": "Desinstalar",
+    "unpatchButton": "Desparchar",
+    "unpatchDialogText": "¿Estás seguro que quieres remover el parche?",
+    "rootDialogTitle": "Error",
+    "rootDialogText": "La aplicación se instaló con permisos de superusuario, pero actualmente ReVanced Manager no tiene permisos.\nPor favor, conceda primero los permisos de superusuario.",
+    "packageNameLabel": "Nombre del paquete",
+    "installTypeLabel": "Installation type",
+    "rootTypeLabel": "Root",
+    "nonRootTypeLabel": "Sin-Root",
+    "patchedDateLabel": "Fecha de parcheo",
+    "appliedPatchesLabel": "Parches aplicados",
+    "updateNotImplemented": "Esta función aún no se ha implementado"
+  },
+  "contributorsView": {
+    "widgetTitle": "Contribuidores"
+  }
+}
