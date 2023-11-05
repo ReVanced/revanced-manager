@@ -1,11 +1,11 @@
 {
-  "okButton": "OK",
+  "okButton": "ଠିକ୍ ଅଛି",
   "cancelButton": "Cancel",
   "quitButton": "Quit",
   "updateButton": "Update",
-  "yesButton": "Yes",
-  "noButton": "No",
-  "warning": "Warning",
+  "yesButton": "ହଁ",
+  "noButton": "ନାହିଁ",
+  "warning": "ଚେତାଵନୀ",
   "options": "Options",
   "notice": "Notice",
   "noShowAgain": "Don't show this again",
@@ -13,8 +13,8 @@
   "remove": "Remove",
   "navigationView": {
     "dashboardTab": "Dashboard",
-    "patcherTab": "Patcher",
-    "settingsTab": "Settings"
+    "patcherTab": "ରଫୁକାର",
+    "settingsTab": "ସେଟିଂ"
   },
   "homeView": {
     "refreshSuccess": "Refreshed successfully",
@@ -38,13 +38,13 @@
     "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
   },
   "applicationItem": {
-    "infoButton": "Info"
+    "infoButton": "ସୂଚନା"
   },
   "latestCommitCard": {
     "loadingLabel": "Loading..."
   },
   "patcherView": {
-    "widgetTitle": "Patcher",
+    "widgetTitle": "ରଫୁକାର",
     "patchButton": "Patch",
     "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
     "requiredOptionDialogText": "Some patch options have to be set."
@@ -85,7 +85,7 @@
     "universalPatches": "Universal patches",
     "newPatches": "New patches",
     "patches": "Patches",
-    "doneButton": "Done",
+    "doneButton": "ହେଲା",
     "defaultTooltip": "Select all default patches",
     "none": "None",
     "noneTooltip": "Deselect all patches",

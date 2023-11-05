@@ -1,27 +1,27 @@
 {
-  "okButton": "OK",
-  "cancelButton": "Cancel",
+  "okButton": "تأیید",
+  "cancelButton": "انصراف",
   "quitButton": "Quit",
-  "updateButton": "Update",
-  "yesButton": "Yes",
-  "noButton": "No",
-  "warning": "Warning",
+  "updateButton": "به‌روزرسانی",
+  "yesButton": "بله",
+  "noButton": "خیر",
+  "warning": "هشدار",
   "options": "Options",
   "notice": "Notice",
   "noShowAgain": "Don't show this again",
   "add": "Add",
   "remove": "Remove",
   "navigationView": {
-    "dashboardTab": "Dashboard",
-    "patcherTab": "Patcher",
-    "settingsTab": "Settings"
+    "dashboardTab": "پیشخوان",
+    "patcherTab": "نصب کننده پچ",
+    "settingsTab": "تنظیمات"
   },
   "homeView": {
-    "refreshSuccess": "Refreshed successfully",
-    "widgetTitle": "Dashboard",
-    "updatesSubtitle": "Updates",
-    "patchedSubtitle": "Patched apps",
-    "noInstallations": "No patched apps installed",
+    "refreshSuccess": "با موفقیت به روزرسانی شد",
+    "widgetTitle": "پیشخوان",
+    "updatesSubtitle": "به‌روزرسانی‌ها",
+    "patchedSubtitle": "برنامه های پچ شده",
+    "noInstallations": "هیچ برنامه پچ شده ای نصب نشده",
     "installUpdate": "Continue to install the update?",
     "updateDialogTitle": "Update Manager",
     "updatePatchesDialogTitle": "Update ReVanced Patches",
@@ -29,28 +29,28 @@
     "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
     "patchesConsentDialogText3": "Auto update?",
     "patchesConsentDialogText3Sub": "You can change this in settings at a later time.",
-    "downloadingMessage": "Downloading update...",
+    "downloadingMessage": "در حال بارگیری به‌روزرسانی…",
     "downloadedMessage": "Update downloaded!",
     "installingMessage": "Installing update...",
     "errorDownloadMessage": "Unable to download update",
     "errorInstallMessage": "Unable to install update",
-    "noConnection": "No internet connection",
+    "noConnection": "اتصال به اینترنت موجود نیست",
     "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
   },
   "applicationItem": {
-    "infoButton": "Info"
+    "infoButton": "اطلاعات"
   },
   "latestCommitCard": {
-    "loadingLabel": "Loading..."
+    "loadingLabel": "درحال بارگذاری..."
   },
   "patcherView": {
     "widgetTitle": "Patcher",
-    "patchButton": "Patch",
+    "patchButton": "پچ",
     "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
     "requiredOptionDialogText": "Some patch options have to be set."
   },
   "appSelectorCard": {
-    "widgetTitle": "Select an application",
+    "widgetTitle": "یک برنامه را انتخاب کنید",
     "widgetTitleSelected": "Selected application",
     "widgetSubtitle": "No application selected",
     "noAppsLabel": "No applications found",

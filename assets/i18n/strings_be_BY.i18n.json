@@ -1,51 +1,51 @@
 {
-  "okButton": "OK",
-  "cancelButton": "Cancel",
+  "okButton": "ОК",
+  "cancelButton": "Скасаваць",
   "quitButton": "Quit",
-  "updateButton": "Update",
-  "yesButton": "Yes",
-  "noButton": "No",
-  "warning": "Warning",
+  "updateButton": "Абнавіць",
+  "yesButton": "Так",
+  "noButton": "Не",
+  "warning": "Увага",
   "options": "Options",
   "notice": "Notice",
   "noShowAgain": "Don't show this again",
   "add": "Add",
   "remove": "Remove",
   "navigationView": {
-    "dashboardTab": "Dashboard",
-    "patcherTab": "Patcher",
-    "settingsTab": "Settings"
+    "dashboardTab": "Галоўная",
+    "patcherTab": "Патчар",
+    "settingsTab": "Налады"
   },
   "homeView": {
-    "refreshSuccess": "Refreshed successfully",
-    "widgetTitle": "Dashboard",
-    "updatesSubtitle": "Updates",
-    "patchedSubtitle": "Patched apps",
-    "noInstallations": "No patched apps installed",
-    "installUpdate": "Continue to install the update?",
-    "updateDialogTitle": "Update Manager",
+    "refreshSuccess": "Паспяхова абноўлена",
+    "widgetTitle": "Галоўная",
+    "updatesSubtitle": "Абнаўленні",
+    "patchedSubtitle": "Прапатчаныя праграмы",
+    "noInstallations": "Няма ўсталяваных прапатчаных праграм",
+    "installUpdate": "Працягнуць устаноўку абнаўлення?",
+    "updateDialogTitle": "Абнавіць Менеджэр",
     "updatePatchesDialogTitle": "Update ReVanced Patches",
-    "updateChangelogTitle": "Changelog",
+    "updateChangelogTitle": "Спіс змяненняў",
     "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
     "patchesConsentDialogText3": "Auto update?",
     "patchesConsentDialogText3Sub": "You can change this in settings at a later time.",
-    "downloadingMessage": "Downloading update...",
-    "downloadedMessage": "Update downloaded!",
-    "installingMessage": "Installing update...",
-    "errorDownloadMessage": "Unable to download update",
-    "errorInstallMessage": "Unable to install update",
-    "noConnection": "No internet connection",
-    "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
+    "downloadingMessage": "Загружаецца абнаўленне...",
+    "downloadedMessage": "Абнаўленне спампавана!",
+    "installingMessage": "Усталяванне абнаўлення...",
+    "errorDownloadMessage": "Немагчыма спампаваць абнаўленне",
+    "errorInstallMessage": "Немагчыма ўсталяваць абнаўленне",
+    "noConnection": "Няма злучэння з інтэрнэтам",
+    "updatesDisabled": "Абнаўленне праграмы з патчам зараз адключана. Паўторна прапатчыце праграму."
   },
   "applicationItem": {
-    "infoButton": "Info"
+    "infoButton": "Інфармацыя"
   },
   "latestCommitCard": {
-    "loadingLabel": "Loading..."
+    "loadingLabel": "Загрузка..."
   },
   "patcherView": {
-    "widgetTitle": "Patcher",
-    "patchButton": "Patch",
+    "widgetTitle": "Патчар",
+    "patchButton": "Прапатчыць",
     "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
     "requiredOptionDialogText": "Some patch options have to be set."
   },
