@@ -1,7 +1,9 @@
 package app.revanced.manager.domain.bundles
 
+import android.util.Log
 import androidx.compose.runtime.Stable
 import app.revanced.manager.patcher.patch.PatchBundle
+import app.revanced.manager.util.tag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -40,6 +42,7 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
         return try {
             State.Loaded(PatchBundle(patchesFile, integrationsFile.takeIf(File::exists)))
         } catch (t: Throwable) {
+            Log.e(tag, "Failed to load patch bundle $name", t)
             State.Failed(t)
         }
     }
