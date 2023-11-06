@@ -21,8 +21,8 @@ class SAdvancedSection extends StatelessWidget {
       children: const <Widget>[
         SAutoUpdatePatches(),
         SEnablePatchesSelection(),
-        SVersionCompatibilityCheck(),
         SRequireSuggestedAppVersion(),
+        SVersionCompatibilityCheck(),
         SUniversalPatches(),
         SManageSourcesUI(),
         SManageApiUrlUI(),
