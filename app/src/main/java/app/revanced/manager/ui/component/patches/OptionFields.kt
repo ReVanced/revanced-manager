@@ -29,7 +29,6 @@ import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.util.toast
-import app.revanced.patcher.patch.options.types.*
 import org.koin.compose.rememberKoinInject
 
 // Composable functions do not support function references, so we have to use composable lambdas instead.
@@ -136,69 +135,69 @@ private fun StringOptionDialog(
     )
 }
 
-private val StringOption: OptionImpl = { option, value, setValue ->
-    var showInputDialog by rememberSaveable { mutableStateOf(false) }
-    fun showInputDialog() {
-        showInputDialog = true
-    }
-
-    fun dismissInputDialog() {
-        showInputDialog = false
-    }
-
-    if (showInputDialog) {
-        StringOptionDialog(
-            name = option.title,
-            value = value as? String,
-            onSubmit = {
-                dismissInputDialog()
-                setValue(it)
-            },
-            onDismissRequest = ::dismissInputDialog
-        )
-    }
-
-    OptionListItem(
-        option = option,
-        onClick = ::showInputDialog
-    ) {
-        IconButton(onClick = ::showInputDialog) {
-            Icon(
-                Icons.Outlined.Edit,
-                contentDescription = stringResource(R.string.string_option_icon_description)
-            )
-        }
-    }
-}
-
-private val BooleanOption: OptionImpl = { option, value, setValue ->
-    val current = (value as? Boolean) ?: false
-
-    OptionListItem(
-        option = option,
-        onClick = { setValue(!current) }
-    ) {
-        Switch(checked = current, onCheckedChange = setValue)
-    }
-}
-
-private val UnknownOption: OptionImpl = { option, _, _ ->
+private val unknownOption: OptionImpl = { option, _, _ ->
     val context = LocalContext.current
     OptionListItem(
         option = option,
-        onClick = { context.toast("Unknown type: ${option.type.name}") },
+        onClick = { context.toast("Unknown type: ${option.type}") },
         trailingContent = {})
 }
+
+private val optionImplementations = mapOf<String, OptionImpl>(
+    // These are the only two types that are currently used by the official patches
+    "Boolean" to { option, value, setValue ->
+        val current = (value as? Boolean) ?: false
+
+        OptionListItem(
+            option = option,
+            onClick = { setValue(!current) }
+        ) {
+            Switch(checked = current, onCheckedChange = setValue)
+        }
+    },
+    "String" to { option, value, setValue ->
+        var showInputDialog by rememberSaveable { mutableStateOf(false) }
+        fun showInputDialog() {
+            showInputDialog = true
+        }
+
+        fun dismissInputDialog() {
+            showInputDialog = false
+        }
+
+        if (showInputDialog) {
+            StringOptionDialog(
+                name = option.title,
+                value = value as? String,
+                onSubmit = {
+                    dismissInputDialog()
+                    setValue(it)
+                },
+                onDismissRequest = ::dismissInputDialog
+            )
+        }
+
+        OptionListItem(
+            option = option,
+            onClick = ::showInputDialog
+        ) {
+            IconButton(onClick = ::showInputDialog) {
+                Icon(
+                    Icons.Outlined.Edit,
+                    contentDescription = stringResource(R.string.string_option_icon_description)
+                )
+            }
+        }
+    }
+)
 
 @Composable
 fun OptionItem(option: Option, value: Any?, setValue: (Any?) -> Unit) {
     val implementation = remember(option.type) {
-        when (option.type) {
-            // These are the only two types that are currently used by the official patches.
-            StringPatchOption::class.java -> StringOption
-            BooleanPatchOption::class.java -> BooleanOption
-            else -> UnknownOption
-        }
+        optionImplementations.getOrDefault(
+            option.type,
+            unknownOption
+        )
     }
 
     implementation(option, value, setValue)
