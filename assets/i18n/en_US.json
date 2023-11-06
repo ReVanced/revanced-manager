@@ -111,7 +111,7 @@
 
         "downloadToast": "Download function is not available yet",
 
-        "requireSuggestedAppVersionDialogText": "It is recommended to select a suggested application version to avoid unexpected issues.\n\nSuggested version: v{suggested}\nSelected version: v{selected}\n\nYou'll need to turn off \"Require suggested app version\" in settings to disable this enforcement.",
+        "requireSuggestedAppVersionDialogText": "The version of the app you have selected does not match the suggested version. Please choose the app that matches the recommended version.\n\nSelected version: v{selected}\nSuggested version: v{suggested}\n\n.You can disable the setting \"Require suggested app version\" to bypass this.",
 
         "featureNotAvailable": "Feature not implemented",
         "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
@@ -241,7 +241,7 @@
         "versionCompatibilityCheckHint": "Restricts patches to supported app versions",
         "requireSuggestedAppVersionLabel": "Require suggested app version",
         "requireSuggestedAppVersionHint": "Enforce selection of suggested app version",
-        "requireSuggestedAppVersionDialogText": "Selecting unsuggested application version may cause unexpected issues.\n\nDisable anyways?",
+        "requireSuggestedAppVersionDialogText": "Selecting an app that does not have the suggested version may cause unexpected issues.\n\nDisable anyways?",
 
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
