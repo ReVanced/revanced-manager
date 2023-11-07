@@ -181,6 +181,14 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> copyLogs() async {
     final info = await AboutInfo.getInfo();
+    dynamic getValue(String patchName, Option option) {
+      final Option? savedOption = _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+      if (savedOption != null) {
+        return savedOption.value;
+      } else {
+        return option.value;
+      }
+    }
 
     final formattedLogs = [
       '- Device Info',
@@ -194,7 +202,7 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${o.value}').join(", ")}]')).toList().join(", ")}',
+      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${getValue(p.name, o)}').join(", ")}]')).toList().join(", ")}',
       
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
