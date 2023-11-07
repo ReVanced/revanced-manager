@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import app.revanced.manager.R
@@ -30,9 +29,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.ContributorViewModel
 import coil.compose.AsyncImage
-import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
-import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
-import com.tbuonomo.viewpagerdotsindicator.compose.type.WormIndicatorType
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,23 +108,6 @@ fun ExpandableListCard(
                     text = "(${(pagerState.currentPage + 1)}/${pagerState.pageCount})",
                     style = MaterialTheme.typography.labelSmall
                 )
-                if (pagerState.pageCount != 1) {
-                    DotsIndicator(
-                        dotCount = pagerState.pageCount,
-                        type = WormIndicatorType(
-                            dotsGraphic = DotGraphic(
-                                6.dp,
-                                color = MaterialTheme.colorScheme.outline
-                            ),
-                            wormDotGraphic = DotGraphic(
-                                6.dp,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        ),
-                        pagerState = pagerState
-
-                    )
-                }
             }
             HorizontalPager(
                 state = pagerState,
