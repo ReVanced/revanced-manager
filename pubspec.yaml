@@ -82,6 +82,7 @@ dependencies:
   share_plus: ^7.2.1
   slang: ^3.25.0
   slang_flutter: ^3.25.0
+  language_code: ^0.3.1
 
 dev_dependencies:
   build_runner: any
