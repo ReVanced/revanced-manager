@@ -1,12 +1,9 @@
 package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -22,13 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.coerceAtMost
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import app.revanced.manager.R
@@ -36,7 +29,6 @@ import app.revanced.manager.network.dto.ReVancedContributor
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.ContributorViewModel
-import app.revanced.manager.util.toast
 import coil.compose.AsyncImage
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -120,7 +112,7 @@ fun ExpandableListCard(
                     text = "(${(pagerState.currentPage + 1)}/${pagerState.pageCount})",
                     style = MaterialTheme.typography.labelSmall
                 )
-                if (pagerState.pageCount !== 1) {
+                if (pagerState.pageCount != 1) {
                     DotsIndicator(
                         dotCount = pagerState.pageCount,
                         type = WormIndicatorType(
@@ -145,8 +137,9 @@ fun ExpandableListCard(
             ) { page ->
                 BoxWithConstraints {
                     val spaceBetween = 16.dp
-                    val itemSize = (this.maxWidth - itemsPerRow * spaceBetween) / itemsPerRow
-                    val itemSpacing = (this.maxWidth - (itemSize * itemsPerRow)) / itemsPerRow + spaceBetween
+                    val maxWidth = this.maxWidth
+                    val itemSize = (maxWidth - (itemsPerRow - 1) * spaceBetween) / itemsPerRow
+                    val itemSpacing = (maxWidth - itemSize * 6) / (itemsPerRow - 1)
                     FlowRow(
                         maxItemsInEachRow = itemsPerRow,
                         horizontalArrangement = Arrangement.spacedBy(itemSpacing),
@@ -154,31 +147,38 @@ fun ExpandableListCard(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         contributorsByPage[page].forEach {
-                            AsyncImage(
-                                model = it.avatarUrl,
-                                contentDescription = it.avatarUrl,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(itemSize)
-                                    .clip(CircleShape)
-                            )
+                            if (itemSize > 100.dp) {
+                                Row(
+                                    modifier = Modifier.width(itemSize - 1.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    AsyncImage(
+                                        model = it.avatarUrl,
+                                        contentDescription = it.avatarUrl,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(itemSize / 3)
+                                            .clip(CircleShape)
+                                    )
+                                    Text(
+                                        modifier = Modifier.basicMarquee(),
+                                        text = it.username,
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
+                            } else {
+                                AsyncImage(
+                                    model = it.avatarUrl,
+                                    contentDescription = it.avatarUrl,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(itemSize - 1.dp)
+                                        .clip(CircleShape)
+                                )
+                            }
                         }
                     }
-//                    LazyVerticalGrid(
-//                        columns = GridCells.Adaptive(itemSize),
-//                        content = {
-//                            contributorsByPage[page].forEach { item ->
-//                                AsyncImage(
-//                                    model = item.avatarUrl,
-//                                    contentDescription = item.avatarUrl,
-//                                    contentScale = ContentScale.Crop,
-//                                    modifier = Modifier
-//                                        .size(itemSize)
-//                                        .clip(CircleShape)
-//                                )
-//                            }
-//                        }
-//                    )
                 }
             }
         }
