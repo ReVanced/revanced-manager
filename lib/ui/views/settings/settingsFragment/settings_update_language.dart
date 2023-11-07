@@ -38,8 +38,8 @@ class SUpdateLanguage extends BaseViewModel {
     // initLang();
 
     // Return a dialog with list for each language supported by the application.
-    // the dialog will display the country, english name, native name of each languages,
-    // the current language will be highlighted with a bold font weight.
+    // the dialog will display the english and native name of each languages,
+    // the current language will be highlighted by selected radio button.
     return showDialog(
       context: parentContext,
       builder: (context) => AlertDialog(
@@ -62,12 +62,6 @@ class SUpdateLanguage extends BaseViewModel {
                         return locale.languageCode;
                       }
                     })(),
-                    style: TextStyle(
-                      fontWeight: locale.languageCode ==
-                              LocaleSettings.currentLocale.languageCode
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
                   ),
                   subtitle: Text(
                     (() {
