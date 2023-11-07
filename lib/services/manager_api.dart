@@ -34,6 +34,7 @@ class ManagerAPI {
   Patch? selectedPatch;
   BuildContext? ctx;
   bool isRooted = false;
+  bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
@@ -257,6 +258,14 @@ class ManagerAPI {
 
   Future<void> enableVersionCompatibilityCheckStatus(bool value) async {
     await _prefs.setBool('versionCompatibilityCheckEnabled', value);
+  }
+
+  bool isRequireSuggestedAppVersionEnabled() {
+    return _prefs.getBool('requireSuggestedAppVersionEnabled') ?? true;
+  }
+
+  Future<void> enableRequireSuggestedAppVersionStatus(bool value) async {
+    await _prefs.setBool('requireSuggestedAppVersionEnabled', value);
   }
 
   Future<void> setKeystorePassword(String password) async {

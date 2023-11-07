@@ -28,7 +28,6 @@ class _AppSelectorViewState extends State<AppSelectorView> {
           icon: const Icon(Icons.sd_storage),
           onPressed: () {
             model.selectAppFromStorage(context);
-            Navigator.of(context).pop();
           },
         ),
         body: CustomScrollView(
