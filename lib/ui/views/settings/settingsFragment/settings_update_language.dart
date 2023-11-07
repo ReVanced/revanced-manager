@@ -45,6 +45,7 @@ class SUpdateLanguage extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Text(t.settingsView.languageLabel),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        contentPadding: EdgeInsets.zero,
         content: SingleChildScrollView(
           child: ListBody(
             children: AppLocale.values.map(
