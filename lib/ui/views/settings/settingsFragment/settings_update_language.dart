@@ -49,7 +49,7 @@ class SUpdateLanguage extends BaseViewModel {
           child: ListBody(
             children: AppLocale.values.map(
               (locale) {
-                return ListTile(
+                return RadioListTile(
                   title: Text(
                     (() {
                       try {
@@ -78,14 +78,14 @@ class SUpdateLanguage extends BaseViewModel {
                       }
                     })(),
                   ),
-                  trailing: Text(
-                    '${locale.countryCode}'
-                    '-'
-                    '${locale.languageCode}',
-                  ),
-                  onTap: () {
+                  value: locale.languageCode.replaceAll('-', '_') ==
+                      LocaleSettings.currentLocale.languageCode.replaceAll(
+                        '-',
+                        '_',
+                      ),
+                  groupValue: true,
+                  onChanged: (value) {
                     updateLocale(locale.languageCode.replaceAll('-', '_'));
-                    Navigator.pop(context);
                   },
                 );
               },
@@ -94,7 +94,7 @@ class SUpdateLanguage extends BaseViewModel {
         ),
         actions: <Widget>[
           CustomMaterialButton(
-            label: Text(t.cancelButton),
+            label: Text(t.okButton),
             onPressed: () {
               Navigator.of(context).pop();
             },
