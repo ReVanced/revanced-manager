@@ -72,8 +72,7 @@ fun ExpandableListCard(
     title: String,
     contributors: List<ReVancedContributor>,
     itemsPerPage: Int = 12,
-    numberOfRows: Int = 2,
-    itemSize: Dp = 40.dp
+    numberOfRows: Int = 2
 ) {
     val itemsPerRow = (itemsPerPage / numberOfRows)
 
@@ -101,6 +100,7 @@ fun ExpandableListCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = processHeadlineText(title),
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -141,7 +141,7 @@ fun ExpandableListCard(
                                             .clip(CircleShape)
                                     )
                                     Text(
-                                        modifier = Modifier.basicMarquee(),
+                                        modifier = Modifier.basicMarquee(100),
                                         text = it.username,
                                         style = MaterialTheme.typography.bodyLarge
                                     )
