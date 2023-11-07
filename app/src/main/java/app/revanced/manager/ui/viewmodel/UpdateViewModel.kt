@@ -5,9 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
-import android.content.pm.PackageManager
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.api.ReVancedAPI.Extensions.findAssetByType
 import app.revanced.manager.network.dto.ReVancedRelease
@@ -25,22 +22,26 @@ import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.APK_MIMETYPE
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.url
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 
 class UpdateViewModel(
-    private val app: Application,
-    private val reVancedAPI: ReVancedAPI,
-    private val http: HttpService,
-    private val pm: PM
-) : ViewModel() {
+    private val downloadOnScreenEntry: Boolean
+) : ViewModel(), KoinComponent {
+    private val app: Application by inject()
+    private val reVancedAPI: ReVancedAPI by inject()
+    private val http: HttpService by inject()
+    private val pm: PM by inject()
+
     var downloadedSize by mutableStateOf(0L)
         private set
     var totalSize by mutableStateOf(0L)
@@ -72,7 +73,9 @@ class UpdateViewModel(
                     release!!.metadata.body
                 )
             }
-            _state.value = State.CAN_DOWNLOAD
+            if (downloadOnScreenEntry) {
+                downloadUpdate()
+            } else { _state.value = State.CAN_DOWNLOAD }
         }
     }
 
