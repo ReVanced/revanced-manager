@@ -26,7 +26,6 @@ coil = "2.4.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
 libsu = "5.2.0"
-dotsindicator = "5.0"
 
 [libraries]
 # AndroidX Core
@@ -78,9 +77,6 @@ koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager
 
 # Compose Navigation
 reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
-
-# Pager Indicator
-dotsindicator = { group = "com.tbuonomo", name = "dotsindicator", version.ref = "dotsindicator" }
 
 # about-libraries
 about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "aboutLibrariesGradlePlugin" }
