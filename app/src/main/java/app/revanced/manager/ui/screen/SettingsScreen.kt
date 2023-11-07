@@ -45,10 +45,16 @@ import org.koin.androidx.compose.getViewModel as getComposeViewModel
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
+    startDestination: SettingsDestination,
     viewModel: SettingsViewModel = getViewModel()
 ) {
-    val navController =
-        rememberNavController<SettingsDestination>(startDestination = SettingsDestination.Settings)
+    val navController = rememberNavController(startDestination)
+
+    val backClick: () -> Unit = {
+        if (navController.backstack.entries.size == 1)
+            onBackClick()
+        else navController.pop()
+    }
 
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -93,53 +99,52 @@ fun SettingsScreen(
     ) { destination ->
         when (destination) {
             is SettingsDestination.General -> GeneralSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 viewModel = viewModel
             )
 
             is SettingsDestination.Advanced -> AdvancedSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onChangelogClick = { navController.navigate(SettingsDestination.Changelogs) },
                 onUpdateClick = { navController.navigate(SettingsDestination.Update(false)) }
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.ImportExport -> ImportExportSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.About -> AboutSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onContributorsClick = { navController.navigate(SettingsDestination.Contributors) },
                 onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
             is SettingsDestination.Update -> UpdateScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 vm = getComposeViewModel {
                     parametersOf(
                         destination.downloadOnScreenEntry
                     )
                 }
-            )
 
             is SettingsDestination.Changelogs -> ChangelogsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Contributors -> ContributorScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Licenses -> LicensesScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Settings -> {
@@ -147,7 +152,7 @@ fun SettingsScreen(
                     topBar = {
                         AppTopBar(
                             title = stringResource(R.string.settings),
-                            onBackClick = onBackClick,
+                            onBackClick = backClick,
                         )
                     }
                 ) { paddingValues ->
