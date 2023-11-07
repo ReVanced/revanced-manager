@@ -110,6 +110,7 @@ class UpdateViewModel(
                         _state.value = State.SUCCESS
                     } else {
                         _state.value = State.FAILED
+                        // TODO: handle install fail with a popup
                         installError = extra
                         app.toast(app.getString(R.string.install_app_fail, extra))
                     }
