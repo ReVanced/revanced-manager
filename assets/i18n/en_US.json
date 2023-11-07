@@ -241,7 +241,7 @@
         "versionCompatibilityCheckHint": "Restricts patches to supported app versions",
         "requireSuggestedAppVersionLabel": "Require suggested app version",
         "requireSuggestedAppVersionHint": "Enforce selection of suggested app version",
-        "requireSuggestedAppVersionDialogText": "Selecting an app that does not have the suggested version may cause unexpected issues.\n\nDisable anyways?",
+        "requireSuggestedAppVersionDialogText": "Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?",
 
         "aboutLabel": "About",
         "snackbarMessage": "Copied to clipboard",
