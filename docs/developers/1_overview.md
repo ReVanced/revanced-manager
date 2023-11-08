@@ -1,6 +1,6 @@
 # 💁 Overview
 
-Take a quick peak of how ReVanced Compose work.
+Take a quick peak of how ReVanced Compose works.
 
 ## ⚙️ Technology
 
