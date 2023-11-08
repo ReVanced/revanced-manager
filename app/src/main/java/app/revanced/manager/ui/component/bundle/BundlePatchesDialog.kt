@@ -70,17 +70,10 @@ fun BundlePatchesDialog(
                 item {
                     AnimatedVisibility(visible = informationCardVisible) {
                         NotificationCard(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
                             icon = Icons.Outlined.Lightbulb,
-                            text = stringResource(R.string.tap_on_patches)
-                        ) {
-                            IconButton(onClick = { informationCardVisible = false }) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Close,
-                                    contentDescription = stringResource(R.string.close),
-                                )
-                            }
-                        }
+                            text = stringResource(R.string.tap_on_patches),
+                            onDismiss = { informationCardVisible = false }
+                        )
                     }
                 }
 

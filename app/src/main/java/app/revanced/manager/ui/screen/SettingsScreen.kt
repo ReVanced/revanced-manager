@@ -7,18 +7,11 @@ import android.net.Uri
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryAlert
@@ -29,32 +22,37 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
-import app.revanced.manager.ui.screen.settings.update.ManagerUpdateChangelog
+import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
 import app.revanced.manager.ui.screen.settings.update.UpdateProgressScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
+import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
+    startDestination: SettingsDestination,
     viewModel: SettingsViewModel = getViewModel()
 ) {
-    val navController =
-        rememberNavController<SettingsDestination>(startDestination = SettingsDestination.Settings)
+    val navController = rememberNavController(startDestination)
+
+    val backClick: () -> Unit = {
+        if (navController.backstack.entries.size == 1)
+            onBackClick()
+        else navController.pop()
+    }
 
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -100,48 +98,48 @@ fun SettingsScreen(
         when (destination) {
 
             is SettingsDestination.General -> GeneralSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 viewModel = viewModel
             )
 
             is SettingsDestination.Advanced -> AdvancedSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
-                onBackClick = { navController.pop() },
-                onChangelogClick = { navController.navigate(SettingsDestination.UpdateChangelog) },
+                onBackClick = backClick,
+                onChangelogClick = { navController.navigate(SettingsDestination.Changelogs) },
                 onUpdateClick = { navController.navigate(SettingsDestination.UpdateProgress) }
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.ImportExport -> ImportExportSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.About -> AboutSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onContributorsClick = { navController.navigate(SettingsDestination.Contributors) },
                 onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
             is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
-            is SettingsDestination.UpdateChangelog -> ManagerUpdateChangelog(
-                onBackClick = { navController.pop() },
+            is SettingsDestination.Changelogs -> ChangelogsScreen(
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Contributors -> ContributorScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Licenses -> LicensesScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Settings -> {
@@ -149,7 +147,7 @@ fun SettingsScreen(
                     topBar = {
                         AppTopBar(
                             title = stringResource(R.string.settings),
-                            onBackClick = onBackClick,
+                            onBackClick = backClick,
                         )
                     }
                 ) { paddingValues ->
@@ -157,61 +155,27 @@ fun SettingsScreen(
                         modifier = Modifier
                             .padding(paddingValues)
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
-                            Card(
-                                onClick = {
+                            NotificationCard(
+                                isWarning = true,
+                                icon = Icons.Default.BatteryAlert,
+                                text = stringResource(R.string.battery_optimization_notification),
+                                primaryAction = {
                                     context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                         data = Uri.parse("package:${context.packageName}")
                                     })
                                     showBatteryButton =
                                         !pm.isIgnoringBatteryOptimizations(context.packageName)
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                                    .clip(RoundedCornerShape(24.dp))
-                                    .background(MaterialTheme.colorScheme.tertiaryContainer),
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.BatteryAlert,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.battery_optimization_notification),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
                                 }
-                            }
+                            )
                         }
                         settingsSections.forEach { (titleDescIcon, destination) ->
-                            ListItem(
+                            SettingsListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
-                                headlineContent = {
-                                    Text(
-                                        stringResource(titleDescIcon.first),
-                                        style = MaterialTheme.typography.titleLarge
-                                    )
-                                },
-                                supportingContent = {
-                                    Text(
-                                        stringResource(titleDescIcon.second),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.outline
-                                    )
-                                },
+                                headlineContent = stringResource(titleDescIcon.first),
+                                supportingContent = stringResource(titleDescIcon.second),
                                 leadingContent = { Icon(titleDescIcon.third, null) }
                             )
                         }

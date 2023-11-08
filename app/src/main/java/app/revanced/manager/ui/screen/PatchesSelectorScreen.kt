@@ -301,10 +301,7 @@ fun PatchesSelectorScreen(
                 icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
                     // TODO: only allow this if all required options have been set.
-                    composableScope.launch {
-                        vm.saveSelection()
-                        onSave(vm.getCustomSelection(), vm.getOptions())
-                    }
+                    onSave(vm.getCustomSelection(), vm.getOptions())
                 }
             )
         }
@@ -574,7 +571,7 @@ fun OptionsDialog(
             items(patch.options, key = { it.key }) { option ->
                 val key = option.key
                 val value =
-                    if (values == null || !values.contains(key)) option.defaultValue else values[key]
+                    if (values == null || !values.contains(key)) option.default else values[key]
 
                 OptionItem(option = option, value = value, setValue = { set(key, it) })
             }

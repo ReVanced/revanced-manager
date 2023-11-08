@@ -11,14 +11,14 @@ accompanist = "0.30.1"
 serialization = "1.6.0"
 collection = "0.3.5"
 room-version = "2.5.2"
-revanced-patcher = "17.0.0"
-revanced-library = "1.1.4"
+revanced-patcher = "19.0.0"
+revanced-library = "1.2.0"
 koin-version = "3.4.3"
 koin-version-compose = "3.4.6"
 reimagined-navigation = "1.5.0"
 ktor = "2.3.3"
-markdown = "0.5.0"
-androidGradlePlugin = "8.1.1"
+markdown-renderer = "0.8.0"
+androidGradlePlugin = "8.1.2"
 kotlinGradlePlugin = "1.9.10"
 devToolsGradlePlugin = "1.9.10-1.0.13"
 aboutLibrariesGradlePlugin = "10.8.3"
@@ -93,7 +93,7 @@ skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skra
 skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
 
 # Markdown
-markdown = { group = "org.jetbrains", name = "markdown", version.ref = "markdown" }
+markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
 
 # LibSU
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }
