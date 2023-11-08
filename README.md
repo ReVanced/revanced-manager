@@ -78,7 +78,7 @@ We provide the some of the features are:
 
 You can get ReVanced Manager by downloading from [ReVanced site](https://revanced.app/download) or [GitHub releases](https://github.com/ReVanced/revanced-manager/releases).
 
-## 🌱 Miscellaneous
+## 📚 Everything else
 
 ### 📄 Documentation
 
