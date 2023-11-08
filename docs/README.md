@@ -13,10 +13,6 @@ This documentation explains how to use [ReVanced Manager](https://github.com/ReV
    4. [⚙️ Configuring ReVanced Manager](2_4_settings.md)
 3. [❔ Troubleshooting](3_troubleshooting.md)
 
-## 👋 Developer version
-
-Interested in contributing? Consider checking out the developer version of [documentation](/developers/README.md)
-
 ## ⏭️ Start here
 
 The next page will tell you about the prerequisites for using ReVanced Manager.

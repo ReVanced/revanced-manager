@@ -76,7 +76,6 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 1. Fork the repository and create a new branch based off the `dev` branch
 2. Make sure that the commit name are clear and concise as possible and commit your changes.
-   If you have never contributed to this repository before, it's recommended to read the overview in the [documentation for developers](/docs/developers/README.md)
 3. Open a pull request to the `dev` branch and reference issues that your pull request closes
 4. The maintainers of ReVanced Manager will review and provide suggestions. 
    Once your pull request is approved and merged, it will be included in the next release of ReVanced Manager
