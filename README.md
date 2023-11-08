@@ -65,7 +65,7 @@
 
 ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications.
 
-### 💪 Features
+## 💪 Features
 
 We provide the some of the features are:
 
@@ -74,7 +74,7 @@ We provide the some of the features are:
 * 🛠️ **Customization**: Patch with third-party sources;
 * ✨ And a **lot more!**
 
-### 🔽 Download
+## 🔽 Download
 
 You can get ReVanced Manager by downloading from [ReVanced site](https://revanced.app/download) or [GitHub releases](https://github.com/ReVanced/revanced-manager/releases).
 
