@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.api.ReVancedAPI.Extensions.findAssetByType
 import app.revanced.manager.network.dto.ReVancedRelease
@@ -45,6 +46,7 @@ class UpdateViewModel(
     private val reVancedAPI: ReVancedAPI by inject()
     private val http: HttpService by inject()
     private val pm: PM by inject()
+    private val networkInfo: NetworkInfo by inject()
 
     var downloadedSize by mutableStateOf(0L)
         private set
@@ -55,6 +57,7 @@ class UpdateViewModel(
 
         downloadedSize.toFloat() / totalSize.toFloat()
     }
+    var showInternetCheckDialog by mutableStateOf(false)
     var state by mutableStateOf(State.CAN_DOWNLOAD)
         private set
 
@@ -86,21 +89,25 @@ class UpdateViewModel(
         }
     }
 
-    fun downloadUpdate() = viewModelScope.launch {
+    fun downloadUpdate(ignoreInternetCheck: Boolean = false) = viewModelScope.launch {
         try {
             withContext(Dispatchers.IO) {
-                state = State.DOWNLOADING
-                val asset = release?.findAssetByType(APK_MIMETYPE)
-                    ?: throw Exception("couldn't find asset to download")
+                if (!networkInfo.isSafe() && !ignoreInternetCheck) {
+                    showInternetCheckDialog = true
+                } else {
+                    state = State.DOWNLOADING
+                    val asset = release?.findAssetByType(APK_MIMETYPE)
+                        ?: throw Exception("couldn't find asset to download")
 
-                http.download(location) {
-                    url(asset.downloadUrl)
-                    onDownload { bytesSentTotal, contentLength ->
-                        downloadedSize = bytesSentTotal
-                        totalSize = contentLength
+                    http.download(location) {
+                        url(asset.downloadUrl)
+                        onDownload { bytesSentTotal, contentLength ->
+                            downloadedSize = bytesSentTotal
+                            totalSize = contentLength
+                        }
                     }
+                    state = State.CAN_INSTALL
                 }
-                state = State.CAN_INSTALL
             }
         } catch (e: Exception) {
             Log.e(tag, "Failed to download update", e)

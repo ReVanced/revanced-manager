@@ -32,10 +32,10 @@
     <string name="patch_selector_item">Patch selection and options</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="no_patches_selected">No patches selected</string>
-    
+
     <string name="version_selector_item">Change version</string>
     <string name="version_selector_item_description">%s selected</string>
-    
+
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
     <string name="auto_updates_dialog_title">Select updates to receive</string>
@@ -309,4 +309,7 @@
     <string name="new_update_available">New update available</string>
     <string name="new_update_available_description">A new version (%s) is available for download.</string>
     <string name="failed_to_download_update">Failed to download update: %s</string>
+    <string name="download_anyways">Download anyways</string>
+    <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
+    <string name="download_update_confirmation">Download update?</string>
 </resources>

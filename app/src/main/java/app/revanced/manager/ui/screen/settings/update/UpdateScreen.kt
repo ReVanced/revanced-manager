@@ -1,6 +1,6 @@
 package app.revanced.manager.ui.screen.settings.update
 
-import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -57,6 +61,9 @@ fun UpdateScreen(
             )
         }
     ) { paddingValues ->
+        AnimatedVisibility(visible = vm.showInternetCheckDialog) {
+            meteredDownloadConfirmationDialog(vm)
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,6 +80,41 @@ fun UpdateScreen(
             Buttons(vm, onBackClick)
         }
     }
+}
+
+@Composable
+private fun meteredDownloadConfirmationDialog(vm: UpdateViewModel) {
+    AlertDialog(
+        onDismissRequest = { vm.showInternetCheckDialog = false },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    vm.showInternetCheckDialog = false
+                }
+            ) {
+                Text(stringResource(id = R.string.cancel))
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    vm.showInternetCheckDialog = false
+                    vm.downloadUpdate(true)
+                }
+            ) {
+                Text(stringResource(id = R.string.download_anyways))
+            }
+        },
+        title = {
+            Text(text = stringResource(id = R.string.download_update_confirmation))
+        },
+        icon = {
+            Icon(Icons.Outlined.Update, stringResource(id = R.string.update))
+        },
+        text = {
+            Text(stringResource(id = R.string.download_confirmation_metered))
+        }
+    )
 }
 
 @Composable
@@ -122,6 +164,7 @@ private fun Header(vm: UpdateViewModel) {
         }
     }
 }
+
 @Composable
 private fun ColumnScope.Changelog(changelog: Changelog) {
     val scrollState = rememberScrollState()
