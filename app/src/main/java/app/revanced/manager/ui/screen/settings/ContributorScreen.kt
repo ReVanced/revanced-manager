@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -92,7 +93,9 @@ fun ContributorsCard(
     val itemsPerRow = (itemsPerPage / numberOfRows)
 
     // Create a list of contributors grouped by itemsPerPage
-    val contributorsByPage = contributors.chunked(itemsPerPage)
+    val contributorsByPage = remember(itemsPerPage, contributors) {
+        contributors.chunked(itemsPerPage)
+    }
     val pagerState = rememberPagerState { contributorsByPage.size }
 
     Card(
@@ -115,12 +118,12 @@ fun ContributorsCard(
             ) {
                 Text(
                     text = processHeadlineText(title),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight(500))
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium)
                 )
                 Text(
                     text = "(${(pagerState.currentPage + 1)}/${pagerState.pageCount})",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight(600))
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
             }
             HorizontalPager(
