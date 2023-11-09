@@ -51,24 +51,36 @@ fun ContributorScreen(
                 .fillMaxHeight()
                 .padding(paddingValues)
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = if (repositories.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
         ) {
-            if (repositories.isEmpty()) {
-                LoadingIndicator()
-            }
-            repositories.forEach {
-                ExpandableListCard(
-                    title = it.name,
-                    contributors = it.contributors
-                )
-            }
+            repositories?.let {
+                if (repositories.isEmpty()) {
+                    Text(
+                        text = stringResource(id = R.string.no_contributors_found),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                } else {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+                        repositories.forEach {
+                            ContributorsCard(
+                                title = it.name,
+                                contributors = it.contributors
+                            )
+                        }
+                    }
+                }
+            } ?: LoadingIndicator()
         }
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun ExpandableListCard(
+fun ContributorsCard(
     title: String,
     contributors: List<ReVancedContributor>,
     itemsPerPage: Int = 12,
@@ -83,7 +95,6 @@ fun ExpandableListCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colorScheme.outlineVariant,
