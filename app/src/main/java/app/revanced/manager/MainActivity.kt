@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                             TextButton(
                                 onClick = {
                                     vm.dismissUpdateDialog()
-                                    navController.navigate(Destination.Settings(SettingsDestination.UpdateProgress))
+                                    navController.navigate(Destination.Settings(SettingsDestination.Update(false)))
                                 }
                             ) {
                                 Text(stringResource(R.string.update))

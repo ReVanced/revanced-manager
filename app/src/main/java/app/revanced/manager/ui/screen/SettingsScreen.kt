@@ -134,6 +134,7 @@ fun SettingsScreen(
                         destination.downloadOnScreenEntry
                     )
                 }
+            )
 
             is SettingsDestination.Changelogs -> ChangelogsScreen(
                 onBackClick = backClick,
