@@ -1,7 +1,6 @@
 package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -15,12 +14,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.coerceAtMost
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import app.revanced.manager.R
@@ -97,10 +100,10 @@ fun ContributorsCard(
             .fillMaxWidth()
             .border(
                 width = 2.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
+                color = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp),
                 shape = MaterialTheme.shapes.medium
             ),
-        colors = CardDefaults.cardColors(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -111,13 +114,13 @@ fun ContributorsCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = processHeadlineText(title),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight(500))
                 )
                 Text(
                     text = "(${(pagerState.currentPage + 1)}/${pagerState.pageCount})",
-                    style = MaterialTheme.typography.labelSmall
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight(600))
                 )
             }
             HorizontalPager(
@@ -139,7 +142,7 @@ fun ContributorsCard(
                         contributorsByPage[page].forEach {
                             if (itemSize > 100.dp) {
                                 Row(
-                                    modifier = Modifier.width(itemSize - 1.dp),
+                                    modifier = Modifier.width(itemSize - 1.dp), // we delete 1.dp to account for not-so divisible numbers
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
@@ -148,24 +151,30 @@ fun ContributorsCard(
                                         contentDescription = it.avatarUrl,
                                         contentScale = ContentScale.Crop,
                                         modifier = Modifier
-                                            .size(itemSize / 3)
+                                            .size((itemSize / 3).coerceAtMost(40.dp))
                                             .clip(CircleShape)
                                     )
                                     Text(
-                                        modifier = Modifier.basicMarquee(100),
                                         text = it.username,
-                                        style = MaterialTheme.typography.bodyLarge
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
                             } else {
-                                AsyncImage(
-                                    model = it.avatarUrl,
-                                    contentDescription = it.avatarUrl,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .size(itemSize - 1.dp)
-                                        .clip(CircleShape)
-                                )
+                                Box(
+                                    modifier = Modifier.width(itemSize - 1.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    AsyncImage(
+                                        model = it.avatarUrl,
+                                        contentDescription = it.avatarUrl,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(size = (itemSize - 1.dp).coerceAtMost(50.dp)) // we delete 1.dp to account for not-so divisible numbers
+                                            .clip(CircleShape)
+                                    )
+                                }
                             }
                         }
                     }
@@ -178,8 +187,6 @@ fun ContributorsCard(
 fun processHeadlineText(repositoryName: String): String {
     return "ReVanced " + repositoryName.replace("revanced/revanced-", "")
         .replace("-", " ")
-        .split(" ")
-        .map { if (it.length > 3) it else it.uppercase() }
-        .joinToString(" ")
+        .split(" ").joinToString(" ") { if (it.length > 3) it else it.uppercase() }
         .replaceFirstChar { it.uppercase() }
 }
