@@ -102,7 +102,7 @@ private fun meteredDownloadConfirmationDialog(vm: UpdateViewModel) {
                     vm.downloadUpdate(true)
                 }
             ) {
-                Text(stringResource(id = R.string.download_anyways))
+                Text(stringResource(id = R.string.download))
             }
         },
         title = {
