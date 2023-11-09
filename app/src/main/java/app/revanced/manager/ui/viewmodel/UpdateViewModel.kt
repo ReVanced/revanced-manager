@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageInstaller
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +25,8 @@ import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.PM
+import app.revanced.manager.util.simpleMessage
+import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import io.ktor.client.plugins.onDownload
@@ -63,14 +67,15 @@ class UpdateViewModel(
     private val job = viewModelScope.launch {
         uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
             withContext(Dispatchers.IO) {
-                release = reVancedAPI
+                val response = reVancedAPI
                     .getLatestRelease("revanced-manager")
                     .getOrThrow()
+                release = response
                 changelog = Changelog(
-                    release!!.metadata.tag,
-                    release!!.findAssetByType(APK_MIMETYPE).downloadCount,
-                    release!!.metadata.publishedAt,
-                    release!!.metadata.body
+                    response.metadata.tag,
+                    response.findAssetByType(APK_MIMETYPE).downloadCount,
+                    response.metadata.publishedAt,
+                    response.metadata.body
                 )
             }
             if (downloadOnScreenEntry) {
@@ -82,18 +87,24 @@ class UpdateViewModel(
     }
 
     fun downloadUpdate() = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
-            state= State.DOWNLOADING
-            val asset = release!!.findAssetByType(APK_MIMETYPE)
+        try {
+            withContext(Dispatchers.IO) {
+                state = State.DOWNLOADING
+                val asset = release?.findAssetByType(APK_MIMETYPE)
+                    ?: throw Exception("couldn't find asset to download")
 
-            http.download(location) {
-                url(asset.downloadUrl)
-                onDownload { bytesSentTotal, contentLength ->
-                    downloadedSize = bytesSentTotal
-                    totalSize = contentLength
+                http.download(location) {
+                    url(asset.downloadUrl)
+                    onDownload { bytesSentTotal, contentLength ->
+                        downloadedSize = bytesSentTotal
+                        totalSize = contentLength
+                    }
                 }
+                state = State.CAN_INSTALL
             }
-            state = State.CAN_INSTALL
+        } catch (e: Exception) {
+            Log.e(tag, "Failed to download update", e)
+            app.toast(app.getString(R.string.failed_to_download_update, e.simpleMessage()))
         }
     }
 
@@ -108,7 +119,8 @@ class UpdateViewModel(
             when (intent?.action) {
                 InstallService.APP_INSTALL_ACTION -> {
                     val pmStatus = intent.getIntExtra(InstallService.EXTRA_INSTALL_STATUS, -999)
-                    val extra = intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
+                    val extra =
+                        intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
 
                     if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
                         app.toast(app.getString(R.string.install_app_success))
