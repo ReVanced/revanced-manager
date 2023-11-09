@@ -51,8 +51,8 @@ class UpdateViewModel(
 
         downloadedSize.toFloat() / totalSize.toFloat()
     }
-    private val _state = mutableStateOf(State.CAN_DOWNLOAD)
-    val state: State get() = _state.value
+    var state by mutableStateOf(State.CAN_DOWNLOAD)
+        private set
 
     var installError by mutableStateOf("")
 
@@ -75,13 +75,15 @@ class UpdateViewModel(
             }
             if (downloadOnScreenEntry) {
                 downloadUpdate()
-            } else { _state.value = State.CAN_DOWNLOAD }
+            } else {
+                state = State.CAN_DOWNLOAD
+            }
         }
     }
 
     fun downloadUpdate() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
-            _state.value = State.DOWNLOADING
+            state= State.DOWNLOADING
             val asset = release!!.findAssetByType(APK_MIMETYPE)
 
             http.download(location) {
@@ -91,12 +93,12 @@ class UpdateViewModel(
                     totalSize = contentLength
                 }
             }
-            _state.value = State.CAN_INSTALL
+            state = State.CAN_INSTALL
         }
     }
 
     fun installUpdate() = viewModelScope.launch {
-        _state.value = State.INSTALLING
+        state = State.INSTALLING
 
         pm.installApp(listOf(location))
     }
@@ -110,9 +112,9 @@ class UpdateViewModel(
 
                     if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
                         app.toast(app.getString(R.string.install_app_success))
-                        _state.value = State.SUCCESS
+                        state = State.SUCCESS
                     } else {
-                        _state.value = State.FAILED
+                        state = State.FAILED
                         // TODO: handle install fail with a popup
                         installError = extra
                         app.toast(app.getString(R.string.install_app_fail, extra))
@@ -147,12 +149,12 @@ class UpdateViewModel(
         val body: String,
     )
 
-    enum class State {
-        CAN_DOWNLOAD,
-        DOWNLOADING,
-        CAN_INSTALL,
-        INSTALLING,
-        FAILED,
-        SUCCESS
+    enum class State(@StringRes val title: Int, val showCancel: Boolean = false) {
+        CAN_DOWNLOAD(R.string.update_available),
+        DOWNLOADING(R.string.downloading_manager_update, true),
+        CAN_INSTALL(R.string.ready_to_install_update, true),
+        INSTALLING(R.string.installing_manager_update),
+        FAILED(R.string.install_update_manager_failed),
+        SUCCESS(R.string.update_completed)
     }
 }

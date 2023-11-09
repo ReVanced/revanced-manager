@@ -78,15 +78,9 @@ fun UpdateScreen(
 @Composable
 private fun Header(vm: UpdateViewModel) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Title(
-            when (vm.state) {
-                State.CAN_DOWNLOAD -> R.string.update_available
-                State.DOWNLOADING -> R.string.downloading_manager_update
-                State.CAN_INSTALL -> R.string.ready_to_install_update
-                State.INSTALLING -> R.string.installing_manager_update
-                State.FAILED -> R.string.install_update_manager_failed
-                State.SUCCESS -> R.string.update_completed
-            }
+        Text(
+            text = stringResource(vm.state.title),
+            style = MaterialTheme.typography.headlineMedium
         )
         if (vm.state == State.CAN_DOWNLOAD) {
             Column {
@@ -128,15 +122,6 @@ private fun Header(vm: UpdateViewModel) {
         }
     }
 }
-
-@Composable
-private fun Title(@StringRes title: Int) {
-    Text(
-        text = stringResource(title),
-        style = MaterialTheme.typography.headlineMedium
-    )
-}
-
 @Composable
 private fun ColumnScope.Changelog(changelog: Changelog) {
     val scrollState = rememberScrollState()
@@ -162,7 +147,7 @@ private fun ColumnScope.Changelog(changelog: Changelog) {
             )
     ) {
         Changelog(
-            markdown = (changelog.body + changelog.body).replace("`", ""),
+            markdown = changelog.body.replace("`", ""),
             version = changelog.version,
             downloadCount = changelog.downloadCount.formatNumber(),
             publishDate = changelog.publishDate.relativeTime(LocalContext.current)
@@ -173,7 +158,7 @@ private fun ColumnScope.Changelog(changelog: Changelog) {
 @Composable
 private fun Buttons(vm: UpdateViewModel, onBackClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth()) {
-        if (vm.state == State.DOWNLOADING || vm.state == State.CAN_INSTALL) {
+        if (vm.state.showCancel) {
             TextButton(
                 onClick = onBackClick,
             ) {
@@ -187,8 +172,7 @@ private fun Buttons(vm: UpdateViewModel, onBackClick: () -> Unit) {
             }
         } else if (vm.state == State.CAN_INSTALL) {
             Button(
-                onClick = vm::installUpdate,
-                enabled = vm.state == State.CAN_INSTALL
+                onClick = vm::installUpdate
             ) {
                 Text(text = stringResource(R.string.install_app))
             }
