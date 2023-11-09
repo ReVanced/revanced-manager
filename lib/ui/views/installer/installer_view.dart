@@ -18,7 +18,7 @@ class InstallerView extends StatelessWidget {
       builder: (context, model, child) => WillPopScope(
         child: SafeArea(
           top: false,
-          bottom: false,
+          bottom: model.isPatching,
           child: Scaffold(
             floatingActionButton: Visibility(
               visible: !model.isPatching && !model.hasErrors,
