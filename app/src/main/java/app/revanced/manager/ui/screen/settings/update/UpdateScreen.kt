@@ -62,7 +62,10 @@ fun UpdateScreen(
         }
     ) { paddingValues ->
         AnimatedVisibility(visible = vm.showInternetCheckDialog) {
-            meteredDownloadConfirmationDialog(vm)
+            meteredDownloadConfirmationDialog(
+                onDismiss = { vm.showInternetCheckDialog = false },
+                onDownloadAnyways = { vm.downloadUpdate(true) }
+            )
         }
         Column(
             modifier = Modifier
@@ -72,24 +75,31 @@ fun UpdateScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            Header(vm)
+            Header(
+                vm.state,
+                vm.changelog,
+                DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize)
+            )
             vm.changelog?.let { changelog ->
                 Divider()
                 Changelog(changelog)
             } ?: Spacer(modifier = Modifier.weight(1f))
-            Buttons(vm, onBackClick)
+            Buttons(vm.state, vm::downloadUpdate, vm::installUpdate, onBackClick)
         }
     }
 }
 
 @Composable
-private fun meteredDownloadConfirmationDialog(vm: UpdateViewModel) {
+private fun meteredDownloadConfirmationDialog(
+    onDismiss: () -> Unit,
+    onDownloadAnyways: () -> Unit
+) {
     AlertDialog(
-        onDismissRequest = { vm.showInternetCheckDialog = false },
+        onDismissRequest = { onDismiss },
         dismissButton = {
             TextButton(
                 onClick = {
-                    vm.showInternetCheckDialog = false
+                    onDismiss
                 }
             ) {
                 Text(stringResource(id = R.string.cancel))
@@ -98,8 +108,8 @@ private fun meteredDownloadConfirmationDialog(vm: UpdateViewModel) {
         confirmButton = {
             TextButton(
                 onClick = {
-                    vm.showInternetCheckDialog = false
-                    vm.downloadUpdate(true)
+                    onDismiss
+                    onDownloadAnyways
                 }
             ) {
                 Text(stringResource(id = R.string.download))
@@ -118,13 +128,13 @@ private fun meteredDownloadConfirmationDialog(vm: UpdateViewModel) {
 }
 
 @Composable
-private fun Header(vm: UpdateViewModel) {
+private fun Header(state: State, changelog: Changelog?, downloadData: DownloadData) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
-            text = stringResource(vm.state.title),
+            text = stringResource(state.title),
             style = MaterialTheme.typography.headlineMedium
         )
-        if (vm.state == State.CAN_DOWNLOAD) {
+        if (state == State.CAN_DOWNLOAD) {
             Column {
                 Text(
                     text = stringResource(
@@ -134,7 +144,7 @@ private fun Header(vm: UpdateViewModel) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                vm.changelog?.let { changelog ->
+                changelog?.let { changelog ->
                     Text(
                         text = stringResource(
                             id = R.string.new_version,
@@ -145,15 +155,19 @@ private fun Header(vm: UpdateViewModel) {
                     )
                 }
             }
-        } else if (vm.state == State.DOWNLOADING) {
+        } else if (state == State.DOWNLOADING) {
             LinearProgressIndicator(
-                progress = vm.downloadProgress,
+                progress = downloadData.downloadProgress,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
                 text =
-                "${vm.downloadedSize.div(1000000)} MB /  ${vm.totalSize.div(1000000)} MB (${
-                    vm.downloadProgress.times(
+                "${downloadData.downloadedSize.div(1000000)} MB /  ${
+                    downloadData.totalSize.div(
+                        1000000
+                    )
+                } MB (${
+                    downloadData.downloadProgress.times(
                         100
                     ).toInt()
                 }%)",
@@ -199,9 +213,14 @@ private fun ColumnScope.Changelog(changelog: Changelog) {
 }
 
 @Composable
-private fun Buttons(vm: UpdateViewModel, onBackClick: () -> Unit) {
+private fun Buttons(
+    state: State,
+    onDownloadClick: () -> Unit,
+    onInstallClick: () -> Unit,
+    onBackClick: () -> Unit
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
-        if (vm.state.showCancel) {
+        if (state.showCancel) {
             TextButton(
                 onClick = onBackClick,
             ) {
@@ -209,16 +228,22 @@ private fun Buttons(vm: UpdateViewModel, onBackClick: () -> Unit) {
             }
         }
         Spacer(modifier = Modifier.weight(1f))
-        if (vm.state == State.CAN_DOWNLOAD) {
-            Button(onClick = vm::downloadUpdate) {
+        if (state == State.CAN_DOWNLOAD) {
+            Button(onClick = onDownloadClick) {
                 Text(text = stringResource(R.string.update))
             }
-        } else if (vm.state == State.CAN_INSTALL) {
+        } else if (state == State.CAN_INSTALL) {
             Button(
-                onClick = vm::installUpdate
+                onClick = onInstallClick
             ) {
                 Text(text = stringResource(R.string.install_app))
             }
         }
     }
 }
+
+data class DownloadData(
+    val downloadProgress: Float,
+    val downloadedSize: Long,
+    val totalSize: Long
+)
