@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
@@ -47,6 +48,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = getViewModel()
 ) {
     val navController = rememberNavController(startDestination)
+    val scrollState = rememberScrollState()
 
     val backClick: () -> Unit = {
         if (navController.backstack.entries.size == 1)
@@ -155,7 +157,7 @@ fun SettingsScreen(
                         modifier = Modifier
                             .padding(paddingValues)
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
+                            .verticalScroll(scrollState)
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
                             NotificationCard(
@@ -180,6 +182,7 @@ fun SettingsScreen(
                             )
                         }
                     }
+                    Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
                 }
             }
         }

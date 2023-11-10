@@ -158,4 +158,7 @@ dependencies {
 
     // Markdown
     implementation(libs.markdown.renderer)
+
+    // Scrollbars
+    implementation(libs.scrollbars)
 }
