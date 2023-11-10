@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import com.gigamole.composescrollbars.Scrollbars
 import com.gigamole.composescrollbars.ScrollbarsState
 import com.gigamole.composescrollbars.config.ScrollbarsConfig
+import com.gigamole.composescrollbars.config.ScrollbarsConfigDefaults
 import com.gigamole.composescrollbars.config.ScrollbarsOrientation
+import com.gigamole.composescrollbars.config.visibilitytype.ScrollbarsVisibilityType
 import com.gigamole.composescrollbars.scrolltype.ScrollbarsScrollType
 import com.gigamole.composescrollbars.scrolltype.knobtype.ScrollbarsDynamicKnobType
 import com.gigamole.composescrollbars.scrolltype.knobtype.ScrollbarsStaticKnobType
@@ -18,7 +20,13 @@ import com.gigamole.composescrollbars.scrolltype.knobtype.ScrollbarsStaticKnobTy
 fun Scrollbar(scrollState: ScrollState, modifier: Modifier = Modifier) {
     Scrollbars(
         state = ScrollbarsState(
-            ScrollbarsConfig(orientation = ScrollbarsOrientation.Vertical),
+            ScrollbarsConfig(
+                orientation = ScrollbarsOrientation.Vertical,
+                visibilityType = ScrollbarsVisibilityType.Dynamic.Fade(
+                    isVisibleOnTouchDown = true,
+                    isStaticWhenScrollPossible = false
+                )
+            ),
             ScrollbarsScrollType.Scroll(
                 knobType = ScrollbarsStaticKnobType.Auto(),
                 state = scrollState
@@ -32,7 +40,13 @@ fun Scrollbar(scrollState: ScrollState, modifier: Modifier = Modifier) {
 fun Scrollbar(scrollState: LazyListState, modifier: Modifier = Modifier) {
     Scrollbars(
         state = ScrollbarsState(
-            ScrollbarsConfig(orientation = ScrollbarsOrientation.Vertical),
+            ScrollbarsConfig(
+                orientation = ScrollbarsOrientation.Vertical,
+                visibilityType = ScrollbarsVisibilityType.Dynamic.Fade(
+                    isVisibleOnTouchDown = true,
+                    isStaticWhenScrollPossible = false
+                )
+            ),
             ScrollbarsScrollType.Lazy.List.Dynamic(
                 knobType = ScrollbarsDynamicKnobType.Auto(),
                 state = scrollState
