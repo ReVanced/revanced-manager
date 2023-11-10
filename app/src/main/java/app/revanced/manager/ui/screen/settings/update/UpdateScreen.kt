@@ -62,7 +62,7 @@ fun UpdateScreen(
         }
     ) { paddingValues ->
         AnimatedVisibility(visible = vm.showInternetCheckDialog) {
-            meteredDownloadConfirmationDialog(
+            MeteredDownloadConfirmationDialog(
                 onDismiss = { vm.showInternetCheckDialog = false },
                 onDownloadAnyways = { vm.downloadUpdate(true) }
             )
@@ -90,7 +90,7 @@ fun UpdateScreen(
 }
 
 @Composable
-private fun meteredDownloadConfirmationDialog(
+private fun MeteredDownloadConfirmationDialog(
     onDismiss: () -> Unit,
     onDownloadAnyways: () -> Unit
 ) {
