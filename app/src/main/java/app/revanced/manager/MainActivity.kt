@@ -85,8 +85,8 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         icon = { Icon(Icons.Outlined.Update, null) },
-                        title = { Text(stringResource(R.string.new_update_available)) },
-                        text = { Text(stringResource(R.string.new_update_available_description, it)) }
+                        title = { Text(stringResource(R.string.update_available_dialog_title)) },
+                        text = { Text(stringResource(R.string.update_available_dialog_description, it)) }
                     )
                 }
 
