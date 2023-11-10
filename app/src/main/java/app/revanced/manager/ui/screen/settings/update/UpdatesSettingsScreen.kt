@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,11 +55,12 @@ fun UpdatesSettingsScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             NotificationCard(
                 text = stringResource(R.string.update_notification),
@@ -77,5 +79,6 @@ fun UpdatesSettingsScreen(
                 )
             }
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }

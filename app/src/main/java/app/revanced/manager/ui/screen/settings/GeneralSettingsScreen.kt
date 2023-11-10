@@ -19,6 +19,7 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
@@ -50,11 +51,12 @@ fun GeneralSettingsScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             GroupHeader(stringResource(R.string.appearance))
 
@@ -82,6 +84,7 @@ fun GeneralSettingsScreen(
                 )
             }
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 

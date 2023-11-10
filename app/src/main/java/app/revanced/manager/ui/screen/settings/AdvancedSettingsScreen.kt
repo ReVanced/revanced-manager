@@ -35,6 +35,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
@@ -64,11 +65,13 @@ fun AdvancedSettingsScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             val apiUrl by vm.apiUrl.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
@@ -127,6 +130,7 @@ fun AdvancedSettingsScreen(
                 supportingContent = memoryLimit
             )
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 

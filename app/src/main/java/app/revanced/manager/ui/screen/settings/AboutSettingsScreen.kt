@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
@@ -103,11 +104,13 @@ fun AboutSettingsScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -208,5 +211,6 @@ fun AboutSettingsScreen(
                 }
             }
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }

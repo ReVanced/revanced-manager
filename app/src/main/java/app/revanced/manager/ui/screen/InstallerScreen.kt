@@ -43,6 +43,7 @@ import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.viewmodel.InstallerViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import kotlin.math.floor
@@ -93,7 +94,12 @@ fun InstallerScreen(
                         if (canInstall) {
                             ExtendedFloatingActionButton(
                                 text = { Text(stringResource(vm.appButtonText)) },
-                                icon = { Icon(Icons.Outlined.FileDownload, stringResource(id = R.string.install_app)) },
+                                icon = {
+                                    Icon(
+                                        Icons.Outlined.FileDownload,
+                                        stringResource(id = R.string.install_app)
+                                    )
+                                },
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                                 onClick = {
@@ -109,16 +115,19 @@ fun InstallerScreen(
             }
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .fillMaxSize()
         ) {
             steps.forEach {
                 InstallStep(it)
             }
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 

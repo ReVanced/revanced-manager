@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.viewmodel.UpdateProgressViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -43,12 +44,14 @@ fun UpdateProgressScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(vertical = 16.dp, horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(scrollState),
         ) {
             Text(
                 text = if (vm.isInstalling) stringResource(R.string.installing_manager_update) else stringResource(
@@ -94,5 +97,6 @@ fun UpdateProgressScreen(
                 }
             }
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }

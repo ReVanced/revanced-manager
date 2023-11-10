@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Close
@@ -30,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.Scrollbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,11 +63,14 @@ fun BundlePatchesDialog(
                 )
             },
         ) { paddingValues ->
+            val lazyListState = rememberLazyListState()
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(paddingValues)
-                    .padding(16.dp)
+                    .padding(16.dp),
+                state = lazyListState
             ) {
                 item {
                     AnimatedVisibility(visible = informationCardVisible) {
@@ -102,6 +107,7 @@ fun BundlePatchesDialog(
                     }
                 }
             }
+            Scrollbar(scrollState = lazyListState, modifier = Modifier.padding(paddingValues))
         }
     }
 }

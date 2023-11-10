@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.util.isDebuggable
 
@@ -44,141 +45,146 @@ fun BaseBundleDialog(
     onPatchesClick: () -> Unit,
     onBundleTypeClick: () -> Unit = {},
     extraFields: @Composable ColumnScope.() -> Unit = {}
-) = Column(
-    modifier = Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
-        .padding(
-            start = 8.dp,
-            top = 8.dp,
-            end = 4.dp,
-        )
-        .then(modifier)
 ) {
-    var showNameInputDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
-    if (showNameInputDialog) {
-        TextInputDialog(
-            initial = name,
-            title = stringResource(R.string.bundle_input_name),
-            onDismissRequest = {
-                showNameInputDialog = false
-            },
-            onConfirm = {
-                showNameInputDialog = false
-                onNameChange?.invoke(it)
-            },
-            validator = {
-                it.length in 1..19
-            }
-        )
-    }
-    BundleListItem(
-        headlineText = stringResource(R.string.bundle_input_name),
-        supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
-        modifier = Modifier.clickable(enabled = onNameChange != null) {
-            showNameInputDialog = true
-        }
-    )
+    val scrollState = rememberScrollState()
 
-    remoteUrl?.takeUnless { isDefault }?.let { url ->
-        var showUrlInputDialog by rememberSaveable {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(scrollState)
+            .padding(
+                start = 8.dp,
+                top = 8.dp,
+                end = 4.dp,
+            )
+            .then(modifier)
+    ) {
+        var showNameInputDialog by rememberSaveable {
             mutableStateOf(false)
         }
-        if (showUrlInputDialog) {
+        if (showNameInputDialog) {
             TextInputDialog(
-                initial = url,
-                title = stringResource(R.string.bundle_input_source_url),
-                onDismissRequest = { showUrlInputDialog = false },
+                initial = name,
+                title = stringResource(R.string.bundle_input_name),
+                onDismissRequest = {
+                    showNameInputDialog = false
+                },
                 onConfirm = {
-                    showUrlInputDialog = false
-                    onRemoteUrlChange?.invoke(it)
+                    showNameInputDialog = false
+                    onNameChange?.invoke(it)
                 },
                 validator = {
-                    if (it.isEmpty()) return@TextInputDialog false
-
-                    URLUtil.isValidUrl(it)
+                    it.length in 1..19
                 }
             )
         }
-
         BundleListItem(
-            modifier = Modifier.clickable(enabled = onRemoteUrlChange != null) {
-                showUrlInputDialog = true
-            },
-            headlineText = stringResource(R.string.bundle_input_source_url),
-            supportingText = url.ifEmpty { stringResource(R.string.field_not_set) }
+            headlineText = stringResource(R.string.bundle_input_name),
+            supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
+            modifier = Modifier.clickable(enabled = onNameChange != null) {
+                showNameInputDialog = true
+            }
         )
-    }
 
-    extraFields()
+        remoteUrl?.takeUnless { isDefault }?.let { url ->
+            var showUrlInputDialog by rememberSaveable {
+                mutableStateOf(false)
+            }
+            if (showUrlInputDialog) {
+                TextInputDialog(
+                    initial = url,
+                    title = stringResource(R.string.bundle_input_source_url),
+                    onDismissRequest = { showUrlInputDialog = false },
+                    onConfirm = {
+                        showUrlInputDialog = false
+                        onRemoteUrlChange?.invoke(it)
+                    },
+                    validator = {
+                        if (it.isEmpty()) return@TextInputDialog false
 
-    if (remoteUrl != null) {
-        BundleListItem(
-            headlineText = stringResource(R.string.automatically_update),
-            supportingText = stringResource(R.string.automatically_update_description),
-            trailingContent = {
-                Switch(
-                    checked = autoUpdate,
-                    onCheckedChange = onAutoUpdateChange
+                        URLUtil.isValidUrl(it)
+                    }
                 )
-            },
-            modifier = Modifier.clickable {
-                onAutoUpdateChange(!autoUpdate)
             }
-        )
-    }
 
-    BundleListItem(
-        headlineText = stringResource(R.string.bundle_type),
-        supportingText = stringResource(R.string.bundle_type_description),
-        modifier = Modifier.clickable {
-            onBundleTypeClick()
-        }
-    ) {
-        FilledTonalButton(
-            onClick = onBundleTypeClick,
-            content = {
-                if (remoteUrl == null) {
-                    Text(stringResource(R.string.local))
-                } else {
-                    Text(stringResource(R.string.remote))
-                }
-            }
-        )
-    }
-
-    if (version != null || patchCount > 0) {
-        Text(
-            text = stringResource(R.string.information),
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 12.dp
-            ),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
-        )
-    }
-
-    val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
-    BundleListItem(
-        headlineText = stringResource(R.string.patches),
-        supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
-        else stringResource(R.string.patches_available, patchCount),
-        modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
-    ) {
-        if (patchesClickable)
-            Icon(
-                Icons.Outlined.ArrowRight,
-                stringResource(R.string.patches)
+            BundleListItem(
+                modifier = Modifier.clickable(enabled = onRemoteUrlChange != null) {
+                    showUrlInputDialog = true
+                },
+                headlineText = stringResource(R.string.bundle_input_source_url),
+                supportingText = url.ifEmpty { stringResource(R.string.field_not_set) }
             )
-    }
+        }
 
-    version?.let {
+        extraFields()
+
+        if (remoteUrl != null) {
+            BundleListItem(
+                headlineText = stringResource(R.string.automatically_update),
+                supportingText = stringResource(R.string.automatically_update_description),
+                trailingContent = {
+                    Switch(
+                        checked = autoUpdate,
+                        onCheckedChange = onAutoUpdateChange
+                    )
+                },
+                modifier = Modifier.clickable {
+                    onAutoUpdateChange(!autoUpdate)
+                }
+            )
+        }
+
         BundleListItem(
-            headlineText = stringResource(R.string.version),
-            supportingText = it,
-        )
+            headlineText = stringResource(R.string.bundle_type),
+            supportingText = stringResource(R.string.bundle_type_description),
+            modifier = Modifier.clickable {
+                onBundleTypeClick()
+            }
+        ) {
+            FilledTonalButton(
+                onClick = onBundleTypeClick,
+                content = {
+                    if (remoteUrl == null) {
+                        Text(stringResource(R.string.local))
+                    } else {
+                        Text(stringResource(R.string.remote))
+                    }
+                }
+            )
+        }
+
+        if (version != null || patchCount > 0) {
+            Text(
+                text = stringResource(R.string.information),
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                ),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+
+        val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
+        BundleListItem(
+            headlineText = stringResource(R.string.patches),
+            supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
+            else stringResource(R.string.patches_available, patchCount),
+            modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
+        ) {
+            if (patchesClickable)
+                Icon(
+                    Icons.Outlined.ArrowRight,
+                    stringResource(R.string.patches)
+                )
+        }
+
+        version?.let {
+            BundleListItem(
+                headlineText = stringResource(R.string.version),
+                supportingText = it,
+            )
+        }
     }
+    Scrollbar(scrollState = scrollState)
 }

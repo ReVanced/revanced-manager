@@ -35,6 +35,7 @@ import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.bundle.BundleSelector
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -102,11 +103,13 @@ fun ImportExportSettingsScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             GroupHeader(stringResource(R.string.signing))
             GroupItem(
@@ -191,6 +194,7 @@ fun ImportExportSettingsScreen(
                 description = R.string.patch_options_clear_all_description,
             )
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 

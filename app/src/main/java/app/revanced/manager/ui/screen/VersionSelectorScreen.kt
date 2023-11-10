@@ -35,6 +35,7 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
 
@@ -78,11 +79,13 @@ fun VersionSelectorScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
@@ -127,6 +130,7 @@ fun VersionSelectorScreen(
                 LoadingIndicator()
 
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ListItem
@@ -26,6 +27,7 @@ import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -47,13 +49,15 @@ fun InstalledAppsScreen(
             )
         }
 
+        val lazyListState = rememberLazyListState()
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = if (installedApps.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
+            verticalArrangement = if (installedApps.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
+            state = lazyListState
         ) {
             installedApps?.let { installedApps ->
-
                 if (installedApps.isNotEmpty()) {
                     items(
                         installedApps,
@@ -86,5 +90,6 @@ fun InstalledAppsScreen(
 
             } ?: item { LoadingIndicator() }
         }
+        Scrollbar(scrollState = lazyListState)
     }
 }

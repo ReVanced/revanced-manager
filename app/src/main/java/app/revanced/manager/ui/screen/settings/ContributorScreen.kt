@@ -25,6 +25,7 @@ import app.revanced.manager.network.dto.ReVancedContributor
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.viewmodel.ContributorViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.getViewModel
@@ -45,12 +46,14 @@ fun ContributorScreen(
             )
         },
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(paddingValues)
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             if(repositories.isEmpty()) {
                 LoadingIndicator()
@@ -62,6 +65,7 @@ fun ContributorScreen(
                 )
             }
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 @OptIn(ExperimentalLayoutApi::class)

@@ -38,6 +38,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.component.SegmentedButton
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
@@ -70,11 +71,12 @@ fun InstalledAppInfoScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             AppInfo(viewModel.appInfo)  {
                 Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
@@ -174,8 +176,8 @@ fun InstalledAppInfoScreen(
                     supportingContent = stringResource(viewModel.installedApp.installType.stringResource)
                 )
             }
-
         }
+        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 
