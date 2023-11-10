@@ -95,35 +95,25 @@ private fun MeteredDownloadConfirmationDialog(
     onDownloadAnyways: () -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = { onDismiss },
+        onDismissRequest = onDismiss,
         dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismiss
-                }
-            ) {
-                Text(stringResource(id = R.string.cancel))
+            TextButton(onDismiss) {
+                Text(stringResource(R.string.cancel))
             }
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    onDismiss
-                    onDownloadAnyways
+                    onDismiss()
+                    onDownloadAnyways()
                 }
             ) {
-                Text(stringResource(id = R.string.download))
+                Text(stringResource(R.string.download))
             }
         },
-        title = {
-            Text(text = stringResource(id = R.string.download_update_confirmation))
-        },
-        icon = {
-            Icon(Icons.Outlined.Update, stringResource(id = R.string.update))
-        },
-        text = {
-            Text(stringResource(id = R.string.download_confirmation_metered))
-        }
+        title = { Text(stringResource(R.string.download_update_confirmation)) },
+        icon = { Icon(Icons.Outlined.Update, null) },
+        text = { Text(stringResource(R.string.download_confirmation_metered)) }
     )
 }
 
