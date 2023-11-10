@@ -186,5 +186,5 @@ fun BaseBundleDialog(
             )
         }
     }
-    Scrollbar(scrollState = scrollState)
+    Scrollbar(scrollState = scrollState, modifier = modifier)
 }
