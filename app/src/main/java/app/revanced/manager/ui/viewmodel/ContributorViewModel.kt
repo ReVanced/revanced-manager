@@ -18,8 +18,8 @@ class ContributorViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repositories = reVancedAPI.getContributors().getOrNull()
+            repositories = withContext(Dispatchers.IO) {
+                reVancedAPI.getContributors().getOrNull()
             }
         }
     }
