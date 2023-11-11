@@ -31,27 +31,27 @@ class ContributorsView extends StatelessWidget {
                 delegate: SliverChildListDelegate.fixed(
                   <Widget>[
                     ContributorsCard(
-                      title: 'contributorsView.patcherContributors',
+                      title: t.contributorsView.patcherContributors,
                       contributors: model.patcherContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.patchesContributors',
+                      title: t.contributorsView.patchesContributors,
                       contributors: model.patchesContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.integrationsContributors',
+                      title: t.contributorsView.integrationsContributors,
                       contributors: model.integrationsContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.cliContributors',
+                      title: t.contributorsView.cliContributors,
                       contributors: model.cliContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.managerContributors',
+                      title: t.contributorsView.managerContributors,
                       contributors: model.managerContributors,
                     ),
                     SizedBox(height: MediaQuery.viewPaddingOf(context).bottom),

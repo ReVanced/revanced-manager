@@ -245,6 +245,11 @@
     "updateNotImplemented": "This feature has not been implemented yet"
   },
   "contributorsView": {
-    "widgetTitle": "Contributors"
+    "widgetTitle": "Contributors",
+    "patcherContributors": "Patcher contributors",
+    "patchesContributors": "Patches contributors",
+    "integrationsContributors": "Integrations contributors",
+    "cliContributors": "CLI contributors",
+    "managerContributors": "Manager contributors"
   }
 }
