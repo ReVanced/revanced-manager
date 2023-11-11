@@ -32,6 +32,8 @@ jobs:
           cache: true
       - name: Install Flutter dependencies
         run: flutter pub get
+      - name: Generate translation with Slang
+        run: dart run slang
       - name: Generate files with Builder
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - name: Build with Flutter

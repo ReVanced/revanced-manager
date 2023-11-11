@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patcherView/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patcherView/patch_selector_card.dart';
@@ -20,9 +20,9 @@ class PatcherView extends StatelessWidget {
         floatingActionButton: Visibility(
           visible: model.showPatchButton(),
           child: FloatingActionButton.extended(
-            label: I18nText('patcherView.patchButton'),
+            label: Text(t.patcherView.patchButton),
             icon: const Icon(Icons.build),
-            onPressed: () async{
+            onPressed: () async {
               if (model.checkRequiredPatchOption(context)) {
                 final bool proceed = model.showRemovedPatchesDialog(context);
                 if (proceed && context.mounted) {
@@ -36,13 +36,10 @@ class PatcherView extends StatelessWidget {
           slivers: <Widget>[
             CustomSliverAppBar(
               isMainView: true,
-              title: I18nText(
-                'patcherView.widgetTitle',
-                child: Text(
-                  '',
-                  style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
+              title: Text(
+                t.patcherView.widgetTitle,
+                style: GoogleFonts.inter(
+                  color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
               ),
             ),

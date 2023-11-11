@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
@@ -23,7 +23,7 @@ class SManageKeystorePassword extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            I18nText('settingsView.selectKeystorePassword'),
+            Text(t.settingsView.selectKeystorePassword),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
@@ -39,7 +39,7 @@ class SManageKeystorePassword extends BaseViewModel {
             children: <Widget>[
               CustomTextField(
                 inputController: _keystorePasswordController,
-                label: I18nText('settingsView.selectKeystorePassword'),
+                label: Text(t.settingsView.selectKeystorePassword),
                 hint: '',
                 onChanged: (value) => notifyListeners(),
               ),
@@ -49,14 +49,14 @@ class SManageKeystorePassword extends BaseViewModel {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: Text(t.cancelButton),
             onPressed: () {
               _keystorePasswordController.clear();
               Navigator.of(context).pop();
             },
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () {
               final String passwd = _keystorePasswordController.text;
               _managerAPI.setKeystorePassword(passwd);
@@ -78,8 +78,8 @@ class SManageKeystorePasswordUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsTileDialog(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      title: 'settingsView.selectKeystorePassword',
-      subtitle: 'settingsView.selectKeystorePasswordHint',
+      title: t.settingsView.selectKeystorePassword,
+      subtitle: t.settingsView.selectKeystorePasswordHint,
       onTap: () => sManageKeystorePassword.showKeystoreDialog(context),
     );
   }

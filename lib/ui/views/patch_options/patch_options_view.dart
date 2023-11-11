@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/views/patch_options/patch_options_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
@@ -25,19 +25,16 @@ class PatchOptionsView extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-            label: I18nText('patchOptionsView.saveOptions'),
+            label: Text(t.patchOptionsView.saveOptions),
             icon: const Icon(Icons.save),
           ),
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: I18nText(
-                  'patchOptionsView.viewTitle',
-                  child: Text(
-                    '',
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.titleLarge!.color,
-                    ),
+                title: Text(
+                  t.patchOptionsView.viewTitle,
+                  style: GoogleFonts.inter(
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
                 actions: [
@@ -48,10 +45,7 @@ class PatchOptionsView extends StatelessWidget {
                     icon: const Icon(
                       Icons.history,
                     ),
-                    tooltip: FlutterI18n.translate(
-                      context,
-                      'patchOptionsView.resetOptionsTooltip',
-                    ),
+                    tooltip: t.patchOptionsView.resetOptionsTooltip,
                   ),
                 ],
               ),
@@ -82,8 +76,7 @@ class PatchOptionsView extends StatelessWidget {
                               model.modifyOptions(value, option);
                             },
                           )
-                        else if (option.valueType ==
-                                'StringArray' ||
+                        else if (option.valueType == 'StringArray' ||
                             option.valueType == 'IntArray' ||
                             option.valueType == 'LongArray')
                           IntStringLongListPatchOption(
@@ -112,7 +105,7 @@ class PatchOptionsView extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const Icon(Icons.add),
-                              I18nText('patchOptionsView.addOptions'),
+                              Text(t.patchOptionsView.addOptions),
                             ],
                           ),
                         ),

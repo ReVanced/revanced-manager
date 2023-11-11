@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
@@ -50,16 +50,13 @@ class UpdateConfirmationDialog extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              I18nText(
+                              Text(
                                 isPatches
-                                    ? 'homeView.updatePatchesDialogTitle'
-                                    : 'homeView.updateDialogTitle',
-                                child: const Text(
-                                  '',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                    ? t.homeView.updatePatchesDialogTitle
+                                    : t.homeView.updateDialogTitle,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(height: 4.0),
@@ -88,7 +85,7 @@ class UpdateConfirmationDialog extends StatelessWidget {
                         ),
                         CustomMaterialButton(
                           isExpanded: true,
-                          label: I18nText('updateButton'),
+                          label: Text(t.updateButton),
                           onPressed: () {
                             Navigator.of(context).pop();
                             isPatches
@@ -101,17 +98,13 @@ class UpdateConfirmationDialog extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 24.0, bottom: 12.0),
-                    child: I18nText(
-                      'homeView.updateChangelogTitle',
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                        ),
+                    child: Text(
+                      t.homeView.updateChangelogTitle,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),

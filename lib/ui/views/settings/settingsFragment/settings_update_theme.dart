@@ -3,8 +3,8 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
@@ -22,18 +22,15 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
   @override
   Widget build(BuildContext context) {
     return SettingsSection(
-      title: 'settingsView.appearanceSectionTitle',
+      title: t.settingsView.appearanceSectionTitle,
       children: <Widget>[
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: I18nText(
-            'settingsView.themeModeLabel',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(
+            t.settingsView.themeModeLabel,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
           trailing: CustomMaterialButton(
@@ -45,17 +42,14 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
         if (managerAPI.isDynamicThemeAvailable)
           SwitchListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-            title: I18nText(
-              'settingsView.dynamicThemeLabel',
-              child: const Text(
-                '',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
+            title: Text(
+              t.settingsView.dynamicThemeLabel,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            subtitle: I18nText('settingsView.dynamicThemeHint'),
+            subtitle: Text(t.settingsView.dynamicThemeHint),
             value: getDynamicThemeStatus(),
             onChanged: (value) => {
               setUseDynamicTheme(
@@ -100,16 +94,16 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
     setState(() {});
   }
 
-  I18nText getThemeModeName() {
+  Text getThemeModeName() {
     switch (getThemeMode()) {
       case 0:
-        return I18nText('settingsView.systemThemeLabel');
+        return Text(t.settingsView.systemThemeLabel);
       case 1:
-        return I18nText('settingsView.lightThemeLabel');
+        return Text(t.settingsView.lightThemeLabel);
       case 2:
-        return I18nText('settingsView.darkThemeLabel');
+        return Text(t.settingsView.darkThemeLabel);
       default:
-        return I18nText('settingsView.systemThemeLabel');
+        return Text(t.settingsView.systemThemeLabel);
     }
   }
 
@@ -119,7 +113,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.themeModeLabel'),
+        title: Text(t.settingsView.themeModeLabel),
         icon: const Icon(Icons.palette),
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -132,7 +126,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   RadioListTile(
-                    title: I18nText('settingsView.systemThemeLabel'),
+                    title: Text(t.settingsView.systemThemeLabel),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 0,
                     groupValue: value,
@@ -141,7 +135,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                     },
                   ),
                   RadioListTile(
-                    title: I18nText('settingsView.lightThemeLabel'),
+                    title: Text(t.settingsView.lightThemeLabel),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 1,
                     groupValue: value,
@@ -150,7 +144,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                     },
                   ),
                   RadioListTile(
-                    title: I18nText('settingsView.darkThemeLabel'),
+                    title: Text(t.settingsView.darkThemeLabel),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 2,
                     groupValue: value,
@@ -166,13 +160,13 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: Text(t.cancelButton),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () {
               setThemeMode(context, newTheme.value);
               Navigator.of(context).pop();

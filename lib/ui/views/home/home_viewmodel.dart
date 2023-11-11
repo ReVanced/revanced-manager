@@ -1,17 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
 import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -51,12 +52,12 @@ class HomeViewModel extends BaseViewModel {
       ),
       onDidReceiveNotificationResponse: (response) async {
         if (response.id == 0) {
-          _toast.showBottom('homeView.installingMessage');
+          _toast.showBottom(t.homeView.installingMessage);
           final File? managerApk = await _managerAPI.downloadManager();
           if (managerApk != null) {
             await InstallPlugin.installApk(managerApk.path);
           } else {
-            _toast.showBottom('homeView.errorDownloadMessage');
+            _toast.showBottom(t.homeView.errorDownloadMessage);
           }
         }
       },
@@ -65,20 +66,20 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-    final bool isConnected = await Connectivity().checkConnectivity() !=
-        ConnectivityResult.none;
+    final bool isConnected =
+        await Connectivity().checkConnectivity() != ConnectivityResult.none;
     if (!isConnected) {
-      _toast.showBottom('homeView.noConnection');
+      _toast.showBottom(t.homeView.noConnection);
     }
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-      _toast.showBottom('homeView.installingMessage');
+      _toast.showBottom(t.homeView.installingMessage);
       final File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
         await InstallPlugin.installApk(managerApk.path);
       } else {
-        _toast.showBottom('homeView.errorDownloadMessage');
+        _toast.showBottom(t.homeView.errorDownloadMessage);
       }
     }
 
@@ -177,42 +178,35 @@ class HomeViewModel extends BaseViewModel {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                I18nText(
-                  'homeView.patchesConsentDialogText',
-                  child: Text(
-                    '',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+                Text(
+                  t.homeView.patchesConsentDialogText,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: I18nText(
-                    'homeView.patchesConsentDialogText2',
-                    translationParams: {
-                      'url': _managerAPI.defaultApiUrl.split('/')[2],
-                    },
-                    child: Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                  child: Text(
+                    t.homeView.patchesConsentDialogText2(
+                      url: _managerAPI.defaultApiUrl.split('/')[2],
+                    ),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                   ),
                 ),
                 CheckboxListTile(
                   value: value,
                   contentPadding: EdgeInsets.zero,
-                  title: I18nText(
-                    'homeView.patchesConsentDialogText3',
+                  title: Text(
+                    t.homeView.patchesConsentDialogText3,
                   ),
-                  subtitle: I18nText(
-                    'homeView.patchesConsentDialogText3Sub',
+                  subtitle: Text(
+                    t.homeView.patchesConsentDialogText3Sub,
                   ),
                   onChanged: (selected) {
                     autoUpdate.value = selected!;
@@ -229,7 +223,7 @@ class HomeViewModel extends BaseViewModel {
               await _managerAPI.setPatchesConsent(false);
               SystemNavigator.pop();
             },
-            label: I18nText('quitButton'),
+            label: Text(t.quitButton),
           ),
           CustomMaterialButton(
             onPressed: () async {
@@ -237,7 +231,7 @@ class HomeViewModel extends BaseViewModel {
               await _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
               Navigator.of(context).pop();
             },
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
           ),
         ],
       ),
@@ -245,7 +239,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> updatePatches(BuildContext context) async {
-    _toast.showBottom('homeView.downloadingMessage');
+    _toast.showBottom(t.homeView.downloadingMessage);
     final String patchesVersion =
         await _managerAPI.getLatestPatchesVersion() ?? '0.0.0';
     final String integrationsVersion =
@@ -253,17 +247,17 @@ class HomeViewModel extends BaseViewModel {
     if (patchesVersion != '0.0.0' && integrationsVersion != '0.0.0') {
       await _managerAPI.setCurrentPatchesVersion(patchesVersion);
       await _managerAPI.setCurrentIntegrationsVersion(integrationsVersion);
-      _toast.showBottom('homeView.downloadedMessage');
+      _toast.showBottom(t.homeView.downloadedMessage);
       forceRefresh(context);
     } else {
-      _toast.showBottom('homeView.errorDownloadMessage');
+      _toast.showBottom(t.homeView.errorDownloadMessage);
     }
   }
 
   Future<void> updateManager(BuildContext context) async {
     final ValueNotifier<bool> downloaded = ValueNotifier(false);
     try {
-      _toast.showBottom('homeView.downloadingMessage');
+      _toast.showBottom(t.homeView.downloadingMessage);
       showDialog(
         context: context,
         builder: (context) => ValueListenableBuilder(
@@ -271,17 +265,14 @@ class HomeViewModel extends BaseViewModel {
           builder: (context, value, child) {
             return SimpleDialog(
               contentPadding: const EdgeInsets.all(16.0),
-              title: I18nText(
+              title: Text(
                 !value
-                    ? 'homeView.downloadingMessage'
-                    : 'homeView.downloadedMessage',
-                child: Text(
-                  '',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+                    ? t.homeView.downloadingMessage
+                    : t.homeView.downloadedMessage,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               children: [
@@ -325,7 +316,7 @@ class HomeViewModel extends BaseViewModel {
                           Align(
                             alignment: Alignment.centerRight,
                             child: CustomMaterialButton(
-                              label: I18nText('cancelButton'),
+                              label: Text(t.cancelButton),
                               onPressed: () {
                                 _revancedAPI.disposeManagerUpdateProgress();
                                 Navigator.of(context).pop();
@@ -338,15 +329,12 @@ class HomeViewModel extends BaseViewModel {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          I18nText(
-                            'homeView.installUpdate',
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                          Text(
+                            t.homeView.installUpdate,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -357,7 +345,7 @@ class HomeViewModel extends BaseViewModel {
                                 alignment: Alignment.centerRight,
                                 child: CustomMaterialButton(
                                   isFilled: false,
-                                  label: I18nText('cancelButton'),
+                                  label: Text(t.cancelButton),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -367,7 +355,7 @@ class HomeViewModel extends BaseViewModel {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: CustomMaterialButton(
-                                  label: I18nText('updateButton'),
+                                  label: Text(t.updateButton),
                                   onPressed: () async {
                                     await InstallPlugin.installApk(
                                       downloadedApk!.path,
@@ -414,21 +402,21 @@ class HomeViewModel extends BaseViewModel {
         //   uiLocalNotificationDateInterpretation:
         //       UILocalNotificationDateInterpretation.absoluteTime,
         // );
-        _toast.showBottom('homeView.installingMessage');
+        _toast.showBottom(t.homeView.installingMessage);
         await InstallPlugin.installApk(managerApk.path);
       } else {
-        _toast.showBottom('homeView.errorDownloadMessage');
+        _toast.showBottom(t.homeView.errorDownloadMessage);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      _toast.showBottom('homeView.errorInstallMessage');
+      _toast.showBottom(t.homeView.errorInstallMessage);
     }
   }
 
   void updatesAreDisabled() {
-    _toast.showBottom('homeView.updatesDisabled');
+    _toast.showBottom(t.homeView.updatesDisabled);
   }
 
   Future<void> showUpdateConfirmationDialog(
@@ -465,7 +453,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> forceRefresh(BuildContext context) async {
     _managerAPI.clearAllData();
-    _toast.showBottom('homeView.refreshSuccess');
+    _toast.showBottom(t.homeView.refreshSuccess);
     initialize(context);
   }
 }

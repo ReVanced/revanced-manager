@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
@@ -34,7 +34,7 @@ class SManageSources extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            I18nText('settingsView.sourcesLabel'),
+            Text(t.settingsView.sourcesLabel),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
@@ -53,7 +53,7 @@ class SManageSources extends BaseViewModel {
                   color: Colors.transparent,
                 ),
                 inputController: _hostSourceController,
-                label: I18nText('settingsView.hostRepositoryLabel'),
+                label: Text(t.settingsView.hostRepositoryLabel),
                 hint: hostRepository,
                 onChanged: (value) => notifyListeners(),
               ),
@@ -64,7 +64,7 @@ class SManageSources extends BaseViewModel {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 inputController: _orgPatSourceController,
-                label: I18nText('settingsView.orgPatchesLabel'),
+                label: Text(t.settingsView.orgPatchesLabel),
                 hint: patchesRepo.split('/')[0],
                 onChanged: (value) => notifyListeners(),
               ),
@@ -75,7 +75,7 @@ class SManageSources extends BaseViewModel {
                   color: Colors.transparent,
                 ),
                 inputController: _patSourceController,
-                label: I18nText('settingsView.sourcesPatchesLabel'),
+                label: Text(t.settingsView.sourcesPatchesLabel),
                 hint: patchesRepo.split('/')[1],
                 onChanged: (value) => notifyListeners(),
               ),
@@ -86,7 +86,7 @@ class SManageSources extends BaseViewModel {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 inputController: _orgIntSourceController,
-                label: I18nText('settingsView.orgIntegrationsLabel'),
+                label: Text(t.settingsView.orgIntegrationsLabel),
                 hint: integrationsRepo.split('/')[0],
                 onChanged: (value) => notifyListeners(),
               ),
@@ -97,19 +97,19 @@ class SManageSources extends BaseViewModel {
                   color: Colors.transparent,
                 ),
                 inputController: _intSourceController,
-                label: I18nText('settingsView.sourcesIntegrationsLabel'),
+                label: Text(t.settingsView.sourcesIntegrationsLabel),
                 hint: integrationsRepo.split('/')[1],
                 onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 20),
-              I18nText('settingsView.sourcesUpdateNote'),
+              Text(t.settingsView.sourcesUpdateNote),
             ],
           ),
         ),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: Text(t.cancelButton),
             onPressed: () {
               _orgPatSourceController.clear();
               _patSourceController.clear();
@@ -119,7 +119,7 @@ class SManageSources extends BaseViewModel {
             },
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () {
               _managerAPI.setRepoUrl(_hostSourceController.text.trim());
               _managerAPI.setPatchesRepo(
@@ -130,7 +130,7 @@ class SManageSources extends BaseViewModel {
               );
               _managerAPI.setCurrentPatchesVersion('0.0.0');
               _managerAPI.setCurrentIntegrationsVersion('0.0.0');
-              _toast.showBottom('settingsView.restartAppForChanges');
+              _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context).pop();
             },
           ),
@@ -143,24 +143,24 @@ class SManageSources extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.sourcesResetDialogTitle'),
+        title: Text(t.settingsView.sourcesResetDialogTitle),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('settingsView.sourcesResetDialogText'),
+        content: Text(t.settingsView.sourcesResetDialogText),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('noButton'),
+            label: Text(t.noButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CustomMaterialButton(
-            label: I18nText('yesButton'),
+            label: Text(t.yesButton),
             onPressed: () {
               _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
               _managerAPI.setCurrentPatchesVersion('0.0.0');
               _managerAPI.setCurrentIntegrationsVersion('0.0.0');
-              _toast.showBottom('settingsView.restartAppForChanges');
+              _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context)
                 ..pop()
                 ..pop();
@@ -181,8 +181,8 @@ class SManageSourcesUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsTileDialog(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      title: 'settingsView.sourcesLabel',
-      subtitle: 'settingsView.sourcesLabelHint',
+      title: t.settingsView.sourcesLabel,
+      subtitle: t.settingsView.sourcesLabelHint,
       onTap: () => sManageSources.showSourcesDialog(context),
     );
   }

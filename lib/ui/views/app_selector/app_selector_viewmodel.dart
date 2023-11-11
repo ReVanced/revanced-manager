@@ -4,8 +4,8 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -141,24 +141,21 @@ class AppSelectorViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        title: I18nText('warning'),
-        content: I18nText(
-          'appSelectorView.requireSuggestedAppVersionDialogText',
-          translationParams: {
-            'suggested': suggestedVersion,
-            'selected': selectedVersion,
-          },
-          child: const Text(
-            '',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+        title: Text(t.warning),
+        content: Text(
+          t.appSelectorView.requireSuggestedAppVersionDialogText(
+            suggested: suggestedVersion,
+            selected: selectedVersion,
           ),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          
         ),
         actions: [
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -181,26 +178,20 @@ class AppSelectorViewModel extends BaseViewModel {
             color: Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(height: 20),
-          I18nText(
-            'appSelectorView.featureNotAvailable',
-            child: const Text(
-              '',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                wordSpacing: 1.5,
-              ),
+          Text(
+            t.appSelectorView.featureNotAvailable,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              wordSpacing: 1.5,
             ),
           ),
           const SizedBox(height: 20),
-          I18nText(
-            'appSelectorView.featureNotAvailableText',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 14,
-              ),
+          Text(
+            t.appSelectorView.featureNotAvailableText,
+            style: const TextStyle(
+              fontSize: 14,
             ),
           ),
           const SizedBox(height: 30),
@@ -214,7 +205,7 @@ class AppSelectorViewModel extends BaseViewModel {
               children: [
                 const Icon(Icons.sd_card),
                 const SizedBox(width: 10),
-                I18nText('appSelectorView.selectFromStorageButton'),
+                Text(t.appSelectorView.selectFromStorageButton),
               ],
             ),
           ),
@@ -228,7 +219,7 @@ class AppSelectorViewModel extends BaseViewModel {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(width: 10),
-                I18nText('cancelButton'),
+                Text(t.cancelButton),
               ],
             ),
           ),
@@ -269,7 +260,7 @@ class AppSelectorViewModel extends BaseViewModel {
       if (kDebugMode) {
         print(e);
       }
-      _toast.showBottom('appSelectorView.errorMessage');
+      _toast.showBottom(t.appSelectorView.errorMessage);
     }
   }
 
@@ -297,5 +288,5 @@ class AppSelectorViewModel extends BaseViewModel {
   }
 
   void showDownloadToast() =>
-      _toast.showBottom('appSelectorView.downloadToast');
+      _toast.showBottom(t.appSelectorView.downloadToast);
 }
