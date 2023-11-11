@@ -108,7 +108,7 @@ jobs:
 
             ### ⚙️ Overview
             - App flavor: ${{ inputs.app-flavour }}
-            - Flutter branch: ${{ inputs.flutter-branch }}
+            - Branch: ${{ inputs.flutter-branch }}
             - Start time: ${{ env.DATETIME }}
 
       - name: Upload build
