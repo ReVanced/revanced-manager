@@ -141,24 +141,21 @@ class AppSelectorViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        title: I18nText('warning'),
-        content: I18nText(
-          'appSelectorView.requireSuggestedAppVersionDialogText',
-          translationParams: {
-            'suggested': suggestedVersion,
-            'selected': selectedVersion,
-          },
-          child: const Text(
-            '',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+        title: Text(t.warning),
+        content: Text(
+          t.appSelectorView.requireSuggestedAppVersionDialogText(
+            suggested: suggestedVersion,
+            selected: selectedVersion,
           ),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          
         ),
         actions: [
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],

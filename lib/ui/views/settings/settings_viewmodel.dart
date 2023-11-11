@@ -146,28 +146,26 @@ class SettingsViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          title: I18nText('warning'),
-          content: I18nText(
-            'settingsView.requireSuggestedAppVersionDialogText',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(t.warning),
+          content: Text(
+            t.settingsView.requireSuggestedAppVersionDialogText,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
+            
           ),
           actions: [
             CustomMaterialButton(
               isFilled: false,
-              label: I18nText('yesButton'),
+              label: Text(t.yesButton),
               onPressed: () {
                 _managerAPI.enableRequireSuggestedAppVersionStatus(false);
                 Navigator.of(context).pop();
               },
             ),
             CustomMaterialButton(
-              label: I18nText('noButton'),
+              label: Text(t.noButton),
               onPressed: () {
                 Navigator.of(context).pop();
               },
