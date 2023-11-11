@@ -3,10 +3,10 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({
-    Key? key,
+    super.key,
     required this.title,
     required this.children,
-  }) : super(key: key);
+  });
   final String title;
   final List<Widget> children;
 

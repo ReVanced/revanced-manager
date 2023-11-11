@@ -145,7 +145,7 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   Future<void>? showRequireSuggestedAppVersionDialog(
-      BuildContext context, bool value) {
+      BuildContext context, bool value,) {
     if (!value) {
       return showDialog(
         context: context,

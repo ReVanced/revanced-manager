@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class CustomMaterialButton extends StatelessWidget {
   const CustomMaterialButton({
-    Key? key,
+    super.key,
     required this.label,
     this.isFilled = true,
     this.isExpanded = false,
     required this.onPressed,
-  }) : super(key: key);
+  });
   final Widget label;
   final bool isFilled;
   final bool isExpanded;
@@ -49,13 +49,13 @@ class CustomMaterialButton extends StatelessWidget {
 // ignore: must_be_immutable
 class TimerButton extends StatefulWidget {
   TimerButton({
-    Key? key,
+    super.key,
     required this.seconds,
     required this.isRunning,
     required this.onTimerEnd,
     this.label = const Text(''),
     this.isFilled = true,
-  }) : super(key: key);
+  });
   Widget label;
   bool isFilled;
   int seconds;

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class OpenContainerWrapper extends StatelessWidget {
   const OpenContainerWrapper({
-    Key? key,
+    super.key,
     required this.openBuilder,
     required this.closedBuilder,
-  }) : super(key: key);
+  });
   final OpenContainerBuilder openBuilder;
   final CloseContainerBuilder closedBuilder;
 

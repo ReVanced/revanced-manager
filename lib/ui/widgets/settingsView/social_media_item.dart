@@ -3,12 +3,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SocialMediaItem extends StatelessWidget {
   const SocialMediaItem({
-    Key? key,
+    super.key,
     this.icon,
     required this.title,
     this.subtitle,
     this.url,
-  }) : super(key: key);
+  });
   final Widget? icon;
   final Widget title;
   final Widget? subtitle;

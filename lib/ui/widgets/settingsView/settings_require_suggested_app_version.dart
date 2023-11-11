@@ -29,7 +29,7 @@ class _SRequireSuggestedAppVersionState extends State<SRequireSuggestedAppVersio
       subtitle: I18nText('settingsView.requireSuggestedAppVersionHint'),
       value: _settingsViewModel.isRequireSuggestedAppVersionEnabled(),
       onChanged: (value) async {
-          await _settingsViewModel.showRequireSuggestedAppVersionDialog(context, value);
+          await _settingsViewModel.showRequireSuggestedAppVersionDialog(context, value,);
           setState(() {});
       },
     );

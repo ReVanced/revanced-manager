@@ -6,7 +6,7 @@ import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class NavigationView extends StatelessWidget {
-  const NavigationView({Key? key}) : super(key: key);
+  const NavigationView({super.key});
 
   @override
   Widget build(BuildContext context) {

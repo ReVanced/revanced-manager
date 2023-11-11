@@ -13,7 +13,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsView extends StatelessWidget {
-  const SettingsView({Key? key}) : super(key: key);
+  const SettingsView({super.key});
 
   static const _settingsDivider =
       Divider(thickness: 1.0, indent: 20.0, endIndent: 20.0);
