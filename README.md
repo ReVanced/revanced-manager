@@ -61,7 +61,7 @@
 # 💊 ReVanced Manager
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/ReVanced/revanced-manager)](https://github.com/ReVanced/revanced-manager/commits "")
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager)](https://github.com/ReVanced/revanced-manager-compose/commits "")
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager)](https://github.com/ReVanced/revanced-manager/commits "")
 
 ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications.
 
