@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
@@ -24,7 +24,7 @@ class SManageApiUrl extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            I18nText('settingsView.apiURLLabel'),
+            Text(t.settingsView.apiURLLabel),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
@@ -43,7 +43,7 @@ class SManageApiUrl extends BaseViewModel {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 inputController: _apiUrlController,
-                label: I18nText('settingsView.selectApiURL'),
+                label: Text(t.settingsView.selectApiURL),
                 hint: apiUrl,
                 onChanged: (value) => notifyListeners(),
               ),
@@ -53,21 +53,21 @@ class SManageApiUrl extends BaseViewModel {
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('cancelButton'),
+            label: Text(t.cancelButton),
             onPressed: () {
               _apiUrlController.clear();
               Navigator.of(context).pop();
             },
           ),
           CustomMaterialButton(
-            label: I18nText('okButton'),
+            label: Text(t.okButton),
             onPressed: () {
               String apiUrl = _apiUrlController.text;
               if (!apiUrl.startsWith('https')) {
                 apiUrl = 'https://$apiUrl';
               }
               _managerAPI.setApiUrl(apiUrl);
-              _toast.showBottom('settingsView.restartAppForChanges');
+              _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context).pop();
             },
           ),
@@ -80,20 +80,20 @@ class SManageApiUrl extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.sourcesResetDialogTitle'),
+        title: Text(t.settingsView.sourcesResetDialogTitle),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('settingsView.apiURLResetDialogText'),
+        content: Text(t.settingsView.apiURLResetDialogText),
         actions: <Widget>[
           CustomMaterialButton(
             isFilled: false,
-            label: I18nText('noButton'),
+            label: Text(t.noButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CustomMaterialButton(
-            label: I18nText('yesButton'),
+            label: Text(t.yesButton),
             onPressed: () {
               _managerAPI.setApiUrl('');
-              _toast.showBottom('settingsView.restartAppForChanges');
+              _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context)
                 ..pop()
                 ..pop();
@@ -114,8 +114,8 @@ class SManageApiUrlUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsTileDialog(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      title: 'settingsView.apiURLLabel',
-      subtitle: 'settingsView.apiURLHint',
+      title: t.settingsView.apiURLLabel,
+      subtitle: t.settingsView.apiURLHint,
       onTap: () => sManageApiUrl.showApiUrlDialog(context),
     );
   }

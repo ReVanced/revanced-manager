@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
@@ -61,27 +61,17 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                     ),
                   ),
                   Text(widget.pkgName),
-                  I18nText(
-                    FlutterI18n.translate(
-                      context,
-                      'installed',
-                      translationParams: {
-                        'version': 'v${widget.installedVersion}',
-                      },
-                    ),
+                  Text(
+                    t.installed(version: widget.installedVersion),
                   ),
                   Wrap(
                     children: [
-                      I18nText(
-                        'suggested',
-                        translationParams: {
-                          'version': widget.suggestedVersion.isEmpty
-                              ? FlutterI18n.translate(
-                                  context,
-                                  'appSelectorCard.allVersions',
-                                )
+                      Text(
+                        t.suggested(
+                          version: widget.suggestedVersion.isEmpty
+                              ? t.appSelectorCard.allVersions
                               : 'v${widget.suggestedVersion}',
-                        },
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(

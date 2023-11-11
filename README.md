@@ -31,5 +31,6 @@ We're accepting translations on [Crowdin](https://translate.revanced.app).
 3. Add your GitHub token in gradle.properties like [this](/docs/4_building.md)
 4. Open the project in terminal
 5. Run `flutter pub get` in terminal
-6. Then `flutter packages pub run build_runner build --delete-conflicting-outputs` (Must be done on each git pull)
-7. To build release APK run `flutter build apk`
+6. Generate translation file using `dart run slang`
+7. Then `flutter packages pub run build_runner build --delete-conflicting-outputs` (Must be done on each git pull)
+8. To build release APK run `flutter build apk`

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/contributorsView/contributors_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
@@ -18,13 +18,10 @@ class ContributorsView extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             CustomSliverAppBar(
-              title: I18nText(
-                'contributorsView.widgetTitle',
-                child: Text(
-                  '',
-                  style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
+              title: Text(
+                t.contributorsView.widgetTitle,
+                style: GoogleFonts.inter(
+                  color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
               ),
             ),
@@ -34,27 +31,27 @@ class ContributorsView extends StatelessWidget {
                 delegate: SliverChildListDelegate.fixed(
                   <Widget>[
                     ContributorsCard(
-                      title: 'contributorsView.patcherContributors',
+                      title: t.contributorsView.patcherContributors,
                       contributors: model.patcherContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.patchesContributors',
+                      title: t.contributorsView.patchesContributors,
                       contributors: model.patchesContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.integrationsContributors',
+                      title: t.contributorsView.integrationsContributors,
                       contributors: model.integrationsContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.cliContributors',
+                      title: t.contributorsView.cliContributors,
                       contributors: model.cliContributors,
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'contributorsView.managerContributors',
+                      title: t.contributorsView.managerContributors,
                       contributors: model.managerContributors,
                     ),
                     SizedBox(height: MediaQuery.viewPaddingOf(context).bottom),
