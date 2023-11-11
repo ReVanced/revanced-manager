@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -141,8 +141,8 @@ class PatchOptionsViewModel extends BaseViewModel {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            I18nText(
-              'patchOptionsView.addOptions',
+            Text(
+              t.patchOptionsView.addOptions,
             ),
             Text(
               '',
@@ -155,7 +155,7 @@ class PatchOptionsViewModel extends BaseViewModel {
         ),
         actions: [
           CustomMaterialButton(
-            label: I18nText('cancelButton'),
+            label: Text(t.cancelButton),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -228,12 +228,12 @@ Future<void> showRequiredOptionNullDialog(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-      title: I18nText('notice'),
+      title: Text(t.notice),
       actions: [
         CustomMaterialButton(
           isFilled: false,
-          label: I18nText(
-            'patchOptionsView.deselectPatch',
+          label: Text(
+            t.patchOptionsView.deselectPatch,
           ),
           onPressed: () async {
             if (managerAPI.isPatchesChangeEnabled()) {
@@ -258,17 +258,16 @@ Future<void> showRequiredOptionNullDialog(
           },
         ),
         CustomMaterialButton(
-          label: I18nText('okButton'),
+          label: Text(t.okButton),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ],
-      content: I18nText(
-        'patchOptionsView.requiredOptionNull',
-        translationParams: {
-          'options': optionsTitles.join('\n'),
-        },
+      content: Text(
+        t.patchOptionsView.requiredOptionNull(
+          options: optionsTitles.join('\n'),
+        ),
       ),
     ),
   );

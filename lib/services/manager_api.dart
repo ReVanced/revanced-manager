@@ -4,11 +4,11 @@ import 'package:device_apps/device_apps.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
@@ -62,7 +62,8 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
-    isDynamicThemeAvailable = (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
+    isDynamicThemeAvailable =
+        (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
@@ -274,6 +275,14 @@ class ManagerAPI {
 
   String getKeystorePassword() {
     return _prefs.getString('keystorePassword') ?? defaultKeystorePassword;
+  }
+
+  String getLocale() {
+    return _prefs.getString('locale') ?? 'en';
+  }
+
+  Future<void> setLocale(String value) async {
+    await _prefs.setString('locale', value);
   }
 
   Future<void> deleteTempFolder() async {
@@ -586,7 +595,7 @@ class ManagerAPI {
         onWillPop: () async => false,
         child: AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          title: I18nText('warning'),
+          title: Text(t.warning),
           content: ValueListenableBuilder(
             valueListenable: noShow,
             builder: (context, value, child) {
@@ -594,22 +603,19 @@ class ManagerAPI {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  I18nText(
-                    'patchItem.patchesChangeWarningDialogText',
-                    child: const Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  Text(
+                    t.patchItem.patchesChangeWarningDialogText,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 8),
                   CheckboxListTile(
                     value: value,
                     contentPadding: EdgeInsets.zero,
-                    title: I18nText(
-                      'noShowAgain',
+                    title: Text(
+                      t.noShowAgain,
                     ),
                     onChanged: (selected) {
                       noShow.value = selected!;
@@ -621,7 +627,7 @@ class ManagerAPI {
           ),
           actions: [
             CustomMaterialButton(
-              label: I18nText('okButton'),
+              label: Text(t.okButton),
               onPressed: () {
                 setPatchesChangeWarning(noShow.value);
                 Navigator.of(context).pop();

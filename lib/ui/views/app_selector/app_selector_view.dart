@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide SearchBar;
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
@@ -24,7 +24,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
       viewModelBuilder: () => AppSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          label: I18nText('appSelectorView.storageButton'),
+          label: Text(t.appSelectorView.storageButton),
           icon: const Icon(Icons.sd_storage),
           onPressed: () {
             model.selectAppFromStorage(context);
@@ -35,13 +35,13 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             SliverAppBar(
               pinned: true,
               floating: true,
-              title: I18nText(
-                'appSelectorView.viewTitle',
+              title: Text(
+                t.appSelectorView.viewTitle,
               ),
               titleTextStyle: TextStyle(
                 fontSize: 22.0,
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
+                color: Theme.of(context).textTheme.titleLarge!.color,
+              ),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
@@ -57,10 +57,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                     horizontal: 12.0,
                   ),
                   child: SearchBar(
-                    hintText: FlutterI18n.translate(
-                      context,
-                      'appSelectorView.searchBarHint',
-                    ),
+                    hintText: t.appSelectorView.searchBarHint,
                     onQueryChanged: (searchQuery) {
                       setState(() {
                         _query = searchQuery;
@@ -73,14 +70,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
             SliverToBoxAdapter(
               child: model.noApps
                   ? Center(
-                      child: I18nText(
-                        'appSelectorCard.noAppsLabel',
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.titleLarge!.color,
-                          ),
+                      child: Text(
+                        t.appSelectorCard.noAppsLabel,
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.titleLarge!.color,
                         ),
                       ),
                     )
