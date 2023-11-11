@@ -4,7 +4,7 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 
 class AboutWidget extends StatefulWidget {
-  const AboutWidget({Key? key, this.padding}) : super(key: key);
+  const AboutWidget({super.key, this.padding});
 
   final EdgeInsetsGeometry? padding;
 

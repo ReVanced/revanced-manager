@@ -14,10 +14,10 @@ import 'package:stacked_services/stacked_services.dart';
 
 class DynamicThemeBuilder extends StatefulWidget {
   const DynamicThemeBuilder({
-    Key? key,
+    super.key,
     required this.title,
     required this.home,
-  }) : super(key: key);
+  });
   final String title;
   final Widget home;
 

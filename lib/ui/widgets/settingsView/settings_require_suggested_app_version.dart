@@ -29,7 +29,7 @@ class _SRequireSuggestedAppVersionState
       value: _settingsViewModel.isRequireSuggestedAppVersionEnabled(),
       onChanged: (value) async {
         await _settingsViewModel.showRequireSuggestedAppVersionDialog(
-            context, value);
+            context, value,);
         setState(() {});
       },
     );

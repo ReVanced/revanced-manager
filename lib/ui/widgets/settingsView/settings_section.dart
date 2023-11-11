@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({
-    Key? key,
+    super.key,
     required this.title,
     required this.children,
-  }) : super(key: key);
+  });
   final String title;
   final List<Widget> children;
 

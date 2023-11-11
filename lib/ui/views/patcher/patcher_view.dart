@@ -9,7 +9,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class PatcherView extends StatelessWidget {
-  const PatcherView({Key? key}) : super(key: key);
+  const PatcherView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,9 +8,9 @@ import 'package:revanced_manager/ui/widgets/shared/custom_icon.dart';
 
 class SocialMediaWidget extends StatelessWidget {
   const SocialMediaWidget({
-    Key? key,
+    super.key,
     this.padding,
-  }) : super(key: key);
+  });
   final EdgeInsetsGeometry? padding;
 
   @override
