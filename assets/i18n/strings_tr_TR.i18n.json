@@ -8,7 +8,7 @@
   "yesButton": "Evet",
   "noButton": "Hayır",
   "warning": "Uyarı",
-  "options": "Tercihler",
+  "options": "Seçenekler",
   "notice": "Dikkat",
   "noShowAgain": "Bunu bir daha gösterme",
   "add": "Ekle",
@@ -36,7 +36,7 @@
     "downloadedMessage": "Güncelleme indirildi!",
     "installingMessage": "Güncelleme yükleniyor...",
     "errorDownloadMessage": "Güncelleme indirilemedi",
-    "errorInstallMessage": "Güncelleme yüklenemiyor",
+    "errorInstallMessage": "Güncelleme yüklenemedi",
     "noConnection": "İnternet bağlantısı yok",
     "updatesDisabled": "Yamalanmış bir uygulamayı güncellemek şu anda mümkün değil. Uygulamayı tekrardan yamalayın."
   },
@@ -50,7 +50,7 @@
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
-    "armv7WarningDialogText": "ARMv7 cihazlarda yamalama henüz desteklenmemektedir ve sorunlar yaşanabilir. Yine de devam edilsin mi?",
+    "armv7WarningDialogText": "ARMv7 cihazlarda yamalama henüz desteklenmemektedir ve başarısız olabilir. Yine de devam edilsin mi?",
     "removedPatchesWarningDialogText": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam etmek istiyor musunuz?",
     "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
   },
@@ -60,7 +60,7 @@
     "widgetSubtitle": "Hiçbir uygulama seçilmedi",
     "noAppsLabel": "Hiçbir uygulama bulunamadı",
     "notInstalled": "Uygulama yüklü değil",
-    "currentVersion": "Şu anki",
+    "currentVersion": "Mevcut",
     "suggestedVersion": "Önerilen",
     "allVersions": "Tüm sürümler"
   },
@@ -76,11 +76,11 @@
   },
   "appSelectorView": {
     "viewTitle": "Bir uygulama seçin",
-    "searchBarHint": "Uygulamala arama",
+    "searchBarHint": "Uygulama arayın",
     "storageButton": "Depolama",
     "selectFromStorageButton": "Depolama alanından seçin",
     "errorMessage": "Seçili uygulama kullanılamıyor",
-    "downloadToast": "İndirme işlevi henüz kullanılamıyor",
+    "downloadToast": "İndirme özelliği henüz kullanılamıyor",
     "requireSuggestedAppVersionDialogText": "Seçtiğiniz uygulamanın sürümü önerilen sürümle eşleşmiyor. Lütfen önerilen sürümle eşleşen uygulamayı seçin.\n\nSeçilen sürüm: v${selected}\nÖnerilen sürüm: v${suggested}\n\n.Yine de devam etmek için, ayarlarda \"Önerilen uygulama sürümünü zorunlu kıl\" seçeneğini devre dışı bırakın.",
     "featureNotAvailable": "Özellik henüz etkin değil",
     "featureNotAvailableText": "Bu uygulama, bölünmüş (split) bir APK dosyasıdır ve seçilemez. Maalesef, bu özellik şuanda yalnızca kök dizin (root) erişimine sahip cihazlarda kullanılabilir. Yine de, uygulamayı cihazınızın depolamasında yer alan APK dosyasını seçerek kurabilirsiniz"
