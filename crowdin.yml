@@ -1,5 +1,6 @@
 preserve_hierarchy: 1
+commit_message: chore(i18n): sync translations for %language%
+pull_request_title: chore(i18n): sync translations
 files:
   - source: /assets/i18n/strings.i18n.json
     translation: /assets/i18n/strings_%locale_with_underscore%.i18n.json
-    export_only_approved: false
