@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Topic
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,18 +36,19 @@ import app.revanced.manager.util.JAR_MIMETYPE
 fun ImportBundleDialog(
     onDismissRequest: () -> Unit,
     onRemoteSubmit: (String, String, Boolean) -> Unit,
-    onLocalSubmit: (String, Uri, Uri?) -> Unit
+    onLocalSubmit: (String, Uri, Uri?) -> Unit,
+    bundleType: BundleType
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(true) }
-    var isLocal by rememberSaveable { mutableStateOf(false) }
+    var bundleType by rememberSaveable { mutableStateOf(bundleType) }
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var integrations by rememberSaveable { mutableStateOf<Uri?>(null) }
 
     val inputsAreValid by remember {
         derivedStateOf {
-            name.isNotEmpty() && if (isLocal) patchBundle != null else remoteUrl.isNotEmpty()
+            name.isNotEmpty() && if (bundleType == BundleType.Local) patchBundle != null else remoteUrl.isNotEmpty()
         }
     }
 
@@ -88,14 +90,13 @@ fun ImportBundleDialog(
                         TextButton(
                             enabled = inputsAreValid,
                             onClick = {
-                                if (isLocal) {
-                                    onLocalSubmit(name, patchBundle!!, integrations)
-                                } else {
-                                    onRemoteSubmit(
+                                when (bundleType) {
+                                    BundleType.Local -> onLocalSubmit(
                                         name,
-                                        remoteUrl,
-                                        autoUpdate
+                                        patchBundle!!,
+                                        integrations
                                     )
+                                    BundleType.Remote -> onRemoteSubmit(name, remoteUrl, autoUpdate)
                                 }
                             },
                             modifier = Modifier.padding(end = 16.dp)
@@ -111,17 +112,22 @@ fun ImportBundleDialog(
                 isDefault = false,
                 name = name,
                 onNameChange = { name = it },
-                remoteUrl = remoteUrl.takeUnless { isLocal },
+                remoteUrl = remoteUrl.takeUnless { bundleType == BundleType.Local },
                 onRemoteUrlChange = { remoteUrl = it },
                 patchCount = 0,
                 version = null,
                 autoUpdate = autoUpdate,
                 onAutoUpdateChange = { autoUpdate = it },
                 onPatchesClick = {},
-                onBundleTypeClick = { isLocal = !isLocal },
+                onBundleTypeClick = {
+                    bundleType = when (bundleType) {
+                        BundleType.Local -> BundleType.Remote
+                        BundleType.Remote -> BundleType.Local
+                    }
+                },
             ) {
-                if (!isLocal) return@BaseBundleDialog
-                
+                if (bundleType == BundleType.Remote) return@BaseBundleDialog
+
                 BundleListItem(
                     headlineText = stringResource(R.string.patch_bundle_field),
                     supportingText = stringResource(if (patchBundle != null) R.string.file_field_set else R.string.file_field_not_set),
@@ -160,4 +166,9 @@ fun ImportBundleDialog(
             }
         }
     }
+}
+
+enum class BundleType {
+    Local,
+    Remote
 }

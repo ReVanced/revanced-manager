@@ -302,4 +302,10 @@
     <string name="dismiss_temporary">Not now</string>
     <string name="update_available">New update available</string>
     <string name="update_available_description">A new version (%s) is available for download.</string>
+    <string name="select">Select</string>
+    <string name="select_bundle_type_dialog_title">Select bundle type</string>
+    <string name="select_bundle_type_dialog_description">Select the type that is right for you.</string>
+    <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
+    <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
+    <string name="recommended">Recommended</string>
 </resources>

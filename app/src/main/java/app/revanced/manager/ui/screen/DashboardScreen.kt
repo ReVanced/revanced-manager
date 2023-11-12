@@ -37,7 +37,9 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
+import app.revanced.manager.ui.component.bundle.BundleType
 import app.revanced.manager.ui.component.bundle.ImportBundleDialog
+import app.revanced.manager.ui.component.bundle.ImportBundleTypeSelectorDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -60,6 +62,8 @@ fun DashboardScreen(
     onAppClick: (InstalledApp) -> Unit
 ) {
     var showImportBundleDialog by rememberSaveable { mutableStateOf(false) }
+    var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
+    var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
 
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val pages: Array<DashboardPage> = DashboardPage.values()
@@ -78,6 +82,16 @@ fun DashboardScreen(
         if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
     }
 
+    if (showBundleTypeSelectorDialog) {
+        ImportBundleTypeSelectorDialog(
+            onDismiss = { showBundleTypeSelectorDialog = false },
+            onConfirm = {
+                showBundleTypeSelectorDialog = false
+                bundleType = it
+                showImportBundleDialog = true
+            }
+        )
+    }
     if (showImportBundleDialog) {
         fun dismiss() {
             showImportBundleDialog = false
@@ -93,6 +107,7 @@ fun DashboardScreen(
                 dismiss()
                 vm.createRemoteSource(name, url, autoUpdate)
             },
+            bundleType = bundleType
         )
     }
 
@@ -165,7 +180,7 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES.ordinal -> {
-                            showImportBundleDialog = true
+                            showBundleTypeSelectorDialog = true
                         }
                     }
                 }
