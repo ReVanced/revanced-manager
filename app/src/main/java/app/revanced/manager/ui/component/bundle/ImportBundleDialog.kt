@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Topic
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
+import app.revanced.manager.ui.model.BundleType
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.JAR_MIMETYPE
 
@@ -166,9 +166,4 @@ fun ImportBundleDialog(
             }
         }
     }
-}
-
-enum class BundleType {
-    Local,
-    Remote
 }
