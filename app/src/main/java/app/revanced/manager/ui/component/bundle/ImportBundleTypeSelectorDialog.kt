@@ -3,7 +3,8 @@ package app.revanced.manager.ui.component.bundle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.RadioButton
@@ -16,8 +17,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.model.BundleType
 
 @Composable
@@ -27,7 +30,7 @@ fun ImportBundleTypeSelectorDialog(
 ) {
     var bundleType: BundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
 
-    AlertDialog(
+    AlertDialogExtended(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
@@ -48,32 +51,45 @@ fun ImportBundleTypeSelectorDialog(
             Column(
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                Text(stringResource(R.string.select_bundle_type_dialog_description))
+                Text(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    text = stringResource(R.string.select_bundle_type_dialog_description)
+                )
                 Column {
                     ListItem(
-                        modifier = Modifier.clickable { bundleType = BundleType.Local },
+                        modifier = Modifier.clickable(
+                            role = Role.RadioButton,
+                            onClick = { bundleType = BundleType.Local }
+                        ),
                         headlineContent = { Text(stringResource(R.string.local)) },
                         supportingContent = { Text(stringResource(R.string.local_bundle_description)) },
+                        overlineContent = { },
                         leadingContent = {
                             RadioButton(
                                 selected = bundleType == BundleType.Local,
-                                onClick = { bundleType = BundleType.Local })
+                                onClick = null
+                            )
                         }
                     )
-                    Divider()
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
                     ListItem(
-                        modifier = Modifier.clickable { bundleType = BundleType.Remote },
+                        modifier = Modifier.clickable(
+                            role = Role.RadioButton,
+                            onClick = { bundleType = BundleType.Remote }
+                        ),
                         headlineContent = { Text(stringResource(R.string.remote)) },
                         overlineContent = { Text(stringResource(R.string.recommended)) },
                         supportingContent = { Text(stringResource(R.string.remote_bundle_description)) },
                         leadingContent = {
                             RadioButton(
                                 selected = bundleType == BundleType.Remote,
-                                onClick = { bundleType = BundleType.Remote })
+                                onClick = null
+                            )
                         }
                     )
                 }
             }
-        }
+        },
+        textHorizontalPadding = PaddingValues(0.dp)
     )
 }
