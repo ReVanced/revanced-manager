@@ -139,9 +139,6 @@ class UpdateViewModel(
                         app.toast(app.getString(R.string.install_app_fail, extra))
                     }
                 }
-
-                UninstallService.APP_UNINSTALL_ACTION -> {
-                }
             }
         }
     }
@@ -149,7 +146,6 @@ class UpdateViewModel(
     init {
         ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
-            addAction(UninstallService.APP_UNINSTALL_ACTION)
         }, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
