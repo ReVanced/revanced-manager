@@ -9,117 +9,92 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.StateFlow
 
-enum class State {
-    WAITING, COMPLETED, FAILED
+enum class StepCategory(@StringRes val displayName: Int) {
+    PREPARING(R.string.patcher_step_group_preparing),
+    PATCHING(R.string.patcher_step_group_patching),
+    SAVING(R.string.patcher_step_group_saving)
 }
 
-class SubStep(
+enum class State {
+    WAITING, RUNNING, FAILED, COMPLETED
+}
+
+data class Step(
     val name: String,
+    val category: StepCategory,
     val state: State = State.WAITING,
     val message: String? = null,
     val progress: StateFlow<Pair<Float, Float>?>? = null
-)
-
-class Step(
-    @StringRes val name: Int,
-    val subSteps: ImmutableList<SubStep>,
-    val state: State = State.WAITING
 )
 
 class PatcherProgressManager(
     context: Context,
     selectedPatches: List<String>,
     selectedApp: SelectedApp,
-    downloadProgress: StateFlow<Pair<Float, Float>?>
+    progress: StateFlow<Pair<Float, Float>?>
 ) {
-    val steps = generateSteps(context, selectedPatches, selectedApp, downloadProgress)
-    private var currentStep: StepKey? = StepKey(0, 0)
+    var steps: ImmutableList<Step> = persistentListOf()
+        private set
 
-    private fun update(key: StepKey, state: State, message: String? = null) {
-        val isLastSubStep: Boolean
-        steps[key.step] = steps[key.step].let { step ->
-            isLastSubStep = key.substep == step.subSteps.lastIndex
+    private var currentStepIndex: Int = 0
 
-            val newStepState = when {
-                // This step failed because one of its sub-steps failed.
-                state == State.FAILED -> State.FAILED
-                // All sub-steps succeeded.
-                state == State.COMPLETED && isLastSubStep -> State.COMPLETED
-                // Keep the old status.
-                else -> step.state
+    init {
+        steps = generateSteps(
+            context,
+            selectedPatches,
+            selectedApp,
+            progress
+        )
+    }
+
+    fun updateProgress(state: State, message: String? = null) {
+        steps = steps.toMutableList().apply {
+            this[currentStepIndex] = this[currentStepIndex].copy(state = state, message = message)
+
+            if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
+                currentStepIndex++
+
+                this[currentStepIndex] = this[currentStepIndex].copy(state = State.RUNNING)
             }
-
-            Step(step.name, step.subSteps.mapIndexed { index, subStep ->
-                if (index != key.substep) subStep else SubStep(subStep.name, state, message)
-            }.toImmutableList(), newStepState)
-        }
-
-        val isFinal = isLastSubStep && key.step == steps.lastIndex
-
-        if (state == State.COMPLETED) {
-            // Move the cursor to the next step.
-            currentStep = when {
-                isFinal -> null // Final step has been completed.
-                isLastSubStep -> StepKey(key.step + 1, 0) // Move to the next step.
-                else -> StepKey(
-                    key.step,
-                    key.substep + 1
-                ) // Move to the next sub-step.
-            }
-        }
+        }.toImmutableList()
     }
-
-    fun replacePatchesList(newList: List<String>) {
-        steps[1] = generatePatchesStep(newList)
-    }
-
-    private fun updateCurrent(newState: State, message: String? = null) {
-        currentStep?.let { update(it, newState, message) }
-    }
-
-    fun failure(error: Throwable) = updateCurrent(
-        State.FAILED,
-        error.stackTraceToString()
-    )
-
-    fun success() = updateCurrent(State.COMPLETED)
-
-    fun getProgress(): List<Step> = steps
 
     companion object {
-        private fun generatePatchesStep(selectedPatches: List<String>) = Step(
-            R.string.patcher_step_group_patching,
-            selectedPatches.map { SubStep(it) }.toImmutableList()
-        )
-
         fun generateSteps(
             context: Context,
             selectedPatches: List<String>,
             selectedApp: SelectedApp,
-            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
-        ) = mutableListOf(
-            Step(
-                R.string.patcher_step_group_prepare,
-                listOfNotNull(
-                    SubStep(context.getString(R.string.patcher_step_load_patches)),
-                    SubStep(
-                        "Download apk",
-                        progress = downloadProgress
-                    ).takeIf { selectedApp is SelectedApp.Download },
-                    SubStep(context.getString(R.string.patcher_step_unpack)),
-                    SubStep(context.getString(R.string.patcher_step_integrations))
-                ).toImmutableList()
-            ),
-            generatePatchesStep(selectedPatches),
-            Step(
-                R.string.patcher_step_group_saving,
-                persistentListOf(
-                    SubStep(context.getString(R.string.patcher_step_write_patched)),
-                    SubStep(context.getString(R.string.patcher_step_sign_apk))
+            progress: StateFlow<Pair<Float, Float>?>? = null
+        ): ImmutableList<Step> {
+            val preparing = listOfNotNull(
+                Step(
+                    context.getString(R.string.patcher_step_load_patches),
+                    StepCategory.PREPARING,
+                    state = State.RUNNING
+                ),
+                Step(
+                    context.getString(R.string.download_apk),
+                    StepCategory.PREPARING,
+                    progress = progress
+                ).takeIf { selectedApp is SelectedApp.Download },
+                Step(
+                    context.getString(R.string.patcher_step_unpack),
+                    StepCategory.PREPARING
+                ),
+                Step(
+                    context.getString(R.string.patcher_step_integrations),
+                    StepCategory.PREPARING
                 )
             )
-        )
-    }
 
-    private data class StepKey(val step: Int, val substep: Int)
+            val patches = selectedPatches.map { Step(it, StepCategory.PATCHING) }
+
+            val saving = listOf(
+                Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
+                Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
+            )
+
+            return (preparing + patches + saving).toImmutableList()
+        }
+    }
 }

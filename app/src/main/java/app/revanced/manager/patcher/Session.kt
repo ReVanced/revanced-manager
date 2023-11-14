@@ -22,7 +22,7 @@ class Session(
     aaptPath: String,
     private val logger: ManagerLogger,
     private val input: File,
-    private val onStepSucceeded: suspend () -> Unit
+    private val onStepSucceeded: () -> Unit
 ) : Closeable {
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
     private val patcher = Patcher(
@@ -33,7 +33,6 @@ class Session(
             aaptBinaryPath = aaptPath
         )
     )
-
 
     private suspend fun Patcher.applyPatchesVerbose() {
         this.apply(true).collect { (patch, exception) ->
