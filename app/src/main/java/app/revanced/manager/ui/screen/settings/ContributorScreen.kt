@@ -3,11 +3,11 @@ package app.revanced.manager.ui.screen.settings
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,34 +50,34 @@ fun ContributorScreen(
             )
         },
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(paddingValues)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = if (repositories.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = if (repositories.isNullOrEmpty()) Arrangement.Center else Arrangement.spacedBy(24.dp)
         ) {
-            repositories?.let {
+            repositories?.let { repositories ->
                 if (repositories.isEmpty()) {
-                    Text(
-                        text = stringResource(id = R.string.no_contributors_found),
-                        style = MaterialTheme.typography.titleLarge
-                    )
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.no_contributors_found),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
                 } else {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                    items(
+                        items = repositories,
+                        key = { it.name }
                     ) {
-                        repositories.forEach {
-                            ContributorsCard(
-                                title = it.name,
-                                contributors = it.contributors
-                            )
-                        }
+                        ContributorsCard(
+                            title = it.name,
+                            contributors = it.contributors
+                        )
                     }
                 }
-            } ?: LoadingIndicator()
+            } ?: item { LoadingIndicator() }
         }
     }
 }
@@ -106,7 +106,11 @@ fun ContributorsCard(
                 color = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp),
                 shape = MaterialTheme.shapes.medium
             ),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
+                1.dp
+            )
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
