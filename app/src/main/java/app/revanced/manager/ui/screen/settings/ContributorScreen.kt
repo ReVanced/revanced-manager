@@ -14,7 +14,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -56,7 +55,9 @@ fun ContributorScreen(
                 .padding(paddingValues)
                 .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = if (repositories.isNullOrEmpty()) Arrangement.Center else Arrangement.spacedBy(24.dp)
+            verticalArrangement = if (repositories.isNullOrEmpty()) Arrangement.Center else Arrangement.spacedBy(
+                24.dp
+            )
         ) {
             repositories?.let { repositories ->
                 if (repositories.isEmpty()) {
@@ -102,15 +103,11 @@ fun ContributorsCard(
         modifier = Modifier
             .fillMaxWidth()
             .border(
-                width = 2.dp,
-                color = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp),
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = MaterialTheme.shapes.medium
             ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                1.dp
-            )
-        )
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
