@@ -4,9 +4,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Storage
@@ -29,8 +27,8 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -91,11 +89,8 @@ fun AppSelectorScreen(
             },
             content = {
                 if (appList.isNotEmpty() && filterText.isNotEmpty()) {
-                    val lazyListState = rememberLazyListState()
-
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        state = lazyListState
+                    LazyColumnWithScrollbar(
+                        modifier = Modifier.fillMaxSize()
                     ) {
                         items(
                             items = filteredAppList,
@@ -127,7 +122,6 @@ fun AppSelectorScreen(
 
                         }
                     }
-                    Scrollbar(scrollState = lazyListState)
                 } else {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -163,13 +157,10 @@ fun AppSelectorScreen(
             )
         }
     ) { paddingValues ->
-        val lazyListState = rememberLazyListState()
-
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            state = lazyListState
+                .padding(paddingValues)
         ) {
             item {
                 ListItem(
@@ -221,6 +212,5 @@ fun AppSelectorScreen(
                 item { LoadingIndicator() }
             }
         }
-        Scrollbar(scrollState = lazyListState, modifier = Modifier.padding(paddingValues))
     }
 }

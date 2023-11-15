@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Campaign
@@ -31,9 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.Markdown
-import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import app.revanced.manager.util.formatNumber
 import app.revanced.manager.util.relativeTime
@@ -55,15 +53,12 @@ fun ChangelogsScreen(
             )
         }
     ) { paddingValues ->
-        val lazyListState = rememberLazyListState()
-
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = if (changelogs.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
-            state = lazyListState
+            verticalArrangement = if (changelogs.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
         ) {
             if (changelogs == null) {
                 item {
@@ -86,7 +81,6 @@ fun ChangelogsScreen(
                 }
             }
         }
-        Scrollbar(scrollState = lazyListState, modifier = Modifier.padding(paddingValues))
     }
 }
 

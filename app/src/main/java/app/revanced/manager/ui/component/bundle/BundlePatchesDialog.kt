@@ -3,16 +3,12 @@ package app.revanced.manager.ui.component.bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -30,8 +26,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.Scrollbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,14 +59,11 @@ fun BundlePatchesDialog(
                 )
             },
         ) { paddingValues ->
-            val lazyListState = rememberLazyListState()
-
-            LazyColumn(
+            LazyColumnWithScrollbar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(paddingValues)
-                    .padding(16.dp),
-                state = lazyListState
+                    .padding(16.dp)
             ) {
                 item {
                     AnimatedVisibility(visible = informationCardVisible) {
@@ -107,7 +100,6 @@ fun BundlePatchesDialog(
                     }
                 }
             }
-            Scrollbar(scrollState = lazyListState, modifier = Modifier.padding(paddingValues))
         }
     }
 }

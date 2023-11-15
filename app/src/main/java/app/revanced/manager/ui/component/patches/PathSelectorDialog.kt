@@ -3,20 +3,17 @@ package app.revanced.manager.ui.component.patches
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.ListItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +28,7 @@ import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
-import app.revanced.manager.ui.component.Scrollbar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.util.saver.PathSaver
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
@@ -69,15 +66,12 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
                 )
             },
         ) { paddingValues ->
-            val lazyListState = rememberLazyListState()
-
             BackHandler(enabled = notAtRootDir) {
                 currentDirectory = currentDirectory.parent
             }
 
-            LazyColumn(
-                modifier = Modifier.padding(paddingValues),
-                state = lazyListState
+            LazyColumnWithScrollbar(
+                modifier = Modifier.padding(paddingValues)
             ) {
                 item(key = "current") {
                     PathItem(
@@ -123,7 +117,6 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
                     )
                 }
             }
-            Scrollbar(scrollState = lazyListState, modifier = Modifier.padding(paddingValues))
         }
     }
 }
