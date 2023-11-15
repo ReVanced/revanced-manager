@@ -21,31 +21,28 @@ import com.gigamole.composescrollbars.scrolltype.knobtype.ScrollbarsStaticKnobTy
 
 @Composable
 fun Scrollbar(scrollState: ScrollState, modifier: Modifier = Modifier) {
-    Scrollbars(
-        state = ScrollbarsState(
-            ScrollbarsConfig(
-                orientation = ScrollbarsOrientation.Vertical,
-                paddingValues = PaddingValues(0.dp),
-                layersType = ScrollbarsLayersType.Wrap(ScrollbarsThicknessType.Exact(4.dp)),
-                knobLayerContentType = ScrollbarsLayerContentType.Default.Colored.Idle(
-                    idleColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
-                ),
-                visibilityType = ScrollbarsVisibilityType.Dynamic.Fade(
-                    isVisibleOnTouchDown = true,
-                    isStaticWhenScrollPossible = false
-                )
-            ),
-            ScrollbarsScrollType.Scroll(
-                knobType = ScrollbarsStaticKnobType.Auto(),
-                state = scrollState
-            )
+    Scrollbar(
+        ScrollbarsScrollType.Scroll(
+            knobType = ScrollbarsStaticKnobType.Auto(),
+            state = scrollState
         ),
-        modifier = modifier
+        modifier
     )
 }
 
 @Composable
 fun Scrollbar(scrollState: LazyListState, modifier: Modifier = Modifier) {
+    Scrollbar(
+        ScrollbarsScrollType.Lazy.List.Dynamic(
+            knobType = ScrollbarsDynamicKnobType.Auto(),
+            state = scrollState
+        ),
+        modifier
+    )
+}
+
+@Composable
+private fun Scrollbar(scrollType: ScrollbarsScrollType, modifier: Modifier = Modifier) {
     Scrollbars(
         state = ScrollbarsState(
             ScrollbarsConfig(
@@ -60,10 +57,7 @@ fun Scrollbar(scrollState: LazyListState, modifier: Modifier = Modifier) {
                     isStaticWhenScrollPossible = false
                 )
             ),
-            ScrollbarsScrollType.Lazy.List.Dynamic(
-                knobType = ScrollbarsDynamicKnobType.Auto(),
-                state = scrollState
-            )
+            scrollType
         ),
         modifier = modifier
     )
