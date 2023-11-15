@@ -4,6 +4,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -24,5 +25,5 @@ fun ColumnWithScrollbar(
         horizontalAlignment = horizontalAlignment,
         content = content
     )
-    Scrollbar(state)
+    Scrollbar(state, Modifier.then(modifier.padding()))
 }
