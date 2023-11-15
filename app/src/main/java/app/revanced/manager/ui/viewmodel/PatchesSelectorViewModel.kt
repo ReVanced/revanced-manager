@@ -25,6 +25,7 @@ import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.saver.Nullable
 import app.revanced.manager.util.saver.nullableSaver
 import app.revanced.manager.util.saver.persistentMapSaver
 import app.revanced.manager.util.saver.persistentSetSaver
@@ -210,7 +211,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
             )
         )
 
-        private val patchesSaver: Saver<PersistentPatchesSelection?, Optional<PatchesSelection>> =
+        private val patchesSaver: Saver<PersistentPatchesSelection?, Nullable<PatchesSelection>> =
             nullableSaver(persistentMapSaver(valueSaver = persistentSetSaver()))
     }
 
