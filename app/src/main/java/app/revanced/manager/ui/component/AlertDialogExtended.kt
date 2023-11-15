@@ -123,7 +123,7 @@ fun AlertDialogExtended(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             tertiaryButton?.let {
-                                it.invoke()
+                                it()
                                 Spacer(modifier = Modifier.weight(1f))
                             }
                             dismissButton?.invoke()
