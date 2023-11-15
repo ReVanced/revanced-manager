@@ -53,7 +53,7 @@ fun AlertDialogExtended(
             color = containerColor,
             tonalElevation = tonalElevation,
         ) {
-            Column (modifier = Modifier.padding(vertical = 24.dp)) {
+            Column(modifier = Modifier.padding(vertical = 24.dp)) {
                 Column(
                     modifier = Modifier.padding(horizontal = 24.dp)
                 ) {
@@ -69,7 +69,10 @@ fun AlertDialogExtended(
                         }
                     }
                     title?.let {
-                        ContentStyle(color = titleContentColor, textStyle = MaterialTheme.typography.headlineSmall) {
+                        ContentStyle(
+                            color = titleContentColor,
+                            textStyle = MaterialTheme.typography.headlineSmall
+                        ) {
                             Box(
                                 // Align the title to the center when an icon is present.
                                 Modifier
@@ -88,7 +91,10 @@ fun AlertDialogExtended(
                     }
                 }
                 text?.let {
-                    ContentStyle(color = textContentColor, textStyle = MaterialTheme.typography.bodyMedium) {
+                    ContentStyle(
+                        color = textContentColor,
+                        textStyle = MaterialTheme.typography.bodyMedium
+                    ) {
                         Box(
                             Modifier
                                 .weight(weight = 1f, fill = false)
@@ -104,10 +110,16 @@ fun AlertDialogExtended(
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                 ) {
-                    ContentStyle(color = MaterialTheme.colorScheme.primary,textStyle = MaterialTheme.typography.labelLarge) {
+                    ContentStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        textStyle = MaterialTheme.typography.labelLarge
+                    ) {
                         FlowRow(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp, if (tertiaryButton != null) Alignment.Start else Alignment.End),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                12.dp,
+                                if (tertiaryButton != null) Alignment.Start else Alignment.End
+                            ),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             tertiaryButton?.let {
@@ -125,7 +137,11 @@ fun AlertDialogExtended(
 }
 
 @Composable
-private fun ContentStyle(color: Color? = null, textStyle: TextStyle? = null, content: @Composable () -> Unit) {
+private fun ContentStyle(
+    color: Color? = null,
+    textStyle: TextStyle? = null,
+    content: @Composable () -> Unit
+) {
     val contentColor = color ?: LocalContentColor.current
     val finalTextStyle = textStyle ?: LocalTextStyle.current
 
