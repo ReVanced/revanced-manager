@@ -34,7 +34,7 @@ fun ImportBundleTypeSelectorDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                onClick = { bundleType.let(onConfirm) }
+                onClick = { onConfirm(bundleType) }
             ) {
                 Text(stringResource(R.string.select))
             }
