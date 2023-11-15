@@ -90,7 +90,7 @@ class UpdateViewModel(
     }
 
     fun downloadUpdate(ignoreInternetCheck: Boolean = false) = viewModelScope.launch {
-        try {
+        uiSafe(app, R.string.failed_to_download_update, "Failed to download update") {
             withContext(Dispatchers.IO) {
                 if (!networkInfo.isSafe() && !ignoreInternetCheck) {
                     showInternetCheckDialog = true
@@ -109,9 +109,6 @@ class UpdateViewModel(
                     state = State.CAN_INSTALL
                 }
             }
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to download update", e)
-            app.toast(app.getString(R.string.failed_to_download_update, e.simpleMessage()))
         }
     }
 
