@@ -120,21 +120,19 @@ class UpdateViewModel(
 
     private val installBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            when (intent?.action) {
-                InstallService.APP_INSTALL_ACTION -> {
-                    val pmStatus = intent.getIntExtra(InstallService.EXTRA_INSTALL_STATUS, -999)
-                    val extra =
-                        intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
+            intent?.let {
+                val pmStatus = intent.getIntExtra(InstallService.EXTRA_INSTALL_STATUS, -999)
+                val extra =
+                    intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
 
-                    if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
-                        app.toast(app.getString(R.string.install_app_success))
-                        state = State.SUCCESS
-                    } else {
-                        state = State.FAILED
-                        // TODO: handle install fail with a popup
-                        installError = extra
-                        app.toast(app.getString(R.string.install_app_fail, extra))
-                    }
+                if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
+                    app.toast(app.getString(R.string.install_app_success))
+                    state = State.SUCCESS
+                } else {
+                    state = State.FAILED
+                    // TODO: handle install fail with a popup
+                    installError = extra
+                    app.toast(app.getString(R.string.install_app_fail, extra))
                 }
             }
         }
