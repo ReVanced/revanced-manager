@@ -13,6 +13,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -56,7 +58,7 @@ fun AlertDialogExtended(
                     modifier = Modifier.padding(horizontal = 24.dp)
                 ) {
                     icon?.let {
-                        CompositionLocalProvider(LocalContentColor provides iconContentColor) {
+                        contentStyle(color = iconContentColor) {
                             Box(
                                 Modifier
                                     .padding(bottom = 16.dp)
@@ -67,41 +69,34 @@ fun AlertDialogExtended(
                         }
                     }
                     title?.let {
-                        CompositionLocalProvider(LocalContentColor provides titleContentColor) {
-                            val textStyle = MaterialTheme.typography.headlineSmall
-                            ProvideTextStyle(textStyle) {
-                                Box(
-                                    // Align the title to the center when an icon is present.
-                                    Modifier
-                                        .padding(bottom = 16.dp)
-                                        .align(
-                                            if (icon == null) {
-                                                Alignment.Start
-                                            } else {
-                                                Alignment.CenterHorizontally
-                                            }
-                                        )
-                                ) {
-                                    title()
-                                }
+                        contentStyle(color = titleContentColor, textStyle = MaterialTheme.typography.headlineSmall) {
+                            Box(
+                                // Align the title to the center when an icon is present.
+                                Modifier
+                                    .padding(bottom = 16.dp)
+                                    .align(
+                                        if (icon == null) {
+                                            Alignment.Start
+                                        } else {
+                                            Alignment.CenterHorizontally
+                                        }
+                                    )
+                            ) {
+                                title()
                             }
                         }
                     }
                 }
                 text?.let {
-                    CompositionLocalProvider(LocalContentColor provides textContentColor) {
-                        val textStyle =
-                            MaterialTheme.typography.bodyMedium
-                        ProvideTextStyle(textStyle) {
-                            Box(
-                                Modifier
-                                    .weight(weight = 1f, fill = false)
-                                    .padding(bottom = 24.dp)
-                                    .padding(textHorizontalPadding)
-                                    .align(Alignment.Start)
-                            ) {
-                                text()
-                            }
+                    contentStyle(color = textContentColor, textStyle = MaterialTheme.typography.bodyMedium) {
+                        Box(
+                            Modifier
+                                .weight(weight = 1f, fill = false)
+                                .padding(bottom = 24.dp)
+                                .padding(textHorizontalPadding)
+                                .align(Alignment.Start)
+                        ) {
+                            text()
                         }
                     }
                 }
@@ -109,25 +104,34 @@ fun AlertDialogExtended(
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
-                        val textStyle = MaterialTheme.typography.labelLarge
-                        ProvideTextStyle(value = textStyle) {
-                            FlowRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp, if (tertiaryButton != null) Alignment.Start else Alignment.End),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                tertiaryButton?.let {
-                                    it.invoke()
-                                    Spacer(modifier = Modifier.weight(1f))
-                                }
-                                dismissButton?.invoke()
-                                confirmButton()
+                    contentStyle(color = MaterialTheme.colorScheme.primary, textStyle = MaterialTheme.typography.labelLarge) {
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp, if (tertiaryButton != null) Alignment.Start else Alignment.End),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            tertiaryButton?.let {
+                                it.invoke()
+                                Spacer(modifier = Modifier.weight(1f))
                             }
+                            dismissButton?.invoke()
+                            confirmButton()
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun contentStyle(color: Color? = null, textStyle: TextStyle? = null, content: @Composable () -> Unit) {
+    val contentColor = color ?: LocalContentColor.current
+    val finalTextStyle = textStyle ?: LocalTextStyle.current
+
+    CompositionLocalProvider(LocalContentColor provides contentColor) {
+        ProvideTextStyle(finalTextStyle) {
+            content()
         }
     }
 }
