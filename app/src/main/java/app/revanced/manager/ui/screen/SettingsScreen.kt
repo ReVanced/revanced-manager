@@ -8,11 +8,8 @@ import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.outlined.*
@@ -27,8 +24,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
-import app.revanced.manager.ui.component.Scrollbar
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
@@ -37,7 +35,6 @@ import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +45,6 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = getViewModel()
 ) {
     val navController = rememberNavController(startDestination)
-    val scrollState = rememberScrollState()
 
     val backClick: () -> Unit = {
         if (navController.backstack.entries.size == 1)
@@ -153,11 +149,10 @@ fun SettingsScreen(
                         )
                     }
                 ) { paddingValues ->
-                    Column(
+                    ColumnWithScrollbar(
                         modifier = Modifier
                             .padding(paddingValues)
                             .fillMaxSize()
-                            .verticalScroll(scrollState)
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
                             NotificationCard(
@@ -182,7 +177,6 @@ fun SettingsScreen(
                             )
                         }
                     }
-                    Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
                 }
             }
         }

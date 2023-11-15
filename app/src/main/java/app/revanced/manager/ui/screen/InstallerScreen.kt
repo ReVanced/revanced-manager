@@ -7,9 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
@@ -43,7 +41,7 @@ import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
-import app.revanced.manager.ui.component.Scrollbar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.viewmodel.InstallerViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import kotlin.math.floor
@@ -115,19 +113,15 @@ fun InstallerScreen(
             }
         }
     ) { paddingValues ->
-        val scrollState = rememberScrollState()
-
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .padding(paddingValues)
-                .verticalScroll(scrollState)
                 .fillMaxSize()
         ) {
             steps.forEach {
                 InstallStep(it)
             }
         }
-        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 

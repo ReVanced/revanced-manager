@@ -2,13 +2,8 @@ package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,8 +19,8 @@ import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedContributor
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.Scrollbar
 import app.revanced.manager.ui.viewmodel.ContributorViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.getViewModel
@@ -46,14 +41,11 @@ fun ContributorScreen(
             )
         },
     ) { paddingValues ->
-        val scrollState = rememberScrollState()
-
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(paddingValues)
                 .fillMaxWidth()
-                .verticalScroll(scrollState)
         ) {
             if(repositories.isEmpty()) {
                 LoadingIndicator()
@@ -65,7 +57,6 @@ fun ContributorScreen(
                 )
             }
         }
-        Scrollbar(scrollState = scrollState, modifier = Modifier.padding(paddingValues))
     }
 }
 @OptIn(ExperimentalLayoutApi::class)

@@ -2,17 +2,13 @@ package app.revanced.manager.ui.component.bundle
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowRight
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -26,7 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.Scrollbar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.util.isDebuggable
 
@@ -46,12 +42,9 @@ fun BaseBundleDialog(
     onBundleTypeClick: () -> Unit = {},
     extraFields: @Composable ColumnScope.() -> Unit = {}
 ) {
-    val scrollState = rememberScrollState()
-
-    Column(
+    ColumnWithScrollbar(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(scrollState)
             .padding(
                 start = 8.dp,
                 top = 8.dp,
@@ -186,5 +179,4 @@ fun BaseBundleDialog(
             )
         }
     }
-    Scrollbar(scrollState = scrollState, modifier = modifier)
 }
