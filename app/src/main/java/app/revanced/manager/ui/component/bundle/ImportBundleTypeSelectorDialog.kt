@@ -63,7 +63,7 @@ fun ImportBundleTypeSelectorDialog(
                         ),
                         headlineContent = { Text(stringResource(R.string.local)) },
                         supportingContent = { Text(stringResource(R.string.local_bundle_description)) },
-                        overlineContent = { },
+                        overlineContent = { }, // we're using this parameter to force the 3-line ListItem state
                         leadingContent = {
                             RadioButton(
                                 selected = bundleType == BundleType.Local,
