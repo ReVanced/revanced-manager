@@ -452,11 +452,11 @@ class InstallerViewModel extends BaseViewModel {
       if (isPatching) {
         if (!cancel) {
           cancel = true;
-          _toast.showBottom(t.installerView.pressBackAgain);
+          _toast.showBottom('installerView.pressBackAgain');
         } else if (!isCanceled) {
           await stopPatcher();
         } else {
-          _toast.showBottom(t.installerView.noExit);
+          _toast.showBottom('installerView.noExit');
         }
       }
     }
