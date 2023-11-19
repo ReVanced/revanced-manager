@@ -1,34 +1,38 @@
 package app.revanced.manager.ui.screen.settings
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.ArrowDropUp
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.coerceAtMost
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedContributor
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.ContributorViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.getViewModel
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,92 +49,148 @@ fun ContributorScreen(
             )
         },
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(paddingValues)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = if (repositories.isNullOrEmpty()) Arrangement.Center else Arrangement.spacedBy(
+                24.dp
+            )
         ) {
-            if(repositories.isEmpty()) {
-                LoadingIndicator()
-            }
-            repositories.forEach {
-                ExpandableListCard(
-                    title = it.name,
-                    contributors = it.contributors
-                )
-            }
+            repositories?.let { repositories ->
+                if (repositories.isEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.no_contributors_found),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
+                } else {
+                    items(
+                        items = repositories,
+                        key = { it.name }
+                    ) {
+                        ContributorsCard(
+                            title = it.name,
+                            contributors = it.contributors
+                        )
+                    }
+                }
+            } ?: item { LoadingIndicator() }
         }
     }
 }
-@OptIn(ExperimentalLayoutApi::class)
+
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun ExpandableListCard(
+fun ContributorsCard(
     title: String,
-    contributors: List<ReVancedContributor>
+    contributors: List<ReVancedContributor>,
+    itemsPerPage: Int = 12,
+    numberOfRows: Int = 2
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    val itemsPerRow = (itemsPerPage / numberOfRows)
+
+    // Create a list of contributors grouped by itemsPerPage
+    val contributorsByPage = remember(itemsPerPage, contributors) {
+        contributors.chunked(itemsPerPage)
+    }
+    val pagerState = rememberPagerState { contributorsByPage.size }
+
     Card(
-        shape = RoundedCornerShape(30.dp),
-        elevation = CardDefaults.outlinedCardElevation(),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
             .border(
-                width = 2.dp,
-                color = MaterialTheme.colorScheme.outline,
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = MaterialTheme.shapes.medium
             ),
-        colors = CardDefaults.outlinedCardColors(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
-        Column() {
-            Row() {
-                ListItem(
-                    headlineContent = {
-                        Text(
-                            text = processHeadlineText(title),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    },
-                    trailingContent = {
-                        if (contributors.isNotEmpty()) {
-                            ArrowButton(
-                                expanded = expanded,
-                                onClick = { expanded = !expanded }
-                            )
-                        }
-                    },
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = processHeadlineText(title),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium)
+                )
+                Text(
+                    text = "(${(pagerState.currentPage + 1)}/${pagerState.pageCount})",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
             }
-            if (expanded) {
-                FlowRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(8.dp),
-                ) {
-                    contributors.forEach {
-                        AsyncImage(
-                            model = it.avatarUrl,
-                            contentDescription = it.avatarUrl,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .size(45.dp)
-                                .clip(CircleShape)
-                        )
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = true,
+                modifier = Modifier.fillMaxSize(),
+            ) { page ->
+                BoxWithConstraints {
+                    val spaceBetween = 16.dp
+                    val maxWidth = this.maxWidth
+                    val itemSize = (maxWidth - (itemsPerRow - 1) * spaceBetween) / itemsPerRow
+                    val itemSpacing = (maxWidth - itemSize * 6) / (itemsPerRow - 1)
+                    FlowRow(
+                        maxItemsInEachRow = itemsPerRow,
+                        horizontalArrangement = Arrangement.spacedBy(itemSpacing),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        contributorsByPage[page].forEach {
+                            if (itemSize > 100.dp) {
+                                Row(
+                                    modifier = Modifier.width(itemSize - 1.dp), // we delete 1.dp to account for not-so divisible numbers
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    AsyncImage(
+                                        model = it.avatarUrl,
+                                        contentDescription = it.avatarUrl,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size((itemSize / 3).coerceAtMost(40.dp))
+                                            .clip(CircleShape)
+                                    )
+                                    Text(
+                                        text = it.username,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            } else {
+                                Box(
+                                    modifier = Modifier.width(itemSize - 1.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    AsyncImage(
+                                        model = it.avatarUrl,
+                                        contentDescription = it.avatarUrl,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(size = (itemSize - 1.dp).coerceAtMost(50.dp)) // we delete 1.dp to account for not-so divisible numbers
+                                            .clip(CircleShape)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
+
 fun processHeadlineText(repositoryName: String): String {
-    return "Revanced " + repositoryName.replace("revanced/revanced-", "")
+    return "ReVanced " + repositoryName.replace("revanced/revanced-", "")
         .replace("-", " ")
-        .split(" ")
-        .map { if (it.length > 3) it else it.uppercase() }
-        .joinToString(" ")
+        .split(" ").joinToString(" ") { if (it.length > 3) it else it.uppercase() }
         .replaceFirstChar { it.uppercase() }
 }

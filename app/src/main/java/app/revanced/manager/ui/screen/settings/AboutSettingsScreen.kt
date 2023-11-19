@@ -84,7 +84,7 @@ fun AboutSettingsScreen(
             stringResource(R.string.contributors),
             stringResource(R.string.contributors_description),
             third = onContributorsClick
-        ).takeIf { context.isDebuggable },
+        ),
         Triple(stringResource(R.string.developer_options),
             stringResource(R.string.developer_options_description),
             third = { /*TODO*/ }).takeIf { context.isDebuggable },
