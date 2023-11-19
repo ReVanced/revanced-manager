@@ -14,7 +14,7 @@ val viewModelModule = module {
     viewModelOf(::AppSelectorViewModel)
     viewModelOf(::VersionSelectorViewModel)
     viewModelOf(::InstallerViewModel)
-    viewModelOf(::UpdateProgressViewModel)
+    viewModelOf(::UpdateViewModel)
     viewModelOf(::ChangelogsViewModel)
     viewModelOf(::ImportExportViewModel)
     viewModelOf(::ContributorViewModel)

@@ -27,7 +27,7 @@ sealed interface SettingsDestination : Parcelable {
     object About : SettingsDestination
 
     @Parcelize
-    object UpdateProgress : SettingsDestination
+    data class Update(val downloadOnScreenEntry: Boolean) : SettingsDestination
 
     @Parcelize
     object Changelogs : SettingsDestination
@@ -37,5 +37,4 @@ sealed interface SettingsDestination : Parcelable {
 
     @Parcelize
     object Licenses: SettingsDestination
-
 }

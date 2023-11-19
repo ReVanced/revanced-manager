@@ -29,6 +29,7 @@ class InstallService : Service() {
             else -> {
                 sendBroadcast(Intent().apply {
                     action = APP_INSTALL_ACTION
+                    `package` = packageName
                     putExtra(EXTRA_INSTALL_STATUS, extraStatus)
                     putExtra(EXTRA_INSTALL_STATUS_MESSAGE, extraStatusMessage)
                     putExtra(EXTRA_PACKAGE_NAME, extraPackageName)
