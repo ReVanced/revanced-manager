@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:async';
 import 'dart:io';
-import 'package:cross_connectivity/cross_connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,10 +34,8 @@ class HomeViewModel extends BaseViewModel {
   final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  DateTime? _lastUpdate;
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
-  List<PatchedApplication> patchedUpdatableApps = [];
   String? _latestManagerVersion = '';
   File? downloadedApk;
 
@@ -66,8 +64,9 @@ class HomeViewModel extends BaseViewModel {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
-    final bool isConnected = await Connectivity().checkConnection();
+        ?.requestNotificationsPermission();
+    final bool isConnected = await Connectivity().checkConnectivity() !=
+        ConnectivityResult.none;
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
     }
@@ -82,7 +81,7 @@ class HomeViewModel extends BaseViewModel {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
     }
-    _getPatchedApps();
+
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
@@ -108,10 +107,6 @@ class HomeViewModel extends BaseViewModel {
 
   void _getPatchedApps() {
     patchedInstalledApps = _managerAPI.getPatchedApps().toList();
-    patchedUpdatableApps = _managerAPI
-        .getPatchedApps()
-        .where((app) => app.hasUpdates == true)
-        .toList();
     notifyListeners();
   }
 
@@ -469,11 +464,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> forceRefresh(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (_lastUpdate == null ||
-        _lastUpdate!.difference(DateTime.now()).inSeconds > 2) {
-      _managerAPI.clearAllData();
-    }
+    _managerAPI.clearAllData();
     _toast.showBottom('homeView.refreshSuccess');
     initialize(context);
   }

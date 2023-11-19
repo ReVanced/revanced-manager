@@ -13,7 +13,6 @@ import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
-import 'package:revanced_manager/utils/string.dart';
 import 'package:stacked/stacked.dart';
 
 class AppInfoViewModel extends BaseViewModel {
@@ -147,17 +146,7 @@ class AppInfoViewModel extends BaseViewModel {
   }
 
   String getAppliedPatchesString(List<String> appliedPatches) {
-    final List<String> names = appliedPatches
-        .map(
-          (p) => p
-              .replaceAll('-', ' ')
-              .split('-')
-              .join(' ')
-              .toTitleCase()
-              .replaceFirst('Microg', 'MicroG'),
-        )
-        .toList();
-    return '\u2022 ${names.join('\n\u2022 ')}';
+    return '• ${appliedPatches.join('\n• ')}';
   }
 
   void openApp(PatchedApplication app) {

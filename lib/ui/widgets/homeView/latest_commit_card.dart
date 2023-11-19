@@ -7,10 +7,10 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
   const LatestCommitCard({
-    Key? key,
+    super.key,
     required this.model,
     required this.parentContext,
-  }) : super(key: key);
+  });
   final HomeViewModel model;
   final BuildContext parentContext;
 
@@ -75,7 +75,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
 
         const SizedBox(height: 16),
 
-        // ReVanced Patches
+        // Patches
         CustomCard(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,7 +84,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('ReVanced Patches'),
+                    const Text('Patches'),
                     const SizedBox(height: 4),
                     Row(
                       children: <Widget>[

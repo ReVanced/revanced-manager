@@ -4,7 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 
 class AboutWidget extends StatefulWidget {
-  const AboutWidget({Key? key, this.padding}) : super(key: key);
+  const AboutWidget({super.key, this.padding});
 
   final EdgeInsetsGeometry? padding;
 

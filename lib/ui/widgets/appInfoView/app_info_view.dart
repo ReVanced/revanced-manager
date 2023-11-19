@@ -9,9 +9,9 @@ import 'package:stacked/stacked.dart';
 
 class AppInfoView extends StatelessWidget {
   const AppInfoView({
-    Key? key,
+    super.key,
     required this.app,
-  }) : super(key: key);
+  });
   final PatchedApplication app;
 
   @override
@@ -220,22 +220,6 @@ class AppInfoView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(app.packageName),
-                    ),
-                    const SizedBox(height: 4),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 20.0),
-                      title: I18nText(
-                        'appInfoView.originalPackageNameLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      subtitle: Text(app.originalPackageName),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

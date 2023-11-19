@@ -10,7 +10,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 //ignore: must_be_immutable
 class InstalledAppsCard extends StatelessWidget {
-  InstalledAppsCard({Key? key}) : super(key: key);
+  InstalledAppsCard({super.key});
 
   List<PatchedApplication> apps = locator<HomeViewModel>().patchedInstalledApps;
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -79,8 +79,6 @@ class InstalledAppsCard extends StatelessWidget {
                           icon: app.icon,
                           name: app.name,
                           patchDate: app.patchDate,
-                          changelog: app.changelog,
-                          isUpdatableApp: false,
                           onPressed: () =>
                               locator<HomeViewModel>().navigateToAppInfo(app),
                         ),

@@ -3,46 +3,27 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
+import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/services/download_manager.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:timeago/timeago.dart';
 
 @lazySingleton
 class RevancedAPI {
-  late Dio _dio = Dio();
+  late final Dio _dio;
+  late final DownloadManager _downloadManager = locator<DownloadManager>();
 
-  final _cacheOptions = CacheOptions(
-    store: MemCacheStore(),
-    maxStale: const Duration(days: 1),
-    priority: CachePriority.high,
-  );
+  final Lock getToolsLock = Lock();
 
-  Future<void> initialize(String apiUrl) async {
-    try {
-      _dio = Dio(
-        BaseOptions(
-          baseUrl: apiUrl,
-        ),
-      );
-
-      _dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+  Future<void> initialize(String repoUrl) async {
+    _dio = _downloadManager.initDio(repoUrl);
   }
 
   Future<void> clearAllCache() async {
-    try {
-      await _cacheOptions.store!.clean();
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+    await _downloadManager.clearAllCache();
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
@@ -66,21 +47,23 @@ class RevancedAPI {
   Future<Map<String, dynamic>?> _getLatestRelease(
     String extension,
     String repoName,
-  ) async {
-    try {
-      final response = await _dio.get('/tools');
-      final List<dynamic> tools = response.data['tools'];
-      return tools.firstWhereOrNull(
-        (t) =>
-            t['repository'] == repoName &&
-            (t['name'] as String).endsWith(extension),
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
+  ) {
+    return getToolsLock.synchronized(() async {
+      try {
+        final response = await _dio.get('/tools');
+        final List<dynamic> tools = response.data['tools'];
+        return tools.firstWhereOrNull(
+          (t) =>
+              t['repository'] == repoName &&
+              (t['name'] as String).endsWith(extension),
+        );
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        return null;
       }
-      return null;
-    }
+    });
   }
 
   Future<String?> getLatestReleaseVersion(
@@ -115,7 +98,7 @@ class RevancedAPI {
       );
       if (release != null) {
         final String url = release['browser_download_url'];
-        return await DefaultCacheManager().getSingleFile(url);
+        return await _downloadManager.getSingleFile(url);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -147,9 +130,8 @@ class RevancedAPI {
       'revanced/revanced-manager',
     );
     File? outputFile;
-    await for (final result in DefaultCacheManager().getFileStream(
+    await for (final result in _downloadManager.getFileStream(
       release!['browser_download_url'] as String,
-      withProgress: true,
     )) {
       if (result is DownloadProgress) {
         final totalSize = result.totalSize ?? 10000000;

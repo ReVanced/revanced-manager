@@ -2,33 +2,46 @@
 
 ReVanced Manager has settings that can be configured to your liking.
 
-## ⭐ Essential settings
+## 🎛️ Essential settings
 
-- ### 🔗 API URL
+- ### 🪛 Allow changing patch selection
 
-  Specify the URL of the API to use. This is used to fetch ReVanced Patches and update ReVanced Manager.
+  Allows the user to change the patch selection from the default selection.
+
+- ### 🔍 Version compatibility check
+
+  Constrains patches to supported app versions. Disable this to patch any version of an app.
+
+  > [!WARNING]
+  > Disabling this may cause issues if the patches are not compatible with the app version.  
+
+- ### 🧑‍🔬 Show universal patches
+
+  Reveals patches which can be applied to any app.
+
+  > [!WARNING]  
+  > These patches may not work on all apps.
 
 - ### 🧬 Sources
 
-  Override the API and change the source of ReVanced Patches.
+  Override the API and download patches from a different source.
 
-- ### 🧪 Experimental ReVanced Patches support
+- ### 🔗 API URL
 
-  Lift app version constraints from ReVanced Patches. This allows you to patch any version of an app, even if the patch is not explicitly compatible with it.
+  API to use to fetch updates and patches from.  
 
-- ### 🧑‍🔬 Experimental universal support
+- ### 💾 Imports & Exports
 
-  This will show or hide ReVanced Patches, which are not meant for any app in particular but rather for all apps but may not work on all apps.
+  You can import, export or reset the following settings:
 
-- ### 🔑 Export, import or delete keystore
+  - 🔑 Keystore
+  - 📄 Patch selection
+  - ⚙️ Patch options
 
-  Manage the keystore used to sign patched apps.
+  > [!NOTE]  
+  > This is particularly useful if you want to backup or reset your settings.
 
-- ### 📄 Export, import or reset ReVanced Patches selection
-
-  Manage the ReVanced Patches selection. This is useful if you want to share your ReVanced Patches selection with others or reset it to the default selection.
-
-- ### ℹ️ About
+- ### ❓ About
 
   View information about your device and ReVanced Manager. This includes the version of ReVanced Manager and supported architectures of your device.
 

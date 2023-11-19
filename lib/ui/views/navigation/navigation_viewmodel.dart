@@ -19,7 +19,6 @@ class NavigationViewModel extends IndexTrackingViewModel {
   Future<void> initialize(BuildContext context) async {
     locator<Toast>().initialize(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await requestManageExternalStorage();
 
     if (prefs.getBool('permissionsRequested') == null) {
       await Permission.storage.request();
@@ -39,9 +38,9 @@ class NavigationViewModel extends IndexTrackingViewModel {
 
     // Force disable Material You on Android 11 and below
     if (dynamicTheme.themeId.isOdd) {
-      const int ANDROID_12_SDK_VERSION = 31;
+      const int android12SdkVersion = 31;
       final AndroidDeviceInfo info = await DeviceInfoPlugin().androidInfo;
-      if (info.version.sdkInt < ANDROID_12_SDK_VERSION) {
+      if (info.version.sdkInt < android12SdkVersion) {
         await prefs.setInt('themeMode', 0);
         await prefs.setBool('useDynamicTheme', false);
         await dynamicTheme.setTheme(0);
@@ -58,17 +57,6 @@ class NavigationViewModel extends IndexTrackingViewModel {
                 : Brightness.light,
       ),
     );
-  }
-
-  Future<void> requestManageExternalStorage() async {
-    final manageExternalStorageStatus =
-        await Permission.manageExternalStorage.status;
-    if (manageExternalStorageStatus.isDenied) {
-      await Permission.manageExternalStorage.request();
-    }
-    if (manageExternalStorageStatus.isPermanentlyDenied) {
-      await openAppSettings();
-    }
   }
 
   Widget getViewForIndex(int index) {

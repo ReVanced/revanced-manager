@@ -15,8 +15,10 @@ import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/utils/about_info.dart';
+import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -29,6 +31,7 @@ class InstallerViewModel extends BaseViewModel {
     'app.revanced.manager.flutter/installer',
   );
   final ScrollController scrollController = ScrollController();
+  final ScreenshotCallback screenshotCallback = ScreenshotCallback();
   double? progress = 0.0;
   String logs = '';
   String headerLogs = '';
@@ -38,6 +41,7 @@ class InstallerViewModel extends BaseViewModel {
   bool hasErrors = false;
   bool isCanceled = false;
   bool cancel = false;
+  bool showPopupScreenshotWarning = true;
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
@@ -64,7 +68,13 @@ class InstallerViewModel extends BaseViewModel {
         } // ignore
       }
     }
-    await Wakelock.enable();
+    screenshotCallback.addListener(() {
+      if (showPopupScreenshotWarning) {
+        showPopupScreenshotWarning = false;
+        screenshotDetected(context);
+      }
+    });
+    await WakelockPlus.enable();
     await handlePlatformChannelMethods();
     await runPatcher();
   }
@@ -130,28 +140,28 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> runPatcher() async {
     try {
-      update(0.0, 'Initializing...', 'Initializing installer');
-      if (_patches.isNotEmpty) {
-        try {
-          update(0.1, '', 'Creating working directory');
-          await _patcherAPI.runPatcher(
-            _app.packageName,
-            _app.apkFilePath,
-            _patches,
-          );
-        } on Exception catch (e) {
-          update(
-            -100.0,
-            'Aborted...',
-            'An error occurred! Aborted\nError:\n$e',
-          );
-          if (kDebugMode) {
-            print(e);
-          }
-        }
-      } else {
-        update(-100.0, 'Aborted...', 'No app or patches selected! Aborted');
+      await _patcherAPI.runPatcher(
+        _app.packageName,
+        _app.apkFilePath,
+        _patches,
+      );
+    } on Exception catch (e) {
+      update(
+        -100.0,
+        'Failed...',
+        'Something went wrong:\n$e',
+      );
+      if (kDebugMode) {
+        print(e);
       }
+    }
+
+    // Necessary to reset the state of patches so that they
+    // can be reloaded again.
+    _managerAPI.patches.clear();
+    await _patcherAPI.loadPatches();
+
+    try {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
         try {
           FlutterBackground.disableBackgroundExecution();
@@ -161,12 +171,85 @@ class InstallerViewModel extends BaseViewModel {
           } // ignore
         }
       }
-      await Wakelock.disable();
+      await WakelockPlus.disable();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
       }
     }
+  }
+
+  Future<void> copyLogs() async {
+    final info = await AboutInfo.getInfo();
+    dynamic getValue(String patchName, Option option) {
+      final Option? savedOption = _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+      if (savedOption != null) {
+        return savedOption.value;
+      } else {
+        return option.value;
+      }
+    }
+
+    final formattedLogs = [
+      '- Device Info',
+      'ReVanced Manager: ${info['version']}',
+      'Build: ${info['flavor']}',
+      'Model: ${info['model']}',
+      'Android version: ${info['androidVersion']}',
+      'Supported architectures: ${info['supportedArch'].join(", ")}',
+      'Root permissions: ${isRooted ? 'Yes' : 'No'}',
+      
+      '\n- Patch Info',
+      'App: ${_app.packageName} v${_app.version}',
+      'Patches version: ${_managerAPI.patchesVersion}',
+      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${getValue(p.name, o)}').join(", ")}]')).toList().join(", ")}',
+      
+      '\n- Settings',
+      'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
+      'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
+      'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
+      'Patches source: ${_managerAPI.getPatchesRepo()}',
+      'Integration source: ${_managerAPI.getIntegrationsRepo()}',
+      
+      '\n- Logs',
+      logs,
+    ];
+
+    Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
+    _toast.showBottom('installerView.copiedToClipboard');
+  }
+
+  Future<void> screenshotDetected(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText(
+          'warning',
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        icon: const Icon(Icons.warning),
+        content: SingleChildScrollView(
+          child: I18nText('installerView.screenshotDetected'),
+        ),
+        actions: <Widget>[
+          CustomMaterialButton(
+            isFilled: false,
+            label: I18nText('noButton'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CustomMaterialButton(
+            label: I18nText('yesButton'),
+            onPressed: () {
+              copyLogs();
+              showPopupScreenshotWarning = true;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> installTypeDialog(BuildContext context) async {
@@ -209,8 +292,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     RadioListTile(
                       title: I18nText('installerView.installNonRootType'),
-                      subtitle: I18nText('installerView.installRecommendedType'),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       value: 0,
                       groupValue: value,
                       onChanged: (selected) {
@@ -219,7 +302,8 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     RadioListTile(
                       title: I18nText('installerView.installRootType'),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       value: 1,
                       groupValue: value,
                       onChanged: (selected) {
@@ -257,9 +341,9 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
-      update(0.5, 'Aborting...', 'Canceling patching process');
+      update(0.5, 'Canceling...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
-      update(-100.0, 'Aborted...', 'Press back to exit');
+      update(-100.0, 'Canceled...', 'Press back to exit');
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -270,56 +354,33 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      final bool hasMicroG =
-          _patches.any((p) => p.name.endsWith('MicroG support'));
-      final bool rootMicroG = installAsRoot && hasMicroG;
-      final bool rootFromStorage = installAsRoot && _app.isFromStorage;
-      final bool ytWithoutRootMicroG =
-          !installAsRoot && !hasMicroG && _app.packageName.contains('youtube');
-      if (rootMicroG || rootFromStorage || ytWithoutRootMicroG) {
-        return showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: I18nText('installerView.installErrorDialogTitle'),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: I18nText(
-              rootMicroG
-                  ? 'installerView.installErrorDialogText1'
-                  : rootFromStorage
-                      ? 'installerView.installErrorDialogText3'
-                      : 'installerView.installErrorDialogText2',
-            ),
-            actions: <Widget>[
-              CustomMaterialButton(
-                label: I18nText('okButton'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      } else {
-        update(
-          1.0,
-          'Installing...',
-          _app.isRooted
-              ? 'Installing patched file using root method'
-              : 'Installing patched file using nonroot method',
-        );
-        isInstalled = await _patcherAPI.installPatchedFile(_app);
-        if (isInstalled) {
-          update(1.0, 'Installed!', 'Installed!');
-          _app.isFromStorage = false;
-          _app.patchDate = DateTime.now();
-          _app.appliedPatches = _patches.map((p) => p.name).toList();
-          if (hasMicroG) {
-            _app.name += ' ReVanced';
-            _app.packageName = _app.packageName.replaceFirst(
-              'com.google.',
-              'app.revanced.',
-            );
-          }
-          await _managerAPI.savePatchedApp(_app);
+      update(
+        1.0,
+        'Installing...',
+        _app.isRooted
+            ? 'Installing patched file using root method'
+            : 'Installing patched file using nonroot method',
+      );
+      isInstalled = await _patcherAPI.installPatchedFile(_app);
+      if (isInstalled) {
+        _app.isFromStorage = false;
+        _app.patchDate = DateTime.now();
+        _app.appliedPatches = _patches.map((p) => p.name).toList();
+
+        // In case a patch changed the app name or package name,
+        // update the app info.
+        final app =
+            await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+        if (app != null) {
+          _app.name = app.appName;
+          _app.packageName = app.packageName;
         }
+
+        await _managerAPI.savePatchedApp(_app);
+
+        update(1.0, 'Installed!', 'Installed!');
+      } else {
+        // TODO(aabed): Show error message.
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -336,10 +397,6 @@ class InstallerViewModel extends BaseViewModel {
         print(e);
       }
     }
-  }
-
-  void exportLog() {
-    _patcherAPI.exportPatcherLog(logs);
   }
 
   Future<void> cleanPatcher() async {
@@ -365,7 +422,7 @@ class InstallerViewModel extends BaseViewModel {
         exportResult();
         break;
       case 1:
-        exportLog();
+        copyLogs();
         break;
     }
   }
@@ -387,6 +444,7 @@ class InstallerViewModel extends BaseViewModel {
     } else {
       _patcherAPI.cleanPatcher();
     }
+    screenshotCallback.dispose();
     Navigator.of(context).pop();
     return true;
   }

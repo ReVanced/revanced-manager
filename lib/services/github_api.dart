@@ -1,61 +1,24 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
-import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 
 @lazySingleton
 class GithubAPI {
-  late Dio _dio = Dio();
+  late final Dio _dio;
   late final ManagerAPI _managerAPI = locator<ManagerAPI>();
-
-  final _cacheOptions = CacheOptions(
-    store: MemCacheStore(),
-    maxStale: const Duration(days: 1),
-    priority: CachePriority.high,
-  );
-
-  final Map<String, String> repoAppPath = {
-    'com.google.android.youtube': 'youtube',
-    'com.google.android.apps.youtube.music': 'music',
-    'com.twitter.android': 'twitter',
-    'com.reddit.frontpage': 'reddit',
-    'com.zhiliaoapp.musically': 'tiktok',
-    'de.dwd.warnapp': 'warnwetter',
-    'com.garzotto.pflotsh.ecmwf_a': 'ecmwf',
-    'com.spotify.music': 'spotify',
-  };
+  late final DownloadManager _downloadManager = locator<DownloadManager>();
 
   Future<void> initialize(String repoUrl) async {
-    try {
-      _dio = Dio(
-        BaseOptions(
-          baseUrl: repoUrl,
-        ),
-      );
-
-      _dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+    _dio = _downloadManager.initDio(repoUrl);
   }
 
   Future<void> clearAllCache() async {
-    try {
-      await _cacheOptions.store!.clean();
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
+    await _downloadManager.clearAllCache();
   }
 
   Future<Map<String, dynamic>?> getLatestRelease(
@@ -117,7 +80,7 @@ class GithubAPI {
       final Map<String, dynamic> releases = response.data[0];
       int updates = 0;
       final String currentVersion =
-          await ManagerAPI().getCurrentManagerVersion();
+          await _managerAPI.getCurrentManagerVersion();
       while (response.data[updates]['tag_name'] != 'v$currentVersion') {
         updates++;
       }
@@ -142,38 +105,6 @@ class GithubAPI {
     }
   }
 
-  Future<List<String>> getCommits(
-    String packageName,
-    String repoName,
-    DateTime since,
-  ) async {
-    final String path =
-        'src/main/kotlin/app/revanced/patches/${repoAppPath[packageName]}';
-    try {
-      final response = await _dio.get(
-        '/repos/$repoName/commits',
-        queryParameters: {
-          'path': path,
-          'since': since.toIso8601String(),
-        },
-      );
-      final List<dynamic> commits = response.data;
-      return commits
-          .map(
-            (commit) => commit['commit']['message'].split('\n')[0] +
-                ' - ' +
-                commit['commit']['author']['name'] +
-                '\n' as String,
-          )
-          .toList();
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    return [];
-  }
-
   Future<File?> getLatestReleaseFile(
     String extension,
     String repoName,
@@ -186,7 +117,7 @@ class GithubAPI {
           (asset) => (asset['name'] as String).endsWith(extension),
         );
         if (asset != null) {
-          return await DefaultCacheManager().getSingleFile(
+          return await _downloadManager.getSingleFile(
             asset['browser_download_url'],
           );
         }
@@ -207,7 +138,7 @@ class GithubAPI {
   ) async {
     try {
       if (url.isNotEmpty) {
-        return await DefaultCacheManager().getSingleFile(
+        return await _downloadManager.getSingleFile(
           url,
         );
       }
@@ -225,7 +156,7 @@ class GithubAPI {
           } else {
             _managerAPI.setPatchesDownloadURL(downloadUrl);
           }
-          return await DefaultCacheManager().getSingleFile(
+          return await _downloadManager.getSingleFile(
             downloadUrl,
           );
         }
@@ -236,31 +167,5 @@ class GithubAPI {
       }
     }
     return null;
-  }
-
-  Future<List<Patch>> getPatches(
-    String repoName,
-    String version,
-    String url,
-  ) async {
-    List<Patch> patches = [];
-    try {
-      final File? f = await getPatchesReleaseFile(
-        '.json',
-        repoName,
-        version,
-        url,
-      );
-      if (f != null) {
-        final List<dynamic> list = jsonDecode(f.readAsStringSync());
-        patches = list.map((patch) => Patch.fromJson(patch)).toList();
-      }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-
-    return patches;
   }
 }

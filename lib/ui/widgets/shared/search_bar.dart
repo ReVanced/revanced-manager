@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({
-    Key? key,
+    super.key,
     required this.hintText,
     this.showSelectIcon = false,
     this.onSelectAll,
     required this.onQueryChanged,
-  }) : super(key: key);
+  });
   final String? hintText;
   final bool showSelectIcon;
   final Function(bool)? onSelectAll;
