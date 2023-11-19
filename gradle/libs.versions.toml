@@ -18,6 +18,7 @@ koin-version-compose = "3.4.6"
 reimagined-navigation = "1.5.0"
 ktor = "2.3.3"
 markdown-renderer = "0.8.0"
+fading-edges = "1.0.4"
 androidGradlePlugin = "8.1.2"
 kotlinGradlePlugin = "1.9.10"
 devToolsGradlePlugin = "1.9.10-1.0.13"
@@ -94,6 +95,9 @@ skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.
 
 # Markdown
 markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
+
+# Fading Edges
+fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version.ref = "fading-edges"}
 
 # LibSU
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }
