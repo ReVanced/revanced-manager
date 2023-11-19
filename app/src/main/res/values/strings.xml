@@ -312,4 +312,5 @@
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
     <string name="download_update_confirmation">Download update?</string>
+    <string name="no_contributors_found">No contributors found</string>
 </resources>
