@@ -302,4 +302,5 @@
     <string name="dismiss_temporary">Not now</string>
     <string name="update_available">New update available</string>
     <string name="update_available_description">A new version (%s) is available for download.</string>
+    <string name="no_contributors_found">No contributors found</string>
 </resources>
