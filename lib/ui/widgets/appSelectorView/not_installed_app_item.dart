@@ -93,7 +93,7 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                               ),
                               const SizedBox(width: 4),
                               const Icon(
-                                Icons.link,
+                                Icons.launch,
                                 size: 17,
                               ),
                             ],
