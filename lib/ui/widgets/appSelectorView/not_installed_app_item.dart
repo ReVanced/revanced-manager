@@ -92,9 +92,10 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                                 },
                               ),
                               const SizedBox(width: 4),
-                              const Icon(
+                              Icon(
                                 Icons.launch,
                                 size: 17,
+                                color: Theme.of(context).colorScheme.onSecondaryContainer,
                               ),
                             ],
                           ),

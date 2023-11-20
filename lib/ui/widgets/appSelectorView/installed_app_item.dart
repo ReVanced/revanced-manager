@@ -100,9 +100,10 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                 },
                               ),
                               const SizedBox(width: 4),
-                              const Icon(
+                              Icon(
                                 Icons.launch,
                                 size: 16,
+                                color: Theme.of(context).colorScheme.onSecondaryContainer,
                               ),
                             ],
                           ),
