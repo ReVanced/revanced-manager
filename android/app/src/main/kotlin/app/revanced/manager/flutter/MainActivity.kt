@@ -197,7 +197,7 @@ class MainActivity : FlutterActivity() {
             startActivity(intent)
         }
     }
-
+    
     @OptIn(InternalCoroutinesApi::class)
     private fun runPatcher(
         result: MethodChannel.Result,
