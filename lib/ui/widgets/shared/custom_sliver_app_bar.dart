@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   const CustomSliverAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.actions,
     this.bottom,
     this.isMainView = false,
     this.onBackButtonPressed,
-  }) : super(key: key);
+  });
   final Widget title;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;

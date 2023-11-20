@@ -7,7 +7,7 @@ import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchesSelectorView extends StatefulWidget {
-  const PatchesSelectorView({Key? key}) : super(key: key);
+  const PatchesSelectorView({super.key});
 
   @override
   State<PatchesSelectorView> createState() => _PatchesSelectorViewState();

@@ -7,7 +7,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class ContributorsView extends StatelessWidget {
-  const ContributorsView({Key? key}) : super(key: key);
+  const ContributorsView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

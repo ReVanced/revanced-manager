@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomChip extends StatelessWidget {
   const CustomChip({
-    Key? key,
+    super.key,
     required this.label,
     this.isSelected = false,
     this.onSelected,
-  }) : super(key: key);
+  });
   final Widget label;
   final bool isSelected;
   final Function(bool)? onSelected;

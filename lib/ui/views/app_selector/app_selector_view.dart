@@ -8,7 +8,7 @@ import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart' hide SkeletonLoader;
 
 class AppSelectorView extends StatefulWidget {
-  const AppSelectorView({Key? key}) : super(key: key);
+  const AppSelectorView({super.key});
 
   @override
   State<AppSelectorView> createState() => _AppSelectorViewState();
@@ -107,7 +107,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       ),
                                     ),
                                   )
-                                  .toList(),
+                                  ,
                               ...model
                                   .getFilteredAppsNames(_query)
                                   .map(
@@ -121,7 +121,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       },
                                     ),
                                   )
-                                  .toList(),
+                                  ,
                               const SizedBox(height: 70.0),
                             ],
                           ),

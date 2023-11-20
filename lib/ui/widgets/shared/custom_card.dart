@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({
-    Key? key,
+    super.key,
     this.isFilled = true,
     required this.child,
     this.onTap,
     this.padding,
     this.backgroundColor,
-  }) : super(key: key);
+  });
   final bool isFilled;
   final Widget child;
   final Function()? onTap;

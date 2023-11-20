@@ -28,9 +28,8 @@ class _SRequireSuggestedAppVersionState
       subtitle: Text(t.settingsView.requireSuggestedAppVersionHint),
       value: _settingsViewModel.isRequireSuggestedAppVersionEnabled(),
       onChanged: (value) async {
-        await _settingsViewModel.showRequireSuggestedAppVersionDialog(
-            context, value,);
-        setState(() {});
+          await _settingsViewModel.showRequireSuggestedAppVersionDialog(context, value,);
+          setState(() {});
       },
     );
   }

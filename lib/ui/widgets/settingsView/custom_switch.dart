@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomSwitch extends StatelessWidget {
   const CustomSwitch({
-    Key? key,
+    super.key,
     required this.onChanged,
     required this.value,
-  }) : super(key: key);
+  });
   final ValueChanged<bool> onChanged;
   final bool value;
 
