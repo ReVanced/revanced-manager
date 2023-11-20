@@ -70,7 +70,7 @@ ReVanced Manager is an Android application that uses ReVanced Patcher to add, re
 We provide the some of the features are:
 
 * 📱 **Portable**: ReVanced Patcher that fit in your pocket;
-* 🤗 **Intuitive UI**: Help you manage your patched applications *intuitively*;
+* 🤗 **Intuitive UI**: Help you manage your patched applications with easy-to-use interface;
 * 🛠️ **Customization**: Patch with third-party sources;
 * ✨ And a **lot more!**
 
