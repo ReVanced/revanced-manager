@@ -80,8 +80,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                           decoration: BoxDecoration(
                             color: Theme.of(context)
                                 .colorScheme
-                                .onSecondaryContainer
-                                .withOpacity(0.4),
+                                .secondaryContainer,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(7)),
                           ),
