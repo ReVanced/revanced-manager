@@ -13,12 +13,15 @@ class Patch {
   });
 
   factory Patch.fromJson(Map<String, dynamic> json) {
-    // See: https://github.com/ReVanced/revanced-manager/issues/1364#issuecomment-1760414618
+    _migrateV16ToV17(json);
+
+    return _$PatchFromJson(json);
+  }
+
+  static void _migrateV16ToV17(Map<String, dynamic> json) {
     if (json['options'] == null) {
       json['options'] = [];
     }
-
-    return _$PatchFromJson(json);
   }
 
   final String name;
@@ -57,18 +60,37 @@ class Option {
     required this.title,
     required this.description,
     required this.value,
+    required this.values,
     required this.required,
-    required this.optionClassType,
+    required this.valueType,
   });
 
-  factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
+  factory Option.fromJson(Map<String, dynamic> json) {
+    _migrateV17ToV19(json);
+
+    return _$OptionFromJson(json);
+  }
+
+  static void _migrateV17ToV19(Map<String, dynamic> json) {
+    if (json['valueType'] == null) {
+      final type = json['optionClassType'];
+      if (type is String) {
+        json['valueType'] = type
+            .replaceAll('PatchOption', '')
+            .replaceAll('List', 'Array');
+
+        json['optionClassType'] = null;
+      }
+    }
+  }
 
   final String key;
   final String title;
   final String description;
-  dynamic value;
+  final dynamic value;
+  final Map<String, dynamic>? values;
   final bool required;
-  final String optionClassType;
+  final String valueType;
 
   Map toJson() => _$OptionToJson(this);
 }

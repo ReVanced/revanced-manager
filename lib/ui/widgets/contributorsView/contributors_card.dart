@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/file.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsCard extends StatefulWidget {
   const ContributorsCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.contributors,
-  }) : super(key: key);
+  });
   final String title;
   final List<dynamic> contributors;
 
@@ -58,7 +58,7 @@ class _ContributorsCardState extends State<ContributorsCard> {
                   mode: LaunchMode.externalApplication,
                 ),
                 child: FutureBuilder<File?>(
-                  future: DefaultCacheManager().getSingleFile(
+                  future: DownloadManager().getSingleFile(
                     widget.contributors[index]['avatar_url'],
                   ),
                   builder: (context, snapshot) => snapshot.hasData

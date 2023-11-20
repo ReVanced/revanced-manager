@@ -7,9 +7,9 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class AppSelectorCard extends StatelessWidget {
   const AppSelectorCard({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
   final Function() onPressed;
 
   @override

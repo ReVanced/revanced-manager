@@ -5,7 +5,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class InstalledAppItem extends StatefulWidget {
   const InstalledAppItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.pkgName,
     required this.icon,
@@ -14,7 +14,7 @@ class InstalledAppItem extends StatefulWidget {
     required this.installedVersion,
     this.onTap,
     this.onLinkTap,
-  }) : super(key: key);
+  });
   final String name;
   final String pkgName;
   final Uint8List icon;

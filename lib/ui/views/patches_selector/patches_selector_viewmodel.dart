@@ -9,6 +9,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
@@ -169,7 +170,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
             .where(
               (element) =>
                   !element.excluded &&
-                  (_managerAPI.areExperimentalPatchesEnabled() ||
+                  (!_managerAPI.isVersionCompatibilityCheckEnabled() ||
                       isPatchSupported(element)),
             ),
       );
@@ -209,7 +210,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
               query.isEmpty ||
               query.length < 2 ||
               patch.name.toLowerCase().contains(query.toLowerCase()) ||
-              patch.getSimpleName().toLowerCase().contains(query.toLowerCase()),
+              patch.name
+                  .replaceAll(RegExp(r'[^\w\s]+'), '')
+                  .toLowerCase()
+                  .contains(query.toLowerCase()),
         )
         .toList();
     if (_managerAPI.areUniversalPatchesEnabled()) {
@@ -219,6 +223,57 @@ class PatchesSelectorViewModel extends BaseViewModel {
           .where((patch) => patch.compatiblePackages.isNotEmpty)
           .toList();
     }
+  }
+
+  Widget getPatchItem(BuildContext context, Patch patch) {
+    return PatchItem(
+      name: patch.name,
+      simpleName: patch.getSimpleName(),
+      description: patch.description ?? '',
+      packageVersion: getAppInfo().version,
+      supportedPackageVersions: getSupportedVersions(patch),
+      isUnsupported: !isPatchSupported(patch),
+      isChangeEnabled: _managerAPI.isPatchesChangeEnabled(),
+      hasUnsupportedPatchOption: hasUnsupportedRequiredOption(
+        patch.options,
+        patch,
+      ),
+      options: patch.options,
+      isSelected: isSelected(patch),
+      navigateToOptions: (options) => navigateToPatchOptions(
+        options,
+        patch,
+      ),
+      onChanged: (value) => selectPatch(
+        patch,
+        value,
+        context,
+      ),
+    );
+  }
+
+  Widget getPatchCategory(BuildContext context, String category) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 10.0,
+      ),
+      child: Container(
+        padding: const EdgeInsets.only(
+          top: 10.0,
+          bottom: 10.0,
+          left: 5.0,
+        ),
+        child: I18nText(
+          category,
+          child: Text(
+            '',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   PatchedApplication getAppInfo() {
@@ -234,12 +289,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
       return !savedPatches
           .any((p) => p.getSimpleName() == patch.getSimpleName());
     }
-  }
-
-  bool newPatchExists() {
-    return patches.any(
-      (patch) => isPatchNew(patch),
-    );
   }
 
   List<String> getSupportedVersions(Patch patch) {
@@ -281,7 +330,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
         this.selectedPatches.addAll(
               patches.where((patch) => selectedPatches.contains(patch.name)),
             );
-        if (!_managerAPI.areExperimentalPatchesEnabled()) {
+        if (_managerAPI.isVersionCompatibilityCheckEnabled()) {
           this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
         }
       } else {
