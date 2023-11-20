@@ -11,6 +11,7 @@ class NotInstalledAppItem extends StatefulWidget {
     this.onTap,
     this.onLinkTap,
   });
+
   final String name;
   final int patchesCount;
   final String suggestedVersion;
@@ -72,7 +73,9 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                         onTap: widget.onLinkTap,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(7)),
                           ),
@@ -90,12 +93,22 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                                         )
                                       : 'v${widget.suggestedVersion}',
                                 },
+                                child: Text(
+                                  '',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                  ),
+                                ),
                               ),
                               const SizedBox(width: 4),
                               Icon(
                                 Icons.launch,
                                 size: 17,
-                                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
                               ),
                             ],
                           ),

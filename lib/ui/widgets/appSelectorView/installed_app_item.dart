@@ -15,6 +15,7 @@ class InstalledAppItem extends StatefulWidget {
     this.onTap,
     this.onLinkTap,
   });
+
   final String name;
   final String pkgName;
   final Uint8List icon;
@@ -98,12 +99,22 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                         )
                                       : 'v${widget.suggestedVersion}',
                                 },
+                                child: Text(
+                                  '',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                  ),
+                                ),
                               ),
                               const SizedBox(width: 4),
                               Icon(
                                 Icons.launch,
                                 size: 16,
-                                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
                               ),
                             ],
                           ),

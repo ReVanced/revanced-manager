@@ -89,12 +89,19 @@ class AppSelectorCard extends StatelessWidget {
                             Text(
                               locator<PatcherViewModel>()
                                   .getSuggestedVersionString(context),
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                              ),
                             ),
                             const SizedBox(width: 4),
                             Icon(
                               Icons.launch,
                               size: 16,
-                              color: Theme.of(context).colorScheme.onSecondaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
                             ),
                           ],
                         ),
