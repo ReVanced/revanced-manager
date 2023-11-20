@@ -15,7 +15,8 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => WillPopScope(
+      builder: (context, model, child) => PopScope(
+        onPopInvoked: (bool didPop) => model.onPopInvoked(context, didPop),
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
@@ -83,7 +84,7 @@ class InstallerView extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  onBackButtonPressed: () => model.onWillPop(context),
+                  onBackButtonPressed: () => model.onBackButtonInvoked(context),
                   bottom: PreferredSize(
                     preferredSize: const Size(double.infinity, 1.0),
                     child: GradientProgressIndicator(progress: model.progress),
@@ -111,7 +112,6 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onWillPop: () => model.onWillPop(context),
       ),
     );
   }
