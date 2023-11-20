@@ -35,3 +35,5 @@ jobs:
               with:
                   source_dir: "assets/i18n"
                   commit_message: "chore: Remove empty strings"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
