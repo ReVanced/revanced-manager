@@ -10,6 +10,7 @@ class AppSelectorCard extends StatelessWidget {
     super.key,
     required this.onPressed,
   });
+
   final Function() onPressed;
 
   @override
@@ -69,23 +70,35 @@ class AppSelectorCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
-                      locator<PatcherViewModel>()
-                          .getSuggestedVersionString(context),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    if (locator<PatcherViewModel>()
-                        .getSuggestedVersion()
-                        .isNotEmpty)
-                      InkWell(
-                        onTap: () {
-                          locator<PatcherViewModel>()
-                              .searchSuggestedVersionOnWeb();
-                        },
-                        child: const Icon(Icons.link),
+                    GestureDetector(
+                      onTap: () {
+                        locator<PatcherViewModel>()
+                            .searchSuggestedVersionOnWeb();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(7)),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              locator<PatcherViewModel>()
+                                  .getSuggestedVersionString(context),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.launch,
+                              size: 16,
+                            ),
+                          ],
+                        ),
                       ),
+                    ),
                   ],
                 ),
               ],
