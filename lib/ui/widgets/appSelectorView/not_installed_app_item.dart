@@ -9,11 +9,14 @@ class NotInstalledAppItem extends StatefulWidget {
     required this.patchesCount,
     required this.suggestedVersion,
     this.onTap,
+    this.onLinkTap,
   });
+
   final String name;
   final int patchesCount;
   final String suggestedVersion;
   final Function()? onTap;
+  final Function()? onLinkTap;
 
   @override
   State<NotInstalledAppItem> createState() => _NotInstalledAppItem();
@@ -65,17 +68,52 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                     ),
                   ),
                   Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      I18nText(
-                        'suggested',
-                        translationParams: {
-                          'version': widget.suggestedVersion.isEmpty
-                              ? FlutterI18n.translate(
-                                  context,
-                                  'appSelectorCard.allVersions',
-                                )
-                              : 'v${widget.suggestedVersion}',
-                        },
+                      Material(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: InkWell(
+                          onTap: widget.onLinkTap,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                I18nText(
+                                  'suggested',
+                                  translationParams: {
+                                    'version': widget.suggestedVersion.isEmpty
+                                        ? FlutterI18n.translate(
+                                            context,
+                                            'appSelectorCard.allVersions',
+                                          )
+                                        : 'v${widget.suggestedVersion}',
+                                  },
+                                  child: Text(
+                                    '',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.search,
+                                  size: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text(
