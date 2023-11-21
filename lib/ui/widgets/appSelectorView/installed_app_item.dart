@@ -74,49 +74,50 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                     ),
                   ),
                   Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: widget.onLinkTap,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondaryContainer,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(7)),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              I18nText(
-                                'suggested',
-                                translationParams: {
-                                  'version': widget.suggestedVersion.isEmpty
-                                      ? FlutterI18n.translate(
-                                          context,
-                                          'appSelectorCard.allVersions',
-                                        )
-                                      : 'v${widget.suggestedVersion}',
-                                },
-                                child: Text(
-                                  '',
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
+                      Material(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: InkWell(
+                          onTap: widget.onLinkTap,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                I18nText(
+                                  'suggested',
+                                  translationParams: {
+                                    'version': widget.suggestedVersion.isEmpty
+                                        ? FlutterI18n.translate(
+                                            context,
+                                            'appSelectorCard.allVersions',
+                                          )
+                                        : 'v${widget.suggestedVersion}',
+                                  },
+                                  child: Text(
+                                    '',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.launch,
-                                size: 16,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                              ),
-                            ],
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.search,
+                                  size: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -70,40 +70,40 @@ class AppSelectorCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        locator<PatcherViewModel>()
-                            .searchSuggestedVersionOnWeb();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(7)),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(
-                              locator<PatcherViewModel>()
-                                  .getSuggestedVersionString(context),
-                              style: TextStyle(
+                    Material(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      child: InkWell(
+                        onTap: () {
+                          locator<PatcherViewModel>()
+                              .searchSuggestedVersionOnWeb();
+                        },
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                locator<PatcherViewModel>()
+                                    .getSuggestedVersionString(context),
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.search,
+                                size: 16,
                                 color: Theme.of(context)
                                     .colorScheme
                                     .onSecondaryContainer,
                               ),
-                            ),
-                            const SizedBox(width: 4),
-                            Icon(
-                              Icons.launch,
-                              size: 16,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
