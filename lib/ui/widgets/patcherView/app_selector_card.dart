@@ -7,9 +7,10 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class AppSelectorCard extends StatelessWidget {
   const AppSelectorCard({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
+
   final Function() onPressed;
 
   @override
@@ -61,11 +62,52 @@ class AppSelectorCard extends StatelessWidget {
             Container()
           else
             Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 4),
                 Text(
-                  locator<PatcherViewModel>()
-                      .getSuggestedVersionString(context),
+                  locator<PatcherViewModel>().getCurrentVersionString(context),
+                ),
+                Row(
+                  children: [
+                    Material(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      child: InkWell(
+                        onTap: () {
+                          locator<PatcherViewModel>()
+                              .searchSuggestedVersionOnWeb();
+                        },
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                locator<PatcherViewModel>()
+                                    .getSuggestedVersionString(context),
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.search,
+                                size: 16,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

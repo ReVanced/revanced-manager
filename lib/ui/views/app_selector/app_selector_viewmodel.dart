@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -70,7 +71,53 @@ class AppSelectorViewModel extends BaseViewModel {
     return true;
   }
 
-  Future<void> selectApp(ApplicationWithIcon application) async {
+  Future<void> searchSuggestedVersionOnWeb({
+    required String packageName,
+  }) async {
+    final String suggestedVersion = getSuggestedVersion(packageName);
+
+    if (suggestedVersion.isNotEmpty) {
+      await openDefaultBrowser('$packageName apk version v$suggestedVersion');
+    } else {
+      await openDefaultBrowser('$packageName apk');
+    }
+  }
+
+  Future<void> openDefaultBrowser(String query) async {
+    if (Platform.isAndroid) {
+      try {
+        const platform = MethodChannel('app.revanced.manager.flutter/browser');
+        await platform.invokeMethod('openBrowser', {'query': query});
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    } else {
+      throw 'Platform not supported';
+    }
+  }
+
+  Future<void> selectApp(
+    BuildContext context,
+    ApplicationWithIcon application, [
+    bool isFromStorage = false,
+  ]) async {
+    final String suggestedVersion =
+        getSuggestedVersion(application.packageName);
+    if (application.versionName != suggestedVersion && suggestedVersion.isNotEmpty) {
+      _managerAPI.suggestedAppVersionSelected = false;
+      if (_managerAPI.isRequireSuggestedAppVersionEnabled() &&
+          context.mounted) {
+        return showRequireSuggestedAppVersionDialog(
+          context,
+          application.versionName!,
+          suggestedVersion,
+        );
+      }
+    } else {
+      _managerAPI.suggestedAppVersionSelected = true;
+    }
     locator<PatcherViewModel>().selectedApp = PatchedApplication(
       name: application.appName,
       packageName: application.packageName,
@@ -78,8 +125,12 @@ class AppSelectorViewModel extends BaseViewModel {
       apkFilePath: application.apkFilePath,
       icon: application.icon,
       patchDate: DateTime.now(),
+      isFromStorage: isFromStorage,
     );
     await locator<PatcherViewModel>().loadLastSelectedPatches();
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
   }
 
   Future<void> canSelectInstalled(
@@ -89,21 +140,58 @@ class AppSelectorViewModel extends BaseViewModel {
     final app =
         await DeviceApps.getApp(packageName, true) as ApplicationWithIcon?;
     if (app != null) {
-      if (await checkSplitApk(packageName) && !isRooted) {
+      final bool isSplitApk = await checkSplitApk(packageName);
+      if (isRooted || !isSplitApk) {
+        if (context.mounted) {
+          await selectApp(context, app);
+        }
+        final List<Option> requiredNullOptions = getNullRequiredOptions(
+          locator<PatcherViewModel>().selectedPatches,
+          packageName,
+        );
+        if (requiredNullOptions.isNotEmpty) {
+          locator<PatcherViewModel>().showRequiredOptionDialog();
+        }
+      } else {
         if (context.mounted) {
           return showSelectFromStorageDialog(context);
         }
-      } else if (!await checkSplitApk(packageName) || isRooted) {
-        await selectApp(app);
-        if (context.mounted) {
-          Navigator.pop(context);
-        }
-        final List<Option> requiredNullOptions = getNullRequiredOptions(locator<PatcherViewModel>().selectedPatches, packageName);
-        if(requiredNullOptions.isNotEmpty){
-          locator<PatcherViewModel>().showRequiredOptionDialog();
-        }
       }
     }
+  }
+
+  Future showRequireSuggestedAppVersionDialog(
+    BuildContext context,
+    String selectedVersion,
+    String suggestedVersion,
+  ) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        title: I18nText('warning'),
+        content: I18nText(
+          'appSelectorView.requireSuggestedAppVersionDialogText',
+          translationParams: {
+            'suggested': suggestedVersion,
+            'selected': selectedVersion,
+          },
+          child: const Text(
+            '',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        actions: [
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
   }
 
   Future showSelectFromStorageDialog(BuildContext context) async {
@@ -145,12 +233,10 @@ class AppSelectorViewModel extends BaseViewModel {
           ),
           const SizedBox(height: 30),
           CustomMaterialButton(
-            onPressed: () => selectAppFromStorage(context).then(
-              (_) {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            ),
+            onPressed: () async {
+              Navigator.pop(context);
+              await selectAppFromStorage(context);
+            },
             label: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -203,17 +289,8 @@ class AppSelectorViewModel extends BaseViewModel {
           apkFile.path,
           true,
         ) as ApplicationWithIcon?;
-        if (application != null) {
-          locator<PatcherViewModel>().selectedApp = PatchedApplication(
-            name: application.appName,
-            packageName: application.packageName,
-            version: application.versionName!,
-            apkFilePath: result,
-            icon: application.icon,
-            patchDate: DateTime.now(),
-            isFromStorage: true,
-          );
-          locator<PatcherViewModel>().loadLastSelectedPatches();
+        if (application != null && context.mounted) {
+          await selectApp(context, application, true);
         }
       }
     } on Exception catch (e) {

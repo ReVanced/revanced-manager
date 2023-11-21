@@ -9,9 +9,9 @@ import 'package:stacked/stacked.dart';
 
 class AppInfoView extends StatelessWidget {
   const AppInfoView({
-    Key? key,
+    super.key,
     required this.app,
-  }) : super(key: key);
+  });
   final PatchedApplication app;
 
   @override
