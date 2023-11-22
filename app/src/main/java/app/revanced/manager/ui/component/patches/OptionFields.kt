@@ -152,9 +152,9 @@ private val optionImplementations = mapOf<String, OptionImpl>(
 
         OptionListItem(
             option = option,
-            onClick = { setValue(!current) }
+            onClick = hapticSwitch(current) { setValue(!current) }
         ) {
-            Switch(checked = current, onCheckedChange = setValue)
+            Switch(checked = current, onCheckedChange = hapticSwitch { setValue(it) })
         }
     },
     "String" to { option, value, setValue ->
@@ -181,7 +181,7 @@ private val optionImplementations = mapOf<String, OptionImpl>(
 
         OptionListItem(
             option = option,
-            onClick = ::showInputDialog
+            onClick = ::showInputDialog,
         ) {
             IconButton(onClick = ::showInputDialog) {
                 Icon(
