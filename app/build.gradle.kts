@@ -156,6 +156,9 @@ dependencies {
     implementation(libs.ktor.content.negotiation)
     implementation(libs.ktor.serialization)
 
-    // Markdown to HTML
-    implementation(libs.markdown)
+    // Markdown
+    implementation(libs.markdown.renderer)
+
+    // Fading Edges
+    implementation(libs.fading.edges)
 }
