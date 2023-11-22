@@ -1,5 +1,7 @@
 package app.revanced.manager.flutter
 
+import android.app.SearchManager
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import app.revanced.manager.flutter.utils.Aapt
@@ -15,7 +17,9 @@ import app.revanced.patcher.patch.PatchResult
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
@@ -24,6 +28,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.logging.LogRecord
 import java.util.logging.Logger
+
 
 class MainActivity : FlutterActivity() {
     private val handler = Handler(Looper.getMainLooper())
@@ -38,6 +43,17 @@ class MainActivity : FlutterActivity() {
 
         val patcherChannel = "app.revanced.manager.flutter/patcher"
         val installerChannel = "app.revanced.manager.flutter/installer"
+        val openBrowserChannel = "app.revanced.manager.flutter/browser"
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, openBrowserChannel).setMethodCallHandler { call, result ->
+            if (call.method == "openBrowser") {
+                val searchQuery = call.argument<String>("query")
+                openBrowser(searchQuery)
+                result.success(null)
+            } else {
+                result.notImplemented()
+            }
+        }
 
         val mainChannel =
             MethodChannel(flutterEngine.dartExecutor.binaryMessenger, patcherChannel)
@@ -98,8 +114,10 @@ class MainActivity : FlutterActivity() {
                     val cacheDirPath = call.argument<String>("cacheDirPath")!!
 
                     try {
+                        val patchBundleFile = File(patchBundleFilePath)
+                        patchBundleFile.setWritable(false)
                         patches = PatchBundleLoader.Dex(
-                            File(patchBundleFilePath),
+                            patchBundleFile,
                             optimizedDexDirectory = File(cacheDirPath)
                         )
                     } catch (ex: Exception) {
@@ -131,24 +149,34 @@ class MainActivity : FlutterActivity() {
                                 })
                                 put("options", JSONArray().apply {
                                     it.options.values.forEach { option ->
-                                        val optionJson = JSONObject().apply option@{
+                                        JSONObject().apply {
                                             put("key", option.key)
                                             put("title", option.title)
                                             put("description", option.description)
                                             put("required", option.required)
 
-                                            when (val value = option.value) {
-                                                null -> put("value", null)
-                                                is Array<*> -> put("value", JSONArray().apply {
-
+                                            fun JSONObject.putValue(
+                                                value: Any?,
+                                                key: String = "value"
+                                            ) = if (value is Array<*>) put(
+                                                key,
+                                                JSONArray().apply {
                                                     value.forEach { put(it) }
                                                 })
-                                                else -> put("value", option.value)
-                                            }
+                                            else put(key, value)
 
-                                            put("optionClassType", option::class.simpleName)
-                                        }
-                                        put(optionJson)
+                                            putValue(option.default)
+
+                                            option.values?.let { values ->
+                                                put("values",
+                                                    JSONObject().apply {
+                                                        values.forEach { (key, value) ->
+                                                            putValue(value, key)
+                                                        }
+                                                    })
+                                            } ?: put("values", null)
+                                            put("valueType", option.valueType)
+                                        }.let(::put)
                                     }
                                 })
                             }.let(::put)
@@ -161,6 +189,16 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    fun openBrowser(query: String?) {
+        val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
+            putExtra(SearchManager.QUERY, query)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+    
+    @OptIn(InternalCoroutinesApi::class)
     private fun runPatcher(
         result: MethodChannel.Result,
         originalFilePath: String,
@@ -283,12 +321,12 @@ class MainActivity : FlutterActivity() {
                     acceptPatches(patches)
 
                     runBlocking {
-                        apply(false).collect { patchResult: PatchResult ->
+                        apply(false).collect(FlowCollector { patchResult: PatchResult ->
                             if (cancel) {
                                 handler.post { stopResult!!.success(null) }
                                 this.cancel()
                                 this@apply.close()
-                                return@collect
+                                return@FlowCollector
                             }
 
                             val msg = patchResult.exception?.let {
@@ -301,7 +339,7 @@ class MainActivity : FlutterActivity() {
 
                             updateProgress(progress, "", msg)
                             progress += progressStep
-                        }
+                        })
                     }
                 }
 

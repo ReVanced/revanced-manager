@@ -38,11 +38,11 @@ class PatchOptionsViewModel extends BaseViewModel {
                   option.required &&
                   !savedOptions.any((sOption) => sOption.key == option.key),
             )
-            .toList(),
+            ,
       ];
     } else {
       visibleOptions = [
-        ...options.where((option) => option.required).toList(),
+        ...options.where((option) => option.required),
       ];
     }
   }
@@ -62,7 +62,10 @@ class PatchOptionsViewModel extends BaseViewModel {
     for (final Option option in options) {
       if (!visibleOptions.any((vOption) => vOption.key == option.key)) {
         _managerAPI.clearPatchOption(
-            selectedApp, _managerAPI.selectedPatch!.name, option.key);
+          selectedApp,
+          _managerAPI.selectedPatch!.name,
+          option.key,
+        );
       }
     }
     for (final Option option in visibleOptions) {
@@ -70,7 +73,10 @@ class PatchOptionsViewModel extends BaseViewModel {
         requiredNullOptions.add(option);
       } else {
         _managerAPI.setPatchOption(
-            option, _managerAPI.selectedPatch!.name, selectedApp);
+          option,
+          _managerAPI.selectedPatch!.name,
+          selectedApp,
+        );
       }
     }
     if (requiredNullOptions.isNotEmpty) {
@@ -89,7 +95,8 @@ class PatchOptionsViewModel extends BaseViewModel {
     final Option modifiedOption = Option(
       title: option.title,
       description: option.description,
-      optionClassType: option.optionClassType,
+      values: option.values,
+      valueType: option.valueType,
       value: value,
       required: option.required,
       key: option.key,
@@ -107,7 +114,8 @@ class PatchOptionsViewModel extends BaseViewModel {
       final Option defaultOption = Option(
         title: option.title,
         description: option.description,
-        optionClassType: option.optionClassType,
+        values: option.values,
+        valueType: option.valueType,
         value: option.value is List ? option.value.toList() : option.value,
         required: option.required,
         key: option.key,
@@ -172,21 +180,27 @@ class PatchOptionsViewModel extends BaseViewModel {
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      e.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      e.description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSurface,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.title,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            e.description,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -229,7 +243,10 @@ Future<void> showRequiredOptionNullDialog(
               locator<PatcherViewModel>().notifyListeners();
               for (final option in options) {
                 managerAPI.clearPatchOption(
-                    selectedApp, managerAPI.selectedPatch!.name, option.key);
+                  selectedApp,
+                  managerAPI.selectedPatch!.name,
+                  option.key,
+                );
               }
               Navigator.of(context)
                 ..pop()

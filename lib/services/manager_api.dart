@@ -35,6 +35,7 @@ class ManagerAPI {
   Patch? selectedPatch;
   BuildContext? ctx;
   bool isRooted = false;
+  bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
@@ -80,7 +81,6 @@ class ManagerAPI {
     if (url.isEmpty || url == ' ') {
       url = defaultApiUrl;
     }
-    await _revancedAPI.initialize(url);
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
   }
@@ -259,6 +259,14 @@ class ManagerAPI {
 
   Future<void> enableVersionCompatibilityCheckStatus(bool value) async {
     await _prefs.setBool('versionCompatibilityCheckEnabled', value);
+  }
+
+  bool isRequireSuggestedAppVersionEnabled() {
+    return _prefs.getBool('requireSuggestedAppVersionEnabled') ?? true;
+  }
+
+  Future<void> enableRequireSuggestedAppVersionStatus(bool value) async {
+    await _prefs.setBool('requireSuggestedAppVersionEnabled', value);
   }
 
   Future<void> setKeystorePassword(String password) async {
@@ -575,8 +583,8 @@ class ManagerAPI {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => WillPopScope(
-        onWillPop: () async => false,
+      builder: (context) => PopScope(
+        canPop: false,
         child: AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),

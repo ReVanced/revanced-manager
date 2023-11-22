@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 var lightCustomColorScheme = ColorScheme.fromSeed(
-  seedColor: Colors.blue,
-  primary: const Color(0xff1B73E8),
+  seedColor: Colors.purple,
+  primary: const Color(0xFF4C51C0),
 );
 
 var lightCustomTheme = ThemeData(
@@ -21,10 +21,10 @@ var lightCustomTheme = ThemeData(
 );
 
 var darkCustomColorScheme = ColorScheme.fromSeed(
-  seedColor: Colors.blue,
+  seedColor: Colors.purple,
   brightness: Brightness.dark,
-  primary: const Color(0xffA5CAFF),
-  surface: const Color(0xff1B1A1D),
+  primary: const Color(0xFFBFC1FF),
+  surface: const Color(0xFF131316),
 );
 
 var darkCustomTheme = ThemeData(
@@ -38,7 +38,7 @@ var darkCustomTheme = ThemeData(
       ),
     ),
   ),
-  canvasColor: const Color(0xff1B1A1D),
-  scaffoldBackgroundColor: const Color(0xff1B1A1D),
+  canvasColor: const Color(0xFF131316),
+  scaffoldBackgroundColor: const Color(0xFF131316),
   textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
 );

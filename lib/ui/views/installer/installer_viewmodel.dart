@@ -18,7 +18,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class InstallerViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
@@ -74,7 +74,7 @@ class InstallerViewModel extends BaseViewModel {
         screenshotDetected(context);
       }
     });
-    await Wakelock.enable();
+    await WakelockPlus.enable();
     await handlePlatformChannelMethods();
     await runPatcher();
   }
@@ -171,7 +171,7 @@ class InstallerViewModel extends BaseViewModel {
           } // ignore
         }
       }
-      await Wakelock.disable();
+      await WakelockPlus.disable();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -181,6 +181,15 @@ class InstallerViewModel extends BaseViewModel {
 
   Future<void> copyLogs() async {
     final info = await AboutInfo.getInfo();
+    dynamic getValue(String patchName, Option option) {
+      final Option? savedOption =
+          _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+      if (savedOption != null) {
+        return savedOption.value;
+      } else {
+        return option.value;
+      }
+    }
 
     final formattedLogs = [
       '- Device Info',
@@ -194,8 +203,7 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${o.value}').join(", ")}]')).toList().join(", ")}',
-      
+      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${getValue(p.name, o)}').join(", ")}]')).toList().join(", ")}',
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
@@ -335,6 +343,7 @@ class InstallerViewModel extends BaseViewModel {
       isCanceled = true;
       update(0.5, 'Canceling...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
+      await WakelockPlus.disable();
       update(-100.0, 'Canceled...', 'Press back to exit');
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -419,25 +428,38 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool> onWillPop(BuildContext context) async {
-    if (isPatching) {
-      if (!cancel) {
-        cancel = true;
-        _toast.showBottom('installerView.pressBackAgain');
-      } else if (!isCanceled) {
-        await stopPatcher();
-      } else {
-        _toast.showBottom('installerView.noExit');
-      }
-      return false;
-    }
-    if (!cancel) {
-      cleanPatcher();
+  bool canPop() {
+    return !isPatching;
+  }
+
+  void onBackButtonInvoked(BuildContext context) {
+    if (canPop()) {
+      onPopInvoked(context, true);
     } else {
-      _patcherAPI.cleanPatcher();
+      onPopInvoked(context, false);
     }
-    screenshotCallback.dispose();
-    Navigator.of(context).pop();
-    return true;
+  }
+
+  Future<void> onPopInvoked(BuildContext context, bool didPop) async {
+    if (didPop) {
+      if (!cancel) {
+        cleanPatcher();
+      } else {
+        _patcherAPI.cleanPatcher();
+      }
+      screenshotCallback.dispose();
+      Navigator.of(context).pop();
+    } else {
+      if (isPatching) {
+        if (!cancel) {
+          cancel = true;
+          _toast.showBottom('installerView.pressBackAgain');
+        } else if (!isCanceled) {
+          await stopPatcher();
+        } else {
+          _toast.showBottom('installerView.noExit');
+        }
+      }
+    }
   }
 }

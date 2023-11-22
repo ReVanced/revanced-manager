@@ -7,9 +7,9 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class PatchSelectorCard extends StatelessWidget {
   const PatchSelectorCard({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
   final Function() onPressed;
 
   @override
