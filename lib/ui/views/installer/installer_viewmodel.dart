@@ -343,6 +343,7 @@ class InstallerViewModel extends BaseViewModel {
       isCanceled = true;
       update(0.5, 'Canceling...', 'Canceling patching process');
       await _patcherAPI.stopPatcher();
+      await WakelockPlus.disable();
       update(-100.0, 'Canceled...', 'Press back to exit');
     } on Exception catch (e) {
       if (kDebugMode) {
