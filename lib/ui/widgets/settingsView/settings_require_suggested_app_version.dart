@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 
 class SRequireSuggestedAppVersion extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SRequireSuggestedAppVersionState extends State<SRequireSuggestedAppVersio
       subtitle: I18nText('settingsView.requireSuggestedAppVersionHint'),
       value: _settingsViewModel.isRequireSuggestedAppVersionEnabled(),
       onChanged: (value) async {
+          hapticSwitch(value);
           await _settingsViewModel.showRequireSuggestedAppVersionDialog(context, value,);
           setState(() {});
       },
