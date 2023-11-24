@@ -17,6 +17,7 @@ on:
         description: Cache
         type: boolean
         default: true
+        
       # Application configuration
       app-flavour:
         description: App flavour
@@ -26,10 +27,15 @@ on:
           - release
           - debug
           - profile
+          
       # Pull Request
       pr-number:
         description: PR number (No hashtag)
         required: true
+        
+      # Additional
+      flutter-build-arguments:
+        description: Flutter build arguments
 
 run-name: "Build PR ${{ inputs.pr-number }}"
         
@@ -41,7 +47,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Setup
+      - name: Setup the PR's repository
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -50,10 +56,10 @@ jobs:
           gh repo set-default ${{ github.repository }}
           gh pr checkout ${{ inputs.pr-number }}
           
-          echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
+          echo "DATETIME=$(TZ='UTC+0' date --rfc-email)" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
@@ -76,6 +82,9 @@ jobs:
         
       - name: Generate files with Builder
         run: dart run build_runner build --delete-conflicting-outputs 
+
+      - name: Dart static analysis
+        uses: zgosalvez/github-actions-analyze-dart@v3
         
       - name: Build with Flutter
         continue-on-error: true
@@ -83,7 +92,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build apk --${{ inputs.app-flavour }};
+          flutter build apk --${{ inputs.app-flavour }} ${{ inputs.flutter-build-arguments }};
           
       - name: Prepare to comment
         run: |
@@ -109,12 +118,12 @@ jobs:
             ### ⚙️ Overview
             - App flavor: ${{ inputs.app-flavour }}
             - Branch: ${{ inputs.flutter-branch }}
+            - Compile arguments: ${{ inputs.flutter-build-arguments }}
             - Start time: ${{ env.DATETIME }}
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          if-no-files-found: error
           name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
           path: | 
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
