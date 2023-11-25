@@ -51,16 +51,25 @@ class HomeView extends StatelessWidget {
                       const SizedBox(height: 10),
                       LatestCommitCard(model: model, parentContext: context),
                       const SizedBox(height: 23),
-                      I18nText(
-                        'homeView.patchHistorySubtitle',
-                        child: Text(
-                          '',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                      Visibility(
+                          visible: model.isPatchHistoryEnabled(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              I18nText(
+                                'homeView.patchHistorySubtitle',
+                                child: Text(
+                                  '',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              PatchHistoryCard(),
+                              const SizedBox(height: 10),
+
+                            ],
+                          ),
                       ),
-                      const SizedBox(height: 10),
-                      PatchHistoryCard(),
-                      const SizedBox(height: 10),
                       I18nText(
                         'homeView.patchedSubtitle',
                         child: Text(

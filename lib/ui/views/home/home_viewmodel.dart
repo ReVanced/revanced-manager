@@ -112,6 +112,10 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool isPatchHistoryEnabled() {
+    return _managerAPI.isPatchHistoryEnabled();
+  }
+
   Future<bool> hasManagerUpdates() async {
     String currentVersion = await _managerAPI.getCurrentManagerVersion();
 

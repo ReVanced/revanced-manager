@@ -147,7 +147,11 @@ class InstallerViewModel extends BaseViewModel {
         _patches,
       );
       _app.appliedPatches = _patches.map((p) => p.name).toList();
-      await _managerAPI.setLastPatchedApp(_app, _patcherAPI.outFile!);
+      if (_managerAPI.isPatchHistoryEnabled()) {
+        await _managerAPI.setLastPatchedApp(_app, _patcherAPI.outFile!);
+      } else {
+        _app.patchedFilePath = _patcherAPI.outFile!.path;
+      }
       locator<HomeViewModel>().initialize(context);
     } on Exception catch (e) {
       update(

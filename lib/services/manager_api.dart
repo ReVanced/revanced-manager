@@ -268,6 +268,14 @@ class ManagerAPI {
     await _prefs.setBool('requireSuggestedAppVersionEnabled', value);
   }
 
+  bool isPatchHistoryEnabled() {
+    return _prefs.getBool('patchHistoryEnabled') ?? true;
+  }
+
+  Future<void> enablePatchHistoryStatus(bool value) async {
+    await _prefs.setBool('patchHistoryEnabled', value);
+  }
+
   Future<void> setKeystorePassword(String password) async {
     await _prefs.setString('keystorePassword', password);
   }
