@@ -217,7 +217,7 @@ class InstallerViewModel extends BaseViewModel {
     final patchesAdded = _patches.where((p) => !defaultPatches.contains(p)).toList();
     final patchesRemoved = defaultPatches.where((p) => !_patches.contains(p)).toList();
 
-    // Patches changed -- default patches that are include but have any of their options changed.
+    // Options changed
     final patchesChanged = defaultPatches.where((p) => _patches.contains(p) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
 
     // Add Info
