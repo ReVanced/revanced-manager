@@ -179,19 +179,49 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
+  void _trimLogs(List<String> logLines, String keyword, String? newString) {
+    final lineCount = logLines.where((line) => line.endsWith(keyword)).length;
+    final index = logLines.indexWhere((line) => line.endsWith(keyword));
+    if (newString != null && lineCount > 0) {
+      logLines.insert(index, newString.replaceAll('{lineCount}', lineCount.toString()));
+    }
+    logLines.removeWhere((lines) => lines.endsWith(keyword));
+  }
+
+  dynamic _getPatchOptionValue(String patchName, Option option) {
+    final Option? savedOption = _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+    if (savedOption != null) {
+      return savedOption.value;
+    } else {
+      return option.value;
+    }
+  }
+
+  String _formatPatches(List<Patch> patches) {
+    if (patches.isEmpty) {
+      return 'None';
+    }
+    return patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]')).toList().join(', ');
+  }
+
   Future<void> copyLogs() async {
     final info = await AboutInfo.getInfo();
-    dynamic getValue(String patchName, Option option) {
-      final Option? savedOption =
-          _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
-      if (savedOption != null) {
-        return savedOption.value;
-      } else {
-        return option.value;
-      }
-    }
 
-    final formattedLogs = [
+    // Trim out extra lines
+    final logsTrimmed = logs.split('\n');
+    _trimLogs(logsTrimmed, 'succeeded', 'Applied {lineCount} patches');
+    _trimLogs(logsTrimmed, '.dex', 'Compiled {lineCount} dex files');
+
+    // Get patches added / removed
+    final defaultPatches = _patcherAPI.getFilteredPatches(_app.packageName).where((p) => !p.excluded).toList();
+    final patchesAdded = _patches.where((p) => !defaultPatches.contains(p)).toList();
+    final patchesRemoved = defaultPatches.where((p) => !_patches.contains(p)).toList();
+
+    // Patches changed -- default patches that are include but have any of their options changed.
+    final patchesChanged = defaultPatches.where((p) => _patches.contains(p) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
+
+    // Add Info
+    final formattedLogsWithInfo = [
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
       'Build: ${info['flavor']}',
@@ -203,7 +233,10 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${getValue(p.name, o)}').join(", ")}]')).toList().join(", ")}',
+      'Patches added: ${_formatPatches(patchesAdded)}',
+      'Patches removed: ${_formatPatches(patchesRemoved)}',
+      'Options changed: ${_formatPatches(patchesChanged)}',
+
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
@@ -212,10 +245,9 @@ class InstallerViewModel extends BaseViewModel {
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
       
       '\n- Logs',
-      logs,
     ];
 
-    Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
+    Clipboard.setData(ClipboardData(text: (formattedLogsWithInfo+logsTrimmed).join('\n')));
     _toast.showBottom('installerView.copiedToClipboard');
   }
 
