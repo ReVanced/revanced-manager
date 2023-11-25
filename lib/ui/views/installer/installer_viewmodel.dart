@@ -221,7 +221,7 @@ class InstallerViewModel extends BaseViewModel {
     final patchesChanged = defaultPatches.where((p) => _patches.contains(p) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
 
     // Add Info
-    final formattedLogsWithInfo = [
+    final formattedLogs = [
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
       'Build: ${info['flavor']}',
@@ -247,7 +247,7 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Logs',
     ];
 
-    Clipboard.setData(ClipboardData(text: (formattedLogsWithInfo+logsTrimmed).join('\n')));
+    Clipboard.setData(ClipboardData(text: (formattedLogs+logsTrimmed).join('\n')));
     _toast.showBottom('installerView.copiedToClipboard');
   }
 
