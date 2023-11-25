@@ -38,11 +38,11 @@ class PatchOptionsViewModel extends BaseViewModel {
                   option.required &&
                   !savedOptions.any((sOption) => sOption.key == option.key),
             )
-            .toList(),
+            ,
       ];
     } else {
       visibleOptions = [
-        ...options.where((option) => option.required).toList(),
+        ...options.where((option) => option.required),
       ];
     }
   }

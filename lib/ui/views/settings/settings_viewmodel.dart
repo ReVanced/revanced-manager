@@ -140,6 +140,57 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool isRequireSuggestedAppVersionEnabled() {
+    return _managerAPI.isRequireSuggestedAppVersionEnabled();
+  }
+
+  Future<void>? showRequireSuggestedAppVersionDialog(
+      BuildContext context, bool value,) {
+    if (!value) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          title: I18nText('warning'),
+          content: I18nText(
+            'settingsView.requireSuggestedAppVersionDialogText',
+            child: const Text(
+              '',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          actions: [
+            CustomMaterialButton(
+              isFilled: false,
+              label: I18nText('yesButton'),
+              onPressed: () {
+                _managerAPI.enableRequireSuggestedAppVersionStatus(false);
+                Navigator.of(context).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('noButton'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      _managerAPI.enableRequireSuggestedAppVersionStatus(true);
+
+      if (!_managerAPI.suggestedAppVersionSelected) {
+        _patcherViewModel.selectedApp = null;
+      }
+
+      return null;
+    }
+  }
+
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
     _toast.showBottom('settingsView.regeneratedKeystore');

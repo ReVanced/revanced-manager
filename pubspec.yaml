@@ -4,7 +4,7 @@ homepage: https://github.com/revanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.15.1+101500100
+version: 1.16.0+101600000
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -86,7 +86,7 @@ dev_dependencies:
   json_serializable: ^6.6.1
   build_runner: any
   flutter_launcher_icons: ^0.13.0
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
   injectable_generator: ^2.1.5

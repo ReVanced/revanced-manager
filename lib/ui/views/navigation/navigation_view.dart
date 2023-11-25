@@ -6,20 +6,18 @@ import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class NavigationView extends StatelessWidget {
-  const NavigationView({Key? key}) : super(key: key);
+  const NavigationView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NavigationViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
-      builder: (context, model, child) => WillPopScope(
-        onWillPop: () async {
-          if (model.currentIndex == 0) {
-            return true;
-          } else {
+      builder: (context, model, child) => PopScope(
+        canPop: model.currentIndex == 0,
+        onPopInvoked: (bool didPop) {
+          if (!didPop) {
             model.setIndex(0);
-            return false;
           }
         },
         child: Scaffold(

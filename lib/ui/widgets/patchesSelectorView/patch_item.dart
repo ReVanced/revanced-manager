@@ -10,7 +10,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
   PatchItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.simpleName,
     required this.description,
@@ -23,7 +23,7 @@ class PatchItem extends StatefulWidget {
     required this.onChanged,
     required this.navigateToOptions,
     required this.isChangeEnabled,
-  }) : super(key: key);
+  });
   final String name;
   final String simpleName;
   final String description;

@@ -18,7 +18,7 @@ This page will guide you through building ReVanced Manager from source.
 4. Delete conflicting outputs
 
    ```sh
-   flutter packages pub run build_runner build --delete-conflicting-outputs
+   dart run build_runner build --delete-conflicting-outputs
    ```
 
    > [!Note]

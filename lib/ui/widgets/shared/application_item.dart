@@ -8,12 +8,12 @@ import 'package:timeago/timeago.dart';
 
 class ApplicationItem extends StatefulWidget {
   const ApplicationItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.name,
     required this.patchDate,
     required this.onPressed,
-  }) : super(key: key);
+  });
   final Uint8List icon;
   final String name;
   final DateTime patchDate;
