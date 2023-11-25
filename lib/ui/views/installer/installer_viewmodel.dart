@@ -245,9 +245,10 @@ class InstallerViewModel extends BaseViewModel {
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
       
       '\n- Logs',
+      logsTrimmed.join('\n'),
     ];
 
-    Clipboard.setData(ClipboardData(text: (formattedLogs+logsTrimmed).join('\n')));
+    Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
     _toast.showBottom('installerView.copiedToClipboard');
   }
 
