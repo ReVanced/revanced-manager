@@ -133,7 +133,7 @@ jobs:
             
             Checkout the Dart static analyse check at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
-            Download the apk at ${{ env.ARTIFACT_URL }}
+            Download the [application artefact](${{ env.ARTIFACT_URL }}).
 
             ### ⚙️ Overview
             - App flavor: ${{ inputs.app-flavour }}
