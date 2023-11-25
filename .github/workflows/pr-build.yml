@@ -130,7 +130,7 @@ jobs:
             
             ${{ env.MESSAGE }}
             
-            You can see more details in run [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}}
+            Checkout the Dart static analyse check at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
             Download the apk at ${{ env.ARTIFACT_URL }}
 
