@@ -10,8 +10,7 @@ import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 //ignore: must_be_immutable
 class PatchHistoryCard extends StatelessWidget {
-  PatchHistoryCard({Key? key}) : super(key: key);
-
+  PatchHistoryCard({super.key});
   PatchedApplication? app = locator<HomeViewModel>().lastPatchedApp;
 
   @override
@@ -50,7 +49,7 @@ class PatchHistoryCard extends StatelessWidget {
         name: app!.name,
         patchDate: app!.patchDate,
         onPressed: () =>
-            locator<HomeViewModel>().navigateToAppInfo(app!, false),
+            locator<HomeViewModel>().navigateToAppInfo(app!, true),
       );
   }
 }

@@ -11,9 +11,10 @@ class AppInfoView extends StatelessWidget {
   const AppInfoView({
     super.key,
     required this.app,
+    required this.isHistory,
   });
   final PatchedApplication app;
-  final bool isInstalled;
+  final bool isHistory;
 
   @override
   Widget build(BuildContext context) {
@@ -75,26 +76,26 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => isInstalled
-                                      ? model.openApp(app)
-                                      : model.installApp(context, app),
+                                    onTap: () => isHistory
+                                      ? model.installApp(context, app)
+                                      : model.openApp(app),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          isInstalled
-                                              ? Icons.open_in_new_outlined
-                                              : Icons.download_outlined,
+                                          isHistory
+                                              ? Icons.download_outlined
+                                              : Icons.open_in_new_outlined,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
                                         I18nText(
-                                          isInstalled
-                                              ? 'appInfoView.openButton'
-                                              : 'appInfoView.installButton',
+                                          isHistory
+                                              ? 'appInfoView.installButton'
+                                              : 'appInfoView.openButton',
                                           child: Text(
                                             '',
                                             style: TextStyle(
@@ -121,30 +122,30 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => isInstalled
-                                      ? model.showUninstallDialog(
+                                    onTap: () => isHistory
+                                      ? model.exportApp(app)
+                                      : model.showUninstallDialog(
                                           context,
                                           app,
                                           false,
-                                        )
-                                      : model.exportApp(app),
+                                        ),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          isInstalled
-                                              ? Icons.delete_outline
-                                              : Icons.save,
+                                          isHistory
+                                              ? Icons.save
+                                              : Icons.delete_outline,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
                                         I18nText(
-                                          isInstalled
-                                              ? 'appInfoView.uninstallButton'
-                                              : 'appInfoView.exportButton',
+                                          isHistory
+                                              ? 'appInfoView.exportButton'
+                                              : 'appInfoView.uninstallButton',
                                           child: Text(
                                             '',
                                             style: TextStyle(
@@ -166,14 +167,60 @@ class AppInfoView extends StatelessWidget {
                                 endIndent: 12.0,
                                 width: 1.0,
                               ),
-                              if (app.isRooted)
+                              if (isHistory)
                                 VerticalDivider(
                                   color: Theme.of(context).canvasColor,
                                   indent: 12.0,
                                   endIndent: 12.0,
                                   width: 1.0,
                                 ),
-                              if (app.isRooted)
+                              if (isHistory)
+                                Expanded(
+                                  child: Material(
+                                    type: MaterialType.transparency,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      onTap: () => model.showDeleteDialog(
+                                        context,
+                                        app,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons
+                                                .delete_forever_outlined,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          I18nText(
+                                            'appInfoView.deleteButton',
+                                            child: Text(
+                                              '',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (!isHistory && app.isRooted)
+                                VerticalDivider(
+                                  color: Theme.of(context).canvasColor,
+                                  indent: 12.0,
+                                  endIndent: 12.0,
+                                  width: 1.0,
+                                ),
+                              if (!isHistory && app.isRooted)
                                 Expanded(
                                   child: Material(
                                     type: MaterialType.transparency,
@@ -239,7 +286,9 @@ class AppInfoView extends StatelessWidget {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),
                       title: I18nText(
-                        'appInfoView.installTypeLabel',
+                        isHistory
+                            ? 'appInfoView.sizeLabel'
+                            : 'appInfoView.versionLabel',
                         child: const Text(
                           '',
                           style: TextStyle(
@@ -248,9 +297,11 @@ class AppInfoView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      subtitle: app.isRooted
-                          ? I18nText('appInfoView.rootTypeLabel')
-                          : I18nText('appInfoView.nonRootTypeLabel'),
+                      subtitle: Text(
+                        isHistory
+                            ? model.getFileSizeString(app.fileSize)
+                            : app.version,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

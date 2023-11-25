@@ -86,10 +86,10 @@ class HomeViewModel extends BaseViewModel {
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
-  void navigateToAppInfo(PatchedApplication app, bool isInstalled) {
+  void navigateToAppInfo(PatchedApplication app, bool isHistory) {
     _navigationService.navigateTo(
       Routes.appInfoView,
-      arguments: AppInfoViewArguments(app: app, isInstalled: isInstalled),
+      arguments: AppInfoViewArguments(app: app, isHistory: isHistory),
     );
   }
 

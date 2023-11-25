@@ -297,21 +297,23 @@ class ManagerAPI {
     return app != null ? PatchedApplication.fromJson(jsonDecode(app)) : null;
   }
 
+  Future<void> deleteLastPatchedApp() async {
+    final PatchedApplication? app = getLastPatchedApp();
+    if (app != null) {
+      final File file = File(app.patchedFilePath);
+      await file.delete();
+      await _prefs.remove('lastPatchedApp');
+    }
+  }
+
   Future<void> setLastPatchedApp(
     PatchedApplication app,
     File outFile,
   ) async {
-    final Directory appCache = await getTemporaryDirectory();
-    app.outFilePath = outFile.copySync('${appCache.path}/${app.packageName}.apk').path;
-    final ApplicationWithIcon? installed = await DeviceApps.getApp(
-      app.packageName,
-      true,
-    ) as ApplicationWithIcon?;
-    if (installed != null) {
-      app.name = installed.appName;
-      app.version = installed.versionName!;
-      app.icon = installed.icon;
-    }
+    deleteLastPatchedApp();
+    final Directory appCache = await getApplicationSupportDirectory();
+    app.patchedFilePath = outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.fileSize = outFile.lengthSync();
     await _prefs.setString(
       'lastPatchedApp',
       json.encode(app.toJson()),
@@ -676,6 +678,16 @@ class ManagerAPI {
     patchedApps.addAll(mountedApps);
 
     await setPatchedApps(patchedApps);
+
+    // Removed saved app history if the file is not found.
+    final PatchedApplication? lastPatchedApp = getLastPatchedApp();
+    if (lastPatchedApp != null) {
+      final File file = File(lastPatchedApp.patchedFilePath);
+      if (!file.existsSync()) {
+        deleteLastPatchedApp();
+        _prefs.remove('lastPatchedApp');
+      }
+    }
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {

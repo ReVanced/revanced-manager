@@ -26,14 +26,14 @@
         "widgetTitle": "Dashboard",
 
         "updatesSubtitle": "Updates",
-        "patchHistorySubtitle": "Patch History",
+        "patchHistorySubtitle": "Last Patched App",
         "patchedSubtitle": "Installed apps",
 
         "noUpdates": "No updates available",
 
         "WIP": "Work in progress...",
 
-        "noHistory": "No patch history available",
+        "noHistory": "No app found",
         "noInstallations": "No patched apps installed",
         "installUpdate": "Continue to install the update?",
 
@@ -307,10 +307,14 @@
         "uninstallButton": "Uninstall",
         "unpatchButton": "Unpatch",
         "exportButton": "Export",
+        "deleteButton": "Delete",
         "rootDialogTitle": "Error",
 
         "unpatchDialogText": "Are you sure you want to unpatch this app?",
         "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
+
+        "removeAppDialogTitle": "Remove app?",
+        "removeAppDialogText": "Are you sure you want to remove this app?",
 
         "packageNameLabel": "Package name",
         "installTypeLabel": "Installation type",
@@ -318,6 +322,7 @@
         "nonRootTypeLabel": "Non-root",
         "patchedDateLabel": "Patched date",
         "appliedPatchesLabel": "Applied patches",
+        "sizeLabel": "File size",
 
         "patchedDateHint": "{date} at {time}",
         "appliedPatchesHint": "{quantity} applied patches",

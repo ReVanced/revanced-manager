@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:math';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -130,6 +131,35 @@ class AppInfoViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> showDeleteDialog(
+    BuildContext context,
+    PatchedApplication app,
+  ) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: I18nText('appInfoView.removeAppDialogTitle'),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: I18nText('appInfoView.removeAppDialogText'),
+        actions: <Widget>[
+          CustomMaterialButton(
+            label: I18nText('cancelButton'),
+            isFilled: false,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          CustomMaterialButton(
+            label: I18nText('okButton'),
+            onPressed: () => {
+              _managerAPI.deleteLastPatchedApp(),
+              Navigator.of(context)..pop()..pop(),
+              locator<HomeViewModel>().initialize(context),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   String getPrettyDate(BuildContext context, DateTime dateTime) {
     return DateFormat.yMMMMd(Localizations.localeOf(context).languageCode)
         .format(dateTime);
@@ -138,6 +168,12 @@ class AppInfoViewModel extends BaseViewModel {
   String getPrettyTime(BuildContext context, DateTime dateTime) {
     return DateFormat.jm(Localizations.localeOf(context).languageCode)
         .format(dateTime);
+  }
+
+  String getFileSizeString(int bytes) {
+    const suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    final i = (log(bytes) / log(1024)).floor();
+    return '${(bytes / pow(1024, i)).toStringAsFixed(2)} ${suffixes[i]}';
   }
 
   Future<void> showAppliedPatchesDialog(

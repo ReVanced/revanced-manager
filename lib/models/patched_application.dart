@@ -16,7 +16,8 @@ class PatchedApplication {
     this.isRooted = false,
     this.isFromStorage = false,
     this.appliedPatches = const [],
-    this.outFilePath = '',
+    this.patchedFilePath = '',
+    this.fileSize = 0,
   });
 
   factory PatchedApplication.fromJson(Map<String, dynamic> json) =>
@@ -34,7 +35,8 @@ class PatchedApplication {
   bool isRooted;
   bool isFromStorage;
   List<String> appliedPatches;
-  String outFilePath;
+  String patchedFilePath;
+  int fileSize;
 
   Map<String, dynamic> toJson() => _$PatchedApplicationToJson(this);
 
