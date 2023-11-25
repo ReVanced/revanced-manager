@@ -283,32 +283,15 @@ class ManagerAPI {
     }
   }
 
-  List<PatchedApplication> getPatchedAppHistory() {
-    final List<String> apps = _prefs.getStringList('patchedAppHistory') ?? [];
-    return apps.map((a) => PatchedApplication.fromJson(jsonDecode(a))).toList();
+  PatchedApplication? getLastPatchedApp() {
+    final String? app = _prefs.getString('lastPatchedApp');
+    return app != null ? PatchedApplication.fromJson(jsonDecode(app)) : null;
   }
 
-  Future<void> setPatchedAppHistory(
-    List<PatchedApplication> patchedAppHistory,
+  Future<void> setLastPatchedApp(
+    PatchedApplication app,
+    File outFile,
   ) async {
-    patchedAppHistory.sort((a, b) => b.patchDate.compareTo(a.patchDate));
-    while (patchedAppHistory.length > 3) {
-      final File file = File(patchedAppHistory[3].outFilePath);
-      if (await file.exists()) {
-        await file.delete();
-      }
-      patchedAppHistory.removeAt(3);
-    }
-
-    await _prefs.setStringList(
-      'patchedAppHistory',
-      patchedAppHistory.map((a) => json.encode(a.toJson())).toList(),
-    );
-  }
-
-  Future<void> savePatchedAppHistory(PatchedApplication app, File outFile) async {
-    final List<PatchedApplication> patchedAppHistory = getPatchedAppHistory();
-    patchedAppHistory.removeWhere((a) => a.packageName == app.packageName);
     final Directory appCache = await getTemporaryDirectory();
     app.outFilePath = outFile.copySync('${appCache.path}/${app.packageName}.apk').path;
     final ApplicationWithIcon? installed = await DeviceApps.getApp(
@@ -320,8 +303,10 @@ class ManagerAPI {
       app.version = installed.versionName!;
       app.icon = installed.icon;
     }
-    patchedAppHistory.add(app);
-    await setPatchedAppHistory(patchedAppHistory);
+    await _prefs.setString(
+      'lastPatchedApp',
+      json.encode(app.toJson()),
+    );
   }
 
   List<PatchedApplication> getPatchedApps() {

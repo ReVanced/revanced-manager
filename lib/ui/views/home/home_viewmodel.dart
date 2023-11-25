@@ -35,7 +35,7 @@ class HomeViewModel extends BaseViewModel {
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   bool showUpdatableApps = false;
-  List<PatchedApplication> patchedAppHistory = [];
+  PatchedApplication? lastPatchedApp;
   List<PatchedApplication> patchedInstalledApps = [];
   String? _latestManagerVersion = '';
   File? downloadedApk;
@@ -107,7 +107,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void _getPatchedApps() {
-    patchedAppHistory = _managerAPI.getPatchedAppHistory().toList();
+    lastPatchedApp = _managerAPI.getLastPatchedApp();
     patchedInstalledApps = _managerAPI.getPatchedApps().toList();
     notifyListeners();
   }
