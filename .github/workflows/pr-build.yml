@@ -20,7 +20,7 @@ on:
         default: true
         
       # Application configuration
-      app-flavour:
+      app-flavor:
         description: App flavour
         default: 'release'
         type: choice
@@ -31,7 +31,7 @@ on:
           
       # Pull Request
       pr-number:
-        description: PR number (No hashtag)
+        description: PR number
         required: true
         
       # Additional
@@ -93,7 +93,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build apk --${{ inputs.app-flavour }} ${{ inputs.flutter-build-arguments }};
+          flutter build apk --${{ inputs.app-flavor }} ${{ inputs.flutter-build-arguments }};
           
       - name: Prepare to comment
         run: |
@@ -106,19 +106,10 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
+          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }})-${{ inputs.flutter-branch }}
           path: | 
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
-            
-      - name: Get artifact URL
-        run: |
-          sudo apt install jq
-          ARTIFACT_URL=$(curl \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -s "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" | \
-            jq -r ".artifacts[] | select(.name==\"revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}\") | .archive_download_url")
-          echo "ARTIFACT_URL=$ARTIFACT_URL" >> $GITHUB_ENV
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk.sha1
           
       - name: "Comment to Pull Request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
@@ -131,12 +122,10 @@ jobs:
             
             ${{ env.MESSAGE }}
             
-            Checkout the Dart static analyze check at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-
-            Directly download the [application artifact](${{ env.ARTIFACT_URL }}) here.
+            Checkout the Dart static analyze check or download the artifact at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
             ### ⚙️ Overview
-            - App flavor: ${{ inputs.app-flavour }}
+            - App flavor: ${{ inputs.app-flavor }}
             - Branch: ${{ inputs.flutter-branch }}
             - Compile arguments: ${{ inputs.flutter-build-arguments }}
             - Start time: ${{ env.DATETIME }}
