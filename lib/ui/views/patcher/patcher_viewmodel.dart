@@ -174,7 +174,8 @@ class PatcherViewModel extends BaseViewModel {
 
     if (suggestedVersion.isNotEmpty) {
       await openDefaultBrowser(
-          '${selectedApp!.packageName} apk version v$suggestedVersion');
+        '${selectedApp!.packageName} apk version v$suggestedVersion',
+      );
     } else {
       await openDefaultBrowser('${selectedApp!.packageName} apk');
     }
@@ -244,7 +245,10 @@ class PatcherViewModel extends BaseViewModel {
         removedPatches.add('• ${patch.name}');
         for (final option in patch.options) {
           _managerAPI.clearPatchOption(
-              selectedApp!.packageName, patch.name, option.key);
+            selectedApp!.packageName,
+            patch.name,
+            option.key,
+          );
         }
       }
     }

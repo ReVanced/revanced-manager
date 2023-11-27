@@ -163,12 +163,14 @@
     },
     "installerView": {
         "widgetTitle": "Installer",
-        "installType": "Select install type",
-        "installTypeDescription": "Select the installation type to proceed with.",
+        "installType": "Choose installation method",
+        "installTypeDescription": "To install, you can either mount or install normally. Mounting will install the patched app on top of an existing installation.",
 
         "installButton": "Install",
         "installRootType": "Mount",
         "installNonRootType": "Normal",
+
+        "warning": "Disable auto updates after installing the app to avoid unexpected issues.",
 
         "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
@@ -327,5 +329,47 @@
         "integrationsContributors": "Integrations contributors",
         "cliContributors": "CLI contributors",
         "managerContributors": "Manager contributors"
+    },
+    "installErrorDialog": {
+        "title0": "Version mismatch",
+        "title1": "No installation found",
+        "title2": "Installation blocked",
+        "title3_0": "Installation blocked",
+
+        "title4": "Installation invalid",
+        "title4_0": "Can't downgrade",
+
+        "title5": "Installation conflict",
+        "title6": "Installation storage issue",
+        "title7": "Installation incompatible",
+        "title8": "Installation timeout",
+        "title10": "No root access",
+
+        "callback0": "To install by mounting the patched app, the version of the installed app must match the version of the patched app.",
+        "callback1": "To install by mounting the patched app, the unpatched app must be installed on this device.",
+        "callback2": "The installation was blocked by {packageName}.",
+        "callback3_0": "The installation was blocked.",
+
+        "callback4": "The app is invalid.",
+        "callback4_0": "The version of the installed app is newer than the version of the patched app.",
+
+        "callback5": "An existing installation of the app prevents the installation.",
+        "callback6": "The app could not be installed due to insufficient storage.",
+        "callback7": "The app is incompatible with this device.",
+        "callback8": "The installation took too long.",
+        "callback10": "To install by mounting the patched app, root access is required.",
+
+        "solution0": "Install the version of the app you are mounting and try again.",
+        "solution2": "Adjust your security settings and try again.",
+        "solution3_0": "Adjust your security settings and try again.",
+
+        "solution4": "Reinstall by uninstalling the app and try again?",
+        "solution4_0": "Uninstall the current version and try again?",
+
+        "solution5": "Uninstall the app and try again?",
+        "solution6": "Free up some space and try again.",
+        "solution7": "Contact the developer of the app and ask for support.",
+        "solution8": "Try again.",
+        "solution10": "Grant root access to ReVanced Manager and try again."
     }
 }

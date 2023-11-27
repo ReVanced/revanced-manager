@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
-import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -54,7 +53,7 @@ class HomeViewModel extends BaseViewModel {
           _toast.showBottom('homeView.installingMessage');
           final File? managerApk = await _managerAPI.downloadManager();
           if (managerApk != null) {
-            await InstallPlugin.installApk(managerApk.path);
+            await _patcherAPI.installApk(context, managerApk.path);
           } else {
             _toast.showBottom('homeView.errorDownloadMessage');
           }
@@ -76,7 +75,7 @@ class HomeViewModel extends BaseViewModel {
       _toast.showBottom('homeView.installingMessage');
       final File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
-        await InstallPlugin.installApk(managerApk.path);
+        await _patcherAPI.installApk(context, managerApk.path);
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
@@ -84,6 +83,7 @@ class HomeViewModel extends BaseViewModel {
 
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
+
 
   void navigateToAppInfo(PatchedApplication app) {
     _navigationService.navigateTo(
@@ -270,6 +270,7 @@ class HomeViewModel extends BaseViewModel {
           valueListenable: downloaded,
           builder: (context, value, child) {
             return SimpleDialog(
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
               contentPadding: const EdgeInsets.all(16.0),
               title: I18nText(
                 !value
@@ -369,9 +370,7 @@ class HomeViewModel extends BaseViewModel {
                                 child: CustomMaterialButton(
                                   label: I18nText('updateButton'),
                                   onPressed: () async {
-                                    await InstallPlugin.installApk(
-                                      downloadedApk!.path,
-                                    );
+                                    await _patcherAPI.installApk(context, downloadedApk!.path);
                                   },
                                 ),
                               ),
@@ -415,7 +414,7 @@ class HomeViewModel extends BaseViewModel {
         //       UILocalNotificationDateInterpretation.absoluteTime,
         // );
         _toast.showBottom('homeView.installingMessage');
-        await InstallPlugin.installApk(managerApk.path);
+        await _patcherAPI.installApk(context, managerApk.path);
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }

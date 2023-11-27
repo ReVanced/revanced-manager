@@ -68,10 +68,6 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
   dio_cache_interceptor: ^3.4.0
-  install_plugin:
-    git: # remove once https://github.com/hui-z/flutter_install_plugin/pull/67 is merged
-      url: https://github.com/BenjaminHalko/flutter_install_plugin
-      ref: master
   screenshot_callback:
     git: # remove once https://github.com/flutter-moum/flutter_screenshot_callback/pull/81 is merged
       url: https://github.com/BenjaminHalko/flutter_screenshot_callback

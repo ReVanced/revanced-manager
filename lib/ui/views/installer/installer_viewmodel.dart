@@ -199,7 +199,7 @@ class InstallerViewModel extends BaseViewModel {
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
       'Root permissions: ${isRooted ? 'Yes' : 'No'}',
-      
+
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
@@ -210,7 +210,7 @@ class InstallerViewModel extends BaseViewModel {
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-      
+
       '\n- Logs',
       logs,
     ];
@@ -258,11 +258,12 @@ class InstallerViewModel extends BaseViewModel {
       await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => AlertDialog(
+        builder: (innerContext) => AlertDialog(
           title: I18nText(
             'installerView.installType',
           ),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          backgroundColor:
+              Theme.of(innerContext).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
           content: SingleChildScrollView(
@@ -310,6 +311,19 @@ class InstallerViewModel extends BaseViewModel {
                         installType.value = selected!;
                       },
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: I18nText(
+                        'installerView.warning',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },
@@ -320,13 +334,13 @@ class InstallerViewModel extends BaseViewModel {
               label: I18nText('cancelButton'),
               isFilled: false,
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(innerContext).pop();
               },
             ),
             CustomMaterialButton(
               label: I18nText('installerView.installButton'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(innerContext).pop();
                 installResult(context, installType.value == 1);
               },
             ),
@@ -334,7 +348,35 @@ class InstallerViewModel extends BaseViewModel {
         ),
       );
     } else {
-      installResult(context, false);
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (innerContext) => AlertDialog(
+          title: I18nText(
+            'warning',
+          ),
+          backgroundColor:
+              Theme.of(innerContext).colorScheme.secondaryContainer,
+          contentPadding: const EdgeInsets.all(16),
+          content: I18nText('installerView.warning'),
+          actions: [
+            CustomMaterialButton(
+              label: I18nText('cancelButton'),
+              isFilled: false,
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+              },
+            ),
+            CustomMaterialButton(
+              label: I18nText('installerView.installButton'),
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+                installResult(context, false);
+              },
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -355,15 +397,18 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      update(
-        1.0,
-        'Installing...',
-        _app.isRooted
-            ? 'Installing patched file using root method'
-            : 'Installing patched file using nonroot method',
-      );
-      isInstalled = await _patcherAPI.installPatchedFile(_app);
-      if (isInstalled) {
+      if (headerLogs != 'Installing...') {
+        update(
+          1.0,
+          'Installing...',
+          _app.isRooted
+              ? 'Mounting patched app'
+              : 'Installing patched app',
+        );
+      }
+      final int response = await _patcherAPI.installPatchedFile(context, _app);
+      if (response == 0) {
+        isInstalled = true;
         _app.isFromStorage = false;
         _app.patchDate = DateTime.now();
         _app.appliedPatches = _patches.map((p) => p.name).toList();
@@ -379,9 +424,26 @@ class InstallerViewModel extends BaseViewModel {
 
         await _managerAPI.savePatchedApp(_app);
 
-        update(1.0, 'Installed!', 'Installed!');
+        update(1.0, 'Installed', 'Installed');
+      } else if (response == 3) {
+        update(
+          1.0,
+          'Installation canceled',
+          'Installation canceled',
+        );
+      } else if (response == 10) {
+        installResult(context, installAsRoot);
+        update(
+          1.0,
+          '',
+          'Starting installer',
+        );
       } else {
-        // TODO(aabed): Show error message.
+        update(
+          1.0,
+          'Installation failed',
+          'Installation failed',
+        );
       }
     } on Exception catch (e) {
       if (kDebugMode) {

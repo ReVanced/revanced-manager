@@ -1,11 +1,16 @@
 package app.revanced.manager.flutter
 
+import android.app.PendingIntent
 import android.app.SearchManager
 import android.content.Intent
+import android.content.pm.PackageInstaller
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import app.revanced.manager.flutter.utils.Aapt
 import app.revanced.manager.flutter.utils.aligning.ZipAligner
+import app.revanced.manager.flutter.utils.packageInstaller.InstallerReceiver
+import app.revanced.manager.flutter.utils.packageInstaller.UninstallerReceiver
 import app.revanced.manager.flutter.utils.signing.Signer
 import app.revanced.manager.flutter.utils.zip.ZipFile
 import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
@@ -184,12 +189,24 @@ class MainActivity : FlutterActivity() {
                     }.toString().let(result::success)
                 }
 
+                "installApk" -> {
+                    val apkPath = call.argument<String>("apkPath")!!
+                    PackageInstallerManager.result = result
+                    installApk(apkPath)
+                }
+
+                "uninstallApp" -> {
+                    val packageName = call.argument<String>("packageName")!!
+                    uninstallApp(packageName)
+                    PackageInstallerManager.result = result
+                }
+
                 else -> result.notImplemented()
             }
         }
     }
 
-    fun openBrowser(query: String?) {
+    private fun openBrowser(query: String?) {
         val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
             putExtra(SearchManager.QUERY, query)
         }
@@ -406,5 +423,45 @@ class MainActivity : FlutterActivity() {
 
             handler.post { result.success(null) }
         }.start()
+    }
+
+    private fun installApk(apkPath: String) {
+        val packageInstaller: PackageInstaller = applicationContext.packageManager.packageInstaller
+        val sessionParams = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
+        val sessionId: Int = packageInstaller.createSession(sessionParams)
+        val session: PackageInstaller.Session = packageInstaller.openSession(sessionId)
+        session.use { activeSession ->
+            val sessionOutputStream = activeSession.openWrite(applicationContext.packageName, 0, -1)
+            sessionOutputStream.use { outputStream ->
+                val apkFile = File(apkPath)
+                apkFile.inputStream().use { inputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+        }
+        val receiverIntent = Intent(applicationContext, InstallerReceiver::class.java).apply {
+            action = "APP_INSTALL_ACTION"
+        }
+        val receiverPendingIntent = PendingIntent.getBroadcast(context, sessionId, receiverIntent, PackageInstallerManager.flags)
+        session.commit(receiverPendingIntent.intentSender)
+        session.close()
+    }
+
+    private fun uninstallApp(packageName: String) {
+        val packageInstaller: PackageInstaller = applicationContext.packageManager.packageInstaller
+        val receiverIntent = Intent(applicationContext, UninstallerReceiver::class.java).apply {
+            action = "APP_UNINSTALL_ACTION"
+        }
+        val receiverPendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PackageInstallerManager.flags)
+        packageInstaller.uninstall(packageName, receiverPendingIntent.intentSender)
+    }
+
+    object PackageInstallerManager {
+        var result: MethodChannel.Result? = null
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
     }
 }

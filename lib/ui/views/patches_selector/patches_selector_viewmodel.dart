@@ -186,10 +186,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
     saveSelectedPatches();
-    if (_managerAPI.ctx != null) {
-      Navigator.pop(_managerAPI.ctx!);
-      _managerAPI.ctx = null;
-    }
     locator<PatcherViewModel>().notifyListeners();
   }
 
