@@ -211,9 +211,8 @@ class InstallerViewModel extends BaseViewModel {
 
     // Get patches added / removed
     final defaultPatches = _patcherAPI.getFilteredPatches(_app.packageName).where((p) => !p.excluded).toList();
-    final defaultPatchesNames = defaultPatches.map((p) => p.name).toList();
     final appliedPatchesNames = _patches.map((p) => p.name).toList();
-    final patchesAdded = _patches.where((p) => !defaultPatchesNames.contains(p.name)).toList();
+    final patchesAdded = _patches.where((p) => p.excluded).toList();
     final patchesRemoved = defaultPatches.where((p) => !appliedPatchesNames.contains(p.name)).toList();
 
     // Options changed
