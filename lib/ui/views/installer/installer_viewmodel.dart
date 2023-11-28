@@ -197,11 +197,8 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  String _formatPatches(List<Patch> patches) {
-    if (patches.isEmpty) {
-      return 'None';
-    }
-    return patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]')).toList().join(', ');
+  String _formatPatches(List<Patch> patches, String noneString) {
+    return patches.isEmpty ? noneString : patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]')).toList().join(', ');
   }
 
   Future<void> copyLogs() async {
@@ -214,11 +211,13 @@ class InstallerViewModel extends BaseViewModel {
 
     // Get patches added / removed
     final defaultPatches = _patcherAPI.getFilteredPatches(_app.packageName).where((p) => !p.excluded).toList();
-    final patchesAdded = _patches.where((p) => !defaultPatches.contains(p)).toList();
-    final patchesRemoved = defaultPatches.where((p) => !_patches.contains(p)).toList();
+    final defaultPatchesNames = defaultPatches.map((p) => p.name).toList();
+    final appliedPatchesNames = _patches.map((p) => p.name).toList();
+    final patchesAdded = _patches.where((p) => !defaultPatchesNames.contains(p.name)).toList();
+    final patchesRemoved = defaultPatches.where((p) => !appliedPatchesNames.contains(p.name)).toList();
 
     // Options changed
-    final patchesChanged = defaultPatches.where((p) => _patches.contains(p) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
+    final patchesChanged = defaultPatches.where((p) => appliedPatchesNames.contains(p.name) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
 
     // Add Info
     final formattedLogs = [
@@ -233,9 +232,9 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches added: ${_formatPatches(patchesAdded)}',
-      'Patches removed: ${_formatPatches(patchesRemoved)}',
-      'Options changed: ${_formatPatches(patchesChanged)}',
+      'Patches added: ${_formatPatches(patchesAdded, 'Default')}',
+      'Patches removed: ${_formatPatches(patchesRemoved, 'None')}',
+      'Options changed: ${_formatPatches(patchesChanged, 'None')}',
 
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
