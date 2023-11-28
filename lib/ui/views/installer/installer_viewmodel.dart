@@ -198,7 +198,10 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   String _formatPatches(List<Patch> patches, String noneString) {
-    return patches.isEmpty ? noneString : patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]')).toList().join(', ');
+    return patches.isEmpty ? noneString : patches.map((p) {
+      final optionsChanged = p.options.where((o) => _getPatchOptionValue(p.name, o) != o.value).toList();
+      return p.name + (optionsChanged.isEmpty ? '' : ' [${optionsChanged.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]');
+    }).join(', ');
   }
 
   Future<void> copyLogs() async {
@@ -212,17 +215,15 @@ class InstallerViewModel extends BaseViewModel {
     // Get patches added / removed
     final defaultPatches = _patcherAPI.getFilteredPatches(_app.packageName).where((p) => !p.excluded).toList();
     final appliedPatchesNames = _patches.map((p) => p.name).toList();
-    final patchesAdded = _patches.where((p) => p.excluded).toList();
-    final patchesRemoved = defaultPatches.where((p) => !appliedPatchesNames.contains(p.name)).toList();
 
-    // Options changed
-    final patchesChanged = defaultPatches.where((p) => appliedPatchesNames.contains(p.name) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
+    final patchesAdded = _patches.where((p) => p.excluded).toList();
+    final patchesRemoved = defaultPatches.where((p) => !appliedPatchesNames.contains(p.name)).map((p) => p.name).toList();
+    final patchesOptionsChanged = defaultPatches.where((p) => appliedPatchesNames.contains(p.name) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
 
     // Add Info
     final formattedLogs = [
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
-      'Build: ${info['flavor']}',
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
@@ -232,8 +233,8 @@ class InstallerViewModel extends BaseViewModel {
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches added: ${_formatPatches(patchesAdded, 'Default')}',
-      'Patches removed: ${_formatPatches(patchesRemoved, 'None')}',
-      'Options changed: ${_formatPatches(patchesChanged, 'None')}',
+      'Patches removed: ${patchesRemoved.isEmpty ? 'None' : patchesRemoved.join(', ')}',
+      'Default patch options changed: ${_formatPatches(patchesOptionsChanged, 'None')}',
 
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
