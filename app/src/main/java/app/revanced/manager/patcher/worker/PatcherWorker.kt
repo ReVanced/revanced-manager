@@ -219,6 +219,7 @@ class PatcherWorker(
                 fs.tempDir.absolutePath,
                 frameworkPath,
                 aaptPath,
+                prefs.multithreadingDexFileWriter.get(),
                 args.logger,
                 inputFile,
                 onStepSucceeded = ::updateProgress
