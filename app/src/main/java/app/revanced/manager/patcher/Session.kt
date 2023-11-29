@@ -20,6 +20,7 @@ class Session(
     cacheDir: String,
     frameworkDir: String,
     aaptPath: String,
+    multithreadingDexFileWriter: Boolean,
     private val logger: ManagerLogger,
     private val input: File,
     private val onStepSucceeded: suspend () -> Unit
@@ -31,7 +32,7 @@ class Session(
             resourceCachePath = tempDir.resolve("aapt-resources"),
             frameworkFileDirectory = frameworkDir,
             aaptBinaryPath = aaptPath,
-            multithreadingDexFileWriter = false
+            multithreadingDexFileWriter = multithreadingDexFileWriter,
         )
     )
 
