@@ -11,22 +11,22 @@ import kotlinx.parcelize.RawValue
 sealed interface Destination : Parcelable {
 
     @Parcelize
-    object Dashboard : Destination
+    data object Dashboard : Destination
 
     @Parcelize
-    data class ApplicationInfo(val installedApp: InstalledApp) : Destination
+    data class InstalledApplicationInfo(val installedApp: InstalledApp) : Destination
 
     @Parcelize
-    object AppSelector : Destination
+    data object AppSelector : Destination
 
     @Parcelize
-    object Settings : Destination
+    data class Settings(val startDestination: SettingsDestination = SettingsDestination.Settings) : Destination
 
     @Parcelize
     data class VersionSelector(val packageName: String, val patchesSelection: PatchesSelection? = null) : Destination
 
     @Parcelize
-    data class PatchesSelector(val selectedApp: SelectedApp, val patchesSelection: PatchesSelection? = null) : Destination
+    data class SelectedApplicationInfo(val selectedApp: SelectedApp, val patchesSelection: PatchesSelection? = null) : Destination
 
     @Parcelize
     data class Installer(val selectedApp: SelectedApp, val selectedPatches: PatchesSelection, val options: @RawValue Options) : Destination

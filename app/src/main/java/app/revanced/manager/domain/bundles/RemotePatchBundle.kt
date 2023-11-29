@@ -33,14 +33,17 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
     private suspend fun download(info: BundleInfo) = withContext(Dispatchers.IO) {
         val (patches, integrations) = info
         coroutineScope {
-            mapOf(
-                patches.url to patchesFile,
-                integrations.url to integrationsFile
-            ).forEach { (asset, file) ->
-                launch {
-                    http.download(file) {
-                        url(asset)
+            launch {
+                patchBundleOutputStream().use {
+                    http.streamTo(it) {
+                        url(patches.url)
                     }
+                }
+            }
+
+            launch {
+                http.download(integrationsFile) {
+                    url(integrations.url)
                 }
             }
         }
@@ -101,7 +104,7 @@ class APIPatchBundle(name: String, id: Int, directory: File, endpoint: String) :
     override suspend fun getLatestInfo() = coroutineScope {
         fun getAssetAsync(repo: String, mime: String) = async(Dispatchers.IO) {
             api
-                .getRelease(repo)
+                .getLatestRelease(repo)
                 .getOrThrow()
                 .let {
                     BundleAsset(it.metadata.tag, it.findAssetByType(mime).downloadUrl)

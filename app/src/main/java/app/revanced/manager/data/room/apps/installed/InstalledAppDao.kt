@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.MapInfo
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,16 +25,20 @@ interface InstalledAppDao {
     suspend fun getPatchesSelection(packageName: String): Map<Int, List<String>>
 
     @Transaction
-    suspend fun insertApp(installedApp: InstalledApp, appliedPatches: List<AppliedPatch>) {
-        insertApp(installedApp)
+    suspend fun upsertApp(installedApp: InstalledApp, appliedPatches: List<AppliedPatch>) {
+        upsertApp(installedApp)
+        deleteAppliedPatches(installedApp.currentPackageName)
         insertAppliedPatches(appliedPatches)
     }
 
-    @Insert
-    suspend fun insertApp(installedApp: InstalledApp)
+    @Upsert
+    suspend fun upsertApp(installedApp: InstalledApp)
 
     @Insert
     suspend fun insertAppliedPatches(appliedPatches: List<AppliedPatch>)
+
+    @Query("DELETE FROM applied_patch WHERE package_name = :packageName")
+    suspend fun deleteAppliedPatches(packageName: String)
 
     @Delete
     suspend fun delete(installedApp: InstalledApp)

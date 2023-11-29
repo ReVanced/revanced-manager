@@ -6,7 +6,9 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.PowerManager
 import android.util.Log
 import android.view.WindowManager
@@ -17,6 +19,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.domain.installer.RootInstaller
+import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
@@ -48,6 +51,7 @@ class PatcherWorker(
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
+    private val keystoreManager: KeystoreManager by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
     private val fs: Filesystem by inject()
@@ -71,7 +75,12 @@ class PatcherWorker(
         private fun String.logFmt() = "$logPrefix $this"
     }
 
-    override suspend fun getForegroundInfo() = ForegroundInfo(1, createNotification())
+    override suspend fun getForegroundInfo() =
+        ForegroundInfo(
+            1,
+            createNotification(),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0
+        )
 
     private fun createNotification(): Notification {
         val notificationIntent = Intent(applicationContext, PatcherWorker::class.java)
@@ -152,6 +161,8 @@ class PatcherWorker(
             progressFlow.value = progressManager.getProgress().toImmutableList()
         }
 
+        val patchedApk = fs.tempDir.resolve("patched.apk")
+
         return try {
 
             if (args.input is SelectedApp.Installed) {
@@ -168,11 +179,11 @@ class PatcherWorker(
                 .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
 
             // Set all patch options.
-            args.options.forEach { (bundle, configuredPatchOptions) ->
+            args.options.forEach { (bundle, bundlePatchOptions) ->
                 val patches = allPatches[bundle] ?: return@forEach
-                configuredPatchOptions.forEach { (patchName, options) ->
+                bundlePatchOptions.forEach { (patchName, configuredPatchOptions) ->
                     val patchOptions = patches.single { it.name == patchName }.options
-                    options.forEach { (key, value) ->
+                    configuredPatchOptions.forEach { (key, value) ->
                         patchOptions[key] = value
                     }
                 }
@@ -212,8 +223,11 @@ class PatcherWorker(
                 inputFile,
                 onStepSucceeded = ::updateProgress
             ).use { session ->
-                session.run(File(args.output), patches, integrations)
+                session.run(patchedApk, patches, integrations)
             }
+
+            keystoreManager.sign(patchedApk, File(args.output))
+            updateProgress() // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
             progressManager.success()
@@ -224,6 +238,7 @@ class PatcherWorker(
             Result.failure()
         } finally {
             updateProgress(false)
+            patchedApk.delete()
         }
     }
 }

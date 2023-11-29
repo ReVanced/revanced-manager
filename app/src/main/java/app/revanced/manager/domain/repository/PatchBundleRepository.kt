@@ -3,6 +3,7 @@ package app.revanced.manager.domain.repository
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.domain.bundles.APIPatchBundle
@@ -13,18 +14,19 @@ import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.tag
+import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 
 class PatchBundleRepository(
-    app: Application,
+    private val app: Application,
     private val persistenceRepo: PatchBundlePersistenceRepository,
     private val networkInfo: NetworkInfo,
 ) {
@@ -124,20 +126,24 @@ class PatchBundleRepository(
         reload()
     }
 
-    suspend fun redownloadRemoteBundles() = getBundlesByType<RemotePatchBundle>().forEach { it.downloadLatest() }
+    suspend fun redownloadRemoteBundles() =
+        getBundlesByType<RemotePatchBundle>().forEach { it.downloadLatest() }
 
-    suspend fun updateCheck() = supervisorScope {
-        if (!networkInfo.isSafe()) {
-            Log.d(tag, "Skipping update check because the network is down or metered.")
-            return@supervisorScope
-        }
+    suspend fun updateCheck() =
+        uiSafe(app, R.string.source_download_fail, "Failed to update bundles") {
+            coroutineScope {
+                if (!networkInfo.isSafe()) {
+                    Log.d(tag, "Skipping update check because the network is down or metered.")
+                    return@coroutineScope
+                }
 
-        getBundlesByType<RemotePatchBundle>().forEach {
-            launch {
-                if (!it.propsFlow().first().autoUpdate) return@launch
-                Log.d(tag, "Updating patch bundle: ${it.name}")
-                it.update()
+                getBundlesByType<RemotePatchBundle>().forEach {
+                    launch {
+                        if (!it.propsFlow().first().autoUpdate) return@launch
+                        Log.d(tag, "Updating patch bundle: ${it.name}")
+                        it.update()
+                    }
+                }
             }
         }
-    }
 }

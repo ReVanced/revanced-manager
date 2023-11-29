@@ -1,45 +1,42 @@
 package app.revanced.manager
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
-import app.revanced.manager.ui.screen.AppInfoScreen
+import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
+import app.revanced.manager.ui.screen.InstalledAppInfoScreen
 import app.revanced.manager.ui.screen.InstallerScreen
-import app.revanced.manager.ui.screen.PatchesSelectorScreen
+import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
-import app.revanced.manager.util.tag
-import app.revanced.manager.util.toast
+import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
-import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.viewmodel.ext.android.getViewModel as getActivityViewModel
+import org.koin.androidx.compose.getViewModel as getComposeViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel as getAndroidViewModel
 
 class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi
@@ -48,7 +45,9 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen()
 
-        val vm: MainViewModel = getActivityViewModel()
+        val vm: MainViewModel = getAndroidViewModel()
+
+        vm.importLegacySettings(this)
 
         setContent {
             val theme by vm.prefs.theme.getAsState()
@@ -65,46 +64,30 @@ class MainActivity : ComponentActivity() {
 
                 val firstLaunch by vm.prefs.firstLaunch.getAsState()
 
-                if (firstLaunch) {
-                    var legacyActivityState by rememberSaveable { mutableStateOf(LegacyActivity.NOT_LAUNCHED) }
-                    if (legacyActivityState == LegacyActivity.NOT_LAUNCHED) {
-                        val launcher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.StartActivityForResult()
-                        ) { result: ActivityResult ->
-                            if (result.resultCode == RESULT_OK) {
-                                if (result.data != null) {
-                                    val jsonData = result.data!!.getStringExtra("data")!!
-                                    vm.applyLegacySettings(jsonData)
+                if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
+
+                vm.updatedManagerVersion?.let {
+                    AlertDialog(
+                        onDismissRequest = vm::dismissUpdateDialog,
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    vm.dismissUpdateDialog()
+                                    navController.navigate(Destination.Settings(SettingsDestination.Update(false)))
                                 }
-                            } else {
-                                legacyActivityState = LegacyActivity.FAILED
-                                toast(getString(R.string.legacy_import_failed))
+                            ) {
+                                Text(stringResource(R.string.update))
                             }
-                        }
-
-                        val intent = Intent().apply {
-                            setClassName(
-                                "app.revanced.manager.flutter",
-                                "app.revanced.manager.flutter.ExportSettingsActivity"
-                            )
-                        }
-
-                        LaunchedEffect(Unit) {
-                            try {
-                                launcher.launch(intent)
-                            } catch (e: Exception) {
-                                if (e !is ActivityNotFoundException) {
-                                    toast(getString(R.string.legacy_import_failed))
-                                    Log.e(tag, "Failed to launch legacy import activity: $e")
-                                }
-                                legacyActivityState = LegacyActivity.FAILED
+                        },
+                        dismissButton = {
+                            TextButton(onClick = vm::dismissUpdateDialog) {
+                                Text(stringResource(R.string.dismiss_temporary))
                             }
-                        }
-
-                        legacyActivityState = LegacyActivity.LAUNCHED
-                    } else if (legacyActivityState == LegacyActivity.FAILED){
-                        AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
-                    }
+                        },
+                        icon = { Icon(Icons.Outlined.Update, null) },
+                        title = { Text(stringResource(R.string.update_available_dialog_title)) },
+                        text = { Text(stringResource(R.string.update_available_dialog_description, it)) }
+                    )
                 }
 
                 AnimatedNavHost(
@@ -112,26 +95,44 @@ class MainActivity : ComponentActivity() {
                 ) { destination ->
                     when (destination) {
                         is Destination.Dashboard -> DashboardScreen(
-                            onSettingsClick = { navController.navigate(Destination.Settings) },
+                            onSettingsClick = { navController.navigate(Destination.Settings()) },
                             onAppSelectorClick = { navController.navigate(Destination.AppSelector) },
-                            onAppClick = { installedApp -> navController.navigate(Destination.ApplicationInfo(installedApp)) }
+                            onAppClick = { installedApp ->
+                                navController.navigate(
+                                    Destination.InstalledApplicationInfo(
+                                        installedApp
+                                    )
+                                )
+                            }
                         )
 
-                        is Destination.ApplicationInfo -> AppInfoScreen(
+                        is Destination.InstalledApplicationInfo -> InstalledAppInfoScreen(
                             onPatchClick = { packageName, patchesSelection ->
-                                navController.navigate(Destination.VersionSelector(packageName, patchesSelection))
+                                navController.navigate(
+                                    Destination.VersionSelector(
+                                        packageName,
+                                        patchesSelection
+                                    )
+                                )
                             },
                             onBackClick = { navController.pop() },
-                            viewModel = getViewModel { parametersOf(destination.installedApp) }
+                            viewModel = getComposeViewModel { parametersOf(destination.installedApp) }
                         )
 
                         is Destination.Settings -> SettingsScreen(
-                            onBackClick = { navController.pop() }
+                            onBackClick = { navController.pop() },
+                            startDestination = destination.startDestination
                         )
 
                         is Destination.AppSelector -> AppSelectorScreen(
                             onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
-                            onStorageClick = { navController.navigate(Destination.PatchesSelector(it)) },
+                            onStorageClick = {
+                                navController.navigate(
+                                    Destination.SelectedApplicationInfo(
+                                        it
+                                    )
+                                )
+                            },
                             onBackClick = { navController.pop() }
                         )
 
@@ -139,42 +140,46 @@ class MainActivity : ComponentActivity() {
                             onBackClick = { navController.pop() },
                             onAppClick = { selectedApp ->
                                 navController.navigate(
-                                    Destination.PatchesSelector(
+                                    Destination.SelectedApplicationInfo(
                                         selectedApp,
+                                        destination.patchesSelection,
+                                    )
+                                )
+                            },
+                            viewModel = getComposeViewModel {
+                                parametersOf(
+                                    destination.packageName,
+                                    destination.patchesSelection
+                                )
+                            }
+                        )
+
+                        is Destination.SelectedApplicationInfo -> SelectedAppInfoScreen(
+                            onPatchClick = { app, patches, options ->
+                                navController.navigate(
+                                    Destination.Installer(
+                                        app, patches, options
+                                    )
+                                )
+                            },
+                            onBackClick = navController::pop,
+                            vm = getComposeViewModel {
+                                parametersOf(
+                                    SelectedAppInfoViewModel.Params(
+                                        destination.selectedApp,
                                         destination.patchesSelection
                                     )
                                 )
-                            },
-                            viewModel = getViewModel { parametersOf(destination.packageName, destination.patchesSelection) }
-                        )
-
-                        is Destination.PatchesSelector -> PatchesSelectorScreen(
-                            onBackClick = { navController.pop() },
-                            onPatchClick = { patches, options ->
-                                navController.navigate(
-                                    Destination.Installer(
-                                        destination.selectedApp,
-                                        patches,
-                                        options
-                                    )
-                                )
-                            },
-                            vm = getViewModel { parametersOf(destination) }
+                            }
                         )
 
                         is Destination.Installer -> InstallerScreen(
                             onBackClick = { navController.popUpTo { it is Destination.Dashboard } },
-                            vm = getViewModel { parametersOf(destination) }
+                            vm = getComposeViewModel { parametersOf(destination) }
                         )
                     }
                 }
             }
         }
-    }
-
-    private enum class LegacyActivity {
-        NOT_LAUNCHED,
-        LAUNCHED,
-        FAILED
     }
 }
