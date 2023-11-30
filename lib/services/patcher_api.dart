@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:cr_file_saver/file_saver.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:injectable/injectable.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
@@ -236,10 +236,10 @@ void exportPatchedFile(String appName, String version) {
   try {
     if (outFile != null) {
       final String newName = _getFileName(appName, version);
-      FlutterFileDialog.saveFile(
-        params: SaveFileDialogParams(
+      CRFileSaver.saveFileWithDialog(
+        SaveFileDialogParams(
           sourceFilePath: outFile!.path,
-          fileName: newName,
+          destinationFileName: newName,
         ),
       );
     }
@@ -286,10 +286,10 @@ Future<void> exportPatcherLog(String logs) async {
   final String fileName = 'revanced-manager_patcher_$dateTime.txt';
   final File log = File('${logDir.path}/$fileName');
   log.writeAsStringSync(logs);
-  FlutterFileDialog.saveFile(
-    params: SaveFileDialogParams(
+  CRFileSaver.saveFileWithDialog(
+     SaveFileDialogParams(
       sourceFilePath: log.path,
-      fileName: fileName,
+      destinationFileName: fileName,
     ),
   );
 }
