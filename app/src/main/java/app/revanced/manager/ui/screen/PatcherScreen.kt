@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -40,15 +41,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
-import app.revanced.manager.patcher.worker.State
-import app.revanced.manager.patcher.worker.Step
-import app.revanced.manager.patcher.worker.StepCategory
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.Arrow
+import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.model.State
+import app.revanced.manager.ui.model.Step
+import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.floor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,13 +62,19 @@ fun PatcherScreen(
 ) {
     BackHandler(onBack = onBackClick)
 
+    val context = LocalContext.current
     val exportApkLauncher =
         rememberLauncherForActivityResult(CreateDocument(APK_MIMETYPE), vm::export)
 
     val patcherSucceeded by vm.patcherSucceeded.observeAsState(null)
-    val steps by vm.steps.collectAsStateWithLifecycle(emptyMap())
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (vm.installedPackageName != null || !vm.isInstalling) } }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
+
+    val steps by remember {
+        derivedStateOf {
+            vm.steps.groupBy { it.category }
+        }
+    }
 
     if (showInstallPicker)
         InstallPickerDialog(
@@ -90,7 +99,7 @@ fun PatcherScreen(
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     IconButton(
-                        onClick = vm::exportLogs,
+                        onClick = { vm.exportLogs(context) },
                         enabled = patcherSucceeded != null
                     ) {
                         Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
@@ -146,7 +155,7 @@ fun PatcherScreen(
                         .fillMaxSize()
                 ) {
                     steps.forEach { (category, steps) ->
-                        Steps(category, steps)
+                        Steps(category, steps.toImmutableList())
                     }
                 }
             }
@@ -156,7 +165,7 @@ fun PatcherScreen(
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
 @Composable
-fun Steps(category: StepCategory, steps: List<Step>) {
+fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
     var expanded by rememberSaveable { mutableStateOf(true) }
 
     val categoryColor by animateColorAsState(
@@ -211,7 +220,7 @@ fun Steps(category: StepCategory, steps: List<Step>) {
                     style = MaterialTheme.typography.labelSmall
                 )
 
-                Arrow(modifier = Modifier.size(24.dp), expanded = expanded)
+                ArrowButton(modifier = Modifier.size(24.dp), expanded = expanded, onClick = null)
             }
         }
 
@@ -298,9 +307,10 @@ fun SubStep(
                     modifier = Modifier.size(24.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Arrow(
+                    ArrowButton(
                         modifier = Modifier.size(20.dp),
-                        expanded = messageExpanded
+                        expanded = messageExpanded,
+                        onClick = null
                     )
                 }
             } else {
@@ -349,21 +359,7 @@ fun StepIcon(state: State, progress: Pair<Float, Float>? = null, size: Dp) {
             tint = MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier.size(size)
         )
-
-
-            /*LoadingIndicator(
-                modifier = stringResource(R.string.step_running).let { description ->
-                    Modifier
-                        .size(size)
-                        .semantics {
-                            contentDescription = description
-                        }
-                    },
-                progress = { 1f },
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                strokeWidth = strokeWidth,
-            )*/
-
+        
         State.RUNNING ->
             LoadingIndicator(
                 modifier = stringResource(R.string.step_running).let { description ->

@@ -1,7 +1,7 @@
 package app.revanced.manager.patcher
 
 import app.revanced.library.ApkUtils
-import app.revanced.manager.ui.viewmodel.ManagerLogger
+import app.revanced.manager.patcher.logger.ManagerLogger
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.Patch

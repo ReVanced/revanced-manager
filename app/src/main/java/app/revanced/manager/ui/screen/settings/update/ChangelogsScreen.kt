@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen.settings.update
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,7 +63,12 @@ fun ChangelogsScreen(
         ) {
             if (changelogs == null) {
                 item {
-                    LoadingIndicator()
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingIndicator()
+                    }
                 }
             } else if (changelogs.isEmpty()) {
                 item {

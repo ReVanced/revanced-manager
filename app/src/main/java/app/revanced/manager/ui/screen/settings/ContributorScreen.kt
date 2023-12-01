@@ -6,15 +6,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -28,7 +26,6 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.viewmodel.ContributorViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.getViewModel
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +50,12 @@ fun ContributorScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             if(repositories.isEmpty()) {
-                LoadingIndicator()
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LoadingIndicator()
+                }
             }
             repositories.forEach {
                 ExpandableListCard(
@@ -84,8 +86,8 @@ fun ExpandableListCard(
             ),
         colors = CardDefaults.outlinedCardColors(),
     ) {
-        Column() {
-            Row() {
+        Column {
+            Row {
                 ListItem(
                     headlineContent = {
                         Text(
@@ -129,8 +131,6 @@ fun ExpandableListCard(
 fun processHeadlineText(repositoryName: String): String {
     return "Revanced " + repositoryName.replace("revanced/revanced-", "")
         .replace("-", " ")
-        .split(" ")
-        .map { if (it.length > 3) it else it.uppercase() }
-        .joinToString(" ")
+        .split(" ").joinToString(" ") { if (it.length > 3) it else it.uppercase() }
         .replaceFirstChar { it.uppercase() }
 }

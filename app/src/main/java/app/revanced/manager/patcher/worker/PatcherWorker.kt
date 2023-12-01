@@ -28,14 +28,13 @@ import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.aapt.Aapt
+import app.revanced.manager.patcher.logger.ManagerLogger
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.ManagerLogger
+import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import org.koin.core.component.KoinComponent
@@ -62,9 +61,10 @@ class PatcherWorker(
         val output: String,
         val selectedPatches: PatchesSelection,
         val options: Options,
-        val progress: MutableStateFlow<ImmutableList<Step>>,
         val logger: ManagerLogger,
-        val setInputFile: (File) -> Unit
+        val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
+        val setInputFile: (File) -> Unit,
+        val onProgress: (state: State, message: String?) -> Unit
     ) {
         val packageName get() = input.packageName
     }
@@ -125,36 +125,25 @@ class PatcherWorker(
     }
 
     private suspend fun runPatcher(args: Args): Result {
-        val bundles = patchBundleRepository.bundles.first()
 
-        // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
-        val selectedBundles = args.selectedPatches.keys
-        val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
-            .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
-
-        val selectedPatches = args.selectedPatches.flatMap { (bundle, selected) ->
-            allPatches[bundle]?.filter { selected.contains(it.name) }
-                ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
-        }
-
-        val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
-
-        val progressManager =
-            PatcherProgressManager(
-                applicationContext,
-                selectedPatches.map { it.name.orEmpty() },
-                args.input,
-                downloadProgress
-            )
-
-        fun updateProgress(state: State = State.COMPLETED, message: String? = null) {
-            progressManager.updateProgress(state, message)
-            args.progress.value = progressManager.steps.toImmutableList()
-        }
+        fun updateProgress(state: State = State.COMPLETED, message: String? = null) =
+            args.onProgress(state, message)
 
         val patchedApk = fs.tempDir.resolve("patched.apk")
 
         return try {
+            val bundles = patchBundleRepository.bundles.first()
+
+            // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
+            val selectedBundles = args.selectedPatches.keys
+            val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
+                .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
+
+            val selectedPatches = args.selectedPatches.flatMap { (bundle, selected) ->
+                allPatches[bundle]?.filter { selected.contains(it.name) }
+                    ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
+            }
+
             val aaptPath = Aapt.binary(applicationContext)?.absolutePath
                 ?: throw FileNotFoundException("Could not resolve aapt.")
 
@@ -189,7 +178,7 @@ class PatcherWorker(
                     downloadedAppRepository.download(
                         selectedApp.app,
                         prefs.preferSplits.get(),
-                        onDownload = { downloadProgress.emit(it) }
+                        onDownload = { args.downloadProgress.emit(it) }
                     ).also {
                         args.setInputFile(it)
                         updateProgress() // Download APK
@@ -219,7 +208,6 @@ class PatcherWorker(
             updateProgress() // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
-            updateProgress()
             Result.success()
         } catch (e: Exception) {
             Log.e(tag, "Exception while patching".logFmt(), e)
