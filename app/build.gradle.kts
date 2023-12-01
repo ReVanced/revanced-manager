@@ -159,4 +159,7 @@ dependencies {
 
     // Markdown
     implementation(libs.markdown.renderer)
+
+    // Fading Edges
+    implementation(libs.fading.edges)
 }

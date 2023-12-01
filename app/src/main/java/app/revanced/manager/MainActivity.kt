@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                             TextButton(
                                 onClick = {
                                     vm.dismissUpdateDialog()
-                                    navController.navigate(Destination.Settings(SettingsDestination.UpdateProgress))
+                                    navController.navigate(Destination.Settings(SettingsDestination.Update(false)))
                                 }
                             ) {
                                 Text(stringResource(R.string.update))
@@ -85,8 +85,8 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         icon = { Icon(Icons.Outlined.Update, null) },
-                        title = { Text(stringResource(R.string.update_available)) },
-                        text = { Text(stringResource(R.string.update_available_description, it)) }
+                        title = { Text(stringResource(R.string.update_available_dialog_title)) },
+                        text = { Text(stringResource(R.string.update_available_dialog_description, it)) }
                     )
                 }
 
