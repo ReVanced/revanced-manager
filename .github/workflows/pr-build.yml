@@ -84,7 +84,7 @@ jobs:
       - name: Generate files with Builder
         run: dart run build_runner build --delete-conflicting-outputs 
 
-      - name: Dart static analysis
+      - name: Analyze Dart code
         uses: zgosalvez/github-actions-analyze-dart@v3
         
       - name: Build with Flutter
