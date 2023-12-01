@@ -31,9 +31,8 @@ jobs:
                   CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
             - name: Nested JSON Postprocessor
-              uses: validcube/crowdin-nested-json-postprocessor@v0.1
+              uses: validcube/crowdin-nested-json-postprocessor@v0.1.2
               with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
                   source_dir: "assets/i18n"
                   commit_message: "chore: Remove empty strings"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
