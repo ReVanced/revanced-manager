@@ -57,7 +57,6 @@ jobs:
           gh repo set-default ${{ github.repository }}
           gh pr checkout ${{ inputs.pr-number }}
           
-          echo "DATETIME=$(TZ='UTC+0' date --rfc-email)" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
       - name: Checkout the repository
@@ -128,7 +127,6 @@ jobs:
             Checkout the Dart static analyze check or download the artifact at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
             ### ⚙️ Overview
-            - Start time: ${{ env.DATETIME }}
             - App flavor: ${{ inputs.app-flavor }}
             - Branch: ${{ inputs.flutter-branch }}
             ${{ env.COMPILE_ARGUMENT_MESSAGE }}
