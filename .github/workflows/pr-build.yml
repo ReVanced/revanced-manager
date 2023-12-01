@@ -98,9 +98,12 @@ jobs:
       - name: Prepare to comment
         run: |
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ ReVanced Manager ${{ env.COMMIT_HASH }} build succeeded." >> $GITHUB_ENV
+            echo "STATUS_MESSAGE=✅ ReVanced Manager ${{ env.COMMIT_HASH }} build succeeded." >> $GITHUB_ENV
           else
-            echo "MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
+            echo "STATUS_MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
+          fi
+          if [ -n "{{ inputs.flutter-build-arguments }}" ]; then
+            echo "COMPILE_ARGUMENT_MESSAGE=- Compile arguments: ${{ inputs.flutter-build-arguments }}" >> $GITHUB_ENV
           fi
           
       - name: Upload build
@@ -120,12 +123,12 @@ jobs:
           message: |
             ## ⚒️ ReVanced PR Build workflow
             
-            ${{ env.MESSAGE }}
+            ${{ env.STATUS_MESSAGE }}
             
             Checkout the Dart static analyze check or download the artifact at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
             ### ⚙️ Overview
+            - Start time: ${{ env.DATETIME }}
             - App flavor: ${{ inputs.app-flavor }}
             - Branch: ${{ inputs.flutter-branch }}
-            - Compile arguments: ${{ inputs.flutter-build-arguments }}
-            - Start time: ${{ env.DATETIME }}
+            ${{ env.COMPILE_ARGUMENT_MESSAGE }}
