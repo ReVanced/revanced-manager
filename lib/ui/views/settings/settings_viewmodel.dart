@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'package:cr_file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart' hide SaveFileDialogParams;
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
@@ -209,10 +210,10 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
+        await CRFileSaver.saveFileWithDialog(
+           SaveFileDialogParams(
             sourceFilePath: outFile.path,
-            fileName: 'selected_patches_$dateTime.json',
+            destinationFileName: 'selected_patches_$dateTime.json',
           ),
         );
         _toast.showBottom('settingsView.exportedPatches');
@@ -260,10 +261,10 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
+        await  CRFileSaver.saveFileWithDialog(
+            SaveFileDialogParams(
             sourceFilePath: outFile.path,
-            fileName: 'keystore_$dateTime.keystore',
+            destinationFileName: 'keystore_$dateTime.keystore',
           ),
         );
         _toast.showBottom('settingsView.exportedKeystore');
