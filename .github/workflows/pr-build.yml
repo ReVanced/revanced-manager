@@ -37,8 +37,10 @@ on:
       # Additional
       flutter-build-arguments:
         description: Flutter build arguments
-
-run-name: "Build PR ${{ inputs.pr-number }}"
+      additional-description:
+        description: What's the purpose of triggering?
+        
+run-name: "Build PR ${{ inputs.pr-number }} ${{ inputs.additional-description }}"
         
 jobs:
   build:
