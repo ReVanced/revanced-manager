@@ -166,6 +166,8 @@ fun PatcherScreen(
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
 @Composable
 fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
+    val context = LocalContext.current
+
     var expanded by rememberSaveable { mutableStateOf(true) }
 
     val categoryColor by animateColorAsState(
@@ -198,13 +200,17 @@ fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
-                StepIcon(
-                    state = when {
+                val state = remember(steps) {
+                    when {
                         steps.all { it.state == State.COMPLETED } -> State.COMPLETED
                         steps.any { it.state == State.FAILED } -> State.FAILED
                         steps.any { it.state == State.RUNNING } -> State.RUNNING
                         else -> State.WAITING
-                    },
+                    }
+                }
+
+                StepIcon(
+                    state = state,
                     size = 24.dp
                 )
 
@@ -231,32 +237,44 @@ fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
             ) {
                 if (category != StepCategory.PATCHING) {
                     steps.forEach { step ->
-                        val progress = step.progress?.collectAsStateWithLifecycle()
+                        val downloadProgress = step.downloadProgress?.collectAsStateWithLifecycle()
 
                         SubStep(
                             name = step.name,
                             state = step.state,
                             message = step.message,
-                            progress = progress?.value
+                            downloadProgress = downloadProgress?.value
                         )
                     }
                 } else {
-                    val currentPatch = steps.find { it.state == State.RUNNING }?.name
-                    val failedPatch = steps.find { it.state == State.FAILED }?.name
+                    val currentPatch = remember(steps) {
+                        steps.find { it.state == State.RUNNING }?.name
+                    }
+                    val failedPatch = remember(steps) {
+                        steps.find { it.state == State.FAILED }?.name
+                    }
 
-                    SubStep(
-                        name = when {
-                            steps.any { it.state == State.RUNNING } -> "Applying $currentPatch"
-                            steps.any { it.state == State.FAILED } -> "Failed to apply $failedPatch"
-                            steps.all { it.state == State.WAITING } -> "Apply patches"
-                            else -> "Applied ${steps.size} patches"
-                        },
-                        state = when {
+                    val name = remember(steps) {
+                        when {
+                            steps.any { it.state == State.RUNNING } -> context.getString(R.string.applying_patch, currentPatch)
+                            steps.any { it.state == State.FAILED } -> context.getString(R.string.failed_to_apply_patch, failedPatch)
+                            steps.all { it.state == State.WAITING } -> context.getString(R.string.apply_patches)
+                            else -> context.resources.getQuantityString(R.plurals.applied_patches, steps.size, steps.size)
+                        }
+                    }
+
+                    val state = remember(steps) {
+                        when {
                             steps.all { it.state == State.COMPLETED } -> State.COMPLETED
                             steps.any { it.state == State.FAILED } -> State.FAILED
                             steps.any { it.state == State.RUNNING } -> State.RUNNING
                             else -> State.WAITING
-                        },
+                        }
+                    }
+
+                    SubStep(
+                        name = name,
+                        state = state,
                         message = steps.find { it.state == State.FAILED }?.message
                     )
                 }
@@ -270,7 +288,7 @@ fun SubStep(
     name: String,
     state: State,
     message: String? = null,
-    progress: Pair<Float, Float>? = null
+    downloadProgress: Pair<Float, Float>? = null
 ) {
     var messageExpanded by rememberSaveable { mutableStateOf(true) }
 
@@ -291,7 +309,7 @@ fun SubStep(
                 modifier = Modifier.size(24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                StepIcon(state, progress, size = 20.dp)
+                StepIcon(state, downloadProgress, size = 20.dp)
             }
 
             Text(
@@ -314,7 +332,7 @@ fun SubStep(
                     )
                 }
             } else {
-                progress?.let { (current, total) ->
+                downloadProgress?.let { (current, total) ->
                     Text(
                         "$current/$total MB",
                         style = MaterialTheme.typography.labelSmall

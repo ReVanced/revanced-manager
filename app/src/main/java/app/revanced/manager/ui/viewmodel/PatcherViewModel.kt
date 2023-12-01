@@ -264,7 +264,7 @@ class PatcherViewModel(
             context: Context,
             selectedPatches: List<String>,
             selectedApp: SelectedApp,
-            progress: StateFlow<Pair<Float, Float>?>? = null
+            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
         ): PersistentList<Step> {
             val preparing = listOfNotNull(
                 Step(
@@ -275,7 +275,7 @@ class PatcherViewModel(
                 Step(
                     context.getString(R.string.download_apk),
                     StepCategory.PREPARING,
-                    progress = progress
+                    downloadProgress = downloadProgress
                 ).takeIf { selectedApp is SelectedApp.Download },
                 Step(
                     context.getString(R.string.patcher_step_unpack),
