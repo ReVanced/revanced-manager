@@ -53,7 +53,7 @@ import java.util.UUID
 
 @Stable
 class PatcherViewModel(
-    private val input: Destination.Installer
+    private val input: Destination.Patcher
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
     private val fs: Filesystem by inject()

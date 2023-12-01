@@ -157,7 +157,7 @@ class MainActivity : ComponentActivity() {
                         is Destination.SelectedApplicationInfo -> SelectedAppInfoScreen(
                             onPatchClick = { app, patches, options ->
                                 navController.navigate(
-                                    Destination.Installer(
+                                    Destination.Patcher(
                                         app, patches, options
                                     )
                                 )
@@ -173,7 +173,7 @@ class MainActivity : ComponentActivity() {
                             }
                         )
 
-                        is Destination.Installer -> PatcherScreen(
+                        is Destination.Patcher -> PatcherScreen(
                             onBackClick = { navController.popUpTo { it is Destination.Dashboard } },
                             vm = getComposeViewModel { parametersOf(destination) }
                         )

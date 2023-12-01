@@ -17,7 +17,7 @@ fun LoadingIndicator(
     trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
     strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
 ) {
-    val progression = progress?.let { it() }
+    val progression = progress?.invoke()
 
     progression?.let {
         CircularProgressIndicator(

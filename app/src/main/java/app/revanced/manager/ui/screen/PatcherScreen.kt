@@ -180,7 +180,6 @@ fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
         label = "card"
     )
 
-    // Card
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
@@ -188,7 +187,6 @@ fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
             .background(cardColor)
     ) {
 
-        // Step Category
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
@@ -230,7 +228,6 @@ fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
             }
         }
 
-        // Sub Steps
         AnimatedVisibility(visible = expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth()
