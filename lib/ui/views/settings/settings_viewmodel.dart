@@ -210,7 +210,7 @@ class SettingsViewModel extends BaseViewModel {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
+            params: SaveFileDialogParams(
             sourceFilePath: outFile.path,
             fileName: 'selected_patches_$dateTime.json',
           ),
@@ -261,7 +261,7 @@ class SettingsViewModel extends BaseViewModel {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
+            params: SaveFileDialogParams(
             sourceFilePath: outFile.path,
             fileName: 'keystore_$dateTime.keystore',
           ),

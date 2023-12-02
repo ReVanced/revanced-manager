@@ -366,7 +366,7 @@ class PatcherAPI {
           params: SaveFileDialogParams(
             sourceFilePath: outFile!.path,
             fileName: newName,
-          ),
+          mimeTypesFilter: ['application/vnd.android.package-archive'],),
         );
       }
     } on Exception catch (e) {
