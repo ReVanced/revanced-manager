@@ -331,45 +331,32 @@
         "managerContributors": "Manager contributors"
     },
     "installErrorDialog": {
-        "title0": "Version mismatch",
-        "title1": "No installation found",
-        "title2": "Installation blocked",
-        "title3_0": "Installation blocked",
+        "mount_version_mismatch": "Version mismatch",
+        "mount_no_root": "No root access",
+        "mount_missing_installation": "No installation found",
 
-        "title4": "Installation invalid",
-        "title4_0": "Can't downgrade",
+        "status_failure_blocked": "Installation blocked",
+        "install_failed_verification_failure": "Installation blocked",
+        "status_failure_invalid": "Installation invalid",
+        "install_failed_version_downgrade": "Can't downgrade",
+        "status_failure_conflict": "Installation conflict",
+        "status_failure_storage": "Installation storage issue",
+        "status_failure_incompatible": "Installation incompatible",
+        "status_failure_timeout": "Installation timeout",
+        "unknown_status": "Unknown status",
 
-        "title5": "Installation conflict",
-        "title6": "Installation storage issue",
-        "title7": "Installation incompatible",
-        "title8": "Installation timeout",
-        "title10": "No root access",
+        "mount_version_mismatch_description": "To install by mounting the patched app, the version of the installed app must match the version of the patched app.\n\nInstall the version of the app you are mounting and try again.",
+        "mount_no_root_description": "To install by mounting the patched app, root access is required.\n\nGrant root access to ReVanced Manager and try again.",
+        "mount_missing_installation_description": "To install by mounting the patched app, the unpatched app must be installed on this device.\n\nInstall the app and try again.",
 
-        "callback0": "To install by mounting the patched app, the version of the installed app must match the version of the patched app.",
-        "callback1": "To install by mounting the patched app, the unpatched app must be installed on this device.",
-        "callback2": "The installation was blocked by {packageName}.",
-        "callback3_0": "The installation was blocked.",
-
-        "callback4": "The app is invalid.",
-        "callback4_0": "The version of the installed app is newer than the version of the patched app.",
-
-        "callback5": "An existing installation of the app prevents the installation.",
-        "callback6": "The app could not be installed due to insufficient storage.",
-        "callback7": "The app is incompatible with this device.",
-        "callback8": "The installation took too long.",
-        "callback10": "To install by mounting the patched app, root access is required.",
-
-        "solution0": "Install the version of the app you are mounting and try again.",
-        "solution2": "Adjust your security settings and try again.",
-        "solution3_0": "Adjust your security settings and try again.",
-
-        "solution4": "Reinstall by uninstalling the app and try again?",
-        "solution4_0": "Uninstall the current version and try again?",
-
-        "solution5": "Uninstall the app and try again?",
-        "solution6": "Free up some space and try again.",
-        "solution7": "Contact the developer of the app and ask for support.",
-        "solution8": "Try again.",
-        "solution10": "Grant root access to ReVanced Manager and try again."
+        "status_failure_timeout_description": "Try again",
+        "status_failure_storage_description": "The app could not be installed due to insufficient storage.\n\nFree up some space and try again.",
+        "status_failure_invalid_description": "The app is invalid.\n\nReinstall by uninstalling the app and try again?",
+        "status_failure_incompatible_description": "The app is incompatible with this device.\n\nContact the developer of the app and ask for support.",
+        "status_failure_conflict_description": "An existing installation of the app prevents the installation.\n\nUninstall the app and try again?",
+        "status_failure_blocked_description": "The installation was blocked by {packageName}.\n\nAdjust your security settings and try again.",
+        "install_failed_verification_failure_description": "The installation was blocked.\n\nAdjust your security settings and try again.",
+        "install_failed_version_downgrade_description": "The version of the installed app is newer than the version of the patched app.\n\nUninstall the current version and try again?",
+        "unknown_status_description": "An unknown error occurred during installation. Please try again."
     }
 }

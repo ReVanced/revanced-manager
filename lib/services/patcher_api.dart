@@ -296,28 +296,24 @@ class PatcherAPI {
     status,
     bool hasExtra = false,
   ]) async {
-    final String extraStatus = hasExtra ? '_0' : '';
+    final String statusValue = InstallStatus.byCode(hasExtra ? double.parse('$statusCode.1') : statusCode);
     bool cleanInstall = false;
     await showDialog(
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        title: I18nText('installErrorDialog.title$statusCode$extraStatus'),
+        title: I18nText('installErrorDialog.$statusValue'),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             I18nText(
-              'installErrorDialog.callback$statusCode$extraStatus',
+              'installErrorDialog.${statusValue}_description',
               translationParams: statusCode == 2
                   ? {
                       'packageName': status['otherPackageName'],
                     }
                   : null,
-            ),
-            const SizedBox(height: 16),
-            I18nText(
-              'installErrorDialog.solution$statusCode$extraStatus',
             ),
           ],
         ),
@@ -366,7 +362,8 @@ class PatcherAPI {
           params: SaveFileDialogParams(
             sourceFilePath: outFile!.path,
             fileName: newName,
-          mimeTypesFilter: ['application/vnd.android.package-archive'],),
+            mimeTypesFilter: ['application/vnd.android.package-archive'],
+          ),
         );
       }
     } on Exception catch (e) {
@@ -446,5 +443,60 @@ class PatcherAPI {
       return (versions.keys.toList()..sort()).last;
     }
     return '';
+  }
+}
+
+enum InstallStatus {
+  statusFailureTimeout(8),
+  statusFailureStorage(6),
+  statusFailureInvalid(4),
+  statusFailureIncompatible(7),
+  statusFailureConflict(5),
+  statusFailureBlocked(2),
+  installFailedVerificationFailure(3.1),
+  installFailedVersionDowngrade(4.1),
+
+  mountVersionMismatch(0),
+  mountMissingInstallation(1),
+  mountNoRoot(10);
+
+  const InstallStatus(this.statusCode);
+  final double statusCode;
+
+  static String byCode(num code) {
+    return InstallStatus.values
+        .firstWhere((flag) => flag.statusCode == code)
+        .status;
+  }
+}
+
+extension InstallStatusExtension on InstallStatus {
+  String get status {
+    switch (this) {
+      case InstallStatus.statusFailureTimeout:
+        return 'status_failure_timeout';
+      case InstallStatus.statusFailureStorage:
+        return 'status_failure_storage';
+      case InstallStatus.statusFailureInvalid:
+        return 'status_failure_invalid';
+      case InstallStatus.statusFailureIncompatible:
+        return 'status_failure_incompatible';
+      case InstallStatus.statusFailureConflict:
+        return 'status_failure_conflict';
+      case InstallStatus.statusFailureBlocked:
+        return 'status_failure_blocked';
+      case InstallStatus.installFailedVerificationFailure:
+        return 'install_failed_verification_failure';
+      case InstallStatus.installFailedVersionDowngrade:
+        return 'install_failed_version_downgrade';
+      case InstallStatus.mountVersionMismatch:
+        return 'mount_version_mismatch';
+      case InstallStatus.mountMissingInstallation:
+        return 'mount_missing_installation';
+      case InstallStatus.mountNoRoot:
+        return 'mount_no_root';
+      default:
+        return 'unknownStatus';
+    }
   }
 }
