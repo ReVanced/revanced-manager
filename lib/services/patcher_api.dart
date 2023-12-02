@@ -237,9 +237,10 @@ void exportPatchedFile(String appName, String version) {
     if (outFile != null) {
       final String newName = _getFileName(appName, version);
       FlutterFileDialog.saveFile(
-        params: SaveFileDialogParams(
+          params: SaveFileDialogParams(
           sourceFilePath: outFile!.path,
           fileName: newName,
+          mimeTypesFilter: ['application/vnd.android.package-archive'],
         ),
       );
     }
@@ -287,7 +288,7 @@ Future<void> exportPatcherLog(String logs) async {
   final File log = File('${logDir.path}/$fileName');
   log.writeAsStringSync(logs);
   FlutterFileDialog.saveFile(
-    params: SaveFileDialogParams(
+     params:SaveFileDialogParams(
       sourceFilePath: log.path,
       fileName: fileName,
     ),
