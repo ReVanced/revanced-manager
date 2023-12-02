@@ -351,7 +351,7 @@
 
         "status_failure_timeout_description": "Try again",
         "status_failure_storage_description": "The app could not be installed due to insufficient storage.\n\nFree up some space and try again.",
-        "status_failure_invalid_description": "The app is invalid.\n\nReinstall by uninstalling the app and try again?",
+        "status_failure_invalid_description": "The app is invalid.\n\nUninstall the app and try again?",
         "status_failure_incompatible_description": "The app is incompatible with this device.\n\nContact the developer of the app and ask for support.",
         "status_failure_conflict_description": "An existing installation of the app prevents the installation.\n\nUninstall the app and try again?",
         "status_failure_blocked_description": "The installation was blocked by {packageName}.\n\nAdjust your security settings and try again.",
