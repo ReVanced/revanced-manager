@@ -34,10 +34,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.4
-  fluttertoast:
-    git: # remove once the next fluttertoast version is release (> 8.2.2)
-      url: https://github.com/ponnamkarthik/FlutterToast
-      ref: f4e7b4e1afc8c760eb5bac80f6a2e299906d83ca
+  fluttertoast: ^8.2.4
   font_awesome_flutter: ^10.4.0
   get_it: ^7.6.4
   google_fonts: ^6.1.0
