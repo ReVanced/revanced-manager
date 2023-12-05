@@ -232,13 +232,10 @@ Future<bool> installPatchedFile(PatchedApplication patchedApp) async {
   return false;
 }
 
-Future<void> exportPatchedFile(String appName, String version) async{
+void exportPatchedFile(String appName, String version) {
   try {
     if (outFile != null) {
-        String patchVersion =
-          await _managerAPI.getCurrentPatchesVersion();
-      patchVersion = '_patches_$patchVersion';
-      final String newName = _getFileName(appName, version, patchVersion: patchVersion);
+      final String newName = _getFileName(appName, version);
        FlutterFileDialog.saveFile(
           params: SaveFileDialogParams(
           sourceFilePath: outFile!.path,
@@ -271,9 +268,10 @@ void sharePatchedFile(String appName, String version) {
   }
 }
 
-String _getFileName(String appName, String version, {String patchVersion=''}) {
+String _getFileName(String appName, String version) {
+  final String patchVersion = _managerAPI.patchesVersion!;
   final String prefix = appName.toLowerCase().replaceAll(' ', '-');
-  final String newName = '$prefix-revanced_v$version$patchVersion.apk';
+  final String newName = '$prefix-revanced_v$version-patches_v$patchVersion.apk';
   return newName;
 }
 
