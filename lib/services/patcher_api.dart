@@ -500,7 +500,7 @@ extension InstallStatusExtension on InstallStatus {
       case InstallStatus.mountNoRoot:
         return 'mount_no_root';
       default:
-        return 'unknown_status';
+        return 'status_unknown';
     }
   }
 }

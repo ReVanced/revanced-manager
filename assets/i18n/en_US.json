@@ -343,7 +343,7 @@
         "status_failure_storage": "Installation storage issue",
         "status_failure_incompatible": "Installation incompatible",
         "status_failure_timeout": "Installation timeout",
-        "unknown_status": "Unknown status",
+        "status_unknown": "Installation failed",
 
         "mount_version_mismatch_description": "To install by mounting the patched app, the version of the installed app must match the version of the patched app.\n\nInstall the version of the app you are mounting and try again.",
         "mount_no_root_description": "To install by mounting the patched app, root access is required.\n\nGrant root access to ReVanced Manager and try again.",
@@ -357,6 +357,6 @@
         "status_failure_blocked_description": "The installation was blocked by {packageName}.\n\nAdjust your security settings and try again.",
         "install_failed_verification_failure_description": "The app could not be installed due to a verification issue.\n\nAdjust your security settings and try again.",
         "install_failed_version_downgrade_description": "The version of the installed app is newer than the version of the patched app.\n\nUninstall the current version and try again?",
-        "unknown_status_description": "An unknown error occurred during installation. Please try again."
+        "status_unknown_description": "The installation failed due to an unknown reason. Please try again."
     }
 }
