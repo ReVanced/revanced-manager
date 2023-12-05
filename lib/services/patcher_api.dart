@@ -359,7 +359,7 @@ class PatcherAPI {
       if (outFile != null) {
         final String newName = _getFileName(appName, version);
         FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
+        params: SaveFileDialogParams(
             sourceFilePath: outFile!.path,
             fileName: newName,
             mimeTypesFilter: ['application/vnd.android.package-archive'],
@@ -391,8 +391,9 @@ class PatcherAPI {
   }
 
   String _getFileName(String appName, String version) {
-    final String prefix = appName.toLowerCase().replaceAll(' ', '-');
-    final String newName = '$prefix-revanced_v$version.apk';
+    final String patchVersion = _managerAPI.patchesVersion!;
+  final String prefix = appName.toLowerCase().replaceAll(' ', '-');
+    final String newName = '$prefix-revanced_v$version-patches_v$patchVersion.apk';
     return newName;
   }
 
