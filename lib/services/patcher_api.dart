@@ -236,8 +236,8 @@ void exportPatchedFile(String appName, String version) {
   try {
     if (outFile != null) {
       final String newName = _getFileName(appName, version);
-       FlutterFileDialog.saveFile(
-          params: SaveFileDialogParams(
+      FlutterFileDialog.saveFile(
+        params: SaveFileDialogParams(
           sourceFilePath: outFile!.path,
           fileName: newName,
           mimeTypesFilter: ['application/vnd.android.package-archive'],
