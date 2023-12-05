@@ -392,7 +392,7 @@ class PatcherAPI {
 
   String _getFileName(String appName, String version) {
     final String patchVersion = _managerAPI.patchesVersion!;
-  final String prefix = appName.toLowerCase().replaceAll(' ', '-');
+    final String prefix = appName.toLowerCase().replaceAll(' ', '-');
     final String newName = '$prefix-revanced_v$version-patches_v$patchVersion.apk';
     return newName;
   }
