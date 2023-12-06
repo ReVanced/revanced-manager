@@ -333,7 +333,7 @@
     "installErrorDialog": {
         "mount_version_mismatch": "Version mismatch",
         "mount_no_root": "No root access",
-        "mount_missing_installation": "No installation found",
+        "mount_missing_installation": "Installation not found",
 
         "status_failure_blocked": "Installation blocked",
         "install_failed_verification_failure": "Verification failed",
