@@ -84,9 +84,7 @@ fun InstalledAppsScreen(
                     }
                 }
 
-            } ?: item {
-                LoadingIndicator()
-            }
+            } ?: item { LoadingIndicator() }
         }
     }
 }

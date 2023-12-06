@@ -215,9 +215,7 @@ fun AppSelectorScreen(
 
                 }
             } else {
-                item {
-                    LoadingIndicator()
-                }
+                item { LoadingIndicator() }
             }
         }
     }
