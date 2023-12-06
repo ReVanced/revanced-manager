@@ -164,7 +164,8 @@ fun AppSelectorScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 ListItem(
@@ -215,12 +216,7 @@ fun AppSelectorScreen(
                 }
             } else {
                 item {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        LoadingIndicator()
-                    }
+                    LoadingIndicator()
                 }
             }
         }

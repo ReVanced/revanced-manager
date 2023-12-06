@@ -50,8 +50,6 @@ import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.floor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -155,7 +153,7 @@ fun PatcherScreen(
                         .fillMaxSize()
                 ) {
                     steps.forEach { (category, steps) ->
-                        Steps(category, steps.toImmutableList())
+                        Steps(category, steps)
                     }
                 }
             }
@@ -165,7 +163,7 @@ fun PatcherScreen(
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
 @Composable
-fun Steps(category: StepCategory, steps: ImmutableList<Step>) {
+fun Steps(category: StepCategory, steps: List<Step>) {
     val context = LocalContext.current
 
     var expanded by rememberSaveable { mutableStateOf(true) }

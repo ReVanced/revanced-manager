@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.Dp
 @Composable
 fun LoadingIndicator(
     modifier: Modifier = Modifier,
-    progress: (() -> Float?)? = null,
+    progress: () -> Float? = { null },
     color: Color = ProgressIndicatorDefaults.circularColor,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
     trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
     strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
 ) {
-    val progression = progress?.invoke()
+    val progression = progress.invoke()
 
     progression?.let {
         CircularProgressIndicator(
