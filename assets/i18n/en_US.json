@@ -163,8 +163,8 @@
     },
     "installerView": {
         "widgetTitle": "Installer",
-        "installType": "Choose installation method",
-        "installTypeDescription": "To install, you can either mount or install normally. Mounting will install the patched app on top of an existing installation.",
+        "installType": "Select install type",
+        "installTypeDescription": "Select the installation type to proceed with.",
 
         "installButton": "Install",
         "installRootType": "Mount",

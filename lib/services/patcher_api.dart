@@ -226,9 +226,9 @@ class PatcherAPI {
           final packageVersion = await DeviceApps.getApp(patchedApp.packageName)
               .then((app) => app?.versionName);
           if (!hasRootPermissions) {
-            installErrorDialog(10);
-          } else if (packageVersion == null) {
             installErrorDialog(1);
+          } else if (packageVersion == null) {
+            installErrorDialog(1.2);
           } else if (packageVersion == patchedApp.version) {
             return await _rootAPI.installApp(
               patchedApp.packageName,
@@ -238,7 +238,7 @@ class PatcherAPI {
                 ? 0
                 : 1;
           } else {
-            installErrorDialog(0);
+            installErrorDialog(1.1);
           }
         } else {
           if (await _rootAPI.hasRootPermissions()) {
@@ -292,7 +292,7 @@ class PatcherAPI {
   }
 
   Future<int> installErrorDialog(
-    int statusCode, [
+    num statusCode, [
     status,
     bool hasExtra = false,
   ]) async {
@@ -300,6 +300,7 @@ class PatcherAPI {
       hasExtra ? double.parse('$statusCode.1') : statusCode,
     );
     bool cleanInstall = false;
+    final bool isFixable = statusCode == 4 || statusCode == 5;
     await showDialog(
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
@@ -330,13 +331,13 @@ class PatcherAPI {
               ]
             : <Widget>[
                 CustomMaterialButton(
-                  isFilled: !(statusCode == 4 || statusCode == 5),
+                  isFilled: !isFixable,
                   label: I18nText('cancelButton'),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-                if (statusCode == 4 || statusCode == 5)
+                if (isFixable)
                   CustomMaterialButton(
                     label: I18nText('okButton'),
                     onPressed: () async {
@@ -451,56 +452,58 @@ class PatcherAPI {
 }
 
 enum InstallStatus {
-  statusFailureTimeout(8),
-  statusFailureStorage(6),
-  statusFailureInvalid(4),
-  statusFailureIncompatible(7),
-  statusFailureConflict(5),
+  mountNoRoot(1),
+  mountVersionMismatch(1.1),
+  mountMissingInstallation(1.2),
+
   statusFailureBlocked(2),
   installFailedVerificationFailure(3.1),
+  statusFailureInvalid(4),
   installFailedVersionDowngrade(4.1),
-
-  mountVersionMismatch(0),
-  mountMissingInstallation(1),
-  mountNoRoot(10);
+  statusFailureConflict(5),
+  statusFailureStorage(6),
+  statusFailureIncompatible(7),
+  statusFailureTimeout(8);
 
   const InstallStatus(this.statusCode);
   final double statusCode;
 
   static String byCode(num code) {
-    return InstallStatus.values
-        .firstWhere((flag) => flag.statusCode == code)
-        .status;
+    try {
+      return InstallStatus.values
+          .firstWhere((flag) => flag.statusCode == code)
+          .status;
+    } catch (e) {
+      return 'status_unknown';
+    }
   }
 }
 
 extension InstallStatusExtension on InstallStatus {
   String get status {
     switch (this) {
-      case InstallStatus.statusFailureTimeout:
-        return 'status_failure_timeout';
-      case InstallStatus.statusFailureStorage:
-        return 'status_failure_storage';
-      case InstallStatus.statusFailureInvalid:
-        return 'status_failure_invalid';
-      case InstallStatus.statusFailureIncompatible:
-        return 'status_failure_incompatible';
-      case InstallStatus.statusFailureConflict:
-        return 'status_failure_conflict';
-      case InstallStatus.statusFailureBlocked:
-        return 'status_failure_blocked';
-      case InstallStatus.installFailedVerificationFailure:
-        return 'install_failed_verification_failure';
-      case InstallStatus.installFailedVersionDowngrade:
-        return 'install_failed_version_downgrade';
+      case InstallStatus.mountNoRoot:
+        return 'mount_no_root';
       case InstallStatus.mountVersionMismatch:
         return 'mount_version_mismatch';
       case InstallStatus.mountMissingInstallation:
         return 'mount_missing_installation';
-      case InstallStatus.mountNoRoot:
-        return 'mount_no_root';
-      default:
-        return 'status_unknown';
+      case InstallStatus.statusFailureBlocked:
+        return 'status_failure_blocked';
+      case InstallStatus.installFailedVerificationFailure:
+        return 'install_failed_verification_failure';
+      case InstallStatus.statusFailureInvalid:
+        return 'status_failure_invalid';
+      case InstallStatus.installFailedVersionDowngrade:
+        return 'install_failed_version_downgrade';
+      case InstallStatus.statusFailureConflict:
+        return 'status_failure_conflict';
+      case InstallStatus.statusFailureStorage:
+        return 'status_failure_storage';
+      case InstallStatus.statusFailureIncompatible:
+        return 'status_failure_incompatible';
+      case InstallStatus.statusFailureTimeout:
+        return 'status_failure_timeout';
     }
   }
 }
