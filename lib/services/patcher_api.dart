@@ -240,6 +240,7 @@ void exportPatchedFile(String appName, String version) {
         params: SaveFileDialogParams(
           sourceFilePath: outFile!.path,
           fileName: newName,
+          mimeTypesFilter: ['application/vnd.android.package-archive'],
         ),
       );
     }
@@ -268,8 +269,9 @@ void sharePatchedFile(String appName, String version) {
 }
 
 String _getFileName(String appName, String version) {
+  final String patchVersion = _managerAPI.patchesVersion!;
   final String prefix = appName.toLowerCase().replaceAll(' ', '-');
-  final String newName = '$prefix-revanced_v$version.apk';
+  final String newName = '$prefix-revanced_v$version-patches_$patchVersion.apk';
   return newName;
 }
 
@@ -287,7 +289,7 @@ Future<void> exportPatcherLog(String logs) async {
   final File log = File('${logDir.path}/$fileName');
   log.writeAsStringSync(logs);
   FlutterFileDialog.saveFile(
-    params: SaveFileDialogParams(
+     params:SaveFileDialogParams(
       sourceFilePath: log.path,
       fileName: fileName,
     ),
