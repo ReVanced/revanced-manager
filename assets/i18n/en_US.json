@@ -346,7 +346,7 @@
         "status_unknown": "Installation failed",
 
         "mount_version_mismatch_description": "To install by mounting the patched app, the version of the installed app must match the version of the patched app.\n\nInstall the version of the app you are mounting and try again.",
-        "mount_no_root_description": "To install by mounting the patched app, root access is required.\n\nGrant root access to ReVanced Manager and try again.",
+        "mount_no_root_description": "To install by mounting the patched app, root access must be granted.\n\nGrant root access to ReVanced Manager and try again.",
         "mount_missing_installation_description": "To install by mounting the patched app, the unpatched app must be installed on this device.\n\nInstall the app and try again.",
 
         "status_failure_timeout_description": "Try again",
