@@ -32,7 +32,6 @@ class SManageKeystorePassword extends BaseViewModel {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[

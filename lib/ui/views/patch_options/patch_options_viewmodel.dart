@@ -133,7 +133,6 @@ class PatchOptionsViewModel extends BaseViewModel {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -224,7 +223,6 @@ Future<void> showRequiredOptionNullDialog(
   await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       title: I18nText('notice'),
       actions: [
         TextButton(

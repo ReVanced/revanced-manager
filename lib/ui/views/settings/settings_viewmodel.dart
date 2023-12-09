@@ -51,7 +51,6 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),
           content: I18nText(
             'settingsView.enablePatchesSelectionWarningText',
@@ -85,7 +84,6 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),
           content: I18nText(
             'settingsView.disablePatchesSelectionWarningText',
@@ -149,7 +147,6 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),
           content: I18nText(
             'settingsView.requireSuggestedAppVersionDialogText',

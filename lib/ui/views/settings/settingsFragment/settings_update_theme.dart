@@ -121,7 +121,6 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
         title: I18nText('settingsView.themeModeLabel'),
         icon: const Icon(Icons.palette),
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: ValueListenableBuilder(
             valueListenable: newTheme,

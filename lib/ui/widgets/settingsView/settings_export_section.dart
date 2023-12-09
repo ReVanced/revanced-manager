@@ -150,7 +150,6 @@ class SExportSection extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText(dialogTitle),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(dialogText),
         actions: <Widget>[
           TextButton(
@@ -174,7 +173,6 @@ class SExportSection extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.regenerateKeystoreDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.regenerateKeystoreDialogText'),
         actions: <Widget>[
           TextButton(

@@ -32,7 +32,6 @@ class SManageApiUrl extends BaseViewModel {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -79,7 +78,6 @@ class SManageApiUrl extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.sourcesResetDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.apiURLResetDialogText'),
         actions: <Widget>[
           TextButton(

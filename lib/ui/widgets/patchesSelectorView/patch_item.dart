@@ -215,7 +215,6 @@ class _PatchItemState extends State<PatchItem> {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('warning'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'patchItem.unsupportedDialogText',
           translationParams: {
@@ -239,7 +238,6 @@ class _PatchItemState extends State<PatchItem> {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('notice'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'patchItem.unsupportedRequiredOption',
         ),

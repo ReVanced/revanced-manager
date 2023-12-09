@@ -168,7 +168,6 @@ class AppSelectorViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         title: I18nText('warning'),
         content: I18nText(
           'appSelectorView.requireSuggestedAppVersionDialogText',

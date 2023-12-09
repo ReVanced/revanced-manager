@@ -66,7 +66,6 @@ class AppInfoViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('appInfoView.rootDialogTitle'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('appInfoView.rootDialogText'),
           actions: <Widget>[
             FilledButton(
@@ -84,7 +83,6 @@ class AppInfoViewModel extends BaseViewModel {
             title: I18nText(
               'appInfoView.unpatchButton',
             ),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
             content: I18nText(
               'appInfoView.unpatchDialogText',
             ),
@@ -129,7 +127,6 @@ class AppInfoViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('appInfoView.appliedPatchesLabel'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Text(getAppliedPatchesString(app.appliedPatches)),
         ),

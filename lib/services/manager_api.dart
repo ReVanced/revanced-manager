@@ -585,7 +585,6 @@ class ManagerAPI {
       builder: (context) => PopScope(
         canPop: false,
         child: AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),
           content: ValueListenableBuilder(
             valueListenable: noShow,

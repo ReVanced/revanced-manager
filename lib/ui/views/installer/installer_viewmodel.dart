@@ -273,7 +273,6 @@ class InstallerViewModel extends BaseViewModel {
         title: I18nText(
           'warning',
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
           child: I18nText('installerView.screenshotDetected'),
@@ -308,7 +307,6 @@ class InstallerViewModel extends BaseViewModel {
           title: I18nText(
             'installerView.installType',
           ),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
           content: SingleChildScrollView(

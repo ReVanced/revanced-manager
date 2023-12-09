@@ -54,7 +54,6 @@ class PatcherViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('notice'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText(
             'patcherView.removedPatchesWarningDialogText',
             translationParams: {'patches': removedPatches.join('\n')},
@@ -95,7 +94,6 @@ class PatcherViewModel extends BaseViewModel {
       context: context ?? ctx,
       builder: (context) => AlertDialog(
         title: I18nText('notice'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('patcherView.requiredOptionDialogText'),
         actions: <Widget>[
           TextButton(
@@ -127,7 +125,6 @@ class PatcherViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('warning'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('patcherView.armv7WarningDialogText'),
           actions: <Widget>[
             FilledButton(
