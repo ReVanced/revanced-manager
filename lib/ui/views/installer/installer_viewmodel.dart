@@ -14,7 +14,6 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
@@ -183,13 +182,15 @@ class InstallerViewModel extends BaseViewModel {
     final lineCount = logLines.where((line) => line.endsWith(keyword)).length;
     final index = logLines.indexWhere((line) => line.endsWith(keyword));
     if (newString != null && lineCount > 0) {
-      logLines.insert(index, newString.replaceAll('{lineCount}', lineCount.toString()));
+      logLines.insert(
+          index, newString.replaceAll('{lineCount}', lineCount.toString()));
     }
     logLines.removeWhere((lines) => lines.endsWith(keyword));
   }
 
   dynamic _getPatchOptionValue(String patchName, Option option) {
-    final Option? savedOption = _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+    final Option? savedOption =
+        _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
     if (savedOption != null) {
       return savedOption.value;
     } else {
@@ -201,7 +202,14 @@ class InstallerViewModel extends BaseViewModel {
     if (patches.isEmpty) {
       return 'None';
     }
-    return patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]')).toList().join(', ');
+    return patches
+        .map((p) =>
+            p.name +
+            (p.options.isEmpty
+                ? ''
+                : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]'))
+        .toList()
+        .join(', ');
   }
 
   Future<void> copyLogs() async {
@@ -213,12 +221,21 @@ class InstallerViewModel extends BaseViewModel {
     _trimLogs(logsTrimmed, '.dex', 'Compiled {lineCount} dex files');
 
     // Get patches added / removed
-    final defaultPatches = _patcherAPI.getFilteredPatches(_app.packageName).where((p) => !p.excluded).toList();
-    final patchesAdded = _patches.where((p) => !defaultPatches.contains(p)).toList();
-    final patchesRemoved = defaultPatches.where((p) => !_patches.contains(p)).toList();
+    final defaultPatches = _patcherAPI
+        .getFilteredPatches(_app.packageName)
+        .where((p) => !p.excluded)
+        .toList();
+    final patchesAdded =
+        _patches.where((p) => !defaultPatches.contains(p)).toList();
+    final patchesRemoved =
+        defaultPatches.where((p) => !_patches.contains(p)).toList();
 
     // Options changed
-    final patchesChanged = defaultPatches.where((p) => _patches.contains(p) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
+    final patchesChanged = defaultPatches
+        .where((p) =>
+            _patches.contains(p) &&
+            p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value))
+        .toList();
 
     // Add Info
     final formattedLogs = [
@@ -229,21 +246,18 @@ class InstallerViewModel extends BaseViewModel {
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
       'Root permissions: ${isRooted ? 'Yes' : 'No'}',
-      
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version}',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches added: ${_formatPatches(patchesAdded)}',
       'Patches removed: ${_formatPatches(patchesRemoved)}',
       'Options changed: ${_formatPatches(patchesChanged)}',
-
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
       'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-      
       '\n- Logs',
       logsTrimmed.join('\n'),
     ];
@@ -265,20 +279,19 @@ class InstallerViewModel extends BaseViewModel {
           child: I18nText('installerView.screenshotDetected'),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               copyLogs();
               showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
@@ -349,19 +362,18 @@ class InstallerViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              label: I18nText('cancelButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: I18nText('cancelButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 installResult(context, installType.value == 1);
               },
+              child: I18nText('installerView.installButton'),
             ),
           ],
         ),

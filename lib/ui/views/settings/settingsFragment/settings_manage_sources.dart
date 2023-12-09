@@ -7,7 +7,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class SManageSources extends BaseViewModel {
@@ -107,9 +106,7 @@ class SManageSources extends BaseViewModel {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               _orgPatSourceController.clear();
               _patSourceController.clear();
@@ -117,9 +114,9 @@ class SManageSources extends BaseViewModel {
               _intSourceController.clear();
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               _managerAPI.setRepoUrl(_hostSourceController.text.trim());
               _managerAPI.setPatchesRepo(
@@ -133,6 +130,7 @@ class SManageSources extends BaseViewModel {
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -147,13 +145,11 @@ class SManageSources extends BaseViewModel {
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.sourcesResetDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
@@ -165,6 +161,7 @@ class SManageSources extends BaseViewModel {
                 ..pop()
                 ..pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),

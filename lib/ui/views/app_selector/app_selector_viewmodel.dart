@@ -13,7 +13,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
@@ -105,7 +104,8 @@ class AppSelectorViewModel extends BaseViewModel {
   ]) async {
     final String suggestedVersion =
         getSuggestedVersion(application.packageName);
-    if (application.versionName != suggestedVersion && suggestedVersion.isNotEmpty) {
+    if (application.versionName != suggestedVersion &&
+        suggestedVersion.isNotEmpty) {
       _managerAPI.suggestedAppVersionSelected = false;
       if (_managerAPI.isRequireSuggestedAppVersionEnabled() &&
           context.mounted) {
@@ -185,9 +185,9 @@ class AppSelectorViewModel extends BaseViewModel {
           ),
         ),
         actions: [
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -232,12 +232,12 @@ class AppSelectorViewModel extends BaseViewModel {
             ),
           ),
           const SizedBox(height: 30),
-          CustomMaterialButton(
+          FilledButton(
             onPressed: () async {
               Navigator.pop(innerContext);
               await selectAppFromStorage(context);
             },
-            label: Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.sd_card),
@@ -247,12 +247,11 @@ class AppSelectorViewModel extends BaseViewModel {
             ),
           ),
           const SizedBox(height: 10),
-          CustomMaterialButton(
-            isFilled: false,
+          TextButton(
             onPressed: () {
               Navigator.pop(innerContext);
             },
-            label: Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(width: 10),

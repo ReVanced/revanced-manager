@@ -5,7 +5,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
@@ -226,9 +225,9 @@ class _PatchItemState extends State<PatchItem> {
           },
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -245,9 +244,9 @@ class _PatchItemState extends State<PatchItem> {
           'patchItem.unsupportedRequiredOption',
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
         ],
       ),

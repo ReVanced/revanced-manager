@@ -10,7 +10,6 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -100,11 +99,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
           },
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -141,18 +140,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
           ),
         ),
         actions: [
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('okButton'),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('patchItem.patchesChangeWarningDialogButton'),
+          FilledButton(
             onPressed: () {
               Navigator.of(context)
                 ..pop()
                 ..pop();
             },
+            child: I18nText('patchItem.patchesChangeWarningDialogButton'),
           ),
         ],
       ),

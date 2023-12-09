@@ -13,7 +13,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
@@ -61,19 +60,18 @@ class PatcherViewModel extends BaseViewModel {
             translationParams: {'patches': removedPatches.join('\n')},
           ),
           actions: <Widget>[
-            CustomMaterialButton(
-              isFilled: false,
-              label: I18nText('noButton'),
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: I18nText('noButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 showArmv7WarningDialog(context);
               },
+              child: I18nText('yesButton'),
             ),
           ],
         ),
@@ -100,19 +98,18 @@ class PatcherViewModel extends BaseViewModel {
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('patcherView.requiredOptionDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => {
               Navigator.pop(context),
               navigateToPatchesSelector(),
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -133,17 +130,16 @@ class PatcherViewModel extends BaseViewModel {
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('patcherView.armv7WarningDialogText'),
           actions: <Widget>[
-            CustomMaterialButton(
-              label: I18nText('noButton'),
+            FilledButton(
               onPressed: () => Navigator.of(context).pop(),
+              child: I18nText('noButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('yesButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
               },
+              child: I18nText('yesButton'),
             ),
           ],
         ),

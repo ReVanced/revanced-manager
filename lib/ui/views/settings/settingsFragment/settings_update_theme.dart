@@ -7,7 +7,6 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 class SUpdateThemeUI extends StatefulWidget {
   const SUpdateThemeUI({super.key});
@@ -36,9 +35,9 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
               ),
             ),
           ),
-          trailing: CustomMaterialButton(
-            label: getThemeModeName(),
+          trailing: FilledButton(
             onPressed: () => {showThemeDialog(context)},
+            child: getThemeModeName(),
           ),
           onTap: () => {showThemeDialog(context)},
         ),
@@ -164,19 +163,18 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               setThemeMode(context, newTheme.value);
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
