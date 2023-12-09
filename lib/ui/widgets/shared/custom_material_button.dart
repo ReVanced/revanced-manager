@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomMaterialButton extends StatelessWidget {
-  @Deprecated(message: 'Use FilledButton instead')
+  @Deprecated('Use the native FilledButton instead')
   const CustomMaterialButton({
     super.key,
     required this.label,
