@@ -14,17 +14,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -32,16 +31,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -61,7 +64,6 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.BaseSelectionMode
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
@@ -73,18 +75,75 @@ import org.koin.compose.rememberKoinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onPatchClick: (PatchesSelection, Options) -> Unit,
+    onSave: (PatchesSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
-    val pagerState = rememberPagerState()
-    val composableScope = rememberCoroutineScope()
-
     val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        bundles.size
+    }
+    val composableScope = rememberCoroutineScope()
+    var search: String? by rememberSaveable {
+        mutableStateOf(null)
+    }
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    val showPatchButton by remember {
+        derivedStateOf { vm.selectionIsValid(bundles) }
+    }
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 24.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.patches_selector_sheet_filter_title),
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = stringResource(R.string.patches_selector_sheet_filter_compat_title),
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    FilterChip(
+                        selected = vm.filter and SHOW_SUPPORTED != 0,
+                        onClick = { vm.toggleFlag(SHOW_SUPPORTED) },
+                        label = { Text(stringResource(R.string.supported)) }
+                    )
+
+                    FilterChip(
+                        selected = vm.filter and SHOW_UNIVERSAL != 0,
+                        onClick = { vm.toggleFlag(SHOW_UNIVERSAL) },
+                        label = { Text(stringResource(R.string.universal)) },
+                    )
+
+                    FilterChip(
+                        selected = vm.filter and SHOW_UNSUPPORTED != 0,
+                        onClick = { vm.toggleFlag(SHOW_UNSUPPORTED) },
+                        label = { Text(stringResource(R.string.unsupported)) },
+                    )
+                }
+            }
+        }
+    }
 
     if (vm.compatibleVersions.isNotEmpty())
         UnsupportedDialog(
-            appVersion = vm.input.selectedApp.version,
+            appVersion = vm.appVersion,
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
         )
@@ -106,6 +165,112 @@ fun PatchesSelectorScreen(
         )
     }
 
+    fun LazyListScope.patchList(
+        uid: Int,
+        patches: List<PatchInfo>,
+        filterFlag: Int,
+        supported: Boolean,
+        header: (@Composable () -> Unit)? = null
+    ) {
+        if (patches.isNotEmpty() && (vm.filter and filterFlag) != 0 || vm.filter == 0) {
+            header?.let {
+                item {
+                    it()
+                }
+            }
+
+            items(
+                items = patches,
+                key = { it.name }
+            ) { patch ->
+                PatchItem(
+                    patch = patch,
+                    onOptionsDialog = {
+                        vm.optionsDialog = uid to patch
+                    },
+                    selected = supported && vm.isSelected(
+                        uid,
+                        patch
+                    ),
+                    onToggle = {
+                        if (vm.selectionWarningEnabled) {
+                            vm.pendingSelectionAction = {
+                                vm.togglePatch(uid, patch)
+                            }
+                        } else {
+                            vm.togglePatch(uid, patch)
+                        }
+                    },
+                    supported = supported
+                )
+            }
+        }
+    }
+
+    search?.let { query ->
+        SearchBar(
+            query = query,
+            onQueryChange = { new ->
+                search = new
+            },
+            onSearch = {},
+            active = true,
+            onActiveChange = { new ->
+                if (new) return@SearchBar
+                search = null
+            },
+            placeholder = {
+                Text(stringResource(R.string.search_patches))
+            },
+            leadingIcon = {
+                IconButton(onClick = { search = null }) {
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        stringResource(R.string.back)
+                    )
+                }
+            }
+        ) {
+            val bundle = bundles[pagerState.currentPage]
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                fun List<PatchInfo>.searched() = filter {
+                    it.name.contains(query, true)
+                }
+
+                patchList(
+                    uid = bundle.uid,
+                    patches = bundle.supported.searched(),
+                    filterFlag = SHOW_SUPPORTED,
+                    supported = true
+                )
+                patchList(
+                    uid = bundle.uid,
+                    patches = bundle.universal.searched(),
+                    filterFlag = SHOW_UNIVERSAL,
+                    supported = true
+                ) {
+                    ListHeader(
+                        title = stringResource(R.string.universal_patches),
+                    )
+                }
+
+                if (!vm.allowExperimental) return@LazyColumn
+                patchList(
+                    uid = bundle.uid,
+                    patches = bundle.unsupported.searched(),
+                    filterFlag = SHOW_UNSUPPORTED,
+                    supported = true
+                ) {
+                    ListHeader(
+                        title = stringResource(R.string.unsupported_patches),
+                        onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                    )
+                }
+            }
+        }
+    }
+
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -115,50 +280,28 @@ fun PatchesSelectorScreen(
                     IconButton(onClick = vm::reset) {
                         Icon(Icons.Outlined.Restore, stringResource(R.string.reset))
                     }
-
-                    var dropdownActive by rememberSaveable {
-                        mutableStateOf(false)
+                    IconButton(onClick = { showBottomSheet = true }) {
+                        Icon(Icons.Outlined.FilterList, stringResource(R.string.more))
                     }
-                    // This part should probably be changed
-                    IconButton(onClick = { dropdownActive = true }) {
-                        Icon(Icons.Outlined.MoreVert, stringResource(R.string.more))
-                        DropdownMenu(
-                            expanded = dropdownActive,
-                            onDismissRequest = { dropdownActive = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = {
-                                    val id =
-                                        if (vm.baseSelectionMode == BaseSelectionMode.DEFAULT)
-                                            R.string.menu_opt_selection_mode_previous else R.string.menu_opt_selection_mode_default
-
-                                    Text(stringResource(id))
-                                },
-                                onClick = {
-                                    dropdownActive = false
-                                    vm.switchBaseSelectionMode()
-                                },
-                                enabled = vm.hasPreviousSelection
-                            )
+                    IconButton(
+                        onClick = {
+                            search = ""
                         }
-                    }
-                    IconButton(onClick = { }) {
+                    ) {
                         Icon(Icons.Outlined.Search, stringResource(R.string.search))
                     }
                 }
             )
         },
         floatingActionButton = {
+            if (!showPatchButton) return@Scaffold
+
             ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.Build, null) },
+                text = { Text(stringResource(R.string.save)) },
+                icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
                     // TODO: only allow this if all required options have been set.
-                    composableScope.launch {
-                        val selection = vm.getSelection()
-                        vm.saveSelection(selection).join()
-                        onPatchClick(selection, vm.getOptions())
-                    }
+                    onSave(vm.getCustomSelection(), vm.getOptions())
                 }
             )
         }
@@ -192,113 +335,40 @@ fun PatchesSelectorScreen(
             }
 
             HorizontalPager(
-                pageCount = bundles.size,
                 state = pagerState,
                 userScrollEnabled = true,
                 pageContent = { index ->
                     val bundle = bundles[index]
 
-                    Column {
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 10.dp, vertical = 2.dp),
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        patchList(
+                            uid = bundle.uid,
+                            patches = bundle.supported,
+                            filterFlag = SHOW_SUPPORTED,
+                            supported = true
+                        )
+                        patchList(
+                            uid = bundle.uid,
+                            patches = bundle.universal,
+                            filterFlag = SHOW_UNIVERSAL,
+                            supported = true
                         ) {
-                            FilterChip(
-                                selected = vm.filter and SHOW_SUPPORTED != 0 && bundle.supported.isNotEmpty(),
-                                onClick = { vm.toggleFlag(SHOW_SUPPORTED) },
-                                label = { Text(stringResource(R.string.supported)) },
-                                enabled = bundle.supported.isNotEmpty()
-                            )
-
-                            FilterChip(
-                                selected = vm.filter and SHOW_UNIVERSAL != 0 && bundle.universal.isNotEmpty(),
-                                onClick = { vm.toggleFlag(SHOW_UNIVERSAL) },
-                                label = { Text(stringResource(R.string.universal)) },
-                                enabled = bundle.universal.isNotEmpty()
-                            )
-
-                            FilterChip(
-                                selected = vm.filter and SHOW_UNSUPPORTED != 0 && bundle.unsupported.isNotEmpty(),
-                                onClick = { vm.toggleFlag(SHOW_UNSUPPORTED) },
-                                label = { Text(stringResource(R.string.unsupported)) },
-                                enabled = bundle.unsupported.isNotEmpty()
+                            ListHeader(
+                                title = stringResource(R.string.universal_patches),
                             )
                         }
-
-                        val allowExperimental by vm.allowExperimental.getAsState()
-
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize()
+                        patchList(
+                            uid = bundle.uid,
+                            patches = bundle.unsupported,
+                            filterFlag = SHOW_UNSUPPORTED,
+                            supported = vm.allowExperimental
                         ) {
-                            fun LazyListScope.patchList(
-                                patches: List<PatchInfo>,
-                                filterFlag: Int,
-                                supported: Boolean,
-                                header: (@Composable () -> Unit)? = null
-                            ) {
-                                if (patches.isNotEmpty() && (vm.filter and filterFlag) != 0 || vm.filter == 0) {
-                                    header?.let {
-                                        item {
-                                            it()
-                                        }
-                                    }
-
-                                    items(
-                                        items = patches,
-                                        key = { it.name }
-                                    ) { patch ->
-                                        PatchItem(
-                                            patch = patch,
-                                            onOptionsDialog = {
-                                                vm.optionsDialog = bundle.uid to patch
-                                            },
-                                            selected = supported && vm.isSelected(
-                                                bundle.uid,
-                                                patch
-                                            ),
-                                            onToggle = {
-                                                if (vm.selectionWarningEnabled) {
-                                                    vm.pendingSelectionAction = {
-                                                        vm.togglePatch(bundle.uid, patch)
-                                                    }
-                                                } else {
-                                                    vm.togglePatch(bundle.uid, patch)
-                                                }
-                                            },
-                                            supported = supported
-                                        )
-                                    }
-                                }
-                            }
-
-                            patchList(
-                                patches = bundle.supported,
-                                filterFlag = SHOW_SUPPORTED,
-                                supported = true
+                            ListHeader(
+                                title = stringResource(R.string.unsupported_patches),
+                                onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
                             )
-                            patchList(
-                                patches = bundle.universal,
-                                filterFlag = SHOW_UNIVERSAL,
-                                supported = true
-                            ) {
-                                ListHeader(
-                                    title = stringResource(R.string.universal_patches),
-                                    onHelpClick = { }
-                                )
-                            }
-                            patchList(
-                                patches = bundle.unsupported,
-                                filterFlag = SHOW_UNSUPPORTED,
-                                supported = allowExperimental
-                            ) {
-                                ListHeader(
-                                    title = stringResource(R.string.unsupported_patches),
-                                    onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
-                                )
-                            }
                         }
                     }
                 }
@@ -400,7 +470,7 @@ fun PatchItem(
     leadingContent = {
         Checkbox(
             checked = selected,
-            onCheckedChange = null,
+            onCheckedChange = { onToggle() },
             enabled = supported
         )
     },
@@ -501,7 +571,7 @@ fun OptionsDialog(
             items(patch.options, key = { it.key }) { option ->
                 val key = option.key
                 val value =
-                    if (values == null || !values.contains(key)) option.defaultValue else values[key]
+                    if (values == null || !values.contains(key)) option.default else values[key]
 
                 OptionItem(option = option, value = value, setValue = { set(key, it) })
             }

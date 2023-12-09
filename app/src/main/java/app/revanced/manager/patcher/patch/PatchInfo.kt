@@ -56,15 +56,15 @@ data class Option(
     val key: String,
     val description: String,
     val required: Boolean,
-    val type: Class<out PatchOption<*>>,
-    val defaultValue: Any?
+    val type: String,
+    val default: Any?
 ) {
     constructor(option: PatchOption<*>) : this(
         option.title ?: option.key,
         option.key,
         option.description.orEmpty(),
         option.required,
-        option::class.java,
-        option.value
+        option.valueType,
+        option.default,
     )
 }

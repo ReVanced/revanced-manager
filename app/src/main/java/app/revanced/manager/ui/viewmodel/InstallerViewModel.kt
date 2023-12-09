@@ -13,6 +13,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -23,7 +24,6 @@ import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
-import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.worker.PatcherProgressManager
@@ -56,7 +56,6 @@ import java.util.logging.LogRecord
 class InstallerViewModel(
     private val input: Destination.Installer
 ) : ViewModel(), KoinComponent {
-    private val keystoreManager: KeystoreManager by inject()
     private val app: Application by inject()
     private val fs: Filesystem by inject()
     private val pm: PM by inject()
@@ -71,8 +70,6 @@ class InstallerViewModel(
     }
 
     private val outputFile = tempDir.resolve("output.apk")
-    private val signedFile = tempDir.resolve("signed.apk")
-    private var hasSigned = false
     private var inputFile: File? = null
 
     private var installedApp: InstalledApp? = null
@@ -97,11 +94,13 @@ class InstallerViewModel(
 
         val (selectedApp, patches, options) = input
 
-        _progress = MutableStateFlow(PatcherProgressManager.generateSteps(
-            app,
-            patches.flatMap { (_, selected) -> selected },
-            selectedApp
-        ).toImmutableList())
+        _progress = MutableStateFlow(
+            PatcherProgressManager.generateSteps(
+                app,
+                patches.flatMap { (_, selected) -> selected },
+                selectedApp
+            ).toImmutableList()
+        )
 
         patcherWorkerId =
             workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
@@ -140,7 +139,7 @@ class InstallerViewModel(
                         installedPackageName =
                             intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
                         viewModelScope.launch {
-                            installedAppRepository.add(
+                            installedAppRepository.addOrUpdate(
                                 installedPackageName!!,
                                 packageName,
                                 input.selectedApp.version,
@@ -160,10 +159,10 @@ class InstallerViewModel(
     }
 
     init {
-        app.registerReceiver(installBroadcastReceiver, IntentFilter().apply {
+        ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
             addAction(UninstallService.APP_UNINSTALL_ACTION)
-        })
+        }, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     fun exportLogs(context: Context) {
@@ -186,62 +185,47 @@ class InstallerViewModel(
             is SelectedApp.Local -> {
                 if (selectedApp.shouldDelete) selectedApp.file.delete()
             }
+
+            is SelectedApp.Installed -> {
+                try {
+                    installedApp?.let {
+                        if (it.installType == InstallType.ROOT) {
+                            rootInstaller.mount(packageName)
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(tag, "Failed to mount", e)
+                    app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
+                }
+            }
+
             else -> {}
         }
 
         tempDir.deleteRecursively()
-
-        try {
-            if (input.selectedApp is SelectedApp.Installed) {
-                installedApp?.let {
-                    if (it.installType == InstallType.ROOT) {
-                        rootInstaller.mount(packageName)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to mount", e)
-            app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
-        }
-    }
-
-    private suspend fun signApk(): Boolean {
-        if (!hasSigned) {
-            try {
-                withContext(Dispatchers.Default) {
-                    keystoreManager.sign(outputFile, signedFile)
-                }
-            } catch (e: Exception) {
-                Log.e(tag, "Got exception while signing", e)
-                app.toast(app.getString(R.string.sign_fail, e::class.simpleName))
-                return false
-            }
-        }
-
-        return true
     }
 
     fun export(uri: Uri?) = viewModelScope.launch {
         uri?.let {
-            if (signApk()) {
-                withContext(Dispatchers.IO) {
-                    app.contentResolver.openOutputStream(it)
-                        .use { stream -> Files.copy(signedFile.toPath(), stream) }
-                }
-                app.toast(app.getString(R.string.export_app_success))
+            withContext(Dispatchers.IO) {
+                app.contentResolver.openOutputStream(it)
+                    .use { stream -> Files.copy(outputFile.toPath(), stream) }
             }
+            app.toast(app.getString(R.string.save_apk_success))
         }
     }
 
     fun install(installType: InstallType) = viewModelScope.launch {
         isInstalling = true
         try {
-            if (!signApk()) return@launch
-
             when (installType) {
-                InstallType.DEFAULT -> { pm.installApp(listOf(signedFile)) }
+                InstallType.DEFAULT -> {
+                    pm.installApp(listOf(outputFile))
+                }
 
-                InstallType.ROOT -> { installAsRoot() }
+                InstallType.ROOT -> {
+                    installAsRoot()
+                }
             }
 
         } finally {
@@ -254,7 +238,7 @@ class InstallerViewModel(
     private suspend fun installAsRoot() {
         try {
             val label = with(pm) {
-                getPackageInfo(signedFile)?.label()
+                getPackageInfo(outputFile)?.label()
                     ?: throw Exception("Failed to load application info")
             }
 
@@ -270,7 +254,7 @@ class InstallerViewModel(
 
             installedApp?.let { installedAppRepository.delete(it) }
 
-            installedAppRepository.add(
+            installedAppRepository.addOrUpdate(
                 packageName,
                 packageName,
                 input.selectedApp.version,
@@ -286,7 +270,8 @@ class InstallerViewModel(
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
             try {
                 rootInstaller.uninstall(packageName)
-            } catch (_: Exception) {  }
+            } catch (_: Exception) {
+            }
         }
     }
 }

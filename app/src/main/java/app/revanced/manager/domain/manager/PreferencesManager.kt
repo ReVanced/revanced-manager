@@ -12,6 +12,7 @@ class PreferencesManager(
 
     val api = stringPreference("api_url", "https://api.revanced.app")
 
+    val multithreadingDexFileWriter = booleanPreference("multithreading_dex_file_writer", true)
     val allowExperimental = booleanPreference("allow_experimental", false)
 
     val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)
@@ -19,7 +20,7 @@ class PreferencesManager(
 
     val preferSplits = booleanPreference("prefer_splits", false)
 
-    val showAutoUpdatesDialog = booleanPreference("show_auto_updates_dialog", true)
+    val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
 
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)

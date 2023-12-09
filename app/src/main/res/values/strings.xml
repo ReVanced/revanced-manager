@@ -11,6 +11,8 @@
     <string name="select_app">Select an app</string>
     <string name="select_patches">Select patches</string>
 
+    <string name="unsupported_architecture_warning">Patching on ARMv7 devices is not yet supported and will most likely fail.</string>
+
     <string name="import_">Import</string>
     <string name="import_bundle">Import patch bundle</string>
     <string name="bundle_patches">Bundle patches</string>
@@ -23,7 +25,19 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
-    
+
+    <string name="selected_app_meta">%1s • %2d available patches</string>
+
+    <string name="patch_item_description">Start patching the application</string>
+    <string name="patch_selector_item">Patch selection and options</string>
+    <string name="patch_selector_item_description">%d patches selected</string>
+    <string name="no_patches_selected">No patches selected</string>
+
+    <string name="version_selector_item">Change version</string>
+    <string name="version_selector_item_description">%s selected</string>
+
+    <string name="legacy_import_failed">Could not import legacy settings</string>
+
     <string name="auto_updates_dialog_title">Select updates to receive</string>
     <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
     <string name="auto_updates_dialog_manager">ReVanced Manager</string>
@@ -51,6 +65,8 @@
     <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
+    <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
+    <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
     <string name="experimental_patches">Allow experimental patches</string>
     <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
     <string name="import_keystore">Import keystore</string>
@@ -76,6 +92,13 @@
     <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
     <string name="clear_patches_selection">Clear patches selection</string>
     <string name="clear_patches_selection_description">Clear all patches selection</string>
+    <string name="patch_options">Patch options</string>
+    <string name="patch_options_clear_package">Clear patch options for package</string>
+    <string name="patch_options_clear_package_description">Resets patch options for a single package</string>
+    <string name="patch_options_clear_bundle">Clear patch options for bundle</string>
+    <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
+    <string name="patch_options_clear_all">Clear all patch options</string>
+    <string name="patch_options_clear_all_description">Resets all patch options</string>
     <string name="prefer_splits">Prefer split apks</string>
     <string name="prefer_splits_description">Prefer split apks instead of full apks</string>
     <string name="prefer_universal">Prefer universal apks</string>
@@ -143,8 +166,6 @@
     <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
-    <string name="menu_opt_selection_mode_default">Use default selection</string>
-    <string name="menu_opt_selection_mode_previous">Use previous selection</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
@@ -152,6 +173,7 @@
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
+    <string name="search_patches">Patch name</string>
     <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
@@ -188,6 +210,9 @@
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
 
+    <string name="patches_selector_sheet_filter_title">Filter</string>
+    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
+
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
     <string name="string_option_placeholder">Value</string>
@@ -206,8 +231,8 @@
     <string name="install_app_fail">Failed to install app: %s</string>
     <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
     <string name="open_app">Open</string>
-    <string name="export_app">Export</string>
-    <string name="export_app_success">Apk exported</string>
+    <string name="save_apk">Save APK</string>
+    <string name="save_apk_success">APK Saved</string>
     <string name="sign_fail">Failed to sign Apk: %s</string>
     <string name="save_logs">Save logs</string>
     <string name="select_install_type">Select installation type</string>
@@ -219,6 +244,7 @@
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
     <string name="patcher_step_write_patched">Write patched Apk</string>
+    <string name="patcher_step_sign_apk">Sign Apk</string>
     <string name="patcher_notification_message">Patching in progress…</string>
 
     <string name="step_completed">completed</string>
@@ -230,6 +256,7 @@
 
     <string name="more">More</string>
     <string name="continue_">Continue</string>
+    <string name="dismiss">Dismiss</string>
     <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
     <string name="website">Website</string>
@@ -248,6 +275,12 @@
     <string name="bundle_type_description">Choose the type of bundle you want</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
+    <string name="update_available">An update is available</string>
+    <string name="current_version">Current version: %s</string>
+    <string name="new_version">New version: %s</string>
+    <string name="ready_to_install_update">Ready to install update</string>
+    <string name="update_completed">Update installed</string>
+    <string name="install_update_manager_failed">Failed to install update</string>
     <string name="update_notification">A minor update for ReVanced Manager is available. Click here to update and get the latest features and fixes!</string>
     <string name="update_channel">Update channel</string>
     <string name="update_channel_description">Stable</string>
@@ -257,7 +290,7 @@
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
-    <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Tap here to turn off.</string>
+    <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off.</string>
     <string name="installing_manager_update">Installing update…</string>
     <string name="downloading_manager_update">Downloading update…</string>
     <string name="download_manager_failed">Failed to download update: %s</string>
@@ -265,4 +298,21 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
+    <string name="no_changelogs_found">No changelogs found</string>
+    <string name="just_now">Just now</string>
+    <string name="minutes_ago">%sm ago</string>
+    <string name="hours_ago">%sh ago</string>
+    <string name="days_ago">%sd ago</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="disable_battery_optimization">Disable battery optimization</string>
+
+    <string name="failed_to_check_updates">Failed to check for updates</string>
+    <string name="dismiss_temporary">Not now</string>
+    <string name="update_available_dialog_title">New update available</string>
+    <string name="update_available_dialog_description">A new version (%s) is available for download.</string>
+    <string name="failed_to_download_update">Failed to download update: %s</string>
+    <string name="download">Download</string>
+    <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
+    <string name="download_update_confirmation">Download update?</string>
+    <string name="no_contributors_found">No contributors found</string>
 </resources>

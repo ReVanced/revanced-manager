@@ -9,13 +9,13 @@ plugins {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 33
-    buildToolsVersion = "33.0.2"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     defaultConfig {
         applicationId = "app.revanced.manager"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
         resourceConfigurations.addAll(listOf(
@@ -54,6 +54,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+    
     packaging {
         resources.excludes.addAll(listOf(
             "/prebuilt/**",
@@ -156,6 +157,9 @@ dependencies {
     implementation(libs.ktor.content.negotiation)
     implementation(libs.ktor.serialization)
 
-    // Markdown to HTML
-    implementation(libs.markdown)
+    // Markdown
+    implementation(libs.markdown.renderer)
+
+    // Fading Edges
+    implementation(libs.fading.edges)
 }
