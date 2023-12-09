@@ -163,6 +163,9 @@ class RootAPI {
 
     chcon u:object_r:apk_data_file:s0  \$base_path
     mount -o bind \$MIRROR\$base_path \$stock_path
+
+    # Kill the app to force it to restart the mounted APK in case it's already running
+    am force-stop $packageName
     '''
         .trim();
     final String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
