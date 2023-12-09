@@ -69,7 +69,7 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 ## 📝 How to contribute
 
-> [!NOTE]
+> [!TIP]
 > We recommend that you discuss your changes with 
 > the maintainers of ReVanced Manager before contributing. 
 > This will help you determine whether your change is acceptable.
