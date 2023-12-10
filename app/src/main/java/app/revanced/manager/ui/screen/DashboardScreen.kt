@@ -70,9 +70,8 @@ fun DashboardScreen(
     onSettingsClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit
 ) {
-    var showImportBundleDialog by rememberSaveable { mutableStateOf(false) }
     var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
-    var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
+    var selectedBundleType: BundleType? by rememberSaveable { mutableStateOf(null) }
 
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val pages: Array<DashboardPage> = DashboardPage.values()
@@ -95,15 +94,15 @@ fun DashboardScreen(
         ImportBundleTypeSelectorDialog(
             onDismiss = { showBundleTypeSelectorDialog = false },
             onConfirm = {
+                selectedBundleType = it
                 showBundleTypeSelectorDialog = false
-                bundleType = it
-                showImportBundleDialog = true
             }
         )
     }
-    if (showImportBundleDialog) {
+
+    selectedBundleType?.let {
         fun dismiss() {
-            showImportBundleDialog = false
+            selectedBundleType = null
         }
 
         ImportBundleDialog(
@@ -116,7 +115,7 @@ fun DashboardScreen(
                 dismiss()
                 vm.createRemoteSource(name, url, autoUpdate)
             },
-            bundleType = bundleType
+            bundleType = it
         )
     }
 
