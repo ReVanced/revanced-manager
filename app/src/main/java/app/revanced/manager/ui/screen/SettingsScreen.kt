@@ -30,11 +30,13 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
-import app.revanced.manager.ui.screen.settings.update.UpdateProgressScreen
+import app.revanced.manager.ui.screen.settings.update.UpdateScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
+import org.koin.androidx.compose.getViewModel as getComposeViewModel
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,7 +96,6 @@ fun SettingsScreen(
         controller = navController
     ) { destination ->
         when (destination) {
-
             is SettingsDestination.General -> GeneralSettingsScreen(
                 onBackClick = backClick,
                 viewModel = viewModel
@@ -107,7 +108,7 @@ fun SettingsScreen(
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
                 onBackClick = backClick,
                 onChangelogClick = { navController.navigate(SettingsDestination.Changelogs) },
-                onUpdateClick = { navController.navigate(SettingsDestination.UpdateProgress) }
+                onUpdateClick = { navController.navigate(SettingsDestination.Update(false)) }
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
@@ -124,8 +125,13 @@ fun SettingsScreen(
                 onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
-            is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
+            is SettingsDestination.Update -> UpdateScreen(
                 onBackClick = backClick,
+                vm = getComposeViewModel {
+                    parametersOf(
+                        destination.downloadOnScreenEntry
+                    )
+                }
             )
 
             is SettingsDestination.Changelogs -> ChangelogsScreen(

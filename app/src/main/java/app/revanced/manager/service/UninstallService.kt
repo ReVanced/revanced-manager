@@ -31,7 +31,7 @@ class UninstallService : Service() {
             else -> {
                 sendBroadcast(Intent().apply {
                     action = APP_UNINSTALL_ACTION
-
+                    `package` = packageName
                     putExtra(EXTRA_UNINSTALL_STATUS, extraStatus)
                     putExtra(EXTRA_UNINSTALL_STATUS_MESSAGE, extraStatusMessage)
                 })
