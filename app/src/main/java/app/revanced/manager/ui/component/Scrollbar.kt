@@ -31,7 +31,7 @@ fun Scrollbar(scrollState: ScrollState, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Scrollbar(scrollState: LazyListState, modifier: Modifier = Modifier) {
+fun Scrollbar(lazyListState: LazyListState, modifier: Modifier = Modifier) {
     Scrollbar(
         ScrollbarsScrollType.Lazy.List.Dynamic(
             knobType = ScrollbarsDynamicKnobType.Auto(),
