@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
@@ -48,7 +49,7 @@ fun GeneralSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
