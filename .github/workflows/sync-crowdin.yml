@@ -13,7 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: crowdin action
+      - name: Setup Dart & Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Sync translation from Crowdin
         uses: crowdin/github-action@v1
         with:
           config: crowdin.yml
