@@ -489,38 +489,25 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  bool canPop() {
-    return !isPatching;
-  }
-
-  void onBackButtonInvoked(BuildContext context) {
-    if (canPop()) {
-      onPopInvoked(context, true);
-    } else {
-      onPopInvoked(context, false);
-    }
-  }
-
-  Future<void> onPopInvoked(BuildContext context, bool didPop) async {
-    if (didPop) {
+  Future<bool> onWillPop(BuildContext context) async {
+    if (isPatching) {
       if (!cancel) {
-        cleanPatcher();
+        cancel = true;
+        _toast.showBottom('installerView.pressBackAgain');
+      } else if (!isCanceled) {
+        await stopPatcher();
       } else {
-        _patcherAPI.cleanPatcher();
+        _toast.showBottom('installerView.noExit');
       }
-      screenshotCallback.dispose();
-      Navigator.of(context).pop();
-    } else {
-      if (isPatching) {
-        if (!cancel) {
-          cancel = true;
-          _toast.showBottom('installerView.pressBackAgain');
-        } else if (!isCanceled) {
-          await stopPatcher();
-        } else {
-          _toast.showBottom('installerView.noExit');
-        }
-      }
+      return false;
     }
+    if (!cancel) {
+      cleanPatcher();
+    } else {
+      _patcherAPI.cleanPatcher();
+    }
+    screenshotCallback.dispose();
+    Navigator.of(context).pop();
+    return true;
   }
 }
