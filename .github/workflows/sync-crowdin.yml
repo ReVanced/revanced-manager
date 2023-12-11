@@ -41,6 +41,8 @@ jobs:
           
       - name: Commit change
         uses: EndBug/add-and-commit@v9
+        # So, the reason for continue-on-error is: Task failed successfully
+        continue-on-error: true
         with:
           message: "chore: remove empty values from JSON"
           push: false
