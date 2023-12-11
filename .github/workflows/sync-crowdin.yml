@@ -37,10 +37,11 @@ jobs:
         run: |
           cd assets/i18n
           sudo chmod 777 *
-          dart nuke.dart
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
 
       - name: Push out changes to i10n
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: remove empty values from JSON"
-          branch: "feat/i10n"
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
+          git push "feat/i10n"
