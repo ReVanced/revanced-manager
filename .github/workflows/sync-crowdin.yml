@@ -8,6 +8,8 @@ on:
 jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,3 +48,5 @@ jobs:
           sudo git fetch --all
           sudo git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
           sudo git push "feat/translations"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
