@@ -8,14 +8,12 @@ on:
 jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Dart & Flutter
-        uses: subosito/flutter-action@v2
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
 
       - name: Sync translation from Crowdin
         uses: crowdin/github-action@v1
@@ -38,6 +36,7 @@ jobs:
       - name: Remove empty values from JSON
         run: |
           cd assets/i18n
+          chmod 777 *
           dart nuke.dart
           
       - name: Commit
