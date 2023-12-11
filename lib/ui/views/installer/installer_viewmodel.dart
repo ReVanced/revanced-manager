@@ -212,6 +212,16 @@ class InstallerViewModel extends BaseViewModel {
         .join(', ');
   }
 
+  String _getSuggestedVersion(String packageName) {
+    String suggestedVersion = _patcherAPI.getSuggestedVersion(_app.packageName);
+    if (suggestedVersion.isEmpty) {
+      suggestedVersion = 'Any';
+    } else {
+      suggestedVersion = 'v$suggestedVersion';
+    }
+    return suggestedVersion;
+  }
+
   Future<void> copyLogs() async {
     final info = await AboutInfo.getInfo();
 
@@ -245,19 +255,22 @@ class InstallerViewModel extends BaseViewModel {
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
-      'Root permissions: ${isRooted ? 'Yes' : 'No'}',
+      'Root permissions: ${isRooted ? 'Yes' : 'No'}', //
+
       '\n- Patch Info',
-      'App: ${_app.packageName} v${_app.version}',
+      'App: ${_app.packageName} v${_app.version} (Suggested: ${_getSuggestedVersion(_app.packageName)})',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches added: ${_formatPatches(patchesAdded)}',
       'Patches removed: ${_formatPatches(patchesRemoved)}',
-      'Options changed: ${_formatPatches(patchesChanged)}',
+      'Options changed: ${_formatPatches(patchesChanged)}', //
+
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
-      'Integration source: ${_managerAPI.getIntegrationsRepo()}',
+      'Integration source: ${_managerAPI.getIntegrationsRepo()}', //
+
       '\n- Logs',
       logsTrimmed.join('\n'),
     ];
