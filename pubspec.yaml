@@ -90,8 +90,6 @@ dev_dependencies:
     sdk: flutter
   injectable_generator: ^2.1.5
 
-
-
 flutter:
   uses-material-design: true
   fonts:
