@@ -45,4 +45,4 @@ jobs:
           sudo git config user.email github-actions@github.com
           sudo git fetch --all
           sudo git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
-          sudo git push "feat/translation"
+          sudo git push "feat/translations"
