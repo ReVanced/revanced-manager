@@ -9,8 +9,8 @@ jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
     permissions:
-      contents: read|write
-      pull-requests: read|write
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,7 +39,6 @@ jobs:
       - name: Remove empty values from JSON
         run: |
           cd assets/i18n
-          chmod 777 *
           dart nuke.dart
           
       - name: Commit
