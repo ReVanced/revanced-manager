@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
@@ -43,7 +45,6 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git fetch --all
           sudo chown -R $USER:$USER .git
           git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
           git push HEAD:refs/heads/feat/translations
