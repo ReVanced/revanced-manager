@@ -26,7 +26,7 @@ jobs:
           create_pull_request: true
           pull_request_title: "chore(i18n): Sync translations"
           pull_request_body: "Sync translations from [Crowdin/ReVanced](https://crowdin.com/project/revanced)"
-          pull_request_base_branch_name: "feat/i10n"
+          pull_request_base_branch_name: "feat/i18n"
           commit_message: "chore(i18n): Sync translations"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,9 +39,12 @@ jobs:
           sudo chmod 777 *
           dart nuke.dart
           
-      - name: Commit
+      - name: Commit change
         uses: EndBug/add-and-commit@v9
         with:
           message: "chore: remove empty values from JSON"
-          new_branch: "feat/i10n"
+          push: false
+          
+      - name: Push to i18n branch
+        run: git push origin feat/i18n
                 
