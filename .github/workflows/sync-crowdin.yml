@@ -1,39 +1,43 @@
 name: Crowdin Action
 
 on:
-    workflow_dispatch:
-    push:
-        branches: [feat/i10n]
+  workflow_dispatch:
+  push:
+    branches: [feat/i10n]
 
 jobs:
-    synchronize-with-crowdin:
-        runs-on: ubuntu-latest
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: crowdin action
-              uses: crowdin/github-action@v1
-              with:
-                  config: crowdin.yml
-                  upload_sources: true
-                  upload_translations: false
-                  download_translations: true
-                  localization_branch_name: feat/translations
-                  create_pull_request: true
-                  pull_request_title: "chore(i18n): Sync translations"
-                  pull_request_body: "Sync translations from [Crowdin/ReVanced](https://crowdin.com/project/revanced)"
-                  pull_request_base_branch_name: "feat/i10n"
-                  commit_message: "chore(i18n): Sync translations"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-                  CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      - name: crowdin action
+        uses: crowdin/github-action@v1
+        with:
+          config: crowdin.yml
+          upload_sources: true
+          upload_translations: false
+          download_translations: true
+          localization_branch_name: feat/translations
+          create_pull_request: true
+          pull_request_title: "chore(i18n): Sync translations"
+          pull_request_body: "Sync translations from [Crowdin/ReVanced](https://crowdin.com/project/revanced)"
+          pull_request_base_branch_name: "feat/i10n"
+          commit_message: "chore(i18n): Sync translations"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-            - name: Nested JSON Postprocessor
-              uses: Ushie/crowdin-nested-json-postprocessor@fix/file_not_found
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  source_dir: "assets/i18n"
-                  commit_message: "chore: Remove empty strings"
+      - name: Remove empty values from JSON
+        run: |
+          cd assets/i18n
+          dart nuke.dart
+          
+      - name: Commit
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore: remove empty values from JSON"
+                
