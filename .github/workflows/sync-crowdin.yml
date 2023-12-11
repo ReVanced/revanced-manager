@@ -8,6 +8,9 @@ on:
 jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read|write
+      pull-requests: read|write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
