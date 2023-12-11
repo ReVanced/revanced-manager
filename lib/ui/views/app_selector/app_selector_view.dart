@@ -105,6 +105,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                         context,
                                         app.packageName,
                                       ),
+                                      onLinkTap: () =>
+                                          model.searchSuggestedVersionOnWeb(
+                                        packageName: app.packageName,
+                                      ),
                                     ),
                                   )
                                   ,
@@ -119,6 +123,10 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                       onTap: () {
                                         model.showDownloadToast();
                                       },
+                                      onLinkTap: () =>
+                                          model.searchSuggestedVersionOnWeb(
+                                        packageName: app,
+                                      ),
                                     ),
                                   )
                                   ,

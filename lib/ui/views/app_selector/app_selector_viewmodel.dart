@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
@@ -68,6 +69,33 @@ class AppSelectorViewModel extends BaseViewModel {
       return app.isSplit;
     }
     return true;
+  }
+
+  Future<void> searchSuggestedVersionOnWeb({
+    required String packageName,
+  }) async {
+    final String suggestedVersion = getSuggestedVersion(packageName);
+
+    if (suggestedVersion.isNotEmpty) {
+      await openDefaultBrowser('$packageName apk version v$suggestedVersion');
+    } else {
+      await openDefaultBrowser('$packageName apk');
+    }
+  }
+
+  Future<void> openDefaultBrowser(String query) async {
+    if (Platform.isAndroid) {
+      try {
+        const platform = MethodChannel('app.revanced.manager.flutter/browser');
+        await platform.invokeMethod('openBrowser', {'query': query});
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    } else {
+      throw 'Platform not supported';
+    }
   }
 
   Future<void> selectApp(
@@ -166,7 +194,7 @@ class AppSelectorViewModel extends BaseViewModel {
   Future showSelectFromStorageDialog(BuildContext context) async {
     return showDialog(
       context: context,
-      builder: (context) => SimpleDialog(
+      builder: (innerContext) => SimpleDialog(
         alignment: Alignment.center,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -175,7 +203,7 @@ class AppSelectorViewModel extends BaseViewModel {
           Icon(
             Icons.block,
             size: 28,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(innerContext).colorScheme.primary,
           ),
           const SizedBox(height: 20),
           Text(
@@ -197,7 +225,7 @@ class AppSelectorViewModel extends BaseViewModel {
           const SizedBox(height: 30),
           CustomMaterialButton(
             onPressed: () async {
-              Navigator.pop(context);
+              Navigator.pop(innerContext);
               await selectAppFromStorage(context);
             },
             label: Row(
@@ -213,7 +241,7 @@ class AppSelectorViewModel extends BaseViewModel {
           CustomMaterialButton(
             isFilled: false,
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(innerContext);
             },
             label: Row(
               mainAxisAlignment: MainAxisAlignment.center,

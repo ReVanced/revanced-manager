@@ -13,7 +13,9 @@ class InstalledAppItem extends StatefulWidget {
     required this.suggestedVersion,
     required this.installedVersion,
     this.onTap,
+    this.onLinkTap,
   });
+
   final String name;
   final String pkgName;
   final Uint8List icon;
@@ -21,6 +23,7 @@ class InstalledAppItem extends StatefulWidget {
   final String suggestedVersion;
   final String installedVersion;
   final Function()? onTap;
+  final Function()? onLinkTap;
 
   @override
   State<InstalledAppItem> createState() => _InstalledAppItemState();
@@ -65,12 +68,48 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                     t.installed(version: widget.installedVersion),
                   ),
                   Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text(
-                        t.suggested(
-                          version: widget.suggestedVersion.isEmpty
-                              ? t.appSelectorCard.allVersions
-                              : 'v${widget.suggestedVersion}',
+                      Material(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: InkWell(
+                          onTap: widget.onLinkTap,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                I18nText(
+                                  'suggested',
+                                  translationParams: {
+                                    'version': widget.suggestedVersion.isEmpty
+                                        ? Text(t.appSelectorCard.allVersions)
+                                        : 'v${widget.suggestedVersion}',
+                                  },
+                                  child: Text(
+                                    '',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.search,
+                                  size: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 4),

@@ -1,6 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -158,6 +162,26 @@ class PatcherViewModel extends BaseViewModel {
     return text;
   }
 
+  String getCurrentVersionString(BuildContext context) {
+    return '${Text(t.appSelectorCard.currentVersion)}: v${selectedApp!.version}';
+  }
+
+  Future<void> searchSuggestedVersionOnWeb() async {
+    final String suggestedVersion =
+        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+
+    if (suggestedVersion.isNotEmpty) {
+      await openDefaultBrowser(
+          '${selectedApp!.packageName} apk version v$suggestedVersion');
+    } else {
+      await openDefaultBrowser('${selectedApp!.packageName} apk');
+    }
+  }
+
+  String getSuggestedVersion() {
+    return _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+  }
+
   String getSuggestedVersionString(BuildContext context) {
     String suggestedVersion =
         _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
@@ -166,7 +190,24 @@ class PatcherViewModel extends BaseViewModel {
     } else {
       suggestedVersion = 'v$suggestedVersion';
     }
-    return '${t.appSelectorCard.currentVersion}: v${selectedApp!.version}\n${t.appSelectorCard.suggestedVersion}: $suggestedVersion';
+    return '${Text(
+      t.appSelectorCard.suggestedVersion,
+    )}: $suggestedVersion';
+  }
+
+  Future<void> openDefaultBrowser(String query) async {
+    if (Platform.isAndroid) {
+      try {
+        const platform = MethodChannel('app.revanced.manager.flutter/browser');
+        await platform.invokeMethod('openBrowser', {'query': query});
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    } else {
+      throw 'Platform not supported';
+    }
   }
 
   Future<void> loadLastSelectedPatches() async {

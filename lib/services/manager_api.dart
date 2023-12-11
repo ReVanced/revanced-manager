@@ -591,8 +591,8 @@ class ManagerAPI {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => PopScope(
-        canPop: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
         child: AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: Text(t.warning),
