@@ -43,5 +43,6 @@ jobs:
         run: |
           sudo git config user.name github-actions
           sudo git config user.email github-actions@github.com
+          sudo git fetch --all
           sudo git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
           sudo git push "feat/i10n"
