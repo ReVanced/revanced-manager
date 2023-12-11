@@ -43,4 +43,5 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "chore: remove empty values from JSON"
+          new_branch: "feat/i10n"
                 
