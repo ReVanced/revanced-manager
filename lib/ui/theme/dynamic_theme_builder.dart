@@ -17,7 +17,6 @@ class DynamicThemeBuilder extends StatefulWidget {
     super.key,
     required this.title,
     required this.home,
-    required this.localizationsDelegates,
   });
   final String title;
   final Widget home;

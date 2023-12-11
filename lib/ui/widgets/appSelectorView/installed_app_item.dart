@@ -83,20 +83,11 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                I18nText(
-                                  'suggested',
-                                  translationParams: {
-                                    'version': widget.suggestedVersion.isEmpty
+                                Text(
+                                  t.suggested(
+                                    version: widget.suggestedVersion.isEmpty
                                         ? Text(t.appSelectorCard.allVersions)
                                         : 'v${widget.suggestedVersion}',
-                                  },
-                                  child: Text(
-                                    '',
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer,
-                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 4),
