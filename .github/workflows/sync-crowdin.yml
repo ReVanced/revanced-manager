@@ -38,15 +38,9 @@ jobs:
           cd assets/i18n
           sudo chmod 777 *
           dart nuke.dart
-          
-      - name: Commit change
-        uses: EndBug/add-and-commit@v9
-        # So, the reason for continue-on-error is: Task failed successfully
-        continue-on-error: true
+
+      - name: Push out changes to i10n
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          message: "chore: remove empty values from JSON"
-          push: false
-          
-      - name: Push to i18n branch
-        run: git push origin feat/i10n
-                
+          commit_message: "chore: remove empty values from JSON"
+          branch: "feat/i10n"
