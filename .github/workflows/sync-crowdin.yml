@@ -48,5 +48,5 @@ jobs:
           push: false
           
       - name: Push to i18n branch
-        run: git push origin feat/i18n
+        run: git push origin feat/i10n
                 
