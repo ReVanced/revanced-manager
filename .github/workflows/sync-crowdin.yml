@@ -41,7 +41,7 @@ jobs:
 
       - name: Push out changes to i10n
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
-          git push "feat/i10n"
+          sudo git config user.name github-actions
+          sudo git config user.email github-actions@github.com
+          sudo git commit assets/i18n/*.json -m "chore: remove empty values from JSON"
+          sudo git push "feat/i10n"
