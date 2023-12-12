@@ -26,8 +26,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
   PatchedApplication? selectedApp = locator<PatcherViewModel>().selectedApp;
   String? patchesVersion = '';
 
-  Set<String> savedPatchNames = {};
-
   bool isDefaultPatchesRepo() {
     return _managerAPI.getPatchesRepo() == 'revanced/revanced-patches';
   }
@@ -52,16 +50,13 @@ class PatchesSelectorViewModel extends BaseViewModel {
     currentSelection.clear();
     currentSelection.addAll(selectedPatches);
 
-    savedPatchNames = _managerAPI.getSavedPatches(selectedApp!.packageName).map((p) => p.name).toSet();
-
     notifyListeners();
   }
 
   bool isSelected(Patch patch) {
     return selectedPatches.any(
-          (element) => element.name == patch.name,
-        ) ||
-        (isPatchNew(patch) && !patch.excluded);
+      (element) => element.name == patch.name,
+    );
   }
 
   void navigateToPatchOptions(List<Option> setOptions, Patch patch) {
@@ -288,11 +283,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   bool isPatchNew(Patch patch) {
-    if (savedPatchNames.isEmpty) {
-      return false;
-    } else {
-      return !savedPatchNames.contains(patch.name);
-    }
+    return locator<PatcherViewModel>().isPatchNew(patch);
   }
 
   List<String> getSupportedVersions(Patch patch) {
