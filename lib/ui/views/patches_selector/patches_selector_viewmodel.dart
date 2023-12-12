@@ -59,8 +59,9 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   bool isSelected(Patch patch) {
     return selectedPatches.any(
-      (element) => element.name == patch.name,
-    );
+          (element) => element.name == patch.name,
+        ) ||
+        (isPatchNew(patch) && !patch.excluded);
   }
 
   void navigateToPatchOptions(List<Option> setOptions, Patch patch) {
