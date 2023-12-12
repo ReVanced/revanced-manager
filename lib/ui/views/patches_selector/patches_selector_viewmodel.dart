@@ -25,6 +25,9 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedPatches;
   PatchedApplication? selectedApp = locator<PatcherViewModel>().selectedApp;
   String? patchesVersion = '';
+
+  Set<String> savedPatchNames = {};
+
   bool isDefaultPatchesRepo() {
     return _managerAPI.getPatchesRepo() == 'revanced/revanced-patches';
   }
@@ -48,13 +51,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
     });
     currentSelection.clear();
     currentSelection.addAll(selectedPatches);
+
+    savedPatchNames = _managerAPI.getSavedPatches(selectedApp!.packageName).map((p) => p.name).toSet();
+
     notifyListeners();
   }
 
   bool isSelected(Patch patch) {
     return selectedPatches.any(
-      (element) => element.name == patch.name,
-    );
+          (element) => element.name == patch.name,
+        ) ||
+        (isPatchNew(patch) && !patch.excluded);
   }
 
   void navigateToPatchOptions(List<Option> setOptions, Patch patch) {
@@ -281,13 +288,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   bool isPatchNew(Patch patch) {
-    final List<Patch> savedPatches =
-        _managerAPI.getSavedPatches(selectedApp!.packageName);
-    if (savedPatches.isEmpty) {
+    if (savedPatchNames.isEmpty) {
       return false;
     } else {
-      return !savedPatches
-          .any((p) => p.getSimpleName() == patch.getSimpleName());
+      return !savedPatchNames.contains(patch.name);
     }
   }
 
