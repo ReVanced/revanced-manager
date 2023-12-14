@@ -22,7 +22,6 @@ fun ArrowButton(modifier: Modifier = Modifier, expanded: Boolean, onClick: (() -
 
     onClick?.let {
         IconButton(onClick = it) {
-
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
                 contentDescription = stringResource(description),

@@ -207,7 +207,7 @@ class PatcherViewModel(
         context.startActivity(shareIntent)
     }
 
-    fun open() = installedPackageName?.let { pm.launch(it) }
+    fun open() = installedPackageName?.let(pm::launch)
 
     fun install(installType: InstallType) = viewModelScope.launch {
         try {

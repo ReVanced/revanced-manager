@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.FileDownload
+import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.*
@@ -112,9 +113,14 @@ fun PatcherScreen(
                                 )
                             },
                             icon = {
-                                Icon(
+                                vm.installedPackageName?.let {
+                                    Icon(
+                                        Icons.Outlined.OpenInNew,
+                                        stringResource(R.string.open_app)
+                                    )
+                                } ?: Icon(
                                     Icons.Outlined.FileDownload,
-                                    stringResource(id = R.string.install_app)
+                                    stringResource(R.string.install_app)
                                 )
                             },
                             onClick = {
@@ -254,7 +260,7 @@ fun Steps(category: StepCategory, steps: List<Step>) {
                             steps.any { it.state == State.RUNNING } -> context.getString(R.string.applying_patch, currentPatch)
                             steps.any { it.state == State.FAILED } -> context.getString(R.string.failed_to_apply_patch, failedPatch)
                             steps.all { it.state == State.WAITING } -> context.getString(R.string.apply_patches)
-                            else -> context.resources.getQuantityString(R.plurals.applied_patches, steps.size, steps.size)
+                            else -> context.resources.getQuantityString(R.plurals.patches_applied, steps.size, steps.size)
                         }
                     }
 
