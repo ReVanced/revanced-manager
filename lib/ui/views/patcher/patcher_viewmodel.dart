@@ -24,6 +24,7 @@ class PatcherViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  Set<String> savedPatchNames = {};
   PatchedApplication? selectedApp;
   BuildContext? ctx;
   List<Patch> selectedPatches = [];
@@ -174,7 +175,8 @@ class PatcherViewModel extends BaseViewModel {
 
     if (suggestedVersion.isNotEmpty) {
       await openDefaultBrowser(
-          '${selectedApp!.packageName} apk version v$suggestedVersion');
+        '${selectedApp!.packageName} apk version v$suggestedVersion',
+      );
     } else {
       await openDefaultBrowser('${selectedApp!.packageName} apk');
     }
@@ -216,6 +218,20 @@ class PatcherViewModel extends BaseViewModel {
     }
   }
 
+  bool isPatchNew(Patch patch) {
+    if (savedPatchNames.isEmpty) {
+      savedPatchNames = _managerAPI
+          .getSavedPatches(selectedApp!.packageName)
+          .map((p) => p.name)
+          .toSet();
+    }
+    if (savedPatchNames.isEmpty) {
+      return false;
+    } else {
+      return !savedPatchNames.contains(patch.name);
+    }
+  }
+
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
     removedPatches.clear();
@@ -238,13 +254,24 @@ class PatcherViewModel extends BaseViewModel {
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
+    this.selectedPatches.addAll(
+          patches.where(
+            (patch) =>
+                isPatchNew(patch) &&
+                !patch.excluded &&
+                !this.selectedPatches.contains(patch),
+          ),
+        );
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
     for (final patch in usedPatches) {
       if (!patches.any((p) => p.name == patch.name)) {
         removedPatches.add('• ${patch.name}');
         for (final option in patch.options) {
           _managerAPI.clearPatchOption(
-              selectedApp!.packageName, patch.name, option.key);
+            selectedApp!.packageName,
+            patch.name,
+            option.key,
+          );
         }
       }
     }
