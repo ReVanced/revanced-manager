@@ -12,6 +12,7 @@ class PreferencesManager(
 
     val api = stringPreference("api_url", "https://api.revanced.app")
 
+    val multithreadingDexFileWriter = booleanPreference("multithreading_dex_file_writer", true)
     val allowExperimental = booleanPreference("allow_experimental", false)
 
     val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)

@@ -54,6 +54,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+    
     packaging {
         resources.excludes.addAll(listOf(
             "/prebuilt/**",
