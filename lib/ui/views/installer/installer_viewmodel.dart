@@ -183,13 +183,15 @@ class InstallerViewModel extends BaseViewModel {
     final lineCount = logLines.where((line) => line.endsWith(keyword)).length;
     final index = logLines.indexWhere((line) => line.endsWith(keyword));
     if (newString != null && lineCount > 0) {
-      logLines.insert(index, newString.replaceAll('{lineCount}', lineCount.toString()));
+      logLines.insert(
+          index, newString.replaceAll('{lineCount}', lineCount.toString()));
     }
     logLines.removeWhere((lines) => lines.endsWith(keyword));
   }
 
   dynamic _getPatchOptionValue(String patchName, Option option) {
-    final Option? savedOption = _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+    final Option? savedOption =
+        _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
     if (savedOption != null) {
       return savedOption.value;
     } else {
@@ -201,7 +203,24 @@ class InstallerViewModel extends BaseViewModel {
     if (patches.isEmpty) {
       return 'None';
     }
-    return patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]')).toList().join(', ');
+    return patches
+        .map((p) =>
+            p.name +
+            (p.options.isEmpty
+                ? ''
+                : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]'))
+        .toList()
+        .join(', ');
+  }
+
+  String _getSuggestedVersion(String packageName) {
+    String suggestedVersion = _patcherAPI.getSuggestedVersion(_app.packageName);
+    if (suggestedVersion.isEmpty) {
+      suggestedVersion = 'Any';
+    } else {
+      suggestedVersion = 'v$suggestedVersion';
+    }
+    return suggestedVersion;
   }
 
   Future<void> copyLogs() async {
@@ -213,12 +232,21 @@ class InstallerViewModel extends BaseViewModel {
     _trimLogs(logsTrimmed, '.dex', 'Compiled {lineCount} dex files');
 
     // Get patches added / removed
-    final defaultPatches = _patcherAPI.getFilteredPatches(_app.packageName).where((p) => !p.excluded).toList();
-    final patchesAdded = _patches.where((p) => !defaultPatches.contains(p)).toList();
-    final patchesRemoved = defaultPatches.where((p) => !_patches.contains(p)).toList();
+    final defaultPatches = _patcherAPI
+        .getFilteredPatches(_app.packageName)
+        .where((p) => !p.excluded)
+        .toList();
+    final patchesAdded =
+        _patches.where((p) => !defaultPatches.contains(p)).toList();
+    final patchesRemoved =
+        defaultPatches.where((p) => !_patches.contains(p)).toList();
 
     // Options changed
-    final patchesChanged = defaultPatches.where((p) => _patches.contains(p) && p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value)).toList();
+    final patchesChanged = defaultPatches
+        .where((p) =>
+            _patches.contains(p) &&
+            p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value))
+        .toList();
 
     // Add Info
     final formattedLogs = [
@@ -228,22 +256,22 @@ class InstallerViewModel extends BaseViewModel {
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
-      'Root permissions: ${isRooted ? 'Yes' : 'No'}',
-      
+      'Root permissions: ${isRooted ? 'Yes' : 'No'}', //
+
       '\n- Patch Info',
-      'App: ${_app.packageName} v${_app.version}',
+      'App: ${_app.packageName} v${_app.version} (Suggested: ${_getSuggestedVersion(_app.packageName)})',
       'Patches version: ${_managerAPI.patchesVersion}',
       'Patches added: ${_formatPatches(patchesAdded)}',
       'Patches removed: ${_formatPatches(patchesRemoved)}',
-      'Options changed: ${_formatPatches(patchesChanged)}',
+      'Options changed: ${_formatPatches(patchesChanged)}', //
 
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
-      'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-      
+      'Integration source: ${_managerAPI.getIntegrationsRepo()}', //
+
       '\n- Logs',
       logsTrimmed.join('\n'),
     ];
@@ -461,38 +489,25 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  bool canPop() {
-    return !isPatching;
-  }
-
-  void onBackButtonInvoked(BuildContext context) {
-    if (canPop()) {
-      onPopInvoked(context, true);
-    } else {
-      onPopInvoked(context, false);
-    }
-  }
-
-  Future<void> onPopInvoked(BuildContext context, bool didPop) async {
-    if (didPop) {
+  Future<bool> onWillPop(BuildContext context) async {
+    if (isPatching) {
       if (!cancel) {
-        cleanPatcher();
+        cancel = true;
+        _toast.showBottom('installerView.pressBackAgain');
+      } else if (!isCanceled) {
+        await stopPatcher();
       } else {
-        _patcherAPI.cleanPatcher();
+        _toast.showBottom('installerView.noExit');
       }
-      screenshotCallback.dispose();
-      Navigator.of(context).pop();
-    } else {
-      if (isPatching) {
-        if (!cancel) {
-          cancel = true;
-          _toast.showBottom('installerView.pressBackAgain');
-        } else if (!isCanceled) {
-          await stopPatcher();
-        } else {
-          _toast.showBottom('installerView.noExit');
-        }
-      }
+      return false;
     }
+    if (!cancel) {
+      cleanPatcher();
+    } else {
+      _patcherAPI.cleanPatcher();
+    }
+    screenshotCallback.dispose();
+    Navigator.of(context).pop();
+    return true;
   }
 }
