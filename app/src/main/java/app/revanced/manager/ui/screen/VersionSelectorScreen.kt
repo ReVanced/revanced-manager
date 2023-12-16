@@ -10,10 +10,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +33,8 @@ import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
 
@@ -71,7 +71,7 @@ fun VersionSelectorScreen(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            HapticExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.select_version)) },
                 icon = { Icon(Icons.Default.Check, null) },
                 onClick = { selectedVersion?.let(onAppClick) }
@@ -140,7 +140,7 @@ fun SelectedAppItem(
     alreadyPatched: Boolean = false
 ) {
     ListItem(
-        leadingContent = { RadioButton(selected, null) },
+        leadingContent = { HapticRadioButton(selected, null) },
         headlineContent = { Text(selectedApp.version) },
         supportingContent = when (selectedApp) {
             is SelectedApp.Installed ->

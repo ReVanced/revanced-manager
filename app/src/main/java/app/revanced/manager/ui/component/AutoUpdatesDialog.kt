@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -24,11 +23,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 
 @Composable
 fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
@@ -68,14 +67,14 @@ fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
                     headline = R.string.auto_updates_dialog_manager,
                     icon = Icons.Outlined.Update,
                     checked = managerEnabled,
-                    onCheckedChange = hapticCheckbox { managerEnabled = it }
+                    onCheckedChange = { managerEnabled = it }
                 )
                 Divider()
                 AutoUpdatesItem(
                     headline = R.string.auto_updates_dialog_patches,
                     icon = Icons.Outlined.Source,
                     checked = patchesEnabled,
-                    onCheckedChange = hapticCheckbox { patchesEnabled = it }
+                    onCheckedChange = { patchesEnabled = it }
                 )
 
                 Text(
@@ -106,7 +105,7 @@ private fun AutoUpdatesItem(
             )
         },
         trailingContent = {
-            Checkbox(
+            HapticCheckbox(
                 checked = checked,
                 onCheckedChange = onCheckedChange
             )

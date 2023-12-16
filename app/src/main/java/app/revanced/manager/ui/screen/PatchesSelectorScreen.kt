@@ -24,7 +24,6 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -52,7 +51,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,8 +62,9 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
-import app.revanced.manager.ui.component.hapticCheckbox
-import app.revanced.manager.ui.component.hapticCheckboxToggle
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -300,7 +299,7 @@ fun PatchesSelectorScreen(
         floatingActionButton = {
             if (!showPatchButton) return@Scaffold
 
-            ExtendedFloatingActionButton(
+            HapticExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
@@ -321,7 +320,7 @@ fun PatchesSelectorScreen(
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
                 ) {
                     bundles.forEachIndexed { index, bundle ->
-                        Tab(
+                        HapticTab(
                             selected = pagerState.currentPage == index,
                             onClick = {
                                 composableScope.launch {
@@ -390,7 +389,6 @@ fun SelectionWarningDialog(
     var dismissPermanently by rememberSaveable {
         mutableStateOf(false)
     }
-    val disableCheckbox = hapticCheckbox { dismissPermanently = !dismissPermanently }
 
     AlertDialog(
         onDismissRequest = onCancel,
@@ -443,11 +441,15 @@ fun SelectionWarningDialog(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    modifier = Modifier.clickable { disableCheckbox(false) }
+                    modifier = Modifier.clickable {
+                        dismissPermanently = !dismissPermanently
+                    }
                 ) {
-                    Checkbox(
+                    HapticCheckbox(
                         checked = dismissPermanently,
-                        onCheckedChange = hapticCheckbox { dismissPermanently = it }
+                        onCheckedChange = {
+                            dismissPermanently = it
+                        }
                     )
                     Text(stringResource(R.string.permanent_dismiss))
                 }
@@ -463,31 +465,28 @@ fun PatchItem(
     selected: Boolean,
     onToggle: () -> Unit,
     supported: Boolean = true
-) {
-    val haptic = hapticCheckboxToggle { onToggle() }
-    return ListItem(
-        modifier = Modifier
-            .let { if (!supported) it.alpha(0.5f) else it }
-            .clickable(enabled = supported, onClick = haptic)
-            .fillMaxSize(),
-        leadingContent = {
-            Checkbox(
-                checked = selected,
-                onCheckedChange = { haptic() },
-                enabled = supported
-            )
-        },
-        headlineContent = { Text(patch.name) },
-        supportingContent = patch.description?.let { { Text(it) } },
-        trailingContent = {
-            if (patch.options?.isNotEmpty() == true) {
-                IconButton(onClick = onOptionsDialog, enabled = supported) {
-                    Icon(Icons.Outlined.Settings, null)
-                }
+) = ListItem (
+    modifier = Modifier
+        .let { if (!supported) it.alpha(0.5f) else it }
+        .clickable(enabled = supported, onClick = onToggle)
+        .fillMaxSize(),
+    leadingContent = {
+        HapticCheckbox(
+            checked = selected,
+            onCheckedChange = { onToggle() },
+            enabled = supported
+        )
+    },
+    headlineContent = { Text(patch.name) },
+    supportingContent = patch.description?.let { { Text(it) } },
+    trailingContent = {
+        if (patch.options?.isNotEmpty() == true) {
+            IconButton(onClick = onOptionsDialog, enabled = supported) {
+                Icon(Icons.Outlined.Settings, null)
             }
         }
-    )
-}
+    },
+)
 
 @Composable
 fun ListHeader(

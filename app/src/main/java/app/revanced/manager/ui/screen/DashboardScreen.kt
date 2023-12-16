@@ -38,6 +38,8 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportBundleDialog
+import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -145,7 +147,7 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            HapticFloatingActionButton(
                 onClick = {
                     vm.cancelSourceSelection()
 
@@ -158,7 +160,7 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
-                                return@FloatingActionButton
+                                return@HapticFloatingActionButton
                             }
 
                             onAppSelectorClick()
@@ -180,7 +182,7 @@ fun DashboardScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
                 pages.forEachIndexed { index, page ->
-                    Tab(
+                    HapticTab(
                         selected = pagerState.currentPage == index,
                         onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                         text = { Text(stringResource(page.titleResId)) },

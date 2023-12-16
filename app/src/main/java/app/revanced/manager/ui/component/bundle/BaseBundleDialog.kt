@@ -14,7 +14,6 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.TextInputDialog
-import app.revanced.manager.ui.component.hapticSwitch
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.util.isDebuggable
 
 @Composable
@@ -116,18 +115,17 @@ fun BaseBundleDialog(
     extraFields()
 
     if (remoteUrl != null) {
-        val autoUpdateClickable = hapticSwitch(autoUpdate) { onAutoUpdateChange(!autoUpdate) }
         BundleListItem(
             headlineText = stringResource(R.string.automatically_update),
             supportingText = stringResource(R.string.automatically_update_description),
             trailingContent = {
-                Switch(
+                HapticSwitch(
                     checked = autoUpdate,
-                    onCheckedChange = hapticSwitch { onAutoUpdateChange(it) }
+                    onCheckedChange = onAutoUpdateChange
                 )
             },
             modifier = Modifier.clickable {
-                autoUpdateClickable()
+                onAutoUpdateChange(!autoUpdate)
             }
         )
     }
