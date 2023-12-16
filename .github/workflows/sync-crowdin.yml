@@ -43,8 +43,8 @@ jobs:
 
       - name: Push out changes to i10n
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name revanced-bot
+          git config user.email github@revanced.app
           sudo chown -R $USER:$USER .git
           git add assets/i18n/*.json
           git commit -m "chore: remove empty values from JSON" assets/i18n/*.json
