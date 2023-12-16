@@ -12,11 +12,11 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
-import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox_list_tile.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart';
@@ -606,14 +606,13 @@ class ManagerAPI {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  CheckboxListTile(
+                  HapticCheckboxListTile(
                     value: value,
                     contentPadding: EdgeInsets.zero,
                     title: I18nText(
                       'noShowAgain',
                     ),
                     onChanged: (selected) {
-                      hapticCheckbox();
                       noShow.value = selected!;
                     },
                   ),

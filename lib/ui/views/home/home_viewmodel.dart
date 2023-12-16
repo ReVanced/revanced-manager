@@ -14,7 +14,6 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
-import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
@@ -23,6 +22,7 @@ import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox_list_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -206,7 +206,7 @@ class HomeViewModel extends BaseViewModel {
                     ),
                   ),
                 ),
-                CheckboxListTile(
+                HapticCheckboxListTile(
                   value: value,
                   contentPadding: EdgeInsets.zero,
                   title: I18nText(
@@ -216,7 +216,6 @@ class HomeViewModel extends BaseViewModel {
                     'homeView.patchesConsentDialogText3Sub',
                   ),
                   onChanged: (selected) {
-                    hapticCheckbox();
                     autoUpdate.value = selected!;
                   },
                 ),

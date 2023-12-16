@@ -4,6 +4,7 @@ import 'package:revanced_manager/ui/views/app_selector/app_selector_viewmodel.da
 import 'package:revanced_manager/ui/widgets/appSelectorView/app_skeleton_loader.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/installed_app_item.dart';
 import 'package:revanced_manager/ui/widgets/appSelectorView/not_installed_app_item.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart' hide SkeletonLoader;
 
@@ -23,7 +24,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
       onViewModelReady: (model) => model.initialize(),
       viewModelBuilder: () => AppSelectorViewModel(),
       builder: (context, model, child) => Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: HapticFloatingActionButtonExtended(
           label: I18nText('appSelectorView.storageButton'),
           icon: const Icon(Icons.sd_storage),
           onPressed: () {

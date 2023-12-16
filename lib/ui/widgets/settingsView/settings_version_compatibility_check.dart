@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
-import 'package:revanced_manager/services/haptics.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_switch_list_tile.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 
 class SVersionCompatibilityCheck extends StatefulWidget {
@@ -20,7 +20,7 @@ final _patcherViewModel = PatcherViewModel();
 class _SVersionCompatibilityCheckState extends State<SVersionCompatibilityCheck> {
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
+    return HapticSwitchListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: I18nText(
         'settingsView.versionCompatibilityCheckLabel',
@@ -35,7 +35,6 @@ class _SVersionCompatibilityCheckState extends State<SVersionCompatibilityCheck>
       subtitle: I18nText('settingsView.versionCompatibilityCheckHint'),
       value: _settingsViewModel.isVersionCompatibilityCheckEnabled(),
       onChanged: (value) {
-        hapticSwitch(value);
         setState(() {
           _settingsViewModel.useVersionCompatibilityCheck(value);
         });

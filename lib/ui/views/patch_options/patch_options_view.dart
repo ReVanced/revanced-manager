@@ -5,6 +5,7 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/views/patch_options/patch_options_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchOptionsView extends StatelessWidget {
@@ -18,7 +19,7 @@ class PatchOptionsView extends StatelessWidget {
       builder: (context, model, child) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          floatingActionButton: FloatingActionButton.extended(
+          floatingActionButton: HapticFloatingActionButtonExtended(
             onPressed: () async {
               final bool saved = model.saveOptions(context);
               if (saved && context.mounted) {

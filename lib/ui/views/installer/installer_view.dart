@@ -5,6 +5,7 @@ import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -22,7 +23,7 @@ class InstallerView extends StatelessWidget {
           child: Scaffold(
             floatingActionButton: Visibility(
               visible: !model.isPatching && !model.hasErrors,
-              child: FloatingActionButton.extended(
+              child: HapticFloatingActionButtonExtended(
                 label: I18nText(
                   model.isInstalled
                       ? 'installerView.openButton'
