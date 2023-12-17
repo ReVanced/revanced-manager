@@ -27,6 +27,7 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -42,6 +43,7 @@ android {
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -104,4 +106,11 @@ dependencies {
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     implementation("com.android.tools.build:apksig:7.2.2")
+
+    // Core libraries
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    // Window
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
 }
