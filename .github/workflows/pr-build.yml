@@ -65,6 +65,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+
+      - name: Setup the PR's repository
+        env: 
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone ${{ github.repository }}
+          cd revanced-manager
+          gh repo set-default ${{ github.repository }}
+          gh pr checkout ${{ inputs.pr-number }}
+          
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
       - name: Setup JDK
         uses: actions/setup-java@v4
