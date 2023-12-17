@@ -74,6 +74,7 @@ jobs:
           cd revanced-manager
           gh repo set-default ${{ github.repository }}
           gh pr checkout ${{ inputs.pr-number }}
+          git branch
           
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
