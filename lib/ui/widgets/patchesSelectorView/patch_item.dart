@@ -5,7 +5,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_custom_card.dart';
 
@@ -218,7 +217,6 @@ class _PatchItemState extends State<PatchItem> {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('warning'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'patchItem.unsupportedDialogText',
           translationParams: {
@@ -228,9 +226,9 @@ class _PatchItemState extends State<PatchItem> {
           },
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -242,14 +240,13 @@ class _PatchItemState extends State<PatchItem> {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('notice'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(
           'patchItem.unsupportedRequiredOption',
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
         ],
       ),

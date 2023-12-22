@@ -51,7 +51,6 @@ class SUpdateLanguage extends BaseViewModel {
       context: parentContext,
       builder: (context) => SimpleDialog(
         title: I18nText('settingsView.languageLabel'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         children: [
           SizedBox(
             height: 500,

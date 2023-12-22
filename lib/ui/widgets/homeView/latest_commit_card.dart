@@ -3,7 +3,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 class LatestCommitCard extends StatefulWidget {
   const LatestCommitCard({
@@ -58,14 +57,14 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 initialData: false,
                 builder: (context, snapshot) => Opacity(
                   opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-                  child: CustomMaterialButton(
-                    label: I18nText('updateButton'),
+                  child: FilledButton(
                     onPressed: snapshot.hasData && snapshot.data!
                         ? () => widget.model.showUpdateConfirmationDialog(
                               widget.parentContext,
                               false,
                             )
                         : () => {},
+                    child: I18nText('updateButton'),
                   ),
                 ),
               ),
@@ -113,14 +112,14 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 initialData: false,
                 builder: (context, snapshot) => Opacity(
                   opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-                  child: CustomMaterialButton(
-                    label: I18nText('updateButton'),
+                  child: FilledButton(
                     onPressed: snapshot.hasData && snapshot.data!
                         ? () => widget.model.showUpdateConfirmationDialog(
                               widget.parentContext,
                               true,
                             )
                         : () => {},
+                    child: I18nText('updateButton'),
                   ),
                 ),
               ),
