@@ -14,7 +14,6 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
@@ -287,26 +286,24 @@ class InstallerViewModel extends BaseViewModel {
         title: I18nText(
           'warning',
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
           child: I18nText('installerView.screenshotDetected'),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               copyLogs();
               showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
@@ -323,8 +320,6 @@ class InstallerViewModel extends BaseViewModel {
           title: I18nText(
             'installerView.installType',
           ),
-          backgroundColor:
-              Theme.of(innerContext).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
           content: SingleChildScrollView(
@@ -391,19 +386,18 @@ class InstallerViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              label: I18nText('cancelButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
               },
+              child: I18nText('cancelButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
                 installResult(context, installType.value == 1);
               },
+              child: I18nText('installerView.installButton'),
             ),
           ],
         ),

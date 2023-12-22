@@ -6,7 +6,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchOptionsViewModel extends BaseViewModel {
@@ -32,13 +31,11 @@ class PatchOptionsViewModel extends BaseViewModel {
     if (savedOptions.isNotEmpty) {
       visibleOptions = [
         ...savedOptions,
-        ...options
-            .where(
-              (option) =>
-                  option.required &&
-                  !savedOptions.any((sOption) => sOption.key == option.key),
-            )
-            ,
+        ...options.where(
+          (option) =>
+              option.required &&
+              !savedOptions.any((sOption) => sOption.key == option.key),
+        ),
       ];
     } else {
       visibleOptions = [
@@ -136,7 +133,6 @@ class PatchOptionsViewModel extends BaseViewModel {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -154,11 +150,11 @@ class PatchOptionsViewModel extends BaseViewModel {
           ],
         ),
         actions: [
-          CustomMaterialButton(
-            label: I18nText('cancelButton'),
+          FilledButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
         ],
         contentPadding: const EdgeInsets.all(8),
@@ -227,14 +223,9 @@ Future<void> showRequiredOptionNullDialog(
   await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       title: I18nText('notice'),
       actions: [
-        CustomMaterialButton(
-          isFilled: false,
-          label: I18nText(
-            'patchOptionsView.deselectPatch',
-          ),
+        TextButton(
           onPressed: () async {
             if (managerAPI.isPatchesChangeEnabled()) {
               locator<PatcherViewModel>()
@@ -256,12 +247,13 @@ Future<void> showRequiredOptionNullDialog(
               PatchesSelectorViewModel().showPatchesChangeDialog(context);
             }
           },
+          child: I18nText('patchOptionsView.deselectPatch'),
         ),
-        CustomMaterialButton(
-          label: I18nText('okButton'),
+        FilledButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
+          child: I18nText('okButton'),
         ),
       ],
       content: I18nText(

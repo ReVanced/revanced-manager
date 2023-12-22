@@ -20,7 +20,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -64,8 +63,8 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-    final bool isConnected = await Connectivity().checkConnectivity() !=
-        ConnectivityResult.none;
+    final bool isConnected =
+        await Connectivity().checkConnectivity() != ConnectivityResult.none;
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
     }
@@ -223,21 +222,20 @@ class HomeViewModel extends BaseViewModel {
           },
         ),
         actions: [
-          CustomMaterialButton(
-            isFilled: false,
+          TextButton(
             onPressed: () async {
               await _managerAPI.setPatchesConsent(false);
               SystemNavigator.pop();
             },
-            label: I18nText('quitButton'),
+            child: I18nText('quitButton'),
           ),
-          CustomMaterialButton(
+          FilledButton(
             onPressed: () async {
               await _managerAPI.setPatchesConsent(true);
               await _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
               Navigator.of(context).pop();
             },
-            label: I18nText('okButton'),
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -325,12 +323,12 @@ class HomeViewModel extends BaseViewModel {
                           const SizedBox(height: 16.0),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: CustomMaterialButton(
-                              label: I18nText('cancelButton'),
+                            child: FilledButton(
                               onPressed: () {
                                 _revancedAPI.disposeManagerUpdateProgress();
                                 Navigator.of(context).pop();
                               },
+                              child: I18nText('cancelButton'),
                             ),
                           ),
                         ],
@@ -356,22 +354,21 @@ class HomeViewModel extends BaseViewModel {
                             children: [
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: CustomMaterialButton(
-                                  isFilled: false,
-                                  label: I18nText('cancelButton'),
+                                child: TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
+                                  child: I18nText('cancelButton'),
                                 ),
                               ),
                               const SizedBox(width: 8.0),
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: CustomMaterialButton(
-                                  label: I18nText('updateButton'),
+                                child: FilledButton(
                                   onPressed: () async {
                                     await _patcherAPI.installApk(context, downloadedApk!.path);
                                   },
+                                  child: I18nText('updateButton'),
                                 ),
                               ),
                             ],
