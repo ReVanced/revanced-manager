@@ -12,7 +12,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - ❗️ Error code `135`, `139` or `1` when patching the app
 
-  You may be trying to patch a split APK[^1], which is sometimes not supported by ReVanced. Sometimes apps are available in both split and non-split forms. If your existing installation of the app is a split APK, try obtaining a non-split version and see if that can be patched correctly.
+  You may be trying to patch a split APK[^1]. This may not work under certain circumstances. In such a case, patch a full APK.
 
   Your device may otherwise be unsupported. Please look at the [Prerequisites](0_prerequisites.md) page for supported devices.
 
