@@ -14,7 +14,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
   You may be trying to patch a split APK[^1], which is sometimes not supported by ReVanced. Sometimes apps are available in both split and non-split forms. If your existing installation of the app is a split APK, try obtaining a non-split version and see if that can be patched correctly.
 
-  You may also get this error if your device is not supported. Refer to the [Prerequisites](0_prerequisites.md) page for supported devices.
+  Your device may otherwise be unsupported. Please look at the [Prerequisites](0_prerequisites.md) page for supported devices.
 
   Alternatively, you can use [ReVanced CLI](https://github.com/revanced/revanced-cli) to patch the app.
 
