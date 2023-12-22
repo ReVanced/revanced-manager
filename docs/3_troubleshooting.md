@@ -8,7 +8,7 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 
 - 🚫 App not installed as package conflicts with an existing package
 
-  An existing installation of the app you're trying to patch is conflicting with the patched app (i.e., the existing version of the app doesn't allow upgrading to the patched version, or a different copy of the app causes a conflict). Uninstall the existing app before installing the patched app.
+  An existing installation of the app you're trying to patch conflicts with the patched app (i.e., signature mismatch or downgrade). Uninstall the existing app before installing the patched app.
 
 - ❗️ Error code `135`, `139` or `1` when patching the app
 
