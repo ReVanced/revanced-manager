@@ -28,4 +28,4 @@ The next page will teach you how to build ReVanced Manager from source.
 
 Continue: [🔨 Building from source](4_building.md)
 
-[^1]: https://old.reddit.com/r/revancedapp/comments/xna2gn/youtube_unsupported_version_and_split_apk/
+[^1]: https://developer.android.com/guide/app-bundle/app-bundle-format
