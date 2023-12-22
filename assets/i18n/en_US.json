@@ -349,7 +349,7 @@
         "mount_no_root_description": "The installation failed due to root access not being granted.\n\nGrant root access to ReVanced Manager and try again.",
         "mount_missing_installation_description": "The installation failed due to the unpatched app not being installed on this device.\n\nInstall the app and try again.",
 
-        "status_failure_timeout_description": "Try again",
+        "status_failure_timeout_description": "The installation took too long to finish.\n\nWould you like to try again?",
         "status_failure_storage_description": "The installation failed due to insufficient storage.\n\nFree up some space and try again.",
         "status_failure_invalid_description": "The installation failed due to the patched app being invalid.\n\nUninstall the app and try again?",
         "status_failure_incompatible_description": "The app is incompatible with this device.\n\nContact the developer of the app and ask for support.",
