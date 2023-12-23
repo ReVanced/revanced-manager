@@ -29,7 +29,9 @@ class AppInfoViewModel extends BaseViewModel {
     if (app.isRooted) {
       final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
-        await _rootAPI.deleteApp(app.packageName, app.apkFilePath);
+        await _rootAPI.unmount(
+          app.packageName,
+        );
         if (!onlyUnpatch) {
           await DeviceApps.uninstallApp(app.packageName);
         }
