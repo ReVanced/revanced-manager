@@ -28,6 +28,7 @@ on:
           - release
           - debug
           - profile
+          - jit-release
           
       # Pull Request
       pr-number:
@@ -37,10 +38,8 @@ on:
       # Additional
       flutter-build-arguments:
         description: Flutter build arguments
-      additional-description:
-        description: What's the purpose of triggering?
         
-run-name: "Build PR ${{ inputs.pr-number }} ${{ inputs.additional-description }}"
+run-name: "Build PR ${{ inputs.pr-number }}"
         
 jobs:
   build:
@@ -115,9 +114,6 @@ jobs:
           else
             echo "STATUS_MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
           fi
-          if [ -n "{{ inputs.flutter-build-arguments }}" ]; then
-            echo "COMPILE_ARGUMENT_MESSAGE=- Compile arguments: ${{ inputs.flutter-build-arguments }}" >> $GITHUB_ENV
-          fi
           
       - name: Upload build
         uses: actions/upload-artifact@v3
@@ -143,4 +139,3 @@ jobs:
             ### ⚙️ Overview
             - App flavor: ${{ inputs.app-flavor }}
             - Branch: ${{ inputs.flutter-branch }}
-            ${{ env.COMPILE_ARGUMENT_MESSAGE }}
