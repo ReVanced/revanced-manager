@@ -151,7 +151,7 @@ class RootAPI {
     await Root.exec(
       cmd: 'mkdir -p "$_serviceDDirPath"',
     );
-    final String content = '''
+    final String mountScript = '''
     #!/system/bin/sh
     MAGISKTMP="\$(magisk --path)" || MAGISKTMP=/sbin
     MIRROR="\$MAGISKTMP/.magisk/mirror"
@@ -160,18 +160,18 @@ class RootAPI {
     until [ -d "/sdcard/Android" ]; do sleep 1; done
     
     base_path=$_revancedDirPath/$packageName/base.apk
-    stock_path=\$(pm path $packageName | grep base | sed 's/package://g' )
+    stock_path=\$(pm path $packageName | grep base | sed "s/package://g" )
 
     chcon u:object_r:apk_data_file:s0  \$base_path
     mount -o bind \$MIRROR\$base_path \$stock_path
 
-    # Kill the app to force it to restart the mounted APK in case it's already running
+    # Kill the app to force it to restart the mounted APK in case it is already running
     am force-stop $packageName
     '''
-        .trim();
+        .trimMultilineString();
     final String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
     await Root.exec(
-      cmd: 'echo \'$content\' > "$scriptFilePath"',
+      cmd: 'echo \'$mountScript\' > "$scriptFilePath"',
     );
     await setPermissions('0744', '', '', scriptFilePath);
   }
@@ -214,4 +214,11 @@ class RootAPI {
       return false;
     }
   }
+}
+
+// Remove leading spaces manually until
+// https://github.com/dart-lang/language/issues/559 is closed
+extension StringExtension on String {
+  String trimMultilineString() =>
+      split('\n').map((line) => line.trim()).join('\n').trim();
 }
