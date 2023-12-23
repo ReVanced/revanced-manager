@@ -25,20 +25,16 @@ class AppInfoViewModel extends BaseViewModel {
     PatchedApplication app,
     bool onlyUnpatch,
   ) async {
-    bool isUninstalled = true;
-    if (app.isRooted) {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (hasRootPermissions) {
-        await _rootAPI.uninstall(
-          app.packageName,
-        );
-        if (!onlyUnpatch) {
-          await DeviceApps.uninstallApp(app.packageName);
-        }
-      }
-    } else {
+    var isUninstalled = onlyUnpatch;
+
+    if (!onlyUnpatch) {
       isUninstalled = await DeviceApps.uninstallApp(app.packageName);
     }
+
+    if (isUninstalled && app.isRooted &&  await _rootAPI.hasRootPermissions()) {
+      await _rootAPI.uninstall(app.packageName);
+    }
+
     if (isUninstalled) {
       await _managerAPI.deletePatchedApp(app);
       locator<HomeViewModel>().initialize(context);
