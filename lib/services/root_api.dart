@@ -45,15 +45,15 @@ class RootAPI {
     try {
       final StringBuffer commands = StringBuffer();
       if (permissions.isNotEmpty) {
-        commands.writeln('chmod $permissions "$filePath"');
+        commands.writeln('chmod $permissions $filePath');
       }
 
       if (ownerGroup.isNotEmpty) {
-        commands.writeln('chown $ownerGroup "$filePath"');
+        commands.writeln('chown $ownerGroup $filePath');
       }
 
       if (seLinux.isNotEmpty) {
-        commands.writeln('chcon $seLinux "$filePath"');
+        commands.writeln('chcon $seLinux $filePath');
       }
 
       await Root.exec(
@@ -76,9 +76,7 @@ class RootAPI {
   Future<List<String>> getInstalledApps() async {
     final List<String> apps = List.empty(growable: true);
     try {
-      final String? res = await Root.exec(
-        cmd: 'ls "$_revancedDirPath"',
-      );
+      final String? res = await Root.exec(cmd: 'ls $_revancedDirPath');
       if (res != null) {
         final List<String> list = res.split('\n');
         list.removeWhere((pack) => pack.isEmpty);
@@ -105,7 +103,7 @@ class RootAPI {
   Future<void> removeOrphanedFiles() async {
     await Root.exec(
       cmd: '''
-      find "$_revancedDirPath" -type f -name original.apk -delete
+      find $_revancedDirPath -type f -name original.apk -delete
       for file in "$_serviceDDirPath"/*; do
         filename=\$(basename "\$file")
         if [ -f "$_postFsDataDirPath/\$filename" ]; then
@@ -142,7 +140,7 @@ class RootAPI {
 
   Future<void> installServiceDScript(String packageName) async {
     await Root.exec(
-      cmd: 'mkdir -p "$_serviceDDirPath"',
+      cmd: 'mkdir -p $_serviceDDirPath',
     );
     final String mountScript = '''
     #!/system/bin/sh
@@ -177,8 +175,8 @@ class RootAPI {
     final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: '''
-      mkdir -p "$_revancedDirPath/$packageName"
-      cp "$patchedFilePath" "$newPatchedFilePath"
+      mkdir -p $_revancedDirPath/$packageName
+      cp "$patchedFilePath" $newPatchedFilePath
       ''',
     );
     await setPermissions(
