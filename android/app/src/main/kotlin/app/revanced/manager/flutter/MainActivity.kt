@@ -366,7 +366,7 @@ class MainActivity : FlutterActivity() {
                     return@Thread
                 }
 
-                updateProgress(0.8, "Building...", "")
+                updateProgress(0.75, "Building...", "")
 
                 val res = patcher.get()
                 patcher.close()
@@ -399,7 +399,7 @@ class MainActivity : FlutterActivity() {
                     return@Thread
                 }
 
-                updateProgress(0.9, "Signing...", "Signing APK")
+                updateProgress(0.8, "Signing...", "Signing APK")
 
                 try {
                     Signer("ReVanced", keystorePassword)
@@ -409,7 +409,7 @@ class MainActivity : FlutterActivity() {
                     e.printStackTrace()
                 }
 
-                updateProgress(1.0, "Patched", "Patched")
+                updateProgress(.85, "Patched", "Patched")
             } catch (ex: Throwable) {
                 if (!cancel) {
                     val stack = ex.stackTraceToString()

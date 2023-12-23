@@ -13,6 +13,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
@@ -103,7 +104,7 @@ class InstallerViewModel extends BaseViewModel {
       isPatching = true;
       isInstalled = false;
       hasErrors = false;
-    } else if (value == 1.0) {
+    } else if (value == .85) {
       isPatching = false;
       hasErrors = false;
       await _managerAPI.savePatches(
@@ -126,10 +127,10 @@ class InstallerViewModel extends BaseViewModel {
       if (logs[logs.length - 1] == '\n') {
         logs = logs.substring(0, logs.length - 1);
       }
-      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 100)).then((value) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 100),
           curve: Curves.fastOutSlowIn,
         );
       });
@@ -455,7 +456,7 @@ class InstallerViewModel extends BaseViewModel {
       _app.isRooted = installAsRoot;
       if (headerLogs != 'Installing...') {
         update(
-          1.0,
+          .85,
           'Installing...',
           _app.isRooted ? 'Mounting patched app' : 'Installing patched app',
         );
@@ -482,20 +483,15 @@ class InstallerViewModel extends BaseViewModel {
         update(1.0, 'Installed', 'Installed');
       } else if (response == 3) {
         update(
-          1.0,
+          .85,
           'Installation canceled',
           'Installation canceled',
         );
       } else if (response == 10) {
         installResult(context, installAsRoot);
-        update(
-          1.0,
-          '',
-          'Starting installer',
-        );
       } else {
         update(
-          1.0,
+          .85,
           'Installation failed',
           'Installation failed',
         );
