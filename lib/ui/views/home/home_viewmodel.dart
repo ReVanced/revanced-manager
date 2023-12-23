@@ -83,7 +83,6 @@ class HomeViewModel extends BaseViewModel {
     _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
-
   void navigateToAppInfo(PatchedApplication app) {
     _navigationService.navigateTo(
       Routes.appInfoView,
@@ -366,7 +365,10 @@ class HomeViewModel extends BaseViewModel {
                                 alignment: Alignment.centerRight,
                                 child: FilledButton(
                                   onPressed: () async {
-                                    await _patcherAPI.installApk(context, downloadedApk!.path);
+                                    await _patcherAPI.installApk(
+                                      context,
+                                      downloadedApk!.path,
+                                    );
                                   },
                                   child: I18nText('updateButton'),
                                 ),

@@ -25,7 +25,8 @@ class DynamicThemeBuilder extends StatefulWidget {
   State<DynamicThemeBuilder> createState() => _DynamicThemeBuilderState();
 }
 
-class _DynamicThemeBuilderState extends State<DynamicThemeBuilder> with WidgetsBindingObserver {
+class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
+    with WidgetsBindingObserver {
   Brightness brightness = PlatformDispatcher.instance.platformBrightness;
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
@@ -43,8 +44,9 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder> with WidgetsB
     if (_managerAPI.getThemeMode() < 2) {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
-          systemNavigationBarIconBrightness:
-          brightness == Brightness.light ? Brightness.dark : Brightness.light,
+          systemNavigationBarIconBrightness: brightness == Brightness.light
+              ? Brightness.dark
+              : Brightness.light,
         ),
       );
     }
@@ -83,24 +85,31 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder> with WidgetsB
         return DynamicTheme(
           themeCollection: ThemeCollection(
             themes: {
-              0: brightness == Brightness.light ? lightCustomTheme : darkCustomTheme,
-              1: brightness == Brightness.light ? lightDynamicTheme : darkDynamicTheme,
+              0: brightness == Brightness.light
+                  ? lightCustomTheme
+                  : darkCustomTheme,
+              1: brightness == Brightness.light
+                  ? lightDynamicTheme
+                  : darkDynamicTheme,
               2: lightCustomTheme,
               3: lightDynamicTheme,
               4: darkCustomTheme,
               5: darkDynamicTheme,
             },
-            fallbackTheme: PlatformDispatcher.instance.platformBrightness == Brightness.light ? lightCustomTheme : darkCustomTheme,
+            fallbackTheme: PlatformDispatcher.instance.platformBrightness ==
+                    Brightness.light
+                ? lightCustomTheme
+                : darkCustomTheme,
           ),
           builder: (context, theme) => MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: widget.title,
-                navigatorKey: StackedService.navigatorKey,
-                onGenerateRoute: StackedRouter().onGenerateRoute,
-                theme: theme,
-                home: widget.home,
-                localizationsDelegates: widget.localizationsDelegates,
-              ),
+            debugShowCheckedModeBanner: false,
+            title: widget.title,
+            navigatorKey: StackedService.navigatorKey,
+            onGenerateRoute: StackedRouter().onGenerateRoute,
+            theme: theme,
+            home: widget.home,
+            localizationsDelegates: widget.localizationsDelegates,
+          ),
         );
       },
     );

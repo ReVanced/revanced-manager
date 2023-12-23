@@ -183,7 +183,9 @@ class InstallerViewModel extends BaseViewModel {
     final index = logLines.indexWhere((line) => line.endsWith(keyword));
     if (newString != null && lineCount > 0) {
       logLines.insert(
-          index, newString.replaceAll('{lineCount}', lineCount.toString()));
+        index,
+        newString.replaceAll('{lineCount}', lineCount.toString()),
+      );
     }
     logLines.removeWhere((lines) => lines.endsWith(keyword));
   }
@@ -203,11 +205,13 @@ class InstallerViewModel extends BaseViewModel {
       return 'None';
     }
     return patches
-        .map((p) =>
-            p.name +
-            (p.options.isEmpty
-                ? ''
-                : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]'))
+        .map(
+          (p) =>
+              p.name +
+              (p.options.isEmpty
+                  ? ''
+                  : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]'),
+        )
         .toList()
         .join(', ');
   }
@@ -242,9 +246,11 @@ class InstallerViewModel extends BaseViewModel {
 
     // Options changed
     final patchesChanged = defaultPatches
-        .where((p) =>
-            _patches.contains(p) &&
-            p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value))
+        .where(
+          (p) =>
+              _patches.contains(p) &&
+              p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value),
+        )
         .toList();
 
     // Add Info
@@ -453,9 +459,7 @@ class InstallerViewModel extends BaseViewModel {
         update(
           1.0,
           'Installing...',
-          _app.isRooted
-              ? 'Mounting patched app'
-              : 'Installing patched app',
+          _app.isRooted ? 'Mounting patched app' : 'Installing patched app',
         );
       }
       final int response = await _patcherAPI.installPatchedFile(context, _app);

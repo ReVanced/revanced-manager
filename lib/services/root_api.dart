@@ -93,7 +93,8 @@ class RootAPI {
 
   Future<void> unmount(String packageName) async {
     await Root.exec(
-      cmd: 'grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done',
+      cmd:
+          'grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done',
     );
     await Root.exec(
       cmd: 'rm -rf "$_revancedDirPath/$packageName"',
@@ -188,12 +189,15 @@ class RootAPI {
     );
   }
 
-  Future<void> mountApk(String packageName,) async {
+  Future<void> mountApk(
+    String packageName,
+  ) async {
     await Root.exec(
       cmd: '''
       grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done
       .$_serviceDDirPath/$packageName.sh
-      '''.trim(),
+      '''
+          .trim(),
     );
   }
 
