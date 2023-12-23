@@ -410,8 +410,6 @@ class InstallerViewModel extends BaseViewModel {
           title: I18nText(
             'warning',
           ),
-          backgroundColor:
-              Theme.of(innerContext).colorScheme.secondaryContainer,
           contentPadding: const EdgeInsets.all(16),
           content: I18nText('installerView.warning'),
           actions: [
