@@ -6,7 +6,8 @@ class SEnablePatchesSelection extends StatefulWidget {
   const SEnablePatchesSelection({super.key});
 
   @override
-  State<SEnablePatchesSelection> createState() => _SEnablePatchesSelectionState();
+  State<SEnablePatchesSelection> createState() =>
+      _SEnablePatchesSelectionState();
 }
 
 final _settingsViewModel = SettingsViewModel();

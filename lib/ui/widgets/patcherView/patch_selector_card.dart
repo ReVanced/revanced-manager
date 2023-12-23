@@ -58,7 +58,8 @@ class PatchSelectorCard extends StatelessWidget {
 
   String _getPatchesSelection() {
     String text = '';
-    final List<Patch> selectedPatches = locator<PatcherViewModel>().selectedPatches;
+    final List<Patch> selectedPatches =
+        locator<PatcherViewModel>().selectedPatches;
     selectedPatches.sort((a, b) => a.name.compareTo(b.name));
     for (final Patch p in selectedPatches) {
       text += '•  ${p.getSimpleName()}\n';

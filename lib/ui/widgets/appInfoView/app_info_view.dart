@@ -184,7 +184,7 @@ class AppInfoView extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 10),
                                           I18nText(
-                                            'appInfoView.unpatchButton',
+                                            'appInfoView.unmountButton',
                                             child: Text(
                                               '',
                                               style: TextStyle(
@@ -236,8 +236,8 @@ class AppInfoView extends StatelessWidget {
                         ),
                       ),
                       subtitle: app.isRooted
-                          ? I18nText('appInfoView.rootTypeLabel')
-                          : I18nText('appInfoView.nonRootTypeLabel'),
+                          ? I18nText('appInfoView.mountTypeLabel')
+                          : I18nText('appInfoView.regularTypeLabel'),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

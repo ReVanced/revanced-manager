@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
-import 'package:install_plugin/install_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -21,7 +20,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -54,7 +52,7 @@ class HomeViewModel extends BaseViewModel {
           _toast.showBottom('homeView.installingMessage');
           final File? managerApk = await _managerAPI.downloadManager();
           if (managerApk != null) {
-            await InstallPlugin.installApk(managerApk.path);
+            await _patcherAPI.installApk(context, managerApk.path);
           } else {
             _toast.showBottom('homeView.errorDownloadMessage');
           }
@@ -65,8 +63,8 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-    final bool isConnected = await Connectivity().checkConnectivity() !=
-        ConnectivityResult.none;
+    final bool isConnected =
+        await Connectivity().checkConnectivity() != ConnectivityResult.none;
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
     }
@@ -76,7 +74,7 @@ class HomeViewModel extends BaseViewModel {
       _toast.showBottom('homeView.installingMessage');
       final File? managerApk = await _managerAPI.downloadManager();
       if (managerApk != null) {
-        await InstallPlugin.installApk(managerApk.path);
+        await _patcherAPI.installApk(context, managerApk.path);
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
@@ -223,21 +221,20 @@ class HomeViewModel extends BaseViewModel {
           },
         ),
         actions: [
-          CustomMaterialButton(
-            isFilled: false,
+          TextButton(
             onPressed: () async {
               await _managerAPI.setPatchesConsent(false);
               SystemNavigator.pop();
             },
-            label: I18nText('quitButton'),
+            child: I18nText('quitButton'),
           ),
-          CustomMaterialButton(
+          FilledButton(
             onPressed: () async {
               await _managerAPI.setPatchesConsent(true);
               await _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
               Navigator.of(context).pop();
             },
-            label: I18nText('okButton'),
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -270,6 +267,7 @@ class HomeViewModel extends BaseViewModel {
           valueListenable: downloaded,
           builder: (context, value, child) {
             return SimpleDialog(
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
               contentPadding: const EdgeInsets.all(16.0),
               title: I18nText(
                 !value
@@ -324,12 +322,12 @@ class HomeViewModel extends BaseViewModel {
                           const SizedBox(height: 16.0),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: CustomMaterialButton(
-                              label: I18nText('cancelButton'),
+                            child: FilledButton(
                               onPressed: () {
                                 _revancedAPI.disposeManagerUpdateProgress();
                                 Navigator.of(context).pop();
                               },
+                              child: I18nText('cancelButton'),
                             ),
                           ),
                         ],
@@ -355,24 +353,24 @@ class HomeViewModel extends BaseViewModel {
                             children: [
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: CustomMaterialButton(
-                                  isFilled: false,
-                                  label: I18nText('cancelButton'),
+                                child: TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
+                                  child: I18nText('cancelButton'),
                                 ),
                               ),
                               const SizedBox(width: 8.0),
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: CustomMaterialButton(
-                                  label: I18nText('updateButton'),
+                                child: FilledButton(
                                   onPressed: () async {
-                                    await InstallPlugin.installApk(
+                                    await _patcherAPI.installApk(
+                                      context,
                                       downloadedApk!.path,
                                     );
                                   },
+                                  child: I18nText('updateButton'),
                                 ),
                               ),
                             ],
@@ -415,7 +413,7 @@ class HomeViewModel extends BaseViewModel {
         //       UILocalNotificationDateInterpretation.absoluteTime,
         // );
         _toast.showBottom('homeView.installingMessage');
-        await InstallPlugin.installApk(managerApk.path);
+        await _patcherAPI.installApk(context, managerApk.path);
       } else {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
