@@ -80,10 +80,10 @@ class AppInfoViewModel extends BaseViewModel {
           context: context,
           builder: (context) => AlertDialog(
             title: I18nText(
-              'appInfoView.unpatchButton',
+              'appInfoView.unmountButton',
             ),
             content: I18nText(
-              'appInfoView.unpatchDialogText',
+              'appInfoView.unmountDialogText',
             ),
             actions: <Widget>[
               TextButton(
