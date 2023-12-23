@@ -200,20 +200,18 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  String _formatPatches(List<Patch> patches) {
-    if (patches.isEmpty) {
-      return 'None';
-    }
-    return patches
-        .map(
-          (p) =>
-              p.name +
-              (p.options.isEmpty
-                  ? ''
-                  : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]'),
-        )
-        .toList()
-        .join(', ');
+  String _formatPatches(List<Patch> patches, String noneString) {
+    return patches.isEmpty
+        ? noneString
+        : patches.map((p) {
+            final optionsChanged = p.options
+                .where((o) => _getPatchOptionValue(p.name, o) != o.value)
+                .toList();
+            return p.name +
+                (optionsChanged.isEmpty
+                    ? ''
+                    : ' [${optionsChanged.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]');
+          }).join(', ');
   }
 
   String _getSuggestedVersion(String packageName) {
@@ -239,16 +237,17 @@ class InstallerViewModel extends BaseViewModel {
         .getFilteredPatches(_app.packageName)
         .where((p) => !p.excluded)
         .toList();
-    final patchesAdded =
-        _patches.where((p) => !defaultPatches.contains(p)).toList();
-    final patchesRemoved =
-        defaultPatches.where((p) => !_patches.contains(p)).toList();
+    final appliedPatchesNames = _patches.map((p) => p.name).toList();
 
-    // Options changed
-    final patchesChanged = defaultPatches
+    final patchesAdded = _patches.where((p) => p.excluded).toList();
+    final patchesRemoved = defaultPatches
+        .where((p) => !appliedPatchesNames.contains(p.name))
+        .map((p) => p.name)
+        .toList();
+    final patchesOptionsChanged = defaultPatches
         .where(
           (p) =>
-              _patches.contains(p) &&
+              appliedPatchesNames.contains(p.name) &&
               p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value),
         )
         .toList();
@@ -257,7 +256,6 @@ class InstallerViewModel extends BaseViewModel {
     final formattedLogs = [
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
-      'Build: ${info['flavor']}',
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
@@ -266,9 +264,9 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version} (Suggested: ${_getSuggestedVersion(_app.packageName)})',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches added: ${_formatPatches(patchesAdded)}',
-      'Patches removed: ${_formatPatches(patchesRemoved)}',
-      'Options changed: ${_formatPatches(patchesChanged)}', //
+      'Patches added: ${_formatPatches(patchesAdded, 'Default')}',
+      'Patches removed: ${patchesRemoved.isEmpty ? 'None' : patchesRemoved.join(', ')}',
+      'Default patch options changed: ${_formatPatches(patchesOptionsChanged, 'None')}', //
 
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
