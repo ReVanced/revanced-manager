@@ -38,11 +38,16 @@ class HomeViewModel extends BaseViewModel {
   File? downloadedApk;
 
   Future<void> initialize(BuildContext context) async {
-    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
+    _managerAPI.rePatchedSavedApps().then((_) => _getPatchedApps());
+
     if (!_managerAPI.getPatchesConsent()) {
       await showPatchesConsent(context);
     }
+
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
+
     await _patcherAPI.initialize();
+
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
@@ -63,11 +68,13 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
+
     final bool isConnected =
         await Connectivity().checkConnectivity() != ConnectivityResult.none;
     if (!isConnected) {
       _toast.showBottom('homeView.noConnection');
     }
+
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
@@ -79,8 +86,6 @@ class HomeViewModel extends BaseViewModel {
         _toast.showBottom('homeView.errorDownloadMessage');
       }
     }
-
-    _managerAPI.reAssessSavedApps().then((_) => _getPatchedApps());
   }
 
   void navigateToAppInfo(PatchedApplication app) {
