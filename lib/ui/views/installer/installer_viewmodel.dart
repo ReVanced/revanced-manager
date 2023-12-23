@@ -415,19 +415,18 @@ class InstallerViewModel extends BaseViewModel {
           contentPadding: const EdgeInsets.all(16),
           content: I18nText('installerView.warning'),
           actions: [
-            CustomMaterialButton(
-              label: I18nText('cancelButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
               },
+              child: I18nText('cancelButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
+            FilledButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
                 installResult(context, false);
               },
+              child: I18nText('installerView.installButton'),
             ),
           ],
         ),
