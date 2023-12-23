@@ -115,6 +115,7 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
+      progress = 0.0;
     }
     if (header.isNotEmpty) {
       headerLogs = header;
