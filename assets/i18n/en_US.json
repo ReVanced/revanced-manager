@@ -168,7 +168,7 @@
 
         "installButton": "Install",
         "installRootType": "Mount",
-        "installNonRootType": "Normal",
+        "installNonRootType": "Regular",
 
         "warning": "Disable auto updates for the patched app to avoid unexpected issues.",
 
