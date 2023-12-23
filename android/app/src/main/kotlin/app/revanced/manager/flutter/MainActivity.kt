@@ -409,7 +409,7 @@ class MainActivity : FlutterActivity() {
                     e.printStackTrace()
                 }
 
-                updateProgress(.85, "Patched", "Patched")
+                updateProgress(.85, "Patched", "Patched APK")
             } catch (ex: Throwable) {
                 if (!cancel) {
                     val stack = ex.stackTraceToString()
