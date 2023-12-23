@@ -229,7 +229,7 @@ class PatcherAPI {
           } else if (packageVersion == null) {
             installErrorDialog(1.2);
           } else if (packageVersion == patchedApp.version) {
-            return await _rootAPI.installApp(
+            return await _rootAPI.install(
               patchedApp.packageName,
               patchedApp.apkFilePath,
               outFile!.path,
@@ -241,7 +241,7 @@ class PatcherAPI {
           }
         } else {
           if (await _rootAPI.hasRootPermissions()) {
-            await _rootAPI.unmount(patchedApp.packageName);
+            await _rootAPI.uninstall(patchedApp.packageName);
           }
           if (context.mounted) {
             return await installApk(

@@ -43,21 +43,22 @@ class RootAPI {
     String filePath,
   ) async {
     try {
+      final StringBuffer commands = StringBuffer();
       if (permissions.isNotEmpty) {
-        await Root.exec(
-          cmd: 'chmod $permissions "$filePath"',
-        );
+        commands.writeln('chmod $permissions "$filePath"');
       }
+
       if (ownerGroup.isNotEmpty) {
-        await Root.exec(
-          cmd: 'chown $ownerGroup "$filePath"',
-        );
+        commands.writeln('chown $ownerGroup "$filePath"');
       }
+
       if (seLinux.isNotEmpty) {
-        await Root.exec(
-          cmd: 'chcon $seLinux "$filePath"',
-        );
+        commands.writeln('chcon $seLinux "$filePath"');
       }
+
+      await Root.exec(
+        cmd: commands.toString(),
+      );
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -91,16 +92,12 @@ class RootAPI {
     return apps;
   }
 
-  Future<void> unmount(String packageName) async {
+  Future<void> uninstall(String packageName) async {
     await Root.exec(
-      cmd:
-          'grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done',
-    );
-    await Root.exec(
-      cmd: 'rm -rf "$_revancedDirPath/$packageName"',
-    );
-    await Root.exec(
-      cmd: 'rm -rf "$_serviceDDirPath/$packageName.sh"',
+      cmd: '''
+          grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done
+          rm -rf $_revancedDirPath/$packageName $_serviceDDirPath/$packageName.sh
+          ''',
     );
   }
 
@@ -115,29 +112,25 @@ class RootAPI {
           rm "$_postFsDataDirPath/\$filename"
         fi
       done
-      '''
-          .trim(),
+      ''',
     );
   }
 
-  Future<bool> installApp(
+  Future<bool> install(
     String packageName,
     String originalFilePath,
     String patchedFilePath,
   ) async {
     try {
-      await Root.exec(
-        cmd: 'mkdir -p "$_revancedDirPath/$packageName"',
-      );
       await setPermissions(
         '0755',
         'shell:shell',
         '',
         '$_revancedDirPath/$packageName',
       );
+      await installPatchedApk(packageName, patchedFilePath);
       await installServiceDScript(packageName);
-      await installApk(packageName, patchedFilePath);
-      await mountApk(packageName);
+      await runMountScript(packageName);
       return true;
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -159,6 +152,9 @@ class RootAPI {
     until [ "\$(getprop sys.boot_completed)" = 1 ]; do sleep 3; done
     until [ -d "/sdcard/Android" ]; do sleep 1; done
     
+    # Unmount any existing installation to prevent multiple unnecessary mounts.
+    grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done
+
     base_path=$_revancedDirPath/$packageName/base.apk
     stock_path=\$(pm path $packageName | grep base | sed "s/package://g" )
 
@@ -176,10 +172,14 @@ class RootAPI {
     await setPermissions('0744', '', '', scriptFilePath);
   }
 
-  Future<void> installApk(String packageName, String patchedFilePath) async {
+  Future<void> installPatchedApk(
+      String packageName, String patchedFilePath) async {
     final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
-      cmd: 'cp "$patchedFilePath" "$newPatchedFilePath"',
+      cmd: '''
+      mkdir -p "$_revancedDirPath/$packageName"
+      cp "$patchedFilePath" "$newPatchedFilePath"
+      ''',
     );
     await setPermissions(
       '0644',
@@ -189,16 +189,10 @@ class RootAPI {
     );
   }
 
-  Future<void> mountApk(
+  Future<void> runMountScript(
     String packageName,
   ) async {
-    await Root.exec(
-      cmd: '''
-      grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done
-      .$_serviceDDirPath/$packageName.sh
-      '''
-          .trim(),
-    );
+    await Root.exec(cmd: '.$_serviceDDirPath/$packageName.sh');
   }
 
   Future<bool> fileExists(String path) async {
