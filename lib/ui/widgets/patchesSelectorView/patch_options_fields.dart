@@ -400,7 +400,9 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
     final bool isStringOption = widget.optionType.contains('String');
     final bool isArrayOption = widget.optionType.contains('Array');
     selectedKey ??= widget.selectedKey;
-    controller.text = !isStringOption && isArrayOption && selectedKey == '' &&
+    controller.text = !isStringOption &&
+            isArrayOption &&
+            selectedKey == '' &&
             (widget.value != null && widget.value.toString().startsWith('['))
         ? ''
         : widget.value ?? '';
@@ -519,7 +521,8 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       }
                       break;
                     case 'patchOptionsView.selectFolder':
-                      final DirectoryLocation? result = await FlutterFileDialog.pickDirectory();
+                      final DirectoryLocation? result =
+                          await FlutterFileDialog.pickDirectory();
                       if (result != null) {
                         controller.text = result.toString();
                         widget.onChanged(controller.text);

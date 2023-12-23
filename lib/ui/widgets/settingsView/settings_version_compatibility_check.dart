@@ -9,14 +9,16 @@ class SVersionCompatibilityCheck extends StatefulWidget {
   const SVersionCompatibilityCheck({super.key});
 
   @override
-  State<SVersionCompatibilityCheck> createState() => _SVersionCompatibilityCheckState();
+  State<SVersionCompatibilityCheck> createState() =>
+      _SVersionCompatibilityCheckState();
 }
 
 final _settingsViewModel = SettingsViewModel();
 final _patchesSelectorViewModel = PatchesSelectorViewModel();
 final _patcherViewModel = PatcherViewModel();
 
-class _SVersionCompatibilityCheckState extends State<SVersionCompatibilityCheck> {
+class _SVersionCompatibilityCheckState
+    extends State<SVersionCompatibilityCheck> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(

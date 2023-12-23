@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:root/root.dart';
 
 class RootAPI {
-  // TODO(ponces): remove in the future, keep it for now during migration.
-  final String _revancedOldDirPath = '/data/local/tmp/revanced-manager';
-  final String _revancedDirPath = '/data/adb/revanced';
+  // TODO(aAbed): remove in the future, keep it for now during migration.
   final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
+
+  final String _revancedDirPath = '/data/adb/revanced';
   final String _serviceDDirPath = '/data/adb/service.d';
 
   Future<bool> isRooted() async {
@@ -75,17 +75,8 @@ class RootAPI {
   Future<List<String>> getInstalledApps() async {
     final List<String> apps = List.empty(growable: true);
     try {
-      String? res = await Root.exec(
+      final String? res = await Root.exec(
         cmd: 'ls "$_revancedDirPath"',
-      );
-      if (res != null) {
-        final List<String> list = res.split('\n');
-        list.removeWhere((pack) => pack.isEmpty);
-        apps.addAll(list.map((pack) => pack.trim()).toList());
-      }
-      // TODO(ponces): remove in the future, keep it for now during migration.
-      res = await Root.exec(
-        cmd: 'ls "$_revancedOldDirPath"',
       );
       if (res != null) {
         final List<String> list = res.split('\n');
@@ -100,16 +91,10 @@ class RootAPI {
     return apps;
   }
 
-  Future<void> deleteApp(String packageName, String originalFilePath) async {
+  Future<void> unmount(String packageName) async {
     await Root.exec(
-      cmd: 'am force-stop "$packageName"',
-    );
-    await Root.exec(
-      cmd: 'su -mm -c "umount -l $originalFilePath"',
-    );
-    // TODO(ponces): remove in the future, keep it for now during migration.
-    await Root.exec(
-      cmd: 'rm -rf "$_revancedOldDirPath/$packageName"',
+      cmd:
+          'grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done',
     );
     await Root.exec(
       cmd: 'rm -rf "$_revancedDirPath/$packageName"',
@@ -117,8 +102,21 @@ class RootAPI {
     await Root.exec(
       cmd: 'rm -rf "$_serviceDDirPath/$packageName.sh"',
     );
+  }
+
+  // TODO(aAbed): remove in the future, keep it for now during migration.
+  Future<void> removeOrphanedFiles() async {
     await Root.exec(
-      cmd: 'rm -rf "$_postFsDataDirPath/$packageName.sh"',
+      cmd: '''
+      find "$_revancedDirPath" -type f -name original.apk -delete
+      for file in "$_serviceDDirPath"/*; do
+        filename=\$(basename "\$file")
+        if [ -f "$_postFsDataDirPath/\$filename" ]; then
+          rm "$_postFsDataDirPath/\$filename"
+        fi
+      done
+      '''
+          .trim(),
     );
   }
 
@@ -128,7 +126,6 @@ class RootAPI {
     String patchedFilePath,
   ) async {
     try {
-      await deleteApp(packageName, originalFilePath);
       await Root.exec(
         cmd: 'mkdir -p "$_revancedDirPath/$packageName"',
       );
@@ -138,11 +135,9 @@ class RootAPI {
         '',
         '$_revancedDirPath/$packageName',
       );
-      await saveOriginalFilePath(packageName, originalFilePath);
       await installServiceDScript(packageName);
-      await installPostFsDataScript(packageName);
       await installApk(packageName, patchedFilePath);
-      await mountApk(packageName, originalFilePath);
+      await mountApk(packageName);
       return true;
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -156,26 +151,25 @@ class RootAPI {
     await Root.exec(
       cmd: 'mkdir -p "$_serviceDDirPath"',
     );
-    final String content = '#!/system/bin/sh\n'
-        'while [ "\$(getprop sys.boot_completed | tr -d \'"\'"\'\\\\r\'"\'"\')" != "1" ]; do sleep 3; done\n'
-        'base_path=$_revancedDirPath/$packageName/base.apk\n'
-        'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
-        r'[ ! -z $stock_path ] && mount -o bind $base_path $stock_path';
-    final String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
-    await Root.exec(
-      cmd: 'echo \'$content\' > "$scriptFilePath"',
-    );
-    await setPermissions('0744', '', '', scriptFilePath);
-  }
+    final String content = '''
+    #!/system/bin/sh
+    MAGISKTMP="\$(magisk --path)" || MAGISKTMP=/sbin
+    MIRROR="\$MAGISKTMP/.magisk/mirror"
 
-  Future<void> installPostFsDataScript(String packageName) async {
-    await Root.exec(
-      cmd: 'mkdir -p "$_postFsDataDirPath"',
-    );
-    final String content = '#!/system/bin/sh\n'
-        'stock_path=\$(pm path $packageName | grep base | sed \'"\'"\'s/package://g\'"\'"\')\n'
-        r'[ ! -z $stock_path ] && umount -l $stock_path';
-    final String scriptFilePath = '$_postFsDataDirPath/$packageName.sh';
+    until [ "\$(getprop sys.boot_completed)" = 1 ]; do sleep 3; done
+    until [ -d "/sdcard/Android" ]; do sleep 1; done
+    
+    base_path=$_revancedDirPath/$packageName/base.apk
+    stock_path=\$(pm path $packageName | grep base | sed 's/package://g' )
+
+    chcon u:object_r:apk_data_file:s0  \$base_path
+    mount -o bind \$MIRROR\$base_path \$stock_path
+
+    # Kill the app to force it to restart the mounted APK in case it's already running
+    am force-stop $packageName
+    '''
+        .trim();
+    final String scriptFilePath = '$_serviceDDirPath/$packageName.sh';
     await Root.exec(
       cmd: 'echo \'$content\' > "$scriptFilePath"',
     );
@@ -195,49 +189,15 @@ class RootAPI {
     );
   }
 
-  Future<void> mountApk(String packageName, String originalFilePath) async {
-    final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
-    await Root.exec(
-      cmd: 'am force-stop "$packageName"',
-    );
-    await Root.exec(
-      cmd: 'su -mm -c "umount -l $originalFilePath"',
-    );
-    await Root.exec(
-      cmd: 'su -mm -c "mount -o bind $newPatchedFilePath $originalFilePath"',
-    );
-  }
-
-  Future<bool> isMounted(String packageName) async {
-    final String? res = await Root.exec(
-      cmd: 'cat /proc/mounts | grep $packageName',
-    );
-    return res != null && res.isNotEmpty;
-  }
-
-  Future<void> saveOriginalFilePath(
+  Future<void> mountApk(
     String packageName,
-    String originalFilePath,
   ) async {
-    final String originalRootPath =
-        '$_revancedDirPath/$packageName/original.apk';
     await Root.exec(
-      cmd: 'mkdir -p "$_revancedDirPath/$packageName"',
-    );
-    await setPermissions(
-      '0755',
-      'shell:shell',
-      '',
-      '$_revancedDirPath/$packageName',
-    );
-    await Root.exec(
-      cmd: 'cp "$originalFilePath" "$originalRootPath"',
-    );
-    await setPermissions(
-      '0644',
-      'shell:shell',
-      'u:object_r:apk_data_file:s0',
-      originalFilePath,
+      cmd: '''
+      grep $packageName /proc/mounts | while read -r line; do echo \$line | cut -d " " -f 2 | sed "s/apk.*/apk/" | xargs -r umount -l; done
+      .$_serviceDDirPath/$packageName.sh
+      '''
+          .trim(),
     );
   }
 

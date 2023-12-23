@@ -45,10 +45,10 @@ jobs:
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh repo clone ${{ github.repository }}
+          gh repo clone "${{ github.repository }}"
           cd revanced-manager
-          gh repo set-default ${{ github.repository }}
-          gh pr checkout ${{ inputs.pr-number }}
+          gh repo set-default "${{ github.repository }}"
+          gh pr checkout "${{ inputs.pr-number }}"
           
           echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -59,7 +59,7 @@ jobs:
           persist-credentials: false
           
       - name: Setup JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'zulu'
@@ -83,7 +83,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build apk --${{ inputs.app-flavour }};
+          flutter build apk --"${{ inputs.app-flavour }}";
           
       - name: Prepare to comment
         run: |

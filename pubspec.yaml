@@ -1,10 +1,10 @@
 name: revanced_manager
 description: Patch your favorite apps, right on your device.
-homepage: https://github.com/revanced/revanced-manager
+homepage: https://github.com/ReVanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.17.0+101700000
+version: 1.17.3+101700300
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -15,7 +15,7 @@ dependencies:
   device_apps:
     git: # switch back to ponces fork once https://github.com/ponces/flutter_plugin_device_apps/pull/1 is merged
       url: https://github.com/BenjaminHalko/flutter_plugin_device_apps
-      ref: revanced-manager
+      ref: 0efbeba41657158a66bbc92c55d1226df56d0f1b # Branch: revanced-manager
   device_info_plus: ^9.1.0
   dynamic_color: ^1.6.3
   dio: ^5.0.0
@@ -27,17 +27,14 @@ dependencies:
   flutter_background:
     git: # remove once https://github.com/JulianAssmann/flutter_background/pull/79 is merged
       url: https://github.com/BenjaminHalko/flutter_background
-      ref: specify-namespace
+      ref: 560d21c4148b53933313573e7eafca0b0eb9aadf # Branch: specify-namespace
   flutter_cache_manager: ^3.3.0
   flutter_i18n: ^0.34.0
   flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.4
-  fluttertoast:
-    git: # remove once the next fluttertoast version is release (> 8.2.2)
-      url: https://github.com/ponnamkarthik/FlutterToast
-      ref: f4e7b4e1afc8c760eb5bac80f6a2e299906d83ca
+  fluttertoast: ^8.2.4
   font_awesome_flutter: ^10.4.0
   get_it: ^7.6.4
   google_fonts: ^6.1.0
@@ -48,15 +45,15 @@ dependencies:
   logcat:
     git:
       url: https://github.com/BenjaminHalko/logcat
-      ref: master
-  package_info_plus: ^4.2.0
+      ref: 4a6d5e0e22292c8eb160cfb9365b9ea29735fd43 # Branch: master
+  package_info_plus: ^5.0.1
   path_provider: ^2.0.14
   permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
   root:
     git:
       url: https://github.com/validcube/root
-      ref: 68e5678a535a2a3344828a14a39017fa74b9098c
+      ref: 68e5678a535a2a3344828a14a39017fa74b9098c # Branch: libsu-521
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
   stacked: ^3.2.0
@@ -68,14 +65,10 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_markdown: ^0.6.14
   dio_cache_interceptor: ^3.4.0
-  install_plugin:
-    git: # remove once https://github.com/hui-z/flutter_install_plugin/pull/67 is merged
-      url: https://github.com/BenjaminHalko/flutter_install_plugin
-      ref: master
   screenshot_callback:
     git: # remove once https://github.com/flutter-moum/flutter_screenshot_callback/pull/81 is merged
       url: https://github.com/BenjaminHalko/flutter_screenshot_callback
-      ref: master
+      ref: 1a1616ac91e16cd1f3dd170a81febf27ffce3587 # Branch: master
   synchronized: ^3.1.0
   connectivity_plus: ^5.0.1
   flutter_file_dialog: ^3.0.2

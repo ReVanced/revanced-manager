@@ -6,12 +6,14 @@ class SRequireSuggestedAppVersion extends StatefulWidget {
   const SRequireSuggestedAppVersion({super.key});
 
   @override
-  State<SRequireSuggestedAppVersion> createState() => _SRequireSuggestedAppVersionState();
+  State<SRequireSuggestedAppVersion> createState() =>
+      _SRequireSuggestedAppVersionState();
 }
 
 final _settingsViewModel = SettingsViewModel();
 
-class _SRequireSuggestedAppVersionState extends State<SRequireSuggestedAppVersion> {
+class _SRequireSuggestedAppVersionState
+    extends State<SRequireSuggestedAppVersion> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
@@ -29,8 +31,11 @@ class _SRequireSuggestedAppVersionState extends State<SRequireSuggestedAppVersio
       subtitle: I18nText('settingsView.requireSuggestedAppVersionHint'),
       value: _settingsViewModel.isRequireSuggestedAppVersionEnabled(),
       onChanged: (value) async {
-          await _settingsViewModel.showRequireSuggestedAppVersionDialog(context, value,);
-          setState(() {});
+        await _settingsViewModel.showRequireSuggestedAppVersionDialog(
+          context,
+          value,
+        );
+        setState(() {});
       },
     );
   }

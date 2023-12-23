@@ -12,7 +12,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class AppInfoViewModel extends BaseViewModel {
@@ -30,7 +29,9 @@ class AppInfoViewModel extends BaseViewModel {
     if (app.isRooted) {
       final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
       if (hasRootPermissions) {
-        await _rootAPI.deleteApp(app.packageName, app.apkFilePath);
+        await _rootAPI.unmount(
+          app.packageName,
+        );
         if (!onlyUnpatch) {
           await DeviceApps.uninstallApp(app.packageName);
         }
@@ -67,12 +68,11 @@ class AppInfoViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: I18nText('appInfoView.rootDialogTitle'),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: I18nText('appInfoView.rootDialogText'),
           actions: <Widget>[
-            CustomMaterialButton(
-              label: I18nText('okButton'),
+            FilledButton(
               onPressed: () => Navigator.of(context).pop(),
+              child: I18nText('okButton'),
             ),
           ],
         ),
@@ -85,23 +85,21 @@ class AppInfoViewModel extends BaseViewModel {
             title: I18nText(
               'appInfoView.unpatchButton',
             ),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
             content: I18nText(
               'appInfoView.unpatchDialogText',
             ),
             actions: <Widget>[
-              CustomMaterialButton(
-                isFilled: false,
-                label: I18nText('noButton'),
+              TextButton(
                 onPressed: () => Navigator.of(context).pop(),
+                child: I18nText('noButton'),
               ),
-              CustomMaterialButton(
-                label: I18nText('yesButton'),
+              FilledButton(
                 onPressed: () {
                   uninstallApp(context, app, onlyUnpatch);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
+                child: I18nText('yesButton'),
               ),
             ],
           ),
@@ -131,14 +129,13 @@ class AppInfoViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('appInfoView.appliedPatchesLabel'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Text(getAppliedPatchesString(app.appliedPatches)),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('okButton'),
           ),
         ],
       ),
