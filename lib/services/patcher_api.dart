@@ -322,24 +322,29 @@ class PatcherAPI {
         ),
         actions: (status == null)
             ? <Widget>[
-                CustomMaterialButton(
-                  label: I18nText('okButton'),
+                FilledButton(
                   onPressed: () async {
                     Navigator.pop(context);
                   },
+                  child: I18nText('okButton'),
                 ),
               ]
             : <Widget>[
-                CustomMaterialButton(
-                  isFilled: !isFixable,
-                  label: I18nText('cancelButton'),
+                if (!isFixable)
+                  FilledButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: I18nText('cancelButton'),
+                  ),
+                TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
+                  child: I18nText('cancelButton'),
                 ),
                 if (isFixable)
-                  CustomMaterialButton(
-                    label: I18nText('okButton'),
+                  FilledButton(
                     onPressed: () async {
                       final int response = await patcherChannel.invokeMethod(
                         'uninstallApp',
@@ -350,6 +355,7 @@ class PatcherAPI {
                         Navigator.pop(context);
                       }
                     },
+                    child: I18nText('okButton'),
                   ),
               ],
       ),
