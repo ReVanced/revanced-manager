@@ -28,6 +28,7 @@ class AppInfoViewModel extends BaseViewModel {
     var isUninstalled = onlyUnpatch;
 
     if (!onlyUnpatch) {
+      // TODO(Someone): Wait for the app to uninstall successfully.
       isUninstalled = await DeviceApps.uninstallApp(app.packageName);
     }
 
@@ -91,7 +92,7 @@ class AppInfoViewModel extends BaseViewModel {
               ),
               FilledButton(
                 onPressed: () {
-                  uninstallApp(context, app, onlyUnpatch);
+                  uninstallApp(context, app, true);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
@@ -101,8 +102,31 @@ class AppInfoViewModel extends BaseViewModel {
           ),
         );
       } else {
-        uninstallApp(context, app, onlyUnpatch);
-        Navigator.of(context).pop();
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText(
+              'appInfoView.uninstallButton',
+            ),
+            content: I18nText(
+              'appInfoView.uninstallDialogText',
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: I18nText('noButton'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  uninstallApp(context, app, false);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: I18nText('yesButton'),
+              ),
+            ],
+          ),
+        );
       }
     }
   }

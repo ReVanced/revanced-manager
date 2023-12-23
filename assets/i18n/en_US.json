@@ -308,6 +308,7 @@
         "rootDialogTitle": "Error",
 
         "unpatchDialogText": "Are you sure you want to unpatch this app?",
+        "uninstallDialogText": "Are you sure you want to uninstall this app?",
         "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
 
         "packageNameLabel": "Package name",
