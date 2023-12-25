@@ -70,7 +70,7 @@ fun AdvancedSettingsScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            val apiUrl by vm.apiUrl.getAsState()
+            val apiUrl by vm.prefs.api.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
             if (showApiUrlDialog) {
@@ -89,10 +89,16 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
-                preference = vm.allowExperimental,
+                preference = vm.prefs.allowExperimental,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.experimental_patches,
                 description = R.string.experimental_patches_description
+            )
+            BooleanItem(
+                preference = vm.prefs.multithreadingDexFileWriter,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.multithreaded_dex_file_writer,
+                description = R.string.multithreaded_dex_file_writer_description,
             )
 
             GroupHeader(stringResource(R.string.patch_bundles_section))
