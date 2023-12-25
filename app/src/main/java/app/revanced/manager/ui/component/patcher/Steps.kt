@@ -63,16 +63,24 @@ fun Steps(category: StepCategory, steps: List<Step>) {
         label = "card"
     )
 
+    val state = remember(steps) {
+        when {
+            steps.all { it.state == State.COMPLETED } -> State.COMPLETED
+            steps.any { it.state == State.FAILED } -> State.FAILED
+            steps.any { it.state == State.RUNNING } -> State.RUNNING
+            else -> State.WAITING
+        }
+    }
+
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .fillMaxWidth()
             .background(cardColor)
     ) {
-
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
                 .clickable { expanded = !expanded }
                 .background(categoryColor)
         ) {
@@ -81,24 +89,9 @@ fun Steps(category: StepCategory, steps: List<Step>) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
-                val state = remember(steps) {
-                    when {
-                        steps.all { it.state == State.COMPLETED } -> State.COMPLETED
-                        steps.any { it.state == State.FAILED } -> State.FAILED
-                        steps.any { it.state == State.RUNNING } -> State.RUNNING
-                        else -> State.WAITING
-                    }
-                }
+                StepIcon(state = state, size = 24.dp)
 
-                StepIcon(
-                    state = state,
-                    size = 24.dp
-                )
-
-                Text(
-                    stringResource(category.displayName),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Text(stringResource(category.displayName))
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -113,7 +106,10 @@ fun Steps(category: StepCategory, steps: List<Step>) {
 
         AnimatedVisibility(visible = expanded) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .padding(start = 4.dp)
             ) {
                 if (category != StepCategory.PATCHING) {
                     steps.forEach { step ->
@@ -185,12 +181,7 @@ fun SubStep(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            Box(
-                modifier = Modifier.size(24.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                StepIcon(state, downloadProgress, size = 20.dp)
-            }
+            StepIcon(state, downloadProgress, size = 18.dp)
 
             Text(
                 text = name,
