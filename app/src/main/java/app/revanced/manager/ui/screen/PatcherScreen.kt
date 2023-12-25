@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,9 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
@@ -147,48 +146,4 @@ fun PatcherScreen(
             }
         }
     }
-}
-
-@Composable
-fun InstallPickerDialog(
-    onDismiss: () -> Unit,
-    onConfirm: (InstallType) -> Unit
-) {
-    var selectedInstallType by rememberSaveable { mutableStateOf(InstallType.DEFAULT) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        dismissButton = {
-            Button(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onConfirm(selectedInstallType)
-                    onDismiss()
-                }
-            ) {
-                Text(stringResource(R.string.install_app))
-            }
-        },
-        title = { Text(stringResource(R.string.select_install_type)) },
-        text = {
-            Column {
-                InstallType.values().forEach {
-                    ListItem(
-                        modifier = Modifier.clickable { selectedInstallType = it },
-                        leadingContent = {
-                            RadioButton(
-                                selected = selectedInstallType == it,
-                                onClick = null
-                            )
-                        },
-                        headlineContent = { Text(stringResource(it.stringResource)) }
-                    )
-                }
-            }
-        }
-    )
 }
