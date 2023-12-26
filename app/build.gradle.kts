@@ -163,6 +163,6 @@ dependencies {
     // Fading Edges
     implementation(libs.fading.edges)
 
-    // Icons
-    implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
+    // Compose Icons
+    implementation(libs.composeIcons.fontAwesome)
 }
