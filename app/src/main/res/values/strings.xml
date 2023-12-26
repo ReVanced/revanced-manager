@@ -32,10 +32,10 @@
     <string name="patch_selector_item">Patch selection and options</string>
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="no_patches_selected">No patches selected</string>
-    
+
     <string name="version_selector_item">Change version</string>
     <string name="version_selector_item_description">%s selected</string>
-    
+
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
     <string name="auto_updates_dialog_title">Select updates to receive</string>
@@ -65,6 +65,8 @@
     <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
+    <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
+    <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
     <string name="experimental_patches">Allow experimental patches</string>
     <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
     <string name="import_keystore">Import keystore</string>
@@ -273,6 +275,12 @@
     <string name="bundle_type_description">Choose the type of bundle you want</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
+    <string name="update_available">An update is available</string>
+    <string name="current_version">Current version: %s</string>
+    <string name="new_version">New version: %s</string>
+    <string name="ready_to_install_update">Ready to install update</string>
+    <string name="update_completed">Update installed</string>
+    <string name="install_update_manager_failed">Failed to install update</string>
     <string name="update_notification">A minor update for ReVanced Manager is available. Click here to update and get the latest features and fixes!</string>
     <string name="update_channel">Update channel</string>
     <string name="update_channel_description">Stable</string>
@@ -297,4 +305,14 @@
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
+
+    <string name="failed_to_check_updates">Failed to check for updates</string>
+    <string name="dismiss_temporary">Not now</string>
+    <string name="update_available_dialog_title">New update available</string>
+    <string name="update_available_dialog_description">A new version (%s) is available for download.</string>
+    <string name="failed_to_download_update">Failed to download update: %s</string>
+    <string name="download">Download</string>
+    <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
+    <string name="download_update_confirmation">Download update?</string>
+    <string name="no_contributors_found">No contributors found</string>
 </resources>

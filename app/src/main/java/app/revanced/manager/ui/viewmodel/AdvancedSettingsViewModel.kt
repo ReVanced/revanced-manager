@@ -12,17 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AdvancedSettingsViewModel(
-    prefs: PreferencesManager,
+    val prefs: PreferencesManager,
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
-    val apiUrl = prefs.api
-    val allowExperimental = prefs.allowExperimental
-
     fun setApiUrl(value: String) = viewModelScope.launch(Dispatchers.Default) {
-        if (value == apiUrl.get()) return@launch
+        if (value == prefs.api.get()) return@launch
 
-        apiUrl.update(value)
+        prefs.api.update(value)
         patchBundleRepository.reloadApiBundles()
     }
 

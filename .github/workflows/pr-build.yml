@@ -17,17 +17,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up cache
-        uses: actions/cache@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          path: |
-            ${{ runner.home }}/.gradle/caches
-            ${{ runner.home }}/.gradle/wrapper
-            .gradle
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Set up Java
-        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
         env:

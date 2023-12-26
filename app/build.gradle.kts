@@ -54,6 +54,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+    
     packaging {
         resources.excludes.addAll(listOf(
             "/prebuilt/**",
@@ -158,6 +159,9 @@ dependencies {
 
     // Markdown
     implementation(libs.markdown.renderer)
+
+    // Fading Edges
+    implementation(libs.fading.edges)
 
     // Icons
     implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")

@@ -28,25 +28,33 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
 import app.revanced.manager.ui.screen.settings.update.ChangelogsScreen
-import app.revanced.manager.ui.screen.settings.update.UpdateProgressScreen
+import app.revanced.manager.ui.screen.settings.update.UpdateScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.settings.SettingsListItem
+import org.koin.core.parameter.parametersOf
+import org.koin.androidx.compose.getViewModel as getComposeViewModel
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
+    startDestination: SettingsDestination,
     viewModel: SettingsViewModel = getViewModel()
 ) {
-    val navController =
-        rememberNavController<SettingsDestination>(startDestination = SettingsDestination.Settings)
+    val navController = rememberNavController(startDestination)
+
+    val backClick: () -> Unit = {
+        if (navController.backstack.entries.size == 1)
+            onBackClick()
+        else navController.pop()
+    }
 
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -90,50 +98,54 @@ fun SettingsScreen(
         controller = navController
     ) { destination ->
         when (destination) {
-
             is SettingsDestination.General -> GeneralSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 viewModel = viewModel
             )
 
             is SettingsDestination.Advanced -> AdvancedSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.Updates -> UpdatesSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onChangelogClick = { navController.navigate(SettingsDestination.Changelogs) },
-                onUpdateClick = { navController.navigate(SettingsDestination.UpdateProgress) }
+                onUpdateClick = { navController.navigate(SettingsDestination.Update(false)) }
             )
 
             is SettingsDestination.Downloads -> DownloadsSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.ImportExport -> ImportExportSettingsScreen(
-                onBackClick = { navController.pop() }
+                onBackClick = backClick
             )
 
             is SettingsDestination.About -> AboutSettingsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
                 onContributorsClick = { navController.navigate(SettingsDestination.Contributors) },
                 onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
             )
 
-            is SettingsDestination.UpdateProgress -> UpdateProgressScreen(
-                onBackClick = { navController.pop() },
+            is SettingsDestination.Update -> UpdateScreen(
+                onBackClick = backClick,
+                vm = getComposeViewModel {
+                    parametersOf(
+                        destination.downloadOnScreenEntry
+                    )
+                }
             )
 
             is SettingsDestination.Changelogs -> ChangelogsScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Contributors -> ContributorScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Licenses -> LicensesScreen(
-                onBackClick = { navController.pop() },
+                onBackClick = backClick,
             )
 
             is SettingsDestination.Settings -> {
@@ -141,7 +153,7 @@ fun SettingsScreen(
                     topBar = {
                         AppTopBar(
                             title = stringResource(R.string.settings),
-                            onBackClick = onBackClick,
+                            onBackClick = backClick,
                         )
                     }
                 ) { paddingValues ->
