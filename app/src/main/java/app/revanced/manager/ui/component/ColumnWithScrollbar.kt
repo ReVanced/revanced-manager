@@ -25,5 +25,5 @@ fun ColumnWithScrollbar(
         horizontalAlignment = horizontalAlignment,
         content = content
     )
-    Scrollbar(state, Modifier.then(modifier.padding()))
+    Scrollbar(state, Modifier.then(modifier.padding())) // Get the modifier's padding to maintain scrollbar within the screen, e.g. paddingValues
 }
