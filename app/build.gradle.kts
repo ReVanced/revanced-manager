@@ -80,6 +80,7 @@ android {
 
     buildFeatures.compose = true
     buildFeatures.aidl = true
+    buildFeatures.buildConfig=true
 
     composeOptions.kotlinCompilerExtensionVersion = "1.5.3"
 }

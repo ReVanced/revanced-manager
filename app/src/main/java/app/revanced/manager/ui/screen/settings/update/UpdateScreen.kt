@@ -16,8 +16,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -81,7 +81,7 @@ fun UpdateScreen(
                 DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize)
             )
             vm.changelog?.let { changelog ->
-                Divider()
+                HorizontalDivider()
                 Changelog(changelog)
             } ?: Spacer(modifier = Modifier.weight(1f))
             Buttons(vm.state, vm::downloadUpdate, vm::installUpdate, onBackClick)
@@ -147,8 +147,8 @@ private fun Header(state: State, changelog: Changelog?, downloadData: DownloadDa
             }
         } else if (state == State.DOWNLOADING) {
             LinearProgressIndicator(
-                progress = downloadData.downloadProgress,
-                modifier = Modifier.fillMaxWidth()
+                progress = { downloadData.downloadProgress },
+                modifier = Modifier.fillMaxWidth(),
             )
             Text(
                 text =

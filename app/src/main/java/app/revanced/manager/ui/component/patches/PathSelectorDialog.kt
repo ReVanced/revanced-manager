@@ -6,11 +6,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.InsertDriveFile
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -86,7 +85,7 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
                     item(key = "parent") {
                         PathItem(
                             onClick = { currentDirectory = currentDirectory.parent },
-                            icon = Icons.Outlined.ArrowBack,
+                            icon = Icons.AutoMirrored.Outlined.ArrowBack,
                             name = stringResource(R.string.path_selector_parent_dir)
                         )
                     }
@@ -113,7 +112,7 @@ fun PathSelectorDialog(root: Path, onSelect: (Path?) -> Unit) {
                 items(files, key = { it.absolutePathString() }) {
                     PathItem(
                         onClick = { onSelect(it) },
-                        icon = Icons.Outlined.InsertDriveFile,
+                        icon = Icons.AutoMirrored.Outlined.InsertDriveFile,
                         name = it.name
                     )
                 }
