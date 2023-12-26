@@ -43,6 +43,8 @@ import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ArrowButton
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.viewmodel.InstallerViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 import kotlin.math.floor
@@ -91,7 +93,7 @@ fun InstallerScreen(
                     },
                     floatingActionButton = {
                         if (canInstall) {
-                            ExtendedFloatingActionButton(
+                            HapticExtendedFloatingActionButton(
                                 text = { Text(stringResource(vm.appButtonText)) },
                                 icon = { Icon(Icons.Outlined.FileDownload, stringResource(id = R.string.install_app)) },
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
@@ -153,7 +155,7 @@ fun InstallPicker(
                     ListItem(
                         modifier = Modifier.clickable { selectedInstallType = it },
                         leadingContent = {
-                            RadioButton(
+                            HapticRadioButton(
                                 selected = selectedInstallType == it,
                                 onClick = null
                             )

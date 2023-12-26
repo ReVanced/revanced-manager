@@ -23,7 +23,6 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
@@ -62,6 +61,9 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -296,7 +298,7 @@ fun PatchesSelectorScreen(
         floatingActionButton = {
             if (!showPatchButton) return@Scaffold
 
-            ExtendedFloatingActionButton(
+            HapticExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
                 onClick = {
@@ -317,7 +319,7 @@ fun PatchesSelectorScreen(
                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
                 ) {
                     bundles.forEachIndexed { index, bundle ->
-                        Tab(
+                        HapticTab(
                             selected = pagerState.currentPage == index,
                             onClick = {
                                 composableScope.launch {
@@ -442,7 +444,7 @@ fun SelectionWarningDialog(
                         dismissPermanently = !dismissPermanently
                     }
                 ) {
-                    Checkbox(
+                    HapticCheckbox(
                         checked = dismissPermanently,
                         onCheckedChange = {
                             dismissPermanently = it
@@ -462,13 +464,13 @@ fun PatchItem(
     selected: Boolean,
     onToggle: () -> Unit,
     supported: Boolean = true
-) = ListItem(
+) = ListItem (
     modifier = Modifier
         .let { if (!supported) it.alpha(0.5f) else it }
         .clickable(enabled = supported, onClick = onToggle)
         .fillMaxSize(),
     leadingContent = {
-        Checkbox(
+        HapticCheckbox(
             checked = selected,
             onCheckedChange = { onToggle() },
             enabled = supported
@@ -482,7 +484,7 @@ fun PatchItem(
                 Icon(Icons.Outlined.Settings, null)
             }
         }
-    }
+    },
 )
 
 @Composable

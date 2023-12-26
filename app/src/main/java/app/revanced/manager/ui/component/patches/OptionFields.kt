@@ -11,7 +11,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.OutlinedTextField
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.util.toast
 import org.koin.compose.rememberKoinInject
 
@@ -152,7 +152,7 @@ private val optionImplementations = mapOf<String, OptionImpl>(
             option = option,
             onClick = { setValue(!current) }
         ) {
-            Switch(checked = current, onCheckedChange = setValue)
+            HapticSwitch(checked = current, onCheckedChange = setValue)
         }
     },
     "String" to { option, value, setValue ->
@@ -179,7 +179,7 @@ private val optionImplementations = mapOf<String, OptionImpl>(
 
         OptionListItem(
             option = option,
-            onClick = ::showInputDialog
+            onClick = ::showInputDialog,
         ) {
             IconButton(onClick = ::showInputDialog) {
                 Icon(
