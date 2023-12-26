@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/views/patch_options/patch_options_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_options_fields.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class PatchOptionsView extends StatelessWidget {
@@ -82,8 +81,7 @@ class PatchOptionsView extends StatelessWidget {
                               model.modifyOptions(value, option);
                             },
                           )
-                        else if (option.valueType ==
-                                'StringArray' ||
+                        else if (option.valueType == 'StringArray' ||
                             option.valueType == 'IntArray' ||
                             option.valueType == 'LongArray')
                           IntStringLongListPatchOption(
@@ -104,11 +102,11 @@ class PatchOptionsView extends StatelessWidget {
                         const SizedBox(
                           height: 8,
                         ),
-                        CustomMaterialButton(
+                        FilledButton(
                           onPressed: () {
                             model.showAddOptionDialog(context);
                           },
-                          label: Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const Icon(Icons.add),

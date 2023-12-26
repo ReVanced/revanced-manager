@@ -22,7 +22,7 @@ class PatcherView extends StatelessWidget {
           child: FloatingActionButton.extended(
             label: I18nText('patcherView.patchButton'),
             icon: const Icon(Icons.build),
-            onPressed: () async{
+            onPressed: () async {
               if (model.checkRequiredPatchOption(context)) {
                 final bool proceed = model.showRemovedPatchesDialog(context);
                 if (proceed && context.mounted) {

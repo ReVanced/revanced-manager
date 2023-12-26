@@ -11,7 +11,6 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_version_compatibility_check.dart';
 
-
 class SAdvancedSection extends StatelessWidget {
   const SAdvancedSection({super.key});
 

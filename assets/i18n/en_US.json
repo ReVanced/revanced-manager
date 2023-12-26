@@ -170,7 +170,9 @@
 
         "installButton": "Install",
         "installRootType": "Mount",
-        "installNonRootType": "Normal",
+        "installNonRootType": "Regular",
+
+        "warning": "Disable auto updates for the patched app to avoid unexpected issues.",
 
         "pressBackAgain": "Press back again to cancel",
         "openButton": "Open",
@@ -308,12 +310,13 @@
         "openButton": "Open",
         "installButton": "Install",
         "uninstallButton": "Uninstall",
-        "unpatchButton": "Unpatch",
+        "unmountButton": "Unmount",
         "exportButton": "Export",
         "deleteButton": "Delete",
         "rootDialogTitle": "Error",
 
-        "unpatchDialogText": "Are you sure you want to unpatch this app?",
+        "unmountDialogText": "Are you sure you want to unmount this app?",
+        "uninstallDialogText": "Are you sure you want to uninstall this app?",
         "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
 
         "removeAppDialogTitle": "Remove app?",
@@ -321,8 +324,8 @@
 
         "packageNameLabel": "Package name",
         "installTypeLabel": "Installation type",
-        "rootTypeLabel": "Root",
-        "nonRootTypeLabel": "Non-root",
+        "mountTypeLabel": "Mount",
+        "regularTypeLabel": "Regular",
         "patchedDateLabel": "Patched date",
         "appliedPatchesLabel": "Applied patches",
         "sizeLabel": "File size",
@@ -339,5 +342,34 @@
         "integrationsContributors": "Integrations contributors",
         "cliContributors": "CLI contributors",
         "managerContributors": "Manager contributors"
+    },
+    "installErrorDialog": {
+        "mount_version_mismatch": "Version mismatch",
+        "mount_no_root": "No root access",
+        "mount_missing_installation": "Installation not found",
+
+        "status_failure_blocked": "Installation blocked",
+        "install_failed_verification_failure": "Verification failed",
+        "status_failure_invalid": "Installation invalid",
+        "install_failed_version_downgrade": "Can't downgrade",
+        "status_failure_conflict": "Installation conflict",
+        "status_failure_storage": "Installation storage issue",
+        "status_failure_incompatible": "Installation incompatible",
+        "status_failure_timeout": "Installation timeout",
+        "status_unknown": "Installation failed",
+
+        "mount_version_mismatch_description": "The installation failed due to the installed app being a different version than the patched app.\n\nInstall the version of the app you are mounting and try again.",
+        "mount_no_root_description": "The installation failed due to root access not being granted.\n\nGrant root access to ReVanced Manager and try again.",
+        "mount_missing_installation_description": "The installation failed due to the unpatched app not being installed on this device in order to mount over it.\n\nInstall the unpatched app before mounting and try again.",
+
+        "status_failure_timeout_description": "The installation took too long to finish.\n\nWould you like to try again?",
+        "status_failure_storage_description": "The installation failed due to insufficient storage.\n\nFree up some space and try again.",
+        "status_failure_invalid_description": "The installation failed due to the patched app being invalid.\n\nUninstall the app and try again?",
+        "status_failure_incompatible_description": "The app is incompatible with this device.\n\nContact the developer of the app and ask for support.",
+        "status_failure_conflict_description": "The installation was prevented by an existing installation of the app.\n\nUninstall the installed app and try again?",
+        "status_failure_blocked_description": "The installation was blocked by {packageName}.\n\nAdjust your security settings and try again.",
+        "install_failed_verification_failure_description": "The installation failed due to a verification issue.\n\nAdjust your security settings and try again.",
+        "install_failed_version_downgrade_description": "The installation failed due to the patched app being a lower version than the installed app.\n\nUninstall the app and try again?",
+        "status_unknown_description": "The installation failed due to an unknown reason. Please try again."
     }
 }

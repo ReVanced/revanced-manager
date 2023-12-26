@@ -244,7 +244,7 @@ class AppInfoView extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 10),
                                           I18nText(
-                                            'appInfoView.unpatchButton',
+                                            'appInfoView.unmountButton',
                                             child: Text(
                                               '',
                                               style: TextStyle(
@@ -297,11 +297,12 @@ class AppInfoView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      subtitle: Text(
+                      subtitle: 
                         isHistory
-                            ? model.getFileSizeString(app.fileSize)
-                            : app.version,
-                      ),
+                          ? Text(model.getFileSizeString(app.fileSize))
+                          : app.isRooted
+                            ? I18nText('appInfoView.mountTypeLabel')
+                            : I18nText('appInfoView.regularTypeLabel'),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

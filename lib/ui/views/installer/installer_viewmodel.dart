@@ -15,7 +15,6 @@ import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
@@ -105,7 +104,7 @@ class InstallerViewModel extends BaseViewModel {
       isPatching = true;
       isInstalled = false;
       hasErrors = false;
-    } else if (value == 1.0) {
+    } else if (value == .85) {
       isPatching = false;
       hasErrors = false;
       await _managerAPI.savePatches(
@@ -116,6 +115,7 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
+      progress = 0.0;
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -128,10 +128,10 @@ class InstallerViewModel extends BaseViewModel {
       if (logs[logs.length - 1] == '\n') {
         logs = logs.substring(0, logs.length - 1);
       }
-      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 100)).then((value) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 100),
           curve: Curves.fastOutSlowIn,
         );
       });
@@ -192,7 +192,9 @@ class InstallerViewModel extends BaseViewModel {
     final index = logLines.indexWhere((line) => line.endsWith(keyword));
     if (newString != null && lineCount > 0) {
       logLines.insert(
-          index, newString.replaceAll('{lineCount}', lineCount.toString()));
+        index,
+        newString.replaceAll('{lineCount}', lineCount.toString()),
+      );
     }
     logLines.removeWhere((lines) => lines.endsWith(keyword));
   }
@@ -207,18 +209,18 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  String _formatPatches(List<Patch> patches) {
-    if (patches.isEmpty) {
-      return 'None';
-    }
-    return patches
-        .map((p) =>
-            p.name +
-            (p.options.isEmpty
-                ? ''
-                : ' [${p.options.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]'))
-        .toList()
-        .join(', ');
+  String _formatPatches(List<Patch> patches, String noneString) {
+    return patches.isEmpty
+        ? noneString
+        : patches.map((p) {
+            final optionsChanged = p.options
+                .where((o) => _getPatchOptionValue(p.name, o) != o.value)
+                .toList();
+            return p.name +
+                (optionsChanged.isEmpty
+                    ? ''
+                    : ' [${optionsChanged.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]');
+          }).join(', ');
   }
 
   String _getSuggestedVersion(String packageName) {
@@ -244,23 +246,25 @@ class InstallerViewModel extends BaseViewModel {
         .getFilteredPatches(_app.packageName)
         .where((p) => !p.excluded)
         .toList();
-    final patchesAdded =
-        _patches.where((p) => !defaultPatches.contains(p)).toList();
-    final patchesRemoved =
-        defaultPatches.where((p) => !_patches.contains(p)).toList();
+    final appliedPatchesNames = _patches.map((p) => p.name).toList();
 
-    // Options changed
-    final patchesChanged = defaultPatches
-        .where((p) =>
-            _patches.contains(p) &&
-            p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value))
+    final patchesAdded = _patches.where((p) => p.excluded).toList();
+    final patchesRemoved = defaultPatches
+        .where((p) => !appliedPatchesNames.contains(p.name))
+        .map((p) => p.name)
+        .toList();
+    final patchesOptionsChanged = defaultPatches
+        .where(
+          (p) =>
+              appliedPatchesNames.contains(p.name) &&
+              p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value),
+        )
         .toList();
 
     // Add Info
     final formattedLogs = [
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
-      'Build: ${info['flavor']}',
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
@@ -269,9 +273,9 @@ class InstallerViewModel extends BaseViewModel {
       '\n- Patch Info',
       'App: ${_app.packageName} v${_app.version} (Suggested: ${_getSuggestedVersion(_app.packageName)})',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches added: ${_formatPatches(patchesAdded)}',
-      'Patches removed: ${_formatPatches(patchesRemoved)}',
-      'Options changed: ${_formatPatches(patchesChanged)}', //
+      'Patches added: ${_formatPatches(patchesAdded, 'Default')}',
+      'Patches removed: ${patchesRemoved.isEmpty ? 'None' : patchesRemoved.join(', ')}',
+      'Default patch options changed: ${_formatPatches(patchesOptionsChanged, 'None')}', //
 
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
@@ -295,30 +299,150 @@ class InstallerViewModel extends BaseViewModel {
         title: I18nText(
           'warning',
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
           child: I18nText('installerView.screenshotDetected'),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               copyLogs();
               showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> installTypeDialog(BuildContext context) async {
+    final ValueNotifier<int> installType = ValueNotifier(0);
+    if (isRooted) {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (innerContext) => AlertDialog(
+          title: I18nText(
+            'installerView.installType',
+          ),
+          icon: const Icon(Icons.file_download_outlined),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+          content: SingleChildScrollView(
+            child: ValueListenableBuilder(
+              valueListenable: installType,
+              builder: (context, value, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: I18nText(
+                        'installerView.installTypeDescription',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      title: I18nText('installerView.installNonRootType'),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
+                      value: 0,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                    RadioListTile(
+                      title: I18nText('installerView.installRootType'),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
+                      value: 1,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: I18nText(
+                        'installerView.warning',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+              },
+              child: I18nText('cancelButton'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+                installResult(context);
+              },
+              child: I18nText('installerView.installButton'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (innerContext) => AlertDialog(
+          title: I18nText(
+            'warning',
+          ),
+          contentPadding: const EdgeInsets.all(16),
+          content: I18nText('installerView.warning'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+              },
+              child: I18nText('cancelButton'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+                installResult(context);
+              },
+              child: I18nText('installerView.installButton'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> stopPatcher() async {
@@ -338,31 +462,45 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context) async {
     try {
       _app.isRooted = await _managerAPI.installTypeDialog(context);
-      update(
-        1.0,
-        'Installing...',
-        _app.isRooted
-            ? 'Installing patched file using root method'
-            : 'Installing patched file using nonroot method',
-      );
-      isInstalled = await _patcherAPI.installPatchedFile(_app);
-      if (isInstalled) {
+      if (headerLogs != 'Installing...') {
+        update(
+          .85,
+          'Installing...',
+          _app.isRooted ? 'Mounting patched app' : 'Installing patched app',
+        );
+      }
+      final int response = await _patcherAPI.installPatchedFile(context, _app);
+      if (response == 0) {
+        isInstalled = true;
         _app.isFromStorage = false;
         _app.patchDate = DateTime.now();
 
         // In case a patch changed the app name or package name,
         // update the app info.
         final app =
-        await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+          await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
         if (app != null) {
           _app.name = app.appName;
           _app.packageName = app.packageName;
         }
         await _managerAPI.savePatchedApp(_app);
-        locator<HomeViewModel>().initialize(context);
-        update(1.0, 'Installed!', 'Installed!');
+        await locator<HomeViewModel>().initialize(context);
+
+        update(1.0, 'Installed', 'Installed');
+      } else if (response == 3) {
+        update(
+          .85,
+          'Installation canceled',
+          'Installation canceled',
+        );
+      } else if (response == 10) {
+        installResult(context);
       } else {
-        // TODO(aabed): Show error message.
+        update(
+          .85,
+          'Installation failed',
+          'Installation failed',
+        );
       }
     } on Exception catch (e) {
       if (kDebugMode) {
