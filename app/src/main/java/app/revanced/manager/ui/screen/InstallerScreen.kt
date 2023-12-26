@@ -281,15 +281,15 @@ fun StepIcon(status: State, downloadProgress: Pair<Float, Float>? = null, size: 
         State.WAITING ->
             downloadProgress?.let { (downloaded, total) ->
                 CircularProgressIndicator(
-                    progress = downloaded / total,
-                    strokeWidth = strokeWidth,
+                    progress = { downloaded / total },
                     modifier = stringResource(R.string.step_running).let { description ->
                         Modifier
                             .size(size)
                             .semantics {
                                 contentDescription = description
                             }
-                    }
+                    },
+                    strokeWidth = strokeWidth,
                 )
             } ?: CircularProgressIndicator(
                 strokeWidth = strokeWidth,
