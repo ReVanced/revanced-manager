@@ -181,11 +181,16 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                             ],
                           ),
-                          if (model.getQueriedPatches(_query).any((patch) => model.isPatchNew(patch)))
+                          if (model
+                              .getQueriedPatches(_query)
+                              .any((patch) => model.isPatchNew(patch)))
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                model.getPatchCategory(context, 'patchesSelectorView.newPatches'),
+                                model.getPatchCategory(
+                                  context,
+                                  'patchesSelectorView.newPatches',
+                                ),
                                 ...model.getQueriedPatches(_query).map((patch) {
                                   if (model.isPatchNew(patch)) {
                                     return model.getPatchItem(context, patch);
@@ -193,26 +198,40 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     return Container();
                                   }
                                 }),
-                                if (model.getQueriedPatches(_query).any((patch) => !model.isPatchNew(patch) && patch.compatiblePackages.isNotEmpty))
-                                  model.getPatchCategory(context, 'patchesSelectorView.patches'),
+                                if (model.getQueriedPatches(_query).any(
+                                      (patch) =>
+                                          !model.isPatchNew(patch) &&
+                                          patch.compatiblePackages.isNotEmpty,
+                                    ))
+                                  model.getPatchCategory(
+                                    context,
+                                    'patchesSelectorView.patches',
+                                  ),
                               ],
                             ),
                           ...model.getQueriedPatches(_query).map(
                             (patch) {
-                              if (patch.compatiblePackages.isNotEmpty && !model.isPatchNew(patch)) {
+                              if (patch.compatiblePackages.isNotEmpty &&
+                                  !model.isPatchNew(patch)) {
                                 return model.getPatchItem(context, patch);
                               } else {
                                 return Container();
                               }
                             },
                           ),
-                          if (model.getQueriedPatches(_query).any((patch) => patch.compatiblePackages.isEmpty))
+                          if (model
+                              .getQueriedPatches(_query)
+                              .any((patch) => patch.compatiblePackages.isEmpty))
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                model.getPatchCategory(context, 'patchesSelectorView.universalPatches'),
+                                model.getPatchCategory(
+                                  context,
+                                  'patchesSelectorView.universalPatches',
+                                ),
                                 ...model.getQueriedPatches(_query).map((patch) {
-                                  if (patch.compatiblePackages.isEmpty && !model.isPatchNew(patch)) {
+                                  if (patch.compatiblePackages.isEmpty &&
+                                      !model.isPatchNew(patch)) {
                                     return model.getPatchItem(context, patch);
                                   } else {
                                     return Container();

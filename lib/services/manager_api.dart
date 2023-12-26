@@ -633,7 +633,7 @@ class ManagerAPI {
     );
   }
 
-  Future<void> reAssessSavedApps() async {
+  Future<void> rePatchedSavedApps() async {
     final List<PatchedApplication> patchedApps = getPatchedApps();
 
     // Remove apps that are not installed anymore.

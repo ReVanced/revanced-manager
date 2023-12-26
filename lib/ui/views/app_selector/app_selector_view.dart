@@ -41,8 +41,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
               ),
               titleTextStyle: TextStyle(
                 fontSize: 22.0,
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
+                color: Theme.of(context).textTheme.titleLarge!.color,
+              ),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
@@ -95,9 +95,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                           ),
                           child: Column(
                             children: [
-                              ...model
-                                  .getFilteredApps(_query)
-                                  .map(
+                              ...model.getFilteredApps(_query).map(
                                     (app) => InstalledAppItem(
                                       name: app.appName,
                                       pkgName: app.packageName,
@@ -118,11 +116,8 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                         packageName: app.packageName,
                                       ),
                                     ),
-                                  )
-                                  ,
-                              ...model
-                                  .getFilteredAppsNames(_query)
-                                  .map(
+                                  ),
+                              ...model.getFilteredAppsNames(_query).map(
                                     (app) => NotInstalledAppItem(
                                       name: app,
                                       patchesCount: model.patchesCount(app),
@@ -136,8 +131,7 @@ class _AppSelectorViewState extends State<AppSelectorView> {
                                         packageName: app,
                                       ),
                                     ),
-                                  )
-                                  ,
+                                  ),
                               const SizedBox(height: 70.0),
                             ],
                           ),

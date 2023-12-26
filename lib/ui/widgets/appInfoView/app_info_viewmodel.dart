@@ -25,18 +25,17 @@ class AppInfoViewModel extends BaseViewModel {
     PatchedApplication app,
     bool onlyUnpatch,
   ) async {
-    bool isUninstalled = true;
-    if (app.isRooted) {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (hasRootPermissions) {
-        await _rootAPI.deleteApp(app.packageName, app.apkFilePath);
-        if (!onlyUnpatch) {
-          await DeviceApps.uninstallApp(app.packageName);
-        }
-      }
-    } else {
+    var isUninstalled = onlyUnpatch;
+
+    if (!onlyUnpatch) {
+      // TODO(Someone): Wait for the app to uninstall successfully.
       isUninstalled = await DeviceApps.uninstallApp(app.packageName);
     }
+
+    if (isUninstalled && app.isRooted &&  await _rootAPI.hasRootPermissions()) {
+      await _rootAPI.uninstall(app.packageName);
+    }
+
     if (isUninstalled) {
       await _managerAPI.deletePatchedApp(app);
       locator<HomeViewModel>().initialize(context);
@@ -81,10 +80,10 @@ class AppInfoViewModel extends BaseViewModel {
           context: context,
           builder: (context) => AlertDialog(
             title: I18nText(
-              'appInfoView.unpatchButton',
+              'appInfoView.unmountButton',
             ),
             content: I18nText(
-              'appInfoView.unpatchDialogText',
+              'appInfoView.unmountDialogText',
             ),
             actions: <Widget>[
               TextButton(
@@ -93,7 +92,7 @@ class AppInfoViewModel extends BaseViewModel {
               ),
               FilledButton(
                 onPressed: () {
-                  uninstallApp(context, app, onlyUnpatch);
+                  uninstallApp(context, app, true);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
@@ -103,8 +102,31 @@ class AppInfoViewModel extends BaseViewModel {
           ),
         );
       } else {
-        uninstallApp(context, app, onlyUnpatch);
-        Navigator.of(context).pop();
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: I18nText(
+              'appInfoView.uninstallButton',
+            ),
+            content: I18nText(
+              'appInfoView.uninstallDialogText',
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: I18nText('noButton'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  uninstallApp(context, app, false);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: I18nText('yesButton'),
+              ),
+            ],
+          ),
+        );
       }
     }
   }

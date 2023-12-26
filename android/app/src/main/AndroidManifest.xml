@@ -33,17 +33,17 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"/>
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <activity
-           android:name=".ExportSettingsActivity"
-           android:exported="true">
-       </activity>
+        <activity
+            android:name=".ExportSettingsActivity"
+            android:exported="true">
+        </activity>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
@@ -56,5 +56,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <receiver
+            android:name=".utils.packageInstaller.InstallerReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="APP_INSTALL_ACTION" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".utils.packageInstaller.UninstallerReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="APP_UNINSTALL_ACTION" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

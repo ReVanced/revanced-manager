@@ -9,16 +9,14 @@ class SUniversalPatches extends StatefulWidget {
   const SUniversalPatches({super.key});
 
   @override
-  State<SUniversalPatches> createState() =>
-      _SUniversalPatchesState();
+  State<SUniversalPatches> createState() => _SUniversalPatchesState();
 }
 
 final _settingsViewModel = SettingsViewModel();
 final _patchesSelectorViewModel = PatchesSelectorViewModel();
 final _patcherViewModel = PatcherViewModel();
 
-class _SUniversalPatchesState
-    extends State<SUniversalPatches> {
+class _SUniversalPatchesState extends State<SUniversalPatches> {
   @override
   Widget build(BuildContext context) {
     return HapticSwitchListTile(
