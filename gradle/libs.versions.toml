@@ -2,11 +2,11 @@
 ktx = "1.12.0"
 viewmodel-lifecycle = "2.6.2"
 splash-screen = "1.0.1"
-compose-activity = "1.8.0"
+compose-activity = "1.8.2"
 paging = "3.2.1"
 preferences-datastore = "1.0.0"
 work-runtime = "2.8.1"
-compose-bom = "2023.10.00"
+compose-bom = "2023.10.01"
 accompanist = "0.30.1"
 serialization = "1.6.0"
 collection = "0.3.5"
@@ -44,7 +44,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.0-alpha10"}
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.0-beta01"}
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 # Coil
