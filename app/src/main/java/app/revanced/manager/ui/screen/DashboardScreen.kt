@@ -175,7 +175,7 @@ fun DashboardScreen(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            PrimaryTabRow(
+            TabRow(
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
