@@ -6,7 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
@@ -82,7 +82,7 @@ fun AppSelectorScreen(
             leadingIcon = {
                 IconButton({ search = false }) {
                     Icon(
-                        Icons.Default.ArrowBack,
+                        Icons.AutoMirrored.Filled.ArrowBack,
                         stringResource(R.string.back)
                     )
                 }
@@ -181,7 +181,7 @@ fun AppSelectorScreen(
                         Text(stringResource(R.string.select_from_storage_description))
                     }
                 )
-                Divider()
+                HorizontalDivider()
             }
 
             if (appList.isNotEmpty()) {

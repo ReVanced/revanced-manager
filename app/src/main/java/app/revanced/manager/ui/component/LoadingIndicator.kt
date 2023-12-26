@@ -26,8 +26,8 @@ fun LoadingIndicator(
 
         progress?.let {
             CircularProgressIndicator(
-                progress = progress,
-                modifier = Modifier.padding(vertical = 16.dp).then(modifier)
+                progress = { progress },
+                modifier = Modifier.padding(vertical = 16.dp).then(modifier),
             )
         } ?:
             CircularProgressIndicator(

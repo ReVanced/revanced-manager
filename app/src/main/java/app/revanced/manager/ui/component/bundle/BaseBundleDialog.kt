@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowRight
+import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -167,7 +167,7 @@ fun BaseBundleDialog(
         ) {
             if (patchesClickable)
                 Icon(
-                    Icons.Outlined.ArrowRight,
+                    Icons.AutoMirrored.Outlined.ArrowRight,
                     stringResource(R.string.patches)
                 )
         }
