@@ -138,15 +138,12 @@ fun AlertDialogExtended(
 
 @Composable
 private fun ContentStyle(
-    color: Color? = null,
-    textStyle: TextStyle? = null,
+    color: Color = LocalContentColor.current,
+    textStyle: TextStyle = LocalTextStyle.current,
     content: @Composable () -> Unit
 ) {
-    val contentColor = color ?: LocalContentColor.current
-    val finalTextStyle = textStyle ?: LocalTextStyle.current
-
-    CompositionLocalProvider(LocalContentColor provides contentColor) {
-        ProvideTextStyle(finalTextStyle) {
+    CompositionLocalProvider(LocalContentColor provides color) {
+        ProvideTextStyle(textStyle) {
             content()
         }
     }
