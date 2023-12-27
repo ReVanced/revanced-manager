@@ -6,21 +6,13 @@
 | ------------|------------------- |
 | main        | :white_check_mark: |
 | dev         | :white_check_mark: |
-| compose-dev | :white_check_mark: |
 
-### Supported Versions (main & dev)
+### Supported Versions
 
 | Version        | Supported          |
 | -------------- | ------------------ |
 | latest         | :white_check_mark: |
 | Alpha (0.0.XX) | :x:                |
-
-
-### Supported Versions (compose-dev)
-
-| Version        | Supported          |
-| -------------- | ------------------ |
-| latest         | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
