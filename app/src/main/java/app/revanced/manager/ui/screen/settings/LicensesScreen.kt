@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.Scrollbar
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
@@ -27,12 +28,14 @@ fun LicensesScreen(
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            val lazyListState = rememberLazyListState()
+        val lazyListState = rememberLazyListState()
 
+        ColumnWithScrollbar(
+            modifier = Modifier.padding(paddingValues),
+            lazyListState = lazyListState
+        ) {
             LibrariesContainer(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 lazyListState = lazyListState,
                 colors = LibraryDefaults.libraryColors(
                     backgroundColor = MaterialTheme.colorScheme.background,
@@ -41,7 +44,6 @@ fun LicensesScreen(
                     badgeContentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             )
-            Scrollbar(lazyListState = lazyListState, modifier = Modifier.padding(paddingValues))
         }
     }
 }
