@@ -27,7 +27,7 @@ coil = "2.4.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
 libsu = "5.2.0"
-scrollbars = "1.0.3"
+scrollbars = "1.0.4"
 
 [libraries]
 # AndroidX Core
