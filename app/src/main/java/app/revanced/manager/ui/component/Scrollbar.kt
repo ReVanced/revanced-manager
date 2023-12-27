@@ -35,7 +35,7 @@ fun Scrollbar(lazyListState: LazyListState, modifier: Modifier = Modifier) {
     Scrollbar(
         ScrollbarsScrollType.Lazy.List.Dynamic(
             knobType = ScrollbarsDynamicKnobType.Auto(),
-            state = scrollState
+            state = lazyListState
         ),
         modifier
     )

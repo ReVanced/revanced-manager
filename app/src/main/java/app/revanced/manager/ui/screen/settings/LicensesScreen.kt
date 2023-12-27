@@ -41,7 +41,7 @@ fun LicensesScreen(
                     badgeContentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             )
-            Scrollbar(scrollState = lazyListState, modifier = Modifier.padding(paddingValues))
+            Scrollbar(lazyListState = lazyListState, modifier = Modifier.padding(paddingValues))
         }
     }
 }
