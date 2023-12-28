@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -79,7 +80,7 @@ fun AboutSettingsScreen(
         "YouTube" to FontAwesomeIcons.Brands.Youtube,
     )
 
-    val outlinedButton = viewModel.socials.filter(ReVancedSocial::preferred).map {
+    val filledButtons = viewModel.socials.filter(ReVancedSocial::preferred).map {
         Triple(socialIcons[it.name] ?: Icons.Outlined.Language, it.name, third = {
             context.openUrl(it.url)
         })
@@ -151,8 +152,8 @@ fun AboutSettingsScreen(
                 maxItemsInEachRow = 2,
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
-                outlinedButton.forEach { (icon, text, onClick) ->
-                    OutlinedButton(
+                filledButtons.forEach { (icon, text, onClick) ->
+                    FilledTonalButton(
                         onClick = onClick
                     ) {
                         Row(
@@ -166,8 +167,7 @@ fun AboutSettingsScreen(
                             )
                             Text(
                                 text,
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.primary
+                                style = MaterialTheme.typography.labelLarge
                             )
                         }
                     }
