@@ -13,14 +13,10 @@ class NavigationView extends StatelessWidget {
     return ViewModelBuilder<NavigationViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
-      builder: (context, model, child) => WillPopScope(
-        onWillPop: () async {
-          if (model.currentIndex == 0) {
-            return true;
-          } else {
-            model.setIndex(0);
-            return false;
-          }
+      builder: (context, model, child) => PopScope(
+        canPop: model.currentIndex == 0,
+        onPopInvoked: (bool didPop) => {
+          if (!didPop) model.setIndex(0),
         },
         child: Scaffold(
           body: PageTransitionSwitcher(
