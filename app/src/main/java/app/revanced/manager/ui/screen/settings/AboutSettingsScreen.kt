@@ -80,13 +80,15 @@ fun AboutSettingsScreen(
         "YouTube" to FontAwesomeIcons.Brands.Youtube,
     )
 
-    val filledButtons = viewModel.socials.filter(ReVancedSocial::preferred).map {
+    val (preferred, notPreferred) = viewModel.socials.partition(ReVancedSocial::preferred)
+
+    val filledButtons = preferred.map {
         Triple(socialIcons[it.name] ?: Icons.Outlined.Language, it.name, third = {
             context.openUrl(it.url)
         })
     }
 
-    val socialButtons = viewModel.socials.filterNot(ReVancedSocial::preferred).map {
+    val socialButtons = notPreferred.map {
         Pair(socialIcons[it.name] ?: Icons.Outlined.Language) {
             context.openUrl(it.url)
         }
