@@ -171,7 +171,7 @@ class RootAPI {
   }
 
   Future<void> installPatchedApk(
-      String packageName, String patchedFilePath) async {
+      String packageName, String patchedFilePath,) async {
     final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: '''
