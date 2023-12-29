@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -28,20 +26,4 @@ fun ColumnWithScrollbar(
         content = content
     )
     Scrollbar(state, Modifier.then(modifier.padding())) // Get the modifier's padding to maintain scrollbar within the screen, e.g. paddingValues
-}
-
-@Composable
-fun ColumnWithScrollbar(
-    modifier: Modifier = Modifier,
-    lazyListState: LazyListState = rememberLazyListState(),
-    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Column(
-        verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment,
-        content = content
-    )
-    Scrollbar(lazyListState, Modifier.then(modifier.padding())) // Get the modifier's padding to maintain scrollbar within the screen, e.g. paddingValues
 }
