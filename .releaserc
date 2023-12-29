@@ -29,6 +29,12 @@
       }
     ],
     [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "mv build/app/outputs/apk/release/revanced-manager.apk build/app/outputs/apk/release/revanced-manager-${nextRelease.version}.apk"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
@@ -44,14 +50,14 @@
             "path": "build/app/outputs/apk/release/*.apk"
           }
         ],
-        successComment: false
+        "successComment": false
       }
     ],
     [
       "@saithodev/semantic-release-backmerge",
       {
-        backmergeBranches: [{"from": "main", "to": "dev"}],
-        clearWorkspace: true
+        "backmergeBranches": [{"from": "main", "to": "dev"}],
+        "clearWorkspace": true
       }
     ]
   ]
