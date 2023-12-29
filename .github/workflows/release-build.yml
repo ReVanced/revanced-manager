@@ -1,10 +1,12 @@
 name: "Release Build"
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - "v*"
-
+    branches:
+      - main
+      - dev
+      
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -20,6 +22,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: npm-${{ hashFiles('package-lock.json') }}
       - name: Set up Flutter
         run: flutter pub get
       - name: Generate files with Builder
@@ -42,9 +50,9 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
       - name: Add version to APK
         run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+      - name: Setup semantic-release
+        run: npm install
       - name: Publish release APK
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: revanced-manager-${{ env.RELEASE_VERSION }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm exec semantic-release
