@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
@@ -58,7 +59,11 @@ fun SettingsScreen(
 
     val context = LocalContext.current
     val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-    var showBatteryButton by remember { mutableStateOf(!pm.isIgnoringBatteryOptimizations(context.packageName)) }
+    var showBatteryButton by remember { mutableStateOf(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            !pm.isIgnoringBatteryOptimizations(context.packageName)
+        } else false
+    ) }
 
     val settingsSections = listOf(
         Triple(
@@ -163,19 +168,21 @@ fun SettingsScreen(
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                     ) {
-                        AnimatedVisibility(visible = showBatteryButton) {
-                            NotificationCard(
-                                isWarning = true,
-                                icon = Icons.Default.BatteryAlert,
-                                text = stringResource(R.string.battery_optimization_notification),
-                                primaryAction = {
-                                    context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                        data = Uri.parse("package:${context.packageName}")
-                                    })
-                                    showBatteryButton =
-                                        !pm.isIgnoringBatteryOptimizations(context.packageName)
-                                }
-                            )
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            AnimatedVisibility(visible = showBatteryButton) {
+                                NotificationCard(
+                                    isWarning = true,
+                                    icon = Icons.Default.BatteryAlert,
+                                    text = stringResource(R.string.battery_optimization_notification),
+                                    primaryAction = {
+                                        context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                            data = Uri.parse("package:${context.packageName}")
+                                        })
+                                        showBatteryButton =
+                                            !pm.isIgnoringBatteryOptimizations(context.packageName)
+                                    }
+                                )
+                            }
                         }
                         settingsSections.forEach { (titleDescIcon, destination) ->
                             SettingsListItem(

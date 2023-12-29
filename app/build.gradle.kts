@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "app.revanced.manager"
-        minSdk = 26
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
@@ -46,6 +46,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -163,4 +164,7 @@ dependencies {
 
     // Fading Edges
     implementation(libs.fading.edges)
+
+    // Desugar
+    coreLibraryDesugaring(libs.desugar.jdk)
 }
