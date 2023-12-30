@@ -157,6 +157,14 @@ class RootAPI {
     stock_path=\$(pm path $packageName | grep base | sed "s/package://g" )
 
     chcon u:object_r:apk_data_file:s0  \$base_path
+
+    # Mount using Magisk mirror, if available.
+    MAGISKTMP="$( magisk --path )" || MAGISKTMP=/sbin
+    MIRROR="${'$'}MAGISKTMP/.magisk/mirror"
+    if [ ! -f ${'$'}MIRROR ]; then
+        MIRROR=""
+    fi
+
     mount -o bind \$MIRROR\$base_path \$stock_path
 
     # Kill the app to force it to restart the mounted APK in case it is already running
