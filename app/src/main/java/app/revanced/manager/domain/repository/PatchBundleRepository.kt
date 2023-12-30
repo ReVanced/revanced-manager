@@ -3,6 +3,7 @@ package app.revanced.manager.domain.repository
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import app.revanced.library.PatchUtils
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
@@ -45,6 +46,16 @@ class PatchBundleRepository(
         }
     ) {
         it.state.map { state -> it.uid to state }
+    }
+
+    val suggestedVersions = bundles.map {
+        val allPatches = it.values.flatMap { bundle -> bundle.patchClasses() }.toSet()
+
+        PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
+            .mapValues { (_, versions) ->
+                // Get the version with the most compatible packages.
+                versions.keys.firstOrNull()
+            }
     }
 
     /**

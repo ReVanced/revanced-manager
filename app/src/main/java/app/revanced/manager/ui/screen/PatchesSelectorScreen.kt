@@ -62,6 +62,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
+import app.revanced.manager.ui.component.DangerousActionDialogBase
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -383,13 +384,14 @@ fun SelectionWarningDialog(
     onConfirm: (Boolean) -> Unit
 ) {
     val prefs: PreferencesManager = rememberKoinInject()
-    var dismissPermanently by rememberSaveable {
-        mutableStateOf(false)
-    }
 
+    /*
     AlertDialog(
         onDismissRequest = onCancel,
-        confirmButton = {
+     */
+    DangerousActionDialogBase(
+        onCancel = onCancel,
+        confirmButton = { dismissPermanently ->
             val enableCountdown by prefs.enableSelectionWarningCountdown.getAsState()
 
             Countdown(start = if (enableCountdown) 3 else 0) { timer ->
@@ -409,6 +411,10 @@ fun SelectionWarningDialog(
                 }
             }
         },
+        title = R.string.selection_warning_title,
+        body = R.string.selection_warning_description,
+    )
+    /*
         dismissButton = {
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.cancel))
@@ -453,6 +459,7 @@ fun SelectionWarningDialog(
             }
         }
     )
+     */
 }
 
 @Composable

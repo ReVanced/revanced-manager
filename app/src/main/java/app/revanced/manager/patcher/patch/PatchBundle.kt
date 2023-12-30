@@ -27,6 +27,11 @@ class PatchBundle(private val loader: Iterable<Patch<*>>, val integrations: File
     val patches = loader.map(::PatchInfo)
 
     /**
+     * Load all patches.
+     */
+    fun patchClasses() = loader.toList()
+
+    /**
      * Load all patches compatible with the specified package.
      */
     fun patchClasses(packageName: String) = loader.filter { patch ->
