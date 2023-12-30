@@ -12,24 +12,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: "17"
           distribution: "zulu"
+
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
           path: |
             node_modules
           key: npm-${{ hashFiles('package-lock.json') }}
+
+      - name: Setup semantic-release
+        run: npm install
+
+      - name: Bump version code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release --extends ./releaserc.bump.json
+
+      - name: Set env
+        run: echo "RELEASE_VERSION=${git describe --tags --abbrev=0}" >> $GITHUB_ENV
+
       - name: Set up Flutter
         run: flutter pub get
+
       - name: Generate files with Builder
         run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,6 +54,7 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
         run: flutter build apk
+
       - name: Sign APK
         id: sign_apk
         uses: ilharp/sign-android-release@v1
@@ -46,11 +64,11 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
       - name: Rename APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager.apk
-      - name: Setup semantic-release
-        run: npm install
+        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+      
       - name: Publish release APK
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm exec semantic-release
+        run: npx semantic-release --extends ./releaserc.release.json
