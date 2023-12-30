@@ -10,12 +10,6 @@
     "@semantic-release/changelog",
     "@semantic-release/release-notes-generator",
     [
-      "@semantic-release/exec",
-      {
-        "prepareCmd": "mv build/app/outputs/apk/release/revanced-manager.apk build/app/outputs/apk/release/revanced-manager-${nextRelease.version}.apk"
-      }
-    ],
-    [
       "@semantic-release/github",
       {
         "assets": [
