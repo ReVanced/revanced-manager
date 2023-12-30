@@ -36,7 +36,7 @@ jobs:
       - name: Bump version code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --extends ./releaserc.bump.json
+        run: npx semantic-release --extends ./.releaserc.bump.json
 
       - name: Set env
         run: echo "RELEASE_VERSION=${git describe --tags --abbrev=0}" >> $GITHUB_ENV
@@ -71,4 +71,4 @@ jobs:
       - name: Publish release APK
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --extends ./releaserc.release.json
+        run: npx semantic-release --extends ./.releaserc.release.json
