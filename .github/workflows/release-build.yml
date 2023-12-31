@@ -33,13 +33,12 @@ jobs:
       - name: Setup semantic-release
         run: npm install
 
-      - name: Bump version code
+      - name: Get version code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --extends ./.releaserc.bump.json --no-ci --dry-run
-
-      - name: Set env
-        run: echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
+        run: |
+          npx semantic-release --extends ./.releaserc.bump.json --no-ci --dry-run
+          echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
 
       - name: Bump pubspec version
         run: |
