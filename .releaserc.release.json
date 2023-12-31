@@ -7,8 +7,23 @@
     }
   ],
   "plugins": [
+    [
+      "@semantic-release/commit-analyzer", {
+        "releaseRules": [
+          { "type": "build", "scope": "Needs bump", "release": "patch" }
+        ]
+      }
+    ],
     "@semantic-release/changelog",
     "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "pubspec.yaml"
+        ]
+      }
+    ],
     [
       "@semantic-release/github",
       {
@@ -18,6 +33,13 @@
           }
         ],
         "successComment": false
+      }
+    ],
+    [
+      "@saithodev/semantic-release-backmerge",
+      {
+        "backmergeBranches": [{"from": "main", "to": "dev"}],
+        "clearWorkspace": true
       }
     ]
   ]

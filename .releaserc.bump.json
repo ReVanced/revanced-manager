@@ -15,30 +15,9 @@
       }
     ],
     [
-      "@droidsolutions-oss/semantic-release-update-file",
+      "@semantic-release/exec",
       {
-        "files": [
-          {
-            "path": ["pubspec.yaml"],
-            "type": "flutter",
-            "branches": ["main", "dev"]
-          }
-        ]
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": [
-          "pubspec.yaml"
-        ]
-      }
-    ],
-    [
-      "@saithodev/semantic-release-backmerge",
-      {
-        "backmergeBranches": [{"from": "main", "to": "dev"}],
-        "clearWorkspace": true
+        "verifyReleaseCmd": "echo ${nextRelease.version} > .VERSION"
       }
     ]
   ]

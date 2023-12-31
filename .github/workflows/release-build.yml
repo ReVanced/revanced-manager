@@ -36,10 +36,13 @@ jobs:
       - name: Bump version code
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --extends ./.releaserc.bump.json
+        run: npx semantic-release --extends ./.releaserc.bump.json --no-ci --dry-run
 
       - name: Set env
-        run: echo "RELEASE_VERSION=${git describe --tags --abbrev=0}" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
+
+      - name: Bump pubspec version
+        run: // TODO
 
       - name: Set up Flutter
         run: flutter pub get
