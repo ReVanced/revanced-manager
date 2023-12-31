@@ -42,7 +42,10 @@ jobs:
         run: echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
 
       - name: Bump pubspec version
-        run: // TODO
+        run: |
+          IFS='.' read -r -a nums <<< "${RELEASE_VERSION/-dev/}.0"
+          VERSIONCODE=$((nums[0] * 100000000 + nums[1] * 100000 + nums[2] * 100 + nums[3]))
+          sed -i "/^version/c\\version: ${{ env.RELEASE_VERSION }}+$VERSIONCODE" pubspec.yaml
 
       - name: Set up Flutter
         run: flutter pub get
@@ -69,7 +72,7 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
       - name: Rename APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-v${{ env.RELEASE_VERSION }}.apk
       
       - name: Publish release APK
         env:
