@@ -37,7 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx semantic-release --extends ./.releaserc.bump.json --no-ci --dry-run
+          npx semantic-release --extends ./.releaserc.getversion.json --no-ci --dry-run
           echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
 
       - name: Bump pubspec version
