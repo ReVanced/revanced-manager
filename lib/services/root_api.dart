@@ -145,9 +145,9 @@ class RootAPI {
     final String mountScript = '''
     #!/system/bin/sh
     # Mount using Magisk mirror, if available.
-    MAGISKTMP="$( magisk --path )" || MAGISKTMP=/sbin
-    MIRROR="${'$'}MAGISKTMP/.magisk/mirror"
-    if [ ! -f ${'$'}MIRROR ]; then
+    MAGISKTMP="\$( magisk --path )" || MAGISKTMP=/sbin
+    MIRROR="\$MAGISKTMP/.magisk/mirror"
+    if [ ! -f \$MIRROR ]; then
         MIRROR=""
     fi
 
