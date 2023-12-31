@@ -13,6 +13,7 @@ import app.revanced.manager.data.room.bundles.Source as SourceInfo
 import app.revanced.manager.domain.bundles.LocalPatchBundle
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
@@ -30,6 +31,7 @@ class PatchBundleRepository(
     private val app: Application,
     private val persistenceRepo: PatchBundlePersistenceRepository,
     private val networkInfo: NetworkInfo,
+    private val prefs: PreferencesManager,
 ) {
     private val bundlesDir = app.getDir("patch_bundles", Context.MODE_PRIVATE)
 
@@ -48,7 +50,7 @@ class PatchBundleRepository(
         it.state.map { state -> it.uid to state }
     }
 
-    val suggestedVersions = bundles.map {
+    private val suggestedVersions = bundles.map {
         val allPatches = it.values.flatMap { bundle -> bundle.patchClasses() }.toSet()
 
         PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
@@ -56,6 +58,14 @@ class PatchBundleRepository(
                 // Get the version with the most compatible packages.
                 versions.keys.firstOrNull()
             }
+    }
+
+    suspend fun isVersionAllowed(packageName: String, version: String) = withContext(Dispatchers.Default) {
+        if (!prefs.suggestedVersionSafeguard.get()) return@withContext true
+
+        // Slow?
+        val suggestedVersion = suggestedVersions.first()[packageName] ?: return@withContext true
+        suggestedVersion == version
     }
 
     /**

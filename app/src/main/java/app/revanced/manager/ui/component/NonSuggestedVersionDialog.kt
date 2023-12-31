@@ -17,6 +17,7 @@ fun NonSuggestedVersionDialog(onCancel: () -> Unit, onContinue: (Boolean) -> Uni
                 Text(stringResource(R.string.continue_))
             }
         },
+        // TODO: use actual strings
         title = R.string.changelog,
         body = R.string.changelog_description
     )

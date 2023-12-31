@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,7 +20,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,10 +29,10 @@ import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
-import app.revanced.manager.util.toast
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,10 +43,14 @@ fun AppSelectorScreen(
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = getViewModel()
 ) {
-    val context = LocalContext.current
+    SideEffect {
+        vm.onStorageClick = onStorageClick
+    }
 
     val pickApkLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let(vm::handleStorageResult)
+            /*
             uri?.let { apkUri ->
                 vm.loadSelectedFile(apkUri)?.let(onStorageClick) ?: context.toast(
                     context.getString(
@@ -54,6 +58,7 @@ fun AppSelectorScreen(
                     )
                 )
             }
+             */
         }
 
     var filterText by rememberSaveable { mutableStateOf("") }
@@ -68,6 +73,12 @@ fun AppSelectorScreen(
             ) or app.packageName.contains(filterText, true)
         }
     }
+
+    if (vm.showNonSuggestedVersionDialog)
+        NonSuggestedVersionDialog(
+            onCancel = vm::dismissNonSuggestedVersionDialog,
+            onContinue = vm::continueWithNonSuggestedVersion,
+        )
 
     // TODO: find something better for this
     if (search) {
