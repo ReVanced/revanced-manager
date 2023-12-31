@@ -5,9 +5,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class SManageSources extends BaseViewModel {
@@ -43,63 +41,100 @@ class SManageSources extends BaseViewModel {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.extension_outlined,
-                  color: Colors.transparent,
-                ),
-                inputController: _hostSourceController,
-                label: I18nText('settingsView.hostRepositoryLabel'),
-                hint: hostRepository,
+              /*
+              API for accessing the specified repositories
+              If default is used, will use the ReVanced API
+              */
+              TextField(
+                controller: _hostSourceController,
+                autocorrect: false,
                 onChanged: (value) => notifyListeners(),
-              ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.extension_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.rocket_launch_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText(
+                    'settingsView.hostRepositoryLabel',
+                  ).toString(),
+                  hintText: hostRepository,
                 ),
-                inputController: _orgPatSourceController,
-                label: I18nText('settingsView.orgPatchesLabel'),
-                hint: patchesRepo.split('/')[0],
-                onChanged: (value) => notifyListeners(),
-              ),
-              const SizedBox(height: 8),
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.extension_outlined,
-                  color: Colors.transparent,
-                ),
-                inputController: _patSourceController,
-                label: I18nText('settingsView.sourcesPatchesLabel'),
-                hint: patchesRepo.split('/')[1],
-                onChanged: (value) => notifyListeners(),
-              ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.merge_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                inputController: _orgIntSourceController,
-                label: I18nText('settingsView.orgIntegrationsLabel'),
-                hint: integrationsRepo.split('/')[0],
-                onChanged: (value) => notifyListeners(),
               ),
               const SizedBox(height: 8),
-              CustomTextField(
-                leadingIcon: const Icon(
-                  Icons.merge_outlined,
-                  color: Colors.transparent,
-                ),
-                inputController: _intSourceController,
-                label: I18nText('settingsView.sourcesIntegrationsLabel'),
-                hint: integrationsRepo.split('/')[1],
+              // Patches owner's name
+              TextField(
+                controller: _orgPatSourceController,
+                autocorrect: false,
                 onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.extension_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText(
+                    'settingsView.orgPatchesLabel',
+                  ).toString(),
+                  hintText: patchesRepo.split('/')[0],
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Patches repository's name
+              TextField(
+                controller: _patSourceController,
+                autocorrect: false,
+                onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  icon: const Icon(
+                    Icons.extension_outlined,
+                    color: Colors.transparent,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText(
+                    'settingsView.sourcesPatchesLabel',
+                  ).toString(),
+                  hintText: patchesRepo.split('/')[1],
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Integrations owner's name
+              TextField(
+                controller: _orgIntSourceController,
+                autocorrect: false,
+                onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.merge_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText(
+                    'settingsView.orgIntegrationsLabel',
+                  ).toString(),
+                  hintText: integrationsRepo.split('/')[0],
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Integrations repository's name
+              TextField(
+                controller: _intSourceController,
+                autocorrect: false,
+                onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  icon: const Icon(
+                    Icons.merge_outlined,
+                    color: Colors.transparent,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText(
+                    'settingsView.sourcesIntegrationsLabel',
+                  ).toString(),
+                  hintText: integrationsRepo.split('/')[1],
+                ),
               ),
               const SizedBox(height: 20),
               I18nText('settingsView.sourcesUpdateNote'),
@@ -107,9 +142,7 @@ class SManageSources extends BaseViewModel {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               _orgPatSourceController.clear();
               _patSourceController.clear();
@@ -117,9 +150,9 @@ class SManageSources extends BaseViewModel {
               _intSourceController.clear();
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               _managerAPI.setRepoUrl(_hostSourceController.text.trim());
               _managerAPI.setPatchesRepo(
@@ -133,6 +166,7 @@ class SManageSources extends BaseViewModel {
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -144,16 +178,13 @@ class SManageSources extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.sourcesResetDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.sourcesResetDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
@@ -165,6 +196,7 @@ class SManageSources extends BaseViewModel {
                 ..pop()
                 ..pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),

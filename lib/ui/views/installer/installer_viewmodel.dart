@@ -13,8 +13,8 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
@@ -104,7 +104,7 @@ class InstallerViewModel extends BaseViewModel {
       isPatching = true;
       isInstalled = false;
       hasErrors = false;
-    } else if (value == 1.0) {
+    } else if (value == .85) {
       isPatching = false;
       hasErrors = false;
       await _managerAPI.savePatches(
@@ -115,6 +115,7 @@ class InstallerViewModel extends BaseViewModel {
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
+      progress = 0.0;
     }
     if (header.isNotEmpty) {
       headerLogs = header;
@@ -127,10 +128,10 @@ class InstallerViewModel extends BaseViewModel {
       if (logs[logs.length - 1] == '\n') {
         logs = logs.substring(0, logs.length - 1);
       }
-      Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 100)).then((value) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 100),
           curve: Curves.fastOutSlowIn,
         );
       });
@@ -179,40 +180,105 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
+  void _trimLogs(List<String> logLines, String keyword, String? newString) {
+    final lineCount = logLines.where((line) => line.endsWith(keyword)).length;
+    final index = logLines.indexWhere((line) => line.endsWith(keyword));
+    if (newString != null && lineCount > 0) {
+      logLines.insert(
+        index,
+        newString.replaceAll('{lineCount}', lineCount.toString()),
+      );
+    }
+    logLines.removeWhere((lines) => lines.endsWith(keyword));
+  }
+
+  dynamic _getPatchOptionValue(String patchName, Option option) {
+    final Option? savedOption =
+        _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
+    if (savedOption != null) {
+      return savedOption.value;
+    } else {
+      return option.value;
+    }
+  }
+
+  String _formatPatches(List<Patch> patches, String noneString) {
+    return patches.isEmpty
+        ? noneString
+        : patches.map((p) {
+            final optionsChanged = p.options
+                .where((o) => _getPatchOptionValue(p.name, o) != o.value)
+                .toList();
+            return p.name +
+                (optionsChanged.isEmpty
+                    ? ''
+                    : ' [${optionsChanged.map((o) => '${o.title}: ${_getPatchOptionValue(p.name, o)}').join(", ")}]');
+          }).join(', ');
+  }
+
+  String _getSuggestedVersion(String packageName) {
+    String suggestedVersion = _patcherAPI.getSuggestedVersion(_app.packageName);
+    if (suggestedVersion.isEmpty) {
+      suggestedVersion = 'Any';
+    } else {
+      suggestedVersion = 'v$suggestedVersion';
+    }
+    return suggestedVersion;
+  }
+
   Future<void> copyLogs() async {
     final info = await AboutInfo.getInfo();
-    dynamic getValue(String patchName, Option option) {
-      final Option? savedOption =
-          _managerAPI.getPatchOption(_app.packageName, patchName, option.key);
-      if (savedOption != null) {
-        return savedOption.value;
-      } else {
-        return option.value;
-      }
-    }
 
+    // Trim out extra lines
+    final logsTrimmed = logs.split('\n');
+    _trimLogs(logsTrimmed, 'succeeded', 'Applied {lineCount} patches');
+    _trimLogs(logsTrimmed, '.dex', 'Compiled {lineCount} dex files');
+
+    // Get patches added / removed
+    final defaultPatches = _patcherAPI
+        .getFilteredPatches(_app.packageName)
+        .where((p) => !p.excluded)
+        .toList();
+    final appliedPatchesNames = _patches.map((p) => p.name).toList();
+
+    final patchesAdded = _patches.where((p) => p.excluded).toList();
+    final patchesRemoved = defaultPatches
+        .where((p) => !appliedPatchesNames.contains(p.name))
+        .map((p) => p.name)
+        .toList();
+    final patchesOptionsChanged = defaultPatches
+        .where(
+          (p) =>
+              appliedPatchesNames.contains(p.name) &&
+              p.options.any((o) => _getPatchOptionValue(p.name, o) != o.value),
+        )
+        .toList();
+
+    // Add Info
     final formattedLogs = [
       '- Device Info',
       'ReVanced Manager: ${info['version']}',
-      'Build: ${info['flavor']}',
       'Model: ${info['model']}',
       'Android version: ${info['androidVersion']}',
       'Supported architectures: ${info['supportedArch'].join(", ")}',
-      'Root permissions: ${isRooted ? 'Yes' : 'No'}',
-      
+      'Root permissions: ${isRooted ? 'Yes' : 'No'}', //
+
       '\n- Patch Info',
-      'App: ${_app.packageName} v${_app.version}',
+      'App: ${_app.packageName} v${_app.version} (Suggested: ${_getSuggestedVersion(_app.packageName)})',
       'Patches version: ${_managerAPI.patchesVersion}',
-      'Patches: ${_patches.map((p) => p.name + (p.options.isEmpty ? '' : ' [${p.options.map((o) => '${o.title}: ${getValue(p.name, o)}').join(", ")}]')).toList().join(", ")}',
+      'Patches added: ${_formatPatches(patchesAdded, 'Default')}',
+      'Patches removed: ${patchesRemoved.isEmpty ? 'None' : patchesRemoved.join(', ')}',
+      'Default patch options changed: ${_formatPatches(patchesOptionsChanged, 'None')}', //
+
       '\n- Settings',
       'Allow changing patch selection: ${_managerAPI.isPatchesChangeEnabled()}',
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
-      'Integration source: ${_managerAPI.getIntegrationsRepo()}',
-      
+      'Integration source: ${_managerAPI.getIntegrationsRepo()}', //
+
       '\n- Logs',
-      logs,
+      logsTrimmed.join('\n'),
     ];
 
     Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
@@ -226,26 +292,24 @@ class InstallerViewModel extends BaseViewModel {
         title: I18nText(
           'warning',
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
           child: I18nText('installerView.screenshotDetected'),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               copyLogs();
               showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
@@ -258,11 +322,10 @@ class InstallerViewModel extends BaseViewModel {
       await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => AlertDialog(
+        builder: (innerContext) => AlertDialog(
           title: I18nText(
             'installerView.installType',
           ),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
           content: SingleChildScrollView(
@@ -310,31 +373,68 @@ class InstallerViewModel extends BaseViewModel {
                         installType.value = selected!;
                       },
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: I18nText(
+                        'installerView.warning',
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              label: I18nText('cancelButton'),
-              isFilled: false,
+            TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(innerContext).pop();
               },
+              child: I18nText('cancelButton'),
             ),
-            CustomMaterialButton(
-              label: I18nText('installerView.installButton'),
+            FilledButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(innerContext).pop();
                 installResult(context, installType.value == 1);
               },
+              child: I18nText('installerView.installButton'),
             ),
           ],
         ),
       );
     } else {
-      installResult(context, false);
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (innerContext) => AlertDialog(
+          title: I18nText(
+            'warning',
+          ),
+          contentPadding: const EdgeInsets.all(16),
+          content: I18nText('installerView.warning'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+              },
+              child: I18nText('cancelButton'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(innerContext).pop();
+                installResult(context, false);
+              },
+              child: I18nText('installerView.installButton'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -355,15 +455,16 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     try {
       _app.isRooted = installAsRoot;
-      update(
-        1.0,
-        'Installing...',
-        _app.isRooted
-            ? 'Installing patched file using root method'
-            : 'Installing patched file using nonroot method',
-      );
-      isInstalled = await _patcherAPI.installPatchedFile(_app);
-      if (isInstalled) {
+      if (headerLogs != 'Installing...') {
+        update(
+          .85,
+          'Installing...',
+          _app.isRooted ? 'Mounting patched app' : 'Installing patched app',
+        );
+      }
+      final int response = await _patcherAPI.installPatchedFile(context, _app);
+      if (response == 0) {
+        isInstalled = true;
         _app.isFromStorage = false;
         _app.patchDate = DateTime.now();
         _app.appliedPatches = _patches.map((p) => p.name).toList();
@@ -378,10 +479,23 @@ class InstallerViewModel extends BaseViewModel {
         }
 
         await _managerAPI.savePatchedApp(_app);
+        await locator<HomeViewModel>().initialize(context);
 
-        update(1.0, 'Installed!', 'Installed!');
+        update(1.0, 'Installed', 'Installed');
+      } else if (response == 3) {
+        update(
+          .85,
+          'Installation canceled',
+          'Installation canceled',
+        );
+      } else if (response == 10) {
+        installResult(context, installAsRoot);
       } else {
-        // TODO(aabed): Show error message.
+        update(
+          .85,
+          'Installation failed',
+          'Installation failed',
+        );
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -428,38 +542,25 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  bool canPop() {
-    return !isPatching;
-  }
-
-  void onBackButtonInvoked(BuildContext context) {
-    if (canPop()) {
-      onPopInvoked(context, true);
-    } else {
-      onPopInvoked(context, false);
-    }
-  }
-
-  Future<void> onPopInvoked(BuildContext context, bool didPop) async {
-    if (didPop) {
+  Future<bool> onWillPop(BuildContext context) async {
+    if (isPatching) {
       if (!cancel) {
-        cleanPatcher();
+        cancel = true;
+        _toast.showBottom('installerView.pressBackAgain');
+      } else if (!isCanceled) {
+        await stopPatcher();
       } else {
-        _patcherAPI.cleanPatcher();
+        _toast.showBottom('installerView.noExit');
       }
-      screenshotCallback.dispose();
-      Navigator.of(context).pop();
-    } else {
-      if (isPatching) {
-        if (!cancel) {
-          cancel = true;
-          _toast.showBottom('installerView.pressBackAgain');
-        } else if (!isCanceled) {
-          await stopPatcher();
-        } else {
-          _toast.showBottom('installerView.noExit');
-        }
-      }
+      return false;
     }
+    if (!cancel) {
+      cleanPatcher();
+    } else {
+      _patcherAPI.cleanPatcher();
+    }
+    screenshotCallback.dispose();
+    Navigator.of(context).pop();
+    return true;
   }
 }

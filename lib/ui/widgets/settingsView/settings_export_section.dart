@@ -3,7 +3,6 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_keystore_password.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 final _settingsViewModel = SettingsViewModel();
 
@@ -151,20 +150,18 @@ class SExportSection extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText(dialogTitle),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText(dialogText),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
               dialogAction(),
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
@@ -176,20 +173,18 @@ class SExportSection extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.regenerateKeystoreDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.regenerateKeystoreDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
               _settingsViewModel.deleteKeystore(),
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),

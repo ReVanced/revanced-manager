@@ -15,7 +15,6 @@ import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart';
@@ -42,11 +41,11 @@ class ManagerAPI {
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://api.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
-  String defaultPatcherRepo = 'revanced/revanced-patcher';
-  String defaultPatchesRepo = 'revanced/revanced-patches';
-  String defaultIntegrationsRepo = 'revanced/revanced-integrations';
-  String defaultCliRepo = 'revanced/revanced-cli';
-  String defaultManagerRepo = 'revanced/revanced-manager';
+  String defaultPatcherRepo = 'ReVanced/revanced-patcher';
+  String defaultPatchesRepo = 'ReVanced/revanced-patches';
+  String defaultIntegrationsRepo = 'ReVanced/revanced-integrations';
+  String defaultCliRepo = 'ReVanced/revanced-cli';
+  String defaultManagerRepo = 'ReVanced/revanced-manager';
   String? patchesVersion = '';
   String? integrationsVersion = '';
 
@@ -62,7 +61,8 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
-    isDynamicThemeAvailable = (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
+    isDynamicThemeAvailable =
+        (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
   }
@@ -582,10 +582,9 @@ class ManagerAPI {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => PopScope(
-        canPop: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
         child: AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: I18nText('warning'),
           content: ValueListenableBuilder(
             valueListenable: noShow,
@@ -620,12 +619,12 @@ class ManagerAPI {
             },
           ),
           actions: [
-            CustomMaterialButton(
-              label: I18nText('okButton'),
+            FilledButton(
               onPressed: () {
                 setPatchesChangeWarning(noShow.value);
                 Navigator.of(context).pop();
               },
+              child: I18nText('okButton'),
             ),
           ],
         ),
@@ -633,7 +632,7 @@ class ManagerAPI {
     );
   }
 
-  Future<void> reAssessSavedApps() async {
+  Future<void> rePatchedSavedApps() async {
     final List<PatchedApplication> patchedApps = getPatchedApps();
 
     // Remove apps that are not installed anymore.

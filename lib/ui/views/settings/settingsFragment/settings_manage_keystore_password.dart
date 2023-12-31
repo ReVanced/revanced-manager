@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class SManageKeystorePassword extends BaseViewModel {
@@ -33,35 +31,39 @@ class SManageKeystorePassword extends BaseViewModel {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              CustomTextField(
-                inputController: _keystorePasswordController,
-                label: I18nText('settingsView.selectKeystorePassword'),
-                hint: '',
+              TextField(
+                controller: _keystorePasswordController,
+                autocorrect: false,
+                obscureText: true,
                 onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText(
+                    'settingsView.selectKeystorePassword',
+                  ).toString(),
+                ),
               ),
             ],
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               _keystorePasswordController.clear();
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               final String passwd = _keystorePasswordController.text;
               _managerAPI.setKeystorePassword(passwd);
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),

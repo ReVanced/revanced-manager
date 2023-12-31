@@ -5,9 +5,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class SManageApiUrl extends BaseViewModel {
@@ -33,34 +31,35 @@ class SManageApiUrl extends BaseViewModel {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.api_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                inputController: _apiUrlController,
-                label: I18nText('settingsView.selectApiURL'),
-                hint: apiUrl,
+              TextField(
+                controller: _apiUrlController,
+                autocorrect: false,
                 onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.api_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: I18nText('settingsView.selectApiURL').toString(),
+                  hintText: apiUrl,
+                ),
               ),
             ],
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('cancelButton'),
+          TextButton(
             onPressed: () {
               _apiUrlController.clear();
               Navigator.of(context).pop();
             },
+            child: I18nText('cancelButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('okButton'),
+          FilledButton(
             onPressed: () {
               String apiUrl = _apiUrlController.text;
               if (!apiUrl.startsWith('https')) {
@@ -70,6 +69,7 @@ class SManageApiUrl extends BaseViewModel {
               _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
+            child: I18nText('okButton'),
           ),
         ],
       ),
@@ -81,16 +81,13 @@ class SManageApiUrl extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: I18nText('settingsView.sourcesResetDialogTitle'),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: I18nText('settingsView.apiURLResetDialogText'),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: I18nText('noButton'),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: I18nText('noButton'),
           ),
-          CustomMaterialButton(
-            label: I18nText('yesButton'),
+          FilledButton(
             onPressed: () {
               _managerAPI.setApiUrl('');
               _toast.showBottom('settingsView.restartAppForChanges');
@@ -98,6 +95,7 @@ class SManageApiUrl extends BaseViewModel {
                 ..pop()
                 ..pop();
             },
+            child: I18nText('yesButton'),
           ),
         ],
       ),
