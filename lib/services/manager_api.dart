@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,6 +24,7 @@ import 'package:timeago/timeago.dart';
 class ManagerAPI {
   final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final GithubAPI _githubAPI = locator<GithubAPI>();
+  final Toast _toast = locator<Toast>();
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
@@ -65,6 +67,16 @@ class ManagerAPI {
         (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+
+    // Migrate to new API URL if not done yet as the old one is sunset.
+    final bool hasMigrated = _prefs.getBool('migratedToNewApiUrl') ?? false;
+    if (!hasMigrated) {
+      final String apiUrl = getApiUrl().toLowerCase();
+      if (apiUrl.contains('releases.revanced.app')) {
+        await setApiUrl(''); // Reset to default.
+        _prefs.setBool('migratedToNewApiUrl', true);
+      }
+    }
   }
 
   Future<int> getSdkVersion() async {
@@ -82,6 +94,7 @@ class ManagerAPI {
     }
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
+    _toast.showBottom('settingsView.restartAppForChanges');
   }
 
   String getRepoUrl() {
