@@ -78,9 +78,9 @@
         "requiredOptionDialogText" : "Some patch options have to be set."
     },
     "appSelectorCard": {
-        "widgetTitle": "Select an application",
-        "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected",
+        "widgetTitle": "Select an app",
+        "widgetTitleSelected": "Selected app",
+        "widgetSubtitle": "No app selected",
 
         "noAppsLabel": "No applications found",
 
@@ -100,8 +100,8 @@
         "widgetSubtitle": "We are online!"
     },
     "appSelectorView": {
-        "viewTitle": "Select an application",
-        "searchBarHint": "Search applications",
+        "viewTitle": "Select an app",
+        "searchBarHint": "Search app",
 
         "storageButton": "Storage",
         "selectFromStorageButton": "Select from storage",
