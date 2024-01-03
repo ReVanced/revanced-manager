@@ -64,7 +64,6 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(
