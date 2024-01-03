@@ -185,7 +185,7 @@ class PatcherViewModel extends BaseViewModel {
     if (suggestedVersion.isEmpty) {
       suggestedVersion = FlutterI18n.translate(
         context,
-        'appSelectorCard.allVersions',
+        'appSelectorCard.anyVersion',
       );
     } else {
       suggestedVersion = 'v$suggestedVersion';

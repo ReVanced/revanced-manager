@@ -50,23 +50,31 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    widget.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 4,
+                    children: [
+                      Text(
+                        widget.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  I18nText(
-                    'appSelectorCard.notInstalled',
-                    child: Text(
-                      '',
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.titleLarge!.color,
-                      ),
-                    ),
-                  ),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
@@ -89,13 +97,14 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                                     'version': widget.suggestedVersion.isEmpty
                                         ? FlutterI18n.translate(
                                             context,
-                                            'appSelectorCard.allVersions',
+                                            'appSelectorCard.anyVersion',
                                           )
-                                        : 'v${widget.suggestedVersion}',
+                                        : widget.suggestedVersion,
                                   },
                                   child: Text(
                                     '',
                                     style: TextStyle(
+                                      fontSize: 14,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSecondaryContainer,
@@ -113,17 +122,6 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.patchesCount == 1
-                            ? '• ${widget.patchesCount} patch'
-                            : '• ${widget.patchesCount} patches',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],
