@@ -62,7 +62,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         widget.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                       ),
@@ -70,7 +70,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                         widget.installedVersion,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                       ),
@@ -88,58 +88,57 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                     ],
                   ),
                   Text(widget.pkgName),
-                  const SizedBox(height: 4),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Material(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        child: InkWell(
-                          onTap: widget.onLinkTap,
+                  if (widget.suggestedVersion.isNotEmpty &&
+                      widget.suggestedVersion != widget.installedVersion) ...[
+                    const SizedBox(height: 4),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Material(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                I18nText(
-                                  'suggested',
-                                  translationParams: {
-                                    'version': widget.suggestedVersion.isEmpty
-                                        ? FlutterI18n.translate(
-                                            context,
-                                            'appSelectorCard.anyVersion',
-                                          )
-                                        : widget.suggestedVersion,
-                                  },
-                                  child: Text(
-                                    '',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer,
+                          child: InkWell(
+                            onTap: widget.onLinkTap,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8)),
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  I18nText(
+                                    'suggested',
+                                    translationParams: {
+                                      'version': widget.suggestedVersion,
+                                    },
+                                    child: Text(
+                                      '',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 4),
-                                Icon(
-                                  Icons.search,
-                                  size: 16,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
-                                ),
-                              ],
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    Icons.search,
+                                    size: 16,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ]
                 ],
               ),
             ),
