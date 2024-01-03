@@ -87,58 +87,52 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                       ),
                     ],
                   ),
-                  Text(widget.pkgName),
-                  if (widget.suggestedVersion.isNotEmpty &&
-                      widget.suggestedVersion != widget.installedVersion) ...[
-                    const SizedBox(height: 4),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Material(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
+                  Text(
+                    widget.pkgName,
+                  ),
+                  const SizedBox(height: 4),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Material(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: InkWell(
+                          onTap: widget.onLinkTap,
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
-                          child: InkWell(
-                            onTap: widget.onLinkTap,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  I18nText(
-                                    'suggested',
-                                    translationParams: {
-                                      'version': widget.suggestedVersion,
-                                    },
-                                    child: Text(
-                                      '',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    Icons.search,
-                                    size: 16,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                  ),
-                                ],
-                              ),
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                I18nText(
+                                  'suggested',
+                                  translationParams: {
+                                    'version': widget.suggestedVersion.isEmpty
+                                        ? FlutterI18n.translate(
+                                            context,
+                                            'appSelectorCard.anyVersion',
+                                          )
+                                        : widget.suggestedVersion,
+                                  },
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.search,
+                                  size: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ]
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

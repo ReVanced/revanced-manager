@@ -48,32 +48,31 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
             const SizedBox(width: 12),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 4,
-                    children: [
-                      Text(
-                        widget.name,
-                        style: const TextStyle(
-                          fontSize: 16,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 4,
+                      children: [
+                        Text(
+                          widget.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                      Text(
-                        widget.patchesCount == 1
-                            ? '• ${widget.patchesCount} patch'
-                            : '• ${widget.patchesCount} patches',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.secondary,
+                        Text(
+                          widget.patchesCount == 1
+                              ? '• ${widget.patchesCount} patch'
+                              : '• ${widget.patchesCount} patches',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  if (widget.suggestedVersion.isNotEmpty) ...[
+                      ],
+                    ),
                     const SizedBox(height: 4),
                     Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
@@ -102,15 +101,6 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                                             )
                                           : widget.suggestedVersion,
                                     },
-                                    child: Text(
-                                      '',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer,
-                                      ),
-                                    ),
                                   ),
                                   const SizedBox(width: 4),
                                   Icon(
@@ -127,9 +117,7 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                         ),
                       ],
                     ),
-                  ]
-                ],
-              ),
+                  ]),
             ),
           ],
         ),
