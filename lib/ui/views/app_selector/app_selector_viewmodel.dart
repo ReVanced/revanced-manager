@@ -76,7 +76,7 @@ class AppSelectorViewModel extends BaseViewModel {
     final String suggestedVersion = getSuggestedVersion(packageName);
 
     if (suggestedVersion.isNotEmpty) {
-      await openDefaultBrowser('$packageName apk version v$suggestedVersion');
+      await openDefaultBrowser('$packageName apk version $suggestedVersion');
     } else {
       await openDefaultBrowser('$packageName apk');
     }

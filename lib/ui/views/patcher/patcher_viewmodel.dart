@@ -168,7 +168,7 @@ class PatcherViewModel extends BaseViewModel {
 
     if (suggestedVersion.isNotEmpty) {
       await openDefaultBrowser(
-        '${selectedApp!.packageName} apk version v$suggestedVersion',
+        '${selectedApp!.packageName} apk version $suggestedVersion',
       );
     } else {
       await openDefaultBrowser('${selectedApp!.packageName} apk');
