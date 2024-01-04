@@ -41,11 +41,11 @@ class ManagerAPI {
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://api.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
-  String defaultPatcherRepo = 'ReVanced/revanced-patcher';
-  String defaultPatchesRepo = 'ReVanced/revanced-patches';
-  String defaultIntegrationsRepo = 'ReVanced/revanced-integrations';
-  String defaultCliRepo = 'ReVanced/revanced-cli';
-  String defaultManagerRepo = 'ReVanced/revanced-manager';
+  String defaultPatcherRepo = 'revanced/revanced-patcher';
+  String defaultPatchesRepo = 'revanced/revanced-patches';
+  String defaultIntegrationsRepo = 'revanced/revanced-integrations';
+  String defaultCliRepo = 'revanced/revanced-cli';
+  String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
   String? integrationsVersion = '';
 

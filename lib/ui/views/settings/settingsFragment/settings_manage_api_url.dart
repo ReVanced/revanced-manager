@@ -44,7 +44,10 @@ class SManageApiUrl extends BaseViewModel {
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: I18nText('settingsView.selectApiURL').toString(),
+                  labelText: FlutterI18n.translate(
+                    context,
+                    'settingsView.selectApiURL',
+                  ),
                   hintText: apiUrl,
                 ),
               ),
