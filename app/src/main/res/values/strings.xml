@@ -315,4 +315,10 @@
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
     <string name="download_update_confirmation">Download update?</string>
     <string name="no_contributors_found">No contributors found</string>
+    <string name="select">Select</string>
+    <string name="select_bundle_type_dialog_title">Select bundle type</string>
+    <string name="select_bundle_type_dialog_description">Select the type that is right for you.</string>
+    <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
+    <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
+    <string name="recommended">Recommended</string>
 </resources>
