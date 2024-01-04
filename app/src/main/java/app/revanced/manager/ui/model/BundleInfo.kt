@@ -80,3 +80,8 @@ data class BundleInfo(
             }
     }
 }
+
+enum class BundleType {
+    Local,
+    Remote
+}
