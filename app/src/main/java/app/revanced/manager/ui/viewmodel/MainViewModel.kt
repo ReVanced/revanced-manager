@@ -27,8 +27,11 @@ import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -55,13 +58,8 @@ class MainViewModel(
     private suspend fun checkForManagerUpdates() {
         if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
-        try {
-            reVancedAPI.getLatestRelease("revanced-manager").getOrThrow().let { release ->
-                updatedManagerVersion = release.metadata.tag.takeIf { it != Build.VERSION.RELEASE }
-            }
-        } catch (e: Exception) {
-            app.toast(app.getString(R.string.failed_to_check_updates))
-            Log.e(tag, "Failed to check for updates", e)
+        uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
+            updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
         }
     }
 

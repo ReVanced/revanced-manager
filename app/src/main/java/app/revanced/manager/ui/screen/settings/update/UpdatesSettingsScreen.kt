@@ -3,22 +3,24 @@ package app.revanced.manager.ui.screen.settings.update
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.NotificationCard
+import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
+import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,25 +28,9 @@ fun UpdatesSettingsScreen(
     onBackClick: () -> Unit,
     onChangelogClick: () -> Unit,
     onUpdateClick: () -> Unit,
+    vm: UpdatesSettingsViewModel = getViewModel(),
 ) {
-    val listItems = listOf(
-        Triple(
-            stringResource(R.string.update_channel),
-            stringResource(R.string.update_channel_description),
-            third = { /*TODO*/ }
-        ),
-        Triple(
-            stringResource(R.string.update_notifications),
-            stringResource(R.string.update_notifications_description),
-            third = { /*TODO*/ }
-        ),
-        Triple(
-            stringResource(R.string.changelog),
-            stringResource(R.string.changelog_description),
-            third = onChangelogClick
-        ),
-    )
-
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -60,22 +46,29 @@ fun UpdatesSettingsScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            NotificationCard(
-                text = stringResource(R.string.update_notification),
-                icon = Icons.Default.Update,
-                primaryAction = onUpdateClick
+            SettingsListItem(
+                modifier = Modifier.clickable {
+                    coroutineScope.launch {
+                        if (vm.checkForUpdates()) onUpdateClick()
+                    }
+                },
+                headlineContent = stringResource(R.string.manual_update_check),
+                supportingContent = stringResource(R.string.manual_update_check_description)
             )
 
-            listItems.forEach { (title, description, onClick) ->
-                SettingsListItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp)
-                        .clickable { onClick() },
-                    headlineContent = title,
-                    supportingContent = description
+            SettingsListItem(
+                modifier = Modifier.clickable(onClick = onChangelogClick),
+                headlineContent = stringResource(R.string.changelog),
+                supportingContent = stringResource(
+                    R.string.changelog_description
                 )
-            }
+            )
+
+            BooleanItem(
+                preference = vm.managerAutoUpdates,
+                headline = R.string.update_checking_manager,
+                description = R.string.update_checking_manager_description
+            )
         }
     }
 }

@@ -17,7 +17,9 @@ data class ReVancedReleases(
 data class ReVancedRelease(
     val metadata: ReVancedReleaseMeta,
     val assets: List<Asset>
-)
+) {
+    val version get() = metadata.tag
+}
 
 @Serializable
 data class ReVancedReleaseMeta(
