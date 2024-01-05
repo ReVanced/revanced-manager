@@ -10,7 +10,7 @@ import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -69,7 +69,7 @@ fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
                     checked = managerEnabled,
                     onCheckedChange = { managerEnabled = it }
                 )
-                Divider()
+                HorizontalDivider()
                 AutoUpdatesItem(
                     headline = R.string.auto_updates_dialog_patches,
                     icon = Icons.Outlined.Source,

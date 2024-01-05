@@ -10,10 +10,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.SettingsBackupRestore
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
@@ -98,7 +98,7 @@ fun InstalledAppInfoScreen(
                     .clip(RoundedCornerShape(24.dp))
             ) {
                 SegmentedButton(
-                    icon = Icons.Outlined.OpenInNew,
+                    icon = Icons.AutoMirrored.Outlined.OpenInNew,
                     text = stringResource(R.string.open_app),
                     onClick = viewModel::launch
                 )
@@ -154,7 +154,7 @@ fun InstalledAppInfoScreen(
                                     it
                                 )
                             },
-                    trailingContent = { Icon(Icons.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
+                    trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
                 )
 
                 SettingsListItem(
