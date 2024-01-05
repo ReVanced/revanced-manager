@@ -63,8 +63,9 @@ class PatcherWorker(
         val options: Options,
         val logger: ManagerLogger,
         val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
+        val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
         val setInputFile: (File) -> Unit,
-        val onProgress: (state: State, message: String?) -> Unit
+        val onProgress: (name: String?, state: State?, message: String?) -> Unit
     ) {
         val packageName get() = input.packageName
     }
@@ -126,8 +127,8 @@ class PatcherWorker(
 
     private suspend fun runPatcher(args: Args): Result {
 
-        fun updateProgress(state: State = State.COMPLETED, message: String? = null) =
-            args.onProgress(state, message)
+        fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
+            args.onProgress(name, state, message)
 
         val patchedApk = fs.tempDir.resolve("patched.apk")
 
@@ -171,7 +172,7 @@ class PatcherWorker(
                 }
             }
 
-            updateProgress() // Loading patches
+            updateProgress(state = State.COMPLETED) // Loading patches
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
@@ -181,7 +182,7 @@ class PatcherWorker(
                         onDownload = { args.downloadProgress.emit(it) }
                     ).also {
                         args.setInputFile(it)
-                        updateProgress() // Download APK
+                        updateProgress(state = State.COMPLETED) // Download APK
                     }
                 }
 
@@ -194,9 +195,11 @@ class PatcherWorker(
                 frameworkPath,
                 aaptPath,
                 prefs.multithreadingDexFileWriter.get(),
+                applicationContext,
                 args.logger,
                 inputFile,
-                onStepSucceeded = ::updateProgress
+                args.patchesProgress,
+                args.onProgress
             ).use { session ->
                 session.run(
                     patchedApk,
@@ -206,13 +209,13 @@ class PatcherWorker(
             }
 
             keystoreManager.sign(patchedApk, File(args.output))
-            updateProgress() // Signing
+            updateProgress(state = State.COMPLETED) // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
             Result.success()
         } catch (e: Exception) {
             Log.e(tag, "Exception while patching".logFmt(), e)
-            updateProgress(State.FAILED, e.stackTraceToString())
+            updateProgress(state = State.FAILED, message = e.stackTraceToString())
             Result.failure()
         } finally {
             patchedApk.delete()

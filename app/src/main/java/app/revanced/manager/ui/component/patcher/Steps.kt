@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -48,9 +47,11 @@ import kotlin.math.floor
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
 @Composable
-fun Steps(category: StepCategory, steps: List<Step>) {
-    val context = LocalContext.current
-
+fun Steps(
+    category: StepCategory,
+    steps: List<Step>,
+    stepCount: Pair<Int, Int>? = null,
+) {
     var expanded by rememberSaveable { mutableStateOf(true) }
 
     val categoryColor by animateColorAsState(
@@ -80,7 +81,7 @@ fun Steps(category: StepCategory, steps: List<Step>) {
     ) {
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
+                .clip(RoundedCornerShape(16.dp))
                 .clickable { expanded = !expanded }
                 .background(categoryColor)
         ) {
@@ -96,7 +97,7 @@ fun Steps(category: StepCategory, steps: List<Step>) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    "${steps.count { it.state == State.COMPLETED }}/${steps.size}",
+                    stepCount?.let { "${it.first}/${it.second}" } ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}",
                     style = MaterialTheme.typography.labelSmall
                 )
 
@@ -106,52 +107,16 @@ fun Steps(category: StepCategory, steps: List<Step>) {
 
         AnimatedVisibility(visible = expanded) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .padding(start = 4.dp)
+                modifier = Modifier.fillMaxWidth()
             ) {
-                if (category != StepCategory.PATCHING) {
-                    steps.forEach { step ->
-                        val downloadProgress = step.downloadProgress?.collectAsStateWithLifecycle()
-
-                        SubStep(
-                            name = step.name,
-                            state = step.state,
-                            message = step.message,
-                            downloadProgress = downloadProgress?.value
-                        )
-                    }
-                } else {
-                    val currentPatch = remember(steps) {
-                        steps.find { it.state == State.RUNNING }?.name
-                    }
-                    val failedPatch = remember(steps) {
-                        steps.find { it.state == State.FAILED }?.name
-                    }
-
-                    val name = remember(steps) {
-                        when {
-                            steps.any { it.state == State.RUNNING } -> context.getString(R.string.applying_patch, currentPatch)
-                            steps.any { it.state == State.FAILED } -> context.getString(R.string.failed_to_apply_patch, failedPatch)
-                            steps.all { it.state == State.WAITING } -> context.getString(R.string.apply_patches)
-                            else -> context.resources.getQuantityString(R.plurals.patches_applied, steps.size, steps.size)
-                        }
-                    }
-
-                    val state = remember(steps) {
-                        when {
-                            steps.all { it.state == State.COMPLETED } -> State.COMPLETED
-                            steps.any { it.state == State.FAILED } -> State.FAILED
-                            steps.any { it.state == State.RUNNING } -> State.RUNNING
-                            else -> State.WAITING
-                        }
-                    }
+                steps.forEach { step ->
+                    val downloadProgress = step.downloadProgress?.collectAsStateWithLifecycle()
 
                     SubStep(
-                        name = name,
-                        state = state,
-                        message = steps.find { it.state == State.FAILED }?.message
+                        name = step.name,
+                        state = step.state,
+                        message = step.message,
+                        downloadProgress = downloadProgress?.value
                     )
                 }
             }
@@ -181,7 +146,12 @@ fun SubStep(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            StepIcon(state, downloadProgress, size = 18.dp)
+            Box(
+                modifier = Modifier.size(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                StepIcon(state, downloadProgress, size = 20.dp)
+            }
 
             Text(
                 text = name,

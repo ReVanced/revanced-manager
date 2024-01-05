@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,8 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.FileDownload
-import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.BottomAppBar
@@ -37,12 +36,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
+import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
 
@@ -66,6 +67,20 @@ fun PatcherScreen(
         derivedStateOf {
             vm.steps.groupBy { it.category }
         }
+    }
+
+    val patchesProgress by vm.patchesProgress.collectAsStateWithLifecycle()
+
+    val progress = remember(steps, patchesProgress) {
+        val stepsList = steps.flatMap { it.value }
+
+        val current = stepsList.filter {
+            it.state == State.COMPLETED && it.category != StepCategory.PATCHING
+        }.size + patchesProgress.first
+
+        val total = stepsList.size - 1 + patchesProgress.second
+
+        current.toFloat() / total.toFloat()
     }
 
     if (showInstallPicker)
@@ -108,7 +123,7 @@ fun PatcherScreen(
                             icon = {
                                 vm.installedPackageName?.let {
                                     Icon(
-                                        Icons.Outlined.OpenInNew,
+                                        Icons.AutoMirrored.Outlined.OpenInNew,
                                         stringResource(R.string.open_app)
                                     )
                                 } ?: Icon(
@@ -127,15 +142,16 @@ fun PatcherScreen(
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
-                progress = {
-                    steps.flatMap { it.value }.let {
-                        it.count { step -> step.state == State.COMPLETED }.toFloat() / it.size.toFloat()
-                    }
-                }
+                progress = { progress },
+                modifier = Modifier.fillMaxWidth()
             )
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -143,9 +159,13 @@ fun PatcherScreen(
             ) {
                 items(
                     items = steps.toList(),
-                    key = { it }
+                    key = { it.first }
                 ) { (category, steps) ->
-                    Steps(category = category, steps = steps)
+                    Steps(
+                        category = category,
+                        steps = steps,
+                        stepCount = if (category == StepCategory.PATCHING) patchesProgress else null
+                    )
                 }
             }
         }

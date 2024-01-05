@@ -38,8 +38,6 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -79,10 +77,10 @@ class PatcherViewModel(
     private val workManager = WorkManager.getInstance(app)
     private val logger = ManagerLogger()
 
+    val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.flatMap { it.value }.size))
     private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
     val steps = generateSteps(
         app,
-        input.selectedPatches.flatMap { it.value },
         input.selectedApp,
         downloadProgress
     ).toMutableStateList()
@@ -97,9 +95,16 @@ class PatcherViewModel(
                 input.options,
                 logger,
                 downloadProgress,
+                patchesProgress,
                 setInputFile = { inputFile = it },
-                onProgress = { state, message ->
-                    steps[currentStepIndex] = steps[currentStepIndex].copy(state = state, message = message)
+                onProgress = { name, state, message ->
+                    steps[currentStepIndex] = steps[currentStepIndex].run {
+                        copy(
+                            name = name ?: this.name,
+                            state = state ?: this.state,
+                            message = message ?: this.message
+                        )
+                    }
 
                     if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
                         currentStepIndex++
@@ -262,11 +267,10 @@ class PatcherViewModel(
     companion object {
         fun generateSteps(
             context: Context,
-            selectedPatches: List<String>,
             selectedApp: SelectedApp,
             downloadProgress: StateFlow<Pair<Float, Float>?>? = null
-        ): PersistentList<Step> {
-            val preparing = listOfNotNull(
+        ): List<Step> {
+            return listOfNotNull(
                 Step(
                     context.getString(R.string.patcher_step_load_patches),
                     StepCategory.PREPARING,
@@ -284,17 +288,16 @@ class PatcherViewModel(
                 Step(
                     context.getString(R.string.patcher_step_integrations),
                     StepCategory.PREPARING
-                )
-            )
+                ),
 
-            val patches = selectedPatches.map { Step(it, StepCategory.PATCHING) }
+                Step(
+                    context.getString(R.string.apply_patches),
+                    StepCategory.PATCHING
+                ),
 
-            val saving = listOf(
                 Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
                 Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
             )
-
-            return (preparing + patches + saving).toPersistentList()
         }
     }
 }
