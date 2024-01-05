@@ -70,12 +70,11 @@ class UpdateViewModel(
     private val job = viewModelScope.launch {
         uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
             withContext(Dispatchers.IO) {
-                val response = reVancedAPI
-                    .getLatestRelease("revanced-manager")
-                    .getOrThrow()
+                val response = reVancedAPI.getAppUpdate() ?: throw Exception("No update available")
+
                 release = response
                 changelog = Changelog(
-                    response.metadata.tag,
+                    response.version,
                     response.findAssetByType(APK_MIMETYPE).downloadCount,
                     response.metadata.publishedAt,
                     response.metadata.body

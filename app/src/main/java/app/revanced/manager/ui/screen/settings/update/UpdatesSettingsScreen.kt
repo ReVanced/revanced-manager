@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
@@ -16,6 +17,9 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,8 +28,9 @@ fun UpdatesSettingsScreen(
     onBackClick: () -> Unit,
     onChangelogClick: () -> Unit,
     onUpdateClick: () -> Unit,
+    vm: UpdatesSettingsViewModel = getViewModel(),
 ) {
-    val prefs: PreferencesManager = rememberKoinInject()
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -41,9 +46,12 @@ fun UpdatesSettingsScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            // TODO: check if a new version is available before bringing them to the page.
             SettingsListItem(
-                modifier = Modifier.clickable(onClick = onUpdateClick),
+                modifier = Modifier.clickable {
+                    coroutineScope.launch {
+                        if (vm.checkForUpdates()) onUpdateClick()
+                    }
+                },
                 headlineContent = stringResource(R.string.manual_update_check),
                 supportingContent = stringResource(R.string.manual_update_check_description)
             )
@@ -57,7 +65,7 @@ fun UpdatesSettingsScreen(
             )
 
             BooleanItem(
-                preference = prefs.managerAutoUpdates,
+                preference = vm.managerAutoUpdates,
                 headline = R.string.update_checking_manager,
                 description = R.string.update_checking_manager_description
             )
