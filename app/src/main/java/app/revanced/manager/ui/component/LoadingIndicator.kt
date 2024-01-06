@@ -1,37 +1,37 @@
 package app.revanced.manager.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.unit.Dp
 
 @Composable
 fun LoadingIndicator(
     modifier: Modifier = Modifier,
-    progress: Float? = null,
-    text: String? = null
+    progress: () -> Float? = { null },
+    color: Color = ProgressIndicatorDefaults.circularColor,
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
+    trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
+    strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        text?.let { Text(text) }
-
-        progress?.let {
-            CircularProgressIndicator(
-                progress = { progress },
-                modifier = Modifier.padding(vertical = 16.dp).then(modifier),
-            )
-        } ?:
-            CircularProgressIndicator(
-                modifier = Modifier.padding(vertical = 16.dp).then(modifier)
-            )
-    }
+    progress()?.let {
+        CircularProgressIndicator(
+            progress = { it },
+            modifier = modifier,
+            color = color,
+            strokeWidth = strokeWidth,
+            trackColor = trackColor,
+            strokeCap = strokeCap
+        )
+    } ?:
+        CircularProgressIndicator(
+            modifier = modifier,
+            color = color,
+            strokeWidth = strokeWidth,
+            trackColor = trackColor,
+            strokeCap = strokeCap
+        )
 }
