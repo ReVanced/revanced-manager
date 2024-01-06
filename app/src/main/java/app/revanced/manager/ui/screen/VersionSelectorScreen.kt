@@ -161,7 +161,7 @@ fun SelectedAppItem(
             else -> null
         },
         trailingContent = patchCount?.let { {
-            Text(pluralStringResource(R.plurals.patches_count, it, it))
+            Text(pluralStringResource(R.plurals.patch_count, it, it))
         } },
         modifier = Modifier
             .clickable(enabled = !alreadyPatched && enabled, onClick = onClick)

@@ -63,21 +63,21 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.patches.OptionItem
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
+import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel.Companion.SHOW_SUPPORTED
+import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel.Companion.SHOW_UNIVERSAL
+import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.launch
 import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun PatchesSelectorScreen(
-    onSave: (PatchesSelection?, Options) -> Unit,
+fun PatchSelectorScreen(
+    onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
-    vm: PatchesSelectorViewModel
+    vm: PatchSelectorViewModel
 ) {
     val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     val pagerState = rememberPagerState(
@@ -105,13 +105,13 @@ fun PatchesSelectorScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_compat_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
                     style = MaterialTheme.typography.titleMedium
                 )
 

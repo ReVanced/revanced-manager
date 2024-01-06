@@ -29,10 +29,10 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
@@ -44,7 +44,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SelectedAppInfoScreen(
-    onPatchClick: (SelectedApp, PatchesSelection, Options) -> Unit,
+    onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
@@ -95,7 +95,7 @@ fun SelectedAppInfoScreen(
                 },
                 onPatchSelectorClick = {
                     navController.navigate(
-                        SelectedAppInfoDestination.PatchesSelector(
+                        SelectedAppInfoDestination.PatchSelector(
                             vm.selectedApp,
                             vm.getCustomPatches(
                                 bundles,
@@ -125,7 +125,7 @@ fun SelectedAppInfoScreen(
                 viewModel = getViewModel { parametersOf(packageName) }
             )
 
-            is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
+            is SelectedAppInfoDestination.PatchSelector -> PatchSelectorScreen(
                 onSave = { patches, options ->
                     vm.updateConfiguration(patches, options, bundles)
                     navController.pop()
@@ -133,7 +133,7 @@ fun SelectedAppInfoScreen(
                 onBackClick = navController::pop,
                 vm = getViewModel {
                     parametersOf(
-                        PatchesSelectorViewModel.Params(
+                        PatchSelectorViewModel.Params(
                             destination.app,
                             destination.currentSelection,
                             destination.options,
