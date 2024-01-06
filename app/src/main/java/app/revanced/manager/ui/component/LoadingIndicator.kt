@@ -20,7 +20,7 @@ fun LoadingIndicator(
     progress()?.let {
         CircularProgressIndicator(
             progress = { it },
-            modifier = Modifier.then(modifier),
+            modifier = modifier,
             color = color,
             strokeWidth = strokeWidth,
             trackColor = trackColor,
@@ -28,7 +28,7 @@ fun LoadingIndicator(
         )
     } ?:
         CircularProgressIndicator(
-            modifier = Modifier.then(modifier),
+            modifier = modifier,
             color = color,
             strokeWidth = strokeWidth,
             trackColor = trackColor,

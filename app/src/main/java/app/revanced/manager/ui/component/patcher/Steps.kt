@@ -96,8 +96,13 @@ fun Steps(
 
                 Spacer(modifier = Modifier.weight(1f))
 
+                val stepProgress = rememberSaveable(stepCount, steps) {
+                    stepCount?.let { (current, total) -> "$current/$total}" }
+                        ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}"
+                }
+
                 Text(
-                    stepCount?.let { "${it.first}/${it.second}" } ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}",
+                    text = stepProgress,
                     style = MaterialTheme.typography.labelSmall
                 )
 
