@@ -71,14 +71,12 @@ fun PatcherScreen(
 
     val patchesProgress by vm.patchesProgress.collectAsStateWithLifecycle()
 
-    val progress = remember(steps, patchesProgress) {
-        val stepsList = steps.flatMap { it.value }
-
-        val current = stepsList.filter {
+    val progress = remember(vm.steps, patchesProgress) {
+        val current = vm.steps.filter {
             it.state == State.COMPLETED && it.category != StepCategory.PATCHING
         }.size + patchesProgress.first
 
-        val total = stepsList.size - 1 + patchesProgress.second
+        val total = vm.steps.size - 1 + patchesProgress.second
 
         current.toFloat() / total.toFloat()
     }

@@ -77,7 +77,7 @@ class PatcherViewModel(
     private val workManager = WorkManager.getInstance(app)
     private val logger = ManagerLogger()
 
-    val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.flatMap { it.value }.size))
+    val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
     private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
     val steps = generateSteps(
         app,

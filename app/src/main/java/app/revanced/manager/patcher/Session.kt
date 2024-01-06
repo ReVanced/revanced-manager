@@ -25,7 +25,7 @@ class Session(
     frameworkDir: String,
     aaptPath: String,
     multithreadingDexFileWriter: Boolean,
-    private val app: Context,
+    private val androidContext: Context,
     private val logger: ManagerLogger,
     private val input: File,
     private val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
@@ -49,7 +49,7 @@ class Session(
         var nextPatchIndex = 0
 
         updateProgress(
-            name = app.getString(R.string.applying_patch, selectedPatches[nextPatchIndex]),
+            name = androidContext.getString(R.string.applying_patch, selectedPatches[nextPatchIndex]),
             state = State.RUNNING
         )
 
@@ -58,7 +58,7 @@ class Session(
 
             if (exception != null) {
                 updateProgress(
-                    name = app.getString(R.string.failed_to_apply_patch, patch.name),
+                    name = androidContext.getString(R.string.failed_to_apply_patch, patch.name),
                     state = State.FAILED,
                     message = exception.stackTraceToString()
                 )
@@ -76,7 +76,7 @@ class Session(
 
             selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
                 updateProgress(
-                    name = app.getString(R.string.applying_patch, nextPatch.name)
+                    name = androidContext.getString(R.string.applying_patch, nextPatch.name)
                 )
             }
 
@@ -85,7 +85,7 @@ class Session(
 
         updateProgress(
             state = State.COMPLETED,
-            name = app.resources.getQuantityString(
+            name = androidContext.resources.getQuantityString(
                 R.plurals.patches_applied,
                 selectedPatches.size,
                 selectedPatches.size
