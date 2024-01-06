@@ -20,7 +20,7 @@ import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
-import app.revanced.manager.ui.screen.InstallerScreen
+import app.revanced.manager.ui.screen.PatcherScreen
 import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.screen.VersionSelectorScreen
@@ -157,7 +157,7 @@ class MainActivity : ComponentActivity() {
                         is Destination.SelectedApplicationInfo -> SelectedAppInfoScreen(
                             onPatchClick = { app, patches, options ->
                                 navController.navigate(
-                                    Destination.Installer(
+                                    Destination.Patcher(
                                         app, patches, options
                                     )
                                 )
@@ -173,7 +173,7 @@ class MainActivity : ComponentActivity() {
                             }
                         )
 
-                        is Destination.Installer -> InstallerScreen(
+                        is Destination.Patcher -> PatcherScreen(
                             onBackClick = { navController.popUpTo { it is Destination.Dashboard } },
                             vm = getComposeViewModel { parametersOf(destination) }
                         )

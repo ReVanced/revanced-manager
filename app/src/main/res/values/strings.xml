@@ -99,10 +99,10 @@
     <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
     <string name="patch_options_clear_all">Clear all patch options</string>
     <string name="patch_options_clear_all_description">Resets all patch options</string>
-    <string name="prefer_splits">Prefer split apks</string>
-    <string name="prefer_splits_description">Prefer split apks instead of full apks</string>
-    <string name="prefer_universal">Prefer universal apks</string>
-    <string name="prefer_universal_description">Prefer universal instead of arch-specific apks</string>
+    <string name="prefer_splits">Prefer split APK\'s</string>
+    <string name="prefer_splits_description">Prefer split APK\'s instead of full APK\'s</string>
+    <string name="prefer_universal">Prefer universal APK\'s</string>
+    <string name="prefer_universal_description">Prefer universal instead of arch-specific APK\'s</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -155,6 +155,7 @@
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
+    <string name="download_apk">Download APK</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
@@ -179,7 +180,7 @@
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
-    <string name="failed_to_load_apk">Failed to load apk</string>
+    <string name="failed_to_load_apk">Failed to load APK</string>
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
     <string name="installed">Installed</string>
@@ -233,23 +234,27 @@
     <string name="open_app">Open</string>
     <string name="save_apk">Save APK</string>
     <string name="save_apk_success">APK Saved</string>
-    <string name="sign_fail">Failed to sign Apk: %s</string>
+    <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
     <string name="select_install_type">Select installation type</string>
 
-    <string name="patcher_step_group_prepare">Preparation</string>
+    <string name="patcher_step_group_preparing">Preparing</string>
     <string name="patcher_step_load_patches">Load patches</string>
-    <string name="patcher_step_unpack">Unpack Apk</string>
+    <string name="patcher_step_unpack">Unpack APK</string>
     <string name="patcher_step_integrations">Merge Integrations</string>
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
-    <string name="patcher_step_write_patched">Write patched Apk</string>
-    <string name="patcher_step_sign_apk">Sign Apk</string>
+    <string name="patcher_step_write_patched">Write patched APK</string>
+    <string name="patcher_step_sign_apk">Sign APK</string>
     <string name="patcher_notification_message">Patching in progress…</string>
+    <string name="apply_patches">Apply patches</string>
+    <string name="applying_patch">Applying %s</string>
+    <string name="failed_to_apply_patch">Failed to apply %s</string>
 
     <string name="step_completed">completed</string>
     <string name="step_failed">failed</string>
     <string name="step_running">running</string>
+    <string name="step_waiting">waiting</string>
 
     <string name="expand_content">expand</string>
     <string name="collapse_content">collapse</string>

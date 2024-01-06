@@ -31,7 +31,7 @@ class AppSelectorViewModel(
                         packageName = packageInfo.packageName,
                         version = packageInfo.versionName,
                         file = this,
-                        shouldDelete = true
+                        temporary = true
                     )
                 }
             }
