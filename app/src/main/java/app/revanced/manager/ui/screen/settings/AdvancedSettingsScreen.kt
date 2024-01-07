@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Http
 import androidx.compose.material3.AlertDialog
@@ -34,9 +32,10 @@ import androidx.core.content.getSystemService
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
-import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -64,11 +63,10 @@ fun AdvancedSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             val apiUrl by vm.prefs.api.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }

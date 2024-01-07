@@ -4,7 +4,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,6 +27,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
@@ -88,13 +88,10 @@ fun AppSelectorScreen(
                 }
             },
             content = {
-
                 if (appList.isNotEmpty() && filterText.isNotEmpty()) {
-
-                    LazyColumn(
+                    LazyColumnWithScrollbar(
                         modifier = Modifier.fillMaxSize()
                     ) {
-
                         items(
                             items = filteredAppList,
                             key = { it.packageName }
@@ -143,7 +140,6 @@ fun AppSelectorScreen(
                         )
                     }
                 }
-
             }
         )
     }
@@ -161,7 +157,7 @@ fun AppSelectorScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
@@ -194,7 +190,6 @@ fun AppSelectorScreen(
                     items = appList,
                     key = { it.packageName }
                 ) { app ->
-
                     ListItem(
                         modifier = Modifier.clickable { onAppClick(app.packageName) },
                         leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },

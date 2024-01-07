@@ -1,11 +1,8 @@
 package app.revanced.manager.ui.screen.settings.update
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,14 +10,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,11 +36,10 @@ fun UpdatesSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             SettingsListItem(
                 modifier = Modifier.clickable {

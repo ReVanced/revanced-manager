@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -62,6 +61,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -232,7 +232,10 @@ fun PatchesSelectorScreen(
             }
         ) {
             val bundle = bundles[pagerState.currentPage]
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+
+            LazyColumnWithScrollbar(
+                modifier = Modifier.fillMaxSize()
+            ) {
                 fun List<PatchInfo>.searched() = filter {
                     it.name.contains(query, true)
                 }
@@ -254,7 +257,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!vm.allowExperimental) return@LazyColumn
+                if (!vm.allowExperimental) return@LazyColumnWithScrollbar
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -340,7 +343,7 @@ fun PatchesSelectorScreen(
                 pageContent = { index ->
                     val bundle = bundles[index]
 
-                    LazyColumn(
+                    LazyColumnWithScrollbar(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         patchList(
@@ -563,10 +566,10 @@ fun OptionsDialog(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier.padding(paddingValues)
         ) {
-            if (patch.options == null) return@LazyColumn
+            if (patch.options == null) return@LazyColumnWithScrollbar
 
             items(patch.options, key = { it.key }) { option ->
                 val key = option.key

@@ -1,11 +1,8 @@
 package app.revanced.manager.ui.screen.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
@@ -21,9 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
-import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.component.settings.BooleanItem
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -52,11 +50,10 @@ fun DownloadsSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             BooleanItem(
                 preference = prefs.preferSplits,
