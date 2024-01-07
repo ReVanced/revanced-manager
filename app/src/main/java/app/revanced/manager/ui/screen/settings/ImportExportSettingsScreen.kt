@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material3.*
@@ -31,15 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
 import app.revanced.manager.ui.component.bundle.BundleSelector
+import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.settings.SettingsListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,11 +101,10 @@ fun ImportExportSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             GroupHeader(stringResource(R.string.signing))
             GroupItem(
