@@ -71,14 +71,16 @@ fun PatcherScreen(
 
     val patchesProgress by vm.patchesProgress.collectAsStateWithLifecycle()
 
-    val progress = remember(vm.steps, patchesProgress) {
-        val current = vm.steps.filter {
-            it.state == State.COMPLETED && it.category != StepCategory.PATCHING
-        }.size + patchesProgress.first
+    val progress by remember {
+        derivedStateOf {
+            val current = vm.steps.count {
+                it.state == State.COMPLETED && it.category != StepCategory.PATCHING
+            } + patchesProgress.first
 
-        val total = vm.steps.size - 1 + patchesProgress.second
+            val total = vm.steps.size - 1 + patchesProgress.second
 
-        current.toFloat() / total.toFloat()
+            current.toFloat() / total.toFloat()
+        }
     }
 
     if (showInstallPicker)
