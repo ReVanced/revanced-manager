@@ -15,7 +15,16 @@ import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -32,12 +41,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.isDefault
 import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.isDefault
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportBundleDialog
+import app.revanced.manager.ui.component.bundle.ImportBundleTypeSelectorDialog
+import app.revanced.manager.ui.model.BundleType
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -59,7 +70,8 @@ fun DashboardScreen(
     onSettingsClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit
 ) {
-    var showImportBundleDialog by rememberSaveable { mutableStateOf(false) }
+    var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
+    var selectedBundleType: BundleType? by rememberSaveable { mutableStateOf(null) }
 
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val pages: Array<DashboardPage> = DashboardPage.values()
@@ -78,9 +90,19 @@ fun DashboardScreen(
         if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
     }
 
-    if (showImportBundleDialog) {
+    if (showBundleTypeSelectorDialog) {
+        ImportBundleTypeSelectorDialog(
+            onDismiss = { showBundleTypeSelectorDialog = false },
+            onConfirm = {
+                selectedBundleType = it
+                showBundleTypeSelectorDialog = false
+            }
+        )
+    }
+
+    selectedBundleType?.let {
         fun dismiss() {
-            showImportBundleDialog = false
+            selectedBundleType = null
         }
 
         ImportBundleDialog(
@@ -93,6 +115,7 @@ fun DashboardScreen(
                 dismiss()
                 vm.createRemoteSource(name, url, autoUpdate)
             },
+            bundleType = it
         )
     }
 
@@ -165,7 +188,7 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES.ordinal -> {
-                            showImportBundleDialog = true
+                            showBundleTypeSelectorDialog = true
                         }
                     }
                 }

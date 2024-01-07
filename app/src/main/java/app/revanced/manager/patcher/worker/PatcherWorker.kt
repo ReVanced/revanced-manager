@@ -28,14 +28,13 @@ import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.aapt.Aapt
+import app.revanced.manager.patcher.logger.ManagerLogger
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.ManagerLogger
+import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchesSelection
 import app.revanced.manager.util.tag
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import org.koin.core.component.KoinComponent
@@ -47,7 +46,6 @@ class PatcherWorker(
     context: Context,
     parameters: WorkerParameters
 ) : Worker<PatcherWorker.Args>(context, parameters), KoinComponent {
-
     private val patchBundleRepository: PatchBundleRepository by inject()
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
@@ -63,16 +61,13 @@ class PatcherWorker(
         val output: String,
         val selectedPatches: PatchesSelection,
         val options: Options,
-        val progress: MutableStateFlow<ImmutableList<Step>>,
         val logger: ManagerLogger,
-        val setInputFile: (File) -> Unit
+        val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
+        val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
+        val setInputFile: (File) -> Unit,
+        val onProgress: (name: String?, state: State?, message: String?) -> Unit
     ) {
         val packageName get() = input.packageName
-    }
-
-    companion object {
-        private const val logPrefix = "[Worker]:"
-        private fun String.logFmt() = "$logPrefix $this"
     }
 
     override suspend fun getForegroundInfo() =
@@ -107,8 +102,6 @@ class PatcherWorker(
             return Result.failure()
         }
 
-        val args = workerRepository.claimInput(this)
-
         try {
             // This does not always show up for some reason.
             setForeground(getForegroundInfo())
@@ -117,12 +110,13 @@ class PatcherWorker(
         }
 
         val wakeLock: PowerManager.WakeLock =
-            (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "$tag::Patcher").apply {
+            (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
+                .newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "$tag::Patcher").apply {
                     acquire(10 * 60 * 1000L)
                     Log.d(tag, "Acquired wakelock.")
                 }
-            }
+
+        val args = workerRepository.claimInput(this)
 
         return try {
             runPatcher(args)
@@ -132,38 +126,32 @@ class PatcherWorker(
     }
 
     private suspend fun runPatcher(args: Args): Result {
-        val aaptPath =
-            Aapt.binary(applicationContext)?.absolutePath
-                ?: throw FileNotFoundException("Could not resolve aapt.")
 
-        val frameworkPath =
-            applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
-
-        val bundles = patchBundleRepository.bundles.first()
-        val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
-
-        val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
-
-        val progressManager =
-            PatcherProgressManager(
-                applicationContext,
-                args.selectedPatches.flatMap { it.value },
-                args.input,
-                downloadProgress
-            )
-
-        val progressFlow = args.progress
-
-        fun updateProgress(advanceCounter: Boolean = true) {
-            if (advanceCounter) {
-                progressManager.success()
-            }
-            progressFlow.value = progressManager.getProgress().toImmutableList()
-        }
+        fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
+            args.onProgress(name, state, message)
 
         val patchedApk = fs.tempDir.resolve("patched.apk")
 
         return try {
+            val bundles = patchBundleRepository.bundles.first()
+
+            // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
+            val selectedBundles = args.selectedPatches.keys
+            val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
+                .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
+
+            val selectedPatches = args.selectedPatches.flatMap { (bundle, selected) ->
+                allPatches[bundle]?.filter { selected.contains(it.name) }
+                    ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
+            }
+
+            val aaptPath = Aapt.binary(applicationContext)?.absolutePath
+                ?: throw FileNotFoundException("Could not resolve aapt.")
+
+            val frameworkPath =
+                applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
+
+            val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
 
             if (args.input is SelectedApp.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
@@ -172,11 +160,6 @@ class PatcherWorker(
                     }
                 }
             }
-
-            // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
-            val selectedBundles = args.selectedPatches.keys
-            val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
-                .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
 
             // Set all patch options.
             args.options.forEach { (bundle, bundlePatchOptions) ->
@@ -189,25 +172,17 @@ class PatcherWorker(
                 }
             }
 
-            val patches = args.selectedPatches.flatMap { (bundle, selected) ->
-                allPatches[bundle]?.filter { selected.contains(it.name) }
-                    ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
-            }
-
-
-            // Ensure they are in the correct order so we can track progress properly.
-            progressManager.replacePatchesList(patches.map { it.name.orEmpty() })
-            updateProgress() // Loading patches
+            updateProgress(state = State.COMPLETED) // Loading patches
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
                     downloadedAppRepository.download(
                         selectedApp.app,
                         prefs.preferSplits.get(),
-                        onDownload = { downloadProgress.emit(it) }
+                        onDownload = { args.downloadProgress.emit(it) }
                     ).also {
                         args.setInputFile(it)
-                        updateProgress() // Downloading
+                        updateProgress(state = State.COMPLETED) // Download APK
                     }
                 }
 
@@ -220,26 +195,35 @@ class PatcherWorker(
                 frameworkPath,
                 aaptPath,
                 prefs.multithreadingDexFileWriter.get(),
+                applicationContext,
                 args.logger,
                 inputFile,
-                onStepSucceeded = ::updateProgress
+                args.patchesProgress,
+                args.onProgress
             ).use { session ->
-                session.run(patchedApk, patches, integrations)
+                session.run(
+                    patchedApk,
+                    selectedPatches,
+                    integrations
+                )
             }
 
             keystoreManager.sign(patchedApk, File(args.output))
-            updateProgress() // Signing
+            updateProgress(state = State.COMPLETED) // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
-            progressManager.success()
             Result.success()
         } catch (e: Exception) {
             Log.e(tag, "Exception while patching".logFmt(), e)
-            progressManager.failure(e)
+            updateProgress(state = State.FAILED, message = e.stackTraceToString())
             Result.failure()
         } finally {
-            updateProgress(false)
             patchedApk.delete()
         }
+    }
+
+    companion object {
+        private const val logPrefix = "[Worker]:"
+        private fun String.logFmt() = "$logPrefix $this"
     }
 }

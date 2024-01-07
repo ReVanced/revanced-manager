@@ -2,6 +2,7 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -80,7 +81,8 @@ fun VersionSelectorScreen(
         ColumnWithScrollbar(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
@@ -99,7 +101,9 @@ fun VersionSelectorScreen(
                 }
             }
 
-            GroupHeader(stringResource(R.string.downloadable_versions))
+            Row(Modifier.fillMaxWidth()) {
+                GroupHeader(stringResource(R.string.downloadable_versions))
+            }
 
             list.forEach {
                 SelectedAppItem(

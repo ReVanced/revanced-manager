@@ -160,7 +160,8 @@ fun AppSelectorScreen(
         LazyColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 ListItem(
