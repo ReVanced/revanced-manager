@@ -7,6 +7,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import app.revanced.manager.util.RequestManageStorageContract
 
 class Filesystem(private val app: Application) {
@@ -32,5 +33,5 @@ class Filesystem(private val app: Application) {
         return contract to storagePermissionName
     }
 
-    fun hasStoragePermission() = if (usesManagePermission()) Environment.isExternalStorageManager() else app.checkSelfPermission(storagePermissionName) == PackageManager.PERMISSION_GRANTED
+    fun hasStoragePermission() = if (usesManagePermission()) Environment.isExternalStorageManager() else ContextCompat.checkSelfPermission(app, storagePermissionName) == PackageManager.PERMISSION_GRANTED
 }

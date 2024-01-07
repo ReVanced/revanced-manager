@@ -152,7 +152,9 @@ class PM(
         get() = PackageInstaller.SessionParams(
             PackageInstaller.SessionParams.MODE_FULL_INSTALL
         ).apply {
-            setInstallReason(PackageManager.INSTALL_REASON_USER)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setInstallReason(PackageManager.INSTALL_REASON_USER)
+            }
         }
 
     private val Context.installIntentSender
