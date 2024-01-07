@@ -97,7 +97,7 @@ fun Steps(
                 Spacer(modifier = Modifier.weight(1f))
 
                 val stepProgress = remember(stepCount, steps) {
-                    stepCount?.let { (current, total) -> "$current/$total}" }
+                    stepCount?.let { (current, total) -> "$current/$total" }
                         ?: "${steps.count { it.state == State.COMPLETED }}/${steps.size}"
                 }
 
