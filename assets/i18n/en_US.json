@@ -114,7 +114,7 @@
         "requireSuggestedAppVersionDialogText": "The version of the app you have selected does not match the suggested version. Please select the app that matches the suggested version.\n\nSelected version: v{selected}\nSuggested version: v{suggested}\n\nTo proceed anyway, disable \"Require suggested app version\" in the settings.",
 
         "featureNotAvailable": "Feature not implemented",
-        "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
+        "featureNotAvailableText": "This application is a split APK and can only be patched with root permissions at the moment. Obtain a full APK and select it from storage or install it and select it regularly."
     },
     "patchesSelectorView": {
         "viewTitle": "Select patches",
