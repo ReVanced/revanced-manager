@@ -15,6 +15,7 @@ import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart';
@@ -23,6 +24,7 @@ import 'package:timeago/timeago.dart';
 class ManagerAPI {
   final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final GithubAPI _githubAPI = locator<GithubAPI>();
+  final Toast _toast = locator<Toast>();
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
@@ -41,11 +43,11 @@ class ManagerAPI {
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
   String defaultApiUrl = 'https://api.revanced.app/';
   String defaultRepoUrl = 'https://api.github.com';
-  String defaultPatcherRepo = 'ReVanced/revanced-patcher';
-  String defaultPatchesRepo = 'ReVanced/revanced-patches';
-  String defaultIntegrationsRepo = 'ReVanced/revanced-integrations';
-  String defaultCliRepo = 'ReVanced/revanced-cli';
-  String defaultManagerRepo = 'ReVanced/revanced-manager';
+  String defaultPatcherRepo = 'revanced/revanced-patcher';
+  String defaultPatchesRepo = 'revanced/revanced-patches';
+  String defaultIntegrationsRepo = 'revanced/revanced-integrations';
+  String defaultCliRepo = 'revanced/revanced-cli';
+  String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
   String? integrationsVersion = '';
 
@@ -65,6 +67,16 @@ class ManagerAPI {
         (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+
+    // Migrate to new API URL if not done yet as the old one is sunset.
+    final bool hasMigrated = _prefs.getBool('migratedToNewApiUrl') ?? false;
+    if (!hasMigrated) {
+      final String apiUrl = getApiUrl().toLowerCase();
+      if (apiUrl.contains('releases.revanced.app')) {
+        await setApiUrl(''); // Reset to default.
+        _prefs.setBool('migratedToNewApiUrl', true);
+      }
+    }
   }
 
   Future<int> getSdkVersion() async {
@@ -82,6 +94,7 @@ class ManagerAPI {
     }
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
+    _toast.showBottom('settingsView.restartAppForChanges');
   }
 
   String getRepoUrl() {
