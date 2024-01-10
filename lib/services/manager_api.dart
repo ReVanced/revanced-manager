@@ -52,12 +52,12 @@ class ManagerAPI {
   String? integrationsVersion = '';
 
   bool isDefaultPatchesRepo() {
-    return getPatchesRepo().toLowerCase() == 'revanced/revanced-patches';
+    return getPatchesRepo().toLowerCase() == defaultPatchesRepo.toLowerCase();
   }
 
   bool isDefaultIntegrationsRepo() {
     return getIntegrationsRepo().toLowerCase() ==
-        'revanced/revanced-integrations';
+        defaultIntegrationsRepo.toLowerCase();
   }
 
   Future<void> initialize() async {
