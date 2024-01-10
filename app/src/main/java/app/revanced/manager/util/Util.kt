@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -175,10 +176,11 @@ fun String.relativeTime(context: Context): String {
 }
 
 @Composable
-fun LazyListState.isScrollingUp(): Boolean {
-    var previousIndex by remember(this) { mutableIntStateOf(firstVisibleItemIndex) }
-    var previousScrollOffset by remember(this) { mutableIntStateOf(firstVisibleItemScrollOffset) }
+fun LazyListState.isScrollingUp(): State<Boolean> {
     return remember(this) {
+        var previousIndex by mutableIntStateOf(firstVisibleItemIndex)
+        var previousScrollOffset by mutableIntStateOf(firstVisibleItemScrollOffset)
+
         derivedStateOf {
             if (previousIndex != firstVisibleItemIndex) {
                 previousIndex > firstVisibleItemIndex
@@ -189,5 +191,7 @@ fun LazyListState.isScrollingUp(): Boolean {
                 previousScrollOffset = firstVisibleItemScrollOffset
             }
         }
-    }.value
+    }
 }
+
+val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value

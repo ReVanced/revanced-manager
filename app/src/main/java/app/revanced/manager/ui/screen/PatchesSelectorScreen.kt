@@ -304,7 +304,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
-                expanded = patchLazyListState.isScrollingUp(),
+                expanded = patchLazyListState.isScrollingUp,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
