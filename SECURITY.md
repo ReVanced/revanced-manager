@@ -66,7 +66,7 @@ This document describes how to report security vulnerabilities for ReVanced Mana
 
 Please open an issue in our [advisory tracker](https://github.com/ReVanced/revanced-manager/security/advisories/new) or reach out privately to us on [Discord](https://discord.gg/revanced).
 
-If a vulnerability is confirmed and accepted, you can join us [Discord](https://discord.gg/revanced) server to receive an special contributor role.
+If a vulnerability is confirmed and accepted, you can join our [Discord](https://discord.gg/revanced) server to receive a special contributor role.
 
 ### ⏳ Supported Versions
 
