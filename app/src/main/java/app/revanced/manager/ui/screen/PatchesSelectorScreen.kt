@@ -275,7 +275,7 @@ fun PatchesSelectorScreen(
         }
     }
 
-    val lazyListState = rememberLazyListState()
+    val patchLazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -304,7 +304,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
-                expanded = lazyListState.isScrollingUp(),
+                expanded = patchLazyListState.isScrollingUp(),
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -348,7 +348,7 @@ fun PatchesSelectorScreen(
 
                     LazyColumnWithScrollbar(
                         modifier = Modifier.fillMaxSize(),
-                        state = lazyListState
+                        state = patchLazyListState
                     ) {
                         patchList(
                             uid = bundle.uid,
