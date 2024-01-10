@@ -10,7 +10,6 @@ import 'package:stacked/stacked.dart';
 
 class SManageApiUrl extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final Toast _toast = locator<Toast>();
 
   final TextEditingController _apiUrlController = TextEditingController();
 
@@ -69,7 +68,6 @@ class SManageApiUrl extends BaseViewModel {
                 apiUrl = 'https://$apiUrl';
               }
               _managerAPI.setApiUrl(apiUrl);
-              _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context).pop();
             },
             child: I18nText('okButton'),
@@ -93,7 +91,6 @@ class SManageApiUrl extends BaseViewModel {
           FilledButton(
             onPressed: () {
               _managerAPI.setApiUrl('');
-              _toast.showBottom('settingsView.restartAppForChanges');
               Navigator.of(context)
                 ..pop()
                 ..pop();
