@@ -60,7 +60,7 @@
 
 # 🔒 Security Policy
 
-This document describes how to report vulnerability to ReVanced Manager.
+This document describes how to report security vulnerabilities for ReVanced Manager.
 
 ## ⏳ Supported Versions
 
