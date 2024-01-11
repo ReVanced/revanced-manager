@@ -2,11 +2,10 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.model.SelectedApp
@@ -78,11 +78,11 @@ fun VersionSelectorScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
@@ -101,7 +101,9 @@ fun VersionSelectorScreen(
                 }
             }
 
-            GroupHeader(stringResource(R.string.downloadable_versions))
+            Row(Modifier.fillMaxWidth()) {
+                GroupHeader(stringResource(R.string.downloadable_versions))
+            }
 
             list.forEach {
                 SelectedAppItem(

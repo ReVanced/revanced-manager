@@ -8,11 +8,8 @@ import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.outlined.*
@@ -27,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.destination.SettingsDestination
@@ -157,11 +155,10 @@ fun SettingsScreen(
                         )
                     }
                 ) { paddingValues ->
-                    Column(
+                    ColumnWithScrollbar(
                         modifier = Modifier
                             .padding(paddingValues)
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
                             NotificationCard(
