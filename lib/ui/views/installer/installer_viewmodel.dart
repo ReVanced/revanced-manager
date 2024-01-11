@@ -37,6 +37,7 @@ class InstallerViewModel extends BaseViewModel {
   String headerLogs = '';
   bool isRooted = false;
   bool isPatching = true;
+  bool isInstalling = false;
   bool isInstalled = false;
   bool hasErrors = false;
   bool isCanceled = false;
