@@ -40,11 +40,10 @@ class HomeViewModel extends BaseViewModel {
   Future<void> initialize(BuildContext context) async {
     _managerAPI.rePatchedSavedApps().then((_) => _getPatchedApps());
 
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     if (!_managerAPI.getPatchesConsent()) {
       await showPatchesConsent(context);
     }
-
-    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
 
     await _patcherAPI.initialize();
 

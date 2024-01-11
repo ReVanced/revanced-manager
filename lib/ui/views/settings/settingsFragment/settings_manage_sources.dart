@@ -58,9 +58,10 @@ class SManageSources extends BaseViewModel {
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: I18nText(
+                  labelText: FlutterI18n.translate(
+                    context,
                     'settingsView.hostRepositoryLabel',
-                  ).toString(),
+                  ),
                   hintText: hostRepository,
                 ),
               ),
@@ -76,9 +77,10 @@ class SManageSources extends BaseViewModel {
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: I18nText(
+                  labelText: FlutterI18n.translate(
+                    context,
                     'settingsView.orgPatchesLabel',
-                  ).toString(),
+                  ),
                   hintText: patchesRepo.split('/')[0],
                 ),
               ),
@@ -94,9 +96,10 @@ class SManageSources extends BaseViewModel {
                     color: Colors.transparent,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: I18nText(
+                  labelText: FlutterI18n.translate(
+                    context,
                     'settingsView.sourcesPatchesLabel',
-                  ).toString(),
+                  ),
                   hintText: patchesRepo.split('/')[1],
                 ),
               ),
@@ -112,9 +115,10 @@ class SManageSources extends BaseViewModel {
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: I18nText(
+                  labelText: FlutterI18n.translate(
+                    context,
                     'settingsView.orgIntegrationsLabel',
-                  ).toString(),
+                  ),
                   hintText: integrationsRepo.split('/')[0],
                 ),
               ),
@@ -130,9 +134,10 @@ class SManageSources extends BaseViewModel {
                     color: Colors.transparent,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: I18nText(
+                  labelText: FlutterI18n.translate(
+                    context,
                     'settingsView.sourcesIntegrationsLabel',
-                  ).toString(),
+                  ),
                   hintText: integrationsRepo.split('/')[1],
                 ),
               ),
