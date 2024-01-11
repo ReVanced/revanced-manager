@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,20 +38,13 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.viewmodel.AboutViewModel
+import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Brands
-import compose.icons.fontawesomeicons.brands.Discord
-import compose.icons.fontawesomeicons.brands.Github
-import compose.icons.fontawesomeicons.brands.Reddit
-import compose.icons.fontawesomeicons.brands.Telegram
-import compose.icons.fontawesomeicons.brands.Twitter
-import compose.icons.fontawesomeicons.brands.Youtube
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -67,28 +61,43 @@ fun AboutSettingsScreen(
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
-    val socialIcons = mapOf(
-        "Contact" to Icons.Outlined.MailOutline,
-        "Discord" to FontAwesomeIcons.Brands.Discord, 
-        "Donate" to Icons.Outlined.FavoriteBorder,
-        "GitHub" to FontAwesomeIcons.Brands.Github,
-        "Reddit" to FontAwesomeIcons.Brands.Reddit,
-        "Telegram" to FontAwesomeIcons.Brands.Telegram,
-        "Twitter" to FontAwesomeIcons.Brands.Twitter,
-        "X" to FontAwesomeIcons.Brands.Twitter,
-        "YouTube" to FontAwesomeIcons.Brands.Youtube,
-    )
-
     val (preferred, notPreferred) = viewModel.socials.partition(ReVancedSocial::preferred)
 
-    val filledButtons = preferred.map {
-        Triple(socialIcons[it.name] ?: Icons.Outlined.Language, it.name, third = {
-            context.openUrl(it.url)
-        })
+    val filledButtons = mutableListOf<Triple<ImageVector, String, () -> Unit>>()
+    filledButtons.addAll(
+        preferred.map {
+            Triple(getSocialIcon(it.name), it.name, third = {
+                context.openUrl(it.url)
+            })
+        }
+    )
+
+    viewModel.donate?.let {
+        filledButtons.add(
+            Triple(
+                Icons.Outlined.FavoriteBorder,
+                stringResource(R.string.donate),
+                third = {
+                    context.openUrl(viewModel.donate!!)
+                }
+            )
+        )
+    }
+
+    viewModel.contact?.let {
+        filledButtons.add(
+            Triple(
+                Icons.Outlined.MailOutline,
+                stringResource(R.string.contact),
+                third = {
+                    context.openUrl(viewModel.contact!!)
+                }
+            )
+        )
     }
 
     val socialButtons = notPreferred.map {
-        Pair(socialIcons[it.name] ?: Icons.Outlined.Language) {
+        Pair(getSocialIcon(it.name)) {
             context.openUrl(it.url)
         }
     }
@@ -185,7 +194,7 @@ fun AboutSettingsScreen(
                                 icon,
                                 contentDescription = null,
                                 modifier = Modifier.size(28.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.secondary
                             )
                         }
                     }
