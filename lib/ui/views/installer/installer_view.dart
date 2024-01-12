@@ -37,7 +37,9 @@ class InstallerView extends StatelessWidget {
                   : FloatingActionButton.extended(
                       label: I18nText('installerView.installButton'),
                       icon: const Icon(Icons.file_download_outlined),
-                      onPressed: () => model.installTypeDialog(context),
+                      onPressed: model.isInstalling
+                          ? null
+                          : () => model.installTypeDialog(context),
                       elevation: 0,
                     ),
             ),
