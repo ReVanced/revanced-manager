@@ -454,8 +454,8 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
+    isInstalling = true;
     try {
-      isInstalling = true;
       _app.isRooted = installAsRoot;
       if (headerLogs != 'Installing...') {
         update(
@@ -505,7 +505,10 @@ class InstallerViewModel extends BaseViewModel {
       if (kDebugMode) {
         print(e);
       }
+    } finally {
+      isInstalling = false;
     }
+    isInstalling = false;
   }
 
   void exportResult() {
