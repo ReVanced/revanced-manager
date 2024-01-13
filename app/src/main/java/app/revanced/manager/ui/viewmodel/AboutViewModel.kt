@@ -6,6 +6,8 @@ import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.domain.manager.KeystoreManager
@@ -29,8 +31,8 @@ import kotlinx.coroutines.withContext
 
 class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
     val socials = mutableStateListOf<ReVancedSocial>()
-    var contact: String? = null
-    var donate: String? = null
+    val contact = mutableStateOf<String?>(null)
+    val donate = mutableStateOf<String?>(null)
 
     init {
         viewModelScope.launch {
@@ -38,14 +40,14 @@ class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
                 reVancedAPI.getInfo("https://api.revanced.app").getOrNull()
             }?.let {
                 socials.addAll(it.socials)
-                contact = it.contact.email
-                donate = it.donations.links.partition(ReVancedDonationLink::preferred).first.firstOrNull()?.url
+                contact.value = it.contact.email
+                donate.value = it.donations.links.find(ReVancedDonationLink::preferred)?.url
             }
         }
     }
 
     companion object {
-        private val _socialIcons = mapOf(
+        private val socialIcons = mapOf(
             "Discord" to FontAwesomeIcons.Brands.Discord,
             "GitHub" to FontAwesomeIcons.Brands.Github,
             "Reddit" to FontAwesomeIcons.Brands.Reddit,
@@ -55,6 +57,6 @@ class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
             "YouTube" to FontAwesomeIcons.Brands.Youtube,
         )
 
-        fun getSocialIcon(name: String) = _socialIcons[name] ?: Icons.Outlined.Language
+        fun getSocialIcon(name: String) = socialIcons[name] ?: Icons.Outlined.Language
     }
 }

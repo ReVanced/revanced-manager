@@ -62,42 +62,43 @@ fun AboutSettingsScreen(
 
     val (preferred, notPreferred) = viewModel.socials.partition(ReVancedSocial::preferred)
 
-    val filledButtons = mutableListOf<Triple<ImageVector, String, () -> Unit>>()
-    filledButtons.addAll(
+    val filledButtons = remember(preferred) {
         preferred.map {
             Triple(getSocialIcon(it.name), it.name, third = {
                 context.openUrl(it.url)
             })
         }
-    )
+    }.toMutableList()
 
-    viewModel.donate?.let {
+    viewModel.donate.value?.let {
         filledButtons.add(
             Triple(
                 Icons.Outlined.FavoriteBorder,
                 stringResource(R.string.donate),
                 third = {
-                    context.openUrl(viewModel.donate!!)
+                    context.openUrl(viewModel.donate.value!!)
                 }
             )
         )
     }
 
-    viewModel.contact?.let {
+    viewModel.contact.value?.let {
         filledButtons.add(
             Triple(
                 Icons.Outlined.MailOutline,
                 stringResource(R.string.contact),
                 third = {
-                    context.openUrl(viewModel.contact!!)
+                    context.openUrl(viewModel.contact.value!!)
                 }
             )
         )
     }
 
-    val socialButtons = notPreferred.map {
-        Pair(getSocialIcon(it.name)) {
-            context.openUrl(it.url)
+    val socialButtons = remember(notPreferred) {
+        notPreferred.map {
+            Pair(getSocialIcon(it.name)) {
+                context.openUrl(it.url)
+            }
         }
     }
 

@@ -169,5 +169,5 @@ dependencies {
     implementation(libs.scrollbars)
 
     // Compose Icons
-    implementation(libs.composeIcons.fontAwesome)
+    implementation(libs.compose.icons.fontawesome)
 }
