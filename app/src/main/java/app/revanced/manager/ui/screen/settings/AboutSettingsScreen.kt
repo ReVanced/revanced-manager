@@ -76,7 +76,7 @@ fun AboutSettingsScreen(
                 Icons.Outlined.FavoriteBorder,
                 stringResource(R.string.donate),
                 third = {
-                    context.openUrl(viewModel.donate.value!!)
+                    context.openUrl(it)
                 }
             )
         )
