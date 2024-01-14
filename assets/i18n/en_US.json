@@ -242,7 +242,7 @@
         "universalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
 
         "patchHistoryLabel": "Save patched app",
-        "patchHistoryHint": "Save the last patched app to install or export later",
+        "patchHistoryHint": "Save the last patch to install or export later",
 
         "versionCompatibilityCheckLabel": "Version compatibility check",
         "versionCompatibilityCheckHint": "Restricts patches to supported app versions",
