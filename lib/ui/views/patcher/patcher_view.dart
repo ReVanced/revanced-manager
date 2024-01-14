@@ -6,6 +6,7 @@ import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patcherView/app_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/patcherView/patch_selector_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:stacked/stacked.dart';
 
 class PatcherView extends StatelessWidget {
@@ -19,7 +20,7 @@ class PatcherView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
           visible: model.showPatchButton(),
-          child: FloatingActionButton.extended(
+          child: HapticFloatingActionButtonExtended(
             label: I18nText('patcherView.patchButton'),
             icon: const Icon(Icons.build),
             onPressed: () async {

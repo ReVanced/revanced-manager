@@ -20,6 +20,7 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox_list_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -207,7 +208,7 @@ class HomeViewModel extends BaseViewModel {
                     ),
                   ),
                 ),
-                CheckboxListTile(
+                HapticCheckboxListTile(
                   value: value,
                   contentPadding: EdgeInsets.zero,
                   title: I18nText(
