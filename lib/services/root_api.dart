@@ -144,8 +144,12 @@ class RootAPI {
     );
     final String mountScript = '''
     #!/system/bin/sh
-    MAGISKTMP="\$(magisk --path)" || MAGISKTMP=/sbin
+    # Mount using Magisk mirror, if available.
+    MAGISKTMP="\$( magisk --path )" || MAGISKTMP=/sbin
     MIRROR="\$MAGISKTMP/.magisk/mirror"
+    if [ ! -f \$MIRROR ]; then
+        MIRROR=""
+    fi
 
     until [ "\$(getprop sys.boot_completed)" = 1 ]; do sleep 3; done
     until [ -d "/sdcard/Android" ]; do sleep 1; done
@@ -171,7 +175,7 @@ class RootAPI {
   }
 
   Future<void> installPatchedApk(
-      String packageName, String patchedFilePath) async {
+      String packageName, String patchedFilePath,) async {
     final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: '''
