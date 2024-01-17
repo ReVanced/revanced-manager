@@ -3,6 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -36,7 +37,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
           visible: model.patches.isNotEmpty,
-          child: FloatingActionButton.extended(
+          child: HapticFloatingActionButtonExtended(
             label: Row(
               children: <Widget>[
                 I18nText('patchesSelectorView.doneButton'),

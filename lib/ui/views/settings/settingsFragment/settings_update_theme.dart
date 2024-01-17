@@ -7,6 +7,8 @@ import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_radio_list_tile.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_switch_list_tile.dart';
 
 class SUpdateThemeUI extends StatefulWidget {
   const SUpdateThemeUI({super.key});
@@ -42,7 +44,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
           onTap: () => {showThemeDialog(context)},
         ),
         if (managerAPI.isDynamicThemeAvailable)
-          SwitchListTile(
+          HapticSwitchListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
             title: I18nText(
               'settingsView.dynamicThemeLabel',
@@ -129,7 +131,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  RadioListTile(
+                  HapticRadioListTile(
                     title: I18nText('settingsView.systemThemeLabel'),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 0,
@@ -138,7 +140,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                       newTheme.value = value!;
                     },
                   ),
-                  RadioListTile(
+                  HapticRadioListTile(
                     title: I18nText('settingsView.lightThemeLabel'),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 1,
@@ -147,7 +149,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                       newTheme.value = value!;
                     },
                   ),
-                  RadioListTile(
+                  HapticRadioListTile(
                     title: I18nText('settingsView.darkThemeLabel'),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 2,

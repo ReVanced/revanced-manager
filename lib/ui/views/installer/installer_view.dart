@@ -5,6 +5,7 @@ import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -15,7 +16,7 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => WillPopScope(
+      builder: (context, model, child) => PopScope(
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
@@ -23,7 +24,7 @@ class InstallerView extends StatelessWidget {
             floatingActionButton: Visibility(
               visible: !model.isPatching && !model.hasErrors,
               child: model.isInstalled
-                  ? FloatingActionButton.extended(
+                  ? HapticFloatingActionButtonExtended(
                       label: I18nText('installerView.openButton'),
                       icon: const Icon(Icons.open_in_new),
                       onPressed: () {
@@ -34,7 +35,7 @@ class InstallerView extends StatelessWidget {
                       },
                       elevation: 0,
                     )
-                  : FloatingActionButton.extended(
+                  : HapticFloatingActionButtonExtended(
                       label: I18nText('installerView.installButton'),
                       icon: const Icon(Icons.file_download_outlined),
                       onPressed: model.isInstalling
@@ -113,7 +114,7 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onWillPop: () => model.onWillPop(context),
+        onPopInvoked: (bool didPop) => model.onWillPop(context),
       ),
     );
   }
