@@ -29,7 +29,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
-import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
@@ -95,7 +95,7 @@ fun SelectedAppInfoScreen(
                 },
                 onPatchSelectorClick = {
                     navController.navigate(
-                        SelectedAppInfoDestination.PatchSelector(
+                        SelectedAppInfoDestination.PatchesSelector(
                             vm.selectedApp,
                             vm.getCustomPatches(
                                 bundles,
@@ -125,7 +125,7 @@ fun SelectedAppInfoScreen(
                 viewModel = getViewModel { parametersOf(packageName) }
             )
 
-            is SelectedAppInfoDestination.PatchSelector -> PatchSelectorScreen(
+            is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
                 onSave = { patches, options ->
                     vm.updateConfiguration(patches, options, bundles)
                     navController.pop()
@@ -133,7 +133,7 @@ fun SelectedAppInfoScreen(
                 onBackClick = navController::pop,
                 vm = getViewModel {
                     parametersOf(
-                        PatchSelectorViewModel.Params(
+                        PatchesSelectorViewModel.Params(
                             destination.app,
                             destination.currentSelection,
                             destination.options,

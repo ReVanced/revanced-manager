@@ -39,7 +39,7 @@ import kotlinx.collections.immutable.*
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
-class PatchSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
+class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     private val app: Application = get()
     private val savedStateHandle: SavedStateHandle = get()
     private val prefs: PreferencesManager = get()

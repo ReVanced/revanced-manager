@@ -63,10 +63,10 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.patches.OptionItem
-import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel.Companion.SHOW_SUPPORTED
-import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel.Companion.SHOW_UNIVERSAL
-import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel.Companion.SHOW_UNSUPPORTED
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
+import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.launch
@@ -74,10 +74,10 @@ import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun PatchSelectorScreen(
+fun PatchesSelectorScreen(
     onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
-    vm: PatchSelectorViewModel
+    vm: PatchesSelectorViewModel
 ) {
     val bundles by vm.bundlesFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     val pagerState = rememberPagerState(
