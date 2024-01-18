@@ -33,7 +33,7 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -59,7 +59,7 @@ class PatcherWorker(
     data class Args(
         val input: SelectedApp,
         val output: String,
-        val selectedPatches: PatchesSelection,
+        val selectedPatches: PatchSelection,
         val options: Options,
         val logger: ManagerLogger,
         val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,

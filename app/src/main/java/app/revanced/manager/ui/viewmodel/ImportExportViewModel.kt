@@ -53,7 +53,7 @@ class ImportExportViewModel(
 
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
 
-    fun clearOptionsForPackage(packageName: String) = viewModelScope.launch {
+    fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
         optionsRepository.clearOptionsForPackage(packageName)
     }
 
@@ -163,8 +163,8 @@ class ImportExportViewModel(
         override val activityArg = JSON_MIMETYPE
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
-            R.string.restore_patches_selection_fail,
-            "Failed to restore patches selection"
+            R.string.import_patch_selection_fail,
+            "Failed to restore patch selection"
         ) {
             val selection = withContext(Dispatchers.IO) {
                 contentResolver.openInputStream(location)!!.use {
@@ -181,8 +181,8 @@ class ImportExportViewModel(
         override val activityArg = "selection.json"
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
-            R.string.backup_patches_selection_fail,
-            "Failed to backup patches selection"
+            R.string.export_patch_selection_fail,
+            "Failed to backup patch selection"
         ) {
             val selection = selectionRepository.export(bundleUid)
 

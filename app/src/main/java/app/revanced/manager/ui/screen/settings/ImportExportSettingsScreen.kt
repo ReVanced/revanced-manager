@@ -131,22 +131,22 @@ fun ImportExportSettingsScreen(
                 description = R.string.regenerate_keystore_description
             )
 
-            GroupHeader(stringResource(R.string.patches_selection))
+            GroupHeader(stringResource(R.string.patches))
             GroupItem(
                 onClick = vm::importSelection,
-                headline = R.string.restore_patches_selection,
-                description = R.string.restore_patches_selection_description
+                headline = R.string.import_patch_selection,
+                description = R.string.import_patch_selection_description
             )
             GroupItem(
                 onClick = vm::exportSelection,
-                headline = R.string.backup_patches_selection,
-                description = R.string.backup_patches_selection_description
+                headline = R.string.export_patch_selection,
+                description = R.string.export_patch_selection_description
             )
             // TODO: allow resetting selection for specific bundle or package name.
             GroupItem(
                 onClick = vm::resetSelection,
-                headline = R.string.clear_patches_selection,
-                description = R.string.clear_patches_selection_description
+                headline = R.string.reset_patch_selection,
+                description = R.string.reset_patch_selection_description
             )
 
             var showPackageSelector by rememberSaveable {
@@ -158,7 +158,7 @@ fun ImportExportSettingsScreen(
 
             if (showPackageSelector)
                 PackageSelector(packages = packagesWithOptions) { selected ->
-                    selected?.let(vm::clearOptionsForPackage)
+                    selected?.let(vm::resetOptionsForPackage)
 
                     showPackageSelector = false
                 }
@@ -170,24 +170,23 @@ fun ImportExportSettingsScreen(
                     showBundleSelector = false
                 }
 
-            GroupHeader(stringResource(R.string.patch_options))
             // TODO: patch options import/export.
             GroupItem(
+                onClick = vm::resetOptions,
+                headline = R.string.patch_options_reset_all,
+                description = R.string.patch_options_reset_all_description,
+            )
+            GroupItem(
                 onClick = { showPackageSelector = true },
-                headline = R.string.patch_options_clear_package,
-                description = R.string.patch_options_clear_package_description
+                headline = R.string.patch_options_reset_package,
+                description = R.string.patch_options_reset_package_description
             )
             if (patchBundles.size > 1)
                 GroupItem(
                     onClick = { showBundleSelector = true },
-                    headline = R.string.patch_options_clear_bundle,
-                    description = R.string.patch_options_clear_bundle_description,
+                    headline = R.string.patch_options_reset_bundle,
+                    description = R.string.patch_options_reset_bundle_description,
                 )
-            GroupItem(
-                onClick = vm::resetOptions,
-                headline = R.string.patch_options_clear_all,
-                description = R.string.patch_options_clear_all_description,
-            )
         }
     }
 }
