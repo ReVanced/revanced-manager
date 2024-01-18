@@ -32,7 +32,7 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
@@ -44,7 +44,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SelectedAppInfoScreen(
-    onPatchClick: (SelectedApp, PatchesSelection, Options) -> Unit,
+    onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {

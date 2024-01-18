@@ -21,7 +21,7 @@ import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -43,7 +43,7 @@ class InstalledAppInfoViewModel(
 
     var appInfo: PackageInfo? by mutableStateOf(null)
         private set
-    var appliedPatches: PatchesSelection? by mutableStateOf(null)
+    var appliedPatches: PatchSelection? by mutableStateOf(null)
     var isMounted by mutableStateOf(rootInstaller.isAppMounted(installedApp.currentPackageName))
         private set
 

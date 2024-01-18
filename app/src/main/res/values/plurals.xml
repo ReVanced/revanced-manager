@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="patches_count">
+    <plurals name="patch_count">
         <item quantity="one">%d patch</item>
         <item quantity="other">%d patches</item>
-    </plurals>
-    <plurals name="applied_patches">
-        <item quantity="one">%d applied patch</item>
-        <item quantity="other">%d applied patches</item>
     </plurals>
     <plurals name="patches_applied">
         <item quantity="one">Applied %d patch</item>

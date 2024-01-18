@@ -83,22 +83,20 @@
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
-    <string name="patches_selection">Patches selection</string>
-    <string name="restore_patches_selection">Restore patches selections</string>
-    <string name="restore_patches_selection_description">Restore patches selection from a file</string>
-    <string name="restore_patches_selection_fail">Failed to restore patches selection: %s</string>
-    <string name="backup_patches_selection">Backup patches selections</string>
-    <string name="backup_patches_selection_description">Backup patches selection to a file</string>
-    <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
-    <string name="clear_patches_selection">Clear patches selection</string>
-    <string name="clear_patches_selection_description">Clear all patches selection</string>
-    <string name="patch_options">Patch options</string>
-    <string name="patch_options_clear_package">Clear patch options for package</string>
-    <string name="patch_options_clear_package_description">Resets patch options for a single package</string>
-    <string name="patch_options_clear_bundle">Clear patch options for bundle</string>
-    <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
-    <string name="patch_options_clear_all">Clear all patch options</string>
-    <string name="patch_options_clear_all_description">Resets all patch options</string>
+    <string name="import_patch_selection">Import patch selection</string>
+    <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
+    <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
+    <string name="export_patch_selection">Export patch selection</string>
+    <string name="export_patch_selection_description">Export patch selection from a JSON file</string>
+    <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
+    <string name="reset_patch_selection">Reset patch selection</string>
+    <string name="reset_patch_selection_description">Reset the stored patch selection</string>
+    <string name="patch_options_reset_package">Reset patch options for app</string>
+    <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
+    <string name="patch_options_reset_bundle">Resets patch options for bundle</string>
+    <string name="patch_options_reset_bundle_description">Resets patch options for all patches in a bundle</string>
+    <string name="patch_options_reset_all">Reset patch options</string>
+    <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="prefer_splits">Prefer split APK\'s</string>
     <string name="prefer_splits_description">Prefer split APK\'s instead of full APK\'s</string>
     <string name="prefer_universal">Prefer universal APK\'s</string>
@@ -211,8 +209,8 @@
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
 
-    <string name="patches_selector_sheet_filter_title">Filter</string>
-    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
+    <string name="patch_selector_sheet_filter_title">Filter</string>
+    <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>

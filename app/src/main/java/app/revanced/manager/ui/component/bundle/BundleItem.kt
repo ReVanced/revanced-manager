@@ -89,7 +89,7 @@ fun BundleItem(
         supportingContent = {
             state.patchBundleOrNull()?.patches?.size?.let { patchCount ->
                 Text(
-                    text = pluralStringResource(R.plurals.patches_count, patchCount, patchCount),
+                    text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
