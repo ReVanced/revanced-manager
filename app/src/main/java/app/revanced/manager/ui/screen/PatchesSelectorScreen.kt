@@ -257,7 +257,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!vm.allowExperimental) return@LazyColumnWithScrollbar
+                if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -366,7 +366,7 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
                             filterFlag = SHOW_UNSUPPORTED,
-                            supported = vm.allowExperimental
+                            supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),

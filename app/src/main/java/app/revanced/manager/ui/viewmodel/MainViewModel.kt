@@ -3,7 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.os.Build
 import android.util.Base64
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,15 +22,12 @@ import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
 import app.revanced.manager.network.api.ReVancedAPI
-import app.revanced.manager.network.utils.getOrThrow
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -134,7 +130,7 @@ class MainViewModel(
             prefs.api.update(api.removeSuffix("/"))
         }
         settings.experimentalPatchesEnabled?.let { allowExperimental ->
-            prefs.allowExperimental.update(allowExperimental)
+            prefs.disablePatchVersionCompatCheck.update(allowExperimental)
         }
         settings.patchesAutoUpdate?.let { autoUpdate ->
             with(patchBundleRepository) {
