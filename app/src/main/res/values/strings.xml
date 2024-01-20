@@ -67,8 +67,8 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
-    <string name="experimental_patches">Allow experimental patches</string>
-    <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
+    <string name="patch_compat_check">Disable version compatibility check</string>
+    <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>

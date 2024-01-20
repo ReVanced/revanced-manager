@@ -56,10 +56,10 @@ fun SelectedAppInfoScreen(
         vm.bundlesRepo.bundleInfoFlow(packageName, version)
     }.collectAsStateWithLifecycle(initialValue = emptyList())
 
-    val allowExperimental by vm.prefs.allowExperimental.getAsState()
+    val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
     val patches by remember {
         derivedStateOf {
-            vm.getPatches(bundles, allowExperimental)
+            vm.getPatches(bundles, allowIncompatiblePatches)
         }
     }
     val selectedPatchCount by remember {
@@ -99,7 +99,7 @@ fun SelectedAppInfoScreen(
                             vm.selectedApp,
                             vm.getCustomPatches(
                                 bundles,
-                                allowExperimental
+                                allowIncompatiblePatches
                             ),
                             vm.options
                         )

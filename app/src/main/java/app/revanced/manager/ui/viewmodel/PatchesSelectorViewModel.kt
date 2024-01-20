@@ -52,7 +52,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     var selectionWarningEnabled by mutableStateOf(true)
         private set
 
-    val allowExperimental = get<PreferencesManager>().allowExperimental.getBlocking()
+    val allowIncompatiblePatches = get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
     val bundlesFlow =
         get<PatchBundleRepository>().bundleInfoFlow(packageName, input.app.version)
 
@@ -63,7 +63,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
                 return@launch
             }
 
-            fun BundleInfo.hasDefaultPatches() = patchSequence(allowExperimental).any { it.include }
+            fun BundleInfo.hasDefaultPatches() = patchSequence(allowIncompatiblePatches).any { it.include }
 
             // Don't show the warning if there are no default patches.
             selectionWarningEnabled = bundlesFlow.first().any(BundleInfo::hasDefaultPatches)
@@ -100,13 +100,13 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     private suspend fun generateDefaultSelection(): PersistentPatchSelection {
         val bundles = bundlesFlow.first()
         val generatedSelection =
-            bundles.toPatchSelection(allowExperimental) { _, patch -> patch.include }
+            bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
 
         return generatedSelection.toPersistentPatchSelection()
     }
 
     fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
-        bundle.patchSequence(allowExperimental).any { patch ->
+        bundle.patchSequence(allowIncompatiblePatches).any { patch ->
             isSelected(bundle.uid, patch)
         }
     }
