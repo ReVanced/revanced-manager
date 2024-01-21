@@ -335,13 +335,14 @@ class PatcherAPI {
                       Navigator.pop(context);
                     },
                     child: I18nText('cancelButton'),
+                  )
+                else
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: I18nText('cancelButton'),
                   ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: I18nText('cancelButton'),
-                ),
                 if (isFixable)
                   FilledButton(
                     onPressed: () async {
