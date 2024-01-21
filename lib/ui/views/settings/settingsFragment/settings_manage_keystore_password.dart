@@ -41,9 +41,10 @@ class SManageKeystorePassword extends BaseViewModel {
                 onChanged: (value) => notifyListeners(),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  labelText: I18nText(
+                  labelText: FlutterI18n.translate(
+                    context,
                     'settingsView.selectKeystorePassword',
-                  ).toString(),
+                  ),
                 ),
               ),
             ],
