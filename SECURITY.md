@@ -72,7 +72,7 @@ If a vulnerability is confirmed and accepted, you can join our [Discord](https:/
 
 | Version | Branch      | Supported          |
 | ------- | ------------|------------------- |
-| v1.18.0 | main        | :white_check_mark: |
+| v1.19.0 | main        | :white_check_mark: |
 | latest  | dev         | :white_check_mark: |
 | latest  | compose-dev | :white_check_mark: |
 
