@@ -52,7 +52,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     var selectionWarningEnabled by mutableStateOf(true)
         private set
 
-    val allowIncompatiblePatches = get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
+    val allowIncompatiblePatches =
+        get<PreferencesManager>().disablePatchVersionCompatCheck.getBlocking()
     val bundlesFlow =
         get<PatchBundleRepository>().bundleInfoFlow(packageName, input.app.version)
 
@@ -63,7 +64,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
                 return@launch
             }
 
-            fun BundleInfo.hasDefaultPatches() = patchSequence(allowIncompatiblePatches).any { it.include }
+            fun BundleInfo.hasDefaultPatches() =
+                patchSequence(allowIncompatiblePatches).any { it.include }
 
             // Don't show the warning if there are no default patches.
             selectionWarningEnabled = bundlesFlow.first().any(BundleInfo::hasDefaultPatches)
@@ -179,7 +181,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     }
 
     fun resetOptions(bundle: Int, patch: PatchInfo) {
-        patchOptions[bundle]?.remove(patch.name)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
+        patchOptions[bundle] = patchOptions[bundle]?.remove(patch.name) ?: return
     }
 
     fun dismissDialogs() {
