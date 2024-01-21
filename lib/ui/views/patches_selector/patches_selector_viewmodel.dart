@@ -10,7 +10,6 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/patchesSelectorView/patch_item.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -25,6 +24,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
       locator<PatcherViewModel>().selectedPatches;
   PatchedApplication? selectedApp = locator<PatcherViewModel>().selectedApp;
   String? patchesVersion = '';
+
   bool isDefaultPatchesRepo() {
     return _managerAPI.getPatchesRepo() == 'revanced/revanced-patches';
   }
@@ -48,6 +48,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
     });
     currentSelection.clear();
     currentSelection.addAll(selectedPatches);
+
     notifyListeners();
   }
 
@@ -92,18 +93,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.notice),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(
           t.patchesSelectorView.setRequiredOption(
             patches: patches.map((patch) => '• $patch').join('\n'),
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -127,7 +127,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         title: Text(t.warning),
         content: Text(
           t.patchItem.patchesChangeWarningDialogText,
@@ -137,18 +136,17 @@ class PatchesSelectorViewModel extends BaseViewModel {
           ),
         ),
         actions: [
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.okButton),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.okButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.patchItem.patchesChangeWarningDialogButton),
+          FilledButton(
             onPressed: () {
               Navigator.of(context)
                 ..pop()
                 ..pop();
             },
+            child: Text(t.patchItem.patchesChangeWarningDialogButton),
           ),
         ],
       ),
@@ -182,10 +180,6 @@ class PatchesSelectorViewModel extends BaseViewModel {
   void selectPatches() {
     locator<PatcherViewModel>().selectedPatches = selectedPatches;
     saveSelectedPatches();
-    if (_managerAPI.ctx != null) {
-      Navigator.pop(_managerAPI.ctx!);
-      _managerAPI.ctx = null;
-    }
     locator<PatcherViewModel>().notifyListeners();
   }
 
@@ -274,14 +268,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   bool isPatchNew(Patch patch) {
-    final List<Patch> savedPatches =
-        _managerAPI.getSavedPatches(selectedApp!.packageName);
-    if (savedPatches.isEmpty) {
-      return false;
-    } else {
-      return !savedPatches
-          .any((p) => p.getSimpleName() == patch.getSimpleName());
-    }
+    return locator<PatcherViewModel>().isPatchNew(patch);
   }
 
   List<String> getSupportedVersions(Patch patch) {

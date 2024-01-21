@@ -27,12 +27,12 @@ bool hasUnsupportedRequiredOption(List<Option> options, Patch patch) {
   for (final Option option in options) {
     if (option.required &&
         option.value == null &&
-        locator<ManagerAPI>()
-                .getPatchOption(
-                  locator<PatcherViewModel>().selectedApp!.packageName,
-                  patch.name,
-                  option.key,
-                ) == null) {
+        locator<ManagerAPI>().getPatchOption(
+              locator<PatcherViewModel>().selectedApp!.packageName,
+              patch.name,
+              option.key,
+            ) ==
+            null) {
       requiredOptionsType.add(option.valueType);
     }
   }
@@ -52,7 +52,8 @@ List<Option> getNullRequiredOptions(List<Patch> patches, String packageName) {
           patchOption.required &&
           patchOption.value == null &&
           locator<ManagerAPI>()
-                  .getPatchOption(packageName, patch.name, patchOption.key) == null) {
+                  .getPatchOption(packageName, patch.name, patchOption.key) ==
+              null) {
         requiredNullOptions.add(patchOption);
       }
     }

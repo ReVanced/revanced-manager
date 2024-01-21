@@ -175,7 +175,7 @@ class AppInfoView extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
-                                            t.appInfoView.unpatchButton,
+                                            t.appInfoView.unmountButton,
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   .colorScheme
@@ -218,8 +218,8 @@ class AppInfoView extends StatelessWidget {
                         ),
                       ),
                       subtitle: app.isRooted
-                          ? Text(t.appInfoView.rootTypeLabel)
-                          : Text(t.appInfoView.nonRootTypeLabel),
+                          ? Text(t.appInfoView.mountTypeLabel)
+                          : Text(t.appInfoView.regularTypeLabel),
                     ),
                     const SizedBox(height: 4),
                     ListTile(

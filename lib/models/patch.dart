@@ -75,9 +75,8 @@ class Option {
     if (json['valueType'] == null) {
       final type = json['optionClassType'];
       if (type is String) {
-        json['valueType'] = type
-            .replaceAll('PatchOption', '')
-            .replaceAll('List', 'Array');
+        json['valueType'] =
+            type.replaceAll('PatchOption', '').replaceAll('List', 'Array');
 
         json['optionClassType'] = null;
       }

@@ -3,7 +3,6 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_keystore_password.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 
 final _settingsViewModel = SettingsViewModel();
 
@@ -130,20 +129,18 @@ class SExportSection extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(dialogTitle),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(dialogText),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.noButton),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.noButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.yesButton),
+          FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
               dialogAction(),
             },
+            child: Text(t.yesButton),
           ),
         ],
       ),
@@ -155,20 +152,18 @@ class SExportSection extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.settingsView.regenerateKeystoreDialogTitle),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(t.settingsView.regenerateKeystoreDialogText),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.noButton),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.noButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.yesButton),
+          FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
               _settingsViewModel.deleteKeystore(),
             },
+            child: Text(t.yesButton),
           ),
         ],
       ),

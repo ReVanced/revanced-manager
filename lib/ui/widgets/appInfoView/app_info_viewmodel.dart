@@ -12,7 +12,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class AppInfoViewModel extends BaseViewModel {
@@ -26,18 +25,17 @@ class AppInfoViewModel extends BaseViewModel {
     PatchedApplication app,
     bool onlyUnpatch,
   ) async {
-    bool isUninstalled = true;
-    if (app.isRooted) {
-      final bool hasRootPermissions = await _rootAPI.hasRootPermissions();
-      if (hasRootPermissions) {
-        await _rootAPI.deleteApp(app.packageName, app.apkFilePath);
-        if (!onlyUnpatch) {
-          await DeviceApps.uninstallApp(app.packageName);
-        }
-      }
-    } else {
+    var isUninstalled = onlyUnpatch;
+
+    if (!onlyUnpatch) {
+      // TODO(Someone): Wait for the app to uninstall successfully.
       isUninstalled = await DeviceApps.uninstallApp(app.packageName);
     }
+
+    if (isUninstalled && app.isRooted && await _rootAPI.hasRootPermissions()) {
+      await _rootAPI.uninstall(app.packageName);
+    }
+
     if (isUninstalled) {
       await _managerAPI.deletePatchedApp(app);
       locator<HomeViewModel>().initialize(context);
@@ -67,12 +65,11 @@ class AppInfoViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(t.appInfoView.rootDialogTitle),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: Text(t.appInfoView.rootDialogText),
           actions: <Widget>[
-            CustomMaterialButton(
-              label: Text(t.okButton),
+            FilledButton(
               onPressed: () => Navigator.of(context).pop(),
+              child: Text(t.okButton),
             ),
           ],
         ),
@@ -82,33 +79,46 @@ class AppInfoViewModel extends BaseViewModel {
         return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text(
-              t.appInfoView.unpatchButton,
-            ),
-            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            content: Text(
-              t.appInfoView.unpatchDialogText,
-            ),
+            title: Text(t.appInfoView.unmountButton),
+            content: Text(t.appInfoView.unmountDialogText),
             actions: <Widget>[
-              CustomMaterialButton(
-                isFilled: false,
-                label: Text(t.noButton),
+              TextButton(
                 onPressed: () => Navigator.of(context).pop(),
+                child: Text(t.noButton),
               ),
-              CustomMaterialButton(
-                label: Text(t.yesButton),
+              FilledButton(
                 onPressed: () {
-                  uninstallApp(context, app, onlyUnpatch);
+                  uninstallApp(context, app, true);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
+                child: Text(t.yesButton),
               ),
             ],
           ),
         );
       } else {
-        uninstallApp(context, app, onlyUnpatch);
-        Navigator.of(context).pop();
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(t.appInfoView.uninstallButton),
+            content: Text(t.appInfoView.uninstallDialogText),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(t.noButton),
+              ),
+              FilledButton(
+                onPressed: () {
+                  uninstallApp(context, app, false);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: Text(t.yesButton),
+              ),
+            ],
+          ),
+        );
       }
     }
   }
@@ -131,14 +141,13 @@ class AppInfoViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.appInfoView.appliedPatchesLabel),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Text(getAppliedPatchesString(app.appliedPatches)),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.okButton),
           ),
         ],
       ),

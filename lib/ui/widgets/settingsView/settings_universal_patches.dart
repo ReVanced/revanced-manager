@@ -3,6 +3,7 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_switch_list_tile.dart';
 
 class SUniversalPatches extends StatefulWidget {
   const SUniversalPatches({super.key});
@@ -18,7 +19,7 @@ final _patcherViewModel = PatcherViewModel();
 class _SUniversalPatchesState extends State<SUniversalPatches> {
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
+    return HapticSwitchListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: Text(
         t.settingsView.universalPatchesLabel,

@@ -5,6 +5,7 @@ import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -15,14 +16,14 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => WillPopScope(
+      builder: (context, model, child) => PopScope(
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
           child: Scaffold(
             floatingActionButton: Visibility(
               visible: !model.isPatching && !model.hasErrors,
-              child: FloatingActionButton.extended(
+              child: HapticFloatingActionButtonExtended(
                 label: Text(
                   model.isInstalled
                       ? t.installerView.openButton
@@ -105,7 +106,7 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onWillPop: () => model.onWillPop(context),
+        onPopInvoked: (bool didPop) => model.onWillPop(context),
       ),
     );
   }

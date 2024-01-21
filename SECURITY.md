@@ -58,40 +58,21 @@
    Continuing the legacy of Vanced
 </p>
 
-# 💊 ReVanced Manager
+# 🔒 Security Policy
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/ReVanced/revanced-manager)](https://github.com/ReVanced/revanced-manager/commits "")
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/ReVanced/revanced-manager)](https://github.com/ReVanced/revanced-manager/commits "")
+This document describes how to report security vulnerabilities for ReVanced Manager.
 
-ReVanced Manager is an Android application that uses ReVanced Patcher to add, remove, and modify existing functionalities in Android applications.
+## 🚨 Reporting a Vulnerability
 
-## 💪 Features
+Please open an issue in our [advisory tracker](https://github.com/ReVanced/revanced-manager/security/advisories/new) or reach out privately to us on [Discord](https://discord.gg/revanced).
 
-Some of the features we provide are:
+If a vulnerability is confirmed and accepted, you can join our [Discord](https://discord.gg/revanced) server to receive a special contributor role.
 
-* 📱 **Portable**: ReVanced Patcher that fit in your pocket;
-* 🤗 **Intuitive UI**: Help you manage your patched applications with easy-to-use interface;
-* 🛠️ **Customization**: Patch with third-party sources;
-* ✨ And a **lot more!**
+### ⏳ Supported Versions
 
-## 🔽 Download
+| Version | Branch      | Supported          |
+| ------- | ------------|------------------- |
+| v1.19.0 | main        | :white_check_mark: |
+| latest  | dev         | :white_check_mark: |
+| latest  | compose-dev | :white_check_mark: |
 
-You can get ReVanced Manager by downloading from [ReVanced site](https://revanced.app/download) or [GitHub releases](https://github.com/ReVanced/revanced-manager/releases).
-
-## 📚 Everything else
-
-### 📄 Documentation
-
-Documentation on how to use the application is available [here](/docs/README.md).
-
-### 👋 Contributing
-
-Thank you for considering contributing to ReVanced Manager, you can find the contribution guidelines [here](/CONTRIBUTING.md).
-
-### 🔴 Issues
-
-For suggestions and bug reports, open an issue [here](https://github.com/ReVanced/revanced-manager/issues/choose).
-
-## ⚖️ License
-
-ReVanced Manager adopts the [GNU General Public License 3.0](/LICENSE), [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3): You may copy, distribute and modify the software as long as you track changes/dates in source files. Any modifications to or software including (via compiler) GPL-licensed code must also be made available under the GPL along with build & install instructions.

@@ -8,7 +8,6 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
@@ -88,11 +87,11 @@ class SUpdateLanguage extends BaseViewModel {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: Text(t.okButton),
           ),
         ],
       ),

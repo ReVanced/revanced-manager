@@ -4,8 +4,8 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_custom_card.dart';
 
 // ignore: must_be_immutable
 class PatchItem extends StatefulWidget {
@@ -57,7 +57,7 @@ class _PatchItemState extends State<PatchItem> {
                 widget._managerAPI.isVersionCompatibilityCheckEnabled() == true
             ? 0.5
             : 1,
-        child: CustomCard(
+        child: HapticCustomCard(
           padding: EdgeInsets.only(
             top: 12,
             bottom: 16,
@@ -89,7 +89,7 @@ class _PatchItemState extends State<PatchItem> {
             children: [
               Transform.scale(
                 scale: 1.2,
-                child: Checkbox(
+                child: HapticCheckbox(
                   value: widget.isSelected,
                   activeColor: Theme.of(context).colorScheme.primary,
                   checkColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -216,7 +216,6 @@ class _PatchItemState extends State<PatchItem> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.warning),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(
           t.patchItem.unsupportedDialogText(
             packageVersion: widget.packageVersion,
@@ -225,9 +224,9 @@ class _PatchItemState extends State<PatchItem> {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -239,14 +238,13 @@ class _PatchItemState extends State<PatchItem> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.notice),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(
           t.patchItem.unsupportedRequiredOption,
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.okButton),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
+import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/ui/theme/dynamic_theme_builder.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,13 @@ Future main() async {
   final String repoUrl = locator<ManagerAPI>().getRepoUrl();
   locator<GithubAPI>().initialize(repoUrl);
   tz.initializeTimeZones();
+
+  // TODO(aAbed): remove in the future, keep it for now during migration.
+  final rootAPI = RootAPI();
+  if (await rootAPI.hasRootPermissions()) {
+    await rootAPI.removeOrphanedFiles();
+  }
+
   prefs = await SharedPreferences.getInstance();
 
   final managerAPI = locator<ManagerAPI>();

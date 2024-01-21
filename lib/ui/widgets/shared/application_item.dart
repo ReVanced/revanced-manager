@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:timeago/timeago.dart';
 
 class ApplicationItem extends StatefulWidget {
@@ -80,9 +79,9 @@ class _ApplicationItemState extends State<ApplicationItem> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    CustomMaterialButton(
-                      label: Text(t.applicationItem.infoButton),
+                    FilledButton(
                       onPressed: widget.onPressed,
+                      child: Text(t.applicationItem.infoButton),
                     ),
                   ],
                 ),

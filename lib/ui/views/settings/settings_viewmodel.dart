@@ -13,7 +13,6 @@ import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_language.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -53,7 +52,6 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: Text(t.warning),
           content: Text(
             t.settingsView.enablePatchesSelectionWarningText,
@@ -63,20 +61,19 @@ class SettingsViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              isFilled: false,
-              label: Text(t.yesButton),
+            TextButton(
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
                 _managerAPI.setPatchesChangeEnabled(true);
                 Navigator.of(context).pop();
               },
+              child: Text(t.yesButton),
             ),
-            CustomMaterialButton(
-              label: Text(t.noButton),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: Text(t.noButton),
             ),
           ],
         ),
@@ -85,7 +82,6 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: Text(t.warning),
           content: Text(
             t.settingsView.disablePatchesSelectionWarningText,
@@ -95,21 +91,20 @@ class SettingsViewModel extends BaseViewModel {
             ),
           ),
           actions: [
-            CustomMaterialButton(
-              isFilled: false,
-              label: Text(t.noButton),
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: Text(t.noButton),
             ),
-            CustomMaterialButton(
-              label: Text(t.yesButton),
+            FilledButton(
               onPressed: () {
                 _managerAPI.setChangingToggleModified(true);
                 _patchesSelectorViewModel.selectDefaultPatches();
                 _managerAPI.setPatchesChangeEnabled(false);
                 Navigator.of(context).pop();
               },
+              child: Text(t.yesButton),
             ),
           ],
         ),
@@ -140,12 +135,13 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   Future<void>? showRequireSuggestedAppVersionDialog(
-      BuildContext context, bool value,) {
+    BuildContext context,
+    bool value,
+  ) {
     if (!value) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: Text(t.warning),
           content: Text(
             t.settingsView.requireSuggestedAppVersionDialogText,
@@ -153,22 +149,20 @@ class SettingsViewModel extends BaseViewModel {
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
-            
           ),
           actions: [
-            CustomMaterialButton(
-              isFilled: false,
-              label: Text(t.yesButton),
+            TextButton(
               onPressed: () {
                 _managerAPI.enableRequireSuggestedAppVersionStatus(false);
                 Navigator.of(context).pop();
               },
+              child: Text(t.yesButton),
             ),
-            CustomMaterialButton(
-              label: Text(t.noButton),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: Text(t.noButton),
             ),
           ],
         ),
@@ -203,7 +197,7 @@ class SettingsViewModel extends BaseViewModel {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await FlutterFileDialog.saveFile(
-            params: SaveFileDialogParams(
+          params: SaveFileDialogParams(
             sourceFilePath: outFile.path,
             fileName: 'selected_patches_$dateTime.json',
           ),
@@ -254,7 +248,7 @@ class SettingsViewModel extends BaseViewModel {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
         await FlutterFileDialog.saveFile(
-            params: SaveFileDialogParams(
+          params: SaveFileDialogParams(
             sourceFilePath: outFile.path,
             fileName: 'keystore_$dateTime.keystore',
           ),

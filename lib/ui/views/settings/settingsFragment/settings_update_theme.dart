@@ -7,7 +7,8 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_radio_list_tile.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_switch_list_tile.dart';
 
 class SUpdateThemeUI extends StatefulWidget {
   const SUpdateThemeUI({super.key});
@@ -33,14 +34,14 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          trailing: CustomMaterialButton(
-            label: getThemeModeName(),
+          trailing: FilledButton(
             onPressed: () => {showThemeDialog(context)},
+            child: getThemeModeName(),
           ),
           onTap: () => {showThemeDialog(context)},
         ),
         if (managerAPI.isDynamicThemeAvailable)
-          SwitchListTile(
+          HapticSwitchListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
             title: Text(
               t.settingsView.dynamicThemeLabel,
@@ -116,7 +117,6 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
         title: Text(t.settingsView.themeModeLabel),
         icon: const Icon(Icons.palette),
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: ValueListenableBuilder(
             valueListenable: newTheme,
@@ -125,7 +125,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  RadioListTile(
+                  HapticRadioListTile(
                     title: Text(t.settingsView.systemThemeLabel),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 0,
@@ -134,7 +134,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                       newTheme.value = value!;
                     },
                   ),
-                  RadioListTile(
+                  HapticRadioListTile(
                     title: Text(t.settingsView.lightThemeLabel),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 1,
@@ -143,7 +143,7 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
                       newTheme.value = value!;
                     },
                   ),
-                  RadioListTile(
+                  HapticRadioListTile(
                     title: Text(t.settingsView.darkThemeLabel),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     value: 2,
@@ -158,19 +158,18 @@ class _SUpdateThemeUIState extends State<SUpdateThemeUI> {
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.cancelButton),
+          TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
+            child: Text(t.cancelButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () {
               setThemeMode(context, newTheme.value);
               Navigator.of(context).pop();
             },
+            child: Text(t.okButton),
           ),
         ],
       ),

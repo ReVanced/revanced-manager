@@ -13,7 +13,6 @@ import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:revanced_manager/utils/about_info.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
@@ -24,6 +23,7 @@ class PatcherViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
+  Set<String> savedPatchNames = {};
   PatchedApplication? selectedApp;
   BuildContext? ctx;
   List<Patch> selectedPatches = [];
@@ -55,26 +55,24 @@ class PatcherViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(t.notice),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: Text(
             t.patcherView.removedPatchesWarningDialogText(
               patches: removedPatches.join('\n'),
             ),
           ),
           actions: <Widget>[
-            CustomMaterialButton(
-              isFilled: false,
-              label: Text(t.noButton),
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: Text(t.noButton),
             ),
-            CustomMaterialButton(
-              label: Text(t.yesButton),
+            FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 showArmv7WarningDialog(context);
               },
+              child: Text(t.yesButton),
             ),
           ],
         ),
@@ -98,22 +96,20 @@ class PatcherViewModel extends BaseViewModel {
       context: context ?? ctx,
       builder: (context) => AlertDialog(
         title: Text(t.notice),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(t.patcherView.requiredOptionDialogText),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.cancelButton),
+          TextButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
+            child: Text(t.cancelButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () => {
               Navigator.pop(context),
               navigateToPatchesSelector(),
             },
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -131,20 +127,18 @@ class PatcherViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(t.warning),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           content: Text(t.patcherView.armv7WarningDialogText),
           actions: <Widget>[
-            CustomMaterialButton(
-              label: Text(t.noButton),
+            FilledButton(
               onPressed: () => Navigator.of(context).pop(),
+              child: Text(t.noButton),
             ),
-            CustomMaterialButton(
-              label: Text(t.yesButton),
-              isFilled: false,
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
               },
+              child: Text(t.yesButton),
             ),
           ],
         ),
@@ -172,7 +166,8 @@ class PatcherViewModel extends BaseViewModel {
 
     if (suggestedVersion.isNotEmpty) {
       await openDefaultBrowser(
-          '${selectedApp!.packageName} apk version v$suggestedVersion');
+        '${selectedApp!.packageName} apk version v$suggestedVersion',
+      );
     } else {
       await openDefaultBrowser('${selectedApp!.packageName} apk');
     }
@@ -210,6 +205,20 @@ class PatcherViewModel extends BaseViewModel {
     }
   }
 
+  bool isPatchNew(Patch patch) {
+    if (savedPatchNames.isEmpty) {
+      savedPatchNames = _managerAPI
+          .getSavedPatches(selectedApp!.packageName)
+          .map((p) => p.name)
+          .toSet();
+    }
+    if (savedPatchNames.isEmpty) {
+      return false;
+    } else {
+      return !savedPatchNames.contains(patch.name);
+    }
+  }
+
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
     removedPatches.clear();
@@ -232,6 +241,14 @@ class PatcherViewModel extends BaseViewModel {
           .selectedPatches
           .removeWhere((patch) => patch.compatiblePackages.isEmpty);
     }
+    this.selectedPatches.addAll(
+          patches.where(
+            (patch) =>
+                isPatchNew(patch) &&
+                !patch.excluded &&
+                !this.selectedPatches.contains(patch),
+          ),
+        );
     final usedPatches = _managerAPI.getUsedPatches(selectedApp!.packageName);
     for (final patch in usedPatches) {
       if (!patches.any((p) => p.name == patch.name)) {

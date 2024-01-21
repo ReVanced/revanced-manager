@@ -4,15 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
-import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/custom_text_field.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_material_button.dart';
 import 'package:stacked/stacked.dart';
 
 class SManageApiUrl extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  final Toast _toast = locator<Toast>();
 
   final TextEditingController _apiUrlController = TextEditingController();
 
@@ -33,43 +29,44 @@ class SManageApiUrl extends BaseViewModel {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              CustomTextField(
-                leadingIcon: Icon(
-                  Icons.api_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                inputController: _apiUrlController,
-                label: Text(t.settingsView.selectApiURL),
-                hint: apiUrl,
+              TextField(
+                controller: _apiUrlController,
+                autocorrect: false,
                 onChanged: (value) => notifyListeners(),
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.api_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  border: const OutlineInputBorder(),
+                  labelText: t.settingsView.selectApiURL,
+                  hintText: apiUrl,
+                ),
               ),
             ],
           ),
         ),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.cancelButton),
+          TextButton(
             onPressed: () {
               _apiUrlController.clear();
               Navigator.of(context).pop();
             },
+            child: Text(t.cancelButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.okButton),
+          FilledButton(
             onPressed: () {
               String apiUrl = _apiUrlController.text;
               if (!apiUrl.startsWith('https')) {
                 apiUrl = 'https://$apiUrl';
               }
               _managerAPI.setApiUrl(apiUrl);
-              _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context).pop();
             },
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -81,23 +78,20 @@ class SManageApiUrl extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.settingsView.sourcesResetDialogTitle),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(t.settingsView.apiURLResetDialogText),
         actions: <Widget>[
-          CustomMaterialButton(
-            isFilled: false,
-            label: Text(t.noButton),
+          TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            child: Text(t.noButton),
           ),
-          CustomMaterialButton(
-            label: Text(t.yesButton),
+          FilledButton(
             onPressed: () {
               _managerAPI.setApiUrl('');
-              _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context)
                 ..pop()
                 ..pop();
             },
+            child: Text(t.yesButton),
           ),
         ],
       ),

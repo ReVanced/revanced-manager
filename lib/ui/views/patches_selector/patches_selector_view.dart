@@ -3,6 +3,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -36,7 +37,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
           visible: model.patches.isNotEmpty,
-          child: FloatingActionButton.extended(
+          child: HapticFloatingActionButtonExtended(
             label: Row(
               children: <Widget>[
                 Text(t.patchesSelectorView.doneButton),
@@ -144,7 +145,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                           Row(
                             children: [
                               ActionChip(
-                                label: Text(t.patchesSelectorView.defaultText),
+                                label: Text(t.patchesSelectorView.defaultChip),
                                 tooltip: t.patchesSelectorView.defaultTooltip,
                                 onPressed: () {
                                   if (_managerAPI.isPatchesChangeEnabled()) {
@@ -156,7 +157,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                               const SizedBox(width: 8),
                               ActionChip(
-                                label: Text(t.patchesSelectorView.none),
+                                label: Text(t.patchesSelectorView.noneChip),
                                 tooltip: t.patchesSelectorView.noneTooltip,
                                 onPressed: () {
                                   if (_managerAPI.isPatchesChangeEnabled()) {
@@ -185,9 +186,13 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     return Container();
                                   }
                                 }),
-                                if (model.getQueriedPatches(_query).any((patch) => !model.isPatchNew(patch) && patch.compatiblePackages.isNotEmpty))
+                                if (model.getQueriedPatches(_query).any(
+                                      (patch) =>
+                                          !model.isPatchNew(patch) &&
+                                          patch.compatiblePackages.isNotEmpty,
+                                    ))
                                   model.getPatchCategory(
-                                    context, 
+                                    context,
                                     t.patchesSelectorView.patches,
                                   ),
                               ],
