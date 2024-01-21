@@ -10,6 +10,7 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -53,7 +54,10 @@ class DashboardViewModel(
             R.string.source_download_fail,
             RemotePatchBundle.updateFailMsg
         ) {
-            bundle.update()
+            if (bundle.update())
+                app.toast(app.getString(R.string.bundle_update_success, bundle.name))
+            else
+                app.toast(app.getString(R.string.bundle_update_unavailable, bundle.name))
         }
     }
 }
