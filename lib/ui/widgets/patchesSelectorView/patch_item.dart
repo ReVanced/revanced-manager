@@ -4,7 +4,6 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_custom_card.dart';
 
