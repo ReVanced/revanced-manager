@@ -21,7 +21,6 @@ linter:
     - always_declare_return_types
     - require_trailing_commas
     - always_put_control_body_on_new_line
-    - always_require_non_null_named_parameters
     - always_use_package_imports # we do this commonly
     - annotate_overrides
     - avoid_bool_literals_in_conditional_expressions
@@ -40,8 +39,6 @@ linter:
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
-    - avoid_returning_null
-    - avoid_returning_null_for_future
     - avoid_returning_null_for_void
     - avoid_setters_without_getters
     - avoid_shadowing_type_parameters
