@@ -126,6 +126,7 @@ linter:
     - slash_for_doc_comments
     - sort_child_properties_last
     - sort_constructors_first
+    - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
