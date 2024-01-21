@@ -16,7 +16,6 @@ import compose.icons.fontawesomeicons.brands.Discord
 import compose.icons.fontawesomeicons.brands.Github
 import compose.icons.fontawesomeicons.brands.Reddit
 import compose.icons.fontawesomeicons.brands.Telegram
-import compose.icons.fontawesomeicons.brands.Twitter
 import compose.icons.fontawesomeicons.brands.XTwitter
 import compose.icons.fontawesomeicons.brands.Youtube
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +45,7 @@ class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
             "GitHub" to FontAwesomeIcons.Brands.Github,
             "Reddit" to FontAwesomeIcons.Brands.Reddit,
             "Telegram" to FontAwesomeIcons.Brands.Telegram,
-            "Twitter" to FontAwesomeIcons.Brands.Twitter,
+            "Twitter" to FontAwesomeIcons.Brands.XTwitter,
             "X" to FontAwesomeIcons.Brands.XTwitter,
             "YouTube" to FontAwesomeIcons.Brands.Youtube,
         )
