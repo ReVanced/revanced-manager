@@ -42,8 +42,8 @@ jobs:
 
       - name: Bump pubspec version
         run: |
-          IFS='.' read -r -a nums <<< "${RELEASE_VERSION/-dev/}.0"
           VERSION=$(echo "${RELEASE_VERSION}" | sed 's/v//')
+          IFS='.' read -r -a nums <<< "${VERSION/-dev/}.0"
           VERSIONCODE=$((nums[0] * 100000000 + nums[1] * 100000 + nums[2] * 100 + nums[3]))
           sed -i "/^version/c\\version: $VERSION+$VERSIONCODE" pubspec.yaml
 
@@ -54,11 +54,6 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build with Flutter
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
         run: flutter build apk
 
       - name: Sign APK
@@ -72,7 +67,7 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
       - name: Rename APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-v${{ env.RELEASE_VERSION }}.apk
+        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
       
       - name: Publish release APK
         env:
