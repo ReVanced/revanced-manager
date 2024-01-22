@@ -42,8 +42,8 @@ jobs:
 
       - name: Bump pubspec version
         run: |
-          IFS='.' read -r -a nums <<< "${RELEASE_VERSION/-dev/}.0"
           VERSION=$(echo "${RELEASE_VERSION}" | sed 's/v//')
+          IFS='.' read -r -a nums <<< "${VERSION/-dev/}.0"
           VERSIONCODE=$((nums[0] * 100000000 + nums[1] * 100000 + nums[2] * 100 + nums[3]))
           sed -i "/^version/c\\version: $VERSION+$VERSIONCODE" pubspec.yaml
 
