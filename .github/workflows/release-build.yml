@@ -1,29 +1,57 @@
 name: "Release Build"
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - "v*"
-
+    branches:
+      - main
+      - dev
+      
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: "17"
           distribution: "zulu"
+
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: npm-${{ hashFiles('package-lock.json') }}
+
+      - name: Setup semantic-release
+        run: npm install
+
+      - name: Get version code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release --extends ./.releaserc.getversion.json --no-ci --dry-run
+          echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
+
+      - name: Bump pubspec version
+        run: |
+          IFS='.' read -r -a nums <<< "${RELEASE_VERSION/-dev/}.0"
+          VERSIONCODE=$((nums[0] * 100000000 + nums[1] * 100000 + nums[2] * 100 + nums[3]))
+          sed -i "/^version/c\\version: ${{ env.RELEASE_VERSION }}+$VERSIONCODE" pubspec.yaml
+
       - name: Set up Flutter
         run: flutter pub get
+
       - name: Generate files with Builder
         run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Build with Flutter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -31,6 +59,7 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
         run: flutter build apk
+
       - name: Sign APK
         id: sign_apk
         uses: ilharp/sign-android-release@v1
@@ -40,11 +69,11 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-      - name: Add version to APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
+
+      - name: Rename APK
+        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-v${{ env.RELEASE_VERSION }}.apk
+      
       - name: Publish release APK
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: revanced-manager-${{ env.RELEASE_VERSION }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release --extends ./.releaserc.release.json
