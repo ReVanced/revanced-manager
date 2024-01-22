@@ -54,11 +54,6 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build with Flutter
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
         run: flutter build apk
 
       - name: Sign APK
@@ -72,7 +67,7 @@ jobs:
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
       - name: Rename APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-v${{ env.RELEASE_VERSION }}.apk
+        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
       
       - name: Publish release APK
         env:
