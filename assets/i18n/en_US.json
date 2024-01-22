@@ -72,22 +72,21 @@
         "widgetTitle": "Patcher",
         "patchButton": "Patch",
 
-        "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Proceed anyways?",
+        "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Continue anyways?",
 
-        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nProceed anyways?",
+        "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n{patches}\n\nContinue anyways?",
         "requiredOptionDialogText" : "Some patch options have to be set."
     },
     "appSelectorCard": {
-        "widgetTitle": "Select an application",
-        "widgetTitleSelected": "Selected application",
-        "widgetSubtitle": "No application selected",
+        "widgetTitle": "Select an app",
+        "widgetTitleSelected": "Selected app",
+        "widgetSubtitle": "No app selected",
 
         "noAppsLabel": "No applications found",
-        "notInstalled":"App not installed",
 
         "currentVersion": "Current",
         "suggestedVersion": "Suggested",
-        "allVersions": "All versions"
+        "anyVersion": "Any version"
     },
     "patchSelectorCard": {
         "widgetTitle": "Select patches",
@@ -101,8 +100,8 @@
         "widgetSubtitle": "We are online!"
     },
     "appSelectorView": {
-        "viewTitle": "Select an application",
-        "searchBarHint": "Search applications",
+        "viewTitle": "Select an app",
+        "searchBarHint": "Search app",
 
         "storageButton": "Storage",
         "selectFromStorageButton": "Select from storage",
@@ -111,7 +110,7 @@
 
         "downloadToast": "Download function is not available yet",
 
-        "requireSuggestedAppVersionDialogText": "The version of the app you have selected does not match the suggested version. Please select the app that matches the suggested version.\n\nSelected version: v{selected}\nSuggested version: v{suggested}\n\nTo proceed anyway, disable \"Require suggested app version\" in the settings.",
+        "requireSuggestedAppVersionDialogText": "The version of the app you have selected does not match the suggested version which can lead to unexpected issues. Please use the suggested version.\n\nSelected version: {selected}\nSuggested version: {suggested}\n\nTo continue anyway, disable \"Require suggested app version\" in the settings.",
 
         "featureNotAvailable": "Feature not implemented",
         "featureNotAvailableText": "This application is a split APK and cannot be selected. Unfortunately, this feature is only available for rooted users at the moment. However, you can still install the application by selecting its APK files from your device's storage instead"
@@ -164,7 +163,7 @@
     "installerView": {
         "widgetTitle": "Installer",
         "installType": "Select install type",
-        "installTypeDescription": "Select the installation type to proceed with.",
+        "installTypeDescription": "Select the installation type to continue with.",
 
         "installButton": "Install",
         "installRootType": "Mount",
@@ -241,6 +240,7 @@
 
         "versionCompatibilityCheckLabel": "Version compatibility check",
         "versionCompatibilityCheckHint": "Prevent selecting patches that are not compatible with the selected app version",
+
         "requireSuggestedAppVersionLabel": "Require suggested app version",
         "requireSuggestedAppVersionHint": "Prevent selecting an app with a version that is not the suggested",
         "requireSuggestedAppVersionDialogText": "Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?",

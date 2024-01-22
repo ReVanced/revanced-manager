@@ -54,25 +54,43 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 4,
+                    children: [
+                      Text(
+                        widget.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        widget.installedVersion,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
                   Text(
-                    widget.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    widget.pkgName,
                   ),
-                  Text(widget.pkgName),
-                  I18nText(
-                    FlutterI18n.translate(
-                      context,
-                      'installed',
-                      translationParams: {
-                        'version': 'v${widget.installedVersion}',
-                      },
-                    ),
-                  ),
+                  const SizedBox(height: 4),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
@@ -85,7 +103,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
                           child: Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -95,18 +113,10 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                     'version': widget.suggestedVersion.isEmpty
                                         ? FlutterI18n.translate(
                                             context,
-                                            'appSelectorCard.allVersions',
+                                            'appSelectorCard.anyVersion',
                                           )
-                                        : 'v${widget.suggestedVersion}',
+                                        : widget.suggestedVersion,
                                   },
-                                  child: Text(
-                                    '',
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer,
-                                    ),
-                                  ),
                                 ),
                                 const SizedBox(width: 4),
                                 Icon(
@@ -119,17 +129,6 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.patchesCount == 1
-                            ? '• ${widget.patchesCount} patch'
-                            : '• ${widget.patchesCount} patches',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],
