@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,18 +28,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.network.dto.ReVancedSocial
-import app.revanced.manager.ui.viewmodel.AboutViewModel
-import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.viewmodel.AboutViewModel
+import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -60,42 +58,44 @@ fun AboutSettingsScreen(
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
-    val (preferred, notPreferred) = viewModel.socials.partition(ReVancedSocial::preferred)
+    val (preferredSocials, socials) = viewModel.socials.partition(ReVancedSocial::preferred)
 
-    val filledButtons = remember(preferred) {
-        preferred.map {
-            Triple(getSocialIcon(it.name), it.name, third = {
-                context.openUrl(it.url)
-            })
-        }
-    }.toMutableList()
-
-    viewModel.donate.value?.let {
-        filledButtons.add(
-            Triple(
-                Icons.Outlined.FavoriteBorder,
-                stringResource(R.string.donate),
-                third = {
-                    context.openUrl(it)
-                }
-            )
+    val donateText = stringResource(R.string.donate)
+    val contactText = stringResource(R.string.contact)
+    val preferredSocialButtons = remember(preferredSocials, viewModel.donate, viewModel.contact) {
+        listOfNotNull(
+            *preferredSocials.map {
+                Triple(
+                    getSocialIcon(it.name),
+                    it.name,
+                    third = {
+                        context.openUrl(it.url)
+                    }
+                )
+            }.toTypedArray(),
+            viewModel.donate?.let {
+                Triple(
+                    Icons.Outlined.FavoriteBorder,
+                    donateText,
+                    third = {
+                        context.openUrl(it)
+                    }
+                )
+            },
+            viewModel.contact?.let {
+                Triple(
+                    Icons.Outlined.MailOutline,
+                    contactText,
+                    third = {
+                        context.openUrl(it)
+                    }
+                )
+            }
         )
     }
 
-    viewModel.contact.value?.let {
-        filledButtons.add(
-            Triple(
-                Icons.Outlined.MailOutline,
-                stringResource(R.string.contact),
-                third = {
-                    context.openUrl(viewModel.contact.value!!)
-                }
-            )
-        )
-    }
-
-    val socialButtons = remember(notPreferred) {
-        notPreferred.map {
+    val socialButtons = remember(socials) {
+        socials.map {
             Pair(getSocialIcon(it.name)) {
                 context.openUrl(it.url)
             }
@@ -161,10 +161,9 @@ fun AboutSettingsScreen(
                 maxItemsInEachRow = 2,
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
-                filledButtons.forEach { (icon, text, onClick) ->
+                preferredSocialButtons.forEach { (icon, text, onClick) ->
                     FilledTonalButton(
                         onClick = onClick,
-                        modifier = Modifier.defaultMinSize(minWidth = 130.dp),
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -182,26 +181,25 @@ fun AboutSettingsScreen(
                         }
                     }
                 }
-                FlowRow(
-                    modifier = Modifier.padding(top = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
-                ) {
-                    socialButtons.forEach { (icon, onClick) ->
-                        IconButton(
-                            onClick = onClick,
-                            modifier = Modifier.padding(end = 8.dp),
-                        ) {
-                            Icon(
-                                icon,
-                                contentDescription = null,
-                                modifier = Modifier.size(28.dp),
-                                tint = MaterialTheme.colorScheme.secondary
-                            )
-                        }
+            }
+            FlowRow(
+                modifier = Modifier.padding(top = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+            ) {
+                socialButtons.forEach { (icon, onClick) ->
+                    IconButton(
+                        onClick = onClick,
+                        modifier = Modifier.padding(end = 8.dp),
+                    ) {
+                        Icon(
+                            icon,
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
                     }
                 }
             }
-
             OutlinedCard(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
