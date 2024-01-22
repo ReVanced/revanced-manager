@@ -58,7 +58,9 @@ fun AboutSettingsScreen(
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
-    val (preferredSocials, socials) = viewModel.socials.partition(ReVancedSocial::preferred)
+    val (preferredSocials, socials) = remember(viewModel.socials) {
+        viewModel.socials.partition(ReVancedSocial::preferred)
+    }
 
     val donateText = stringResource(R.string.donate)
     val contactText = stringResource(R.string.contact)
@@ -87,7 +89,7 @@ fun AboutSettingsScreen(
                     Icons.Outlined.MailOutline,
                     contactText,
                     third = {
-                        context.openUrl(it)
+                        context.openUrl("mailto:$it")
                     }
                 )
             }

@@ -3,7 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -25,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
-    val socials = mutableStateListOf<ReVancedSocial>()
+    var socials by mutableStateOf(emptyList<ReVancedSocial>())
     var contact by mutableStateOf<String?>(null)
     var donate by mutableStateOf<String?>(null)
 
@@ -34,7 +33,7 @@ class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
             withContext(Dispatchers.IO) {
                 reVancedAPI.getInfo("https://api.revanced.app").getOrNull()
             }?.let {
-                socials.addAll(it.socials)
+                socials = it.socials
                 contact = it.contact.email
                 donate = it.donations.links.find(ReVancedDonationLink::preferred)?.url
             }
