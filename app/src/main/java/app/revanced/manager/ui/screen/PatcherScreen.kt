@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
@@ -88,6 +89,9 @@ fun PatcherScreen(
             onDismiss = { showInstallPicker = false },
             onConfirm = vm::install
         )
+
+    if (vm.installerStatusDialogModel.packageInstallerStatus != null)
+        InstallerStatusDialog(vm.installerStatusDialogModel)
 
     AppScaffold(
         topBar = {

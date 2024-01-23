@@ -167,4 +167,8 @@ dependencies {
 
     // Scrollbars
     implementation(libs.scrollbars)
+
+    // EnumUtil
+    implementation(libs.enumutil)
+    ksp(libs.enumutil.ksp)
 }

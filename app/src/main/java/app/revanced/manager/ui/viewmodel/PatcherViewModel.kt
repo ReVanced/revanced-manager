@@ -29,6 +29,8 @@ import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.logger.ManagerLogger
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.service.InstallService
+import app.revanced.manager.service.UninstallService
+import app.revanced.manager.ui.component.InstallerStatusDialogModel
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
@@ -38,6 +40,7 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,6 +52,11 @@ import java.io.File
 import java.nio.file.Files
 import java.util.UUID
 
+data class PackageInstallerResult(
+    val status: Int = PackageInstaller.STATUS_FAILURE,
+    val extraStatusMessage: String?,
+)
+
 @Stable
 class PatcherViewModel(
     private val input: Destination.Patcher
@@ -59,6 +67,20 @@ class PatcherViewModel(
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
+
+    val installerStatusDialogModel = object : InstallerStatusDialogModel {
+        override var packageInstallerStatus by mutableStateOf<Int?>(null)
+
+        override fun reinstall() {
+            this@PatcherViewModel.reinstall()
+        }
+
+        override fun install() {
+            // Since this is a package installer status dialog,
+            // InstallType.ROOT is never used here.
+            install(InstallType.DEFAULT)
+        }
+    }
 
     private var installedApp: InstalledApp? = null
     val packageName: String = input.selectedApp.packageName
@@ -109,7 +131,8 @@ class PatcherViewModel(
                     if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
                         currentStepIndex++
 
-                        steps[currentStepIndex] = steps[currentStepIndex].copy(state = State.RUNNING)
+                        steps[currentStepIndex] =
+                            steps[currentStepIndex].copy(state = State.RUNNING)
                     }
                 }
             )
@@ -124,15 +147,19 @@ class PatcherViewModel(
             }
         }
 
-    private val installBroadcastReceiver = object : BroadcastReceiver() {
+    private val installerBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 InstallService.APP_INSTALL_ACTION -> {
-                    val pmStatus = intent.getIntExtra(InstallService.EXTRA_INSTALL_STATUS, -999)
-                    val extra = intent.getStringExtra(InstallService.EXTRA_INSTALL_STATUS_MESSAGE)!!
+                    val pmStatus = intent.getIntExtra(
+                        InstallService.EXTRA_INSTALL_STATUS,
+                        PackageInstaller.STATUS_FAILURE
+                    )
+
+                    // TODO: This is unused and may be completely removed everywhere.
+                    // intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
 
                     if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
-                        app.toast(app.getString(R.string.install_app_success))
                         installedPackageName =
                             intent.getStringExtra(InstallService.EXTRA_PACKAGE_NAME)
                         viewModelScope.launch {
@@ -144,8 +171,22 @@ class PatcherViewModel(
                                 input.selectedPatches
                             )
                         }
-                    } else {
-                        app.toast(app.getString(R.string.install_app_fail, extra))
+                    }
+
+                    installerStatusDialogModel.packageInstallerStatus = pmStatus
+                }
+
+                UninstallService.APP_UNINSTALL_ACTION -> {
+                    val pmStatus = intent.getIntExtra(
+                        UninstallService.EXTRA_UNINSTALL_STATUS,
+                        PackageInstaller.STATUS_FAILURE
+                    )
+
+                    // TODO: This is unused and may be completely removed everywhere.
+                    // intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
+
+                    if (pmStatus != PackageInstaller.STATUS_SUCCESS) {
+                        installerStatusDialogModel.packageInstallerStatus = pmStatus
                     }
                 }
             }
@@ -153,9 +194,14 @@ class PatcherViewModel(
     }
 
     init { // TODO: navigate away when system-initiated process death is detected because it is not possible to recover from it.
-        ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
-            addAction(InstallService.APP_INSTALL_ACTION)
-        }, ContextCompat.RECEIVER_NOT_EXPORTED)
+        ContextCompat.registerReceiver(
+            app, installerBroadcastReceiver,
+            IntentFilter().apply {
+                addAction(InstallService.APP_INSTALL_ACTION)
+                addAction(UninstallService.APP_UNINSTALL_ACTION)
+            },
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
 
         viewModelScope.launch {
             installedApp = installedAppRepository.get(packageName)
@@ -164,7 +210,7 @@ class PatcherViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        app.unregisterReceiver(installBroadcastReceiver)
+        app.unregisterReceiver(installerBroadcastReceiver)
         workManager.cancelWorkById(patcherWorkerId)
 
         when (val selectedApp = input.selectedApp) {
@@ -255,12 +301,22 @@ class PatcherViewModel(
                         app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
                         try {
                             rootInstaller.uninstall(packageName)
-                        } catch (_: Exception) {  }
+                        } catch (_: Exception) {
+                        }
                     }
                 }
             }
         } finally {
             isInstalling = false
+        }
+    }
+
+    fun reinstall() = viewModelScope.launch {
+        uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
+            pm.getPackageInfo(outputFile)?.packageName?.let { pm.uninstallPackage(it) }
+                ?: throw Exception("Failed to load application info")
+
+            pm.installApp(listOf(outputFile))
         }
     }
 
