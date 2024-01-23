@@ -49,18 +49,22 @@ android {
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
-            if (project.hasProperty("signAsDebug")) {
+            if (!hasReleaseConfig) {
                 applicationIdSuffix = ".debug"
                 resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
-            } else if (hasReleaseConfig) {
+            } else {
                 signingConfig = signingConfigs.getByName("release")
             }
             applicationVariants.all {
                 this.outputs
                     .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
                     .forEach { output ->
-                        output.outputFileName = "revanced-manager-v${project.version}.apk"
+                        if (applicationIdSuffix == ".debug") {
+                            output.outputFileName = "revanced-manager-v${project.version}-debug.apk"
+                        } else {
+                            output.outputFileName = "revanced-manager-v${project.version}.apk"
+                        }
                     }
             }
         }
