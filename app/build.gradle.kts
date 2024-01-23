@@ -32,13 +32,13 @@ android {
         }
 
         release {
-            if (System.getenv("KEYSTORE_FILE") != null) {
+            if (System.getenv("signingKey") != null) {
                 signingConfigs {
                     create("release") {
-                        storeFile = file(System.getenv("KEYSTORE_FILE"))
-                        storePassword = System.getenv("KEYSTORE_PASSWORD")
-                        keyAlias = System.getenv("KEY_ALIAS")
-                        keyPassword = System.getenv("KEY_PASSWORD")
+                        storeFile = file(System.getenv("signingKey"))
+                        storePassword = System.getenv("keyStorePassword")
+                        keyAlias = System.getenv("keyAlias")
+                        keyPassword = System.getenv("keyPassword")
                     }
                 }
                 signingConfig = signingConfigs.getByName("release")
