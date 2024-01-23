@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.10"
 }
 
+val (majorVersion, minorVersion, patchVersion, devVersion) = "${project.version}.0".replace("-dev","").split(".")
 android {
     namespace = "app.revanced.manager"
     compileSdk = 34
@@ -16,12 +17,24 @@ android {
         applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.0.1"
+        versionName = project.version.toString()
+        versionCode = (majorVersion.toInt() * 100000000) + (minorVersion.toInt() * 100000) + (patchVersion.toInt() * 100) + devVersion.toInt()
         resourceConfigurations.addAll(listOf(
             "en",
         ))
         vectorDrawables.useSupportLibrary = true
+    }
+
+    val hasReleaseConfig = (System.getenv("KEYSTORE_FILE") != null)
+    signingConfigs {
+        if (hasReleaseConfig) {
+            create("release") {
+                storeFile = file(System.getenv("KEYSTORE_FILE"))
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
@@ -36,11 +49,19 @@ android {
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
-
             if (project.hasProperty("signAsDebug")) {
                 applicationIdSuffix = ".debug"
                 resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
+            } else if (hasReleaseConfig) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+            applicationVariants.all {
+                this.outputs
+                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                    .forEach { output ->
+                        output.outputFileName = "revanced-manager-v${project.version}.apk"
+                    }
             }
         }
     }
@@ -87,6 +108,12 @@ android {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.register("publish") {
+    group = "Build"
+    description = "Assemble main outputs for all the variants."
+    dependsOn("assembleRelease")
 }
 
 dependencies {

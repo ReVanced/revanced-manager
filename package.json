@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@saithodev/semantic-release-backmerge": "^4.0.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "gradle-semantic-release-plugin": "^1.9.1",
+    "semantic-release": "^23.0.0"
+  }
+}
