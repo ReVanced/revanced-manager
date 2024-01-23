@@ -25,18 +25,6 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    val hasReleaseConfig = (System.getenv("KEYSTORE_FILE") != null)
-    signingConfigs {
-        if (hasReleaseConfig) {
-            create("release") {
-                storeFile = file(System.getenv("KEYSTORE_FILE"))
-                storePassword = System.getenv("KEYSTORE_PASSWORD")
-                keyAlias = System.getenv("KEY_ALIAS")
-                keyPassword = System.getenv("KEY_PASSWORD")
-            }
-        }
-    }
-
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -44,27 +32,39 @@ android {
         }
 
         release {
+            val hasReleaseConfig = (System.getenv("KEYSTORE_FILE") != null)
+            var suffix = "v${project.version}"
+            if (hasReleaseConfig) {
+                signingConfigs {
+                    create("release") {
+                        storeFile = file(System.getenv("KEYSTORE_FILE"))
+                        storePassword = System.getenv("KEYSTORE_PASSWORD")
+                        keyAlias = System.getenv("KEY_ALIAS")
+                        keyPassword = System.getenv("KEY_PASSWORD")
+                    }
+                }
+                signingConfig = signingConfigs.getByName("release")
+            } else {
+                applicationIdSuffix = ".debug"
+                resValue("string", "app_name", "ReVanced Manager Debug")
+                signingConfig = signingConfigs.getByName("debug")
+                val os = org.apache.commons.io.output.ByteArrayOutputStream()
+                project.exec {
+                    commandLine = "git rev-parse --short HEAD".split(" ")
+                    standardOutput = os
+                }
+                suffix = String(os.toByteArray()).trim()
+            }
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
-            if (!hasReleaseConfig) {
-                applicationIdSuffix = ".debug"
-                resValue("string", "app_name", "ReVanced Manager Debug")
-                signingConfig = signingConfigs.getByName("debug")
-            } else {
-                signingConfig = signingConfigs.getByName("release")
-            }
             applicationVariants.all {
                 this.outputs
                     .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
                     .forEach { output ->
-                        if (applicationIdSuffix == ".debug") {
-                            output.outputFileName = "revanced-manager-v${project.version}-debug.apk"
-                        } else {
-                            output.outputFileName = "revanced-manager-v${project.version}.apk"
-                        }
+                        output.outputFileName = "revanced-manager-${suffix}.apk"
                     }
             }
         }

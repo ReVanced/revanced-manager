@@ -27,18 +27,10 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew assembleRelease --no-daemon -PnoProguard -PsignAsDebug
-
-      - name: Set env
-        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-      - name: Add hash to APK
-        run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-${{ env.COMMIT_HASH }}.apk
+        run: ./gradlew assembleRelease --no-daemon -PnoProguard
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
           name: revanced-manager
-          path: revanced-manager-${{ env.COMMIT_HASH }}.apk
+          path: app/build/outputs/apk/release/*.apk
