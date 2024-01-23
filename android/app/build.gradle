@@ -45,8 +45,6 @@ android {
     }
     buildTypes {
         release {
-            shrinkResources false
-            minifyEnabled false
             resValue "string", "app_name", "ReVanced Manager"
             signingConfig signingConfigs.debug
             ndk {
