@@ -36,5 +36,5 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-${{ steps.get_commit_hash.outputs.hash }}
+          name: revanced-manager-${{ steps.get_commit_hash.outputs.hash }}.apk
           path: app/build/outputs/apk/release/*.apk
