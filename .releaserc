@@ -30,7 +30,7 @@
       {
         "assets": [
           {
-            "path": "app/build/outputs/apk/release/*.apk"
+            "path": "app/build/outputs/apk/release/revanced-manager*.apk"
           }
         ],
         "successComment": false

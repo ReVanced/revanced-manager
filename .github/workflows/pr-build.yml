@@ -29,8 +29,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease --no-daemon -PnoProguard
 
+      - name: Get commit hash
+        id: get_commit_hash
+        run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager
+          name: revanced-manager-${{ steps.get_commit_hash.outputs.hash }}
           path: app/build/outputs/apk/release/*.apk

@@ -33,7 +33,6 @@ android {
 
         release {
             val hasReleaseConfig = (System.getenv("KEYSTORE_FILE") != null)
-            var suffix = "v${project.version}"
             if (hasReleaseConfig) {
                 signingConfigs {
                     create("release") {
@@ -44,28 +43,22 @@ android {
                     }
                 }
                 signingConfig = signingConfigs.getByName("release")
+                applicationVariants.all {
+                    this.outputs
+                        .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                        .forEach { output ->
+                            output.outputFileName = "revanced-manager-v${project.version}.apk"
+                        }
+                }
             } else {
                 applicationIdSuffix = ".debug"
                 resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
-                val os = org.apache.commons.io.output.ByteArrayOutputStream()
-                project.exec {
-                    commandLine = "git rev-parse --short HEAD".split(" ")
-                    standardOutput = os
-                }
-                suffix = String(os.toByteArray()).trim()
             }
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            }
-            applicationVariants.all {
-                this.outputs
-                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                    .forEach { output ->
-                        output.outputFileName = "revanced-manager-${suffix}.apk"
-                    }
             }
         }
     }
