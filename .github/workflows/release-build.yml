@@ -20,6 +20,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
