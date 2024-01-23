@@ -48,5 +48,5 @@ jobs:
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
-          echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > keystore.jks
+          echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > app/keystore.jks
           npx semantic-release

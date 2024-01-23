@@ -17,6 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Get commit hash
+        id: get_commit_hash
+        run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -27,14 +31,10 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease --no-daemon -PnoProguard
-
-      - name: Get commit hash
-        id: get_commit_hash
-        run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: ./gradlew assembleRelease --no-daemon -PnoProguard -Psuffix=${{ steps.get_commit_hash.outputs.hash }}
 
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: revanced-manager-${{ steps.get_commit_hash.outputs.hash }}.apk
+          name: revanced-manager-${{ steps.get_commit_hash.outputs.hash }}
           path: app/build/outputs/apk/release/*.apk

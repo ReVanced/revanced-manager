@@ -42,13 +42,6 @@ android {
                     }
                 }
                 signingConfig = signingConfigs.getByName("release")
-                applicationVariants.all {
-                    this.outputs
-                        .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                        .forEach { output ->
-                            output.outputFileName = "revanced-manager-v${project.version}.apk"
-                        }
-                }
             } else {
                 applicationIdSuffix = ".debug"
                 resValue("string", "app_name", "ReVanced Manager Debug")
@@ -58,6 +51,17 @@ android {
                 isMinifyEnabled = true
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            }
+            var suffix = "v${project.version}"
+            if (project.hasProperty("suffix")) {
+                suffix = "${project.property("suffix")}"
+            }
+            applicationVariants.all {
+                this.outputs
+                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                    .forEach { output ->
+                        output.outputFileName = "revanced-manager-${suffix}.apk"
+                    }
             }
         }
     }
