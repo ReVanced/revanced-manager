@@ -31,7 +31,7 @@ jobs:
 
       - name: Get commit hash
         id: get_commit_hash
-        run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+        run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Upload build
         uses: actions/upload-artifact@v3

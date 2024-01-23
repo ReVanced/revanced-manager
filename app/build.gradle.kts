@@ -32,8 +32,7 @@ android {
         }
 
         release {
-            val hasReleaseConfig = (System.getenv("KEYSTORE_FILE") != null)
-            if (hasReleaseConfig) {
+            if (System.getenv("KEYSTORE_FILE") != null) {
                 signingConfigs {
                     create("release") {
                         storeFile = file(System.getenv("KEYSTORE_FILE"))
