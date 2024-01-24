@@ -161,11 +161,13 @@ fun AboutSettingsScreen(
             }
             FlowRow(
                 maxItemsInEachRow = 2,
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 preferredSocialButtons.forEach { (icon, text, onClick) ->
                     FilledTonalButton(
                         onClick = onClick,
+                        modifier = Modifier.weight(1f),
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
