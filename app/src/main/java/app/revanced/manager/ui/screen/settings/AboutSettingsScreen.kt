@@ -187,7 +187,6 @@ fun AboutSettingsScreen(
                 }
             }
             FlowRow(
-                modifier = Modifier.padding(top = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
                 socialButtons.forEach { (icon, onClick) ->
