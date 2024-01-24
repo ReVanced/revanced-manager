@@ -19,7 +19,7 @@ import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_dialog.dart';
+import 'package:revanced_manager/ui/widgets/homeView/update_confirmation_sheet.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox_list_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -35,17 +35,22 @@ class HomeViewModel extends BaseViewModel {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   bool showUpdatableApps = false;
   List<PatchedApplication> patchedInstalledApps = [];
+  String _currentManagerVersion = '';
   String? _latestManagerVersion = '';
   File? downloadedApk;
 
   Future<void> initialize(BuildContext context) async {
     _managerAPI.rePatchedSavedApps().then((_) => _getPatchedApps());
-
-    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
+    _currentManagerVersion = await _managerAPI.getCurrentManagerVersion();
     if (!_managerAPI.getPatchesConsent()) {
       await showPatchesConsent(context);
+      await forceRefresh(context);
+      return;
     }
-
+    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
+    if (await hasManagerUpdates() && _managerAPI.showManagerUpdateDialog()) {
+      showManagerUpdate(context);
+    }
     await _patcherAPI.initialize();
 
     await flutterLocalNotificationsPlugin.initialize(
@@ -114,17 +119,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
-    String currentVersion = await _managerAPI.getCurrentManagerVersion();
-
-    // add v to current version
-    if (!currentVersion.startsWith('v')) {
-      currentVersion = 'v$currentVersion';
-    }
-
     _latestManagerVersion =
-        await _managerAPI.getLatestManagerVersion() ?? currentVersion;
+        await _managerAPI.getLatestManagerVersion() ?? _currentManagerVersion;
 
-    if (_latestManagerVersion != currentVersion) {
+    if (_latestManagerVersion != _currentManagerVersion) {
       return true;
     }
     return false;
@@ -132,13 +130,12 @@ class HomeViewModel extends BaseViewModel {
 
   Future<bool> hasPatchesUpdates() async {
     final String? latestVersion = await _managerAPI.getLatestPatchesVersion();
-    final String currentVersion = await _managerAPI.getCurrentPatchesVersion();
     if (latestVersion != null) {
       try {
         final int latestVersionInt =
             int.parse(latestVersion.replaceAll(RegExp('[^0-9]'), ''));
         final int currentVersionInt =
-            int.parse(currentVersion.replaceAll(RegExp('[^0-9]'), ''));
+            int.parse(_currentManagerVersion.replaceAll(RegExp('[^0-9]'), ''));
         return latestVersionInt > currentVersionInt;
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -171,39 +168,122 @@ class HomeViewModel extends BaseViewModel {
     await showDialog(
       context: context,
       barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          title: const Text('Download ReVanced Patches?'),
+          content: ValueListenableBuilder(
+            valueListenable: autoUpdate,
+            builder: (context, value, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  I18nText(
+                    'homeView.patchesConsentDialogText',
+                    child: Text(
+                      '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: I18nText(
+                      'homeView.patchesConsentDialogText2',
+                      translationParams: {
+                        'url': _managerAPI.defaultApiUrl.split('/')[2],
+                      },
+                      child: Text(
+                        '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                  ),
+                  HapticCheckboxListTile(
+                    value: value,
+                    contentPadding: EdgeInsets.zero,
+                    title: I18nText(
+                      'homeView.patchesConsentDialogText3',
+                    ),
+                    subtitle: I18nText(
+                      'homeView.changeLaterSubtitle',
+                    ),
+                    onChanged: (selected) {
+                      autoUpdate.value = selected!;
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                _managerAPI.setPatchesConsent(false);
+                SystemNavigator.pop();
+              },
+              child: I18nText('quitButton'),
+            ),
+            FilledButton(
+              onPressed: () async {
+                _managerAPI.setPatchesConsent(true);
+                _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
+                Navigator.of(context).pop();
+              },
+              child: I18nText('okButton'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showManagerUpdate(BuildContext context) {
+    final ValueNotifier<bool> noShow = ValueNotifier(!_managerAPI.showManagerUpdateDialog());
+    showDialog(
+      context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Download ReVanced Patches?'),
+        title: I18nText('homeView.updateDialogTitle'),
         content: ValueListenableBuilder(
-          valueListenable: autoUpdate,
+          valueListenable: noShow,
           builder: (context, value, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 I18nText(
-                  'homeView.patchesConsentDialogText',
+                  'homeView.updateDialogText',
+                  translationParams: {
+                    'installed': _currentManagerVersion,
+                    'latest': _latestManagerVersion!,
+                  },
                   child: Text(
                     '',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: I18nText(
-                    'homeView.patchesConsentDialogText2',
-                    translationParams: {
-                      'url': _managerAPI.defaultApiUrl.split('/')[2],
-                    },
+                    'homeView.updateDialogText2',
                     child: Text(
                       '',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.error,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ),
@@ -212,13 +292,13 @@ class HomeViewModel extends BaseViewModel {
                   value: value,
                   contentPadding: EdgeInsets.zero,
                   title: I18nText(
-                    'homeView.patchesConsentDialogText3',
+                    'noShowAgain',
                   ),
                   subtitle: I18nText(
-                    'homeView.patchesConsentDialogText3Sub',
+                    'homeView.changeLaterSubtitle',
                   ),
                   onChanged: (selected) {
-                    autoUpdate.value = selected!;
+                    noShow.value = selected!;
                   },
                 ),
               ],
@@ -228,18 +308,18 @@ class HomeViewModel extends BaseViewModel {
         actions: [
           TextButton(
             onPressed: () async {
-              await _managerAPI.setPatchesConsent(false);
-              SystemNavigator.pop();
+              _managerAPI.setManagerUpdateDialog(!noShow.value);
+              Navigator.pop(context);
             },
-            child: I18nText('quitButton'),
+            child: I18nText('noButton'), // Decide later
           ),
           FilledButton(
             onPressed: () async {
-              await _managerAPI.setPatchesConsent(true);
-              await _managerAPI.setPatchesAutoUpdate(autoUpdate.value);
-              Navigator.of(context).pop();
+              _managerAPI.setManagerUpdateDialog(!noShow.value);
+              Navigator.pop(context);
+              await showUpdateConfirmationDialog(context, false);
             },
-            child: I18nText('okButton'),
+            child: I18nText('yesButton'),
           ),
         ],
       ),
@@ -444,7 +524,7 @@ class HomeViewModel extends BaseViewModel {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
       ),
-      builder: (context) => UpdateConfirmationDialog(
+      builder: (context) => UpdateConfirmationSheet(
         isPatches: isPatches,
       ),
     );

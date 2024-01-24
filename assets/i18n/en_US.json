@@ -27,6 +27,7 @@
 
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched apps",
+        "changeLaterSubtitle": "You can change this in settings at a later time.",
 
         "noUpdates": "No updates available",
 
@@ -35,14 +36,17 @@
         "noInstallations": "No patched apps installed",
         "installUpdate": "Continue to install the update?",
 
-        "updateDialogTitle": "Update Manager",
-        "updatePatchesDialogTitle": "Update ReVanced Patches",
+        "updateSheetTitle": "Update Manager",
+        "updateDialogTitle": "New update available",
+        "updatePatchesSheetTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
+
+        "updateDialogText": "Installed version: {installed}\nLatest version: {latest}",
+        "updateDialogText2": "Would you like to update now?",
 
         "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
         "patchesConsentDialogText2": "This will connect you to {url}.",
         "patchesConsentDialogText3": "Auto update?",
-        "patchesConsentDialogText3Sub": "You can change this in settings at a later time.",
 
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
@@ -235,6 +239,8 @@
 
         "autoUpdatePatchesLabel": "Auto update patches",
         "autoUpdatePatchesHint": "Automatically update patches to the latest version",
+        "showUpdateDialogLabel": "Show update dialog",
+        "showUpdateDialogHint": "Show a dialog when a new update is available",
         "universalPatchesLabel": "Show universal patches",
         "universalPatchesHint": "Display all apps and universal patches (may slow down the app list)",
 

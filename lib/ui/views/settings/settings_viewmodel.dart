@@ -39,6 +39,15 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool showUpdateDialog() {
+    return _managerAPI.showManagerUpdateDialog();
+  }
+
+  void setShowUpdateDialog(bool value) {
+    _managerAPI.setManagerUpdateDialog(value);
+    notifyListeners();
+  }
+
   bool isPatchesChangeEnabled() {
     return _managerAPI.isPatchesChangeEnabled();
   }

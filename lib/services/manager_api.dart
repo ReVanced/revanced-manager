@@ -132,8 +132,8 @@ class ManagerAPI {
     return _prefs.getBool('patchesConsent') ?? false;
   }
 
-  Future<void> setPatchesConsent(bool consent) async {
-    await _prefs.setBool('patchesConsent', consent);
+  void setPatchesConsent(bool consent) {
+    _prefs.setBool('patchesConsent', consent);
   }
 
   bool isPatchesAutoUpdate() {
@@ -156,6 +156,14 @@ class ManagerAPI {
     _prefs.setBool('showPatchesChangeWarning', !value);
   }
 
+  bool showManagerUpdateDialog() {
+    return _prefs.getBool('showManagerUpdateDialog') ?? true;
+  }
+
+  void setManagerUpdateDialog(bool value) {
+    _prefs.setBool('showManagerUpdateDialog', value);
+  }
+
   bool isChangingToggleModified() {
     return _prefs.getBool('isChangingToggleModified') ?? false;
   }
@@ -164,8 +172,8 @@ class ManagerAPI {
     _prefs.setBool('isChangingToggleModified', value);
   }
 
-  Future<void> setPatchesAutoUpdate(bool value) async {
-    await _prefs.setBool('patchesAutoUpdate', value);
+  void setPatchesAutoUpdate(bool value) {
+    _prefs.setBool('patchesAutoUpdate', value);
   }
 
   List<Patch> getSavedPatches(String packageName) {
@@ -508,7 +516,11 @@ class ManagerAPI {
 
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo.version;
+    String version = packageInfo.version;
+    if (!version.startsWith('v')) {
+      version = 'v$version';
+    }
+    return version;
   }
 
   Future<String> getCurrentPatchesVersion() async {

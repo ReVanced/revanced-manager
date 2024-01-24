@@ -4,8 +4,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 
-class UpdateConfirmationDialog extends StatelessWidget {
-  const UpdateConfirmationDialog({super.key, required this.isPatches});
+class UpdateConfirmationSheet extends StatelessWidget {
+  const UpdateConfirmationSheet({super.key, required this.isPatches});
 
   final bool isPatches;
   @override
@@ -51,8 +51,8 @@ class UpdateConfirmationDialog extends StatelessWidget {
                             children: [
                               I18nText(
                                 isPatches
-                                    ? 'homeView.updatePatchesDialogTitle'
-                                    : 'homeView.updateDialogTitle',
+                                    ? 'homeView.updatePatchesSheetTitle'
+                                    : 'homeView.updateSheetTitle',
                                 child: const Text(
                                   '',
                                   style: TextStyle(
