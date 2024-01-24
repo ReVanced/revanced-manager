@@ -52,11 +52,6 @@ import java.io.File
 import java.nio.file.Files
 import java.util.UUID
 
-data class PackageInstallerResult(
-    val status: Int = PackageInstaller.STATUS_FAILURE,
-    val extraStatusMessage: String?,
-)
-
 @Stable
 class PatcherViewModel(
     private val input: Destination.Patcher
@@ -156,8 +151,8 @@ class PatcherViewModel(
                         PackageInstaller.STATUS_FAILURE
                     )
 
-                    // TODO: This is unused and may be completely removed everywhere.
-                    // intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
+                    intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
+                        ?.let(logger::trace)
 
                     if (pmStatus == PackageInstaller.STATUS_SUCCESS) {
                         installedPackageName =
@@ -182,8 +177,8 @@ class PatcherViewModel(
                         PackageInstaller.STATUS_FAILURE
                     )
 
-                    // TODO: This is unused and may be completely removed everywhere.
-                    // intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
+                    intent.getStringExtra(UninstallService.EXTRA_UNINSTALL_STATUS_MESSAGE)
+                        ?.let(logger::trace)
 
                     if (pmStatus != PackageInstaller.STATUS_SUCCESS) {
                         installerStatusDialogModel.packageInstallerStatus = pmStatus
