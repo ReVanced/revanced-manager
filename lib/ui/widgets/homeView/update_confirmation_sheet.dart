@@ -5,9 +5,10 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 
 class UpdateConfirmationSheet extends StatelessWidget {
-  const UpdateConfirmationSheet({super.key, required this.isPatches});
+  const UpdateConfirmationSheet({super.key, required this.isPatches,  this.changelog = false});
 
   final bool isPatches;
+  final bool changelog;
   @override
   Widget build(BuildContext context) {
     final HomeViewModel model = locator<HomeViewModel>();
@@ -36,6 +37,7 @@ class UpdateConfirmationSheet extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (!changelog)
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 40.0,

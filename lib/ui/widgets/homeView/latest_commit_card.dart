@@ -55,17 +55,15 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               FutureBuilder<bool>(
                 future: model.hasManagerUpdates(),
                 initialData: false,
-                builder: (context, snapshot) => Opacity(
-                  opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-                  child: FilledButton(
-                    onPressed: snapshot.hasData && snapshot.data!
-                        ? () => widget.model.showUpdateConfirmationDialog(
-                              widget.parentContext,
-                              false,
-                            )
-                        : () => {},
-                    child: I18nText('updateButton'),
+                builder: (context, snapshot) => FilledButton(
+                  onPressed: () => widget.model.showUpdateConfirmationDialog(
+                    widget.parentContext,
+                    false,
+                    !snapshot.data!,
                   ),
+                  child: (snapshot.hasData && !snapshot.data!)
+                      ? I18nText('showChangelogButton')
+                      : I18nText('showUpdateButton'),
                 ),
               ),
             ],
@@ -83,7 +81,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('Patches'),
+                    const Text('ReVanced Patches'),
                     const SizedBox(height: 4),
                     Row(
                       children: <Widget>[
@@ -108,19 +106,17 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 ),
               ),
               FutureBuilder<bool>(
-                future: locator<HomeViewModel>().hasPatchesUpdates(),
+                future: model.hasPatchesUpdates(),
                 initialData: false,
-                builder: (context, snapshot) => Opacity(
-                  opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-                  child: FilledButton(
-                    onPressed: snapshot.hasData && snapshot.data!
-                        ? () => widget.model.showUpdateConfirmationDialog(
-                              widget.parentContext,
-                              true,
-                            )
-                        : () => {},
-                    child: I18nText('updateButton'),
+                builder: (context, snapshot) => FilledButton(
+                  onPressed: () => widget.model.showUpdateConfirmationDialog(
+                    widget.parentContext,
+                    true,
+                    !snapshot.data!,
                   ),
+                  child: (snapshot.hasData && !snapshot.data!)
+                      ? I18nText('showChangelogButton')
+                      : I18nText('showUpdateButton'),
                 ),
               ),
             ],

@@ -16,6 +16,8 @@
     "noShowAgain": "Don't show this again",
     "add": "Add",
     "remove": "Remove",
+    "showChangelogButton": "Show changelog",
+    "showUpdateButton": "Show update",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
@@ -27,7 +29,7 @@
 
         "updatesSubtitle": "Updates",
         "patchedSubtitle": "Patched apps",
-        "changeLaterSubtitle": "You can change this in settings at a later time.",
+        "changeLaterSubtitle": "You can change this in the settings at a later time.",
 
         "noUpdates": "No updates available",
 
@@ -36,23 +38,25 @@
         "noInstallations": "No patched apps installed",
         "installUpdate": "Continue to install the update?",
 
-        "updateSheetTitle": "Update Manager",
+        "updateSheetTitle": "Update ReVanced Manager",
         "updateDialogTitle": "New update available",
         "updatePatchesSheetTitle": "Update ReVanced Patches",
         "updateChangelogTitle": "Changelog",
 
-        "updateDialogText": "Installed version: {installed}\nLatest version: {latest}",
-        "updateDialogText2": "Would you like to update now?",
+        "updateDialogText": "A new update is available for {file}.\n\nThe currently installed version is {version}.",
 
-        "patchesConsentDialogText": "ReVanced Patches needs to be downloaded.",
-        "patchesConsentDialogText2": "This will connect you to {url}.",
-        "patchesConsentDialogText3": "Auto update?",
+        "downloadConsentDialogTitle": "Download necessary files?",
+        "downloadConsentDialogText": "ReVanced Manager needs to download necessary files to to work properly.",
+        "downloadConsentDialogText2": "This will connect you to {url}.",
+
+        "checkUpdateDialogTitle": "Check for updates?",
+        "checkUpdateDialogText": "Do you want ReVanced Manager to check for updates automatically?",
 
         "notificationTitle": "Update downloaded",
         "notificationText": "Tap to install the update",
 
         "downloadingMessage": "Downloading update...",
-        "downloadedMessage": "Update downloaded!",
+        "downloadedMessage": "Update downloaded",
 
         "installingMessage": "Installing update...",
 
@@ -161,7 +165,7 @@
         "unsupportedPatchVersion": "Patch is not supported for this app version.",
         "unsupportedRequiredOption": "This patch contains a required option that is not supported by this app",
 
-        "patchesChangeWarningDialogText": "It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou'll need to turn on \"Allow changing patch selection\" in settings before changing any patch selection.",
+        "patchesChangeWarningDialogText": "It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou'll need to turn on \"Allow changing patch selection\" in the settings before changing any patch selection.",
         "patchesChangeWarningDialogButton": "Use default selection"
     },
     "installerView": {

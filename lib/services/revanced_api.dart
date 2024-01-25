@@ -49,7 +49,7 @@ class RevancedAPI {
     String extension,
     String repoName,
   ) {
-    if (!locator<ManagerAPI>().getPatchesConsent()) {
+    if (!locator<ManagerAPI>().getDownloadConsent()) {
       return Future(() => null);
     }
     return getToolsLock.synchronized(() async {

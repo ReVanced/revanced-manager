@@ -128,12 +128,12 @@ class ManagerAPI {
     await _prefs.setString('patchesRepo', value);
   }
 
-  bool getPatchesConsent() {
-    return _prefs.getBool('patchesConsent') ?? false;
+  bool getDownloadConsent() {
+    return _prefs.getBool('downloadConsent') ?? false;
   }
 
-  void setPatchesConsent(bool consent) {
-    _prefs.setBool('patchesConsent', consent);
+  void setDownloadConsent(bool consent) {
+    _prefs.setBool('downloadConsent', consent);
   }
 
   bool isPatchesAutoUpdate() {
@@ -156,12 +156,12 @@ class ManagerAPI {
     _prefs.setBool('showPatchesChangeWarning', !value);
   }
 
-  bool showManagerUpdateDialog() {
-    return _prefs.getBool('showManagerUpdateDialog') ?? true;
+  bool showUpdateDialog() {
+    return _prefs.getBool('showUpdateDialog') ?? true;
   }
 
-  void setManagerUpdateDialog(bool value) {
-    _prefs.setBool('showManagerUpdateDialog', value);
+  void setShowUpdateDialog(bool value) {
+    _prefs.setBool('showUpdateDialog', value);
   }
 
   bool isChangingToggleModified() {
