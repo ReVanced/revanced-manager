@@ -35,8 +35,10 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +52,7 @@ fun VersionSelectorScreen(
 
     val list by remember {
         derivedStateOf {
-            (downloadedVersions + viewModel.downloadableVersions)
+            val apps = (downloadedVersions + viewModel.downloadableVersions)
                 .distinctBy { it.version }
                 .sortedWith(
                     compareByDescending<SelectedApp> {
@@ -58,10 +60,19 @@ fun VersionSelectorScreen(
                     }.thenByDescending { supportedVersions[it.version] }
                         .thenByDescending { it.version }
                 )
+
+            viewModel.forcedVersion?.let {
+                apps.filter { app -> app.version == it }
+            } ?: apps
         }
     }
 
     var selectedVersion: SelectedApp? by rememberSaveable { mutableStateOf(null) }
+    var showNonSuggestedVersionDialog: SelectedApp.Installed? by rememberSaveable {
+        mutableStateOf(
+            null
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -84,6 +95,16 @@ fun VersionSelectorScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if (viewModel.showNonSuggestedVersionDialog)
+                NonSuggestedVersionDialog(
+                    onCancel = viewModel::dismissNonSuggestedVersionDialog,
+                    onContinue = { dismissPermanently ->
+                        selectedVersion = viewModel.nonSuggestedVersion
+
+                        viewModel.continueWithNonSuggestedVersion(dismissPermanently)
+                    }
+                )
+
             viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
                     packageName = viewModel.packageName,
@@ -92,10 +113,13 @@ fun VersionSelectorScreen(
                     SelectedAppItem(
                         selectedApp = it,
                         selected = selectedVersion == it,
-                        onClick = { selectedVersion = it },
+                        onClick = {
+                            if (viewModel.isAppVersionAllowed(it))
+                                selectedVersion = it
+                        },
                         patchCount = supportedVersions[it.version],
                         enabled =
-                            !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
+                        !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
                         alreadyPatched = installedApp != null && installedApp.installType != InstallType.ROOT
                     )
                 }
@@ -158,9 +182,11 @@ fun SelectedAppItem(
 
             else -> null
         },
-        trailingContent = patchCount?.let { {
-            Text(pluralStringResource(R.plurals.patch_count, it, it))
-        } },
+        trailingContent = patchCount?.let {
+            {
+                Text(pluralStringResource(R.plurals.patch_count, it, it))
+            }
+        },
         modifier = Modifier
             .clickable(enabled = !alreadyPatched && enabled, onClick = onClick)
             .run {

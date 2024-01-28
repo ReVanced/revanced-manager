@@ -50,7 +50,7 @@ class PatchBundleRepository(
         it.state.map { state -> it.uid to state }
     }
 
-    private val suggestedVersions = bundles.map {
+    val suggestedVersions = bundles.map {
         val allPatches = it.values.flatMap { bundle -> bundle.patchClasses() }.toSet()
 
         PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
