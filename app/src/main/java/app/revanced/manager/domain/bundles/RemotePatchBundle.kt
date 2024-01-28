@@ -107,7 +107,7 @@ class APIPatchBundle(name: String, id: Int, directory: File, endpoint: String) :
                 .getLatestRelease(repo)
                 .getOrThrow()
                 .let {
-                    BundleAsset(it.metadata.tag, it.findAssetByType(mime).downloadUrl)
+                    BundleAsset(it.version, it.findAssetByType(mime).downloadUrl)
                 }
         }
 

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -63,20 +62,21 @@ import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.DangerousActionDialogBase
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.launch
 import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onSave: (PatchesSelection?, Options) -> Unit,
+    onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
@@ -106,13 +106,13 @@ fun PatchesSelectorScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_compat_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
                     style = MaterialTheme.typography.titleMedium
                 )
 
@@ -233,7 +233,10 @@ fun PatchesSelectorScreen(
             }
         ) {
             val bundle = bundles[pagerState.currentPage]
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+
+            LazyColumnWithScrollbar(
+                modifier = Modifier.fillMaxSize()
+            ) {
                 fun List<PatchInfo>.searched() = filter {
                     it.name.contains(query, true)
                 }
@@ -255,7 +258,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!vm.allowExperimental) return@LazyColumn
+                if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -341,7 +344,7 @@ fun PatchesSelectorScreen(
                 pageContent = { index ->
                     val bundle = bundles[index]
 
-                    LazyColumn(
+                    LazyColumnWithScrollbar(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         patchList(
@@ -364,7 +367,7 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
                             filterFlag = SHOW_UNSUPPORTED,
-                            supported = vm.allowExperimental
+                            supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),
@@ -570,10 +573,10 @@ fun OptionsDialog(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier.padding(paddingValues)
         ) {
-            if (patch.options == null) return@LazyColumn
+            if (patch.options == null) return@LazyColumnWithScrollbar
 
             items(patch.options, key = { it.key }) { option ->
                 val key = option.key

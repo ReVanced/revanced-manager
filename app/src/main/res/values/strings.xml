@@ -67,8 +67,8 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
-    <string name="experimental_patches">Allow experimental patches</string>
-    <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
+    <string name="patch_compat_check">Disable version compatibility check</string>
+    <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -83,26 +83,24 @@
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
-    <string name="patches_selection">Patches selection</string>
-    <string name="restore_patches_selection">Restore patches selections</string>
-    <string name="restore_patches_selection_description">Restore patches selection from a file</string>
-    <string name="restore_patches_selection_fail">Failed to restore patches selection: %s</string>
-    <string name="backup_patches_selection">Backup patches selections</string>
-    <string name="backup_patches_selection_description">Backup patches selection to a file</string>
-    <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
-    <string name="clear_patches_selection">Clear patches selection</string>
-    <string name="clear_patches_selection_description">Clear all patches selection</string>
-    <string name="patch_options">Patch options</string>
-    <string name="patch_options_clear_package">Clear patch options for package</string>
-    <string name="patch_options_clear_package_description">Resets patch options for a single package</string>
-    <string name="patch_options_clear_bundle">Clear patch options for bundle</string>
-    <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
-    <string name="patch_options_clear_all">Clear all patch options</string>
-    <string name="patch_options_clear_all_description">Resets all patch options</string>
-    <string name="prefer_splits">Prefer split apks</string>
-    <string name="prefer_splits_description">Prefer split apks instead of full apks</string>
-    <string name="prefer_universal">Prefer universal apks</string>
-    <string name="prefer_universal_description">Prefer universal instead of arch-specific apks</string>
+    <string name="import_patch_selection">Import patch selection</string>
+    <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
+    <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
+    <string name="export_patch_selection">Export patch selection</string>
+    <string name="export_patch_selection_description">Export patch selection from a JSON file</string>
+    <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
+    <string name="reset_patch_selection">Reset patch selection</string>
+    <string name="reset_patch_selection_description">Reset the stored patch selection</string>
+    <string name="patch_options_reset_package">Reset patch options for app</string>
+    <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
+    <string name="patch_options_reset_bundle">Resets patch options for bundle</string>
+    <string name="patch_options_reset_bundle_description">Resets patch options for all patches in a bundle</string>
+    <string name="patch_options_reset_all">Reset patch options</string>
+    <string name="patch_options_reset_all_description">Resets all patch options</string>
+    <string name="prefer_splits">Prefer split APK\'s</string>
+    <string name="prefer_splits_description">Prefer split APK\'s instead of full APK\'s</string>
+    <string name="prefer_universal">Prefer universal APK\'s</string>
+    <string name="prefer_universal_description">Prefer universal instead of arch-specific APK\'s</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -155,6 +153,7 @@
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
+    <string name="download_apk">Download APK</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
@@ -167,6 +166,7 @@
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
+    <string name="patch_options_reset_toast">Patch options have been reset</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
     <string name="selection_warning_continue_countdown">Continue (%ds)</string>
@@ -179,7 +179,7 @@
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
     <string name="app_not_installed">The app you selected isn\'t installed. Do you want to download it?</string>
-    <string name="failed_to_load_apk">Failed to load apk</string>
+    <string name="failed_to_load_apk">Failed to load APK</string>
     <string name="loading">Loading…</string>
     <string name="not_installed">Not installed</string>
     <string name="installed">Installed</string>
@@ -210,8 +210,8 @@
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
 
-    <string name="patches_selector_sheet_filter_title">Filter</string>
-    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
+    <string name="patch_selector_sheet_filter_title">Filter</string>
+    <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
@@ -233,23 +233,27 @@
     <string name="open_app">Open</string>
     <string name="save_apk">Save APK</string>
     <string name="save_apk_success">APK Saved</string>
-    <string name="sign_fail">Failed to sign Apk: %s</string>
+    <string name="sign_fail">Failed to sign APK: %s</string>
     <string name="save_logs">Save logs</string>
     <string name="select_install_type">Select installation type</string>
 
-    <string name="patcher_step_group_prepare">Preparation</string>
+    <string name="patcher_step_group_preparing">Preparing</string>
     <string name="patcher_step_load_patches">Load patches</string>
-    <string name="patcher_step_unpack">Unpack Apk</string>
+    <string name="patcher_step_unpack">Unpack APK</string>
     <string name="patcher_step_integrations">Merge Integrations</string>
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
-    <string name="patcher_step_write_patched">Write patched Apk</string>
-    <string name="patcher_step_sign_apk">Sign Apk</string>
+    <string name="patcher_step_write_patched">Write patched APK</string>
+    <string name="patcher_step_sign_apk">Sign APK</string>
     <string name="patcher_notification_message">Patching in progress…</string>
+    <string name="apply_patches">Apply patches</string>
+    <string name="applying_patch">Applying %s</string>
+    <string name="failed_to_apply_patch">Failed to apply %s</string>
 
     <string name="step_completed">completed</string>
     <string name="step_failed">failed</string>
     <string name="step_running">running</string>
+    <string name="step_waiting">waiting</string>
 
     <string name="expand_content">expand</string>
     <string name="collapse_content">collapse</string>
@@ -269,6 +273,8 @@
     <string name="developer_options_description">Options for debugging issues</string>
     <string name="bundle_input_name">Name</string>
     <string name="bundle_input_source_url">Source URL</string>
+    <string name="bundle_update_success">Successfully updated %s</string>
+    <string name="bundle_update_unavailable">No update available for %s</string>
     <string name="automatically_update">Automatically update</string>
     <string name="automatically_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
@@ -281,11 +287,10 @@
     <string name="ready_to_install_update">Ready to install update</string>
     <string name="update_completed">Update installed</string>
     <string name="install_update_manager_failed">Failed to install update</string>
-    <string name="update_notification">A minor update for ReVanced Manager is available. Click here to update and get the latest features and fixes!</string>
-    <string name="update_channel">Update channel</string>
-    <string name="update_channel_description">Stable</string>
-    <string name="update_notifications">Update notifications</string>
-    <string name="update_notifications_description">Dialog on app launch + badges</string>
+    <string name="manual_update_check">Check for updates</string>
+    <string name="manual_update_check_description">Manually check for updates</string>
+    <string name="update_checking_manager">Update checking</string>
+    <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
     <string name="changelog">Changelog</string>
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
@@ -306,7 +311,9 @@
     <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
 
-    <string name="failed_to_check_updates">Failed to check for updates</string>
+    <string name="failed_to_check_updates">Failed to check for updates: %s</string>
+    <string name="no_update_available">No update available</string>
+    <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
     <string name="update_available_dialog_title">New update available</string>
     <string name="update_available_dialog_description">A new version (%s) is available for download.</string>
@@ -315,4 +322,10 @@
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
     <string name="download_update_confirmation">Download update?</string>
     <string name="no_contributors_found">No contributors found</string>
+    <string name="select">Select</string>
+    <string name="select_bundle_type_dialog_title">Select bundle type</string>
+    <string name="select_bundle_type_dialog_description">Select the type that is right for you.</string>
+    <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
+    <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
+    <string name="recommended">Recommended</string>
 </resources>

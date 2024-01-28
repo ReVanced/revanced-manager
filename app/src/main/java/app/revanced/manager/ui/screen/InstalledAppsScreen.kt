@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.WarningAmber
@@ -24,6 +23,7 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
@@ -47,13 +47,12 @@ fun InstalledAppsScreen(
             )
         }
 
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = if (installedApps.isNullOrEmpty()) Arrangement.Center else Arrangement.Top
+            verticalArrangement = if (installedApps.isNullOrEmpty()) Arrangement.Center else Arrangement.Top,
         ) {
             installedApps?.let { installedApps ->
-
                 if (installedApps.isNotEmpty()) {
                     items(
                         installedApps,

@@ -54,7 +54,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    
+
     packaging {
         resources.excludes.addAll(listOf(
             "/prebuilt/**",
@@ -105,6 +105,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.preview)
+    implementation(libs.compose.ui.tooling)
     implementation(libs.compose.livedata)
     implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
@@ -163,4 +164,7 @@ dependencies {
 
     // Fading Edges
     implementation(libs.fading.edges)
+
+    // Scrollbars
+    implementation(libs.scrollbars)
 }

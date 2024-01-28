@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BooleanItem(
+    modifier: Modifier = Modifier,
     preference: Preference<Boolean>,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
@@ -22,6 +23,7 @@ fun BooleanItem(
     val value by preference.getAsState()
 
     BooleanItem(
+        modifier = modifier,
         value = value,
         onValueChange = { coroutineScope.launch { preference.update(it) } },
         headline = headline,
@@ -31,12 +33,15 @@ fun BooleanItem(
 
 @Composable
 fun BooleanItem(
+    modifier: Modifier = Modifier,
     value: Boolean,
     onValueChange: (Boolean) -> Unit,
     @StringRes headline: Int,
     @StringRes description: Int
 ) = SettingsListItem(
-    modifier = Modifier.clickable { onValueChange(!value) },
+    modifier = Modifier
+        .clickable { onValueChange(!value) }
+        .then(modifier),
     headlineContent = stringResource(headline),
     supportingContent = stringResource(description),
     trailingContent = {

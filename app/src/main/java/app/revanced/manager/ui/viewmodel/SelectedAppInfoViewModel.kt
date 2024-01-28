@@ -20,7 +20,7 @@ import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -109,11 +109,11 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     fun getCustomPatches(
         bundles: List<BundleInfo>,
         allowUnsupported: Boolean
-    ): PatchesSelection? =
+    ): PatchSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
     fun updateConfiguration(
-        selection: PatchesSelection?,
+        selection: PatchSelection?,
         options: Options,
         bundles: List<BundleInfo>
     ) {
@@ -135,7 +135,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 
     data class Params(
         val app: SelectedApp,
-        val patches: PatchesSelection?,
+        val patches: PatchSelection?,
     )
 
     private companion object {
@@ -165,15 +165,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 }
 
 private sealed interface SelectionState : Parcelable {
-    fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchesSelection
+    fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchSelection
 
     @Parcelize
-    data class Customized(val patchesSelection: PatchesSelection) : SelectionState {
+    data class Customized(val patchSelection: PatchSelection) : SelectionState {
         override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
             bundles.toPatchSelection(
                 allowUnsupported
             ) { uid, patch ->
-                patchesSelection[uid]?.contains(patch.name) ?: false
+                patchSelection[uid]?.contains(patch.name) ?: false
             }
     }
 

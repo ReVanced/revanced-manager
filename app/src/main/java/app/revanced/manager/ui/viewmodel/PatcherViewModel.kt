@@ -9,10 +9,10 @@ import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
@@ -26,22 +26,21 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
-import app.revanced.manager.patcher.worker.PatcherProgressManager
+import app.revanced.manager.patcher.logger.ManagerLogger
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.patcher.worker.Step
 import app.revanced.manager.service.InstallService
-import app.revanced.manager.service.UninstallService
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.model.SelectedApp
+import app.revanced.manager.ui.model.State
+import app.revanced.manager.ui.model.Step
+import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -49,12 +48,10 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 import java.util.UUID
-import java.util.logging.Level
-import java.util.logging.LogRecord
 
 @Stable
-class InstallerViewModel(
-    private val input: Destination.Installer
+class PatcherViewModel(
+    private val input: Destination.Patcher
 ) : ViewModel(), KoinComponent {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
@@ -63,62 +60,62 @@ class InstallerViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
+    private var installedApp: InstalledApp? = null
     val packageName: String = input.selectedApp.packageName
+    var installedPackageName by mutableStateOf<String?>(null)
+        private set
+    var isInstalling by mutableStateOf(false)
+        private set
+
     private val tempDir = fs.tempDir.resolve("installer").also {
         it.deleteRecursively()
         it.mkdirs()
     }
-
-    private val outputFile = tempDir.resolve("output.apk")
     private var inputFile: File? = null
-
-    private var installedApp: InstalledApp? = null
-    var isInstalling by mutableStateOf(false)
-        private set
-    var installedPackageName by mutableStateOf<String?>(null)
-        private set
-    val appButtonText by derivedStateOf { if (installedPackageName == null) R.string.install_app else R.string.open_app }
+    private val outputFile = tempDir.resolve("output.apk")
 
     private val workManager = WorkManager.getInstance(app)
-
-    private val _progress: MutableStateFlow<ImmutableList<Step>>
-    private val patcherWorkerId: UUID
     private val logger = ManagerLogger()
 
-    init {
-        // TODO: navigate away when system-initiated process death is detected because it is not possible to recover from it.
+    val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
+    private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
+    val steps = generateSteps(
+        app,
+        input.selectedApp,
+        downloadProgress
+    ).toMutableStateList()
+    private var currentStepIndex = 0
 
-        viewModelScope.launch {
-            installedApp = installedAppRepository.get(packageName)
-        }
+    private val patcherWorkerId: UUID =
+        workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
+            "patching", PatcherWorker.Args(
+                input.selectedApp,
+                outputFile.path,
+                input.selectedPatches,
+                input.options,
+                logger,
+                downloadProgress,
+                patchesProgress,
+                setInputFile = { inputFile = it },
+                onProgress = { name, state, message ->
+                    steps[currentStepIndex] = steps[currentStepIndex].run {
+                        copy(
+                            name = name ?: this.name,
+                            state = state ?: this.state,
+                            message = message ?: this.message
+                        )
+                    }
 
-        val (selectedApp, patches, options) = input
+                    if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
+                        currentStepIndex++
 
-        _progress = MutableStateFlow(
-            PatcherProgressManager.generateSteps(
-                app,
-                patches.flatMap { (_, selected) -> selected },
-                selectedApp
-            ).toImmutableList()
+                        steps[currentStepIndex] = steps[currentStepIndex].copy(state = State.RUNNING)
+                    }
+                }
+            )
         )
 
-        patcherWorkerId =
-            workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
-                "patching", PatcherWorker.Args(
-                    selectedApp,
-                    outputFile.path,
-                    patches,
-                    options,
-                    _progress,
-                    logger,
-                    setInputFile = { inputFile = it }
-                )
-            )
-    }
-
-    val progress = _progress.asStateFlow()
-
-    val patcherState =
+    val patcherSucceeded =
         workManager.getWorkInfoByIdLiveData(patcherWorkerId).map { workInfo: WorkInfo ->
             when (workInfo.state) {
                 WorkInfo.State.SUCCEEDED -> true
@@ -151,29 +148,18 @@ class InstallerViewModel(
                         app.toast(app.getString(R.string.install_app_fail, extra))
                     }
                 }
-
-                UninstallService.APP_UNINSTALL_ACTION -> {
-                }
             }
         }
     }
 
-    init {
+    init { // TODO: navigate away when system-initiated process death is detected because it is not possible to recover from it.
         ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
-            addAction(UninstallService.APP_UNINSTALL_ACTION)
         }, ContextCompat.RECEIVER_NOT_EXPORTED)
-    }
 
-    fun exportLogs(context: Context) {
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, logger.export())
-            type = "text/plain"
+        viewModelScope.launch {
+            installedApp = installedAppRepository.get(packageName)
         }
-
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        context.startActivity(shareIntent)
     }
 
     override fun onCleared() {
@@ -183,7 +169,7 @@ class InstallerViewModel(
 
         when (val selectedApp = input.selectedApp) {
             is SelectedApp.Local -> {
-                if (selectedApp.shouldDelete) selectedApp.file.delete()
+                if (selectedApp.temporary) selectedApp.file.delete()
             }
 
             is SelectedApp.Installed -> {
@@ -199,7 +185,7 @@ class InstallerViewModel(
                 }
             }
 
-            else -> {}
+            else -> Unit
         }
 
         tempDir.deleteRecursively()
@@ -215,117 +201,103 @@ class InstallerViewModel(
         }
     }
 
+    fun exportLogs(context: Context) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, logger.export())
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
+    }
+
+    fun open() = installedPackageName?.let(pm::launch)
+
     fun install(installType: InstallType) = viewModelScope.launch {
-        isInstalling = true
         try {
+            isInstalling = true
             when (installType) {
                 InstallType.DEFAULT -> {
                     pm.installApp(listOf(outputFile))
                 }
 
                 InstallType.ROOT -> {
-                    installAsRoot()
+                    try {
+                        val label = with(pm) {
+                            getPackageInfo(outputFile)?.label()
+                                ?: throw Exception("Failed to load application info")
+                        }
+
+                        rootInstaller.install(
+                            outputFile,
+                            inputFile,
+                            packageName,
+                            input.selectedApp.version,
+                            label
+                        )
+
+                        installedAppRepository.addOrUpdate(
+                            packageName,
+                            packageName,
+                            input.selectedApp.version,
+                            InstallType.ROOT,
+                            input.selectedPatches
+                        )
+
+                        rootInstaller.mount(packageName)
+
+                        installedPackageName = packageName
+
+                        app.toast(app.getString(R.string.install_app_success))
+                    } catch (e: Exception) {
+                        Log.e(tag, "Failed to install as root", e)
+                        app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
+                        try {
+                            rootInstaller.uninstall(packageName)
+                        } catch (_: Exception) {  }
+                    }
                 }
             }
-
         } finally {
             isInstalling = false
         }
     }
 
-    fun open() = installedPackageName?.let { pm.launch(it) }
+    companion object {
+        fun generateSteps(
+            context: Context,
+            selectedApp: SelectedApp,
+            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
+        ): List<Step> {
+            return listOfNotNull(
+                Step(
+                    context.getString(R.string.patcher_step_load_patches),
+                    StepCategory.PREPARING,
+                    state = State.RUNNING
+                ),
+                Step(
+                    context.getString(R.string.download_apk),
+                    StepCategory.PREPARING,
+                    downloadProgress = downloadProgress
+                ).takeIf { selectedApp is SelectedApp.Download },
+                Step(
+                    context.getString(R.string.patcher_step_unpack),
+                    StepCategory.PREPARING
+                ),
+                Step(
+                    context.getString(R.string.patcher_step_integrations),
+                    StepCategory.PREPARING
+                ),
 
-    private suspend fun installAsRoot() {
-        try {
-            val label = with(pm) {
-                getPackageInfo(outputFile)?.label()
-                    ?: throw Exception("Failed to load application info")
-            }
+                Step(
+                    context.getString(R.string.apply_patches),
+                    StepCategory.PATCHING
+                ),
 
-            rootInstaller.install(
-                outputFile,
-                inputFile,
-                packageName,
-                input.selectedApp.version,
-                label
+                Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
+                Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
             )
-
-            rootInstaller.mount(packageName)
-
-            installedApp?.let { installedAppRepository.delete(it) }
-
-            installedAppRepository.addOrUpdate(
-                packageName,
-                packageName,
-                input.selectedApp.version,
-                InstallType.ROOT,
-                input.selectedPatches
-            )
-
-            installedPackageName = packageName
-
-            app.toast(app.getString(R.string.install_app_success))
-        } catch (e: Exception) {
-            Log.e(tag, "Failed to install as root", e)
-            app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
-            try {
-                rootInstaller.uninstall(packageName)
-            } catch (_: Exception) {
-            }
         }
-    }
-}
-
-// TODO: move this to a better place
-class ManagerLogger : java.util.logging.Handler() {
-    private val logs = mutableListOf<Pair<LogLevel, String>>()
-    private fun log(level: LogLevel, msg: String) {
-        level.androidLog(msg)
-        if (level == LogLevel.TRACE) return
-        logs.add(level to msg)
-    }
-
-    fun export() =
-        logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
-
-    fun trace(msg: String) = log(LogLevel.TRACE, msg)
-    fun info(msg: String) = log(LogLevel.INFO, msg)
-    fun warn(msg: String) = log(LogLevel.WARN, msg)
-    fun error(msg: String) = log(LogLevel.ERROR, msg)
-    override fun publish(record: LogRecord) {
-        val msg = record.message
-        val fn = when (record.level) {
-            Level.INFO -> ::info
-            Level.SEVERE -> ::error
-            Level.WARNING -> ::warn
-            else -> ::trace
-        }
-
-        fn(msg)
-    }
-
-    override fun flush() = Unit
-
-    override fun close() = Unit
-}
-
-enum class LogLevel {
-    TRACE {
-        override fun androidLog(msg: String) = Log.v(androidTag, msg)
-    },
-    INFO {
-        override fun androidLog(msg: String) = Log.i(androidTag, msg)
-    },
-    WARN {
-        override fun androidLog(msg: String) = Log.w(androidTag, msg)
-    },
-    ERROR {
-        override fun androidLog(msg: String) = Log.e(androidTag, msg)
-    };
-
-    abstract fun androidLog(msg: String): Int
-
-    private companion object {
-        const val androidTag = "ReVanced Patcher"
     }
 }

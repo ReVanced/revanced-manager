@@ -25,7 +25,7 @@ class ChangelogsViewModel(
             uiSafe(app, R.string.changelog_download_fail, "Failed to download changelog") {
                 changelogs = api.getReleases("revanced-manager").getOrNull().orEmpty().map { release ->
                     Changelog(
-                        release.metadata.tag,
+                        release.version,
                         release.findAssetByType(APK_MIMETYPE).downloadCount,
                         release.metadata.publishedAt,
                         release.metadata.body
