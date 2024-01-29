@@ -25,8 +25,11 @@ import kotlinx.coroutines.withContext
 
 class AboutViewModel(private val reVancedAPI: ReVancedAPI) : ViewModel() {
     var socials by mutableStateOf(emptyList<ReVancedSocial>())
+    	private set
     var contact by mutableStateOf<String?>(null)
+      	private set
     var donate by mutableStateOf<String?>(null)
+      	private set
 
     init {
         viewModelScope.launch {
