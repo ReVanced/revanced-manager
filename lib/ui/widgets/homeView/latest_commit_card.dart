@@ -52,20 +52,26 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                   ],
                 ),
               ),
-              FutureBuilder<bool>(
-                future: model.hasManagerUpdates(),
-                initialData: false,
-                builder: (context, snapshot) => FilledButton(
-                  onPressed: () => widget.model.showUpdateConfirmationDialog(
-                    widget.parentContext,
-                    false,
-                    !snapshot.data!,
+              if (model.releaseBuild)
+                FutureBuilder<bool>(
+                  future: model.hasManagerUpdates(),
+                  initialData: false,
+                  builder: (context, snapshot) => FilledButton(
+                    onPressed: () => widget.model.showUpdateConfirmationDialog(
+                      widget.parentContext,
+                      false,
+                      !snapshot.data!,
+                    ),
+                    child: (snapshot.hasData && !snapshot.data!)
+                        ? I18nText('showChangelogButton')
+                        : I18nText('showUpdateButton'),
                   ),
-                  child: (snapshot.hasData && !snapshot.data!)
-                      ? I18nText('showChangelogButton')
-                      : I18nText('showUpdateButton'),
+                )
+              else
+                FilledButton(
+                  onPressed: null,
+                  child: I18nText('devBuild'),
                 ),
-              ),
             ],
           ),
         ),

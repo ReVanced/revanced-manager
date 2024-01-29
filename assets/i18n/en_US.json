@@ -18,6 +18,7 @@
     "remove": "Remove",
     "showChangelogButton": "Show changelog",
     "showUpdateButton": "Show update",
+    "devBuild": "Dev build",
     "navigationView": {
         "dashboardTab": "Dashboard",
         "patcherTab": "Patcher",
