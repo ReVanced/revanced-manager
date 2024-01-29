@@ -42,7 +42,6 @@ class HomeViewModel extends BaseViewModel {
   File? downloadedApk;
 
   Future<void> initialize(BuildContext context) async {
-    releaseBuild = _managerAPI.releaseBuild;
     _managerAPI.rePatchedSavedApps().then((_) => _getPatchedApps());
     _currentManagerVersion = await _managerAPI.getCurrentManagerVersion();
     if (!_managerAPI.getDownloadConsent()) {
@@ -52,15 +51,13 @@ class HomeViewModel extends BaseViewModel {
     }
     _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     _currentPatchesVersion = await _managerAPI.getCurrentPatchesVersion();
-    if (_managerAPI.releaseBuild) {
-      if (_managerAPI.showUpdateDialog() && await hasManagerUpdates()) {
-        showUpdateDialog(context, false);
-      }
-      if (!_managerAPI.isPatchesAutoUpdate() &&
-          _managerAPI.showUpdateDialog() &&
-          await hasPatchesUpdates()) {
-        showUpdateDialog(context, true);
-      }
+    if (_managerAPI.showUpdateDialog() && await hasManagerUpdates()) {
+      showUpdateDialog(context, false);
+    }
+    if (!_managerAPI.isPatchesAutoUpdate() &&
+        _managerAPI.showUpdateDialog() &&
+        await hasPatchesUpdates()) {
+      showUpdateDialog(context, true);
     }
 
     await _patcherAPI.initialize();
@@ -131,6 +128,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
+    if (!_managerAPI.releaseBuild) {
+      return false;
+    }
     _latestManagerVersion =
         await _managerAPI.getLatestManagerVersion() ?? _currentManagerVersion;
 
