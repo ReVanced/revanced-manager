@@ -17,6 +17,8 @@ class InstallerView extends StatelessWidget {
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
       builder: (context, model, child) => PopScope(
+        onPopInvoked: (bool didPop) => model.onWillPop(context),
+        canPop: false,
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
@@ -112,7 +114,6 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onPopInvoked: (bool didPop) => model.onWillPop(context),
       ),
     );
   }
