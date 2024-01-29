@@ -6,6 +6,13 @@ on:
     branches:
       - main
       - dev
+    paths:
+      - ".github/workflows/release-build.yml"
+      - "android/**"
+      - "assets/**"
+      - "lib/**"
+      - ".releaserc.*"
+      - "pubspec.yaml"
       
 jobs:
   release:
