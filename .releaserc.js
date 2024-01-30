@@ -15,7 +15,26 @@ module.exports = {
       }
     ],
     "@semantic-release/changelog",
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        presetConfig: {
+          types: [
+            { type: "feat", section: "Features" },
+            { type: "fix", section: "Bug Fixes" },
+            { type: "docs", section: "Documentation" },
+            { type: "style", section: "Styles" },
+            { type: "refactor", section: "Code Refactoring" },
+            { type: "perf", section: "Performance Improvements" },
+            { type: "test", section: "Tests" },
+            { type: "build", section: "Builds" },
+            { type: "ci", section: "Continuous Integration" },
+            { type: "chore", section: "Chores" },
+            { type: "revert", section: "Reverts" },
+          ],
+        },
+      }
+    ],
     [
       "@droidsolutions-oss/semantic-release-update-file",
       {
@@ -60,5 +79,7 @@ module.exports = {
         "clearWorkspace": true
       }
     ]
-  ]
+  ],
+
+
 };
