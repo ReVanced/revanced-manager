@@ -47,10 +47,30 @@ android {
         release {
             shrinkResources false
             minifyEnabled false
-            resValue "string", "app_name", "ReVanced Manager"
-            signingConfig signingConfigs.debug
+
             ndk {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
+            }
+            if (System.getenv("signingKey") != null) {
+                signingConfigs {
+                    create("release") {
+                        storeFile = file(System.getenv("signingKey"))
+                        storePassword = System.getenv("keyStorePassword")
+                        keyAlias = System.getenv("keyAlias")
+                        keyPassword = System.getenv("keyPassword")
+                    }
+                }
+                signingConfig = signingConfigs.release
+                resValue "string", "app_name", "ReVanced Manager"
+                applicationVariants.all { variant ->
+                    variant.outputs.all {
+                        outputFileName = "revanced-manager-v${flutterVersionName}.apk"
+                    }
+                }
+            } else {
+                signingConfig = signingConfigs.debug
+                resValue "string", "app_name", "ReVanced Manager Debug"
+                applicationIdSuffix ".debug"
             }
         }
         debug {

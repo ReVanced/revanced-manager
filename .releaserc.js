@@ -1,4 +1,4 @@
-{
+module.exports = {
   "branches": [
     "main",
     {
@@ -17,6 +17,24 @@
     "@semantic-release/changelog",
     "@semantic-release/release-notes-generator",
     [
+      "@droidsolutions-oss/semantic-release-update-file",
+      {
+        "files": [
+          {
+            "path": ["pubspec.yaml"],
+            "type": "flutter",
+            "branches": ["main", "dev"]
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "flutter build apk"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
@@ -29,7 +47,7 @@
       {
         "assets": [
           {
-            "path": "revanced-manager-v*.apk"
+            "path": "build/app/outputs/apk/release/revanced-manager*.apk"
           }
         ],
         "successComment": false
@@ -43,4 +61,4 @@
       }
     ]
   ]
-}
+};
