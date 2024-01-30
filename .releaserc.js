@@ -18,21 +18,23 @@ module.exports = {
     [
       "@semantic-release/release-notes-generator",
       {
-        presetConfig: {
-          types: [
-            { type: "feat", section: "Features" },
-            { type: "fix", section: "Bug Fixes" },
-            { type: "docs", section: "Documentation" },
-            { type: "style", section: "Styles" },
-            { type: "refactor", section: "Code Refactoring" },
-            { type: "perf", section: "Performance Improvements" },
-            { type: "test", section: "Tests" },
-            { type: "build", section: "Builds" },
-            { type: "ci", section: "Continuous Integration" },
-            { type: "chore", section: "Chores" },
-            { type: "revert", section: "Reverts" },
-          ],
+        "preset": "conventionalcommits",
+        parserOpts: {
+          headerCorrespondence: ['type','scope','subject'],
         },
+        writerOpts: {
+          commitPartial: "* {{subject}} ([{{author.name}}]({{~@root.host}}/{{~@root.owner}}/{{~@root.repository}}/commit/{{hash}}))\n",
+          mainTemplate: `
+{{#each commitGroups}}
+{{#if title}}
+## {{title}}
+{{/if}}
+{{#each commits}}
+{{> commit root=@root}}
+{{/each}}
+{{/each}}
+          `
+        }
       }
     ],
     [
