@@ -19,9 +19,6 @@ module.exports = {
       "@semantic-release/release-notes-generator",
       {
         "preset": "conventionalcommits",
-        parserOpts: {
-          headerCorrespondence: ['type','scope','subject'],
-        },
         writerOpts: {
           commitPartial: "* {{subject}} ([{{author.name}}]({{~@root.host}}/{{~@root.owner}}/{{~@root.repository}}/commit/{{hash}}))\n",
           mainTemplate: `
