@@ -6,7 +6,14 @@ on:
     branches:
       - main
       - dev
-      
+    paths:
+      - ".github/workflows/release-build.yml"
+      - "android/**"
+      - "assets/**"
+      - "lib/**"
+      - ".releaserc.js"
+      - "pubspec.yaml"
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -33,20 +40,6 @@ jobs:
       - name: Setup semantic-release
         run: npm install
 
-      - name: Get version code
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx semantic-release --extends ./.releaserc.getversion.json --no-ci --dry-run
-          echo "RELEASE_VERSION=v$(cat .VERSION)" >> $GITHUB_ENV
-
-      - name: Bump pubspec version
-        run: |
-          VERSION=$(echo "${RELEASE_VERSION}" | sed 's/v//')
-          IFS='.' read -r -a nums <<< "${VERSION/-dev/}.0"
-          VERSIONCODE=$((nums[0] * 100000000 + nums[1] * 100000 + nums[2] * 100 + nums[3]))
-          sed -i "/^version/c\\version: $VERSION+$VERSIONCODE" pubspec.yaml
-
       - name: Set up Flutter
         run: flutter pub get
 
@@ -54,22 +47,12 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build with Flutter
-        run: flutter build apk
-
-      - name: Sign APK
-        id: sign_apk
-        uses: ilharp/sign-android-release@v1
-        with:
-          releaseDir: build/app/outputs/apk/release
-          signingKey: ${{ secrets.SIGNING_KEYSTORE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          signingKey: "keystore.jks"
           keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
           keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-
-      - name: Rename APK
-        run: mv ${{steps.sign_apk.outputs.signedFile}} revanced-manager-${{ env.RELEASE_VERSION }}.apk
-      
-      - name: Publish release APK
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release --extends ./.releaserc.release.json
+        run: |
+          echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
+          npx semantic-release

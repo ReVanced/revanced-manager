@@ -81,7 +81,7 @@ class GithubAPI {
       int updates = 0;
       final String currentVersion =
           await _managerAPI.getCurrentManagerVersion();
-      while (response.data[updates]['tag_name'] != 'v$currentVersion') {
+      while (response.data[updates]['tag_name'] != currentVersion) {
         updates++;
       }
       for (int i = 1; i < updates; i++) {
