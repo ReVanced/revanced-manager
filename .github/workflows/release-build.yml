@@ -31,7 +31,7 @@ jobs:
           channel: "stable"
 
       - name: Cache Node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             node_modules
