@@ -65,16 +65,15 @@ fun AboutSettingsScreen(
     val donateText = stringResource(R.string.donate)
     val contactText = stringResource(R.string.contact)
     val preferredSocialButtons = remember(preferredSocials, viewModel.donate, viewModel.contact) {
-        listOfNotNull(
-            *preferredSocials.map {
-                Triple(
-                    getSocialIcon(it.name),
-                    it.name,
-                    third = {
-                        context.openUrl(it.url)
-                    }
-                )
-            }.toTypedArray(),
+        preferredSocials.map {
+            Triple(
+                getSocialIcon(it.name),
+                it.name,
+                third = {
+                    context.openUrl(it.url)
+                }
+            )
+        } + listOfNotNull(
             viewModel.donate?.let {
                 Triple(
                     Icons.Outlined.FavoriteBorder,
@@ -83,7 +82,8 @@ fun AboutSettingsScreen(
                         context.openUrl(it)
                     }
                 )
-            },
+            }
+        ) + listOfNotNull(
             viewModel.contact?.let {
                 Triple(
                     Icons.Outlined.MailOutline,
