@@ -112,7 +112,7 @@ libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = 
 scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
 
 # Compose Icons
-# switch to
+# switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
 
 [plugins]
