@@ -1,6 +1,6 @@
 package app.revanced.manager.network.api
 
-import app.revanced.manager.BuildConfig
+import android.os.Build
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.dto.ReVancedRelease
 import app.revanced.manager.network.service.ReVancedService
@@ -24,17 +24,7 @@ class ReVancedAPI(
     suspend fun getAppUpdate() =
         getLatestRelease("revanced-manager")
             .getOrThrow()
-            .takeIf {
-                val (major, minor, patch, dev) =
-                    "${it.version.removePrefix("v").replace("-dev", "")}.0"
-                    .split(".")
-                    .map { num-> num.toInt() }
-                val versioncode = major * 100000000 + minor * 100000 + patch * 100 + dev
-                if (versioncode > BuildConfig.VERSION_CODE)
-                    return it
-                else
-                    return null
-            }
+            .takeIf { it.version != Build.VERSION.RELEASE }
 
     companion object Extensions {
         fun ReVancedRelease.findAssetByType(mime: String) =
