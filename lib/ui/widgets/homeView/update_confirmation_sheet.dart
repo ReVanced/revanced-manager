@@ -100,7 +100,7 @@ class UpdateConfirmationSheet extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 24.0, bottom: 12.0),
+                    padding: const EdgeInsets.only(top: 12.0, left: 24.0, bottom: 12.0),
                     child: I18nText(
                       'homeView.updateChangelogTitle',
                       child: Text(
