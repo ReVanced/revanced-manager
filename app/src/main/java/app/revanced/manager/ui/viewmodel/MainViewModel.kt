@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
@@ -52,7 +53,7 @@ class MainViewModel(
     }
 
     private suspend fun checkForManagerUpdates() {
-        if (!prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
+        if (BuildConfig.DEBUG || BuildConfig.VERSION_NAME.contains("-dev") || !prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
