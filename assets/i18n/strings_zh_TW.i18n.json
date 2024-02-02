@@ -16,8 +16,6 @@
   "noShowAgain": "不要再顯示此內容",
   "add": "新增",
   "remove": "移除",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "儀表板",
     "patcherTab": "修補工具",
@@ -28,25 +26,14 @@
     "widgetTitle": "儀表板",
     "updatesSubtitle": "更新",
     "patchedSubtitle": "已修補的應用程式",
-    "changeLaterSubtitle": "",
     "noUpdates": "沒有可用的更新",
     "WIP": "進行中...",
     "noInstallations": "未安裝已修補的應用程式",
     "installUpdate": "是否要繼續安裝更新？",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "更新日誌",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "更新已下載",
     "notificationText": "點擊安裝更新",
     "downloadingMessage": "正在下載更新...",
-    "downloadedMessage": "",
     "installingMessage": "正在安裝更新...",
     "errorDownloadMessage": "無法下載更新",
     "errorInstallMessage": "無法安裝更新",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "修補工具",
     "patchButton": "修補",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "某些修補檔選項需要設定。"
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "找不到應用程式",
     "currentVersion": "目前版本",
-    "suggestedVersion": "建議版本",
-    "anyVersion": ""
+    "suggestedVersion": "建議版本"
   },
   "patchSelectorCard": {
     "widgetTitle": "選取修補檔",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "掃榻以待，歡迎造訪！"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "儲存空間",
     "selectFromStorageButton": "從儲存空間中選取",
     "errorMessage": "無法使用所選的應用程式",
     "downloadToast": "下載功能尚不可用",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "功能尚未實作",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "功能尚未實作"
   },
   "patchesSelectorView": {
     "viewTitle": "選取修補檔",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "選取此修補檔可能導致修補錯誤。\n應用程式版本： ${packageVersion}\n支援的版本： ${supportedVersions}",
     "unsupportedPatchVersion": "此版本的應用程式不支援此修補檔。",
     "unsupportedRequiredOption": "這個修補檔包含一個由這個應用程式不支援的必要選項。",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "採用預設設定選項"
   },
   "installerView": {
     "widgetTitle": "安裝程式",
     "installType": "請選擇安裝方式",
-    "installTypeDescription": "",
     "installButton": "安裝",
     "installRootType": "掛載",
     "installNonRootType": "普通",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "即將禁用修補選項的變更功能，並恢復到預設選項。\n\n仍然要禁用嗎？",
     "autoUpdatePatchesLabel": "自動更新修補檔",
     "autoUpdatePatchesHint": "自動更新修補檔至最新版本",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "顯示通用修補檔",
     "universalPatchesHint": "顯示所有應用程式和通用修補檔（可能會拖慢應用程式列表的速度）",
     "versionCompatibilityCheckLabel": "檢查版本相容性",

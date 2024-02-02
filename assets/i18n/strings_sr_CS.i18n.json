@@ -16,8 +16,6 @@
   "noShowAgain": "Ne prikazuj ponovo",
   "add": "Dodaj",
   "remove": "Ukloni",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Kontrolna tabla",
     "patcherTab": "Pečer",
@@ -28,25 +26,14 @@
     "widgetTitle": "Kontrolna tabla",
     "updatesSubtitle": "Ažuriranja",
     "patchedSubtitle": "Pečovane aplikacije",
-    "changeLaterSubtitle": "",
     "noUpdates": "Nema dostupnih ažuriranja",
     "WIP": "Radovi u toku…",
     "noInstallations": "Nema instaliranih pečovanih aplikacija",
     "installUpdate": "Nastaviti sa instalacijom ažuriranja?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Evidencija promena",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Ažuriranje je preuzeto",
     "notificationText": "Dodirnite da biste instalirali ažuriranje",
     "downloadingMessage": "Preuzimanje ažuriranja…",
-    "downloadedMessage": "",
     "installingMessage": "Instaliranje ažuriranja…",
     "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
     "errorInstallMessage": "Nije moguće instalirati ažuriranje",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Pečer",
     "patchButton": "Pečuj",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Neke opcije moraju biti podešene."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Nijedna aplikacija nije pronađena",
     "currentVersion": "Trenutna verzija",
-    "suggestedVersion": "Preporučena verzija",
-    "anyVersion": ""
+    "suggestedVersion": "Preporučena verzija"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izaberite pečeve",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Onlajn smo!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Memorija",
     "selectFromStorageButton": "Izaberi iz memorije",
     "errorMessage": "Nije moguće koristiti izabranu aplikaciju",
     "downloadToast": "Preuzimanje trenutno nije dostupno",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Funkcija nije implementirana",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Funkcija nije implementirana"
   },
   "patchesSelectorView": {
     "viewTitle": "Izaberite pečeve",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Izborom ovog peča može doći do grešaka prilikom pečovanja.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}",
     "unsupportedPatchVersion": "Peč nije primenljiv na ovu verziju aplikacije.",
     "unsupportedRequiredOption": "Ovaj peč sadrži obaveznu opciju koju ova aplikacija ne podržava",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Koristi podrazumevani izbor"
   },
   "installerView": {
     "widgetTitle": "Program za instalaciju",
     "installType": "Izbor tipa instalacije",
-    "installTypeDescription": "",
     "installButton": "Instaliraj",
     "installRootType": "Privilegovana",
     "installNonRootType": "Obična",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Upravo ćete da onemogućite promenu izbora pečeva.\nPodrazumevani izbor pečeva će biti vraćen.\n\nIpak onemogućiti?",
     "autoUpdatePatchesLabel": "Automatski ažuriraj pečeve",
     "autoUpdatePatchesHint": "Instalira najnoviju verziju pečeva automatski",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Prikaži univerzalne pečeve",
     "universalPatchesHint": "Prikazuje sve aplikacije i univerzalne pečeve (može da uspori listu aplikacija)",
     "versionCompatibilityCheckLabel": "Provera kompatibilnosti verzije",

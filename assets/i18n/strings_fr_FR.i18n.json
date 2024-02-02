@@ -16,8 +16,6 @@
   "noShowAgain": "Ne plus afficher",
   "add": "Ajouter",
   "remove": "Supprimer",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Tableau de bord",
     "patcherTab": "Patcheur",
@@ -28,25 +26,14 @@
     "widgetTitle": "Tableau de bord",
     "updatesSubtitle": "Mises à jour",
     "patchedSubtitle": "Applications patchées",
-    "changeLaterSubtitle": "",
     "noUpdates": "Aucune mise à jour n'est disponible",
     "WIP": "Bientôt disponible...",
     "noInstallations": "Aucune application patchée installée",
     "installUpdate": "Continuer à installer la mise à jour ?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Journal des modifications",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Mise à jour téléchargée",
     "notificationText": "Cliquez pour installer la mise à jour",
     "downloadingMessage": "Téléchargement de la mise à jour...",
-    "downloadedMessage": "",
     "installingMessage": "Installation de la mise à jour...",
     "errorDownloadMessage": "Impossible de télécharger la mise à jour",
     "errorInstallMessage": "Impossible d'installer la mise à jour",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Patcheur",
     "patchButton": "Patcher",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Certaines options de patch doivent être définies."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Aucune application trouvée",
     "currentVersion": "Version actuelle",
-    "suggestedVersion": "Version suggérée",
-    "anyVersion": ""
+    "suggestedVersion": "Version suggérée"
   },
   "patchSelectorCard": {
     "widgetTitle": "Sélectionner les patchs",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Nous sommes en ligne !"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Stockage",
     "selectFromStorageButton": "Sélectionner depuis le stockage",
     "errorMessage": "Impossible d'utiliser l'application sélectionnée",
     "downloadToast": "La fonction de téléchargement est actuellement indisponible",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Fonctionnalité non implémentée",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Fonctionnalité non implémentée"
   },
   "patchesSelectorView": {
     "viewTitle": "Sélectionner les patchs",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Sélectionner ce patch pourrait entrainer des erreurs dans la modification.\n\nVersion de l'application : ${packageVersion}\nVersions supportées :\n${supportedVersions}",
     "unsupportedPatchVersion": "Le patch n'est pas supporté pour cette version de l'application.",
     "unsupportedRequiredOption": "Ce patch contient une option requise qui n'est pas supporté par cette application",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Utiliser la sélection par défaut"
   },
   "installerView": {
     "widgetTitle": "Installateur",
     "installType": "Choisissez le mode d'installation",
-    "installTypeDescription": "",
     "installButton": "Installer",
     "installRootType": "Monter",
     "installNonRootType": "Standard",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Vous êtes sur le point de désactiver le changement de sélection par défaut des patchs.\nLa sélection par défaut des patchs sera restaurée.\n\nDésactiver quand même ?",
     "autoUpdatePatchesLabel": "Mise à jour automatique des patchs",
     "autoUpdatePatchesHint": "Mise à jour automatique des patchs ReVanced vers la dernière version",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Afficher les patchs universels",
     "universalPatchesHint": "Afficher toutes les applications et les patchs universels (peut ralentir la liste des applications)",
     "versionCompatibilityCheckLabel": "Vérification de la compatibilité des versions",

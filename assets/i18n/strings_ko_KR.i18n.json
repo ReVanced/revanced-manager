@@ -16,8 +16,6 @@
   "noShowAgain": "다시 보지 않기",
   "add": "추가",
   "remove": "제거",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "대시보드",
     "patcherTab": "패처",
@@ -28,25 +26,14 @@
     "widgetTitle": "대시보드",
     "updatesSubtitle": "업데이트",
     "patchedSubtitle": "패치한 앱",
-    "changeLaterSubtitle": "",
     "noUpdates": "새 업데이트가 없습니다",
     "WIP": "개발 중 입니다...",
     "noInstallations": "패치된 앱이 설치되지 않았습니다.",
     "installUpdate": "업데이트를 계속 설치하겠습니까?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "변경 사항",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "업데이트 다운로드 완료",
     "notificationText": "눌러서 업데이트 설치",
     "downloadingMessage": "업데이트 다운로드 중...",
-    "downloadedMessage": "",
     "installingMessage": "업데이트 설치 중...",
     "errorDownloadMessage": "업데이트를 내려받을 수 없음",
     "errorInstallMessage": "업데이트를 설치할 수 없음",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "패처",
     "patchButton": "패치",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "일부 패치 옵션을 설정해야 합니다."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "앱이 발견되지 않음",
     "currentVersion": "현재 버전",
-    "suggestedVersion": "권장",
-    "anyVersion": ""
+    "suggestedVersion": "권장"
   },
   "patchSelectorCard": {
     "widgetTitle": "패치를 선택하세요",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "SNS에서 우리를 만나보세요!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "저장소",
     "selectFromStorageButton": "저장소에서 선택",
     "errorMessage": "선택한 앱을 사용할 수 없음",
     "downloadToast": "다운로드 기능은 아직 사용할 수 없습니다",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "기능이 구현되지 않음",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "기능이 구현되지 않음"
   },
   "patchesSelectorView": {
     "viewTitle": "패치 선택",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "이 패치는 오류를 발생시킬 수 있습니다.\n\n앱 버전: ${packageVersion}\n지원되는 버전:\n${supportedVersions}",
     "unsupportedPatchVersion": "패치가 이 앱 버전을 지원하지 않습니다.",
     "unsupportedRequiredOption": "패치에 이 앱에서 지원하지 않는 필수 옵션이 포함되어 있습니다",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "기본 선택사항 사용"
   },
   "installerView": {
     "widgetTitle": "설치기",
     "installType": "설치 유형 선택",
-    "installTypeDescription": "",
     "installButton": "설치",
     "installRootType": "마운트",
     "installNonRootType": "일반",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "패치 선택 변경을 비활성화하려 합니다.\n패치의 기본 선택사항이 복원될 것입니다.\n\n그래도 비활성화하시겠습니까?",
     "autoUpdatePatchesLabel": "패치 자동 업데이트",
     "autoUpdatePatchesHint": "ReVanced 패치를 최신 버전으로 자동 업데이트",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "공통 패치 보기",
     "universalPatchesHint": "모든 앱과 공통 패치 보기(앱이 느려질 수 있습니다.)",
     "versionCompatibilityCheckLabel": "버전 호환성 체크",

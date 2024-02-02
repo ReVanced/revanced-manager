@@ -16,8 +16,6 @@
   "noShowAgain": "Να μην ξαναεμφανιστεί",
   "add": "Προσθήκη",
   "remove": "Αφαίρεση",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Πίνακας Ελέγχου",
     "patcherTab": "Τροποποιητής",
@@ -28,25 +26,14 @@
     "widgetTitle": "Πίνακας Ελέγχου",
     "updatesSubtitle": "Ενημερώσεις",
     "patchedSubtitle": "Τροποποιημένες Εφαρμογές",
-    "changeLaterSubtitle": "",
     "noUpdates": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
     "WIP": "Υπό κατασκευή...",
     "noInstallations": "Δεν έχουν εγκατασταθεί τροποποιημένες εφαρμογές",
     "installUpdate": "Συνέχεια για εγκατάσταση της ενημέρωσης;",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Τι νέο υπάρχει",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Η λήψη της ενημέρωσης ολοκληρώθηκε",
     "notificationText": "Πατήστε για εγκατάσταση της ενημέρωσης",
     "downloadingMessage": "Λήψη ενημέρωσης...",
-    "downloadedMessage": "",
     "installingMessage": "Εγκατάσταση ενημέρωσης...",
     "errorDownloadMessage": "Αδυναμία λήψης ενημέρωσης",
     "errorInstallMessage": "Αδυναμία εγκατάστασης ενημέρωσης",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Τροποποιητής",
     "patchButton": "Τροποποίηση",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Δε βρέθηκαν εφαρμογές",
     "currentVersion": "Τρέχουσα έκδοση",
-    "suggestedVersion": "Προτεινόμενη έκδοση",
-    "anyVersion": ""
+    "suggestedVersion": "Προτεινόμενη έκδοση"
   },
   "patchSelectorCard": {
     "widgetTitle": "Επιλέξτε τροποποιήσεις",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Είμαστε ενεργοί!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Αποθηκευτικός χώρος",
     "selectFromStorageButton": "Επιλογή από αποθηκευτικό χώρο",
     "errorMessage": "Αδυναμία χρήσης της επιλεγμένης εφαρμογής",
     "downloadToast": "Η λειτουργία λήψης δεν είναι ακόμη διαθέσιμη",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Η δυνατότητα δεν έχει υλοποιηθεί",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Η δυνατότητα δεν έχει υλοποιηθεί"
   },
   "patchesSelectorView": {
     "viewTitle": "Επιλέξτε τροποποιήσεις",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Η επιλογή αυτής της τροποποίησης μπορεί να επιφέρει σφάλματα τροποποίησης.\n\nΈκδοση εφαρμογής: ${packageVersion}\nΥποστηριζόμενες εκδόσεις: ${supportedVersions}",
     "unsupportedPatchVersion": "Η τροποποίηση δεν υποστηρίζεται σε αυτήν την έκδοση της εφαρμογής.",
     "unsupportedRequiredOption": "Αυτή η τροποποίηση αναγκαστικά περιέχει μια επιλογή η οποία δεν υποστηρίζεται από αυτήν την εφαρμογή",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Χρήση προεπιλεγμένων επιλογών"
   },
   "installerView": {
     "widgetTitle": "Πρόγραμμα Εγκατάστασης",
     "installType": "Επιλέξτε τύπο εγκατάστασης",
-    "installTypeDescription": "",
     "installButton": "Εγκατάσταση",
     "installRootType": "Προσάρτηση",
     "installNonRootType": "Κανονική",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Πρόκειται να απενεργοποιήσετε τη δυνατότητα αλλαγής των επιλογών τροποποιήσεων.\nΟι προεπιλεγμένες επιλογές τροποποιήσεων θα επαναφερθούν.\n\nΑπενεργοποίηση παρόλα αυτά;",
     "autoUpdatePatchesLabel": "Αυτόματες ενημερώσεις τροποποιήσεων",
     "autoUpdatePatchesHint": "Αυτόματη ενημέρωση τροποποιήσεων στην τελευταία έκδοση",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Εμφάνιση γενικευμένων τροποποιήσεων",
     "universalPatchesHint": "Εμφάνιση όλων των εφαρμογών και γενικευμένων τροποποιήσεων (ενδέχεται να επιβραδύνει τη φόρτωση λίστας εφαρμογών)",
     "versionCompatibilityCheckLabel": "Έλεγχος συμβατότητας έκδοσης",

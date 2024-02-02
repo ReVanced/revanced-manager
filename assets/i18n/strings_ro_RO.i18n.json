@@ -16,8 +16,6 @@
   "noShowAgain": "Nu afișa asta din nou",
   "add": "Adaugă",
   "remove": "Șterge",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Panou de bord",
     "patcherTab": "Patcher",
@@ -28,25 +26,14 @@
     "widgetTitle": "Panou de bord",
     "updatesSubtitle": "Actualizări",
     "patchedSubtitle": "Aplicații Patch-uite",
-    "changeLaterSubtitle": "",
     "noUpdates": "Nu există actualizări disponibile",
     "WIP": "Lucru în curs...",
     "noInstallations": "Nu sunt instalate aplicații patch-uite",
     "installUpdate": "Continuați să instalați actualizarea?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Istoric schimbări",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Actualizare descărcată",
     "notificationText": "Apăsați pentru a instala actualizarea",
     "downloadingMessage": "Se descarcă actualizarea...",
-    "downloadedMessage": "",
     "installingMessage": "Se instalează actualizarea...",
     "errorDownloadMessage": "Nu s-a putut descărca actualizarea",
     "errorInstallMessage": "Nu s-a putut instala actualizarea",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Unele opțiuni pentru patch-uri trebuie setate."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Nu s-au găsit aplicații",
     "currentVersion": "Actual",
-    "suggestedVersion": "Sugerate",
-    "anyVersion": ""
+    "suggestedVersion": "Sugerate"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selectați patch-urile",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Suntem online!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Stocare",
     "selectFromStorageButton": "Selectați din spațiul de stocare",
     "errorMessage": "Aplicația selectată nu poate fi utilizată",
     "downloadToast": "Funcția de descărcare este momentan indisponibilă",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Caracteristică neimplementată",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Caracteristică neimplementată"
   },
   "patchesSelectorView": {
     "viewTitle": "Selectați patch-urile",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Selectarea acestui patch poate rezulta în erori de patch-uire.\n\nVersiunea aplicației: ${packageVersion}\nVersiuni compatibile:\n${supportedVersions}",
     "unsupportedPatchVersion": "Patch-ul nu este acceptat pentru această versiune a aplicației.",
     "unsupportedRequiredOption": "Acest patch conține o opțiune necesară care nu este suportată de această aplicație",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Folosește selecția implicită"
   },
   "installerView": {
     "widgetTitle": "Instalator",
     "installType": "Selectați tipul de instalare",
-    "installTypeDescription": "",
     "installButton": "Instalează",
     "installRootType": "Montează",
     "installNonRootType": "Obișnuit",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Sunteți pe cale să dezactivați modificarea selecției patch-urilor.\nSelecția implicită a patch-urilor va fi restaurată.\n\nDezactivați oricum?",
     "autoUpdatePatchesLabel": "Actualizare automată a patch-urilor",
     "autoUpdatePatchesHint": "Actualizează automat patch-urile la versiunea cea mai recentă",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Arată patch-urile universale",
     "universalPatchesHint": "Afişaţi toate aplicaţiile şi patch-urile universale (poate încetini lista de aplicaţii)",
     "versionCompatibilityCheckLabel": "Verificare compatibilitate versiune",

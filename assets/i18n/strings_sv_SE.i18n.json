@@ -16,8 +16,6 @@
   "noShowAgain": "Visa inte det här igen",
   "add": "Lägg till",
   "remove": "Ta bort",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Kontrollpanel",
     "patcherTab": "Patcher",
@@ -28,25 +26,14 @@
     "widgetTitle": "Kontrollpanel",
     "updatesSubtitle": "Uppdateringar",
     "patchedSubtitle": "Patchade appar",
-    "changeLaterSubtitle": "",
     "noUpdates": "Inga uppdateringar tillgängliga",
     "WIP": "Arbete pågår...",
     "noInstallations": "Inga patchade appar installerade",
     "installUpdate": "Gå vidare och installera uppdateringen?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Ändringslogg",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Uppdatering nerladdad",
     "notificationText": "Tryck för att installera uppdateringen",
     "downloadingMessage": "Laddar ner uppdatering...",
-    "downloadedMessage": "",
     "installingMessage": "Installerar uppdatering...",
     "errorDownloadMessage": "Det gick inte att ladda ner uppdateringen",
     "errorInstallMessage": "Det gick inte att installera uppdatering",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Vissa patchalternativ måste anges."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Inga applikationer hittades",
     "currentVersion": "Aktuell",
-    "suggestedVersion": "Rekommenderad",
-    "anyVersion": ""
+    "suggestedVersion": "Rekommenderad"
   },
   "patchSelectorCard": {
     "widgetTitle": "Välj patchar",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Vi är online!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Lagring",
     "selectFromStorageButton": "Välj från lagringsplatsen",
     "errorMessage": "Det gick inte att använda vald applikation",
     "downloadToast": "Nerladdningsfunktionen är för närvarande inte tillgänglig",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Funktionen har inte lagts till ännu",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Funktionen har inte lagts till ännu"
   },
   "patchesSelectorView": {
     "viewTitle": "Välj patchar",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Denna patchen kan orsaka patchningsfel.\n\nAppversion: ${packageVersion}\nKompatibla versioner:\n${supportedVersions}",
     "unsupportedPatchVersion": "Patchen stöds inte för den här appversionen.",
     "unsupportedRequiredOption": "Denna patch innehåller ett obligatoriskt alternativ som inte stöds av denna app",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Använd standardval"
   },
   "installerView": {
     "widgetTitle": "Installerare",
     "installType": "Välj installationstyp",
-    "installTypeDescription": "",
     "installButton": "Installera",
     "installRootType": "Montera",
     "installNonRootType": "Regular",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Du håller på att inaktivera valet av patchar.\nStandardvalet av patchar kommer att återställas.\n\nInaktivera ändå?",
     "autoUpdatePatchesLabel": "Uppdatera patchar automatiskt",
     "autoUpdatePatchesHint": "Uppdatera automatiskt patches till den senaste versionen",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Visa universella patchar",
     "universalPatchesHint": "Visa alla appar och universella patchar (kan slöa ner applistan)",
     "versionCompatibilityCheckLabel": "Kontroll av versionskompatibilitet",

@@ -16,8 +16,6 @@
   "noShowAgain": "Nie pokazuj ponownie",
   "add": "Dodaj",
   "remove": "Usuń",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Panel główny",
     "patcherTab": "Program łatający",
@@ -28,25 +26,14 @@
     "widgetTitle": "Panel główny",
     "updatesSubtitle": "Aktualizacje",
     "patchedSubtitle": "Załatane aplikacje",
-    "changeLaterSubtitle": "",
     "noUpdates": "Brak dostępnych aktualizacji",
     "WIP": "Prace w toku...",
     "noInstallations": "Nie zainstalowano żadnych załatanych aplikacji",
     "installUpdate": "Kontynuować instalację aktualizacji?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Dziennik zmian",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Pobrano aktualizację",
     "notificationText": "Kliknij, aby zainstalować aktualizację",
     "downloadingMessage": "Pobieranie aktualizacji...",
-    "downloadedMessage": "",
     "installingMessage": "Instalowanie aktualizacji...",
     "errorDownloadMessage": "Nie udało się pobrać aktualizacji",
     "errorInstallMessage": "Nie udało się zainstalować aktualizacji",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Program łatający",
     "patchButton": "Łataj",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Niektóre opcje muszą być ustawione."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Nie znaleziono aplikacji",
     "currentVersion": "Aktualna",
-    "suggestedVersion": "Sugerowane",
-    "anyVersion": ""
+    "suggestedVersion": "Sugerowane"
   },
   "patchSelectorCard": {
     "widgetTitle": "Wybierz łatki",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Jesteśmy online!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Pamięć",
     "selectFromStorageButton": "Wybierz z pamięci",
     "errorMessage": "Nie można użyć wybranej aplikacji",
     "downloadToast": "Funkcja pobierania jest jeszcze niedostępna",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Funkcja nie zaimplementowana",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Funkcja nie zaimplementowana"
   },
   "patchesSelectorView": {
     "viewTitle": "Wybierz łatki",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas modyfikowania.\n\nWersja aplikacji: ${packageVersion}\nAktualnie wspierana wersja:\n${supportedVersions}",
     "unsupportedPatchVersion": "Łatka nie jest wspierana dla tej wersji aplikacji.",
     "unsupportedRequiredOption": "Ta łatka wymaga ustawienia opcji, która nie jest wspierana przez tę aplikację",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Użyj domyślnego wyboru"
   },
   "installerView": {
     "widgetTitle": "Instalator",
     "installType": "Wybierz typ instalacji",
-    "installTypeDescription": "",
     "installButton": "Zainstaluj",
     "installRootType": "Zainstaluj",
     "installNonRootType": "Standardowe",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Zamierzasz wyłączyć zmianę wyboru łatek.\nZostanie przywrócony domyślny wybór łatek.\n\nWyłączyć mimo to?",
     "autoUpdatePatchesLabel": "Automatycznie aktualizuj łatki",
     "autoUpdatePatchesHint": "Automatycznie aktualizuj łatki do najnowszej wersji",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Pokaż uniwersalne łatki",
     "universalPatchesHint": "Wyświetl wszystkie aplikacje i uniwersalne łatki (może spowolnić wczytywane listy aplikacji)",
     "versionCompatibilityCheckLabel": "Sprawdzanie zgodności wersji",

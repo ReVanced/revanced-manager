@@ -16,8 +16,6 @@
   "noShowAgain": "Nicht erneut anzeigen",
   "add": "Hinzufügen",
   "remove": "Entfernen",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Übersicht",
     "patcherTab": "Patcher",
@@ -28,25 +26,14 @@
     "widgetTitle": "Übersicht",
     "updatesSubtitle": "Aktualisierungen",
     "patchedSubtitle": "Gepatchte Apps",
-    "changeLaterSubtitle": "",
     "noUpdates": "Keine Updates verfügbar",
     "WIP": "In Arbeit...",
     "noInstallations": "Keine gepatchten Apps installiert",
     "installUpdate": "Mit der Installation des Updates fortfahren?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Änderungsverlauf",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Update heruntergeladen",
     "notificationText": "Tippen um Update zu installieren",
     "downloadingMessage": "Aktualisierung wird heruntergeladen...",
-    "downloadedMessage": "",
     "installingMessage": "Update wird installiert...",
     "errorDownloadMessage": "Aktualisierung konnte nicht heruntergeladen werden",
     "errorInstallMessage": "Aktualisierung konnte nicht installiert werden",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patchen",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Einige Patch-Optionen müssen gesetzt werden."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Keine Apps gefunden",
     "currentVersion": "Aktuell",
-    "suggestedVersion": "Empfohlen",
-    "anyVersion": ""
+    "suggestedVersion": "Empfohlen"
   },
   "patchSelectorCard": {
     "widgetTitle": "Patches auswählen",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Wir sind online!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Speicher",
     "selectFromStorageButton": "Aus Speicher auswählen",
     "errorMessage": "Ausgewählte App kann nicht verwendet werden",
     "downloadToast": "Die Download-Funktion ist noch nicht verfügbar",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Funktion ist nicht implementiert",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Funktion ist nicht implementiert"
   },
   "patchesSelectorView": {
     "viewTitle": "Patches auswählen",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Die Auswahl dieses Patches kann zu Fehlern beim Patchen führen.\n\nApp-Version: ${packageVersion}\nUnterstützte Versionen:\n${supportedVersions}",
     "unsupportedPatchVersion": "Patch wird für diese App Version nicht unterstützt.",
     "unsupportedRequiredOption": "Dieser Patch enthält eine erforderliche Option, die von dieser App nicht unterstützt wird",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Als Standard-Auswahl nutzen"
   },
   "installerView": {
     "widgetTitle": "Installer",
     "installType": "Installationstyp wählen",
-    "installTypeDescription": "",
     "installButton": "Installieren",
     "installRootType": "Einhängen",
     "installNonRootType": "Normal",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Sie sind im Begriff, die Auswahl der Patches zu deaktivieren.\nDie Standardauswahl der Patches wird wiederhergestellt.\n\nTrotzdem deaktivieren?",
     "autoUpdatePatchesLabel": "Patches automatisch aktualisieren",
     "autoUpdatePatchesHint": "Patches automatisch auf die neueste Version aktualisieren",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Universelle Patches zeigen",
     "universalPatchesHint": "Alle Apps und Universal Patches anzeigen (kann die App Liste verlangsamen)",
     "versionCompatibilityCheckLabel": "Versionskompatibilitätskontrolle",

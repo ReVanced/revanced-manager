@@ -16,8 +16,6 @@
   "noShowAgain": "Ne jelenjen meg többé",
   "add": "Hozzáadás",
   "remove": "Eltávolítás",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Irányítópult",
     "patcherTab": "Patchelő",
@@ -28,25 +26,14 @@
     "widgetTitle": "Irányítópult",
     "updatesSubtitle": "Frissítések",
     "patchedSubtitle": "Patchelt alkalmazások",
-    "changeLaterSubtitle": "",
     "noUpdates": "Nincs elérhető frissítés",
     "WIP": "Folyamatban van...",
     "noInstallations": "Nincs telepítve patchelt alkalmazás",
     "installUpdate": "Folytatja a frissítés telepítését?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Újdonságok",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Frissítés letöltve",
     "notificationText": "Koppintson a frissítés telepítéséhez",
     "downloadingMessage": "Frissítés letöltése...",
-    "downloadedMessage": "",
     "installingMessage": "Frissítés telepítése...",
     "errorDownloadMessage": "Frissítés letöltése sikertelen",
     "errorInstallMessage": "Frissítés telepítése sikertelen",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Patchelő",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Nem találhatóak alkalmazások",
     "currentVersion": "Jelenlegi",
-    "suggestedVersion": "Javasolt",
-    "anyVersion": ""
+    "suggestedVersion": "Javasolt"
   },
   "patchSelectorCard": {
     "widgetTitle": "Patchek kiválasztása",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Online vagyunk!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Tárhely",
     "selectFromStorageButton": "Kiválasztás a tárhelyről",
     "errorMessage": "A kiválasztott alkalmazás nem használható",
     "downloadToast": "A letöltés funkció még nem érhető el",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "A funkció nincs megvalósítva",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "A funkció nincs megvalósítva"
   },
   "patchesSelectorView": {
     "viewTitle": "Patchek kiválasztása",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Ezt a patchet nem biztos hogy sikerül alkalmazni, mert más verzióhoz készült.\n\nAlkalmazás verzió: ${packageVersion}\nJelenleg támogatott verziók:\n${supportedVersions}",
     "unsupportedPatchVersion": "A Patch nem támogatott ehhez az alkalmazásverzióhoz.",
     "unsupportedRequiredOption": "Ez a Patch egy kötelező beállítást tartalmaz, amelyet ez az alkalmazás nem támogat",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Használja az alapértelmezett kijelölést"
   },
   "installerView": {
     "widgetTitle": "Telepítő",
     "installType": "Válassza ki a telepítés típusát",
-    "installTypeDescription": "",
     "installButton": "Telepítés",
     "installRootType": "Felcsatolás",
     "installNonRootType": "Hagyományos",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Arra készül, hogy letiltja a patchek kiválasztásának módosítását.\nA javítások alapértelmezett kiválasztása visszaáll.\n\nMindenképpen letiltja?",
     "autoUpdatePatchesLabel": "Patchek automatikus frissítése",
     "autoUpdatePatchesHint": "A patchek automatikus frissítése a legújabb verzióra",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Univerzális patchek megjelenítése",
     "universalPatchesHint": "Az összes alkalmazás és univerzális patch megjelenítése (lassíthatja az alkalmazáslistát)",
     "versionCompatibilityCheckLabel": "Verziókompatibilitás ellenőrzése",

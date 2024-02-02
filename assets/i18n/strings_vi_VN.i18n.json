@@ -16,8 +16,6 @@
   "noShowAgain": "Không hiển thị lại điều này",
   "add": "Thêm",
   "remove": "Loại bỏ",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Tổng quan",
     "patcherTab": "Trình vá",
@@ -28,25 +26,14 @@
     "widgetTitle": "Tổng quan",
     "updatesSubtitle": "Các bản cập nhật",
     "patchedSubtitle": "Ứng dụng đã vá",
-    "changeLaterSubtitle": "",
     "noUpdates": "Không có bản cập nhật mới",
     "WIP": "Đang thực hiện...",
     "noInstallations": "Không có ứng dụng đã vá nào được cài đặt",
     "installUpdate": "Tiếp tục cài đặt bản cập nhật?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Nhật ký thay đổi",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Đã tải xuống bản cập nhật",
     "notificationText": "Nhấn để cài đặt bản cập nhật",
     "downloadingMessage": "Đang tải xuống bản cập nhật...",
-    "downloadedMessage": "",
     "installingMessage": "Đang cài đặt bản cập nhật...",
     "errorDownloadMessage": "Không thể tải về bản cập nhật",
     "errorInstallMessage": "Không thể cài đặt bản cập nhật",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Không tìm thấy ứng dụng nào",
     "currentVersion": "Hiện tại",
-    "suggestedVersion": "Được đề xuất",
-    "anyVersion": ""
+    "suggestedVersion": "Được đề xuất"
   },
   "patchSelectorCard": {
     "widgetTitle": "Chọn bản vá",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Chúng tôi đang trực tuyến!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Lưu trữ",
     "selectFromStorageButton": "Chọn từ bộ nhớ",
     "errorMessage": "Không thể dùng ứng dụng đã chọn",
     "downloadToast": "Tính năng tải về chưa khả dụng",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Tính năng chưa triển khai",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Tính năng chưa triển khai"
   },
   "patchesSelectorView": {
     "viewTitle": "Chọn bản vá",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Chọn bản vá này có thể gây lỗi khi vá.\n\nPhiên bản ứng dụng: ${packageVersion}\nPhiên bản được hỗ trợ: ${supportedVersions}",
     "unsupportedPatchVersion": "Bản vá không được hỗ trợ cho phiên bản ứng dụng này.",
     "unsupportedRequiredOption": "Bản vá này chứa một tùy chọn bắt buộc không được hỗ trợ bởi ứng dụng này",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Dùng lựa chọn mặc định"
   },
   "installerView": {
     "widgetTitle": "Trình cài đặt",
     "installType": "Chọn kiểu cài đặt",
-    "installTypeDescription": "",
     "installButton": "Cài đặt",
     "installRootType": "Gắn kết",
     "installNonRootType": "Thông thường",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Bạn chuẩn bị tắt thay đổi lựa chọn các bản vá.\nLựa chọn mặc định các bản vá sẽ được khôi phục.\n\nVẫn tắt?",
     "autoUpdatePatchesLabel": "Tự động cập nhật các bản vá",
     "autoUpdatePatchesHint": "Tự động cập nhật các bản vá lên phiên bản mới nhất",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Các bản vá phổ quát",
     "universalPatchesHint": "Hiển thị tất cả các ứng dụng và các bản vá phổ quát (có thể gây chậm danh sách ứng dụng)",
     "versionCompatibilityCheckLabel": "Kiểm tra khả năng tương thích của phiên bản",

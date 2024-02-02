@@ -16,8 +16,6 @@
   "noShowAgain": "Не показувати знову",
   "add": "Додати",
   "remove": "Прибрати",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Головна",
     "patcherTab": "Патчер",
@@ -28,25 +26,14 @@
     "widgetTitle": "Панель керування",
     "updatesSubtitle": "Оновлення",
     "patchedSubtitle": "Пропатчені застосунки",
-    "changeLaterSubtitle": "",
     "noUpdates": "Немає доступних оновлень",
     "WIP": "В розробці...",
     "noInstallations": "Пропатчені застосунки не встановлено",
     "installUpdate": "Продовжити встановлення оновлення?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Список змін",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Оновлення завантажено",
     "notificationText": "Натисніть, щоб встановити оновлення",
     "downloadingMessage": "Оновлення завантажується...",
-    "downloadedMessage": "",
     "installingMessage": "Оновлення встановлюєтся...",
     "errorDownloadMessage": "Неможливо завантажити оновлення",
     "errorInstallMessage": "Не вдалося встановити оновлення",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патч",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Потрібно встановити деякі параметри патчу."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Не знайдено жодного застосунку",
     "currentVersion": "Поточна версія",
-    "suggestedVersion": "Запропоновано",
-    "anyVersion": ""
+    "suggestedVersion": "Запропоновано"
   },
   "patchSelectorCard": {
     "widgetTitle": "Обрати патчі",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Ми в мережі!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Сховище",
     "selectFromStorageButton": "Вибрати зі сховища",
     "errorMessage": "Неможливо використати обраний застосунок",
     "downloadToast": "Функція завантаження поки що недоступна",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Функція не реалізована",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Функція не реалізована"
   },
   "patchesSelectorView": {
     "viewTitle": "Обрати патчі",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Вибір цього патчу може призвести до помилок при встановленні патчу.\n\nВерсія застосунку: ${packageVersion}\nПідтримувані версії:\n${supportedVersions}",
     "unsupportedPatchVersion": "Патч не підтримується для цієї версії застосунку.",
     "unsupportedRequiredOption": "Цей патч містить необхідний параметр, який не підтримується цим застосунком",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Використовувати стандартний вибір"
   },
   "installerView": {
     "widgetTitle": "Інсталятор",
     "installType": "Оберіть тип встановлення",
-    "installTypeDescription": "",
     "installButton": "Встановити",
     "installRootType": "Монтувати",
     "installNonRootType": "Звичайний",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Ви збираєтеся вимкнути зміну вибору патчів.\nБуде відновлено типовий вибір патчів.\n\nВсе одно вимкнути?",
     "autoUpdatePatchesLabel": "Автоматичне оновлення патчів",
     "autoUpdatePatchesHint": "Автоматично оновлювати патчі до останньої версії",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Показувати універсальні патчі",
     "universalPatchesHint": "Показувати всі застосунки та універсальні патчі (може сповільнити список застосунків)",
     "versionCompatibilityCheckLabel": "Перевірка сумісності версії",

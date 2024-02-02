@@ -16,8 +16,6 @@
   "noShowAgain": "Bunu tekrar gösterme",
   "add": "Ekle",
   "remove": "Kaldır",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Gösterge Paneli",
     "patcherTab": "Yamalayıcı",
@@ -28,25 +26,14 @@
     "widgetTitle": "Gösterge Paneli",
     "updatesSubtitle": "Güncellemeler",
     "patchedSubtitle": "Yamalanmış uygulamalar",
-    "changeLaterSubtitle": "",
     "noUpdates": "Yeni bir güncelleme yok",
     "WIP": "Yapım aşamasında...",
     "noInstallations": "Kurulu yamalanmış uygulama yok",
     "installUpdate": "Güncelleme yüklensin mi?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Değişiklikler",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Güncelleme indirildi",
     "notificationText": "Güncellemeyi yüklemek için tıklayın",
     "downloadingMessage": "Güncelleme indiriliyor...",
-    "downloadedMessage": "",
     "installingMessage": "Güncelleme yükleniyor...",
     "errorDownloadMessage": "Güncelleme indirilemedi",
     "errorInstallMessage": "Güncelleme yüklenemedi",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Hiçbir uygulama bulunamadı",
     "currentVersion": "Şu anki",
-    "suggestedVersion": "Önerilen",
-    "anyVersion": ""
+    "suggestedVersion": "Önerilen"
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaları seçin",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Sosyal medyadayız!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Depolama",
     "selectFromStorageButton": "Depolama alanından seçin",
     "errorMessage": "Seçilen uygulama kullanılamıyor",
     "downloadToast": "İndirme özelliği henüz kullanılamıyor",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Özellik henüz etkin değil",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Özellik henüz etkin değil"
   },
   "patchesSelectorView": {
     "viewTitle": "Yamaları seçin",
@@ -135,13 +112,11 @@
     "unsupportedDialogText": "Bu yamayı seçmek yamalama hatalarına sebep olabilir.\n\nUygulama sürümü: ${packageVersion}\nDesteklenen sürümler:\n${supportedVersions}",
     "unsupportedPatchVersion": "Yama, uygulamanın bu sürümü için desteklenmiyor.",
     "unsupportedRequiredOption": "Bu yama, bu uygulama tarafından desteklenmeyen fakat gerekli olan bir seçenek içeriyor",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Varsayılan seçimi kullan"
   },
   "installerView": {
     "widgetTitle": "Yükleyici",
     "installType": "Kurulum tipini seçin",
-    "installTypeDescription": "",
     "installButton": "Yükle",
     "installRootType": "Mount",
     "installNonRootType": "Standart",
@@ -197,8 +172,6 @@
     "disablePatchesSelectionWarningText": "Yama seçimini değiştirmeyi devre dışı bırakmak üzeresiniz.\nVarsayılan yama seçimi geri yüklenecektir.\n\nYine de devre dışı bırakılsın mı?",
     "autoUpdatePatchesLabel": "Yamaları otomatik güncelle",
     "autoUpdatePatchesHint": "Yamaları otomatik olarak en son sürüme güncelle",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Ortak yamaları göster",
     "universalPatchesHint": "Tüm uygulamaları ve ortak yamaları göster (uygulamaları listelemeyi yavaşlatabilir)",
     "versionCompatibilityCheckLabel": "Sürüm uyumluluğu kontrolü",

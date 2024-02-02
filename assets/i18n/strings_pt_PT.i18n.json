@@ -16,8 +16,6 @@
   "noShowAgain": "Não mostrar isto novamente",
   "add": "Adicionar",
   "remove": "Remover",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Painel de controlo",
     "patcherTab": "Modificador",
@@ -28,25 +26,14 @@
     "widgetTitle": "Painel de controlo",
     "updatesSubtitle": "Atualizações",
     "patchedSubtitle": "Aplicações Modificadas",
-    "changeLaterSubtitle": "",
     "noUpdates": "Nenhuma atualização disponível",
     "WIP": "Trabalho em progresso...",
     "noInstallations": "Nenhuma aplicação modificada instalada",
     "installUpdate": "Continuar para instalar a atualização?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Alterações",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Atualização transferida",
     "notificationText": "Toque para instalar a atualização",
     "downloadingMessage": "A transferir a atualização...",
-    "downloadedMessage": "",
     "installingMessage": "A instalar atualização...",
     "errorDownloadMessage": "Não é possível transferir a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
@@ -58,26 +45,17 @@
   },
   "latestCommitCard": {
     "loadingLabel": "A carregar...",
-    "timeagoLabel": "${time} atrás",
-    "patcherLabel": "",
-    "managerLabel": "",
-    "updateButton": ""
+    "timeagoLabel": "${time} atrás"
   },
   "patcherView": {
     "widgetTitle": "Modificador",
     "patchButton": "Modificar",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Algumas opções das Modificações precisam ser definidas."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Não foram encontradas aplicações",
     "currentVersion": "Atual",
-    "suggestedVersion": "Sugerida",
-    "anyVersion": ""
+    "suggestedVersion": "Sugerida"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecionar modificações",
@@ -90,15 +68,11 @@
     "widgetSubtitle": "Estamos online!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Armazenamento",
     "selectFromStorageButton": "Selecionar do armazenamento",
     "errorMessage": "Não é possível usar a aplicação selecionada",
     "downloadToast": "A função de transferência não está disponível",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Recurso não implementado",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Recurso não implementado"
   },
   "patchesSelectorView": {
     "viewTitle": "Selecionar modificações",
@@ -135,13 +109,11 @@
     "unsupportedDialogText": "Selecionar esta modificação pode resultar em erros.\n\nVersão da aplicação: ${packageVersion}\nVersões suportadas:\n${supportedVersions}",
     "unsupportedPatchVersion": "A Modificação não é suportada para esta versão da aplicação.",
     "unsupportedRequiredOption": "Esta modificação contém uma opção obrigatória que não é suportada por esta app",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Usar seleção padrão"
   },
   "installerView": {
     "widgetTitle": "Instalador",
     "installType": "Selecione o tipo de instalação",
-    "installTypeDescription": "",
     "installButton": "Instalar",
     "installRootType": "Montar",
     "installNonRootType": "Normal",
@@ -197,14 +169,10 @@
     "disablePatchesSelectionWarningText": "Estás prestes a desativar a alteração da seleção de Modificações.\nA seleção predefinida de Modificações será restaurada.\n\nDesativar de qualquer forma?",
     "autoUpdatePatchesLabel": "Atualizar automaticamente as modificações",
     "autoUpdatePatchesHint": "Atualizar automaticamente as Modificações para a versão mais recente",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Mostrar Modificações universais",
     "universalPatchesHint": "Mostrar todas as aplicações e Modificações universais (pode tornar a lista de aplicações mais lenta)",
     "versionCompatibilityCheckLabel": "Verificar a compatibilidade das versões",
-    "versionCompatibilityCheckHint": "",
     "requireSuggestedAppVersionLabel": "Exigir versão sugerida da aplicação",
-    "requireSuggestedAppVersionHint": "",
     "requireSuggestedAppVersionDialogText": "A seleção de uma aplicação que não seja a versão sugerida poderá causar problemas inesperados.\n\nQuer continuar na mesma?",
     "aboutLabel": "Sobre",
     "snackbarMessage": "Copiado para a área de transferência",
@@ -255,8 +223,6 @@
     "uninstallButton": "Desinstalar",
     "unmountButton": "Desmontar",
     "rootDialogTitle": "Erro",
-    "unmountDialogText": "",
-    "uninstallDialogText": "",
     "rootDialogText": "A aplicação foi instalada com permissões de Super-Utilizador, mas atualmente o ReVanced Manager não tem permissões.\nPor favor, conceda permissões de Super-Utilizador primeiro.",
     "packageNameLabel": "Nome do pacote",
     "installTypeLabel": "Tipo de instalação",
@@ -277,29 +243,14 @@
     "managerContributors": "Contribuidores do Manager"
   },
   "installErrorDialog": {
-    "mount_version_mismatch": "",
     "mount_no_root": "Sem acesso Root",
     "mount_missing_installation": "A Instalação não foi encontrada",
     "status_failure_blocked": "Instalação bloqueada",
     "install_failed_verification_failure": "Falha na verificação",
     "status_failure_invalid": "Instalação inválida",
-    "install_failed_version_downgrade": "",
     "status_failure_conflict": "Conflito de instalação",
-    "status_failure_storage": "",
     "status_failure_incompatible": "Instalação incompatível",
     "status_failure_timeout": "Tempo de instalação esgotado",
-    "status_unknown": "Falha na instalação",
-    "mount_version_mismatch_description": "",
-    "mount_no_root_description": "",
-    "mount_missing_installation_description": "",
-    "status_failure_timeout_description": "",
-    "status_failure_storage_description": "",
-    "status_failure_invalid_description": "",
-    "status_failure_incompatible_description": "",
-    "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
-    "install_failed_verification_failure_description": "",
-    "install_failed_version_downgrade_description": "",
-    "status_unknown_description": ""
+    "status_unknown": "Falha na instalação"
   }
 }
