@@ -28,7 +28,7 @@ jobs:
           create_pull_request: true
           pull_request_title: "chore(i18n): Sync translations"
           pull_request_body: "Sync translations from [Crowdin/ReVanced](https://crowdin.com/project/revanced)"
-          pull_request_base_branch_name: "feat/i10n"
+          pull_request_base_branch_name: "dev"
           commit_message: "chore(i18n): Sync translations"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
           git config user.email github@revanced.app
           sudo chown -R $USER:$USER .git
           git add assets/i18n/*.json
-          git commit -m "chore(translation): Remove empty values from JSON" assets/i18n/*.json
+          git commit -m "chore(Translation): Remove empty values from JSON" assets/i18n/*.json
           git push origin HEAD:feat/translations
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
