@@ -34,6 +34,7 @@ class HomeViewModel extends BaseViewModel {
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   bool showUpdatableApps = false;
+  bool releaseBuild = false;
   List<PatchedApplication> patchedInstalledApps = [];
   String _currentManagerVersion = '';
   String _currentPatchesVersion = '';
@@ -127,6 +128,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> hasManagerUpdates() async {
+    if (!_managerAPI.releaseBuild) {
+      return false;
+    }
     _latestManagerVersion =
         await _managerAPI.getLatestManagerVersion() ?? _currentManagerVersion;
 
