@@ -417,8 +417,11 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                     child: RichText(
                       text: TextSpan(
                         text: e.key,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
                         children: [
                           TextSpan(

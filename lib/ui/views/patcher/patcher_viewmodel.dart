@@ -149,45 +149,17 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   String getAppSelectionString() {
-    String text = '${selectedApp!.name} (${selectedApp!.packageName})';
-    if (text.length > 32) {
-      text = '${text.substring(0, 32)}...)';
-    }
-    return text;
+    return '${selectedApp!.name} ${selectedApp!.version}';
   }
 
-  String getCurrentVersionString(BuildContext context) {
-    return '${Text(t.appSelectorCard.currentVersion)}: v${selectedApp!.version}';
-  }
-
-  Future<void> searchSuggestedVersionOnWeb() async {
-    final String suggestedVersion =
-        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
-
-    if (suggestedVersion.isNotEmpty) {
-      await openDefaultBrowser(
-        '${selectedApp!.packageName} apk version v$suggestedVersion',
-      );
-    } else {
-      await openDefaultBrowser('${selectedApp!.packageName} apk');
-    }
-  }
-
-  String getSuggestedVersion() {
-    return _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+  Future<void> queryVersion(String suggestedVersion) async {
+    await openDefaultBrowser(
+      '${selectedApp!.packageName} apk version $suggestedVersion',
+    );
   }
 
   String getSuggestedVersionString(BuildContext context) {
-    String suggestedVersion =
-        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
-    if (suggestedVersion.isEmpty) {
-      suggestedVersion = t.appSelectorCard.allVersions;
-    } else {
-      suggestedVersion = 'v$suggestedVersion';
-    }
-    return '${Text(
-      t.appSelectorCard.suggestedVersion,
-    )}: $suggestedVersion';
+    return _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
   }
 
   Future<void> openDefaultBrowser(String query) async {

@@ -4,10 +4,11 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 
-class UpdateConfirmationDialog extends StatelessWidget {
-  const UpdateConfirmationDialog({super.key, required this.isPatches});
+class UpdateConfirmationSheet extends StatelessWidget {
+  const UpdateConfirmationSheet({super.key, required this.isPatches,  this.changelog = false});
 
   final bool isPatches;
+  final bool changelog;
   @override
   Widget build(BuildContext context) {
     final HomeViewModel model = locator<HomeViewModel>();
@@ -36,6 +37,7 @@ class UpdateConfirmationDialog extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (!changelog)
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 40.0,
@@ -51,8 +53,8 @@ class UpdateConfirmationDialog extends StatelessWidget {
                             children: [
                               Text(
                                 isPatches
-                                    ? t.homeView.updatePatchesDialogTitle
-                                    : t.homeView.updateDialogTitle,
+                                    ? t.homeView.updatePatchesSheetTitle
+                                    : t.homeView.updateSheetTitle,
                                 style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -95,7 +97,7 @@ class UpdateConfirmationDialog extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 24.0, bottom: 12.0),
+                    padding: const EdgeInsets.only(top: 12.0, left: 24.0, bottom: 12.0),
                     child: Text(
                       t.homeView.updateChangelogTitle,
                       style: TextStyle(
@@ -103,22 +105,22 @@ class UpdateConfirmationDialog extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24.0),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      borderRadius: BorderRadius.circular(12.0),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Markdown(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(20.0),
+                        data: snapshot.data!['body'] ?? '',
+                      ),
                     ),
-                    child: Markdown(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(20.0),
-                      data: snapshot.data!['body'] ?? '',
-                    ),
-                  ),
                 ],
               );
             },

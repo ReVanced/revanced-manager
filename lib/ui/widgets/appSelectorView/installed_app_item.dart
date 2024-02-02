@@ -54,19 +54,43 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    widget.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.visible,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 4,
+                    children: [
+                      Text(
+                        widget.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        widget.installedVersion,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(widget.pkgName),
                   Text(
-                    t.installed(version: widget.installedVersion),
+                    widget.pkgName,
                   ),
+                  const SizedBox(height: 4),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
@@ -79,14 +103,14 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
                           child: Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   t.suggested(
                                     version: widget.suggestedVersion.isEmpty
-                                        ? Text(t.appSelectorCard.allVersions)
+                                        ? Text(t.appSelectorCard.anyVersion)
                                         : 'v${widget.suggestedVersion}',
                                   ),
                                 ),
@@ -101,17 +125,6 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.patchesCount == 1
-                            ? '• ${widget.patchesCount} patch'
-                            : '• ${widget.patchesCount} patches',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],

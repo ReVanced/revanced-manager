@@ -184,8 +184,9 @@ class PatchOptionsViewModel extends BaseViewModel {
                         children: [
                           Text(
                             e.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 4),

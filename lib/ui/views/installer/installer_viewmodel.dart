@@ -214,8 +214,6 @@ class InstallerViewModel extends BaseViewModel {
     String suggestedVersion = _patcherAPI.getSuggestedVersion(_app.packageName);
     if (suggestedVersion.isEmpty) {
       suggestedVersion = 'Any';
-    } else {
-      suggestedVersion = 'v$suggestedVersion';
     }
     return suggestedVersion;
   }
