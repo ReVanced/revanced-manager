@@ -36,6 +36,7 @@ class ManagerAPI {
   Patch? selectedPatch;
   BuildContext? ctx;
   bool isRooted = false;
+  bool releaseBuild = false;
   bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
   String storedPatchesFile = '/selected-patches.json';
@@ -68,6 +69,9 @@ class ManagerAPI {
         (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+    if (kReleaseMode) {
+      releaseBuild = !(await getCurrentManagerVersion()).contains('-dev');
+    }
 
     // Migrate to new API URL if not done yet as the old one is sunset.
     final bool hasMigrated = _prefs.getBool('migratedToNewApiUrl') ?? false;
