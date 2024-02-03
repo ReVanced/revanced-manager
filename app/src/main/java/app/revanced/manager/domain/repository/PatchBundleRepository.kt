@@ -14,6 +14,7 @@ import app.revanced.manager.domain.bundles.LocalPatchBundle
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
@@ -51,7 +52,7 @@ class PatchBundleRepository(
     }
 
     val suggestedVersions = bundles.map {
-        val allPatches = it.values.flatMap { bundle -> bundle.patchClasses() }.toSet()
+        val allPatches = it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toFakePatchObject) }.toSet()
 
         PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
             .mapValues { (_, versions) ->
