@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -69,6 +70,7 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.isScrollingUp
 import kotlinx.coroutines.launch
 import org.koin.compose.rememberKoinInject
 
@@ -273,7 +275,7 @@ fun PatchesSelectorScreen(
         }
     }
 
-
+    val patchLazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -302,6 +304,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
+                expanded = patchLazyListState.isScrollingUp,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -344,7 +347,8 @@ fun PatchesSelectorScreen(
                     val bundle = bundles[index]
 
                     LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        state = patchLazyListState
                     ) {
                         patchList(
                             uid = bundle.uid,
