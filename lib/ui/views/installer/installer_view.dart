@@ -17,7 +17,9 @@ class InstallerView extends StatelessWidget {
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
       builder: (context, model, child) => PopScope(
-        onPopInvoked: (bool didPop) => model.onWillPop(context),
+        onPopInvoked: (bool didPop) {
+          model.onPop(context);
+        },
         canPop: false,
         child: SafeArea(
           top: false,

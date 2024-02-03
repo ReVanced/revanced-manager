@@ -540,7 +540,7 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool> onWillPop(BuildContext context) async {
+  Future<void> onPop(BuildContext context) async {
     if (isPatching) {
       if (!cancel) {
         cancel = true;
@@ -550,7 +550,6 @@ class InstallerViewModel extends BaseViewModel {
       } else {
         _toast.showBottom('installerView.noExit');
       }
-      return false;
     }
     if (!cancel) {
       cleanPatcher();
@@ -559,6 +558,5 @@ class InstallerViewModel extends BaseViewModel {
     }
     screenshotCallback.dispose();
     Navigator.of(context).pop();
-    return true;
   }
 }
