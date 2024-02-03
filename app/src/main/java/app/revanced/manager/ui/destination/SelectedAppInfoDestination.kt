@@ -3,7 +3,7 @@ package app.revanced.manager.ui.destination
 import android.os.Parcelable
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -12,7 +12,7 @@ sealed interface SelectedAppInfoDestination : Parcelable {
     data object Main : SelectedAppInfoDestination
 
     @Parcelize
-    data class PatchesSelector(val app: SelectedApp, val currentSelection: PatchesSelection?, val options: @RawValue Options) : SelectedAppInfoDestination
+    data class PatchesSelector(val app: SelectedApp, val currentSelection: PatchSelection?, val options: @RawValue Options) : SelectedAppInfoDestination
 
     @Parcelize
     data object VersionSelector: SelectedAppInfoDestination

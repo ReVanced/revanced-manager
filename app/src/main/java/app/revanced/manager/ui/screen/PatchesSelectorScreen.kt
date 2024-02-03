@@ -69,7 +69,7 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
 import kotlinx.coroutines.launch
 import org.koin.compose.rememberKoinInject
@@ -77,7 +77,7 @@ import org.koin.compose.rememberKoinInject
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onSave: (PatchesSelection?, Options) -> Unit,
+    onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
@@ -107,13 +107,13 @@ fun PatchesSelectorScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_compat_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
                     style = MaterialTheme.typography.titleMedium
                 )
 
@@ -259,7 +259,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!vm.allowExperimental) return@LazyColumnWithScrollbar
+                if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -370,7 +370,7 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
                             filterFlag = SHOW_UNSUPPORTED,
-                            supported = vm.allowExperimental
+                            supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),
