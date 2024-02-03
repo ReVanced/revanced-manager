@@ -18,9 +18,42 @@ module.exports = {
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "conventionalcommits",
+        preset: "conventionalcommits",
+        presetConfig: {
+          types: [
+            { type: "feat", section: "Features" },
+            { type: "fix", section: "Bug Fixes" },
+            { type: "docs", section: "Documentation" },
+            { type: "style", section: "Styles" },
+            { type: "refactor", section: "Code Refactoring" },
+            { type: "perf", section: "Performance Improvements" },
+            { type: "test", section: "Tests" },
+            { type: "build", section: "Build System" },
+            { type: "ci", section: "Continuous Integration" },
+            { type: "chore", section: "Chores" },
+            { type: "revert", section: "Reverts" },
+          ]
+        },
         writerOpts: {
-          commitPartial: "* {{subject}} ([{{author.name}}]({{~@root.host}}/{{~@root.owner}}/{{~@root.repository}}/commit/{{hash}}))\n",
+          transform: (commit, context) => {
+            if (commit.author.name === "semantic-release-bot") return;
+            const types = {
+              feat: "Features",
+              fix: "Bug Fixes",
+              docs: "Documentation",
+              style: "Styles",
+              refactor: "Code Refactoring",
+              perf: "Performance Improvements",
+              test: "Tests",
+              build: "Build System",
+              ci: "Continuous Integration",
+              chore: "Chores",
+              revert: "Reverts",
+            }
+            commit.type = types[commit.type];
+            return commit;
+          },
+          commitPartial: "* {{#if scope}}**{{scope}}:** {{/if}}{{subject}} ([{{author.name}}]({{~@root.host}}/{{~@root.owner}}/{{~@root.repository}}/commit/{{hash}}))\n",
           mainTemplate: `
 {{#each commitGroups}}
 {{#if title}}
