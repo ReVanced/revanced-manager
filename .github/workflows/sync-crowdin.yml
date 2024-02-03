@@ -3,7 +3,7 @@ name: Crowdin Action
 on:
   workflow_dispatch:
   push:
-    branches: [feat/i10n]
+    branches: [dev]
 
 jobs:
   synchronize-with-crowdin:
