@@ -53,7 +53,10 @@ class MainViewModel(
     }
 
     private suspend fun checkForManagerUpdates() {
-        if (BuildConfig.DEBUG || BuildConfig.VERSION_NAME.contains("-dev") || !prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
+        if (BuildConfig.DEBUG || 
+            BuildConfig.VERSION_NAME.contains("-dev") || 
+            !prefs.managerAutoUpdates.get() || 
+            !networkInfo.isConnected()) return
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
