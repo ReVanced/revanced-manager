@@ -388,10 +388,6 @@ fun SelectionWarningDialog(
 ) {
     val prefs: PreferencesManager = rememberKoinInject()
 
-    /*
-    AlertDialog(
-        onDismissRequest = onCancel,
-     */
     DangerousActionDialogBase(
         onCancel = onCancel,
         confirmButton = { dismissPermanently ->
@@ -417,52 +413,6 @@ fun SelectionWarningDialog(
         title = R.string.selection_warning_title,
         body = R.string.selection_warning_description,
     )
-    /*
-        dismissButton = {
-            TextButton(onClick = onCancel) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        icon = {
-            Icon(Icons.Outlined.WarningAmber, null)
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.selection_warning_title),
-                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = stringResource(R.string.selection_warning_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    modifier = Modifier.clickable {
-                        dismissPermanently = !dismissPermanently
-                    }
-                ) {
-                    Checkbox(
-                        checked = dismissPermanently,
-                        onCheckedChange = {
-                            dismissPermanently = it
-                        }
-                    )
-                    Text(stringResource(R.string.permanent_dismiss))
-                }
-            }
-        }
-    )
-     */
 }
 
 @Composable
