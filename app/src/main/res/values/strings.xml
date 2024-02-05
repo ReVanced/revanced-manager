@@ -169,6 +169,8 @@
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="version_warning_title">Non suggested version</string>
+    <string name="version_warning_description">The version of the app you have selected does not match the suggested version. Please select the app that matches the suggested version.</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
     <string name="selection_warning_continue_countdown">Continue (%ds)</string>
