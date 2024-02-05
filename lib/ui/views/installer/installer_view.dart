@@ -22,7 +22,11 @@ class InstallerView extends StatelessWidget {
           bottom: model.isPatching,
           child: Scaffold(
             floatingActionButton: Visibility(
-              visible: !model.isPatching && !model.hasErrors,
+              visible: [
+                !model.isPatching,
+                !model.hasErrors,
+                !model.isInstalling,
+              ].every((element) => element),
               child: model.isInstalled
                   ? HapticFloatingActionButtonExtended(
                       label: I18nText('installerView.openButton'),
