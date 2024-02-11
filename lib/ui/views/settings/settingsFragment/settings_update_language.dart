@@ -45,6 +45,7 @@ class SUpdateLanguage extends BaseViewModel {
       context: parentContext,
       builder: (context) => AlertDialog(
         title: Text(t.settingsView.languageLabel),
+        icon: const Icon(Icons.language),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         contentPadding: EdgeInsets.zero,
         content: ValueListenableBuilder(
