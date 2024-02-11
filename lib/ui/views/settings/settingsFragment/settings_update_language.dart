@@ -34,6 +34,8 @@ class SUpdateLanguage extends BaseViewModel {
   }
 
   Future<void> showLanguagesDialog(BuildContext parentContext) {
+    final ValueNotifier<String> selectedLanguageCode =
+        ValueNotifier(LocaleSettings.currentLocale.languageCode);
     // initLang();
 
     // Return a dialog with list for each language supported by the application.
@@ -45,50 +47,51 @@ class SUpdateLanguage extends BaseViewModel {
         title: Text(t.settingsView.languageLabel),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         contentPadding: EdgeInsets.zero,
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: AppLocale.values.map(
-              (locale) {
-                return RadioListTile(
-                  title: Text(
-                    (() {
-                      try {
-                        return LanguageCodes.fromCode(locale.languageCode)
-                            .englishName;
-                      } catch (e) {
-                        // This act as an fallback if the language is not supported by the package
-                        // Do not try to make this nicer or debug it; trust me, I've tried.
-                        return locale.languageCode;
-                      }
-                    })(),
-                  ),
-                  subtitle: Text(
-                    (() {
-                      try {
-                        return LanguageCodes.fromCode(locale.languageCode)
-                            .nativeName;
-                      } catch (e) {
-                        return '????';
-                      }
-                    })(),
-                  ),
-                  value: locale.languageCode.replaceAll('-', '_') ==
-                      LocaleSettings.currentLocale.languageCode.replaceAll(
-                        '-',
-                        '_',
+        content: ValueListenableBuilder(
+          valueListenable: selectedLanguageCode,
+          builder: (context, value, child) {
+            return SingleChildScrollView(
+              child: ListBody(
+                children: AppLocale.values.map(
+                  (locale) {
+                    LanguageCodes? languageCode;
+                    Text? languageNativeName;
+
+                    try {
+                      languageCode =
+                          LanguageCodes.fromCode(locale.languageCode);
+                    } catch (e) {}
+                    if (languageCode != null) {
+                      languageNativeName = Text(languageCode.nativeName);
+                    }
+
+                    return RadioListTile(
+                      title: Text(
+                        languageCode?.englishName ?? locale.languageCode,
                       ),
-                  groupValue: true,
-                  onChanged: (value) {
-                    updateLocale(locale.languageCode.replaceAll('-', '_'));
+                      subtitle: languageNativeName,
+                      value: locale.languageCode == selectedLanguageCode.value,
+                      groupValue: true,
+                      onChanged: (value) {
+                        selectedLanguageCode.value = locale.languageCode;
+                      },
+                    );
                   },
-                );
-              },
-            ).toList(),
-          ),
+                ).toList(),
+              ),
+            );
+          },
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(t.cancelButton),
+          ),
+          TextButton(
+            onPressed: () {
+              updateLocale(selectedLanguageCode.value);
               Navigator.of(context).pop();
             },
             child: Text(t.okButton),
