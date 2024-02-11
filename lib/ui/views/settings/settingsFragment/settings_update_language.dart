@@ -107,7 +107,9 @@ class SUpdateLanguageUI extends StatelessWidget {
     return SettingsTileDialog(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: t.settingsView.languageLabel,
-      subtitle: LocaleSettings.currentLocale.name,
+      subtitle:
+          LanguageCodes.fromCode(LocaleSettings.currentLocale.languageCode)
+              .nativeName,
       onTap: () =>
           _settingViewModel.sUpdateLanguage.showLanguagesDialog(context),
     );
