@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:stacked/stacked.dart';
@@ -20,7 +20,7 @@ class SManageApiUrl extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            I18nText('settingsView.apiURLLabel'),
+            Text(t.settingsView.apiURLLabel),
             const Spacer(),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
@@ -42,10 +42,7 @@ class SManageApiUrl extends BaseViewModel {
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   border: const OutlineInputBorder(),
-                  labelText: FlutterI18n.translate(
-                    context,
-                    'settingsView.selectApiURL',
-                  ),
+                  labelText: t.settingsView.selectApiURL,
                   hintText: apiUrl,
                 ),
               ),
@@ -58,7 +55,7 @@ class SManageApiUrl extends BaseViewModel {
               _apiUrlController.clear();
               Navigator.of(context).pop();
             },
-            child: I18nText('cancelButton'),
+            child: Text(t.cancelButton),
           ),
           FilledButton(
             onPressed: () {
@@ -69,7 +66,7 @@ class SManageApiUrl extends BaseViewModel {
               _managerAPI.setApiUrl(apiUrl);
               Navigator.of(context).pop();
             },
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -80,12 +77,12 @@ class SManageApiUrl extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('settingsView.sourcesResetDialogTitle'),
-        content: I18nText('settingsView.apiURLResetDialogText'),
+        title: Text(t.settingsView.sourcesResetDialogTitle),
+        content: Text(t.settingsView.apiURLResetDialogText),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: I18nText('noButton'),
+            child: Text(t.noButton),
           ),
           FilledButton(
             onPressed: () {
@@ -94,7 +91,7 @@ class SManageApiUrl extends BaseViewModel {
                 ..pop()
                 ..pop();
             },
-            child: I18nText('yesButton'),
+            child: Text(t.yesButton),
           ),
         ],
       ),
@@ -111,8 +108,8 @@ class SManageApiUrlUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsTileDialog(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      title: 'settingsView.apiURLLabel',
-      subtitle: 'settingsView.apiURLHint',
+      title: t.settingsView.apiURLLabel,
+      subtitle: t.settingsView.apiURLHint,
       onTap: () => sManageApiUrl.showApiUrlDialog(context),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/about_widget.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
@@ -12,51 +12,42 @@ class SDebugSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsSection(
-      title: 'settingsView.debugSectionTitle',
+      title: t.settingsView.debugSectionTitle,
       children: <Widget>[
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: I18nText(
-            'settingsView.logsLabel',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(
+            t.settingsView.logsLabel,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          subtitle: I18nText('settingsView.logsHint'),
+          subtitle: Text(t.settingsView.logsHint),
           onTap: () => _settingsViewModel.exportLogcatLogs(),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: I18nText(
-            'settingsView.deleteLogsLabel',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(
+            t.settingsView.deleteLogsLabel,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          subtitle: I18nText('settingsView.deleteLogsHint'),
+          subtitle: Text(t.settingsView.deleteLogsHint),
           onTap: () => _settingsViewModel.deleteLogs(),
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: I18nText(
-            'settingsView.deleteTempDirLabel',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(
+            t.settingsView.deleteTempDirLabel,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          subtitle: I18nText('settingsView.deleteTempDirHint'),
+          subtitle: Text(t.settingsView.deleteTempDirHint),
           onTap: () => _settingsViewModel.deleteTempDir(),
         ),
         const AboutWidget(

@@ -1,0 +1,53 @@
+name: Crowdin Action
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [dev]
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Sync translation from Crowdin
+        uses: crowdin/github-action@v1
+        with:
+          config: crowdin.yml
+          upload_sources: true
+          upload_translations: false
+          download_translations: true
+          localization_branch_name: feat/translations
+          create_pull_request: true
+          pull_request_title: "chore(i18n): Sync translations"
+          pull_request_body: "Sync translations from [Crowdin/ReVanced](https://crowdin.com/project/revanced)"
+          pull_request_base_branch_name: "dev"
+          commit_message: "chore(i18n): Sync translations"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      - name: Remove empty values from JSON
+        run: |
+          cd assets/i18n
+          sudo chmod 777 *
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
+
+      - name: Push out changes to i10n
+        run: |
+          git config user.name revanced-bot
+          git config user.email github@revanced.app
+          sudo chown -R $USER:$USER .git
+          git add assets/i18n/*.json
+          git commit -m "chore(Translation): Remove empty values from JSON" assets/i18n/*.json
+          git push origin HEAD:feat/translations
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

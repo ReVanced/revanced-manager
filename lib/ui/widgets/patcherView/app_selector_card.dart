@@ -1,7 +1,8 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
@@ -28,21 +29,18 @@ class AppSelectorCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          I18nText(
+          Text(
             vm.selectedApp == null
-                ? 'appSelectorCard.widgetTitle'
-                : 'appSelectorCard.widgetTitleSelected',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
+                ? t.appSelectorCard.widgetTitle
+                : t.appSelectorCard.widgetTitleSelected,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 8),
           if (vm.selectedApp == null)
-            I18nText('appSelectorCard.widgetSubtitle')
+            Text(t.appSelectorCard.widgetSubtitle)
           else
             Row(
               children: <Widget>[
@@ -96,11 +94,10 @@ class AppSelectorCard extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                I18nText(
-                                  'suggested',
-                                  translationParams: {
-                                    'version': suggestedVersion,
-                                  },
+                                Text(
+                                  t.suggested(
+                                    version: suggestedVersion,
+                                  ),
                                 ),
                                 const SizedBox(width: 4),
                                 Icon(
