@@ -43,7 +43,7 @@ class UpdateConfirmationSheet extends StatelessWidget {
                       top: 40.0,
                       left: 24.0,
                       right: 24.0,
-                      bottom: 32.0,
+                      bottom: 20.0,
                     ),
                     child: Row(
                       children: [
