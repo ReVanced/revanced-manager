@@ -131,6 +131,11 @@ class UpdateConfirmationSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Markdown(
+                      styleSheet: MarkdownStyleSheet(
+                        a: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.all(20.0),
