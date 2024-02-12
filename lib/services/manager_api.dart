@@ -66,7 +66,6 @@ class ManagerAPI {
 
     // Migrate to new API URL if not done yet as the old one is sunset.
     final bool hasMigratedToNewApi = _prefs.getBool('migratedToNewApiUrl') ?? false;
-    final bool hasMigratedToAlternativeSource = _prefs.getBool('migratedToNewApiUrl') ?? false;
     if (!hasMigratedToNewApi) {
       final String apiUrl = getApiUrl().toLowerCase();
       if (apiUrl.contains('releases.revanced.app')) {
@@ -74,6 +73,8 @@ class ManagerAPI {
         _prefs.setBool('migratedToNewApiUrl', true);
       }
     }
+
+    final bool hasMigratedToAlternativeSource = _prefs.getBool('migratedToAlternativeSource') ?? false;
     if (!hasMigratedToAlternativeSource) {
       final String patchesRepo = getPatchesRepo();
       final String integrationsRepo = getIntegrationsRepo();
@@ -215,7 +216,7 @@ class ManagerAPI {
 
   void useAlternativeSources(bool value) {
     _prefs.setBool('useAlternativeSources', value);
-    _toast.showBottom('settingsView.restartAppForChanges');
+    _toast.showBottom(t.settingsView.restartAppForChanges);
   }
 
   bool isUsingAlternativeSources() {
