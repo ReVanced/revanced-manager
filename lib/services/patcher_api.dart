@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -304,18 +304,19 @@ class PatcherAPI {
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        title: I18nText('installErrorDialog.$statusValue'),
+        title: Text(t['installErrorDialog.$statusValue']),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            I18nText(
-              'installErrorDialog.${statusValue}_description',
-              translationParams: statusCode == 2
-                  ? {
-                      'packageName': status['otherPackageName'],
-                    }
-                  : null,
+            Text(
+              t['installErrorDialog.${statusValue}_description'](
+                packageName: statusCode == 2
+                    ? {
+                        'packageName': status['otherPackageName'],
+                      }
+                    : null,
+              ),
             ),
           ],
         ),
@@ -325,7 +326,7 @@ class PatcherAPI {
                   onPressed: () async {
                     Navigator.pop(context);
                   },
-                  child: I18nText('okButton'),
+                  child: Text(t.okButton),
                 ),
               ]
             : <Widget>[
@@ -334,14 +335,14 @@ class PatcherAPI {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: I18nText('cancelButton'),
+                    child: Text(t.cancelButton),
                   )
                 else
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: I18nText('cancelButton'),
+                    child: Text(t.cancelButton),
                   ),
                 if (isFixable)
                   FilledButton(
@@ -355,7 +356,7 @@ class PatcherAPI {
                         Navigator.pop(context);
                       }
                     },
-                    child: I18nText('okButton'),
+                    child: Text(t.okButton),
                   ),
               ],
       ),

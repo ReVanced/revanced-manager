@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -137,8 +137,8 @@ class PatchOptionsViewModel extends BaseViewModel {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            I18nText(
-              'patchOptionsView.addOptions',
+            Text(
+              t.patchOptionsView.addOptions,
             ),
             Text(
               '',
@@ -154,7 +154,7 @@ class PatchOptionsViewModel extends BaseViewModel {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: I18nText('cancelButton'),
+            child: Text(t.cancelButton),
           ),
         ],
         contentPadding: const EdgeInsets.all(8),
@@ -224,7 +224,7 @@ Future<void> showRequiredOptionNullDialog(
   await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: I18nText('notice'),
+      title: Text(t.notice),
       actions: [
         TextButton(
           onPressed: () async {
@@ -248,20 +248,19 @@ Future<void> showRequiredOptionNullDialog(
               PatchesSelectorViewModel().showPatchesChangeDialog(context);
             }
           },
-          child: I18nText('patchOptionsView.deselectPatch'),
+          child: Text(t.patchOptionsView.deselectPatch),
         ),
         FilledButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: I18nText('okButton'),
+          child: Text(t.okButton),
         ),
       ],
-      content: I18nText(
-        'patchOptionsView.requiredOptionNull',
-        translationParams: {
-          'options': optionsTitles.join('\n'),
-        },
+      content: Text(
+        t.patchOptionsView.requiredOptionNull(
+          options: optionsTitles.join('\n'),
+        ),
       ),
     ),
   );
