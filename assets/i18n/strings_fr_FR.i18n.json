@@ -269,12 +269,7 @@
     "updateNotImplemented": "Cette fonctionnalité n'est pas encore disponible"
   },
   "contributorsView": {
-    "widgetTitle": "Contributeurs",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Contributeurs"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Incompatibilité de version",

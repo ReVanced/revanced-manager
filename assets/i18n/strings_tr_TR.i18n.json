@@ -269,12 +269,7 @@
     "updateNotImplemented": "Bu özellik henüz geliştirilmedi"
   },
   "contributorsView": {
-    "widgetTitle": "Katkıda bulunanlar",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Katkıda bulunanlar"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Sürüm uyuşmazlığı",

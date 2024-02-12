@@ -269,12 +269,7 @@
     "updateNotImplemented": "這項功能尚未實作"
   },
   "contributorsView": {
-    "widgetTitle": "貢獻者",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "貢獻者"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "版本不相符",

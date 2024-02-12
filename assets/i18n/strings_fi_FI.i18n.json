@@ -269,12 +269,7 @@
     "updateNotImplemented": "Ominaisuutta ei ole vielä toteutettu"
   },
   "contributorsView": {
-    "widgetTitle": "Osallistujat",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Osallistujat"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versioristiriita",

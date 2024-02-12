@@ -269,12 +269,7 @@
     "updateNotImplemented": "Ця можливість ще не реалізована"
   },
   "contributorsView": {
-    "widgetTitle": "Розробники",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Розробники"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Невідповідність версії",

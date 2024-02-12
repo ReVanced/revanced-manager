@@ -269,12 +269,7 @@
     "updateNotImplemented": "Denna funktionen har inte lagts till ännu"
   },
   "contributorsView": {
-    "widgetTitle": "Bidragsgivare",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Bidragsgivare"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionerna stämmer inte överens",

@@ -269,12 +269,7 @@
     "updateNotImplemented": "Diese Funktion ist noch nicht implementiert"
   },
   "contributorsView": {
-    "widgetTitle": "Mitwirkende",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Mitwirkende"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionskonflikt",
