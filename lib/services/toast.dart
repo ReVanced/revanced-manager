@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:fluttertoast/fluttertoast.dart' as t;
 
 class Toast {
@@ -12,10 +11,7 @@ class Toast {
 
   void show(String text) {
     t.Fluttertoast.showToast(
-      msg: FlutterI18n.translate(
-        _fToast.context!,
-        text,
-      ),
+      msg: text,
       toastLength: t.Toast.LENGTH_LONG,
       gravity: t.ToastGravity.CENTER,
     );
@@ -23,10 +19,7 @@ class Toast {
 
   void showBottom(String text) {
     t.Fluttertoast.showToast(
-      msg: FlutterI18n.translate(
-        _fToast.context!,
-        text,
-      ),
+      msg: text,
       toastLength: t.Toast.LENGTH_LONG,
       gravity: t.ToastGravity.BOTTOM,
     );

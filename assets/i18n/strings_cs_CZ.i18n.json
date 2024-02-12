@@ -1,0 +1,152 @@
+{
+  "okButton": "OK",
+  "cancelButton": "Zrušit",
+  "quitButton": "Odejít",
+  "updateButton": "Aktualizovat",
+  "installed": "Nainstalováno: ${version}",
+  "suggested": "Doporučeno: ${version}",
+  "yesButton": "Ano",
+  "noButton": "Ne",
+  "warning": "Varování",
+  "options": "Možnosti",
+  "notice": "Upozornění",
+  "noShowAgain": "Již nezobrazovat",
+  "add": "Přidat",
+  "remove": "Odebrat",
+  "navigationView": {
+    "dashboardTab": "Řídící panel",
+    "settingsTab": "Nastavení"
+  },
+  "homeView": {
+    "refreshSuccess": "Úspěšně obnoveno",
+    "widgetTitle": "Řídící panel",
+    "updatesSubtitle": "Aktualizace",
+    "patchedSubtitle": "Záplatované aplikace",
+    "noInstallations": "Nejsou nainstalovány žádné záplatované aplikace",
+    "installUpdate": "Pokračovat v instalaci aktualizace?",
+    "updateChangelogTitle": "Seznam změn",
+    "downloadingMessage": "Stahování aktualizace...",
+    "installingMessage": "Instalace aktualizace...",
+    "errorDownloadMessage": "Nelze stáhnout aktualizaci",
+    "errorInstallMessage": "Aktualizace se nepodařilo nainstalovat",
+    "noConnection": "Žádné připojení k internetu",
+    "updatesDisabled": "Aktualizace záplatované aplikace je momentálně zakázána. Znovu záplatujte aplikaci."
+  },
+  "applicationItem": {},
+  "latestCommitCard": {
+    "loadingLabel": "Načítání...",
+    "timeagoLabel": "před ${time}"
+  },
+  "patcherView": {
+    "patchButton": "Patchovat"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Nebyly nalezeny žádné aplikace",
+    "currentVersion": "Aktuální",
+    "suggestedVersion": "Navrženo"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Vybrat patche",
+    "widgetTitleSelected": "Vybrané patche",
+    "widgetSubtitle": "Nejprve vyberte aplikaci",
+    "widgetEmptySubtitle": "Nejsou vybrány žádné patche"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Sociální sítě",
+    "widgetSubtitle": "Jsme online!"
+  },
+  "appSelectorView": {
+    "storageButton": "Uložiště",
+    "selectFromStorageButton": "Vybrat z úložiště",
+    "errorMessage": "Vybranou aplikaci nelze použít",
+    "downloadToast": "Funkce stahování zatím není dostupná",
+    "featureNotAvailable": "Funkce není implementována"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Vybrat patche",
+    "searchBarHint": "Vyhledat patche",
+    "doneButton": "Hotovo",
+    "defaultTooltip": "Vybrat všechny výchozí patche",
+    "noneTooltip": "Zrušit výběr všech patchů",
+    "noPatchesFound": "Pro vybranou aplikaci nebyly nalezeny žádné záplaty"
+  },
+  "patchOptionsView": {
+    "saveOptions": "Uložit",
+    "addOptions": "Přidat možnosti",
+    "tooltip": "Další možnosti vstupu",
+    "selectFilePath": "Zvolte cestu k souboru"
+  },
+  "patchItem": {
+    "unsupportedDialogText": "Výběrem této záplaty může dojít k chybám.\n\nVerze aplikace: ${packageVersion}\nAktuálně podporované verze:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installType": "Zvolte instalační typ",
+    "installButton": "Instalovat",
+    "openButton": "Otevřít",
+    "notificationTitle": "ReVanced Manager patchuje",
+    "notificationText": "Klepnutím se vrátíte do instalátoru",
+    "noExit": "Instalační program je stále spuštěn, nelze ukončit..."
+  },
+  "settingsView": {
+    "widgetTitle": "Nastavení",
+    "appearanceSectionTitle": "Vzhled",
+    "teamSectionTitle": "Tým",
+    "advancedSectionTitle": "Pokročilé",
+    "exportSectionTitle": "Import a export",
+    "themeModeLabel": "Vzhled aplikace",
+    "systemThemeLabel": "Systém",
+    "lightThemeLabel": "Světlý",
+    "darkThemeLabel": "Tmavý motiv",
+    "dynamicThemeHint": "Vychutnejte si zážitek blíže k vašemu zařízení",
+    "languageLabel": "Jazyk",
+    "sourcesLabel": "Zdroje",
+    "sourcesIntegrationsLabel": "Zdroj integrace",
+    "sourcesResetDialogTitle": "Obnovit",
+    "hostRepositoryLabel": "API Repozitář",
+    "orgPatchesLabel": "Organizace patchů",
+    "sourcesPatchesLabel": "Zdroj patchů",
+    "orgIntegrationsLabel": "Autor integrace",
+    "contributorsLabel": "Přispěvatelé",
+    "contributorsHint": "Seznam přispěvatelů ReVanced",
+    "versionCompatibilityCheckLabel": "Kontrola kompatibility verzí",
+    "aboutLabel": "O aplikaci",
+    "snackbarMessage": "Zkopírováno do schránky",
+    "restartAppForChanges": "Pro aplikování změn restartuj aplikaci",
+    "deleteTempDirLabel": "Odstranit dočasné soubory",
+    "deleteTempDirHint": "Odstranit nepoužívané dočasné soubory",
+    "deletedTempDir": "Dočasné soubory byly smazány",
+    "resetStoredOptions": "Možnosti byly resetovány",
+    "deleteLogsLabel": "Vymazat logy",
+    "deleteLogsHint": "Odstranit shromážděné logy ReVanced Manageru",
+    "deletedLogs": "Záznamy byly smazány",
+    "exportKeystoreLabel": "Exportovat úložiště klíčů",
+    "exportedKeystore": "Úložiště klíčů exportováno",
+    "noKeystoreExportFileFound": "Žádný úložiště klíčů k exportu",
+    "importKeystoreLabel": "Importovat úložiště klíčů",
+    "importedKeystore": "Úložiště klíčů importováno",
+    "jsonSelectorErrorMessage": "Vybraný JSON soubor nelze použít"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informace o aplikaci",
+    "openButton": "Otevřít",
+    "uninstallButton": "Odinstalovat",
+    "rootDialogTitle": "Chyba",
+    "rootDialogText": "Aplikace byla nainstalována s oprávněním superuser, ale aktuálně ReVanced Manager nemá žádná oprávnění.\nProsím nejprve udělte oprávnění superuser.",
+    "packageNameLabel": "Název balíčku",
+    "installTypeLabel": "Typ instalace",
+    "patchedDateLabel": "Datum patchování",
+    "appliedPatchesLabel": "Použité patche",
+    "patchedDateHint": "${date} v ${time}",
+    "appliedPatchesHint": "${quantity} použité patche",
+    "updateNotImplemented": "Tato funkce ještě není implementována"
+  },
+  "contributorsView": {
+    "widgetTitle": "Přispěvatelé",
+    "patcherContributors": "Přispěvatelé k patcheru",
+    "patchesContributors": "Přispěvatelé k patchemi",
+    "integrationsContributors": "Přispěvatelé integrace",
+    "cliContributors": "Přispěvatelé CLI",
+    "managerContributors": "Přispěvatelé správce"
+  },
+  "installErrorDialog": {}
+}

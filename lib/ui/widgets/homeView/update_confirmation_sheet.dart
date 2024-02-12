@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 
 class UpdateConfirmationSheet extends StatelessWidget {
@@ -55,18 +55,15 @@ class UpdateConfirmationSheet extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                I18nText(
+                              Text(
                                   isPatches
-                                      ? 'homeView.updatePatchesSheetTitle'
-                                      : 'homeView.updateSheetTitle',
-                                  child: const Text(
-                                    '',
-                                    style: TextStyle(
+                                    ? t.homeView.updatePatchesSheetTitle
+                                    : t.homeView.updateSheetTitle,
+                                style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
                                 const SizedBox(height: 4.0),
                                 Row(
                                   children: [
@@ -99,7 +96,7 @@ class UpdateConfirmationSheet extends StatelessWidget {
                                   ? model.updatePatches(context)
                                   : model.updateManager(context);
                             },
-                            child: I18nText('updateButton'),
+                          child: Text(t.updateButton),
                           ),
                         ],
                       ),
@@ -110,38 +107,34 @@ class UpdateConfirmationSheet extends StatelessWidget {
                       left: 24.0,
                       bottom: 12.0,
                     ),
-                    child: I18nText(
-                      'homeView.updateChangelogTitle',
-                      child: Text(
-                        '',
-                        style: TextStyle(
+                    child: Text(
+                      t.homeView.updateChangelogTitle,
+                      style: TextStyle(
                           fontSize: changelog ? 24 : 20,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+                        fontWeight: FontWeight.w500,
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24.0),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Markdown(
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Markdown(
                       styleSheet: MarkdownStyleSheet(
                         a: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(20.0),
-                      data: snapshot.data!['body'] ?? '',
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(20.0),
+                        data: snapshot.data!['body'] ?? '',
+                      ),
                     ),
-                  ),
                 ],
               );
             },

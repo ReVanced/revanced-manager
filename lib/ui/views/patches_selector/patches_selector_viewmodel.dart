@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -92,19 +92,18 @@ class PatchesSelectorViewModel extends BaseViewModel {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('notice'),
-        content: I18nText(
-          'patchesSelectorView.setRequiredOption',
-          translationParams: {
-            'patches': patches.map((patch) => '• $patch').join('\n'),
-          },
+        title: Text(t.notice),
+        content: Text(
+          t.patchesSelectorView.setRequiredOption(
+            patches: patches.map((patch) => '• $patch').join('\n'),
+          ),
         ),
         actions: <Widget>[
           FilledButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -128,21 +127,18 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('warning'),
-        content: I18nText(
-          'patchItem.patchesChangeWarningDialogText',
-          child: const Text(
-            '',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+        title: Text(t.warning),
+        content: Text(
+          t.patchItem.patchesChangeWarningDialogText,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
           FilledButton(
             onPressed: () {
@@ -150,7 +146,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
                 ..pop()
                 ..pop();
             },
-            child: I18nText('patchItem.patchesChangeWarningDialogButton'),
+            child: Text(t.patchItem.patchesChangeWarningDialogButton),
           ),
         ],
       ),
@@ -257,13 +253,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
           bottom: 10.0,
           left: 5.0,
         ),
-        child: I18nText(
+        child: Text(
           category,
-          child: Text(
-            '',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),
@@ -321,7 +314,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
           this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
         }
       } else {
-        locator<Toast>().showBottom('patchesSelectorView.noSavedPatches');
+        locator<Toast>().showBottom(t.patchesSelectorView.noSavedPatches);
       }
       notifyListeners();
     } else {
