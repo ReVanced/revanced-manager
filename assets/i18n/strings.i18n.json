@@ -270,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Contributors",
-    "patcherContributors": "Patcher contributors",
-    "patchesContributors": "Patches contributors",
-    "integrationsContributors": "Integrations contributors",
-    "cliContributors": "CLI contributors",
-    "managerContributors": "Manager contributors"
+    "patcherContributors": "ReVanced Patcher",
+    "patchesContributors": "ReVanced Patches",
+    "integrationsContributors": "ReVanced Integrations",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Version mismatch",
