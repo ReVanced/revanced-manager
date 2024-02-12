@@ -12,17 +12,14 @@ class SManageSources extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final Toast _toast = locator<Toast>();
 
-  final TextEditingController _hostSourceController = TextEditingController();
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
   final TextEditingController _orgIntSourceController = TextEditingController();
   final TextEditingController _intSourceController = TextEditingController();
 
   Future<void> showSourcesDialog(BuildContext context) async {
-    final String hostRepository = _managerAPI.getRepoUrl();
     final String patchesRepo = _managerAPI.getPatchesRepo();
     final String integrationsRepo = _managerAPI.getIntegrationsRepo();
-    _hostSourceController.text = hostRepository;
     _orgPatSourceController.text = patchesRepo.split('/')[0];
     _patSourceController.text = patchesRepo.split('/')[1];
     _orgIntSourceController.text = integrationsRepo.split('/')[0];
@@ -44,29 +41,6 @@ class SManageSources extends BaseViewModel {
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              /*
-              API for accessing the specified repositories
-              If default is used, will use the ReVanced API
-              */
-              TextField(
-                controller: _hostSourceController,
-                autocorrect: false,
-                onChanged: (value) => notifyListeners(),
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.rocket_launch_outlined,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  border: const OutlineInputBorder(),
-                  labelText: FlutterI18n.translate(
-                    context,
-                    'settingsView.hostRepositoryLabel',
-                  ),
-                  hintText: hostRepository,
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Patches owner's name
               TextField(
                 controller: _orgPatSourceController,
                 autocorrect: false,
@@ -159,7 +133,6 @@ class SManageSources extends BaseViewModel {
           ),
           FilledButton(
             onPressed: () {
-              _managerAPI.setRepoUrl(_hostSourceController.text.trim());
               _managerAPI.setPatchesRepo(
                 '${_orgPatSourceController.text.trim()}/${_patSourceController.text.trim()}',
               );
@@ -191,7 +164,6 @@ class SManageSources extends BaseViewModel {
           ),
           FilledButton(
             onPressed: () {
-              _managerAPI.setRepoUrl('');
               _managerAPI.setPatchesRepo('');
               _managerAPI.setIntegrationsRepo('');
               _managerAPI.setCurrentPatchesVersion('0.0.0');

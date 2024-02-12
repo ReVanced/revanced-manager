@@ -52,6 +52,15 @@ class SettingsViewModel extends BaseViewModel {
     return _managerAPI.isPatchesChangeEnabled();
   }
 
+  void useAlternativeSources(bool value) {
+    _managerAPI.useAlternativeSources(value);
+    notifyListeners();
+  }
+
+  bool isUsingAlternativeSources() {
+    return _managerAPI.isUsingAlternativeSources();
+  }
+
   Future<void> showPatchesChangeEnableDialog(
     bool value,
     BuildContext context,

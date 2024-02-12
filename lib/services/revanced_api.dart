@@ -33,7 +33,7 @@ class RevancedAPI {
       final response = await _dio.get('/contributors');
       final List<dynamic> repositories = response.data['repositories'];
       for (final Map<String, dynamic> repo in repositories) {
-        final String name = repo['name'].toLowerCase();
+        final String name = repo['name'];
         contributors[name] = repo['contributors'];
       }
     } on Exception catch (e) {
@@ -58,7 +58,7 @@ class RevancedAPI {
         final List<dynamic> tools = response.data['tools'];
         return tools.firstWhereOrNull(
           (t) =>
-              (t['repository'] as String).toLowerCase() == repoName.toLowerCase() &&
+              (t['repository'] as String) == repoName &&
               (t['name'] as String).endsWith(extension),
         );
       } on Exception catch (e) {
