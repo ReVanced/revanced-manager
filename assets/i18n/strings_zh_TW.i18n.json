@@ -107,7 +107,9 @@
     "newPatches": "新的修補檔",
     "patches": "修補檔",
     "doneButton": "完成",
+    "defaultChip": "預設",
     "defaultTooltip": "選取全部預設修補檔",
+    "noneChip": "無",
     "noneTooltip": "取消選取修補檔",
     "loadPatchesSelection": "載入修補選取",
     "noSavedPatches": "未儲存應用程式選定的修補選項。\n按下 [完成] 以儲存目前的選取。",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "質感設計",
     "dynamicThemeHint": "享受更貼近您裝置的使用體驗",
     "languageLabel": "語言",
+    "languageUpdated": "已更新語言",
     "englishOption": "英文",
     "sourcesLabel": "來源",
     "sourcesLabelHint": "設定修補檔和整合功能的來源",
@@ -267,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "貢獻者",
-    "patcherContributors": "修補工具貢獻者",
-    "patchesContributors": "修補檔貢獻者",
-    "integrationsContributors": "整合貢獻者",
-    "cliContributors": "CLI 貢獻者",
-    "managerContributors": "Manager 貢獻者"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "版本不相符",

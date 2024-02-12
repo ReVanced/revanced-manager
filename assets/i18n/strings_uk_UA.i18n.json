@@ -107,7 +107,9 @@
     "newPatches": "Нові патчі",
     "patches": "Патчі",
     "doneButton": "Готово",
+    "defaultChip": "За замовчуванням",
     "defaultTooltip": "Обрати всі стандартні патчі",
+    "noneChip": "Відсутньо",
     "noneTooltip": "Зняти вибір з усіх патчів",
     "loadPatchesSelection": "Ввантажити вибір патчів",
     "noSavedPatches": "Немає збереженого вибору патчів для вибраного застосунку.\nНатисніть «Готово», щоб зберегти поточний вибір.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Насолоджуйтесь враженнями ближче до свого пристрою",
     "languageLabel": "Мова",
+    "languageUpdated": "Мову застосунку оновлено",
     "englishOption": "Англійська",
     "sourcesLabel": "Джерела",
     "sourcesLabelHint": "Налаштування джерела патчів та інтеграцій",
@@ -267,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Розробники",
-    "patcherContributors": "Розробники патчера",
-    "patchesContributors": "Розробники патчів",
-    "integrationsContributors": "Розробники інтеграцій",
-    "cliContributors": "Розробники CLI",
-    "managerContributors": "Розробники менеджера"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Невідповідність версії",

@@ -107,7 +107,9 @@
     "newPatches": "Nowe łatki",
     "patches": "Łatki",
     "doneButton": "Gotowe",
+    "defaultChip": "",
     "defaultTooltip": "Wybierz wszystkie domyślne łatki",
+    "noneChip": "",
     "noneTooltip": "Odznacz wszystkie łatki",
     "loadPatchesSelection": "Załaduj wybór łatek",
     "noSavedPatches": "Brak zapisanych łatek dla wybranej aplikacji.\nNaciśnij Gotowe, aby zapisać bieżący wybór.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
     "languageLabel": "Język",
+    "languageUpdated": "",
     "englishOption": "Angielski",
     "sourcesLabel": "Źródła",
     "sourcesLabelHint": "Skonfiguruj źródło łatek i integracji",
@@ -267,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Współtwórcy",
-    "patcherContributors": "Współtwórcy programu łatającego",
-    "patchesContributors": "Współtwórcy łatek",
-    "integrationsContributors": "Współtwórcy integracji",
-    "cliContributors": "Współtwórcy CLI",
-    "managerContributors": "Współtwórcy menedżera"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Niezgodność wersji",

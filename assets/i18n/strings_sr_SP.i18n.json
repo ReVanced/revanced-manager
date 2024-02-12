@@ -16,6 +16,8 @@
   "noShowAgain": "Не приказуј поново",
   "add": "Додај",
   "remove": "Уклони",
+  "showChangelogButton": "",
+  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Контролна табла",
     "patcherTab": "Печер",
@@ -26,14 +28,25 @@
     "widgetTitle": "Контролна табла",
     "updatesSubtitle": "Ажурирања",
     "patchedSubtitle": "Печоване апликације",
+    "changeLaterSubtitle": "",
     "noUpdates": "Нема доступних ажурирања",
     "WIP": "Радови у току…",
     "noInstallations": "Нема инсталираних печованих апликација",
     "installUpdate": "Наставити са инсталацијом ажурирања?",
+    "updateSheetTitle": "",
+    "updateDialogTitle": "",
+    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Евиденција промена",
+    "updateDialogText": "",
+    "downloadConsentDialogTitle": "",
+    "downloadConsentDialogText": "",
+    "downloadConsentDialogText2": "",
+    "checkUpdateDialogTitle": "",
+    "checkUpdateDialogText": "",
     "notificationTitle": "Ажурирање је преузето",
     "notificationText": "Додирните да бисте инсталирали ажурирање",
     "downloadingMessage": "Преузимање ажурирања…",
+    "downloadedMessage": "",
     "installingMessage": "Инсталирање ажурирања…",
     "errorDownloadMessage": "Није могуће преузети ажурирање",
     "errorInstallMessage": "Није могуће инсталирати ажурирање",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Печер",
     "patchButton": "Печуј",
+    "armv7WarningDialogText": "",
+    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Неке опције морају бити подешене."
   },
   "appSelectorCard": {
+    "widgetTitle": "",
+    "widgetTitleSelected": "",
+    "widgetSubtitle": "",
     "noAppsLabel": "Ниједна апликација није пронађена",
     "currentVersion": "Тренутна верзија",
-    "suggestedVersion": "Препоручена верзија"
+    "suggestedVersion": "Препоручена верзија",
+    "anyVersion": ""
   },
   "patchSelectorCard": {
     "widgetTitle": "Изаберите печеве",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "Онлајн смо!"
   },
   "appSelectorView": {
+    "viewTitle": "",
+    "searchBarHint": "",
     "storageButton": "Из меморије",
     "selectFromStorageButton": "Изабери из меморије",
     "errorMessage": "Није могуће користити изабрану апликацију",
     "downloadToast": "Преузимање тренутно није доступно",
-    "featureNotAvailable": "Функција није имплементирана"
+    "requireSuggestedAppVersionDialogText": "",
+    "featureNotAvailable": "Функција није имплементирана",
+    "featureNotAvailableText": ""
   },
   "patchesSelectorView": {
     "viewTitle": "Изаберите печеве",
@@ -84,7 +107,9 @@
     "newPatches": "Нови печеви",
     "patches": "Печеви",
     "doneButton": "Готово",
+    "defaultChip": "",
     "defaultTooltip": "Изабери све подразумеване печеве",
+    "noneChip": "",
     "noneTooltip": "Поништи избор свих печева",
     "loadPatchesSelection": "Учитај избор печева",
     "noSavedPatches": "За изабрану апликацију нема сачуваног избора печева.\nПритисните „Готово” да бисте сачували тренутни избор.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Избором овог печа може доћи до грешака приликом печовања.\n\nВерзија апликације: ${packageVersion}\nПодржане верзије:\n${supportedVersions}",
     "unsupportedPatchVersion": "Печ није применљив на ову верзију апликације.",
     "unsupportedRequiredOption": "Овај печ садржи обавезну опцију коју ова апликација не подржава",
+    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Користи подразумевани избор"
   },
   "installerView": {
     "widgetTitle": "Програм за инсталацију",
     "installType": "Избор типа инсталације",
+    "installTypeDescription": "",
     "installButton": "Инсталирај",
     "installRootType": "Привилегована",
     "installNonRootType": "Обична",
@@ -144,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Уживајте у теми која се прилагођава вашем уређају",
     "languageLabel": "Језик",
+    "languageUpdated": "",
     "englishOption": "енглески",
     "sourcesLabel": "Извори",
     "sourcesLabelHint": "Подесите извор печева и интеграција",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Управо ћете да онемогућите промену избора печева.\nПодразумевани избор печева ће бити враћен.\n\nИпак онемогућити?",
     "autoUpdatePatchesLabel": "Аутоматски ажурирај печеве",
     "autoUpdatePatchesHint": "Инсталира најновију верзију печева аутоматски",
+    "showUpdateDialogLabel": "",
+    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Прикажи универзалне печеве",
     "universalPatchesHint": "Приказује све апликације и универзалне печеве (може да успори листу апликација)",
     "versionCompatibilityCheckLabel": "Провера компатибилности верзије",
@@ -240,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Сарадници",
-    "patcherContributors": "Сарадници за Patcher",
-    "patchesContributors": "Сарадници за печеве",
-    "integrationsContributors": "Сарадници за интеграције",
-    "cliContributors": "Сарадници за CLI",
-    "managerContributors": "Сарадници за Manager"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Верзија се не поклапа",

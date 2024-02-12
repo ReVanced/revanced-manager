@@ -107,7 +107,9 @@
     "newPatches": "Novas modificações",
     "patches": "Modificações",
     "doneButton": "Concluído",
+    "defaultChip": "",
     "defaultTooltip": "Selecionar todas as modificações padrão",
+    "noneChip": "",
     "noneTooltip": "Desselecionar todas as modificações",
     "loadPatchesSelection": "Carregar a seleção de modificações",
     "noSavedPatches": "Não há nenhuma modificação guardada para a aplicação selecionada.\nPrima Concluído para guardar a seleção atual.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "O Teu Material",
     "dynamicThemeHint": "Aproveite uma experiência mais próxima do tema do seu dispositivo",
     "languageLabel": "Idioma",
+    "languageUpdated": "",
     "englishOption": "Inglês",
     "sourcesLabel": "Fontes",
     "sourcesLabelHint": "Configurar a fonte de correções e integrações",
@@ -267,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Contribuidores",
-    "patcherContributors": "Contribuidores do Modificador",
-    "patchesContributors": "Contribuidores das Modificações",
-    "integrationsContributors": "Contribuidores das Integrações",
-    "cliContributors": "Contribuidores do CLI",
-    "managerContributors": "Contribuidores do Manager"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versão incompatível",

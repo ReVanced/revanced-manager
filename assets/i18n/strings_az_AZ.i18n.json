@@ -16,6 +16,8 @@
   "noShowAgain": "Bunu təkrar göstərmə",
   "add": "Əlavə et",
   "remove": "Sil",
+  "showChangelogButton": "Dəyişiklik jurnalını göstər",
+  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "İdarəetmə lövhəsi",
     "patcherTab": "Yamaqlayıcı",
@@ -26,14 +28,25 @@
     "widgetTitle": "İdarəetmə lövhəsi",
     "updatesSubtitle": "Yeniləmələr",
     "patchedSubtitle": "Yamaqlanmış tətbiqlər",
+    "changeLaterSubtitle": "",
     "noUpdates": "Güncəlləmə mövcud deyil",
     "WIP": "Proses davam edir...",
     "noInstallations": "Yamaqlanmış tətbiq quraşdırılmayıb",
     "installUpdate": "Yeniləməni quraşdırmağa davam edilsin?",
+    "updateSheetTitle": "",
+    "updateDialogTitle": "",
+    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Dəyişiklik jurnalı",
+    "updateDialogText": "",
+    "downloadConsentDialogTitle": "",
+    "downloadConsentDialogText": "",
+    "downloadConsentDialogText2": "",
+    "checkUpdateDialogTitle": "",
+    "checkUpdateDialogText": "",
     "notificationTitle": "Güncəlləmə endirildi",
     "notificationText": "Güncəlləməni quraşdırmaq üçün toxunun",
     "downloadingMessage": "Yeniləmə yüklənilir...",
+    "downloadedMessage": "",
     "installingMessage": "Yeniləmə quraşdırılır...",
     "errorDownloadMessage": "Güncəlləmə endirilə bilmir",
     "errorInstallMessage": "Güncəlləmə quraşdırıla bilmir",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Yamaqlayıcı",
     "patchButton": "Yamaqla",
+    "armv7WarningDialogText": "",
+    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Bəzi yamaq seçimləri ayarlanmalıdır."
   },
   "appSelectorCard": {
+    "widgetTitle": "",
+    "widgetTitleSelected": "",
+    "widgetSubtitle": "",
     "noAppsLabel": "Heç bir tətbiq tapılmadı",
     "currentVersion": "Hazırkı",
-    "suggestedVersion": "Təklif edilən"
+    "suggestedVersion": "Təklif edilən",
+    "anyVersion": ""
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaqları seçin",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "Xətdəyik!"
   },
   "appSelectorView": {
+    "viewTitle": "",
+    "searchBarHint": "",
     "storageButton": "Anbar",
     "selectFromStorageButton": "Anbardan seç",
     "errorMessage": "Seçilmiş tətbiq istifadə edilə bilmir",
     "downloadToast": "Endirmə hələ əlçatmazdır",
-    "featureNotAvailable": "Özəllik tətbiq edilmədi"
+    "requireSuggestedAppVersionDialogText": "",
+    "featureNotAvailable": "Özəllik tətbiq edilmədi",
+    "featureNotAvailableText": ""
   },
   "patchesSelectorView": {
     "viewTitle": "Yamaqları seçin",
@@ -84,7 +107,9 @@
     "newPatches": "Yeni yamaqlar",
     "patches": "Yamaqlar",
     "doneButton": "Hazırdır",
+    "defaultChip": "İlkin",
     "defaultTooltip": "Bütün ilkin yamaqları seç",
+    "noneChip": "Yoxdur",
     "noneTooltip": "Yamaqların heç birini seçmə",
     "loadPatchesSelection": "Yamaq seçimini yüklə",
     "noSavedPatches": "Seçilmiş tətbiq üçün saxlanılmış yamaq yoxdur.\nHazırkı seçimi saxlamaq üçün \"Hazırdır\"a toxunun.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Bu yamağı seçmək, yamaqlama xətalarına səbəb ola bilər.\n\nTətbiq versiyası: ${packageVersion} \nDəstəklənən versiyalar:\n${supportedVersions}",
     "unsupportedPatchVersion": "Yamaq, tətbiqin bu versiyası üçün dəstəklənmir.",
     "unsupportedRequiredOption": "Bu yamaqda, bu tətbiq tərəfindən dəstəklənməyən və tələb edilən bir seçim var",
+    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "İlkin seçimi istifadə et"
   },
   "installerView": {
     "widgetTitle": "Quraşdırıcı",
     "installType": "Quraşdırma növünü seçin",
+    "installTypeDescription": "",
     "installButton": "Quraşdır",
     "installRootType": "Qoş",
     "installNonRootType": "Normal",
@@ -144,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Cihazınıza yaxın bir təcrübədən həzz alın",
     "languageLabel": "Dil",
+    "languageUpdated": "Dil güncəlləndi",
     "englishOption": "İngiliscə",
     "sourcesLabel": "Mənbələr",
     "sourcesLabelHint": "Yamaqların və inteqrasiyaların mənbəyini konfiqurasiya et",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Yamaq seçiminin dəyişdirilməsini sıradan çıxartmaq üzrəsiniz.\nİlkin yamaq seçimi bərpa ediləcək.\n\nYenə də sıradan çıxarılsın?",
     "autoUpdatePatchesLabel": "Yamaqları avto-güncəllə",
     "autoUpdatePatchesHint": "Yamaqları son versiyaya avtomatik güncəllə",
+    "showUpdateDialogLabel": "",
+    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Universal yamaqları göstər",
     "universalPatchesHint": "Bütün tətbiqləri və universal yamaqları göstər (tətbiqlərin sadalanmasını yavaşlandıra bilər)",
     "versionCompatibilityCheckLabel": "Versiya uyumluluq yoxlanışı",
@@ -240,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Töhfə verənlər",
-    "patcherContributors": "Yamaqlama üzrə töhfə verənlər",
-    "patchesContributors": "Yamaqlara töhfə verənlər",
-    "integrationsContributors": "İnteqrasiyalara töhfə verənlər",
-    "cliContributors": "CLI-yə töhfə verənlər",
-    "managerContributors": "Manager-ə töhfə verənlər"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiya uyuşmur",

@@ -16,6 +16,7 @@
   "noShowAgain": "Bunu tekrar gösterme",
   "add": "Ekle",
   "remove": "Kaldır",
+  "showChangelogButton": "Değişiklikleri göster",
   "showUpdateButton": "Güncellemeyi göster",
   "navigationView": {
     "dashboardTab": "Gösterge Paneli",
@@ -106,7 +107,9 @@
     "newPatches": "Yeni yamalar",
     "patches": "Yamalar",
     "doneButton": "Bitti",
+    "defaultChip": "Varsayılan",
     "defaultTooltip": "Varsayılan yamaların tümünü seç",
+    "noneChip": "Hiçbiri",
     "noneTooltip": "Tüm yamaların seçimini kaldır",
     "loadPatchesSelection": "Yama seçimini yükle",
     "noSavedPatches": "Seçilen uygulama için kaydedilmiş yama seçimi yok.\nMevcut seçimi kaydetmek için Bitti tuşuna basın.",
@@ -168,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Cihazınıza yakın bir deneyimin keyfini çıkarın",
     "languageLabel": "Dil",
+    "languageUpdated": "Dil güncellendi",
     "englishOption": "İngilizce",
     "sourcesLabel": "Kaynaklar",
     "sourcesLabelHint": "Yamaların ve Integrations'ın kaynağını ayarlayın",
@@ -193,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Yama seçimini değiştirmeyi devre dışı bırakmak üzeresiniz.\nVarsayılan yama seçimi geri yüklenecektir.\n\nYine de devre dışı bırakılsın mı?",
     "autoUpdatePatchesLabel": "Yamaları otomatik güncelle",
     "autoUpdatePatchesHint": "Yamaları otomatik olarak en son sürüme güncelle",
+    "showUpdateDialogLabel": "Güncelleme diyaloğunu göster",
+    "showUpdateDialogHint": "Yeni bir güncelleme olduğunda bir diyalog göster",
     "universalPatchesLabel": "Ortak yamaları göster",
     "universalPatchesHint": "Tüm uygulamaları ve ortak yamaları göster (uygulamaları listelemeyi yavaşlatabilir)",
     "versionCompatibilityCheckLabel": "Sürüm uyumluluğu kontrolü",
@@ -264,11 +270,11 @@
   },
   "contributorsView": {
     "widgetTitle": "Katkıda bulunanlar",
-    "patcherContributors": "Yamalayıcı'ya katkıda bulunanlar",
-    "patchesContributors": "Yamalara katkıda bulunanlar",
-    "integrationsContributors": "Integrations'a katkıda bulunanlar",
-    "cliContributors": "CLI'ye katkıda bulunanlar",
-    "managerContributors": "Manager'a katkıda bulunanlar"
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Sürüm uyuşmazlığı",
