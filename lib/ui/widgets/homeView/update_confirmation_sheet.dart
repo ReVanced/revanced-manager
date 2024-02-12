@@ -5,7 +5,11 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 
 class UpdateConfirmationSheet extends StatelessWidget {
-  const UpdateConfirmationSheet({super.key, required this.isPatches,  this.changelog = false});
+  const UpdateConfirmationSheet({
+    super.key,
+    required this.isPatches,
+    this.changelog = false,
+  });
 
   final bool isPatches;
   final bool changelog;
@@ -38,75 +42,80 @@ class UpdateConfirmationSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (!changelog)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 40.0,
-                      left: 24.0,
-                      right: 24.0,
-                      bottom: 20.0,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              I18nText(
-                                isPatches
-                                    ? 'homeView.updatePatchesSheetTitle'
-                                    : 'homeView.updateSheetTitle',
-                                child: const Text(
-                                  '',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 40.0,
+                        left: 24.0,
+                        right: 24.0,
+                        bottom: 20.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                I18nText(
+                                  isPatches
+                                      ? 'homeView.updatePatchesSheetTitle'
+                                      : 'homeView.updateSheetTitle',
+                                  child: const Text(
+                                    '',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 4.0),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.new_releases_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                  Text(
-                                    snapshot.data!['tag_name'] ?? 'Unknown',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
+                                const SizedBox(height: 4.0),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.new_releases_outlined,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    const SizedBox(width: 8.0),
+                                    Text(
+                                      snapshot.data!['tag_name'] ?? 'Unknown',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            isPatches
-                                ? model.updatePatches(context)
-                                : model.updateManager(context);
-                          },
-                          child: I18nText('updateButton'),
-                        ),
-                      ],
+                          FilledButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              isPatches
+                                  ? model.updatePatches(context)
+                                  : model.updateManager(context);
+                            },
+                            child: I18nText('updateButton'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 12.0, left: 24.0, bottom: 12.0),
+                    padding: const EdgeInsets.only(
+                      top: 12.0,
+                      left: 24.0,
+                      bottom: 12.0,
+                    ),
                     child: I18nText(
                       'homeView.updateChangelogTitle',
                       child: Text(
                         '',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: changelog ? 24 : 20,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context)
                               .colorScheme
