@@ -257,12 +257,7 @@
     "updateNotImplemented": "이 기능은 아직 구현되지 않았습니다"
   },
   "contributorsView": {
-    "widgetTitle": "기여자",
-    "patcherContributors": "패처 기여자",
-    "patchesContributors": "패치 기여자",
-    "integrationsContributors": "통합 기능 기여자",
-    "cliContributors": "CLI 기여자",
-    "managerContributors": "매니저 기여자"
+    "widgetTitle": "기여자"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "버전 불일치",

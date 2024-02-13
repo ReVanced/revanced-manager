@@ -127,12 +127,7 @@
     "updateNotImplemented": "Ova značajka još nije implementirana"
   },
   "contributorsView": {
-    "widgetTitle": "Pridonositelji",
-    "patcherContributors": "Pridonositelji zakrpa",
-    "patchesContributors": "Pridonositelji zakrpa",
-    "integrationsContributors": "Pridonositelji integracija",
-    "cliContributors": "Pridonositelji za CLI",
-    "managerContributors": "Pridonositelji za upravitelja"
+    "widgetTitle": "Pridonositelji"
   },
   "installErrorDialog": {}
 }

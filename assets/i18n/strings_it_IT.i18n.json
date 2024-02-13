@@ -107,7 +107,9 @@
     "newPatches": "Nuove patch",
     "patches": "Patch",
     "doneButton": "Fatto",
+    "defaultChip": "Predefinito",
     "defaultTooltip": "Seleziona tutte le patch predefinite",
+    "noneChip": "Nessuna",
     "noneTooltip": "Deseleziona tutte le patch",
     "loadPatchesSelection": "Carica selezione patch",
     "noSavedPatches": "Nessuna selezione patch salvata per l'app selezionata.\nPremi Fatto per salvare la selezione attuale.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Goditi un'esperienza più in armonia con il tuo dispositivo",
     "languageLabel": "Lingua",
+    "languageUpdated": "Lingua aggiornata",
     "englishOption": "Inglese",
     "sourcesLabel": "Sorgenti",
     "sourcesLabelHint": "Configura la sorgente delle patch e integrazioni",
@@ -266,12 +269,7 @@
     "updateNotImplemented": "Questa funzionalità non è stata ancora implementata"
   },
   "contributorsView": {
-    "widgetTitle": "Contributori",
-    "patcherContributors": "Collaboratori patcher",
-    "patchesContributors": "Collaboratori patch",
-    "integrationsContributors": "Collaboratori integrazioni",
-    "cliContributors": "Collaboratori CLI",
-    "managerContributors": "Contributori Manager"
+    "widgetTitle": "Contributori"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versione non corrispondente",

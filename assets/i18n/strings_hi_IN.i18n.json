@@ -138,12 +138,7 @@
     "updateNotImplemented": "यह फीचर फिलहाल इम्प्लीमेंट नहीं हुआ है"
   },
   "contributorsView": {
-    "widgetTitle": "योगदान कर्ता",
-    "patcherContributors": "पैचर योगदानकर्ता",
-    "patchesContributors": "पैच योगदानकर्ता",
-    "integrationsContributors": "एकीकरण योगदानकर्ता",
-    "cliContributors": "CLI योगदानकर्ता",
-    "managerContributors": "प्रबंधक योगदानकर्ता"
+    "widgetTitle": "योगदान कर्ता"
   },
   "installErrorDialog": {}
 }

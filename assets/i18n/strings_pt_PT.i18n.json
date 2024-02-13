@@ -266,12 +266,7 @@
     "updateNotImplemented": "Este recurso ainda não foi implementado"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Contribuidores do Modificador",
-    "patchesContributors": "Contribuidores das Modificações",
-    "integrationsContributors": "Contribuidores das Integrações",
-    "cliContributors": "Contribuidores do CLI",
-    "managerContributors": "Contribuidores do Manager"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versão incompatível",

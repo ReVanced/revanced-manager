@@ -239,12 +239,7 @@
     "updateNotImplemented": "Tính năng này chưa được triển khai"
   },
   "contributorsView": {
-    "widgetTitle": "Những người đóng góp",
-    "patcherContributors": "Những người đóng góp Trình vá",
-    "patchesContributors": "Những người đóng góp Trình vá",
-    "integrationsContributors": "Những người đóng góp bản tích hợp",
-    "cliContributors": "Những người đóng góp CLI",
-    "managerContributors": "Những người đóng góp Trình quản lý"
+    "widgetTitle": "Những người đóng góp"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Phiên bản không phù hợp",

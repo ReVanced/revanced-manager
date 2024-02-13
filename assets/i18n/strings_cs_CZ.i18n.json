@@ -141,12 +141,7 @@
     "updateNotImplemented": "Tato funkce ještě není implementována"
   },
   "contributorsView": {
-    "widgetTitle": "Přispěvatelé",
-    "patcherContributors": "Přispěvatelé k patcheru",
-    "patchesContributors": "Přispěvatelé k patchemi",
-    "integrationsContributors": "Přispěvatelé integrace",
-    "cliContributors": "Přispěvatelé CLI",
-    "managerContributors": "Přispěvatelé správce"
+    "widgetTitle": "Přispěvatelé"
   },
   "installErrorDialog": {}
 }

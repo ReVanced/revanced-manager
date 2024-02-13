@@ -201,12 +201,7 @@
     "updateNotImplemented": "Denne funktion er ikke implementeret endnu"
   },
   "contributorsView": {
-    "widgetTitle": "Medvirkende",
-    "patcherContributors": "Patcher bidragere",
-    "patchesContributors": "Patches bidragere",
-    "integrationsContributors": "Integrationer bidragere",
-    "cliContributors": "CLI bidragere",
-    "managerContributors": "Manager bidragere"
+    "widgetTitle": "Medvirkende"
   },
   "installErrorDialog": {}
 }

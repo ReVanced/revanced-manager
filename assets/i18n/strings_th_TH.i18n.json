@@ -127,12 +127,7 @@
     "updateNotImplemented": "ยังไม่ได้ใช้คุณลักษณะนี้"
   },
   "contributorsView": {
-    "widgetTitle": "ผู้ช่วยเหลือโปรเจกต์",
-    "patcherContributors": "ผู้ร่วมพัฒนาตัวดัดแปลง",
-    "patchesContributors": "ผู้ร่วมพัฒนาการดัดแปลง",
-    "integrationsContributors": "ผู้ร่วมพัฒนาส่วนเสริม",
-    "cliContributors": "ผู้ร่วมพัฒนา CLI",
-    "managerContributors": "ผู้ร่วมพัฒนา Manager"
+    "widgetTitle": "ผู้ช่วยเหลือโปรเจกต์"
   },
   "installErrorDialog": {}
 }

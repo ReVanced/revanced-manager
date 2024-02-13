@@ -107,7 +107,9 @@
     "newPatches": "Nya patchar",
     "patches": "Patchar",
     "doneButton": "Klar",
+    "defaultChip": "Standard",
     "defaultTooltip": "Välj alla standardpatchar",
+    "noneChip": "Inga",
     "noneTooltip": "Avmarkera alla patchar",
     "loadPatchesSelection": "Ladda patchval",
     "noSavedPatches": "Inga sparade patchval för den valda appen.\nTryck på klar för att spara aktuellt val.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Njut av en upplevelse närmare din enhet",
     "languageLabel": "Språk",
+    "languageUpdated": "Språket uppdaterat",
     "englishOption": "Engelska",
     "sourcesLabel": "Källor",
     "sourcesLabelHint": "Konfigurera källan för patchar och integrationer",
@@ -266,12 +269,7 @@
     "updateNotImplemented": "Denna funktionen har inte lagts till ännu"
   },
   "contributorsView": {
-    "widgetTitle": "Bidragsgivare",
-    "patcherContributors": "Bidragsgivare för Patcher",
-    "patchesContributors": "Bidragsgivare för Patches",
-    "integrationsContributors": "Bidragsgivare för integrationer",
-    "cliContributors": "Bidragsgivare för CLI",
-    "managerContributors": "Bidragsgivare för hanterare"
+    "widgetTitle": "Bidragsgivare"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionerna stämmer inte överens",

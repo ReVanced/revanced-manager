@@ -174,12 +174,7 @@
     "updateNotImplemented": "Тази функция все още не е внедрена"
   },
   "contributorsView": {
-    "widgetTitle": "Хора, които допринесоха",
-    "patcherContributors": "Допринесли към модификациите",
-    "patchesContributors": "Допринесли към модификациите",
-    "integrationsContributors": "Допринесли към интеграциите",
-    "cliContributors": "Допринесли към CLI",
-    "managerContributors": "Допринесли към мениджъра"
+    "widgetTitle": "Хора, които допринесоха"
   },
   "installErrorDialog": {}
 }

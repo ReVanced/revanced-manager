@@ -212,12 +212,7 @@
     "updateNotImplemented": "Ši funkcija dar neįgyvendinta"
   },
   "contributorsView": {
-    "widgetTitle": "Prisidėjusieji žmonės",
-    "patcherContributors": "Prisidėjusieji prie Pataisytuvo",
-    "patchesContributors": "Prisidėjusieji prie pataisymų",
-    "integrationsContributors": "Prisidėjusieji prie integracijų",
-    "cliContributors": "Prisidėjusieji prie CLI",
-    "managerContributors": "Prisidėjusieji prie Tvarkyklės"
+    "widgetTitle": "Prisidėjusieji žmonės"
   },
   "installErrorDialog": {}
 }

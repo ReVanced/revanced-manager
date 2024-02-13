@@ -212,12 +212,7 @@
     "updateNotImplemented": "Esta función no se implementó aún"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Contribuidores del parcheador",
-    "patchesContributors": "Contribuidores de los parches",
-    "integrationsContributors": "Contribuidores de las integraciones",
-    "cliContributors": "Contribuidores del CLI",
-    "managerContributors": "Contribuidores del Manager"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {}
 }

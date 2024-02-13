@@ -107,7 +107,9 @@
     "newPatches": "Νέες τροποποιήσεις",
     "patches": "Τροποποιήσεις",
     "doneButton": "Τέλος",
+    "defaultChip": "Προεπιλογές",
     "defaultTooltip": "Επιλέξτε όλες τις προεπιλεγμένες τροποποιήσεις",
+    "noneChip": "Καμία",
     "noneTooltip": "Αποεπιλέξτε όλες τις τροποποιήσεις",
     "loadPatchesSelection": "Φόρτωση επιλεγμένων τροποποιήσεων",
     "noSavedPatches": "Δεν υπάρχουν αποθηκευμένες τροποποιήσεις για την εφαρμογή που επιλέξατε.\nΠατήστε «Τέλος» για να αποθηκεύσετε τις τωρινές επιλογές σας.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Εμφάνιση που ταιριάζει με τη δική σας συσκευή",
     "languageLabel": "Γλώσσα",
+    "languageUpdated": "Η γλώσσα ενημερώθηκε",
     "englishOption": "Αγγλικά",
     "sourcesLabel": "Πηγές",
     "sourcesLabelHint": "Ρυθμίστε την πηγή τροποποιήσεων και ενσωματώσεων",
@@ -266,12 +269,7 @@
     "updateNotImplemented": "Αυτή η δυνατότητα δεν είναι ακόμα διαθέσιμη"
   },
   "contributorsView": {
-    "widgetTitle": "Συνεισφέροντες",
-    "patcherContributors": "Συνεισφέροντες του τροποποιητή",
-    "patchesContributors": "Συνεισφέροντες των τροποποιήσεων",
-    "integrationsContributors": "Συνεισφέροντες των ενσωματώσεων",
-    "cliContributors": "Συνεισφέροντες του CLI",
-    "managerContributors": "Συνεισφέροντες του Manager"
+    "widgetTitle": "Συνεισφέροντες"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Ασυμφωνία έκδοσης",

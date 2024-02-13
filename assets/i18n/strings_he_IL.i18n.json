@@ -216,12 +216,7 @@
     "updateNotImplemented": "תכונה זו טרם יושמה"
   },
   "contributorsView": {
-    "widgetTitle": "תורמים",
-    "patcherContributors": "תורמי מתקן",
-    "patchesContributors": "תורמי תיקונים",
-    "integrationsContributors": "תורמי אינטגרציה",
-    "cliContributors": "תורמי CLI",
-    "managerContributors": "תורמי מנהל"
+    "widgetTitle": "תורמים"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "אי התאמה של הגירסה",

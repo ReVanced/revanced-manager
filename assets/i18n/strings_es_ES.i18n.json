@@ -107,7 +107,9 @@
     "newPatches": "Nuevos parches",
     "patches": "Parches",
     "doneButton": "Listo",
+    "defaultChip": "Por defecto",
     "defaultTooltip": "Seleccionar todos los parches predeterminados",
+    "noneChip": "Nada",
     "noneTooltip": "Deseleccionar todos los parches",
     "loadPatchesSelection": "Cargar selección de parches",
     "noSavedPatches": "No se ha guardado ninguna selección de parches para la aplicación seleccionada.\nPresione Hecho para guardar la selección actual.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Disfrute de una experiencia más acorde a su dispositivo",
     "languageLabel": "Idioma",
+    "languageUpdated": "Idioma actualizado",
     "englishOption": "Inglés",
     "sourcesLabel": "Fuentes",
     "sourcesLabelHint": "Configurar la fuente de parches e integraciones",
@@ -266,12 +269,7 @@
     "updateNotImplemented": "Esta función no se ha implementado aún"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Contribuidores del parcheador",
-    "patchesContributors": "Contribuidores de los parches",
-    "integrationsContributors": "Contribuidores de las integraciones",
-    "cliContributors": "Contribuidores del CLI",
-    "managerContributors": "Contribuidores del Manager"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "La versión no coincide",
