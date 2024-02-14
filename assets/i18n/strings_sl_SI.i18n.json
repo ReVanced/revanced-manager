@@ -128,12 +128,7 @@
     "updateNotImplemented": "Ta funkcionalnost še ni implementirana"
   },
   "contributorsView": {
-    "widgetTitle": "Prispevali so",
-    "patcherContributors": "Za Popravilnik so prispevali",
-    "patchesContributors": "Popravke so prispevali",
-    "integrationsContributors": "K integraciji so prispevali",
-    "cliContributors": "Za CLI so prispevali",
-    "managerContributors": "K Upravitelju so prispevali"
+    "widgetTitle": "Prispevali so"
   },
   "installErrorDialog": {}
 }

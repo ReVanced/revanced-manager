@@ -266,12 +266,7 @@
     "updateNotImplemented": "Ta funkcja nie została jeszcze zaimplementowana"
   },
   "contributorsView": {
-    "widgetTitle": "Współtwórcy",
-    "patcherContributors": "Współtwórcy programu łatającego",
-    "patchesContributors": "Współtwórcy łatek",
-    "integrationsContributors": "Współtwórcy integracji",
-    "cliContributors": "Współtwórcy CLI",
-    "managerContributors": "Współtwórcy menedżera"
+    "widgetTitle": "Współtwórcy"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Niezgodność wersji",

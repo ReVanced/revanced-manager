@@ -239,12 +239,7 @@
     "updateNotImplemented": "Ова функција још увек није имплементирана"
   },
   "contributorsView": {
-    "widgetTitle": "Сарадници",
-    "patcherContributors": "Сарадници за Patcher",
-    "patchesContributors": "Сарадници за печеве",
-    "integrationsContributors": "Сарадници за интеграције",
-    "cliContributors": "Сарадници за CLI",
-    "managerContributors": "Сарадници за Manager"
+    "widgetTitle": "Сарадници"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Верзија се не поклапа",

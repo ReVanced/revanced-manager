@@ -211,12 +211,7 @@
     "updateNotImplemented": "Fitur ini belum diimplementasikan"
   },
   "contributorsView": {
-    "widgetTitle": "Kontributor",
-    "patcherContributors": "Penyumbangsih penambal",
-    "patchesContributors": "Penyumbangsih tambalan",
-    "integrationsContributors": "Kontributor Integrasi",
-    "cliContributors": "Kontributor CLI",
-    "managerContributors": "Penyumbangsih Manager"
+    "widgetTitle": "Kontributor"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versi tidak cocok",

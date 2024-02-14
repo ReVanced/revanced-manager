@@ -239,12 +239,7 @@
     "updateNotImplemented": "Ez a funkció még nem készült el"
   },
   "contributorsView": {
-    "widgetTitle": "Közreműködők",
-    "patcherContributors": "Patcher közreműködők",
-    "patchesContributors": "Patchek közreműködői",
-    "integrationsContributors": "Integrációk közreműködői",
-    "cliContributors": "CLI közreműködők",
-    "managerContributors": "Manager közreműködők"
+    "widgetTitle": "Közreműködők"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verzió ütközés",

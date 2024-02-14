@@ -140,12 +140,7 @@
     "updateNotImplemented": "Šī funkcija vēl nav izveidota"
   },
   "contributorsView": {
-    "widgetTitle": "Autori",
-    "patcherContributors": "Paču autori",
-    "patchesContributors": "Paču autori",
-    "integrationsContributors": "Integrācijas autori",
-    "cliContributors": "CLI autori",
-    "managerContributors": "Menedžera autori"
+    "widgetTitle": "Autori"
   },
   "installErrorDialog": {}
 }

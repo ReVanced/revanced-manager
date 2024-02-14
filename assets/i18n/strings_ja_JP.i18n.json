@@ -216,12 +216,7 @@
     "updateNotImplemented": "この機能はまだ実装されていません"
   },
   "contributorsView": {
-    "widgetTitle": "貢献者",
-    "patcherContributors": "Patcher のコントリビューター",
-    "patchesContributors": "パッチの開発者",
-    "integrationsContributors": "Integrations のコントリビューター",
-    "cliContributors": "CLIの開発者",
-    "managerContributors": "ReVanced Managerの開発者"
+    "widgetTitle": "貢献者"
   },
   "installErrorDialog": {
     "install_failed_verification_failure": "検証に失敗しました",

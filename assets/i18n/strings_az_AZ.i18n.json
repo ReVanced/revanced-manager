@@ -16,6 +16,7 @@
   "noShowAgain": "Bunu təkrar göstərmə",
   "add": "Əlavə et",
   "remove": "Sil",
+  "showChangelogButton": "Dəyişiklik jurnalını göstər",
   "navigationView": {
     "dashboardTab": "İdarəetmə lövhəsi",
     "patcherTab": "Yamaqlayıcı",
@@ -84,7 +85,9 @@
     "newPatches": "Yeni yamaqlar",
     "patches": "Yamaqlar",
     "doneButton": "Hazırdır",
+    "defaultChip": "İlkin",
     "defaultTooltip": "Bütün ilkin yamaqları seç",
+    "noneChip": "Yoxdur",
     "noneTooltip": "Yamaqların heç birini seçmə",
     "loadPatchesSelection": "Yamaq seçimini yüklə",
     "noSavedPatches": "Seçilmiş tətbiq üçün saxlanılmış yamaq yoxdur.\nHazırkı seçimi saxlamaq üçün \"Hazırdır\"a toxunun.",
@@ -144,6 +147,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Cihazınıza yaxın bir təcrübədən həzz alın",
     "languageLabel": "Dil",
+    "languageUpdated": "Dil güncəlləndi",
     "englishOption": "İngiliscə",
     "sourcesLabel": "Mənbələr",
     "sourcesLabelHint": "Yamaqların və inteqrasiyaların mənbəyini konfiqurasiya et",
@@ -239,12 +243,7 @@
     "updateNotImplemented": "Bu özəllik hələ tətbiq olunmayıb"
   },
   "contributorsView": {
-    "widgetTitle": "Töhfə verənlər",
-    "patcherContributors": "Yamaqlama üzrə töhfə verənlər",
-    "patchesContributors": "Yamaqlara töhfə verənlər",
-    "integrationsContributors": "İnteqrasiyalara töhfə verənlər",
-    "cliContributors": "CLI-yə töhfə verənlər",
-    "managerContributors": "Manager-ə töhfə verənlər"
+    "widgetTitle": "Töhfə verənlər"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiya uyuşmur",

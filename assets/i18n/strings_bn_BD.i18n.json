@@ -239,12 +239,7 @@
     "updateNotImplemented": "এই ফিচারটি এখনো কার্যকর করা হয়নি"
   },
   "contributorsView": {
-    "widgetTitle": "অবদানকারীগণ",
-    "patcherContributors": "প্যাচার অবদানকারী",
-    "patchesContributors": "প্যাচসমূহে অবদানকারী",
-    "integrationsContributors": "ইন্টিগ্রেশন্স অবদানকারী",
-    "cliContributors": "CLI অবদানকারী",
-    "managerContributors": "Manager অবদানকারী"
+    "widgetTitle": "অবদানকারীগণ"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "সংস্করণ মেলেনি",

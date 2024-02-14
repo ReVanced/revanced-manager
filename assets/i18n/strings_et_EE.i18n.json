@@ -95,12 +95,7 @@
     "updateNotImplemented": "Seda funktsiooni pole veel ellu viidud"
   },
   "contributorsView": {
-    "widgetTitle": "Panustajad",
-    "patcherContributors": "Parandaja panustajad",
-    "patchesContributors": "Paranduste panustajad",
-    "integrationsContributors": "Integratsioonide panustajad",
-    "cliContributors": "CLI panustajad",
-    "managerContributors": "Manageri panustajad"
+    "widgetTitle": "Panustajad"
   },
   "installErrorDialog": {}
 }

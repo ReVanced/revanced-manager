@@ -31,18 +31,47 @@
     "changeLaterSubtitle": "Pwede mo palitan ito sa settings mamaya.",
     "noUpdates": "Walang pagbabagong mayroon"
   },
-  "applicationItem": {},
-  "latestCommitCard": {},
+  "applicationItem": {
+    "infoButton": "Impormasyon"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Naglo-load...",
+    "timeagoLabel": "${time} ang nakalipas"
+  },
   "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
+  "appSelectorCard": {
+    "currentVersion": "Ngayong Bersyon"
+  },
+  "patchSelectorCard": {
+    "widgetEmptySubtitle": "Walang patches ang napili"
+  },
+  "socialMediaCard": {
+    "widgetSubtitle": "Online na kami!"
+  },
+  "appSelectorView": {
+    "viewTitle": "Pumili ka ng app",
+    "searchBarHint": "Hanapin ang app",
+    "storageButton": "Storage",
+    "selectFromStorageButton": "Pumili ka galing sa storage"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Pumili ka ng patches",
+    "doneButton": "Tapos na",
+    "defaultChip": "Default",
+    "noneChip": "Wala"
+  },
   "patchOptionsView": {},
   "patchItem": {},
   "installerView": {},
-  "settingsView": {},
+  "settingsView": {
+    "systemThemeLabel": "Sistema",
+    "lightThemeLabel": "Liwanag",
+    "darkThemeLabel": "Dilim",
+    "dynamicThemeLabel": "Material You",
+    "languageLabel": "Wika",
+    "deleteLogsLabel": "Burahin lahat ng logs",
+    "deletedLogs": "Nabura na yung logs"
+  },
   "appInfoView": {
     "widgetTitle": "Impormasyon",
     "openButton": "Buksan",

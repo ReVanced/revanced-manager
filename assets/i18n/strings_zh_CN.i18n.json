@@ -185,12 +185,7 @@
     "updateNotImplemented": "此功能尚未实现"
   },
   "contributorsView": {
-    "widgetTitle": "贡献者",
-    "patcherContributors": "修补器贡献者",
-    "patchesContributors": "补丁贡献者",
-    "integrationsContributors": "集成贡献者",
-    "cliContributors": "命令行界面贡献者",
-    "managerContributors": "管理器贡献者"
+    "widgetTitle": "贡献者"
   },
   "installErrorDialog": {}
 }

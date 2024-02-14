@@ -239,12 +239,7 @@
     "updateNotImplemented": "Эта возможность ещё не реализована"
   },
   "contributorsView": {
-    "widgetTitle": "Соучастники проекта",
-    "patcherContributors": "Соучастники патчера",
-    "patchesContributors": "Соучастники патчей",
-    "integrationsContributors": "Соучастники интеграций",
-    "cliContributors": "Соучастники CLI",
-    "managerContributors": "Соучастники Менеджера"
+    "widgetTitle": "Соучастники проекта"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Несовпадение версий",

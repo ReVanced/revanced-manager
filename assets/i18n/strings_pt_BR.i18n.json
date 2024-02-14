@@ -208,12 +208,7 @@
     "updateNotImplemented": "Este recurso ainda não foi implementado"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Contribuidores do patcher",
-    "patchesContributors": "Contribuidores de patches",
-    "integrationsContributors": "Contribuidores de integrações",
-    "cliContributors": "Contribuidores CLI",
-    "managerContributors": "Contribuidores do Manager"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {}
 }

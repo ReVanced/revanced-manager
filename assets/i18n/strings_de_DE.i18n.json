@@ -107,7 +107,9 @@
     "newPatches": "Neue Patches",
     "patches": "Patches",
     "doneButton": "Fertig",
+    "defaultChip": "Standard",
     "defaultTooltip": "Alle Standard Patches auswählen",
+    "noneChip": "Keine",
     "noneTooltip": "Alle Patches abwählen",
     "loadPatchesSelection": "Patchauswahl laden",
     "noSavedPatches": "Keine gespeicherten Patches für die ausgewählte App. Drücke „Fertig” zum Speichern der aktuellen Auswahl.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Genieße ein Erlebnis näher an deinem Gerät",
     "languageLabel": "Sprache",
+    "languageUpdated": "Sprache aktualisiert",
     "englishOption": "Englisch",
     "sourcesLabel": "Quellen",
     "sourcesLabelHint": "Konfiguriere die Quelle von Patches und Integrationen",
@@ -266,12 +269,7 @@
     "updateNotImplemented": "Diese Funktion ist noch nicht implementiert"
   },
   "contributorsView": {
-    "widgetTitle": "Mitwirkende",
-    "patcherContributors": "Patcher Mitwirkende",
-    "patchesContributors": "Patches Mitwirkende",
-    "integrationsContributors": "Mitwirkende der Integration",
-    "cliContributors": "CLI Mitwirkende",
-    "managerContributors": "Manager Mitwirkende"
+    "widgetTitle": "Mitwirkende"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionskonflikt",

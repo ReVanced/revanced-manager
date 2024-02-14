@@ -266,12 +266,7 @@
     "updateNotImplemented": "Această funcție nu a fost încă implementată"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuitori",
-    "patcherContributors": "Contribuitori ai patcher-ului",
-    "patchesContributors": "Contribuitori ai patch-urilor",
-    "integrationsContributors": "Contribuitori ai integrărilor",
-    "cliContributors": "Contribuitori ai CLI",
-    "managerContributors": "Contribuitori ai manager-ului"
+    "widgetTitle": "Contribuitori"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiune nepotrivită",

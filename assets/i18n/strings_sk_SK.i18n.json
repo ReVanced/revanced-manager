@@ -148,12 +148,7 @@
     "updateNotImplemented": "Táto funkcia ešte nebola implementovaná"
   },
   "contributorsView": {
-    "widgetTitle": "Prispievatelia",
-    "patcherContributors": "Prispievatelia Zaplátača",
-    "patchesContributors": "Prispievatelia Záplat",
-    "integrationsContributors": "Prispievatelia integrácií",
-    "cliContributors": "Prispievatelia CLI",
-    "managerContributors": "Prispievatelia Manažéra"
+    "widgetTitle": "Prispievatelia"
   },
   "installErrorDialog": {}
 }

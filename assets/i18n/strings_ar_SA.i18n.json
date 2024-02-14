@@ -216,12 +216,7 @@
     "updateNotImplemented": "لم يتم تنفيذ هذه الميزة بعد"
   },
   "contributorsView": {
-    "widgetTitle": "المساهمون",
-    "patcherContributors": "المساهمون المُعَدِّلون",
-    "patchesContributors": "المساهمون في التعديلات",
-    "integrationsContributors": "المساهمون في الدمج",
-    "cliContributors": "المساهمون في CLI",
-    "managerContributors": "المساهمون في Manager"
+    "widgetTitle": "المساهمون"
   },
   "installErrorDialog": {}
 }
