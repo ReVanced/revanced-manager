@@ -34,7 +34,7 @@ The following pages will guide you through using ReVanced Manager to patch apps.
    > If you are rooted, you can mount the patched app on top of the original app.[^3]
    > Optionally, you may export the patched app to storage using the option in the bottom left corner.
 
-[^1]: Non-root users may be prompted to select an APK from storage, in which case you must source the APK file yourself. ReVanced does not provide any APK files.
+[^1]: Non-root users may be prompted to select an APK file from storage, in which case you must source the APK file yourself. ReVanced does not provide any APK files.
 [^2]: It is suggested to use the default set of patches by tapping on the **Default** button above the list of patches.
 [^3]: Mounting the patched app on top of the original app will only work if the installed app version matches the version of the app selected in step 3. above.
 
