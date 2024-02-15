@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class NotInstalledAppItem extends StatefulWidget {
@@ -91,16 +91,12 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  I18nText(
-                                    'suggested',
-                                    translationParams: {
-                                      'version': widget.suggestedVersion.isEmpty
-                                          ? FlutterI18n.translate(
-                                              context,
-                                              'appSelectorCard.anyVersion',
-                                            )
-                                          : widget.suggestedVersion,
-                                    },
+                                  Text(
+                                    t.suggested(
+                                      version: widget.suggestedVersion.isEmpty
+                                          ? t.appSelectorCard.anyVersion
+                                          : 'v${widget.suggestedVersion}',
+                                    ),
                                   ),
                                   const SizedBox(width: 4),
                                   Icon(

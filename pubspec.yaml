@@ -4,7 +4,7 @@ homepage: https://github.com/ReVanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.19.0-dev.6+101900006
+version: 1.19.0-dev.9+101900009
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -14,9 +14,9 @@ dependencies:
   collection: ^1.17.0
   connectivity_plus: ^5.0.1
   device_apps:
-    git: # switch back to ponces fork once https://github.com/ponces/flutter_plugin_device_apps/pull/1 is merged
-      url: https://github.com/BenjaminHalko/flutter_plugin_device_apps
-      ref: 0efbeba41657158a66bbc92c55d1226df56d0f1b # Branch: revanced-manager
+    git:
+      url: https://github.com/ponces/flutter_plugin_device_apps
+      ref: 0609662324b9e00931fccfa87e9e1b00b7610907 # Branch: revanced-manager
   device_info_plus: ^9.1.0
   dio: ^5.0.0
   dio_cache_interceptor: ^3.4.0
@@ -31,7 +31,6 @@ dependencies:
       ref: 560d21c4148b53933313573e7eafca0b0eb9aadf # Branch: specify-namespace
   flutter_cache_manager: ^3.3.0
   flutter_file_dialog: ^3.0.2
-  flutter_i18n: ^0.34.0
   flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
@@ -41,7 +40,8 @@ dependencies:
   google_fonts: ^6.1.0
   injectable: ^2.1.1
   intl: ^0.18.0
-  json_annotation: ^4.8.0
+  json_annotation: ^4.8.1
+  language_code: ^0.4.0
   logcat:
     git:
       url: https://github.com/BenjaminHalko/logcat
@@ -60,6 +60,8 @@ dependencies:
   share_plus: ^7.2.1
   shared_preferences: ^2.1.0
   skeletons: ^0.0.3
+  slang: ^3.25.0
+  slang_flutter: ^3.25.0
   stacked: ^3.2.0
   stacked_generator: ^1.1.0
   stacked_services: ^1.0.0
@@ -73,7 +75,7 @@ dev_dependencies:
   build_runner: any
   flutter_lints: ^3.0.1
   injectable_generator: ^2.1.5
-  json_serializable: ^6.6.1
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
@@ -83,3 +85,6 @@ flutter:
         - asset: fonts/custom-icons.ttf
   assets:
     - assets/i18n/
+
+flutter_localizations:
+  sdk: flutter

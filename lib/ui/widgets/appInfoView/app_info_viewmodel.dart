@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:intl/intl.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
@@ -32,7 +32,7 @@ class AppInfoViewModel extends BaseViewModel {
       isUninstalled = await DeviceApps.uninstallApp(app.packageName);
     }
 
-    if (isUninstalled && app.isRooted &&  await _rootAPI.hasRootPermissions()) {
+    if (isUninstalled && app.isRooted && await _rootAPI.hasRootPermissions()) {
       await _rootAPI.uninstall(app.packageName);
     }
 
@@ -51,7 +51,7 @@ class AppInfoViewModel extends BaseViewModel {
   }
 
   void updateNotImplemented(BuildContext context) {
-    _toast.showBottom('appInfoView.updateNotImplemented');
+    _toast.showBottom(t.appInfoView.updateNotImplemented);
   }
 
   Future<void> showUninstallDialog(
@@ -64,12 +64,12 @@ class AppInfoViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('appInfoView.rootDialogTitle'),
-          content: I18nText('appInfoView.rootDialogText'),
+          title: Text(t.appInfoView.rootDialogTitle),
+          content: Text(t.appInfoView.rootDialogText),
           actions: <Widget>[
             FilledButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: I18nText('okButton'),
+              child: Text(t.okButton),
             ),
           ],
         ),
@@ -79,16 +79,12 @@ class AppInfoViewModel extends BaseViewModel {
         return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: I18nText(
-              'appInfoView.unmountButton',
-            ),
-            content: I18nText(
-              'appInfoView.unmountDialogText',
-            ),
+            title: Text(t.appInfoView.unmountButton),
+            content: Text(t.appInfoView.unmountDialogText),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: I18nText('noButton'),
+                child: Text(t.noButton),
               ),
               FilledButton(
                 onPressed: () {
@@ -96,7 +92,7 @@ class AppInfoViewModel extends BaseViewModel {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
-                child: I18nText('yesButton'),
+                child: Text(t.yesButton),
               ),
             ],
           ),
@@ -105,16 +101,12 @@ class AppInfoViewModel extends BaseViewModel {
         return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: I18nText(
-              'appInfoView.uninstallButton',
-            ),
-            content: I18nText(
-              'appInfoView.uninstallDialogText',
-            ),
+            title: Text(t.appInfoView.uninstallButton),
+            content: Text(t.appInfoView.uninstallDialogText),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: I18nText('noButton'),
+                child: Text(t.noButton),
               ),
               FilledButton(
                 onPressed: () {
@@ -122,7 +114,7 @@ class AppInfoViewModel extends BaseViewModel {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
-                child: I18nText('yesButton'),
+                child: Text(t.yesButton),
               ),
             ],
           ),
@@ -148,14 +140,14 @@ class AppInfoViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('appInfoView.appliedPatchesLabel'),
+        title: Text(t.appInfoView.appliedPatchesLabel),
         content: SingleChildScrollView(
           child: Text(getAppliedPatchesString(app.appliedPatches)),
         ),
         actions: <Widget>[
           FilledButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
         ],
       ),

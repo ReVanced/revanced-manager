@@ -1,12 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:logcat/logcat.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
@@ -60,15 +61,12 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('warning'),
-          content: I18nText(
-            'settingsView.enablePatchesSelectionWarningText',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(t.warning),
+          content: Text(
+            t.settingsView.enablePatchesSelectionWarningText,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
           actions: [
@@ -78,13 +76,13 @@ class SettingsViewModel extends BaseViewModel {
                 _managerAPI.setPatchesChangeEnabled(true);
                 Navigator.of(context).pop();
               },
-              child: I18nText('yesButton'),
+              child: Text(t.yesButton),
             ),
             FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: I18nText('noButton'),
+              child: Text(t.noButton),
             ),
           ],
         ),
@@ -93,15 +91,12 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('warning'),
-          content: I18nText(
-            'settingsView.disablePatchesSelectionWarningText',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(t.warning),
+          content: Text(
+            t.settingsView.disablePatchesSelectionWarningText,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
           actions: [
@@ -109,7 +104,7 @@ class SettingsViewModel extends BaseViewModel {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: I18nText('noButton'),
+              child: Text(t.noButton),
             ),
             FilledButton(
               onPressed: () {
@@ -118,7 +113,7 @@ class SettingsViewModel extends BaseViewModel {
                 _managerAPI.setPatchesChangeEnabled(false);
                 Navigator.of(context).pop();
               },
-              child: I18nText('yesButton'),
+              child: Text(t.yesButton),
             ),
           ],
         ),
@@ -156,15 +151,12 @@ class SettingsViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('warning'),
-          content: I18nText(
-            'settingsView.requireSuggestedAppVersionDialogText',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+          title: Text(t.warning),
+          content: Text(
+            t.settingsView.requireSuggestedAppVersionDialogText,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
           actions: [
@@ -173,13 +165,13 @@ class SettingsViewModel extends BaseViewModel {
                 _managerAPI.enableRequireSuggestedAppVersionStatus(false);
                 Navigator.of(context).pop();
               },
-              child: I18nText('yesButton'),
+              child: Text(t.yesButton),
             ),
             FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: I18nText('noButton'),
+              child: Text(t.noButton),
             ),
           ],
         ),
@@ -197,13 +189,13 @@ class SettingsViewModel extends BaseViewModel {
 
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
-    _toast.showBottom('settingsView.regeneratedKeystore');
+    _toast.showBottom(t.settingsView.regeneratedKeystore);
     notifyListeners();
   }
 
   void deleteTempDir() {
     _managerAPI.deleteTempFolder();
-    _toast.showBottom('settingsView.deletedTempDir');
+    _toast.showBottom(t.settingsView.deletedTempDir);
     notifyListeners();
   }
 
@@ -219,9 +211,9 @@ class SettingsViewModel extends BaseViewModel {
             fileName: 'selected_patches_$dateTime.json',
           ),
         );
-        _toast.showBottom('settingsView.exportedPatches');
+        _toast.showBottom(t.settingsView.exportedPatches);
       } else {
-        _toast.showBottom('settingsView.noExportFileFound');
+        _toast.showBottom(t.settingsView.noExportFileFound);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -245,13 +237,13 @@ class SettingsViewModel extends BaseViewModel {
           if (_patcherViewModel.selectedApp != null) {
             _patcherViewModel.loadLastSelectedPatches();
           }
-          _toast.showBottom('settingsView.importedPatches');
+          _toast.showBottom(t.settingsView.importedPatches);
         }
       } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
         }
-        _toast.showBottom('settingsView.jsonSelectorErrorMessage');
+        _toast.showBottom(t.settingsView.jsonSelectorErrorMessage);
       }
     } else {
       _managerAPI.showPatchesChangeWarningDialog(context);
@@ -270,9 +262,9 @@ class SettingsViewModel extends BaseViewModel {
             fileName: 'keystore_$dateTime.keystore',
           ),
         );
-        _toast.showBottom('settingsView.exportedKeystore');
+        _toast.showBottom(t.settingsView.exportedKeystore);
       } else {
-        _toast.showBottom('settingsView.noKeystoreExportFileFound');
+        _toast.showBottom(t.settingsView.noKeystoreExportFileFound);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -288,24 +280,24 @@ class SettingsViewModel extends BaseViewModel {
         final File inFile = File(result);
         inFile.copySync(_managerAPI.keystoreFile);
 
-        _toast.showBottom('settingsView.importedKeystore');
+        _toast.showBottom(t.settingsView.importedKeystore);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      _toast.showBottom('settingsView.keystoreSelectorErrorMessage');
+      _toast.showBottom(t.settingsView.keystoreSelectorErrorMessage);
     }
   }
 
   void resetAllOptions() {
     _managerAPI.resetAllOptions();
-    _toast.showBottom('settingsView.resetStoredOptions');
+    _toast.showBottom(t.settingsView.resetStoredOptions);
   }
 
   void resetSelectedPatches() {
     _managerAPI.resetLastSelectedPatches();
-    _toast.showBottom('settingsView.resetStoredPatches');
+    _toast.showBottom(t.settingsView.resetStoredPatches);
   }
 
   Future<void> deleteLogs() async {
@@ -314,7 +306,7 @@ class SettingsViewModel extends BaseViewModel {
     if (logsDir.existsSync()) {
       logsDir.deleteSync(recursive: true);
     }
-    _toast.showBottom('settingsView.deletedLogs');
+    _toast.showBottom(t.settingsView.deletedLogs);
   }
 
   Future<void> exportLogcatLogs() async {
