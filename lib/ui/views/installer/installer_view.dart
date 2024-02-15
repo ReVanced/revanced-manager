@@ -16,9 +16,12 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => PopScope(
-        onPopInvoked: (bool didPop) => model.onWillPop(context),
-        canPop: false,
+      builder: (context, model, child) => WillPopScope(
+        /* 
+          TODO(any): migrate to [PopScope],
+          we've tried to migrate it two times but 
+          reverted it because we couldn't exit out of the screen. 
+        */
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
@@ -108,6 +111,7 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
+        onWillPop: () => model.onWillPop(context),
       ),
     );
   }

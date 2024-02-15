@@ -619,8 +619,8 @@ class ManagerAPI {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => PopScope(
-        canPop: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
         child: AlertDialog(
           title: Text(t.warning),
           content: ValueListenableBuilder(
