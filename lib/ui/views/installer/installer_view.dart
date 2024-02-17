@@ -6,7 +6,6 @@ import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indi
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
-import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -18,12 +17,12 @@ class InstallerView extends StatelessWidget {
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
       builder: (context, model, child) => PopScope(
-        canPop: false,
+        canPop: !model.isPatching,
         onPopInvoked: (bool didPop) {
-          final result = model.onPop(context) as bool;
-          if (result) {
-            ScreenshotCallback().dispose();
-            Navigator.pop(context);
+          if (didPop) {
+            model.onPop();
+          } else {
+            model.onPopAttempt(context);
           }
         },
         child: SafeArea(
@@ -87,7 +86,7 @@ class InstallerView extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  onBackButtonPressed: () => model.onWillPop(context),
+                  onBackButtonPressed: () => Navigator.maybePop(context),
                   bottom: PreferredSize(
                     preferredSize: const Size(double.infinity, 1.0),
                     child: GradientProgressIndicator(progress: model.progress),
@@ -115,7 +114,6 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onWillPop: () => model.onWillPop(context),
       ),
     );
   }
