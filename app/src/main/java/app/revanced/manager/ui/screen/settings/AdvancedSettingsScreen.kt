@@ -87,10 +87,10 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
-                preference = vm.prefs.allowExperimental,
+                preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
-                headline = R.string.experimental_patches,
-                description = R.string.experimental_patches_description
+                headline = R.string.patch_compat_check,
+                description = R.string.patch_compat_check_description
             )
             BooleanItem(
                 preference = vm.prefs.multithreadingDexFileWriter,

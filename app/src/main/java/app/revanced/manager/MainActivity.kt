@@ -107,11 +107,11 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.InstalledApplicationInfo -> InstalledAppInfoScreen(
-                            onPatchClick = { packageName, patchesSelection ->
+                            onPatchClick = { packageName, patchSelection ->
                                 navController.navigate(
                                     Destination.VersionSelector(
                                         packageName,
-                                        patchesSelection
+                                        patchSelection
                                     )
                                 )
                             },
@@ -142,14 +142,14 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(
                                     Destination.SelectedApplicationInfo(
                                         selectedApp,
-                                        destination.patchesSelection,
+                                        destination.patchSelection,
                                     )
                                 )
                             },
                             viewModel = getComposeViewModel {
                                 parametersOf(
                                     destination.packageName,
-                                    destination.patchesSelection
+                                    destination.patchSelection
                                 )
                             }
                         )
@@ -167,7 +167,7 @@ class MainActivity : ComponentActivity() {
                                 parametersOf(
                                     SelectedAppInfoViewModel.Params(
                                         destination.selectedApp,
-                                        destination.patchesSelection
+                                        destination.patchSelection
                                     )
                                 )
                             }

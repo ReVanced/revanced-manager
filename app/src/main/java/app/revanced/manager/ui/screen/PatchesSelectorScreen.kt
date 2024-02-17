@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -68,14 +69,15 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.isScrollingUp
 import kotlinx.coroutines.launch
 import org.koin.compose.rememberKoinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PatchesSelectorScreen(
-    onSave: (PatchesSelection?, Options) -> Unit,
+    onSave: (PatchSelection?, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: PatchesSelectorViewModel
 ) {
@@ -105,13 +107,13 @@ fun PatchesSelectorScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 Text(
-                    text = stringResource(R.string.patches_selector_sheet_filter_compat_title),
+                    text = stringResource(R.string.patch_selector_sheet_filter_compat_title),
                     style = MaterialTheme.typography.titleMedium
                 )
 
@@ -257,7 +259,7 @@ fun PatchesSelectorScreen(
                     )
                 }
 
-                if (!vm.allowExperimental) return@LazyColumnWithScrollbar
+                if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
                 patchList(
                     uid = bundle.uid,
                     patches = bundle.unsupported.searched(),
@@ -273,7 +275,7 @@ fun PatchesSelectorScreen(
         }
     }
 
-
+    val patchLazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -302,6 +304,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
+                expanded = patchLazyListState.isScrollingUp,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -344,7 +347,8 @@ fun PatchesSelectorScreen(
                     val bundle = bundles[index]
 
                     LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        state = patchLazyListState
                     ) {
                         patchList(
                             uid = bundle.uid,
@@ -366,7 +370,7 @@ fun PatchesSelectorScreen(
                             uid = bundle.uid,
                             patches = bundle.unsupported,
                             filterFlag = SHOW_UNSUPPORTED,
-                            supported = vm.allowExperimental
+                            supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),

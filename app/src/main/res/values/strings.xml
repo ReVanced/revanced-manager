@@ -67,8 +67,8 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
-    <string name="experimental_patches">Allow experimental patches</string>
-    <string name="experimental_patches_description">Allow patching incompatible patches with experimental versions, something may break</string>
+    <string name="patch_compat_check">Disable version compatibility check</string>
+    <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -83,22 +83,20 @@
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
-    <string name="patches_selection">Patches selection</string>
-    <string name="restore_patches_selection">Restore patches selections</string>
-    <string name="restore_patches_selection_description">Restore patches selection from a file</string>
-    <string name="restore_patches_selection_fail">Failed to restore patches selection: %s</string>
-    <string name="backup_patches_selection">Backup patches selections</string>
-    <string name="backup_patches_selection_description">Backup patches selection to a file</string>
-    <string name="backup_patches_selection_fail">Failed to backup patches selection: %s</string>
-    <string name="clear_patches_selection">Clear patches selection</string>
-    <string name="clear_patches_selection_description">Clear all patches selection</string>
-    <string name="patch_options">Patch options</string>
-    <string name="patch_options_clear_package">Clear patch options for package</string>
-    <string name="patch_options_clear_package_description">Resets patch options for a single package</string>
-    <string name="patch_options_clear_bundle">Clear patch options for bundle</string>
-    <string name="patch_options_clear_bundle_description">Resets patch options for all patches in a bundle</string>
-    <string name="patch_options_clear_all">Clear all patch options</string>
-    <string name="patch_options_clear_all_description">Resets all patch options</string>
+    <string name="import_patch_selection">Import patch selection</string>
+    <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
+    <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
+    <string name="export_patch_selection">Export patch selection</string>
+    <string name="export_patch_selection_description">Export patch selection from a JSON file</string>
+    <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
+    <string name="reset_patch_selection">Reset patch selection</string>
+    <string name="reset_patch_selection_description">Reset the stored patch selection</string>
+    <string name="patch_options_reset_package">Reset patch options for app</string>
+    <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
+    <string name="patch_options_reset_bundle">Resets patch options for bundle</string>
+    <string name="patch_options_reset_bundle_description">Resets patch options for all patches in a bundle</string>
+    <string name="patch_options_reset_all">Reset patch options</string>
+    <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="prefer_splits">Prefer split APK\'s</string>
     <string name="prefer_splits_description">Prefer split APK\'s instead of full APK\'s</string>
     <string name="prefer_universal">Prefer universal APK\'s</string>
@@ -168,6 +166,7 @@
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
+    <string name="patch_options_reset_toast">Patch options have been reset</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
     <string name="selection_warning_continue_countdown">Continue (%ds)</string>
@@ -211,8 +210,8 @@
     <string name="downloadable_versions">Downloadable versions</string>
     <string name="already_patched">Already patched</string>
 
-    <string name="patches_selector_sheet_filter_title">Filter</string>
-    <string name="patches_selector_sheet_filter_compat_title">Compatibility</string>
+    <string name="patch_selector_sheet_filter_title">Filter</string>
+    <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
@@ -274,6 +273,8 @@
     <string name="developer_options_description">Options for debugging issues</string>
     <string name="bundle_input_name">Name</string>
     <string name="bundle_input_source_url">Source URL</string>
+    <string name="bundle_update_success">Successfully updated %s</string>
+    <string name="bundle_update_unavailable">No update available for %s</string>
     <string name="automatically_update">Automatically update</string>
     <string name="automatically_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>

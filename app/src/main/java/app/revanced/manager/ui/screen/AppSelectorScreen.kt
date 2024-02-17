@@ -111,7 +111,7 @@ fun AppSelectorScreen(
                                     {
                                         Text(
                                             pluralStringResource(
-                                                R.plurals.patches_count,
+                                                R.plurals.patch_count,
                                                 it,
                                                 it
                                             )
@@ -199,7 +199,7 @@ fun AppSelectorScreen(
                             {
                                 Text(
                                     pluralStringResource(
-                                        R.plurals.patches_count,
+                                        R.plurals.patch_count,
                                         it,
                                         it
                                     )
