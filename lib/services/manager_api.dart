@@ -4,17 +4,19 @@ import 'package:device_apps/device_apps.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/github_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/revanced_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
+import 'package:revanced_manager/services/toast.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox_list_tile.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart';
@@ -23,6 +25,7 @@ import 'package:timeago/timeago.dart';
 class ManagerAPI {
   final RevancedAPI _revancedAPI = locator<RevancedAPI>();
   final GithubAPI _githubAPI = locator<GithubAPI>();
+  final Toast _toast = locator<Toast>();
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
@@ -33,6 +36,7 @@ class ManagerAPI {
   Patch? selectedPatch;
   BuildContext? ctx;
   bool isRooted = false;
+  bool releaseBuild = false;
   bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
   String storedPatchesFile = '/selected-patches.json';
@@ -50,12 +54,11 @@ class ManagerAPI {
   String? integrationsVersion = '';
 
   bool isDefaultPatchesRepo() {
-    return getPatchesRepo().toLowerCase() == 'revanced/revanced-patches';
+    return getPatchesRepo().toLowerCase() == defaultPatchesRepo;
   }
 
   bool isDefaultIntegrationsRepo() {
-    return getIntegrationsRepo().toLowerCase() ==
-        'revanced/revanced-integrations';
+    return getIntegrationsRepo().toLowerCase() == defaultIntegrationsRepo;
   }
 
   Future<void> initialize() async {
@@ -65,6 +68,19 @@ class ManagerAPI {
         (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
+    if (kReleaseMode) {
+      releaseBuild = !(await getCurrentManagerVersion()).contains('-dev');
+    }
+
+    // Migrate to new API URL if not done yet as the old one is sunset.
+    final bool hasMigrated = _prefs.getBool('migratedToNewApiUrl') ?? false;
+    if (!hasMigrated) {
+      final String apiUrl = getApiUrl().toLowerCase();
+      if (apiUrl.contains('releases.revanced.app')) {
+        await setApiUrl(''); // Reset to default.
+        _prefs.setBool('migratedToNewApiUrl', true);
+      }
+    }
   }
 
   Future<int> getSdkVersion() async {
@@ -82,6 +98,7 @@ class ManagerAPI {
     }
     await _revancedAPI.clearAllCache();
     await _prefs.setString('apiUrl', url);
+    _toast.showBottom(t.settingsView.restartAppForChanges);
   }
 
   String getRepoUrl() {
@@ -114,12 +131,12 @@ class ManagerAPI {
     await _prefs.setString('patchesRepo', value);
   }
 
-  bool getPatchesConsent() {
-    return _prefs.getBool('patchesConsent') ?? false;
+  bool getDownloadConsent() {
+    return _prefs.getBool('downloadConsent') ?? false;
   }
 
-  Future<void> setPatchesConsent(bool consent) async {
-    await _prefs.setBool('patchesConsent', consent);
+  void setDownloadConsent(bool consent) {
+    _prefs.setBool('downloadConsent', consent);
   }
 
   bool isPatchesAutoUpdate() {
@@ -142,6 +159,14 @@ class ManagerAPI {
     _prefs.setBool('showPatchesChangeWarning', !value);
   }
 
+  bool showUpdateDialog() {
+    return _prefs.getBool('showUpdateDialog') ?? true;
+  }
+
+  void setShowUpdateDialog(bool value) {
+    _prefs.setBool('showUpdateDialog', value);
+  }
+
   bool isChangingToggleModified() {
     return _prefs.getBool('isChangingToggleModified') ?? false;
   }
@@ -150,8 +175,8 @@ class ManagerAPI {
     _prefs.setBool('isChangingToggleModified', value);
   }
 
-  Future<void> setPatchesAutoUpdate(bool value) async {
-    await _prefs.setBool('patchesAutoUpdate', value);
+  void setPatchesAutoUpdate(bool value) {
+    _prefs.setBool('patchesAutoUpdate', value);
   }
 
   List<Patch> getSavedPatches(String packageName) {
@@ -282,6 +307,14 @@ class ManagerAPI {
 
   String getKeystorePassword() {
     return _prefs.getString('keystorePassword') ?? defaultKeystorePassword;
+  }
+
+  String getLocale() {
+    return _prefs.getString('locale') ?? 'en';
+  }
+
+  Future<void> setLocale(String value) async {
+    await _prefs.setString('locale', value);
   }
 
   Future<void> deleteTempFolder() async {
@@ -530,7 +563,11 @@ class ManagerAPI {
 
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo.version;
+    String version = packageInfo.version;
+    if (!version.startsWith('v')) {
+      version = 'v$version';
+    }
+    return version;
   }
 
   Future<String> getCurrentPatchesVersion() async {
@@ -621,7 +658,7 @@ class ManagerAPI {
       builder: (context) => WillPopScope(
         onWillPop: () async => false,
         child: AlertDialog(
-          title: I18nText('warning'),
+          title: Text(t.warning),
           content: ValueListenableBuilder(
             valueListenable: noShow,
             builder: (context, value, child) {
@@ -629,22 +666,19 @@ class ManagerAPI {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  I18nText(
-                    'patchItem.patchesChangeWarningDialogText',
-                    child: const Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  Text(
+                    t.patchItem.patchesChangeWarningDialogText,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  CheckboxListTile(
+                  HapticCheckboxListTile(
                     value: value,
                     contentPadding: EdgeInsets.zero,
-                    title: I18nText(
-                      'noShowAgain',
+                    title: Text(
+                      t.noShowAgain,
                     ),
                     onChanged: (selected) {
                       noShow.value = selected!;
@@ -660,7 +694,7 @@ class ManagerAPI {
                 setPatchesChangeWarning(noShow.value);
                 Navigator.of(context).pop();
               },
-              child: I18nText('okButton'),
+              child: Text(t.okButton),
             ),
           ],
         ),

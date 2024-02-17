@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_api_url.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_auto_update_patches.dart';
@@ -8,6 +9,7 @@ import 'package:revanced_manager/ui/widgets/settingsView/settings_enable_patches
 import 'package:revanced_manager/ui/widgets/settingsView/settings_patch_history.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_require_suggested_app_version.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_show_update_dialog.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_universal_patches.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_version_compatibility_check.dart';
 
@@ -17,9 +19,10 @@ class SAdvancedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsSection(
-      title: 'settingsView.advancedSectionTitle',
+      title: t.settingsView.advancedSectionTitle,
       children: const <Widget>[
         SAutoUpdatePatches(),
+        SShowUpdateDialog(),
         SEnablePatchesSelection(),
         SRequireSuggestedAppVersion(),
         SVersionCompatibilityCheck(),

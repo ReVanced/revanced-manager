@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:timeago/timeago.dart';
 
@@ -82,7 +82,7 @@ class _ApplicationItemState extends State<ApplicationItem> {
                   children: <Widget>[
                     FilledButton(
                       onPressed: widget.onPressed,
-                      child: I18nText('applicationItem.infoButton'),
+                      child: Text(t.applicationItem.infoButton),
                     ),
                   ],
                 ),

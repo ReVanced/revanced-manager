@@ -1,0 +1,77 @@
+{
+  "okButton": "ОК",
+  "cancelButton": "Скасаваць",
+  "quitButton": "Выйсці",
+  "updateButton": "Абнавіць",
+  "installed": "Усталявана: ${version}",
+  "suggested": "Прапанавана: ${version}",
+  "yesButton": "Так",
+  "noButton": "Не",
+  "warning": "Увага",
+  "options": "Параметры",
+  "notice": "Апавяшчэнне",
+  "noShowAgain": "Больш не паказваць",
+  "add": "Дадаць",
+  "remove": "Выдаліць",
+  "navigationView": {
+    "dashboardTab": "Галоўная",
+    "patcherTab": "Патчар",
+    "settingsTab": "Налады"
+  },
+  "homeView": {
+    "refreshSuccess": "Паспяхова абноўлена",
+    "widgetTitle": "Галоўная",
+    "updatesSubtitle": "Абнаўленні",
+    "patchedSubtitle": "Прапатчаныя праграмы",
+    "noInstallations": "Няма ўсталяваных прапатчаных праграм",
+    "installUpdate": "Працягнуць устаноўку абнаўлення?",
+    "updateChangelogTitle": "Спіс змяненняў",
+    "downloadingMessage": "Загружаецца абнаўленне...",
+    "installingMessage": "Усталяванне абнаўлення...",
+    "errorDownloadMessage": "Немагчыма спампаваць абнаўленне",
+    "errorInstallMessage": "Немагчыма ўсталяваць абнаўленне",
+    "noConnection": "Няма злучэння з інтэрнэтам",
+    "updatesDisabled": "Абнаўленне праграмы з патчам зараз адключана. Паўторна прапатчыце праграму."
+  },
+  "applicationItem": {
+    "infoButton": "Інфармацыя"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Загрузка...",
+    "timeagoLabel": "${time} таму назад"
+  },
+  "patcherView": {
+    "widgetTitle": "Патчар",
+    "patchButton": "Прапатчыць",
+    "requiredOptionDialogText": "Некаторыя параметры павінны быць зададзены."
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Праграмы не знойдзены",
+    "currentVersion": "Бягучая версія",
+    "suggestedVersion": "Прапанаваная"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Выбраць патчы",
+    "widgetTitleSelected": "Выбраныя патчы",
+    "widgetSubtitle": "Спачатку выберыце праграму",
+    "widgetEmptySubtitle": "Патчы не выбраны"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Сацсеткі",
+    "widgetSubtitle": "Мы ў інтэрнэце!"
+  },
+  "appSelectorView": {
+    "storageButton": "Сховішча",
+    "selectFromStorageButton": "Выбраць са сховішча",
+    "errorMessage": "Немагчыма выкарыстоўваць выбраную праграму",
+    "downloadToast": "Функцыя спампоўвання пакуль недаступна"
+  },
+  "patchesSelectorView": {},
+  "patchOptionsView": {},
+  "patchItem": {},
+  "installerView": {},
+  "settingsView": {},
+  "appInfoView": {},
+  "contributorsView": {},
+  "installErrorDialog": {}
+}

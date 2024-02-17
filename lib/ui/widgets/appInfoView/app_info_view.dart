@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/ui/widgets/appInfoView/app_info_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
@@ -24,13 +24,10 @@ class AppInfoView extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             CustomSliverAppBar(
-              title: I18nText(
-                'appInfoView.widgetTitle',
-                child: Text(
-                  '',
-                  style: GoogleFonts.inter(
-                    color: Theme.of(context).textTheme.titleLarge!.color,
-                  ),
+              title: Text(
+                t.appInfoView.widgetTitle,
+                style: GoogleFonts.inter(
+                  color: Theme.of(context).textTheme.titleLarge!.color,
                 ),
               ),
             ),
@@ -92,18 +89,15 @@ class AppInfoView extends StatelessWidget {
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
-                                        I18nText(
+                                        Text(
                                           isHistory
-                                              ? 'appInfoView.installButton'
-                                              : 'appInfoView.openButton',
-                                          child: Text(
-                                            '',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                              ? t.appInfoView.installButton
+                                              : t.appInfoView.openButton,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
@@ -142,18 +136,15 @@ class AppInfoView extends StatelessWidget {
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
-                                        I18nText(
+                                        Text(
                                           isHistory
-                                              ? 'appInfoView.exportButton'
-                                              : 'appInfoView.uninstallButton',
-                                          child: Text(
-                                            '',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                              ? t.appInfoView.exportButton
+                                              : t.appInfoView.uninstallButton,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
@@ -243,16 +234,13 @@ class AppInfoView extends StatelessWidget {
                                                 .primary,
                                           ),
                                           const SizedBox(height: 10),
-                                          I18nText(
-                                            'appInfoView.unmountButton',
-                                            child: Text(
-                                              '',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                          Text(
+                                            t.appInfoView.unmountButton,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ],
@@ -269,14 +257,11 @@ class AppInfoView extends StatelessWidget {
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),
-                      title: I18nText(
-                        'appInfoView.packageNameLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      title: Text(
+                        t.appInfoView.packageNameLabel,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       subtitle: Text(app.packageName),
@@ -285,66 +270,50 @@ class AppInfoView extends StatelessWidget {
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),
-                      title: I18nText(
-                        isHistory
-                            ? 'appInfoView.sizeLabel'
-                            : 'appInfoView.versionLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      title: Text(
+                        t.appInfoView.installTypeLabel,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subtitle: 
-                        isHistory
-                          ? Text(model.getFileSizeString(app.fileSize))
-                          : app.isRooted
-                            ? I18nText('appInfoView.mountTypeLabel')
-                            : I18nText('appInfoView.regularTypeLabel'),
+                      subtitle: app.isRooted
+                          ? Text(t.appInfoView.mountTypeLabel)
+                          : Text(t.appInfoView.regularTypeLabel),
                     ),
                     const SizedBox(height: 4),
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),
-                      title: I18nText(
-                        'appInfoView.patchedDateLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      title: Text(
+                        t.appInfoView.patchedDateLabel,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subtitle: I18nText(
-                        'appInfoView.patchedDateHint',
-                        translationParams: {
-                          'date': model.getPrettyDate(context, app.patchDate),
-                          'time': model.getPrettyTime(context, app.patchDate),
-                        },
+                      subtitle: Text(
+                        t.appInfoView.patchedDateHint(
+                          date: model.getPrettyDate(context, app.patchDate),
+                          time: model.getPrettyTime(context, app.patchDate),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 4),
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),
-                      title: I18nText(
-                        'appInfoView.appliedPatchesLabel',
-                        child: const Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      title: Text(
+                        t.appInfoView.appliedPatchesLabel,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subtitle: I18nText(
-                        'appInfoView.appliedPatchesHint',
-                        translationParams: {
-                          'quantity': app.appliedPatches.length.toString(),
-                        },
+                      subtitle: Text(
+                        t.appInfoView.appliedPatchesHint(
+                          quantity: app.appliedPatches.length.toString(),
+                        ),
                       ),
                       onTap: () => model.showAppliedPatchesDialog(context, app),
                     ),

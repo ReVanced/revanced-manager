@@ -401,13 +401,7 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.8, "Signing...", "Signing APK")
 
-                try {
-                    Signer("ReVanced", keystorePassword)
-                        .signApk(patchedFile, outFile, keyStoreFile)
-                } catch (e: Exception) {
-                    print("Error signing APK: ${e.message}")
-                    e.printStackTrace()
-                }
+                Signer("ReVanced", keystorePassword).signApk(patchedFile, outFile, keyStoreFile)
 
                 updateProgress(.85, "Patched", "Patched APK")
             } catch (ex: Throwable) {

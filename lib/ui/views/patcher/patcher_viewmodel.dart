@@ -5,10 +5,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -54,24 +54,25 @@ class PatcherViewModel extends BaseViewModel {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('notice'),
-          content: I18nText(
-            'patcherView.removedPatchesWarningDialogText',
-            translationParams: {'patches': removedPatches.join('\n')},
+          title: Text(t.notice),
+          content: Text(
+            t.patcherView.removedPatchesWarningDialogText(
+              patches: removedPatches.join('\n'),
+            ),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: I18nText('noButton'),
+              child: Text(t.noButton),
             ),
             FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 showArmv7WarningDialog(context);
               },
-              child: I18nText('yesButton'),
+              child: Text(t.yesButton),
             ),
           ],
         ),
@@ -94,21 +95,21 @@ class PatcherViewModel extends BaseViewModel {
     showDialog(
       context: context ?? ctx,
       builder: (context) => AlertDialog(
-        title: I18nText('notice'),
-        content: I18nText('patcherView.requiredOptionDialogText'),
+        title: Text(t.notice),
+        content: Text(t.patcherView.requiredOptionDialogText),
         actions: <Widget>[
           TextButton(
             onPressed: () => {
               Navigator.of(context).pop(),
             },
-            child: I18nText('cancelButton'),
+            child: Text(t.cancelButton),
           ),
           FilledButton(
             onPressed: () => {
               Navigator.pop(context),
               navigateToPatchesSelector(),
             },
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -125,19 +126,19 @@ class PatcherViewModel extends BaseViewModel {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: I18nText('warning'),
-          content: I18nText('patcherView.armv7WarningDialogText'),
+          title: Text(t.warning),
+          content: Text(t.patcherView.armv7WarningDialogText),
           actions: <Widget>[
             FilledButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: I18nText('noButton'),
+              child: Text(t.noButton),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 navigateToInstaller();
               },
-              child: I18nText('yesButton'),
+              child: Text(t.yesButton),
             ),
           ],
         ),
@@ -148,52 +149,17 @@ class PatcherViewModel extends BaseViewModel {
   }
 
   String getAppSelectionString() {
-    String text = '${selectedApp!.name} (${selectedApp!.packageName})';
-    if (text.length > 32) {
-      text = '${text.substring(0, 32)}...)';
-    }
-    return text;
+    return '${selectedApp!.name} ${selectedApp!.version}';
   }
 
-  String getCurrentVersionString(BuildContext context) {
-    return '${FlutterI18n.translate(
-      context,
-      'appSelectorCard.currentVersion',
-    )}: v${selectedApp!.version}';
-  }
-
-  Future<void> searchSuggestedVersionOnWeb() async {
-    final String suggestedVersion =
-        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
-
-    if (suggestedVersion.isNotEmpty) {
-      await openDefaultBrowser(
-        '${selectedApp!.packageName} apk version v$suggestedVersion',
-      );
-    } else {
-      await openDefaultBrowser('${selectedApp!.packageName} apk');
-    }
-  }
-
-  String getSuggestedVersion() {
-    return _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
+  Future<void> queryVersion(String suggestedVersion) async {
+    await openDefaultBrowser(
+      '${selectedApp!.packageName} apk version $suggestedVersion',
+    );
   }
 
   String getSuggestedVersionString(BuildContext context) {
-    String suggestedVersion =
-        _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
-    if (suggestedVersion.isEmpty) {
-      suggestedVersion = FlutterI18n.translate(
-        context,
-        'appSelectorCard.allVersions',
-      );
-    } else {
-      suggestedVersion = 'v$suggestedVersion';
-    }
-    return '${FlutterI18n.translate(
-      context,
-      'appSelectorCard.suggestedVersion',
-    )}: $suggestedVersion';
+    return _patcherAPI.getSuggestedVersion(selectedApp!.packageName);
   }
 
   Future<void> openDefaultBrowser(String query) async {

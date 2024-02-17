@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
@@ -26,13 +26,10 @@ class HomeView extends StatelessWidget {
             slivers: <Widget>[
               CustomSliverAppBar(
                 isMainView: true,
-                title: I18nText(
-                  'homeView.widgetTitle',
-                  child: Text(
-                    '',
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.titleLarge!.color,
-                    ),
+                title: Text(
+                  t.homeView.widgetTitle,
+                  style: GoogleFonts.inter(
+                    color: Theme.of(context).textTheme.titleLarge!.color,
                   ),
                 ),
               ),
@@ -41,12 +38,9 @@ class HomeView extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     <Widget>[
-                      I18nText(
-                        'homeView.updatesSubtitle',
-                        child: Text(
-                          '',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                      Text(
+                        t.homeView.updatesSubtitle,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 10),
                       LatestCommitCard(model: model, parentContext: context),
@@ -56,12 +50,9 @@ class HomeView extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              I18nText(
-                                'homeView.patchHistorySubtitle',
-                                child: Text(
-                                  '',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
+                              Text(
+                                t.homeView.patchHistorySubtitle,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                               const SizedBox(height: 10),
                               PatchHistoryCard(),
@@ -70,12 +61,9 @@ class HomeView extends StatelessWidget {
                             ],
                           ),
                       ),
-                      I18nText(
-                        'homeView.patchedSubtitle',
-                        child: Text(
-                          '',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                      Text(
+                        t.homeView.patchedSubtitle,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 10),
                       InstalledAppsCard(),

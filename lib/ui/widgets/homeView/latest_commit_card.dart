@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
@@ -39,13 +39,13 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                       children: <Widget>[
                         FutureBuilder<String?>(
                           future: model.getLatestManagerReleaseTime(),
-                          builder: (context, snapshot) => snapshot.hasData &&
-                                  snapshot.data!.isNotEmpty
-                              ? I18nText(
-                                  'latestCommitCard.timeagoLabel',
-                                  translationParams: {'time': snapshot.data!},
-                                )
-                              : I18nText('latestCommitCard.loadingLabel'),
+                          builder: (context, snapshot) =>
+                              snapshot.hasData && snapshot.data!.isNotEmpty
+                                  ? Text(
+                                      t.latestCommitCard
+                                          .timeagoLabel(time: snapshot.data!),
+                                    )
+                                  : Text(t.latestCommitCard.loadingLabel),
                         ),
                       ],
                     ),
@@ -55,17 +55,15 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
               FutureBuilder<bool>(
                 future: model.hasManagerUpdates(),
                 initialData: false,
-                builder: (context, snapshot) => Opacity(
-                  opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-                  child: FilledButton(
-                    onPressed: snapshot.hasData && snapshot.data!
-                        ? () => widget.model.showUpdateConfirmationDialog(
-                              widget.parentContext,
-                              false,
-                            )
-                        : () => {},
-                    child: I18nText('updateButton'),
+                builder: (context, snapshot) => FilledButton(
+                  onPressed: () => widget.model.showUpdateConfirmationDialog(
+                    widget.parentContext,
+                    false,
+                    !snapshot.data!,
                   ),
+                  child: (snapshot.hasData && !snapshot.data!)
+                      ? Text(t.showChangelogButton)
+                      : Text(t.showUpdateButton),
                 ),
               ),
             ],
@@ -83,7 +81,7 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('Patches'),
+                    const Text('ReVanced Patches'),
                     const SizedBox(height: 4),
                     Row(
                       children: <Widget>[
@@ -91,15 +89,9 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                           future: model.getLatestPatchesReleaseTime(),
                           builder: (context, snapshot) => Text(
                             snapshot.hasData && snapshot.data!.isNotEmpty
-                                ? FlutterI18n.translate(
-                                    context,
-                                    'latestCommitCard.timeagoLabel',
-                                    translationParams: {'time': snapshot.data!},
-                                  )
-                                : FlutterI18n.translate(
-                                    context,
-                                    'latestCommitCard.loadingLabel',
-                                  ),
+                                ? t.latestCommitCard
+                                    .timeagoLabel(time: snapshot.data!)
+                                : t.latestCommitCard.loadingLabel,
                           ),
                         ),
                       ],
@@ -108,19 +100,17 @@ class _LatestCommitCardState extends State<LatestCommitCard> {
                 ),
               ),
               FutureBuilder<bool>(
-                future: locator<HomeViewModel>().hasPatchesUpdates(),
+                future: model.hasPatchesUpdates(),
                 initialData: false,
-                builder: (context, snapshot) => Opacity(
-                  opacity: snapshot.hasData && snapshot.data! ? 1.0 : 0.25,
-                  child: FilledButton(
-                    onPressed: snapshot.hasData && snapshot.data!
-                        ? () => widget.model.showUpdateConfirmationDialog(
-                              widget.parentContext,
-                              true,
-                            )
-                        : () => {},
-                    child: I18nText('updateButton'),
+                builder: (context, snapshot) => FilledButton(
+                  onPressed: () => widget.model.showUpdateConfirmationDialog(
+                    widget.parentContext,
+                    true,
+                    !snapshot.data!,
                   ),
+                  child: (snapshot.hasData && !snapshot.data!)
+                      ? Text(t.showChangelogButton)
+                      : Text(t.showUpdateButton),
                 ),
               ),
             ],

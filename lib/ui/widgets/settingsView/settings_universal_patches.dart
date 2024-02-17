@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_switch_list_tile.dart';
 
 class SUniversalPatches extends StatefulWidget {
   const SUniversalPatches({super.key});
@@ -18,19 +19,16 @@ final _patcherViewModel = PatcherViewModel();
 class _SUniversalPatchesState extends State<SUniversalPatches> {
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
+    return HapticSwitchListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-      title: I18nText(
-        'settingsView.universalPatchesLabel',
-        child: const Text(
-          '',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
+      title: Text(
+        t.settingsView.universalPatchesLabel,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
         ),
       ),
-      subtitle: I18nText('settingsView.universalPatchesHint'),
+      subtitle: Text(t.settingsView.universalPatchesHint),
       value: _settingsViewModel.areUniversalPatchesEnabled(),
       onChanged: (value) {
         setState(() {

@@ -8,6 +8,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/download_manager.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:timeago/timeago.dart';
 
@@ -32,7 +33,7 @@ class RevancedAPI {
       final response = await _dio.get('/contributors');
       final List<dynamic> repositories = response.data['repositories'];
       for (final Map<String, dynamic> repo in repositories) {
-        final String name = repo['name'];
+        final String name = repo['name'].toLowerCase();
         contributors[name] = repo['contributors'];
       }
     } on Exception catch (e) {
@@ -48,13 +49,16 @@ class RevancedAPI {
     String extension,
     String repoName,
   ) {
+    if (!locator<ManagerAPI>().getDownloadConsent()) {
+      return Future(() => null);
+    }
     return getToolsLock.synchronized(() async {
       try {
         final response = await _dio.get('/tools');
         final List<dynamic> tools = response.data['tools'];
         return tools.firstWhereOrNull(
           (t) =>
-              t['repository'] == repoName &&
+              (t['repository'] as String).toLowerCase() == repoName.toLowerCase() &&
               (t['name'] as String).endsWith(extension),
         );
       } on Exception catch (e) {

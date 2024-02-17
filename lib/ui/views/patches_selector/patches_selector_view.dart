@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart' hide SearchBar;
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patches_selector/patches_selector_viewmodel.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:revanced_manager/ui/widgets/shared/search_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -36,10 +37,10 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Visibility(
           visible: model.patches.isNotEmpty,
-          child: FloatingActionButton.extended(
+          child: HapticFloatingActionButtonExtended(
             label: Row(
               children: <Widget>[
-                I18nText('patchesSelectorView.doneButton'),
+                Text(t.patchesSelectorView.doneButton),
                 Text(' (${model.selectedPatches.length})'),
               ],
             ),
@@ -57,8 +58,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
             SliverAppBar(
               pinned: true,
               floating: true,
-              title: I18nText(
-                'patchesSelectorView.viewTitle',
+              title: Text(
+                t.patchesSelectorView.viewTitle,
               ),
               titleTextStyle: TextStyle(
                 fontSize: 22.0,
@@ -98,8 +99,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                     PopupMenuItem(
                       value: 0,
-                      child: I18nText(
-                        'patchesSelectorView.loadPatchesSelection',
+                      child: Text(
+                        t.patchesSelectorView.loadPatchesSelection,
                       ),
                     ),
                   ],
@@ -113,10 +114,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                     horizontal: 12.0,
                   ),
                   child: SearchBar(
-                    hintText: FlutterI18n.translate(
-                      context,
-                      'patchesSelectorView.searchBarHint',
-                    ),
+                    hintText: t.patchesSelectorView.searchBarHint,
                     onQueryChanged: (searchQuery) {
                       setState(() {
                         _query = searchQuery;
@@ -131,12 +129,9 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
-                        child: I18nText(
-                          'patchesSelectorView.noPatchesFound',
-                          child: Text(
-                            '',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                        child: Text(
+                          t.patchesSelectorView.noPatchesFound,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                     )
@@ -150,11 +145,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                           Row(
                             children: [
                               ActionChip(
-                                label: I18nText('patchesSelectorView.default'),
-                                tooltip: FlutterI18n.translate(
-                                  context,
-                                  'patchesSelectorView.defaultTooltip',
-                                ),
+                                label: Text(t.patchesSelectorView.defaultChip),
+                                tooltip: t.patchesSelectorView.defaultTooltip,
                                 onPressed: () {
                                   if (_managerAPI.isPatchesChangeEnabled()) {
                                     model.selectDefaultPatches();
@@ -165,11 +157,8 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               ),
                               const SizedBox(width: 8),
                               ActionChip(
-                                label: I18nText('patchesSelectorView.none'),
-                                tooltip: FlutterI18n.translate(
-                                  context,
-                                  'patchesSelectorView.noneTooltip',
-                                ),
+                                label: Text(t.patchesSelectorView.noneChip),
+                                tooltip: t.patchesSelectorView.noneTooltip,
                                 onPressed: () {
                                   if (_managerAPI.isPatchesChangeEnabled()) {
                                     model.clearPatches();
@@ -188,7 +177,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               children: [
                                 model.getPatchCategory(
                                   context,
-                                  'patchesSelectorView.newPatches',
+                                  t.patchesSelectorView.newPatches,
                                 ),
                                 ...model.getQueriedPatches(_query).map((patch) {
                                   if (model.isPatchNew(patch)) {
@@ -204,7 +193,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                                     ))
                                   model.getPatchCategory(
                                     context,
-                                    'patchesSelectorView.patches',
+                                    t.patchesSelectorView.patches,
                                   ),
                               ],
                             ),
@@ -226,7 +215,7 @@ class _PatchesSelectorViewState extends State<PatchesSelectorView> {
                               children: [
                                 model.getPatchCategory(
                                   context,
-                                  'patchesSelectorView.universalPatches',
+                                  t.patchesSelectorView.universalPatches,
                                 ),
                                 ...model.getQueriedPatches(_query).map((patch) {
                                   if (patch.compatiblePackages.isEmpty &&
