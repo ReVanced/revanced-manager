@@ -831,9 +831,7 @@ class ManagerAPI {
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: I18nText(
-            'installerView.installType',
-          ),
+          title: Text(t.installerView.installType),
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -850,20 +848,17 @@ class ManagerAPI {
                         horizontal: 20,
                         vertical: 10,
                       ),
-                      child: I18nText(
-                        'installerView.installTypeDescription',
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                      child: Text(
+                        t.installerView.installTypeDescription,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),
                     RadioListTile(
-                      title: I18nText('installerView.installNonRootType'),
+                      title: Text(t.installerView.installNonRootType),
                       contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16),
                       value: 0,
@@ -873,7 +868,7 @@ class ManagerAPI {
                       },
                     ),
                     RadioListTile(
-                      title: I18nText('installerView.installRootType'),
+                      title: Text(t.installerView.installRootType),
                       contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16),
                       value: 1,
@@ -889,13 +884,13 @@ class ManagerAPI {
           ),
           actions: [
             OutlinedButton(
-              child: I18nText('cancelButton'),
+              child: Text(t.cancelButton),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             FilledButton(
-              child: I18nText('installerView.installButton'),
+              child: Text(t.installerView.installButton),
               onPressed: () {
                 Navigator.of(context).pop();
               },

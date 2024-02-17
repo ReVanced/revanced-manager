@@ -148,16 +148,16 @@ class AppInfoViewModel extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('appInfoView.removeAppDialogTitle'),
+        title: Text(t.appInfoView.removeAppDialogTitle),
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        content: I18nText('appInfoView.removeAppDialogText'),
+        content: Text(t.appInfoView.removeAppDialogText),
         actions: <Widget>[
           OutlinedButton(
-            child: I18nText('cancelButton'),
+            child: Text(t.cancelButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
           FilledButton(
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
             onPressed: () => {
               _managerAPI.deleteLastPatchedApp(),
               Navigator.of(context)..pop()..pop(),

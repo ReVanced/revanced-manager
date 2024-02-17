@@ -187,16 +187,13 @@ class AppInfoView extends StatelessWidget {
                                                 .primary,
                                           ),
                                           const SizedBox(height: 10),
-                                          I18nText(
-                                            'appInfoView.deleteButton',
-                                            child: Text(
-                                              '',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                          Text(
+                                            t.appInfoView.deleteButton,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ],
