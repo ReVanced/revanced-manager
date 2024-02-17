@@ -82,8 +82,7 @@ fun AboutSettingsScreen(
                         context.openUrl(it)
                     }
                 )
-            }
-        ) + listOfNotNull(
+            },
             viewModel.contact?.let {
                 Triple(
                     Icons.Outlined.MailOutline,
