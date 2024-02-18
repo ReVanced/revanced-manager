@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    labels: []
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: npm
+    labels: []
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: pub
+    labels: []
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: gradle
+    labels: [ "ReVanced Manager Compose" ]
+    directory: /
+    target-branch: compose-dev
+    schedule:
+      interval: monthly

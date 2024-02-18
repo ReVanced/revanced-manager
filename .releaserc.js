@@ -9,8 +9,14 @@ module.exports = {
   "plugins": [
     [
       "@semantic-release/commit-analyzer", {
+        "preset": "conventionalcommits",
         "releaseRules": [
-          { "type": "build", "scope": "Needs bump", "release": "patch" }
+          { type: "style", release: "patch" },
+          { type: "refactor", release: "patch" },
+          { type: "perf", release: "patch" },
+          { type: "build", release: "patch" },
+          { type: "chore", release: "patch" },
+          { type: "revert", release: "patch" }
         ]
       }
     ],

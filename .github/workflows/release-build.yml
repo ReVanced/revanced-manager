@@ -26,6 +26,11 @@ jobs:
           java-version: "17"
           distribution: "zulu"
 
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
