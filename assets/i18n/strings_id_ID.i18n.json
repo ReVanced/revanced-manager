@@ -211,7 +211,12 @@
     "updateNotImplemented": "Fitur ini belum diimplementasikan"
   },
   "contributorsView": {
-    "widgetTitle": "Kontributor"
+    "widgetTitle": "Kontributor",
+    "patcherContributors": "ReVanced Patcher",
+    "patchesContributors": "ReVanced Patches",
+    "integrationsContributors": "ReVanced Integrations",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versi tidak cocok",

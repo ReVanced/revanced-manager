@@ -107,7 +107,9 @@
     "newPatches": "Nowe łatki",
     "patches": "Łatki",
     "doneButton": "Gotowe",
+    "defaultChip": "Domyślnie",
     "defaultTooltip": "Wybierz wszystkie domyślne łatki",
+    "noneChip": "Brak",
     "noneTooltip": "Odznacz wszystkie łatki",
     "loadPatchesSelection": "Załaduj wybór łatek",
     "noSavedPatches": "Brak zapisanych łatek dla wybranej aplikacji.\nNaciśnij Gotowe, aby zapisać bieżący wybór.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
     "languageLabel": "Język",
+    "languageUpdated": "Zaktualizowano język",
     "englishOption": "Angielski",
     "sourcesLabel": "Źródła",
     "sourcesLabelHint": "Skonfiguruj źródło łatek i integracji",
@@ -266,7 +269,12 @@
     "updateNotImplemented": "Ta funkcja nie została jeszcze zaimplementowana"
   },
   "contributorsView": {
-    "widgetTitle": "Współtwórcy"
+    "widgetTitle": "Współtwórcy",
+    "patcherContributors": "Program łatający ReVanced",
+    "patchesContributors": "Łatki ReVanced",
+    "integrationsContributors": "Integracje ReVanced",
+    "cliContributors": "CLI ReVanced",
+    "managerContributors": "Menedżer ReVanced"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Niezgodność wersji",

@@ -107,7 +107,9 @@
     "newPatches": "Patch-uri noi",
     "patches": "Patch-uri",
     "doneButton": "Finalizat",
+    "defaultChip": "Implicit",
     "defaultTooltip": "Selectați toate patch-urile implicite",
+    "noneChip": "Niciunul",
     "noneTooltip": "Deselectați toate patch-urile",
     "loadPatchesSelection": "Importă selecția patch-urilor",
     "noSavedPatches": "Nu există patch-uri salvate pentru aplicația selectată.\nApăsați Terminat pentru a salva selecția curentă.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Bucură-te de o experiență mai apropiată de dispozitivul tău",
     "languageLabel": "Limbă",
+    "languageUpdated": "Limbă actualizată",
     "englishOption": "Engleză",
     "sourcesLabel": "Surse",
     "sourcesLabelHint": "Configuraţi sursa patch-urilor şi a integrărilor",
@@ -266,7 +269,12 @@
     "updateNotImplemented": "Această funcție nu a fost încă implementată"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuitori"
+    "widgetTitle": "Contribuitori",
+    "patcherContributors": "Patcher ReVanced",
+    "patchesContributors": "Patch-uri ReVanced",
+    "integrationsContributors": "Integrări ReVanced",
+    "cliContributors": "CLI ReVanced",
+    "managerContributors": "Manager ReVanced"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiune nepotrivită",

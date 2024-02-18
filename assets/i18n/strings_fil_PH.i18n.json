@@ -29,7 +29,8 @@
     "updatesSubtitle": "Mga Pagbabago",
     "patchedSubtitle": "Naka-patch nga aplikasyon",
     "changeLaterSubtitle": "Pwede mo palitan ito sa settings mamaya.",
-    "noUpdates": "Walang pagbabagong mayroon"
+    "noUpdates": "Walang pagbabagong mayroon",
+    "downloadingMessage": "Nagda-download ng update..."
   },
   "applicationItem": {
     "infoButton": "Impormasyon"
