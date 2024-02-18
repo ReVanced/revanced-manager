@@ -33,7 +33,7 @@ class AppSelectorCard extends StatelessWidget {
             vm.selectedApp == null
                 ? t.appSelectorCard.widgetTitle
                 : t.appSelectorCard.widgetTitleSelected,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -114,7 +114,7 @@ class AppSelectorCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                ]
+                ],
               ],
             ),
         ],
