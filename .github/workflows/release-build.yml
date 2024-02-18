@@ -62,8 +62,3 @@ jobs:
         run: |
           echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
           npx semantic-release
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4
-        with: 
-          name: Artifact
-          path: build/app/outputs/apk/release/revanced-manager*.apk
