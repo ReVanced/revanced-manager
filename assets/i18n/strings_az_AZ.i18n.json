@@ -269,12 +269,7 @@
     "updateNotImplemented": "Bu özəllik hələ tətbiq olunmayıb"
   },
   "contributorsView": {
-    "widgetTitle": "Töhfə verənlər",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Töhfə verənlər"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiya uyuşmur",

@@ -16,8 +16,6 @@
   "noShowAgain": "Не показывать снова",
   "add": "Добавить",
   "remove": "Удалить",
-  "showChangelogButton": "",
-  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Панель инструментов",
     "patcherTab": "Патчер",
@@ -28,25 +26,14 @@
     "widgetTitle": "Панель инструментов",
     "updatesSubtitle": "Обновления",
     "patchedSubtitle": "Пропатченные приложения",
-    "changeLaterSubtitle": "",
     "noUpdates": "Нет доступных обновлений",
     "WIP": "В процессе...",
     "noInstallations": "Пропатченные приложения не установлены",
     "installUpdate": "Продолжить установку обновления?",
-    "updateSheetTitle": "",
-    "updateDialogTitle": "",
-    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Список изменений",
-    "updateDialogText": "",
-    "downloadConsentDialogTitle": "",
-    "downloadConsentDialogText": "",
-    "downloadConsentDialogText2": "",
-    "checkUpdateDialogTitle": "",
-    "checkUpdateDialogText": "",
     "notificationTitle": "Обновление загружено",
     "notificationText": "Нажмите, чтобы установить обновление",
     "downloadingMessage": "Загрузка обновления...",
-    "downloadedMessage": "",
     "installingMessage": "Установка обновления...",
     "errorDownloadMessage": "Не удалось загрузить обновление",
     "errorInstallMessage": "Не удалось установить обновление",
@@ -66,18 +53,12 @@
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патч",
-    "armv7WarningDialogText": "",
-    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Некоторые параметры патчей должны быть обязательно установлены."
   },
   "appSelectorCard": {
-    "widgetTitle": "",
-    "widgetTitleSelected": "",
-    "widgetSubtitle": "",
     "noAppsLabel": "Приложения не найдены",
     "currentVersion": "Текущая",
-    "suggestedVersion": "Предложенная",
-    "anyVersion": ""
+    "suggestedVersion": "Предложенная"
   },
   "patchSelectorCard": {
     "widgetTitle": "Выбор патчей",
@@ -90,15 +71,11 @@
     "widgetSubtitle": "Мы онлайн!"
   },
   "appSelectorView": {
-    "viewTitle": "",
-    "searchBarHint": "",
     "storageButton": "Хранилище",
     "selectFromStorageButton": "Выбрать из хранилища",
     "errorMessage": "Невозможно использовать выбранное приложение",
     "downloadToast": "Функция загрузки пока недоступна",
-    "requireSuggestedAppVersionDialogText": "",
-    "featureNotAvailable": "Функция не реализована",
-    "featureNotAvailableText": ""
+    "featureNotAvailable": "Функция не реализована"
   },
   "patchesSelectorView": {
     "viewTitle": "Выбор патчей",
@@ -107,9 +84,7 @@
     "newPatches": "Новые патчи",
     "patches": "Патчи",
     "doneButton": "Готово",
-    "defaultChip": "",
     "defaultTooltip": "Выбрать все стандартные патчи",
-    "noneChip": "",
     "noneTooltip": "Снять выбор всех патчей",
     "loadPatchesSelection": "Загрузка выборки патчей",
     "noSavedPatches": "Нет сохраненной выборки патчей для выбранного приложения.\nНажмите \"Готово\" для сохранения текущего выбора.",
@@ -135,13 +110,11 @@
     "unsupportedDialogText": "Выбор этого патча может привести к ошибкам во время патчинга.\n\nВерсия приложения: ${packageVersion}\nПоддерживаемые версии:\n${supportedVersions}",
     "unsupportedPatchVersion": "Патч не поддерживается этой версией приложения.",
     "unsupportedRequiredOption": "Этот патч содержит обязательную опцию, не поддерживаемую этим приложением",
-    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Использовать стандартный набор"
   },
   "installerView": {
     "widgetTitle": "Установщик",
     "installType": "Выберите тип установки",
-    "installTypeDescription": "",
     "installButton": "Установить",
     "installRootType": "Монтировать",
     "installNonRootType": "Обычный",
@@ -171,7 +144,6 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Наслаждайтесь темой Вашего устройства",
     "languageLabel": "Язык",
-    "languageUpdated": "",
     "englishOption": "Английский",
     "sourcesLabel": "Источники",
     "sourcesLabelHint": "Настройка источника патчей и интеграций",
@@ -197,8 +169,6 @@
     "disablePatchesSelectionWarningText": "Вы собираетесь выключить измененную выборку патчей.\nБудет восстановлен стандартный выбор патчей.\n\nВсе равно выключить?",
     "autoUpdatePatchesLabel": "Автообновление патчей",
     "autoUpdatePatchesHint": "Автоматически обновлять патчи до последней версии",
-    "showUpdateDialogLabel": "",
-    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Показать универсальные патчи",
     "universalPatchesHint": "Отобразить все приложения и универсальные патчи (может замедлить список отображения приложений)",
     "versionCompatibilityCheckLabel": "Проверка совместимости версий",
@@ -269,12 +239,7 @@
     "updateNotImplemented": "Эта возможность ещё не реализована"
   },
   "contributorsView": {
-    "widgetTitle": "Соучастники проекта",
-    "patcherContributors": "",
-    "patchesContributors": "",
-    "integrationsContributors": "",
-    "cliContributors": "",
-    "managerContributors": ""
+    "widgetTitle": "Соучастники проекта"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Несовпадение версий",
