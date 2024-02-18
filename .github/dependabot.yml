@@ -27,4 +27,3 @@ updates:
     target-branch: compose-dev
     schedule:
       interval: monthly
-
