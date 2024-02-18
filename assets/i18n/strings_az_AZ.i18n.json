@@ -17,6 +17,7 @@
   "add": "Əlavə et",
   "remove": "Sil",
   "showChangelogButton": "Dəyişiklik jurnalını göstər",
+  "showUpdateButton": "Güncəlləməni göstər",
   "navigationView": {
     "dashboardTab": "İdarəetmə lövhəsi",
     "patcherTab": "Yamaqlayıcı",
@@ -27,14 +28,25 @@
     "widgetTitle": "İdarəetmə lövhəsi",
     "updatesSubtitle": "Yeniləmələr",
     "patchedSubtitle": "Yamaqlanmış tətbiqlər",
+    "changeLaterSubtitle": "Bunu daha sonra ayarlarda dəyişdirə bilərsiniz.",
     "noUpdates": "Güncəlləmə mövcud deyil",
     "WIP": "Proses davam edir...",
     "noInstallations": "Yamaqlanmış tətbiq quraşdırılmayıb",
     "installUpdate": "Yeniləməni quraşdırmağa davam edilsin?",
+    "updateSheetTitle": "ReVanced Menecerini Güncəllə",
+    "updateDialogTitle": "Güncəlləmə mövcuddur",
+    "updatePatchesSheetTitle": "ReVanced yamaqlarını güncəllə",
     "updateChangelogTitle": "Dəyişiklik jurnalı",
+    "updateDialogText": "${file} üçün yeni bir güncəlləmə var.\n\nHazırkı quraşdırılmış versiya: ${version}.",
+    "downloadConsentDialogTitle": "Lazımi fayllar endirilsin?",
+    "downloadConsentDialogText": "\"ReVanced Meneceri\"nin düzgün işləməsi üçün lazımi faylları endirməsi lazımdır.",
+    "downloadConsentDialogText2": "Bu, sizi ${url} ünvanına bağlayacaq.",
+    "checkUpdateDialogTitle": "Güncəlləmələr yoxlanılsın?",
+    "checkUpdateDialogText": "\"ReVanced Meneceri\"nin güncəlləmələri avto-yoxlamasını istəyirsiniz?",
     "notificationTitle": "Güncəlləmə endirildi",
     "notificationText": "Güncəlləməni quraşdırmaq üçün toxunun",
     "downloadingMessage": "Yeniləmə yüklənilir...",
+    "downloadedMessage": "Güncəlləmə endirildi",
     "installingMessage": "Yeniləmə quraşdırılır...",
     "errorDownloadMessage": "Güncəlləmə endirilə bilmir",
     "errorInstallMessage": "Güncəlləmə quraşdırıla bilmir",
@@ -54,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Yamaqlayıcı",
     "patchButton": "Yamaqla",
+    "armv7WarningDialogText": "ARMv7 cihazlarında yamaqlama hələ dəstəklənmir və xəta verə bilər. Yenə də davam edilsin?",
+    "removedPatchesWarningDialogText": "Aşağıdakı yamaqlar son istifadədən bu yana silindi.\n\n${patches}\n\nYenə də davam edilsin?",
     "requiredOptionDialogText": "Bəzi yamaq seçimləri ayarlanmalıdır."
   },
   "appSelectorCard": {
+    "widgetTitle": "Bir tətbiq seçin",
+    "widgetTitleSelected": "Seçilmiş tətbiq",
+    "widgetSubtitle": "Heç bir tətbiq seçilmədi",
     "noAppsLabel": "Heç bir tətbiq tapılmadı",
     "currentVersion": "Hazırkı",
-    "suggestedVersion": "Təklif edilən"
+    "suggestedVersion": "Təklif edilən",
+    "anyVersion": "Bütün versiyalar"
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaqları seçin",
@@ -72,11 +90,15 @@
     "widgetSubtitle": "Xətdəyik!"
   },
   "appSelectorView": {
+    "viewTitle": "Bir tətbiq seçin",
+    "searchBarHint": "Tətbiq axtar",
     "storageButton": "Anbar",
     "selectFromStorageButton": "Anbardan seç",
     "errorMessage": "Seçilmiş tətbiq istifadə edilə bilmir",
     "downloadToast": "Endirmə hələ əlçatmazdır",
-    "featureNotAvailable": "Özəllik tətbiq edilmədi"
+    "requireSuggestedAppVersionDialogText": "Seçdiyiniz tətbiqin versiyası təklif edilən versiya ilə uyuşmur və bu, gözlənilməz problemlərə səbəb ola bilər. Lütfən təklif edilən versiyanı istifadə edin.\n\nSeçilmiş versiya: v${selected}\nTəklif edilən versiya: v${suggested}\n\nYenə də davam etmək üçün, ayarlarda \"Təklif edilən versiyanı tələb et\"i sıradan çıxarda bilərsiniz.",
+    "featureNotAvailable": "Özəllik tətbiq edilmədi",
+    "featureNotAvailableText": "Bu tətbiq bölünmüş bir APK-dir və yalnız root icazələri ilə qoşularaq yamaqlana və quraşdırıla bilər. Ancaq, anbar sahəsindən tam APK-ni seçərək yamaqlaya və quraşdıra bilərsiniz."
   },
   "patchesSelectorView": {
     "viewTitle": "Yamaqları seçin",
@@ -113,11 +135,13 @@
     "unsupportedDialogText": "Bu yamağı seçmək, yamaqlama xətalarına səbəb ola bilər.\n\nTətbiq versiyası: ${packageVersion} \nDəstəklənən versiyalar:\n${supportedVersions}",
     "unsupportedPatchVersion": "Yamaq, tətbiqin bu versiyası üçün dəstəklənmir.",
     "unsupportedRequiredOption": "Bu yamaqda, bu tətbiq tərəfindən dəstəklənməyən və tələb edilən bir seçim var",
+    "patchesChangeWarningDialogText": "İlkin yamaq seçimi və seçimlərin istifadəsi tövsiyə olunur. Onların dəyişdirilməsi gözlənilməz problemlərlə nəticələnə bilər.\n\nHər hansısa bir yamaq seçimini dəyişdirməzdən əvvəl ayarlarda \"Yamaq seçimini dəyişdirməyə icazə ver\"i işə salmalısınız.",
     "patchesChangeWarningDialogButton": "İlkin seçimi istifadə et"
   },
   "installerView": {
     "widgetTitle": "Quraşdırıcı",
     "installType": "Quraşdırma növünü seçin",
+    "installTypeDescription": "Davam etmək üçün quraşdırma növünü seçin.",
     "installButton": "Quraşdır",
     "installRootType": "Qoş",
     "installNonRootType": "Normal",
@@ -173,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Yamaq seçiminin dəyişdirilməsini sıradan çıxartmaq üzrəsiniz.\nİlkin yamaq seçimi bərpa ediləcək.\n\nYenə də sıradan çıxarılsın?",
     "autoUpdatePatchesLabel": "Yamaqları avto-güncəllə",
     "autoUpdatePatchesHint": "Yamaqları son versiyaya avtomatik güncəllə",
+    "showUpdateDialogLabel": "Güncəlləmə dialoqunu göstər",
+    "showUpdateDialogHint": "Yeni güncəlləmə mövcud olduqda bir dialoq pəncərəsi göstər",
     "universalPatchesLabel": "Universal yamaqları göstər",
     "universalPatchesHint": "Bütün tətbiqləri və universal yamaqları göstər (tətbiqlərin sadalanmasını yavaşlandıra bilər)",
     "versionCompatibilityCheckLabel": "Versiya uyumluluq yoxlanışı",
@@ -243,7 +269,12 @@
     "updateNotImplemented": "Bu özəllik hələ tətbiq olunmayıb"
   },
   "contributorsView": {
-    "widgetTitle": "Töhfə verənlər"
+    "widgetTitle": "Töhfə verənlər",
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiya uyuşmur",

@@ -16,6 +16,8 @@
   "noShowAgain": "Ne jelenjen meg többé",
   "add": "Hozzáadás",
   "remove": "Eltávolítás",
+  "showChangelogButton": "Változások megtekintése",
+  "showUpdateButton": "Frissítések mutatása",
   "navigationView": {
     "dashboardTab": "Irányítópult",
     "patcherTab": "Patchelő",
@@ -26,14 +28,25 @@
     "widgetTitle": "Irányítópult",
     "updatesSubtitle": "Frissítések",
     "patchedSubtitle": "Patchelt alkalmazások",
+    "changeLaterSubtitle": "Ezt később módosíthatja a beállításokban.",
     "noUpdates": "Nincs elérhető frissítés",
     "WIP": "Folyamatban van...",
     "noInstallations": "Nincs telepítve patchelt alkalmazás",
     "installUpdate": "Folytatja a frissítés telepítését?",
+    "updateSheetTitle": "ReVanced Manager frissítése",
+    "updateDialogTitle": "Új frissítés elérhető",
+    "updatePatchesSheetTitle": "ReVanced Patchek frissítése",
     "updateChangelogTitle": "Újdonságok",
+    "updateDialogText": "Új frissítés érhető el a következőhöz: ${file}.\n\nA jelenleg telepített verzió: ${version}.",
+    "downloadConsentDialogTitle": "Letölti a szükséges fájlokat?",
+    "downloadConsentDialogText": "A ReVanced Managernek le kell töltenie a szükséges fájlokat a megfelelő működéshez.",
+    "downloadConsentDialogText2": "Ezzel összekapcsolja a következővel: ${url}.",
+    "checkUpdateDialogTitle": "Frissítések keresése?",
+    "checkUpdateDialogText": "Szeretné, hogy a ReVanced Kezelő automatikusan ellenőrizze a frissítéseket?",
     "notificationTitle": "Frissítés letöltve",
     "notificationText": "Koppintson a frissítés telepítéséhez",
     "downloadingMessage": "Frissítés letöltése...",
+    "downloadedMessage": "Frissítés letöltve",
     "installingMessage": "Frissítés telepítése...",
     "errorDownloadMessage": "Frissítés letöltése sikertelen",
     "errorInstallMessage": "Frissítés telepítése sikertelen",
@@ -45,20 +58,26 @@
   },
   "latestCommitCard": {
     "loadingLabel": "Betöltés...",
-    "timeagoLabel": "Ennyi ideje: ${time}",
+    "timeagoLabel": "Frissítve: ${time}",
     "patcherLabel": "Patchelő: ",
     "managerLabel": "Kezelő: ",
-    "updateButton": "Frissítéskezelő"
+    "updateButton": "Manager frissítése"
   },
   "patcherView": {
     "widgetTitle": "Patchelő",
     "patchButton": "Patch",
+    "armv7WarningDialogText": "A javítás az ARMv7 eszközökön még nem támogatott, és sikertelen lehet. Folytatja?",
+    "removedPatchesWarningDialogText": "A következő patcheket a legutóbbi használatuk óta eltávolították.\n\n${patches}\n\nMindenképpen folytatja?",
     "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani."
   },
   "appSelectorCard": {
+    "widgetTitle": "Válasszon egy alkalmazást",
+    "widgetTitleSelected": "Kiválasztott alkalmazás",
+    "widgetSubtitle": "Nincs alkalmazás kiválasztva",
     "noAppsLabel": "Nem találhatóak alkalmazások",
     "currentVersion": "Jelenlegi",
-    "suggestedVersion": "Javasolt"
+    "suggestedVersion": "Javasolt",
+    "anyVersion": "Bármilyen verzió"
   },
   "patchSelectorCard": {
     "widgetTitle": "Patchek kiválasztása",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "Online vagyunk!"
   },
   "appSelectorView": {
+    "viewTitle": "Válasszon egy alkalmazást",
+    "searchBarHint": "App keresés",
     "storageButton": "Tárhely",
     "selectFromStorageButton": "Kiválasztás a tárhelyről",
     "errorMessage": "A kiválasztott alkalmazás nem használható",
     "downloadToast": "A letöltés funkció még nem érhető el",
-    "featureNotAvailable": "A funkció nincs megvalósítva"
+    "requireSuggestedAppVersionDialogText": "Az alkalmazás kiválasztott verziója nem egyezik a javasolt verzióval. Kérjük, válassza ki a javasolt verziónak megfelelő alkalmazást.\n\nKiválasztott verzió: ${selected}\nJavasolt verzió: ${suggested}\n\nA folytatáshoz kapcsolja ki a „Javasolt alkalmazásverzió megkövetelése” lehetőséget a beállításokban.",
+    "featureNotAvailable": "A funkció nincs megvalósítva",
+    "featureNotAvailableText": "Ez az alkalmazás egy osztott APK, és csak root jogosultságokkal javítható és telepíthető megbízhatóan. A teljes APK-t azonban javíthatja és telepítheti, ha kiválasztja azt a tárhelyről."
   },
   "patchesSelectorView": {
     "viewTitle": "Patchek kiválasztása",
@@ -84,7 +107,9 @@
     "newPatches": "Új patchek",
     "patches": "Patchek",
     "doneButton": "Kész",
+    "defaultChip": "Alapértelmezett",
     "defaultTooltip": "Összes alapértelmezett patch kiválasztása",
+    "noneChip": "Semmi",
     "noneTooltip": "Összes javítás kijelölésének törlése",
     "loadPatchesSelection": "Patch kiválasztás betöltése",
     "noSavedPatches": "Nincs mentett patch a kiválasztott alkalmazáshoz.\nNyomja meg a Kész gombot az aktuális kijelölés mentéséhez.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Ezt a patchet nem biztos hogy sikerül alkalmazni, mert más verzióhoz készült.\n\nAlkalmazás verzió: ${packageVersion}\nJelenleg támogatott verziók:\n${supportedVersions}",
     "unsupportedPatchVersion": "A Patch nem támogatott ehhez az alkalmazásverzióhoz.",
     "unsupportedRequiredOption": "Ez a Patch egy kötelező beállítást tartalmaz, amelyet ez az alkalmazás nem támogat",
+    "patchesChangeWarningDialogText": "Javasoljuk, hogy az alapértelmezett patch lehetőséget és opciókat használja. Ezek megváltoztatása váratlan problémákat okozhat.\n\nMielőtt bármilyen patchet módosítana, be kell kapcsolnia a „Patch módosításának engedélyezése” lehetőséget a beállításokban.",
     "patchesChangeWarningDialogButton": "Használja az alapértelmezett kijelölést"
   },
   "installerView": {
     "widgetTitle": "Telepítő",
     "installType": "Válassza ki a telepítés típusát",
+    "installTypeDescription": "Válassza ki a telepítés típusát a folytatáshoz.",
     "installButton": "Telepítés",
     "installRootType": "Felcsatolás",
     "installNonRootType": "Hagyományos",
@@ -136,14 +163,15 @@
     "teamSectionTitle": "Csapat",
     "debugSectionTitle": "Hibakeresés",
     "advancedSectionTitle": "Haladó",
-    "exportSectionTitle": "Importálás & exportálás",
+    "exportSectionTitle": "Importálás és exportálás",
     "themeModeLabel": "Alkalmazás témája",
     "systemThemeLabel": "Rendszer",
     "lightThemeLabel": "Világos",
-    "darkThemeLabel": "Sötét mód",
-    "dynamicThemeLabel": "Material You",
+    "darkThemeLabel": "Sötét",
+    "dynamicThemeLabel": "Közel Hozzád",
     "dynamicThemeHint": "Élvezd az eszközödhöz közelibb élményt",
     "languageLabel": "Nyelv",
+    "languageUpdated": "Nyelv frissítve",
     "englishOption": "Angol",
     "sourcesLabel": "Források",
     "sourcesLabelHint": "Konfigurálja a javítások és integrációk forrását",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Arra készül, hogy letiltja a patchek kiválasztásának módosítását.\nA javítások alapértelmezett kiválasztása visszaáll.\n\nMindenképpen letiltja?",
     "autoUpdatePatchesLabel": "Patchek automatikus frissítése",
     "autoUpdatePatchesHint": "A patchek automatikus frissítése a legújabb verzióra",
+    "showUpdateDialogLabel": "Frissítési panel megjelenítése",
+    "showUpdateDialogHint": "Panel megjelenítése, ha új frissítés érhető el",
     "universalPatchesLabel": "Univerzális patchek megjelenítése",
     "universalPatchesHint": "Az összes alkalmazás és univerzális patch megjelenítése (lassíthatja az alkalmazáslistát)",
     "versionCompatibilityCheckLabel": "Verziókompatibilitás ellenőrzése",
@@ -239,7 +269,12 @@
     "updateNotImplemented": "Ez a funkció még nem készült el"
   },
   "contributorsView": {
-    "widgetTitle": "Közreműködők"
+    "widgetTitle": "Közreműködők",
+    "patcherContributors": "ReVanced Patchelő",
+    "patchesContributors": "ReVanced Patchek",
+    "integrationsContributors": "ReVanced Integrációk",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verzió ütközés",

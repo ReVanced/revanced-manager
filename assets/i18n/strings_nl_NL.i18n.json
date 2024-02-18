@@ -16,6 +16,8 @@
   "noShowAgain": "Niet meer tonen",
   "add": "Voeg toe",
   "remove": "Verwijderen",
+  "showChangelogButton": "",
+  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "Overzicht",
     "patcherTab": "Patcher",
@@ -26,14 +28,25 @@
     "widgetTitle": "Overzicht",
     "updatesSubtitle": "Updates",
     "patchedSubtitle": "Gepatchte applicaties",
+    "changeLaterSubtitle": "",
     "noUpdates": "Geen updates beschikbaar",
     "WIP": "Bezig met uitvoeren...",
     "noInstallations": "Geen gepatchte applicaties geïnstalleerd",
     "installUpdate": "Doorgaan met het installeren van de update?",
+    "updateSheetTitle": "",
+    "updateDialogTitle": "",
+    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "Wijzigingslogboek",
+    "updateDialogText": "",
+    "downloadConsentDialogTitle": "",
+    "downloadConsentDialogText": "",
+    "downloadConsentDialogText2": "",
+    "checkUpdateDialogTitle": "",
+    "checkUpdateDialogText": "",
     "notificationTitle": "Update gedownload",
     "notificationText": "Tik om de update te installeren",
     "downloadingMessage": "Update wordt gedownload...",
+    "downloadedMessage": "",
     "installingMessage": "Update wordt geïnstalleerd...",
     "errorDownloadMessage": "Update downloaden mislukt",
     "errorInstallMessage": "Update installeren mislukt",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patchen",
+    "armv7WarningDialogText": "",
+    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "Er moeten enkele patch-opties worden ingesteld."
   },
   "appSelectorCard": {
+    "widgetTitle": "",
+    "widgetTitleSelected": "",
+    "widgetSubtitle": "",
     "noAppsLabel": "Geen applicatie gevonden",
     "currentVersion": "Huidige",
-    "suggestedVersion": "Voorgesteld"
+    "suggestedVersion": "Voorgesteld",
+    "anyVersion": ""
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecteer patches",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "We zijn online!"
   },
   "appSelectorView": {
+    "viewTitle": "",
+    "searchBarHint": "",
     "storageButton": "Opslag",
     "selectFromStorageButton": "Selecteer uit opslag",
     "errorMessage": "Kan geselecteerde applicatie niet gebruiken",
     "downloadToast": "Download functie is nog niet beschikbaar",
-    "featureNotAvailable": "Functie niet geïmplementeerd"
+    "requireSuggestedAppVersionDialogText": "",
+    "featureNotAvailable": "Functie niet geïmplementeerd",
+    "featureNotAvailableText": ""
   },
   "patchesSelectorView": {
     "viewTitle": "Selecteer patches",
@@ -84,7 +107,9 @@
     "newPatches": "Nieuwe patches",
     "patches": "Patches",
     "doneButton": "Gereed",
+    "defaultChip": "",
     "defaultTooltip": "Selecteer alle standaard patches",
+    "noneChip": "",
     "noneTooltip": "Alle patches deselecteren",
     "loadPatchesSelection": "Laad patch selectie",
     "noSavedPatches": "Geen opgeslagen patch selectie voor de geselecteerde app.\nDruk op Klaar om de huidige selectie op te slaan.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Het selecteren van deze patch kan leiden tot patch fouten.\n\nApp-versie: ${packageVersion}\nOndersteunde versies:\n${supportedVersions}",
     "unsupportedPatchVersion": "Patch wordt niet ondersteund voor deze app versie.",
     "unsupportedRequiredOption": "Deze patch bevat een verplichte optie die niet wordt ondersteund door deze app",
+    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "Gebruik standaard selectie"
   },
   "installerView": {
     "widgetTitle": "Installatieprogramma",
     "installType": "Selecteer installatietype",
+    "installTypeDescription": "",
     "installButton": "Installeren",
     "installRootType": "Bestijgen",
     "installNonRootType": "Normaal",
@@ -144,6 +171,7 @@
     "dynamicThemeLabel": "Materiaal jij",
     "dynamicThemeHint": "Geniet van een ervaring dichter bij je apparaat",
     "languageLabel": "Taal",
+    "languageUpdated": "",
     "englishOption": "Engels",
     "sourcesLabel": "Bronnen",
     "sourcesLabelHint": "Configureer de bron van patches en integraties",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "U staat op het punt om de selectie van patches uit te schakelen.\nDe standaard selectie van patches zal worden hersteld.\n\nToch uitschakelen?",
     "autoUpdatePatchesLabel": "Patch automatisch bijwerken",
     "autoUpdatePatchesHint": "Patch automatisch bijwerken naar de laatste versie",
+    "showUpdateDialogLabel": "",
+    "showUpdateDialogHint": "",
     "universalPatchesLabel": "Toon universele patches",
     "universalPatchesHint": "Alle apps en universele patches weergeven (kan de app-lijst vertragen)",
     "versionCompatibilityCheckLabel": "Versie compatibiliteitscontrole",
@@ -239,7 +269,12 @@
     "updateNotImplemented": "Deze functie is nog niet geïmplementeerd"
   },
   "contributorsView": {
-    "widgetTitle": "Bijdragers"
+    "widgetTitle": "Bijdragers",
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verkeerde versie",

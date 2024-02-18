@@ -107,7 +107,9 @@
     "newPatches": "Novas modificações",
     "patches": "Modificações",
     "doneButton": "Concluído",
+    "defaultChip": "Predefinição",
     "defaultTooltip": "Selecionar todas as modificações padrão",
+    "noneChip": "Nenhum",
     "noneTooltip": "Desselecionar todas as modificações",
     "loadPatchesSelection": "Carregar a seleção de modificações",
     "noSavedPatches": "Não há nenhuma modificação guardada para a aplicação selecionada.\nPrima Concluído para guardar a seleção atual.",
@@ -169,6 +171,7 @@
     "dynamicThemeLabel": "O Teu Material",
     "dynamicThemeHint": "Aproveite uma experiência mais próxima do tema do seu dispositivo",
     "languageLabel": "Idioma",
+    "languageUpdated": "Idioma atualizado",
     "englishOption": "Inglês",
     "sourcesLabel": "Fontes",
     "sourcesLabelHint": "Configurar a fonte de correções e integrações",
@@ -266,7 +269,12 @@
     "updateNotImplemented": "Este recurso ainda não foi implementado"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores"
+    "widgetTitle": "Contribuidores",
+    "patcherContributors": "Modificador ReVanced",
+    "patchesContributors": "Modificações ReVanced",
+    "integrationsContributors": "Integrações ReVanced",
+    "cliContributors": "Cliente ReVanced",
+    "managerContributors": "Gestor ReVanced"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versão incompatível",

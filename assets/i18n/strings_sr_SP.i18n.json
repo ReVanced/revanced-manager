@@ -16,6 +16,8 @@
   "noShowAgain": "Не приказуј поново",
   "add": "Додај",
   "remove": "Уклони",
+  "showChangelogButton": "Прикажи евиденцију промена",
+  "showUpdateButton": "Прикажи ажурирање",
   "navigationView": {
     "dashboardTab": "Контролна табла",
     "patcherTab": "Печер",
@@ -26,14 +28,25 @@
     "widgetTitle": "Контролна табла",
     "updatesSubtitle": "Ажурирања",
     "patchedSubtitle": "Печоване апликације",
+    "changeLaterSubtitle": "Ово можете касније да промените у подешавањима.",
     "noUpdates": "Нема доступних ажурирања",
     "WIP": "Радови у току…",
     "noInstallations": "Нема инсталираних печованих апликација",
     "installUpdate": "Наставити са инсталацијом ажурирања?",
+    "updateSheetTitle": "Ажурирање ReVanced Manager-а",
+    "updateDialogTitle": "Ново ажурирање је доступно",
+    "updatePatchesSheetTitle": "Ажурирање ReVanced печева",
     "updateChangelogTitle": "Евиденција промена",
+    "updateDialogText": "Ново ажурирање је доступно за ${file}.\n\nТренутно инсталирана верзија је ${version}.",
+    "downloadConsentDialogTitle": "Преузети неопходне фајлове?",
+    "downloadConsentDialogText": "ReVanced Manager мора да преузме неопходне фајлове да би исправно радио.",
+    "downloadConsentDialogText2": "Ово ће вас повезати са ${url}.",
+    "checkUpdateDialogTitle": "Провера ажурирања?",
+    "checkUpdateDialogText": "Желите ли да ReVanced Manager аутоматски проверава да ли постоје ажурирања?",
     "notificationTitle": "Ажурирање је преузето",
     "notificationText": "Додирните да бисте инсталирали ажурирање",
     "downloadingMessage": "Преузимање ажурирања…",
+    "downloadedMessage": "Ажурирање је преузето",
     "installingMessage": "Инсталирање ажурирања…",
     "errorDownloadMessage": "Није могуће преузети ажурирање",
     "errorInstallMessage": "Није могуће инсталирати ажурирање",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Печер",
     "patchButton": "Печуј",
+    "armv7WarningDialogText": "Печовање на ARMv7 уређајима још увек није подржано и можда неће успети. Ипак наставити?",
+    "removedPatchesWarningDialogText": "Следећи печеви су уклоњени од последњег пута када сте их користили.\n\n${patches}\n\nИпак наставити?",
     "requiredOptionDialogText": "Неке опције морају бити подешене."
   },
   "appSelectorCard": {
+    "widgetTitle": "Изабери апликацију",
+    "widgetTitleSelected": "Изабрана апликација",
+    "widgetSubtitle": "Није изабрана ниједна апликација",
     "noAppsLabel": "Ниједна апликација није пронађена",
     "currentVersion": "Тренутна верзија",
-    "suggestedVersion": "Препоручена верзија"
+    "suggestedVersion": "Препоручена верзија",
+    "anyVersion": "Било која верзија"
   },
   "patchSelectorCard": {
     "widgetTitle": "Изаберите печеве",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "Онлајн смо!"
   },
   "appSelectorView": {
+    "viewTitle": "Изаберите апликацију",
+    "searchBarHint": "Тражите апликацију",
     "storageButton": "Из меморије",
     "selectFromStorageButton": "Изабери из меморије",
     "errorMessage": "Није могуће користити изабрану апликацију",
     "downloadToast": "Преузимање тренутно није доступно",
-    "featureNotAvailable": "Функција није имплементирана"
+    "requireSuggestedAppVersionDialogText": "Верзија апликације коју сте изабрали није препоручена, што може довести до неочекиваних проблема. Изаберите препоручену верзију.\n\nИзабрана верзија: ${selected}\nПрепоручена верзија: ${suggested}\n\nДа бисте ипак наставили, онемогућите опцију „Захтевај препоручену верзију апликације” у подешавањима.",
+    "featureNotAvailable": "Функција није имплементирана",
+    "featureNotAvailableText": "Ова апликација је подељени APK и може се печовати и поуздано инсталирати само монтирањем са root дозволама. Међутим, можете да печујете и инсталирате потпуни APK тако што ћете га изабрати из меморије."
   },
   "patchesSelectorView": {
     "viewTitle": "Изаберите печеве",
@@ -84,7 +107,9 @@
     "newPatches": "Нови печеви",
     "patches": "Печеви",
     "doneButton": "Готово",
+    "defaultChip": "Подразумевани",
     "defaultTooltip": "Изабери све подразумеване печеве",
+    "noneChip": "Ниједан",
     "noneTooltip": "Поништи избор свих печева",
     "loadPatchesSelection": "Учитај избор печева",
     "noSavedPatches": "За изабрану апликацију нема сачуваног избора печева.\nПритисните „Готово” да бисте сачували тренутни избор.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Избором овог печа може доћи до грешака приликом печовања.\n\nВерзија апликације: ${packageVersion}\nПодржане верзије:\n${supportedVersions}",
     "unsupportedPatchVersion": "Печ није применљив на ову верзију апликације.",
     "unsupportedRequiredOption": "Овај печ садржи обавезну опцију коју ова апликација не подржава",
+    "patchesChangeWarningDialogText": "Препоручује се да користите подразумевани избор и опције печева. Њихова промена може довести до неочекиваних проблема.\n\nМораћете да укључите „Дозволи промену избора печева” у подешавањима пре него што промените било који избор печева.",
     "patchesChangeWarningDialogButton": "Користи подразумевани избор"
   },
   "installerView": {
     "widgetTitle": "Програм за инсталацију",
     "installType": "Избор типа инсталације",
+    "installTypeDescription": "Изаберите тип инсталације да бисте наставили.",
     "installButton": "Инсталирај",
     "installRootType": "Привилегована",
     "installNonRootType": "Обична",
@@ -144,6 +171,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Уживајте у теми која се прилагођава вашем уређају",
     "languageLabel": "Језик",
+    "languageUpdated": "Језик је ажуриран",
     "englishOption": "енглески",
     "sourcesLabel": "Извори",
     "sourcesLabelHint": "Подесите извор печева и интеграција",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Управо ћете да онемогућите промену избора печева.\nПодразумевани избор печева ће бити враћен.\n\nИпак онемогућити?",
     "autoUpdatePatchesLabel": "Аутоматски ажурирај печеве",
     "autoUpdatePatchesHint": "Инсталира најновију верзију печева аутоматски",
+    "showUpdateDialogLabel": "Прикажи дијалог о ажурирању",
+    "showUpdateDialogHint": "Приказивање дијалога када је ново ажурирање доступно",
     "universalPatchesLabel": "Прикажи универзалне печеве",
     "universalPatchesHint": "Приказује све апликације и универзалне печеве (може да успори листу апликација)",
     "versionCompatibilityCheckLabel": "Провера компатибилности верзије",
@@ -239,7 +269,12 @@
     "updateNotImplemented": "Ова функција још увек није имплементирана"
   },
   "contributorsView": {
-    "widgetTitle": "Сарадници"
+    "widgetTitle": "Сарадници",
+    "patcherContributors": "ReVanced Patcher",
+    "patchesContributors": "ReVanced печеви",
+    "integrationsContributors": "ReVanced интеграције",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Верзија се не поклапа",

@@ -197,7 +197,7 @@
     "disablePatchesSelectionWarningText": "Yama seçimini değiştirmeyi devre dışı bırakmak üzeresiniz.\nVarsayılan yama seçimi geri yüklenecektir.\n\nYine de devre dışı bırakılsın mı?",
     "autoUpdatePatchesLabel": "Yamaları otomatik güncelle",
     "autoUpdatePatchesHint": "Yamaları otomatik olarak en son sürüme güncelle",
-    "showUpdateDialogLabel": "Güncelleme diyaloğunu göster",
+    "showUpdateDialogLabel": "Güncelleme penceresini göster",
     "showUpdateDialogHint": "Yeni bir güncelleme olduğunda bir diyalog göster",
     "universalPatchesLabel": "Ortak yamaları göster",
     "universalPatchesHint": "Tüm uygulamaları ve ortak yamaları göster (uygulamaları listelemeyi yavaşlatabilir)",
@@ -269,7 +269,12 @@
     "updateNotImplemented": "Bu özellik henüz geliştirilmedi"
   },
   "contributorsView": {
-    "widgetTitle": "Katkıda bulunanlar"
+    "widgetTitle": "Katkıda bulunanlar",
+    "patcherContributors": "ReVanced Patcher",
+    "patchesContributors": "ReVanced Patches",
+    "integrationsContributors": "ReVanced Integrations",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Sürüm uyuşmazlığı",

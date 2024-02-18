@@ -16,6 +16,8 @@
   "noShowAgain": "Không hiển thị lại điều này",
   "add": "Thêm",
   "remove": "Loại bỏ",
+  "showChangelogButton": "Hiển thị nhật ký thay đổi",
+  "showUpdateButton": "Hiển thị cập nhật",
   "navigationView": {
     "dashboardTab": "Tổng quan",
     "patcherTab": "Trình vá",
@@ -26,14 +28,25 @@
     "widgetTitle": "Tổng quan",
     "updatesSubtitle": "Các bản cập nhật",
     "patchedSubtitle": "Ứng dụng đã vá",
+    "changeLaterSubtitle": "Bạn có thể thay đổi cài đặt này sau.",
     "noUpdates": "Không có bản cập nhật mới",
     "WIP": "Đang thực hiện...",
     "noInstallations": "Không có ứng dụng đã vá nào được cài đặt",
     "installUpdate": "Tiếp tục cài đặt bản cập nhật?",
+    "updateSheetTitle": "Cập nhật ReVanced Manager",
+    "updateDialogTitle": "Có bản cập nhật mới",
+    "updatePatchesSheetTitle": "Cập nhật Các bản vá ReVanced",
     "updateChangelogTitle": "Nhật ký thay đổi",
+    "updateDialogText": "Có một bản cập nhật cho ${file}.\n\nPhiên bản đã cài hiện tại là ${version}.",
+    "downloadConsentDialogTitle": "Tải các tập tin cần thiết?",
+    "downloadConsentDialogText": "ReVanced Manager cần tải các tập tin cần thiết để hoạt động đúng cách.",
+    "downloadConsentDialogText2": "Điều này sẽ kết nối bạn đến ${url}.",
+    "checkUpdateDialogTitle": "Kiểm tra cập nhật?",
+    "checkUpdateDialogText": "Bạn có muốn ReVanced Manager kiểm tra bản cập nhật tự động?",
     "notificationTitle": "Đã tải xuống bản cập nhật",
     "notificationText": "Nhấn để cài đặt bản cập nhật",
     "downloadingMessage": "Đang tải xuống bản cập nhật...",
+    "downloadedMessage": "Đã tải xuống bản cập nhật",
     "installingMessage": "Đang cài đặt bản cập nhật...",
     "errorDownloadMessage": "Không thể tải về bản cập nhật",
     "errorInstallMessage": "Không thể cài đặt bản cập nhật",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
+    "armv7WarningDialogText": "Việc vá trên các thiết bị ARMv7 chưa được hỗ trợ và có thể thất bại. Vẫn tiếp tục?",
+    "removedPatchesWarningDialogText": "Những bản vá sau đây đã bị loại bỏ từ lần cuối bạn dùng chúng.\n\n${patches}\n\nVẫn tiếp tục?",
     "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
   },
   "appSelectorCard": {
+    "widgetTitle": "Chọn một ứng dụng",
+    "widgetTitleSelected": "Ứng dụng đã chọn",
+    "widgetSubtitle": "Không có ứng dụng được chọn",
     "noAppsLabel": "Không tìm thấy ứng dụng nào",
     "currentVersion": "Hiện tại",
-    "suggestedVersion": "Được đề xuất"
+    "suggestedVersion": "Được đề xuất",
+    "anyVersion": "Phiên bản bất kỳ"
   },
   "patchSelectorCard": {
     "widgetTitle": "Chọn bản vá",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "Chúng tôi đang trực tuyến!"
   },
   "appSelectorView": {
+    "viewTitle": "Chọn một ứng dụng",
+    "searchBarHint": "Tìm ứng dụng",
     "storageButton": "Lưu trữ",
     "selectFromStorageButton": "Chọn từ bộ nhớ",
     "errorMessage": "Không thể dùng ứng dụng đã chọn",
     "downloadToast": "Tính năng tải về chưa khả dụng",
-    "featureNotAvailable": "Tính năng chưa triển khai"
+    "requireSuggestedAppVersionDialogText": "Phiên bản của ứng dụng bạn đã chọn không trùng khớp vói phiên bản được đề xuất có thể dẫn đến các phát sinh không mong muốn. Xin chọn ứng dụng khớp với phiên bản được đề xuất.\n\nPhiên bản đã chọn: ${selected}\nPhiên bản được đề xuất: ${suggested}\n\nĐể tiếp tục, tắt \"Yêu cầu phiên bản ứng dụng được đề xuất\" trong cài đặt.",
+    "featureNotAvailable": "Tính năng chưa triển khai",
+    "featureNotAvailableText": "Ứng dụng này là một APK tách rời và chỉ có thể được vá và cài một cách tin cậy bằng cách gắn kết với quyền root. Tuy nhiên, bạn có thể vá và cài APK đầy đủ bằng cách chọn chúng từ lưu trữ."
   },
   "patchesSelectorView": {
     "viewTitle": "Chọn bản vá",
@@ -84,7 +107,9 @@
     "newPatches": "Các bản vá mới",
     "patches": "Các bản vá",
     "doneButton": "Hoàn tất",
+    "defaultChip": "Mặc định",
     "defaultTooltip": "Chọn tất cả bản vá mặc định",
+    "noneChip": "Không có",
     "noneTooltip": "Bỏ chọn tất cả bản vá",
     "loadPatchesSelection": "Nạp các bản vá được chọn",
     "noSavedPatches": "Không có bản vá cho ứng dụng được chọn\nNhấn Hoàn tất để lưu lựa chọn hiện tại.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Chọn bản vá này có thể gây lỗi khi vá.\n\nPhiên bản ứng dụng: ${packageVersion}\nPhiên bản được hỗ trợ: ${supportedVersions}",
     "unsupportedPatchVersion": "Bản vá không được hỗ trợ cho phiên bản ứng dụng này.",
     "unsupportedRequiredOption": "Bản vá này chứa một tùy chọn bắt buộc không được hỗ trợ bởi ứng dụng này",
+    "patchesChangeWarningDialogText": "Bạn nên sử dụng lựa chọn bản vá mặc định và các tùy chọn. Thay đổi chúng có thể dẫn đến các vấn đề không mong muốn.\n\nBạn cần bật \"Cho phép thay đổi lựa chọn đường dẫn\" trong cài đặt trước khi thay đổi bất kỳ lựa chọn đường dẫn nào.",
     "patchesChangeWarningDialogButton": "Dùng lựa chọn mặc định"
   },
   "installerView": {
     "widgetTitle": "Trình cài đặt",
     "installType": "Chọn kiểu cài đặt",
+    "installTypeDescription": "Chọn kiểu cài đặt để thực hiện với nó.",
     "installButton": "Cài đặt",
     "installRootType": "Gắn kết",
     "installNonRootType": "Thông thường",
@@ -144,6 +171,7 @@
     "dynamicThemeLabel": "Cá nhân",
     "dynamicThemeHint": "Tận hưởng trải nghiệm gần hơn với thiết bị của bạn",
     "languageLabel": "Ngôn ngữ",
+    "languageUpdated": "Ngôn ngữ đã cập nhập",
     "englishOption": "Tiếng Anh",
     "sourcesLabel": "Nguồn",
     "sourcesLabelHint": "Cấu hình nguồn các bản vá và tích hợp",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "Bạn chuẩn bị tắt thay đổi lựa chọn các bản vá.\nLựa chọn mặc định các bản vá sẽ được khôi phục.\n\nVẫn tắt?",
     "autoUpdatePatchesLabel": "Tự động cập nhật các bản vá",
     "autoUpdatePatchesHint": "Tự động cập nhật các bản vá lên phiên bản mới nhất",
+    "showUpdateDialogLabel": "Hiện hộp thoại cập nhật",
+    "showUpdateDialogHint": "Hiện một hộp thoại khi có một bản cập nhật",
     "universalPatchesLabel": "Các bản vá phổ quát",
     "universalPatchesHint": "Hiển thị tất cả các ứng dụng và các bản vá phổ quát (có thể gây chậm danh sách ứng dụng)",
     "versionCompatibilityCheckLabel": "Kiểm tra khả năng tương thích của phiên bản",
@@ -239,7 +269,12 @@
     "updateNotImplemented": "Tính năng này chưa được triển khai"
   },
   "contributorsView": {
-    "widgetTitle": "Những người đóng góp"
+    "widgetTitle": "Những người đóng góp",
+    "patcherContributors": "Trình vá ReVanced",
+    "patchesContributors": "Bản vá ReVanced",
+    "integrationsContributors": "Tích hợp ReVanced",
+    "cliContributors": "Giao tiếp dòng lệnh (CLI) ReVanced",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Phiên bản không phù hợp",

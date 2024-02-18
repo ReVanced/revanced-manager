@@ -16,6 +16,8 @@
   "noShowAgain": "পুনরায় দেখাবেন না",
   "add": "যুক্ত করুন",
   "remove": "অপসারণ করুন",
+  "showChangelogButton": "",
+  "showUpdateButton": "",
   "navigationView": {
     "dashboardTab": "ড্যাশবোর্ড",
     "patcherTab": "প্যাচার",
@@ -26,14 +28,25 @@
     "widgetTitle": "ড্যাশবোর্ড",
     "updatesSubtitle": "আপডেটসমূহ",
     "patchedSubtitle": "প্যাচড অ্যাপ্লিকেশনগুলো",
+    "changeLaterSubtitle": "",
     "noUpdates": "কোন আপডেট নেই",
     "WIP": "কাজ হচ্ছে...",
     "noInstallations": "কোন প্যাচড অ্যাপ্লিকেশন ইনস্টল করা হয়নি",
     "installUpdate": "আপডেট ইনস্টল করতে এগিয়ে যেতে চান?",
+    "updateSheetTitle": "",
+    "updateDialogTitle": "",
+    "updatePatchesSheetTitle": "",
     "updateChangelogTitle": "পরিবর্তনসমূহ",
+    "updateDialogText": "",
+    "downloadConsentDialogTitle": "",
+    "downloadConsentDialogText": "",
+    "downloadConsentDialogText2": "",
+    "checkUpdateDialogTitle": "",
+    "checkUpdateDialogText": "",
     "notificationTitle": "আপডেট ডাউনলোড হয়েছে",
     "notificationText": "আপডেট ইনস্টল করতে চাপ দিন",
     "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে...",
+    "downloadedMessage": "",
     "installingMessage": "আপডেট ইনস্টল করা হচ্ছে...",
     "errorDownloadMessage": "আপডেট ডাউনলোড করতে সফল হয় নি",
     "errorInstallMessage": "আপডেট ইনস্টল করতে সফল হয় নি",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "প্যাচার",
     "patchButton": "প্যাচ",
+    "armv7WarningDialogText": "",
+    "removedPatchesWarningDialogText": "",
     "requiredOptionDialogText": "কিছু প্যাচ অপশন সেট করতে হবে।"
   },
   "appSelectorCard": {
+    "widgetTitle": "",
+    "widgetTitleSelected": "",
+    "widgetSubtitle": "",
     "noAppsLabel": "কোন অ্যাপ্লিকেশন পাওয়া যায়নি",
     "currentVersion": "বর্তমান",
-    "suggestedVersion": "প্রস্তাবিত"
+    "suggestedVersion": "প্রস্তাবিত",
+    "anyVersion": ""
   },
   "patchSelectorCard": {
     "widgetTitle": "প্যাচসমূহ নির্বাচন করুন",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "আমরা অনলাইনে!"
   },
   "appSelectorView": {
+    "viewTitle": "",
+    "searchBarHint": "",
     "storageButton": "স্টোরেজ",
     "selectFromStorageButton": "স্টোরেজ থেকে নির্বাচন করুন",
     "errorMessage": "নির্বাচিত অ্যাপ্লিকেশনটি ব্যবহার করা সম্ভব নয়",
     "downloadToast": "ডাউনলোড ফাংশন এখনো উপলব্ধ হয়নি",
-    "featureNotAvailable": "ফিচার সম্পাদন করা হয়নি"
+    "requireSuggestedAppVersionDialogText": "",
+    "featureNotAvailable": "ফিচার সম্পাদন করা হয়নি",
+    "featureNotAvailableText": ""
   },
   "patchesSelectorView": {
     "viewTitle": "প্যাচ নির্বাচন করুন",
@@ -84,7 +107,9 @@
     "newPatches": "নতুন প্যাচসমূহ",
     "patches": "প্যাচসমূহ",
     "doneButton": "সম্পন্ন হয়েছে",
+    "defaultChip": "",
     "defaultTooltip": "সকল পূর্ব-নির্ধারিত প্যাচ নির্বাচন করুন",
+    "noneChip": "",
     "noneTooltip": "সকল প্যাচ অনির্বাচন করুন",
     "loadPatchesSelection": "নির্বাচিত প্যাচ লোড করুন",
     "noSavedPatches": "নির্বাচিত অ্যাপের জন্য কোন সংরক্ষিত প্যাচ নেই।\nবর্তমানে নির্বাচিত প্যাচ সংরক্ষণ করতে সম্পন্ন হয়েছে চাপুন।",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "এই প্যাচটি নির্বাচন করলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nঅ্যাপ সংস্করণ: ${packageVersion}\nসমর্থিত সংস্করণ:\n${supportedVersions}",
     "unsupportedPatchVersion": "এই অ্যাপ সংস্করণের জন্য প্যাচ সমর্থিত নয়।",
     "unsupportedRequiredOption": "এই প্যাচটিতে একটি প্রয়োজনীয় অপশন রয়েছে যা এই অ্যাপটি সমর্থন করে না",
+    "patchesChangeWarningDialogText": "",
     "patchesChangeWarningDialogButton": "পূর্বনির্ধারিত নির্বাচন ব্যবহার করুন"
   },
   "installerView": {
     "widgetTitle": "ইনস্টলার",
     "installType": "ইনস্টল করার ধরণ নির্বাচন করুন",
+    "installTypeDescription": "",
     "installButton": "ইনস্টল করুন",
     "installRootType": "মাউন্ট",
     "installNonRootType": "সাধারণ",
@@ -144,6 +171,7 @@
     "dynamicThemeLabel": "ম্যাটেরিয়াল ইউ",
     "dynamicThemeHint": "আপনার ডিভাইসের লুকের কাছাকাছি অভিজ্ঞতা নিন",
     "languageLabel": "ভাষা",
+    "languageUpdated": "",
     "englishOption": "ইংরেজি",
     "sourcesLabel": "উৎস",
     "sourcesLabelHint": "প্যাচ ও ইন্ট্রিগেশন এর সোর্স কনফিগার করুন",
@@ -169,6 +197,8 @@
     "disablePatchesSelectionWarningText": "আপনি নির্বাচিত প্যাচ পরিবর্তনকে নিষ্ক্রিয় করতে যাচ্ছেন।\nপূর্বনির্ধারিত নির্বাচিত প্যাচসমূহ ফিরিয়ে আনা হবে।\n\nযেকোন ভাবে নিষ্ক্রিয় করতে চান?",
     "autoUpdatePatchesLabel": "প্যাচসমূহ স্বয়ংক্রিয়ভাবে আপডেট করুন",
     "autoUpdatePatchesHint": "প্যাচসমূহ স্বয়ংক্রিয়ভাবে সর্বশেষ সংস্করণে আপডেট হবে",
+    "showUpdateDialogLabel": "",
+    "showUpdateDialogHint": "",
     "universalPatchesLabel": "বৈশ্বিক প্যাচসমূহ দেখান",
     "universalPatchesHint": "সকল অ্যাপ এবং বৈশ্বিক প্যাচসমূহ দেখায় (অ্যাপ লিস্ট দেখানো একটু ধীর হতে পারে)",
     "versionCompatibilityCheckLabel": "সংস্করণ সামঞ্জস্যতা পরীক্ষা করা",
@@ -239,7 +269,12 @@
     "updateNotImplemented": "এই ফিচারটি এখনো কার্যকর করা হয়নি"
   },
   "contributorsView": {
-    "widgetTitle": "অবদানকারীগণ"
+    "widgetTitle": "অবদানকারীগণ",
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "সংস্করণ মেলেনি",
@@ -249,6 +284,22 @@
     "install_failed_verification_failure": "যাচাইকরণ ব্যর্থ হয়েছে",
     "status_failure_invalid": "ইনস্টল সঠিক নয়",
     "install_failed_version_downgrade": "ডাউনগ্রেড সম্ভব নয়",
-    "status_failure_conflict": "ইনস্টল কনফ্লিক্ট হচ্ছে"
+    "status_failure_conflict": "ইনস্টল কনফ্লিক্ট হচ্ছে",
+    "status_failure_storage": "",
+    "status_failure_incompatible": "",
+    "status_failure_timeout": "",
+    "status_unknown": "",
+    "mount_version_mismatch_description": "",
+    "mount_no_root_description": "",
+    "mount_missing_installation_description": "",
+    "status_failure_timeout_description": "",
+    "status_failure_storage_description": "",
+    "status_failure_invalid_description": "",
+    "status_failure_incompatible_description": "",
+    "status_failure_conflict_description": "",
+    "status_failure_blocked_description": "",
+    "install_failed_verification_failure_description": "",
+    "install_failed_version_downgrade_description": "",
+    "status_unknown_description": ""
   }
 }
