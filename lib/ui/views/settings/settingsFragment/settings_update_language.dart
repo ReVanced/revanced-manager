@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:language_code/language_code.dart';
 import 'package:revanced_manager/app/app.locator.dart';
@@ -60,7 +61,11 @@ class SUpdateLanguage extends BaseViewModel {
                     try {
                       languageCode =
                           LanguageCodes.fromCode(locale.languageCode);
-                    } catch (e) {}
+                    } catch (e) {
+                      if (kDebugMode) {
+                        print(e);
+                      }
+                    }
                     if (languageCode != null) {
                       languageNativeName = Text(languageCode.nativeName);
                     }

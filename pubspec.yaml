@@ -72,6 +72,7 @@ dependencies:
   wakelock_plus: ^1.1.3
 
 dev_dependencies:
+  analyzer: ^6.4.1
   build_runner: any
   flutter_lints: ^3.0.1
   injectable_generator: ^2.1.5
