@@ -20,3 +20,11 @@ updates:
     target-branch: dev
     schedule:
       interval: monthly
+
+  - package-ecosystem: gradle
+    labels: [ "ReVanced Manager Compose" ]
+    directory: /
+    target-branch: compose-dev
+    schedule:
+      interval: monthly
+
