@@ -53,14 +53,6 @@ class ManagerAPI {
   String? patchesVersion = '';
   String? integrationsVersion = '';
 
-  bool isDefaultPatchesRepo() {
-    return getPatchesRepo().toLowerCase() == defaultPatchesRepo;
-  }
-
-  bool isDefaultIntegrationsRepo() {
-    return getIntegrationsRepo().toLowerCase() == defaultIntegrationsRepo;
-  }
-
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
@@ -73,13 +65,22 @@ class ManagerAPI {
     }
 
     // Migrate to new API URL if not done yet as the old one is sunset.
-    final bool hasMigrated = _prefs.getBool('migratedToNewApiUrl') ?? false;
-    if (!hasMigrated) {
+    final bool hasMigratedToNewApi = _prefs.getBool('migratedToNewApiUrl') ?? false;
+    if (!hasMigratedToNewApi) {
       final String apiUrl = getApiUrl().toLowerCase();
       if (apiUrl.contains('releases.revanced.app')) {
         await setApiUrl(''); // Reset to default.
         _prefs.setBool('migratedToNewApiUrl', true);
       }
+    }
+
+    final bool hasMigratedToAlternativeSource = _prefs.getBool('migratedToAlternativeSource') ?? false;
+    if (!hasMigratedToAlternativeSource) {
+      final String patchesRepo = getPatchesRepo();
+      final String integrationsRepo = getIntegrationsRepo();
+      final bool usingAlternativeSources = patchesRepo.toLowerCase() != defaultPatchesRepo || integrationsRepo.toLowerCase() != defaultIntegrationsRepo;
+      _prefs.setBool('useAlternativeSources', usingAlternativeSources);
+      _prefs.setBool('migratedToAlternativeSource', true);
     }
   }
 
@@ -102,14 +103,7 @@ class ManagerAPI {
   }
 
   String getRepoUrl() {
-    return _prefs.getString('repoUrl') ?? defaultRepoUrl;
-  }
-
-  Future<void> setRepoUrl(String url) async {
-    if (url.isEmpty || url == ' ') {
-      url = defaultRepoUrl;
-    }
-    await _prefs.setString('repoUrl', url);
+    return defaultRepoUrl;
   }
 
   String getPatchesDownloadURL() {
@@ -217,6 +211,15 @@ class ManagerAPI {
       return jsonEncode(patch.toJson());
     }).toList();
     await _prefs.setStringList('usedPatches-$packageName', patchesJson);
+  }
+
+  void useAlternativeSources(bool value) {
+    _prefs.setBool('useAlternativeSources', value);
+    _toast.showBottom(t.settingsView.restartAppForChanges);
+  }
+
+  bool isUsingAlternativeSources() {
+    return _prefs.getBool('useAlternativeSources') ?? false;
   }
 
   Option? getPatchOption(String packageName, String patchName, String key) {
@@ -416,7 +419,7 @@ class ManagerAPI {
 
   Future<File?> downloadPatches() async {
     try {
-      final String repoName = getPatchesRepo();
+      final String repoName = !isUsingAlternativeSources() ? defaultPatchesRepo : getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
       final String url = getPatchesDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
@@ -435,7 +438,7 @@ class ManagerAPI {
 
   Future<File?> downloadIntegrations() async {
     try {
-      final String repoName = getIntegrationsRepo();
+      final String repoName = !isUsingAlternativeSources() ? defaultIntegrationsRepo : getIntegrationsRepo();
       final String currentVersion = await getCurrentIntegrationsVersion();
       final String url = getIntegrationsDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
@@ -460,7 +463,7 @@ class ManagerAPI {
   }
 
   Future<String?> getLatestPatchesReleaseTime() async {
-    if (isDefaultPatchesRepo()) {
+    if (!isUsingAlternativeSources()) {
       return await _revancedAPI.getLatestReleaseTime(
         '.json',
         defaultPatchesRepo,
@@ -493,7 +496,7 @@ class ManagerAPI {
   }
 
   Future<String?> getLatestIntegrationsVersion() async {
-    if (isDefaultIntegrationsRepo()) {
+    if (!isUsingAlternativeSources()) {
       return await _revancedAPI.getLatestReleaseVersion(
         '.apk',
         defaultIntegrationsRepo,
@@ -509,7 +512,7 @@ class ManagerAPI {
   }
 
   Future<String?> getLatestPatchesVersion() async {
-    if (isDefaultPatchesRepo()) {
+    if (!isUsingAlternativeSources()) {
       return await _revancedAPI.getLatestReleaseVersion(
         '.json',
         defaultPatchesRepo,
