@@ -419,7 +419,7 @@ class ManagerAPI {
 
   Future<File?> downloadPatches() async {
     try {
-      final String repoName = getPatchesRepo();
+      final String repoName = !isUsingAlternativeSources() ? defaultPatchesRepo : getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
       final String url = getPatchesDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
@@ -438,7 +438,7 @@ class ManagerAPI {
 
   Future<File?> downloadIntegrations() async {
     try {
-      final String repoName = getIntegrationsRepo();
+      final String repoName = !isUsingAlternativeSources() ? defaultIntegrationsRepo : getIntegrationsRepo();
       final String currentVersion = await getCurrentIntegrationsVersion();
       final String url = getIntegrationsDownloadURL();
       return await _githubAPI.getPatchesReleaseFile(
