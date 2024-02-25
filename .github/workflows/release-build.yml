@@ -11,7 +11,7 @@ on:
       - "android/**"
       - "assets/**"
       - "lib/**"
-      - ".releaserc.js"
+      - ".releaserc"
       - "pubspec.yaml"
 
 jobs:
