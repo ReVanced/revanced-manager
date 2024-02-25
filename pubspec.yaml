@@ -44,7 +44,7 @@ dependencies:
   language_code:
     git:
       url: https://github.com/Ushie/language_code
-      ref: 21b71892d1ce07fb8ea51ac2b474e435360fb6f7 # Branch: feat/add-filipino
+      ref: 21b71892d1ce07fb8ea51ac2b474e435360fb6f7 # Branch: feat/add-Filipino, Upstream PR: https://github.com/lamnhan066/language_code/pull/1 
   logcat:
     git:
       url: https://github.com/BenjaminHalko/logcat
