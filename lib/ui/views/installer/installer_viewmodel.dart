@@ -37,6 +37,7 @@ class InstallerViewModel extends BaseViewModel {
   String headerLogs = '';
   bool isRooted = false;
   bool isPatching = true;
+  bool isInstalling = false;
   bool isInstalled = false;
   bool hasErrors = false;
   bool isCanceled = false;
@@ -437,6 +438,7 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
+    isInstalling = true;
     try {
       _app.isRooted = installAsRoot;
       if (headerLogs != 'Installing...') {
@@ -486,6 +488,7 @@ class InstallerViewModel extends BaseViewModel {
         print(e);
       }
     }
+    isInstalling = false;
   }
 
   void exportResult() {
