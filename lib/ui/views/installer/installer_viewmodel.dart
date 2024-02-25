@@ -499,14 +499,10 @@ class InstallerViewModel extends BaseViewModel {
           'Installation failed',
         );
       }
-      isInstalling = false;
     } on Exception catch (e) {
-      isInstalling = false;
       if (kDebugMode) {
         print(e);
       }
-    } finally {
-      isInstalling = false;
     }
     isInstalling = false;
   }

@@ -22,31 +22,26 @@ class InstallerView extends StatelessWidget {
           bottom: model.isPatching,
           child: Scaffold(
             floatingActionButton: Visibility(
-              visible: [
-                !model.isPatching,
-                !model.hasErrors,
-                !model.isInstalling,
-              ].every((element) => element),
-              child: model.isInstalled
-                  ? HapticFloatingActionButtonExtended(
-                      label: I18nText('installerView.openButton'),
-                      icon: const Icon(Icons.open_in_new),
-                      onPressed: () {
-                        model
-                          ..openApp()
-                          ..cleanPatcher();
-                        Navigator.of(context).pop();
-                      },
-                      elevation: 0,
-                    )
-                  : HapticFloatingActionButtonExtended(
-                      label: I18nText('installerView.installButton'),
-                      icon: const Icon(Icons.file_download_outlined),
-                      onPressed: model.isInstalling
-                          ? null
-                          : () => model.installTypeDialog(context),
-                      elevation: 0,
-                    ),
+              visible:
+                  !model.isPatching && !model.hasErrors && !model.isInstalling,
+              child: HapticFloatingActionButtonExtended(
+                label: I18nText(
+                  model.isInstalled
+                      ? 'installerView.openButton'
+                      : 'installerView.installButton',
+                ),
+                icon: model.isInstalled
+                    ? const Icon(Icons.open_in_new)
+                    : const Icon(Icons.file_download_outlined),
+                onPressed: model.isInstalled
+                    ? () => {
+                          model.openApp(),
+                          model.cleanPatcher(),
+                          Navigator.of(context).pop(),
+                        }
+                    : () => model.installTypeDialog(context),
+                elevation: 0,
+              ),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endContained,
