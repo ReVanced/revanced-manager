@@ -164,6 +164,7 @@
     "debugSectionTitle": "偵錯",
     "advancedSectionTitle": "進階",
     "exportSectionTitle": "匯入和匯出",
+    "dataSectionTitle": "資料來源",
     "themeModeLabel": "應用程式主題",
     "systemThemeLabel": "系統預設",
     "lightThemeLabel": "亮色模式",
@@ -173,17 +174,16 @@
     "languageLabel": "語言",
     "languageUpdated": "已更新語言",
     "englishOption": "英文",
-    "sourcesLabel": "來源",
-    "sourcesLabelHint": "設定修補檔和整合功能的來源",
+    "sourcesLabel": "替代來源",
+    "sourcesLabelHint": "設定 ReVanced 補丁和 ReVanced 整合的替代來源",
     "sourcesIntegrationsLabel": "整合來源",
+    "useAlternativeSources": "使用替代來源",
     "sourcesResetDialogTitle": "重設",
     "sourcesResetDialogText": "確定要將來源資訊重設為預設值嗎？",
     "apiURLResetDialogText": "確定要重設 API URL 至預設值嗎？",
-    "sourcesUpdateNote": "注意：修補檔將自動更新至最新版本。\n\n此操作將向伺服器透露您的 IP 位址。",
     "apiURLLabel": "API 鏈接",
-    "apiURLHint": "設定要使用的 API 的網址",
+    "apiURLHint": "設定 ReVanced 管理器的 API URL",
     "selectApiURL": "API 鏈接",
-    "hostRepositoryLabel": "儲存庫 API",
     "orgPatchesLabel": "修補檔組織",
     "sourcesPatchesLabel": "修補檔來源",
     "orgIntegrationsLabel": "整合組織",
@@ -269,7 +269,11 @@
     "updateNotImplemented": "這項功能尚未實作"
   },
   "contributorsView": {
-    "widgetTitle": "貢獻者"
+    "widgetTitle": "貢獻者",
+    "patchesContributors": "ReVanced 補丁",
+    "integrationsContributors": "ReVanced 整合",
+    "cliContributors": "ReVanced 命令行介面",
+    "managerContributors": "ReVanced 管理器"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "版本不相符",
