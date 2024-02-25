@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
@@ -93,13 +93,10 @@ class IntAndStringPatchOption extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
-                    I18nText(
-                      'patchOptionsView.requiredOption',
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                    Text(
+                      t.patchOptionsView.requiredOption,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                   ],
@@ -240,14 +237,11 @@ class IntStringLongListPatchOption extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.add, size: 20),
-                        I18nText(
-                          'add',
-                          child: const Text(
-                            '',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        Text(
+                          t.add,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -279,13 +273,10 @@ class UnsupportedPatchOption extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: I18nText(
-            'patchOptionsView.unsupportedOption',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 16,
-              ),
+          child: Text(
+            t.patchOptionsView.unsupportedOption,
+            style: const TextStyle(
+              fontSize: 16,
             ),
           ),
         ),
@@ -426,8 +417,11 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                     child: RichText(
                       text: TextSpan(
                         text: e.key,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                         ),
                         children: [
                           TextSpan(
@@ -449,13 +443,10 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
               ..add(
                 DropdownMenuItem(
                   value: '',
-                  child: I18nText(
-                    'patchOptionsView.customValue',
-                    child: const Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                  child: Text(
+                    t.patchOptionsView.customValue,
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -488,25 +479,22 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                 isStringOption ? TextInputType.text : TextInputType.number,
             decoration: InputDecoration(
               suffixIcon: PopupMenuButton(
-                tooltip: FlutterI18n.translate(
-                  context,
-                  'patchOptionsView.tooltip',
-                ),
+                tooltip: t.patchOptionsView.tooltip,
                 itemBuilder: (BuildContext context) {
                   return [
                     if (isArrayOption)
                       PopupMenuItem(
-                        value: 'remove',
-                        child: I18nText('remove'),
+                        value: t.remove,
+                        child: Text(t.remove),
                       ),
                     if (isStringOption) ...[
                       PopupMenuItem(
-                        value: 'patchOptionsView.selectFilePath',
-                        child: I18nText('patchOptionsView.selectFilePath'),
+                        value: t.patchOptionsView.selectFilePath,
+                        child: Text(t.patchOptionsView.selectFilePath),
                       ),
                       PopupMenuItem(
-                        value: 'patchOptionsView.selectFolder',
-                        child: I18nText('patchOptionsView.selectFolder'),
+                        value: t.patchOptionsView.selectFolder,
+                        child: Text(t.patchOptionsView.selectFolder),
                       ),
                     ],
                   ];

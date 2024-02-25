@@ -15,7 +15,13 @@ This page will guide you through building ReVanced Manager from source.
    flutter pub get
    ```
 
-4\. Delete conflicting outputs
+4\. Generate translation file
+
+   ```sh
+   dart run slang
+   ```
+
+5\. Delete conflicting outputs
 
 > [!TIP]
 > Must be run every time you sync your local repository with the remote repository.
@@ -24,9 +30,7 @@ This page will guide you through building ReVanced Manager from source.
    dart run build_runner build --delete-conflicting-outputs
    ```
 
-
-
-5\. Build the APK
+6\. Build the APK
 
    ```sh
    flutter build apk

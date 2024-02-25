@@ -1,7 +1,8 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
@@ -15,26 +16,31 @@ class AppSelectorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = locator<PatcherViewModel>();
+
+
+    String? suggestedVersion;
+    if (vm.selectedApp != null) {
+      suggestedVersion = vm.getSuggestedVersionString(context);
+    }
+
     return CustomCard(
       onTap: onPressed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          I18nText(
-            locator<PatcherViewModel>().selectedApp == null
-                ? 'appSelectorCard.widgetTitle'
-                : 'appSelectorCard.widgetTitleSelected',
-            child: const Text(
-              '',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
+          Text(
+            vm.selectedApp == null
+                ? t.appSelectorCard.widgetTitle
+                : t.appSelectorCard.widgetTitleSelected,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 8),
-          if (locator<PatcherViewModel>().selectedApp == null)
-            I18nText('appSelectorCard.widgetSubtitle')
+          if (vm.selectedApp == null)
+            Text(t.appSelectorCard.widgetSubtitle)
           else
             Row(
               children: <Widget>[
@@ -42,9 +48,9 @@ class AppSelectorCard extends StatelessWidget {
                   height: 18.0,
                   child: ClipOval(
                     child: Image.memory(
-                      locator<PatcherViewModel>().selectedApp == null
+                      vm.selectedApp == null
                           ? Uint8List(0)
-                          : locator<PatcherViewModel>().selectedApp!.icon,
+                          : vm.selectedApp!.icon,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -52,13 +58,13 @@ class AppSelectorCard extends StatelessWidget {
                 const SizedBox(width: 6),
                 Flexible(
                   child: Text(
-                    locator<PatcherViewModel>().getAppSelectionString(),
+                    vm.getAppSelectionString(),
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
             ),
-          if (locator<PatcherViewModel>().selectedApp == null)
+          if (vm.selectedApp == null)
             Container()
           else
             Column(
@@ -66,49 +72,49 @@ class AppSelectorCard extends StatelessWidget {
               children: [
                 const SizedBox(height: 4),
                 Text(
-                  locator<PatcherViewModel>().getCurrentVersionString(context),
+                  vm.selectedApp!.packageName,
                 ),
-                Row(
-                  children: [
-                    Material(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      child: InkWell(
-                        onTap: () {
-                          locator<PatcherViewModel>()
-                              .searchSuggestedVersionOnWeb();
-                        },
+                if (suggestedVersion!.isNotEmpty &&
+                    suggestedVersion != vm.selectedApp!.version) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Material(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                locator<PatcherViewModel>()
-                                    .getSuggestedVersionString(context),
-                                style: TextStyle(
+                        child: InkWell(
+                          onTap: () {
+                            vm.queryVersion(suggestedVersion!);
+                          },
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  t.suggested(
+                                    version: suggestedVersion,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.search,
+                                  size: 16,
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onSecondaryContainer,
                                 ),
-                              ),
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.search,
-                                size: 16,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ],
             ),
         ],

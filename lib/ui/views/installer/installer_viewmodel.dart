@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -50,14 +50,8 @@ class InstallerViewModel extends BaseViewModel {
       try {
         FlutterBackground.initialize(
           androidConfig: FlutterBackgroundAndroidConfig(
-            notificationTitle: FlutterI18n.translate(
-              context,
-              'installerView.notificationTitle',
-            ),
-            notificationText: FlutterI18n.translate(
-              context,
-              'installerView.notificationText',
-            ),
+            notificationTitle: t.installerView.notificationTitle,
+            notificationText: t.installerView.notificationText,
             notificationIcon: const AndroidResource(
               name: 'ic_notification',
             ),
@@ -221,8 +215,6 @@ class InstallerViewModel extends BaseViewModel {
     String suggestedVersion = _patcherAPI.getSuggestedVersion(_app.packageName);
     if (suggestedVersion.isEmpty) {
       suggestedVersion = 'Any';
-    } else {
-      suggestedVersion = 'v$suggestedVersion';
     }
     return suggestedVersion;
   }
@@ -283,26 +275,26 @@ class InstallerViewModel extends BaseViewModel {
     ];
 
     Clipboard.setData(ClipboardData(text: formattedLogs.join('\n')));
-    _toast.showBottom('installerView.copiedToClipboard');
+    _toast.showBottom(t.installerView.copiedToClipboard);
   }
 
   Future<void> screenshotDetected(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText(
-          'warning',
+        title: Text(
+          t.warning,
         ),
         icon: const Icon(Icons.warning),
         content: SingleChildScrollView(
-          child: I18nText('installerView.screenshotDetected'),
+          child: Text(t.installerView.screenshotDetected),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: I18nText('noButton'),
+            child: Text(t.noButton),
           ),
           FilledButton(
             onPressed: () {
@@ -310,7 +302,7 @@ class InstallerViewModel extends BaseViewModel {
               showPopupScreenshotWarning = true;
               Navigator.of(context).pop();
             },
-            child: I18nText('yesButton'),
+            child: Text(t.yesButton),
           ),
         ],
       ),
@@ -324,8 +316,8 @@ class InstallerViewModel extends BaseViewModel {
         context: context,
         barrierDismissible: false,
         builder: (innerContext) => AlertDialog(
-          title: I18nText(
-            'installerView.installType',
+          title: Text(
+            t.installerView.installType,
           ),
           icon: const Icon(Icons.file_download_outlined),
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -342,20 +334,17 @@ class InstallerViewModel extends BaseViewModel {
                         horizontal: 20,
                         vertical: 10,
                       ),
-                      child: I18nText(
-                        'installerView.installTypeDescription',
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                      child: Text(
+                        t.installerView.installTypeDescription,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),
                     RadioListTile(
-                      title: I18nText('installerView.installNonRootType'),
+                      title: Text(t.installerView.installNonRootType),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
                       value: 0,
@@ -365,7 +354,7 @@ class InstallerViewModel extends BaseViewModel {
                       },
                     ),
                     RadioListTile(
-                      title: I18nText('installerView.installRootType'),
+                      title: Text(t.installerView.installRootType),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
                       value: 1,
@@ -376,14 +365,11 @@ class InstallerViewModel extends BaseViewModel {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: I18nText(
-                        'installerView.warning',
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                      child: Text(
+                        t.installerView.warning,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                       ),
                     ),
@@ -397,14 +383,14 @@ class InstallerViewModel extends BaseViewModel {
               onPressed: () {
                 Navigator.of(innerContext).pop();
               },
-              child: I18nText('cancelButton'),
+              child: Text(t.cancelButton),
             ),
             FilledButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
                 installResult(context, installType.value == 1);
               },
-              child: I18nText('installerView.installButton'),
+              child: Text(t.installerView.installButton),
             ),
           ],
         ),
@@ -414,24 +400,22 @@ class InstallerViewModel extends BaseViewModel {
         context: context,
         barrierDismissible: false,
         builder: (innerContext) => AlertDialog(
-          title: I18nText(
-            'warning',
-          ),
+          title: Text(t.warning),
           contentPadding: const EdgeInsets.all(16),
-          content: I18nText('installerView.warning'),
+          content: Text(t.installerView.warning),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
               },
-              child: I18nText('cancelButton'),
+              child: Text(t.cancelButton),
             ),
             FilledButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
                 installResult(context, false);
               },
-              child: I18nText('installerView.installButton'),
+              child: Text(t.installerView.installButton),
             ),
           ],
         ),
@@ -545,25 +529,23 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool> onWillPop(BuildContext context) async {
-    if (isPatching) {
-      if (!cancel) {
-        cancel = true;
-        _toast.showBottom('installerView.pressBackAgain');
-      } else if (!isCanceled) {
-        await stopPatcher();
-      } else {
-        _toast.showBottom('installerView.noExit');
-      }
-      return false;
+  Future<void> onPopAttempt(BuildContext context) async {
+    if (!cancel) {
+      cancel = true;
+      _toast.showBottom(t.installerView.pressBackAgain);
+    } else if (!isCanceled) {
+      await stopPatcher();
+    } else {
+      _toast.showBottom(t.installerView.noExit);
     }
+  }
+
+  void onPop() {
     if (!cancel) {
       cleanPatcher();
     } else {
       _patcherAPI.cleanPatcher();
     }
-    screenshotCallback.dispose();
-    Navigator.of(context).pop();
-    return true;
+    ScreenshotCallback().dispose();
   }
 }

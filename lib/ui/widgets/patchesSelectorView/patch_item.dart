@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
-import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_checkbox.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_custom_card.dart';
 
@@ -163,7 +162,7 @@ class _PatchItemState extends State<PatchItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: TextButton.icon(
-                                    label: I18nText('warning'),
+                                    label: Text(t.warning),
                                     icon: const Icon(
                                       Icons.warning_amber_outlined,
                                       size: 20.0,
@@ -216,19 +215,18 @@ class _PatchItemState extends State<PatchItem> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('warning'),
-        content: I18nText(
-          'patchItem.unsupportedDialogText',
-          translationParams: {
-            'packageVersion': widget.packageVersion,
-            'supportedVersions':
+        title: Text(t.warning),
+        content: Text(
+          t.patchItem.unsupportedDialogText(
+            packageVersion: widget.packageVersion,
+            supportedVersions:
                 '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
-          },
+          ),
         ),
         actions: <Widget>[
           FilledButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
         ],
       ),
@@ -239,14 +237,14 @@ class _PatchItemState extends State<PatchItem> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: I18nText('notice'),
-        content: I18nText(
-          'patchItem.unsupportedRequiredOption',
+        title: Text(t.notice),
+        content: Text(
+          t.patchItem.unsupportedRequiredOption,
         ),
         actions: <Widget>[
           FilledButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: I18nText('okButton'),
+            child: Text(t.okButton),
           ),
         ],
       ),

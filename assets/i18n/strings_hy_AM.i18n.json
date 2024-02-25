@@ -1,0 +1,20 @@
+{
+  "okButton": "Այո",
+  "navigationView": {},
+  "homeView": {},
+  "applicationItem": {},
+  "latestCommitCard": {},
+  "patcherView": {},
+  "appSelectorCard": {},
+  "patchSelectorCard": {},
+  "socialMediaCard": {},
+  "appSelectorView": {},
+  "patchesSelectorView": {},
+  "patchOptionsView": {},
+  "patchItem": {},
+  "installerView": {},
+  "settingsView": {},
+  "appInfoView": {},
+  "contributorsView": {},
+  "installErrorDialog": {}
+}
