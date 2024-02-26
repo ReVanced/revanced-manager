@@ -1,23 +1,15 @@
-name: PR Build
+name: Build pull request
 
 on:
   workflow_dispatch:
     inputs:
-      # Flutter
-      flutter-branch:
-        description: Flutter branch
-        type: choice
-        default: 'stable'
-        options: 
-          - stable
-          - beta
-          - dev
-          - master
+      # Enable or disable cache
       flutter-cache:
         description: Cache
         type: boolean
         default: true
-      # Application configuration
+      
+      # Select app flavour
       app-flavour:
         description: App flavour
         default: 'release'
@@ -26,22 +18,23 @@ on:
           - release
           - debug
           - profile
-      # Pull Request
+      
+      # Select pull request
       pr-number:
-        description: PR number (No hashtag)
+        description: PR number (Without hashtag)
         required: true
 
-run-name: "Build PR ${{ inputs.pr-number }}"
+run-name: "Build pull request ${{ inputs.pr-number }}"
         
 jobs:
   build:
-    name: Build the application
+    name: Build
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - name: Setup
+      - name: Setup pull request
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -50,73 +43,74 @@ jobs:
           gh repo set-default "${{ github.repository }}"
           gh pr checkout "${{ inputs.pr-number }}"
           
-          echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
       - name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-          cache: gradle
-          
-      - name: Setup Flutter
+          fetch-depth: 0
+
+      - name: Cache Gradle
+        uses: burrunan/gradle-cache-action@v1
+
+      - name: Setup Java
+        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ inputs.flutter-branch }}
+          channel: "stable"
           cache: ${{ inputs.flutter-cache }}
-          
-      - name: Install Flutter dependencies
+
+      - name: Get dependencies
         run: flutter pub get
-      - name: Generate translation with Slang
+
+      - name: Generate translations
         run: dart run slang
-      - name: Generate files with Builder
-        run: dart run build_runner build --delete-conflicting-outputs 
-        
-      - name: Build with Flutter
+
+      - name: Generate code files
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build
         continue-on-error: true
         id: flutter-build
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           flutter build apk --"${{ inputs.app-flavour }}";
-          
-      - name: Prepare to comment
+
+      - name: Prepare comment
         run: |
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ ReVanced Manager ${{ env.COMMIT_HASH }} build succeeded." >> $GITHUB_ENV
+            echo "MESSAGE=✅ Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           else
-            echo "MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
+            echo "MESSAGE=🚫 Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           fi
-          
-      - name: "Comment to Pull Request #${{ inputs.pr-number }}"
+
+      - name: "Comment on pull request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
         with:
           GITHUB_TOKEN: ${{ github.token }}
           pr_number: ${{ inputs.pr-number }}
           mode: recreate
           message: |
-            ## ⚒️ ReVanced PR Build workflow
+            ## ⚒️ Build status
             
             ${{ env.MESSAGE }}
             
-            You can see more details in run [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
+            Details: [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
 
-            ### ⚙️ Overview
+            ### ⚙️ Workflow run configuration
+
+            - Flutter cache: ${{ inputs.flutter-cache }}
             - App flavor: ${{ inputs.app-flavour }}
-            - Branch: ${{ inputs.flutter-branch }}
-            - Start time: ${{ env.DATETIME }}
 
-      - name: Upload build
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error
-          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
-          path: | 
+          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})
+          path: |
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
             build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
