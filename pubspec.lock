@@ -562,10 +562,11 @@ packages:
   language_code:
     dependency: "direct main"
     description:
-      name: language_code
-      sha256: ca1e026cc5d4ceeeb03beb73c6fc695ff091e00cec76e089394a365917a37909
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "21b71892d1ce07fb8ea51ac2b474e435360fb6f7"
+      resolved-ref: "21b71892d1ce07fb8ea51ac2b474e435360fb6f7"
+      url: "https://github.com/Ushie/language_code"
+    source: git
     version: "0.4.0"
   leak_tracker:
     dependency: transitive
