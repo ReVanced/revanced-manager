@@ -47,7 +47,7 @@ class InstallerView extends StatelessWidget {
                           model.cleanPatcher(),
                           Navigator.of(context).pop(),
                         }
-                    : () => model.installResult(context),
+                    : () => model.installTypeDialog(context),
                 elevation: 0,
               ),
             ),
