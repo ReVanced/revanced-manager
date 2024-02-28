@@ -48,72 +48,73 @@ class _NotInstalledAppItem extends State<NotInstalledAppItem> {
             const SizedBox(width: 12),
             Expanded(
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 4,
-                      children: [
-                        Text(
-                          widget.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 4,
+                    children: [
+                      Text(
+                        widget.name,
+                        style: const TextStyle(
+                          fontSize: 16,
                         ),
-                        Text(
-                          widget.patchesCount == 1
-                              ? '• ${widget.patchesCount} patch'
-                              : '• ${widget.patchesCount} patches',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                      ),
+                      Text(
+                        widget.patchesCount == 1
+                            ? '• ${widget.patchesCount} patch'
+                            : '• ${widget.patchesCount} patches',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Material(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Material(
+                        color:
+                            Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: InkWell(
+                          onTap: widget.onLinkTap,
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
-                          child: InkWell(
-                            onTap: widget.onLinkTap,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    t.suggested(
-                                      version: widget.suggestedVersion.isEmpty
-                                          ? t.appSelectorCard.anyVersion
-                                          : 'v${widget.suggestedVersion}',
-                                    ),
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  t.suggested(
+                                    version: widget.suggestedVersion.isEmpty
+                                        ? t.appSelectorCard.anyVersion
+                                        : 'v${widget.suggestedVersion}',
                                   ),
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    Icons.search,
-                                    size: 16,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.search,
+                                  size: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

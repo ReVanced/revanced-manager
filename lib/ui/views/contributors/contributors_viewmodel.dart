@@ -14,9 +14,9 @@ class ContributorsViewModel extends BaseViewModel {
     final Map<String, List<dynamic>> contributors =
         await _managerAPI.getContributors();
     patcherContributors = contributors[_managerAPI.defaultPatcherRepo] ?? [];
-    patchesContributors = contributors[_managerAPI.getPatchesRepo().toLowerCase()] ?? [];
+    patchesContributors = contributors[_managerAPI.defaultPatchesRepo] ?? [];
     integrationsContributors =
-        contributors[_managerAPI.getIntegrationsRepo().toLowerCase()] ?? [];
+        contributors[_managerAPI.defaultIntegrationsRepo] ?? [];
     cliContributors = contributors[_managerAPI.defaultCliRepo] ?? [];
     managerContributors = contributors[_managerAPI.defaultManagerRepo] ?? [];
     notifyListeners();

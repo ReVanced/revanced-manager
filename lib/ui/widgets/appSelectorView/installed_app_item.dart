@@ -110,7 +110,7 @@ class _InstalledAppItemState extends State<InstalledAppItem> {
                                 Text(
                                   t.suggested(
                                     version: widget.suggestedVersion.isEmpty
-                                        ? Text(t.appSelectorCard.anyVersion)
+                                        ? t.appSelectorCard.anyVersion
                                         : 'v${widget.suggestedVersion}',
                                   ),
                                 ),

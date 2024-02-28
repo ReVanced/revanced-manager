@@ -34,8 +34,9 @@ class SUpdateLanguage extends BaseViewModel {
   }
 
   Future<void> showLanguagesDialog(BuildContext parentContext) {
-    final ValueNotifier<String> selectedLanguageCode =
-        ValueNotifier(LocaleSettings.currentLocale.languageCode);
+    final ValueNotifier<String> selectedLanguageCode = ValueNotifier(
+      '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}',
+    );
     // initLang();
 
     // Return a dialog with list for each language supported by the application.
@@ -54,26 +55,24 @@ class SUpdateLanguage extends BaseViewModel {
               child: ListBody(
                 children: AppLocale.values.map(
                   (locale) {
-                    LanguageCodes? languageCode;
-                    Text? languageNativeName;
-
-                    try {
-                      languageCode =
-                          LanguageCodes.fromCode(locale.languageCode);
-                    } catch (e) {}
-                    if (languageCode != null) {
-                      languageNativeName = Text(languageCode.nativeName);
-                    }
+                    final LanguageCodes languageCode = LanguageCodes.fromCode(
+                      '${locale.languageCode}_${locale.countryCode}',
+                      orElse: () => LanguageCodes.fromCode(locale.languageCode),
+                    );
 
                     return RadioListTile(
                       title: Text(
-                        languageCode?.englishName ?? locale.languageCode,
+                        languageCode.englishName,
                       ),
-                      subtitle: languageNativeName,
-                      value: locale.languageCode == selectedLanguageCode.value,
+                      subtitle: Text(
+                        '${languageCode.nativeName} (${locale.languageCode}${locale.countryCode != null ? '-${locale.countryCode}' : ''})',
+                      ),
+                      value: '${locale.languageCode}-${locale.countryCode}' ==
+                          selectedLanguageCode.value,
                       groupValue: true,
                       onChanged: (value) {
-                        selectedLanguageCode.value = locale.languageCode;
+                        selectedLanguageCode.value =
+                            '${locale.languageCode}-${locale.countryCode}';
                       },
                     );
                   },

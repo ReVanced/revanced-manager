@@ -16,18 +16,22 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => WillPopScope(
-        /* 
-          TODO(any): migrate to [PopScope],
-          we've tried to migrate it two times but 
-          reverted it because we couldn't exit out of the screen. 
-        */
+      builder: (context, model, child) => PopScope(
+        canPop: !model.isPatching,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            model.onPop();
+          } else {
+            model.onPopAttempt(context);
+          }
+        },
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
           child: Scaffold(
             floatingActionButton: Visibility(
-              visible: !model.isPatching && !model.hasErrors,
+              visible:
+                  !model.isPatching && !model.hasErrors && !model.isInstalling,
               child: HapticFloatingActionButtonExtended(
                 label: Text(
                   model.isInstalled
@@ -83,7 +87,7 @@ class InstallerView extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  onBackButtonPressed: () => model.onWillPop(context),
+                  onBackButtonPressed: () => Navigator.maybePop(context),
                   bottom: PreferredSize(
                     preferredSize: const Size(double.infinity, 1.0),
                     child: GradientProgressIndicator(progress: model.progress),
@@ -111,7 +115,6 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onWillPop: () => model.onWillPop(context),
       ),
     );
   }

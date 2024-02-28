@@ -11,7 +11,6 @@ on:
       - "android/**"
       - "assets/**"
       - "lib/**"
-      - ".releaserc.js"
       - "pubspec.yaml"
 
 jobs:
@@ -25,6 +24,11 @@ jobs:
         with:
           java-version: "17"
           distribution: "zulu"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - uses: subosito/flutter-action@v2
         with:
@@ -57,8 +61,3 @@ jobs:
         run: |
           echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
           npx semantic-release
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4
-        with: 
-          name: Artifact
-          path: build/app/outputs/apk/release/revanced-manager*.apk

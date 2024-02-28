@@ -28,28 +28,11 @@ class DynamicThemeBuilder extends StatefulWidget {
 class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
     with WidgetsBindingObserver {
   Brightness brightness = PlatformDispatcher.instance.platformBrightness;
-  final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangePlatformBrightness() {
-    setState(() {
-      brightness = PlatformDispatcher.instance.platformBrightness;
-    });
-    if (_managerAPI.getThemeMode() < 2) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          systemNavigationBarIconBrightness: brightness == Brightness.light
-              ? Brightness.dark
-              : Brightness.light,
-        ),
-      );
-    }
   }
 
   @override
@@ -70,6 +53,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
         );
         final ThemeData darkDynamicTheme = ThemeData(
+          brightness: Brightness.dark,
           useMaterial3: true,
           navigationBarTheme: NavigationBarThemeData(
             labelTextStyle: MaterialStateProperty.all(

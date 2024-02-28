@@ -4,7 +4,7 @@ homepage: https://github.com/ReVanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.19.0-dev.11+101900011
+version: 1.19.0-dev.17+101900017
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -41,7 +41,10 @@ dependencies:
   injectable: ^2.1.1
   intl: ^0.18.0
   json_annotation: ^4.8.1
-  language_code: ^0.4.0
+  language_code:
+    git:
+      url: https://github.com/Ushie/language_code
+      ref: 21b71892d1ce07fb8ea51ac2b474e435360fb6f7 # Branch: feat/add-Filipino, Upstream PR: https://github.com/lamnhan066/language_code/pull/1 
   logcat:
     git:
       url: https://github.com/BenjaminHalko/logcat
@@ -72,6 +75,7 @@ dependencies:
   wakelock_plus: ^1.1.3
 
 dev_dependencies:
+  analyzer: ^6.4.1
   build_runner: any
   flutter_lints: ^3.0.1
   injectable_generator: ^2.1.5

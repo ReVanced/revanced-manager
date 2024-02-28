@@ -37,6 +37,7 @@ class InstallerViewModel extends BaseViewModel {
   String headerLogs = '';
   bool isRooted = false;
   bool isPatching = true;
+  bool isInstalling = false;
   bool isInstalled = false;
   bool hasErrors = false;
   bool isCanceled = false;
@@ -394,7 +395,7 @@ class InstallerViewModel extends BaseViewModel {
             FilledButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
-                installResult(context);
+                installResult(context, installType.value == 1);
               },
               child: Text(t.installerView.installButton),
             ),
@@ -419,7 +420,7 @@ class InstallerViewModel extends BaseViewModel {
             FilledButton(
               onPressed: () {
                 Navigator.of(innerContext).pop();
-                installResult(context);
+                installResult(context, false);
               },
               child: Text(t.installerView.installButton),
             ),
@@ -443,7 +444,8 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> installResult(BuildContext context) async {
+  Future<void> installResult(BuildContext context, bool installAsRoot) async {
+    isInstalling = true;
     try {
       _app.isRooted = await _managerAPI.installTypeDialog(context);
       if (headerLogs != 'Installing...') {
@@ -478,7 +480,7 @@ class InstallerViewModel extends BaseViewModel {
           'Installation canceled',
         );
       } else if (response == 10) {
-        installResult(context);
+        installResult(context, installAsRoot);
       } else {
         update(
           .85,
@@ -491,6 +493,7 @@ class InstallerViewModel extends BaseViewModel {
         print(e);
       }
     }
+    isInstalling = false;
   }
 
   void exportResult() {
@@ -531,25 +534,23 @@ class InstallerViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool> onWillPop(BuildContext context) async {
-    if (isPatching) {
-      if (!cancel) {
-        cancel = true;
-        _toast.showBottom(t.installerView.pressBackAgain);
-      } else if (!isCanceled) {
-        await stopPatcher();
-      } else {
-        _toast.showBottom(t.installerView.noExit);
-      }
-      return false;
+  Future<void> onPopAttempt(BuildContext context) async {
+    if (!cancel) {
+      cancel = true;
+      _toast.showBottom(t.installerView.pressBackAgain);
+    } else if (!isCanceled) {
+      await stopPatcher();
+    } else {
+      _toast.showBottom(t.installerView.noExit);
     }
+  }
+
+  void onPop() {
     if (!cancel) {
       cleanPatcher();
     } else {
       _patcherAPI.cleanPatcher();
     }
-    screenshotCallback.dispose();
-    Navigator.of(context).pop();
-    return true;
+    ScreenshotCallback().dispose();
   }
 }

@@ -148,17 +148,12 @@
     "dynamicThemeHint": "Nikmati pengalaman lebih dekat ke perangkat Anda",
     "languageLabel": "Bahasa",
     "englishOption": "Bahasa Inggris",
-    "sourcesLabel": "Sumber",
-    "sourcesLabelHint": "Setel sumber dari tambalan dan pemaduan",
     "sourcesIntegrationsLabel": "Sumber Integrasi",
     "sourcesResetDialogTitle": "Atur ulang",
     "sourcesResetDialogText": "Apakah Anda yakin ingin mengatur ulang sumber kustom ke bawaannya?",
     "apiURLResetDialogText": "Apakah Anda yakin ingin mengatur ulang URL API ke bawaan?",
-    "sourcesUpdateNote": "Catatan: Tambalan ini akan diperbarui otomatis ke versi terkini.\n\nIni akan menampilkan alamat IP Anda ke server.",
     "apiURLLabel": "URL API",
-    "apiURLHint": "Setel URL dari API yang digunakan",
     "selectApiURL": "URL API",
-    "hostRepositoryLabel": "API Repositori",
     "orgPatchesLabel": "Perapihan tambalan",
     "sourcesPatchesLabel": "Sumber tambalan",
     "orgIntegrationsLabel": "Organisasi Intergrasi",
@@ -211,7 +206,12 @@
     "updateNotImplemented": "Fitur ini belum diimplementasikan"
   },
   "contributorsView": {
-    "widgetTitle": "Kontributor"
+    "widgetTitle": "Kontributor",
+    "patcherContributors": "ReVanced Patcher",
+    "patchesContributors": "ReVanced Patches",
+    "integrationsContributors": "ReVanced Integrations",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versi tidak cocok",

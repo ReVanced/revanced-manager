@@ -7,6 +7,7 @@ import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_upd
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_update_theme.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_advanced_section.dart';
+import 'package:revanced_manager/ui/widgets/settingsView/settings_data_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_debug_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_export_section.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_team_section.dart';
@@ -48,6 +49,8 @@ class SettingsView extends StatelessWidget {
                       SUpdateLanguageUI(),
                       _settingsDivider,
                       SAdvancedSection(),
+                      _settingsDivider,
+                      SDataSection(),
                       _settingsDivider,
                       SExportSection(),
                       _settingsDivider,

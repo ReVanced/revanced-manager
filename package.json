@@ -5,7 +5,6 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "conventional-changelog-conventionalcommits": "^7.0.2",
-    "semantic-release": "^22.0.12"
+    "semantic-release": "^23.0.2"
   }
 }
