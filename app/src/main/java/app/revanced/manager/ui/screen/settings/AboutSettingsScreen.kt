@@ -97,9 +97,13 @@ fun AboutSettingsScreen(
 
     val socialButtons = remember(socials) {
         socials.map {
-            Pair(getSocialIcon(it.name)) {
-                context.openUrl(it.url)
-            }
+            Triple(
+                getSocialIcon(it.name),
+                it.name,
+                third = {
+                    context.openUrl(it.url)
+                }
+            )
         }
     }
 
@@ -174,7 +178,7 @@ fun AboutSettingsScreen(
                         ) {
                             Icon(
                                 icon,
-                                contentDescription = null,
+                                contentDescription = text,
                                 modifier = Modifier.size(18.dp)
                             )
                             Text(
@@ -188,14 +192,14 @@ fun AboutSettingsScreen(
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
-                socialButtons.forEach { (icon, onClick) ->
+                socialButtons.forEach { (icon, text, onClick) ->
                     IconButton(
                         onClick = onClick,
                         modifier = Modifier.padding(end = 8.dp),
                     ) {
                         Icon(
                             icon,
-                            contentDescription = null,
+                            contentDescription = text,
                             modifier = Modifier.size(28.dp),
                             tint = MaterialTheme.colorScheme.secondary
                         )
