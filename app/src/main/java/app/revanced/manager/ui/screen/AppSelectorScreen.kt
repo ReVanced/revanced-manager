@@ -146,6 +146,8 @@ fun AppSelectorScreen(
         )
     }
 
+    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle(emptyMap())
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -195,8 +197,17 @@ fun AppSelectorScreen(
                     ListItem(
                         modifier = Modifier.clickable { onAppClick(app.packageName) },
                         leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
-                        headlineContent = { AppLabel(app.packageInfo) },
-                        supportingContent = { Text(app.packageName) },
+                        headlineContent = {
+                            AppLabel(
+                                app.packageInfo,
+                                defaultText = app.packageName
+                            )
+                        },
+                        supportingContent = {
+                            suggestedVersions[app.packageName]?.let {
+                                Text(stringResource(R.string.suggested_version_info, it))
+                            }
+                        },
                         trailingContent = app.patches?.let {
                             {
                                 Text(

@@ -52,21 +52,35 @@ class PatchBundleRepository(
     }
 
     val suggestedVersions = bundles.map {
-        val allPatches = it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toFakePatchObject) }.toSet()
+        val allPatches =
+            it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toFakePatchObject) }.toSet()
 
         PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
             .mapValues { (_, versions) ->
-                // Get the version with the most compatible packages.
-                versions.keys.firstOrNull()
+                if (versions.keys.size < 2)
+                    return@mapValues versions.keys.firstOrNull()
+
+                // The entries are ordered from most compatible to least compatible.
+                // If there are entries with the same number of compatible patches, older versions will be first, which is undesirable.
+                // This means we have to pick the last entry we find that has the highest patch count.
+                // The order may change in future versions of ReVanced Library.
+                var currentHighestPatchCount = -1
+                versions.entries.last { (_, patchCount) ->
+                    if (patchCount >= currentHighestPatchCount) {
+                        currentHighestPatchCount = patchCount
+                        true
+                    } else false
+                }.key
             }
     }
 
-    suspend fun isVersionAllowed(packageName: String, version: String) = withContext(Dispatchers.Default) {
-        if (!prefs.suggestedVersionSafeguard.get()) return@withContext true
+    suspend fun isVersionAllowed(packageName: String, version: String) =
+        withContext(Dispatchers.Default) {
+            if (!prefs.suggestedVersionSafeguard.get()) return@withContext true
 
-        val suggestedVersion = suggestedVersions.first()[packageName] ?: return@withContext true
-        suggestedVersion == version
-    }
+            val suggestedVersion = suggestedVersions.first()[packageName] ?: return@withContext true
+            suggestedVersion == version
+        }
 
     /**
      * Get the directory of the [PatchBundleSource] with the specified [uid], creating it if needed.

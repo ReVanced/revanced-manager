@@ -16,6 +16,7 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -33,6 +34,8 @@ class AppSelectorViewModel(
     val appList = pm.appList
 
     var onStorageClick: (SelectedApp.Local) -> Unit = {}
+
+    val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
     // TODO: this is a bad name
     private var nonSuggestedVersion by mutableStateOf<SelectedApp.Local?>(null)
