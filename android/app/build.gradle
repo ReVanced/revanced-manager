@@ -105,7 +105,7 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(11)
 }
 
 flutter {
@@ -113,12 +113,9 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
 
     // ReVanced
-    implementation "app.revanced:revanced-patcher:19.1.0"
-
-    // Signing & aligning
-    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("com.android.tools.build:apksig:7.2.2")
+    implementation "app.revanced:revanced-patcher:19.3.1"
+    implementation "app.revanced:revanced-library:2.0.0"
 }

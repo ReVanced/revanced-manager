@@ -7,16 +7,16 @@ import android.content.pm.PackageInstaller
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import app.revanced.library.ApkUtils
+import app.revanced.library.ApkUtils.applyTo
+import app.revanced.library.ApkUtils.sign
 import app.revanced.manager.flutter.utils.Aapt
-import app.revanced.manager.flutter.utils.aligning.ZipAligner
 import app.revanced.manager.flutter.utils.packageInstaller.InstallerReceiver
 import app.revanced.manager.flutter.utils.packageInstaller.UninstallerReceiver
-import app.revanced.manager.flutter.utils.signing.Signer
-import app.revanced.manager.flutter.utils.zip.ZipFile
-import app.revanced.manager.flutter.utils.zip.structures.ZipEntry
 import app.revanced.patcher.PatchBundleLoader
 import app.revanced.patcher.PatchSet
 import app.revanced.patcher.Patcher
+import app.revanced.patcher.PatcherConfig
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.PatchResult
 import io.flutter.embedding.android.FlutterActivity
@@ -290,7 +290,7 @@ class MainActivity : FlutterActivity() {
                 updateProgress(0.05, "Reading APK...", "Reading APK")
 
                 val patcher = Patcher(
-                    PatcherOptions(
+                    PatcherConfig(
                         inputFile,
                         cacheDir,
                         Aapt.binary(applicationContext).absolutePath,
@@ -300,6 +300,7 @@ class MainActivity : FlutterActivity() {
                 )
 
                 if (cancel) {
+                    patcher.close()
                     postStop()
                     return@Thread
                 }
@@ -319,9 +320,10 @@ class MainActivity : FlutterActivity() {
                     options[patch.name]?.forEach { (key, value) ->
                         patch.options[key] = value
                     }
-                }
+                }.toSet()
 
                 if (cancel) {
+                    patcher.close()
                     postStop()
                     return@Thread
                 }
@@ -334,14 +336,14 @@ class MainActivity : FlutterActivity() {
                 var progress = 0.15
 
                 patcher.apply {
-                    acceptIntegrations(listOf(integrations))
+                    acceptIntegrations(setOf(integrations))
                     acceptPatches(patches)
 
                     runBlocking {
                         apply(false).collect(FlowCollector { patchResult: PatchResult ->
                             if (cancel) {
                                 handler.post { stopResult!!.success(null) }
-                                this.cancel()
+                                cancel()
                                 this@apply.close()
                                 return@FlowCollector
                             }
@@ -368,40 +370,26 @@ class MainActivity : FlutterActivity() {
 
                 updateProgress(0.75, "Building...", "")
 
-                val res = patcher.get()
+                patcher.get().applyTo(patchedFile)
                 patcher.close()
-
-                ZipFile(patchedFile).use { file ->
-                    res.dexFiles.forEach {
-                        if (cancel) {
-                            postStop()
-                            return@Thread
-                        }
-                        file.addEntryCompressData(
-                            ZipEntry.createWithName(it.name),
-                            it.stream.readBytes()
-                        )
-                    }
-                    res.resourceFile?.let {
-                        file.copyEntriesFromFileAligned(
-                            ZipFile(it),
-                            ZipAligner::getEntryAlignment
-                        )
-                    }
-                    file.copyEntriesFromFileAligned(
-                        ZipFile(inputFile),
-                        ZipAligner::getEntryAlignment
-                    )
-                }
 
                 if (cancel) {
                     postStop()
                     return@Thread
                 }
 
-                updateProgress(0.8, "Signing...", "Signing APK")
+                updateProgress(0.8, "Signing...", "")
 
-                Signer("ReVanced", keystorePassword).signApk(patchedFile, outFile, keyStoreFile)
+                patchedFile.sign(
+                    ApkUtils.SigningOptions(
+                        keyStoreFile,
+                        keystorePassword,
+                        "alias",
+                        keystorePassword
+                    )
+                )
+
+                patchedFile.renameTo(outFile)
 
                 updateProgress(.85, "Patched", "Patched APK")
             } catch (ex: Throwable) {

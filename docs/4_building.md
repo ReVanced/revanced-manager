@@ -9,6 +9,7 @@ This page will guide you through building ReVanced Manager from source.
    ```sh
    git clone https://github.com/revanced/revanced-manager.git && cd revanced-manager
    ```
+
 3\. Get dependencies
 
    ```sh
@@ -35,3 +36,14 @@ This page will guide you through building ReVanced Manager from source.
    ```sh
    flutter build apk
    ```
+
+> [!NOTE]
+> If the build fails due to authentication, you may need to authenticate to GitHub Packages.
+> Create a PAT with the scope `read:packages` [here](https://github.com/settings/tokens/new?scopes=read:packages&description=ReVanced) and add your token to ~/.gradle/gradle.properties.
+>
+> Example `gradle.properties` file:
+>
+> ```properties
+> gpr.user = user
+> gpr.key = key
+> ```
