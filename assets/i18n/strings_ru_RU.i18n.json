@@ -16,6 +16,8 @@
   "noShowAgain": "Не показывать снова",
   "add": "Добавить",
   "remove": "Удалить",
+  "showChangelogButton": "Показать список изменений",
+  "showUpdateButton": "Показать обновление",
   "navigationView": {
     "dashboardTab": "Панель инструментов",
     "patcherTab": "Патчер",
@@ -26,14 +28,25 @@
     "widgetTitle": "Панель инструментов",
     "updatesSubtitle": "Обновления",
     "patchedSubtitle": "Пропатченные приложения",
+    "changeLaterSubtitle": "Вы можете изменить это в настройках позже.",
     "noUpdates": "Нет доступных обновлений",
     "WIP": "В процессе...",
     "noInstallations": "Пропатченные приложения не установлены",
     "installUpdate": "Продолжить установку обновления?",
+    "updateSheetTitle": "Обновить Revanced Менеджер",
+    "updateDialogTitle": "Доступно обновление",
+    "updatePatchesSheetTitle": "Обновить патчи ReVanced",
     "updateChangelogTitle": "Список изменений",
+    "updateDialogText": "Доступно обновление для ${file}.\n\nТекущая установленная версия ${version}.",
+    "downloadConsentDialogTitle": "Скачать необходимые файлы?",
+    "downloadConsentDialogText": "Для правильной работы ReVanced Менеджера нужно загрузить необходимые файлы.",
+    "downloadConsentDialogText2": "Это соединит вас с ${url}.",
+    "checkUpdateDialogTitle": "Проверить наличие обновлений?",
+    "checkUpdateDialogText": "Хотите, чтобы ReVanced Менеджер автоматически проверял наличие обновлений?",
     "notificationTitle": "Обновление загружено",
     "notificationText": "Нажмите, чтобы установить обновление",
     "downloadingMessage": "Загрузка обновления...",
+    "downloadedMessage": "Обновление загружено",
     "installingMessage": "Установка обновления...",
     "errorDownloadMessage": "Не удалось загрузить обновление",
     "errorInstallMessage": "Не удалось установить обновление",
@@ -53,12 +66,18 @@
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патч",
+    "armv7WarningDialogText": "Патчинг на устройствах ARMv7 пока не поддерживается и может привести к сбоям. Все равно продолжить?",
+    "removedPatchesWarningDialogText": "Следующие патчи были удалены с момента их последнего использования.\n\n ${patches}\n\n Все равно продолжить?",
     "requiredOptionDialogText": "Некоторые параметры патчей должны быть обязательно установлены."
   },
   "appSelectorCard": {
+    "widgetTitle": "Выбрать приложение",
+    "widgetTitleSelected": "Выбранное приложение",
+    "widgetSubtitle": "Приложение не выбрано",
     "noAppsLabel": "Приложения не найдены",
     "currentVersion": "Текущая",
-    "suggestedVersion": "Предложенная"
+    "suggestedVersion": "Предложенная",
+    "anyVersion": "Любая версия"
   },
   "patchSelectorCard": {
     "widgetTitle": "Выбор патчей",
@@ -71,11 +90,15 @@
     "widgetSubtitle": "Мы онлайн!"
   },
   "appSelectorView": {
+    "viewTitle": "Выбрать приложение",
+    "searchBarHint": "Поиск приложения",
     "storageButton": "Хранилище",
     "selectFromStorageButton": "Выбрать из хранилища",
     "errorMessage": "Невозможно использовать выбранное приложение",
     "downloadToast": "Функция загрузки пока недоступна",
-    "featureNotAvailable": "Функция не реализована"
+    "requireSuggestedAppVersionDialogText": "Выбранная Вами версия приложения не соответствует предлагаемой, что может привести к непредвиденным проблемам. Пожалуйста, используйте предложенную версию.\n\n Выбранная версия: ${selected}\n Предлагаемая версия: ${suggested}.\n\nЧтобы продолжить, отключите в настройках параметр «Требовать рекомендуемую версию приложения».",
+    "featureNotAvailable": "Функция не реализована",
+    "featureNotAvailableText": "Это приложение представляет собой разделенный APK-файл, и его можно пропатчить и корректно установить только путем монтирования с правами root. Однако Вы можете пропатчить и установить полный APK-файл, выбрав его из хранилища."
   },
   "patchesSelectorView": {
     "viewTitle": "Выбор патчей",
@@ -84,7 +107,9 @@
     "newPatches": "Новые патчи",
     "patches": "Патчи",
     "doneButton": "Готово",
+    "defaultChip": "По умолчанию",
     "defaultTooltip": "Выбрать все стандартные патчи",
+    "noneChip": "Никакие",
     "noneTooltip": "Снять выбор всех патчей",
     "loadPatchesSelection": "Загрузка выборки патчей",
     "noSavedPatches": "Нет сохраненной выборки патчей для выбранного приложения.\nНажмите \"Готово\" для сохранения текущего выбора.",
@@ -110,11 +135,13 @@
     "unsupportedDialogText": "Выбор этого патча может привести к ошибкам во время патчинга.\n\nВерсия приложения: ${packageVersion}\nПоддерживаемые версии:\n${supportedVersions}",
     "unsupportedPatchVersion": "Патч не поддерживается этой версией приложения.",
     "unsupportedRequiredOption": "Этот патч содержит обязательную опцию, не поддерживаемую этим приложением",
+    "patchesChangeWarningDialogText": "Рекомендуется использовать выборку патчей и параметры по умолчанию. Их изменение может привести к неожиданным проблемам.\n\n Вам необходимо включить «Разрешить изменение выборки патчей» в настройках, прежде чем изменять какие-либо выборки патчей.",
     "patchesChangeWarningDialogButton": "Использовать стандартный набор"
   },
   "installerView": {
     "widgetTitle": "Установщик",
     "installType": "Выберите тип установки",
+    "installTypeDescription": "Выберите тип установки, чтобы продолжить.",
     "installButton": "Установить",
     "installRootType": "Монтировать",
     "installNonRootType": "Обычный",
@@ -137,6 +164,7 @@
     "debugSectionTitle": "Отладка",
     "advancedSectionTitle": "Дополнительные",
     "exportSectionTitle": "Импорт и экспорт",
+    "dataSectionTitle": "Источники данных",
     "themeModeLabel": "Тема приложения",
     "systemThemeLabel": "Системная",
     "lightThemeLabel": "Светлая",
@@ -144,12 +172,19 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Наслаждайтесь темой Вашего устройства",
     "languageLabel": "Язык",
+    "languageUpdated": "Язык обновлен",
     "englishOption": "Английский",
+    "sourcesLabel": "Альтернативные источники",
+    "sourcesLabelHint": "Настройте альтернативные источники для патчей и интеграций ReVanced",
     "sourcesIntegrationsLabel": "Репозиторий интеграций",
+    "useAlternativeSources": "Использовать альтернативные источники",
+    "useAlternativeSourcesHint": "Использовать альтернативные источники для патчей и интеграций ReVanced вместо API",
     "sourcesResetDialogTitle": "Сброс",
     "sourcesResetDialogText": "Вы уверены, что хотите сбросить ваши источники до значений по умолчанию?",
     "apiURLResetDialogText": "Вы уверены, что хотите сбросить API-ссылку до значения по умолчанию?",
+    "sourcesUpdateNote": "Примечание: при этом будут автоматически загружены патчи и интеграции ReVanced из альтернативных источников.\n\nЭто соединит вас с альтернативным источником.",
     "apiURLLabel": "API-ссылка",
+    "apiURLHint": "Настройте URL-адрес API ReVanced Менеджера",
     "selectApiURL": "API-ссылка",
     "orgPatchesLabel": "Организация патчей",
     "sourcesPatchesLabel": "Репозиторий патчей",
@@ -164,6 +199,8 @@
     "disablePatchesSelectionWarningText": "Вы собираетесь выключить измененную выборку патчей.\nБудет восстановлен стандартный выбор патчей.\n\nВсе равно выключить?",
     "autoUpdatePatchesLabel": "Автообновление патчей",
     "autoUpdatePatchesHint": "Автоматически обновлять патчи до последней версии",
+    "showUpdateDialogLabel": "Показать диалог обновления",
+    "showUpdateDialogHint": "Показывать диалоговое окно, когда доступно новое обновление",
     "universalPatchesLabel": "Показать универсальные патчи",
     "universalPatchesHint": "Отобразить все приложения и универсальные патчи (может замедлить список отображения приложений)",
     "versionCompatibilityCheckLabel": "Проверка совместимости версий",
@@ -234,7 +271,12 @@
     "updateNotImplemented": "Эта возможность ещё не реализована"
   },
   "contributorsView": {
-    "widgetTitle": "Соучастники проекта"
+    "widgetTitle": "Соучастники проекта",
+    "patcherContributors": "ReVanced патчер",
+    "patchesContributors": "ReVanced патчи",
+    "integrationsContributors": "Интеграции ReVanced",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Менеджер"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Несовпадение версий",
