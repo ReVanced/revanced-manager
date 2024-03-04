@@ -5,19 +5,14 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# These packages are referenced by ReVanced Patches
--keep class app.revanced.patcher.** { *; }
+-keep class app.revanced.** { *; }
 -keep class com.android.tools.smali.** { *; }
 -keep class kotlin.** { *; }
+-keep class com.google.auto.value.** { *; }
+-keep class com.android.apksig.internal.** { *; }
 -keepnames class com.google.common.collect.**
 
-# This package uses reflection internally, so do not remove and rename
--keep class com.android.apksig.internal.** { *; }
-
-# Fix crash
--keepnames class org.xmlpull.** { *; }
-
-# Fix build errors
+-dontwarn com.google.auto.value.**
+-dontwarn com.google.j2objc.annotations.*
 -dontwarn java.awt.**
 -dontwarn javax.**
--dontwarn com.google.j2objc.annotations.*
