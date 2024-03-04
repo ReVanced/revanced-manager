@@ -8,12 +8,12 @@ Learn how to use ReVanced Manager to patch apps.
 2. Tap on the **Select an app** card
 3. Choose an app to patch[^1]
 
-   > 💡 Tip  
-   > If you are prompted to select an APK file from storage because the selected app is a split APK, tap on the "Suggested version" label to open a search query to obtain said APK file
-
    > ℹ️ Note  
    > The suggested version is visible on each app's card.  
    > You can tap on it to open a search query to obtain an APK file for the selected app with the suggested version
+
+   > 💡 Tip  
+   > If you are prompted to select an APK file from storage because the selected app is a split APK, tap on the "Suggested version" label to open a search query to obtain said APK file
 
 4. Tap on the **Select patches** card and select the patches you want to apply[^2].
 
