@@ -67,11 +67,6 @@ fun VersionSelectorScreen(
     }
 
     var selectedVersion: SelectedApp? by rememberSaveable { mutableStateOf(null) }
-    var showNonSuggestedVersionDialog: SelectedApp.Installed? by rememberSaveable {
-        mutableStateOf(
-            null
-        )
-    }
 
     Scaffold(
         topBar = {
