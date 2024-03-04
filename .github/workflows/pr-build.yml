@@ -3,6 +3,7 @@ name: PR Build
 on:
   workflow_dispatch:
     inputs:
+    
       # Flutter
       flutter-branch:
         description: Flutter branch
@@ -17,8 +18,9 @@ on:
         description: Cache
         type: boolean
         default: true
+        
       # Application configuration
-      app-flavour:
+      app-flavor:
         description: App flavour
         default: 'release'
         type: choice
@@ -26,11 +28,17 @@ on:
           - release
           - debug
           - profile
+          - jit-release
+          
       # Pull Request
       pr-number:
-        description: PR number (No hashtag)
+        description: PR number
         required: true
-
+        
+      # Additional
+      flutter-build-arguments:
+        description: Flutter build arguments
+        
 run-name: "Build PR ${{ inputs.pr-number }}"
         
 jobs:
@@ -41,7 +49,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Setup
+      - name: Setup the PR's repository
         env: 
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -50,13 +58,24 @@ jobs:
           gh repo set-default "${{ github.repository }}"
           gh pr checkout "${{ inputs.pr-number }}"
           
-          echo "DATETIME=$( TZ='UTC+0' date --rfc-email )" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+
+      - name: Setup the PR's repository
+        env: 
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone ${{ github.repository }}
+          cd revanced-manager
+          gh repo set-default ${{ github.repository }}
+          gh pr checkout ${{ inputs.pr-number }}
+          git branch
+          
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           
       - name: Setup JDK
         uses: actions/setup-java@v4
@@ -77,6 +96,9 @@ jobs:
         run: dart run slang
       - name: Generate files with Builder
         run: dart run build_runner build --delete-conflicting-outputs 
+
+      - name: Analyze Dart code
+        uses: zgosalvez/github-actions-analyze-dart@v3
         
       - name: Build with Flutter
         continue-on-error: true
@@ -84,15 +106,23 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          flutter build apk --"${{ inputs.app-flavour }}";
+          flutter build apk --${{ inputs.app-flavor }} ${{ inputs.flutter-build-arguments }}
           
       - name: Prepare to comment
         run: |
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ ReVanced Manager ${{ env.COMMIT_HASH }} build succeeded." >> $GITHUB_ENV
+            echo "STATUS_MESSAGE=✅ ReVanced Manager ${{ env.COMMIT_HASH }} build succeeded." >> $GITHUB_ENV
           else
-            echo "MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
+            echo "STATUS_MESSAGE=🚫 ReVanced Manager ${{ env.COMMIT_HASH }} build failed." >> $GITHUB_ENV
           fi
+          
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavor }})-${{ inputs.flutter-branch }}
+          path: | 
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk
+            build/app/outputs/flutter-apk/app-${{ inputs.app-flavor }}.apk.sha1
           
       - name: "Comment to Pull Request #${{ inputs.pr-number }}"
         uses: thollander/actions-comment-pull-request@v2
@@ -103,20 +133,10 @@ jobs:
           message: |
             ## ⚒️ ReVanced PR Build workflow
             
-            ${{ env.MESSAGE }}
+            ${{ env.STATUS_MESSAGE }}
             
-            You can see more details in run [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})!
+            Checkout the Dart static analyze check or download the artifact at [job summary](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
             ### ⚙️ Overview
-            - App flavor: ${{ inputs.app-flavour }}
+            - App flavor: ${{ inputs.app-flavor }}
             - Branch: ${{ inputs.flutter-branch }}
-            - Start time: ${{ env.DATETIME }}
-
-      - name: Upload build
-        uses: actions/upload-artifact@v3
-        with:
-          if-no-files-found: error
-          name: revanced-manager-(${{ env.COMMIT_HASH }}-${{ inputs.pr-number }}-${{ inputs.app-flavour }})-${{ inputs.flutter-branch }}
-          path: | 
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk
-            build/app/outputs/flutter-apk/app-${{ inputs.app-flavour }}.apk.sha1
