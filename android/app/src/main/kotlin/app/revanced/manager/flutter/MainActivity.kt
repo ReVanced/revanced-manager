@@ -285,7 +285,7 @@ class MainActivity : FlutterActivity() {
                 )
 
                 if (cancel(patcher::close)) return@Thread
-                updateProgress(0.1, "Loading patches...", "Loading patches")
+                updateProgress(0.02, "Loading patches...", "Loading patches")
 
                 val patches = patches.filter { patch ->
                     val isCompatible = patch.compatiblePackages?.any {
@@ -303,7 +303,7 @@ class MainActivity : FlutterActivity() {
                 }.toSet()
 
                 if (cancel(patcher::close)) return@Thread
-                updateProgress(0.15, "Executing...", "")
+                updateProgress(0.05, "Executing...", "")
 
                 val patcherResult = patcher.use {
                     patcher.apply {
@@ -315,7 +315,7 @@ class MainActivity : FlutterActivity() {
                         // Update the progress bar every time a patch is executed from 0.15 to 0.7
                         val totalPatchesCount = patches.size
                         val progressStep = 0.55 / totalPatchesCount
-                        var progress = 0.15
+                        var progress = 0.05
 
                         patcher.apply(false).collect(FlowCollector { patchResult: PatchResult ->
                             if (cancel(patcher::close)) return@FlowCollector
