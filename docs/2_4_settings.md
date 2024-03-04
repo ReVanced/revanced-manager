@@ -22,14 +22,14 @@ Learn how to configure ReVanced Manager.
 
   By default, ReVanced Manager allows you to select patches that are not compatible with the version of the app you selected. Disabling this will allow you to select patches that are not compatible with the app version you selected.
 
-  > ⚠️ Warning
+  > ⚠️ Warning  
   > Patches are more likely to fail on versions they are not compatible with. Unless you know what you are doing, it is recommended to keep this enabled.
 
 - ### 🧑‍🔬 Show universal patches
 
   By default, ReVanced Manager only shows patches that are compatible with specifc apps. Enabling this will show patches that are intended to work on all apps.
 
-  > ⚠️ Warning
+  > ⚠️ Warning  
   > Patches that are intended to work on all apps may not work on all apps. Unless you know what you are doing, it is recommended to keep this disabled.
 
 - ### 🔗 API URL
