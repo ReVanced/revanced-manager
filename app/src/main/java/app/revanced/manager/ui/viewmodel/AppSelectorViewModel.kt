@@ -37,20 +37,19 @@ class AppSelectorViewModel(
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
-    // TODO: this is a bad name
-    private var nonSuggestedVersion by mutableStateOf<SelectedApp.Local?>(null)
-    val showNonSuggestedVersionDialog by derivedStateOf { nonSuggestedVersion != null }
+    private var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
+    val showNonSuggestedVersionDialog by derivedStateOf { nonSuggestedVersionDialogSubject != null }
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 
     fun dismissNonSuggestedVersionDialog() {
-        nonSuggestedVersion = null
+        nonSuggestedVersionDialogSubject = null
     }
 
     fun continueWithNonSuggestedVersion(dismissPermanently: Boolean) = viewModelScope.launch {
         if (dismissPermanently) prefs.suggestedVersionSafeguard.update(false)
 
-        nonSuggestedVersion?.let(onStorageClick)
+        nonSuggestedVersionDialogSubject?.let(onStorageClick)
         dismissNonSuggestedVersionDialog()
     }
 
@@ -67,7 +66,7 @@ class AppSelectorViewModel(
         if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
             onStorageClick(selectedApp)
         } else {
-            nonSuggestedVersion = selectedApp
+            nonSuggestedVersionDialogSubject = selectedApp
         }
     }
 
