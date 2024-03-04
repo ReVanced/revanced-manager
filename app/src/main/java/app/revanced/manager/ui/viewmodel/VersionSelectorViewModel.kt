@@ -49,29 +49,22 @@ class VersionSelectorViewModel(
     var errorMessage: String? by mutableStateOf(null)
         private set
 
-    var forcedVersion: String? by mutableStateOf(null)
+    var requiredVersion: String? by mutableStateOf(null)
         private set
 
-    // TODO: this is a bad name
-    var nonSuggestedVersion by mutableStateOf<SelectedApp.Installed?>(null)
+    var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Installed?>(null)
         private set
-    val showNonSuggestedVersionDialog by derivedStateOf { nonSuggestedVersion != null }
+    val showNonSuggestedVersionDialog by derivedStateOf { nonSuggestedVersionDialogSubject != null }
 
-    private val forcedVersionAsync = viewModelScope.async(Dispatchers.Default) {
+    private val requiredVersionAsync = viewModelScope.async(Dispatchers.Default) {
         if (!prefs.suggestedVersionSafeguard.get()) return@async null
 
         patchBundleRepository.suggestedVersions.first()[packageName]
-    }.also {
-        viewModelScope.launch {
-            forcedVersion = it.await()
-        }
     }
-
-    val downloadableVersions = mutableStateSetOf<SelectedApp.Download>()
 
     val supportedVersions = patchBundleRepository.bundles.map { bundles ->
         // It is mandatory to use the suggested version if the safeguard is enabled.
-        forcedVersionAsync.await()?.let { version ->
+        requiredVersionAsync.await()?.let { version ->
             return@map mapOf(
                 version to bundles
                     .asSequence()
@@ -100,6 +93,14 @@ class VersionSelectorViewModel(
                 }
             }
     }.flowOn(Dispatchers.Default)
+
+    init {
+        viewModelScope.launch {
+            requiredVersion = requiredVersionAsync.await()
+        }
+    }
+
+    val downloadableVersions = mutableStateSetOf<SelectedApp.Download>()
 
     val downloadedVersions = downloadedAppRepository.getAll().map { downloadedApps ->
         downloadedApps.filter { it.packageName == packageName }.map {
@@ -156,7 +157,7 @@ class VersionSelectorViewModel(
     }
 
     fun dismissNonSuggestedVersionDialog() {
-        nonSuggestedVersion = null
+        nonSuggestedVersionDialogSubject = null
     }
 
     fun continueWithNonSuggestedVersion(dismissPermanently: Boolean) = viewModelScope.launch {
@@ -164,11 +165,11 @@ class VersionSelectorViewModel(
         dismissNonSuggestedVersionDialog()
     }
 
-    fun isAppVersionAllowed(app: SelectedApp.Installed): Boolean {
-        if (forcedVersion == null) return true
+    fun performAppVersionCheck(app: SelectedApp.Installed): Boolean {
+        if (requiredVersion == null) return true
 
-        return (app.version == forcedVersion).also { result ->
-            if (!result) nonSuggestedVersion = app
+        return (app.version == requiredVersion).also { result ->
+            if (!result) nonSuggestedVersionDialogSubject = app
         }
     }
 }

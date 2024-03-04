@@ -38,7 +38,6 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +60,7 @@ fun VersionSelectorScreen(
                         .thenByDescending { it.version }
                 )
 
-            viewModel.forcedVersion?.let {
+            viewModel.requiredVersion?.let {
                 apps.filter { app -> app.version == it }
             } ?: apps
         }
@@ -99,7 +98,7 @@ fun VersionSelectorScreen(
                 NonSuggestedVersionDialog(
                     onCancel = viewModel::dismissNonSuggestedVersionDialog,
                     onContinue = { dismissPermanently ->
-                        selectedVersion = viewModel.nonSuggestedVersion
+                        selectedVersion = viewModel.nonSuggestedVersionDialogSubject
 
                         viewModel.continueWithNonSuggestedVersion(dismissPermanently)
                     }
@@ -114,7 +113,7 @@ fun VersionSelectorScreen(
                         selectedApp = it,
                         selected = selectedVersion == it,
                         onClick = {
-                            if (viewModel.isAppVersionAllowed(it))
+                            if (viewModel.performAppVersionCheck(it))
                                 selectedVersion = it
                         },
                         patchCount = supportedVersions[it.version],
