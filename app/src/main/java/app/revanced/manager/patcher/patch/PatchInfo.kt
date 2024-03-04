@@ -41,20 +41,20 @@ data class PatchInfo(
     }
 
     /**
-     * Create a fake patch with the same metadata as this object.
+     * Create a fake [Patch] with the same metadata as the [PatchInfo] instance.
      * The resulting patch cannot be executed.
      * This is necessary because some functions in ReVanced Library only accept full [Patch] objects.
      */
-    fun toFakePatchObject() = object : ResourcePatch(
+    fun toPatcherPatch(): Patch<*> = object : ResourcePatch(
         name = name,
         description = description,
         compatiblePackages = compatiblePackages
-            ?.map(app.revanced.manager.patcher.patch.CompatiblePackage::toPatchCompatiblePackage)
+            ?.map(app.revanced.manager.patcher.patch.CompatiblePackage::toPatcherCompatiblePackage)
             ?.toSet(),
         use = include,
     ) {
         override fun execute(context: ResourceContext) =
-            throw Exception("This should never be called")
+            throw Exception("Metadata patches cannot be executed")
     }
 }
 
@@ -69,9 +69,9 @@ data class CompatiblePackage(
     )
 
     /**
-     * Converts this into the Patcher version of [Patch.CompatiblePackage].
+     * Converts this [CompatiblePackage] into a [Patch.CompatiblePackage] from patcher.
      */
-    fun toPatchCompatiblePackage() = Patch.CompatiblePackage(
+    fun toPatcherCompatiblePackage() = Patch.CompatiblePackage(
         name = packageName,
         versions = versions,
     )

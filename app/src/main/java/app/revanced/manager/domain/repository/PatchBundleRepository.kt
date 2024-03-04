@@ -53,7 +53,7 @@ class PatchBundleRepository(
 
     val suggestedVersions = bundles.map {
         val allPatches =
-            it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toFakePatchObject) }.toSet()
+            it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toPatcherPatch) }.toSet()
 
         PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
             .mapValues { (_, versions) ->
