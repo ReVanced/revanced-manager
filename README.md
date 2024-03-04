@@ -80,7 +80,7 @@ Some of the features ReVanced Manager provides are:
 
 ## 🔽 Download
 
-You can download the most recent version of ReVanced Manager at [revanced.app/download](https://revanced.app/download) and [GitHub releases](https://github.com/ReVanced/revanced-manager/releases).  
+You can download the most recent version of ReVanced Manager at [revanced.app/download](https://revanced.app/download) or from [GitHub releases](https://github.com/ReVanced/revanced-manager/releases).  
 Learn how to use ReVanced Manager by following the [documentation](/docs).
 
 ## 📚 Everything else
@@ -96,11 +96,11 @@ To build a ReVanced Manager, you can follow the [documentation](/docs).
 
 ### 📄 Documentation
 
-You can find the documentation of ReVanced Manager [here](/docs).
+You can find the documentation for ReVanced Manager [here](/docs).
 
 ### 👋 Contributing
 
-Thank you for considering contributing to ReVanced Manager, you can find the contribution guidelines [here](/CONTRIBUTING.md).
+Thank you for considering contributing to ReVanced Manager. You can find the contribution guidelines [here](/CONTRIBUTING.md).
 
 ## ⚖️ License
 
