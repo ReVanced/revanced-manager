@@ -43,7 +43,7 @@ class HomeViewModel extends BaseViewModel {
   File? downloadedApk;
 
   Future<void> initialize(BuildContext context) async {
-    _managerAPI.rePatchedSavedApps().then((_) => _getPatchedApps());
+    _managerAPI.reAssessPatchedApps().then((_) => getPatchedApps());
     _currentManagerVersion = await _managerAPI.getCurrentManagerVersion();
     if (!_managerAPI.getDownloadConsent()) {
       await showDownloadConsent(context);
@@ -122,7 +122,7 @@ class HomeViewModel extends BaseViewModel {
     locator<NavigationViewModel>().setIndex(1);
   }
 
-  void _getPatchedApps() {
+  void getPatchedApps() {
     patchedInstalledApps = _managerAPI.getPatchedApps().toList();
     notifyListeners();
   }

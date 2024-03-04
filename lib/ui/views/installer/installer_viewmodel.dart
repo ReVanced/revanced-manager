@@ -465,7 +465,10 @@ class InstallerViewModel extends BaseViewModel {
         }
 
         await _managerAPI.savePatchedApp(_app);
-        await locator<HomeViewModel>().initialize(context);
+
+        _managerAPI
+            .reAssessPatchedApps()
+            .then((_) => locator<HomeViewModel>().getPatchedApps());
 
         update(1.0, 'Installed', 'Installed');
       } else if (response == 3) {
