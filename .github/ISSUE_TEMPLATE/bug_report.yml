@@ -73,7 +73,7 @@ body:
         - **Do not submit a duplicate bug report**: You can review existing bug reports [here](https://github.com/ReVanced/revanced-manager/labels/Bug%20report).
         - **Review the contribution guidelines**: Make sure your bug report adheres to it. You can find the guidelines [here](https://github.com/ReVanced/revanced-manager/blob/main/CONTRIBUTING.md).
         - **Do not use the issue page for support**: If you need help or have questions, check out other platforms on [revanced.app](https://revanced.app).
-   - type: textarea
+  - type: textarea
     attributes:
       label: Bug description
       description: |
