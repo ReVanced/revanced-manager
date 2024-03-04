@@ -52,7 +52,7 @@ Learn how to configure ReVanced Manager.
   - ⚙️ Remembered patch options
 
   > ℹ️ Note  
-  > These settings can be used to backup and restore settings or to reset settings to default in case of issues.
+  > These can be used to backup and restore or reset settings to default in case of issues.
 
 - ### ❓ About
 
