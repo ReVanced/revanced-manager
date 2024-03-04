@@ -164,6 +164,7 @@
     "debugSectionTitle": "Vianselvitys",
     "advancedSectionTitle": "Lisäasetukset",
     "exportSectionTitle": "Tuonti/vienti",
+    "dataSectionTitle": "",
     "themeModeLabel": "Sovelluksen teema",
     "systemThemeLabel": "Järjestelmä",
     "lightThemeLabel": "Vaalea",
@@ -173,11 +174,17 @@
     "languageLabel": "Kieli",
     "languageUpdated": "Kieli on vaihdettu",
     "englishOption": "Englanti",
+    "sourcesLabel": "",
+    "sourcesLabelHint": "",
     "sourcesIntegrationsLabel": "Integraatioiden lähde",
+    "useAlternativeSources": "",
+    "useAlternativeSourcesHint": "",
     "sourcesResetDialogTitle": "Palauta",
     "sourcesResetDialogText": "Haluatko varmasti palauttaa oletuslähteet?",
     "apiURLResetDialogText": "Haluatko varmasti palauttaa oletusarvoisen API:n URL-osoitteen?",
+    "sourcesUpdateNote": "",
     "apiURLLabel": "API:n URL-osoite",
+    "apiURLHint": "",
     "selectApiURL": "API:n URL-osoite",
     "orgPatchesLabel": "Paikkauksien organisaatio",
     "sourcesPatchesLabel": "Paikkauksien lähde",
@@ -264,7 +271,12 @@
     "updateNotImplemented": "Ominaisuutta ei ole vielä toteutettu"
   },
   "contributorsView": {
-    "widgetTitle": "Osallistujat"
+    "widgetTitle": "Osallistujat",
+    "patcherContributors": "",
+    "patchesContributors": "",
+    "integrationsContributors": "",
+    "cliContributors": "",
+    "managerContributors": ""
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versioristiriita",
