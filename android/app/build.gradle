@@ -117,5 +117,5 @@ dependencies {
 
     // ReVanced
     implementation "app.revanced:revanced-patcher:19.3.1"
-    implementation "app.revanced:revanced-library:2.0.0"
+    implementation "app.revanced:revanced-library:2.1.0"
 }
