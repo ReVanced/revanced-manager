@@ -117,8 +117,7 @@ fun VersionSelectorScreen(
                                 selectedVersion = it
                         },
                         patchCount = supportedVersions[it.version],
-                        enabled =
-                        !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
+                        enabled = !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
                         alreadyPatched = installedApp != null && installedApp.installType != InstallType.ROOT
                     )
                 }
