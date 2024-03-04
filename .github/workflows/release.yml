@@ -1,4 +1,4 @@
-name: "Release Build"
+name: Release
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
       - dev
     paths:
-      - ".github/workflows/release-build.yml"
+      - ".github/workflows/release.yml"
       - "android/**"
       - "assets/**"
       - "lib/**"
@@ -15,43 +15,41 @@ on:
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          java-version: "17"
-          distribution: "zulu"
+          fetch-depth: 0
 
-      - name: Set up Node.js 20
+      - name: Setup Java
+        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "lts/*"
+          cache: 'npm'
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: "stable"
 
-      - name: Cache Node modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-          key: npm-${{ hashFiles('package-lock.json') }}
-
-      - name: Setup semantic-release
+      - name: Install dependencies
         run: npm install
 
-      - name: Set up Flutter
+      - name: Get dependencies
         run: flutter pub get
-      - name: Generate translation with Slang
+
+      - name: Generate translations
         run: dart run slang
-      - name: Generate files with Builder
+
+      - name: Generate code files
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Build with Flutter
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
           signingKey: "keystore.jks"
