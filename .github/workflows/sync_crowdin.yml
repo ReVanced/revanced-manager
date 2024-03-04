@@ -40,6 +40,7 @@ jobs:
       - name: Remove empty values from JSON
         run: |
           cd assets/i18n
+          sudo chmod 777 *
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
 
       - name: Commit translations
