@@ -17,13 +17,10 @@ import app.revanced.patcher.PatchBundleLoader
 import app.revanced.patcher.PatchSet
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherConfig
-import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.PatchResult
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
@@ -50,7 +47,10 @@ class MainActivity : FlutterActivity() {
         val installerChannel = "app.revanced.manager.flutter/installer"
         val openBrowserChannel = "app.revanced.manager.flutter/browser"
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, openBrowserChannel).setMethodCallHandler { call, result ->
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            openBrowserChannel
+        ).setMethodCallHandler { call, result ->
             if (call.method == "openBrowser") {
                 val searchQuery = call.argument<String>("query")
                 openBrowser(searchQuery)
@@ -69,40 +69,34 @@ class MainActivity : FlutterActivity() {
         mainChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "runPatcher" -> {
-                    val originalFilePath = call.argument<String>("originalFilePath")
-                    val inputFilePath = call.argument<String>("inputFilePath")
-                    val patchedFilePath = call.argument<String>("patchedFilePath")
+                    val inFilePath = call.argument<String>("inFilePath")
                     val outFilePath = call.argument<String>("outFilePath")
                     val integrationsPath = call.argument<String>("integrationsPath")
                     val selectedPatches = call.argument<List<String>>("selectedPatches")
                     val options = call.argument<Map<String, Map<String, Any>>>("options")
-                    val cacheDirPath = call.argument<String>("cacheDirPath")
+                    val tmpDirPath = call.argument<String>("tmpDirPath")
                     val keyStoreFilePath = call.argument<String>("keyStoreFilePath")
                     val keystorePassword = call.argument<String>("keystorePassword")
 
                     if (
-                        originalFilePath != null &&
-                        inputFilePath != null &&
-                        patchedFilePath != null &&
+                        inFilePath != null &&
                         outFilePath != null &&
                         integrationsPath != null &&
                         selectedPatches != null &&
                         options != null &&
-                        cacheDirPath != null &&
+                        tmpDirPath != null &&
                         keyStoreFilePath != null &&
                         keystorePassword != null
                     ) {
                         cancel = false
                         runPatcher(
                             result,
-                            originalFilePath,
-                            inputFilePath,
-                            patchedFilePath,
+                            inFilePath,
                             outFilePath,
                             integrationsPath,
                             selectedPatches,
                             options,
-                            cacheDirPath,
+                            tmpDirPath,
                             keyStoreFilePath,
                             keystorePassword
                         )
@@ -214,28 +208,23 @@ class MainActivity : FlutterActivity() {
             startActivity(intent)
         }
     }
-    
-    @OptIn(InternalCoroutinesApi::class)
+
     private fun runPatcher(
         result: MethodChannel.Result,
-        originalFilePath: String,
-        inputFilePath: String,
-        patchedFilePath: String,
+        inFilePath: String,
         outFilePath: String,
         integrationsPath: String,
         selectedPatches: List<String>,
         options: Map<String, Map<String, Any>>,
-        cacheDirPath: String,
+        tmpDirPath: String,
         keyStoreFilePath: String,
         keystorePassword: String
     ) {
-        val originalFile = File(originalFilePath)
-        val inputFile = File(inputFilePath)
-        val patchedFile = File(patchedFilePath)
+        val inFile = File(inFilePath)
         val outFile = File(outFilePath)
         val integrations = File(integrationsPath)
         val keyStoreFile = File(keyStoreFilePath)
-        val cacheDir = File(cacheDirPath)
+        val tmpDir = File(tmpDirPath)
 
         Thread {
             fun updateProgress(progress: Double, header: String, log: String) {
@@ -252,6 +241,16 @@ class MainActivity : FlutterActivity() {
             }
 
             fun postStop() = handler.post { stopResult!!.success(null) }
+
+            fun cancel(block: () -> Unit = {}): Boolean {
+                if (cancel) {
+                    block()
+                    postStop()
+                }
+
+                return cancel
+            }
+
 
             // Setup logger
             Logger.getLogger("").apply {
@@ -273,38 +272,19 @@ class MainActivity : FlutterActivity() {
             }
 
             try {
-                updateProgress(0.0, "", "Copying APK")
-
-                if (cancel) {
-                    postStop()
-                    return@Thread
-                }
-
-                originalFile.copyTo(inputFile, true)
-
-                if (cancel) {
-                    postStop()
-                    return@Thread
-                }
-
-                updateProgress(0.05, "Reading APK...", "Reading APK")
+                updateProgress(0.0, "Reading APK...", "Reading APK")
 
                 val patcher = Patcher(
                     PatcherConfig(
-                        inputFile,
-                        cacheDir,
+                        inFile,
+                        tmpDir,
                         Aapt.binary(applicationContext).absolutePath,
-                        cacheDir.path,
+                        tmpDir.path,
                         true // TODO: Add option to disable this
                     )
                 )
 
-                if (cancel) {
-                    patcher.close()
-                    postStop()
-                    return@Thread
-                }
-
+                if (cancel(patcher::close)) return@Thread
                 updateProgress(0.1, "Loading patches...", "Loading patches")
 
                 val patches = patches.filter { patch ->
@@ -322,31 +302,23 @@ class MainActivity : FlutterActivity() {
                     }
                 }.toSet()
 
-                if (cancel) {
-                    patcher.close()
-                    postStop()
-                    return@Thread
-                }
-
+                if (cancel(patcher::close)) return@Thread
                 updateProgress(0.15, "Executing...", "")
 
-                // Update the progress bar every time a patch is executed from 0.15 to 0.7
-                val totalPatchesCount = patches.size
-                val progressStep = 0.55 / totalPatchesCount
-                var progress = 0.15
-
-                patcher.apply {
-                    acceptIntegrations(setOf(integrations))
-                    acceptPatches(patches)
+                val patcherResult = patcher.use {
+                    patcher.apply {
+                        acceptIntegrations(setOf(integrations))
+                        acceptPatches(patches)
+                    }
 
                     runBlocking {
-                        apply(false).collect(FlowCollector { patchResult: PatchResult ->
-                            if (cancel) {
-                                handler.post { stopResult!!.success(null) }
-                                cancel()
-                                this@apply.close()
-                                return@FlowCollector
-                            }
+                        // Update the progress bar every time a patch is executed from 0.15 to 0.7
+                        val totalPatchesCount = patches.size
+                        val progressStep = 0.55 / totalPatchesCount
+                        var progress = 0.15
+
+                        patcher.apply(false).collect(FlowCollector { patchResult: PatchResult ->
+                            if (cancel(patcher::close)) return@FlowCollector
 
                             val msg = patchResult.exception?.let {
                                 val writer = StringWriter()
@@ -360,27 +332,23 @@ class MainActivity : FlutterActivity() {
                             progress += progressStep
                         })
                     }
+
+                    if (cancel(patcher::close)) return@Thread
+                    updateProgress(0.75, "Building...", "")
+
+                    patcher.get()
                 }
 
-                if (cancel) {
-                    postStop()
-                    patcher.close()
-                    return@Thread
-                }
+                inFile.copyTo(outFile)
 
-                updateProgress(0.75, "Building...", "")
+                if (cancel(patcher::close)) return@Thread
 
-                patcher.get().applyTo(patchedFile)
-                patcher.close()
+                patcherResult.applyTo(outFile)
 
-                if (cancel) {
-                    postStop()
-                    return@Thread
-                }
-
+                if (cancel(patcher::close)) return@Thread
                 updateProgress(0.8, "Signing...", "")
 
-                patchedFile.sign(
+                outFile.sign(
                     ApkUtils.SigningOptions(
                         keyStoreFile,
                         keystorePassword,
@@ -388,8 +356,6 @@ class MainActivity : FlutterActivity() {
                         keystorePassword
                     )
                 )
-
-                patchedFile.renameTo(outFile)
 
                 updateProgress(.85, "Patched", "Patched APK")
             } catch (ex: Throwable) {
@@ -409,7 +375,8 @@ class MainActivity : FlutterActivity() {
 
     private fun installApk(apkPath: String) {
         val packageInstaller: PackageInstaller = applicationContext.packageManager.packageInstaller
-        val sessionParams = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
+        val sessionParams =
+            PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL)
         val sessionId: Int = packageInstaller.createSession(sessionParams)
         val session: PackageInstaller.Session = packageInstaller.openSession(sessionId)
         session.use { activeSession ->
@@ -424,7 +391,12 @@ class MainActivity : FlutterActivity() {
         val receiverIntent = Intent(applicationContext, InstallerReceiver::class.java).apply {
             action = "APP_INSTALL_ACTION"
         }
-        val receiverPendingIntent = PendingIntent.getBroadcast(context, sessionId, receiverIntent, PackageInstallerManager.flags)
+        val receiverPendingIntent = PendingIntent.getBroadcast(
+            context,
+            sessionId,
+            receiverIntent,
+            PackageInstallerManager.flags
+        )
         session.commit(receiverPendingIntent.intentSender)
         session.close()
     }
@@ -434,7 +406,8 @@ class MainActivity : FlutterActivity() {
         val receiverIntent = Intent(applicationContext, UninstallerReceiver::class.java).apply {
             action = "APP_UNINSTALL_ACTION"
         }
-        val receiverPendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PackageInstallerManager.flags)
+        val receiverPendingIntent =
+            PendingIntent.getBroadcast(context, 0, receiverIntent, PackageInstallerManager.flags)
         packageInstaller.uninstall(packageName, receiverPendingIntent.intentSender)
     }
 

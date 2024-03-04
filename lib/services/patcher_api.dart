@@ -172,25 +172,22 @@ class PatcherAPI {
       _dataDir.createSync();
       _tmpDir.createSync();
       final Directory workDir = _tmpDir.createTempSync('tmp-');
-      final File inputFile = File('${workDir.path}/base.apk');
-      final File patchedFile = File('${workDir.path}/patched.apk');
+
       outFile = File('${workDir.path}/out.apk');
-      final Directory cacheDir = Directory('${workDir.path}/cache');
-      cacheDir.createSync();
-      final String originalFilePath = apkFilePath;
+
+      final Directory tmpDir =
+          Directory('${workDir.path}/revanced-temporary-files');
 
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
-            'originalFilePath': originalFilePath,
-            'inputFilePath': inputFile.path,
-            'patchedFilePath': patchedFile.path,
+            'inFilePath': apkFilePath,
             'outFilePath': outFile!.path,
             'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'options': options,
-            'cacheDirPath': cacheDir.path,
+            'tmpDirPath': tmpDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
             'keystorePassword': _managerAPI.getKeystorePassword(),
           },
@@ -462,7 +459,6 @@ enum InstallStatus {
   mountNoRoot(1),
   mountVersionMismatch(1.1),
   mountMissingInstallation(1.2),
-
   statusFailureBlocked(2),
   installFailedVerificationFailure(3.1),
   statusFailureInvalid(4),
@@ -473,6 +469,7 @@ enum InstallStatus {
   statusFailureTimeout(8);
 
   const InstallStatus(this.statusCode);
+
   final double statusCode;
 
   static String byCode(num code) {
