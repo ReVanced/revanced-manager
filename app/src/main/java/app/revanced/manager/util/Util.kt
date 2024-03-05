@@ -11,6 +11,14 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
@@ -166,3 +174,24 @@ fun String.relativeTime(context: Context): String {
         return context.getString(R.string.invalid_date)
     }
 }
+
+@Composable
+fun LazyListState.isScrollingUp(): State<Boolean> {
+    return remember(this) {
+        var previousIndex by mutableIntStateOf(firstVisibleItemIndex)
+        var previousScrollOffset by mutableIntStateOf(firstVisibleItemScrollOffset)
+
+        derivedStateOf {
+            if (previousIndex != firstVisibleItemIndex) {
+                previousIndex > firstVisibleItemIndex
+            } else {
+                previousScrollOffset >= firstVisibleItemScrollOffset
+            }.also {
+                previousIndex = firstVisibleItemIndex
+                previousScrollOffset = firstVisibleItemScrollOffset
+            }
+        }
+    }
+}
+
+val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
