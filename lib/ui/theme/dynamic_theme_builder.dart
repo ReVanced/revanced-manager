@@ -2,13 +2,10 @@ import 'dart:ui';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
-import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:stacked_services/stacked_services.dart';
 

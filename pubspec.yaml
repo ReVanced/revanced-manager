@@ -4,7 +4,7 @@ homepage: https://github.com/ReVanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.19.0-dev.17+101900017
+version: 1.19.1+101800002
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -37,14 +37,11 @@ dependencies:
   flutter_markdown: ^0.6.14
   fluttertoast: ^8.2.4
   font_awesome_flutter: ^10.4.0
-  google_fonts: ^6.1.0
+  google_fonts: ^6.2.1
   injectable: ^2.1.1
   intl: ^0.18.0
   json_annotation: ^4.8.1
-  language_code:
-    git:
-      url: https://github.com/Ushie/language_code
-      ref: 21b71892d1ce07fb8ea51ac2b474e435360fb6f7 # Branch: feat/add-Filipino, Upstream PR: https://github.com/lamnhan066/language_code/pull/1 
+  language_code: ^0.4.1
   logcat:
     git:
       url: https://github.com/BenjaminHalko/logcat

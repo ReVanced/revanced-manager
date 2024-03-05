@@ -182,7 +182,7 @@
     "sourcesResetDialogTitle": "Скинути",
     "sourcesResetDialogText": "Ви дійсно бажаєте відновити стандартні значення джерел?",
     "apiURLResetDialogText": "Ви дійсно хочете скинути API URL на стандартне значення?",
-    "sourcesUpdateNote": "Примітка: Це буде автоматично завантажувати ReVanced Patches та ReVanced Integrations з альтернативних джерел.\n\nЦе під'єднає вас до альтернативного джерела.",
+    "sourcesUpdateNote": "Примітка. Це автоматично завантажить ReVanced Patches і ReVanced Integrations з альтернативних джерел.\n\nЦе під'єднає вас до альтернативного джерела.",
     "apiURLLabel": "URL-адреса API",
     "apiURLHint": "Налаштуйте API URL для ReVanced Manager",
     "selectApiURL": "URL-адреса API",

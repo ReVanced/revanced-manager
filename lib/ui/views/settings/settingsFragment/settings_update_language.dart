@@ -37,6 +37,14 @@ class SUpdateLanguage extends BaseViewModel {
     final ValueNotifier<String> selectedLanguageCode = ValueNotifier(
       '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}',
     );
+    LanguageCodes getLanguageCode(locale) {
+      return LanguageCodes.fromCode(
+        '${locale.languageCode}_${locale.countryCode}',
+        orElse: () => LanguageCodes.fromCode(locale.languageCode),
+      );
+    }
+
+    final currentlyUsedLanguage = getLanguageCode(LocaleSettings.currentLocale);
     // initLang();
 
     // Return a dialog with list for each language supported by the application.
@@ -53,17 +61,29 @@ class SUpdateLanguage extends BaseViewModel {
           builder: (context, value, child) {
             return SingleChildScrollView(
               child: ListBody(
-                children: AppLocale.values.map(
-                  (locale) {
-                    final LanguageCodes languageCode = LanguageCodes.fromCode(
-                      '${locale.languageCode}_${locale.countryCode}',
-                      orElse: () => LanguageCodes.fromCode(locale.languageCode),
-                    );
-
+                children: [
+                  RadioListTile(
+                    title: Text(currentlyUsedLanguage.englishName),
+                    subtitle: Text(
+                        '${currentlyUsedLanguage.nativeName} (${LocaleSettings.currentLocale.languageCode}${LocaleSettings.currentLocale.countryCode != null ? '-${LocaleSettings.currentLocale.countryCode}' : ''})'),
+                    value:
+                        '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}' ==
+                            selectedLanguageCode.value,
+                    groupValue: true,
+                    onChanged: (value) {
+                      selectedLanguageCode.value =
+                          '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}';
+                    },
+                  ),
+                  ...AppLocale.values
+                      .where(
+                    (locale) =>
+                        locale.languageCode != currentlyUsedLanguage.code,
+                  )
+                      .map((locale) {
+                    final languageCode = getLanguageCode(locale);
                     return RadioListTile(
-                      title: Text(
-                        languageCode.englishName,
-                      ),
+                      title: Text(languageCode.englishName),
                       subtitle: Text(
                         '${languageCode.nativeName} (${locale.languageCode}${locale.countryCode != null ? '-${locale.countryCode}' : ''})',
                       ),
@@ -75,8 +95,8 @@ class SUpdateLanguage extends BaseViewModel {
                             '${locale.languageCode}-${locale.countryCode}';
                       },
                     );
-                  },
-                ).toList(),
+                  }),
+                ],
               ),
             );
           },
