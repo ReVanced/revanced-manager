@@ -264,6 +264,7 @@
     "exportButton": "Export",
     "deleteButton": "Delete",
     "rootDialogTitle": "Error",
+    "patchHistoryDescription": "This is a backup of the last patched app. You can install or export it later.",
     "unmountDialogText": "Are you sure you want to unmount this app?",
     "uninstallDialogText": "Are you sure you want to uninstall this app?",
     "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",

@@ -59,6 +59,14 @@ class AppInfoView extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 20),
+                    if (isHistory) ...[
+                      ListTile(
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        subtitle: Text(t.appInfoView.patchHistoryDescription),
+                      ),
+                      const SizedBox(height: 4),
+                    ],
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: CustomCard(
