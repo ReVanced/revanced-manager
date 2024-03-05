@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "@droidsolutions-oss/semantic-release-update-file": "^1.3.2",
     "@saithodev/semantic-release-backmerge": "^4.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
