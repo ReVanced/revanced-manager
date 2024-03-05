@@ -1,7 +1,7 @@
 [versions]
 ktx = "1.12.0"
 ui-tooling = "1.6.0-alpha08"
-viewmodel-lifecycle = "2.6.2"
+viewmodel-lifecycle = "2.7.0"
 splash-screen = "1.0.1"
 compose-activity = "1.8.2"
 paging = "3.2.1"
