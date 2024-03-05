@@ -11,6 +11,7 @@
 -keep class com.google.auto.value.** { *; }
 -keep class com.android.apksig.internal.** { *; }
 -keepnames class com.google.common.collect.**
+-keepnames class org.xmlpull.** { *; }
 
 -dontwarn com.google.auto.value.**
 -dontwarn com.google.j2objc.annotations.*
