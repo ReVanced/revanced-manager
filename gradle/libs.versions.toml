@@ -1,17 +1,18 @@
 [versions]
 ktx = "1.12.0"
-ui-tooling = "1.6.0-alpha08"
-viewmodel-lifecycle = "2.6.2"
+material3 = "1.2.0"
+ui-tooling = "1.6.2"
+viewmodel-lifecycle = "2.7.0"
 splash-screen = "1.0.1"
 compose-activity = "1.8.2"
 paging = "3.2.1"
 preferences-datastore = "1.0.0"
-work-runtime = "2.8.1"
-compose-bom = "2023.10.01"
+work-runtime = "2.9.0"
+compose-bom = "2024.02.01"
 accompanist = "0.30.1"
 serialization = "1.6.0"
 collection = "0.3.5"
-room-version = "2.5.2"
+room-version = "2.6.1"
 revanced-patcher = "19.1.0"
 revanced-library = "1.4.0"
 koin-version = "3.4.3"
@@ -20,14 +21,14 @@ reimagined-navigation = "1.5.0"
 ktor = "2.3.3"
 markdown-renderer = "0.8.0"
 fading-edges = "1.0.4"
-androidGradlePlugin = "8.2.0"
+androidGradlePlugin = "8.3.0"
 kotlinGradlePlugin = "1.9.10"
 devToolsGradlePlugin = "1.9.10-1.0.13"
 aboutLibrariesGradlePlugin = "10.8.3"
 coil = "2.4.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
-libsu = "5.2.0"
+libsu = "5.2.1"
 scrollbars = "1.0.4"
 
 [libraries]
@@ -47,7 +48,7 @@ compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.0-beta01"}
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"}
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 # Coil
