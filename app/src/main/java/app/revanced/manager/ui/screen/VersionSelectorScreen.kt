@@ -78,7 +78,8 @@ fun VersionSelectorScreen(
                 selectedVersion = viewModel.nonSuggestedVersionDialogSubject
 
                 viewModel.continueWithNonSuggestedVersion(dismissPermanently)
-            }
+            },
+            suggestedVersion = viewModel.requiredVersion.orEmpty()
         )
 
     val lazyListState = rememberLazyListState()
@@ -174,7 +175,7 @@ fun SelectedAppItem(
     onClick: () -> Unit,
     patchCount: Int?,
     enabled: Boolean = true,
-    alreadyPatched: Boolean = false
+    alreadyPatched: Boolean = false,
 ) {
     ListItem(
         leadingContent = { RadioButton(selected, null) },

@@ -31,7 +31,7 @@ inline fun DangerousActionDialogBase(
     noinline onCancel: () -> Unit,
     crossinline confirmButton: @Composable (Boolean) -> Unit,
     @StringRes title: Int,
-    @StringRes body: Int,
+    body: String,
 ) {
     var dismissPermanently by rememberSaveable {
         mutableStateOf(false)
@@ -63,7 +63,7 @@ inline fun DangerousActionDialogBase(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = stringResource(body),
+                    text = body,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

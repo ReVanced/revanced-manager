@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
 @Composable
-fun NonSuggestedVersionDialog(onCancel: () -> Unit, onContinue: (Boolean) -> Unit) {
+fun NonSuggestedVersionDialog(onCancel: () -> Unit, onContinue: (Boolean) -> Unit, suggestedVersion: String) {
     DangerousActionDialogBase(
         onCancel = onCancel,
         confirmButton = { dismissPermanently ->
@@ -18,7 +18,6 @@ fun NonSuggestedVersionDialog(onCancel: () -> Unit, onContinue: (Boolean) -> Uni
             }
         },
         title = R.string.version_warning_title,
-        // TODO: show suggested version in UI
-        body = R.string.version_warning_description,
+        body = stringResource(R.string.version_warning_description, suggestedVersion),
     )
 }

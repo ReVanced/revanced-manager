@@ -52,6 +52,8 @@ fun AppSelectorScreen(
             uri?.let(vm::handleStorageResult)
         }
 
+    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle(emptyMap())
+
     var filterText by rememberSaveable { mutableStateOf("") }
     var search by rememberSaveable { mutableStateOf(false) }
 
@@ -65,11 +67,13 @@ fun AppSelectorScreen(
         }
     }
 
-    if (vm.showNonSuggestedVersionDialog)
+    vm.nonSuggestedVersionDialogSubject?.let {
         NonSuggestedVersionDialog(
             onCancel = vm::dismissNonSuggestedVersionDialog,
             onContinue = vm::continueWithNonSuggestedVersion,
+            suggestedVersion = suggestedVersions[it.packageName].orEmpty()
         )
+    }
 
     // TODO: find something better for this
     if (search) {
@@ -145,8 +149,6 @@ fun AppSelectorScreen(
             }
         )
     }
-
-    val suggestedVersions by vm.suggestedAppVersions.collectAsStateWithLifecycle(emptyMap())
 
     Scaffold(
         topBar = {

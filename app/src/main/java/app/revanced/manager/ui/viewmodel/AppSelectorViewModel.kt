@@ -37,8 +37,8 @@ class AppSelectorViewModel(
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
-    private var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
-    val showNonSuggestedVersionDialog by derivedStateOf { nonSuggestedVersionDialogSubject != null }
+    var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
+        private set
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 

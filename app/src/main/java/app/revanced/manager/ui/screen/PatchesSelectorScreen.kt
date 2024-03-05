@@ -415,7 +415,7 @@ fun SelectionWarningDialog(
             }
         },
         title = R.string.selection_warning_title,
-        body = R.string.selection_warning_description,
+        body = stringResource(R.string.selection_warning_description),
     )
 }
 
