@@ -2,11 +2,10 @@ import 'dart:ui';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/app/app.router.dart';
-import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/theme.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -15,11 +14,9 @@ class DynamicThemeBuilder extends StatefulWidget {
     super.key,
     required this.title,
     required this.home,
-    required this.localizationsDelegates,
   });
   final String title;
   final Widget home;
-  final Iterable<LocalizationsDelegate> localizationsDelegates;
 
   @override
   State<DynamicThemeBuilder> createState() => _DynamicThemeBuilderState();
@@ -28,28 +25,11 @@ class DynamicThemeBuilder extends StatefulWidget {
 class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
     with WidgetsBindingObserver {
   Brightness brightness = PlatformDispatcher.instance.platformBrightness;
-  final ManagerAPI _managerAPI = locator<ManagerAPI>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangePlatformBrightness() {
-    setState(() {
-      brightness = PlatformDispatcher.instance.platformBrightness;
-    });
-    if (_managerAPI.getThemeMode() < 2) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          systemNavigationBarIconBrightness: brightness == Brightness.light
-              ? Brightness.dark
-              : Brightness.light,
-        ),
-      );
-    }
   }
 
   @override
@@ -70,6 +50,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
           textTheme: GoogleFonts.robotoTextTheme(ThemeData.light().textTheme),
         );
         final ThemeData darkDynamicTheme = ThemeData(
+          brightness: Brightness.dark,
           useMaterial3: true,
           navigationBarTheme: NavigationBarThemeData(
             labelTextStyle: MaterialStateProperty.all(
@@ -108,7 +89,9 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
             onGenerateRoute: StackedRouter().onGenerateRoute,
             theme: theme,
             home: widget.home,
-            localizationsDelegates: widget.localizationsDelegates,
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            locale: TranslationProvider.of(context).flutterLocale,
+            supportedLocales: AppLocaleUtils.supportedLocales,
           ),
         );
       },

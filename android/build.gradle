@@ -1,22 +1,14 @@
-buildscript {
-    ext.kotlin_version = '1.9.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 allprojects {
     repositories {
         google()
         mavenCentral()
         maven {
-            url 'https://jitpack.io'
+            // A repository must be speficied for some reason. "registry" is a dummy.
+            url = uri("https://maven.pkg.github.com/revanced/registry")
+            credentials {
+                username = project.findProperty("gpr.user") as String ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") as String ?: System.getenv("GITHUB_TOKEN")
+            }
         }
         mavenLocal()
     }

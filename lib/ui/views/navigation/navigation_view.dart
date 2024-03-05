@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,13 +13,11 @@ class NavigationView extends StatelessWidget {
     return ViewModelBuilder<NavigationViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
-      builder: (context, model, child) => WillPopScope(
-        onWillPop: () async {
-          if (model.currentIndex == 0) {
-            return true;
-          } else {
+      builder: (context, model, child) => PopScope(
+        canPop: model.currentIndex == 0,
+        onPopInvoked: (bool didPop) {
+          if (!didPop) {
             model.setIndex(0);
-            return false;
           }
         },
         child: Scaffold(
@@ -47,30 +45,21 @@ class NavigationView extends StatelessWidget {
                 icon: model.isIndexSelected(0)
                     ? const Icon(Icons.dashboard)
                     : const Icon(Icons.dashboard_outlined),
-                label: FlutterI18n.translate(
-                  context,
-                  'navigationView.dashboardTab',
-                ),
+                label: t.navigationView.dashboardTab,
                 tooltip: '',
               ),
               NavigationDestination(
                 icon: model.isIndexSelected(1)
                     ? const Icon(Icons.build)
                     : const Icon(Icons.build_outlined),
-                label: FlutterI18n.translate(
-                  context,
-                  'navigationView.patcherTab',
-                ),
+                label: t.navigationView.patcherTab,
                 tooltip: '',
               ),
               NavigationDestination(
                 icon: model.isIndexSelected(2)
                     ? const Icon(Icons.settings)
                     : const Icon(Icons.settings_outlined),
-                label: FlutterI18n.translate(
-                  context,
-                  'navigationView.settingsTab',
-                ),
+                label: t.navigationView.settingsTab,
                 tooltip: '',
               ),
             ],

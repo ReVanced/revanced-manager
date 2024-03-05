@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/models/patched_application.dart';
 import 'package:revanced_manager/services/manager_api.dart';
@@ -172,25 +172,22 @@ class PatcherAPI {
       _dataDir.createSync();
       _tmpDir.createSync();
       final Directory workDir = _tmpDir.createTempSync('tmp-');
-      final File inputFile = File('${workDir.path}/base.apk');
-      final File patchedFile = File('${workDir.path}/patched.apk');
+
       outFile = File('${workDir.path}/out.apk');
-      final Directory cacheDir = Directory('${workDir.path}/cache');
-      cacheDir.createSync();
-      final String originalFilePath = apkFilePath;
+
+      final Directory tmpDir =
+          Directory('${workDir.path}/revanced-temporary-files');
 
       try {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
-            'originalFilePath': originalFilePath,
-            'inputFilePath': inputFile.path,
-            'patchedFilePath': patchedFile.path,
+            'inFilePath': apkFilePath,
             'outFilePath': outFile!.path,
             'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
             'options': options,
-            'cacheDirPath': cacheDir.path,
+            'tmpDirPath': tmpDir.path,
             'keyStoreFilePath': _keyStoreFile.path,
             'keystorePassword': _managerAPI.getKeystorePassword(),
           },
@@ -304,18 +301,19 @@ class PatcherAPI {
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        title: I18nText('installErrorDialog.$statusValue'),
+        title: Text(t['installErrorDialog.$statusValue']),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            I18nText(
-              'installErrorDialog.${statusValue}_description',
-              translationParams: statusCode == 2
-                  ? {
-                      'packageName': status['otherPackageName'],
-                    }
-                  : null,
+            Text(
+              t['installErrorDialog.${statusValue}_description'](
+                packageName: statusCode == 2
+                    ? {
+                        'packageName': status['otherPackageName'],
+                      }
+                    : null,
+              ),
             ),
           ],
         ),
@@ -325,7 +323,7 @@ class PatcherAPI {
                   onPressed: () async {
                     Navigator.pop(context);
                   },
-                  child: I18nText('okButton'),
+                  child: Text(t.okButton),
                 ),
               ]
             : <Widget>[
@@ -334,14 +332,15 @@ class PatcherAPI {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: I18nText('cancelButton'),
+                    child: Text(t.cancelButton),
+                  )
+                else
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(t.cancelButton),
                   ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: I18nText('cancelButton'),
-                ),
                 if (isFixable)
                   FilledButton(
                     onPressed: () async {
@@ -354,7 +353,7 @@ class PatcherAPI {
                         Navigator.pop(context);
                       }
                     },
-                    child: I18nText('okButton'),
+                    child: Text(t.okButton),
                   ),
               ],
       ),
@@ -460,7 +459,6 @@ enum InstallStatus {
   mountNoRoot(1),
   mountVersionMismatch(1.1),
   mountMissingInstallation(1.2),
-
   statusFailureBlocked(2),
   installFailedVerificationFailure(3.1),
   statusFailureInvalid(4),
@@ -471,6 +469,7 @@ enum InstallStatus {
   statusFailureTimeout(8);
 
   const InstallStatus(this.statusCode);
+
   final double statusCode;
 
   static String byCode(num code) {

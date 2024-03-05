@@ -2,9 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:root/root.dart';
 
 class RootAPI {
-  // TODO(aAbed): remove in the future, keep it for now during migration.
-  final String _postFsDataDirPath = '/data/adb/post-fs-data.d';
-
   final String _revancedDirPath = '/data/adb/revanced';
   final String _serviceDDirPath = '/data/adb/service.d';
 
@@ -99,18 +96,9 @@ class RootAPI {
     );
   }
 
-  // TODO(aAbed): remove in the future, keep it for now during migration.
   Future<void> removeOrphanedFiles() async {
     await Root.exec(
-      cmd: '''
-      find $_revancedDirPath -type f -name original.apk -delete
-      for file in "$_serviceDDirPath"/*; do
-        filename=\$(basename "\$file")
-        if [ -f "$_postFsDataDirPath/\$filename" ]; then
-          rm "$_postFsDataDirPath/\$filename"
-        fi
-      done
-      ''',
+      cmd: 'find $_revancedDirPath -type f -name original.apk -delete',
     );
   }
 
@@ -144,8 +132,12 @@ class RootAPI {
     );
     final String mountScript = '''
     #!/system/bin/sh
-    MAGISKTMP="\$(magisk --path)" || MAGISKTMP=/sbin
+    # Mount using Magisk mirror, if available.
+    MAGISKTMP="\$( magisk --path )" || MAGISKTMP=/sbin
     MIRROR="\$MAGISKTMP/.magisk/mirror"
+    if [ ! -f \$MIRROR ]; then
+        MIRROR=""
+    fi
 
     until [ "\$(getprop sys.boot_completed)" = 1 ]; do sleep 3; done
     until [ -d "/sdcard/Android" ]; do sleep 1; done
@@ -171,7 +163,7 @@ class RootAPI {
   }
 
   Future<void> installPatchedApk(
-      String packageName, String patchedFilePath) async {
+      String packageName, String patchedFilePath,) async {
     final String newPatchedFilePath = '$_revancedDirPath/$packageName/base.apk';
     await Root.exec(
       cmd: '''

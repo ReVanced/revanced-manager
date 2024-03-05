@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/installerView/gradient_progress_indicator.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
+import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_floating_action_button_extended.dart';
 import 'package:stacked/stacked.dart';
 
 class InstallerView extends StatelessWidget {
@@ -15,18 +16,27 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => WillPopScope(
+      builder: (context, model, child) => PopScope(
+        canPop: !model.isPatching,
+        onPopInvoked: (bool didPop) {
+          if (didPop) {
+            model.onPop();
+          } else {
+            model.onPopAttempt(context);
+          }
+        },
         child: SafeArea(
           top: false,
           bottom: model.isPatching,
           child: Scaffold(
             floatingActionButton: Visibility(
-              visible: !model.isPatching && !model.hasErrors,
-              child: FloatingActionButton.extended(
-                label: I18nText(
+              visible:
+                  !model.isPatching && !model.hasErrors && !model.isInstalling,
+              child: HapticFloatingActionButtonExtended(
+                label: Text(
                   model.isInstalled
-                      ? 'installerView.openButton'
-                      : 'installerView.installButton',
+                      ? t.installerView.openButton
+                      : t.installerView.installButton,
                 ),
                 icon: model.isInstalled
                     ? const Icon(Icons.open_in_new)
@@ -51,19 +61,13 @@ class InstallerView extends StatelessWidget {
                     Visibility(
                       visible: !model.hasErrors,
                       child: IconButton.filledTonal(
-                        tooltip: FlutterI18n.translate(
-                          context,
-                          'installerView.exportApkButtonTooltip',
-                        ),
+                        tooltip: t.installerView.exportApkButtonTooltip,
                         icon: const Icon(Icons.save),
                         onPressed: () => model.onButtonPressed(0),
                       ),
                     ),
                     IconButton.filledTonal(
-                      tooltip: FlutterI18n.translate(
-                        context,
-                        'installerView.exportLogButtonTooltip',
-                      ),
+                      tooltip: t.installerView.exportLogButtonTooltip,
                       icon: const Icon(Icons.post_add),
                       onPressed: () => model.onButtonPressed(1),
                     ),
@@ -83,7 +87,7 @@ class InstallerView extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  onBackButtonPressed: () => model.onWillPop(context),
+                  onBackButtonPressed: () => Navigator.maybePop(context),
                   bottom: PreferredSize(
                     preferredSize: const Size(double.infinity, 1.0),
                     child: GradientProgressIndicator(progress: model.progress),
@@ -111,7 +115,6 @@ class InstallerView extends StatelessWidget {
             ),
           ),
         ),
-        onWillPop: () => model.onWillPop(context),
       ),
     );
   }

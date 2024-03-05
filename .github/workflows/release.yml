@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - ".github/workflows/release.yml"
+      - "android/**"
+      - "assets/**"
+      - "lib/**"
+      - "pubspec.yaml"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: 'npm'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate translations
+        run: dart run slang
+
+      - name: Generate code files
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
+          signingKey: "keystore.jks"
+          keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
+          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: |
+          echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
+          npx semantic-release

@@ -1,6 +1,6 @@
 # 🔄 Updating ReVanced Manager
 
-In order to keep up with the latest features and bug fixes, it is recommended to keep ReVanced Manager up to date.
+Learn how to update ReVanced Manager.
 
 ## ✅ Updating steps
 
@@ -9,6 +9,6 @@ In order to keep up with the latest features and bug fixes, it is recommended to
 
 ## ⏭️ What's next
 
-The next page will bring you back to the usage page.
+The next page will lead back to the usage page.
 
 Continue: [🛠️ Usage](2_usage.md)

@@ -1,0 +1,5 @@
+base_locale: en
+fallback_strategy: base_locale
+input_file_pattern: .i18n.json
+input_directory: assets/i18n
+output_directory: lib/gen
