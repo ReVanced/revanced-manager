@@ -63,8 +63,8 @@ fun VersionSelectorScreen(
                         .thenByDescending { it.version }
                 )
 
-            viewModel.requiredVersion?.let {
-                apps.filter { app -> app.version == it }
+            viewModel.requiredVersion?.let { requiredVersion ->
+                apps.filter { it.version == requiredVersion }
             } ?: apps
         }
     }
