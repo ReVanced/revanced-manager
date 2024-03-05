@@ -9,32 +9,32 @@ Learn how to configure ReVanced Manager.
   By default, you can not change the patch selection and the default selection is used. Enabling this will allow you to change the patch selection.
 
   > ⚠️ Warning  
-  > Changing the selection may cause cause unexpected issues. Unless you know what you are doing, it is recommended to keep this disabled.
+  > Changing the selection may cause unexpected issues. Unless you know what you are doing, it is recommended to keep this disabled.
 
 - ### 📦 Require suggested app version
 
-  By default, ReVanced Manager allows you to patch an app if the suggested version to patch matches the app you selected. Disabling this will allow you to patch an app even if the suggested version does not match the app you selected.
+  By default, ReVanced Manager allows you to patch an app if the suggested version to patch matches the version of the app you selected. Disabling this will allow you to patch an app even if the suggested version does not match the version of the app you selected.
 
   > ⚠️ Warning  
   > Patches are more likely to fail on versions that are not suggested by ReVanced Manager. Unless you know what you are doing, it is recommended to keep this enabled.
 
 - ### ✅ Version compatibility check
 
-  By default, ReVanced Manager allows you to select patches that are not compatible with the version of the app you selected. Disabling this will allow you to select patches that are not compatible with the app version you selected.
+  By default, ReVanced Manager does not allow you to select patches that are not compatible with the version of the app you selected. Disabling this will allow you to select patches that are not compatible with the version of the app you selected.
 
   > ⚠️ Warning  
   > Patches are more likely to fail on versions they are not compatible with. Unless you know what you are doing, it is recommended to keep this enabled.
 
 - ### 🧑‍🔬 Show universal patches
 
-  By default, ReVanced Manager only shows patches that are compatible with specifc apps. Enabling this will show patches that are intended to work on all apps.
+  By default, ReVanced Manager only shows patches that are compatible with specific apps. Enabling this will show patches that are intended to work on all apps.
 
   > ⚠️ Warning  
-  > Patches that are intended to work on all apps may not work on all apps. Unless you know what you are doing, it is recommended to keep this disabled.
+  > Patches that are intended to may not work on all apps. Unless you know what you are doing, it is recommended to keep this disabled.
 
 - ### 🔗 API URL
 
-  Configure the API URL to use. The API is used to download updates and patches.
+  Configure the API URL to use. The API is used to download patches and updates.
 
 - ### 🧬 Use alternative source
 
