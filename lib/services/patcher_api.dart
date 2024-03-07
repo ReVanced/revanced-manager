@@ -297,6 +297,18 @@ class PatcherAPI {
     );
     bool cleanInstall = false;
     final bool isFixable = statusCode == 4 || statusCode == 5;
+
+    var description = t['installErrorDialog.${statusValue}_description'];
+    if (statusCode == 2) {
+      description = description(
+        packageName: statusCode == 2
+            ? {
+                'packageName': status['otherPackageName'],
+              }
+            : null,
+      );
+    }
+
     await showDialog(
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
@@ -306,15 +318,7 @@ class PatcherAPI {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              t['installErrorDialog.${statusValue}_description'](
-                packageName: statusCode == 2
-                    ? {
-                        'packageName': status['otherPackageName'],
-                      }
-                    : null,
-              ),
-            ),
+            Text(description),
           ],
         ),
         actions: (status == null)
