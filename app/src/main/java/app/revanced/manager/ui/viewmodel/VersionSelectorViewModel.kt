@@ -64,10 +64,10 @@ class VersionSelectorViewModel(
         patchBundleRepository.suggestedVersions.first()[packageName]
     }
 
-    val supportedVersions = patchBundleRepository.bundles.map { bundles ->
-        // It is mandatory to use the suggested version if the safeguard is enabled.
+    val supportedVersions = patchBundleRepository.bundles.map supportedVersions@{ bundles ->
         requiredVersionAsync.await()?.let { version ->
-            return@map mapOf(
+            // It is mandatory to use the suggested version if the safeguard is enabled.
+            return@supportedVersions mapOf(
                 version to bundles
                     .asSequence()
                     .flatMap { (_, bundle) -> bundle.patches }
