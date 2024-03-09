@@ -171,7 +171,10 @@ class PatcherAPI {
     if (integrationsFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
-      final Directory workDir = _tmpDir.createTempSync('tmp-');
+      final Directory workDir = await _tmpDir.createTemp('tmp-');
+
+      final File inApkFile = File('${workDir.path}/in.apk');
+      await File(apkFilePath).copy(inApkFile.path);
 
       outFile = File('${workDir.path}/out.apk');
 
@@ -182,7 +185,7 @@ class PatcherAPI {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
-            'inFilePath': apkFilePath,
+            'inFilePath': inApkFile.path,
             'outFilePath': outFile!.path,
             'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
