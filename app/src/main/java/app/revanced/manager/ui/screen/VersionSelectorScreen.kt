@@ -69,17 +69,11 @@ fun VersionSelectorScreen(
         }
     }
 
-    var selectedVersion: SelectedApp? by rememberSaveable { mutableStateOf(null) }
-
     if (viewModel.showNonSuggestedVersionDialog)
         NonSuggestedVersionDialog(
             suggestedVersion = viewModel.requiredVersion.orEmpty(),
             onCancel = viewModel::dismissNonSuggestedVersionDialog,
-            onContinue = { dismissPermanently ->
-                selectedVersion = viewModel.nonSuggestedVersionDialogSubject
-
-                viewModel.continueWithNonSuggestedVersion(dismissPermanently)
-            },
+            onContinue = viewModel::continueWithNonSuggestedVersion,
         )
 
     val lazyListState = rememberLazyListState()
@@ -95,7 +89,7 @@ fun VersionSelectorScreen(
                 text = { Text(stringResource(R.string.select_version)) },
                 icon = { Icon(Icons.Default.Check, null) },
                 expanded = lazyListState.isScrollingUp,
-                onClick = { selectedVersion?.let(onAppClick) }
+                onClick = { viewModel.selectedVersion?.let(onAppClick) }
             )
         }
     ) { paddingValues ->
@@ -114,11 +108,8 @@ fun VersionSelectorScreen(
                     item {
                         SelectedAppItem(
                             selectedApp = it,
-                            selected = selectedVersion == it,
-                            onClick = {
-                                if (viewModel.performAppVersionCheck(it))
-                                    selectedVersion = it
-                            },
+                            selected = viewModel.selectedVersion == it,
+                            onClick = { viewModel.select(it) },
                             patchCount = supportedVersions[it.version],
                             enabled =
                             !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
@@ -140,8 +131,8 @@ fun VersionSelectorScreen(
             ) {
                 SelectedAppItem(
                     selectedApp = it,
-                    selected = selectedVersion == it,
-                    onClick = { selectedVersion = it },
+                    selected = viewModel.selectedVersion == it,
+                    onClick = { viewModel.select(it) },
                     patchCount = supportedVersions[it.version]
                 )
             }
