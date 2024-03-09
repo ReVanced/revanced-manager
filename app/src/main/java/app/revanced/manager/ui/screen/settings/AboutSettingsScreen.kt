@@ -62,8 +62,6 @@ fun AboutSettingsScreen(
         viewModel.socials.partition(ReVancedSocial::preferred)
     }
 
-    val donateText = stringResource(R.string.donate)
-    val contactText = stringResource(R.string.contact)
     val preferredSocialButtons = remember(preferredSocials, viewModel.donate, viewModel.contact) {
         preferredSocials.map {
             Triple(
@@ -77,7 +75,7 @@ fun AboutSettingsScreen(
             viewModel.donate?.let {
                 Triple(
                     Icons.Outlined.FavoriteBorder,
-                    donateText,
+                    context.getString(R.string.donate),
                     third = {
                         context.openUrl(it)
                     }
@@ -86,7 +84,7 @@ fun AboutSettingsScreen(
             viewModel.contact?.let {
                 Triple(
                     Icons.Outlined.MailOutline,
-                    contactText,
+                    context.getString(R.string.contact),
                     third = {
                         context.openUrl("mailto:$it")
                     }
