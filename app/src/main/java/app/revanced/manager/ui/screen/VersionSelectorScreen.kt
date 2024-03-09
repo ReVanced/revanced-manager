@@ -117,7 +117,7 @@ fun VersionSelectorScreen(
 
             items(
                 items = list,
-                key = { it.packageName }
+                key = { it.version }
             ) {
                 SelectedAppItem(
                     selectedApp = it,
