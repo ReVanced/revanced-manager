@@ -2,6 +2,7 @@ package app.revanced.manager.patcher
 
 import android.content.Context
 import app.revanced.library.ApkUtils
+import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.R
 import app.revanced.manager.patcher.logger.ManagerLogger
 import app.revanced.manager.ui.model.State
@@ -105,8 +106,8 @@ class Session(
         }
         with(patcher) {
             logger.info("Merging integrations")
-            acceptIntegrations(integrations)
-            acceptPatches(selectedPatches)
+            acceptIntegrations(integrations.toSet())
+            acceptPatches(selectedPatches.toSet())
             updateProgress(state = State.COMPLETED) // Merging
 
             logger.info("Applying patches...")
@@ -117,7 +118,7 @@ class Session(
         val result = patcher.get()
 
         val aligned = tempDir.resolve("aligned.apk")
-        ApkUtils.copyAligned(input, aligned, result)
+        result.applyTo(aligned)
 
         logger.info("Patched apk saved to $aligned")
 

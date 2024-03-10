@@ -43,7 +43,7 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
 
     suspend fun regenerate() = withContext(Dispatchers.Default) {
         val ks = ApkSigner.newKeyStore(
-            listOf(
+            setOf(
                 ApkSigner.KeyStoreEntry(
                     DEFAULT, DEFAULT
                 )
