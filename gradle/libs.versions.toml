@@ -1,31 +1,31 @@
 [versions]
 ktx = "1.12.0"
-material3 = "1.2.0"
-ui-tooling = "1.6.2"
+material3 = "1.2.1"
+ui-tooling = "1.6.3"
 viewmodel-lifecycle = "2.7.0"
 splash-screen = "1.0.1"
 compose-activity = "1.8.2"
 paging = "3.2.1"
 preferences-datastore = "1.0.0"
 work-runtime = "2.9.0"
-compose-bom = "2024.02.01"
-accompanist = "0.30.1"
-serialization = "1.6.0"
-collection = "0.3.5"
+compose-bom = "2024.02.02"
+accompanist = "0.34.0"
+serialization = "1.6.3"
+collection = "0.3.7"
 room-version = "2.6.1"
-revanced-patcher = "19.1.0"
-revanced-library = "1.4.0"
-koin-version = "3.4.3"
-koin-version-compose = "3.4.6"
+revanced-patcher = "19.3.1"
+revanced-library = "2.2.1"
+koin-version = "3.5.3"
+koin-version-compose = "3.5.3"
 reimagined-navigation = "1.5.0"
-ktor = "2.3.3"
-markdown-renderer = "0.8.0"
+ktor = "2.3.9"
+markdown-renderer = "0.13.0"
 fading-edges = "1.0.4"
 androidGradlePlugin = "8.3.0"
-kotlinGradlePlugin = "1.9.10"
+kotlinGradlePlugin = "1.9.22"
 devToolsGradlePlugin = "1.9.10-1.0.13"
-aboutLibrariesGradlePlugin = "10.8.3"
-coil = "2.4.0"
+aboutLibrariesGradlePlugin = "11.1.0"
+coil = "2.6.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
 libsu = "5.2.1"
@@ -58,8 +58,6 @@ coil-appiconloader = { group = "me.zhanghai.android.appiconloader", name = "appi
 # Accompanist
 accompanist-drawablepainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
 accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist" }
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist" }
 
 # Kotlinx
@@ -98,7 +96,7 @@ skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skra
 skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
 
 # Markdown
-markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
+markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-m3", version.ref = "markdown-renderer" }
 
 # Fading Edges
 fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version.ref = "fading-edges"}
