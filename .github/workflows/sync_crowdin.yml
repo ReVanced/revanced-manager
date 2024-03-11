@@ -8,6 +8,7 @@ on:
     paths:
       - assets/i18n/*.json
       - assets/i18n/*.dart
+      - .github/workflows/sync_crowdin.yml
 
 jobs:
   sync:
