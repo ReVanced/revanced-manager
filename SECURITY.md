@@ -70,8 +70,8 @@ If a vulnerability is confirmed and accepted, you can join our [Discord](https:/
 
 ### ⏳ Supported Versions
 
-| Version                                                                                                  | Branch      | Supported          |
-| -------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
-| ![GitHub Release](https://img.shields.io/github/v/release/ReVanced/revanced-manager?style=for-the-badge) | main        | :white_check_mark: |
-| ![Static Badge](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge)             | dev         | :white_check_mark: |
-| ![Static Badge](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge)             | compose-dev | :white_check_mark: |
+| Version                                                                                                                                 | Branch      | Supported          |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
+| ![Latest stable release](https://img.shields.io/github/v/release/ReVanced/revanced-manager?style=for-the-badge "Latest stable release") | main        | :white_check_mark: |
+| ![Latest version](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version")                         | dev         | :white_check_mark: |
+| ![Latest version](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version")                         | compose-dev | :white_check_mark: |
