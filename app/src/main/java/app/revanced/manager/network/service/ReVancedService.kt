@@ -1,10 +1,12 @@
 package app.revanced.manager.network.service
 
-import app.revanced.manager.network.dto.ReVancedLatestRelease
 import app.revanced.manager.network.dto.ReVancedGitRepositories
+import app.revanced.manager.network.dto.ReVancedInfo
+import app.revanced.manager.network.dto.ReVancedInfoParent
+import app.revanced.manager.network.dto.ReVancedLatestRelease
 import app.revanced.manager.network.dto.ReVancedReleases
 import app.revanced.manager.network.utils.APIResponse
-import io.ktor.client.request.*
+import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -29,6 +31,13 @@ class ReVancedService(
         withContext(Dispatchers.IO) {
             client.request {
                 url("$api/contributors")
+            }
+        }
+
+    suspend fun getInfo(api: String): APIResponse<ReVancedInfoParent> =
+        withContext(Dispatchers.IO) {
+            client.request {
+                url("$api/v2/info")
             }
         }
 }
