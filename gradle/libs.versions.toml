@@ -30,6 +30,7 @@ app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
 libsu = "5.2.1"
 scrollbars = "1.0.4"
+compose-icons = "1.2.4"
 
 [libraries]
 # AndroidX Core
@@ -108,6 +109,10 @@ libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = 
 
 # Scrollbars
 scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
+
+# Compose Icons
+# switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
+compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
