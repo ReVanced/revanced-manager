@@ -1,0 +1,19 @@
+project_id_env: CROWDIN_PROJECT_ID
+api_token_env: CROWDIN_PERSONAL_TOKEN
+
+preserve_hierarchy: true
+
+pull_request_title: 'chore(translation): sync translation with Crowdin'
+commit_message: 'chore(translation): sync translation with Crowdin'
+pull_request_labels: 'translation'
+
+files: [
+  {
+    source: 'app/src/res/values/strings.xml',
+    translation: 'app/src/res/values-%android_code%/strings.xml'
+  }
+  {
+    source: 'app/src/res/values/plurals.xml',
+    translation: 'app/src/res/values-%android_code%/plurals.xml'
+  }
+]
