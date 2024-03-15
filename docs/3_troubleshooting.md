@@ -23,9 +23,3 @@ In case you encounter any issues while using ReVanced Manager, please refer to t
 - 🚨 Patched app crashes on launch
 
   Select the **Default** button when choosing patches.
-
-## ⏭️ What's next
-
-The next page will teach you how to build ReVanced Manager from source.
-
-Continue: [🔨 Building from source](4_building.md)
