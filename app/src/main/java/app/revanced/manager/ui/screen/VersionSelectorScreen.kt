@@ -37,6 +37,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
 import app.revanced.manager.util.isScrollingUp
@@ -53,7 +54,7 @@ fun VersionSelectorScreen(
 
     val list by remember {
         derivedStateOf {
-            (downloadedVersions + viewModel.downloadableVersions)
+            val apps = (downloadedVersions + viewModel.downloadableVersions)
                 .distinctBy { it.version }
                 .sortedWith(
                     compareByDescending<SelectedApp> {
@@ -61,10 +62,19 @@ fun VersionSelectorScreen(
                     }.thenByDescending { supportedVersions[it.version] }
                         .thenByDescending { it.version }
                 )
+
+            viewModel.requiredVersion?.let { requiredVersion ->
+                apps.filter { it.version == requiredVersion }
+            } ?: apps
         }
     }
 
-    var selectedVersion: SelectedApp? by rememberSaveable { mutableStateOf(null) }
+    if (viewModel.showNonSuggestedVersionDialog)
+        NonSuggestedVersionDialog(
+            suggestedVersion = viewModel.requiredVersion.orEmpty(),
+            onCancel = viewModel::dismissNonSuggestedVersionDialog,
+            onContinue = viewModel::continueWithNonSuggestedVersion,
+        )
 
     val lazyListState = rememberLazyListState()
     Scaffold(
@@ -79,7 +89,7 @@ fun VersionSelectorScreen(
                 text = { Text(stringResource(R.string.select_version)) },
                 icon = { Icon(Icons.Default.Check, null) },
                 expanded = lazyListState.isScrollingUp,
-                onClick = { selectedVersion?.let(onAppClick) }
+                onClick = { viewModel.selectedVersion?.let(onAppClick) }
             )
         }
     ) { paddingValues ->
@@ -98,8 +108,8 @@ fun VersionSelectorScreen(
                     item {
                         SelectedAppItem(
                             selectedApp = it,
-                            selected = selectedVersion == it,
-                            onClick = { selectedVersion = it },
+                            selected = viewModel.selectedVersion == it,
+                            onClick = { viewModel.select(it) },
                             patchCount = supportedVersions[it.version],
                             enabled =
                             !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
@@ -121,8 +131,8 @@ fun VersionSelectorScreen(
             ) {
                 SelectedAppItem(
                     selectedApp = it,
-                    selected = selectedVersion == it,
-                    onClick = { selectedVersion = it },
+                    selected = viewModel.selectedVersion == it,
+                    onClick = { viewModel.select(it) },
                     patchCount = supportedVersions[it.version]
                 )
             }
@@ -156,7 +166,7 @@ fun SelectedAppItem(
     onClick: () -> Unit,
     patchCount: Int?,
     enabled: Boolean = true,
-    alreadyPatched: Boolean = false
+    alreadyPatched: Boolean = false,
 ) {
     ListItem(
         leadingContent = { RadioButton(selected, null) },
@@ -175,9 +185,11 @@ fun SelectedAppItem(
 
             else -> null
         },
-        trailingContent = patchCount?.let { {
-            Text(pluralStringResource(R.plurals.patch_count, it, it))
-        } },
+        trailingContent = patchCount?.let {
+            {
+                Text(pluralStringResource(R.plurals.patch_count, it, it))
+            }
+        },
         modifier = Modifier
             .clickable(enabled = !alreadyPatched && enabled, onClick = onClick)
             .run {

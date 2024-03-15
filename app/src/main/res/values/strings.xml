@@ -69,6 +69,8 @@
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
+    <string name="suggested_version_safeguard">Require suggested app version</string>
+    <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -113,6 +115,7 @@
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
+    <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
     <string name="search">Search</string>
     <string name="apply">Apply</string>
@@ -167,6 +170,8 @@
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="non_suggested_version_warning_title">Non suggested version</string>
+    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
     <string name="selection_warning_continue_countdown">Continue (%ds)</string>
