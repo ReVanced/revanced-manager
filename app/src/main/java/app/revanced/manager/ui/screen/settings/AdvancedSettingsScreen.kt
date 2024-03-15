@@ -93,6 +93,12 @@ fun AdvancedSettingsScreen(
                 description = R.string.patch_compat_check_description
             )
             BooleanItem(
+                preference = vm.prefs.suggestedVersionSafeguard,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.suggested_version_safeguard,
+                description = R.string.suggested_version_safeguard_description
+            )
+            BooleanItem(
                 preference = vm.prefs.multithreadingDexFileWriter,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.multithreaded_dex_file_writer,

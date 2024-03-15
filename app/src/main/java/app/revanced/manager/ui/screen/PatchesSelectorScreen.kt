@@ -62,6 +62,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
+import app.revanced.manager.ui.component.DangerousActionDialogBase
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
@@ -390,13 +391,10 @@ fun SelectionWarningDialog(
     onConfirm: (Boolean) -> Unit
 ) {
     val prefs: PreferencesManager = rememberKoinInject()
-    var dismissPermanently by rememberSaveable {
-        mutableStateOf(false)
-    }
 
-    AlertDialog(
-        onDismissRequest = onCancel,
-        confirmButton = {
+    DangerousActionDialogBase(
+        onCancel = onCancel,
+        confirmButton = { dismissPermanently ->
             val enableCountdown by prefs.enableSelectionWarningCountdown.getAsState()
 
             Countdown(start = if (enableCountdown) 3 else 0) { timer ->
@@ -416,49 +414,8 @@ fun SelectionWarningDialog(
                 }
             }
         },
-        dismissButton = {
-            TextButton(onClick = onCancel) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        icon = {
-            Icon(Icons.Outlined.WarningAmber, null)
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.selection_warning_title),
-                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = stringResource(R.string.selection_warning_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    modifier = Modifier.clickable {
-                        dismissPermanently = !dismissPermanently
-                    }
-                ) {
-                    Checkbox(
-                        checked = dismissPermanently,
-                        onCheckedChange = {
-                            dismissPermanently = it
-                        }
-                    )
-                    Text(stringResource(R.string.permanent_dismiss))
-                }
-            }
-        }
+        title = R.string.selection_warning_title,
+        body = stringResource(R.string.selection_warning_description),
     )
 }
 

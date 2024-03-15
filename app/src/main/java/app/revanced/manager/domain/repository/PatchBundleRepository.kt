@@ -3,6 +3,7 @@ package app.revanced.manager.domain.repository
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import app.revanced.library.PatchUtils
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
@@ -12,6 +13,8 @@ import app.revanced.manager.data.room.bundles.Source as SourceInfo
 import app.revanced.manager.domain.bundles.LocalPatchBundle
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
@@ -29,6 +32,7 @@ class PatchBundleRepository(
     private val app: Application,
     private val persistenceRepo: PatchBundlePersistenceRepository,
     private val networkInfo: NetworkInfo,
+    private val prefs: PreferencesManager,
 ) {
     private val bundlesDir = app.getDir("patch_bundles", Context.MODE_PRIVATE)
 
@@ -46,6 +50,37 @@ class PatchBundleRepository(
     ) {
         it.state.map { state -> it.uid to state }
     }
+
+    val suggestedVersions = bundles.map {
+        val allPatches =
+            it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toPatcherPatch) }.toSet()
+
+        PatchUtils.getMostCommonCompatibleVersions(allPatches, countUnusedPatches = true)
+            .mapValues { (_, versions) ->
+                if (versions.keys.size < 2)
+                    return@mapValues versions.keys.firstOrNull()
+
+                // The entries are ordered from most compatible to least compatible.
+                // If there are entries with the same number of compatible patches, older versions will be first, which is undesirable.
+                // This means we have to pick the last entry we find that has the highest patch count.
+                // The order may change in future versions of ReVanced Library.
+                var currentHighestPatchCount = -1
+                versions.entries.last { (_, patchCount) ->
+                    if (patchCount >= currentHighestPatchCount) {
+                        currentHighestPatchCount = patchCount
+                        true
+                    } else false
+                }.key
+            }
+    }
+
+    suspend fun isVersionAllowed(packageName: String, version: String) =
+        withContext(Dispatchers.Default) {
+            if (!prefs.suggestedVersionSafeguard.get()) return@withContext true
+
+            val suggestedVersion = suggestedVersions.first()[packageName] ?: return@withContext true
+            suggestedVersion == version
+        }
 
     /**
      * Get the directory of the [PatchBundleSource] with the specified [uid], creating it if needed.
