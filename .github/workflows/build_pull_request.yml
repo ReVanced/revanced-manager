@@ -83,7 +83,7 @@ jobs:
       - name: Prepare comment
         run: |
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
+            echo "MESSAGE=✅ Succeeded build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           else
             echo "MESSAGE=🚫 Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           fi
