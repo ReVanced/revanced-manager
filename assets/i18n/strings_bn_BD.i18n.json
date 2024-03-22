@@ -292,16 +292,6 @@
     "status_failure_timeout": "ইনস্টলেশন সময় পার হয়েছে",
     "status_unknown": "ইনস্টলেশন ব্যর্থ হয়েছে",
     "mount_version_mismatch_description": "প্যাচ অ্যাপ ও ইনস্টলকৃত অ্যাপের সংস্করণ ভিন্ন হওয়ার কারণে ইনস্টলেশন ব্যর্থ হয়েছে।\n\nআপনি যে সংস্করণটি মাউন্ট করতে চাচ্ছেন তা আগে ইনস্টল করুন অতঃপর আবার চেষ্টা করুন।",
-    "mount_no_root_description": "রুট প্রবেশাধিকারের অনুমতি না দেয়ার কারণে ইনস্টলেশন ব্যর্থ হয়েছে।\n\nReVanced Manager এর রুট প্রবেশাধিকার অনুমতি দিন এবং আবার চেষ্টা করুন।",
-    "mount_missing_installation_description": "",
-    "status_failure_timeout_description": "",
-    "status_failure_storage_description": "",
-    "status_failure_invalid_description": "",
-    "status_failure_incompatible_description": "",
-    "status_failure_conflict_description": "",
-    "status_failure_blocked_description": "",
-    "install_failed_verification_failure_description": "",
-    "install_failed_version_downgrade_description": "",
-    "status_unknown_description": ""
+    "mount_no_root_description": "রুট প্রবেশাধিকারের অনুমতি না দেয়ার কারণে ইনস্টলেশন ব্যর্থ হয়েছে।\n\nReVanced Manager এর রুট প্রবেশাধিকার অনুমতি দিন এবং আবার চেষ্টা করুন।"
   }
 }
