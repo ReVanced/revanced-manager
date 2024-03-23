@@ -72,7 +72,7 @@
   },
   "appSelectorCard": {
     "widgetTitle": "Selectați o aplicație",
-    "widgetTitleSelected": "Aplicația selectata",
+    "widgetTitleSelected": "Aplicația selectată",
     "widgetSubtitle": "Nici o aplicație selectată",
     "noAppsLabel": "Nu s-au găsit aplicații",
     "currentVersion": "Actual",

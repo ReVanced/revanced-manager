@@ -7,7 +7,7 @@
   "enabledLabel": "Включено",
   "disabledLabel": "Отключено",
   "installed": "Установлено: ${version}",
-  "suggested": "Предложено: ${version}",
+  "suggested": "Рекомендуемая: ${version}",
   "yesButton": "Да",
   "noButton": "Нет",
   "warning": "Внимание",

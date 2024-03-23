@@ -80,7 +80,7 @@
     "anyVersion": "Bilo koja verzija"
   },
   "patchSelectorCard": {
-    "widgetTitle": "Izaberite pečeve",
+    "widgetTitle": "Izaberi pečeve",
     "widgetTitleSelected": "Izabrani pečevi",
     "widgetSubtitle": "Prvo izaberite aplikaciju",
     "widgetEmptySubtitle": "Nema izabranih pečeva"
@@ -91,7 +91,7 @@
   },
   "appSelectorView": {
     "viewTitle": "Izaberite aplikaciju",
-    "searchBarHint": "Tražite aplikaciju",
+    "searchBarHint": "Pretražite aplikaciju",
     "storageButton": "Memorija",
     "selectFromStorageButton": "Izaberi iz memorije",
     "errorMessage": "Nije moguće koristiti izabranu aplikaciju",
@@ -231,7 +231,7 @@
     "resetStoredOptionsDialogTitle": "Resetovati opcije peča?",
     "resetStoredOptionsDialogText": "Resetovanjem opcija peča uklanjate sve sačuvane opcije.",
     "resetStoredOptions": "Opcije su resetovane",
-    "deleteLogsLabel": "Obriši evidencije",
+    "deleteLogsLabel": "Izbriši evidencije",
     "deleteLogsHint": "Izbrišite prikupljene evidencije ReVanced Managera",
     "deletedLogs": "Evidencije su izbrisane",
     "regenerateKeystoreLabel": "Generiši novo skladište ključeva",
