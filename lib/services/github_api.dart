@@ -77,29 +77,37 @@ class GithubAPI {
       final response = await _dio.get(
         '/repos/$repoName/releases',
       );
-      final Map<String, dynamic> releases = response.data[0];
-      int updates = 0;
+      final List<dynamic> releases = response.data;
+      int latestReleaseIndex =
+          releases.indexWhere((element) => element['prerelease'] == false);
+      if (latestReleaseIndex == -1) {
+        latestReleaseIndex = 0;
+      }
+      final Map<String, dynamic> release = releases[latestReleaseIndex];
       final String currentVersion =
           await _managerAPI.getCurrentManagerVersion();
-      while (response.data[updates]['tag_name'] != currentVersion) {
-        updates++;
-      }
-      for (int i = 1; i < updates; i++) {
-        if (response.data[i]['prerelease']) {
-          continue;
+      if (release['tag_name'] != currentVersion) {
+        // Append previous changelogs
+        for (int i = latestReleaseIndex + 1; i < releases.length; i++) {
+          if (releases[i]['tag_name'] == currentVersion) {
+            break;
+          }
+          if (releases[i]['prerelease']) {
+            continue;
+          }
+          release.update(
+            'body',
+            (value) =>
+                value +
+                '\n' +
+                '# ' +
+                releases[i]['tag_name'] +
+                '\n' +
+                releases[i]['body'],
+          );
         }
-        releases.update(
-          'body',
-          (value) =>
-              value +
-              '\n' +
-              '# ' +
-              response.data[i]['tag_name'] +
-              '\n' +
-              response.data[i]['body'],
-        );
       }
-      return releases;
+      return release;
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
