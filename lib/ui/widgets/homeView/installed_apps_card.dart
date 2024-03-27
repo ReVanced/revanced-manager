@@ -76,7 +76,7 @@ class InstalledAppsCard extends StatelessWidget {
                           name: app.name,
                           patchDate: app.patchDate,
                           onPressed: () =>
-                              locator<HomeViewModel>().navigateToAppInfo(app),
+                              locator<HomeViewModel>().navigateToAppInfo(app, false),
                         ),
                       )
                       .toList(),

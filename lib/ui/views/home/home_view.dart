@@ -5,6 +5,7 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/patch_history_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -44,6 +45,22 @@ class HomeView extends StatelessWidget {
                       const SizedBox(height: 10),
                       LatestCommitCard(model: model, parentContext: context),
                       const SizedBox(height: 23),
+                      Visibility(
+                          visible: model.isPatchHistoryEnabled(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                t.homeView.patchHistorySubtitle,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              const SizedBox(height: 10),
+                              PatchHistoryCard(),
+                              const SizedBox(height: 10),
+
+                            ],
+                          ),
+                      ),
                       Text(
                         t.homeView.patchedSubtitle,
                         style: Theme.of(context).textTheme.titleLarge,

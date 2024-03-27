@@ -33,6 +33,7 @@ class _ApplicationItemState extends State<ApplicationItem> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16.0),
       child: CustomCard(
+        onTap: widget.onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

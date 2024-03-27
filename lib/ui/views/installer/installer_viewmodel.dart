@@ -71,7 +71,7 @@ class InstallerViewModel extends BaseViewModel {
     });
     await WakelockPlus.enable();
     await handlePlatformChannelMethods();
-    await runPatcher();
+    await runPatcher(context);
   }
 
   Future<dynamic> handlePlatformChannelMethods() async {
@@ -134,13 +134,20 @@ class InstallerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> runPatcher() async {
+  Future<void> runPatcher(BuildContext context) async {
     try {
       await _patcherAPI.runPatcher(
         _app.packageName,
         _app.apkFilePath,
         _patches,
       );
+      _app.appliedPatches = _patches.map((p) => p.name).toList();
+      if (_managerAPI.isPatchHistoryEnabled()) {
+        await _managerAPI.setLastPatchedApp(_app, _patcherAPI.outFile!);
+      } else {
+        _app.patchedFilePath = _patcherAPI.outFile!.path;
+      }
+      locator<HomeViewModel>().initialize(context);
     } on Exception catch (e) {
       update(
         -100.0,
@@ -440,7 +447,7 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     isInstalling = true;
     try {
-      _app.isRooted = installAsRoot;
+      _app.isRooted = await _managerAPI.installTypeDialog(context);
       if (headerLogs != 'Installing...') {
         update(
           .85,
@@ -453,17 +460,15 @@ class InstallerViewModel extends BaseViewModel {
         isInstalled = true;
         _app.isFromStorage = false;
         _app.patchDate = DateTime.now();
-        _app.appliedPatches = _patches.map((p) => p.name).toList();
 
         // In case a patch changed the app name or package name,
         // update the app info.
         final app =
-            await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+          await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
         if (app != null) {
           _app.name = app.appName;
           _app.packageName = app.packageName;
         }
-
         await _managerAPI.savePatchedApp(_app);
 
         _managerAPI
@@ -496,7 +501,7 @@ class InstallerViewModel extends BaseViewModel {
 
   void exportResult() {
     try {
-      _patcherAPI.exportPatchedFile(_app.name, _app.version);
+      _patcherAPI.exportPatchedFile(_app);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
