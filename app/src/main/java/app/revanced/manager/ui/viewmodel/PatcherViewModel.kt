@@ -26,7 +26,8 @@ import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.WorkerRepository
-import app.revanced.manager.patcher.logger.ManagerLogger
+import app.revanced.manager.patcher.logger.LogLevel
+import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.ui.destination.Destination
@@ -270,17 +271,21 @@ class PatcherViewModel(
             selectedApp: SelectedApp,
             downloadProgress: StateFlow<Pair<Float, Float>?>? = null
         ): List<Step> {
+            val needsDownload = selectedApp is SelectedApp.Download
+
             return listOfNotNull(
-                Step(
-                    context.getString(R.string.patcher_step_load_patches),
-                    StepCategory.PREPARING,
-                    state = State.RUNNING
-                ),
                 Step(
                     context.getString(R.string.download_apk),
                     StepCategory.PREPARING,
-                    downloadProgress = downloadProgress
-                ).takeIf { selectedApp is SelectedApp.Download },
+                    state = State.RUNNING,
+                    downloadProgress = downloadProgress,
+
+                ).takeIf { needsDownload },
+                Step(
+                    context.getString(R.string.patcher_step_load_patches),
+                    StepCategory.PREPARING,
+                    state = if (needsDownload) State.WAITING else State.RUNNING,
+                ),
                 Step(
                     context.getString(R.string.patcher_step_unpack),
                     StepCategory.PREPARING
@@ -298,6 +303,29 @@ class PatcherViewModel(
                 Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
                 Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
             )
+        }
+    }
+
+    private class ManagerLogger : Logger() {
+        private val logs = mutableListOf<Pair<LogLevel, String>>()
+        override fun log(level: LogLevel, message: String) {
+            level.androidLog(message)
+            if (level == LogLevel.TRACE) return
+            logs.add(level to message)
+        }
+
+        fun export() =
+            logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
+
+        private companion object {
+            const val TAG = "ReVanced Patcher"
+
+            fun LogLevel.androidLog(msg: String) = when(this) {
+                LogLevel.TRACE -> Log.v(TAG, msg)
+                LogLevel.INFO -> Log.i(TAG, msg)
+                LogLevel.WARN -> Log.w(TAG, msg)
+                LogLevel.ERROR -> Log.e(TAG, msg)
+            }
         }
     }
 }

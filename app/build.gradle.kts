@@ -1,3 +1,5 @@
+import kotlin.random.Random
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -22,12 +24,19 @@ android {
             "en",
         ))
         vectorDrawables.useSupportLibrary = true
+        externalNativeBuild {
+            cmake {
+                cppFlags += ""
+            }
+        }
     }
 
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager Debug")
+
+            buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
 
         release {
@@ -42,6 +51,8 @@ android {
                 resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
             }
+
+            buildConfigField("long", "BUILD_ID", "0L")
         }
     }
 
@@ -83,6 +94,12 @@ android {
     buildFeatures.buildConfig=true
 
     composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
 }
 
 kotlin {
@@ -137,6 +154,13 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 
+    // Native processes
+    implementation(libs.kotlin.process)
+
+    // HiddenAPI
+    compileOnly(libs.hidden.api.stub)
+
+    // LibSU
     implementation(libs.libsu.core)
     implementation(libs.libsu.service)
     implementation(libs.libsu.nio)

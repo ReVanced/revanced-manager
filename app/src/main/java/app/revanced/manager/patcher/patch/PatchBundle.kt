@@ -6,19 +6,18 @@ import app.revanced.patcher.PatchBundleLoader
 import app.revanced.patcher.patch.Patch
 import java.io.File
 
-class PatchBundle(private val loader: Iterable<Patch<*>>, val integrations: File?) {
-    constructor(bundleJar: File, integrations: File?) : this(
-        object : Iterable<Patch<*>> {
-            private fun load(): Iterable<Patch<*>> {
-                bundleJar.setReadOnly()
-                return PatchBundleLoader.Dex(bundleJar, optimizedDexDirectory = null)
-            }
+class PatchBundle(val patchesJar: File, val integrations: File?) {
+    private val loader = object : Iterable<Patch<*>> {
+        private fun load(): Iterable<Patch<*>> {
+            patchesJar.setReadOnly()
+            return PatchBundleLoader.Dex(patchesJar, optimizedDexDirectory = null)
+        }
 
-            override fun iterator(): Iterator<Patch<*>> = load().iterator()
-        },
-        integrations
-    ) {
-        Log.d(tag, "Loaded patch bundle: $bundleJar")
+        override fun iterator(): Iterator<Patch<*>> = load().iterator()
+    }
+
+    init {
+        Log.d(tag, "Loaded patch bundle: $patchesJar")
     }
 
     /**

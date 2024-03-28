@@ -1,23 +1,21 @@
 package app.revanced.manager.patcher
 
 import android.content.Context
-import app.revanced.library.ApkUtils
 import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.R
-import app.revanced.manager.patcher.logger.ManagerLogger
+import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.ui.model.State
 import app.revanced.patcher.Patcher
+import app.revanced.patcher.PatcherConfig
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import java.util.logging.Logger
 
 internal typealias PatchList = List<Patch<*>>
 
@@ -27,9 +25,9 @@ class Session(
     aaptPath: String,
     multithreadingDexFileWriter: Boolean,
     private val androidContext: Context,
-    private val logger: ManagerLogger,
-    private val input: File,
-    private val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
+    private val logger: Logger,
+    input: File,
+    private val onPatchCompleted: () -> Unit,
     private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
     private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
@@ -37,9 +35,9 @@ class Session(
 
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
     private val patcher = Patcher(
-        PatcherOptions(
-            inputFile = input,
-            resourceCachePath = tempDir.resolve("aapt-resources"),
+        PatcherConfig(
+            apkFile = input,
+            temporaryFilesPath = tempDir,
             frameworkFileDirectory = frameworkDir,
             aaptBinaryPath = aaptPath,
             multithreadingDexFileWriter = multithreadingDexFileWriter,
@@ -71,9 +69,7 @@ class Session(
 
             nextPatchIndex++
 
-            patchesProgress.value.let {
-                patchesProgress.emit(it.copy(it.first + 1))
-            }
+            onPatchCompleted()
 
             selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
                 updateProgress(
@@ -96,14 +92,16 @@ class Session(
 
     suspend fun run(output: File, selectedPatches: PatchList, integrations: List<File>) {
         updateProgress(state = State.COMPLETED) // Unpacking
-        Logger.getLogger("").apply {
+
+        java.util.logging.Logger.getLogger("").apply {
             handlers.forEach {
                 it.close()
                 removeHandler(it)
             }
 
-            addHandler(logger)
+            addHandler(logger.handler)
         }
+
         with(patcher) {
             logger.info("Merging integrations")
             acceptIntegrations(integrations.toSet())
