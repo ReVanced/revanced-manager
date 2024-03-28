@@ -222,6 +222,14 @@ class ManagerAPI {
     return _prefs.getBool('useAlternativeSources') ?? false;
   }
 
+  Future<void> usePrereleasePatches(bool value) async {
+    await _prefs.setBool('usePrereleasePatches', value);
+  }
+
+  bool isUsingPrereleasePatches() {
+    return _prefs.getBool('usePrereleasePatches') ?? false;
+  }
+
   Option? getPatchOption(String packageName, String patchName, String key) {
     final String? optionJson =
         _prefs.getString('patchOption-$packageName-$patchName-$key');
@@ -469,8 +477,9 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release =
-          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+      final release = !isUsingPrereleasePatches()
+          ? await _githubAPI.getLatestRelease(getPatchesRepo())
+          : await _githubAPI.getLatestReleaseWithPreReleases(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -502,7 +511,9 @@ class ManagerAPI {
         defaultIntegrationsRepo,
       );
     } else {
-      final release = await _githubAPI.getLatestRelease(getIntegrationsRepo());
+      final release = !isUsingPrereleasePatches()
+          ? await _githubAPI.getLatestRelease(getIntegrationsRepo())
+          : await _githubAPI.getLatestReleaseWithPreReleases(getIntegrationsRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
@@ -518,8 +529,9 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release =
-          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+      final release = !isUsingPrereleasePatches()
+          ? await _githubAPI.getLatestRelease(getPatchesRepo())
+          : await _githubAPI.getLatestReleaseWithPreReleases(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {

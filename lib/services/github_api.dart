@@ -21,12 +21,12 @@ class GithubAPI {
     await _downloadManager.clearAllCache();
   }
 
-  Future<Map<String, dynamic>?> getLatestRelease(
+  Future<Map<String, dynamic>?> getLatestReleaseWithPreReleases(
     String repoName,
   ) async {
     try {
       final response = await _dio.get(
-        '/repos/$repoName/releases',
+        '/repos/$repoName/releases?per_page=1',
       );
       return response.data[0];
     } on Exception catch (e) {
@@ -54,7 +54,7 @@ class GithubAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> getLatestPatchesRelease(
+  Future<Map<String, dynamic>?> getLatestRelease(
     String repoName,
   ) async {
     try {
@@ -106,31 +106,6 @@ class GithubAPI {
       }
       return null;
     }
-  }
-
-  Future<File?> getLatestReleaseFile(
-    String extension,
-    String repoName,
-  ) async {
-    try {
-      final Map<String, dynamic>? release = await getLatestRelease(repoName);
-      if (release != null) {
-        final Map<String, dynamic>? asset =
-            (release['assets'] as List<dynamic>).firstWhereOrNull(
-          (asset) => (asset['name'] as String).endsWith(extension),
-        );
-        if (asset != null) {
-          return await _downloadManager.getSingleFile(
-            asset['browser_download_url'],
-          );
-        }
-      }
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    return null;
   }
 
   Future<File?> getPatchesReleaseFile(

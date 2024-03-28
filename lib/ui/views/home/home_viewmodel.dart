@@ -480,7 +480,13 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<Map<String, dynamic>?> getLatestPatchesRelease() {
-    return _githubAPI.getLatestPatchesRelease(_managerAPI.defaultPatchesRepo);
+    if (_managerAPI.isUsingAlternativeSources() &&
+        _managerAPI.isUsingPrereleasePatches()) {
+      return _githubAPI
+          .getLatestReleaseWithPreReleases(_managerAPI.getPatchesRepo());
+    } else {
+      return _githubAPI.getLatestRelease(_managerAPI.getPatchesRepo());
+    }
   }
 
   Future<String?> getLatestPatchesReleaseTime() {

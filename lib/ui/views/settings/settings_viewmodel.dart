@@ -198,6 +198,66 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
+  bool isUsingPrereleasePatches() {
+    return _managerAPI.isUsingPrereleasePatches();
+  }
+
+  Future<void>? showUsePrelereasePatchesDialog(
+    BuildContext context,
+    bool value,
+  ) {
+    if (value) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(t.warning),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                t.settingsView.usePrereleasePatchesDialogText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                t.settingsView.usePrereleasePatchesDialogText2,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _managerAPI.usePrereleasePatches(true);
+                _toast.showBottom(t.settingsView.restartAppForChanges);
+                Navigator.of(context).pop();
+              },
+              child: Text(t.yesButton),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(t.noButton),
+            ),
+          ],
+        ),
+      );
+    } else {
+      _managerAPI.usePrereleasePatches(false);
+      _toast.showBottom(t.settingsView.restartAppForChanges);
+    }
+    return null;
+  }
+
   void deleteKeystore() {
     _managerAPI.deleteKeystore();
     _toast.showBottom(t.settingsView.regeneratedKeystore);
