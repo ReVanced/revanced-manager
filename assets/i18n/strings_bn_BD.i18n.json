@@ -107,7 +107,9 @@
     "newPatches": "নতুন প্যাচসমূহ",
     "patches": "প্যাচসমূহ",
     "doneButton": "সম্পন্ন হয়েছে",
+    "defaultChip": "পূর্ব-নির্ধারিত",
     "defaultTooltip": "সকল পূর্ব-নির্ধারিত প্যাচ নির্বাচন করুন",
+    "noneChip": "কোনটি নয়",
     "noneTooltip": "সকল প্যাচ অনির্বাচন করুন",
     "loadPatchesSelection": "নির্বাচিত প্যাচ লোড করুন",
     "noSavedPatches": "নির্বাচিত অ্যাপের জন্য কোন সংরক্ষিত প্যাচ নেই।\nবর্তমানে নির্বাচিত প্যাচ সংরক্ষণ করতে সম্পন্ন হয়েছে চাপুন।",
@@ -133,11 +135,13 @@
     "unsupportedDialogText": "এই প্যাচটি নির্বাচন করলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nঅ্যাপ সংস্করণ: ${packageVersion}\nসমর্থিত সংস্করণ:\n${supportedVersions}",
     "unsupportedPatchVersion": "এই অ্যাপ সংস্করণের জন্য প্যাচ সমর্থিত নয়।",
     "unsupportedRequiredOption": "এই প্যাচটিতে একটি প্রয়োজনীয় অপশন রয়েছে যা এই অ্যাপটি সমর্থন করে না",
+    "patchesChangeWarningDialogText": "পূর্ব নির্ধারিত নির্বাচিত প্যাচ এবং অপশন ব্যবহার করার প্রস্তাব রাখে। এগুলো পরিবর্তন করার মাধ্যমে অনাকাঙ্খিত ইস্যু হতে পারে।\n\nপ্যাচ নির্বাচন পরিবর্তন করার পূর্বে আপনাকে অবশ্যই সেটিং থেকে \"প্যাচ নির্বাচন পরিবর্তন করার অনুমতি\" সচল করতে হবে।",
     "patchesChangeWarningDialogButton": "পূর্বনির্ধারিত নির্বাচন ব্যবহার করুন"
   },
   "installerView": {
     "widgetTitle": "ইনস্টলার",
     "installType": "ইনস্টল করার ধরণ নির্বাচন করুন",
+    "installTypeDescription": "যে প্রক্রিয়ায় ইনস্টল করা এগিয়ে নিতে চান তা নির্বাচন করুন।",
     "installButton": "ইনস্টল করুন",
     "installRootType": "মাউন্ট",
     "installNonRootType": "সাধারণ",
@@ -160,6 +164,7 @@
     "debugSectionTitle": "ডিবাগিং",
     "advancedSectionTitle": "উন্নত",
     "exportSectionTitle": "আমদানি ও রপ্তানি",
+    "dataSectionTitle": "তথ্যের উৎস",
     "themeModeLabel": "অ্যাপের থীম",
     "systemThemeLabel": "সিস্টেম",
     "lightThemeLabel": "উজ্জ্বল",
@@ -167,12 +172,19 @@
     "dynamicThemeLabel": "ম্যাটেরিয়াল ইউ",
     "dynamicThemeHint": "আপনার ডিভাইসের লুকের কাছাকাছি অভিজ্ঞতা নিন",
     "languageLabel": "ভাষা",
+    "languageUpdated": "ভাষা হালনাগাদ করা হয়েছে",
     "englishOption": "ইংরেজি",
+    "sourcesLabel": "বিকল্প উৎস",
+    "sourcesLabelHint": "ReVanced প্যাচ ও ReVanced ইন্ট্রিগ্রেশনের জন্য বিকল্প উৎস কনফিগার করুন",
     "sourcesIntegrationsLabel": "ইন্ট্রিগেশনের উৎস",
+    "useAlternativeSources": "বিকল্প উৎস ব্যবহার করুন",
+    "useAlternativeSourcesHint": "ReVanced প্যাচ ও ReVanced ইন্ট্রিগ্রেশনের জন্য API এর পরিবর্তে বিকল্প উৎস ব্যবহার করুন",
     "sourcesResetDialogTitle": "পুনরায় সেট করুন",
     "sourcesResetDialogText": "আপনি কি নিশ্চিতভাবে আপনার উৎসগুলোকে পূর্বনির্ধারিত উৎসে ফিরিয়ে নিতে চান?",
     "apiURLResetDialogText": "আপনি কি নিশ্চিতভাবে আপনার API URL কে তার মূল ভ্যালুতে পুনরায় সেট করতে চান?",
+    "sourcesUpdateNote": "বি:দ্র: এটি স্বয়ংক্রিয়ভাবে বিকল্প উৎস থেকে ReVanced প্যাচ ও ReVanced ইন্ট্রিগ্রেশন ডাউনলোড করবে।\n\nএটি আপনাকে বিকল্প উৎসের সাথে সংযুক্ত করবে।",
     "apiURLLabel": "API URL",
+    "apiURLHint": "ReVanced Manager এর API URL কনফিগার করুন",
     "selectApiURL": "API URL",
     "orgPatchesLabel": "প্যাচ এর উদ্ভাবক",
     "sourcesPatchesLabel": "প্যাচ এর উৎস",
@@ -187,6 +199,8 @@
     "disablePatchesSelectionWarningText": "আপনি নির্বাচিত প্যাচ পরিবর্তনকে নিষ্ক্রিয় করতে যাচ্ছেন।\nপূর্বনির্ধারিত নির্বাচিত প্যাচসমূহ ফিরিয়ে আনা হবে।\n\nযেকোন ভাবে নিষ্ক্রিয় করতে চান?",
     "autoUpdatePatchesLabel": "প্যাচসমূহ স্বয়ংক্রিয়ভাবে আপডেট করুন",
     "autoUpdatePatchesHint": "প্যাচসমূহ স্বয়ংক্রিয়ভাবে সর্বশেষ সংস্করণে আপডেট হবে",
+    "showUpdateDialogLabel": "হালনাগাদ ডায়ালগ দেখান",
+    "showUpdateDialogHint": "যখন হালনাগাদ উপলব্ধ থাকবে তখন একটি ডায়ালগ দেখান",
     "universalPatchesLabel": "বৈশ্বিক প্যাচসমূহ দেখান",
     "universalPatchesHint": "সকল অ্যাপ এবং বৈশ্বিক প্যাচসমূহ দেখায় (অ্যাপ লিস্ট দেখানো একটু ধীর হতে পারে)",
     "versionCompatibilityCheckLabel": "সংস্করণ সামঞ্জস্যতা পরীক্ষা করা",
@@ -257,7 +271,12 @@
     "updateNotImplemented": "এই ফিচারটি এখনো কার্যকর করা হয়নি"
   },
   "contributorsView": {
-    "widgetTitle": "অবদানকারীগণ"
+    "widgetTitle": "অবদানকারীগণ",
+    "patcherContributors": "ReVanced প্যাচার",
+    "patchesContributors": "ReVanced প্যাচসমূহ",
+    "integrationsContributors": "ReVanced ইন্ট্রিগ্রেশন",
+    "cliContributors": "ReVanced CLI",
+    "managerContributors": "ReVanced Manager"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "সংস্করণ মেলেনি",
@@ -267,6 +286,12 @@
     "install_failed_verification_failure": "যাচাইকরণ ব্যর্থ হয়েছে",
     "status_failure_invalid": "ইনস্টল সঠিক নয়",
     "install_failed_version_downgrade": "ডাউনগ্রেড সম্ভব নয়",
-    "status_failure_conflict": "ইনস্টল কনফ্লিক্ট হচ্ছে"
+    "status_failure_conflict": "ইনস্টল কনফ্লিক্ট হচ্ছে",
+    "status_failure_storage": "ইনস্টলেশন স্টোরেজ সমস্যা",
+    "status_failure_incompatible": "ইনস্টলেশন অনুপযুক্ত",
+    "status_failure_timeout": "ইনস্টলেশন সময় পার হয়েছে",
+    "status_unknown": "ইনস্টলেশন ব্যর্থ হয়েছে",
+    "mount_version_mismatch_description": "প্যাচ অ্যাপ ও ইনস্টলকৃত অ্যাপের সংস্করণ ভিন্ন হওয়ার কারণে ইনস্টলেশন ব্যর্থ হয়েছে।\n\nআপনি যে সংস্করণটি মাউন্ট করতে চাচ্ছেন তা আগে ইনস্টল করুন অতঃপর আবার চেষ্টা করুন।",
+    "mount_no_root_description": "রুট প্রবেশাধিকারের অনুমতি না দেয়ার কারণে ইনস্টলেশন ব্যর্থ হয়েছে।\n\nReVanced Manager এর রুট প্রবেশাধিকার অনুমতি দিন এবং আবার চেষ্টা করুন।"
   }
 }

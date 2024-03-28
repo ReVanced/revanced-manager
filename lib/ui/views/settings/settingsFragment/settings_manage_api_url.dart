@@ -20,8 +20,9 @@ class SManageApiUrl extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            Text(t.settingsView.apiURLLabel),
-            const Spacer(),
+            Expanded(
+              child: Text(t.settingsView.apiURLLabel),
+            ),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
               onPressed: () => showApiUrlResetDialog(context),

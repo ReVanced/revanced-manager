@@ -20,7 +20,7 @@ Learn how to build ReVanced Manager from source.
 
    ```sh
    dart run slang
-   dart run build_runner build --delete-conflicting-outputs
+   dart run build_runner build -d
    ```
 
 5. Build the APK

@@ -463,6 +463,7 @@ class HomeViewModel extends BaseViewModel {
   ]) {
     return showModalBottomSheet(
       context: parentContext,
+      useSafeArea: true,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),

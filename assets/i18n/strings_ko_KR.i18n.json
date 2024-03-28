@@ -16,7 +16,7 @@
   "noShowAgain": "다시 보지 않기",
   "add": "추가",
   "remove": "제거",
-  "showChangelogButton": "변경 내역 보기",
+  "showChangelogButton": "변경 사항 보기",
   "showUpdateButton": "업데이트 보기",
   "navigationView": {
     "dashboardTab": "대시보드",
@@ -142,7 +142,7 @@
     "widgetTitle": "설치 관리자",
     "installType": "설치 유형 선택",
     "installTypeDescription": "설치를 진행할 유형을 선택해주세요.",
-    "installButton": "설치",
+    "installButton": "설치하기",
     "installRootType": "마운트",
     "installNonRootType": "일반",
     "warning": "패치한 앱의 자동 업데이트를 꺼서 예기치 못한 오류를 예방하세요.",
@@ -254,7 +254,7 @@
   "appInfoView": {
     "widgetTitle": "앱 정보",
     "openButton": "열기",
-    "uninstallButton": "제거",
+    "uninstallButton": "제거하기",
     "unmountButton": "마운트 해제",
     "rootDialogTitle": "오류",
     "unmountDialogText": "이 앱의 마운트를 해제할까요?",
