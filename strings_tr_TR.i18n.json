@@ -1,0 +1,4338 @@
+[
+    {
+        "identifier": "okButton",
+        "source_string": "OK",
+        "translation": "Tamam",
+        "context": " -> okButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "cancelButton",
+        "source_string": "Cancel",
+        "translation": "İptal",
+        "context": " -> cancelButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "dismissButton",
+        "source_string": "Dismiss",
+        "translation": "Yoksay",
+        "context": " -> dismissButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "quitButton",
+        "source_string": "Quit",
+        "translation": "Çık",
+        "context": " -> quitButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "updateButton",
+        "source_string": "Update",
+        "translation": "Güncelle",
+        "context": " -> updateButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "enabledLabel",
+        "source_string": "Enabled",
+        "translation": "Etkin",
+        "context": " -> enabledLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "disabledLabel",
+        "source_string": "Disabled",
+        "translation": "Devre dışı",
+        "context": " -> disabledLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installed",
+        "source_string": "Installed: ${version}",
+        "translation": "Kurulu: ${version}",
+        "context": " -> installed",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "suggested",
+        "source_string": "Suggested: ${version}",
+        "translation": "Önerilen: ${version}",
+        "context": " -> suggested",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "yesButton",
+        "source_string": "Yes",
+        "translation": "Evet",
+        "context": " -> yesButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "noButton",
+        "source_string": "No",
+        "translation": "Hayır",
+        "context": " -> noButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "warning",
+        "source_string": "Warning",
+        "translation": "Uyarı",
+        "context": " -> warning",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "options",
+        "source_string": "Options",
+        "translation": "Seçenekler",
+        "context": " -> options",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "notice",
+        "source_string": "Notice",
+        "translation": "Dikkat",
+        "context": " -> notice",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "noShowAgain",
+        "source_string": "Don't show this again",
+        "translation": "Bunu tekrar gösterme",
+        "context": " -> noShowAgain",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "add",
+        "source_string": "Add",
+        "translation": "Ekle",
+        "context": " -> add",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "remove",
+        "source_string": "Remove",
+        "translation": "Kaldır",
+        "context": " -> remove",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "showChangelogButton",
+        "source_string": "Show changelog",
+        "translation": "Değişiklikleri göster",
+        "context": " -> showChangelogButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "showUpdateButton",
+        "source_string": "Show update",
+        "translation": "Güncellemeyi göster",
+        "context": " -> showUpdateButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "navigationView.dashboardTab",
+        "source_string": "Dashboard",
+        "translation": "Gösterge Paneli",
+        "context": "navigationView -> dashboardTab",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "navigationView.patcherTab",
+        "source_string": "Patcher",
+        "translation": "Yamalayıcı",
+        "context": "navigationView -> patcherTab",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "navigationView.settingsTab",
+        "source_string": "Settings",
+        "translation": "Ayarlar",
+        "context": "navigationView -> settingsTab",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.refreshSuccess",
+        "source_string": "Refreshed successfully",
+        "translation": "Başarıyla yenilendi",
+        "context": "homeView -> refreshSuccess",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.widgetTitle",
+        "source_string": "Dashboard",
+        "translation": "Gösterge Paneli",
+        "context": "homeView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updatesSubtitle",
+        "source_string": "Updates",
+        "translation": "Güncellemeler",
+        "context": "homeView -> updatesSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.patchedSubtitle",
+        "source_string": "Patched apps",
+        "translation": "Yamalanmış uygulamalar",
+        "context": "homeView -> patchedSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.changeLaterSubtitle",
+        "source_string": "You can change this in the settings at a later time.",
+        "translation": "Bunu daha sonra ayarlardan değiştirebilirsiniz.",
+        "context": "homeView -> changeLaterSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.noUpdates",
+        "source_string": "No updates available",
+        "translation": "Yeni bir güncelleme yok",
+        "context": "homeView -> noUpdates",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.WIP",
+        "source_string": "Work in progress...",
+        "translation": "Yapım aşamasında...",
+        "context": "homeView -> WIP",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.noInstallations",
+        "source_string": "No patched apps installed",
+        "translation": "Kurulu yamalanmış uygulama yok",
+        "context": "homeView -> noInstallations",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.installUpdate",
+        "source_string": "Continue to install the update?",
+        "translation": "Güncelleme yüklensin mi?",
+        "context": "homeView -> installUpdate",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateSheetTitle",
+        "source_string": "Update ReVanced Manager",
+        "translation": "ReVanced Manager'ı güncelle",
+        "context": "homeView -> updateSheetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateDialogTitle",
+        "source_string": "New update available",
+        "translation": "Yeni güncelleme mevcut",
+        "context": "homeView -> updateDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updatePatchesSheetTitle",
+        "source_string": "Update ReVanced Patches",
+        "translation": "ReVanced Patches'ı güncelle",
+        "context": "homeView -> updatePatchesSheetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateChangelogTitle",
+        "source_string": "Changelog",
+        "translation": "Değişiklikler",
+        "context": "homeView -> updateChangelogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateDialogText",
+        "source_string": "A new update is available for ${file}.\n\nThe currently installed version is ${version}.",
+        "translation": "${file} için yeni bir güncelleme mevcut.\n\nŞu anda kurulu olan sürüm: ${version}.",
+        "context": "homeView -> updateDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadConsentDialogTitle",
+        "source_string": "Download necessary files?",
+        "translation": "Gerekli dosyalar indirilsin mi?",
+        "context": "homeView -> downloadConsentDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadConsentDialogText",
+        "source_string": "ReVanced Manager needs to download necessary files to work properly.",
+        "translation": "ReVanced Manager'ın düzgün çalışması için gerekli dosyaları indirmesi gerekiyor.",
+        "context": "homeView -> downloadConsentDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadConsentDialogText2",
+        "source_string": "This will connect you to ${url}.",
+        "translation": "Bu sizi ${url}'a bağlayacak.",
+        "context": "homeView -> downloadConsentDialogText2",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.checkUpdateDialogTitle",
+        "source_string": "Check for updates?",
+        "translation": "Güncellemeler kontrol edilsin mi?",
+        "context": "homeView -> checkUpdateDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.checkUpdateDialogText",
+        "source_string": "Do you want ReVanced Manager to check for updates automatically?",
+        "translation": "ReVanced Manager'ın güncellemeleri otomatik olarak kontrol etmesini istiyor musunuz?",
+        "context": "homeView -> checkUpdateDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.notificationTitle",
+        "source_string": "Update downloaded",
+        "translation": "Güncelleme indirildi",
+        "context": "homeView -> notificationTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.notificationText",
+        "source_string": "Tap to install the update",
+        "translation": "Güncellemeyi yüklemek için tıklayın",
+        "context": "homeView -> notificationText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadingMessage",
+        "source_string": "Downloading update...",
+        "translation": "Güncelleme indiriliyor...",
+        "context": "homeView -> downloadingMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadedMessage",
+        "source_string": "Update downloaded",
+        "translation": "Güncelleme indirildi",
+        "context": "homeView -> downloadedMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.installingMessage",
+        "source_string": "Installing update...",
+        "translation": "Güncelleme yükleniyor...",
+        "context": "homeView -> installingMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.errorDownloadMessage",
+        "source_string": "Unable to download update",
+        "translation": "Güncelleme indirilemedi",
+        "context": "homeView -> errorDownloadMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.errorInstallMessage",
+        "source_string": "Unable to install update",
+        "translation": "Güncelleme yüklenemedi",
+        "context": "homeView -> errorInstallMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.noConnection",
+        "source_string": "No internet connection",
+        "translation": "İnternet bağlantısı yok",
+        "context": "homeView -> noConnection",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updatesDisabled",
+        "source_string": "Updating a patched app is currently disabled. Repatch the app again.",
+        "translation": "Yamalanmış bir uygulamayı güncellemek şu anda mümkün değil. Uygulamayı tekrardan yamalayın.",
+        "context": "homeView -> updatesDisabled",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "applicationItem.infoButton",
+        "source_string": "Info",
+        "translation": "Bilgi",
+        "context": "applicationItem -> infoButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.loadingLabel",
+        "source_string": "Loading...",
+        "translation": "Yükleniyor...",
+        "context": "latestCommitCard -> loadingLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.timeagoLabel",
+        "source_string": "${time} ago",
+        "translation": "${time} önce",
+        "context": "latestCommitCard -> timeagoLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.patcherLabel",
+        "source_string": "Patcher: ",
+        "translation": "Yamalayıcı: ",
+        "context": "latestCommitCard -> patcherLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.managerLabel",
+        "source_string": "Manager: ",
+        "translation": "Manager: ",
+        "context": "latestCommitCard -> managerLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.updateButton",
+        "source_string": "Update Manager",
+        "translation": "Manager'ı güncelle",
+        "context": "latestCommitCard -> updateButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.widgetTitle",
+        "source_string": "Patcher",
+        "translation": "Yamalayıcı",
+        "context": "patcherView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.patchButton",
+        "source_string": "Patch",
+        "translation": "Yamala",
+        "context": "patcherView -> patchButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.armv7WarningDialogText",
+        "source_string": "Patching on ARMv7 devices is not yet supported and might fail. Continue anyways?",
+        "translation": "ARMv7 cihazlarda yamalama henüz desteklenmemektedir ve başarısız olabilir. Yine de devam edilsin mi?",
+        "context": "patcherView -> armv7WarningDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.removedPatchesWarningDialogText",
+        "source_string": "The following patches have been removed since the last time you used them.\n\n${patches}\n\nContinue anyways?",
+        "translation": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam edilsin mi?",
+        "context": "patcherView -> removedPatchesWarningDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.requiredOptionDialogText",
+        "source_string": "Some patch options have to be set.",
+        "translation": "Bazı yama seçeneklerinin ayarlanması gerekiyor.",
+        "context": "patcherView -> requiredOptionDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.widgetTitle",
+        "source_string": "Select an app",
+        "translation": "Bir uygulama seç",
+        "context": "appSelectorCard -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.widgetTitleSelected",
+        "source_string": "Selected app",
+        "translation": "Seçilen uygulama",
+        "context": "appSelectorCard -> widgetTitleSelected",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.widgetSubtitle",
+        "source_string": "No app selected",
+        "translation": "Bir uygulama seçilmedi",
+        "context": "appSelectorCard -> widgetSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.noAppsLabel",
+        "source_string": "No applications found",
+        "translation": "Hiçbir uygulama bulunamadı",
+        "context": "appSelectorCard -> noAppsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.currentVersion",
+        "source_string": "Current",
+        "translation": "Şu anki",
+        "context": "appSelectorCard -> currentVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.suggestedVersion",
+        "source_string": "Suggested",
+        "translation": "Önerilen",
+        "context": "appSelectorCard -> suggestedVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.anyVersion",
+        "source_string": "Any version",
+        "translation": "Herhangi bir sürüm",
+        "context": "appSelectorCard -> anyVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetTitle",
+        "source_string": "Select patches",
+        "translation": "Yamaları seçin",
+        "context": "patchSelectorCard -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetTitleSelected",
+        "source_string": "Selected patches",
+        "translation": "Seçilen yamalar",
+        "context": "patchSelectorCard -> widgetTitleSelected",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetSubtitle",
+        "source_string": "Select an application first",
+        "translation": "Önce bir uygulama seçin",
+        "context": "patchSelectorCard -> widgetSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetEmptySubtitle",
+        "source_string": "No patches selected",
+        "translation": "Hiçbir yama seçilmedi",
+        "context": "patchSelectorCard -> widgetEmptySubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "socialMediaCard.widgetTitle",
+        "source_string": "Socials",
+        "translation": "Sosyal ağlar",
+        "context": "socialMediaCard -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "socialMediaCard.widgetSubtitle",
+        "source_string": "We are online!",
+        "translation": "Sosyal medyadayız!",
+        "context": "socialMediaCard -> widgetSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.viewTitle",
+        "source_string": "Select an app",
+        "translation": "Bir uygulama seç",
+        "context": "appSelectorView -> viewTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.searchBarHint",
+        "source_string": "Search app",
+        "translation": "Uygulama ara",
+        "context": "appSelectorView -> searchBarHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.storageButton",
+        "source_string": "Storage",
+        "translation": "Depolama",
+        "context": "appSelectorView -> storageButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.selectFromStorageButton",
+        "source_string": "Select from storage",
+        "translation": "Depolama alanından seçin",
+        "context": "appSelectorView -> selectFromStorageButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.errorMessage",
+        "source_string": "Unable to use selected application",
+        "translation": "Seçilen uygulama kullanılamıyor",
+        "context": "appSelectorView -> errorMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.downloadToast",
+        "source_string": "Download function is not available yet",
+        "translation": "İndirme özelliği henüz kullanılamıyor",
+        "context": "appSelectorView -> downloadToast",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.requireSuggestedAppVersionDialogText",
+        "source_string": "The version of the app you have selected does not match the suggested version which can lead to unexpected issues. Please use the suggested version.\n\nSelected version: ${selected}\nSuggested version: ${suggested}\n\nTo continue anyway, disable \"Require suggested app version\" in the settings.",
+        "translation": "Seçtiğiniz uygulamanın sürümü, önerilen sürümle eşleşmiyor ve bu durum beklenmeyen sorunlara yol açabilir. Lütfen önerilen sürümü kullanın.\n\nSeçilen sürüm: ${selected}\nÖnerilen sürüm: ${suggested}\n\nYine de devam etmek istiyorsanız, ayarlarda \"Önerilen uygulama sürümünü zorunlu kıl\" seçeneğini devre dışı bırakın.",
+        "context": "appSelectorView -> requireSuggestedAppVersionDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.featureNotAvailable",
+        "source_string": "Feature not implemented",
+        "translation": "Özellik henüz etkin değil",
+        "context": "appSelectorView -> featureNotAvailable",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.featureNotAvailableText",
+        "source_string": "This app is a split APK and can only be patched and installed reliably by mounting with root permissions. However, you can patch and install a full APK by selecting it from storage.",
+        "translation": "Bu uygulama bir split APK'dır ve yalnızca root izinleriyle yamalanıp, mount yöntemiyle kurulabilir.  Yine de, bir tam APK'yı depolamadan seçerek yamalayabilir ve kurabilirsiniz.",
+        "context": "appSelectorView -> featureNotAvailableText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.viewTitle",
+        "source_string": "Select patches",
+        "translation": "Yamaları seçin",
+        "context": "patchesSelectorView -> viewTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.searchBarHint",
+        "source_string": "Search patches",
+        "translation": "Yama arayın",
+        "context": "patchesSelectorView -> searchBarHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.universalPatches",
+        "source_string": "Universal patches",
+        "translation": "Ortak yamalar",
+        "context": "patchesSelectorView -> universalPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.newPatches",
+        "source_string": "New patches",
+        "translation": "Yeni yamalar",
+        "context": "patchesSelectorView -> newPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.patches",
+        "source_string": "Patches",
+        "translation": "Yamalar",
+        "context": "patchesSelectorView -> patches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.doneButton",
+        "source_string": "Done",
+        "translation": "Bitti",
+        "context": "patchesSelectorView -> doneButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.defaultChip",
+        "source_string": "Default",
+        "translation": "Varsayılan",
+        "context": "patchesSelectorView -> defaultChip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.defaultTooltip",
+        "source_string": "Select all default patches",
+        "translation": "Varsayılan yamaların tümünü seç",
+        "context": "patchesSelectorView -> defaultTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noneChip",
+        "source_string": "None",
+        "translation": "Hiçbiri",
+        "context": "patchesSelectorView -> noneChip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noneTooltip",
+        "source_string": "Deselect all patches",
+        "translation": "Tüm yamaların seçimini kaldır",
+        "context": "patchesSelectorView -> noneTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.loadPatchesSelection",
+        "source_string": "Load patch selection",
+        "translation": "Yama seçimini yükle",
+        "context": "patchesSelectorView -> loadPatchesSelection",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noSavedPatches",
+        "source_string": "No saved patch selection for the selected app.\nPress Done to save the current selection.",
+        "translation": "Seçilen uygulama için kaydedilmiş yama seçimi yok.\nMevcut seçimi kaydetmek için Bitti tuşuna basın.",
+        "context": "patchesSelectorView -> noSavedPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noPatchesFound",
+        "source_string": "No patches found for the selected app",
+        "translation": "Seçilen uygulama için yama bulunamadı",
+        "context": "patchesSelectorView -> noPatchesFound",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.setRequiredOption",
+        "source_string": "Some patches require options to be set:\n\n${patches}\n\nPlease set them before continuing.",
+        "translation": "Bazı yamaların seçeneklerinin ayarlanmasını gerekiyor:\n\n${patches}\n\nLütfen devam etmeden önce onları ayarlayın.",
+        "context": "patchesSelectorView -> setRequiredOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.customValue",
+        "source_string": "Custom value",
+        "translation": "Özel değer",
+        "context": "patchOptionsView -> customValue",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.resetOptionsTooltip",
+        "source_string": "Reset patch options",
+        "translation": "Yama seçeneklerini sıfırla",
+        "context": "patchOptionsView -> resetOptionsTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.viewTitle",
+        "source_string": "Patch options",
+        "translation": "Yama seçenekleri",
+        "context": "patchOptionsView -> viewTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.saveOptions",
+        "source_string": "Save",
+        "translation": "Kaydet",
+        "context": "patchOptionsView -> saveOptions",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.addOptions",
+        "source_string": "Add options",
+        "translation": "Seçenek ekle",
+        "context": "patchOptionsView -> addOptions",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.deselectPatch",
+        "source_string": "Deselect patch",
+        "translation": "Yamanın seçimini kaldır",
+        "context": "patchOptionsView -> deselectPatch",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.tooltip",
+        "source_string": "More input options",
+        "translation": "Daha fazla giriş seçeneği",
+        "context": "patchOptionsView -> tooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.selectFilePath",
+        "source_string": "Select file path",
+        "translation": "Dosya yolunu seç",
+        "context": "patchOptionsView -> selectFilePath",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.selectFolder",
+        "source_string": "Select folder",
+        "translation": "Klasör seç",
+        "context": "patchOptionsView -> selectFolder",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.selectOption",
+        "source_string": "Select option",
+        "translation": "Seçeneği seç",
+        "context": "patchOptionsView -> selectOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.requiredOption",
+        "source_string": "This option is required",
+        "translation": "Bu seçenek gereklidir",
+        "context": "patchOptionsView -> requiredOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.unsupportedOption",
+        "source_string": "This option is not supported",
+        "translation": "Bu seçenek desteklenmiyor",
+        "context": "patchOptionsView -> unsupportedOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.requiredOptionNull",
+        "source_string": "The following options have to be set:\n\n${options}",
+        "translation": "Aşağıdaki seçeneklerin ayarlanması gerekiyor:\n\n${options}",
+        "context": "patchOptionsView -> requiredOptionNull",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.unsupportedDialogText",
+        "source_string": "Selecting this patch may result in patching errors.\n\nApp version: ${packageVersion}\nSupported versions:\n${supportedVersions}",
+        "translation": "Bu yamayı seçmek yamalama hatalarına sebep olabilir.\n\nUygulama sürümü: ${packageVersion}\nDesteklenen sürümler:\n${supportedVersions}",
+        "context": "patchItem -> unsupportedDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.unsupportedPatchVersion",
+        "source_string": "Patch is not supported for this app version.",
+        "translation": "Yama, uygulamanın bu sürümü için desteklenmiyor.",
+        "context": "patchItem -> unsupportedPatchVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.unsupportedRequiredOption",
+        "source_string": "This patch contains a required option that is not supported by this app",
+        "translation": "Bu yama, bu uygulama tarafından desteklenmeyen fakat gerekli olan bir seçenek içeriyor",
+        "context": "patchItem -> unsupportedRequiredOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.patchesChangeWarningDialogText",
+        "source_string": "It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou'll need to turn on \"Allow changing patch selection\" in the settings before changing any patch selection.",
+        "translation": "Varsayılan yama seçimini ve seçeneklerini kullanmanız önerilir. Bunları değiştirmek beklenmedik sorunlara yol açabilir.\n\nHerhangi bir yama seçimini değiştirmeden önce ayarlarda \"Yama seçimini değiştirmeye izin ver\" seçeneğini açmanız gerekir.",
+        "context": "patchItem -> patchesChangeWarningDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.patchesChangeWarningDialogButton",
+        "source_string": "Use default selection",
+        "translation": "Varsayılan seçimi kullan",
+        "context": "patchItem -> patchesChangeWarningDialogButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.widgetTitle",
+        "source_string": "Installer",
+        "translation": "Yükleyici",
+        "context": "installerView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installType",
+        "source_string": "Select install type",
+        "translation": "Kurulum tipini seçin",
+        "context": "installerView -> installType",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installTypeDescription",
+        "source_string": "Select the installation type to continue with.",
+        "translation": "Kullanılacak kurulum tipini seçin.",
+        "context": "installerView -> installTypeDescription",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installButton",
+        "source_string": "Install",
+        "translation": "Yükle",
+        "context": "installerView -> installButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installRootType",
+        "source_string": "Mount",
+        "translation": "Mount",
+        "context": "installerView -> installRootType",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installNonRootType",
+        "source_string": "Regular",
+        "translation": "Standart",
+        "context": "installerView -> installNonRootType",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.warning",
+        "source_string": "Disable auto updates for the patched app to avoid unexpected issues.",
+        "translation": "Beklenmedik sorunlar ile karşılaşmamak için, otomatik güncellemeleri yamalanmış uygulama için devre dışı bırakın.",
+        "context": "installerView -> warning",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.pressBackAgain",
+        "source_string": "Press back again to cancel",
+        "translation": "İptal etmek için tekrar geri tuşuna basın",
+        "context": "installerView -> pressBackAgain",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.openButton",
+        "source_string": "Open",
+        "translation": "Aç",
+        "context": "installerView -> openButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.shareButton",
+        "source_string": "Share file",
+        "translation": "Dosyayı paylaş",
+        "context": "installerView -> shareButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.notificationTitle",
+        "source_string": "ReVanced Manager is patching",
+        "translation": "ReVanced Manager yamalıyor",
+        "context": "installerView -> notificationTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.notificationText",
+        "source_string": "Tap to return to the installer",
+        "translation": "Yükleyiciye dönmek için dokunun",
+        "context": "installerView -> notificationText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.exportApkButtonTooltip",
+        "source_string": "Export patched APK",
+        "translation": "Yamalanmış APK'yı dışa aktar",
+        "context": "installerView -> exportApkButtonTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.exportLogButtonTooltip",
+        "source_string": "Export log",
+        "translation": "Log'u dışa aktar",
+        "context": "installerView -> exportLogButtonTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.screenshotDetected",
+        "source_string": "A screenshot has been detected. If you are trying to share the log, please share a text copy instead.\n\nCopy log to clipboard?",
+        "translation": "Bir ekran görüntüsü algılandı. Log'u paylaşmaya çalışıyorsanız lütfen bunun yerine bir metin kopyasını paylaşın.\n\nLog panoya kopyalansın mı?",
+        "context": "installerView -> screenshotDetected",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.copiedToClipboard",
+        "source_string": "Copied log to clipboard",
+        "translation": "Log panoya kopyalandı",
+        "context": "installerView -> copiedToClipboard",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.noExit",
+        "source_string": "Installer is still running, cannot exit...",
+        "translation": "Yükleyici hâlâ çalışıyor, çıkış yapılamaz...",
+        "context": "installerView -> noExit",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.widgetTitle",
+        "source_string": "Settings",
+        "translation": "Ayarlar",
+        "context": "settingsView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.appearanceSectionTitle",
+        "source_string": "Appearance",
+        "translation": "Görünüm",
+        "context": "settingsView -> appearanceSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.teamSectionTitle",
+        "source_string": "Team",
+        "translation": "Ekip",
+        "context": "settingsView -> teamSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.debugSectionTitle",
+        "source_string": "Debugging",
+        "translation": "Hata ayıklama",
+        "context": "settingsView -> debugSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.advancedSectionTitle",
+        "source_string": "Advanced",
+        "translation": "Gelişmiş",
+        "context": "settingsView -> advancedSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportSectionTitle",
+        "source_string": "Import & export",
+        "translation": "İçe ve dışa aktar",
+        "context": "settingsView -> exportSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.dataSectionTitle",
+        "source_string": "Data sources",
+        "translation": "Veri kaynakları",
+        "context": "settingsView -> dataSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.themeModeLabel",
+        "source_string": "App theme",
+        "translation": "Uygulama teması",
+        "context": "settingsView -> themeModeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.systemThemeLabel",
+        "source_string": "System",
+        "translation": "Sistem",
+        "context": "settingsView -> systemThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.lightThemeLabel",
+        "source_string": "Light",
+        "translation": "Aydınlık",
+        "context": "settingsView -> lightThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.darkThemeLabel",
+        "source_string": "Dark",
+        "translation": "Karanlık",
+        "context": "settingsView -> darkThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.dynamicThemeLabel",
+        "source_string": "Material You",
+        "translation": "Material You",
+        "context": "settingsView -> dynamicThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.dynamicThemeHint",
+        "source_string": "Enjoy an experience closer to your device",
+        "translation": "Cihazınıza yakın bir deneyimin keyfini çıkarın",
+        "context": "settingsView -> dynamicThemeHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.languageLabel",
+        "source_string": "Language",
+        "translation": "Dil",
+        "context": "settingsView -> languageLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.languageUpdated",
+        "source_string": "Language updated",
+        "translation": "Dil güncellendi",
+        "context": "settingsView -> languageUpdated",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.englishOption",
+        "source_string": "English",
+        "translation": "İngilizce",
+        "context": "settingsView -> englishOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesLabel",
+        "source_string": "Alternative sources",
+        "translation": "Alternatif kaynaklar",
+        "context": "settingsView -> sourcesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesLabelHint",
+        "source_string": "Configure the alternative sources for ReVanced Patches and ReVanced Integrations",
+        "translation": "ReVanced Patches ve ReVanced Integrations için alternatif kaynakları ayarlayın",
+        "context": "settingsView -> sourcesLabelHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesIntegrationsLabel",
+        "source_string": "Integrations source",
+        "translation": "Integrations source",
+        "context": "settingsView -> sourcesIntegrationsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.useAlternativeSources",
+        "source_string": "Use alternative sources",
+        "translation": "Alternatif kaynakları kullan",
+        "context": "settingsView -> useAlternativeSources",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.useAlternativeSourcesHint",
+        "source_string": "Use alternative sources for ReVanced Patches and ReVanced Integrations instead of the API",
+        "translation": "ReVanced Patches ve ReVanced Integrations için API yerine alternatif kaynakları kullanın",
+        "context": "settingsView -> useAlternativeSourcesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesResetDialogTitle",
+        "source_string": "Reset",
+        "translation": "Sıfırla",
+        "context": "settingsView -> sourcesResetDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesResetDialogText",
+        "source_string": "Are you sure you want to reset your sources to their default values?",
+        "translation": "Kaynaklarınızı varsayılan değerlerine sıfırlamak istediğinizden emin misiniz?",
+        "context": "settingsView -> sourcesResetDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.apiURLResetDialogText",
+        "source_string": "Are you sure you want to reset your API URL to its default value?",
+        "translation": "API URL'nizi varsayılan değerine sıfırlamak istediğinizden emin misiniz?",
+        "context": "settingsView -> apiURLResetDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesUpdateNote",
+        "source_string": "Note: This will automatically download ReVanced Patches and ReVanced Integrations from the alternative sources.\n\nThis will connect you to the alternative source.",
+        "translation": "Not: Bu, ReVanced Patches'ı ve ReVanced Integrations'ı otomatik olarak alternatif kaynaklardan indirecektir.\n\nBu sizi alternatif kaynağa bağlayacaktır.",
+        "context": "settingsView -> sourcesUpdateNote",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.apiURLLabel",
+        "source_string": "API URL",
+        "translation": "API URL'si",
+        "context": "settingsView -> apiURLLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.apiURLHint",
+        "source_string": "Configure the API URL of ReVanced Manager",
+        "translation": "ReVanced Manager'in API URL'sini ayarlayın",
+        "context": "settingsView -> apiURLHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.selectApiURL",
+        "source_string": "API URL",
+        "translation": "API URL'si",
+        "context": "settingsView -> selectApiURL",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.orgPatchesLabel",
+        "source_string": "Patches organization",
+        "translation": "Patches organization",
+        "context": "settingsView -> orgPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesPatchesLabel",
+        "source_string": "Patches source",
+        "translation": "Patches source",
+        "context": "settingsView -> sourcesPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.orgIntegrationsLabel",
+        "source_string": "Integrations organization",
+        "translation": "Integrations organization",
+        "context": "settingsView -> orgIntegrationsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.contributorsLabel",
+        "source_string": "Contributors",
+        "translation": "Katkıda bulunanlar",
+        "context": "settingsView -> contributorsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.contributorsHint",
+        "source_string": "A list of contributors of ReVanced",
+        "translation": "ReVanced'a katkıda bulunanların listesi",
+        "context": "settingsView -> contributorsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.logsLabel",
+        "source_string": "Share logs",
+        "translation": "Logları paylaş",
+        "context": "settingsView -> logsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.logsHint",
+        "source_string": "Share ReVanced Manager logs",
+        "translation": "ReVanced Manager loglarını paylaşın",
+        "context": "settingsView -> logsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.enablePatchesSelectionLabel",
+        "source_string": "Allow changing patch selection",
+        "translation": "Yama seçimini değiştirmeye izin ver",
+        "context": "settingsView -> enablePatchesSelectionLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.enablePatchesSelectionHint",
+        "source_string": "Do not prevent selecting or deselecting patches",
+        "translation": "Yamaların seçilmesini veya seçiminin kaldırılmasını engelleme",
+        "context": "settingsView -> enablePatchesSelectionHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.enablePatchesSelectionWarningText",
+        "source_string": "Changing the selection of patches may cause unexpected issues.\n\nEnable anyways?",
+        "translation": "Yama seçimini değiştirmek beklenmedik sorunlara yol açabilir.\n\nYine de etkinleştirilsin mi?",
+        "context": "settingsView -> enablePatchesSelectionWarningText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.disablePatchesSelectionWarningText",
+        "source_string": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
+        "translation": "Yama seçimini değiştirmeyi devre dışı bırakmak üzeresiniz.\nVarsayılan yama seçimi geri yüklenecektir.\n\nYine de devre dışı bırakılsın mı?",
+        "context": "settingsView -> disablePatchesSelectionWarningText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.autoUpdatePatchesLabel",
+        "source_string": "Auto update patches",
+        "translation": "Yamaları otomatik güncelle",
+        "context": "settingsView -> autoUpdatePatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.autoUpdatePatchesHint",
+        "source_string": "Automatically update patches to the latest version",
+        "translation": "Yamaları otomatik olarak en son sürüme güncelle",
+        "context": "settingsView -> autoUpdatePatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.showUpdateDialogLabel",
+        "source_string": "Show update dialog",
+        "translation": "Güncelleme penceresini göster",
+        "context": "settingsView -> showUpdateDialogLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.showUpdateDialogHint",
+        "source_string": "Show a dialog when a new update is available",
+        "translation": "Yeni bir güncelleme mevcut olduğunda bir pencere göster",
+        "context": "settingsView -> showUpdateDialogHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.universalPatchesLabel",
+        "source_string": "Show universal patches",
+        "translation": "Ortak yamaları göster",
+        "context": "settingsView -> universalPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.universalPatchesHint",
+        "source_string": "Display all apps and universal patches (may slow down the app list)",
+        "translation": "Tüm uygulamaları ve ortak yamaları göster (uygulamaları listelemeyi yavaşlatabilir)",
+        "context": "settingsView -> universalPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.versionCompatibilityCheckLabel",
+        "source_string": "Version compatibility check",
+        "translation": "Sürüm uyumluluğu kontrolü",
+        "context": "settingsView -> versionCompatibilityCheckLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.versionCompatibilityCheckHint",
+        "source_string": "Prevent selecting patches that are not compatible with the selected app version",
+        "translation": "Seçilen uygulama sürümüyle uyumlu olmayan yamaların seçilmesini engelle",
+        "context": "settingsView -> versionCompatibilityCheckHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.requireSuggestedAppVersionLabel",
+        "source_string": "Require suggested app version",
+        "translation": "Önerilen uygulama sürümünü zorunlu kıl",
+        "context": "settingsView -> requireSuggestedAppVersionLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.requireSuggestedAppVersionHint",
+        "source_string": "Prevent selecting an app with a version that is not the suggested",
+        "translation": "Uygulamanın önerilen sürümünden farklı bir sürümün seçilmesini engelle",
+        "context": "settingsView -> requireSuggestedAppVersionHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.requireSuggestedAppVersionDialogText",
+        "source_string": "Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?",
+        "translation": "Uygulamanın önerilen sürümünden farklı bir sürümünü seçmek beklenmedik sorunlara yol açabilir.\n\nYine de devam etmek istiyor musunuz?",
+        "context": "settingsView -> requireSuggestedAppVersionDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.aboutLabel",
+        "source_string": "About",
+        "translation": "Hakkında",
+        "context": "settingsView -> aboutLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.snackbarMessage",
+        "source_string": "Copied to clipboard",
+        "translation": "Panoya kopyalandı",
+        "context": "settingsView -> snackbarMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.restartAppForChanges",
+        "source_string": "Restart the app to apply changes",
+        "translation": "Değişiklikleri uygulamak için uygulamayı yeniden başlatın",
+        "context": "settingsView -> restartAppForChanges",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteTempDirLabel",
+        "source_string": "Delete temporary files",
+        "translation": "Geçici dosyaları sil",
+        "context": "settingsView -> deleteTempDirLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteTempDirHint",
+        "source_string": "Delete unused temporary files",
+        "translation": "Kullanılmayan geçici dosyaları silin",
+        "context": "settingsView -> deleteTempDirHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deletedTempDir",
+        "source_string": "Temporary files deleted",
+        "translation": "Geçici dosyalar silindi",
+        "context": "settingsView -> deletedTempDir",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportPatchesLabel",
+        "source_string": "Export patch selection",
+        "translation": "Yama seçimini dışa aktar",
+        "context": "settingsView -> exportPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportPatchesHint",
+        "source_string": "Export patch selection to a JSON file",
+        "translation": "Yama seçimini bir JSON dosyasına kaydedin",
+        "context": "settingsView -> exportPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportedPatches",
+        "source_string": "Patch selection exported",
+        "translation": "Yama seçimi dışa aktarıldı",
+        "context": "settingsView -> exportedPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.noExportFileFound",
+        "source_string": "No patch selection to export",
+        "translation": "Dışa aktarılabilecek yama seçimi yok",
+        "context": "settingsView -> noExportFileFound",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importPatchesLabel",
+        "source_string": "Import patch selection",
+        "translation": "Yama seçimini içe aktar",
+        "context": "settingsView -> importPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importPatchesHint",
+        "source_string": "Import patch selection from a JSON file",
+        "translation": "Yama seçimini bir JSON dosyasından içe aktarın",
+        "context": "settingsView -> importPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importedPatches",
+        "source_string": "Patch selection imported",
+        "translation": "Yama seçimi içe aktarıldı",
+        "context": "settingsView -> importedPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesLabel",
+        "source_string": "Reset patch selection",
+        "translation": "Yama seçimini sıfırla",
+        "context": "settingsView -> resetStoredPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesHint",
+        "source_string": "Reset the stored patch selection",
+        "translation": "Mevcut yama seçimini sıfırlayın",
+        "context": "settingsView -> resetStoredPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesDialogTitle",
+        "source_string": "Reset patch selection?",
+        "translation": "Yama seçimi sıfırlansın mı?",
+        "context": "settingsView -> resetStoredPatchesDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesDialogText",
+        "source_string": "The default selection of patches will be restored.",
+        "translation": "Varsayılan yama seçimi geri yüklenecektir.",
+        "context": "settingsView -> resetStoredPatchesDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatches",
+        "source_string": "Patch selection has been reset",
+        "translation": "Yama seçimi sıfırlandı",
+        "context": "settingsView -> resetStoredPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsLabel",
+        "source_string": "Reset patch options",
+        "translation": "Yama seçeneklerini sıfırla",
+        "context": "settingsView -> resetStoredOptionsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsHint",
+        "source_string": "Reset all patch options",
+        "translation": "Tüm yama seçeneklerini sıfırlayın",
+        "context": "settingsView -> resetStoredOptionsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsDialogTitle",
+        "source_string": "Reset patch options?",
+        "translation": "Yama seçenekleri sıfırlansın mı?",
+        "context": "settingsView -> resetStoredOptionsDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsDialogText",
+        "source_string": "Resetting patch options will remove all saved options.",
+        "translation": "Yama seçeneklerini sıfırlamak, kayıtlı tüm seçenekleri kaldıracaktır.",
+        "context": "settingsView -> resetStoredOptionsDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptions",
+        "source_string": "Options have been reset",
+        "translation": "Seçenekler sıfırlandı",
+        "context": "settingsView -> resetStoredOptions",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteLogsLabel",
+        "source_string": "Clear logs",
+        "translation": "Logları temizle",
+        "context": "settingsView -> deleteLogsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteLogsHint",
+        "source_string": "Delete collected ReVanced Manager logs",
+        "translation": "Kayıtlı ReVanced Manager loglarını silin",
+        "context": "settingsView -> deleteLogsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deletedLogs",
+        "source_string": "Logs deleted",
+        "translation": "Loglar silindi",
+        "context": "settingsView -> deletedLogs",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreLabel",
+        "source_string": "Regenerate keystore",
+        "translation": "Keystore'u yeniden oluştur",
+        "context": "settingsView -> regenerateKeystoreLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreHint",
+        "source_string": "Regenerate the keystore used to sign apps",
+        "translation": "Uygulamaları imzalamak için kullanılan keystore'u yeniden oluşturun",
+        "context": "settingsView -> regenerateKeystoreHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreDialogTitle",
+        "source_string": "Regenerate keystore?",
+        "translation": "Keystore yeniden oluşturulsun mu?",
+        "context": "settingsView -> regenerateKeystoreDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreDialogText",
+        "source_string": "Patched apps signed with the old keystore will no longer be able to be updated.",
+        "translation": "Eski keystore ile imzalanan yamalanmış uygulamalar artık güncellenemeyecek.",
+        "context": "settingsView -> regenerateKeystoreDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regeneratedKeystore",
+        "source_string": "Keystore regenerated",
+        "translation": "Keystore yeniden oluşturuldu",
+        "context": "settingsView -> regeneratedKeystore",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportKeystoreLabel",
+        "source_string": "Export keystore",
+        "translation": "Keystore'u dışa aktar",
+        "context": "settingsView -> exportKeystoreLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportKeystoreHint",
+        "source_string": "Export the keystore used to sign apps",
+        "translation": "Uygulamaları imzalamak için kullanılan keystore'u dışa aktarın",
+        "context": "settingsView -> exportKeystoreHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportedKeystore",
+        "source_string": "Keystore exported",
+        "translation": "Keystore dışa aktarıldı",
+        "context": "settingsView -> exportedKeystore",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.noKeystoreExportFileFound",
+        "source_string": "No keystore to export",
+        "translation": "Dışa aktarılacak keystore yok",
+        "context": "settingsView -> noKeystoreExportFileFound",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importKeystoreLabel",
+        "source_string": "Import keystore",
+        "translation": "Keystore'u içe aktar",
+        "context": "settingsView -> importKeystoreLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importKeystoreHint",
+        "source_string": "Import a keystore used to sign apps",
+        "translation": "Uygulamaları imzalamak için kullanılan bir keystore'u içe aktarın",
+        "context": "settingsView -> importKeystoreHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importedKeystore",
+        "source_string": "Keystore imported",
+        "translation": "Keystore içe aktarıldı",
+        "context": "settingsView -> importedKeystore",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.selectKeystorePassword",
+        "source_string": "Keystore password",
+        "translation": "Keystore şifresi",
+        "context": "settingsView -> selectKeystorePassword",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.selectKeystorePasswordHint",
+        "source_string": "Select keystore password used to sign apps",
+        "translation": "Uygulamaları imzalamak için kullanılan keystore'un şifresini seçin",
+        "context": "settingsView -> selectKeystorePasswordHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.jsonSelectorErrorMessage",
+        "source_string": "Unable to use selected JSON file",
+        "translation": "Seçilen JSON dosyası kullanılamıyor",
+        "context": "settingsView -> jsonSelectorErrorMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.keystoreSelectorErrorMessage",
+        "source_string": "Unable to use selected keystore file",
+        "translation": "Seçilen keystore dosyası kullanılamıyor",
+        "context": "settingsView -> keystoreSelectorErrorMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.widgetTitle",
+        "source_string": "App info",
+        "translation": "Uygulama bilgisi",
+        "context": "appInfoView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.openButton",
+        "source_string": "Open",
+        "translation": "Aç",
+        "context": "appInfoView -> openButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.uninstallButton",
+        "source_string": "Uninstall",
+        "translation": "Kaldır",
+        "context": "appInfoView -> uninstallButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.unmountButton",
+        "source_string": "Unmount",
+        "translation": "Mount'u kaldır",
+        "context": "appInfoView -> unmountButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.rootDialogTitle",
+        "source_string": "Error",
+        "translation": "Hata",
+        "context": "appInfoView -> rootDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.unmountDialogText",
+        "source_string": "Are you sure you want to unmount this app?",
+        "translation": "Bu uygulamanın Mount'unu kaldırmak istediğinize emin misiniz?",
+        "context": "appInfoView -> unmountDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.uninstallDialogText",
+        "source_string": "Are you sure you want to uninstall this app?",
+        "translation": "Bu uygulamayı kaldırmak istediğinizden emin misiniz?",
+        "context": "appInfoView -> uninstallDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.rootDialogText",
+        "source_string": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
+        "translation": "Uygulama root izinleriyle yüklendi, ancak şu anda ReVanced Manager'ın bu izinleri yok.\nLütfen önce root izni verin.",
+        "context": "appInfoView -> rootDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.packageNameLabel",
+        "source_string": "Package name",
+        "translation": "Paket adı",
+        "context": "appInfoView -> packageNameLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.installTypeLabel",
+        "source_string": "Installation type",
+        "translation": "Kurulum tipi",
+        "context": "appInfoView -> installTypeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.mountTypeLabel",
+        "source_string": "Mount",
+        "translation": "Mount",
+        "context": "appInfoView -> mountTypeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.regularTypeLabel",
+        "source_string": "Regular",
+        "translation": "Standart",
+        "context": "appInfoView -> regularTypeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.patchedDateLabel",
+        "source_string": "Patched date",
+        "translation": "Yamalandığı tarih",
+        "context": "appInfoView -> patchedDateLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.appliedPatchesLabel",
+        "source_string": "Applied patches",
+        "translation": "Uygulanan yamalar",
+        "context": "appInfoView -> appliedPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.patchedDateHint",
+        "source_string": "${date} at ${time}",
+        "translation": "${date} ${time} ",
+        "context": "appInfoView -> patchedDateHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.appliedPatchesHint",
+        "source_string": "${quantity} applied patches",
+        "translation": "${quantity} tane yama uygulanmış",
+        "context": "appInfoView -> appliedPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.updateNotImplemented",
+        "source_string": "This feature has not been implemented yet",
+        "translation": "Bu özellik henüz geliştirilmedi",
+        "context": "appInfoView -> updateNotImplemented",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.widgetTitle",
+        "source_string": "Contributors",
+        "translation": "Katkıda bulunanlar",
+        "context": "contributorsView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.patcherContributors",
+        "source_string": "ReVanced Patcher",
+        "translation": "ReVanced Patcher",
+        "context": "contributorsView -> patcherContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.patchesContributors",
+        "source_string": "ReVanced Patches",
+        "translation": "ReVanced Patches",
+        "context": "contributorsView -> patchesContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.integrationsContributors",
+        "source_string": "ReVanced Integrations",
+        "translation": "ReVanced Integrations",
+        "context": "contributorsView -> integrationsContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.cliContributors",
+        "source_string": "ReVanced CLI",
+        "translation": "ReVanced CLI",
+        "context": "contributorsView -> cliContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.managerContributors",
+        "source_string": "ReVanced Manager",
+        "translation": "ReVanced Manager",
+        "context": "contributorsView -> managerContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_version_mismatch",
+        "source_string": "Version mismatch",
+        "translation": "Sürüm uyuşmazlığı",
+        "context": "installErrorDialog -> mount_version_mismatch",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_no_root",
+        "source_string": "No root access",
+        "translation": "Root izni yok",
+        "context": "installErrorDialog -> mount_no_root",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_missing_installation",
+        "source_string": "Installation not found",
+        "translation": "Kurulum bulunamadı",
+        "context": "installErrorDialog -> mount_missing_installation",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_blocked",
+        "source_string": "Installation blocked",
+        "translation": "Kurulum engellendi",
+        "context": "installErrorDialog -> status_failure_blocked",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_verification_failure",
+        "source_string": "Verification failed",
+        "translation": "Doğrulama başarısız",
+        "context": "installErrorDialog -> install_failed_verification_failure",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_invalid",
+        "source_string": "Installation invalid",
+        "translation": "Kurulum geçersiz",
+        "context": "installErrorDialog -> status_failure_invalid",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_version_downgrade",
+        "source_string": "Can't downgrade",
+        "translation": "Sürüm düşürülemiyor",
+        "context": "installErrorDialog -> install_failed_version_downgrade",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_conflict",
+        "source_string": "Installation conflict",
+        "translation": "Kurulum çakışması",
+        "context": "installErrorDialog -> status_failure_conflict",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_storage",
+        "source_string": "Installation storage issue",
+        "translation": "Kurulum depolama sorunu",
+        "context": "installErrorDialog -> status_failure_storage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_incompatible",
+        "source_string": "Installation incompatible",
+        "translation": "Kurulum uyumsuz",
+        "context": "installErrorDialog -> status_failure_incompatible",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_timeout",
+        "source_string": "Installation timeout",
+        "translation": "Kurulum zaman aşımı",
+        "context": "installErrorDialog -> status_failure_timeout",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_unknown",
+        "source_string": "Installation failed",
+        "translation": "Kurulum başarısız",
+        "context": "installErrorDialog -> status_unknown",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_version_mismatch_description",
+        "source_string": "The installation failed due to the installed app being a different version than the patched app.\n\nInstall the version of the app you are mounting and try again.",
+        "translation": "Kurulu uygulamanın sürümü, yamalanmış uygulamadan farklı olduğu için kurulum başarısız oldu.\n\nMount ettiğiniz uygulamanın sürümünü yükleyin ve tekrar deneyin.",
+        "context": "installErrorDialog -> mount_version_mismatch_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_no_root_description",
+        "source_string": "The installation failed due to root access not being granted.\n\nGrant root access to ReVanced Manager and try again.",
+        "translation": "Root izni verilmediğinden kurulum başarısız oldu.\n\nReVanced Manager'a root izni verin ve tekrar deneyin.",
+        "context": "installErrorDialog -> mount_no_root_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_missing_installation_description",
+        "source_string": "The installation failed due to the unpatched app not being installed on this device in order to mount over it.\n\nInstall the unpatched app before mounting and try again.",
+        "translation": "Yama yapılmamış uygulama bu cihazda kurulu olmadığından üstüne Mount edilemedi ve kurulum başarısız oldu.\n\nMount etmeden önce yama yapılmamış uygulamayı yükleyin ve tekrar deneyin.",
+        "context": "installErrorDialog -> mount_missing_installation_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_timeout_description",
+        "source_string": "The installation took too long to finish.\n\nWould you like to try again?",
+        "translation": "Kurulumun tamamlanması çok uzun sürdü.\n\nTekrar denemek ister misiniz?",
+        "context": "installErrorDialog -> status_failure_timeout_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_storage_description",
+        "source_string": "The installation failed due to insufficient storage.\n\nFree up some space and try again.",
+        "translation": "Yetersiz depolama alanı nedeniyle kurulum başarısız oldu.\n\nCihazınızda biraz yer açın ve tekrar deneyin.",
+        "context": "installErrorDialog -> status_failure_storage_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_invalid_description",
+        "source_string": "The installation failed due to the patched app being invalid.\n\nUninstall the app and try again?",
+        "translation": "Yamalanmış uygulamanın geçersiz olması nedeniyle kurulum başarısız oldu.\n\nUygulamayı kaldırıp tekrar denemek ister misiniz?",
+        "context": "installErrorDialog -> status_failure_invalid_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_incompatible_description",
+        "source_string": "The app is incompatible with this device.\n\nContact the developer of the app and ask for support.",
+        "translation": "Uygulama bu cihazla uyumlu değil.\n\nUygulamanın geliştiricisiyle iletişime geçin ve destek isteyin.",
+        "context": "installErrorDialog -> status_failure_incompatible_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_conflict_description",
+        "source_string": "The installation was prevented by an existing installation of the app.\n\nUninstall the installed app and try again?",
+        "translation": "Kurulum, uygulamanın mevcut kurulumu nedeniyle engellendi.\n\nKurulu uygulamayı kaldırıp tekrar denemek ister misiniz?",
+        "context": "installErrorDialog -> status_failure_conflict_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_blocked_description",
+        "source_string": "The installation was blocked by ${packageName}.\n\nAdjust your security settings and try again.",
+        "translation": "Kurulum ${packageName} tarafından engellendi.\n\nGüvenlik ayarlarınızı değiştirin ve tekrar deneyin.",
+        "context": "installErrorDialog -> status_failure_blocked_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_verification_failure_description",
+        "source_string": "The installation failed due to a verification issue.\n\nAdjust your security settings and try again.",
+        "translation": "Bir doğrulama sorunu nedeniyle kurulum başarısız oldu.\n\nGüvenlik ayarlarınızı değiştirin ve tekrar deneyin.",
+        "context": "installErrorDialog -> install_failed_verification_failure_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_version_downgrade_description",
+        "source_string": "The installation failed due to the patched app being a lower version than the installed app.\n\nUninstall the app and try again?",
+        "translation": "Yamalanmış uygulamanın sürümünün, kurulu uygulamadan daha düşük olması nedeniyle kurulum başarısız oldu.\n\nUygulamayı kaldırıp tekrar denemek ister misiniz?",
+        "context": "installErrorDialog -> install_failed_version_downgrade_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_unknown_description",
+        "source_string": "The installation failed due to an unknown reason. Please try again.",
+        "translation": "Bilinmeyen bir nedenden dolayı kurulum başarısız oldu. Lütfen tekrar deneyin.",
+        "context": "installErrorDialog -> status_unknown_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "okButton",
+        "source_string": "OK",
+        "translation": null,
+        "context": " -> okButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "cancelButton",
+        "source_string": "Cancel",
+        "translation": null,
+        "context": " -> cancelButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "dismissButton",
+        "source_string": "Dismiss",
+        "translation": null,
+        "context": " -> dismissButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "quitButton",
+        "source_string": "Quit",
+        "translation": null,
+        "context": " -> quitButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "updateButton",
+        "source_string": "Update",
+        "translation": null,
+        "context": " -> updateButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "enabledLabel",
+        "source_string": "Enabled",
+        "translation": null,
+        "context": " -> enabledLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "disabledLabel",
+        "source_string": "Disabled",
+        "translation": null,
+        "context": " -> disabledLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installed",
+        "source_string": "Installed: ${version}",
+        "translation": null,
+        "context": " -> installed",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "suggested",
+        "source_string": "Suggested: ${version}",
+        "translation": null,
+        "context": " -> suggested",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "yesButton",
+        "source_string": "Yes",
+        "translation": null,
+        "context": " -> yesButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "noButton",
+        "source_string": "No",
+        "translation": null,
+        "context": " -> noButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "warning",
+        "source_string": "Warning",
+        "translation": null,
+        "context": " -> warning",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "options",
+        "source_string": "Options",
+        "translation": null,
+        "context": " -> options",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "notice",
+        "source_string": "Notice",
+        "translation": null,
+        "context": " -> notice",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "noShowAgain",
+        "source_string": "Don't show this again",
+        "translation": null,
+        "context": " -> noShowAgain",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "add",
+        "source_string": "Add",
+        "translation": null,
+        "context": " -> add",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "remove",
+        "source_string": "Remove",
+        "translation": null,
+        "context": " -> remove",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "showChangelogButton",
+        "source_string": "Show changelog",
+        "translation": null,
+        "context": " -> showChangelogButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "showUpdateButton",
+        "source_string": "Show update",
+        "translation": null,
+        "context": " -> showUpdateButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "navigationView.dashboardTab",
+        "source_string": "Dashboard",
+        "translation": null,
+        "context": "navigationView -> dashboardTab",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "navigationView.patcherTab",
+        "source_string": "Patcher",
+        "translation": null,
+        "context": "navigationView -> patcherTab",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "navigationView.settingsTab",
+        "source_string": "Settings",
+        "translation": null,
+        "context": "navigationView -> settingsTab",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.refreshSuccess",
+        "source_string": "Refreshed successfully",
+        "translation": null,
+        "context": "homeView -> refreshSuccess",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.widgetTitle",
+        "source_string": "Dashboard",
+        "translation": null,
+        "context": "homeView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updatesSubtitle",
+        "source_string": "Updates",
+        "translation": null,
+        "context": "homeView -> updatesSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.patchedSubtitle",
+        "source_string": "Patched apps",
+        "translation": null,
+        "context": "homeView -> patchedSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.changeLaterSubtitle",
+        "source_string": "You can change this in the settings at a later time.",
+        "translation": null,
+        "context": "homeView -> changeLaterSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.noUpdates",
+        "source_string": "No updates available",
+        "translation": null,
+        "context": "homeView -> noUpdates",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.WIP",
+        "source_string": "Work in progress...",
+        "translation": null,
+        "context": "homeView -> WIP",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.noInstallations",
+        "source_string": "No patched apps installed",
+        "translation": null,
+        "context": "homeView -> noInstallations",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.installUpdate",
+        "source_string": "Continue to install the update?",
+        "translation": null,
+        "context": "homeView -> installUpdate",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateSheetTitle",
+        "source_string": "Update ReVanced Manager",
+        "translation": null,
+        "context": "homeView -> updateSheetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateDialogTitle",
+        "source_string": "New update available",
+        "translation": null,
+        "context": "homeView -> updateDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updatePatchesSheetTitle",
+        "source_string": "Update ReVanced Patches",
+        "translation": null,
+        "context": "homeView -> updatePatchesSheetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateChangelogTitle",
+        "source_string": "Changelog",
+        "translation": null,
+        "context": "homeView -> updateChangelogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updateDialogText",
+        "source_string": "A new update is available for ${file}.\n\nThe currently installed version is ${version}.",
+        "translation": null,
+        "context": "homeView -> updateDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadConsentDialogTitle",
+        "source_string": "Download necessary files?",
+        "translation": null,
+        "context": "homeView -> downloadConsentDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadConsentDialogText",
+        "source_string": "ReVanced Manager needs to download necessary files to work properly.",
+        "translation": null,
+        "context": "homeView -> downloadConsentDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadConsentDialogText2",
+        "source_string": "This will connect you to ${url}.",
+        "translation": null,
+        "context": "homeView -> downloadConsentDialogText2",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.checkUpdateDialogTitle",
+        "source_string": "Check for updates?",
+        "translation": null,
+        "context": "homeView -> checkUpdateDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.checkUpdateDialogText",
+        "source_string": "Do you want ReVanced Manager to check for updates automatically?",
+        "translation": null,
+        "context": "homeView -> checkUpdateDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.notificationTitle",
+        "source_string": "Update downloaded",
+        "translation": null,
+        "context": "homeView -> notificationTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.notificationText",
+        "source_string": "Tap to install the update",
+        "translation": null,
+        "context": "homeView -> notificationText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadingMessage",
+        "source_string": "Downloading update...",
+        "translation": null,
+        "context": "homeView -> downloadingMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.downloadedMessage",
+        "source_string": "Update downloaded",
+        "translation": null,
+        "context": "homeView -> downloadedMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.installingMessage",
+        "source_string": "Installing update...",
+        "translation": null,
+        "context": "homeView -> installingMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.errorDownloadMessage",
+        "source_string": "Unable to download update",
+        "translation": null,
+        "context": "homeView -> errorDownloadMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.errorInstallMessage",
+        "source_string": "Unable to install update",
+        "translation": null,
+        "context": "homeView -> errorInstallMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.noConnection",
+        "source_string": "No internet connection",
+        "translation": null,
+        "context": "homeView -> noConnection",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "homeView.updatesDisabled",
+        "source_string": "Updating a patched app is currently disabled. Repatch the app again.",
+        "translation": null,
+        "context": "homeView -> updatesDisabled",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "applicationItem.infoButton",
+        "source_string": "Info",
+        "translation": null,
+        "context": "applicationItem -> infoButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.loadingLabel",
+        "source_string": "Loading...",
+        "translation": null,
+        "context": "latestCommitCard -> loadingLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.timeagoLabel",
+        "source_string": "${time} ago",
+        "translation": null,
+        "context": "latestCommitCard -> timeagoLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.patcherLabel",
+        "source_string": "Patcher: ",
+        "translation": null,
+        "context": "latestCommitCard -> patcherLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.managerLabel",
+        "source_string": "Manager: ",
+        "translation": null,
+        "context": "latestCommitCard -> managerLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "latestCommitCard.updateButton",
+        "source_string": "Update Manager",
+        "translation": null,
+        "context": "latestCommitCard -> updateButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.widgetTitle",
+        "source_string": "Patcher",
+        "translation": null,
+        "context": "patcherView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.patchButton",
+        "source_string": "Patch",
+        "translation": null,
+        "context": "patcherView -> patchButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.armv7WarningDialogText",
+        "source_string": "Patching on ARMv7 devices is not yet supported and might fail. Continue anyways?",
+        "translation": null,
+        "context": "patcherView -> armv7WarningDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.removedPatchesWarningDialogText",
+        "source_string": "The following patches have been removed since the last time you used them.\n\n${patches}\n\nContinue anyways?",
+        "translation": null,
+        "context": "patcherView -> removedPatchesWarningDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patcherView.requiredOptionDialogText",
+        "source_string": "Some patch options have to be set.",
+        "translation": null,
+        "context": "patcherView -> requiredOptionDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.widgetTitle",
+        "source_string": "Select an app",
+        "translation": null,
+        "context": "appSelectorCard -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.widgetTitleSelected",
+        "source_string": "Selected app",
+        "translation": null,
+        "context": "appSelectorCard -> widgetTitleSelected",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.widgetSubtitle",
+        "source_string": "No app selected",
+        "translation": null,
+        "context": "appSelectorCard -> widgetSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.noAppsLabel",
+        "source_string": "No applications found",
+        "translation": null,
+        "context": "appSelectorCard -> noAppsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.currentVersion",
+        "source_string": "Current",
+        "translation": null,
+        "context": "appSelectorCard -> currentVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.suggestedVersion",
+        "source_string": "Suggested",
+        "translation": null,
+        "context": "appSelectorCard -> suggestedVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorCard.anyVersion",
+        "source_string": "Any version",
+        "translation": null,
+        "context": "appSelectorCard -> anyVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetTitle",
+        "source_string": "Select patches",
+        "translation": null,
+        "context": "patchSelectorCard -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetTitleSelected",
+        "source_string": "Selected patches",
+        "translation": null,
+        "context": "patchSelectorCard -> widgetTitleSelected",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetSubtitle",
+        "source_string": "Select an application first",
+        "translation": null,
+        "context": "patchSelectorCard -> widgetSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchSelectorCard.widgetEmptySubtitle",
+        "source_string": "No patches selected",
+        "translation": null,
+        "context": "patchSelectorCard -> widgetEmptySubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "socialMediaCard.widgetTitle",
+        "source_string": "Socials",
+        "translation": null,
+        "context": "socialMediaCard -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "socialMediaCard.widgetSubtitle",
+        "source_string": "We are online!",
+        "translation": null,
+        "context": "socialMediaCard -> widgetSubtitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.viewTitle",
+        "source_string": "Select an app",
+        "translation": null,
+        "context": "appSelectorView -> viewTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.searchBarHint",
+        "source_string": "Search app",
+        "translation": null,
+        "context": "appSelectorView -> searchBarHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.storageButton",
+        "source_string": "Storage",
+        "translation": null,
+        "context": "appSelectorView -> storageButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.selectFromStorageButton",
+        "source_string": "Select from storage",
+        "translation": null,
+        "context": "appSelectorView -> selectFromStorageButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.errorMessage",
+        "source_string": "Unable to use selected application",
+        "translation": null,
+        "context": "appSelectorView -> errorMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.downloadToast",
+        "source_string": "Download function is not available yet",
+        "translation": null,
+        "context": "appSelectorView -> downloadToast",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.requireSuggestedAppVersionDialogText",
+        "source_string": "The version of the app you have selected does not match the suggested version which can lead to unexpected issues. Please use the suggested version.\n\nSelected version: ${selected}\nSuggested version: ${suggested}\n\nTo continue anyway, disable \"Require suggested app version\" in the settings.",
+        "translation": null,
+        "context": "appSelectorView -> requireSuggestedAppVersionDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.featureNotAvailable",
+        "source_string": "Feature not implemented",
+        "translation": null,
+        "context": "appSelectorView -> featureNotAvailable",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appSelectorView.featureNotAvailableText",
+        "source_string": "This app is a split APK and can only be patched and installed reliably by mounting with root permissions. However, you can patch and install a full APK by selecting it from storage.",
+        "translation": null,
+        "context": "appSelectorView -> featureNotAvailableText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.viewTitle",
+        "source_string": "Select patches",
+        "translation": null,
+        "context": "patchesSelectorView -> viewTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.searchBarHint",
+        "source_string": "Search patches",
+        "translation": null,
+        "context": "patchesSelectorView -> searchBarHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.universalPatches",
+        "source_string": "Universal patches",
+        "translation": null,
+        "context": "patchesSelectorView -> universalPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.newPatches",
+        "source_string": "New patches",
+        "translation": null,
+        "context": "patchesSelectorView -> newPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.patches",
+        "source_string": "Patches",
+        "translation": null,
+        "context": "patchesSelectorView -> patches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.doneButton",
+        "source_string": "Done",
+        "translation": null,
+        "context": "patchesSelectorView -> doneButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.defaultChip",
+        "source_string": "Default",
+        "translation": null,
+        "context": "patchesSelectorView -> defaultChip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.defaultTooltip",
+        "source_string": "Select all default patches",
+        "translation": null,
+        "context": "patchesSelectorView -> defaultTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noneChip",
+        "source_string": "None",
+        "translation": null,
+        "context": "patchesSelectorView -> noneChip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noneTooltip",
+        "source_string": "Deselect all patches",
+        "translation": null,
+        "context": "patchesSelectorView -> noneTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.loadPatchesSelection",
+        "source_string": "Load patch selection",
+        "translation": null,
+        "context": "patchesSelectorView -> loadPatchesSelection",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noSavedPatches",
+        "source_string": "No saved patch selection for the selected app.\nPress Done to save the current selection.",
+        "translation": null,
+        "context": "patchesSelectorView -> noSavedPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.noPatchesFound",
+        "source_string": "No patches found for the selected app",
+        "translation": null,
+        "context": "patchesSelectorView -> noPatchesFound",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchesSelectorView.setRequiredOption",
+        "source_string": "Some patches require options to be set:\n\n${patches}\n\nPlease set them before continuing.",
+        "translation": null,
+        "context": "patchesSelectorView -> setRequiredOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.customValue",
+        "source_string": "Custom value",
+        "translation": null,
+        "context": "patchOptionsView -> customValue",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.resetOptionsTooltip",
+        "source_string": "Reset patch options",
+        "translation": null,
+        "context": "patchOptionsView -> resetOptionsTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.viewTitle",
+        "source_string": "Patch options",
+        "translation": null,
+        "context": "patchOptionsView -> viewTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.saveOptions",
+        "source_string": "Save",
+        "translation": null,
+        "context": "patchOptionsView -> saveOptions",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.addOptions",
+        "source_string": "Add options",
+        "translation": null,
+        "context": "patchOptionsView -> addOptions",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.deselectPatch",
+        "source_string": "Deselect patch",
+        "translation": null,
+        "context": "patchOptionsView -> deselectPatch",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.tooltip",
+        "source_string": "More input options",
+        "translation": null,
+        "context": "patchOptionsView -> tooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.selectFilePath",
+        "source_string": "Select file path",
+        "translation": null,
+        "context": "patchOptionsView -> selectFilePath",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.selectFolder",
+        "source_string": "Select folder",
+        "translation": null,
+        "context": "patchOptionsView -> selectFolder",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.selectOption",
+        "source_string": "Select option",
+        "translation": null,
+        "context": "patchOptionsView -> selectOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.requiredOption",
+        "source_string": "This option is required",
+        "translation": null,
+        "context": "patchOptionsView -> requiredOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.unsupportedOption",
+        "source_string": "This option is not supported",
+        "translation": null,
+        "context": "patchOptionsView -> unsupportedOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchOptionsView.requiredOptionNull",
+        "source_string": "The following options have to be set:\n\n${options}",
+        "translation": null,
+        "context": "patchOptionsView -> requiredOptionNull",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.unsupportedDialogText",
+        "source_string": "Selecting this patch may result in patching errors.\n\nApp version: ${packageVersion}\nSupported versions:\n${supportedVersions}",
+        "translation": null,
+        "context": "patchItem -> unsupportedDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.unsupportedPatchVersion",
+        "source_string": "Patch is not supported for this app version.",
+        "translation": null,
+        "context": "patchItem -> unsupportedPatchVersion",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.unsupportedRequiredOption",
+        "source_string": "This patch contains a required option that is not supported by this app",
+        "translation": null,
+        "context": "patchItem -> unsupportedRequiredOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.patchesChangeWarningDialogText",
+        "source_string": "It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou'll need to turn on \"Allow changing patch selection\" in the settings before changing any patch selection.",
+        "translation": null,
+        "context": "patchItem -> patchesChangeWarningDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "patchItem.patchesChangeWarningDialogButton",
+        "source_string": "Use default selection",
+        "translation": null,
+        "context": "patchItem -> patchesChangeWarningDialogButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.widgetTitle",
+        "source_string": "Installer",
+        "translation": null,
+        "context": "installerView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installType",
+        "source_string": "Select install type",
+        "translation": null,
+        "context": "installerView -> installType",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installTypeDescription",
+        "source_string": "Select the installation type to continue with.",
+        "translation": null,
+        "context": "installerView -> installTypeDescription",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installButton",
+        "source_string": "Install",
+        "translation": null,
+        "context": "installerView -> installButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installRootType",
+        "source_string": "Mount",
+        "translation": null,
+        "context": "installerView -> installRootType",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.installNonRootType",
+        "source_string": "Regular",
+        "translation": null,
+        "context": "installerView -> installNonRootType",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.warning",
+        "source_string": "Disable auto updates for the patched app to avoid unexpected issues.",
+        "translation": null,
+        "context": "installerView -> warning",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.pressBackAgain",
+        "source_string": "Press back again to cancel",
+        "translation": null,
+        "context": "installerView -> pressBackAgain",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.openButton",
+        "source_string": "Open",
+        "translation": null,
+        "context": "installerView -> openButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.shareButton",
+        "source_string": "Share file",
+        "translation": null,
+        "context": "installerView -> shareButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.notificationTitle",
+        "source_string": "ReVanced Manager is patching",
+        "translation": null,
+        "context": "installerView -> notificationTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.notificationText",
+        "source_string": "Tap to return to the installer",
+        "translation": null,
+        "context": "installerView -> notificationText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.exportApkButtonTooltip",
+        "source_string": "Export patched APK",
+        "translation": null,
+        "context": "installerView -> exportApkButtonTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.exportLogButtonTooltip",
+        "source_string": "Export log",
+        "translation": null,
+        "context": "installerView -> exportLogButtonTooltip",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.screenshotDetected",
+        "source_string": "A screenshot has been detected. If you are trying to share the log, please share a text copy instead.\n\nCopy log to clipboard?",
+        "translation": null,
+        "context": "installerView -> screenshotDetected",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.copiedToClipboard",
+        "source_string": "Copied log to clipboard",
+        "translation": null,
+        "context": "installerView -> copiedToClipboard",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installerView.noExit",
+        "source_string": "Installer is still running, cannot exit...",
+        "translation": null,
+        "context": "installerView -> noExit",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.widgetTitle",
+        "source_string": "Settings",
+        "translation": null,
+        "context": "settingsView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.appearanceSectionTitle",
+        "source_string": "Appearance",
+        "translation": null,
+        "context": "settingsView -> appearanceSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.teamSectionTitle",
+        "source_string": "Team",
+        "translation": null,
+        "context": "settingsView -> teamSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.debugSectionTitle",
+        "source_string": "Debugging",
+        "translation": null,
+        "context": "settingsView -> debugSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.advancedSectionTitle",
+        "source_string": "Advanced",
+        "translation": null,
+        "context": "settingsView -> advancedSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportSectionTitle",
+        "source_string": "Import & export",
+        "translation": null,
+        "context": "settingsView -> exportSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.dataSectionTitle",
+        "source_string": "Data sources",
+        "translation": null,
+        "context": "settingsView -> dataSectionTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.themeModeLabel",
+        "source_string": "App theme",
+        "translation": null,
+        "context": "settingsView -> themeModeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.systemThemeLabel",
+        "source_string": "System",
+        "translation": null,
+        "context": "settingsView -> systemThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.lightThemeLabel",
+        "source_string": "Light",
+        "translation": null,
+        "context": "settingsView -> lightThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.darkThemeLabel",
+        "source_string": "Dark",
+        "translation": null,
+        "context": "settingsView -> darkThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.dynamicThemeLabel",
+        "source_string": "Material You",
+        "translation": null,
+        "context": "settingsView -> dynamicThemeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.dynamicThemeHint",
+        "source_string": "Enjoy an experience closer to your device",
+        "translation": null,
+        "context": "settingsView -> dynamicThemeHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.languageLabel",
+        "source_string": "Language",
+        "translation": null,
+        "context": "settingsView -> languageLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.languageUpdated",
+        "source_string": "Language updated",
+        "translation": null,
+        "context": "settingsView -> languageUpdated",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.englishOption",
+        "source_string": "English",
+        "translation": null,
+        "context": "settingsView -> englishOption",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesLabel",
+        "source_string": "Alternative sources",
+        "translation": null,
+        "context": "settingsView -> sourcesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesLabelHint",
+        "source_string": "Configure the alternative sources for ReVanced Patches and ReVanced Integrations",
+        "translation": null,
+        "context": "settingsView -> sourcesLabelHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesIntegrationsLabel",
+        "source_string": "Integrations source",
+        "translation": null,
+        "context": "settingsView -> sourcesIntegrationsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.useAlternativeSources",
+        "source_string": "Use alternative sources",
+        "translation": null,
+        "context": "settingsView -> useAlternativeSources",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.useAlternativeSourcesHint",
+        "source_string": "Use alternative sources for ReVanced Patches and ReVanced Integrations instead of the API",
+        "translation": null,
+        "context": "settingsView -> useAlternativeSourcesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesResetDialogTitle",
+        "source_string": "Reset",
+        "translation": null,
+        "context": "settingsView -> sourcesResetDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesResetDialogText",
+        "source_string": "Are you sure you want to reset your sources to their default values?",
+        "translation": null,
+        "context": "settingsView -> sourcesResetDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.apiURLResetDialogText",
+        "source_string": "Are you sure you want to reset your API URL to its default value?",
+        "translation": null,
+        "context": "settingsView -> apiURLResetDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesUpdateNote",
+        "source_string": "Note: This will automatically download ReVanced Patches and ReVanced Integrations from the alternative sources.\n\nThis will connect you to the alternative source.",
+        "translation": null,
+        "context": "settingsView -> sourcesUpdateNote",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.apiURLLabel",
+        "source_string": "API URL",
+        "translation": null,
+        "context": "settingsView -> apiURLLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.apiURLHint",
+        "source_string": "Configure the API URL of ReVanced Manager",
+        "translation": null,
+        "context": "settingsView -> apiURLHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.selectApiURL",
+        "source_string": "API URL",
+        "translation": null,
+        "context": "settingsView -> selectApiURL",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.orgPatchesLabel",
+        "source_string": "Patches organization",
+        "translation": null,
+        "context": "settingsView -> orgPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.sourcesPatchesLabel",
+        "source_string": "Patches source",
+        "translation": null,
+        "context": "settingsView -> sourcesPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.orgIntegrationsLabel",
+        "source_string": "Integrations organization",
+        "translation": null,
+        "context": "settingsView -> orgIntegrationsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.contributorsLabel",
+        "source_string": "Contributors",
+        "translation": null,
+        "context": "settingsView -> contributorsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.contributorsHint",
+        "source_string": "A list of contributors of ReVanced",
+        "translation": null,
+        "context": "settingsView -> contributorsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.logsLabel",
+        "source_string": "Share logs",
+        "translation": null,
+        "context": "settingsView -> logsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.logsHint",
+        "source_string": "Share ReVanced Manager logs",
+        "translation": null,
+        "context": "settingsView -> logsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.enablePatchesSelectionLabel",
+        "source_string": "Allow changing patch selection",
+        "translation": null,
+        "context": "settingsView -> enablePatchesSelectionLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.enablePatchesSelectionHint",
+        "source_string": "Do not prevent selecting or deselecting patches",
+        "translation": null,
+        "context": "settingsView -> enablePatchesSelectionHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.enablePatchesSelectionWarningText",
+        "source_string": "Changing the selection of patches may cause unexpected issues.\n\nEnable anyways?",
+        "translation": null,
+        "context": "settingsView -> enablePatchesSelectionWarningText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.disablePatchesSelectionWarningText",
+        "source_string": "You are about to disable changing the selection of patches.\nThe default selection of patches will be restored.\n\nDisable anyways?",
+        "translation": null,
+        "context": "settingsView -> disablePatchesSelectionWarningText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.autoUpdatePatchesLabel",
+        "source_string": "Auto update patches",
+        "translation": null,
+        "context": "settingsView -> autoUpdatePatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.autoUpdatePatchesHint",
+        "source_string": "Automatically update patches to the latest version",
+        "translation": null,
+        "context": "settingsView -> autoUpdatePatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.showUpdateDialogLabel",
+        "source_string": "Show update dialog",
+        "translation": null,
+        "context": "settingsView -> showUpdateDialogLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.showUpdateDialogHint",
+        "source_string": "Show a dialog when a new update is available",
+        "translation": null,
+        "context": "settingsView -> showUpdateDialogHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.universalPatchesLabel",
+        "source_string": "Show universal patches",
+        "translation": null,
+        "context": "settingsView -> universalPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.universalPatchesHint",
+        "source_string": "Display all apps and universal patches (may slow down the app list)",
+        "translation": null,
+        "context": "settingsView -> universalPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.versionCompatibilityCheckLabel",
+        "source_string": "Version compatibility check",
+        "translation": null,
+        "context": "settingsView -> versionCompatibilityCheckLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.versionCompatibilityCheckHint",
+        "source_string": "Prevent selecting patches that are not compatible with the selected app version",
+        "translation": null,
+        "context": "settingsView -> versionCompatibilityCheckHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.requireSuggestedAppVersionLabel",
+        "source_string": "Require suggested app version",
+        "translation": null,
+        "context": "settingsView -> requireSuggestedAppVersionLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.requireSuggestedAppVersionHint",
+        "source_string": "Prevent selecting an app with a version that is not the suggested",
+        "translation": null,
+        "context": "settingsView -> requireSuggestedAppVersionHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.requireSuggestedAppVersionDialogText",
+        "source_string": "Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?",
+        "translation": null,
+        "context": "settingsView -> requireSuggestedAppVersionDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.aboutLabel",
+        "source_string": "About",
+        "translation": null,
+        "context": "settingsView -> aboutLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.snackbarMessage",
+        "source_string": "Copied to clipboard",
+        "translation": null,
+        "context": "settingsView -> snackbarMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.restartAppForChanges",
+        "source_string": "Restart the app to apply changes",
+        "translation": null,
+        "context": "settingsView -> restartAppForChanges",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteTempDirLabel",
+        "source_string": "Delete temporary files",
+        "translation": null,
+        "context": "settingsView -> deleteTempDirLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteTempDirHint",
+        "source_string": "Delete unused temporary files",
+        "translation": null,
+        "context": "settingsView -> deleteTempDirHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deletedTempDir",
+        "source_string": "Temporary files deleted",
+        "translation": null,
+        "context": "settingsView -> deletedTempDir",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportPatchesLabel",
+        "source_string": "Export patch selection",
+        "translation": null,
+        "context": "settingsView -> exportPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportPatchesHint",
+        "source_string": "Export patch selection to a JSON file",
+        "translation": null,
+        "context": "settingsView -> exportPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportedPatches",
+        "source_string": "Patch selection exported",
+        "translation": null,
+        "context": "settingsView -> exportedPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.noExportFileFound",
+        "source_string": "No patch selection to export",
+        "translation": null,
+        "context": "settingsView -> noExportFileFound",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importPatchesLabel",
+        "source_string": "Import patch selection",
+        "translation": null,
+        "context": "settingsView -> importPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importPatchesHint",
+        "source_string": "Import patch selection from a JSON file",
+        "translation": null,
+        "context": "settingsView -> importPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importedPatches",
+        "source_string": "Patch selection imported",
+        "translation": null,
+        "context": "settingsView -> importedPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesLabel",
+        "source_string": "Reset patch selection",
+        "translation": null,
+        "context": "settingsView -> resetStoredPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesHint",
+        "source_string": "Reset the stored patch selection",
+        "translation": null,
+        "context": "settingsView -> resetStoredPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesDialogTitle",
+        "source_string": "Reset patch selection?",
+        "translation": null,
+        "context": "settingsView -> resetStoredPatchesDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatchesDialogText",
+        "source_string": "The default selection of patches will be restored.",
+        "translation": null,
+        "context": "settingsView -> resetStoredPatchesDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredPatches",
+        "source_string": "Patch selection has been reset",
+        "translation": null,
+        "context": "settingsView -> resetStoredPatches",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsLabel",
+        "source_string": "Reset patch options",
+        "translation": null,
+        "context": "settingsView -> resetStoredOptionsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsHint",
+        "source_string": "Reset all patch options",
+        "translation": null,
+        "context": "settingsView -> resetStoredOptionsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsDialogTitle",
+        "source_string": "Reset patch options?",
+        "translation": null,
+        "context": "settingsView -> resetStoredOptionsDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptionsDialogText",
+        "source_string": "Resetting patch options will remove all saved options.",
+        "translation": null,
+        "context": "settingsView -> resetStoredOptionsDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.resetStoredOptions",
+        "source_string": "Options have been reset",
+        "translation": null,
+        "context": "settingsView -> resetStoredOptions",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteLogsLabel",
+        "source_string": "Clear logs",
+        "translation": null,
+        "context": "settingsView -> deleteLogsLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deleteLogsHint",
+        "source_string": "Delete collected ReVanced Manager logs",
+        "translation": null,
+        "context": "settingsView -> deleteLogsHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.deletedLogs",
+        "source_string": "Logs deleted",
+        "translation": null,
+        "context": "settingsView -> deletedLogs",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreLabel",
+        "source_string": "Regenerate keystore",
+        "translation": null,
+        "context": "settingsView -> regenerateKeystoreLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreHint",
+        "source_string": "Regenerate the keystore used to sign apps",
+        "translation": null,
+        "context": "settingsView -> regenerateKeystoreHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreDialogTitle",
+        "source_string": "Regenerate keystore?",
+        "translation": null,
+        "context": "settingsView -> regenerateKeystoreDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regenerateKeystoreDialogText",
+        "source_string": "Patched apps signed with the old keystore will no longer be able to be updated.",
+        "translation": null,
+        "context": "settingsView -> regenerateKeystoreDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.regeneratedKeystore",
+        "source_string": "Keystore regenerated",
+        "translation": null,
+        "context": "settingsView -> regeneratedKeystore",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportKeystoreLabel",
+        "source_string": "Export keystore",
+        "translation": null,
+        "context": "settingsView -> exportKeystoreLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportKeystoreHint",
+        "source_string": "Export the keystore used to sign apps",
+        "translation": null,
+        "context": "settingsView -> exportKeystoreHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.exportedKeystore",
+        "source_string": "Keystore exported",
+        "translation": null,
+        "context": "settingsView -> exportedKeystore",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.noKeystoreExportFileFound",
+        "source_string": "No keystore to export",
+        "translation": null,
+        "context": "settingsView -> noKeystoreExportFileFound",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importKeystoreLabel",
+        "source_string": "Import keystore",
+        "translation": null,
+        "context": "settingsView -> importKeystoreLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importKeystoreHint",
+        "source_string": "Import a keystore used to sign apps",
+        "translation": null,
+        "context": "settingsView -> importKeystoreHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.importedKeystore",
+        "source_string": "Keystore imported",
+        "translation": null,
+        "context": "settingsView -> importedKeystore",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.selectKeystorePassword",
+        "source_string": "Keystore password",
+        "translation": null,
+        "context": "settingsView -> selectKeystorePassword",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.selectKeystorePasswordHint",
+        "source_string": "Select keystore password used to sign apps",
+        "translation": null,
+        "context": "settingsView -> selectKeystorePasswordHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.jsonSelectorErrorMessage",
+        "source_string": "Unable to use selected JSON file",
+        "translation": null,
+        "context": "settingsView -> jsonSelectorErrorMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "settingsView.keystoreSelectorErrorMessage",
+        "source_string": "Unable to use selected keystore file",
+        "translation": null,
+        "context": "settingsView -> keystoreSelectorErrorMessage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.widgetTitle",
+        "source_string": "App info",
+        "translation": null,
+        "context": "appInfoView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.openButton",
+        "source_string": "Open",
+        "translation": null,
+        "context": "appInfoView -> openButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.uninstallButton",
+        "source_string": "Uninstall",
+        "translation": null,
+        "context": "appInfoView -> uninstallButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.unmountButton",
+        "source_string": "Unmount",
+        "translation": null,
+        "context": "appInfoView -> unmountButton",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.rootDialogTitle",
+        "source_string": "Error",
+        "translation": null,
+        "context": "appInfoView -> rootDialogTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.unmountDialogText",
+        "source_string": "Are you sure you want to unmount this app?",
+        "translation": null,
+        "context": "appInfoView -> unmountDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.uninstallDialogText",
+        "source_string": "Are you sure you want to uninstall this app?",
+        "translation": null,
+        "context": "appInfoView -> uninstallDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.rootDialogText",
+        "source_string": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
+        "translation": null,
+        "context": "appInfoView -> rootDialogText",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.packageNameLabel",
+        "source_string": "Package name",
+        "translation": null,
+        "context": "appInfoView -> packageNameLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.installTypeLabel",
+        "source_string": "Installation type",
+        "translation": null,
+        "context": "appInfoView -> installTypeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.mountTypeLabel",
+        "source_string": "Mount",
+        "translation": null,
+        "context": "appInfoView -> mountTypeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.regularTypeLabel",
+        "source_string": "Regular",
+        "translation": null,
+        "context": "appInfoView -> regularTypeLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.patchedDateLabel",
+        "source_string": "Patched date",
+        "translation": null,
+        "context": "appInfoView -> patchedDateLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.appliedPatchesLabel",
+        "source_string": "Applied patches",
+        "translation": null,
+        "context": "appInfoView -> appliedPatchesLabel",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.patchedDateHint",
+        "source_string": "${date} at ${time}",
+        "translation": null,
+        "context": "appInfoView -> patchedDateHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.appliedPatchesHint",
+        "source_string": "${quantity} applied patches",
+        "translation": null,
+        "context": "appInfoView -> appliedPatchesHint",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "appInfoView.updateNotImplemented",
+        "source_string": "This feature has not been implemented yet",
+        "translation": null,
+        "context": "appInfoView -> updateNotImplemented",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.widgetTitle",
+        "source_string": "Contributors",
+        "translation": null,
+        "context": "contributorsView -> widgetTitle",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.patcherContributors",
+        "source_string": "ReVanced Patcher",
+        "translation": null,
+        "context": "contributorsView -> patcherContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.patchesContributors",
+        "source_string": "ReVanced Patches",
+        "translation": null,
+        "context": "contributorsView -> patchesContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.integrationsContributors",
+        "source_string": "ReVanced Integrations",
+        "translation": null,
+        "context": "contributorsView -> integrationsContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.cliContributors",
+        "source_string": "ReVanced CLI",
+        "translation": null,
+        "context": "contributorsView -> cliContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "contributorsView.managerContributors",
+        "source_string": "ReVanced Manager",
+        "translation": null,
+        "context": "contributorsView -> managerContributors",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_version_mismatch",
+        "source_string": "Version mismatch",
+        "translation": null,
+        "context": "installErrorDialog -> mount_version_mismatch",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_no_root",
+        "source_string": "No root access",
+        "translation": null,
+        "context": "installErrorDialog -> mount_no_root",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_missing_installation",
+        "source_string": "Installation not found",
+        "translation": null,
+        "context": "installErrorDialog -> mount_missing_installation",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_blocked",
+        "source_string": "Installation blocked",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_blocked",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_verification_failure",
+        "source_string": "Verification failed",
+        "translation": null,
+        "context": "installErrorDialog -> install_failed_verification_failure",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_invalid",
+        "source_string": "Installation invalid",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_invalid",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_version_downgrade",
+        "source_string": "Can't downgrade",
+        "translation": null,
+        "context": "installErrorDialog -> install_failed_version_downgrade",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_conflict",
+        "source_string": "Installation conflict",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_conflict",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_storage",
+        "source_string": "Installation storage issue",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_storage",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_incompatible",
+        "source_string": "Installation incompatible",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_incompatible",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_timeout",
+        "source_string": "Installation timeout",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_timeout",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_unknown",
+        "source_string": "Installation failed",
+        "translation": null,
+        "context": "installErrorDialog -> status_unknown",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_version_mismatch_description",
+        "source_string": "The installation failed due to the installed app being a different version than the patched app.\n\nInstall the version of the app you are mounting and try again.",
+        "translation": null,
+        "context": "installErrorDialog -> mount_version_mismatch_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_no_root_description",
+        "source_string": "The installation failed due to root access not being granted.\n\nGrant root access to ReVanced Manager and try again.",
+        "translation": null,
+        "context": "installErrorDialog -> mount_no_root_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.mount_missing_installation_description",
+        "source_string": "The installation failed due to the unpatched app not being installed on this device in order to mount over it.\n\nInstall the unpatched app before mounting and try again.",
+        "translation": null,
+        "context": "installErrorDialog -> mount_missing_installation_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_timeout_description",
+        "source_string": "The installation took too long to finish.\n\nWould you like to try again?",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_timeout_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_storage_description",
+        "source_string": "The installation failed due to insufficient storage.\n\nFree up some space and try again.",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_storage_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_invalid_description",
+        "source_string": "The installation failed due to the patched app being invalid.\n\nUninstall the app and try again?",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_invalid_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_incompatible_description",
+        "source_string": "The app is incompatible with this device.\n\nContact the developer of the app and ask for support.",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_incompatible_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_conflict_description",
+        "source_string": "The installation was prevented by an existing installation of the app.\n\nUninstall the installed app and try again?",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_conflict_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_failure_blocked_description",
+        "source_string": "The installation was blocked by ${packageName}.\n\nAdjust your security settings and try again.",
+        "translation": null,
+        "context": "installErrorDialog -> status_failure_blocked_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_verification_failure_description",
+        "source_string": "The installation failed due to a verification issue.\n\nAdjust your security settings and try again.",
+        "translation": null,
+        "context": "installErrorDialog -> install_failed_verification_failure_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.install_failed_version_downgrade_description",
+        "source_string": "The installation failed due to the patched app being a lower version than the installed app.\n\nUninstall the app and try again?",
+        "translation": null,
+        "context": "installErrorDialog -> install_failed_version_downgrade_description",
+        "labels": null,
+        "max_length": null
+    },
+    {
+        "identifier": "installErrorDialog.status_unknown_description",
+        "source_string": "The installation failed due to an unknown reason. Please try again.",
+        "translation": null,
+        "context": "installErrorDialog -> status_unknown_description",
+        "labels": null,
+        "max_length": null
+    }
+]
