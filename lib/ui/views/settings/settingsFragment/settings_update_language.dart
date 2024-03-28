@@ -63,9 +63,11 @@ class SUpdateLanguage extends BaseViewModel {
               child: ListBody(
                 children: [
                   RadioListTile(
+                    // TODO(Someone): There must've been a better way to do this.
                     title: Text(currentlyUsedLanguage.englishName),
                     subtitle: Text(
-                        '${currentlyUsedLanguage.nativeName} (${LocaleSettings.currentLocale.languageCode}${LocaleSettings.currentLocale.countryCode != null ? '-${LocaleSettings.currentLocale.countryCode}' : ''})'),
+                      '${currentlyUsedLanguage.nativeName} (${LocaleSettings.currentLocale.languageCode}${LocaleSettings.currentLocale.countryCode != null ? '-${LocaleSettings.currentLocale.countryCode}' : ''})',
+                    ),
                     value:
                         '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}' ==
                             selectedLanguageCode.value,
@@ -110,6 +112,7 @@ class SUpdateLanguage extends BaseViewModel {
           ),
           TextButton(
             onPressed: () {
+              // TODO(nullcube): Translation will not update until we refresh the page.
               updateLocale(selectedLanguageCode.value);
               Navigator.of(context).pop();
             },
