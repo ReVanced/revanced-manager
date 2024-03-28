@@ -1,23 +1,18 @@
 package app.revanced.manager.patcher.runtime
 
 import android.content.Context
-import app.revanced.manager.data.platform.Filesystem
-import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.ProgressEventHandler
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
-import kotlinx.coroutines.flow.first
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 
-class LocalRuntime(private val context: Context) : Runtime(context), KoinComponent {
-    private val fs: Filesystem by inject()
-    private val patchBundlesRepo: PatchBundleRepository by inject()
-
+/**
+ * Simple [Runtime] implementation that runs the patcher using coroutines.
+ */
+class CoroutineRuntime(private val context: Context) : Runtime(context) {
     override suspend fun execute(
         inputFile: String,
         outputFile: String,
@@ -25,11 +20,10 @@ class LocalRuntime(private val context: Context) : Runtime(context), KoinCompone
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        enableMultithreadedDexWriter: Boolean,
         onPatchCompleted: () -> Unit,
         onProgress: ProgressEventHandler,
     ) {
-        val bundles = patchBundlesRepo.bundles.first()
+        val bundles = bundles()
 
         val selectedBundles = selectedPatches.keys
         val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
@@ -56,10 +50,10 @@ class LocalRuntime(private val context: Context) : Runtime(context), KoinCompone
         onProgress(null, State.COMPLETED, null) // Loading patches
 
         Session(
-            fs.tempDir.absolutePath,
+            cacheDir,
             frameworkPath,
             aaptPath,
-            enableMultithreadedDexWriter,
+            enableMultithreadedDexWriter(),
             context,
             logger,
             File(inputFile),

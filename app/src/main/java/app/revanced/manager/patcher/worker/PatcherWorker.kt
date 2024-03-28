@@ -26,8 +26,8 @@ import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.runtime.LocalRuntime
-import app.revanced.manager.patcher.runtime.process.ProcessRuntime
+import app.revanced.manager.patcher.runtime.CoroutineRuntime
+import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
@@ -160,7 +160,7 @@ class PatcherWorker(
             val runtime = if (prefs.useProcessRuntime.get()) {
                 ProcessRuntime(applicationContext)
             } else {
-                LocalRuntime(applicationContext)
+                CoroutineRuntime(applicationContext)
             }
 
             runtime.execute(
@@ -170,7 +170,6 @@ class PatcherWorker(
                 args.selectedPatches,
                 args.options,
                 args.logger,
-                prefs.multithreadingDexFileWriter.get(),
                 onPatchCompleted = {
                     args.patchesProgress.update { (completed, total) ->
                         completed + 1 to total

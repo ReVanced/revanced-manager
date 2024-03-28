@@ -6,12 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import app.revanced.manager.BuildConfig
-import app.revanced.manager.IPatcherEvents
-import app.revanced.manager.IPatcherRunner
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.patch.PatchBundle
+import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.ui.model.State
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +19,10 @@ import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
 
-class PatcherRunner(private val context: Context) : IPatcherRunner.Stub() {
+/**
+ * The main class that runs inside the runner process launched by [ProcessRuntime].
+ */
+class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
     private var eventBinder: IPatcherEvents? = null
 
     private val scope =
@@ -34,7 +36,7 @@ class PatcherRunner(private val context: Context) : IPatcherRunner.Stub() {
                 }
             }
 
-            println(throwable.stackTraceToString())
+            throwable.printStackTrace()
             exitProcess(1)
         })
 
@@ -106,14 +108,14 @@ class PatcherRunner(private val context: Context) : IPatcherRunner.Stub() {
             val systemContext = ActivityThread.systemMain().systemContext as Context
             val appContext = systemContext.createPackageContext(managerPackageName, 0)
 
-            val binder = PatcherRunner(appContext)
+            val ipcInterface = PatcherProcess(appContext)
 
             appContext.sendBroadcast(Intent().apply {
                 action = ProcessRuntime.CONNECT_TO_APP_ACTION
                 `package` = managerPackageName
 
                 putExtra(ProcessRuntime.INTENT_BUNDLE_KEY, Bundle().apply {
-                    putBinder(ProcessRuntime.BUNDLE_BINDER_KEY, binder.asBinder())
+                    putBinder(ProcessRuntime.BUNDLE_BINDER_KEY, ipcInterface.asBinder())
                 })
             })
 

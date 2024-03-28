@@ -1,7 +1,7 @@
 // IPatcherEvents.aidl
-package app.revanced.manager;
+package app.revanced.manager.patcher.runtime.process;
 
-// Interface used to send events backs to the main app process.
+// Interface for sending events back to the main app process.
 oneway interface IPatcherEvents {
     void log(String level, String msg);
     void patchSucceeded();

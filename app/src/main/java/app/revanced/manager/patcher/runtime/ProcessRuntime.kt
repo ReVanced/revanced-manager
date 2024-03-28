@@ -1,4 +1,4 @@
-package app.revanced.manager.patcher.runtime.process
+package app.revanced.manager.patcher.runtime
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,14 +7,13 @@ import android.content.IntentFilter
 import android.util.Log
 import androidx.core.content.ContextCompat
 import app.revanced.manager.BuildConfig
-import app.revanced.manager.IPatcherEvents
-import app.revanced.manager.IPatcherRunner
-import app.revanced.manager.data.platform.Filesystem
-import app.revanced.manager.domain.manager.PreferencesManager
-import app.revanced.manager.domain.repository.PatchBundleRepository
+import app.revanced.manager.patcher.runtime.process.IPatcherEvents
+import app.revanced.manager.patcher.runtime.process.IPatcherProcess
 import app.revanced.manager.patcher.LibraryResolver
 import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.runtime.Runtime
+import app.revanced.manager.patcher.runtime.process.Parameters
+import app.revanced.manager.patcher.runtime.process.PatchConfiguration
+import app.revanced.manager.patcher.runtime.process.PatcherProcess
 import app.revanced.manager.patcher.worker.ProgressEventHandler
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
@@ -26,26 +25,24 @@ import com.github.pgreze.process.process
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
-import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class ProcessRuntime(private val context: Context) : Runtime(context), KoinComponent {
-    private val fs: Filesystem by inject()
+/**
+ * Runs the patcher in another process by using the app_process binary and IPC.
+ */
+class ProcessRuntime(private val context: Context) : Runtime(context) {
     private val pm: PM by inject()
-    private val patchBundlesRepo: PatchBundleRepository by inject()
-    private val prefs: PreferencesManager by inject()
 
-    private suspend fun awaitBinderConnection(): IPatcherRunner {
-        val binderFuture = CompletableDeferred<IPatcherRunner>()
+    private suspend fun awaitBinderConnection(): IPatcherProcess {
+        val binderFuture = CompletableDeferred<IPatcherProcess>()
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val binder =
                     intent.getBundleExtra(INTENT_BUNDLE_KEY)?.getBinder(BUNDLE_BINDER_KEY)!!
 
-                binderFuture.complete(IPatcherRunner.Stub.asInterface(binder))
+                binderFuture.complete(IPatcherProcess.Stub.asInterface(binder))
             }
         }
 
@@ -69,7 +66,6 @@ class ProcessRuntime(private val context: Context) : Runtime(context), KoinCompo
         selectedPatches: PatchSelection,
         options: Options,
         logger: Logger,
-        enableMultithreadedDexWriter: Boolean,
         onPatchCompleted: () -> Unit,
         onProgress: ProgressEventHandler,
     ) = coroutineScope {
@@ -96,10 +92,10 @@ class ProcessRuntime(private val context: Context) : Runtime(context), KoinCompo
         launch(Dispatchers.IO) {
             val result = process(
                 APP_PROCESS_BIN_PATH,
-                "-Djava.io.tmpdir=${fs.tempDir}", // The process will use /tmp if this isn't set, which is a problem because that folder is not accessible on Android.
+                "-Djava.io.tmpdir=$cacheDir", // The process will use /tmp if this isn't set, which is a problem because that folder is not accessible on Android.
                 "/", // The unused cmd-dir parameter
                 "--nice-name=${context.packageName}:Patcher",
-                PatcherRunner::class.java.name, // The class with the main function.
+                PatcherProcess::class.java.name, // The class with the main function.
                 context.packageName,
                 env = env,
                 stdout = Redirect.CAPTURE,
@@ -143,16 +139,16 @@ class ProcessRuntime(private val context: Context) : Runtime(context), KoinCompo
                 }
             }
 
-            val bundles = patchBundlesRepo.bundles.first()
+            val bundles = bundles()
 
             val parameters = Parameters(
                 aaptPath = aaptPath,
                 frameworkDir = frameworkPath,
-                cacheDir = fs.tempDir.absolutePath,
+                cacheDir = cacheDir,
                 packageName = packageName,
                 inputFile = inputFile,
                 outputFile = outputFile,
-                enableMultithrededDexWriter = enableMultithreadedDexWriter,
+                enableMultithrededDexWriter = enableMultithreadedDexWriter(),
                 configurations = selectedPatches.map { (id, patches) ->
                     val bundle = bundles[id]!!
 
