@@ -445,8 +445,11 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                   value: '',
                   child: Text(
                     t.patchOptionsView.customValue,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSecondaryContainer,
                     ),
                   ),
                 ),
