@@ -323,9 +323,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "560d21c4148b53933313573e7eafca0b0eb9aadf"
-      resolved-ref: "560d21c4148b53933313573e7eafca0b0eb9aadf"
-      url: "https://github.com/BenjaminHalko/flutter_background"
+      ref: "65cf0ec93486b3a6c74339aadaeb384cf2c9a24b"
+      resolved-ref: "65cf0ec93486b3a6c74339aadaeb384cf2c9a24b"
+      url: "https://github.com/JulianAssmann/flutter_background"
     source: git
     version: "1.2.0"
   flutter_cache_manager:
