@@ -271,12 +271,7 @@
     "updateNotImplemented": "Αυτή η δυνατότητα δεν είναι ακόμα διαθέσιμη"
   },
   "contributorsView": {
-    "widgetTitle": "Συνεισφέροντες",
-    "patcherContributors": "Τροποποιητής ReVanced",
-    "patchesContributors": "Τροποποιήσεις ReVanced",
-    "integrationsContributors": "Ενσωματώσεις ReVanced",
-    "cliContributors": "Τερματικό ReVanced",
-    "managerContributors": "Διαχειριστής ReVanced"
+    "widgetTitle": "Συνεισφέροντες"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Ασυμφωνία έκδοσης",

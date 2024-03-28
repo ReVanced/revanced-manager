@@ -271,12 +271,7 @@
     "updateNotImplemented": "এই ফিচারটি এখনো কার্যকর করা হয়নি"
   },
   "contributorsView": {
-    "widgetTitle": "অবদানকারীগণ",
-    "patcherContributors": "ReVanced প্যাচার",
-    "patchesContributors": "ReVanced প্যাচসমূহ",
-    "integrationsContributors": "ReVanced ইন্ট্রিগ্রেশন",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "অবদানকারীগণ"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "সংস্করণ মেলেনি",

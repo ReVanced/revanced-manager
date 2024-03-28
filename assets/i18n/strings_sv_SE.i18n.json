@@ -271,12 +271,7 @@
     "updateNotImplemented": "Denna funktionen har inte lagts till ännu"
   },
   "contributorsView": {
-    "widgetTitle": "Bidragsgivare",
-    "patcherContributors": "Revanced-patcher",
-    "patchesContributors": "Revanced-patchar",
-    "integrationsContributors": "ReVanced-integrationer",
-    "cliContributors": "ReVanced-CLI",
-    "managerContributors": "ReVanced-hanterare"
+    "widgetTitle": "Bidragsgivare"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionerna stämmer inte överens",

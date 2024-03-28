@@ -271,12 +271,7 @@
     "updateNotImplemented": "Este recurso ainda não foi implementado"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Modificador ReVanced",
-    "patchesContributors": "Modificações ReVanced",
-    "integrationsContributors": "Integrações ReVanced",
-    "cliContributors": "Cliente ReVanced",
-    "managerContributors": "Gestor ReVanced"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versão incompatível",

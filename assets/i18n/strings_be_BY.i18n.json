@@ -271,12 +271,7 @@
     "updateNotImplemented": "Пакуль яшчэ гэта функцыя не рэалізавана"
   },
   "contributorsView": {
-    "widgetTitle": "Удзельнікі",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "Выпраўленні ReVanced",
-    "integrationsContributors": "Інтэграцыі ReVanced",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Удзельнікі"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Неадпаведнасць версій",

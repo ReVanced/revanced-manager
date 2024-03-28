@@ -271,12 +271,7 @@
     "updateNotImplemented": "Cette fonctionnalité n'est pas encore disponible"
   },
   "contributorsView": {
-    "widgetTitle": "Contributeurs",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Contributeurs"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Incompatibilité de version",

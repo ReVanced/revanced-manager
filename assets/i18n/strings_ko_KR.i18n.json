@@ -271,12 +271,7 @@
     "updateNotImplemented": "이 기능은 아직 구현되지 않았습니다."
   },
   "contributorsView": {
-    "widgetTitle": "도움을 주신 분들",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "도움을 주신 분들"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "버전 불일치",

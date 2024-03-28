@@ -271,12 +271,7 @@
     "updateNotImplemented": "Această funcție nu a fost încă implementată"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuitori",
-    "patcherContributors": "Patcher ReVanced",
-    "patchesContributors": "Patch-uri ReVanced",
-    "integrationsContributors": "Integrări ReVanced",
-    "cliContributors": "CLI ReVanced",
-    "managerContributors": "Manager ReVanced"
+    "widgetTitle": "Contribuitori"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiune nepotrivită",

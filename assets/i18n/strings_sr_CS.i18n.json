@@ -271,12 +271,7 @@
     "updateNotImplemented": "Ova funkcija još uvek nije implementirana"
   },
   "contributorsView": {
-    "widgetTitle": "Saradnici",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced pečevi",
-    "integrationsContributors": "ReVanced integracije",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Saradnici"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verzija se ne poklapa",

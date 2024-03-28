@@ -271,12 +271,7 @@
     "updateNotImplemented": "Esta función no se implementó aún"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "La versión no coincide",

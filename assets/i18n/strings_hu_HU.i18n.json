@@ -271,12 +271,7 @@
     "updateNotImplemented": "Ez a funkció még nem készült el"
   },
   "contributorsView": {
-    "widgetTitle": "Közreműködők",
-    "patcherContributors": "ReVanced Patchelő",
-    "patchesContributors": "ReVanced Patchek",
-    "integrationsContributors": "ReVanced Integrációk",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Közreműködők"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verzió ütközés",

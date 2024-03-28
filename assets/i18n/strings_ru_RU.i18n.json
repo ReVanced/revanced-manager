@@ -271,12 +271,7 @@
     "updateNotImplemented": "Эта возможность ещё не реализована"
   },
   "contributorsView": {
-    "widgetTitle": "Соучастники проекта",
-    "patcherContributors": "ReVanced патчер",
-    "patchesContributors": "ReVanced патчи",
-    "integrationsContributors": "Интеграции ReVanced",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Менеджер"
+    "widgetTitle": "Соучастники проекта"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Несовпадение версий",
