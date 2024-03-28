@@ -258,7 +258,7 @@ class AppSelectorViewModel extends BaseViewModel {
     try {
       final String? result = await FlutterFileDialog.pickFile(
         params: const OpenFileDialogParams(
-          fileExtensionsFilter: ['apk'],
+          mimeTypesFilter: ['application/vnd.android.package-archive'],
         ),
       );
       if (result != null) {
