@@ -27,6 +27,7 @@ class SManageSources extends BaseViewModel {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         title: Row(
           children: <Widget>[
             Expanded(
@@ -39,75 +40,73 @@ class SManageSources extends BaseViewModel {
             ),
           ],
         ),
-        content: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              TextField(
-                controller: _orgPatSourceController,
-                autocorrect: false,
-                onChanged: (value) => notifyListeners(),
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.extension_outlined,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  border: const OutlineInputBorder(),
-                  labelText: t.settingsView.orgPatchesLabel,
-                  hintText: patchesRepo.split('/')[0],
+        content: Column(
+          children: <Widget>[
+            TextField(
+              controller: _orgPatSourceController,
+              autocorrect: false,
+              onChanged: (value) => notifyListeners(),
+              decoration: InputDecoration(
+                icon: Icon(
+                  Icons.extension_outlined,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
+                border: const OutlineInputBorder(),
+                labelText: t.settingsView.orgPatchesLabel,
+                hintText: patchesRepo.split('/')[0],
               ),
-              const SizedBox(height: 8),
-              // Patches repository's name
-              TextField(
-                controller: _patSourceController,
-                autocorrect: false,
-                onChanged: (value) => notifyListeners(),
-                decoration: InputDecoration(
-                  icon: const Icon(
-                    Icons.extension_outlined,
-                    color: Colors.transparent,
-                  ),
-                  border: const OutlineInputBorder(),
-                  labelText: t.settingsView.sourcesPatchesLabel,
-                  hintText: patchesRepo.split('/')[1],
+            ),
+            const SizedBox(height: 8),
+            // Patches repository's name
+            TextField(
+              controller: _patSourceController,
+              autocorrect: false,
+              onChanged: (value) => notifyListeners(),
+              decoration: InputDecoration(
+                icon: const Icon(
+                  Icons.extension_outlined,
+                  color: Colors.transparent,
                 ),
+                border: const OutlineInputBorder(),
+                labelText: t.settingsView.sourcesPatchesLabel,
+                hintText: patchesRepo.split('/')[1],
               ),
-              const SizedBox(height: 8),
-              // Integrations owner's name
-              TextField(
-                controller: _orgIntSourceController,
-                autocorrect: false,
-                onChanged: (value) => notifyListeners(),
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.merge_outlined,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  border: const OutlineInputBorder(),
-                  labelText: t.settingsView.orgIntegrationsLabel,
-                  hintText: integrationsRepo.split('/')[0],
+            ),
+            const SizedBox(height: 8),
+            // Integrations owner's name
+            TextField(
+              controller: _orgIntSourceController,
+              autocorrect: false,
+              onChanged: (value) => notifyListeners(),
+              decoration: InputDecoration(
+                icon: Icon(
+                  Icons.merge_outlined,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
+                border: const OutlineInputBorder(),
+                labelText: t.settingsView.orgIntegrationsLabel,
+                hintText: integrationsRepo.split('/')[0],
               ),
-              const SizedBox(height: 8),
-              // Integrations repository's name
-              TextField(
-                controller: _intSourceController,
-                autocorrect: false,
-                onChanged: (value) => notifyListeners(),
-                decoration: InputDecoration(
-                  icon: const Icon(
-                    Icons.merge_outlined,
-                    color: Colors.transparent,
-                  ),
-                  border: const OutlineInputBorder(),
-                  labelText: t.settingsView.sourcesIntegrationsLabel,
-                  hintText: integrationsRepo.split('/')[1],
+            ),
+            const SizedBox(height: 8),
+            // Integrations repository's name
+            TextField(
+              controller: _intSourceController,
+              autocorrect: false,
+              onChanged: (value) => notifyListeners(),
+              decoration: InputDecoration(
+                icon: const Icon(
+                  Icons.merge_outlined,
+                  color: Colors.transparent,
                 ),
+                border: const OutlineInputBorder(),
+                labelText: t.settingsView.sourcesIntegrationsLabel,
+                hintText: integrationsRepo.split('/')[1],
               ),
-              const SizedBox(height: 20),
-              Text(t.settingsView.sourcesUpdateNote),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            Text(t.settingsView.sourcesUpdateNote),
+          ],
         ),
         actions: <Widget>[
           TextButton(
