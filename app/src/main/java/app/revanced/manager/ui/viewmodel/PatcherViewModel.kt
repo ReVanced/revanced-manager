@@ -75,8 +75,17 @@ class PatcherViewModel(
     private var inputFile: File? = null
     private val outputFile = tempDir.resolve("output.apk")
 
-    private val workManager = WorkManager.getInstance(app)
-    private val logger = ManagerLogger()
+    private val logs = mutableListOf<Pair<LogLevel, String>>()
+    private val logger = object : Logger() {
+        override fun log(level: LogLevel, message: String) {
+            level.androidLog(message)
+            if (level == LogLevel.TRACE) return
+
+            viewModelScope.launch {
+                logs.add(level to message)
+            }
+        }
+    }
 
     val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
     private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
@@ -86,6 +95,8 @@ class PatcherViewModel(
         downloadProgress
     ).toMutableStateList()
     private var currentStepIndex = 0
+
+    private val workManager = WorkManager.getInstance(app)
 
     private val patcherWorkerId: UUID =
         workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
@@ -99,18 +110,21 @@ class PatcherViewModel(
                 patchesProgress,
                 setInputFile = { inputFile = it },
                 onProgress = { name, state, message ->
-                    steps[currentStepIndex] = steps[currentStepIndex].run {
-                        copy(
-                            name = name ?: this.name,
-                            state = state ?: this.state,
-                            message = message ?: this.message
-                        )
-                    }
+                    viewModelScope.launch {
+                        steps[currentStepIndex] = steps[currentStepIndex].run {
+                            copy(
+                                name = name ?: this.name,
+                                state = state ?: this.state,
+                                message = message ?: this.message
+                            )
+                        }
 
-                    if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
-                        currentStepIndex++
+                        if (state == State.COMPLETED && currentStepIndex != steps.lastIndex) {
+                            currentStepIndex++
 
-                        steps[currentStepIndex] = steps[currentStepIndex].copy(state = State.RUNNING)
+                            steps[currentStepIndex] =
+                                steps[currentStepIndex].copy(state = State.RUNNING)
+                        }
                     }
                 }
             )
@@ -205,7 +219,10 @@ class PatcherViewModel(
     fun exportLogs(context: Context) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, logger.export())
+            putExtra(
+                Intent.EXTRA_TEXT,
+                logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
+            )
             type = "text/plain"
         }
 
@@ -256,7 +273,8 @@ class PatcherViewModel(
                         app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
                         try {
                             rootInstaller.uninstall(packageName)
-                        } catch (_: Exception) {  }
+                        } catch (_: Exception) {
+                        }
                     }
                 }
             }
@@ -266,6 +284,15 @@ class PatcherViewModel(
     }
 
     companion object {
+        private const val TAG = "ReVanced Patcher"
+
+        fun LogLevel.androidLog(msg: String) = when (this) {
+            LogLevel.TRACE -> Log.v(TAG, msg)
+            LogLevel.INFO -> Log.i(TAG, msg)
+            LogLevel.WARN -> Log.w(TAG, msg)
+            LogLevel.ERROR -> Log.e(TAG, msg)
+        }
+
         fun generateSteps(
             context: Context,
             selectedApp: SelectedApp,
@@ -279,7 +306,6 @@ class PatcherViewModel(
                     StepCategory.PREPARING,
                     state = State.RUNNING,
                     downloadProgress = downloadProgress,
-
                 ).takeIf { needsDownload },
                 Step(
                     context.getString(R.string.patcher_step_load_patches),
@@ -303,29 +329,6 @@ class PatcherViewModel(
                 Step(context.getString(R.string.patcher_step_write_patched), StepCategory.SAVING),
                 Step(context.getString(R.string.patcher_step_sign_apk), StepCategory.SAVING)
             )
-        }
-    }
-
-    private class ManagerLogger : Logger() {
-        private val logs = mutableListOf<Pair<LogLevel, String>>()
-        override fun log(level: LogLevel, message: String) {
-            level.androidLog(message)
-            if (level == LogLevel.TRACE) return
-            logs.add(level to message)
-        }
-
-        fun export() =
-            logs.asSequence().map { (level, msg) -> "[${level.name}]: $msg" }.joinToString("\n")
-
-        private companion object {
-            const val TAG = "ReVanced Patcher"
-
-            fun LogLevel.androidLog(msg: String) = when(this) {
-                LogLevel.TRACE -> Log.v(TAG, msg)
-                LogLevel.INFO -> Log.i(TAG, msg)
-                LogLevel.WARN -> Log.w(TAG, msg)
-                LogLevel.ERROR -> Log.e(TAG, msg)
-            }
         }
     }
 }

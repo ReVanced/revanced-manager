@@ -74,7 +74,7 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
 
         val limit = "${prefs.patcherProcessMemoryLimit.get()}M"
         val propOverride = resolvePropOverride(context)?.absolutePath
-            ?: throw Exception("Couldn't find prop spoof library")
+            ?: throw Exception("Couldn't find prop override library")
 
         val env =
             System.getenv().toMutableMap().apply {
