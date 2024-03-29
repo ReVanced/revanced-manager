@@ -9,6 +9,7 @@ on:
       - assets/i18n/*.json
       - assets/i18n/*.dart
       - .github/workflows/sync_crowdin.yml
+      - crowdin.yml
 
 jobs:
   sync:
