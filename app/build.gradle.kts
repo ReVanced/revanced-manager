@@ -24,11 +24,6 @@ android {
             "en",
         ))
         vectorDrawables.useSupportLibrary = true
-        externalNativeBuild {
-            cmake {
-                cppFlags += ""
-            }
-        }
     }
 
     buildTypes {
