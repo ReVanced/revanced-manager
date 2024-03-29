@@ -31,6 +31,8 @@ skrapeit = "1.2.2"
 libsu = "5.2.1"
 scrollbars = "1.0.4"
 compose-icons = "1.2.4"
+kotlin-process = "1.4.1"
+hidden-api-stub = "4.3.3"
 
 [libraries]
 # AndroidX Core
@@ -101,6 +103,12 @@ markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-ren
 
 # Fading Edges
 fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version.ref = "fading-edges"}
+
+# Native processes
+kotlin-process = { group = "com.github.pgreze", name = "kotlin-process", version.ref = "kotlin-process" }
+
+# HiddenAPI
+hidden-api-stub = { group = "dev.rikka.hidden", name = "stub", version.ref = "hidden-api-stub" }
 
 # LibSU
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }

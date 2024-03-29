@@ -85,7 +85,7 @@ private fun StringOptionDialog(
                 value = fieldValue,
                 onValueChange = { fieldValue = it },
                 placeholder = {
-                    Text(stringResource(R.string.string_option_placeholder))
+                    Text(stringResource(R.string.dialog_input_placeholder))
                 },
                 trailingIcon = {
                     var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
@@ -184,7 +184,7 @@ private val optionImplementations = mapOf<String, OptionImpl>(
             IconButton(onClick = ::showInputDialog) {
                 Icon(
                     Icons.Outlined.Edit,
-                    contentDescription = stringResource(R.string.string_option_icon_description)
+                    contentDescription = stringResource(R.string.edit)
                 )
             }
         }
