@@ -26,6 +26,10 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
+# This required for the process runtime.
+-keep class app.revanced.manager.patcher.runtime.process.* {
+  *;
+}
 # Required for the patcher to function correctly
 -keep class app.revanced.patcher.** {
   *;
@@ -45,6 +49,7 @@
 -keep class com.android.** {
   *;
 }
+-dontwarn com.google.auto.value.**
 -dontwarn java.awt.**
 -dontwarn javax.**
 -dontwarn org.slf4j.**

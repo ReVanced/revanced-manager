@@ -35,6 +35,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.settings.BooleanItem
+import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import org.koin.androidx.compose.getViewModel
@@ -86,6 +87,18 @@ fun AdvancedSettingsScreen(
             )
 
             GroupHeader(stringResource(R.string.patcher))
+            BooleanItem(
+                preference = vm.prefs.useProcessRuntime,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime,
+                description = R.string.process_runtime_description,
+            )
+            IntegerItem(
+                preference = vm.prefs.patcherProcessMemoryLimit,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime_memory_limit,
+                description = R.string.process_runtime_memory_limit_description,
+            )
             BooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
