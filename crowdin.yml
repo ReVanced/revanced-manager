@@ -1,8 +1,9 @@
-project_id_env: "CROWDIN_PROJECT_ID"
-api_token_env: "CROWDIN_PERSONAL_TOKEN"
+project_id_env: CROWDIN_PROJECT_ID
+api_token_env: CROWDIN_PERSONAL_TOKEN
+--preserve-hierarchy: false
 
-preserve_hierarchy: true
 files:
     - source: /assets/i18n/strings.i18n.json
       translation: /assets/i18n/strings_%locale_with_underscore%.i18n.json
-      skip_untranslated_strings: true
+bundles:
+    - 16
