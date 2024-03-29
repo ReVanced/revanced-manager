@@ -2,7 +2,9 @@ project_id_env: CROWDIN_PROJECT_ID
 api_token_env: CROWDIN_PERSONAL_TOKEN
 preserve-hierarchy: true
 
-files:
-    - source: /assets/i18n/strings.i18n.json
-      translation: /assets/i18n/strings_%locale_with_underscore%.i18n.json
-      dest: "ReVanced Manager/strings.i18n.json"
+files: [
+  {
+    "source": "/assets/i18n/strings.i18n.json",                                       #source files filter
+    "translation": "/assets/i18n/strings_%locale_with_underscore%.i18n.json"        #where translations are stored
+  }
+]
