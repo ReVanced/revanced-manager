@@ -6,5 +6,3 @@ files:
     - source: /assets/i18n/strings.i18n.json
       translation: /assets/i18n/strings_%locale_with_underscore%.i18n.json
       dest: "ReVanced Manager/strings.i18n.json"
-bundles:
-    - 16
