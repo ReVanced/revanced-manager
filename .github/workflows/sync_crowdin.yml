@@ -32,7 +32,7 @@ jobs:
           download_bundle: 16
           localization_branch_name: feat/translations
           create_pull_request: true
-          pull_request_title: "chore: Sync translations"
+          pull_request_title: "chore: Sync translatios"
           pull_request_body: "Sync translations from [crowdin.com/project/revanced](https://crowdin.com/project/revanced)"
           pull_request_base_branch_name: "dev"
           commit_message: "chore: Sync translations"
