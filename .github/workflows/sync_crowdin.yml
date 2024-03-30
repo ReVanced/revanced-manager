@@ -29,7 +29,7 @@ jobs:
           config: crowdin.yml
           upload_sources: true
           upload_translations: false
-          download_bundle: 16
+          download_translations: true
           localization_branch_name: feat/translations
           create_pull_request: true
           pull_request_title: "chore: Sync translations"
