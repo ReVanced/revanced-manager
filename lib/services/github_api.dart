@@ -70,44 +70,27 @@ class GithubAPI {
     }
   }
 
-  Future<Map<String, dynamic>?> getLatestManagerRelease(
-    String repoName,
-  ) async {
+  Future<String?> getManagerChangelogs() async {
     try {
       final response = await _dio.get(
-        '/repos/$repoName/releases',
+        '/repos/${_managerAPI.defaultManagerRepo}/releases?per_page=50',
       );
-      final List<dynamic> releases = response.data;
-      int latestReleaseIndex =
-          releases.indexWhere((element) => element['prerelease'] == false);
-      if (latestReleaseIndex == -1) {
-        latestReleaseIndex = 0;
-      }
-      final Map<String, dynamic> release = releases[latestReleaseIndex];
+      final buffer = StringBuffer();
       final String currentVersion =
           await _managerAPI.getCurrentManagerVersion();
-      if (release['tag_name'] != currentVersion) {
-        // Append previous changelogs
-        for (int i = latestReleaseIndex + 1; i < releases.length; i++) {
-          if (releases[i]['tag_name'] == currentVersion) {
-            break;
+      for (final release in response.data) {
+        if (release['tag_name'] == currentVersion) {
+          if (buffer.isEmpty) {
+            buffer.writeln(release['body']);
           }
-          if (releases[i]['prerelease']) {
-            continue;
-          }
-          release.update(
-            'body',
-            (value) =>
-                value +
-                '\n' +
-                '# ' +
-                releases[i]['tag_name'] +
-                '\n' +
-                releases[i]['body'],
-          );
+          break;
         }
+        if (release['prerelease']) {
+          continue;
+        }
+        buffer.writeln(release['body']);
       }
-      return release;
+      return buffer.toString();
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
