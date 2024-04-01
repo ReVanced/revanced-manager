@@ -12,7 +12,7 @@ environment:
 dependencies:
   animations: ^2.0.7
   collection: ^1.17.0
-  connectivity_plus: ^5.0.1
+  connectivity_plus: ^6.0.1
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
