@@ -74,7 +74,7 @@ dependencies:
 dev_dependencies:
   analyzer: ^6.4.1
   build_runner: any
-  flutter_lints: ^3.0.1
+  flutter_lints: ^3.0.2
   injectable_generator: ^2.1.5
   json_serializable: ^6.7.1
 
