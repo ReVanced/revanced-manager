@@ -1091,10 +1091,10 @@ packages:
     dependency: "direct main"
     description:
       name: stacked_services
-      sha256: b91f8f35043f80961f4d80cd25ec3677f035461b9e7ee12b04727911ed7f53f7
+      sha256: "5cb55065d85c395da3d37ec0e52ace7f6e367c0b8477aace8c8479009e02cb41"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.5.0"
   stacked_shared:
     dependency: transitive
     description:

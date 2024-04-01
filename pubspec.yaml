@@ -64,7 +64,7 @@ dependencies:
   slang_flutter: ^3.25.0
   stacked: ^3.2.0
   stacked_generator: ^1.1.0
-  stacked_services: ^1.0.0
+  stacked_services: ^1.5.0
   synchronized: ^3.1.0
   timeago: ^3.3.0
   timezone: ^0.9.0
