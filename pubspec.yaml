@@ -38,6 +38,7 @@ dependencies:
   fluttertoast: ^8.2.4
   font_awesome_flutter: ^10.4.0
   google_fonts: ^6.2.1
+  google_mobile_ads: ^5.0.0
   injectable: ^2.1.1
   intl: ^0.18.0
   json_annotation: ^4.8.1

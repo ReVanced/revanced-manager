@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/download_manager.dart';
@@ -15,6 +18,7 @@ late SharedPreferences prefs;
 Future main() async {
   await setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
+  unawaited(MobileAds.instance.initialize());
   await locator<ManagerAPI>().initialize();
 
   await locator<DownloadManager>().initialize();
@@ -47,6 +51,7 @@ class MyApp extends StatelessWidget {
     return const DynamicThemeBuilder(
       title: 'ReVanced Manager',
       home: NavigationView(),
+      
     );
   }
 }
