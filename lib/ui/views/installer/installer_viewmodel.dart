@@ -426,7 +426,7 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
-      update(0.5, 'Canceling...', 'Canceling patching process');
+      update(0.5, 'Cancelling...', 'Cancelling patching process');
       await _patcherAPI.stopPatcher();
       await WakelockPlus.disable();
       update(-100.0, 'Canceled...', 'Press back to exit');
