@@ -7,7 +7,6 @@ import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.ui.model.State
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherConfig
-import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,7 @@ class Session(
     multithreadingDexFileWriter: Boolean,
     private val androidContext: Context,
     private val logger: Logger,
-    input: File,
+    private val input: File,
     private val onPatchCompleted: () -> Unit,
     private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
@@ -115,13 +114,16 @@ class Session(
         logger.info("Writing patched files...")
         val result = patcher.get()
 
-        val aligned = tempDir.resolve("aligned.apk")
-        result.applyTo(aligned)
+        val patched = tempDir.resolve("result.apk")
+        withContext(Dispatchers.IO) {
+            Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
+        result.applyTo(patched)
 
-        logger.info("Patched apk saved to $aligned")
+        logger.info("Patched apk saved to $patched")
 
         withContext(Dispatchers.IO) {
-            Files.move(aligned.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
         }
         updateProgress(state = State.COMPLETED) // Saving
     }
