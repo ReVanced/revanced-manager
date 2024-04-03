@@ -426,10 +426,10 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> stopPatcher() async {
     try {
       isCanceled = true;
-      update(0.5, 'Canceling...', 'Canceling patching process');
+      update(0.5, 'Cancelling...', 'Cancelling patching process');
       await _patcherAPI.stopPatcher();
       await WakelockPlus.disable();
-      update(-100.0, 'Canceled...', 'Press back to exit');
+      update(-100.0, 'Cancelled...', 'Press back to exit');
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -474,8 +474,8 @@ class InstallerViewModel extends BaseViewModel {
       } else if (response == 3) {
         update(
           .85,
-          'Installation canceled',
-          'Installation canceled',
+          'Installation cancelled',
+          'Installation cancelled',
         );
       } else if (response == 10) {
         installResult(context, installAsRoot);
