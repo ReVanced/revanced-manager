@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 
 @Composable
-inline fun DangerousActionDialogBase(
-    noinline onCancel: () -> Unit,
-    crossinline confirmButton: @Composable (Boolean) -> Unit,
+fun DangerousActionDialogBase(
+    onCancel: () -> Unit,
+    confirmButton: @Composable (Boolean) -> Unit,
     @StringRes title: Int,
     body: String,
 ) {
