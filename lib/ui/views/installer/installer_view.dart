@@ -122,7 +122,7 @@ class InstallerView extends StatelessWidget {
                     ],
                   ),
                   Visibility(
-                    visible: !model.isAutoScrollEnabled,
+                    visible: model.showAutoScrollButton,
                     child: Align(
                       alignment: const Alignment(0.9, 0.97),
                       child: FloatingActionButton(

@@ -44,8 +44,9 @@ class InstallerViewModel extends BaseViewModel {
   bool isCanceled = false;
   bool cancel = false;
   bool showPopupScreenshotWarning = true;
-  bool isAutoScrollEnabled = true;
+
   bool showAutoScrollButton = false;
+  bool _isAutoScrollEnabled = true;
   bool _isAutoScrolling = false;
 
   double get getCurrentScrollPercentage {
@@ -56,8 +57,8 @@ class InstallerViewModel extends BaseViewModel {
   }
 
   bool handleAutoScrollNotification(ScrollNotification event) {
-    if (isAutoScrollEnabled && event is ScrollStartNotification) {
-      isAutoScrollEnabled = _isAutoScrolling;
+    if (_isAutoScrollEnabled && event is ScrollStartNotification) {
+      _isAutoScrollEnabled = _isAutoScrolling;
       showAutoScrollButton = false;
       notifyListeners();
 
@@ -65,17 +66,13 @@ class InstallerViewModel extends BaseViewModel {
     }
 
     if (event is ScrollEndNotification) {
-      const anchorThreshold = 0.95;
-      final initialAutoScrollValue = isAutoScrollEnabled;
+      const anchorThreshold = 0.987;
 
-      isAutoScrollEnabled = _isAutoScrolling || getCurrentScrollPercentage >= anchorThreshold;
-      showAutoScrollButton = !_isAutoScrolling && !isAutoScrollEnabled;
+      _isAutoScrollEnabled =
+          _isAutoScrolling || getCurrentScrollPercentage >= anchorThreshold;
 
-      final hasChanged = initialAutoScrollValue != isAutoScrollEnabled;
-
-      if (hasChanged) {
-        notifyListeners();
-      }
+      showAutoScrollButton = !_isAutoScrollEnabled && !_isAutoScrolling;
+      notifyListeners();
 
       return true;
     }
@@ -178,7 +175,7 @@ class InstallerViewModel extends BaseViewModel {
       if (logs[logs.length - 1] == '\n') {
         logs = logs.substring(0, logs.length - 1);
       }
-      if (isAutoScrollEnabled) {
+      if (_isAutoScrollEnabled) {
         scrollToBottom();
       }
     }
