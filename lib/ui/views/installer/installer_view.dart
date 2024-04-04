@@ -75,43 +75,64 @@ class InstallerView extends StatelessWidget {
                 ),
               ),
             ),
-            body: CustomScrollView(
-              controller: model.scrollController,
-              slivers: <Widget>[
-                CustomSliverAppBar(
-                  title: Text(
-                    model.headerLogs,
-                    style: GoogleFonts.inter(
-                      color: Theme.of(context).textTheme.titleLarge!.color,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onBackButtonPressed: () => Navigator.maybePop(context),
-                  bottom: PreferredSize(
-                    preferredSize: const Size(double.infinity, 1.0),
-                    child: GradientProgressIndicator(progress: model.progress),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(20.0),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate.fixed(
-                      <Widget>[
-                        CustomCard(
-                          child: Text(
-                            model.logs,
-                            style: GoogleFonts.jetBrainsMono(
-                              fontSize: 13,
-                              height: 1.5,
-                            ),
+            body: NotificationListener<ScrollNotification>(
+              onNotification: model.handleAutoScrollNotification,
+              child: Stack(
+                children: [
+                  CustomScrollView(
+                    key: model.logCustomScrollKey,
+                    controller: model.scrollController,
+                    slivers: <Widget>[
+                      CustomSliverAppBar(
+                        title: Text(
+                          model.headerLogs,
+                          style: GoogleFonts.inter(
+                            color:
+                                Theme.of(context).textTheme.titleLarge!.color,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        onBackButtonPressed: () => Navigator.maybePop(context),
+                        bottom: PreferredSize(
+                          preferredSize: const Size(double.infinity, 1.0),
+                          child: GradientProgressIndicator(
+                            progress: model.progress,
                           ),
                         ),
-                      ],
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(20.0),
+                        sliver: SliverList(
+                          delegate: SliverChildListDelegate.fixed(
+                            <Widget>[
+                              CustomCard(
+                                child: Text(
+                                  model.logs,
+                                  style: GoogleFonts.jetBrainsMono(
+                                    fontSize: 13,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: model.showAutoScrollButton,
+                    child: Align(
+                      alignment: const Alignment(0.9, 0.97),
+                      child: FloatingActionButton(
+                        onPressed: model.scrollToBottom,
+                        child: const Icon(Icons.arrow_downward_rounded),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
