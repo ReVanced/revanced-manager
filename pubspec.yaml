@@ -26,9 +26,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_background:
-    git: # Switch to 'flutter_background' once new version is released
-      url: https://github.com/JulianAssmann/flutter_background
-      ref: 65cf0ec93486b3a6c74339aadaeb384cf2c9a24b # Branch: master
+    git: # remove once https://github.com/JulianAssmann/flutter_background/pull/79 is merged
+      url: https://github.com/BenjaminHalko/flutter_background
+      ref: 560d21c4148b53933313573e7eafca0b0eb9aadf # Branch: specify-namespace
   flutter_cache_manager: ^3.3.0
   flutter_file_dialog: ^3.0.2
   flutter_local_notifications: ^16.1.0
