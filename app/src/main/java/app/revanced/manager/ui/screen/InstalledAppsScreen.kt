@@ -27,12 +27,12 @@ import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun InstalledAppsScreen(
     onAppClick: (InstalledApp) -> Unit,
-    viewModel: InstalledAppsViewModel = getViewModel()
+    viewModel: InstalledAppsViewModel = koinViewModel()
 ) {
     val installedApps by viewModel.apps.collectAsStateWithLifecycle(initialValue = null)
 

@@ -52,7 +52,7 @@ import app.revanced.manager.ui.model.BundleType
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 enum class DashboardPage(
     val titleResId: Int,
@@ -65,7 +65,7 @@ enum class DashboardPage(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    vm: DashboardViewModel = getViewModel(),
+    vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit

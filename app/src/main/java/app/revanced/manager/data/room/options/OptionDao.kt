@@ -2,7 +2,7 @@ package app.revanced.manager.data.room.options
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.MapInfo
+import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
@@ -10,13 +10,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class OptionDao {
     @Transaction
-    @MapInfo(keyColumn = "patch_bundle")
     @Query(
         "SELECT patch_bundle, `group`, patch_name, `key`, value FROM option_groups" +
                 " LEFT JOIN options ON uid = options.`group`" +
                 " WHERE package_name = :packageName"
     )
-    abstract suspend fun getOptions(packageName: String): Map<Int, List<Option>>
+    abstract suspend fun getOptions(packageName: String): Map<@MapColumn("patch_bundle") Int, List<Option>>
 
     @Query("SELECT uid FROM option_groups WHERE patch_bundle = :bundleUid AND package_name = :packageName")
     abstract suspend fun getGroupId(bundleUid: Int, packageName: String): Int?

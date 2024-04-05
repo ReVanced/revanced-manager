@@ -10,6 +10,7 @@ preferences-datastore = "1.0.0"
 work-runtime = "2.9.0"
 compose-bom = "2024.03.00"
 accompanist = "0.34.0"
+placeholder = "1.1.2"
 serialization = "1.6.3"
 collection = "0.3.7"
 room-version = "2.6.1"
@@ -60,8 +61,9 @@ coil-appiconloader = { group = "me.zhanghai.android.appiconloader", name = "appi
 
 # Accompanist
 accompanist-drawablepainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
-accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist" }
-accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist" }
+
+# Placeholder
+placeholder-material3 = { group = "io.github.fornewid", name = "placeholder-material3", version.ref = "placeholder"}
 
 # Kotlinx
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }

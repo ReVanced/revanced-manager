@@ -42,7 +42,7 @@ import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -50,7 +50,7 @@ fun AboutSettingsScreen(
     onBackClick: () -> Unit,
     onContributorsClick: () -> Unit,
     onLicensesClick: () -> Unit,
-    viewModel: AboutViewModel = getViewModel()
+    viewModel: AboutViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     // painterResource() is broken on release builds for some reason.
