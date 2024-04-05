@@ -203,9 +203,7 @@
     "updateNotImplemented": "Tato funkce ještě není implementována"
   },
   "contributorsView": {
-    "widgetTitle": "Přispěvatelé",
-    "integrationsContributors": "ReVanced Integrace",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Přispěvatelé"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verse neshodná",
