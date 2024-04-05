@@ -271,12 +271,7 @@
     "updateNotImplemented": "這項功能尚未實作"
   },
   "contributorsView": {
-    "widgetTitle": "貢獻者",
-    "patcherContributors": "ReVanced 修補程式",
-    "patchesContributors": "ReVanced 補丁",
-    "integrationsContributors": "ReVanced 整合",
-    "cliContributors": "ReVanced 命令行介面",
-    "managerContributors": "ReVanced 管理器"
+    "widgetTitle": "貢獻者"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "版本不相符",

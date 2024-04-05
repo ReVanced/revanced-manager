@@ -271,12 +271,7 @@
     "updateNotImplemented": "Bu özəllik hələ tətbiq olunmayıb"
   },
   "contributorsView": {
-    "widgetTitle": "Töhfə verənlər",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Yamaqları",
-    "integrationsContributors": "ReVanced İnteqrasiyaları",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Töhfə verənlər"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiya uyuşmur",

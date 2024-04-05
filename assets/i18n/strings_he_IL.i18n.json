@@ -1,6 +1,7 @@
 {
   "okButton": "אישור",
   "cancelButton": "ביטול",
+  "dismissButton": "התעלם",
   "quitButton": "יציאה",
   "updateButton": "עדכן",
   "enabledLabel": "הופעל",
@@ -15,6 +16,8 @@
   "noShowAgain": "אל תציג זאת שוב",
   "add": "הוסף",
   "remove": "הסר",
+  "showChangelogButton": "הצגת יומן שינויים",
+  "showUpdateButton": "הצג עדכון",
   "navigationView": {
     "dashboardTab": "לוח בקרה",
     "patcherTab": "מתקן",
@@ -25,14 +28,25 @@
     "widgetTitle": "לוח בקרה",
     "updatesSubtitle": "עדכונים",
     "patchedSubtitle": "אפליקציות מתוקנות",
+    "changeLaterSubtitle": "ניתן לשנות זאת בהגדרות מאוחר יותר.",
     "noUpdates": "אין עדכונים זמינים",
     "WIP": "עבודה בתהליך...",
     "noInstallations": "אין אפליקציות מתוקנת מותקנות",
     "installUpdate": "המשך להתקין את העדכון?",
+    "updateSheetTitle": "עדכן את ReVanced Manager",
+    "updateDialogTitle": "עידכון חדש זמין",
+    "updatePatchesSheetTitle": "עדכן את ReVanced Patches",
     "updateChangelogTitle": "היסטורית שינויים",
+    "updateDialogText": "עדכון חדש זמין עבור ${file}.\n\nהגרסה המותקנת כרגע היא ${version}.",
+    "downloadConsentDialogTitle": "להוריד קבצי עזר?",
+    "downloadConsentDialogText": "ReVanced Manager צריך להוריד קבצי עזר על מנת לעבוד כמו שצריך.",
+    "downloadConsentDialogText2": "זה יחבר אותך ל${url}.",
+    "checkUpdateDialogTitle": "לבדוק עדכונים?",
+    "checkUpdateDialogText": "מעדיף ש-ReVanced Manager יבדוק עדכונים אוטומטית?",
     "notificationTitle": "העדכון הורד",
     "notificationText": "הקש כדי להתקין את העדכון",
     "downloadingMessage": "מוריד עדכון...",
+    "downloadedMessage": "עדכון הורד",
     "installingMessage": "מתקין עדכון...",
     "errorDownloadMessage": "הורדת קובץ העדכון נכשלה",
     "errorInstallMessage": "לא ניתן להתקין את העדכון",
@@ -46,17 +60,24 @@
     "loadingLabel": "טוען...",
     "timeagoLabel": "לפני ${time}",
     "patcherLabel": "מתקן: ",
-    "managerLabel": "מנהל: "
+    "managerLabel": "מנהל: ",
+    "updateButton": "עדכן את Manager"
   },
   "patcherView": {
     "widgetTitle": "מתקן",
     "patchButton": "תיקון",
+    "armv7WarningDialogText": "תיקון במכשירי ARMv7 לא נתמך כרגע ואולי יכשל. להמשיך בכל זאת?",
+    "removedPatchesWarningDialogText": "התיקונים הבאים הוסרו מאז הפעם האחרונה שהשתמשת בהם.\n${patches}\nלהמשיך בכל זאת?",
     "requiredOptionDialogText": "כמה אפשרויות תיקון חייבות להיקבע."
   },
   "appSelectorCard": {
+    "widgetTitle": "בחר אפליקציה",
+    "widgetTitleSelected": "אפליקציה שנבחרה",
+    "widgetSubtitle": "לא נבחרה אפליקציה",
     "noAppsLabel": "לא נמצאו יישומים",
     "currentVersion": "נוֹכְחִי",
-    "suggestedVersion": "מוצע"
+    "suggestedVersion": "מוצע",
+    "anyVersion": "כל גרסה"
   },
   "patchSelectorCard": {
     "widgetTitle": "בחר תיקונים",
@@ -69,10 +90,13 @@
     "widgetSubtitle": "אנחנו מחוברים!"
   },
   "appSelectorView": {
+    "viewTitle": "בחר אפליקציה",
+    "searchBarHint": "חיפוש אפליקציה",
     "storageButton": "אחסון",
     "selectFromStorageButton": "בחירה מהאחסון",
     "errorMessage": "לא ניתן להשתמש ביישום שנבחר",
     "downloadToast": "פונקציית ההורדה אינה זמינה כעת",
+    "requireSuggestedAppVersionDialogText": "גרסת האפליקציה שבחרת אינה תואמת את הגרסה המומלצת, מה שעלול להוביל לבעיות בלתי צפויות. אנא השתמש בגרסה המומלצת.\n\nהגרסה שנבחרה: ${selected}\nהגרסה המומלצת: ${suggested}\n\nכדי להמשיך בכל זאת, כבה את \"דרוש גרסת אפליקציה מומלצת\" בהגדרות.",
     "featureNotAvailable": "תכונה לא מיושמת"
   },
   "patchesSelectorView": {
@@ -82,7 +106,9 @@
     "newPatches": "תיקונים חדשים",
     "patches": "תיקונים",
     "doneButton": "בוצע",
+    "defaultChip": "ברירת מחדל",
     "defaultTooltip": "בחר את כל תיקוני ברירת המחדל",
+    "noneChip": "כלום",
     "noneTooltip": "בטל את בחירת כל התיקונים",
     "loadPatchesSelection": "טען בחירת תיקונים",
     "noSavedPatches": "אין תיקונים שמורים עבור האפליקציה שנבחרה.\nלחץ על בוצע כדי לשמור את הבחירה הנוכחית.",

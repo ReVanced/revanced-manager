@@ -271,12 +271,7 @@
     "updateNotImplemented": "Ця можливість ще не реалізована"
   },
   "contributorsView": {
-    "widgetTitle": "Розробники",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Розробники"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Невідповідність версії",

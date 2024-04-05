@@ -4,7 +4,7 @@ homepage: https://github.com/ReVanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.19.3+101800006
+version: 1.20.0-dev.1+101800014
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -12,7 +12,7 @@ environment:
 dependencies:
   animations: ^2.0.7
   collection: ^1.17.0
-  connectivity_plus: ^5.0.1
+  connectivity_plus: ^6.0.1
   device_apps:
     git:
       url: https://github.com/ponces/flutter_plugin_device_apps
@@ -26,9 +26,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_background:
-    git: # remove once https://github.com/JulianAssmann/flutter_background/pull/79 is merged
-      url: https://github.com/BenjaminHalko/flutter_background
-      ref: 560d21c4148b53933313573e7eafca0b0eb9aadf # Branch: specify-namespace
+    git: # Switch to 'flutter_background' once new version is released
+      url: https://github.com/JulianAssmann/flutter_background
+      ref: 65cf0ec93486b3a6c74339aadaeb384cf2c9a24b # Branch: master
   flutter_cache_manager: ^3.3.0
   flutter_file_dialog: ^3.0.2
   flutter_local_notifications: ^16.1.0
@@ -41,12 +41,12 @@ dependencies:
   injectable: ^2.1.1
   intl: ^0.18.0
   json_annotation: ^4.8.1
-  language_code: ^0.4.1
+  language_code: ^0.5.1
   logcat:
     git:
       url: https://github.com/BenjaminHalko/logcat
       ref: 4a6d5e0e22292c8eb160cfb9365b9ea29735fd43 # Branch: master
-  package_info_plus: ^5.0.1
+  package_info_plus: ^6.0.0
   path_provider: ^2.0.14
   permission_handler: ^11.0.1
   root:
@@ -74,7 +74,7 @@ dependencies:
 dev_dependencies:
   analyzer: ^6.4.1
   build_runner: any
-  flutter_lints: ^3.0.1
+  flutter_lints: ^3.0.2
   injectable_generator: ^2.1.5
   json_serializable: ^6.7.1
 

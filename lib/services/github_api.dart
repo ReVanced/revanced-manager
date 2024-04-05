@@ -85,6 +85,9 @@ class GithubAPI {
         updates++;
       }
       for (int i = 1; i < updates; i++) {
+        if (response.data[i]['prerelease']) {
+          continue;
+        }
         releases.update(
           'body',
           (value) =>

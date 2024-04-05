@@ -12,7 +12,7 @@
   "noButton": "Не",
   "warning": "Увага",
   "options": "Параметры",
-  "notice": "Апавяшчэнне",
+  "notice": "Заўвага",
   "noShowAgain": "Больш не паказваць",
   "add": "Дадаць",
   "remove": "Выдаліць",
@@ -41,7 +41,7 @@
     "downloadConsentDialogTitle": "Спампаваць неабходныя файлы?",
     "downloadConsentDialogText": "ReVanced Manager неабходна спампаваць неабходныя файлы для правільнай працы.",
     "downloadConsentDialogText2": "Гэта падключыць вас да ${url}.",
-    "checkUpdateDialogTitle": "Праверыць абнаўленні?",
+    "checkUpdateDialogTitle": "Праверыць наяўнасць абнаўленняў?",
     "checkUpdateDialogText": "Вы сапраўды хочаце правяраць абнаўленні ReVanced Manager аўтаматычна?",
     "notificationTitle": "Абнаўленне спампавана",
     "notificationText": "Націсніце, каб усталяваць абнаўленне",
@@ -66,9 +66,9 @@
   "patcherView": {
     "widgetTitle": "Праграма выпраўлення",
     "patchButton": "Выправіць",
-    "armv7WarningDialogText": "Выпраўленне на працэсарах з архітэктурай ARMv7 пакуль не падтрымліваецца і можа прывесці да збою. Працягнуць?",
+    "armv7WarningDialogText": "Выпраўленне для прылад на ARMv7 пакуль не падтрымліваецца і можа прывесці да збою. Працягнуць?",
     "removedPatchesWarningDialogText": "Наступныя выпраўленні былі выдалены з моманту іх апошняга выкарыстання.\n\n${patches}\n\nУсё роўна працягнуць?",
-    "requiredOptionDialogText": "Некаторыя выпраўленні павінны быць зададзены."
+    "requiredOptionDialogText": "Неабходна задаць некаторыя параметры выпраўленняў."
   },
   "appSelectorCard": {
     "widgetTitle": "Выбраць праграму",
@@ -117,7 +117,7 @@
     "setRequiredOption": "Некаторыя выпраўленні патрабуюць зададзеных параметраў:\n\n${patches}\n\nЗадайце іх перад працягам."
   },
   "patchOptionsView": {
-    "customValue": "Карыстальніцкае значэнне",
+    "customValue": "Уласнае значэнне",
     "resetOptionsTooltip": "Скінуць параметры выпраўлення",
     "viewTitle": "Параметры выпраўлення",
     "saveOptions": "Захаваць",
@@ -140,8 +140,8 @@
   },
   "installerView": {
     "widgetTitle": "Устаноўшчык праграм",
-    "installType": "Выберыце тып усталявання",
-    "installTypeDescription": "Выберыце тып усталявання для працягу.",
+    "installType": "Выберыце тып устаноўкі",
+    "installTypeDescription": "Выберыце тып устаноўкі для працягу.",
     "installButton": "Усталяваць",
     "installRootType": "Падключыць",
     "installNonRootType": "Звычайны",
@@ -271,12 +271,7 @@
     "updateNotImplemented": "Пакуль яшчэ гэта функцыя не рэалізавана"
   },
   "contributorsView": {
-    "widgetTitle": "Удзельнікі",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "Выпраўленні ReVanced",
-    "integrationsContributors": "Інтэграцыі ReVanced",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Удзельнікі"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Неадпаведнасць версій",

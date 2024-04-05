@@ -271,12 +271,7 @@
     "updateNotImplemented": "Bu özellik henüz geliştirilmedi"
   },
   "contributorsView": {
-    "widgetTitle": "Katkıda bulunanlar",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Katkıda bulunanlar"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Sürüm uyuşmazlığı",
