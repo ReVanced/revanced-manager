@@ -38,13 +38,13 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImportExportSettingsScreen(
     onBackClick: () -> Unit,
-    vm: ImportExportViewModel = getViewModel()
+    vm: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
 

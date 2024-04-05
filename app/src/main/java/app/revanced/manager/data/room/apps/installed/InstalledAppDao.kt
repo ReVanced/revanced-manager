@@ -3,7 +3,7 @@ package app.revanced.manager.data.room.apps.installed
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.MapInfo
+import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -17,12 +17,13 @@ interface InstalledAppDao {
     @Query("SELECT * FROM installed_app WHERE current_package_name = :packageName")
     suspend fun get(packageName: String): InstalledApp?
 
-    @MapInfo(keyColumn = "bundle", valueColumn = "patch_name")
     @Query(
         "SELECT bundle, patch_name FROM applied_patch" +
                 " WHERE package_name = :packageName"
     )
-    suspend fun getPatchesSelection(packageName: String): Map<Int, List<String>>
+    suspend fun getPatchesSelection(packageName: String): Map<@MapColumn("bundle") Int, List<@MapColumn(
+        "patch_name"
+    ) String>>
 
     @Transaction
     suspend fun upsertApp(installedApp: InstalledApp, appliedPatches: List<AppliedPatch>) {

@@ -38,13 +38,13 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
-    vm: AdvancedSettingsViewModel = getViewModel()
+    vm: AdvancedSettingsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val memoryLimit = remember {

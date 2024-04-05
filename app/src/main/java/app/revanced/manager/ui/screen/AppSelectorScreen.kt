@@ -33,7 +33,7 @@ import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +41,7 @@ fun AppSelectorScreen(
     onAppClick: (packageName: String) -> Unit,
     onStorageClick: (SelectedApp.Local) -> Unit,
     onBackClick: () -> Unit,
-    vm: AppSelectorViewModel = getViewModel()
+    vm: AppSelectorViewModel = koinViewModel()
 ) {
     SideEffect {
         vm.onStorageClick = onStorageClick

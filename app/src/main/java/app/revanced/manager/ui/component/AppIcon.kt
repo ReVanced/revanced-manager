@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import coil.compose.AsyncImage
-import com.google.accompanist.placeholder.placeholder
+import io.github.fornewid.placeholder.material3.placeholder
 
 @Composable
 fun AppIcon(

@@ -34,9 +34,8 @@ import app.revanced.manager.ui.screen.settings.update.UpdateScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.compose.getViewModel as getComposeViewModel
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +43,7 @@ import org.koin.androidx.compose.getViewModel as getComposeViewModel
 fun SettingsScreen(
     onBackClick: () -> Unit,
     startDestination: SettingsDestination,
-    viewModel: SettingsViewModel = getViewModel()
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
     val navController = rememberNavController(startDestination)
 
@@ -127,7 +126,7 @@ fun SettingsScreen(
 
             is SettingsDestination.Update -> UpdateScreen(
                 onBackClick = backClick,
-                vm = getComposeViewModel {
+                vm = koinViewModel {
                     parametersOf(
                         destination.downloadOnScreenEntry
                     )

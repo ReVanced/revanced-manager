@@ -35,7 +35,7 @@ import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.compose.getViewModel as getComposeViewModel
+import org.koin.androidx.compose.koinViewModel as getComposeViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getAndroidViewModel
 
 class MainActivity : ComponentActivity() {

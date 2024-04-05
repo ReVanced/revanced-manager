@@ -25,13 +25,13 @@ import app.revanced.manager.ui.component.settings.Changelog
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import app.revanced.manager.util.formatNumber
 import app.revanced.manager.util.relativeTime
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangelogsScreen(
     onBackClick: () -> Unit,
-    vm: ChangelogsViewModel = getViewModel()
+    vm: ChangelogsViewModel = koinViewModel()
 ) {
     val changelogs = vm.changelogs
 

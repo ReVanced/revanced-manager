@@ -29,7 +29,7 @@ import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.util.toast
-import org.koin.compose.rememberKoinInject
+import org.koin.compose.koinInject
 
 // Composable functions do not support function references, so we have to use composable lambdas instead.
 private typealias OptionImpl = @Composable (Option, Any?, (Any?) -> Unit) -> Unit
@@ -60,7 +60,7 @@ private fun StringOptionDialog(
         mutableStateOf(value.orEmpty())
     }
 
-    val fs: Filesystem = rememberKoinInject()
+    val fs: Filesystem = koinInject()
     val (contract, permissionName) = fs.permissionContract()
     val permissionLauncher = rememberLauncherForActivityResult(contract = contract) {
         showFileDialog = it

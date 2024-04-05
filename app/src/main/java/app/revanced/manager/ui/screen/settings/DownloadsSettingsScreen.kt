@@ -23,13 +23,13 @@ import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
-    viewModel: DownloadsViewModel = getViewModel()
+    viewModel: DownloadsViewModel = koinViewModel()
 ) {
     val prefs = viewModel.prefs
 

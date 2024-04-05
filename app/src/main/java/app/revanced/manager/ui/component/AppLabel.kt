@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import app.revanced.manager.R
-import com.google.accompanist.placeholder.placeholder
+import io.github.fornewid.placeholder.material3.placeholder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
