@@ -37,12 +37,12 @@ fun ImportBundleDialog(
     onDismissRequest: () -> Unit,
     onRemoteSubmit: (String, String, Boolean) -> Unit,
     onLocalSubmit: (String, Uri, Uri?) -> Unit,
-    bundleType: BundleType
+    initialBundleType: BundleType
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(true) }
-    var bundleType by rememberSaveable { mutableStateOf(bundleType) }
+    var bundleType by rememberSaveable { mutableStateOf(initialBundleType) }
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
     var integrations by rememberSaveable { mutableStateOf<Uri?>(null) }
 

@@ -115,7 +115,7 @@ fun DashboardScreen(
                 dismiss()
                 vm.createRemoteSource(name, url, autoUpdate)
             },
-            bundleType = it
+            initialBundleType = it
         )
     }
 
