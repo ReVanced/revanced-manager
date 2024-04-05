@@ -385,10 +385,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_markdown
-      sha256: a64c5323ac83ed2b7940d2b6288d160aa1753ff271ba9d9b2a86770414aa3eab
+      sha256: "31c12de79262b5431c5492e9c89948aa789158435f707d3519a7fdef6af28af7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.20+1"
+    version: "0.6.22+1"
   flutter_test:
     dependency: transitive
     description: flutter
@@ -563,10 +563,10 @@ packages:
     dependency: "direct main"
     description:
       name: language_code
-      sha256: "3124246f599039a89c990d007b00bc41b1526d6400de97cf13a478b7f4b16a83"
+      sha256: "45b5320eedf35075176a6398b5d46c408c423be293280f1a95a92c216e7de40b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "0.5.1"
   leak_tracker:
     dependency: transitive
     description:
