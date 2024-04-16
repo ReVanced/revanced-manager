@@ -279,7 +279,7 @@ class MainActivity : FlutterActivity() {
                         tmpDir,
                         Aapt.binary(applicationContext).absolutePath,
                         tmpDir.path,
-                        true // TODO: Add option to disable this
+                        false // TODO: Add option to toggle multithreading in UI
                     )
                 )
 
