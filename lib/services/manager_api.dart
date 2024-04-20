@@ -29,6 +29,8 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
+  final String patchesRepo = 'revanced-patches';
+  final String integrationsRepo = 'revanced-integrations';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
   List<Option> modifiedOptions = [];
@@ -472,10 +474,12 @@ class ManagerAPI {
 
   Future<String?> getLatestPatchesReleaseTime() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseTime(
-        '.json',
-        defaultPatchesRepo,
-      );
+      return !isUsingPrereleasePatches()
+          ? await _revancedAPI.getLatestReleaseTime(
+              '.json',
+              defaultPatchesRepo,
+            )
+          : await _revancedAPI.getLatestReleaseTimeWithPreReleases(patchesRepo);
     } else {
       final release = !isUsingPrereleasePatches()
           ? await _githubAPI.getLatestRelease(getPatchesRepo())
@@ -506,10 +510,14 @@ class ManagerAPI {
 
   Future<String?> getLatestIntegrationsVersion() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        '.apk',
-        defaultIntegrationsRepo,
-      );
+      return !isUsingPrereleasePatches()
+          ? await _revancedAPI.getLatestReleaseVersion(
+              '.apk',
+              defaultIntegrationsRepo,
+            )
+          : await _revancedAPI.getLatestReleaseVersionWithPreReleases(
+              integrationsRepo,
+            );
     } else {
       final release = !isUsingPrereleasePatches()
           ? await _githubAPI.getLatestRelease(getIntegrationsRepo())
@@ -524,10 +532,13 @@ class ManagerAPI {
 
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        '.json',
-        defaultPatchesRepo,
-      );
+      return !isUsingPrereleasePatches()
+          ? await _revancedAPI.getLatestReleaseVersion(
+              '.json',
+              defaultPatchesRepo,
+            )
+          : await _revancedAPI
+              .getLatestReleaseVersionWithPreReleases(patchesRepo);
     } else {
       final release = !isUsingPrereleasePatches()
           ? await _githubAPI.getLatestRelease(getPatchesRepo())

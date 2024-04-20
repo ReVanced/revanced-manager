@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/settings/settingsFragment/settings_manage_sources.dart';
 import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
-import 'package:revanced_manager/ui/widgets/settingsView/settings_use_prerelease_patches.dart';
 import 'package:revanced_manager/ui/widgets/shared/haptics/haptic_switch_list_tile.dart';
 
 class SUseAlternativeSources extends StatefulWidget {
@@ -38,10 +37,7 @@ class _SUseAlternativeSourcesState extends State<SUseAlternativeSources> {
           },
         ),
         if (_settingsViewModel.isUsingAlternativeSources())
-          ...[
-            const SManageSourcesUI(),
-            const SUsePrereleasePatches(),
-          ],
+          const SManageSourcesUI(),
       ],
     );
   }
