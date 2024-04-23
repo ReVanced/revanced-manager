@@ -98,7 +98,7 @@ To build a ReVanced Manager, you can follow the [documentation](/docs).
 
 You can find the documentation for ReVanced Manager [here](/docs).
 
-# ⚖️ License
+## ⚖️ License
 
 ReVanced Manager is licensed under the GPLv3 license. Please see the [license file](LICENSE) for more information.
 [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3) you may copy, distribute and modify ReVanced Manager as long as you track changes/dates in source files.
