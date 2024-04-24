@@ -11,6 +11,7 @@ work-runtime = "2.9.0"
 compose-bom = "2024.03.00"
 accompanist = "0.34.0"
 placeholder = "1.1.2"
+reorderable = "1.5.2"
 serialization = "1.6.3"
 collection = "0.3.7"
 room-version = "2.6.1"
@@ -119,6 +120,9 @@ libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = 
 
 # Scrollbars
 scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
+
+# Reorderable lists
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 
 # Compose Icons
 # switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged

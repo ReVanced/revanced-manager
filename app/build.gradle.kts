@@ -188,6 +188,9 @@ dependencies {
     // Scrollbars
     implementation(libs.scrollbars)
 
+    // Reorderable lists
+    implementation(libs.reorderable)
+
     // Compose Icons
     implementation(libs.compose.icons.fontawesome)
 }
