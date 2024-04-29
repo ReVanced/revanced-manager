@@ -206,7 +206,6 @@
     "versionCompatibilityCheckLabel": "バージョンの互換性の確認",
     "versionCompatibilityCheckHint": "選択したアプリのバージョンと互換性のないパッチの選択を防止",
     "requireSuggestedAppVersionLabel": "推奨するアプリバージョンの要求",
-    "requireSuggestedAppVersionHint": "",
     "requireSuggestedAppVersionDialogText": "推奨されているバージョンではないアプリを選択すると、予期しない問題が発生する可能性があります。\n\nこのまま続行しますか？",
     "aboutLabel": "情報",
     "snackbarMessage": "クリップボードにコピーしました",
