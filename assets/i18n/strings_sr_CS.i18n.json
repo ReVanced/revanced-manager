@@ -16,8 +16,8 @@
   "noShowAgain": "Ne prikazuj ponovo",
   "add": "Dodaj",
   "remove": "Ukloni",
-  "showChangelogButton": "Prikaži evidenciju promena",
-  "showUpdateButton": "Prikaži ažuriranje",
+  "showChangelogButton": "Vidi evidenciju promena",
+  "showUpdateButton": "Vidi ažuriranje",
   "navigationView": {
     "dashboardTab": "Kontrolna tabla",
     "patcherTab": "Pečer",
@@ -77,7 +77,7 @@
     "noAppsLabel": "Nijedna aplikacija nije pronađena",
     "currentVersion": "Trenutna verzija",
     "suggestedVersion": "Preporučena verzija",
-    "anyVersion": "Bilo koja verzija"
+    "anyVersion": "Sve verzije"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izaberi pečeve",
@@ -178,7 +178,7 @@
     "sourcesLabelHint": "Konfigurišite alternativne izvore za ReVanced pečeve i ReVanced integracije",
     "sourcesIntegrationsLabel": "Izvor integracija",
     "useAlternativeSources": "Koristi alternativne izvore",
-    "useAlternativeSourcesHint": "Koristite alternativne izvore za ReVanced pečeve i ReVanced integracije umesto API-ja",
+    "useAlternativeSourcesHint": "Korišćenje alternativnih izvora za ReVanced pečeve i ReVanced integracije umesto API-ja",
     "sourcesResetDialogTitle": "Resetovanje",
     "sourcesResetDialogText": "Želite li zaista da vratite izvore na podrazumevane vrednosti?",
     "apiURLResetDialogText": "Želite li zaista da vratite URL API-ja na podrazumevanu vrednost?",
@@ -226,10 +226,10 @@
     "resetStoredPatchesDialogTitle": "Resetovati izbor pečeva?",
     "resetStoredPatchesDialogText": "Podrazumevani izbor pečeva će biti vraćen.",
     "resetStoredPatches": "Izbor pečeva je resetovan",
-    "resetStoredOptionsLabel": "Resetuj opcije peča",
-    "resetStoredOptionsHint": "Resetujte sve opcije peča",
-    "resetStoredOptionsDialogTitle": "Resetovati opcije peča?",
-    "resetStoredOptionsDialogText": "Resetovanjem opcija peča uklanjate sve sačuvane opcije.",
+    "resetStoredOptionsLabel": "Resetuj opcije pečeva",
+    "resetStoredOptionsHint": "Resetujte sve opcije pečeva",
+    "resetStoredOptionsDialogTitle": "Resetovati opcije pečeva?",
+    "resetStoredOptionsDialogText": "Resetovanjem opcija pečeva uklanjate sve sačuvane opcije.",
     "resetStoredOptions": "Opcije su resetovane",
     "deleteLogsLabel": "Izbriši evidencije",
     "deleteLogsHint": "Izbrišite prikupljene evidencije ReVanced Managera",
@@ -252,7 +252,7 @@
     "keystoreSelectorErrorMessage": "Nije moguće koristiti izabrani fajl sa skladištem ključeva"
   },
   "appInfoView": {
-    "widgetTitle": "Informacije o aplikaciji",
+    "widgetTitle": "O aplikaciji",
     "openButton": "Otvori",
     "uninstallButton": "Deinstaliraj",
     "unmountButton": "Demontiraj",
