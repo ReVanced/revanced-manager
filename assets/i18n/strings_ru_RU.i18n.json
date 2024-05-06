@@ -159,7 +159,7 @@
   },
   "settingsView": {
     "widgetTitle": "Настройки",
-    "appearanceSectionTitle": "Оформление",
+    "appearanceSectionTitle": "Внешний вид",
     "teamSectionTitle": "Команда",
     "debugSectionTitle": "Отладка",
     "advancedSectionTitle": "Дополнительные",
@@ -175,7 +175,7 @@
     "languageUpdated": "Язык обновлен",
     "englishOption": "Английский",
     "sourcesLabel": "Альтернативные источники",
-    "sourcesLabelHint": "Настройте альтернативные источники для патчей и интеграций ReVanced",
+    "sourcesLabelHint": "Настроить альтернативные источники для патчей и интеграций ReVanced",
     "sourcesIntegrationsLabel": "Репозиторий интеграций",
     "useAlternativeSources": "Использовать альтернативные источники",
     "useAlternativeSourcesHint": "Использовать альтернативные источники для патчей и интеграций ReVanced вместо API",
