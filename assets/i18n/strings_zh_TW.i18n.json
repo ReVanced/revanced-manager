@@ -13,7 +13,7 @@
   "warning": "警告",
   "options": "選項",
   "notice": "提示",
-  "noShowAgain": "不要再顯示此內容",
+  "noShowAgain": "不再顯示此內容",
   "add": "新增",
   "remove": "移除",
   "showChangelogButton": "顯示更新記錄",
@@ -24,7 +24,7 @@
     "settingsTab": "設定"
   },
   "homeView": {
-    "refreshSuccess": "重新整理成功",
+    "refreshSuccess": "重新整理完成",
     "widgetTitle": "儀表板",
     "updatesSubtitle": "更新",
     "patchedSubtitle": "已修補的應用程式",
@@ -39,8 +39,8 @@
     "updateChangelogTitle": "更新記錄檔",
     "updateDialogText": "${file} 有新的更新可用。\n\n當前安裝的版本是 ${version}。",
     "downloadConsentDialogTitle": "需要下載必要檔案嗎？",
-    "downloadConsentDialogText": "ReVanced Manager 需要下載必要檔案才能正常工作。",
-    "downloadConsentDialogText2": "這將連接您至 ${url}。",
+    "downloadConsentDialogText": "ReVanced Manager 需要下載必要檔案才能正常執行。",
+    "downloadConsentDialogText2": "這將連結您至 ${url}。",
     "checkUpdateDialogTitle": "檢查更新？",
     "checkUpdateDialogText": "您希望 ReVanced Manager 自動檢查更新嗎？",
     "notificationTitle": "更新已下載",
@@ -95,10 +95,10 @@
     "storageButton": "儲存空間",
     "selectFromStorageButton": "從儲存空間中選取",
     "errorMessage": "無法使用所選的應用程式",
-    "downloadToast": "下載功能尚不可用",
+    "downloadToast": "下載功能暫時無法使用",
     "requireSuggestedAppVersionDialogText": "您選擇的應用程式版本與建議版本不符，可能會導致意外問題。請使用建議的版本。\n\n已選擇版本：${selected}\n建議版本：${suggested}\n\n要無視此警告繼續，請在設定中停用「要求使用建議的應用程式版本」。",
     "featureNotAvailable": "功能尚未實作",
-    "featureNotAvailableText": "此應用程式為分割 APK，只能通過具有 root 權限的掛載來可靠地進行修補和安裝。不過，您可以通過從儲存中選擇來修補和安裝完整 APK。"
+    "featureNotAvailableText": "此應用程式為分割 APK，只能通過具有 root 權限的掛載來可靠地進行修補和安裝。不過，您可以透過從儲存空間中選擇來修補和安裝完整 APK。"
   },
   "patchesSelectorView": {
     "viewTitle": "選取修補檔",
@@ -167,7 +167,7 @@
     "dataSectionTitle": "資料來源",
     "themeModeLabel": "應用程式主題",
     "systemThemeLabel": "系統預設",
-    "lightThemeLabel": "亮色模式",
+    "lightThemeLabel": "淺色模式",
     "darkThemeLabel": "深色模式",
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "享受更貼近您裝置的使用體驗",
