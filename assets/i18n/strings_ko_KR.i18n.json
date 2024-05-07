@@ -184,7 +184,7 @@
     "apiURLResetDialogText": "정말 API URL을 기본값으로 되돌릴까요?",
     "sourcesUpdateNote": "알림: 변경하면 대체 소스에서 ReVanced Patches 및 ReVanced Integrations이 자동으로 다운로드됩니다. \n\n그 이후에는 대체 소스로 연결됩니다.",
     "apiURLLabel": "API URL",
-    "apiURLHint": "ReVanced Manager의 API URL를 설정할 수 있습니다.\\n만약 Dashboad의 업데이트 항목이 \\'Loading\\'이라면 ReVanced API 접근 제한이므로 다른 기기에서 시도하거나 1시간 정도 후에 다시 시도하세요.",
+    "apiURLHint": "ReVanced Manager의 API URL를 설정할 수 있습니다.",
     "selectApiURL": "API URL",
     "orgPatchesLabel": "Patches 구성",
     "sourcesPatchesLabel": "Patches 소스",
