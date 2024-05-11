@@ -21,8 +21,9 @@ class SManageKeystorePassword extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            Text(t.settingsView.selectKeystorePassword),
-            const Spacer(),
+            Expanded(
+              child: Text(t.settingsView.selectKeystorePassword),
+            ),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
               onPressed: () => _keystorePasswordController.text =

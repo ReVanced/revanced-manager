@@ -21,39 +21,6 @@ class GithubAPI {
     await _downloadManager.clearAllCache();
   }
 
-  Future<Map<String, dynamic>?> getLatestReleaseWithPreReleases(
-    String repoName,
-  ) async {
-    try {
-      final response = await _dio.get(
-        '/repos/$repoName/releases?per_page=1',
-      );
-      return response.data[0];
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return null;
-    }
-  }
-
-  Future<Map<String, dynamic>?> getPatchesRelease(
-    String repoName,
-    String version,
-  ) async {
-    try {
-      final response = await _dio.get(
-        '/repos/$repoName/releases/tags/$version',
-      );
-      return response.data;
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return null;
-    }
-  }
-
   Future<Map<String, dynamic>?> getLatestRelease(
     String repoName,
   ) async {
@@ -62,6 +29,22 @@ class GithubAPI {
         '/repos/$repoName/releases/latest',
       );
       return response.data;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getLatestReleaseWithPreReleases(
+      String repoName,
+      ) async {
+    try {
+      final response = await _dio.get(
+        '/repos/$repoName/releases?per_page=1',
+      );
+      return response.data[0];
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -108,7 +91,7 @@ class GithubAPI {
     }
   }
 
-  Future<File?> getPatchesReleaseFile(
+  Future<File?> getReleaseFile(
     String extension,
     String repoName,
     String version,
@@ -120,8 +103,10 @@ class GithubAPI {
           url,
         );
       }
-      final Map<String, dynamic>? release =
-          await getPatchesRelease(repoName, version);
+      final response = await _dio.get(
+        '/repos/$repoName/releases/tags/$version',
+      );
+      final Map<String, dynamic>? release = response.data;
       if (release != null) {
         final Map<String, dynamic>? asset =
             (release['assets'] as List<dynamic>).firstWhereOrNull(

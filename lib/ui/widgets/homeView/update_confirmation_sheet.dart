@@ -3,6 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpdateConfirmationSheet extends StatelessWidget {
   const UpdateConfirmationSheet({
@@ -55,15 +56,15 @@ class UpdateConfirmationSheet extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                              Text(
+                                Text(
                                   isPatches
-                                    ? t.homeView.updatePatchesSheetTitle
-                                    : t.homeView.updateSheetTitle,
-                                style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                      ? t.homeView.updatePatchesSheetTitle
+                                      : t.homeView.updateSheetTitle,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
                                   ),
+                                ),
                                 const SizedBox(height: 4.0),
                                 Row(
                                   children: [
@@ -96,7 +97,7 @@ class UpdateConfirmationSheet extends StatelessWidget {
                                   ? model.updatePatches(context)
                                   : model.updateManager(context);
                             },
-                          child: Text(t.updateButton),
+                            child: Text(t.updateButton),
                           ),
                         ],
                       ),
@@ -110,31 +111,37 @@ class UpdateConfirmationSheet extends StatelessWidget {
                     child: Text(
                       t.homeView.updateChangelogTitle,
                       style: TextStyle(
-                          fontSize: changelog ? 24 : 20,
+                        fontSize: changelog ? 24 : 20,
                         fontWeight: FontWeight.w500,
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer,
-                        ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 24.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Markdown(
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Markdown(
                       styleSheet: MarkdownStyleSheet(
                         a: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(20.0),
-                        data: snapshot.data!['body'] ?? '',
-                      ),
+                      onTapLink: (text, href, title) => href != null
+                          ? launchUrl(
+                              Uri.parse(href),
+                              mode: LaunchMode.externalApplication,
+                            )
+                          : null,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(20.0),
+                      data: snapshot.data!['body'] ?? '',
                     ),
+                  ),
                 ],
               );
             },
