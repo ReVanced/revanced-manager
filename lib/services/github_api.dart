@@ -38,13 +38,25 @@ class GithubAPI {
   }
 
   Future<Map<String, dynamic>?> getLatestReleaseWithPreReleases(
-      String repoName,
-      ) async {
+    String repoName,
+  ) async {
     try {
-      final response = await _dio.get(
-        '/repos/$repoName/releases?per_page=1',
-      );
-      return response.data[0];
+      final response = await _dio.get('/repos/$repoName/releases?per_page=10');
+      final List<dynamic> releases = response.data;
+
+      /*
+      * Loop through all releases (including pre-releases) and return the latest
+      */
+      Map<String, dynamic>? latestRelease;
+      DateTime latestReleaseDate = DateTime.fromMillisecondsSinceEpoch(0);
+      for (final release in releases) {
+        final DateTime releaseDate = DateTime.parse(release['published_at']);
+        if (releaseDate.isAfter(latestReleaseDate)) {
+          latestReleaseDate = releaseDate;
+          latestRelease = release;
+        }
+      }
+      return latestRelease;
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
