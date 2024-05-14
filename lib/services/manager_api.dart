@@ -224,11 +224,11 @@ class ManagerAPI {
     return _prefs.getBool('useAlternativeSources') ?? false;
   }
 
-  Future<void> usePrereleasePatches(bool value) async {
+  Future<void> setPreReleasePatchesEnabled(bool value) async {
     await _prefs.setBool('usePrereleasePatches', value);
   }
 
-  bool isUsingPrereleasePatches() {
+  bool isPreReleasePatchesEnabled() {
     return _prefs.getBool('usePrereleasePatches') ?? false;
   }
 
@@ -474,14 +474,14 @@ class ManagerAPI {
 
   Future<String?> getLatestPatchesReleaseTime() async {
     if (!isUsingAlternativeSources()) {
-      return !isUsingPrereleasePatches()
+      return !isPreReleasePatchesEnabled()
           ? await _revancedAPI.getLatestReleaseTime(
               '.json',
               defaultPatchesRepo,
             )
           : await _revancedAPI.getLatestReleaseTimeWithPreReleases(patchesRepo);
     } else {
-      final release = !isUsingPrereleasePatches()
+      final release = !isPreReleasePatchesEnabled()
           ? await _githubAPI.getLatestRelease(getPatchesRepo())
           : await _githubAPI.getLatestReleaseWithPreReleases(getPatchesRepo());
       if (release != null) {
@@ -510,7 +510,7 @@ class ManagerAPI {
 
   Future<String?> getLatestIntegrationsVersion() async {
     if (!isUsingAlternativeSources()) {
-      return !isUsingPrereleasePatches()
+      return !isPreReleasePatchesEnabled()
           ? await _revancedAPI.getLatestReleaseVersion(
               '.apk',
               defaultIntegrationsRepo,
@@ -519,7 +519,7 @@ class ManagerAPI {
               integrationsRepo,
             );
     } else {
-      final release = !isUsingPrereleasePatches()
+      final release = !isPreReleasePatchesEnabled()
           ? await _githubAPI.getLatestRelease(getIntegrationsRepo())
           : await _githubAPI.getLatestReleaseWithPreReleases(getIntegrationsRepo());
       if (release != null) {
@@ -532,7 +532,7 @@ class ManagerAPI {
 
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
-      return !isUsingPrereleasePatches()
+      return !isPreReleasePatchesEnabled()
           ? await _revancedAPI.getLatestReleaseVersion(
               '.json',
               defaultPatchesRepo,
@@ -540,7 +540,7 @@ class ManagerAPI {
           : await _revancedAPI
               .getLatestReleaseVersionWithPreReleases(patchesRepo);
     } else {
-      final release = !isUsingPrereleasePatches()
+      final release = !isPreReleasePatchesEnabled()
           ? await _githubAPI.getLatestRelease(getPatchesRepo())
           : await _githubAPI.getLatestReleaseWithPreReleases(getPatchesRepo());
       if (release != null) {

@@ -25,9 +25,9 @@ class _SUsePrereleasePatchesState extends State<SUsePrereleasePatches> {
         ),
       ),
       subtitle: Text(t.settingsView.usePrereleasePatchesHint),
-      value: _settingsViewModel.isUsingPrereleasePatches(),
+      value: _settingsViewModel.isPreReleasePatchesEnabled(),
       onChanged: (value) async {
-        await _settingsViewModel.showUsePrelereasePatchesDialog(context, value);
+        await _settingsViewModel.showUsePreReleasePatchesDialog(context, value);
         setState(() {});
       },
     );

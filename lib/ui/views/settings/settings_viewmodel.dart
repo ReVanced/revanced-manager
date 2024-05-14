@@ -198,11 +198,11 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
-  bool isUsingPrereleasePatches() {
-    return _managerAPI.isUsingPrereleasePatches();
+  bool isPreReleasePatchesEnabled() {
+    return _managerAPI.isPreReleasePatchesEnabled();
   }
 
-  Future<void>? showUsePrelereasePatchesDialog(
+  Future<void>? showUsePreReleasePatchesDialog(
     BuildContext context,
     bool value,
   ) {
@@ -236,7 +236,7 @@ class SettingsViewModel extends BaseViewModel {
           actions: [
             TextButton(
               onPressed: () {
-                _managerAPI.usePrereleasePatches(true);
+                _managerAPI.setPreReleasePatchesEnabled(true);
                 _toast.showBottom(t.settingsView.restartAppForChanges);
                 Navigator.of(context).pop();
               },
@@ -252,7 +252,7 @@ class SettingsViewModel extends BaseViewModel {
         ),
       );
     } else {
-      _managerAPI.usePrereleasePatches(false);
+      _managerAPI.setPreReleasePatchesEnabled(false);
       _toast.showBottom(t.settingsView.restartAppForChanges);
     }
     return null;
