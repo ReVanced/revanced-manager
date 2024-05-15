@@ -209,7 +209,7 @@
     "requireSuggestedAppVersionHint": "Prevent selecting an app with a version that is not the suggested",
     "requireSuggestedAppVersionDialogText": "Selecting an app that is not the suggested version may cause unexpected issues.\n\nDo you want to proceed anyways?",
     "usePrereleasePatchesLabel": "Use pre-release patches",
-    "usePrereleasePatchesHint": "Use the pre-release (dev) versions of patches and integrations",
+    "usePrereleasePatchesHint": "Use the pre-release (dev) versions of patches and integrations if available",
     "usePrereleasePatchesDialogText": "Pre-release patches are for development purposes and may cause unexpected issues.",
     "usePrereleasePatchesDialogText2": "It may not be compatible with the current version of ReVanced Manager and may cause patching errors.\n\nDo you want to proceed anyways?",
     "aboutLabel": "About",
