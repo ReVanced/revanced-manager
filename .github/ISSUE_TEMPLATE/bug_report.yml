@@ -122,5 +122,5 @@ body:
           required: true
         - label: All requested information has been provided properly.
           required: true
-        - label: The bug is only related to ReVanced Manager
+        - label: The bug is only related to ReVanced Manager.
           required: true
