@@ -79,7 +79,6 @@ body:
       description: |
         - Describe your feature in detail
         - Add images, videos, links, examples, references, etc. if possible
-        - Add the target application name in case you request a new patch
   - type: textarea
     attributes:
       label: Motivation
