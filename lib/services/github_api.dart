@@ -6,12 +6,14 @@ import 'package:injectable/injectable.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/services/download_manager.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:synchronized/synchronized.dart';
 
 @lazySingleton
 class GithubAPI {
   late final Dio _dio;
   late final ManagerAPI _managerAPI = locator<ManagerAPI>();
   late final DownloadManager _downloadManager = locator<DownloadManager>();
+  final Map<String, Lock> _lockMap = {};
 
   Future<void> initialize(String repoUrl) async {
     _dio = _downloadManager.initDio(repoUrl);
@@ -21,11 +23,21 @@ class GithubAPI {
     await _downloadManager.clearAllCache();
   }
 
+  Future<Response> _dioGetSynchronously(String path) async {
+    // Create a new Lock for each path
+    if (!_lockMap.containsKey(path)) {
+      _lockMap[path] = Lock();
+    }
+    return _lockMap[path]!.synchronized(() async {
+      return await _dio.get(path);
+    });
+  }
+
   Future<Map<String, dynamic>?> getLatestRelease(
     String repoName,
   ) async {
     try {
-      final response = await _dio.get(
+      final response = await _dioGetSynchronously(
         '/repos/$repoName/releases/latest',
       );
       return response.data;
@@ -41,7 +53,7 @@ class GithubAPI {
     String repoName,
   ) async {
     try {
-      final response = await _dio.get(
+      final response = await _dioGetSynchronously(
         '/repos/$repoName/releases',
       );
       final Map<String, dynamic> releases = response.data[0];
@@ -87,7 +99,7 @@ class GithubAPI {
           url,
         );
       }
-      final response = await _dio.get(
+      final response = await _dioGetSynchronously(
         '/repos/$repoName/releases/tags/$version',
       );
       final Map<String, dynamic>? release = response.data;
