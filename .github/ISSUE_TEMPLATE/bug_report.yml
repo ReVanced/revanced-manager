@@ -99,14 +99,14 @@ body:
   - type: textarea
     attributes:
       label: ReVanced Manager logs
-      description: Export logs in ReVanced Manager settings.
+      description: Export logs from the ReVanced Manager settings.
       render: shell
     validations:
       required: true
   - type: textarea
     attributes:
       label: Patch logs
-      description: Export logs in "Patcher" screen.
+      description: Export logs from the "Patcher" screen.
       render: shell
     validations:
       required: false
