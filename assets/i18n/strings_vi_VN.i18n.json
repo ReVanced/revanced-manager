@@ -271,12 +271,7 @@
     "updateNotImplemented": "Tính năng này chưa được triển khai"
   },
   "contributorsView": {
-    "widgetTitle": "Những người đóng góp",
-    "patcherContributors": "Trình vá ReVanced",
-    "patchesContributors": "Bản vá ReVanced",
-    "integrationsContributors": "Tích hợp ReVanced",
-    "cliContributors": "Giao tiếp dòng lệnh (CLI) ReVanced",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Những người đóng góp"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Phiên bản không phù hợp",

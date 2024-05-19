@@ -1,5 +1,5 @@
 {
-  "okButton": "OK",
+  "okButton": "OK ",
   "cancelButton": "Anuluj",
   "dismissButton": "Odrzuć",
   "quitButton": "Wyjdź",
@@ -271,12 +271,7 @@
     "updateNotImplemented": "Ta funkcja nie została jeszcze zaimplementowana"
   },
   "contributorsView": {
-    "widgetTitle": "Współtwórcy",
-    "patcherContributors": "Program łatający ReVanced",
-    "patchesContributors": "Łatki ReVanced",
-    "integrationsContributors": "Integracje ReVanced",
-    "cliContributors": "CLI ReVanced",
-    "managerContributors": "Menedżer ReVanced"
+    "widgetTitle": "Współtwórcy"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Niezgodność wersji",

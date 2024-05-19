@@ -1,10 +1,10 @@
 {
   "devDependencies": {
-    "@droidsolutions-oss/semantic-release-update-file": "^1.4.0-beta.1",
+    "@droidsolutions-oss/semantic-release-update-file": "^1.4.0",
     "@saithodev/semantic-release-backmerge": "^4.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "semantic-release": "^23.0.2"
+    "semantic-release": "^23.0.7"
   }
 }

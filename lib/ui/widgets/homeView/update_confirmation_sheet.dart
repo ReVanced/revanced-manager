@@ -3,6 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpdateConfirmationSheet extends StatelessWidget {
   const UpdateConfirmationSheet({
@@ -129,15 +130,21 @@ class UpdateConfirmationSheet extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
+                      onTapLink: (text, href, title) => href != null
+                          ? launchUrl(
+                              Uri.parse(href),
+                              mode: LaunchMode.externalApplication,
+                            )
+                          : null,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.all(20.0),
-                      data: snapshot.data ?? '',
+                      data: snapshot.data!['body'] ?? '',
                     ),
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

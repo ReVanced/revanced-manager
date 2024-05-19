@@ -29,8 +29,9 @@ class SManageSources extends BaseViewModel {
       builder: (context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            Text(t.settingsView.sourcesLabel),
-            const Spacer(),
+            Expanded(
+              child: Text(t.settingsView.sourcesLabel),
+            ),
             IconButton(
               icon: const Icon(Icons.manage_history_outlined),
               onPressed: () => showResetConfirmationDialog(context),

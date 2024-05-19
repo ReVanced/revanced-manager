@@ -49,6 +49,10 @@ jobs:
           sudo chmod 777 *.json
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
 
+      - name: Validation of Translation Strings
+        run: |
+          dart analyze lib/gen/strings.g.dart
+
       - name: Commit translations
         run: |
           git config user.name revanced-bot

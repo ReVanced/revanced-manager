@@ -16,16 +16,16 @@
   "noShowAgain": "Não mostrar isto novamente",
   "add": "Adicionar",
   "remove": "Remover",
-  "showChangelogButton": "Mostrar o registo de modificações",
+  "showChangelogButton": "Mostrar as correções",
   "showUpdateButton": "Mostrar atualização",
   "navigationView": {
-    "dashboardTab": "Painel de controlo",
+    "dashboardTab": "Painel de Controlo",
     "patcherTab": "Modificador",
     "settingsTab": "Definições"
   },
   "homeView": {
     "refreshSuccess": "Atualizado com sucesso",
-    "widgetTitle": "Painel de controlo",
+    "widgetTitle": "Painel de Controlo",
     "updatesSubtitle": "Atualizações",
     "patchedSubtitle": "Aplicações Modificadas",
     "changeLaterSubtitle": "Podes modificar esta definição mais tarde.",
@@ -271,12 +271,7 @@
     "updateNotImplemented": "Este recurso ainda não foi implementado"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Modificador ReVanced",
-    "patchesContributors": "Modificações ReVanced",
-    "integrationsContributors": "Integrações ReVanced",
-    "cliContributors": "Cliente ReVanced",
-    "managerContributors": "Gestor ReVanced"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versão incompatível",

@@ -271,12 +271,7 @@
     "updateNotImplemented": "Deze functie is nog niet geïmplementeerd"
   },
   "contributorsView": {
-    "widgetTitle": "Bijdragers",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced patches",
-    "integrationsContributors": "ReVanced integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Bijdragers"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verkeerde versie",

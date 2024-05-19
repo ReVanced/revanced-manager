@@ -5,6 +5,8 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
+-dontobfuscate
+
 -keep class app.revanced.** { *; }
 -keep class com.android.tools.smali.** { *; }
 -keep class kotlin.** { *; }
