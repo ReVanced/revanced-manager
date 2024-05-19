@@ -139,12 +139,12 @@ class UpdateConfirmationSheet extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.all(20.0),
-                      data: snapshot.data!['body'] ?? '',
+                      data: snapshot.data ?? '',
                     ),
-                  ),
-                ],
-              );
-            },
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
