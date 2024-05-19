@@ -58,7 +58,7 @@
   },
   "latestCommitCard": {
     "loadingLabel": "正在加载…",
-    "timeagoLabel": "${time}前",
+    "timeagoLabel": "${time} 前",
     "patcherLabel": "补丁程序： ",
     "managerLabel": "管理器： ",
     "updateButton": "更新管理器"

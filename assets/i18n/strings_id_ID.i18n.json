@@ -3,9 +3,9 @@
   "cancelButton": "Batal",
   "dismissButton": "Abaikan",
   "quitButton": "Keluar",
-  "updateButton": "Memperbarui",
+  "updateButton": "Perbarui",
   "enabledLabel": "Aktif",
-  "disabledLabel": "Tidak Aktif",
+  "disabledLabel": "Nonaktif",
   "installed": "Terpasang: ${version}",
   "suggested": "Disarankan: ${version}",
   "yesButton": "Iya",
@@ -16,7 +16,7 @@
   "noShowAgain": "Jangan tampilkan lagi",
   "add": "Tambah",
   "remove": "Hapus",
-  "showChangelogButton": "Tampilkan daftar perubahan",
+  "showChangelogButton": "Tampilkan log perubahan",
   "showUpdateButton": "Tampilkan pembaruan",
   "navigationView": {
     "dashboardTab": "Dasbor",
@@ -27,7 +27,7 @@
     "refreshSuccess": "Berhasil Memuat Ulang",
     "widgetTitle": "Dasbor",
     "updatesSubtitle": "Pembaruan",
-    "patchedSubtitle": "Aplikasi yang dimodifikasi",
+    "patchedSubtitle": "Aplikasi tertambal",
     "changeLaterSubtitle": "Anda dapat mengubahnya di pengaturan nanti.",
     "noUpdates": "Tidak ada pembaruan",
     "WIP": "Sedang dikerjakan...",
@@ -67,7 +67,7 @@
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
     "armv7WarningDialogText": "Menambal pada perangkat ARMv7 belum didukung dan mungkin gagal. Lanjutkan saja?",
-    "removedPatchesWarningDialogText": "Patch berikut ini telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjutkan?",
+    "removedPatchesWarningDialogText": "Patch berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
     "requiredOptionDialogText": "Beberapa opsi patch harus diatur."
   },
   "appSelectorCard": {
