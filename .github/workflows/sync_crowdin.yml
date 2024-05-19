@@ -51,6 +51,8 @@ jobs:
 
       - name: Validation of Translation Strings
         run: |
+          dart pub get
+          dart run slang
           dart analyze lib/gen/strings.g.dart
 
       - name: Commit translations
