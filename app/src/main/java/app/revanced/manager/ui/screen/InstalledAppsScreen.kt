@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,12 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
-import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.component.AppLabel
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.viewmodel.InstalledAppsViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -37,16 +33,6 @@ fun InstalledAppsScreen(
     val installedApps by viewModel.apps.collectAsStateWithLifecycle(initialValue = null)
 
     Column {
-        if (!Aapt.supportsDevice()) {
-            NotificationCard(
-                isWarning = true,
-                icon = Icons.Outlined.WarningAmber,
-                text = stringResource(
-                    R.string.unsupported_architecture_warning
-                ),
-            )
-        }
-
         LazyColumnWithScrollbar(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
