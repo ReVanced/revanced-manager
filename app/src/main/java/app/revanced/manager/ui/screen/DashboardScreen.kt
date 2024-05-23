@@ -236,10 +236,10 @@ fun DashboardScreen(
                             icon = Icons.Outlined.Update,
                             actions = {
                                 TextButton(onClick = vm::dismissUpdateDialog) {
-                                    Text("Dismiss")
+                                    Text(stringResource(R.string.dismiss))
                                 }
                                 TextButton(onClick = onUpdateClick) {
-                                    Text("Update")
+                                    Text(stringResource(R.string.update))
                                 }
                             }
                         )
@@ -309,14 +309,14 @@ fun DashboardScreen(
 fun Notifications(
     vararg notifications: (@Composable () -> Unit)?,
 ) {
-    val nonNull = notifications.filterNotNull()
+    val activeNotifications = notifications.filterNotNull()
 
-    if (nonNull.isNotEmpty()) {
+    if (activeNotifications.isNotEmpty()) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            nonNull.forEach { notification ->
+            activeNotifications.forEach { notification ->
                 notification()
             }
         }

@@ -167,14 +167,14 @@ private fun NotificationCardInstance(
         Card(
             onClick = onClick,
             colors = colors,
-            modifier = Modifier.then(modifier).then(defaultModifier)
+            modifier = modifier.then(defaultModifier)
         ) {
             content()
         }
     } else {
         Card(
             colors = colors,
-            modifier = Modifier.then(modifier).then(defaultModifier)
+            modifier = modifier.then(defaultModifier)
         ) {
             content()
         }
