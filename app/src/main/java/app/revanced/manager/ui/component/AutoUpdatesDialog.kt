@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,14 +47,14 @@ fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
 
                 Column {
                     AutoUpdatesItem(
-                        headline = stringResource(R.string.auto_updates_dialog_manager),
+                        headline = R.string.auto_updates_dialog_manager,
                         icon = Icons.Outlined.Update,
                         checked = managerEnabled,
                         onCheckedChange = { managerEnabled = it }
                     )
                     HorizontalDivider()
                     AutoUpdatesItem(
-                        headline = stringResource(R.string.auto_updates_dialog_patches),
+                        headline = R.string.auto_updates_dialog_patches,
                         icon = Icons.Outlined.Source,
                         checked = patchesEnabled,
                         onCheckedChange = { patchesEnabled = it }
@@ -68,13 +69,13 @@ fun AutoUpdatesDialog(onSubmit: (Boolean, Boolean) -> Unit) {
 
 @Composable
 private fun AutoUpdatesItem(
-    headline: String,
+    @StringRes headline: Int,
     icon: ImageVector,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) = ListItem(
     leadingContent = { Icon(icon, null) },
-    headlineContent = { Text(text = headline) },
+    headlineContent = { Text(stringResource(headline)) },
     trailingContent = { Checkbox(checked = checked, onCheckedChange = null) },
     modifier = Modifier.clickable { onCheckedChange(!checked) }
 )
