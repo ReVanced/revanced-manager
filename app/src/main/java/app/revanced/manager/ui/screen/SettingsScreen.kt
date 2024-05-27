@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -161,10 +162,11 @@ fun SettingsScreen(
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
                             NotificationCard(
+                                modifier = Modifier.padding(16.dp),
                                 isWarning = true,
                                 icon = Icons.Default.BatteryAlert,
                                 text = stringResource(R.string.battery_optimization_notification),
-                                primaryAction = {
+                                onClick = {
                                     context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                         data = Uri.parse("package:${context.packageName}")
                                     })
