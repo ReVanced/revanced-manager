@@ -5,16 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.AppSelectorScreen
@@ -46,7 +38,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getAndroidViewModel()
-
         vm.importLegacySettings(this)
 
         setContent {
@@ -59,36 +50,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 val navController =
                     rememberNavController<Destination>(startDestination = Destination.Dashboard)
-
                 NavBackHandler(navController)
-
-                val firstLaunch by vm.prefs.firstLaunch.getAsState()
-
-                if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
-
-                vm.updatedManagerVersion?.let {
-                    AlertDialog(
-                        onDismissRequest = vm::dismissUpdateDialog,
-                        confirmButton = {
-                            TextButton(
-                                onClick = {
-                                    vm.dismissUpdateDialog()
-                                    navController.navigate(Destination.Settings(SettingsDestination.Update(false)))
-                                }
-                            ) {
-                                Text(stringResource(R.string.update))
-                            }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = vm::dismissUpdateDialog) {
-                                Text(stringResource(R.string.dismiss_temporary))
-                            }
-                        },
-                        icon = { Icon(Icons.Outlined.Update, null) },
-                        title = { Text(stringResource(R.string.update_available_dialog_title)) },
-                        text = { Text(stringResource(R.string.update_available_dialog_description, it)) }
-                    )
-                }
 
                 AnimatedNavHost(
                     controller = navController
@@ -97,6 +59,9 @@ class MainActivity : ComponentActivity() {
                         is Destination.Dashboard -> DashboardScreen(
                             onSettingsClick = { navController.navigate(Destination.Settings()) },
                             onAppSelectorClick = { navController.navigate(Destination.AppSelector) },
+                            onUpdateClick = { navController.navigate(
+                                Destination.Settings(SettingsDestination.Update())
+                            ) },
                             onAppClick = { installedApp ->
                                 navController.navigate(
                                     Destination.InstalledApplicationInfo(

@@ -324,8 +324,7 @@
     <string name="no_update_available">No update available</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
-    <string name="update_available_dialog_title">New update available</string>
-    <string name="update_available_dialog_description">A new version (%s) is available for download.</string>
+    <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
     <string name="failed_to_download_update">Failed to download update: %s</string>
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>

@@ -8,25 +8,18 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
 import app.revanced.manager.domain.repository.SerializedSelection
-import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.ui.theme.Theme
-import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -36,50 +29,9 @@ class MainViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val patchSelectionRepository: PatchSelectionRepository,
     private val keystoreManager: KeystoreManager,
-    private val reVancedAPI: ReVancedAPI,
     private val app: Application,
-    private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager
 ) : ViewModel() {
-    var updatedManagerVersion: String? by mutableStateOf(null)
-        private set
-
-    init {
-        viewModelScope.launch { checkForManagerUpdates() }
-    }
-
-    fun dismissUpdateDialog() {
-        updatedManagerVersion = null
-    }
-
-    private suspend fun checkForManagerUpdates() {
-        if (app.isDebuggable || !prefs.managerAutoUpdates.get() || !networkInfo.isConnected()) return
-
-        uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
-            updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
-        }
-    }
-
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
-        prefs.firstLaunch.update(false)
-
-        prefs.managerAutoUpdates.update(manager)
-
-        if (manager) checkForManagerUpdates()
-
-        if (patches) {
-            with(patchBundleRepository) {
-                sources
-                    .first()
-                    .find { it.uid == 0 }
-                    ?.asRemoteOrNull
-                    ?.setAutoUpdate(true)
-
-                updateCheck()
-            }
-        }
-    }
-
     fun importLegacySettings(componentActivity: ComponentActivity) {
         if (!prefs.firstLaunch.getBlocking()) return
 

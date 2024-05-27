@@ -65,34 +65,22 @@ fun BundleItem(
             .height(64.dp)
             .fillMaxWidth()
             .combinedClickable(
-                onClick = {
-                    viewBundleDialogPage = true
-                },
+                onClick = { viewBundleDialogPage = true },
                 onLongClick = onSelect,
             ),
-        leadingContent = {
-            if(selectable) {
+        leadingContent = if (selectable) {
+            {
                 Checkbox(
                     checked = isBundleSelected,
                     onCheckedChange = toggleSelection,
                 )
             }
-        },
+        } else null,
 
-        headlineContent = {
-            Text(
-                text = bundle.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        },
+        headlineContent = { Text(text = bundle.name) },
         supportingContent = {
             state.patchBundleOrNull()?.patches?.size?.let { patchCount ->
-                Text(
-                    text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                Text(text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
             }
         },
         trailingContent = {
@@ -114,13 +102,7 @@ fun BundleItem(
                     )
                 }
 
-                version?.let { txt ->
-                    Text(
-                        text = txt,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                version?.let { Text(text = it) }
             }
         },
     )

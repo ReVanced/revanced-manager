@@ -2,6 +2,7 @@ package app.revanced.manager.ui.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,8 @@ import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
+import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +47,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.isDefault
+import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.AutoUpdatesDialog
+import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportBundleDialog
@@ -68,38 +75,26 @@ fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
+    onUpdateClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit
 ) {
-    var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
-    var selectedBundleType: BundleType? by rememberSaveable { mutableStateOf(null) }
-
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
-    val pages: Array<DashboardPage> = DashboardPage.values()
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val androidContext = LocalContext.current
-
+    val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         initialPage = DashboardPage.DASHBOARD.ordinal,
         initialPageOffsetFraction = 0f
-    ) {
-        DashboardPage.values().size
-    }
-    val composableScope = rememberCoroutineScope()
+    ) { DashboardPage.entries.size }
 
     LaunchedEffect(pagerState.currentPage) {
         if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
     }
 
-    if (showBundleTypeSelectorDialog) {
-        ImportBundleTypeSelectorDialog(
-            onDismiss = { showBundleTypeSelectorDialog = false },
-            onConfirm = {
-                selectedBundleType = it
-                showBundleTypeSelectorDialog = false
-            }
-        )
-    }
+    val firstLaunch by vm.prefs.firstLaunch.getAsState()
+    if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
 
+    var selectedBundleType: BundleType? by rememberSaveable { mutableStateOf(null) }
     selectedBundleType?.let {
         fun dismiss() {
             selectedBundleType = null
@@ -116,6 +111,17 @@ fun DashboardScreen(
                 vm.createRemoteSource(name, url, autoUpdate)
             },
             initialBundleType = it
+        )
+    }
+
+    var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
+    if (showBundleTypeSelectorDialog) {
+        ImportBundleTypeSelectorDialog(
+            onDismiss = { showBundleTypeSelectorDialog = false },
+            onConfirm = {
+                selectedBundleType = it
+                showBundleTypeSelectorDialog = false
+            }
         )
     }
 
@@ -192,9 +198,7 @@ fun DashboardScreen(
                         }
                     }
                 }
-            ) {
-                Icon(Icons.Default.Add, stringResource(R.string.add))
-            }
+            ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
@@ -202,7 +206,7 @@ fun DashboardScreen(
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
-                pages.forEachIndexed { index, page ->
+                DashboardPage.entries.forEachIndexed { index, page ->
                     Tab(
                         selected = pagerState.currentPage == index,
                         onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
@@ -214,12 +218,41 @@ fun DashboardScreen(
                 }
             }
 
+            Notifications(
+                if (!Aapt.supportsDevice()) {
+                    {
+                        NotificationCard(
+                            isWarning = true,
+                            icon = Icons.Outlined.WarningAmber,
+                            text = stringResource(R.string.unsupported_architecture_warning),
+                            onDismiss = null
+                        )
+                    }
+                } else null,
+                vm.updatedManagerVersion?.let {
+                    {
+                        NotificationCard(
+                            text = stringResource(R.string.update_available_dialog_description, it),
+                            icon = Icons.Outlined.Update,
+                            actions = {
+                                TextButton(onClick = vm::dismissUpdateDialog) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
+                                TextButton(onClick = onUpdateClick) {
+                                    Text(stringResource(R.string.update))
+                                }
+                            }
+                        )
+                    }
+                }
+            )
+
             HorizontalPager(
                 state = pagerState,
                 userScrollEnabled = true,
                 modifier = Modifier.fillMaxSize(),
                 pageContent = { index ->
-                    when (pages[index]) {
+                    when (DashboardPage.entries[index]) {
                         DashboardPage.DASHBOARD -> {
                             InstalledAppsScreen(
                                 onAppClick = onAppClick
@@ -238,11 +271,9 @@ fun DashboardScreen(
                             val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
 
                             Column(
-                                modifier = Modifier
-                                    .fillMaxSize(),
+                                modifier = Modifier.fillMaxSize(),
                             ) {
                                 sources.forEach {
-
                                     BundleItem(
                                         bundle = it,
                                         onDelete = {
@@ -270,6 +301,24 @@ fun DashboardScreen(
                     }
                 }
             )
+        }
+    }
+}
+
+@Composable
+fun Notifications(
+    vararg notifications: (@Composable () -> Unit)?,
+) {
+    val activeNotifications = notifications.filterNotNull()
+
+    if (activeNotifications.isNotEmpty()) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            activeNotifications.forEach { notification ->
+                notification()
+            }
         }
     }
 }

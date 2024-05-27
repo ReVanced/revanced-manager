@@ -27,7 +27,7 @@ sealed interface SettingsDestination : Parcelable {
     object About : SettingsDestination
 
     @Parcelize
-    data class Update(val downloadOnScreenEntry: Boolean) : SettingsDestination
+    data class Update(val downloadOnScreenEntry: Boolean = false) : SettingsDestination
 
     @Parcelize
     object Changelogs : SettingsDestination
