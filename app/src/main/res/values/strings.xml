@@ -119,7 +119,7 @@
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
     <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
-    <string name="search">Search</string>
+    <string name="search">Search patches…</string>
     <string name="apply">Apply</string>
     <string name="help">Help</string>
     <string name="back">Back</string>

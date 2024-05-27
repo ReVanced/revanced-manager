@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
@@ -33,7 +32,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -61,6 +59,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.DangerousActionDialogBase
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -208,28 +207,11 @@ fun PatchesSelectorScreen(
     }
 
     search?.let { query ->
-        SearchBar(
+        SearchView(
             query = query,
-            onQueryChange = { new ->
-                search = new
-            },
-            onSearch = {},
-            active = true,
-            onActiveChange = { new ->
-                if (new) return@SearchBar
-                search = null
-            },
-            placeholder = {
-                Text(stringResource(R.string.search_patches))
-            },
-            leadingIcon = {
-                IconButton(onClick = { search = null }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        stringResource(R.string.back)
-                    )
-                }
-            }
+            onQueryChange = { search = it },
+            onActiveChange = { if (!it) search = null },
+            placeholder = { Text(stringResource(R.string.search_patches)) }
         ) {
             val bundle = bundles[pagerState.currentPage]
 
