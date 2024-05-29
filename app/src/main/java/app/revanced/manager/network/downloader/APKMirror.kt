@@ -35,7 +35,7 @@ class APKMirror : AppDownloader, KoinComponent {
     )
 
     private suspend fun getAppLink(packageName: String): String {
-        val searchResults = httpClient.getHtml { url("$apkMirror/?post_type=app_release&searchtype=app&s=$packageName") }
+        val searchResults = httpClient.getHtml { url("$APK_MIRROR/?post_type=app_release&searchtype=app&s=$packageName") }
             .div {
                 withId = "content"
                 findFirst {
@@ -66,7 +66,7 @@ class APKMirror : AppDownloader, KoinComponent {
             }
 
         return searchResults.find { url ->
-            httpClient.getHtml { url(apkMirror + url) }
+            httpClient.getHtml { url(APK_MIRROR + url) }
                 .div {
                     withId = "primary"
                     findFirst {
@@ -90,11 +90,12 @@ class APKMirror : AppDownloader, KoinComponent {
 
     override fun getAvailableVersions(packageName: String, versionFilter: Set<String>) = flow<AppDownloader.App> {
 
-        // Vanced music uses the same package name so we have to hardcode...
-        val appCategory = if (packageName == "com.google.android.apps.youtube.music")
-            "youtube-music"
-        else
-            getAppLink(packageName).split("/")[3]
+        // We have to hardcode some apps since there are multiple apps with that package name
+        val appCategory = when (packageName) {
+            "com.google.android.apps.youtube.music" -> "youtube-music"
+            "com.google.android.youtube" -> "youtube"
+            else -> getAppLink(packageName).split("/")[3]
+        }
 
         var page = 1
 
@@ -107,7 +108,7 @@ class APKMirror : AppDownloader, KoinComponent {
                 page <= 1
         ) {
             httpClient.getHtml {
-                url("$apkMirror/uploads/page/$page/")
+                url("$APK_MIRROR/uploads/page/$page/")
                 parameter("appcategory", appCategory)
             }.div {
                 withClass = "widget_appmanager_recentpostswidget"
@@ -172,7 +173,7 @@ class APKMirror : AppDownloader, KoinComponent {
             preferSplit: Boolean,
             onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit
         ) {
-            val variants = httpClient.getHtml { url(apkMirror + downloadLink) }
+            val variants = httpClient.getHtml { url(APK_MIRROR + downloadLink) }
                 .div {
                     withClass = "variants-table"
                     findFirst { // list of variants
@@ -217,7 +218,7 @@ class APKMirror : AppDownloader, KoinComponent {
 
             if (variant.apkType == APKType.BUNDLE) throw Exception("Split apks are not supported yet") // TODO
 
-            val downloadPage = httpClient.getHtml { url(apkMirror + variant.link) }
+            val downloadPage = httpClient.getHtml { url(APK_MIRROR + variant.link) }
                 .a {
                     withClass = "downloadButton"
                     findFirst {
@@ -225,7 +226,7 @@ class APKMirror : AppDownloader, KoinComponent {
                     }
                 }
 
-            val downloadLink = httpClient.getHtml { url(apkMirror + downloadPage) }
+            val downloadLink = httpClient.getHtml { url(APK_MIRROR + downloadPage) }
                 .form {
                     withId = "filedownload"
                     findFirst {
@@ -250,7 +251,7 @@ class APKMirror : AppDownloader, KoinComponent {
 
             try {
                 httpClient.download(targetFile) {
-                    url(apkMirror + downloadLink)
+                    url(APK_MIRROR + downloadLink)
                     onDownload { bytesSentTotal, contentLength ->
                         onDownload(bytesSentTotal.div(100000).toFloat().div(10) to contentLength.div(100000).toFloat().div(10))
                     }
@@ -268,7 +269,7 @@ class APKMirror : AppDownloader, KoinComponent {
     }
 
     companion object {
-        const val apkMirror = "https://www.apkmirror.com"
+        const val APK_MIRROR = "https://www.apkmirror.com"
 
         val supportedArches = listOf("universal", "noarch") + SUPPORTED_ABIS
     }
