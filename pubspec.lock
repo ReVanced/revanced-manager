@@ -323,9 +323,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "560d21c4148b53933313573e7eafca0b0eb9aadf"
-      resolved-ref: "560d21c4148b53933313573e7eafca0b0eb9aadf"
-      url: "https://github.com/BenjaminHalko/flutter_background"
+      ref: "900a81501f1f0e4996fe9e2cbf55f1ea8df08b49"
+      resolved-ref: "900a81501f1f0e4996fe9e2cbf55f1ea8df08b49"
+      url: "https://github.com/validcube/flutter_background"
     source: git
     version: "1.2.0"
   flutter_cache_manager:
@@ -692,10 +692,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "2c582551839386fa7ddbc7770658be7c0f87f388a4bff72066478f597c34d17f"
+      sha256: b93d8b4d624b4ea19b0a5a208b2d6eff06004bc3ce74c06040b120eeadd00ce0
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "8.0.0"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
