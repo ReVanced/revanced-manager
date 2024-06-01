@@ -61,7 +61,7 @@ dependencies:
   shared_preferences: ^2.2.3
   skeletons: ^0.0.3
   slang: ^3.30.2
-  slang_flutter: ^3.30.0
+  slang_flutter: ^3.31.0
   stacked: ^3.4.2
   stacked_generator: ^1.6.0
   stacked_services: ^1.5.0
