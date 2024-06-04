@@ -1,7 +1,9 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
@@ -449,9 +451,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                     t.patchOptionsView.customValue,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSecondaryContainer,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
                     ),
                   ),
                 ),
@@ -507,16 +507,24 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                 onSelected: (String selection) async {
                   // manageExternalStorage permission is required for file/folder selection
                   // otherwise, the app will not complain, but the patches will error out
-                  // the same way as if the user selected an empty file/folder
+                  // the same way as if the user selected an empty file/folder.
+                  // Android 10 and above requires the manageExternalStorage permission
                   final Map<String, dynamic> availableActions = {
                     t.patchOptionsView.selectFilePath: () async {
+                      final androidVersion =
+                          await DeviceInfoPlugin().androidInfo.then((info) {
+                        return info.version.release;
+                      });
+                      if (Platform.isAndroid &&
+                          int.parse(androidVersion) >= 10) {
+                        final permission =
+                            await Permission.manageExternalStorage.request();
+                        if (!permission.isGranted) {
+                          return;
+                        }
+                      }
                       final FilePickerResult? result =
                           await FilePicker.platform.pickFiles();
-                      final permission =
-                          await Permission.manageExternalStorage.request();
-                      if (!permission.isGranted) {
-                        return;
-                      }
                       if (result == null) {
                         return;
                       }
@@ -524,10 +532,17 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       widget.onChanged(controller.text);
                     },
                     t.patchOptionsView.selectFolder: () async {
-                      final permission =
-                          await Permission.manageExternalStorage.request();
-                      if (!permission.isGranted) {
-                        return;
+                      final androidVersion =
+                          await DeviceInfoPlugin().androidInfo.then((info) {
+                        return info.version.release;
+                      });
+                      if (Platform.isAndroid &&
+                          int.parse(androidVersion) >= 10) {
+                        final permission =
+                            await Permission.manageExternalStorage.request();
+                        if (!permission.isGranted) {
+                          return;
+                        }
                       }
                       final String? result =
                           await FilePicker.platform.getDirectoryPath();
