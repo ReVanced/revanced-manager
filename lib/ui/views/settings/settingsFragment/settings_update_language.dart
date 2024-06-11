@@ -109,9 +109,8 @@ class SUpdateLanguage extends BaseViewModel {
           ),
           TextButton(
             onPressed: () {
-              // TODO(nullcube): Translation will not update until we refresh the page.
               updateLocale(selectedLanguageCode.value.languageTag);
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
             child: Text(t.okButton),
           ),
