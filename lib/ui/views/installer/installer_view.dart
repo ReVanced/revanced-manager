@@ -27,7 +27,7 @@ class InstallerView extends StatelessWidget {
         },
         child: SafeArea(
           top: false,
-          bottom: model.isPatching,
+          bottom: false,
           child: Scaffold(
             floatingActionButton: Visibility(
               visible:
