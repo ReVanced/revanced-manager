@@ -528,7 +528,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                     if (!widget.patchOption.required)
                       PopupMenuItem(
                         value: 'null',
-                        child: Text(t.patchOptionsView.nullValue),
+                        child: Text(t.patchOptionsView.setToNull),
                       ),
                   ];
                 },
@@ -553,7 +553,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       widget.removeValue!();
                       break;
                     case 'null':
-                      controller.text = 'null';
+                      controller.text = '';
                       widget.onChanged(null);
                       break;
                   }
