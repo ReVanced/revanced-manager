@@ -90,31 +90,22 @@ class _IntAndStringPatchOptionState extends State<IntAndStringPatchOption> {
                   widget.model.modifyOptions(value, widget.patchOption);
                 },
               ),
-              if (widget.patchOption.required && value == null)
+              if (value == null)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
                     Text(
-                      t.patchOptionsView.requiredOption,
+                      widget.patchOption.required
+                          ? t.patchOptionsView.requiredOption
+                          : t.patchOptionsView.nullValue,
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                  ],
-                ),
-              if (value == null && !widget.patchOption.required)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8),
-                    Text(
-                      t.patchOptionsView.nullValue,
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondaryContainer
-                            .withOpacity(0.6),
+                        color: widget.patchOption.required
+                            ? Theme.of(context).colorScheme.error
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withOpacity(0.6),
                       ),
                     ),
                   ],
