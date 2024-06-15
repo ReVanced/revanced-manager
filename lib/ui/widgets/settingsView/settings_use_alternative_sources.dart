@@ -31,8 +31,9 @@ class _SUseAlternativeSourcesState extends State<SUseAlternativeSources> {
           subtitle: Text(t.settingsView.useAlternativeSourcesHint),
           value: _settingsViewModel.isUsingAlternativeSources(),
           onChanged: (value) {
-            _settingsViewModel.useAlternativeSources(value);
-            setState(() {});
+            setState(() {
+              _settingsViewModel.useAlternativeSources(value);
+            });
           },
         ),
         if (_settingsViewModel.isUsingAlternativeSources())

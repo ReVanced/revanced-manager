@@ -29,6 +29,8 @@ class ManagerAPI {
   final RootAPI _rootAPI = RootAPI();
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
+  final String patchesRepo = 'revanced-patches';
+  final String integrationsRepo = 'revanced-integrations';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
   List<Option> modifiedOptions = [];
@@ -220,6 +222,14 @@ class ManagerAPI {
 
   bool isUsingAlternativeSources() {
     return _prefs.getBool('useAlternativeSources') ?? false;
+  }
+
+  Future<void> setPreReleasePatchesEnabled(bool value) async {
+    await _prefs.setBool('usePrereleasePatches', value);
+  }
+
+  bool isPreReleasePatchesEnabled() {
+    return _prefs.getBool('usePrereleasePatches') ?? false;
   }
 
   Option? getPatchOption(String packageName, String patchName, String key) {
@@ -464,13 +474,16 @@ class ManagerAPI {
 
   Future<String?> getLatestPatchesReleaseTime() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseTime(
-        '.json',
-        defaultPatchesRepo,
-      );
+      return !isPreReleasePatchesEnabled()
+          ? await _revancedAPI.getLatestReleaseTime(
+              '.json',
+              defaultPatchesRepo,
+            )
+          : await _revancedAPI.getLatestReleaseTimeWithPreReleases(patchesRepo);
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = !isPreReleasePatchesEnabled()
+          ? await _githubAPI.getLatestRelease(getPatchesRepo())
+          : await _githubAPI.getLatestReleaseWithPreReleases(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -497,12 +510,18 @@ class ManagerAPI {
 
   Future<String?> getLatestIntegrationsVersion() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        '.apk',
-        defaultIntegrationsRepo,
-      );
+      return !isPreReleasePatchesEnabled()
+          ? await _revancedAPI.getLatestReleaseVersion(
+              '.apk',
+              defaultIntegrationsRepo,
+            )
+          : await _revancedAPI.getLatestReleaseVersionWithPreReleases(
+              integrationsRepo,
+            );
     } else {
-      final release = await _githubAPI.getLatestRelease(getIntegrationsRepo());
+      final release = !isPreReleasePatchesEnabled()
+          ? await _githubAPI.getLatestRelease(getIntegrationsRepo())
+          : await _githubAPI.getLatestReleaseWithPreReleases(getIntegrationsRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
@@ -513,13 +532,17 @@ class ManagerAPI {
 
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        '.json',
-        defaultPatchesRepo,
-      );
+      return !isPreReleasePatchesEnabled()
+          ? await _revancedAPI.getLatestReleaseVersion(
+              '.json',
+              defaultPatchesRepo,
+            )
+          : await _revancedAPI
+              .getLatestReleaseVersionWithPreReleases(patchesRepo);
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = !isPreReleasePatchesEnabled()
+          ? await _githubAPI.getLatestRelease(getPatchesRepo())
+          : await _githubAPI.getLatestReleaseWithPreReleases(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {

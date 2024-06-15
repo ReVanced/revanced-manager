@@ -18,6 +18,7 @@ class RevancedAPI {
   late final DownloadManager _downloadManager = locator<DownloadManager>();
 
   final Lock getToolsLock = Lock();
+  final Lock getV2Lock = Lock();
 
   Future<void> initialize(String repoUrl) async {
     _dio = _downloadManager.initDio(repoUrl);
@@ -163,6 +164,64 @@ class RevancedAPI {
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['timestamp'] as String);
+        return format(timestamp, locale: 'en_short');
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> _getLatestReleaseWithPreReleases(
+    String repoName, // must not contain organization name
+  ) async {
+    if (!locator<ManagerAPI>().getDownloadConsent()) {
+      return Future(() => null);
+    }
+    return getV2Lock.synchronized(() async {
+      try {
+        final response =
+            await _dio.get('/v2/$repoName/releases/latest?dev=true');
+        return response.data['release'];
+      } on Exception catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        return null;
+      }
+    });
+  }
+
+  Future<String?> getLatestReleaseVersionWithPreReleases(
+    String repoName,
+  ) async {
+    try {
+      final Map<String, dynamic>? release =
+          await _getLatestReleaseWithPreReleases(repoName);
+      if (release != null) {
+        return release['metadata']['tag_name'];
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+    return null;
+  }
+
+  Future<String?> getLatestReleaseTimeWithPreReleases(
+    String repoName,
+  ) async {
+    try {
+      final Map<String, dynamic>? release =
+          await _getLatestReleaseWithPreReleases(repoName);
+      if (release != null) {
+        final DateTime timestamp =
+            DateTime.parse(release['metadata']['published_at'] as String);
         return format(timestamp, locale: 'en_short');
       }
     } on Exception catch (e) {
