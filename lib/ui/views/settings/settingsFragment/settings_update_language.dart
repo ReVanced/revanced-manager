@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:language_code/language_code.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
@@ -10,8 +11,10 @@ import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 final _settingViewModel = SettingsViewModel();
+final _navigationService = NavigationService();
 
 class SUpdateLanguage extends BaseViewModel {
   final Toast _toast = locator<Toast>();
@@ -108,10 +111,9 @@ class SUpdateLanguage extends BaseViewModel {
             child: Text(t.cancelButton),
           ),
           TextButton(
-            onPressed: () {
-              // TODO(nullcube): Translation will not update until we refresh the page.
+            onPressed: () async {
               updateLocale(selectedLanguageCode.value.languageTag);
-              Navigator.of(context).pop();
+              await _navigationService.navigateToNavigationView();
             },
             child: Text(t.okButton),
           ),
