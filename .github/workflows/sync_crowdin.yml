@@ -24,7 +24,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          flutter-version: 3.19.x
+          flutter-version: 3.22.x
 
       - name: Sync translations from Crowdin
         uses: crowdin/github-action@v1
