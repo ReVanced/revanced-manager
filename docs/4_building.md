@@ -2,7 +2,7 @@
 
 Learn how to build ReVanced Manager from source.
 
-1. Setup the Flutter environment for your [platform](https://docs.flutter.dev/get-started/install) with version **3.22**
+1. Setup the Flutter environment for your [platform](https://docs.flutter.dev/get-started/install) with the suggested version of **v3.22**
 
 2. Clone the repository
 
