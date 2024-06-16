@@ -15,8 +15,8 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.repository.PatchOptionsRepository
 import app.revanced.manager.domain.repository.PatchSelectionRepository
-import app.revanced.manager.ui.model.BundleInfo
-import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
+import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.PatchBundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
@@ -101,13 +101,13 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         selectedAppInfo = info
     }
 
-    fun getOptionsFiltered(bundles: List<BundleInfo>) = options.filtered(bundles)
+    fun getOptionsFiltered(bundles: List<PatchBundleInfo.Scoped>) = options.filtered(bundles)
 
-    fun getPatches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
+    fun getPatches(bundles: List<PatchBundleInfo.Scoped>, allowUnsupported: Boolean) =
         selectionState.patches(bundles, allowUnsupported)
 
     fun getCustomPatches(
-        bundles: List<BundleInfo>,
+        bundles: List<PatchBundleInfo.Scoped>,
         allowUnsupported: Boolean
     ): PatchSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
@@ -115,7 +115,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     fun updateConfiguration(
         selection: PatchSelection?,
         options: Options,
-        bundles: List<BundleInfo>
+        bundles: List<PatchBundleInfo.Scoped>
     ) {
         selectionState = selection?.let(SelectionState::Customized) ?: SelectionState.Default
 
@@ -142,11 +142,11 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         /**
          * Returns a copy with all nonexistent options removed.
          */
-        private fun Options.filtered(bundles: List<BundleInfo>): Options = buildMap options@{
+        private fun Options.filtered(bundles: List<PatchBundleInfo.Scoped>): Options = buildMap options@{
             bundles.forEach bundles@{ bundle ->
                 val bundleOptions = this@filtered[bundle.uid] ?: return@bundles
 
-                val patches = bundle.all.associateBy { it.name }
+                val patches = bundle.patches.associateBy { it.name }
 
                 this@options[bundle.uid] = buildMap bundleOptions@{
                     bundleOptions.forEach patch@{ (patchName, values) ->
@@ -165,11 +165,11 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 }
 
 private sealed interface SelectionState : Parcelable {
-    fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchSelection
+    fun patches(bundles: List<PatchBundleInfo.Scoped>, allowUnsupported: Boolean): PatchSelection
 
     @Parcelize
     data class Customized(val patchSelection: PatchSelection) : SelectionState {
-        override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
+        override fun patches(bundles: List<PatchBundleInfo.Scoped>, allowUnsupported: Boolean) =
             bundles.toPatchSelection(
                 allowUnsupported
             ) { uid, patch ->
@@ -179,7 +179,7 @@ private sealed interface SelectionState : Parcelable {
 
     @Parcelize
     data object Default : SelectionState {
-        override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
+        override fun patches(bundles: List<PatchBundleInfo.Scoped>, allowUnsupported: Boolean) =
             bundles.toPatchSelection(allowUnsupported) { _, patch -> patch.include }
     }
 }

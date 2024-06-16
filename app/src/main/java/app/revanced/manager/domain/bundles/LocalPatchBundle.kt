@@ -20,6 +20,6 @@ class LocalPatchBundle(name: String, id: Int, directory: File) : PatchBundleSour
             }
         }
 
-        reload()
+        refresh()
     }
 }

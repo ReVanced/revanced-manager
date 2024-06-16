@@ -224,13 +224,13 @@ fun PatchesSelectorScreen(
 
                 patchList(
                     uid = bundle.uid,
-                    patches = bundle.supported.searched(),
+                    patches = bundle.supportedPatches.searched(),
                     filterFlag = SHOW_SUPPORTED,
                     supported = true
                 )
                 patchList(
                     uid = bundle.uid,
-                    patches = bundle.universal.searched(),
+                    patches = bundle.universalPatches.searched(),
                     filterFlag = SHOW_UNIVERSAL,
                     supported = true
                 ) {
@@ -242,13 +242,13 @@ fun PatchesSelectorScreen(
                 if (!vm.allowIncompatiblePatches) return@LazyColumnWithScrollbar
                 patchList(
                     uid = bundle.uid,
-                    patches = bundle.unsupported.searched(),
+                    patches = bundle.unsupportedPatches.searched(),
                     filterFlag = SHOW_UNSUPPORTED,
                     supported = true
                 ) {
                     ListHeader(
                         title = stringResource(R.string.unsupported_patches),
-                        onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                        onHelpClick = { vm.openUnsupportedDialog(bundle.unsupportedPatches) }
                     )
                 }
             }
@@ -332,13 +332,13 @@ fun PatchesSelectorScreen(
                     ) {
                         patchList(
                             uid = bundle.uid,
-                            patches = bundle.supported,
+                            patches = bundle.supportedPatches,
                             filterFlag = SHOW_SUPPORTED,
                             supported = true
                         )
                         patchList(
                             uid = bundle.uid,
-                            patches = bundle.universal,
+                            patches = bundle.universalPatches,
                             filterFlag = SHOW_UNIVERSAL,
                             supported = true
                         ) {
@@ -348,13 +348,13 @@ fun PatchesSelectorScreen(
                         }
                         patchList(
                             uid = bundle.uid,
-                            patches = bundle.unsupported,
+                            patches = bundle.unsupportedPatches,
                             filterFlag = SHOW_UNSUPPORTED,
                             supported = vm.allowIncompatiblePatches
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),
-                                onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                                onHelpClick = { vm.openUnsupportedDialog(bundle.unsupportedPatches) }
                             )
                         }
                     }

@@ -26,17 +26,23 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
+import kotlinx.coroutines.flow.mapNotNull
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BundlePatchesDialog(
-    onDismissRequest: () -> Unit,
     bundle: PatchBundleSource,
+    onDismissRequest: () -> Unit,
 ) {
     var informationCardVisible by remember { mutableStateOf(true) }
-    val state by bundle.state.collectAsStateWithLifecycle()
+    val patchBundleRepository: PatchBundleRepository = koinInject()
+    val patches by remember(bundle.uid) {
+        patchBundleRepository.bundleInfoFlow.mapNotNull { it[bundle.uid]?.patches }
+    }.collectAsStateWithLifecycle(initialValue = emptyList())
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -75,29 +81,28 @@ fun BundlePatchesDialog(
                     }
                 }
 
-                state.patchBundleOrNull()?.let { bundle ->
-                    items(bundle.patches.size) { bundleIndex ->
-                        val patch = bundle.patches[bundleIndex]
-                        ListItem(
-                            headlineContent = {
+                items(patches.size) { index ->
+                    val patch = patches[index]
+
+                    ListItem(
+                        headlineContent = {
+                            Text(
+                                text = patch.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        supportingContent = {
+                            patch.description?.let {
                                 Text(
-                                    text = patch.name,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    text = it,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
-                            },
-                            supportingContent = {
-                                patch.description?.let {
-                                    Text(
-                                        text = it,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
                             }
-                        )
-                        HorizontalDivider()
-                    }
+                        }
+                    )
+                    HorizontalDivider()
                 }
             }
         }

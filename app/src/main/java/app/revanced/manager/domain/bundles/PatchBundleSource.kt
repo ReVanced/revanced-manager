@@ -1,9 +1,7 @@
 package app.revanced.manager.domain.bundles
 
-import android.util.Log
 import androidx.compose.runtime.Stable
 import app.revanced.manager.patcher.patch.PatchBundle
-import app.revanced.manager.util.tag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -18,7 +16,7 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
     protected val patchesFile = directory.resolve("patches.jar")
     protected val integrationsFile = directory.resolve("integrations.apk")
 
-    private val _state = MutableStateFlow(load())
+    private val _state = MutableStateFlow(getPatchBundle())
     val state = _state.asStateFlow()
 
     /**
@@ -36,19 +34,16 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
         }
     }
 
-    private fun load(): State {
-        if (!hasInstalled()) return State.Missing
+    private fun getPatchBundle() =
+        if (!hasInstalled()) State.Missing
+        else State.Available(PatchBundle(patchesFile, integrationsFile.takeIf(File::exists)))
 
-        return try {
-            State.Loaded(PatchBundle(patchesFile, integrationsFile.takeIf(File::exists)))
-        } catch (t: Throwable) {
-            Log.e(tag, "Failed to load patch bundle $name", t)
-            State.Failed(t)
-        }
+    fun refresh() {
+        _state.value = getPatchBundle()
     }
 
-    fun reload() {
-        _state.value = load()
+    fun markAsFailed(e: Throwable) {
+        _state.value = State.Failed(e)
     }
 
     sealed interface State {
@@ -56,7 +51,7 @@ sealed class PatchBundleSource(val name: String, val uid: Int, directory: File) 
 
         data object Missing : State
         data class Failed(val throwable: Throwable) : State
-        data class Loaded(val bundle: PatchBundle) : State {
+        data class Available(val bundle: PatchBundle) : State {
             override fun patchBundleOrNull() = bundle
         }
     }

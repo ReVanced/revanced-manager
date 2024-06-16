@@ -49,7 +49,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
         }
 
         saveVersion(patches.version, integrations.version)
-        reload()
+        refresh()
     }
 
     suspend fun downloadLatest() {
@@ -76,7 +76,7 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
 
     suspend fun deleteLocalFiles() = withContext(Dispatchers.Default) {
         arrayOf(patchesFile, integrationsFile).forEach(File::delete)
-        reload()
+        refresh()
     }
 
     fun propsFlow() = configRepository.getProps(uid)

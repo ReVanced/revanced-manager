@@ -64,37 +64,38 @@ class VersionSelectorViewModel(
         patchBundleRepository.suggestedVersions.first()[packageName]
     }
 
-    val supportedVersions = patchBundleRepository.bundles.map supportedVersions@{ bundles ->
-        requiredVersionAsync.await()?.let { version ->
-            // It is mandatory to use the suggested version if the safeguard is enabled.
-            return@supportedVersions mapOf(
-                version to bundles
-                    .asSequence()
-                    .flatMap { (_, bundle) -> bundle.patches }
-                    .flatMap { it.compatiblePackages.orEmpty() }
-                    .filter { it.packageName == packageName }
-                    .count { it.versions.isNullOrEmpty() || version in it.versions }
-            )
-        }
-
-        var patchesWithoutVersions = 0
-
-        bundles.flatMap { (_, bundle) ->
-            bundle.patches.flatMap { patch ->
-                patch.compatiblePackages.orEmpty()
-                    .filter { it.packageName == packageName }
-                    .onEach { if (it.versions == null) patchesWithoutVersions++ }
-                    .flatMap { it.versions.orEmpty() }
+    val supportedVersions =
+        patchBundleRepository.bundleInfoFlow.map supportedVersions@{ bundles ->
+            requiredVersionAsync.await()?.let { version ->
+                // It is mandatory to use the suggested version if the safeguard is enabled.
+                return@supportedVersions mapOf(
+                    version to bundles
+                        .asSequence()
+                        .flatMap { (_, bundle) -> bundle.patches }
+                        .flatMap { it.compatiblePackages.orEmpty() }
+                        .filter { it.packageName == packageName }
+                        .count { it.versions.isNullOrEmpty() || version in it.versions }
+                )
             }
-        }.groupingBy { it }
-            .eachCount()
-            .toMutableMap()
-            .apply {
-                replaceAll { _, count ->
-                    count + patchesWithoutVersions
+
+            var patchesWithoutVersions = 0
+
+            bundles.flatMap { (_, bundle) ->
+                bundle.patches.flatMap { patch ->
+                    patch.compatiblePackages.orEmpty()
+                        .filter { it.packageName == packageName }
+                        .onEach { if (it.versions == null) patchesWithoutVersions++ }
+                        .flatMap { it.versions.orEmpty() }
                 }
-            }
-    }.flowOn(Dispatchers.Default)
+            }.groupingBy { it }
+                .eachCount()
+                .toMutableMap()
+                .apply {
+                    replaceAll { _, count ->
+                        count + patchesWithoutVersions
+                    }
+                }
+        }.flowOn(Dispatchers.Default)
 
     init {
         viewModelScope.launch {
