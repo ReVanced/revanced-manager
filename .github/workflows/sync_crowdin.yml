@@ -5,6 +5,7 @@ on:
   schedule: 
     - cron: 00 12 * * 1
   push:
+    branches: dev
     paths:
       - assets/i18n/*.json
       - assets/i18n/*.dart
