@@ -162,7 +162,7 @@
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
-    <string name="download_apk">Download APK</string>
+    <string name="download_apk">Download APK file</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
@@ -248,16 +248,15 @@
 
     <string name="patcher_step_group_preparing">Preparing</string>
     <string name="patcher_step_load_patches">Load patches</string>
-    <string name="patcher_step_unpack">Unpack APK</string>
-    <string name="patcher_step_integrations">Merge Integrations</string>
+    <string name="patcher_step_unpack">Read APK file</string>
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
-    <string name="patcher_step_write_patched">Write patched APK</string>
-    <string name="patcher_step_sign_apk">Sign APK</string>
+    <string name="patcher_step_write_patched">Write patched APK file</string>
+    <string name="patcher_step_sign_apk">Sign patched APK file</string>
     <string name="patcher_notification_message">Patching in progress…</string>
-    <string name="apply_patches">Apply patches</string>
-    <string name="applying_patch">Applying %s</string>
-    <string name="failed_to_apply_patch">Failed to apply %s</string>
+    <string name="execute_patches">Execute patches</string>
+    <string name="executing_patch">Execute %s</string>
+    <string name="failed_to_execute_patch">Failed to execute %s</string>
 
     <string name="step_completed">completed</string>
     <string name="step_failed">failed</string>
