@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -93,6 +93,8 @@ fun PatchesSelectorScreen(
     val showPatchButton by remember {
         derivedStateOf { vm.selectionIsValid(bundles) }
     }
+
+    val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -255,7 +257,6 @@ fun PatchesSelectorScreen(
         }
     }
 
-    val patchLazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -284,7 +285,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
-                expanded = patchLazyListState.isScrollingUp,
+                expanded = patchLazyListStates[pagerState.currentPage].isScrollingUp,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -328,7 +329,7 @@ fun PatchesSelectorScreen(
 
                     LazyColumnWithScrollbar(
                         modifier = Modifier.fillMaxSize(),
-                        state = patchLazyListState
+                        state = patchLazyListStates[index]
                     ) {
                         patchList(
                             uid = bundle.uid,
