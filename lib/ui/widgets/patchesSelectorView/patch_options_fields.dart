@@ -9,6 +9,9 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
+import '../../../app/app.locator.dart';
+import '../../../services/manager_api.dart';
+
 class BooleanPatchOption extends StatelessWidget {
   const BooleanPatchOption({
     super.key,
@@ -386,6 +389,7 @@ class TextFieldForPatchOption extends StatefulWidget {
 }
 
 class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final TextEditingController controller = TextEditingController();
   String? selectedKey;
   String? defaultValue;
@@ -508,15 +512,10 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                   // manageExternalStorage permission is required for file/folder selection
                   // otherwise, the app will not complain, but the patches will error out
                   // the same way as if the user selected an empty file/folder.
-                  // Android 10 and above requires the manageExternalStorage permission
+                  // Android 11 and above requires the manageExternalStorage permission
                   final Map<String, dynamic> availableActions = {
                     t.patchOptionsView.selectFilePath: () async {
-                      final androidVersion =
-                          await DeviceInfoPlugin().androidInfo.then((info) {
-                        return info.version.release;
-                      });
-                      if (Platform.isAndroid &&
-                          int.parse(androidVersion) >= 10) {
+                      if (_managerAPI.isScopedStorageAvailable) {
                         final permission =
                             await Permission.manageExternalStorage.request();
                         if (!permission.isGranted) {
@@ -532,12 +531,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       widget.onChanged(controller.text);
                     },
                     t.patchOptionsView.selectFolder: () async {
-                      final androidVersion =
-                          await DeviceInfoPlugin().androidInfo.then((info) {
-                        return info.version.release;
-                      });
-                      if (Platform.isAndroid &&
-                          int.parse(androidVersion) >= 10) {
+                      if (_managerAPI.isScopedStorageAvailable) {
                         final permission =
                             await Permission.manageExternalStorage.request();
                         if (!permission.isGranted) {
