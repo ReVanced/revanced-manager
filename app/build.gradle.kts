@@ -29,7 +29,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
-            resValue("string", "app_name", "ReVanced Manager Debug")
+            resValue("string", "app_name", "ReVanced Manager (dev)")
 
             buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
