@@ -41,7 +41,7 @@
     "downloadConsentDialogTitle": "¿Descargar archivos necesarios?",
     "downloadConsentDialogText": "ReVanced Manager necesita descargar los archivos necesarios para funcionar correctamente.",
     "downloadConsentDialogText2": "Esto te conectará a ${url}.",
-    "checkUpdateDialogTitle": "¿Buscar actualizaciones?",
+    "checkUpdateDialogTitle": "¿Comprobar actualizaciones?",
     "checkUpdateDialogText": "¿Quieres que ReVanced Manager compruebe si hay actualizaciones automáticamente?",
     "notificationTitle": "Actualización descargada",
     "notificationText": "Toca para instalar la actualización",
@@ -91,14 +91,14 @@
   },
   "appSelectorView": {
     "viewTitle": "Seleccionar una aplicación",
-    "searchBarHint": "Buscar app",
+    "searchBarHint": "Buscar aplicación",
     "storageButton": "Almacenamiento",
     "selectFromStorageButton": "Seleccionar desde almacenamiento",
     "errorMessage": "No se puede usar la aplicación seleccionada",
     "downloadToast": "La función de descarga aún no está disponible",
     "requireSuggestedAppVersionDialogText": "La versión de la aplicación que has seleccionado no coincide con la versión sugerida, lo que podría causar errores inesperados. Por favor, utiliza la versión sugerida.\n\nVersión seleccionada: ${selected}\nVersión sugerida: ${suggested}\n\nPara continuar de todas formas, desactiva \"Requerir versión sugerida de la aplicación\" en la configuración.",
     "featureNotAvailable": "Característica no implementada",
-    "featureNotAvailableText": "Esta aplicación es un APK dividido y solo puede ser parcheada e instalada de forma fiable mediante el montaje con permisos de root. Sin embargo, puedes parchear e instalar un APK completo seleccionándolo del almacenamiento."
+    "featureNotAvailableText": "Esta aplicación es una APK dividida y solo puede ser parcheada e instalada confiablemente al montar con permisos de root. Sin embargo, puedes parchear e instalar una APK completa seleccionándola en el almacenamiento."
   },
   "patchesSelectorView": {
     "viewTitle": "Selecciona parches",
@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Valor personalizado",
+    "setToNull": "Establecer a nulo",
+    "nullValue": "Este valor de opción es nulo actualmente",
     "resetOptionsTooltip": "Restablecer las opciones de parche",
     "viewTitle": "Opciones de parche",
     "saveOptions": "Guardar",
     "addOptions": "Añadir opciones",
-    "deselectPatch": "Deseleccionar parche",
+    "unselectPatch": "Deseleccionar parche",
     "tooltip": "Más opciones de entrada",
     "selectFilePath": "Selecciona la ruta del archivo",
     "selectFolder": "Selecciona la carpeta",
     "selectOption": "Seleccionar opción",
-    "requiredOption": "Esta opción es requerida",
+    "requiredOption": "La configuración de esta opción es necesaria",
     "unsupportedOption": "Esta opción no está disponible",
     "requiredOptionNull": "Hay que configurar las siguientes opciones:\n\n${options}"
   },
@@ -196,7 +198,7 @@
     "enablePatchesSelectionLabel": "Permitir cambiar la selección de parches",
     "enablePatchesSelectionHint": "No prevenir la selección o deselección de parches",
     "enablePatchesSelectionWarningText": "Cambiar la selección de parches puede cauar problemas inespereados.\n\n¿Quieres activarlo de todas formas?",
-    "disablePatchesSelectionWarningText": "Estás a punto de desactivar cambiar la selección de parches.\nLa selección predeterminada de parches se restaurará.\n\n¿Deshabilitar de todos modos?",
+    "disablePatchesSelectionWarningText": "Estás a punto de desactivar cambiar la selección de los parches.\nLa selección predeterminada de los parches será restaurada.\n\n¿Desactivar de todos modos?",
     "autoUpdatePatchesLabel": "Actualizar parches automáticamente",
     "autoUpdatePatchesHint": "Actualiza los parches a la última versión automáticamente",
     "showUpdateDialogLabel": "Mostrar diálogo de actualización",
@@ -252,7 +254,7 @@
     "keystoreSelectorErrorMessage": "No se puede utilizar el archivo de repositorio de claves seleccionado"
   },
   "appInfoView": {
-    "widgetTitle": "Informacion de la applicacion",
+    "widgetTitle": "Informacion de la aplicación",
     "openButton": "Abrir",
     "uninstallButton": "Desinstalar",
     "unmountButton": "Desmontar",
