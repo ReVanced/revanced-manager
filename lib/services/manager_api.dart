@@ -31,7 +31,6 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
-  List<Option> modifiedOptions = [];
   List<Option> options = [];
   Patch? selectedPatch;
   BuildContext? ctx;
