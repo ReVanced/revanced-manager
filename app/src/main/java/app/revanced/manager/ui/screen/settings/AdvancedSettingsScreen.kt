@@ -35,15 +35,16 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.settings.BooleanItem
+import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
-    vm: AdvancedSettingsViewModel = getViewModel()
+    vm: AdvancedSettingsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val memoryLimit = remember {
@@ -87,10 +88,28 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
+                preference = vm.prefs.useProcessRuntime,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime,
+                description = R.string.process_runtime_description,
+            )
+            IntegerItem(
+                preference = vm.prefs.patcherProcessMemoryLimit,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.process_runtime_memory_limit,
+                description = R.string.process_runtime_memory_limit_description,
+            )
+            BooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
                 description = R.string.patch_compat_check_description
+            )
+            BooleanItem(
+                preference = vm.prefs.suggestedVersionSafeguard,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.suggested_version_safeguard,
+                description = R.string.suggested_version_safeguard_description
             )
             BooleanItem(
                 preference = vm.prefs.multithreadingDexFileWriter,

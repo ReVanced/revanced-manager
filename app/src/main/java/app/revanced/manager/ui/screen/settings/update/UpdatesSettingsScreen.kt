@@ -16,7 +16,7 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.UpdatesSettingsViewModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +24,7 @@ fun UpdatesSettingsScreen(
     onBackClick: () -> Unit,
     onChangelogClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    vm: UpdatesSettingsViewModel = getViewModel(),
+    vm: UpdatesSettingsViewModel = koinViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
 

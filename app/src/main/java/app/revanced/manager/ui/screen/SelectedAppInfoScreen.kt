@@ -39,7 +39,7 @@ import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
@@ -122,7 +122,7 @@ fun SelectedAppInfoScreen(
                     vm.selectedApp = it
                     navController.pop()
                 },
-                viewModel = getViewModel { parametersOf(packageName) }
+                viewModel = koinViewModel { parametersOf(packageName) }
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
@@ -131,7 +131,7 @@ fun SelectedAppInfoScreen(
                     navController.pop()
                 },
                 onBackClick = navController::pop,
-                vm = getViewModel {
+                vm = koinViewModel {
                     parametersOf(
                         PatchesSelectorViewModel.Params(
                             destination.app,

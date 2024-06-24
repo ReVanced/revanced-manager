@@ -26,6 +26,9 @@ class ReVancedAPI(
             .getOrThrow()
             .takeIf { it.version != Build.VERSION.RELEASE }
 
+    suspend fun getInfo(api: String? = null) = service.getInfo(api ?: apiUrl()).transform { it.info }
+
+
     companion object Extensions {
         fun ReVancedRelease.findAssetByType(mime: String) =
             assets.singleOrNull { it.contentType == mime } ?: throw MissingAssetException(mime)

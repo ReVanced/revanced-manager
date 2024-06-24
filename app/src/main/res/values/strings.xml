@@ -26,7 +26,7 @@
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
 
-    <string name="selected_app_meta">%1s • %2d available patches</string>
+    <string name="selected_app_meta">%1$s • %2$d available patches</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patch selection and options</string>
@@ -69,6 +69,8 @@
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
+    <string name="suggested_version_safeguard">Require suggested app version</string>
+    <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -109,12 +111,15 @@
 
     <string name="options">Options</string>
     <string name="ok">OK</string>
+    <string name="edit">Edit</string>
+    <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
+    <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
-    <string name="search">Search</string>
+    <string name="search">Search patches…</string>
     <string name="apply">Apply</string>
     <string name="help">Help</string>
     <string name="back">Back</string>
@@ -126,6 +131,10 @@
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
     <string name="downloaded_apps">Downloaded apps</string>
+    <string name="process_runtime">Run Patcher in another process (experimental)</string>
+    <string name="process_runtime_description">This is faster and allows Patcher to use more memory.</string>
+    <string name="process_runtime_memory_limit">Patcher process memory limit</string>
+    <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
     <string name="api_url">API URL</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
     <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
@@ -167,6 +176,8 @@
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
+    <string name="non_suggested_version_warning_title">Non suggested version</string>
+    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
     <string name="selection_warning_continue_countdown">Continue (%ds)</string>
@@ -213,9 +224,7 @@
     <string name="patch_selector_sheet_filter_title">Filter</string>
     <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
 
-    <string name="string_option_icon_description">Edit</string>
     <string name="string_option_menu_description">More options</string>
-    <string name="string_option_placeholder">Value</string>
 
     <string name="path_selector">Select from storage</string>
     <string name="path_selector_parent_dir">Previous directory</string>
@@ -316,8 +325,7 @@
     <string name="no_update_available">No update available</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
-    <string name="update_available_dialog_title">New update available</string>
-    <string name="update_available_dialog_description">A new version (%s) is available for download.</string>
+    <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
     <string name="failed_to_download_update">Failed to download update: %s</string>
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>

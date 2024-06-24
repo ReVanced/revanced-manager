@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -34,9 +35,8 @@ import app.revanced.manager.ui.screen.settings.update.UpdateScreen
 import app.revanced.manager.ui.screen.settings.update.UpdatesSettingsScreen
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
 import dev.olshevski.navigation.reimagined.*
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.compose.getViewModel as getComposeViewModel
 
 @SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +44,7 @@ import org.koin.androidx.compose.getViewModel as getComposeViewModel
 fun SettingsScreen(
     onBackClick: () -> Unit,
     startDestination: SettingsDestination,
-    viewModel: SettingsViewModel = getViewModel()
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
     val navController = rememberNavController(startDestination)
 
@@ -127,7 +127,7 @@ fun SettingsScreen(
 
             is SettingsDestination.Update -> UpdateScreen(
                 onBackClick = backClick,
-                vm = getComposeViewModel {
+                vm = koinViewModel {
                     parametersOf(
                         destination.downloadOnScreenEntry
                     )
@@ -162,10 +162,11 @@ fun SettingsScreen(
                     ) {
                         AnimatedVisibility(visible = showBatteryButton) {
                             NotificationCard(
+                                modifier = Modifier.padding(16.dp),
                                 isWarning = true,
                                 icon = Icons.Default.BatteryAlert,
                                 text = stringResource(R.string.battery_optimization_notification),
-                                primaryAction = {
+                                onClick = {
                                     context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                         data = Uri.parse("package:${context.packageName}")
                                     })

@@ -1,22 +1,20 @@
 package app.revanced.manager.patcher
 
 import android.content.Context
-import app.revanced.library.ApkUtils
+import app.revanced.library.ApkUtils.applyTo
 import app.revanced.manager.R
-import app.revanced.manager.patcher.logger.ManagerLogger
+import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.ui.model.State
 import app.revanced.patcher.Patcher
-import app.revanced.patcher.PatcherOptions
+import app.revanced.patcher.PatcherConfig
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import java.util.logging.Logger
 
 internal typealias PatchList = List<Patch<*>>
 
@@ -26,9 +24,9 @@ class Session(
     aaptPath: String,
     multithreadingDexFileWriter: Boolean,
     private val androidContext: Context,
-    private val logger: ManagerLogger,
+    private val logger: Logger,
     private val input: File,
-    private val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
+    private val onPatchCompleted: () -> Unit,
     private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
     private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
@@ -36,9 +34,9 @@ class Session(
 
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
     private val patcher = Patcher(
-        PatcherOptions(
-            inputFile = input,
-            resourceCachePath = tempDir.resolve("aapt-resources"),
+        PatcherConfig(
+            apkFile = input,
+            temporaryFilesPath = tempDir,
             frameworkFileDirectory = frameworkDir,
             aaptBinaryPath = aaptPath,
             multithreadingDexFileWriter = multithreadingDexFileWriter,
@@ -70,9 +68,7 @@ class Session(
 
             nextPatchIndex++
 
-            patchesProgress.value.let {
-                patchesProgress.emit(it.copy(it.first + 1))
-            }
+            onPatchCompleted()
 
             selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
                 updateProgress(
@@ -95,18 +91,20 @@ class Session(
 
     suspend fun run(output: File, selectedPatches: PatchList, integrations: List<File>) {
         updateProgress(state = State.COMPLETED) // Unpacking
-        Logger.getLogger("").apply {
+
+        java.util.logging.Logger.getLogger("").apply {
             handlers.forEach {
                 it.close()
                 removeHandler(it)
             }
 
-            addHandler(logger)
+            addHandler(logger.handler)
         }
+
         with(patcher) {
             logger.info("Merging integrations")
-            acceptIntegrations(integrations)
-            acceptPatches(selectedPatches)
+            acceptIntegrations(integrations.toSet())
+            acceptPatches(selectedPatches.toSet())
             updateProgress(state = State.COMPLETED) // Merging
 
             logger.info("Applying patches...")
@@ -116,13 +114,16 @@ class Session(
         logger.info("Writing patched files...")
         val result = patcher.get()
 
-        val aligned = tempDir.resolve("aligned.apk")
-        ApkUtils.copyAligned(input, aligned, result)
+        val patched = tempDir.resolve("result.apk")
+        withContext(Dispatchers.IO) {
+            Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
+        result.applyTo(patched)
 
-        logger.info("Patched apk saved to $aligned")
+        logger.info("Patched apk saved to $patched")
 
         withContext(Dispatchers.IO) {
-            Files.move(aligned.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
         }
         updateProgress(state = State.COMPLETED) // Saving
     }

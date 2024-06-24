@@ -44,14 +44,14 @@ import com.gigamole.composefadingedges.content.FadingEdgesContentType
 import com.gigamole.composefadingedges.content.scrollconfig.FadingEdgesScrollConfig
 import com.gigamole.composefadingedges.fill.FadingEdgesFillType
 import com.gigamole.composefadingedges.verticalFadingEdges
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Stable
 fun UpdateScreen(
     onBackClick: () -> Unit,
-    vm: UpdateViewModel = getViewModel()
+    vm: UpdateViewModel = koinViewModel()
 ) {
     Scaffold(
         topBar = {

@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,10 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,11 +31,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
+import app.revanced.manager.ui.component.NonSuggestedVersionDialog
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.VersionSelectorViewModel
+import app.revanced.manager.util.isScrollingUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +51,7 @@ fun VersionSelectorScreen(
 
     val list by remember {
         derivedStateOf {
-            (downloadedVersions + viewModel.downloadableVersions)
+            val apps = (downloadedVersions + viewModel.downloadableVersions)
                 .distinctBy { it.version }
                 .sortedWith(
                     compareByDescending<SelectedApp> {
@@ -58,11 +59,21 @@ fun VersionSelectorScreen(
                     }.thenByDescending { supportedVersions[it.version] }
                         .thenByDescending { it.version }
                 )
+
+            viewModel.requiredVersion?.let { requiredVersion ->
+                apps.filter { it.version == requiredVersion }
+            } ?: apps
         }
     }
 
-    var selectedVersion: SelectedApp? by rememberSaveable { mutableStateOf(null) }
+    if (viewModel.showNonSuggestedVersionDialog)
+        NonSuggestedVersionDialog(
+            suggestedVersion = viewModel.requiredVersion.orEmpty(),
+            onCancel = viewModel::dismissNonSuggestedVersionDialog,
+            onContinue = viewModel::continueWithNonSuggestedVersion,
+        )
 
+    val lazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -74,60 +85,73 @@ fun VersionSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.select_version)) },
                 icon = { Icon(Icons.Default.Check, null) },
-                onClick = { selectedVersion?.let(onAppClick) }
+                expanded = lazyListState.isScrollingUp,
+                onClick = { viewModel.selectedVersion?.let(onAppClick) }
             )
         }
     ) { paddingValues ->
-        ColumnWithScrollbar(
+        LazyColumnWithScrollbar(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            state = lazyListState
         ) {
             viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
                     packageName = viewModel.packageName,
                     version = packageInfo.versionName
                 ).let {
-                    SelectedAppItem(
-                        selectedApp = it,
-                        selected = selectedVersion == it,
-                        onClick = { selectedVersion = it },
-                        patchCount = supportedVersions[it.version],
-                        enabled =
+                    item {
+                        SelectedAppItem(
+                            selectedApp = it,
+                            selected = viewModel.selectedVersion == it,
+                            onClick = { viewModel.select(it) },
+                            patchCount = supportedVersions[it.version],
+                            enabled =
                             !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
-                        alreadyPatched = installedApp != null && installedApp.installType != InstallType.ROOT
-                    )
+                            alreadyPatched = installedApp != null && installedApp.installType != InstallType.ROOT
+                        )
+                    }
                 }
             }
 
-            Row(Modifier.fillMaxWidth()) {
-                GroupHeader(stringResource(R.string.downloadable_versions))
+            item {
+                Row(Modifier.fillMaxWidth()) {
+                    GroupHeader(stringResource(R.string.downloadable_versions))
+                }
             }
 
-            list.forEach {
+            items(
+                items = list,
+                key = { it.version }
+            ) {
                 SelectedAppItem(
                     selectedApp = it,
-                    selected = selectedVersion == it,
-                    onClick = { selectedVersion = it },
+                    selected = viewModel.selectedVersion == it,
+                    onClick = { viewModel.select(it) },
                     patchCount = supportedVersions[it.version]
                 )
             }
 
             if (viewModel.errorMessage != null) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(stringResource(R.string.error_occurred))
-                    Text(
-                        text = viewModel.errorMessage!!,
-                        modifier = Modifier.padding(horizontal = 15.dp)
-                    )
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(stringResource(R.string.error_occurred))
+                        Text(
+                            text = viewModel.errorMessage!!,
+                            modifier = Modifier.padding(horizontal = 15.dp)
+                        )
+                    }
                 }
-            } else if (viewModel.isLoading)
-                LoadingIndicator()
-
+            } else if (viewModel.isLoading) {
+                item {
+                    LoadingIndicator()
+                }
+            }
         }
     }
 }
@@ -139,7 +163,7 @@ fun SelectedAppItem(
     onClick: () -> Unit,
     patchCount: Int?,
     enabled: Boolean = true,
-    alreadyPatched: Boolean = false
+    alreadyPatched: Boolean = false,
 ) {
     ListItem(
         leadingContent = { RadioButton(selected, null) },
@@ -158,9 +182,11 @@ fun SelectedAppItem(
 
             else -> null
         },
-        trailingContent = patchCount?.let { {
-            Text(pluralStringResource(R.plurals.patch_count, it, it))
-        } },
+        trailingContent = patchCount?.let {
+            {
+                Text(pluralStringResource(R.plurals.patch_count, it, it))
+            }
+        },
         modifier = Modifier
             .clickable(enabled = !alreadyPatched && enabled, onClick = onClick)
             .run {

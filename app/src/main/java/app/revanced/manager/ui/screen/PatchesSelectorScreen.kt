@@ -10,17 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,7 +32,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -47,11 +45,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -61,7 +57,9 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
+import app.revanced.manager.ui.component.DangerousActionDialogBase
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -69,8 +67,9 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNSUPPORTED
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.isScrollingUp
 import kotlinx.coroutines.launch
-import org.koin.compose.rememberKoinInject
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -208,28 +207,11 @@ fun PatchesSelectorScreen(
     }
 
     search?.let { query ->
-        SearchBar(
+        SearchView(
             query = query,
-            onQueryChange = { new ->
-                search = new
-            },
-            onSearch = {},
-            active = true,
-            onActiveChange = { new ->
-                if (new) return@SearchBar
-                search = null
-            },
-            placeholder = {
-                Text(stringResource(R.string.search_patches))
-            },
-            leadingIcon = {
-                IconButton(onClick = { search = null }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        stringResource(R.string.back)
-                    )
-                }
-            }
+            onQueryChange = { search = it },
+            onActiveChange = { if (!it) search = null },
+            placeholder = { Text(stringResource(R.string.search_patches)) }
         ) {
             val bundle = bundles[pagerState.currentPage]
 
@@ -273,7 +255,7 @@ fun PatchesSelectorScreen(
         }
     }
 
-
+    val patchLazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -302,6 +284,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
+                expanded = patchLazyListState.isScrollingUp,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -344,7 +327,8 @@ fun PatchesSelectorScreen(
                     val bundle = bundles[index]
 
                     LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        state = patchLazyListState
                     ) {
                         patchList(
                             uid = bundle.uid,
@@ -385,14 +369,11 @@ fun SelectionWarningDialog(
     onCancel: () -> Unit,
     onConfirm: (Boolean) -> Unit
 ) {
-    val prefs: PreferencesManager = rememberKoinInject()
-    var dismissPermanently by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val prefs: PreferencesManager = koinInject()
 
-    AlertDialog(
-        onDismissRequest = onCancel,
-        confirmButton = {
+    DangerousActionDialogBase(
+        onCancel = onCancel,
+        confirmButton = { dismissPermanently ->
             val enableCountdown by prefs.enableSelectionWarningCountdown.getAsState()
 
             Countdown(start = if (enableCountdown) 3 else 0) { timer ->
@@ -412,49 +393,8 @@ fun SelectionWarningDialog(
                 }
             }
         },
-        dismissButton = {
-            TextButton(onClick = onCancel) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        icon = {
-            Icon(Icons.Outlined.WarningAmber, null)
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.selection_warning_title),
-                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = stringResource(R.string.selection_warning_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    modifier = Modifier.clickable {
-                        dismissPermanently = !dismissPermanently
-                    }
-                ) {
-                    Checkbox(
-                        checked = dismissPermanently,
-                        onCheckedChange = {
-                            dismissPermanently = it
-                        }
-                    )
-                    Text(stringResource(R.string.permanent_dismiss))
-                }
-            }
-        }
+        title = R.string.selection_warning_title,
+        body = stringResource(R.string.selection_warning_description),
     )
 }
 

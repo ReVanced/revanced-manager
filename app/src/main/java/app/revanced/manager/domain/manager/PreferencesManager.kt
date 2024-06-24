@@ -13,6 +13,8 @@ class PreferencesManager(
     val api = stringPreference("api_url", "https://api.revanced.app")
 
     val multithreadingDexFileWriter = booleanPreference("multithreading_dex_file_writer", true)
+    val useProcessRuntime = booleanPreference("use_process_runtime", false)
+    val patcherProcessMemoryLimit = intPreference("process_runtime_memory_limit", 700)
     val disablePatchVersionCompatCheck = booleanPreference("disable_patch_version_compatibility_check", false)
 
     val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)
@@ -25,4 +27,6 @@ class PreferencesManager(
 
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
     val enableSelectionWarningCountdown = booleanPreference("enable_selection_warning_countdown", true)
+
+    val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
 }

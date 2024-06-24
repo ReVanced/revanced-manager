@@ -23,12 +23,11 @@ import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
-import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
-import app.revanced.manager.patcher.Session
-import app.revanced.manager.patcher.aapt.Aapt
-import app.revanced.manager.patcher.logger.ManagerLogger
+import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.runtime.CoroutineRuntime
+import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
@@ -36,17 +35,17 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
-import java.io.FileNotFoundException
+
+typealias ProgressEventHandler = (name: String?, state: State?, message: String?) -> Unit
 
 class PatcherWorker(
     context: Context,
     parameters: WorkerParameters
 ) : Worker<PatcherWorker.Args>(context, parameters), KoinComponent {
-    private val patchBundleRepository: PatchBundleRepository by inject()
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
     private val keystoreManager: KeystoreManager by inject()
@@ -61,11 +60,11 @@ class PatcherWorker(
         val output: String,
         val selectedPatches: PatchSelection,
         val options: Options,
-        val logger: ManagerLogger,
+        val logger: Logger,
         val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
         val setInputFile: (File) -> Unit,
-        val onProgress: (name: String?, state: State?, message: String?) -> Unit
+        val onProgress: ProgressEventHandler
     ) {
         val packageName get() = input.packageName
     }
@@ -111,7 +110,8 @@ class PatcherWorker(
 
         val wakeLock: PowerManager.WakeLock =
             (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager)
-                .newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "$tag::Patcher").apply {
+                .newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "$tag::Patcher")
+                .apply {
                     acquire(10 * 60 * 1000L)
                     Log.d(tag, "Acquired wakelock.")
                 }
@@ -133,26 +133,6 @@ class PatcherWorker(
         val patchedApk = fs.tempDir.resolve("patched.apk")
 
         return try {
-            val bundles = patchBundleRepository.bundles.first()
-
-            // TODO: consider passing all the classes directly now that the input no longer needs to be serializable.
-            val selectedBundles = args.selectedPatches.keys
-            val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
-                .mapValues { (_, bundle) -> bundle.patchClasses(args.packageName) }
-
-            val selectedPatches = args.selectedPatches.flatMap { (bundle, selected) ->
-                allPatches[bundle]?.filter { selected.contains(it.name) }
-                    ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
-            }
-
-            val aaptPath = Aapt.binary(applicationContext)?.absolutePath
-                ?: throw FileNotFoundException("Could not resolve aapt.")
-
-            val frameworkPath =
-                applicationContext.cacheDir.resolve("framework").also { it.mkdirs() }.absolutePath
-
-            val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
-
             if (args.input is SelectedApp.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
                     if (it.installType == InstallType.ROOT) {
@@ -160,19 +140,6 @@ class PatcherWorker(
                     }
                 }
             }
-
-            // Set all patch options.
-            args.options.forEach { (bundle, bundlePatchOptions) ->
-                val patches = allPatches[bundle] ?: return@forEach
-                bundlePatchOptions.forEach { (patchName, configuredPatchOptions) ->
-                    val patchOptions = patches.single { it.name == patchName }.options
-                    configuredPatchOptions.forEach { (key, value) ->
-                        patchOptions[key] = value
-                    }
-                }
-            }
-
-            updateProgress(state = State.COMPLETED) // Loading patches
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
@@ -190,31 +157,38 @@ class PatcherWorker(
                 is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo.sourceDir)
             }
 
-            Session(
-                fs.tempDir.absolutePath,
-                frameworkPath,
-                aaptPath,
-                prefs.multithreadingDexFileWriter.get(),
-                applicationContext,
-                args.logger,
-                inputFile,
-                args.patchesProgress,
-                args.onProgress
-            ).use { session ->
-                session.run(
-                    patchedApk,
-                    selectedPatches,
-                    integrations
-                )
+            val runtime = if (prefs.useProcessRuntime.get()) {
+                ProcessRuntime(applicationContext)
+            } else {
+                CoroutineRuntime(applicationContext)
             }
+
+            runtime.execute(
+                inputFile.absolutePath,
+                patchedApk.absolutePath,
+                args.packageName,
+                args.selectedPatches,
+                args.options,
+                args.logger,
+                onPatchCompleted = {
+                    args.patchesProgress.update { (completed, total) ->
+                        completed + 1 to total
+                    }
+                },
+                args.onProgress
+            )
 
             keystoreManager.sign(patchedApk, File(args.output))
             updateProgress(state = State.COMPLETED) // Signing
 
             Log.i(tag, "Patching succeeded".logFmt())
             Result.success()
+        } catch (e: ProcessRuntime.RemoteFailureException) {
+            Log.e(tag, "An exception occured in the remote process while patching. ${e.originalStackTrace}".logFmt())
+            updateProgress(state = State.FAILED, message = e.originalStackTrace)
+            Result.failure()
         } catch (e: Exception) {
-            Log.e(tag, "Exception while patching".logFmt(), e)
+            Log.e(tag, "An exception occured while patching".logFmt(), e)
             updateProgress(state = State.FAILED, message = e.stackTraceToString())
             Result.failure()
         } finally {
@@ -223,7 +197,7 @@ class PatcherWorker(
     }
 
     companion object {
-        private const val logPrefix = "[Worker]:"
-        private fun String.logFmt() = "$logPrefix $this"
+        private const val LOG_PREFIX = "[Worker]"
+        private fun String.logFmt() = "$LOG_PREFIX $this"
     }
 }
