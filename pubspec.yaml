@@ -59,7 +59,10 @@ dependencies:
       ref: 1a1616ac91e16cd1f3dd170a81febf27ffce3587 # Branch: master
   share_plus: ^9.0.0
   shared_preferences: ^2.2.3
-  skeletons: ^0.0.3
+  skeletons:
+    git: # remove once https://github.com/badjio/skeletons/pull/11 is merged
+      url: https://github.com/Ofceab-Studio/skeletons
+      ref: 326fbb4223ac4d8a6301cc2f16b6112ecd308c71 # Branch: master
   slang: ^3.30.2
   slang_flutter: ^3.30.0
   stacked: ^3.4.2
