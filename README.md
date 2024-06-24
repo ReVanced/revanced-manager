@@ -98,10 +98,6 @@ To build a ReVanced Manager, you can follow the [documentation](/docs).
 
 You can find the documentation for ReVanced Manager [here](/docs).
 
-### 👋 Contributing
-
-Thank you for considering contributing to ReVanced Manager. You can find the contribution guidelines [here](/CONTRIBUTING.md).
-
 ## ⚖️ License
 
 ReVanced Manager is licensed under the GPLv3 license. Please see the [license file](LICENSE) for more information.
