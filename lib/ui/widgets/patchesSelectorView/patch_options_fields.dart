@@ -1,16 +1,12 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
-
-import '../../../app/app.locator.dart';
-import '../../../services/manager_api.dart';
 
 class BooleanPatchOption extends StatelessWidget {
   const BooleanPatchOption({
