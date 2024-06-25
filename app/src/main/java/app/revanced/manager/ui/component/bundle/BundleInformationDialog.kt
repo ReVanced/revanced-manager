@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -86,7 +86,7 @@ fun BundleInformationDialog(
                         if (!isLocal) {
                             IconButton(onClick = onRefreshButton) {
                                 Icon(
-                                    Icons.Outlined.Refresh,
+                                    Icons.Outlined.Update,
                                     stringResource(R.string.refresh)
                                 )
                             }
