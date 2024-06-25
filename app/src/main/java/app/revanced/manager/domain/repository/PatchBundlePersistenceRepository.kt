@@ -5,7 +5,6 @@ import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.bundles.PatchBundleEntity
 import app.revanced.manager.data.room.bundles.Source
 import app.revanced.manager.data.room.bundles.VersionInfo
-import io.ktor.http.*
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 class PatchBundlePersistenceRepository(db: AppDatabase) {
@@ -47,7 +46,7 @@ class PatchBundlePersistenceRepository(db: AppDatabase) {
     private companion object {
         val defaultSource = PatchBundleEntity(
             uid = 0,
-            name = "Main",
+            name = "Default",
             versionInfo = VersionInfo(),
             source = Source.API,
             autoUpdate = false
