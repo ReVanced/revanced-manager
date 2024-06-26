@@ -34,12 +34,13 @@ import kotlinx.coroutines.flow.map
 @Composable
 fun BundleItem(
     bundle: PatchBundleSource,
-    onDelete: () -> Unit,
-    onUpdate: () -> Unit,
+    patchCount: Int,
     selectable: Boolean,
-    onSelect: () -> Unit,
     isBundleSelected: Boolean,
     toggleSelection: (Boolean) -> Unit,
+    onDelete: () -> Unit,
+    onUpdate: () -> Unit,
+    onSelect: () -> Unit,
 ) {
     var viewBundleDialogPage by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
@@ -50,12 +51,13 @@ fun BundleItem(
 
     if (viewBundleDialogPage) {
         BundleInformationDialog(
+            bundle = bundle,
+            patchCount = patchCount,
             onDismissRequest = { viewBundleDialogPage = false },
             onDeleteRequest = {
                 viewBundleDialogPage = false
                 onDelete()
             },
-            bundle = bundle,
             onRefreshButton = onUpdate,
         )
     }
@@ -79,9 +81,7 @@ fun BundleItem(
 
         headlineContent = { Text(text = bundle.name) },
         supportingContent = {
-            state.patchBundleOrNull()?.patches?.size?.let { patchCount ->
-                Text(text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
-            }
+            Text(text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
         },
         trailingContent = {
             Row {
@@ -89,7 +89,7 @@ fun BundleItem(
                     when (state) {
                         is PatchBundleSource.State.Failed -> Icons.Outlined.ErrorOutline to R.string.bundle_error
                         is PatchBundleSource.State.Missing -> Icons.Outlined.Warning to R.string.bundle_missing
-                        is PatchBundleSource.State.Loaded -> null
+                        is PatchBundleSource.State.Available -> null
                     }
                 }
 

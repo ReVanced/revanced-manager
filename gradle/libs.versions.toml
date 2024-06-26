@@ -16,6 +16,7 @@ collection = "0.3.7"
 room-version = "2.6.1"
 revanced-patcher = "19.3.1"
 revanced-library = "2.2.1"
+revanced-multidexlib2 = "3.0.3.r3"
 koin-version = "3.5.3"
 koin-version-compose = "3.5.3"
 reimagined-navigation = "1.5.0"
@@ -77,6 +78,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 # Patcher
 revanced-patcher = { group = "app.revanced", name = "revanced-patcher", version.ref = "revanced-patcher" }
 revanced-library = { group = "app.revanced", name = "revanced-library", version.ref = "revanced-library" }
+revanced-multidexlib2 = { group = "app.revanced", name = "multidexlib2", version.ref = "revanced-multidexlib2" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }

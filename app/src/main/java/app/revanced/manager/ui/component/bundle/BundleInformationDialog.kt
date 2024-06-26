@@ -32,27 +32,25 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BundleInformationDialog(
+    bundle: PatchBundleSource,
+    patchCount: Int,
     onDismissRequest: () -> Unit,
     onDeleteRequest: () -> Unit,
-    bundle: PatchBundleSource,
     onRefreshButton: () -> Unit,
 ) {
     val composableScope = rememberCoroutineScope()
     var viewCurrentBundlePatches by remember { mutableStateOf(false) }
     val isLocal = bundle is LocalPatchBundle
-    val patchCount by remember(bundle) {
-        bundle.state.map { it.patchBundleOrNull()?.patches?.size ?: 0 }
-    }.collectAsStateWithLifecycle(0)
     val props by remember(bundle) {
         bundle.propsOrNullFlow()
     }.collectAsStateWithLifecycle(null)
 
     if (viewCurrentBundlePatches) {
         BundlePatchesDialog(
+            bundle = bundle,
             onDismissRequest = {
                 viewCurrentBundlePatches = false
-            },
-            bundle = bundle,
+            }
         )
     }
 
@@ -110,7 +108,7 @@ fun BundleInformationDialog(
                 },
                 onPatchesClick = {
                     viewCurrentBundlePatches = true
-                },
+                }
             )
         }
     }

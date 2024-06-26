@@ -43,10 +43,10 @@ class PM(
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    val appList = patchBundleRepository.bundles.map { bundles ->
+    val appList = patchBundleRepository.bundleInfoFlow.map { bundles ->
         val compatibleApps = scope.async {
-            val compatiblePackages = bundles.values
-                .flatMap { it.patches }
+            val compatiblePackages = bundles
+                .flatMap { (_, bundle) -> bundle.patches }
                 .flatMap { it.compatiblePackages.orEmpty() }
                 .groupingBy { it.packageName }
                 .eachCount()
@@ -80,7 +80,7 @@ class PM(
             (compatibleApps.await() + installedApps.await())
                 .distinctBy { it.packageName }
                 .sortedWith(
-                    compareByDescending<AppInfo>{
+                    compareByDescending<AppInfo> {
                         it.packageInfo != null && (it.patches ?: 0) > 0
                     }.thenByDescending {
                         it.patches

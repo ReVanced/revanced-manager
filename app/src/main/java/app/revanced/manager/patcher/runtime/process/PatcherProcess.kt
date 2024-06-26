@@ -9,7 +9,7 @@ import app.revanced.manager.BuildConfig
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
-import app.revanced.manager.patcher.patch.PatchBundle
+import app.revanced.manager.patcher.patch.PatchBundleLoader
 import app.revanced.manager.patcher.runtime.ProcessRuntime
 import app.revanced.manager.ui.model.State
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -55,12 +55,14 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
             val integrations =
-                parameters.configurations.mapNotNull { it.integrationsPath?.let(::File) }
-            val patchList = parameters.configurations.flatMap { config ->
-                val bundle = PatchBundle(File(config.bundlePath), null)
+                parameters.configurations.mapNotNull { it.bundle.integrations }
+            val patchBundleLoader = PatchBundleLoader(parameters.configurations.map { it.bundle })
 
+            val patchList = parameters.configurations.flatMap { config ->
                 val patches =
-                    bundle.patchClasses(parameters.packageName).filter { it.name in config.patches }
+                    patchBundleLoader
+                        .loadPatches(config.bundle, parameters.packageName)
+                        .filter { it.name in config.patches }
                         .associateBy { it.name }
 
                 config.options.forEach { (patchName, opts) ->

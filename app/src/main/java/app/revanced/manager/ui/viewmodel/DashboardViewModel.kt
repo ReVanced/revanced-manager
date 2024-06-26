@@ -30,12 +30,11 @@ class DashboardViewModel(
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager
 ) : ViewModel() {
-    val availablePatches =
-        patchBundleRepository.bundles.map { it.values.sumOf { bundle -> bundle.patches.size } }
+    val bundlePatchCountsFlow = patchBundleRepository.bundleInfoFlow.map { it.mapValues { (_, bundle) -> bundle.patches.size } }
+    val availablePatchesCountFlow = bundlePatchCountsFlow.map { it.values.sum() }
     private val contentResolver: ContentResolver = app.contentResolver
     val sources = patchBundleRepository.sources
     val selectedSources = mutableStateListOf<PatchBundleSource>()
-
 
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
@@ -76,10 +75,10 @@ class DashboardViewModel(
         }
     }
 
-
     fun cancelSourceSelection() {
         selectedSources.clear()
     }
+
     fun createLocalSource(name: String, patchBundle: Uri, integrations: Uri?) =
         viewModelScope.launch {
             contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->

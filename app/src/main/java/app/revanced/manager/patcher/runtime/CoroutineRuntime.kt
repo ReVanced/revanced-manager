@@ -3,6 +3,7 @@ package app.revanced.manager.patcher.runtime
 import android.content.Context
 import app.revanced.manager.patcher.Session
 import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.patcher.patch.PatchBundleLoader
 import app.revanced.manager.patcher.worker.ProgressEventHandler
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
@@ -26,8 +27,11 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
         val bundles = bundles()
 
         val selectedBundles = selectedPatches.keys
-        val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
-            .mapValues { (_, bundle) -> bundle.patchClasses(packageName) }
+        val allPatches = with(PatchBundleLoader(bundles.values)) {
+            bundles
+                .filterKeys { selectedBundles.contains(it) }
+                .mapValues { (_, bundle) -> loadPatches(bundle, packageName) }
+        }
 
         val patchList = selectedPatches.flatMap { (bundle, selected) ->
             allPatches[bundle]?.filter { selected.contains(it.name) }

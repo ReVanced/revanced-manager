@@ -15,6 +15,8 @@ import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
+import app.revanced.manager.patcher.patch.PatchBundleInfo
+import app.revanced.manager.patcher.patch.PatchBundleLoader
 import app.revanced.manager.util.flatMapLatestAndCombine
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.uiSafe
@@ -22,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -51,7 +54,46 @@ class PatchBundleRepository(
         it.state.map { state -> it.uid to state }
     }
 
-    val suggestedVersions = bundles.map {
+    val bundleInfoFlow = sources.flatMapLatestAndCombine(
+        transformer = { source ->
+            source.state.map {
+                source to it
+            }
+        },
+        combiner = { states ->
+            val patchBundleLoader by lazy {
+                PatchBundleLoader(states.mapNotNull { (_, state) -> state.patchBundleOrNull() })
+            }
+
+            states.mapNotNull { (source, state) ->
+                val bundle = state.patchBundleOrNull() ?: return@mapNotNull null
+
+                try {
+                    source.uid to PatchBundleInfo.Global(
+                        source.name,
+                        source.uid,
+                        patchBundleLoader.loadMetadata(bundle)
+                    )
+                } catch (t: Throwable) {
+                    Log.e(tag, "Failed to load patches from ${source.name}", t)
+                    source.markAsFailed(t)
+
+                    null
+                }
+            }.toMap()
+        }
+    ).flowOn(Dispatchers.Default)
+
+    fun scopedBundleInfoFlow(packageName: String, version: String) = bundleInfoFlow.map {
+        it.map { (_, bundle) ->
+            bundle.forPackage(
+                packageName,
+                version
+            )
+        }
+    }
+
+    val suggestedVersions = bundleInfoFlow.map {
         val allPatches =
             it.values.flatMap { bundle -> bundle.patches.map(PatchInfo::toPatcherPatch) }.toSet()
 

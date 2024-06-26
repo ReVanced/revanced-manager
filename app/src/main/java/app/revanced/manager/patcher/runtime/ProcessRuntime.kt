@@ -150,11 +150,8 @@ class ProcessRuntime(private val context: Context) : Runtime(context) {
                 outputFile = outputFile,
                 enableMultithrededDexWriter = enableMultithreadedDexWriter(),
                 configurations = selectedPatches.map { (id, patches) ->
-                    val bundle = bundles[id]!!
-
                     PatchConfiguration(
-                        bundle.patchesJar.absolutePath,
-                        bundle.integrations?.absolutePath,
+                        bundles[id]!!,
                         patches,
                         options[id].orEmpty()
                     )

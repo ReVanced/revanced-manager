@@ -27,7 +27,6 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
-import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
@@ -53,7 +52,7 @@ fun SelectedAppInfoScreen(
     val packageName = vm.selectedApp.packageName
     val version = vm.selectedApp.version
     val bundles by remember(packageName, version) {
-        vm.bundlesRepo.bundleInfoFlow(packageName, version)
+        vm.bundlesRepo.scopedBundleInfoFlow(packageName, version)
     }.collectAsStateWithLifecycle(initialValue = emptyList())
 
     val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
@@ -69,7 +68,7 @@ fun SelectedAppInfoScreen(
     }
     val availablePatchCount by remember {
         derivedStateOf {
-            bundles.sumOf { it.patchCount }
+            bundles.sumOf { it.patches.size }
         }
     }
 

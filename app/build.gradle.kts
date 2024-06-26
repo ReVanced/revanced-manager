@@ -149,6 +149,7 @@ dependencies {
     // ReVanced
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
+    implementation(libs.revanced.multidexlib2)
 
     // Native processes
     implementation(libs.kotlin.process)

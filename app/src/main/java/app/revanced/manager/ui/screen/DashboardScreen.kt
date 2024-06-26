@@ -79,7 +79,7 @@ fun DashboardScreen(
     onAppClick: (InstalledApp) -> Unit
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
-    val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val availablePatches by vm.availablePatchesCountFlow.collectAsStateWithLifecycle(0)
     val androidContext = LocalContext.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -269,6 +269,9 @@ fun DashboardScreen(
                             }
 
                             val sources by vm.sources.collectAsStateWithLifecycle(initialValue = emptyList())
+                            val patchCounts by vm.bundlePatchCountsFlow.collectAsStateWithLifecycle(
+                                initialValue = emptyMap()
+                            )
 
                             Column(
                                 modifier = Modifier.fillMaxSize(),
@@ -276,23 +279,24 @@ fun DashboardScreen(
                                 sources.forEach {
                                     BundleItem(
                                         bundle = it,
-                                        onDelete = {
-                                            vm.delete(it)
-                                        },
-                                        onUpdate = {
-                                            vm.update(it)
-                                        },
+                                        patchCount = patchCounts[it.uid] ?: 0,
+                                        isBundleSelected = vm.selectedSources.contains(it),
                                         selectable = bundlesSelectable,
                                         onSelect = {
                                             vm.selectedSources.add(it)
                                         },
-                                        isBundleSelected = vm.selectedSources.contains(it),
                                         toggleSelection = { bundleIsNotSelected ->
                                             if (bundleIsNotSelected) {
                                                 vm.selectedSources.add(it)
                                             } else {
                                                 vm.selectedSources.remove(it)
                                             }
+                                        },
+                                        onDelete = {
+                                            vm.delete(it)
+                                        },
+                                        onUpdate = {
+                                            vm.update(it)
                                         }
                                     )
                                 }
