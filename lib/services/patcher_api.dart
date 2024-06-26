@@ -171,7 +171,10 @@ class PatcherAPI {
     if (integrationsFile != null) {
       _dataDir.createSync();
       _tmpDir.createSync();
-      final Directory workDir = _tmpDir.createTempSync('tmp-');
+      final Directory workDir = await _tmpDir.createTemp('tmp-');
+
+      final File inApkFile = File('${workDir.path}/in.apk');
+      await File(apkFilePath).copy(inApkFile.path);
 
       outFile = File('${workDir.path}/out.apk');
 
@@ -182,7 +185,7 @@ class PatcherAPI {
         await patcherChannel.invokeMethod(
           'runPatcher',
           {
-            'inFilePath': apkFilePath,
+            'inFilePath': inApkFile.path,
             'outFilePath': outFile!.path,
             'integrationsPath': integrationsFile.path,
             'selectedPatches': selectedPatches.map((p) => p.name).toList(),
@@ -297,6 +300,18 @@ class PatcherAPI {
     );
     bool cleanInstall = false;
     final bool isFixable = statusCode == 4 || statusCode == 5;
+
+    var description = t['installErrorDialog.${statusValue}_description'];
+    if (statusCode == 2) {
+      description = description(
+        packageName: statusCode == 2
+            ? {
+                'packageName': status['otherPackageName'],
+              }
+            : null,
+      );
+    }
+
     await showDialog(
       context: _managerAPI.ctx!,
       builder: (context) => AlertDialog(
@@ -306,15 +321,7 @@ class PatcherAPI {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              t['installErrorDialog.${statusValue}_description'](
-                packageName: statusCode == 2
-                    ? {
-                        'packageName': status['otherPackageName'],
-                      }
-                    : null,
-              ),
-            ),
+            Text(description),
           ],
         ),
         actions: (status == null)

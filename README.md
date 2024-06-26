@@ -13,8 +13,8 @@
   <br>
   <a href="https://revanced.app/">
        <picture>
-           <source height="24px" media="(prefers-color-scheme: dark)" srcset="assets/revanced-logo/revanced-logo-round.svg" />
-           <img height="24px" src="assets/revanced-logo/revanced-logo-round.svg" />
+           <source height="24px" media="(prefers-color-scheme: dark)" srcset="assets/revanced-logo/revanced-logo.svg" />
+           <img height="24px" src="assets/revanced-logo/revanced-logo.svg" />
        </picture>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://github.com/ReVanced">
@@ -97,10 +97,6 @@ To build a ReVanced Manager, you can follow the [documentation](/docs).
 ### 📄 Documentation
 
 You can find the documentation for ReVanced Manager [here](/docs).
-
-### 👋 Contributing
-
-Thank you for considering contributing to ReVanced Manager. You can find the contribution guidelines [here](/CONTRIBUTING.md).
 
 ## ⚖️ License
 

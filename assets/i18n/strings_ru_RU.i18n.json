@@ -7,7 +7,7 @@
   "enabledLabel": "Включено",
   "disabledLabel": "Отключено",
   "installed": "Установлено: ${version}",
-  "suggested": "Предложено: ${version}",
+  "suggested": "Рекомендуемая: ${version}",
   "yesButton": "Да",
   "noButton": "Нет",
   "warning": "Внимание",
@@ -118,11 +118,13 @@
   },
   "patchOptionsView": {
     "customValue": "Пользовательское значение",
+    "setToNull": "Установить null",
+    "nullValue": "Значение этого параметра в настоящее время является нулевым",
     "resetOptionsTooltip": "Сброс параметров патчей",
     "viewTitle": "Параметры патчей",
     "saveOptions": "Сохранить",
     "addOptions": "Добавить параметры",
-    "deselectPatch": "Снять выделение с патча",
+    "unselectPatch": "Отменить выбор патча",
     "tooltip": "Другие параметры ввода",
     "selectFilePath": "Выберите путь к файлу",
     "selectFolder": "Выберите папку",
@@ -159,7 +161,7 @@
   },
   "settingsView": {
     "widgetTitle": "Настройки",
-    "appearanceSectionTitle": "Оформление",
+    "appearanceSectionTitle": "Внешний вид",
     "teamSectionTitle": "Команда",
     "debugSectionTitle": "Отладка",
     "advancedSectionTitle": "Дополнительные",
@@ -175,7 +177,7 @@
     "languageUpdated": "Язык обновлен",
     "englishOption": "Английский",
     "sourcesLabel": "Альтернативные источники",
-    "sourcesLabelHint": "Настройте альтернативные источники для патчей и интеграций ReVanced",
+    "sourcesLabelHint": "Настроить альтернативные источники для патчей и интеграций ReVanced",
     "sourcesIntegrationsLabel": "Репозиторий интеграций",
     "useAlternativeSources": "Использовать альтернативные источники",
     "useAlternativeSourcesHint": "Использовать альтернативные источники для патчей и интеграций ReVanced вместо API",
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Эта возможность ещё не реализована"
   },
   "contributorsView": {
-    "widgetTitle": "Соучастники проекта",
-    "patcherContributors": "ReVanced патчер",
-    "patchesContributors": "ReVanced патчи",
-    "integrationsContributors": "Интеграции ReVanced",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Менеджер"
+    "widgetTitle": "Соучастники проекта"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Несовпадение версий",

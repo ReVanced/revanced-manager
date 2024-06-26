@@ -40,7 +40,8 @@ class HomeViewModel extends BaseViewModel {
   List<PatchedApplication> patchedInstalledApps = [];
   String _currentManagerVersion = '';
   String _currentPatchesVersion = '';
-  String? _latestManagerVersion = '';
+  String? latestManagerVersion;
+  String? latestPatchesVersion;
   File? downloadedApk;
 
   Future<void> initialize(BuildContext context) async {
@@ -51,7 +52,6 @@ class HomeViewModel extends BaseViewModel {
       await forceRefresh(context);
       return;
     }
-    _latestManagerVersion = await _managerAPI.getLatestManagerVersion();
     _currentPatchesVersion = await _managerAPI.getCurrentPatchesVersion();
     if (_managerAPI.showUpdateDialog() && await hasManagerUpdates()) {
       showUpdateDialog(context, false);
@@ -137,21 +137,21 @@ class HomeViewModel extends BaseViewModel {
     if (!_managerAPI.releaseBuild) {
       return false;
     }
-    _latestManagerVersion =
+    latestManagerVersion =
         await _managerAPI.getLatestManagerVersion() ?? _currentManagerVersion;
 
-    if (_latestManagerVersion != _currentManagerVersion) {
+    if (latestManagerVersion != _currentManagerVersion) {
       return true;
     }
     return false;
   }
 
   Future<bool> hasPatchesUpdates() async {
-    final String? latestVersion = await _managerAPI.getLatestPatchesVersion();
-    if (latestVersion != null) {
+    latestPatchesVersion = await _managerAPI.getLatestPatchesVersion();
+    if (latestPatchesVersion != null) {
       try {
         final int latestVersionInt =
-            int.parse(latestVersion.replaceAll(RegExp('[^0-9]'), ''));
+            int.parse(latestPatchesVersion!.replaceAll(RegExp('[^0-9]'), ''));
         final int currentVersionInt =
             int.parse(_currentPatchesVersion.replaceAll(RegExp('[^0-9]'), ''));
         return latestVersionInt > currentVersionInt;
@@ -469,6 +469,7 @@ class HomeViewModel extends BaseViewModel {
   ]) {
     return showModalBottomSheet(
       context: parentContext,
+      useSafeArea: true,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
@@ -480,12 +481,14 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  Future<Map<String, dynamic>?> getLatestManagerRelease() {
-    return _githubAPI.getLatestManagerRelease(_managerAPI.defaultManagerRepo);
+  Future<String?> getManagerChangelogs() {
+    return _githubAPI.getManagerChangelogs();
   }
 
-  Future<Map<String, dynamic>?> getLatestPatchesRelease() {
-    return _githubAPI.getLatestPatchesRelease(_managerAPI.defaultPatchesRepo);
+  Future<String?> getLatestPatchesChangelog() async {
+    final release =
+        await _githubAPI.getLatestRelease(_managerAPI.defaultPatchesRepo);
+    return release?['body'];
   }
 
   Future<String?> getLatestPatchesReleaseTime() {

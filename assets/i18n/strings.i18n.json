@@ -120,16 +120,18 @@
   },
   "patchOptionsView": {
     "customValue": "Custom value",
+    "setToNull": "Set to null",
+    "nullValue": "This option value is currently null",
     "resetOptionsTooltip": "Reset patch options",
     "viewTitle": "Patch options",
     "saveOptions": "Save",
     "addOptions": "Add options",
-    "deselectPatch": "Deselect patch",
+    "unselectPatch": "Unselect patch",
     "tooltip": "More input options",
     "selectFilePath": "Select file path",
     "selectFolder": "Select folder",
     "selectOption": "Select option",
-    "requiredOption": "This option is required",
+    "requiredOption": "Setting this option is required",
     "unsupportedOption": "This option is not supported",
     "requiredOptionNull": "The following options have to be set:\n\n${options}"
   },
@@ -282,12 +284,7 @@
     "updateNotImplemented": "This feature has not been implemented yet"
   },
   "contributorsView": {
-    "widgetTitle": "Contributors",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Contributors"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Version mismatch",

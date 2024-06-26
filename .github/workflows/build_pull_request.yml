@@ -61,6 +61,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+          flutter-version: 3.22.x
           cache: ${{ inputs.flutter-cache }}
 
       - name: Get dependencies
@@ -83,7 +84,7 @@ jobs:
       - name: Prepare comment
         run: |
           if [[ "${{ steps.flutter-build.outcome }}" == "success" ]]; then
-            echo "MESSAGE=✅ Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
+            echo "MESSAGE=✅ Succeeded build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           else
             echo "MESSAGE=🚫 Failed build on ${{ env.COMMIT_HASH }}." >> $GITHUB_ENV
           fi

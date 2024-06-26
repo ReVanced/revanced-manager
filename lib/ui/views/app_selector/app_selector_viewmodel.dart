@@ -54,7 +54,7 @@ class AppSelectorViewModel extends BaseViewModel {
         .toSet()
         .where((name) => !apps.any((app) => app.packageName == name))
         .toList();
-    noApps = allApps.isEmpty;
+    noApps = allApps.isEmpty && apps.isEmpty;
     return allApps;
   }
 
@@ -258,7 +258,7 @@ class AppSelectorViewModel extends BaseViewModel {
     try {
       final String? result = await FlutterFileDialog.pickFile(
         params: const OpenFileDialogParams(
-          fileExtensionsFilter: ['apk'],
+          mimeTypesFilter: ['application/vnd.android.package-archive'],
         ),
       );
       if (result != null) {

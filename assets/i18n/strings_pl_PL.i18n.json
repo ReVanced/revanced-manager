@@ -1,5 +1,5 @@
 {
-  "okButton": "OK",
+  "okButton": "OK ",
   "cancelButton": "Anuluj",
   "dismissButton": "Odrzuć",
   "quitButton": "Wyjdź",
@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Niestandardowa wartość",
+    "setToNull": "Ustaw na zerowy",
+    "nullValue": "Ta opcja jest obecnie pusta",
     "resetOptionsTooltip": "Zresetuj opcje od łatek",
     "viewTitle": "Opcje łatek",
     "saveOptions": "Zapisz",
     "addOptions": "Dodaj opcje",
-    "deselectPatch": "Odznacz łatkę",
+    "unselectPatch": "Odznacz łatkę",
     "tooltip": "Więcej opcji wejściowych",
     "selectFilePath": "Wybierz ścieżkę pliku",
     "selectFolder": "Wybierz folder",
     "selectOption": "Wybierz opcję",
-    "requiredOption": "Ta opcja jest wymagana",
+    "requiredOption": "Ustawienie tej opcji jest wymagane",
     "unsupportedOption": "Ta opcja nie jest wspierana",
     "requiredOptionNull": "Należy ustawić następujące opcje:\n\n${options}"
   },
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Ta funkcja nie została jeszcze zaimplementowana"
   },
   "contributorsView": {
-    "widgetTitle": "Współtwórcy",
-    "patcherContributors": "Program łatający ReVanced",
-    "patchesContributors": "Łatki ReVanced",
-    "integrationsContributors": "Integracje ReVanced",
-    "cliContributors": "CLI ReVanced",
-    "managerContributors": "Menedżer ReVanced"
+    "widgetTitle": "Współtwórcy"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Niezgodność wersji",

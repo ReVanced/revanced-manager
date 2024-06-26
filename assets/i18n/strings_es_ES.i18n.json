@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Valor personalizado",
+    "setToNull": "Establecer a nulo",
+    "nullValue": "Este valor de opción es nulo actualmente",
     "resetOptionsTooltip": "Restablecer las opciones de parche",
     "viewTitle": "Opciones de parche",
     "saveOptions": "Guardar",
     "addOptions": "Añadir opciones",
-    "deselectPatch": "Deseleccionar parche",
+    "unselectPatch": "Deseleccionar parche",
     "tooltip": "Más opciones de entrada",
     "selectFilePath": "Seleccionar ruta del archivo",
     "selectFolder": "Seleccionar carpeta",
     "selectOption": "Seleccionar opción",
-    "requiredOption": "Esta opción es necesaria",
+    "requiredOption": "La configuración de esta opción es necesaria",
     "unsupportedOption": "Esta opción no está disponible",
     "requiredOptionNull": "Hay que establecer las siguientes opciones:\n\n${options}"
   },
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Esta función no se ha implementado aún"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuidores",
-    "patcherContributors": "Parcheador de ReVanced",
-    "patchesContributors": "Parches de ReVanced",
-    "integrationsContributors": "Integraciones de ReVanced",
-    "cliContributors": "CLI de ReVanced",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Contribuidores"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "La versión no coincide",

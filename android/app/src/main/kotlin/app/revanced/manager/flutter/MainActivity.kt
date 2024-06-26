@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import app.revanced.library.ApkUtils
 import app.revanced.library.ApkUtils.applyTo
-import app.revanced.library.ApkUtils.sign
 import app.revanced.manager.flutter.utils.Aapt
 import app.revanced.manager.flutter.utils.packageInstaller.InstallerReceiver
 import app.revanced.manager.flutter.utils.packageInstaller.UninstallerReceiver
@@ -339,16 +338,15 @@ class MainActivity : FlutterActivity() {
                     patcher.get()
                 }
 
-                inFile.copyTo(outFile)
+                if (cancel(patcher::close)) return@Thread
+
+                patcherResult.applyTo(inFile)
 
                 if (cancel(patcher::close)) return@Thread
 
-                patcherResult.applyTo(outFile)
-
-                if (cancel(patcher::close)) return@Thread
-                updateProgress(0.8, "Signing...", "")
-
-                outFile.sign(
+                ApkUtils.sign(
+                    inFile,
+                    outFile,
                     ApkUtils.SigningOptions(
                         keyStoreFile,
                         keystorePassword,

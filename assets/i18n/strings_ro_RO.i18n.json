@@ -72,7 +72,7 @@
   },
   "appSelectorCard": {
     "widgetTitle": "Selectați o aplicație",
-    "widgetTitleSelected": "Aplicația selectata",
+    "widgetTitleSelected": "Aplicația selectată",
     "widgetSubtitle": "Nici o aplicație selectată",
     "noAppsLabel": "Nu s-au găsit aplicații",
     "currentVersion": "Actual",
@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Valoare personalizată",
+    "setToNull": "Setează ca nul",
+    "nullValue": "Această valoare este în prezent nulă",
     "resetOptionsTooltip": "Resetează opțiunile patch-ului",
     "viewTitle": "Opțiuni patch",
     "saveOptions": "Salvează",
     "addOptions": "Adaugă opțiuni",
-    "deselectPatch": "Deselectați toate patch-urile",
+    "unselectPatch": "Deselectează patch-ul",
     "tooltip": "Mai multe opțiuni de intrare",
     "selectFilePath": "Selectați calea fișierului",
     "selectFolder": "Selectați dosarul",
     "selectOption": "Selectați opțiunea",
-    "requiredOption": "Această opțiune este necesară",
+    "requiredOption": "Setarea acestei opțiuni este necesară",
     "unsupportedOption": "Această opțiune nu este acceptată",
     "requiredOptionNull": "Următoarele opțiuni trebuie setate:\n\n${options}"
   },
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Această funcție nu a fost încă implementată"
   },
   "contributorsView": {
-    "widgetTitle": "Contribuitori",
-    "patcherContributors": "Patcher ReVanced",
-    "patchesContributors": "Patch-uri ReVanced",
-    "integrationsContributors": "Integrări ReVanced",
-    "cliContributors": "CLI ReVanced",
-    "managerContributors": "Manager ReVanced"
+    "widgetTitle": "Contribuitori"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versiune nepotrivită",

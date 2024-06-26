@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:language_code/language_code.dart';
 import 'package:revanced_manager/app/app.locator.dart';
+import 'package:revanced_manager/app/app.router.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/toast.dart';
@@ -10,8 +11,10 @@ import 'package:revanced_manager/ui/views/settings/settings_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/settingsView/settings_tile_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 final _settingViewModel = SettingsViewModel();
+final _navigationService = NavigationService();
 
 class SUpdateLanguage extends BaseViewModel {
   final Toast _toast = locator<Toast>();
@@ -34,17 +37,18 @@ class SUpdateLanguage extends BaseViewModel {
   }
 
   Future<void> showLanguagesDialog(BuildContext parentContext) {
-    final ValueNotifier<String> selectedLanguageCode = ValueNotifier(
-      '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}',
+    final ValueNotifier<AppLocale> selectedLanguageCode = ValueNotifier(
+      LocaleSettings.currentLocale,
     );
-    LanguageCodes getLanguageCode(locale) {
-      return LanguageCodes.fromCode(
-        '${locale.languageCode}_${locale.countryCode}',
+    LanguageCodes getLanguageCode(Locale locale) {
+      return LanguageCodes.fromLocale(
+        locale,
         orElse: () => LanguageCodes.fromCode(locale.languageCode),
       );
     }
 
-    final currentlyUsedLanguage = getLanguageCode(LocaleSettings.currentLocale);
+    final currentlyUsedLanguage =
+        getLanguageCode(LocaleSettings.currentLocale.flutterLocale);
     // initLang();
 
     // Return a dialog with list for each language supported by the application.
@@ -65,34 +69,32 @@ class SUpdateLanguage extends BaseViewModel {
                   RadioListTile(
                     title: Text(currentlyUsedLanguage.englishName),
                     subtitle: Text(
-                        '${currentlyUsedLanguage.nativeName} (${LocaleSettings.currentLocale.languageCode}${LocaleSettings.currentLocale.countryCode != null ? '-${LocaleSettings.currentLocale.countryCode}' : ''})'),
-                    value:
-                        '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}' ==
-                            selectedLanguageCode.value,
+                      '${currentlyUsedLanguage.nativeName}\n'
+                      '(${LocaleSettings.currentLocale.languageTag})',
+                    ),
+                    value: LocaleSettings.currentLocale ==
+                        selectedLanguageCode.value,
                     groupValue: true,
                     onChanged: (value) {
-                      selectedLanguageCode.value =
-                          '${LocaleSettings.currentLocale.languageCode}-${LocaleSettings.currentLocale.countryCode}';
+                      selectedLanguageCode.value = LocaleSettings.currentLocale;
                     },
                   ),
                   ...AppLocale.values
                       .where(
-                    (locale) =>
-                        locale.languageCode != currentlyUsedLanguage.code,
+                    (locale) => locale != LocaleSettings.currentLocale,
                   )
                       .map((locale) {
-                    final languageCode = getLanguageCode(locale);
+                    final languageCode = getLanguageCode(locale.flutterLocale);
                     return RadioListTile(
                       title: Text(languageCode.englishName),
                       subtitle: Text(
-                        '${languageCode.nativeName} (${locale.languageCode}${locale.countryCode != null ? '-${locale.countryCode}' : ''})',
+                        '${languageCode.nativeName}\n'
+                        '(${locale.languageTag})',
                       ),
-                      value: '${locale.languageCode}-${locale.countryCode}' ==
-                          selectedLanguageCode.value,
+                      value: locale == selectedLanguageCode.value,
                       groupValue: true,
                       onChanged: (value) {
-                        selectedLanguageCode.value =
-                            '${locale.languageCode}-${locale.countryCode}';
+                        selectedLanguageCode.value = locale;
                       },
                     );
                   }),
@@ -109,9 +111,9 @@ class SUpdateLanguage extends BaseViewModel {
             child: Text(t.cancelButton),
           ),
           TextButton(
-            onPressed: () {
-              updateLocale(selectedLanguageCode.value);
-              Navigator.of(context).pop();
+            onPressed: () async {
+              updateLocale(selectedLanguageCode.value.languageTag);
+              await _navigationService.navigateToNavigationView();
             },
             child: Text(t.okButton),
           ),
@@ -130,7 +132,7 @@ class SUpdateLanguageUI extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       title: t.settingsView.languageLabel,
       subtitle:
-          LanguageCodes.fromCode(LocaleSettings.currentLocale.languageCode)
+          LanguageCodes.fromLocale(LocaleSettings.currentLocale.flutterLocale)
               .nativeName,
       onTap: () =>
           _settingViewModel.sUpdateLanguage.showLanguagesDialog(context),

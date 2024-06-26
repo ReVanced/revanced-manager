@@ -31,7 +31,6 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
-  List<Option> modifiedOptions = [];
   List<Option> options = [];
   Patch? selectedPatch;
   BuildContext? ctx;
@@ -458,7 +457,7 @@ class ManagerAPI {
       final String repoName = !isUsingAlternativeSources() ? defaultPatchesRepo : getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
       final String url = getPatchesDownloadURL();
-      return await _githubAPI.getPatchesReleaseFile(
+      return await _githubAPI.getReleaseFile(
         '.jar',
         repoName,
         currentVersion,
@@ -477,7 +476,7 @@ class ManagerAPI {
       final String repoName = !isUsingAlternativeSources() ? defaultIntegrationsRepo : getIntegrationsRepo();
       final String currentVersion = await getCurrentIntegrationsVersion();
       final String url = getIntegrationsDownloadURL();
-      return await _githubAPI.getPatchesReleaseFile(
+      return await _githubAPI.getReleaseFile(
         '.apk',
         repoName,
         currentVersion,
@@ -506,7 +505,7 @@ class ManagerAPI {
       );
     } else {
       final release =
-          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+          await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -555,7 +554,7 @@ class ManagerAPI {
       );
     } else {
       final release =
-          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+          await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {

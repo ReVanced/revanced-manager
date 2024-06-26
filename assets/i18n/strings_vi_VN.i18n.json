@@ -164,6 +164,7 @@
     "debugSectionTitle": "Gỡ Lỗi",
     "advancedSectionTitle": "Nâng cao",
     "exportSectionTitle": "Nhập và xuất",
+    "dataSectionTitle": "Nguồn dữ liệu",
     "themeModeLabel": "Chủ đề ứng dụng",
     "systemThemeLabel": "Hệ thống",
     "lightThemeLabel": "Sáng",
@@ -173,11 +174,17 @@
     "languageLabel": "Ngôn ngữ",
     "languageUpdated": "Ngôn ngữ đã cập nhập",
     "englishOption": "Tiếng Anh",
+    "sourcesLabel": "Nguồn thay thế",
+    "sourcesLabelHint": "Cấu hình nguồn thay thế cho Bản vá ReVanced và Tích hợp ReVanced",
     "sourcesIntegrationsLabel": "Nguồn tích hợp",
+    "useAlternativeSources": "Dùng nguồn thay thế",
+    "useAlternativeSourcesHint": "Dùng nguồn thay thế cho Bản vá ReVanced và Tích hợp ReVanced thay cho API",
     "sourcesResetDialogTitle": "Đặt lại",
     "sourcesResetDialogText": "Bạn có chắc chắn muốn đặt lại nguồn của mình về giá trị mặc định không?",
     "apiURLResetDialogText": "Bạn có chắc bạn muốn đặt lại API URL của bạn về giá trị mặc định của nó không?",
+    "sourcesUpdateNote": "Lưu ý: Việc này sẽ tự động tải Bản vá ReVanced và Tích hợp ReVanced từ nguồn thay thế.",
     "apiURLLabel": "Địa chỉ URL của API",
+    "apiURLHint": "Cấu hình địa chỉ URL API của ReVanced Manager",
     "selectApiURL": "Địa chỉ URL của API",
     "orgPatchesLabel": "Tác giả bản vá",
     "sourcesPatchesLabel": "Nguồn bản vá",
@@ -264,12 +271,7 @@
     "updateNotImplemented": "Tính năng này chưa được triển khai"
   },
   "contributorsView": {
-    "widgetTitle": "Những người đóng góp",
-    "patcherContributors": "Trình vá ReVanced",
-    "patchesContributors": "Bản vá ReVanced",
-    "integrationsContributors": "Tích hợp ReVanced",
-    "cliContributors": "Giao tiếp dòng lệnh (CLI) ReVanced",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Những người đóng góp"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Phiên bản không phù hợp",

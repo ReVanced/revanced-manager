@@ -30,6 +30,7 @@ class InstallerViewModel extends BaseViewModel {
   static const _installerChannel = MethodChannel(
     'app.revanced.manager.flutter/installer',
   );
+  final Key logCustomScrollKey = UniqueKey();
   final ScrollController scrollController = ScrollController();
   final ScreenshotCallback screenshotCallback = ScreenshotCallback();
   double? progress = 0.0;
@@ -43,6 +44,57 @@ class InstallerViewModel extends BaseViewModel {
   bool isCanceled = false;
   bool cancel = false;
   bool showPopupScreenshotWarning = true;
+
+  bool showAutoScrollButton = false;
+  bool _isAutoScrollEnabled = true;
+  bool _isAutoScrolling = false;
+
+  double get getCurrentScrollPercentage {
+    final maxScrollExtent = scrollController.position.maxScrollExtent;
+    final currentPosition = scrollController.position.pixels;
+
+    return currentPosition / maxScrollExtent;
+  }
+
+  bool handleAutoScrollNotification(ScrollNotification event) {
+    if (_isAutoScrollEnabled && event is ScrollStartNotification) {
+      _isAutoScrollEnabled = _isAutoScrolling;
+      showAutoScrollButton = false;
+      notifyListeners();
+
+      return true;
+    }
+
+    if (event is ScrollEndNotification) {
+      const anchorThreshold = 0.987;
+
+      _isAutoScrollEnabled =
+          _isAutoScrolling || getCurrentScrollPercentage >= anchorThreshold;
+
+      showAutoScrollButton = !_isAutoScrollEnabled && !_isAutoScrolling;
+      notifyListeners();
+
+      return true;
+    }
+
+    return false;
+  }
+
+  void scrollToBottom() {
+    _isAutoScrolling = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final maxScrollExtent = scrollController.position.maxScrollExtent;
+
+      await scrollController.animateTo(
+        maxScrollExtent,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.fastOutSlowIn,
+      );
+
+      _isAutoScrolling = false;
+    });
+  }
 
   Future<void> initialize(BuildContext context) async {
     isRooted = await _rootAPI.isRooted();
@@ -123,13 +175,9 @@ class InstallerViewModel extends BaseViewModel {
       if (logs[logs.length - 1] == '\n') {
         logs = logs.substring(0, logs.length - 1);
       }
-      Future.delayed(const Duration(milliseconds: 100)).then((value) {
-        scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.fastOutSlowIn,
-        );
-      });
+      if (_isAutoScrollEnabled) {
+        scrollToBottom();
+      }
     }
     notifyListeners();
   }

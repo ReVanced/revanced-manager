@@ -16,7 +16,7 @@
   "noShowAgain": "Να μην ξαναεμφανιστεί",
   "add": "Προσθήκη",
   "remove": "Αφαίρεση",
-  "showChangelogButton": "Εμφάνιση αρχείου καταγραφής αλλαγών",
+  "showChangelogButton": "Εμφάνιση αλλαγών",
   "showUpdateButton": "Εμφάνιση ενημέρωσης",
   "navigationView": {
     "dashboardTab": "Πίνακας Ελέγχου",
@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Προσαρμοσμένη τιμή",
+    "setToNull": "Ορισμός σε null",
+    "nullValue": "Αυτή η επιλογή είναι κενή",
     "resetOptionsTooltip": "Επαναφορά επιλογών τροποποιήσεων",
     "viewTitle": "Επιλογές τροποποιήσεων",
     "saveOptions": "Αποθήκευση",
     "addOptions": "Προσθήκη επιλογών",
-    "deselectPatch": "Αποεπιλέξτε τροποποιήσεις",
+    "unselectPatch": "Αποεπιλογή patch",
     "tooltip": "Περισσότερες επιλογές εισόδου",
     "selectFilePath": "Επιλογή τοποθεσίας αρχείου",
     "selectFolder": "Επιλογή φακέλου",
     "selectOption": "Επιλογή ρύθμισης",
-    "requiredOption": "Αυτή η επιλογή απαιτείται",
+    "requiredOption": "Απαιτείται ρύθμιση αυτής της επιλογής",
     "unsupportedOption": "Αυτή η επιλογή δεν υποστηρίζεται",
     "requiredOptionNull": "Πρέπει να οριστούν οι παρακάτω επιλογές:\n\n${options}"
   },
@@ -178,11 +180,11 @@
     "sourcesLabelHint": "Ρυθμίστε τις εναλλακτικές πηγές για τις τροποποιήσεις ReVanced και τις ενσωματώσεις ReVanced",
     "sourcesIntegrationsLabel": "Πηγή ενσωματώσεων",
     "useAlternativeSources": "Χρήση εναλλακτικών πηγών",
-    "useAlternativeSourcesHint": "Χρήση εναλλακτικών πηγών για των τροποποιήσεων ReVanced και των ενσωματώσεων ReVanced αντί για το API",
+    "useAlternativeSourcesHint": "Χρήση εναλλακτικών πηγών για τις τροποποιήσεις και τις ενσωματώσεις ReVanced αντί του API",
     "sourcesResetDialogTitle": "Επαναφορά",
     "sourcesResetDialogText": "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τις πηγές σας στις προεπιλεγμένες τιμές τους;",
     "apiURLResetDialogText": "Είστε βέβαιοι ότι θέλετε να επαναφέρετε την API URL σας στην προεπιλεγμένη τιμή της;",
-    "sourcesUpdateNote": "Σημείωση: Αυτό θα κάνει αυτόματη λήψη των τροποποιήσεων ReVanced και των ενσωματώσεων ReVanced από τις εναλλακτικές πηγές.\n\nΑυτό θα σας συνδέσει με την εναλλακτική πηγή.",
+    "sourcesUpdateNote": "Σημείωση: Θα γίνεται αυτόματη λήψη των τροποποιήσεων και των ενσωματώσεων ReVanced από τις εναλλακτικές πηγές.\n\nΟπότε θα συνδέεστε με τις εναλλακτικές πηγές.",
     "apiURLLabel": "API URL",
     "apiURLHint": "Ρύθμιση διεύθυνσης URL του API του ReVanced Manager",
     "selectApiURL": "API URL",
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Αυτή η δυνατότητα δεν είναι ακόμα διαθέσιμη"
   },
   "contributorsView": {
-    "widgetTitle": "Συνεισφέροντες",
-    "patcherContributors": "Τροποποιητής ReVanced",
-    "patchesContributors": "Τροποποιήσεις ReVanced",
-    "integrationsContributors": "Ενσωματώσεις ReVanced",
-    "cliContributors": "Τερματικό ReVanced",
-    "managerContributors": "Διαχειριστής ReVanced"
+    "widgetTitle": "Συνεισφέροντες"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Ασυμφωνία έκδοσης",

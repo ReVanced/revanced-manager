@@ -28,11 +28,11 @@
     "widgetTitle": "Dashboard",
     "updatesSubtitle": "Aggiornamenti",
     "patchedSubtitle": "Applicazioni patchate",
-    "changeLaterSubtitle": "È possibile modificare questa impostazione nelle impostazioni in un secondo momento.",
+    "changeLaterSubtitle": "Questo sarà modificabile nelle impostazioni in un secondo momento.",
     "noUpdates": "Nessun aggiornamento disponibile",
     "WIP": "Lavori in corso...",
     "noInstallations": "Nessuna applicazione patchata è stata installata",
-    "installUpdate": "Proseguire ad installare l'aggiornamento?",
+    "installUpdate": "Proseguire con l'installazione dell'aggiornamento?",
     "updateSheetTitle": "Aggiorna ReVanced Manager",
     "updateDialogTitle": "Nuovo aggiornamento disponibile",
     "updatePatchesSheetTitle": "Aggiorna le patch ReVanced",
@@ -65,7 +65,7 @@
   },
   "patcherView": {
     "widgetTitle": "Patcher",
-    "patchButton": "Patcha",
+    "patchButton": "Patch",
     "armv7WarningDialogText": "Il patching sui dispositivi ARMv7 non è ancora supportato e potrebbe fallire. Continuare comunque?",
     "removedPatchesWarningDialogText": "Le seguenti patch sono state rimosse dall'ultima volta che le hai usate.\n\n${patches}\n\nContinuare comunque?",
     "requiredOptionDialogText": "Alcune opzioni di patch devono essere impostate."
@@ -93,7 +93,7 @@
     "viewTitle": "Seleziona un'app",
     "searchBarHint": "Cerca app",
     "storageButton": "Memoria interna",
-    "selectFromStorageButton": "Seleziona dalla memoria",
+    "selectFromStorageButton": "Seleziona dalla memoria interna",
     "errorMessage": "Impossibile utilizzare l'applicazione selezionata",
     "downloadToast": "La funzione di Download non è ancora disponibile",
     "requireSuggestedAppVersionDialogText": "La versione dell'app selezionata non corrisponde a quella suggerita, il che può causare problemi imprevisti. Si prega di utilizzare la versione suggerita.\n\nVersione selezionata: ${selected}\nVersione suggerita: ${suggested}\n\nPer continuare comunque, disattiva \"Richiedi versione consigliata dell'app\" nelle impostazioni.",
@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Valore personalizzato",
+    "setToNull": "Imposta a nullo",
+    "nullValue": "Questo valore di opzione è al momento nullo",
     "resetOptionsTooltip": "Ripristina opzioni patch",
     "viewTitle": "Opzioni patch",
     "saveOptions": "Salva",
     "addOptions": "Aggiungi opzioni",
-    "deselectPatch": "Deseleziona patch",
+    "unselectPatch": "Deseleziona patch",
     "tooltip": "Più opzioni di input",
     "selectFilePath": "Seleziona percorso file",
     "selectFolder": "Seleziona cartella",
     "selectOption": "Seleziona opzione",
-    "requiredOption": "Questa opzione è richiesta",
+    "requiredOption": "L'impostazione di questa opzione è obbligatoria",
     "unsupportedOption": "Questa opzione non è supportata",
     "requiredOptionNull": "È necessario impostare le seguenti opzioni:\n\n${options}"
   },
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Questa funzionalità non è stata ancora implementata"
   },
   "contributorsView": {
-    "widgetTitle": "Contributori",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "Patches di ReVanced",
-    "integrationsContributors": "Integrazioni di ReVanced",
-    "cliContributors": "CLI di ReVanced",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Contributori"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versione non corrispondente",

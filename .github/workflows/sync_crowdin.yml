@@ -2,9 +2,14 @@ name: Sync Crowdin
 
 on:
   workflow_dispatch:
+  schedule: 
+    - cron: 00 12 * * 1
   push:
-    branches:
-      - dev
+    branches: dev
+    paths:
+      - assets/i18n/*.json
+      - assets/i18n/*.dart
+      - .github/workflows/sync_crowdin.yml
 
 jobs:
   sync:
@@ -16,8 +21,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          flutter-version: 3.22.x
 
       - name: Sync translations from Crowdin
         uses: crowdin/github-action@v1
@@ -32,16 +40,24 @@ jobs:
           pull_request_body: "Sync translations from [crowdin.com/project/revanced](https://crowdin.com/project/revanced)"
           pull_request_base_branch_name: "dev"
           commit_message: "chore: Sync translations"
+          github_user_name: revanced-bot
+          github_user_email: github@revanced.app
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
       - name: Remove empty values from JSON
         run: |
           cd assets/i18n
-          sudo chmod 777 *
+          sudo chmod 777 *.json
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
+
+      - name: Validation of Translation Strings
+        run: |
+          dart pub get
+          dart run slang
+          flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
         run: |
@@ -51,5 +67,3 @@ jobs:
           git add assets/i18n/*.json
           git commit -m "chore: Remove empty values from JSON" assets/i18n/*.json
           git push origin HEAD:feat/translations
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

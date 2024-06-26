@@ -16,8 +16,8 @@
   "noShowAgain": "Не приказуј поново",
   "add": "Додај",
   "remove": "Уклони",
-  "showChangelogButton": "Прикажи евиденцију промена",
-  "showUpdateButton": "Прикажи ажурирање",
+  "showChangelogButton": "Види евиденцију промена",
+  "showUpdateButton": "Види ажурирање",
   "navigationView": {
     "dashboardTab": "Контролна табла",
     "patcherTab": "Печер",
@@ -77,10 +77,10 @@
     "noAppsLabel": "Ниједна апликација није пронађена",
     "currentVersion": "Тренутна верзија",
     "suggestedVersion": "Препоручена верзија",
-    "anyVersion": "Било која верзија"
+    "anyVersion": "Све верзије"
   },
   "patchSelectorCard": {
-    "widgetTitle": "Изаберите печеве",
+    "widgetTitle": "Изабери печеве",
     "widgetTitleSelected": "Изабрани печеви",
     "widgetSubtitle": "Прво изаберите апликацију",
     "widgetEmptySubtitle": "Нема изабраних печева"
@@ -91,7 +91,7 @@
   },
   "appSelectorView": {
     "viewTitle": "Изаберите апликацију",
-    "searchBarHint": "Тражите апликацију",
+    "searchBarHint": "Претражите апликацију",
     "storageButton": "Из меморије",
     "selectFromStorageButton": "Изабери из меморије",
     "errorMessage": "Није могуће користити изабрану апликацију",
@@ -178,7 +178,7 @@
     "sourcesLabelHint": "Конфигуришите алтернативне изворе за ReVanced печеве и ReVanced интеграције",
     "sourcesIntegrationsLabel": "Извор интеграција",
     "useAlternativeSources": "Користи алтернативне изворе",
-    "useAlternativeSourcesHint": "Користите алтернативне изворе за ReVanced печеве и ReVanced интеграције уместо API-ја",
+    "useAlternativeSourcesHint": "Коришћење алтернативних извора за ReVanced печеве и ReVanced интеграције уместо API-ја",
     "sourcesResetDialogTitle": "Ресетовање",
     "sourcesResetDialogText": "Желите ли заиста да вратите изворе на подразумеване вредности?",
     "apiURLResetDialogText": "Желите ли заиста да вратите URL API-ја на подразумевану вредност?",
@@ -226,12 +226,12 @@
     "resetStoredPatchesDialogTitle": "Ресетовати избор печева?",
     "resetStoredPatchesDialogText": "Подразумевани избор печева ће бити враћен.",
     "resetStoredPatches": "Избор печева је ресетован",
-    "resetStoredOptionsLabel": "Ресетуј опције печа",
-    "resetStoredOptionsHint": "Ресетујте све опције печа",
-    "resetStoredOptionsDialogTitle": "Ресетовати опције печа?",
-    "resetStoredOptionsDialogText": "Ресетовањем опција печа уклањате све сачуване опције.",
+    "resetStoredOptionsLabel": "Ресетуј опције печева",
+    "resetStoredOptionsHint": "Ресетујте све опције печева",
+    "resetStoredOptionsDialogTitle": "Ресетовати опције печева?",
+    "resetStoredOptionsDialogText": "Ресетовањем опција печева уклањате све сачуване опције.",
     "resetStoredOptions": "Опције су ресетоване",
-    "deleteLogsLabel": "Обриши евиденције",
+    "deleteLogsLabel": "Избриши евиденције",
     "deleteLogsHint": "Избришите прикупљене евиденције ReVanced Manager-а",
     "deletedLogs": "Евиденције су избрисане",
     "regenerateKeystoreLabel": "Генериши ново складиште кључева",
@@ -252,7 +252,7 @@
     "keystoreSelectorErrorMessage": "Није могуће користити изабрани фајл са складиштем кључева"
   },
   "appInfoView": {
-    "widgetTitle": "Информације о апликацији",
+    "widgetTitle": "О апликацији",
     "openButton": "Отвори",
     "uninstallButton": "Деинсталирај",
     "unmountButton": "Демонтирај",
@@ -271,12 +271,7 @@
     "updateNotImplemented": "Ова функција још увек није имплементирана"
   },
   "contributorsView": {
-    "widgetTitle": "Сарадници",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced печеви",
-    "integrationsContributors": "ReVanced интеграције",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Сарадници"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Верзија се не поклапа",

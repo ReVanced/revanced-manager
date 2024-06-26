@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "Benutzerdefinierter Wert",
+    "setToNull": "Auf Null setzen",
+    "nullValue": "Dieser Optionswert ist derzeit null",
     "resetOptionsTooltip": "Patch-Optionen zurücksetzen",
     "viewTitle": "Patch-Optionen",
     "saveOptions": "Speichern",
     "addOptions": "Option hinzufügen",
-    "deselectPatch": "Patch abwählen",
+    "unselectPatch": "Patch entfernen",
     "tooltip": "Weitere Eingabeoptionen",
     "selectFilePath": "Dateipfad auswählen",
     "selectFolder": "Ordner auswählen",
     "selectOption": "Option auswählen",
-    "requiredOption": "Diese Option ist erforderlich.",
+    "requiredOption": "Einstellung dieser Option ist erforderlich",
     "unsupportedOption": "Dieser Vorgang ist nicht unterstützt.",
     "requiredOptionNull": "Die folgenden Optionen müssen gesetzt sein:\n\n${options}"
   },
@@ -271,12 +273,7 @@
     "updateNotImplemented": "Diese Funktion ist noch nicht implementiert"
   },
   "contributorsView": {
-    "widgetTitle": "Mitwirkende",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Mitwirkende"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionskonflikt",
