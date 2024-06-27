@@ -9,6 +9,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.23"
 }
 
+val (majorVersion, minorVersion, patchVersion, devVersion) = "${project.version}.0".replace("-dev","").split(".")
 android {
     namespace = "app.revanced.manager"
     compileSdk = 34
@@ -18,8 +19,8 @@ android {
         applicationId = "app.revanced.manager"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.0.1"
+        versionName = project.version.toString()
+        versionCode = (majorVersion.toInt() * 100000000) + (minorVersion.toInt() * 100000) + (patchVersion.toInt() * 100) + devVersion.toInt()
         resourceConfigurations.addAll(listOf(
             "en",
         ))
@@ -35,16 +36,36 @@ android {
         }
 
         release {
+            if (System.getenv("signingKey") != null) {
+                signingConfigs {
+                    create("release") {
+                        storeFile = file(System.getenv("signingKey"))
+                        storePassword = System.getenv("keyStorePassword")
+                        keyAlias = System.getenv("keyAlias")
+                        keyPassword = System.getenv("keyPassword")
+                    }
+                }
+                signingConfig = signingConfigs.getByName("release")
+            } else {
+                applicationIdSuffix = ".debug"
+                resValue("string", "app_name", "ReVanced Manager Debug")
+                signingConfig = signingConfigs.getByName("debug")
+            }
             if (!project.hasProperty("noProguard")) {
                 isMinifyEnabled = true
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
-
-            if (project.hasProperty("signAsDebug")) {
-                applicationIdSuffix = ".debug"
-                resValue("string", "app_name", "ReVanced Manager Debug")
-                signingConfig = signingConfigs.getByName("debug")
+            var suffix = "v${project.version}"
+            if (project.hasProperty("suffix")) {
+                suffix = "${project.property("suffix")}"
+            }
+            applicationVariants.all {
+                this.outputs
+                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                    .forEach { output ->
+                        output.outputFileName = "revanced-manager-${suffix}.apk"
+                    }
             }
 
             buildConfigField("long", "BUILD_ID", "0L")
@@ -99,6 +120,12 @@ android {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.register("publish") {
+    group = "Build"
+    description = "Assemble main outputs for all the variants."
+    dependsOn("assembleRelease")
 }
 
 dependencies {
