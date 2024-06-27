@@ -271,7 +271,7 @@
     "uninstallDialogText": "Are you sure you want to uninstall this app?",
     "rootDialogText": "App was installed with superuser permissions, but currently ReVanced Manager has no permissions.\nPlease grant superuser permissions first.",
     "removeAppDialogTitle": "Delete app?",
-    "removeAppDialogText": "Are you sure you want to delete this app?",
+    "removeAppDialogText": "Are you sure you want to delete this backup?",
     "packageNameLabel": "Package name",
     "installTypeLabel": "Installation type",
     "mountTypeLabel": "Mount",
