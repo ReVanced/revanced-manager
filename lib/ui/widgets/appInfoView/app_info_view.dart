@@ -11,10 +11,10 @@ class AppInfoView extends StatelessWidget {
   const AppInfoView({
     super.key,
     required this.app,
-    required this.isHistory,
+    required this.isLastPatchedApp,
   });
   final PatchedApplication app;
-  final bool isHistory;
+  final bool isLastPatchedApp;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AppInfoView extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 20),
-                    if (isHistory) ...[
+                    if (isLastPatchedApp) ...[
                       ListTile(
                         contentPadding:
                         const EdgeInsets.symmetric(horizontal: 20.0),
@@ -81,7 +81,7 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => isHistory
+                                    onTap: () => isLastPatchedApp
                                       ? model.installApp(context, app)
                                       : model.openApp(app),
                                     child: Column(
@@ -89,7 +89,7 @@ class AppInfoView extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          isHistory
+                                          isLastPatchedApp
                                               ? Icons.download_outlined
                                               : Icons.open_in_new_outlined,
                                           color: Theme.of(context)
@@ -98,7 +98,7 @@ class AppInfoView extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          isHistory
+                                          isLastPatchedApp
                                               ? t.appInfoView.installButton
                                               : t.appInfoView.openButton,
                                           style: TextStyle(
@@ -124,7 +124,7 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => isHistory
+                                    onTap: () => isLastPatchedApp
                                       ? model.exportApp(app)
                                       : model.showUninstallDialog(
                                           context,
@@ -136,7 +136,7 @@ class AppInfoView extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          isHistory
+                                          isLastPatchedApp
                                               ? Icons.save
                                               : Icons.delete_outline,
                                           color: Theme.of(context)
@@ -145,7 +145,7 @@ class AppInfoView extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          isHistory
+                                          isLastPatchedApp
                                               ? t.appInfoView.exportButton
                                               : t.appInfoView.uninstallButton,
                                           style: TextStyle(
@@ -166,14 +166,14 @@ class AppInfoView extends StatelessWidget {
                                 endIndent: 12.0,
                                 width: 1.0,
                               ),
-                              if (isHistory)
+                              if (isLastPatchedApp)
                                 VerticalDivider(
                                   color: Theme.of(context).canvasColor,
                                   indent: 12.0,
                                   endIndent: 12.0,
                                   width: 1.0,
                                 ),
-                              if (isHistory)
+                              if (isLastPatchedApp)
                                 Expanded(
                                   child: Material(
                                     type: MaterialType.transparency,
@@ -209,14 +209,14 @@ class AppInfoView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              if (!isHistory && app.isRooted)
+                              if (!isLastPatchedApp && app.isRooted)
                                 VerticalDivider(
                                   color: Theme.of(context).canvasColor,
                                   indent: 12.0,
                                   endIndent: 12.0,
                                   width: 1.0,
                                 ),
-                              if (!isHistory && app.isRooted)
+                              if (!isLastPatchedApp && app.isRooted)
                                 Expanded(
                                   child: Material(
                                     type: MaterialType.transparency,
@@ -305,6 +305,23 @@ class AppInfoView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    if (isLastPatchedApp) ...[
+                      ListTile(
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: Text(
+                          t.appInfoView.sizeLabel,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        subtitle: Text(
+                          model.getFileSizeString(app.fileSize),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                    ],
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),

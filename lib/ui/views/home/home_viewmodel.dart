@@ -103,10 +103,10 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  void navigateToAppInfo(PatchedApplication app, bool isHistory) {
+  void navigateToAppInfo(PatchedApplication app, bool isLastPatchedApp) {
     _navigationService.navigateTo(
       Routes.appInfoView,
-      arguments: AppInfoViewArguments(app: app, isHistory: isHistory),
+      arguments: AppInfoViewArguments(app: app, isLastPatchedApp: isLastPatchedApp),
     );
   }
 

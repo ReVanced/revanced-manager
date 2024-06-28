@@ -5,7 +5,7 @@ import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
-import 'package:revanced_manager/ui/widgets/homeView/patch_history_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/last_patched_app_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
