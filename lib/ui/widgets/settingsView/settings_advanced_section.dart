@@ -25,7 +25,7 @@ class SAdvancedSection extends StatelessWidget {
         SRequireSuggestedAppVersion(),
         SVersionCompatibilityCheck(),
         SUniversalPatches(),
-        SPatchHistory(),
+        SLastPatchedApp(),
       ],
     );
   }

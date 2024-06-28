@@ -129,8 +129,8 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool isPatchHistoryEnabled() {
-    return _managerAPI.isPatchHistoryEnabled();
+  bool isLastPatchedAppEnabled() {
+    return _managerAPI.isLastPatchedAppEnabled();
   }
 
   Future<bool> hasManagerUpdates() async {

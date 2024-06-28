@@ -141,12 +141,12 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  bool isPatchHistoryEnabled() {
-    return _managerAPI.isPatchHistoryEnabled();
+  bool isLastPatchedAppEnabled() {
+    return _managerAPI.isLastPatchedAppEnabled();
   }
 
-  void usePatchHistory(bool value) {
-    _managerAPI.enablePatchHistoryStatus(value);
+  void useLastPatchedApp(bool value) {
+    _managerAPI.enableLastPatchedAppStatus(value);
     if (!value) {
       _managerAPI.deleteLastPatchedApp();
     }

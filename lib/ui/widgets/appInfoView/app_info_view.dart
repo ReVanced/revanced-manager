@@ -63,7 +63,7 @@ class AppInfoView extends StatelessWidget {
                       ListTile(
                         contentPadding:
                         const EdgeInsets.symmetric(horizontal: 20.0),
-                        subtitle: Text(t.appInfoView.patchHistoryDescription),
+                        subtitle: Text(t.appInfoView.lastPatchedAppDescription),
                       ),
                       const SizedBox(height: 4),
                     ],
