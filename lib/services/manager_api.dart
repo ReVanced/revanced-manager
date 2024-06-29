@@ -302,6 +302,14 @@ class ManagerAPI {
     await _prefs.setBool('requireSuggestedAppVersionEnabled', value);
   }
 
+  bool isLastPatchedAppEnabled() {
+    return _prefs.getBool('lastPatchedAppEnabled') ?? true;
+  }
+
+  Future<void> enableLastPatchedAppStatus(bool value) async {
+    await _prefs.setBool('lastPatchedAppEnabled', value);
+  }
+
   Future<void> setKeystorePassword(String password) async {
     await _prefs.setString('keystorePassword', password);
   }
@@ -332,6 +340,34 @@ class ManagerAPI {
     if (await keystore.exists()) {
       await keystore.delete();
     }
+  }
+
+  PatchedApplication? getLastPatchedApp() {
+    final String? app = _prefs.getString('lastPatchedApp');
+    return app != null ? PatchedApplication.fromJson(jsonDecode(app)) : null;
+  }
+
+  Future<void> deleteLastPatchedApp() async {
+    final PatchedApplication? app = getLastPatchedApp();
+    if (app != null) {
+      final File file = File(app.patchedFilePath);
+      await file.delete();
+      await _prefs.remove('lastPatchedApp');
+    }
+  }
+
+  Future<void> setLastPatchedApp(
+    PatchedApplication app,
+    File outFile,
+  ) async {
+    deleteLastPatchedApp();
+    final Directory appCache = await getApplicationSupportDirectory();
+    app.patchedFilePath = outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.fileSize = outFile.lengthSync();
+    await _prefs.setString(
+      'lastPatchedApp',
+      json.encode(app.toJson()),
+    );
   }
 
   List<PatchedApplication> getPatchedApps() {
@@ -692,6 +728,16 @@ class ManagerAPI {
     patchedApps.addAll(mountedApps);
 
     await setPatchedApps(patchedApps);
+
+    // Delete the saved app if the file is not found.
+    final PatchedApplication? lastPatchedApp = getLastPatchedApp();
+    if (lastPatchedApp != null) {
+      final File file = File(lastPatchedApp.patchedFilePath);
+      if (!file.existsSync()) {
+        deleteLastPatchedApp();
+        _prefs.remove('lastPatchedApp');
+      }
+    }
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {
@@ -785,5 +831,83 @@ class ManagerAPI {
     if (selectedPatchesFile.existsSync()) {
       selectedPatchesFile.deleteSync();
     }
+  }
+
+  Future<bool> installTypeDialog(BuildContext context) async {
+    final ValueNotifier<int> installType = ValueNotifier(0);
+    if (isRooted) {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: Text(t.installerView.installType),
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          icon: const Icon(Icons.file_download_outlined),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+          content: SingleChildScrollView(
+            child: ValueListenableBuilder(
+              valueListenable: installType,
+              builder: (context, value, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: Text(
+                        t.installerView.installTypeDescription,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                    RadioListTile(
+                      title: Text(t.installerView.installNonRootType),
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16),
+                      value: 0,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text(t.installerView.installRootType),
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16),
+                      value: 1,
+                      groupValue: value,
+                      onChanged: (selected) {
+                        installType.value = selected!;
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          actions: [
+            OutlinedButton(
+              child: Text(t.cancelButton),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FilledButton(
+              child: Text(t.installerView.installButton),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    return false;
   }
 }

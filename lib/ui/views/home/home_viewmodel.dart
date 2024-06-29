@@ -35,6 +35,7 @@ class HomeViewModel extends BaseViewModel {
   final Toast _toast = locator<Toast>();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   bool showUpdatableApps = false;
+  PatchedApplication? lastPatchedApp;
   bool releaseBuild = false;
   List<PatchedApplication> patchedInstalledApps = [];
   String _currentManagerVersion = '';
@@ -102,10 +103,10 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  void navigateToAppInfo(PatchedApplication app) {
+  void navigateToAppInfo(PatchedApplication app, bool isLastPatchedApp) {
     _navigationService.navigateTo(
       Routes.appInfoView,
-      arguments: AppInfoViewArguments(app: app),
+      arguments: AppInfoViewArguments(app: app, isLastPatchedApp: isLastPatchedApp),
     );
   }
 
@@ -123,8 +124,13 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void getPatchedApps() {
+    lastPatchedApp = _managerAPI.getLastPatchedApp();
     patchedInstalledApps = _managerAPI.getPatchedApps().toList();
     notifyListeners();
+  }
+
+  bool isLastPatchedAppEnabled() {
+    return _managerAPI.isLastPatchedAppEnabled();
   }
 
   Future<bool> hasManagerUpdates() async {
