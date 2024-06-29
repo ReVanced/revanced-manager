@@ -722,7 +722,7 @@ class ManagerAPI {
 
     await setPatchedApps(patchedApps);
 
-    // Removed saved app history if the file is not found.
+    // Delete the saved app if the file is not found.
     final PatchedApplication? lastPatchedApp = getLastPatchedApp();
     if (lastPatchedApp != null) {
       final File file = File(lastPatchedApp.patchedFilePath);

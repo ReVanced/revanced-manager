@@ -25,7 +25,7 @@ class LastPatchedAppCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  t.homeView.noHistory,
+                  t.homeView.noSavedAppFound,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!

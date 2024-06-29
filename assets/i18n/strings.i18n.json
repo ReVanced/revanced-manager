@@ -32,7 +32,7 @@
     "changeLaterSubtitle": "You can change this in the settings at a later time.",
     "noUpdates": "No updates available",
     "WIP": "Work in progress...",
-    "noHistory": "No app found",
+    "noSavedAppFound": "No app found",
     "noInstallations": "No patched apps installed",
     "installUpdate": "Continue to install the update?",
     "updateSheetTitle": "Update ReVanced Manager",
