@@ -301,9 +301,16 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   Future<void> loadSelectedPatches(BuildContext context) async {
     if (_managerAPI.isPatchesChangeEnabled()) {
-      final List<String> selectedPatches = await _managerAPI.getSelectedPatches(
-        locator<PatcherViewModel>().selectedApp!.packageName,
-      );
+      final List<String>? appliedPatches = _managerAPI
+          .getPatchedApps()
+          .firstWhereOrNull(
+            (app) => app.packageName == selectedApp!.packageName,
+          )
+          ?.appliedPatches;
+      final List<String> selectedPatches = appliedPatches ??
+          await _managerAPI.getSelectedPatches(
+            selectedApp!.packageName,
+          );
       if (selectedPatches.isNotEmpty) {
         this.selectedPatches.clear();
         this.selectedPatches.addAll(
