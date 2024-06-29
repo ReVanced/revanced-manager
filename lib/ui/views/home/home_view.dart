@@ -21,7 +21,9 @@ class HomeView extends StatelessWidget {
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: RefreshIndicator(
-          onRefresh: () => model.forceRefresh(context),
+          edgeOffset: 110.0,
+          displacement: 10.0,
+          onRefresh: () async => await model.forceRefresh(context),
           child: CustomScrollView(
             slivers: <Widget>[
               CustomSliverAppBar(

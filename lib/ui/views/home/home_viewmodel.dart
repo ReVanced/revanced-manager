@@ -500,8 +500,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> forceRefresh(BuildContext context) async {
-    _managerAPI.clearAllData();
+    await _managerAPI.clearAllData();
+    await initialize(context);
     _toast.showBottom(t.homeView.refreshSuccess);
-    initialize(context);
   }
 }
