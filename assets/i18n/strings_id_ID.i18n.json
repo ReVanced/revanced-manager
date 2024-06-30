@@ -27,7 +27,6 @@
     "refreshSuccess": "Berhasil Memuat Ulang",
     "widgetTitle": "Dasbor",
     "updatesSubtitle": "Pembaruan",
-    "patchedSubtitle": "Aplikasi tertambal",
     "changeLaterSubtitle": "Anda dapat mengubahnya di pengaturan nanti.",
     "noUpdates": "Tidak ada pembaruan",
     "WIP": "Sedang dikerjakan...",
@@ -122,12 +121,10 @@
     "viewTitle": "Opsi tambalan",
     "saveOptions": "Simpan",
     "addOptions": "Tambahkan opsi",
-    "deselectPatch": "Lepas tambalan",
     "tooltip": "Opsi masukan lainnya",
     "selectFilePath": "Pilih lokasi berkas",
     "selectFolder": "Pilih folder",
     "selectOption": "Pilih opsi",
-    "requiredOption": "Pilihan ini diperlukan",
     "unsupportedOption": "Pilihan ini tidak didukung",
     "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}"
   },
@@ -254,6 +251,7 @@
   "appInfoView": {
     "widgetTitle": "Info aplikasi",
     "openButton": "Buka",
+    "installButton": "Pasang",
     "uninstallButton": "Copot",
     "unmountButton": "Lepas mount",
     "rootDialogTitle": "Kesalahan",

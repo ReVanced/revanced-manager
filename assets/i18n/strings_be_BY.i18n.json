@@ -27,7 +27,6 @@
     "refreshSuccess": "Паспяхова абноўлена",
     "widgetTitle": "Галоўная",
     "updatesSubtitle": "Абнаўленні",
-    "patchedSubtitle": "Выпраўленыя праграмы",
     "changeLaterSubtitle": "Вы можаце змяніць гэта ў наладах пазней.",
     "noUpdates": "Няма даступных абнаўленняў",
     "WIP": "У працэсе...",
@@ -122,12 +121,10 @@
     "viewTitle": "Параметры выпраўлення",
     "saveOptions": "Захаваць",
     "addOptions": "Дадаць параметры",
-    "deselectPatch": "Зняць выбар з выпраўлення",
     "tooltip": "Больш уваходных параметраў",
     "selectFilePath": "Выбраць шлях да файла",
     "selectFolder": "Выбраць папку",
     "selectOption": "Выберыце параметр",
-    "requiredOption": "Абавязковы параметр",
     "unsupportedOption": "Гэты параметр не падтрымліваецца",
     "requiredOptionNull": "Наступныя параметры павінны быць зададзены:\n\n${options}"
   },
@@ -254,6 +251,7 @@
   "appInfoView": {
     "widgetTitle": "Пра праграму",
     "openButton": "Адкрыць",
+    "installButton": "Усталяваць",
     "uninstallButton": "Выдаліць",
     "unmountButton": "Адключыць",
     "rootDialogTitle": "Памылка",

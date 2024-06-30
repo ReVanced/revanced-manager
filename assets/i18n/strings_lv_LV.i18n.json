@@ -3,6 +3,8 @@
   "cancelButton": "Atcelt",
   "quitButton": "Iziet",
   "updateButton": "Atjaunināt",
+  "enabledLabel": "Ieslēgts",
+  "disabledLabel": "Atspējots",
   "installed": "Uzstādītā versija: ${version}",
   "suggested": "Ieteiktā versija: ${version}",
   "yesButton": "Jā",
@@ -13,6 +15,8 @@
   "noShowAgain": "Vairs nerādīt",
   "add": "Pievienot",
   "remove": "Noņemt",
+  "showChangelogButton": "Rādīt izmaiņu sarakstu",
+  "showUpdateButton": "Rādīt atjauninājumus",
   "navigationView": {
     "dashboardTab": "Info panelis",
     "patcherTab": "Pačeris",
@@ -22,11 +26,25 @@
     "refreshSuccess": "Veiksmīgi atsvaidzināts",
     "widgetTitle": "Info panelis",
     "updatesSubtitle": "Atjauninājumi",
-    "patchedSubtitle": "Pačotās aplikācijas",
+    "changeLaterSubtitle": "Jūs varat mainīt šo iestatījumu vēlāk.",
+    "noUpdates": "Nav pieejami atjauninājumi",
+    "WIP": "Pie šī tiek strādāts...",
     "noInstallations": "Nav atrasta neviena pačota aplikācija",
     "installUpdate": "Vai turpināt instalēt atjauninājumu?",
+    "updateSheetTitle": "Atjaunit ReVanced pārvaldnieku",
+    "updateDialogTitle": "Jauns atjauninājums ir pieejams",
+    "updatePatchesSheetTitle": "ReVanced Patches atjaunināšana",
     "updateChangelogTitle": "Izmaiņu žurnāls",
+    "updateDialogText": "Jauns atjauninājums ir pieejams ${file}.\n\nŠobrīd instalētā versija ir ${version}.",
+    "downloadConsentDialogTitle": "Lejupielādēt nepieciešamos failus?",
+    "downloadConsentDialogText": "ReVanced pārvaldniekam ir jālejupielādē nepieciešamie faili, lai tas darbotos korekti.",
+    "downloadConsentDialogText2": "Tev tas izveidos savienojumu ar ${url}.",
+    "checkUpdateDialogTitle": "Pārbaudīt atjauninājumus?",
+    "checkUpdateDialogText": "Vai Jūs vēlaties, lai ReVanced pārvaldnieks pārbauda atjauninājumus automātiski?",
+    "notificationTitle": "Atjauninājums lejupielādēts",
+    "notificationText": "Spied lai instalētu atjauninājumu",
     "downloadingMessage": "Lejupielādē atjauninājumu...",
+    "downloadedMessage": "Atjauninājums lejupielādēts",
     "installingMessage": "Instalē atjauninājumu...",
     "errorDownloadMessage": "Nav iespējams lejupielādēt atjauninājumu",
     "errorInstallMessage": "Nav iespējams instalēt atjauninājumu",
@@ -38,21 +56,30 @@
   },
   "latestCommitCard": {
     "loadingLabel": "Notiek ielāde...",
-    "timeagoLabel": "Pirms ${time}"
+    "timeagoLabel": "Pirms ${time}",
+    "patcherLabel": "Pačeris: ",
+    "managerLabel": "Menedžeris: ",
+    "updateButton": "Atjaunināt menedžeri"
   },
   "patcherView": {
     "widgetTitle": "Pačeris",
-    "patchButton": "Pačot"
+    "patchButton": "Pačot",
+    "armv7WarningDialogText": "Lāpīšana ARMv7 ierīcēs vēl nav atbalstīta, un tā var neizdoties. Turpināt tāpat?",
+    "removedPatchesWarningDialogText": "Kopš pēdējās lietošanas reizes ir noņemti šādi ielāpi.\n\n${patches}\n\nTurpināt jebkurā gadījumā?"
   },
   "appSelectorCard": {
+    "widgetTitle": "Izvēlaties lietotni",
+    "widgetTitleSelected": "Izvēlētā lietotne",
+    "widgetSubtitle": "Neviena lietotne nav izvēlēta",
     "noAppsLabel": "Netika atrasta neviena aplikācija",
     "currentVersion": "Pašreizējā",
-    "suggestedVersion": "Ieteikums"
+    "suggestedVersion": "Ieteikums",
+    "anyVersion": "Jebkura versija"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izvēlies pačus",
     "widgetTitleSelected": "Izvēlētie pači",
-    "widgetSubtitle": "Vispirms izvēlies aplikāciju",
+    "widgetSubtitle": "Vispirms, izvēlieties aplikāciju",
     "widgetEmptySubtitle": "Nav atlasītu paču"
   },
   "socialMediaCard": {
@@ -60,29 +87,38 @@
     "widgetSubtitle": "Mēs esam tiešsaistē!"
   },
   "appSelectorView": {
+    "viewTitle": "Izvēlaties lietotni",
+    "searchBarHint": "Meklēt lietotni",
     "storageButton": "Krātuve",
     "selectFromStorageButton": "Izvēlēties krātuvi",
     "errorMessage": "Nevar izmantot atlasīto aplikāciju",
     "downloadToast": "Instalēšanas funkcija pašlaik nav pieejama",
+    "requireSuggestedAppVersionDialogText": "Lietotnes versija, kuru Jūs izvēlējāties, neatbilst rekomendētajai versijai, kas var novest līdz dažādām ķibelēm. Aicinām Jūs lietot rekomendēto versiju.\n\nIzvēlētā versija: ${selected}\nRekomendētā versija: ${suggested}\n\nLai turpinātu tā pat, atslēdziet \"Piespiest rekomendēto aplikācijas versiju\" iestatījumos.",
     "featureNotAvailable": "Funkcija nav ieviesta"
   },
   "patchesSelectorView": {
     "viewTitle": "Izvēlies pačus",
     "searchBarHint": "Meklē pačus",
     "doneButton": "Gatavs",
+    "defaultChip": "Parasts",
     "defaultTooltip": "Atlasiet visus standarta pači",
+    "noneChip": "Neviens",
     "noneTooltip": "Atsijāt visus pači",
     "noPatchesFound": "Atlasītajai lietotnei nav atrasts neviens patčs"
   },
   "patchOptionsView": {
-    "saveOptions": "Saglabāt"
+    "saveOptions": "Saglabāt",
+    "addOptions": "Pievienot opciju",
+    "selectOption": "Izvēlēties opciju"
   },
   "patchItem": {
     "unsupportedDialogText": "Izvēloties šo paču var rasties paču kļūdas\n\nApp versija: ${packageVersion}\nPašlaik atbalstītās versijas:\n${supportedVersions}"
   },
   "installerView": {
+    "widgetTitle": "Instalēšana",
     "installButton": "Instalēt",
     "openButton": "Atvērt",
+    "shareButton": "Koplietot failu",
     "notificationTitle": "ReVanced Manager pašlaik pačo",
     "notificationText": "Spied, lai atgrieztos pie instalācijas",
     "noExit": "Vēl notiek instalācija, nevar iziet..."
@@ -100,6 +136,7 @@
     "dynamicThemeLabel": "Materiāls izskats",
     "dynamicThemeHint": "Izbaudi pieredzi personalizētu tavai ierīcei",
     "languageLabel": "Valoda",
+    "englishOption": "Angļu",
     "sourcesIntegrationsLabel": "Integrācijas avots",
     "sourcesResetDialogTitle": "Atiestatīt",
     "apiURLLabel": "API Saite",
@@ -126,6 +163,7 @@
   "appInfoView": {
     "widgetTitle": "Lietotnes informācija",
     "openButton": "Atvērt",
+    "installButton": "Instalēt",
     "uninstallButton": "Atinstalēt",
     "rootDialogTitle": "Kļūda",
     "rootDialogText": "Aplikācija tika instalēta ar superuser pieejām, taču ReVanced Manager nav šādu pieeju.\nLūdzams uzlikt vispirms superuser ieejas.",

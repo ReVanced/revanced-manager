@@ -27,7 +27,6 @@
     "refreshSuccess": "সফলভাবে রিফ্রেশ করা হয়েছে",
     "widgetTitle": "ড্যাশবোর্ড",
     "updatesSubtitle": "আপডেটসমূহ",
-    "patchedSubtitle": "প্যাচড অ্যাপ্লিকেশনগুলো",
     "changeLaterSubtitle": "পরবর্তীতে আপনি এটি সেটিং থেকে পরিবর্তন করতে পারবেন।",
     "noUpdates": "কোন আপডেট নেই",
     "WIP": "কাজ হচ্ছে...",
@@ -122,12 +121,10 @@
     "viewTitle": "প্যাচ অপশন",
     "saveOptions": "সংরক্ষণ করুন",
     "addOptions": "অপশন যুক্ত করুন",
-    "deselectPatch": "প্যাচ অনির্বাচন করুন",
     "tooltip": "আরও ইনপুট অপশন",
     "selectFilePath": "ফাইলের স্থান নির্বাচন করুন",
     "selectFolder": "ফোল্ডার নির্বাচন করুন",
     "selectOption": "অপশন নির্বাচন করুন",
-    "requiredOption": "এই অপশনটি আবশ্যক",
     "unsupportedOption": "এই অপশনসটি অসমর্থিত",
     "requiredOptionNull": "এই অপশনগুলো সেট করতে হবে:\n\n${options}"
   },
@@ -254,6 +251,7 @@
   "appInfoView": {
     "widgetTitle": "অ্যাপের তথ্য",
     "openButton": "খুলুন",
+    "installButton": "ইনস্টল করুন",
     "uninstallButton": "আনইন্সটল করুন",
     "unmountButton": "আনমাউন্ট",
     "rootDialogTitle": "ত্রুটি দেখা দিয়েছে",

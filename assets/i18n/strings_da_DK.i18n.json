@@ -27,7 +27,6 @@
     "refreshSuccess": "Opdatering succesfuldt",
     "widgetTitle": "Oversigt",
     "updatesSubtitle": "Opdateringer",
-    "patchedSubtitle": "Patchede applikationer",
     "changeLaterSubtitle": "Du kan ændre dette i indstillingerne senere.",
     "noUpdates": "Ingen tilgængelige opdateringer",
     "WIP": "Arbejdet er i gang...",
@@ -256,6 +255,7 @@
   "appInfoView": {
     "widgetTitle": "Appinfo",
     "openButton": "Åbn",
+    "installButton": "Installér",
     "uninstallButton": "Afinstallér",
     "unmountButton": "Afmonter",
     "rootDialogTitle": "Fejl",

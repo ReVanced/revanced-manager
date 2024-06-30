@@ -2,6 +2,8 @@
   "okButton": "U redu",
   "cancelButton": "Poništi",
   "updateButton": "Ažuriraj",
+  "enabledLabel": "Omogućeno",
+  "disabledLabel": "Onemogućeno",
   "installed": "Instalirana verzija: ${version}",
   "suggested": "Preporučena verzija: ${version}",
   "yesButton": "Da",
@@ -16,11 +18,15 @@
     "refreshSuccess": "Uspješno osvježeno",
     "widgetTitle": "Nadzorna ploča",
     "updatesSubtitle": "Ažuriranja",
-    "patchedSubtitle": "Zakrpane aplikacije",
+    "noUpdates": "Nema dostupnih ažuriranja",
+    "WIP": "Još radimo na ovome...",
     "noInstallations": "Nema instaliranih zakrpanih aplikacija",
     "installUpdate": "Nastaviti s instalacijom ažuriranja?",
     "updateChangelogTitle": "Zapisnik promjena",
+    "notificationTitle": "Ažuriranje je preuzeto",
+    "notificationText": "Dodirnite za instalaciju ažuriranja",
     "downloadingMessage": "Preuzimanje ažuriranja...",
+    "downloadedMessage": "Ažuriranje je preuzeto",
     "installingMessage": "Instaliranje ažuriranja...",
     "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
     "errorInstallMessage": "Nije moguće instalirati ažuriranje",
@@ -32,7 +38,10 @@
   },
   "latestCommitCard": {
     "loadingLabel": "Učitavanje...",
-    "timeagoLabel": "Prije ${time}"
+    "timeagoLabel": "Prije ${time}",
+    "patcherLabel": "Zakrpe napravio: ",
+    "managerLabel": "Upravitelj: ",
+    "updateButton": "Ažuriranje upravitelja"
   },
   "patcherView": {
     "widgetTitle": "Zakrpe",
@@ -64,7 +73,9 @@
     "viewTitle": "Odaberite zakrpe",
     "searchBarHint": "Pretraživanje zakrpa",
     "doneButton": "Završeno",
+    "defaultChip": "Zadano",
     "defaultTooltip": "Odaberi sve zadane zakrpe",
+    "noneChip": "Ništa",
     "noneTooltip": "Poništi odabir svih zakrpa",
     "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
   },
@@ -73,8 +84,10 @@
     "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}"
   },
   "installerView": {
+    "widgetTitle": "Instalacija",
     "installButton": "Instaliraj",
     "openButton": "Otvori",
+    "shareButton": "Podijeli datoteku",
     "notificationTitle": "Krpanje u tijeku",
     "notificationText": "Dodirnite za povratak na instalacijski program",
     "noExit": "Instalacija je u tijeku, nije moguće izaći..."
@@ -88,9 +101,11 @@
     "darkThemeLabel": "Tamni način",
     "dynamicThemeHint": "Uživajte u iskustvu prilagođenom vašem uređaju",
     "languageLabel": "Jezik",
+    "englishOption": "engleski",
     "sourcesIntegrationsLabel": "Izvori ugradnje",
     "sourcesResetDialogTitle": "Ponovno postavljanje",
-    "apiURLLabel": "API URL (Automatic Copy)",
+    "apiURLLabel": "API URL",
+    "selectApiURL": "API URL",
     "orgPatchesLabel": "Autori zakrpa",
     "sourcesPatchesLabel": "Izvor zakrpa",
     "orgIntegrationsLabel": "Organizacije za ugradnju",
@@ -113,6 +128,7 @@
   "appInfoView": {
     "widgetTitle": "O aplikaciji",
     "openButton": "Otvori",
+    "installButton": "Instaliraj",
     "uninstallButton": "Deinstaliraj",
     "rootDialogTitle": "Greška",
     "rootDialogText": "Aplikacija je bila instalirana s superkorisničkom dopuštenosti, ali trenutno ReVanced Upravitelj nema dopuštenja.\nPrvo dodijelite superkorisničko dopuštenje.",

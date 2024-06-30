@@ -27,7 +27,6 @@
     "refreshSuccess": "Úspěšně obnoveno",
     "widgetTitle": "Řídící panel",
     "updatesSubtitle": "Aktualizace",
-    "patchedSubtitle": "Záplatované aplikace",
     "changeLaterSubtitle": "Tuto možnost můžete změnit později v nastavení.",
     "noUpdates": "Nejsou dostupné žádné aktualizace",
     "WIP": "Probíhající přípravy...",
@@ -256,6 +255,7 @@
   "appInfoView": {
     "widgetTitle": "Informace o aplikaci",
     "openButton": "Otevřít",
+    "installButton": "Instalovat",
     "uninstallButton": "Odinstalovat",
     "unmountButton": "Odpojit",
     "rootDialogTitle": "Chyba",

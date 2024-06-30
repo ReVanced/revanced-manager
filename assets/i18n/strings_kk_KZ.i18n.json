@@ -1,5 +1,4 @@
 {
-  "okButton": "ОК",
   "cancelButton": "Артқа",
   "dismissButton": "Елемеу",
   "quitButton": "Шығу",
@@ -27,7 +26,6 @@
     "refreshSuccess": "Сәтті жаңартылды",
     "widgetTitle": "Бақылау тақтасы",
     "updatesSubtitle": "Жаңартулар",
-    "patchedSubtitle": "Патчталған қолданбалар",
     "changeLaterSubtitle": "Мұны кейінірек баптауда өзгертіп ала аласыз.",
     "noUpdates": "Жаңарту жоқ",
     "WIP": "Жүктеліп жатыр...",
@@ -38,12 +36,24 @@
     "updatePatchesSheetTitle": "ReVanced патчін жаңарту",
     "updateChangelogTitle": "Өзгерту тарихы",
     "updateDialogText": "${file} үшін жаңарту қолжетімді.\n\nҚазіргі ${version} нұсқасы орнатылып тұр.",
-    "downloadConsentDialogTitle": "Керек файлды жүктеп алайық па?"
+    "notificationTitle": "Жаңарту жүктелген",
+    "notificationText": "Жаңартуды орнату үшін осыны басыңыз",
+    "downloadedMessage": "Жаңарту жүктелген"
   },
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
+  "applicationItem": {
+    "infoButton": "Ақпарат"
+  },
+  "latestCommitCard": {
+    "patcherLabel": "Патчер: ",
+    "updateButton": "Manager-ді жаңарту"
+  },
+  "patcherView": {
+    "widgetTitle": "Патчер",
+    "patchButton": "Патч"
+  },
+  "appSelectorCard": {
+    "currentVersion": "Қазіргі"
+  },
   "patchSelectorCard": {},
   "socialMediaCard": {},
   "appSelectorView": {},
@@ -51,7 +61,9 @@
   "patchOptionsView": {},
   "patchItem": {},
   "installerView": {},
-  "settingsView": {},
+  "settingsView": {
+    "widgetTitle": "Баптау"
+  },
   "appInfoView": {},
   "contributorsView": {},
   "installErrorDialog": {}

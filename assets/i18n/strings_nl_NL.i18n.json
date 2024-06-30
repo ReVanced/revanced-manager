@@ -27,7 +27,6 @@
     "refreshSuccess": "Vernieuwen voltooid",
     "widgetTitle": "Overzicht",
     "updatesSubtitle": "Updates",
-    "patchedSubtitle": "Gepatchte applicaties",
     "changeLaterSubtitle": "U kunt dit op een later moment wijzigen in de instellingen.",
     "noUpdates": "Geen updates beschikbaar",
     "WIP": "Bezig met uitvoeren...",
@@ -256,6 +255,7 @@
   "appInfoView": {
     "widgetTitle": "App info",
     "openButton": "Openen",
+    "installButton": "Installeren",
     "uninstallButton": "Verwijderen",
     "unmountButton": "Ontkoppelen",
     "rootDialogTitle": "Fout",

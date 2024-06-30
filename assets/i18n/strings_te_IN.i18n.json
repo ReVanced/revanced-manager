@@ -1,19 +1,104 @@
 {
-  "navigationView": {},
-  "homeView": {},
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
+  "okButton": "సరే",
+  "cancelButton": "రద్దుచేయి",
+  "updateButton": "అప్డేట్",
+  "enabledLabel": "ప్రారంభించబడింది",
+  "disabledLabel": "రద్దు చేయబడింది",
+  "yesButton": "అవును",
+  "noButton": "కాదు",
+  "warning": "హెచ్చరిక",
+  "navigationView": {
+    "dashboardTab": "డాష్‌బోర్డ్",
+    "patcherTab": "ప్యాచర్",
+    "settingsTab": "సెట్టింగులు"
+  },
+  "homeView": {
+    "widgetTitle": "డాష్‌బోర్డ్",
+    "updatesSubtitle": "అప్డేట్లు",
+    "noUpdates": "అప్‌డేట్‌లేవీ అందుబాటులో లేవు",
+    "WIP": "పని జరుగుచున్నది...",
+    "updateChangelogTitle": "మార్పుల సంచిక",
+    "notificationTitle": "అప్‌డేట్ డౌన్‌లోడ్ అయింది",
+    "notificationText": "అప్డేట్ ఇన్స్టాల్ చేయటానికి తాకండి",
+    "downloadingMessage": "అప్డేట్ డౌన్లోడ్ చేయబడుతోంది...",
+    "downloadedMessage": "అప్‌డేట్ డౌన్‌లోడ్ అయింది",
+    "installingMessage": "అప్డేట్ ఇన్స్టాల్ చేయబడుతోంది...",
+    "errorDownloadMessage": "అప్డేట్ డౌన్లోడ్ చేయుట కుదరలేదు",
+    "errorInstallMessage": "అప్డేట్ ఇన్స్టాల్ చేయుట కుదరలేదు",
+    "noConnection": "ఇంటర్నెట్ కనెక్షన్ లేదు",
+    "updatesDisabled": "అతికిన app ని నూతనపరుచుట ప్రస్తుతానికి ఆపివేయబడింది. app ని మళ్ళీ అతకండి."
+  },
+  "applicationItem": {
+    "infoButton": "సమాచారం"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "లోడ్ అవుతుంది...",
+    "patcherLabel": "పూడ్చేది: ",
+    "managerLabel": "నిర్వాహకుడు: ",
+    "updateButton": "నిర్వహకుడిని నూతనపరచండి"
+  },
+  "patcherView": {
+    "widgetTitle": "పూడ్చేది",
+    "patchButton": "అతుకు"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "ఏ అనువర్తనాలూ లేవు",
+    "currentVersion": "ప్రస్తుత"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "అతుకులు ఎంచుకోండి",
+    "widgetTitleSelected": "ఎంచుకున్న అతుకులు",
+    "widgetSubtitle": "ముందు అనువర్తనాన్ని ఎంచుకోండి",
+    "widgetEmptySubtitle": "అతుకులు ఏవీ ఎంచుకోబడలేదు"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "సామాజికాలు",
+    "widgetSubtitle": "మేము ఆన్లైన్లో ఉన్నాం!"
+  },
+  "appSelectorView": {
+    "storageButton": "నిల్వ",
+    "errorMessage": "ఎంచుకున్న అనువర్తనాన్ని వాడలేకపోయాం"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "అతుకులు ఎంచుకోండి",
+    "searchBarHint": "అతుకులు వెతకండి",
+    "patches": "Patches",
+    "doneButton": "అయింది",
+    "noneChip": "ఏదీ కాదు"
+  },
+  "patchOptionsView": {
+    "saveOptions": "Save"
+  },
   "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
+  "installerView": {
+    "installButton": "స్థాపించు",
+    "openButton": "తెరువు",
+    "shareButton": "పంచు",
+    "notificationTitle": "రీవాన్సడ్ మేనేజర్ పాచ్ చేస్తుంది",
+    "notificationText": "Tap to return to the installer"
+  },
+  "settingsView": {
+    "widgetTitle": "అమరికలు",
+    "appearanceSectionTitle": "స్వరూపం",
+    "teamSectionTitle": "జట్టు",
+    "advancedSectionTitle": "అధునాతన",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "మీ పరికరానికి దగ్గరి అనుభవాన్ని ఆనందించండి",
+    "languageLabel": "భాషలు",
+    "englishOption": "ఆంగ్లం",
+    "contributorsLabel": "దోహదకారి",
+    "aboutLabel": "గురించి",
+    "snackbarMessage": "క్లిప్‌బోర్డ్‌కి కాపీ అయింది"
+  },
+  "appInfoView": {
+    "widgetTitle": "అనువర్తన సమాచారం",
+    "openButton": "తెరువు",
+    "installButton": "స్థాపించు",
+    "uninstallButton": "తీసివేయు",
+    "rootDialogTitle": "లోపం"
+  },
+  "contributorsView": {
+    "widgetTitle": "దోహదకారి"
+  },
   "installErrorDialog": {}
 }

@@ -1,20 +1,85 @@
 {
   "okButton": "Այո",
-  "navigationView": {},
-  "homeView": {},
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
+  "cancelButton": "Չեղարկում",
+  "enabledLabel": "Միացված է",
+  "disabledLabel": "Անջատված է",
+  "yesButton": "Այո՛",
+  "noButton": "Ոչ",
+  "warning": "Զգուշացում",
+  "navigationView": {
+    "dashboardTab": "Վահանակ",
+    "patcherTab": "Կարկատել",
+    "settingsTab": "Կարգավորումներ"
+  },
+  "homeView": {
+    "widgetTitle": "Վահանակ",
+    "updatesSubtitle": "Թարմացումներ",
+    "noUpdates": "Թարմացումներ չկան",
+    "WIP": "Աշխատանքներն ընթացքի մեջ են...",
+    "updateChangelogTitle": "Փոփոխությունների օրագիր",
+    "notificationTitle": "Թարմացումը ներբեռնվեց",
+    "notificationText": "Սեղմեք՝ թարմացումը տեղադրելու համար",
+    "downloadingMessage": "Թարմացումը ներբեռնվում է...",
+    "downloadedMessage": "Թարմացումը ներբեռնվեց",
+    "installingMessage": "Թարմացումը տեղադրվում է...",
+    "errorDownloadMessage": "Չհաջողվեց ներբեռնել թարմացումը",
+    "errorInstallMessage": "Չհաջողվեց տեղադրել թարմացումը",
+    "noConnection": "Ինտերնետ կապ չկա",
+    "updatesDisabled": "Կարկատված հավելվածի թարմացումը ներկայումս անջատված է: Կրկին թարմացրեք հավելվածը."
+  },
+  "applicationItem": {
+    "infoButton": "Ինֆո"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Բեռնվում է...",
+    "patcherLabel": "Կարկատել: ",
+    "updateButton": "Թարմացման Manager"
+  },
+  "patcherView": {
+    "widgetTitle": "Կարկատել",
+    "patchButton": "Կարկատել"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Դիմումներ չեն գտնվել",
+    "currentVersion": "Ընթացիկ"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Ընտրեք patches",
+    "widgetTitleSelected": "Ընտրված patches",
+    "widgetSubtitle": "Նախ ընտրեք ծրագիր",
+    "widgetEmptySubtitle": "Ընտրված չեն patches"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Սոցիալներ",
+    "widgetSubtitle": "Մենք առցանց ենք!"
+  },
+  "appSelectorView": {
+    "storageButton": "Պահեստ",
+    "errorMessage": "Հնարավոր չէ օգտագործել ընտրված ծրագիրը"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Ընտրեք patches",
+    "searchBarHint": "Վերջ",
+    "doneButton": "Վերջ"
+  },
   "patchOptionsView": {},
   "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
+  "installerView": {
+    "widgetTitle": "Տեղադրվել",
+    "installButton": "Տեղադրվել",
+    "openButton": "Բաց",
+    "shareButton": "Կիսվել ֆայլեր"
+  },
+  "settingsView": {
+    "widgetTitle": "Կարգավորումներ",
+    "languageLabel": "Լեզուն",
+    "aboutLabel": "Ծրագրի մասին"
+  },
+  "appInfoView": {
+    "openButton": "Բաց",
+    "installButton": "Տեղադրվել",
+    "updateNotImplemented": "Ներկայումս այս ֆունկցիան հասանելի չէ"
+  },
   "contributorsView": {},
   "installErrorDialog": {}
 }

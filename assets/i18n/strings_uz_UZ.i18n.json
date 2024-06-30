@@ -20,14 +20,12 @@
   "showUpdateButton": "Yangilanishni ko'rish",
   "navigationView": {
     "dashboardTab": "Asboblar",
-    "patcherTab": "Patcher",
     "settingsTab": "Sozlamalar"
   },
   "homeView": {
     "refreshSuccess": "Muvaffaqiyatli yangilandi",
     "widgetTitle": "Asboblar",
     "updatesSubtitle": "Yangilanishlar",
-    "patchedSubtitle": "Patchlangan dasturlar",
     "changeLaterSubtitle": "Keyinroq sozlamalardan o'zgartirishingiz mumkin.",
     "noUpdates": "Yangilanish mavjud emas",
     "WIP": "Jarayonda...",
@@ -39,21 +37,63 @@
     "updateChangelogTitle": "O'zgarishlar",
     "updateDialogText": "${file} uchun yangilanish mavjud.\n\nHozirgi o'rnatilgan versiya: ${version}.",
     "downloadConsentDialogTitle": "Ba'zi fayllarni yuklab olish?",
-    "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak."
+    "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak.",
+    "notificationTitle": "Yangilanish otqizildi",
+    "notificationText": "Yangilanmani otqizish uchun bosing",
+    "downloadingMessage": "Yangilanishlar otvotti...",
+    "downloadedMessage": "Yangilanish otqizildi",
+    "installingMessage": "Yangilanishlar ornatib olinvotti...",
+    "errorDownloadMessage": "Yangilanishni otqizib bomadi",
+    "errorInstallMessage": "Yangilanishni ornatib bolmadi",
+    "noConnection": "Internet bog‘lanishingiz yoq",
+    "updatesDisabled": "Patch qilingan ilovani yangilash hozirda ochirib qoyilgan. Ilovani boshqattan patch qiling."
   },
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
+  "applicationItem": {
+    "infoButton": "Ma'lumot"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "Yuklanmoqda...",
+    "managerLabel": "Menejer: ",
+    "updateButton": "Menejerni yangilash"
+  },
+  "patcherView": {
+    "patchButton": "Patch"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "Ilovalar topilmadi",
+    "currentVersion": "Hozirgi"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Patchlarni tanlang",
+    "widgetTitleSelected": "Tanlangan patchlar",
+    "widgetSubtitle": "Ilovani birinchi tanlang"
+  },
   "socialMediaCard": {},
   "appSelectorView": {},
-  "patchesSelectorView": {},
+  "patchesSelectorView": {
+    "viewTitle": "Patchlarni tanlang",
+    "patches": "Patches"
+  },
   "patchOptionsView": {},
   "patchItem": {},
   "installerView": {},
-  "settingsView": {},
+  "settingsView": {
+    "widgetTitle": "Sozlamalar",
+    "exportSectionTitle": "Import & eksport",
+    "sourcesIntegrationsLabel": "Integratsiyani manbai",
+    "sourcesResetDialogTitle": "Oddiy holga qaytarish",
+    "apiURLLabel": "API URL",
+    "selectApiURL": "API URL",
+    "sourcesPatchesLabel": "Patchlarni manbai",
+    "orgIntegrationsLabel": "Integratsiyani tashkiloti",
+    "contributorsLabel": "Yordamchilar",
+    "contributorsHint": "ReVanced yordamchilani royxati",
+    "aboutLabel": "Haqida",
+    "snackbarMessage": "Vaqtinchalik xotiraga nusxalandi"
+  },
   "appInfoView": {},
-  "contributorsView": {},
+  "contributorsView": {
+    "widgetTitle": "Yordamchilar"
+  },
   "installErrorDialog": {}
 }

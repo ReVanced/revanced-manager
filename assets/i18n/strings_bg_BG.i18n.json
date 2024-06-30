@@ -27,7 +27,6 @@
     "refreshSuccess": "Успешно обновяване",
     "widgetTitle": "Табло за управление",
     "updatesSubtitle": "Актуализации",
-    "patchedSubtitle": "Модифицирани приложения",
     "changeLaterSubtitle": "Можете да промените това в настройките на по-късен етап.",
     "noUpdates": "Няма налични актуализации",
     "WIP": "В процес на разработка...",
@@ -122,12 +121,10 @@
     "viewTitle": "Опции за модификациите",
     "saveOptions": "Запази",
     "addOptions": "Добави опции",
-    "deselectPatch": "Отмяна на всички модификации",
     "tooltip": "Повече опции за въвеждане",
     "selectFilePath": "Изберете път към файла",
     "selectFolder": "Изберете папка",
     "selectOption": "Изберете опция",
-    "requiredOption": "Тази опция е задължителна",
     "unsupportedOption": "Тази опция не се поддържа",
     "requiredOptionNull": "Следните опции трябва да бъдат зададени:\n\n${options}"
   },
@@ -254,6 +251,7 @@
   "appInfoView": {
     "widgetTitle": "Информация за приложението",
     "openButton": "Отвори",
+    "installButton": "Инсталиране",
     "uninstallButton": "Деинсталирай",
     "unmountButton": "Демонтиране",
     "rootDialogTitle": "Грешка",

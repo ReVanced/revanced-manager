@@ -27,7 +27,6 @@
     "refreshSuccess": "Päivitys onnistui",
     "widgetTitle": "Hallintapaneeli",
     "updatesSubtitle": "Päivitykset",
-    "patchedSubtitle": "Paikatut sovellukset",
     "changeLaterSubtitle": "Voit muuttaa tätä aseutksista koska tahansa.",
     "noUpdates": "Päivityksiä ei ole saatavilla",
     "WIP": "Työn alla...",
@@ -256,6 +255,7 @@
   "appInfoView": {
     "widgetTitle": "Sovelluksen tiedot",
     "openButton": "Avaa",
+    "installButton": "Asenna",
     "uninstallButton": "Poista asennus",
     "unmountButton": "Irroita liitos",
     "rootDialogTitle": "Virhe",
