@@ -68,7 +68,7 @@ class _PatchItemState extends State<PatchItem> {
             if (widget.isUnsupported &&
                 widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
               widget.isSelected = false;
-              widget.toast.showBottom('patchItem.unsupportedPatchVersion');
+              widget.toast.showBottom(t.patchItem.unsupportedPatchVersion);
             } else if (widget.isChangeEnabled) {
               if (!widget.isSelected) {
                 if (widget.hasUnsupportedPatchOption) {
@@ -103,7 +103,7 @@ class _PatchItemState extends State<PatchItem> {
                             .isVersionCompatibilityCheckEnabled()) {
                       widget.isSelected = false;
                       widget.toast.showBottom(
-                        'patchItem.unsupportedPatchVersion',
+                        t.patchItem.unsupportedPatchVersion,
                       );
                     } else if (widget.isChangeEnabled) {
                       if (!widget.isSelected) {
