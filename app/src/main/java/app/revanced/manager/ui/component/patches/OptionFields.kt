@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.component.patches
 
 import android.app.Application
+import android.os.Parcelable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
@@ -47,7 +48,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
@@ -69,11 +69,13 @@ import app.revanced.manager.util.mutableStateSetOf
 import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
+import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyColumnState
+import java.io.Serializable
 import kotlin.random.Random
 
 private class OptionEditorScope<T>(
@@ -101,6 +103,51 @@ private interface OptionEditor<T> {
 
     @Composable
     fun Dialog(scope: OptionEditorScope<T>)
+}
+
+private val optionEditors = mapOf(
+    "Boolean" to BooleanOptionEditor,
+    "String" to StringOptionEditor,
+    "Int" to IntOptionEditor,
+    "Long" to LongOptionEditor,
+    "Float" to FloatOptionEditor,
+    "BooleanArray" to ListOptionEditor(BooleanOptionEditor),
+    "StringArray" to ListOptionEditor(StringOptionEditor),
+    "IntArray" to ListOptionEditor(IntOptionEditor),
+    "LongArray" to ListOptionEditor(LongOptionEditor),
+    "FloatArray" to ListOptionEditor(FloatOptionEditor),
+)
+
+@Composable
+fun <T> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
+    val editor = remember(option.type) {
+        @Suppress("UNCHECKED_CAST")
+        val baseOptionEditor =
+            optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
+
+        if (option.type != "Boolean" && option.presets != null) PresetOptionEditor(baseOptionEditor)
+        else baseOptionEditor
+    }
+
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    val scope = OptionEditorScope(
+        option,
+        openDialog = { showDialog = true },
+        dismissDialog = { showDialog = false },
+        value,
+        setValue
+    )
+
+    if (showDialog)
+        editor.Dialog(scope)
+
+    ListItem(
+        modifier = Modifier.clickable { editor.clickAction(scope) },
+        headlineContent = { Text(option.title) },
+        supportingContent = { Text(option.description) },
+        trailingContent = { editor.ListItemTrailingContent(scope) }
+    )
 }
 
 private object StringOptionEditor : OptionEditor<String> {
@@ -236,6 +283,15 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
     private val OptionEditorScope<Boolean>.current get() = value ?: false
 }
 
+private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
+    override fun clickAction(scope: OptionEditorScope<Any>) =
+        get<Application>().toast("Unknown type: ${scope.option.type}")
+
+    @Composable
+    override fun Dialog(scope: OptionEditorScope<Any>) {
+    }
+}
+
 private class PresetOptionEditor<T>(private val innerEditor: OptionEditor<T>) : OptionEditor<T> {
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
@@ -311,7 +367,7 @@ private class PresetOptionEditor<T>(private val innerEditor: OptionEditor<T>) : 
                         Item(it.key, it.value, it.key)
                     }
 
-                    item {
+                    item(key = null) {
                         Item(stringResource(R.string.option_preset_custom_value), null, null)
                     }
                 }
@@ -320,7 +376,7 @@ private class PresetOptionEditor<T>(private val innerEditor: OptionEditor<T>) : 
     }
 }
 
-private class ListOptionEditor<T>(private val elementEditor: OptionEditor<T>) :
+private class ListOptionEditor<T : Serializable>(private val elementEditor: OptionEditor<T>) :
     OptionEditor<List<T>> {
     private fun createElementOption(option: Option<List<T>>) = Option<T>(
         option.title,
@@ -335,14 +391,15 @@ private class ListOptionEditor<T>(private val elementEditor: OptionEditor<T>) :
     @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
     @Composable
     override fun Dialog(scope: OptionEditorScope<List<T>>) {
-        val items: SnapshotStateList<Item<T?>> =
+        val items =
             rememberSaveable(scope.value, saver = snapshotStateListSaver()) {
-                scope.value?.map { Item<T?>(it) }?.toMutableStateList() ?: mutableStateListOf()
+                // We need a key for each element in order to support dragging.
+                scope.value?.map(::Item)?.toMutableStateList() ?: mutableStateListOf()
             }
 
         val listIsDirty by remember {
             derivedStateOf {
-                val current = scope.value.orEmpty().filterNotNull()
+                val current = scope.value.orEmpty()
                 if (current.size != items.size) return@derivedStateOf true
 
                 current.forEachIndexed { index, value ->
@@ -531,59 +588,6 @@ private class ListOptionEditor<T>(private val elementEditor: OptionEditor<T>) :
         }
     }
 
-    private data class Item<T>(val value: T, val key: Int = Random.nextInt())
-}
-
-private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
-    override fun clickAction(scope: OptionEditorScope<Any>) =
-        get<Application>().toast("Unknown type: ${scope.option.type}")
-
-    @Composable
-    override fun Dialog(scope: OptionEditorScope<Any>) {
-    }
-}
-
-private val optionEditors = mapOf(
-    "Boolean" to BooleanOptionEditor,
-    "String" to StringOptionEditor,
-    "Int" to IntOptionEditor,
-    "Long" to LongOptionEditor,
-    "Float" to FloatOptionEditor,
-    "BooleanArray" to ListOptionEditor(BooleanOptionEditor),
-    "StringArray" to ListOptionEditor(StringOptionEditor),
-    "IntArray" to ListOptionEditor(IntOptionEditor),
-    "LongArray" to ListOptionEditor(LongOptionEditor),
-    "FloatArray" to ListOptionEditor(FloatOptionEditor),
-)
-
-@Composable
-fun <T> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
-    val editor = remember(option.type) {
-        @Suppress("UNCHECKED_CAST")
-        val baseOptionEditor =
-            optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
-
-        if (option.type != "Boolean" && option.presets != null) PresetOptionEditor(baseOptionEditor)
-        else baseOptionEditor
-    }
-
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-
-    val scope = OptionEditorScope(
-        option,
-        openDialog = { showDialog = true },
-        dismissDialog = { showDialog = false },
-        value,
-        setValue
-    )
-
-    if (showDialog)
-        editor.Dialog(scope)
-
-    ListItem(
-        modifier = Modifier.clickable { editor.clickAction(scope) },
-        headlineContent = { Text(option.title) },
-        supportingContent = { Text(option.description) },
-        trailingContent = { editor.ListItemTrailingContent(scope) }
-    )
+    @Parcelize
+    private data class Item<T : Serializable>(val value: T?, val key: Int = Random.nextInt()) : Parcelable
 }
