@@ -6,6 +6,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
 import 'package:revanced_manager/services/manager_api.dart';
+import 'package:revanced_manager/ui/views/patch_options/patch_options_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
 class BooleanPatchOption extends StatelessWidget {
