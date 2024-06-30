@@ -86,6 +86,7 @@ data class Option<T>(
     val type: String,
     val default: T?,
     val presets: Map<String, T?>?,
+    val validator: (T?) -> Boolean,
 ) {
     constructor(option: PatchOption<T>) : this(
         option.title ?: option.key,
@@ -95,5 +96,6 @@ data class Option<T>(
         option.valueType,
         option.default,
         option.values,
+        { option.validator(option, it) },
     )
 }

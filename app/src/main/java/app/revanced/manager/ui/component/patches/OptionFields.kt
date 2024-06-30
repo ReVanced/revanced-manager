@@ -10,6 +10,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,6 +37,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -157,6 +159,9 @@ private object StringOptionEditor : OptionEditor<String> {
         var fieldValue by rememberSaveable(scope.value) {
             mutableStateOf(scope.value.orEmpty())
         }
+        val validatorFailed by remember {
+            derivedStateOf { !scope.option.validator(fieldValue) }
+        }
 
         val fs: Filesystem = koinInject()
         val (contract, permissionName) = fs.permissionContract()
@@ -184,6 +189,12 @@ private object StringOptionEditor : OptionEditor<String> {
                     onValueChange = { fieldValue = it },
                     placeholder = {
                         Text(stringResource(R.string.dialog_input_placeholder))
+                    },
+                    isError = validatorFailed,
+                    supportingText = {
+                        if (validatorFailed) {
+                            Text(stringResource(R.string.input_dialog_value_invalid), modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.error)
+                        }
                     },
                     trailingIcon = {
                         var showDropdownMenu by rememberSaveable { mutableStateOf(false) }
@@ -221,7 +232,7 @@ private object StringOptionEditor : OptionEditor<String> {
                 )
             },
             confirmButton = {
-                TextButton(onClick = { scope.submitDialog(fieldValue) }) {
+                TextButton(enabled = !validatorFailed, onClick = { scope.submitDialog(fieldValue) }) {
                     Text(stringResource(R.string.save))
                 }
             },
@@ -236,11 +247,11 @@ private object StringOptionEditor : OptionEditor<String> {
 
 private abstract class NumberOptionEditor<T> : OptionEditor<T> {
     @Composable
-    protected abstract fun NumberDialog(title: String, current: T?, onSubmit: (T?) -> Unit)
+    protected abstract fun NumberDialog(title: String, current: T?, validator: (T?) -> Boolean, onSubmit: (T?) -> Unit)
 
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
-        NumberDialog(scope.option.title, scope.value) {
+        NumberDialog(scope.option.title, scope.value, scope.option.validator) {
             if (it == null) return@NumberDialog scope.dismissDialog()
 
             scope.submitDialog(it)
@@ -250,20 +261,20 @@ private abstract class NumberOptionEditor<T> : OptionEditor<T> {
 
 private object IntOptionEditor : NumberOptionEditor<Int>() {
     @Composable
-    override fun NumberDialog(title: String, current: Int?, onSubmit: (Int?) -> Unit) =
-        IntInputDialog(current, title, onSubmit)
+    override fun NumberDialog(title: String, current: Int?, validator: (Int?) -> Boolean, onSubmit: (Int?) -> Unit) =
+        IntInputDialog(current, title, validator, onSubmit)
 }
 
 private object LongOptionEditor : NumberOptionEditor<Long>() {
     @Composable
-    override fun NumberDialog(title: String, current: Long?, onSubmit: (Long?) -> Unit) =
-        LongInputDialog(current, title, onSubmit)
+    override fun NumberDialog(title: String, current: Long?, validator: (Long?) -> Boolean, onSubmit: (Long?) -> Unit) =
+        LongInputDialog(current, title, validator, onSubmit)
 }
 
 private object FloatOptionEditor : NumberOptionEditor<Float>() {
     @Composable
-    override fun NumberDialog(title: String, current: Float?, onSubmit: (Float?) -> Unit) =
-        FloatInputDialog(current, title, onSubmit)
+    override fun NumberDialog(title: String, current: Float?, validator: (Float?) -> Boolean, onSubmit: (Float?) -> Unit) =
+        FloatInputDialog(current, title, validator, onSubmit)
 }
 
 private object BooleanOptionEditor : OptionEditor<Boolean> {
@@ -387,7 +398,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
         option.type.removeSuffix("Array"),
         null,
         null
-    )
+    ) { true }
 
     @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
     @Composable
