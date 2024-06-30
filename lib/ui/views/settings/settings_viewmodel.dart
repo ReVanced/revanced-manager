@@ -141,6 +141,18 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool isLastPatchedAppEnabled() {
+    return _managerAPI.isLastPatchedAppEnabled();
+  }
+
+  void useLastPatchedApp(bool value) {
+    _managerAPI.enableLastPatchedAppStatus(value);
+    if (!value) {
+      _managerAPI.deleteLastPatchedApp();
+    }
+    notifyListeners();
+  }
+
   bool isVersionCompatibilityCheckEnabled() {
     return _managerAPI.isVersionCompatibilityCheckEnabled();
   }

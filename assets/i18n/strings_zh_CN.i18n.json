@@ -58,7 +58,7 @@
   },
   "latestCommitCard": {
     "loadingLabel": "正在加载…",
-    "timeagoLabel": "${time}前",
+    "timeagoLabel": "${time} 前",
     "patcherLabel": "补丁程序： ",
     "managerLabel": "管理器： ",
     "updateButton": "更新管理器"
@@ -118,16 +118,18 @@
   },
   "patchOptionsView": {
     "customValue": "自定义值",
+    "setToNull": "设置为为空",
+    "nullValue": "此选项值当前为空",
     "resetOptionsTooltip": "重置补丁选项",
     "viewTitle": "补丁选项",
     "saveOptions": "保存",
     "addOptions": "添加选项",
-    "deselectPatch": "取消选择补丁",
+    "unselectPatch": "取消选择补丁",
     "tooltip": "更多输入选项",
     "selectFilePath": "选择文件路径",
     "selectFolder": "选择文件夹",
     "selectOption": "选择选项",
-    "requiredOption": "必须填写此选项",
+    "requiredOption": "设置此选项是必需的",
     "unsupportedOption": "不支持此选项",
     "requiredOptionNull": "必须设置以下选项：\n\n${options}"
   },

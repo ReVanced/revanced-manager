@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -24,12 +25,24 @@ class DynamicThemeBuilder extends StatefulWidget {
 
 class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
     with WidgetsBindingObserver {
-  Brightness brightness = PlatformDispatcher.instance.platformBrightness;
+  late Brightness brightness;
 
   @override
   void initState() {
     super.initState();
+    brightness = PlatformDispatcher.instance.platformBrightness;
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      final systemBrightness = PlatformDispatcher.instance.platformBrightness;
+      if (brightness != systemBrightness) {
+        brightness = systemBrightness;
+        setState(() {});
+      }
+    }
   }
 
   @override
