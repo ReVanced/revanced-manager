@@ -318,6 +318,7 @@ private class PresetOptionEditor<T>(private val innerEditor: OptionEditor<T>) : 
             mutableStateOf(presets.entries.find { it.value == scope.value }?.key)
         }
 
+        // TODO: add a divider for scrollable content
         AlertDialogExtended(
             onDismissRequest = scope.dismissDialog,
             confirmButton = {
