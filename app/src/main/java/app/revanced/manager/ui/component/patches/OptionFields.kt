@@ -161,7 +161,7 @@ private inline fun <T : Any> WithOptionEditor(
 
 @Composable
 fun <T : Any> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
-    val editor = remember(option.type) {
+    val editor = remember(option.type, option.presets) {
         @Suppress("UNCHECKED_CAST")
         val baseOptionEditor =
             optionEditors.getOrDefault(option.type, UnknownTypeEditor) as OptionEditor<T>
