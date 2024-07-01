@@ -39,7 +39,7 @@ data class Option(
 ) {
     @Serializable
     data class SerializedValue(val raw: JsonElement) {
-        fun toJsonString() = Json.encodeToString(raw)
+        fun toJsonString() = json.encodeToString(raw)
         fun deserializeFor(option: Option<*>): Any? {
             if (raw is JsonNull) return null
 
@@ -58,6 +58,11 @@ data class Option(
         }
 
         companion object {
+            private val json = Json {
+                // Patcher does not forbid the use of these values, so we should support them.
+                allowSpecialFloatingPointValues = true
+            }
+
             private fun deserializeBasicType(type: String, value: JsonPrimitive) = when (type) {
                 "Boolean" -> value.boolean
                 "Int" -> value.int
@@ -67,7 +72,7 @@ data class Option(
                 else -> throw SerializationException("Unknown type: $type")
             }
 
-            fun fromJsonString(value: String) = SerializedValue(Json.decodeFromString(value))
+            fun fromJsonString(value: String) = SerializedValue(json.decodeFromString(value))
             fun fromValue(value: Any?) = SerializedValue(when (value) {
                 null -> JsonNull
                 is Number -> JsonPrimitive(value)
