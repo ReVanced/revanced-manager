@@ -355,6 +355,11 @@ private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
     }
 }
 
+/**
+ * A wrapper for [OptionEditor]s that shows selectable presets.
+ *
+ * @param innerEditor The [OptionEditor] for [T].
+ */
 private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<T>) :
     OptionEditor<T> {
     @Composable
@@ -461,7 +466,6 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                 // We need a key for each element in order to support dragging.
                 scope.value?.map(::Item)?.toMutableStateList() ?: mutableStateListOf()
             }
-
         val listIsDirty by remember {
             derivedStateOf {
                 val current = scope.value.orEmpty()
