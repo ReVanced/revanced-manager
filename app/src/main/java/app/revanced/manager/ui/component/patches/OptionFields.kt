@@ -43,6 +43,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,9 +79,11 @@ import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyColumnState
 import java.io.Serializable
+import kotlin.concurrent.thread
 import kotlin.random.Random
 
-private class OptionEditorScope<T>(
+private class OptionEditorScope<T : Any>(
+    private val editor: OptionEditor<T>,
     val option: Option<T>,
     val openDialog: () -> Unit,
     val dismissDialog: () -> Unit,
@@ -91,9 +94,17 @@ private class OptionEditorScope<T>(
         setValue(value)
         dismissDialog()
     }
+
+    fun clickAction() = editor.clickAction(this)
+
+    @Composable
+    fun ListItemTrailingContent() = editor.ListItemTrailingContent(this)
+
+    @Composable
+    fun Dialog() = editor.Dialog(this)
 }
 
-private interface OptionEditor<T> {
+private interface OptionEditor<T : Any> {
     fun clickAction(scope: OptionEditorScope<T>) = scope.openDialog()
 
     @Composable
@@ -121,7 +132,36 @@ private val optionEditors = mapOf(
 )
 
 @Composable
-fun <T> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
+private inline fun <T : Any> WithOptionEditor(
+    editor: OptionEditor<T>,
+    option: Option<T>,
+    value: T?,
+    noinline setValue: (T?) -> Unit,
+    crossinline onDismissDialog: @DisallowComposableCalls () -> Unit = {},
+    block: OptionEditorScope<T>.() -> Unit
+) {
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+    val scope = remember(editor, option, value, setValue) {
+        OptionEditorScope(
+            editor,
+            option,
+            openDialog = { showDialog = true },
+            dismissDialog = {
+                showDialog = false
+                onDismissDialog()
+            },
+            value,
+            setValue
+        )
+    }
+
+    if (showDialog) scope.Dialog()
+
+    scope.block()
+}
+
+@Composable
+fun <T : Any> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
     val editor = remember(option.type) {
         @Suppress("UNCHECKED_CAST")
         val baseOptionEditor =
@@ -131,25 +171,14 @@ fun <T> OptionItem(option: Option<T>, value: T?, setValue: (T?) -> Unit) {
         else baseOptionEditor
     }
 
-    var showDialog by rememberSaveable { mutableStateOf(false) }
-
-    val scope = OptionEditorScope(
-        option,
-        openDialog = { showDialog = true },
-        dismissDialog = { showDialog = false },
-        value,
-        setValue
-    )
-
-    if (showDialog)
-        editor.Dialog(scope)
-
-    ListItem(
-        modifier = Modifier.clickable { editor.clickAction(scope) },
-        headlineContent = { Text(option.title) },
-        supportingContent = { Text(option.description) },
-        trailingContent = { editor.ListItemTrailingContent(scope) }
-    )
+    WithOptionEditor(editor, option, value, setValue) {
+        ListItem(
+            modifier = Modifier.clickable(onClick = ::clickAction),
+            headlineContent = { Text(option.title) },
+            supportingContent = { Text(option.description) },
+            trailingContent = { ListItemTrailingContent() }
+        )
+    }
 }
 
 private object StringOptionEditor : OptionEditor<String> {
@@ -193,7 +222,11 @@ private object StringOptionEditor : OptionEditor<String> {
                     isError = validatorFailed,
                     supportingText = {
                         if (validatorFailed) {
-                            Text(stringResource(R.string.input_dialog_value_invalid), modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.error)
+                            Text(
+                                stringResource(R.string.input_dialog_value_invalid),
+                                modifier = Modifier.fillMaxWidth(),
+                                color = MaterialTheme.colorScheme.error
+                            )
                         }
                     },
                     trailingIcon = {
@@ -232,7 +265,9 @@ private object StringOptionEditor : OptionEditor<String> {
                 )
             },
             confirmButton = {
-                TextButton(enabled = !validatorFailed, onClick = { scope.submitDialog(fieldValue) }) {
+                TextButton(
+                    enabled = !validatorFailed,
+                    onClick = { scope.submitDialog(fieldValue) }) {
                     Text(stringResource(R.string.save))
                 }
             },
@@ -245,9 +280,14 @@ private object StringOptionEditor : OptionEditor<String> {
     }
 }
 
-private abstract class NumberOptionEditor<T> : OptionEditor<T> {
+private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
     @Composable
-    protected abstract fun NumberDialog(title: String, current: T?, validator: (T?) -> Boolean, onSubmit: (T?) -> Unit)
+    protected abstract fun NumberDialog(
+        title: String,
+        current: T?,
+        validator: (T?) -> Boolean,
+        onSubmit: (T?) -> Unit
+    )
 
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
@@ -261,20 +301,32 @@ private abstract class NumberOptionEditor<T> : OptionEditor<T> {
 
 private object IntOptionEditor : NumberOptionEditor<Int>() {
     @Composable
-    override fun NumberDialog(title: String, current: Int?, validator: (Int?) -> Boolean, onSubmit: (Int?) -> Unit) =
-        IntInputDialog(current, title, validator, onSubmit)
+    override fun NumberDialog(
+        title: String,
+        current: Int?,
+        validator: (Int?) -> Boolean,
+        onSubmit: (Int?) -> Unit
+    ) = IntInputDialog(current, title, validator, onSubmit)
 }
 
 private object LongOptionEditor : NumberOptionEditor<Long>() {
     @Composable
-    override fun NumberDialog(title: String, current: Long?, validator: (Long?) -> Boolean, onSubmit: (Long?) -> Unit) =
-        LongInputDialog(current, title, validator, onSubmit)
+    override fun NumberDialog(
+        title: String,
+        current: Long?,
+        validator: (Long?) -> Boolean,
+        onSubmit: (Long?) -> Unit
+    ) = LongInputDialog(current, title, validator, onSubmit)
 }
 
 private object FloatOptionEditor : NumberOptionEditor<Float>() {
     @Composable
-    override fun NumberDialog(title: String, current: Float?, validator: (Float?) -> Boolean, onSubmit: (Float?) -> Unit) =
-        FloatInputDialog(current, title, validator, onSubmit)
+    override fun NumberDialog(
+        title: String,
+        current: Float?,
+        validator: (Float?) -> Boolean,
+        onSubmit: (Float?) -> Unit
+    ) = FloatInputDialog(current, title, validator, onSubmit)
 }
 
 private object BooleanOptionEditor : OptionEditor<Boolean> {
@@ -303,88 +355,89 @@ private object UnknownTypeEditor : OptionEditor<Any>, KoinComponent {
     }
 }
 
-private class PresetOptionEditor<T>(private val innerEditor: OptionEditor<T>) : OptionEditor<T> {
+private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<T>) :
+    OptionEditor<T> {
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
-        var customDialog by rememberSaveable {
-            mutableStateOf(false)
-        }
-
-        if (customDialog) {
-            val innerScope = OptionEditorScope(
-                scope.option,
-                openDialog = {},
-                dismissDialog = { customDialog = false },
-                scope.value,
-                scope.setValue
-            )
-
-            innerEditor.Dialog(innerScope)
-            return
-        }
-
         var selectedPreset by rememberSaveable(scope.value) {
             val presets = scope.option.presets!!
 
             mutableStateOf(presets.entries.find { it.value == scope.value }?.key)
         }
 
-        // TODO: add a divider for scrollable content
-        AlertDialogExtended(
-            onDismissRequest = scope.dismissDialog,
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (selectedPreset != null) scope.submitDialog(
-                            scope.option.presets?.get(
-                                selectedPreset
-                            )
-                        )
-                        else customDialog = true
-                    }
-                ) {
-                    Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = scope.dismissDialog) {
-                    Text(stringResource(R.string.cancel))
-                }
-            },
-            title = { Text(scope.option.title) },
-            textHorizontalPadding = PaddingValues(horizontal = 0.dp),
-            text = {
-                val presets = remember(scope.option.presets) {
-                    scope.option.presets?.entries?.toList().orEmpty()
-                }
-
-                LazyColumn {
-                    @Composable
-                    fun Item(title: String, value: Any?, presetKey: String?) {
-                        ListItem(
-                            modifier = Modifier.clickable { selectedPreset = presetKey },
-                            headlineContent = { Text(title) },
-                            supportingContent = value?.toString()?.let { { Text(it) } },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = selectedPreset == presetKey,
-                                    onClick = { selectedPreset = presetKey }
-                                )
-                            }
-                        )
-                    }
-
-
-                    items(presets, key = { it.key }) {
-                        Item(it.key, it.value, it.key)
-                    }
-
-                    item(key = null) {
-                        Item(stringResource(R.string.option_preset_custom_value), null, null)
-                    }
-                }
+        WithOptionEditor(
+            innerEditor,
+            scope.option,
+            scope.value,
+            scope.setValue,
+            onDismissDialog = scope.dismissDialog
+        ) inner@{
+            var hidePresetsDialog by rememberSaveable {
+                mutableStateOf(false)
             }
-        )
+            if (hidePresetsDialog) return@inner
+
+            // TODO: add a divider for scrollable content
+            AlertDialogExtended(
+                onDismissRequest = scope.dismissDialog,
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            if (selectedPreset != null) scope.submitDialog(
+                                scope.option.presets?.get(
+                                    selectedPreset
+                                )
+                            )
+                            else {
+                                this@inner.openDialog()
+                                // Hide the presets dialog so it doesn't show up in the background.
+                                hidePresetsDialog = true
+                            }
+                        }
+                    ) {
+                        Text(stringResource(if (selectedPreset != null) R.string.save else R.string.continue_))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = scope.dismissDialog) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                },
+                title = { Text(scope.option.title) },
+                textHorizontalPadding = PaddingValues(horizontal = 0.dp),
+                text = {
+                    val presets = remember(scope.option.presets) {
+                        scope.option.presets?.entries?.toList().orEmpty()
+                    }
+
+                    LazyColumn {
+                        @Composable
+                        fun Item(title: String, value: Any?, presetKey: String?) {
+                            ListItem(
+                                modifier = Modifier.clickable { selectedPreset = presetKey },
+                                headlineContent = { Text(title) },
+                                supportingContent = value?.toString()?.let { { Text(it) } },
+                                leadingContent = {
+                                    RadioButton(
+                                        selected = selectedPreset == presetKey,
+                                        onClick = { selectedPreset = presetKey }
+                                    )
+                                }
+                            )
+                        }
+
+
+                        items(presets, key = { it.key }) {
+                            Item(it.key, it.value, it.key)
+                        }
+
+                        item(key = null) {
+                            Item(stringResource(R.string.option_preset_custom_value), null, null)
+                        }
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -521,6 +574,8 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                     )
                 }
             ) { paddingValues ->
+                val elementOption = remember(scope.option) { createElementOption(scope.option) }
+
                 LazyColumn(
                     state = lazyListState,
                     modifier = Modifier
@@ -531,68 +586,60 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                         val interactionSource = remember { MutableInteractionSource() }
 
                         ReorderableItem(reorderableLazyColumnState, key = item.key) {
-                            var showDialog by rememberSaveable { mutableStateOf(false) }
+                            WithOptionEditor(
+                                elementEditor,
+                                elementOption,
+                                value = item.value,
+                                setValue = { items[index] = item.copy(value = it) }
+                            ) {
+                                ListItem(
+                                    modifier = Modifier.combinedClickable(
+                                        indication = LocalIndication.current,
+                                        interactionSource = interactionSource,
+                                        onLongClickLabel = stringResource(R.string.select),
+                                        onLongClick = {
+                                            deletionTargets.add(item.key)
+                                            deleteMode = true
+                                        },
+                                        onClick = {
+                                            if (!deleteMode) {
+                                                clickAction()
+                                                return@combinedClickable
+                                            }
 
-                            val elementScope = OptionEditorScope(
-                                createElementOption(scope.option),
-                                openDialog = { showDialog = true },
-                                dismissDialog = { showDialog = false },
-                                item.value,
-                                setValue = { items[index] = item.copy(value = it) },
-                            )
-
-                            if (showDialog)
-                                elementEditor.Dialog(elementScope)
-
-                            ListItem(
-                                modifier = Modifier.combinedClickable(
-                                    indication = LocalIndication.current,
-                                    interactionSource = interactionSource,
-                                    onLongClickLabel = stringResource(R.string.select),
-                                    onLongClick = {
-                                        deletionTargets.add(item.key)
-                                        deleteMode = true
-                                    },
-                                    onClick = {
-                                        if (!deleteMode) {
-                                            elementEditor.clickAction(elementScope)
-                                            return@combinedClickable
-                                        }
-
-                                        if (item.key in deletionTargets) {
-                                            deletionTargets.remove(
-                                                item.key
+                                            if (item.key in deletionTargets) {
+                                                deletionTargets.remove(
+                                                    item.key
+                                                )
+                                                deleteMode = deletionTargets.isNotEmpty()
+                                            } else deletionTargets.add(item.key)
+                                        },
+                                    ),
+                                    tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
+                                    leadingContent = {
+                                        IconButton(
+                                            modifier = Modifier.draggableHandle(interactionSource = interactionSource),
+                                            onClick = {},
+                                        ) {
+                                            Icon(
+                                                Icons.Filled.DragHandle,
+                                                stringResource(R.string.drag_handle)
                                             )
-                                            deleteMode = deletionTargets.isNotEmpty()
-                                        } else deletionTargets.add(item.key)
+                                        }
                                     },
-                                ),
-                                tonalElevation = if (deleteMode && item.key in deletionTargets) 8.dp else 0.dp,
-                                leadingContent = {
-                                    IconButton(
-                                        modifier = Modifier.draggableHandle(interactionSource = interactionSource),
-                                        onClick = {},
-                                    ) {
-                                        Icon(
-                                            Icons.Filled.DragHandle,
-                                            stringResource(R.string.drag_handle)
+                                    headlineContent = {
+                                        if (item.value == null) return@ListItem Text(
+                                            stringResource(R.string.empty),
+                                            fontStyle = FontStyle.Italic
                                         )
-                                    }
-                                },
-                                headlineContent = {
-                                    if (item.value == null) return@ListItem Text(
-                                        stringResource(R.string.empty),
-                                        fontStyle = FontStyle.Italic
-                                    )
 
-                                    Text(item.value.toString())
-                                },
-                                trailingContent = {
-                                    elementEditor.ListItemTrailingContent(
-                                        elementScope
-                                    )
-                                }
-                            )
+                                        Text(item.value.toString())
+                                    },
+                                    trailingContent = {
+                                        ListItemTrailingContent()
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -601,5 +648,6 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
     }
 
     @Parcelize
-    private data class Item<T : Serializable>(val value: T?, val key: Int = Random.nextInt()) : Parcelable
+    private data class Item<T : Serializable>(val value: T?, val key: Int = Random.nextInt()) :
+        Parcelable
 }
