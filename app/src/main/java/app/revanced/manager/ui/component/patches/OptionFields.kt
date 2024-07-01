@@ -363,7 +363,7 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
     OptionEditor<T> {
     @Composable
     override fun Dialog(scope: OptionEditorScope<T>) {
-        var selectedPreset by rememberSaveable(scope.value) {
+        var selectedPreset by rememberSaveable(scope.value, scope.option.presets) {
             val presets = scope.option.presets!!
 
             mutableStateOf(presets.entries.find { it.value == scope.value }?.key)
@@ -429,7 +429,6 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
                                 }
                             )
                         }
-
 
                         items(presets, key = { it.key }) {
                             Item(it.key, it.value, it.key)
