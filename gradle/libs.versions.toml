@@ -1,5 +1,5 @@
 [versions]
-ktx = "1.12.0"
+ktx = "1.13.1"
 material3 = "1.2.1"
 ui-tooling = "1.6.4"
 viewmodel-lifecycle = "2.7.0"
