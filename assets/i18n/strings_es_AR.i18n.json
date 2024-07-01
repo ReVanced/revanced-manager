@@ -59,7 +59,7 @@
   "latestCommitCard": {
     "loadingLabel": "Cargando...",
     "timeagoLabel": "Hace ${time}",
-    "patcherLabel": "Patcher: ",
+    "patcherLabel": "Parcheador: ",
     "managerLabel": "Manager: ",
     "updateButton": "Actualizar Manager"
   },

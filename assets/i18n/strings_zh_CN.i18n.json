@@ -58,7 +58,7 @@
   },
   "latestCommitCard": {
     "loadingLabel": "正在加载…",
-    "timeagoLabel": "${time}前",
+    "timeagoLabel": "${time} 前",
     "patcherLabel": "补丁程序： ",
     "managerLabel": "管理器： ",
     "updateButton": "更新管理器"
@@ -127,7 +127,7 @@
     "selectFilePath": "选择文件路径",
     "selectFolder": "选择文件夹",
     "selectOption": "选择选项",
-    "requiredOption": "必须填写此选项",
+    "requiredOption": "必填此项",
     "unsupportedOption": "不支持此选项",
     "requiredOptionNull": "必须设置以下选项：\n\n${options}"
   },

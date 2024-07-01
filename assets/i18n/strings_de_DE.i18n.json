@@ -127,7 +127,7 @@
     "selectFilePath": "Dateipfad auswählen",
     "selectFolder": "Ordner auswählen",
     "selectOption": "Option auswählen",
-    "requiredOption": "Diese Option ist erforderlich.",
+    "requiredOption": "Diese Option ist erforderlich",
     "unsupportedOption": "Dieser Vorgang ist nicht unterstützt.",
     "requiredOptionNull": "Die folgenden Optionen müssen gesetzt sein:\n\n${options}"
   },

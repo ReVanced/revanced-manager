@@ -1,7 +1,7 @@
 {
   "okButton": "OK",
   "cancelButton": "Cancelar",
-  "dismissButton": "Dispensar",
+  "dismissButton": "Ignorar",
   "quitButton": "Sair",
   "updateButton": "Atualizar",
   "enabledLabel": "Ativado",
@@ -27,11 +27,11 @@
     "refreshSuccess": "Atualizado com sucesso",
     "widgetTitle": "Painel de Controlo",
     "updatesSubtitle": "Atualizações",
-    "patchedSubtitle": "Aplicações Modificadas",
+    "patchedSubtitle": "Apps patcheados",
     "changeLaterSubtitle": "Podes modificar esta definição mais tarde.",
     "noUpdates": "Nenhuma atualização disponível",
     "WIP": "Trabalho em progresso...",
-    "noInstallations": "Nenhuma aplicação modificada instalada",
+    "noInstallations": "Nenhum app patcheado instalado",
     "installUpdate": "Continuar para instalar a atualização?",
     "updateSheetTitle": "Atualizar o ReVanced Manager",
     "updateDialogTitle": "Nova atualização disponível",
@@ -51,7 +51,7 @@
     "errorDownloadMessage": "Não é possível transferir a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
     "noConnection": "Sem ligação à Internet",
-    "updatesDisabled": "Atualizar uma aplicação modificada está atualmente desabilitado. Volta a modificar a aplicação."
+    "updatesDisabled": "A atualização de um app patcheado está desativada no momento. Repatch o app de novo."
   },
   "applicationItem": {
     "infoButton": "Informação"
@@ -98,7 +98,7 @@
     "downloadToast": "A função de transferência não está disponível",
     "requireSuggestedAppVersionDialogText": "A versão da aplicação que selecionaste não corresponde à versão sugerida, o que pode levar a problemas inesperados. Utiliza a versão recomendada.\n\nVersão selecionada: ${selected}\nVersão recomendada: ${suggested}\n\nPara continuar na mesma, desactive a opção \"Exigir a versão recomendada da aplicação\" nas definições.",
     "featureNotAvailable": "Recurso não implementado",
-    "featureNotAvailableText": "Esta aplicação é um APK dividido e só pode ser modificado e instalado de forma fiável através da montagem com permissões root. No entanto, é possível corrigir e instalar um APK completo selecionando-o a partir do armazenamento."
+    "featureNotAvailableText": "Esse app é um APK dividido e só pode ser modificado e instalado de forma fiável através da montagem com permissões root. No entanto, é possível patchear e instalar um APK completo selecionando ele a partir do armazenamento."
   },
   "patchesSelectorView": {
     "viewTitle": "Selecionar modificações",
@@ -145,13 +145,13 @@
     "installButton": "Instalar",
     "installRootType": "Montar",
     "installNonRootType": "Normal",
-    "warning": "Desativa as atualizações automáticas da aplicação modificada para evitar problemas inesperados.",
+    "warning": "Desative as atualizações automáticas do app patcheado para evitar problemas inesperados.",
     "pressBackAgain": "Pressione voltar novamente para cancelar",
     "openButton": "Abrir",
     "shareButton": "Partilhar ficheiro",
     "notificationTitle": "O ReVanced Manager está a fazer as modificações",
     "notificationText": "Toca para voltar ao instalador",
-    "exportApkButtonTooltip": "Exportar APK modificado",
+    "exportApkButtonTooltip": "Exportar APK patcheado",
     "exportLogButtonTooltip": "Exportar registo",
     "screenshotDetected": "Foi detetada uma captura de ecrã. Se estiver a tentar partilhar o registo, partilhe antes uma cópia de texto.\n\nCopiar o registo para a área de transferência?",
     "copiedToClipboard": "Registo copiado para a área de transferência",
@@ -258,13 +258,13 @@
     "unmountButton": "Desmontar",
     "rootDialogTitle": "Erro",
     "unmountDialogText": "Tens a certeza que queres remover as modificações desta aplicação?",
-    "uninstallDialogText": "Tens a certeza que queres desinstalar esta aplicação?",
+    "uninstallDialogText": "Tem certeza que quer desinstalar esse app?",
     "rootDialogText": "A aplicação foi instalada com permissões de Super-Utilizador, mas atualmente o ReVanced Manager não tem permissões.\nPor favor, conceda permissões de Super-Utilizador primeiro.",
     "packageNameLabel": "Nome do pacote",
     "installTypeLabel": "Tipo de instalação",
     "mountTypeLabel": "Montar",
     "regularTypeLabel": "Normal",
-    "patchedDateLabel": "Data da Modificação",
+    "patchedDateLabel": "Data do patch",
     "appliedPatchesLabel": "Modificações aplicadas",
     "patchedDateHint": "${date} às ${time}",
     "appliedPatchesHint": "${quantity} modificação/ões aplicada/s",
@@ -293,10 +293,10 @@
     "status_failure_storage_description": "A instalação falhou devido ao armazenamento insuficiente.\n\nLiberta algum espaço e tenta novamente.",
     "status_failure_invalid_description": "A instalação falhou devido ao facto da aplicação modificada ser inválida.\n\nDesinstalar a aplicação e tentar novamente?",
     "status_failure_incompatible_description": "O aplicativo é incompatível com este dispositivo.\n\nEntre em contacto com o desenvolvedor da aplicação e peça suporte.",
-    "status_failure_conflict_description": "A instalação foi impedida por uma instalação já existente da mesma aplicação.\n\nDesinstalar a aplicação instalada e tentar novamente?",
+    "status_failure_conflict_description": "A instalação foi impedida por uma instalação existente do app.\n\nDesinstalar o app instalado e tentar de novo?",
     "status_failure_blocked_description": "A instalação foi bloqueada por ${packageName}.\n\nAjuste as suas definições de segurança e tenta novamente.",
     "install_failed_verification_failure_description": "A instalação falhou por problemas de verificação.\n\nAjusta as tuas definições de segurança e tenta novamente.",
-    "install_failed_version_downgrade_description": "A instalação falhou devido ao facto da aplicação modificada ser uma versão inferior à da aplicação instalada.\n\nDesinstalar a aplicação e tentar novamente?",
+    "install_failed_version_downgrade_description": "A instalação falhou porque o app patcheado era uma versão inferior ao aplicativo instalado.\n\nDesinstalar o app e tentar de novo?",
     "status_unknown_description": "A instalação falhou por razões desconhecidas. Por favor, tenta novamente."
   }
 }

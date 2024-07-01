@@ -16,7 +16,7 @@
   "noShowAgain": "Ne plus afficher",
   "add": "Ajouter",
   "remove": "Supprimer",
-  "showChangelogButton": "Afficher le journal des modifications",
+  "showChangelogButton": "Journal des modifications",
   "showUpdateButton": "Afficher les mises à jour",
   "navigationView": {
     "dashboardTab": "Tableau de bord",
@@ -29,7 +29,7 @@
     "updatesSubtitle": "Mises à jour",
     "patchedSubtitle": "Applications patchées",
     "changeLaterSubtitle": "Vous pouvez changer cela dans les paramètres ultérieurement.",
-    "noUpdates": "Aucune mise à jour n'est disponible",
+    "noUpdates": "Aucune mise à jour disponible",
     "WIP": "Bientôt disponible...",
     "noInstallations": "Aucune application patchée installée",
     "installUpdate": "Continuer à installer la mise à jour ?",
@@ -37,21 +37,21 @@
     "updateDialogTitle": "Nouvelle mise à jour disponible",
     "updatePatchesSheetTitle": "Mettre à jour les patchs ReVanced",
     "updateChangelogTitle": "Journal des modifications",
-    "updateDialogText": "Une nouvelle mise à jour est disponible pour ${file}.\n\nLa version actuellement installée est ${version}.",
-    "downloadConsentDialogTitle": "Télécharger les fichiers requis ?",
-    "downloadConsentDialogText": "ReVanced Manager à besoin de télécharger des fichiers nécessaires pour fonctionner correctement.",
+    "updateDialogText": "Une nouvelle mise à jour est disponible pour ${file}.\n\nLa version actuellement installée est la version ${version}.",
+    "downloadConsentDialogTitle": "Télécharger les fichiers nécessaires ?",
+    "downloadConsentDialogText": "ReVanced Manager doit télécharger les fichiers nécessaires pour fonctionner correctement.",
     "downloadConsentDialogText2": "Vous allez être connecté à ${url}.",
     "checkUpdateDialogTitle": "Vérifier les mises à jour ?",
-    "checkUpdateDialogText": "Voulez-vous que ReVanced Manager vérifie les mises à jour automatiquement ?",
+    "checkUpdateDialogText": "Souhaitez-vous que ReVanced Manager recherche automatiquement les mises à jour ?",
     "notificationTitle": "Mise à jour téléchargée",
-    "notificationText": "Cliquez pour installer la mise à jour",
+    "notificationText": "Appuyer pour installer la mise à jour",
     "downloadingMessage": "Téléchargement de la mise à jour...",
     "downloadedMessage": "Mise à jour téléchargée",
     "installingMessage": "Installation de la mise à jour...",
     "errorDownloadMessage": "Impossible de télécharger la mise à jour",
     "errorInstallMessage": "Impossible d'installer la mise à jour",
     "noConnection": "Aucune connexion internet",
-    "updatesDisabled": "La mise à jour d'une application patchée est actuellement désactivée. Repatchez l'application à nouveau."
+    "updatesDisabled": "La mise à jour d'une application patchée est actuellement désactivée. Repatchez l'application."
   },
   "applicationItem": {
     "infoButton": "Info"
@@ -66,7 +66,7 @@
   "patcherView": {
     "widgetTitle": "Patcheur",
     "patchButton": "Patcher",
-    "armv7WarningDialogText": "Patcher sur des appareils sur ARMv7 n'est pas encore supporté et pourrait échouer. Continuer quand même ?",
+    "armv7WarningDialogText": "L'application de patchs sur les appareils ARMv7 n'est pas encore prise en charge et pourrait échouer. Continuer quand même ?",
     "removedPatchesWarningDialogText": "Les patchs suivants ont été supprimés depuis la dernière fois que vous les avez utilisés.\n\n${patches}\n\nContinuer quand même ?",
     "requiredOptionDialogText": "Certaines options de patch doivent être définies."
   },
@@ -77,13 +77,13 @@
     "noAppsLabel": "Aucune application trouvée",
     "currentVersion": "Version actuelle",
     "suggestedVersion": "Version suggérée",
-    "anyVersion": "Toute les versions"
+    "anyVersion": "Toutes les versions"
   },
   "patchSelectorCard": {
     "widgetTitle": "Sélectionner les patchs",
     "widgetTitleSelected": "Patchs sélectionnés",
-    "widgetSubtitle": "Choisissez d'abord une application",
-    "widgetEmptySubtitle": "Aucun patch n'est sélectionné"
+    "widgetSubtitle": "Sélectionnez d'abord une application",
+    "widgetEmptySubtitle": "Aucun patch sélectionné"
   },
   "socialMediaCard": {
     "widgetTitle": "Réseaux sociaux",
@@ -91,7 +91,7 @@
   },
   "appSelectorView": {
     "viewTitle": "Sélectionner une application",
-    "searchBarHint": "Chercher une application",
+    "searchBarHint": "Rechercher une application",
     "storageButton": "Stockage",
     "selectFromStorageButton": "Sélectionner depuis le stockage",
     "errorMessage": "Impossible d'utiliser l'application sélectionnée",
@@ -122,20 +122,20 @@
     "viewTitle": "Options de patch",
     "saveOptions": "Enregistrer",
     "addOptions": "Ajouter des options",
-    "deselectPatch": "Désélectionner tous les patchs",
+    "deselectPatch": "Désélectionner la patch",
     "tooltip": "Plus d'options d'entrée",
     "selectFilePath": "Sélectionner l'emplacement du fichier",
     "selectFolder": "Sélectionner le dossier",
     "selectOption": "Sélectionner une option",
-    "requiredOption": "Cette option est obligatoire",
-    "unsupportedOption": "Cette option n'est pas supportée",
+    "requiredOption": "Cette option est requise",
+    "unsupportedOption": "Cette option n'est pas prise en charge",
     "requiredOptionNull": "Les options suivantes doivent être définies :\n\n${options}"
   },
   "patchItem": {
-    "unsupportedDialogText": "Sélectionner ce patch pourrait entrainer des erreurs dans la modification.\n\nVersion de l'application : ${packageVersion}\nVersions supportées :\n${supportedVersions}",
-    "unsupportedPatchVersion": "Le patch n'est pas supporté pour cette version de l'application.",
-    "unsupportedRequiredOption": "Ce patch contient une option requise qui n'est pas supporté par cette application",
-    "patchesChangeWarningDialogText": "Il est recommandé d'utiliser les patchs par défaut ainsi que les options. Leur modification peut entraîner des problèmes inattendus.\n\nVous aurez besoin d'activer \"Autoriser la modification de la sélection du patch\" dans les paramètres avant de modifier toute sélection de patch.",
+    "unsupportedDialogText": "Sélectionner ce patch peut entrainer des erreurs dans la modification.\n\nVersion de l'application : ${packageVersion}\nVersions prises en charge :\n${supportedVersions}",
+    "unsupportedPatchVersion": "Le patch n'est pas pris en charge pour cette version de l'application.",
+    "unsupportedRequiredOption": "Ce patch contient une option requise qui n'est pas prise en charge par cette application",
+    "patchesChangeWarningDialogText": "Il est recommandé d'utiliser les patchs et options par défaut. Leur modification peut entraîner des problèmes inattendus.\n\nVous aurez besoin d'activer « Autoriser la modification de la sélection de patchs » dans les paramètres avant de modifier toute sélection de patchs.",
     "patchesChangeWarningDialogButton": "Utiliser la sélection par défaut"
   },
   "installerView": {
@@ -193,7 +193,7 @@
     "contributorsHint": "Liste des contributeurs de ReVanced",
     "logsLabel": "Partager les journaux",
     "logsHint": "Partager les logs de ReVanced Manager",
-    "enablePatchesSelectionLabel": "Autoriser la modification de la sélection du patch",
+    "enablePatchesSelectionLabel": "Autoriser la modification de la sélection de patchs",
     "enablePatchesSelectionHint": "Ne pas empêcher la sélection ou la désélection des patchs",
     "enablePatchesSelectionWarningText": "Le changement de sélection par défaut des patchs peut causer des problèmes inattendus \n\nActiver quand même ?",
     "disablePatchesSelectionWarningText": "Vous êtes sur le point de désactiver le changement de sélection par défaut des patchs.\nLa sélection par défaut des patchs sera restaurée.\n\nDésactiver quand même ?",
