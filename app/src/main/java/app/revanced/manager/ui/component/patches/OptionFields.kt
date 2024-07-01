@@ -79,7 +79,6 @@ import org.koin.core.component.get
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyColumnState
 import java.io.Serializable
-import kotlin.concurrent.thread
 import kotlin.random.Random
 
 private class OptionEditorScope<T : Any>(
