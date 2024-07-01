@@ -32,7 +32,7 @@ dependencies:
       ref: 900a81501f1f0e4996fe9e2cbf55f1ea8df08b49 # Branch: specify-namespace
   flutter_cache_manager: ^3.3.2
   flutter_file_dialog: ^3.0.2
-  flutter_local_notifications: ^17.1.0
+  flutter_local_notifications: ^17.2.1
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.7.1
