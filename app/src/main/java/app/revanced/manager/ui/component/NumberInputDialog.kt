@@ -49,7 +49,11 @@ private inline fun <T> NumberInputDialog(
                 isError = validatorFailed,
                 supportingText = {
                     if (validatorFailed) {
-                        Text(stringResource(R.string.input_dialog_value_invalid), modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.error)
+                        Text(
+                            stringResource(R.string.input_dialog_value_invalid),
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.error
+                        )
                     }
                 }
             )
@@ -71,13 +75,25 @@ private inline fun <T> NumberInputDialog(
 }
 
 @Composable
-fun IntInputDialog(current: Int?, name: String, validator: (Int) -> Boolean = { true }, onSubmit: (Int?) -> Unit) =
-    NumberInputDialog(current, name, onSubmit, validator, String::toIntOrNull)
+fun IntInputDialog(
+    current: Int?,
+    name: String,
+    validator: (Int) -> Boolean = { true },
+    onSubmit: (Int?) -> Unit
+) = NumberInputDialog(current, name, onSubmit, validator, String::toIntOrNull)
 
 @Composable
-fun LongInputDialog(current: Long?, name: String, validator: (Long) -> Boolean = { true }, onSubmit: (Long?) -> Unit) =
-    NumberInputDialog(current, name, onSubmit, validator, String::toLongOrNull)
+fun LongInputDialog(
+    current: Long?,
+    name: String,
+    validator: (Long) -> Boolean = { true },
+    onSubmit: (Long?) -> Unit
+) = NumberInputDialog(current, name, onSubmit, validator, String::toLongOrNull)
 
 @Composable
-fun FloatInputDialog(current: Float?, name: String, validator: (Float) -> Boolean = { true }, onSubmit: (Float?) -> Unit) =
-    NumberInputDialog(current, name, onSubmit, validator, String::toFloatOrNull)
+fun FloatInputDialog(
+    current: Float?,
+    name: String,
+    validator: (Float) -> Boolean = { true },
+    onSubmit: (Float?) -> Unit
+) = NumberInputDialog(current, name, onSubmit, validator, String::toFloatOrNull)
