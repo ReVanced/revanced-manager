@@ -36,7 +36,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.7.1
-  fluttertoast: ^8.2.5
+  fluttertoast: ^8.2.6
   font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1
   injectable: ^2.4.0
