@@ -36,7 +36,7 @@ class PatchBundle(val patchesJar: File, val integrations: File?) {
         null
     }
 
-    fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name).also { println(it) }
+    fun readManifestAttribute(name: String) = manifest?.mainAttributes?.getValue(name)
 
     /**
      * Load all patches compatible with the specified package.
