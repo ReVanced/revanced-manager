@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -164,6 +166,13 @@ private fun SelectedAppInfoScreen(
                 title = stringResource(R.string.app_info),
                 onBackClick = onBackClick
             )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text(stringResource(R.string.patch)) },
+                icon = { Icon(Icons.Default.AutoFixHigh, null) },
+                onClick = onPatchClick
+            )
         }
     ) { paddingValues ->
         Column(
@@ -178,15 +187,6 @@ private fun SelectedAppInfoScreen(
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-
-            PageItem(R.string.patch, stringResource(R.string.patch_item_description), onPatchClick)
-
-            Text(
-                stringResource(R.string.advanced),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelLarge,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-            )
 
             PageItem(
                 R.string.patch_selector_item,
