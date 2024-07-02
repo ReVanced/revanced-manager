@@ -23,9 +23,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.LocalPatchBundle
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.isDefault
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.propsOrNullFlow
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -44,7 +44,7 @@ fun BundleInformationDialog(
         bundle.state.map { it.patchBundleOrNull()?.patches?.size ?: 0 }
     }.collectAsStateWithLifecycle(0)
     val props by remember(bundle) {
-        bundle.propsOrNullFlow()
+        bundle.propsFlow()
     }.collectAsStateWithLifecycle(null)
 
     if (viewCurrentBundlePatches) {
@@ -63,10 +63,12 @@ fun BundleInformationDialog(
             dismissOnBackPress = true
         )
     ) {
+        val bundleName by bundle.nameState
+
         Scaffold(
             topBar = {
                 BundleTopBar(
-                    title = bundle.name,
+                    title = bundleName,
                     onBackClick = onDismissRequest,
                     onBackIcon = {
                         Icon(
@@ -98,7 +100,8 @@ fun BundleInformationDialog(
             BaseBundleDialog(
                 modifier = Modifier.padding(paddingValues),
                 isDefault = bundle.isDefault,
-                name = bundle.name,
+                name = bundleName,
+                onNameChange = { composableScope.launch { bundle.setName(it) } },
                 remoteUrl = bundle.asRemoteOrNull?.endpoint,
                 patchCount = patchCount,
                 version = props?.versionInfo?.patches,
