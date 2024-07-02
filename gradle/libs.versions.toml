@@ -23,10 +23,10 @@ reimagined-navigation = "1.5.0"
 ktor = "2.3.9"
 markdown-renderer = "0.22.0"
 fading-edges = "1.0.4"
-androidGradlePlugin = "8.3.2"
-kotlinGradlePlugin = "1.9.22"
-devToolsGradlePlugin = "1.9.22-1.0.17"
-aboutLibrariesGradlePlugin = "11.1.1"
+android-gradle-plugin = "8.3.2"
+kotlin-gradle-plugin = "1.9.22"
+dev-tools-gradle-plugin = "1.9.22-1.0.17"
+about-libraries-gradle-plugin = "11.1.1"
 coil = "2.6.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
@@ -87,8 +87,8 @@ koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager
 # Compose Navigation
 reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
 
-# about-libraries
-about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "aboutLibrariesGradlePlugin" }
+# About Libraries
+about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries-gradle-plugin" }
 
 # Ktor
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -129,7 +129,7 @@ reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reo
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
-devtools = { id = "com.google.devtools.ksp", version.ref = "devToolsGradlePlugin" }
-about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibrariesGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-gradle-plugin" }
+devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
+about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }
