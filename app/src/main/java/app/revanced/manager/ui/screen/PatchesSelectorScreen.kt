@@ -54,6 +54,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
@@ -519,7 +520,8 @@ fun OptionsDialog(
                 val value =
                     if (values == null || !values.contains(key)) option.default else values[key]
 
-                OptionItem(option = option, value = value, setValue = { set(key, it) })
+                @Suppress("UNCHECKED_CAST")
+                OptionItem(option = option as Option<Any>, value = value, setValue = { set(key, it) })
             }
         }
     }

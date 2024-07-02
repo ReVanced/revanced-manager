@@ -2,7 +2,7 @@ package app.revanced.manager.data.room
 
 import androidx.room.TypeConverter
 import app.revanced.manager.data.room.bundles.Source
-import io.ktor.http.*
+import app.revanced.manager.data.room.options.Option.SerializedValue
 import java.io.File
 
 class Converters {
@@ -17,4 +17,10 @@ class Converters {
 
     @TypeConverter
     fun fileToString(file: File): String = file.path
+
+    @TypeConverter
+    fun serializedOptionFromString(value: String) = SerializedValue.fromJsonString(value)
+
+    @TypeConverter
+    fun serializedOptionToString(value: SerializedValue) = value.toJsonString()
 }
