@@ -11,6 +11,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -194,4 +195,17 @@ fun LazyListState.isScrollingUp(): State<Boolean> {
     }
 }
 
+@Composable
+fun ScrollState.isScrollingUp(): State<Boolean> {
+    return remember(this) {
+        var previousScrollOffset by mutableIntStateOf(value)
+        derivedStateOf {
+            (previousScrollOffset >= value).also {
+                previousScrollOffset = value
+            }
+        }
+    }
+}
+
 val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
+val ScrollState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
