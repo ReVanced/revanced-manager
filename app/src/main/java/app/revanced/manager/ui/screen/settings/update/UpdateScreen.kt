@@ -56,7 +56,7 @@ fun UpdateScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.updates),
+                title = stringResource(R.string.update),
                 onBackClick = onBackClick
             )
         }
