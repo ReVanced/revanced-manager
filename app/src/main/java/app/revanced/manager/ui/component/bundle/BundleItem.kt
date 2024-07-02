@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.propsOrNullFlow
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -45,8 +45,9 @@ fun BundleItem(
     val state by bundle.state.collectAsStateWithLifecycle()
 
     val version by remember(bundle) {
-        bundle.propsOrNullFlow().map { props -> props?.versionInfo?.patches }
+        bundle.propsFlow().map { props -> props?.versionInfo?.patches }
     }.collectAsStateWithLifecycle(null)
+    val name by bundle.nameState
 
     if (viewBundleDialogPage) {
         BundleInformationDialog(
@@ -77,10 +78,10 @@ fun BundleItem(
             }
         } else null,
 
-        headlineContent = { Text(text = bundle.name) },
+        headlineContent = { Text(name) },
         supportingContent = {
             state.patchBundleOrNull()?.patches?.size?.let { patchCount ->
-                Text(text = pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
+                Text(pluralStringResource(R.plurals.patch_count, patchCount, patchCount))
             }
         },
         trailingContent = {
@@ -95,7 +96,7 @@ fun BundleItem(
 
                 icon?.let { (vector, description) ->
                     Icon(
-                        imageVector = vector,
+                        vector,
                         contentDescription = stringResource(description),
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.error

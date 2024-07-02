@@ -25,6 +25,8 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+    <string name="bundle_name_default">Default</string>
+    <string name="bundle_name_fallback">Unnamed</string>
 
     <string name="selected_app_meta">%1$s • %2$d available patches</string>
 

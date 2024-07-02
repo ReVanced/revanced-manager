@@ -35,11 +35,10 @@ import app.revanced.manager.util.JAR_MIMETYPE
 @Composable
 fun ImportBundleDialog(
     onDismissRequest: () -> Unit,
-    onRemoteSubmit: (String, String, Boolean) -> Unit,
-    onLocalSubmit: (String, Uri, Uri?) -> Unit,
+    onRemoteSubmit: (String, Boolean) -> Unit,
+    onLocalSubmit: (Uri, Uri?) -> Unit,
     initialBundleType: BundleType
 ) {
-    var name by rememberSaveable { mutableStateOf("") }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(true) }
     var bundleType by rememberSaveable { mutableStateOf(initialBundleType) }
@@ -48,7 +47,7 @@ fun ImportBundleDialog(
 
     val inputsAreValid by remember {
         derivedStateOf {
-            name.isNotEmpty() && if (bundleType == BundleType.Local) patchBundle != null else remoteUrl.isNotEmpty()
+            if (bundleType == BundleType.Local) patchBundle != null else remoteUrl.isNotEmpty()
         }
     }
 
@@ -56,6 +55,7 @@ fun ImportBundleDialog(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { patchBundle = it }
         }
+
     fun launchPatchActivity() {
         patchActivityLauncher.launch(JAR_MIMETYPE)
     }
@@ -64,6 +64,7 @@ fun ImportBundleDialog(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { integrations = it }
         }
+
     fun launchIntegrationsActivity() {
         integrationsActivityLauncher.launch(APK_MIMETYPE)
     }
@@ -91,12 +92,8 @@ fun ImportBundleDialog(
                             enabled = inputsAreValid,
                             onClick = {
                                 when (bundleType) {
-                                    BundleType.Local -> onLocalSubmit(
-                                        name,
-                                        patchBundle!!,
-                                        integrations
-                                    )
-                                    BundleType.Remote -> onRemoteSubmit(name, remoteUrl, autoUpdate)
+                                    BundleType.Local -> onLocalSubmit(patchBundle!!, integrations)
+                                    BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
                                 }
                             },
                             modifier = Modifier.padding(end = 16.dp)
@@ -110,8 +107,7 @@ fun ImportBundleDialog(
             BaseBundleDialog(
                 modifier = Modifier.padding(paddingValues),
                 isDefault = false,
-                name = name,
-                onNameChange = { name = it },
+                name = null,
                 remoteUrl = remoteUrl.takeUnless { bundleType == BundleType.Local },
                 onRemoteUrlChange = { remoteUrl = it },
                 patchCount = 0,

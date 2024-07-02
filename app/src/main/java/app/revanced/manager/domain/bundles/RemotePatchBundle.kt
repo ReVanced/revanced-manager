@@ -2,7 +2,6 @@ package app.revanced.manager.domain.bundles
 
 import androidx.compose.runtime.Stable
 import app.revanced.manager.data.room.bundles.VersionInfo
-import app.revanced.manager.domain.repository.PatchBundlePersistenceRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.api.ReVancedAPI.Extensions.findAssetByType
 import app.revanced.manager.network.dto.BundleAsset
@@ -15,17 +14,14 @@ import io.ktor.client.request.url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 
 @Stable
 sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpoint: String) :
-    PatchBundleSource(name, id, directory), KoinComponent {
-    private val configRepository: PatchBundlePersistenceRepository by inject()
+    PatchBundleSource(name, id, directory) {
     protected val http: HttpService by inject()
 
     protected abstract suspend fun getLatestInfo(): BundleInfo
@@ -70,16 +66,10 @@ sealed class RemotePatchBundle(name: String, id: Int, directory: File, val endpo
         true
     }
 
-    private suspend fun currentVersion() = configRepository.getProps(uid).first().versionInfo
-    private suspend fun saveVersion(patches: String, integrations: String) =
-        configRepository.updateVersion(uid, patches, integrations)
-
     suspend fun deleteLocalFiles() = withContext(Dispatchers.Default) {
         arrayOf(patchesFile, integrationsFile).forEach(File::delete)
         reload()
     }
-
-    fun propsFlow() = configRepository.getProps(uid)
 
     suspend fun setAutoUpdate(value: Boolean) = configRepository.setAutoUpdate(uid, value)
 
