@@ -358,4 +358,5 @@
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
     <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
     <string name="recommended">Recommended</string>
+    <string name="show">Show</string>
 </resources>

@@ -259,7 +259,7 @@ fun DashboardScreen(
                                     Text(stringResource(R.string.dismiss))
                                 }
                                 TextButton(onClick = onUpdateClick) {
-                                    Text(stringResource(R.string.update))
+                                    Text(stringResource(R.string.show))
                                 }
                             }
                         )
