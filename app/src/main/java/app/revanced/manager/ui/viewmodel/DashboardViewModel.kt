@@ -12,7 +12,7 @@ import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.domain.bundles.PatchBundleSource
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.asRemoteOrNull
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
@@ -80,20 +80,17 @@ class DashboardViewModel(
     fun cancelSourceSelection() {
         selectedSources.clear()
     }
-    fun createLocalSource(name: String, patchBundle: Uri, integrations: Uri?) =
+    fun createLocalSource(patchBundle: Uri, integrations: Uri?) =
         viewModelScope.launch {
             contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                val integrationsStream = integrations?.let { contentResolver.openInputStream(it) }
-                try {
-                    patchBundleRepository.createLocal(name, patchesStream, integrationsStream)
-                } finally {
-                    integrationsStream?.close()
+                integrations?.let { contentResolver.openInputStream(it) }.use { integrationsStream ->
+                    patchBundleRepository.createLocal(patchesStream, integrationsStream)
                 }
             }
         }
 
-    fun createRemoteSource(name: String, apiUrl: String, autoUpdate: Boolean) =
-        viewModelScope.launch { patchBundleRepository.createRemote(name, apiUrl, autoUpdate) }
+    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) =
+        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
 
     fun delete(bundle: PatchBundleSource) =
         viewModelScope.launch { patchBundleRepository.remove(bundle) }
@@ -107,9 +104,9 @@ class DashboardViewModel(
             RemotePatchBundle.updateFailMsg
         ) {
             if (bundle.update())
-                app.toast(app.getString(R.string.bundle_update_success, bundle.name))
+                app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
             else
-                app.toast(app.getString(R.string.bundle_update_unavailable, bundle.name))
+                app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))
         }
     }
 }

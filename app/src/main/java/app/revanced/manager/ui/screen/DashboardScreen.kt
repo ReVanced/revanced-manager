@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
-import app.revanced.manager.domain.bundles.PatchBundleSource.Companion.isDefault
+import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
@@ -102,13 +102,13 @@ fun DashboardScreen(
 
         ImportBundleDialog(
             onDismissRequest = ::dismiss,
-            onLocalSubmit = { name, patches, integrations ->
+            onLocalSubmit = { patches, integrations ->
                 dismiss()
-                vm.createLocalSource(name, patches, integrations)
+                vm.createLocalSource(patches, integrations)
             },
-            onRemoteSubmit = { name, url, autoUpdate ->
+            onRemoteSubmit = { url, autoUpdate ->
                 dismiss()
-                vm.createRemoteSource(name, url, autoUpdate)
+                vm.createRemoteSource(url, autoUpdate)
             },
             initialBundleType = it
         )
