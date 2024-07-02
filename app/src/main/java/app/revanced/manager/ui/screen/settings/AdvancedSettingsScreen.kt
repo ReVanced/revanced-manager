@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -132,22 +133,17 @@ fun AdvancedSettingsScreen(
                 }
             )
 
-            GroupHeader(stringResource(R.string.device))
+            GroupHeader(stringResource(R.string.debugging))
             SettingsListItem(
-                headlineContent = stringResource(R.string.device_model),
-                supportingContent = Build.MODEL
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_android_version),
-                supportingContent = Build.VERSION.RELEASE
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_architectures),
-                supportingContent = Build.SUPPORTED_ABIS.joinToString(", ")
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_memory_limit),
-                supportingContent = memoryLimit
+                headlineContent = stringResource(R.string.about_device),
+                supportingContent = """
+                    **Version**: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+                    **Build type**: ${BuildConfig.BUILD_TYPE}
+                    **Model**: ${Build.MODEL}
+                    **Android version**: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
+                    **Supported Archs**: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    **Memory limit**: $memoryLimit
+                """.trimIndent()
             )
         }
     }
