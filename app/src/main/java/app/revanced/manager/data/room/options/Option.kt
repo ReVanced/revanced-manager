@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import app.revanced.manager.patcher.patch.Option
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -43,6 +44,7 @@ data class Option(
         fun deserializeFor(option: Option<*>): Any? {
             if (raw is JsonNull) return null
 
+            val errorMessage = "Cannot deserialize value as ${option.type}"
             try {
                 if (option.type.endsWith("Array")) {
                     val elementType = option.type.removeSuffix("Array")
@@ -51,9 +53,11 @@ data class Option(
 
                 return deserializeBasicType(option.type, raw.jsonPrimitive)
             } catch (e: IllegalArgumentException) {
-                throw SerializationException("Cannot deserialize value as ${option.type}", e)
+                throw SerializationException(errorMessage, e)
             } catch (e: IllegalStateException) {
-                throw SerializationException("Cannot deserialize value as ${option.type}", e)
+                throw SerializationException(errorMessage, e)
+            } catch (e: kotlinx.serialization.SerializationException) {
+                throw SerializationException(errorMessage, e)
             }
         }
 
