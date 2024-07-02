@@ -285,7 +285,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
-                expanded = patchLazyListStates[pagerState.currentPage].isScrollingUp,
+                expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp ?: true,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -325,6 +325,8 @@ fun PatchesSelectorScreen(
                 state = pagerState,
                 userScrollEnabled = true,
                 pageContent = { index ->
+                    // Avoid crashing if the lists have not been fully initialized yet.
+                    if (index > bundles.lastIndex || bundles.size != patchLazyListStates.size) return@HorizontalPager
                     val bundle = bundles[index]
 
                     LazyColumnWithScrollbar(
