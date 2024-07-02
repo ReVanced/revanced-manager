@@ -176,6 +176,9 @@ fun String.relativeTime(context: Context): String {
     }
 }
 
+
+const val isScrollingUpSensitivity = 10
+
 @Composable
 fun LazyListState.isScrollingUp(): State<Boolean> {
     return remember(this) {
@@ -183,10 +186,16 @@ fun LazyListState.isScrollingUp(): State<Boolean> {
         var previousScrollOffset by mutableIntStateOf(firstVisibleItemScrollOffset)
 
         derivedStateOf {
-            if (previousIndex != firstVisibleItemIndex) {
+            val indexChanged = previousIndex != firstVisibleItemIndex
+            val offsetChanged =
+                kotlin.math.abs(previousScrollOffset - firstVisibleItemScrollOffset) > isScrollingUpSensitivity
+
+            if (indexChanged) {
                 previousIndex > firstVisibleItemIndex
+            } else if (offsetChanged) {
+                previousScrollOffset > firstVisibleItemScrollOffset
             } else {
-                previousScrollOffset >= firstVisibleItemScrollOffset
+                true
             }.also {
                 previousIndex = firstVisibleItemIndex
                 previousScrollOffset = firstVisibleItemScrollOffset
@@ -195,6 +204,7 @@ fun LazyListState.isScrollingUp(): State<Boolean> {
     }
 }
 
+// TODO: support sensitivity
 @Composable
 fun ScrollState.isScrollingUp(): State<Boolean> {
     return remember(this) {
