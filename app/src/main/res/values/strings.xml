@@ -42,8 +42,8 @@
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
-    <string name="auto_updates_dialog_title">Select updates to receive</string>
-    <string name="auto_updates_dialog_description">Periodically connect to update providers to check for updates.</string>
+    <string name="auto_updates_dialog_title">Configure updates</string>
+    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
     <string name="auto_updates_dialog_manager">ReVanced Manager</string>
     <string name="auto_updates_dialog_patches">ReVanced Patches</string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
