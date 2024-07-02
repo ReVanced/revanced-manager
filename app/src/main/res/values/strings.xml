@@ -165,7 +165,7 @@
     <string name="device_model">Model</string>
     <string name="device_architectures">CPU Architectures</string>
     <string name="device_memory_limit">Memory limits</string>
-    <string name="device_memory_limit_format">Normal: %1$d MB, Large: %2$d MB</string>
+    <string name="device_memory_limit_format">%1$dMB (Normal) - %2$dMB (Large)</string>
     <string name="patch_bundles_section">Patch bundles</string>
     <string name="patch_bundles_redownload">Redownload all patch bundles</string>
     <string name="patch_bundles_reset">Reset patch bundles</string>
@@ -359,4 +359,6 @@
     <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
     <string name="recommended">Recommended</string>
     <string name="show">Show</string>
+    <string name="debugging">Debugging</string>
+    <string name="about_device">About device</string>
 </resources>
