@@ -56,10 +56,6 @@ fun Changelog(
                 .fillMaxWidth()
         ) {
             Tag(
-                Icons.Outlined.Sell,
-                version
-            )
-            Tag(
                 Icons.Outlined.FileDownload,
                 downloadCount
             )
