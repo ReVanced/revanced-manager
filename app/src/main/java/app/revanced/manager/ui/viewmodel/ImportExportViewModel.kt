@@ -55,14 +55,17 @@ class ImportExportViewModel(
 
     fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
         optionsRepository.clearOptionsForPackage(packageName)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun clearOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
         optionsRepository.clearOptionsForPatchBundle(patchBundle.uid)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun resetOptions() = viewModelScope.launch {
         optionsRepository.reset()
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun startKeystoreImport(content: Uri) = viewModelScope.launch {
@@ -98,6 +101,7 @@ class ImportExportViewModel(
     private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
         path.inputStream().use { stream ->
             if (keystoreManager.import(cn, pass, stream)) {
+                app.toast(app.getString(R.string.import_keystore_success))
                 cancelKeystoreImport()
                 return true
             }
@@ -116,6 +120,7 @@ class ImportExportViewModel(
 
     fun exportKeystore(target: Uri) = viewModelScope.launch {
         keystoreManager.export(contentResolver.openOutputStream(target)!!)
+        app.toast(app.getString(R.string.export_keystore_success))
     }
 
     fun regenerateKeystore() = viewModelScope.launch {
@@ -123,8 +128,9 @@ class ImportExportViewModel(
         app.toast(app.getString(R.string.regenerate_keystore_success))
     }
 
-    fun resetSelection() = viewModelScope.launch(Dispatchers.Default) {
-        selectionRepository.reset()
+    fun resetSelection() = viewModelScope.launch {
+        withContext(Dispatchers.Default) { selectionRepository.reset() }
+        app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 
     fun executeSelectionAction(target: Uri) = viewModelScope.launch {
@@ -173,6 +179,7 @@ class ImportExportViewModel(
             }
 
             selectionRepository.import(bundleUid, selection)
+            app.toast(app.getString(R.string.import_patch_selection_success))
         }
     }
 
@@ -191,6 +198,7 @@ class ImportExportViewModel(
                     Json.Default.encodeToStream(selection, it)
                 }
             }
+            app.toast(app.getString(R.string.export_patch_selection_success))
         }
     }
 
