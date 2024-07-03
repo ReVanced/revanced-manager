@@ -137,6 +137,10 @@
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory.</string>
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
+    <string name="debug_logs_export">Export debug logs</string>
+    <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
+    <string name="debug_logs_export_failed">Failed to export logs</string>
+    <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
     <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>

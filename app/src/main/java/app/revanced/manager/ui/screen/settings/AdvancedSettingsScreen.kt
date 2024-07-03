@@ -2,6 +2,8 @@ package app.revanced.manager.ui.screen.settings
 
 import android.app.ActivityManager
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -84,6 +86,15 @@ fun AdvancedSettingsScreen(
                 modifier = Modifier.clickable {
                     showApiUrlDialog = true
                 }
+            )
+
+            val exportDebugLogsLauncher =
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                    it?.let(vm::exportDebugLogs)
+                }
+            SettingsListItem(
+                headlineContent = stringResource(R.string.debug_logs_export),
+                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
             )
 
             GroupHeader(stringResource(R.string.patcher))
