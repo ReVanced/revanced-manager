@@ -44,7 +44,7 @@ fun AlertDialogExtended(
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
     textContentColor: Color = AlertDialogDefaults.textContentColor,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
-    textHorizontalPadding: PaddingValues = PaddingValues(horizontal = 24.dp)
+    textHorizontalPadding: PaddingValues = TextHorizontalPadding
 ) {
     BasicAlertDialog(onDismissRequest = onDismissRequest) {
         Surface(
@@ -148,3 +148,5 @@ private fun ContentStyle(
         }
     }
 }
+
+val TextHorizontalPadding = PaddingValues(horizontal = 24.dp)
