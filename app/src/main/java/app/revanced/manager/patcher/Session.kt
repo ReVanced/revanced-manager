@@ -47,7 +47,7 @@ class Session(
         var nextPatchIndex = 0
 
         updateProgress(
-            name = androidContext.getString(R.string.applying_patch, selectedPatches[nextPatchIndex]),
+            name = androidContext.getString(R.string.executing_patch, selectedPatches[nextPatchIndex]),
             state = State.RUNNING
         )
 
@@ -56,7 +56,7 @@ class Session(
 
             if (exception != null) {
                 updateProgress(
-                    name = androidContext.getString(R.string.failed_to_apply_patch, patch.name),
+                    name = androidContext.getString(R.string.failed_to_execute_patch, patch.name),
                     state = State.FAILED,
                     message = exception.stackTraceToString()
                 )
@@ -72,7 +72,7 @@ class Session(
 
             selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
                 updateProgress(
-                    name = androidContext.getString(R.string.applying_patch, nextPatch.name)
+                    name = androidContext.getString(R.string.executing_patch, nextPatch.name)
                 )
             }
 
@@ -82,7 +82,7 @@ class Session(
         updateProgress(
             state = State.COMPLETED,
             name = androidContext.resources.getQuantityString(
-                R.plurals.patches_applied,
+                R.plurals.patches_executed,
                 selectedPatches.size,
                 selectedPatches.size
             )
@@ -105,7 +105,6 @@ class Session(
             logger.info("Merging integrations")
             acceptIntegrations(integrations.toSet())
             acceptPatches(selectedPatches.toSet())
-            updateProgress(state = State.COMPLETED) // Merging
 
             logger.info("Applying patches...")
             applyPatchesVerbose(selectedPatches.sortedBy { it.name })

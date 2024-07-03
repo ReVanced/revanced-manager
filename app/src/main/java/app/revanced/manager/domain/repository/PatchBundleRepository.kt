@@ -137,16 +137,16 @@ class PatchBundleRepository(
     private fun addBundle(patchBundle: PatchBundleSource) =
         _sources.update { it.toMutableMap().apply { put(patchBundle.uid, patchBundle) } }
 
-    suspend fun createLocal(name: String, patches: InputStream, integrations: InputStream?) {
-        val id = persistenceRepo.create(name, SourceInfo.Local).uid
-        val bundle = LocalPatchBundle(name, id, directoryOf(id))
+    suspend fun createLocal(patches: InputStream, integrations: InputStream?) {
+        val uid = persistenceRepo.create("", SourceInfo.Local).uid
+        val bundle = LocalPatchBundle("", uid, directoryOf(uid))
 
         bundle.replace(patches, integrations)
         addBundle(bundle)
     }
 
-    suspend fun createRemote(name: String, url: String, autoUpdate: Boolean) {
-        val entity = persistenceRepo.create(name, SourceInfo.from(url), autoUpdate)
+    suspend fun createRemote(url: String, autoUpdate: Boolean) {
+        val entity = persistenceRepo.create("", SourceInfo.from(url), autoUpdate)
         addBundle(entity.load())
     }
 
@@ -174,8 +174,8 @@ class PatchBundleRepository(
 
                 getBundlesByType<RemotePatchBundle>().forEach {
                     launch {
-                        if (!it.propsFlow().first().autoUpdate) return@launch
-                        Log.d(tag, "Updating patch bundle: ${it.name}")
+                        if (!it.getProps().autoUpdate) return@launch
+                        Log.d(tag, "Updating patch bundle: ${it.getName()}")
                         it.update()
                     }
                 }

@@ -44,8 +44,8 @@ import app.revanced.manager.util.JAR_MIMETYPE
 @Composable
 fun ImportPatchBundleDialog(
     onDismiss: () -> Unit,
-    onRemoteSubmit: (String, String, Boolean) -> Unit,
-    onLocalSubmit: (String, Uri, Uri?) -> Unit
+    onRemoteSubmit: (String, Boolean) -> Unit,
+    onLocalSubmit: (Uri, Uri?) -> Unit
 ) {
     var currentStep by rememberSaveable { mutableIntStateOf(0) }
     var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
@@ -59,10 +59,18 @@ fun ImportPatchBundleDialog(
             uri?.let { patchBundle = it }
         }
 
+    fun launchPatchActivity() {
+        patchActivityLauncher.launch(JAR_MIMETYPE)
+    }
+
     val integrationsActivityLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let { integrations = it }
         }
+
+    fun launchIntegrationsActivity() {
+        integrationsActivityLauncher.launch(APK_MIMETYPE)
+    }
 
     val steps = listOf<@Composable () -> Unit>(
         {
@@ -77,8 +85,8 @@ fun ImportPatchBundleDialog(
                 integrations,
                 remoteUrl,
                 autoUpdate,
-                { patchActivityLauncher.launch(JAR_MIMETYPE) },
-                { integrationsActivityLauncher.launch(APK_MIMETYPE) },
+                { launchPatchActivity() },
+                { launchIntegrationsActivity() },
                 { remoteUrl = it },
                 { autoUpdate = it }
             )
@@ -108,13 +116,12 @@ fun ImportPatchBundleDialog(
                         when (bundleType) {
                             BundleType.Local -> patchBundle?.let {
                                 onLocalSubmit(
-                                    "BundleName",
                                     it,
                                     integrations
                                 )
                             }
 
-                            BundleType.Remote -> onRemoteSubmit("BundleName", remoteUrl, autoUpdate)
+                            BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
                         }
                     }
                 ) {

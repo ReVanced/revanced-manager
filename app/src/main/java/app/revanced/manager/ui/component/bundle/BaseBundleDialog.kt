@@ -30,7 +30,7 @@ import app.revanced.manager.util.isDebuggable
 fun BaseBundleDialog(
     modifier: Modifier = Modifier,
     isDefault: Boolean,
-    name: String,
+    name: String?,
     onNameChange: ((String) -> Unit)? = null,
     remoteUrl: String?,
     onRemoteUrlChange: ((String) -> Unit)? = null,
@@ -52,32 +52,34 @@ fun BaseBundleDialog(
             )
             .then(modifier)
     ) {
-        var showNameInputDialog by rememberSaveable {
-            mutableStateOf(false)
-        }
-        if (showNameInputDialog) {
-            TextInputDialog(
-                initial = name,
-                title = stringResource(R.string.bundle_input_name),
-                onDismissRequest = {
-                    showNameInputDialog = false
-                },
-                onConfirm = {
-                    showNameInputDialog = false
-                    onNameChange?.invoke(it)
-                },
-                validator = {
-                    it.length in 1..19
+        if (name != null) {
+            var showNameInputDialog by rememberSaveable {
+                mutableStateOf(false)
+            }
+            if (showNameInputDialog) {
+                TextInputDialog(
+                    initial = name,
+                    title = stringResource(R.string.bundle_input_name),
+                    onDismissRequest = {
+                        showNameInputDialog = false
+                    },
+                    onConfirm = {
+                        showNameInputDialog = false
+                        onNameChange?.invoke(it)
+                    },
+                    validator = {
+                        it.length in 1..19
+                    }
+                )
+            }
+            BundleListItem(
+                headlineText = stringResource(R.string.bundle_input_name),
+                supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
+                modifier = Modifier.clickable(enabled = onNameChange != null) {
+                    showNameInputDialog = true
                 }
             )
         }
-        BundleListItem(
-            headlineText = stringResource(R.string.bundle_input_name),
-            supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
-            modifier = Modifier.clickable(enabled = onNameChange != null) {
-                showNameInputDialog = true
-            }
-        )
 
         remoteUrl?.takeUnless { isDefault }?.let { url ->
             var showUrlInputDialog by rememberSaveable {
