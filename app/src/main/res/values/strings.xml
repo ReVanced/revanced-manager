@@ -18,8 +18,8 @@
     <string name="bundle_patches">Bundle patches</string>
     <string name="patch_bundle_field">Patch bundle</string>
     <string name="integrations_field">Integrations</string>
-    <string name="file_field_set">Provided</string>
-    <string name="file_field_not_set">Not provided</string>
+    <string name="file_field_set">Selected</string>
+    <string name="file_field_not_set">Not selected</string>
 
     <string name="field_not_set">Not set</string>
 
@@ -353,12 +353,17 @@
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
     <string name="select_deselect_all">Select or deselect all</string>
-    <string name="select_bundle_type_dialog_title">Select bundle type</string>
-    <string name="select_bundle_type_dialog_description">Select the type that is right for you.</string>
+    <string name="select_bundle_type_dialog_title">Add new bundle</string>
+    <string name="select_bundle_type_dialog_description">Add a new bundle from a URL or storage</string>
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
     <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
     <string name="recommended">Recommended</string>
     <string name="show">Show</string>
     <string name="debugging">Debugging</string>
     <string name="about_device">About device</string>
+    <string name="enter_url">Enter URL</string>
+    <string name="next">Next</string>
+    <string name="add_patch_bundle">Add patch bundle</string>
+    <string name="bundle_url">Bundle URL</string>
+    <string name="auto_update">Auto update</string>
 </resources>

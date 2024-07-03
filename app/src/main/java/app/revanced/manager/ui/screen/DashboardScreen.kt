@@ -58,9 +58,7 @@ import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
-import app.revanced.manager.ui.component.bundle.ImportBundleDialog
-import app.revanced.manager.ui.component.bundle.ImportBundleTypeSelectorDialog
-import app.revanced.manager.ui.model.BundleType
+import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -100,33 +98,17 @@ fun DashboardScreen(
     val firstLaunch by vm.prefs.firstLaunch.getAsState()
     if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
 
-    var selectedBundleType: BundleType? by rememberSaveable { mutableStateOf(null) }
-    selectedBundleType?.let {
-        fun dismiss() {
-            selectedBundleType = null
-        }
-
-        ImportBundleDialog(
-            onDismissRequest = ::dismiss,
+    var showAddBundleDialog by rememberSaveable { mutableStateOf(false) }
+    if (showAddBundleDialog) {
+        ImportPatchBundleDialog(
+            onDismiss = { showAddBundleDialog = false },
             onLocalSubmit = { patches, integrations ->
-                dismiss()
+                showAddBundleDialog = false
                 vm.createLocalSource(patches, integrations)
             },
             onRemoteSubmit = { url, autoUpdate ->
-                dismiss()
+                showAddBundleDialog = false
                 vm.createRemoteSource(url, autoUpdate)
-            },
-            initialBundleType = it
-        )
-    }
-
-    var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
-    if (showBundleTypeSelectorDialog) {
-        ImportBundleTypeSelectorDialog(
-            onDismiss = { showBundleTypeSelectorDialog = false },
-            onConfirm = {
-                selectedBundleType = it
-                showBundleTypeSelectorDialog = false
             }
         )
     }
@@ -200,7 +182,7 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES.ordinal -> {
-                            showBundleTypeSelectorDialog = true
+                            showAddBundleDialog = true
                         }
                     }
                 }
