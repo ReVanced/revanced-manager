@@ -20,9 +20,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
-        resourceConfigurations.addAll(listOf(
-            "en",
-        ))
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -88,7 +85,13 @@ android {
     buildFeatures.aidl = true
     buildFeatures.buildConfig=true
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
+    android {
+        androidResources {
+            generateLocaleConfig = true
+        }
+    }
+
+    composeOptions.kotlinCompilerExtensionVersion = "1.5.14"
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
