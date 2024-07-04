@@ -37,7 +37,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,7 +55,6 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.DangerousActionDialogBase
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SearchView
@@ -370,32 +368,14 @@ fun PatchesSelectorScreen(
 @Composable
 fun SelectionWarningDialog(
     onCancel: () -> Unit,
-    onConfirm: (Boolean) -> Unit
+    onConfirm: () -> Unit
 ) {
     val prefs: PreferencesManager = koinInject()
 
     DangerousActionDialogBase(
         onCancel = onCancel,
-        confirmButton = { dismissPermanently ->
-            val enableCountdown by prefs.enableSelectionWarningCountdown.getAsState()
-
-            Countdown(start = if (enableCountdown) 3 else 0) { timer ->
-                LaunchedEffect(timer) {
-                    if (timer == 0) prefs.enableSelectionWarningCountdown.update(false)
-                }
-
-                TextButton(
-                    onClick = { onConfirm(dismissPermanently) },
-                    enabled = timer == 0
-                ) {
-                    val text =
-                        if (timer == 0) stringResource(R.string.continue_) else stringResource(
-                            R.string.selection_warning_continue_countdown, timer
-                        )
-                    Text(text, color = MaterialTheme.colorScheme.error)
-                }
-            }
-        },
+        onConfirm = onConfirm,
+        enableConfirmCountdown = prefs.enableSelectionWarningCountdown,
         title = R.string.selection_warning_title,
         body = stringResource(R.string.selection_warning_description),
     )

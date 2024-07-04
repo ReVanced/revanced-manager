@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,22 +26,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.domain.manager.base.BooleanPreference
 
 @Composable
 fun DangerousActionDialogBase(
     onCancel: () -> Unit,
-    confirmButton: @Composable (Boolean) -> Unit,
+    onConfirm: () -> Unit,
+    enableConfirmCountdown: BooleanPreference,
     @StringRes title: Int,
     body: String,
 ) {
-    var dismissPermanently by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val enableCountdown by enableConfirmCountdown.getAsState()
 
     AlertDialog(
         onDismissRequest = onCancel,
         confirmButton = {
-            confirmButton(dismissPermanently)
+            Countdown(start = if (enableCountdown) 3 else 0) { timer ->
+                LaunchedEffect(timer) {
+                    if (timer == 0) enableConfirmCountdown.update(false)
+                }
+
+                TextButton(
+                    onClick = onConfirm,
+                    enabled = timer == 0
+                ) {
+                    val text =
+                        if (timer == 0) stringResource(R.string.continue_) else stringResource(
+                            R.string.selection_warning_continue_countdown, timer
+                        )
+                    Text(text, color = MaterialTheme.colorScheme.error)
+                }
+            }
         },
         dismissButton = {
             TextButton(onClick = onCancel) {
@@ -53,39 +69,11 @@ fun DangerousActionDialogBase(
         title = {
             Text(
                 text = stringResource(title),
-                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center)
             )
         },
         text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = body,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(0.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            dismissPermanently = !dismissPermanently
-                        }
-                ) {
-                    Checkbox(
-                        checked = dismissPermanently,
-                        onCheckedChange = {
-                            dismissPermanently = it
-                        }
-                    )
-                    Text(stringResource(R.string.permanent_dismiss))
-                }
-            }
+            Text(body)
         }
     )
 }

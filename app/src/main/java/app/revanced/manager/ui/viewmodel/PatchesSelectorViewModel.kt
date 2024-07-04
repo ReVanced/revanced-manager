@@ -131,17 +131,11 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         customPatchSelection = selection.put(bundle, newPatches)
     }
 
-    fun confirmSelectionWarning(dismissPermanently: Boolean) {
+    fun confirmSelectionWarning() {
         selectionWarningEnabled = false
 
         pendingSelectionAction?.invoke()
         pendingSelectionAction = null
-
-        if (!dismissPermanently) return
-
-        viewModelScope.launch {
-            prefs.disableSelectionWarning.update(true)
-        }
     }
 
     fun dismissSelectionWarning() {

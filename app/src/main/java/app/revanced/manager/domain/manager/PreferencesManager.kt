@@ -29,4 +29,5 @@ class PreferencesManager(
     val enableSelectionWarningCountdown = booleanPreference("enable_selection_warning_countdown", true)
 
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
+    val enableSuggestedVersionSafeguardCountdown = booleanPreference("enable_suggested_version_safeguard_countdown", true)
 }

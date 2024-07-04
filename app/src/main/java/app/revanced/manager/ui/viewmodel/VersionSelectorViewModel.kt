@@ -162,8 +162,7 @@ class VersionSelectorViewModel(
         nonSuggestedVersionDialogSubject = null
     }
 
-    fun continueWithNonSuggestedVersion(dismissPermanently: Boolean) = viewModelScope.launch {
-        if (dismissPermanently) prefs.suggestedVersionSafeguard.update(false)
+    fun continueWithNonSuggestedVersion() = viewModelScope.launch {
         selectedVersion = nonSuggestedVersionDialogSubject
         dismissNonSuggestedVersionDialog()
     }
