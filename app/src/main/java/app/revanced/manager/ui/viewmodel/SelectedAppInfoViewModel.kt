@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.app.Application
 import android.content.pm.PackageInfo
 import android.os.Parcelable
 import androidx.compose.runtime.MutableState
@@ -22,6 +23,7 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
@@ -31,10 +33,12 @@ import org.koin.core.component.get
 @OptIn(SavedStateHandleSaveableApi::class)
 class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     val bundlesRepo: PatchBundleRepository = get()
+    private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
+    private val app: Application = get()
     val prefs: PreferencesManager = get()
 
     private val persistConfiguration = input.patches == null
@@ -62,8 +66,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            val packageName = selectedApp.packageName // Accessing this from another thread may cause crashes.
-            state.value = withContext(Dispatchers.Default) { optionsRepository.getOptions(packageName) }
+            val packageName =
+                selectedApp.packageName // Accessing this from another thread may cause crashes.
+
+            state.value = withContext(Dispatchers.Default) {
+                val bundlePatches = bundleRepository.bundles.first()
+                    .mapValues { (_, bundle) -> bundle.patches.associateBy { it.name } }
+
+                optionsRepository.getOptions(packageName, bundlePatches)
+            }
         }
 
         state
