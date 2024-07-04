@@ -50,7 +50,7 @@ fun BundlePatchesDialog(
                 BundleTopBar(
                     title = stringResource(R.string.bundle_patches),
                     onBackClick = onDismissRequest,
-                    onBackIcon = {
+                    backIcon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
