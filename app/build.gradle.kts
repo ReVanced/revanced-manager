@@ -91,7 +91,7 @@ android {
         }
     }
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.14"
+    composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
