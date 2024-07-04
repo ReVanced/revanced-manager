@@ -81,7 +81,7 @@ fun ImportBundleDialog(
                 BundleTopBar(
                     title = stringResource(R.string.import_bundle),
                     onBackClick = onDismissRequest,
-                    onBackIcon = {
+                    backIcon = {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.close)

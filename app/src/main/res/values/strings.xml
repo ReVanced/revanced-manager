@@ -25,6 +25,8 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+    <string name="bundle_error_description">Bundle could not be loaded. Click to view the error</string>
+    <string name="bundle_not_downloaded">Bundle has not been downloaded. Click here to download it</string>
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
@@ -121,6 +123,7 @@
     <string name="edit">Edit</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
+    <string name="share">Share</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
