@@ -22,7 +22,8 @@ import kotlinx.parcelize.Parcelize
         ForeignKey(
             PatchBundleEntity::class,
             parentColumns = ["uid"],
-            childColumns = ["bundle"]
+            childColumns = ["bundle"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [Index(value = ["bundle"], unique = false)]

@@ -9,12 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.Restore
@@ -33,7 +32,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -62,6 +60,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.Countdown
 import app.revanced.manager.ui.component.DangerousActionDialogBase
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_SUPPORTED
@@ -95,6 +94,8 @@ fun PatchesSelectorScreen(
     val showPatchButton by remember {
         derivedStateOf { vm.selectionIsValid(bundles) }
     }
+
+    val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -209,28 +210,11 @@ fun PatchesSelectorScreen(
     }
 
     search?.let { query ->
-        SearchBar(
+        SearchView(
             query = query,
-            onQueryChange = { new ->
-                search = new
-            },
-            onSearch = {},
-            active = true,
-            onActiveChange = { new ->
-                if (new) return@SearchBar
-                search = null
-            },
-            placeholder = {
-                Text(stringResource(R.string.search_patches))
-            },
-            leadingIcon = {
-                IconButton(onClick = { search = null }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        stringResource(R.string.back)
-                    )
-                }
-            }
+            onQueryChange = { search = it },
+            onActiveChange = { if (!it) search = null },
+            placeholder = { Text(stringResource(R.string.search_patches)) }
         ) {
             val bundle = bundles[pagerState.currentPage]
 
@@ -274,7 +258,6 @@ fun PatchesSelectorScreen(
         }
     }
 
-    val patchLazyListState = rememberLazyListState()
     Scaffold(
         topBar = {
             AppTopBar(
@@ -303,7 +286,7 @@ fun PatchesSelectorScreen(
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
                 icon = { Icon(Icons.Outlined.Save, null) },
-                expanded = patchLazyListState.isScrollingUp,
+                expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp ?: true,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -343,11 +326,13 @@ fun PatchesSelectorScreen(
                 state = pagerState,
                 userScrollEnabled = true,
                 pageContent = { index ->
+                    // Avoid crashing if the lists have not been fully initialized yet.
+                    if (index > bundles.lastIndex || bundles.size != patchLazyListStates.size) return@HorizontalPager
                     val bundle = bundles[index]
 
                     LazyColumnWithScrollbar(
                         modifier = Modifier.fillMaxSize(),
-                        state = patchLazyListState
+                        state = patchLazyListStates[index]
                     ) {
                         patchList(
                             uid = bundle.uid,

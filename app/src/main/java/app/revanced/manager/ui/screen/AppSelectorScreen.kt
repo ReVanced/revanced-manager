@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
@@ -30,6 +29,7 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.NonSuggestedVersionDialog
+import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -75,79 +75,66 @@ fun AppSelectorScreen(
         )
     }
 
-    // TODO: find something better for this
     if (search) {
-        SearchBar(
+        SearchView(
             query = filterText,
             onQueryChange = { filterText = it },
-            onSearch = { },
-            active = true,
             onActiveChange = { search = it },
-            modifier = Modifier.fillMaxSize(),
-            placeholder = { Text(stringResource(R.string.search_apps)) },
-            leadingIcon = {
-                IconButton({ search = false }) {
+            placeholder = { Text(stringResource(R.string.search_apps)) }
+        ) {
+            if (appList.isNotEmpty() && filterText.isNotEmpty()) {
+                LazyColumnWithScrollbar(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(
+                        items = filteredAppList,
+                        key = { it.packageName }
+                    ) { app ->
+                        ListItem(
+                            modifier = Modifier.clickable { onAppClick(app.packageName) },
+                            leadingContent = {
+                                AppIcon(
+                                    app.packageInfo,
+                                    null,
+                                    Modifier.size(36.dp)
+                                )
+                            },
+                            headlineContent = { AppLabel(app.packageInfo) },
+                            supportingContent = { Text(app.packageName) },
+                            trailingContent = app.patches?.let {
+                                {
+                                    Text(
+                                        pluralStringResource(
+                                            R.plurals.patch_count,
+                                            it,
+                                            it
+                                        )
+                                    )
+                                }
+                            }
+                        )
+
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        stringResource(R.string.back)
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = stringResource(R.string.search),
+                        modifier = Modifier.size(64.dp)
+                    )
+
+                    Text(
+                        text = stringResource(R.string.type_anything),
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
-            },
-            content = {
-                if (appList.isNotEmpty() && filterText.isNotEmpty()) {
-                    LazyColumnWithScrollbar(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(
-                            items = filteredAppList,
-                            key = { it.packageName }
-                        ) { app ->
-                            ListItem(
-                                modifier = Modifier.clickable { onAppClick(app.packageName) },
-                                leadingContent = {
-                                    AppIcon(
-                                        app.packageInfo,
-                                        null,
-                                        Modifier.size(36.dp)
-                                    )
-                                },
-                                headlineContent = { AppLabel(app.packageInfo) },
-                                supportingContent = { Text(app.packageName) },
-                                trailingContent = app.patches?.let {
-                                    {
-                                        Text(
-                                            pluralStringResource(
-                                                R.plurals.patch_count,
-                                                it,
-                                                it
-                                            )
-                                        )
-                                    }
-                                }
-                            )
-
-                        }
-                    }
-                } else {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = stringResource(R.string.search),
-                            modifier = Modifier.size(64.dp)
-                        )
-
-                        Text(
-                            text = stringResource(R.string.type_anything),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                }
             }
-        )
+        }
     }
 
     Scaffold(

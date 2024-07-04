@@ -1,8 +1,10 @@
 package app.revanced.manager.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,74 +28,73 @@ import app.revanced.manager.R
 
 @Composable
 fun NotificationCard(
-    isWarning: Boolean = false,
-    title: String? = null,
     text: String,
     icon: ImageVector,
-    actions: (@Composable () -> Unit)?
+    modifier: Modifier = Modifier,
+    actions: (@Composable RowScope.() -> Unit)? = null,
+    title: String? = null,
+    isWarning: Boolean = false
 ) {
     val color =
         if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
 
-    NotificationCardInstance(isWarning = isWarning) {
-        Column(
-            modifier = Modifier.padding(if (title != null) 20.dp else 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+    NotificationCardInstance(modifier = modifier, isWarning = isWarning) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (title != null) {
+            Box(
+                modifier = Modifier.size(28.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 Icon(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(24.dp),
                     imageVector = icon,
                     contentDescription = null,
                     tint = color,
                 )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
+            }
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                title?.let {
                     Text(
-                        text = title,
+                        text = it,
                         style = MaterialTheme.typography.titleLarge,
                         color = color,
                     )
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = color,
-                    )
                 }
-            } else {
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = color,
-                    )
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = color,
-                    )
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = color,
+                )
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    actions?.invoke(this)
                 }
             }
-            actions?.invoke()
         }
     }
 }
 
 @Composable
 fun NotificationCard(
-    isWarning: Boolean = false,
-    title: String? = null,
     text: String,
     icon: ImageVector,
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    isWarning: Boolean = false,
     onDismiss: (() -> Unit)? = null,
-    primaryAction: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null
 ) {
     val color =
         if (isWarning) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimaryContainer
 
-    NotificationCardInstance(isWarning = isWarning, onClick = primaryAction) {
+    NotificationCardInstance(modifier = modifier, isWarning = isWarning, onClick = onClick) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,12 +102,17 @@ fun NotificationCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Icon(
-                modifier = Modifier.size(if (title != null) 36.dp else 24.dp),
-                imageVector = icon,
-                contentDescription = null,
-                tint = color,
-            )
+            Box(
+                modifier = Modifier.size(28.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = color,
+                )
+            }
             if (title != null) {
                 Column(
                     modifier = Modifier.weight(1f),
@@ -145,32 +150,31 @@ fun NotificationCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NotificationCardInstance(
+    modifier: Modifier = Modifier,
     isWarning: Boolean = false,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     val colors =
         CardDefaults.cardColors(containerColor = if (isWarning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer)
-    val modifier = Modifier
+    val defaultModifier = Modifier
         .fillMaxWidth()
-        .padding(16.dp)
         .clip(RoundedCornerShape(24.dp))
 
     if (onClick != null) {
         Card(
             onClick = onClick,
             colors = colors,
-            modifier = modifier
+            modifier = modifier.then(defaultModifier)
         ) {
             content()
         }
     } else {
         Card(
             colors = colors,
-            modifier = modifier,
+            modifier = modifier.then(defaultModifier)
         ) {
             content()
         }

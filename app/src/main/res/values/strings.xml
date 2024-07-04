@@ -25,6 +25,8 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+    <string name="bundle_name_default">Default</string>
+    <string name="bundle_name_fallback">Unnamed</string>
 
     <string name="selected_app_meta">%1$s • %2$d available patches</string>
 
@@ -79,20 +81,25 @@
     <string name="import_keystore_dialog_password_field">Password</string>
     <string name="import_keystore_dialog_button">Import</string>
     <string name="import_keystore_wrong_credentials">Wrong keystore credentials</string>
+    <string name="import_keystore_success">Imported keystore</string>
     <string name="export_keystore">Export keystore</string>
     <string name="export_keystore_description">Export the current keystore</string>
     <string name="export_keystore_unavailable">No keystore to export</string>
+    <string name="export_keystore_success">Exported keystore</string>
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
     <string name="import_patch_selection">Import patch selection</string>
     <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
     <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
+    <string name="import_patch_selection_success">Imported patch selection</string>
     <string name="export_patch_selection">Export patch selection</string>
-    <string name="export_patch_selection_description">Export patch selection from a JSON file</string>
+    <string name="export_patch_selection_description">Export patch selection to a JSON file</string>
     <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
+    <string name="export_patch_selection_success">Exported patch selection</string>
     <string name="reset_patch_selection">Reset patch selection</string>
     <string name="reset_patch_selection_description">Reset the stored patch selection</string>
+    <string name="reset_patch_selection_success">Patch selection has been reset</string>
     <string name="patch_options_reset_package">Reset patch options for app</string>
     <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
     <string name="patch_options_reset_bundle">Resets patch options for bundle</string>
@@ -119,7 +126,7 @@
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
     <string name="suggested_version_info">Suggested version: %s</string>
     <string name="type_anything">Type anything to continue</string>
-    <string name="search">Search</string>
+    <string name="search">Search patches…</string>
     <string name="apply">Apply</string>
     <string name="help">Help</string>
     <string name="back">Back</string>
@@ -135,6 +142,10 @@
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory.</string>
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
+    <string name="debug_logs_export">Export debug logs</string>
+    <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
+    <string name="debug_logs_export_failed">Failed to export logs</string>
+    <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
     <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
@@ -162,7 +173,7 @@
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
-    <string name="download_apk">Download APK</string>
+    <string name="download_apk">Download APK file</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
@@ -249,16 +260,15 @@
 
     <string name="patcher_step_group_preparing">Preparing</string>
     <string name="patcher_step_load_patches">Load patches</string>
-    <string name="patcher_step_unpack">Unpack APK</string>
-    <string name="patcher_step_integrations">Merge Integrations</string>
+    <string name="patcher_step_unpack">Read APK file</string>
     <string name="patcher_step_group_patching">Patching</string>
     <string name="patcher_step_group_saving">Saving</string>
-    <string name="patcher_step_write_patched">Write patched APK</string>
-    <string name="patcher_step_sign_apk">Sign APK</string>
+    <string name="patcher_step_write_patched">Write patched APK file</string>
+    <string name="patcher_step_sign_apk">Sign patched APK file</string>
     <string name="patcher_notification_message">Patching in progress…</string>
-    <string name="apply_patches">Apply patches</string>
-    <string name="applying_patch">Applying %s</string>
-    <string name="failed_to_apply_patch">Failed to apply %s</string>
+    <string name="execute_patches">Execute patches</string>
+    <string name="executing_patch">Execute %s</string>
+    <string name="failed_to_execute_patch">Failed to execute %s</string>
 
     <string name="step_completed">completed</string>
     <string name="step_failed">failed</string>
@@ -328,8 +338,7 @@
     <string name="no_update_available">No update available</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
-    <string name="update_available_dialog_title">New update available</string>
-    <string name="update_available_dialog_description">A new version (%s) is available for download.</string>
+    <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
     <string name="failed_to_download_update">Failed to download update: %s</string>
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>

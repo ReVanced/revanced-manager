@@ -9,13 +9,16 @@ interface PatchBundleDao {
     suspend fun all(): List<PatchBundleEntity>
 
     @Query("SELECT version, integrations_version, auto_update FROM patch_bundles WHERE uid = :uid")
-    fun getPropsById(uid: Int): Flow<BundleProperties>
+    fun getPropsById(uid: Int): Flow<BundleProperties?>
 
     @Query("UPDATE patch_bundles SET version = :patches, integrations_version = :integrations WHERE uid = :uid")
     suspend fun updateVersion(uid: Int, patches: String?, integrations: String?)
 
     @Query("UPDATE patch_bundles SET auto_update = :value WHERE uid = :uid")
     suspend fun setAutoUpdate(uid: Int, value: Boolean)
+
+    @Query("UPDATE patch_bundles SET name = :value WHERE uid = :uid")
+    suspend fun setName(uid: Int, value: String)
 
     @Query("DELETE FROM patch_bundles WHERE uid != 0")
     suspend fun purgeCustomBundles()

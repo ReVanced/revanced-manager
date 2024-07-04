@@ -184,11 +184,11 @@ class PatcherWorker(
             Log.i(tag, "Patching succeeded".logFmt())
             Result.success()
         } catch (e: ProcessRuntime.RemoteFailureException) {
-            Log.e(tag, "An exception occured in the remote process while patching. ${e.originalStackTrace}".logFmt())
+            Log.e(tag, "An exception occurred in the remote process while patching. ${e.originalStackTrace}".logFmt())
             updateProgress(state = State.FAILED, message = e.originalStackTrace)
             Result.failure()
         } catch (e: Exception) {
-            Log.e(tag, "An exception occured while patching".logFmt(), e)
+            Log.e(tag, "An exception occurred while patching".logFmt(), e)
             updateProgress(state = State.FAILED, message = e.stackTraceToString())
             Result.failure()
         } finally {

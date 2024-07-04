@@ -316,13 +316,9 @@ class PatcherViewModel(
                     context.getString(R.string.patcher_step_unpack),
                     StepCategory.PREPARING
                 ),
-                Step(
-                    context.getString(R.string.patcher_step_integrations),
-                    StepCategory.PREPARING
-                ),
 
                 Step(
-                    context.getString(R.string.apply_patches),
+                    context.getString(R.string.execute_patches),
                     StepCategory.PATCHING
                 ),
 
