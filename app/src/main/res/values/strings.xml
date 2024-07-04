@@ -148,8 +148,8 @@
     <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
-    <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
-    <string name="api_url_dialog_warning">Only use API\'s you trust!</string>
+    <string name="api_url_dialog_description">This will change the default API\'s link to alternative link, by default we recommend that you use the provided URL to the API.</string>
+    <string name="api_url_dialog_warning">We do not operate or verify any alternative APIs, only use API that you trust.</string>
     <string name="api_url_dialog_save">Set</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
