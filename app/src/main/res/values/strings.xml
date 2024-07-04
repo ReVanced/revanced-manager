@@ -25,6 +25,8 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+    <string name="bundle_error_description">Bundle could not be loaded. Click to view the error</string>
+    <string name="bundle_not_downloaded">Bundle has not been downloaded. Click here to download it</string>
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
@@ -81,20 +83,25 @@
     <string name="import_keystore_dialog_password_field">Password</string>
     <string name="import_keystore_dialog_button">Import</string>
     <string name="import_keystore_wrong_credentials">Wrong keystore credentials</string>
+    <string name="import_keystore_success">Imported keystore</string>
     <string name="export_keystore">Export keystore</string>
     <string name="export_keystore_description">Export the current keystore</string>
     <string name="export_keystore_unavailable">No keystore to export</string>
+    <string name="export_keystore_success">Exported keystore</string>
     <string name="regenerate_keystore">Regenerate keystore</string>
     <string name="regenerate_keystore_description">Generate a new keystore</string>
     <string name="regenerate_keystore_success">The keystore has been successfully replaced</string>
     <string name="import_patch_selection">Import patch selection</string>
     <string name="import_patch_selection_description">Import patch selection from a JSON file</string>
     <string name="import_patch_selection_fail">Could not import patch selection: %s</string>
+    <string name="import_patch_selection_success">Imported patch selection</string>
     <string name="export_patch_selection">Export patch selection</string>
-    <string name="export_patch_selection_description">Export patch selection from a JSON file</string>
+    <string name="export_patch_selection_description">Export patch selection to a JSON file</string>
     <string name="export_patch_selection_fail">Could not export patch selection: %s</string>
+    <string name="export_patch_selection_success">Exported patch selection</string>
     <string name="reset_patch_selection">Reset patch selection</string>
     <string name="reset_patch_selection_description">Reset the stored patch selection</string>
+    <string name="reset_patch_selection_success">Patch selection has been reset</string>
     <string name="patch_options_reset_package">Reset patch options for app</string>
     <string name="patch_options_reset_package_description">Resets patch options for a single app</string>
     <string name="patch_options_reset_bundle">Resets patch options for bundle</string>
@@ -116,6 +123,7 @@
     <string name="edit">Edit</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
+    <string name="share">Share</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
@@ -137,6 +145,10 @@
     <string name="process_runtime_description">This is faster and allows Patcher to use more memory.</string>
     <string name="process_runtime_memory_limit">Patcher process memory limit</string>
     <string name="process_runtime_memory_limit_description">The max amount of memory that the Patcher process can use (in megabytes)</string>
+    <string name="debug_logs_export">Export debug logs</string>
+    <string name="debug_logs_export_read_failed">Failed to read logs (exit code %d)</string>
+    <string name="debug_logs_export_failed">Failed to export logs</string>
+    <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
     <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
@@ -227,6 +239,7 @@
     <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_menu_description">More options</string>
+    <string name="option_preset_custom_value">Custom value</string>
 
     <string name="path_selector">Select from storage</string>
     <string name="path_selector_parent_dir">Previous directory</string>
@@ -267,6 +280,7 @@
 
     <string name="expand_content">expand</string>
     <string name="collapse_content">collapse</string>
+    <string name="drag_handle">reorder</string>
 
     <string name="more">More</string>
     <string name="continue_">Continue</string>
@@ -312,6 +326,7 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="update">Update</string>
+    <string name="empty">Empty</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
     <string name="no_changelogs_found">No changelogs found</string>
     <string name="just_now">Just now</string>
@@ -320,6 +335,7 @@
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
+    <string name="input_dialog_value_invalid">Invalid value</string>
 
     <string name="failed_to_check_updates">Failed to check for updates: %s</string>
     <string name="no_update_available">No update available</string>
@@ -332,6 +348,7 @@
     <string name="download_update_confirmation">Download update?</string>
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
+    <string name="select_deselect_all">Select or deselect all</string>
     <string name="select_bundle_type_dialog_title">Add new bundle</string>
     <string name="select_bundle_type_dialog_description">Add a new bundle from a URL or storage</string>
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>

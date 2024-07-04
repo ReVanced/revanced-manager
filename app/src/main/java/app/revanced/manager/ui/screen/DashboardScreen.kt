@@ -113,7 +113,7 @@ fun DashboardScreen(
                 BundleTopBar(
                     title = stringResource(R.string.bundles_selected, vm.selectedSources.size),
                     onBackClick = vm::cancelSourceSelection,
-                    onBackIcon = {
+                    backIcon = {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.back)

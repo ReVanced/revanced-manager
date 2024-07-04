@@ -137,7 +137,7 @@ class PatchBundleRepository(
     private fun addBundle(patchBundle: PatchBundleSource) =
         _sources.update { it.toMutableMap().apply { put(patchBundle.uid, patchBundle) } }
 
-    suspend fun createLocal(patches: InputStream, integrations: InputStream?) {
+    suspend fun createLocal(patches: InputStream, integrations: InputStream?) = withContext(Dispatchers.Default) {
         val uid = persistenceRepo.create("", SourceInfo.Local).uid
         val bundle = LocalPatchBundle("", uid, directoryOf(uid))
 
@@ -145,7 +145,7 @@ class PatchBundleRepository(
         addBundle(bundle)
     }
 
-    suspend fun createRemote(url: String, autoUpdate: Boolean) {
+    suspend fun createRemote(url: String, autoUpdate: Boolean) = withContext(Dispatchers.Default) {
         val entity = persistenceRepo.create("", SourceInfo.from(url), autoUpdate)
         addBundle(entity.load())
     }
