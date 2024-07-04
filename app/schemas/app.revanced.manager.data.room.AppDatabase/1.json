@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "802fa2fda94b930bf0ebb85d195f1022",
+    "identityHash": "c0c780e55e10c9b095c004733c846b67",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -231,7 +231,7 @@
       },
       {
         "tableName": "applied_patch",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `bundle` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`package_name`, `bundle`, `patch_name`), FOREIGN KEY(`package_name`) REFERENCES `installed_app`(`current_package_name`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `bundle` INTEGER NOT NULL, `patch_name` TEXT NOT NULL, PRIMARY KEY(`package_name`, `bundle`, `patch_name`), FOREIGN KEY(`package_name`) REFERENCES `installed_app`(`current_package_name`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`bundle`) REFERENCES `patch_bundles`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "packageName",
@@ -285,7 +285,7 @@
           },
           {
             "table": "patch_bundles",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "bundle"
@@ -407,7 +407,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '802fa2fda94b930bf0ebb85d195f1022')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0c780e55e10c9b095c004733c846b67')"
     ]
   }
 }
