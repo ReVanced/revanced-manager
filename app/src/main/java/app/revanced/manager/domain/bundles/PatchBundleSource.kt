@@ -9,9 +9,11 @@ import app.revanced.manager.R
 import app.revanced.manager.domain.repository.PatchBundlePersistenceRepository
 import app.revanced.manager.patcher.patch.PatchBundle
 import app.revanced.manager.util.tag
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -80,8 +82,8 @@ sealed class PatchBundleSource(initialName: String, val uid: Int, directory: Fil
      * Create a flow that emits the [app.revanced.manager.data.room.bundles.BundleProperties] of this [PatchBundleSource].
      * The flow will emit null if the associated [PatchBundleSource] is deleted.
      */
-    fun propsFlow() = configRepository.getProps(uid)
-    suspend fun getProps() = configRepository.getProps(uid).first()!!
+    fun propsFlow() = configRepository.getProps(uid).flowOn(Dispatchers.Default)
+    suspend fun getProps() = propsFlow().first()!!
 
     suspend fun currentVersion() = getProps().versionInfo
     protected suspend fun saveVersion(patches: String?, integrations: String?) =
