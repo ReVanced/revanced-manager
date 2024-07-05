@@ -122,7 +122,8 @@ fun SettingsScreen(
             is SettingsDestination.About -> AboutSettingsScreen(
                 onBackClick = backClick,
                 onContributorsClick = { navController.navigate(SettingsDestination.Contributors) },
-                onLicensesClick = { navController.navigate(SettingsDestination.Licenses) }
+                onDeveloperOptionsClick = { navController.navigate(SettingsDestination.DeveloperOptions) },
+                onLicensesClick = { navController.navigate(SettingsDestination.Licenses) },
             )
 
             is SettingsDestination.Update -> UpdateScreen(
@@ -145,6 +146,8 @@ fun SettingsScreen(
             is SettingsDestination.Licenses -> LicensesScreen(
                 onBackClick = backClick,
             )
+
+            is SettingsDestination.DeveloperOptions -> DeveloperOptionsScreen(onBackClick = backClick)
 
             is SettingsDestination.Settings -> {
                 Scaffold(

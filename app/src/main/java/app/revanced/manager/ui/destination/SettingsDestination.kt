@@ -6,35 +6,38 @@ import kotlinx.parcelize.Parcelize
 sealed interface SettingsDestination : Parcelable {
 
     @Parcelize
-    object Settings : SettingsDestination
+    data object Settings : SettingsDestination
 
     @Parcelize
-    object General : SettingsDestination
+    data object General : SettingsDestination
 
     @Parcelize
-    object Advanced : SettingsDestination
+    data object Advanced : SettingsDestination
 
     @Parcelize
-    object Updates : SettingsDestination
+    data object Updates : SettingsDestination
 
     @Parcelize
-    object Downloads : SettingsDestination
+    data object Downloads : SettingsDestination
 
     @Parcelize
-    object ImportExport : SettingsDestination
+    data object ImportExport : SettingsDestination
 
     @Parcelize
-    object About : SettingsDestination
+    data object About : SettingsDestination
 
     @Parcelize
     data class Update(val downloadOnScreenEntry: Boolean = false) : SettingsDestination
 
     @Parcelize
-    object Changelogs : SettingsDestination
+    data object Changelogs : SettingsDestination
 
     @Parcelize
-    object Contributors: SettingsDestination
+    data object Contributors: SettingsDestination
 
     @Parcelize
-    object Licenses: SettingsDestination
+    data object Licenses: SettingsDestination
+
+    @Parcelize
+    data object DeveloperOptions: SettingsDestination
 }
