@@ -50,11 +50,10 @@ fun DangerousActionDialogBase(
                     onClick = onConfirm,
                     enabled = timer == 0
                 ) {
-                    val text =
-                        if (timer == 0) stringResource(R.string.continue_) else stringResource(
-                            R.string.selection_warning_continue_countdown, timer
-                        )
-                    Text(text, color = MaterialTheme.colorScheme.error)
+                    if (timer == 0)
+                        Text(stringResource(R.string.continue_), color = MaterialTheme.colorScheme.error)
+                    else
+                        Text(stringResource(R.string.continue_countdown, timer))
                 }
             }
         },

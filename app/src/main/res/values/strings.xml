@@ -76,6 +76,8 @@
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
+    <string name="patch_selection_safeguard">Allow changing patch selection</string>
+    <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -192,8 +194,7 @@
     <string name="non_suggested_version_warning_title">Non suggested version</string>
     <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s</string>
     <string name="selection_warning_title">Stop using defaults?</string>
-    <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
-    <string name="selection_warning_continue_countdown">Continue (%ds)</string>
+    <string name="selection_warning_description">You may encounter issues when not using the default patch selection.</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
@@ -283,6 +284,7 @@
 
     <string name="more">More</string>
     <string name="continue_">Continue</string>
+    <string name="continue_countdown">Continue (%ds)</string>
     <string name="dismiss">Dismiss</string>
     <string name="permanent_dismiss">Do not show this again</string>
     <string name="donate">Donate</string>
