@@ -83,7 +83,7 @@ fun InstalledAppInfoScreen(
 
                 if (viewModel.installedApp.installType == InstallType.ROOT) {
                     Text(
-                        text = if (viewModel.rootInstaller.isAppMounted(viewModel.installedApp.currentPackageName)) {
+                        text = if (viewModel.isMounted) {
                             stringResource(R.string.mounted)
                         } else {
                             stringResource(R.string.not_mounted)
