@@ -39,15 +39,21 @@ import app.revanced.manager.util.PM
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
+import java.time.Duration
 import java.util.UUID
 
 @Stable
@@ -177,6 +183,7 @@ class PatcherViewModel(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCleared() {
         super.onCleared()
         app.unregisterReceiver(installBroadcastReceiver)
@@ -188,15 +195,16 @@ class PatcherViewModel(
             }
 
             is SelectedApp.Installed -> {
-                try {
-                    installedApp?.let {
-                        if (it.installType == InstallType.ROOT) {
-                            rootInstaller.mount(packageName)
+                GlobalScope.launch(Dispatchers.Main) {
+                    uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
+                        installedApp?.let {
+                            if (it.installType == InstallType.ROOT) {
+                                withTimeout(Duration.ofMinutes(1L)) {
+                                    rootInstaller.mount(packageName)
+                                }
+                            }
                         }
                     }
-                } catch (e: Exception) {
-                    Log.e(tag, "Failed to mount", e)
-                    app.toast(app.getString(R.string.failed_to_mount, e.simpleMessage()))
                 }
             }
 
