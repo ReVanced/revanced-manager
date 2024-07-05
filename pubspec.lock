@@ -323,9 +323,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "560d21c4148b53933313573e7eafca0b0eb9aadf"
-      resolved-ref: "560d21c4148b53933313573e7eafca0b0eb9aadf"
-      url: "https://github.com/BenjaminHalko/flutter_background"
+      ref: "900a81501f1f0e4996fe9e2cbf55f1ea8df08b49"
+      resolved-ref: "900a81501f1f0e4996fe9e2cbf55f1ea8df08b49"
+      url: "https://github.com/validcube/flutter_background"
     source: git
     version: "1.2.0"
   flutter_cache_manager:
@@ -989,10 +989,11 @@ packages:
   skeletons:
     dependency: "direct main"
     description:
-      name: skeletons
-      sha256: "5b2d08ae7f908ee1f7007ca99f8dcebb4bfc1d3cb2143dec8d112a5be5a45c8f"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "326fbb4223ac4d8a6301cc2f16b6112ecd308c71"
+      resolved-ref: "326fbb4223ac4d8a6301cc2f16b6112ecd308c71"
+      url: "https://github.com/Ofceab-Studio/skeletons"
+    source: git
     version: "0.0.3"
   sky_engine:
     dependency: transitive

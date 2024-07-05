@@ -217,7 +217,7 @@ class PatcherAPI {
     BuildContext context,
     PatchedApplication patchedApp,
   ) async {
-    if (outFile != null) {
+    if (patchedApp.patchedFilePath != '') {
       _managerAPI.ctx = context;
       try {
         if (patchedApp.isRooted) {
@@ -232,7 +232,7 @@ class PatcherAPI {
             return await _rootAPI.install(
               patchedApp.packageName,
               patchedApp.apkFilePath,
-              outFile!.path,
+              patchedApp.patchedFilePath,
             )
                 ? 0
                 : 1;
@@ -246,7 +246,7 @@ class PatcherAPI {
           if (context.mounted) {
             return await installApk(
               context,
-              outFile!.path,
+              patchedApp.patchedFilePath,
             );
           }
         }
@@ -368,13 +368,13 @@ class PatcherAPI {
     return cleanInstall ? 10 : 1;
   }
 
-  void exportPatchedFile(String appName, String version) {
+  void exportPatchedFile(PatchedApplication app) {
     try {
       if (outFile != null) {
-        final String newName = _getFileName(appName, version);
+        final String newName = _getFileName(app.name, app.version);
         FlutterFileDialog.saveFile(
           params: SaveFileDialogParams(
-            sourceFilePath: outFile!.path,
+            sourceFilePath: app.patchedFilePath,
             fileName: newName,
             mimeTypesFilter: ['application/vnd.android.package-archive'],
           ),
@@ -387,14 +387,14 @@ class PatcherAPI {
     }
   }
 
-  void sharePatchedFile(String appName, String version) {
+  void sharePatchedFile(PatchedApplication app) {
     try {
       if (outFile != null) {
-        final String newName = _getFileName(appName, version);
-        final int lastSeparator = outFile!.path.lastIndexOf('/');
+        final String newName = _getFileName(app.name, app.version);
+        final int lastSeparator = app.patchedFilePath.lastIndexOf('/');
         final String newPath =
-            outFile!.path.substring(0, lastSeparator + 1) + newName;
-        final File shareFile = outFile!.copySync(newPath);
+            app.patchedFilePath.substring(0, lastSeparator + 1) + newName;
+        final File shareFile = File(app.patchedFilePath).copySync(newPath);
         Share.shareXFiles([XFile(shareFile.path)]);
       }
     } on Exception catch (e) {

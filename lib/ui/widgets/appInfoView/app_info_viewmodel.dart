@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:math';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,23 @@ class AppInfoViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
   final Toast _toast = locator<Toast>();
+
+  Future<void> installApp(
+    BuildContext context,
+    PatchedApplication app,
+  ) async {
+    app.isRooted = await _managerAPI.installTypeDialog(context);
+    final int statusCode = await _patcherAPI.installPatchedFile(context, app);
+    if (statusCode == 0) {
+      locator<HomeViewModel>().initialize(context);
+    }
+  }
+
+  Future<void> exportApp(
+    PatchedApplication app,
+  ) async {
+    _patcherAPI.exportPatchedFile(app);
+  }
 
   Future<void> uninstallApp(
     BuildContext context,
@@ -123,6 +141,34 @@ class AppInfoViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> showDeleteDialog(
+    BuildContext context,
+    PatchedApplication app,
+  ) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(t.appInfoView.removeAppDialogTitle),
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        content: Text(t.appInfoView.removeAppDialogText),
+        actions: <Widget>[
+          OutlinedButton(
+            child: Text(t.cancelButton),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          FilledButton(
+            child: Text(t.okButton),
+            onPressed: () => {
+              _managerAPI.deleteLastPatchedApp(),
+              Navigator.of(context)..pop()..pop(),
+              locator<HomeViewModel>().initialize(context),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   String getPrettyDate(BuildContext context, DateTime dateTime) {
     return DateFormat.yMMMMd(Localizations.localeOf(context).languageCode)
         .format(dateTime);
@@ -131,6 +177,12 @@ class AppInfoViewModel extends BaseViewModel {
   String getPrettyTime(BuildContext context, DateTime dateTime) {
     return DateFormat.jm(Localizations.localeOf(context).languageCode)
         .format(dateTime);
+  }
+
+  String getFileSizeString(int bytes) {
+    const suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    final i = (log(bytes) / log(1024)).floor();
+    return '${(bytes / pow(1024, i)).toStringAsFixed(2)} ${suffixes[i]}';
   }
 
   Future<void> showAppliedPatchesDialog(

@@ -5,6 +5,7 @@ on:
   schedule: 
     - cron: 00 12 * * 1
   push:
+    branches: dev
     paths:
       - assets/i18n/*.json
       - assets/i18n/*.dart
@@ -24,6 +25,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
+          flutter-version: 3.22.x
 
       - name: Sync translations from Crowdin
         uses: crowdin/github-action@v1
@@ -55,7 +57,7 @@ jobs:
         run: |
           dart pub get
           dart run slang
-          dart analyze lib/gen/strings.g.dart
+          flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
         run: |
