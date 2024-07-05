@@ -19,7 +19,7 @@ fun BundleTopBar(
     onBackClick: (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit) = {},
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    onBackIcon: @Composable () -> Unit,
+    backIcon: @Composable () -> Unit,
 ) {
     val containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
 
@@ -34,7 +34,7 @@ fun BundleTopBar(
         navigationIcon = {
             if (onBackClick != null) {
                 IconButton(onClick = onBackClick) {
-                    onBackIcon()
+                    backIcon()
                 }
             }
         },

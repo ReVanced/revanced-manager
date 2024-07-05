@@ -57,7 +57,7 @@ fun BundleItem(
                 onDelete()
             },
             bundle = bundle,
-            onRefreshButton = onUpdate,
+            onUpdate = onUpdate,
         )
     }
 

@@ -25,6 +25,8 @@
 
     <string name="bundle_missing">Missing</string>
     <string name="bundle_error">Error</string>
+    <string name="bundle_error_description">Bundle could not be loaded. Click to view the error</string>
+    <string name="bundle_not_downloaded">Bundle has not been downloaded. Click here to download it</string>
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
@@ -69,6 +71,7 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
+    <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
@@ -121,6 +124,7 @@
     <string name="edit">Edit</string>
     <string name="dialog_input_placeholder">Value</string>
     <string name="reset">Reset</string>
+    <string name="share">Share</string>
     <string name="patch">Patch</string>
     <string name="select_from_storage">Select from storage</string>
     <string name="select_from_storage_description">Select an APK file from storage using file picker</string>
@@ -178,8 +182,6 @@
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
-    <string name="no_patches">No patches available to view</string>
-    <string name="patches_available">%d Patches available, tap to view</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
     <string name="unsupported_app">Unsupported app</string>
@@ -236,6 +238,7 @@
     <string name="patch_selector_sheet_filter_compat_title">Compatibility</string>
 
     <string name="string_option_menu_description">More options</string>
+    <string name="option_preset_custom_value">Custom value</string>
 
     <string name="path_selector">Select from storage</string>
     <string name="path_selector_parent_dir">Previous directory</string>
@@ -276,6 +279,7 @@
 
     <string name="expand_content">expand</string>
     <string name="collapse_content">collapse</string>
+    <string name="drag_handle">reorder</string>
 
     <string name="more">More</string>
     <string name="continue_">Continue</string>
@@ -294,8 +298,8 @@
     <string name="bundle_input_source_url">Source URL</string>
     <string name="bundle_update_success">Successfully updated %s</string>
     <string name="bundle_update_unavailable">No update available for %s</string>
-    <string name="automatically_update">Automatically update</string>
-    <string name="automatically_update_description">Automatically update this bundle when ReVanced starts</string>
+    <string name="bundle_auto_update">Auto update</string>
+    <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
     <string name="bundle_type_description">Choose the type of bundle you want</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
@@ -321,6 +325,7 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="update">Update</string>
+    <string name="empty">Empty</string>
     <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
     <string name="no_changelogs_found">No changelogs found</string>
     <string name="just_now">Just now</string>
@@ -329,6 +334,7 @@
     <string name="days_ago">%sd ago</string>
     <string name="invalid_date">Invalid date</string>
     <string name="disable_battery_optimization">Disable battery optimization</string>
+    <string name="input_dialog_value_invalid">Invalid value</string>
 
     <string name="failed_to_check_updates">Failed to check for updates: %s</string>
     <string name="no_update_available">No update available</string>
@@ -341,6 +347,7 @@
     <string name="download_update_confirmation">Download update?</string>
     <string name="no_contributors_found">No contributors found</string>
     <string name="select">Select</string>
+    <string name="select_deselect_all">Select or deselect all</string>
     <string name="select_bundle_type_dialog_title">Select bundle type</string>
     <string name="select_bundle_type_dialog_description">Select the type that is right for you.</string>
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>

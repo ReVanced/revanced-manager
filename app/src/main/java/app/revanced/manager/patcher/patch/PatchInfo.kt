@@ -15,7 +15,7 @@ data class PatchInfo(
     val description: String?,
     val include: Boolean,
     val compatiblePackages: ImmutableList<CompatiblePackage>?,
-    val options: ImmutableList<Option>?
+    val options: ImmutableList<Option<*>>?
 ) {
     constructor(patch: Patch<*>) : this(
         patch.name.orEmpty(),
@@ -78,20 +78,24 @@ data class CompatiblePackage(
 }
 
 @Immutable
-data class Option(
+data class Option<T>(
     val title: String,
     val key: String,
     val description: String,
     val required: Boolean,
     val type: String,
-    val default: Any?
+    val default: T?,
+    val presets: Map<String, T?>?,
+    val validator: (T?) -> Boolean,
 ) {
-    constructor(option: PatchOption<*>) : this(
+    constructor(option: PatchOption<T>) : this(
         option.title ?: option.key,
         option.key,
         option.description.orEmpty(),
         option.required,
         option.valueType,
         option.default,
+        option.values,
+        { option.validator(option, it) },
     )
 }
