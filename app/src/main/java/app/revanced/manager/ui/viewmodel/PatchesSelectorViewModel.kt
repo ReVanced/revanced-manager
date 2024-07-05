@@ -48,8 +48,11 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     val appVersion = input.app.version
 
     var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
+    var pendingUniversalPatchAction by mutableStateOf<(() -> Unit)?>(null)
 
     var selectionWarningEnabled by mutableStateOf(true)
+        private set
+    var universalPatchWarningEnabled by mutableStateOf(true)
         private set
 
     val allowIncompatiblePatches =
@@ -59,6 +62,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     init {
         viewModelScope.launch {
+            universalPatchWarningEnabled = !prefs.disableUniversalPatchWarning.get()
+
             if (prefs.disableSelectionWarning.get()) {
                 selectionWarningEnabled = false
                 return@launch
@@ -135,11 +140,22 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         selectionWarningEnabled = false
 
         pendingSelectionAction?.invoke()
-        pendingSelectionAction = null
+        dismissSelectionWarning()
     }
 
     fun dismissSelectionWarning() {
         pendingSelectionAction = null
+    }
+
+    fun confirmUniversalPatchWarning() {
+        universalPatchWarningEnabled = false
+
+        pendingUniversalPatchAction?.invoke()
+        pendingUniversalPatchAction = null
+    }
+
+    fun dismissUniversalPatchWarning() {
+        pendingUniversalPatchAction = null
     }
 
     fun reset() {

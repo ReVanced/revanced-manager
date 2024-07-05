@@ -195,6 +195,8 @@
     <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s</string>
     <string name="selection_warning_title">Stop using defaults?</string>
     <string name="selection_warning_description">You may encounter issues when not using the default patch selection.</string>
+    <string name="universal_patch_warning_title">Placeholder</string>
+    <string name="universal_patch_warning_description">Placeholder placeholder placeholder placeholder placeholder</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>

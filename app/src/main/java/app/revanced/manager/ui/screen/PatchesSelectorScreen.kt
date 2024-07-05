@@ -56,7 +56,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.DangerousActionDialogBase
+import app.revanced.manager.ui.component.DangerousActionDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
@@ -164,6 +164,12 @@ fun PatchesSelectorScreen(
             onConfirm = vm::confirmSelectionWarning
         )
     }
+    vm.pendingUniversalPatchAction?.let { 
+        UniversalPatchWarningDialog(
+            onCancel = vm::dismissUniversalPatchWarning,
+            onConfirm = vm::confirmUniversalPatchWarning
+        )
+    }
 
     fun LazyListScope.patchList(
         uid: Int,
@@ -193,10 +199,12 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
+                        val fn: () -> Unit = { vm.togglePatch(uid, patch) }
+
                         if (vm.selectionWarningEnabled) {
-                            vm.pendingSelectionAction = {
-                                vm.togglePatch(uid, patch)
-                            }
+                            vm.pendingSelectionAction = fn
+                        } else if (vm.universalPatchWarningEnabled && patch.compatiblePackages == null) {
+                            vm.pendingUniversalPatchAction = fn
                         } else {
                             vm.togglePatch(uid, patch)
                         }
@@ -373,12 +381,29 @@ fun SelectionWarningDialog(
 ) {
     val prefs: PreferencesManager = koinInject()
 
-    DangerousActionDialogBase(
+    DangerousActionDialog(
         onCancel = onCancel,
         onConfirm = onConfirm,
         enableConfirmCountdown = prefs.enableSelectionWarningCountdown,
         title = R.string.selection_warning_title,
         body = stringResource(R.string.selection_warning_description),
+    )
+}
+
+@Composable
+fun UniversalPatchWarningDialog(
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    DangerousActionDialog(
+        onCancel = onCancel,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(stringResource(R.string.continue_))
+            }
+        },
+        title = R.string.universal_patch_warning_title,
+        body = stringResource(R.string.universal_patch_warning_description)
     )
 }
 

@@ -28,6 +28,8 @@ class PreferencesManager(
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
     val enableSelectionWarningCountdown = booleanPreference("enable_selection_warning_countdown", true)
 
+    val disableUniversalPatchWarning = booleanPreference("disable_universal_patch_warning", false)
+
     val suggestedVersionSafeguard = booleanPreference("suggested_version_safeguard", true)
     val enableSuggestedVersionSafeguardCountdown = booleanPreference("enable_suggested_version_safeguard_countdown", true)
 }

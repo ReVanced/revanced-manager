@@ -10,7 +10,7 @@ import org.koin.compose.koinInject
 fun NonSuggestedVersionDialog(suggestedVersion: String, onCancel: () -> Unit, onContinue: () -> Unit) {
     val prefs: PreferencesManager = koinInject()
 
-    DangerousActionDialogBase(
+    DangerousActionDialog(
         onCancel = onCancel,
         onConfirm = onContinue,
         enableConfirmCountdown = prefs.enableSuggestedVersionSafeguardCountdown,
