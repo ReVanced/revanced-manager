@@ -11,4 +11,8 @@
     <plurals name="selected_count">
         <item quantity="other">%d selected</item>
     </plurals>
+    <plurals name="bundle_patches_available">
+        <item quantity="one">%d patch available</item>
+        <item quantity="other">%d patches available</item>
+    </plurals>
 </resources>

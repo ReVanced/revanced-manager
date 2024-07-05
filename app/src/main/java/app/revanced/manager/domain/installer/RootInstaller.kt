@@ -1,49 +1,93 @@
 package app.revanced.manager.domain.installer
 
 import android.app.Application
-import app.revanced.manager.service.RootConnection
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
+import app.revanced.manager.IRootSystemService
+import app.revanced.manager.service.ManagerRootService
 import app.revanced.manager.util.PM
 import com.topjohnwu.superuser.Shell
+import com.topjohnwu.superuser.ipc.RootService
+import com.topjohnwu.superuser.nio.FileSystemManager
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.time.withTimeoutOrNull
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.time.Duration
 
 class RootInstaller(
     private val app: Application,
-    private val rootConnection: RootConnection,
     private val pm: PM
-) {
+) : ServiceConnection {
+    private var remoteFS = CompletableDeferred<FileSystemManager>()
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        val ipc = IRootSystemService.Stub.asInterface(service)
+        val binder = ipc.fileSystemService
+
+        remoteFS.complete(FileSystemManager.getRemote(binder))
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        remoteFS = CompletableDeferred()
+    }
+
+    private suspend fun awaitRemoteFS(): FileSystemManager {
+        if (remoteFS.isActive) {
+            withContext(Dispatchers.Main) {
+                val intent = Intent(app, ManagerRootService::class.java)
+                RootService.bind(intent, this@RootInstaller)
+            }
+        }
+
+        return withTimeoutOrNull(Duration.ofSeconds(120L)) {
+            remoteFS.await()
+        } ?: throw RootServiceException()
+    }
+
+    private suspend fun getShell() = with(CompletableDeferred<Shell>()) {
+        Shell.getShell(::complete)
+
+        await()
+    }
+
+    suspend fun execute(vararg commands: String) = getShell().newJob().add(*commands).exec()
+
     fun hasRootAccess() = Shell.isAppGrantedRoot() ?: false
 
-    fun isAppInstalled(packageName: String) =
-        rootConnection.remoteFS?.getFile("$modulesPath/$packageName-revanced")
-            ?.exists() ?: throw RootServiceException()
+    suspend fun isAppInstalled(packageName: String) =
+        awaitRemoteFS().getFile("$modulesPath/$packageName-revanced").exists()
 
-    fun isAppMounted(packageName: String): Boolean {
-        return pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir?.let {
-            Shell.cmd("mount | grep \"$it\"").exec().isSuccess
+    suspend fun isAppMounted(packageName: String) = withContext(Dispatchers.IO) {
+        pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir?.let {
+            execute("mount | grep \"$it\"").isSuccess
         } ?: false
     }
 
-    fun mount(packageName: String) {
+    suspend fun mount(packageName: String) {
         if (isAppMounted(packageName)) return
 
-        val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
-            ?: throw Exception("Failed to load application info")
-        val patchedAPK = "$modulesPath/$packageName-revanced/$packageName.apk"
+        withContext(Dispatchers.IO) {
+            val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
+                ?: throw Exception("Failed to load application info")
+            val patchedAPK = "$modulesPath/$packageName-revanced/$packageName.apk"
 
-        Shell.cmd("mount -o bind \"$patchedAPK\" \"$stockAPK\"").exec()
-            .also { if (!it.isSuccess) throw Exception("Failed to mount APK") }
+            execute("mount -o bind \"$patchedAPK\" \"$stockAPK\"").assertSuccess("Failed to mount APK")
+        }
     }
 
-    fun unmount(packageName: String) {
+    suspend fun unmount(packageName: String) {
         if (!isAppMounted(packageName)) return
 
-        val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
-            ?: throw Exception("Failed to load application info")
+        withContext(Dispatchers.IO) {
+            val stockAPK = pm.getPackageInfo(packageName)?.applicationInfo?.sourceDir
+                ?: throw Exception("Failed to load application info")
 
-        Shell.cmd("umount -l \"$stockAPK\"").exec()
-            .also { if (!it.isSuccess) throw Exception("Failed to unmount APK") }
+            execute("umount -l \"$stockAPK\"").assertSuccess("Failed to unmount APK")
+        }
     }
 
     suspend fun install(
@@ -52,80 +96,77 @@ class RootInstaller(
         packageName: String,
         version: String,
         label: String
-    ) {
-        withContext(Dispatchers.IO) {
-            rootConnection.remoteFS?.let { remoteFS ->
-                val assets = app.assets
-                val modulePath = "$modulesPath/$packageName-revanced"
+    ) = withContext(Dispatchers.IO) {
+        val remoteFS = awaitRemoteFS()
+        val assets = app.assets
+        val modulePath = "$modulesPath/$packageName-revanced"
 
-                unmount(packageName)
+        unmount(packageName)
 
-                stockAPK?.let { stockApp ->
-                    pm.getPackageInfo(packageName)?.let { packageInfo ->
-                        if (packageInfo.versionName <= version)
-                            Shell.cmd("pm uninstall -k --user 0 $packageName").exec()
-                                .also { if (!it.isSuccess) throw Exception("Failed to uninstall stock app") }
+        stockAPK?.let { stockApp ->
+            pm.getPackageInfo(packageName)?.let { packageInfo ->
+                if (packageInfo.versionName <= version)
+                    execute("pm uninstall -k --user 0 $packageName").assertSuccess("Failed to uninstall stock app")
+            }
+
+            execute("pm install \"${stockApp.absolutePath}\"").assertSuccess("Failed to install stock app")
+        }
+
+        remoteFS.getFile(modulePath).mkdir()
+
+        listOf(
+            "service.sh",
+            "module.prop",
+        ).forEach { file ->
+            assets.open("root/$file").use { inputStream ->
+                remoteFS.getFile("$modulePath/$file").newOutputStream()
+                    .use { outputStream ->
+                        val content = String(inputStream.readBytes())
+                            .replace("__PKG_NAME__", packageName)
+                            .replace("__VERSION__", version)
+                            .replace("__LABEL__", label)
+                            .toByteArray()
+
+                        outputStream.write(content)
                     }
+            }
+        }
 
-                    Shell.cmd("pm install \"${stockApp.absolutePath}\"").exec()
-                        .also { if (!it.isSuccess) throw Exception("Failed to install stock app") }
+        "$modulePath/$packageName.apk".let { apkPath ->
+
+            remoteFS.getFile(patchedAPK.absolutePath)
+                .also { if (!it.exists()) throw Exception("File doesn't exist") }
+                .newInputStream().use { inputStream ->
+                    remoteFS.getFile(apkPath).newOutputStream().use { outputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
                 }
 
-                remoteFS.getFile(modulePath).mkdir()
-
-                listOf(
-                    "service.sh",
-                    "module.prop",
-                ).forEach { file ->
-                    assets.open("root/$file").use { inputStream ->
-                        remoteFS.getFile("$modulePath/$file").newOutputStream()
-                            .use { outputStream ->
-                                val content = String(inputStream.readBytes())
-                                    .replace("__PKG_NAME__", packageName)
-                                    .replace("__VERSION__", version)
-                                    .replace("__LABEL__", label)
-                                    .toByteArray()
-
-                                outputStream.write(content)
-                            }
-                    }
-                }
-
-                "$modulePath/$packageName.apk".let { apkPath ->
-
-                    remoteFS.getFile(patchedAPK.absolutePath)
-                        .also { if (!it.exists()) throw Exception("File doesn't exist") }
-                        .newInputStream().use { inputStream ->
-                        remoteFS.getFile(apkPath).newOutputStream().use { outputStream ->
-                            inputStream.copyTo(outputStream)
-                        }
-                    }
-
-                    Shell.cmd(
-                        "chmod 644 $apkPath",
-                        "chown system:system $apkPath",
-                        "chcon u:object_r:apk_data_file:s0 $apkPath",
-                        "chmod +x $modulePath/service.sh"
-                    ).exec()
-                        .let { if (!it.isSuccess) throw Exception("Failed to set file permissions") }
-                }
-            } ?: throw RootServiceException()
+            execute(
+                "chmod 644 $apkPath",
+                "chown system:system $apkPath",
+                "chcon u:object_r:apk_data_file:s0 $apkPath",
+                "chmod +x $modulePath/service.sh"
+            ).assertSuccess("Failed to set file permissions")
         }
     }
 
-    fun uninstall(packageName: String) {
-        rootConnection.remoteFS?.let { remoteFS ->
-            if (isAppMounted(packageName))
-                unmount(packageName)
+    suspend fun uninstall(packageName: String) {
+        val remoteFS = awaitRemoteFS()
+        if (isAppMounted(packageName))
+            unmount(packageName)
 
-            remoteFS.getFile("$modulesPath/$packageName-revanced").deleteRecursively()
-                .also { if (!it) throw Exception("Failed to delete files") }
-        } ?: throw RootServiceException()
+        remoteFS.getFile("$modulesPath/$packageName-revanced").deleteRecursively()
+            .also { if (!it) throw Exception("Failed to delete files") }
     }
 
     companion object {
         const val modulesPath = "/data/adb/modules"
+
+        private fun Shell.Result.assertSuccess(errorMessage: String) {
+            if (!isSuccess) throw Exception(errorMessage)
+        }
     }
 }
 
-class RootServiceException: Exception("Root not available")
+class RootServiceException : Exception("Root not available")
