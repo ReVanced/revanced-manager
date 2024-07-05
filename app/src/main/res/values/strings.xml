@@ -182,8 +182,6 @@
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
-    <string name="no_patches">No patches available to view</string>
-    <string name="patches_available">%d Patches available, tap to view</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
     <string name="unsupported_app">Unsupported app</string>
@@ -300,8 +298,8 @@
     <string name="bundle_input_source_url">Source URL</string>
     <string name="bundle_update_success">Successfully updated %s</string>
     <string name="bundle_update_unavailable">No update available for %s</string>
-    <string name="automatically_update">Automatically update</string>
-    <string name="automatically_update_description">Automatically update this bundle when ReVanced starts</string>
+    <string name="bundle_auto_update">Auto update</string>
+    <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
     <string name="bundle_type_description">Choose the type of bundle you want</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
