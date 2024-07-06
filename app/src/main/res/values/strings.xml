@@ -323,7 +323,7 @@
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
-    <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off.</string>
+    <string name="battery_optimization_notification">Battery optimizations must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off optimizations.</string>
     <string name="installing_manager_update">Installing update…</string>
     <string name="downloading_manager_update">Downloading update…</string>
     <string name="download_manager_failed">Failed to download update: %s</string>

@@ -1,5 +1,9 @@
 package app.revanced.manager.ui.screen
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +14,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.DeleteOutline
@@ -69,6 +74,7 @@ enum class DashboardPage(
     BUNDLES(R.string.tab_bundles, Icons.Outlined.Source),
 }
 
+@SuppressLint("BatteryLife")
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -226,6 +232,21 @@ fun DashboardScreen(
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.unsupported_architecture_warning),
                             onDismiss = null
+                        )
+                    }
+                } else null,
+                if (vm.showBatteryOptimizationsWarning) {
+                    {
+                        NotificationCard(
+                            modifier = Modifier.padding(16.dp),
+                            isWarning = true,
+                            icon = Icons.Default.BatteryAlert,
+                            text = stringResource(R.string.battery_optimization_notification),
+                            onClick = {
+                                androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                    data = Uri.parse("package:${androidContext.packageName}")
+                                })
+                            }
                         )
                     }
                 } else null,

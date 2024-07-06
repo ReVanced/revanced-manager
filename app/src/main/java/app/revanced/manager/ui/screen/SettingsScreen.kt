@@ -1,32 +1,17 @@
 package app.revanced.manager.ui.screen
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.PowerManager
-import android.provider.Settings
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
-import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.settings.*
@@ -38,7 +23,6 @@ import dev.olshevski.navigation.reimagined.*
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@SuppressLint("BatteryLife")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
@@ -53,10 +37,6 @@ fun SettingsScreen(
             onBackClick()
         else navController.pop()
     }
-
-    val context = LocalContext.current
-    val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-    var showBatteryButton by remember { mutableStateOf(!pm.isIgnoringBatteryOptimizations(context.packageName)) }
 
     val settingsSections = listOf(
         Triple(
@@ -163,21 +143,6 @@ fun SettingsScreen(
                             .padding(paddingValues)
                             .fillMaxSize()
                     ) {
-                        AnimatedVisibility(visible = showBatteryButton) {
-                            NotificationCard(
-                                modifier = Modifier.padding(16.dp),
-                                isWarning = true,
-                                icon = Icons.Default.BatteryAlert,
-                                text = stringResource(R.string.battery_optimization_notification),
-                                onClick = {
-                                    context.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                        data = Uri.parse("package:${context.packageName}")
-                                    })
-                                    showBatteryButton =
-                                        !pm.isIgnoringBatteryOptimizations(context.packageName)
-                                }
-                            )
-                        }
                         settingsSections.forEach { (titleDescIcon, destination) ->
                             SettingsListItem(
                                 modifier = Modifier.clickable { navController.navigate(destination) },
