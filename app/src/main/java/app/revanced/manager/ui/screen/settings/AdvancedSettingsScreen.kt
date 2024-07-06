@@ -127,10 +127,22 @@ fun AdvancedSettingsScreen(
                 description = R.string.patch_compat_check_description
             )
             BooleanItem(
+                preference = vm.prefs.disableUniversalPatchWarning,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.universal_patches_safeguard,
+                description = R.string.universal_patches_safeguard_description
+            )
+            BooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.suggested_version_safeguard,
                 description = R.string.suggested_version_safeguard_description
+            )
+            BooleanItem(
+                preference = vm.prefs.disableSelectionWarning,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.patch_selection_safeguard,
+                description = R.string.patch_selection_safeguard_description
             )
 
             GroupHeader(stringResource(R.string.device))

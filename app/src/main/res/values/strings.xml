@@ -76,6 +76,10 @@
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
+    <string name="patch_selection_safeguard">Allow changing patch selection</string>
+    <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches</string>
+    <string name="universal_patches_safeguard">Disable universal patch warning</string>
+    <string name="universal_patches_safeguard_description">Disables the warning that appears when you try to select universal patches</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -134,6 +138,7 @@
     <string name="apply">Apply</string>
     <string name="help">Help</string>
     <string name="back">Back</string>
+    <string name="warning">Warning</string>
     <string name="add">Add</string>
     <string name="close">Close</string>
     <string name="system">System</string>
@@ -190,10 +195,10 @@
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
-    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s</string>
+    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s\n\nTo continue anyway, disable \"Require suggested app version\" in the advanced settings.</string>
     <string name="selection_warning_title">Stop using defaults?</string>
-    <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
-    <string name="selection_warning_continue_countdown">Continue (%ds)</string>
+    <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou need to turn on \"Allow changing patch selection\" in the advanced settings before toggling patches.</string>
+    <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.\n\nThis warning can be disabled in the advanced settings.</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>

@@ -3,14 +3,12 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.net.Uri
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
@@ -25,8 +23,7 @@ import java.nio.file.Files
 class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
-    private val patchBundleRepository: PatchBundleRepository,
-    private val prefs: PreferencesManager,
+    private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
     private val inputFile = File(app.cacheDir, "input.apk").also {
         it.delete()
@@ -44,13 +41,6 @@ class AppSelectorViewModel(
 
     fun dismissNonSuggestedVersionDialog() {
         nonSuggestedVersionDialogSubject = null
-    }
-
-    fun continueWithNonSuggestedVersion(dismissPermanently: Boolean) = viewModelScope.launch {
-        if (dismissPermanently) prefs.suggestedVersionSafeguard.update(false)
-
-        nonSuggestedVersionDialogSubject?.let(onStorageClick)
-        dismissNonSuggestedVersionDialog()
     }
 
     fun handleStorageResult(uri: Uri) = viewModelScope.launch {
