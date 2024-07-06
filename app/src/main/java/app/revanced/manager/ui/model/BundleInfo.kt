@@ -75,7 +75,7 @@ data class BundleInfo(
                         targetList.add(it)
                     }
 
-                    BundleInfo(source.name, source.uid, supported, unsupported, universal)
+                    BundleInfo(source.getName(), source.uid, supported, unsupported, universal)
                 }
             }
     }

@@ -2,6 +2,8 @@ package app.revanced.manager.ui.screen.settings
 
 import android.app.ActivityManager
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -69,6 +71,8 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            GroupHeader(stringResource(R.string.manager))
+
             val apiUrl by vm.prefs.api.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -86,6 +90,15 @@ fun AdvancedSettingsScreen(
                 }
             )
 
+            val exportDebugLogsLauncher =
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                    it?.let(vm::exportDebugLogs)
+                }
+            SettingsListItem(
+                headlineContent = stringResource(R.string.debug_logs_export),
+                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
+            )
+
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
                 preference = vm.prefs.useProcessRuntime,
@@ -100,10 +113,24 @@ fun AdvancedSettingsScreen(
                 description = R.string.process_runtime_memory_limit_description,
             )
             BooleanItem(
+                preference = vm.prefs.multithreadingDexFileWriter,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.multithreaded_dex_file_writer,
+                description = R.string.multithreaded_dex_file_writer_description,
+            )
+
+            GroupHeader(stringResource(R.string.safeguards))
+            BooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
                 description = R.string.patch_compat_check_description
+            )
+            BooleanItem(
+                preference = vm.prefs.disableUniversalPatchWarning,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.universal_patches_safeguard,
+                description = R.string.universal_patches_safeguard_description
             )
             BooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
@@ -112,24 +139,10 @@ fun AdvancedSettingsScreen(
                 description = R.string.suggested_version_safeguard_description
             )
             BooleanItem(
-                preference = vm.prefs.multithreadingDexFileWriter,
+                preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
-                headline = R.string.multithreaded_dex_file_writer,
-                description = R.string.multithreaded_dex_file_writer_description,
-            )
-
-            GroupHeader(stringResource(R.string.patch_bundles_section))
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_redownload),
-                modifier = Modifier.clickable {
-                    vm.redownloadBundles()
-                }
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_reset),
-                modifier = Modifier.clickable {
-                    vm.resetBundles()
-                }
+                headline = R.string.patch_selection_safeguard,
+                description = R.string.patch_selection_safeguard_description
             )
 
             GroupHeader(stringResource(R.string.device))

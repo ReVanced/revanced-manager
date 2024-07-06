@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
@@ -30,7 +31,7 @@ import app.revanced.manager.util.isDebuggable
 fun BaseBundleDialog(
     modifier: Modifier = Modifier,
     isDefault: Boolean,
-    name: String,
+    name: String?,
     onNameChange: ((String) -> Unit)? = null,
     remoteUrl: String?,
     onRemoteUrlChange: ((String) -> Unit)? = null,
@@ -52,32 +53,34 @@ fun BaseBundleDialog(
             )
             .then(modifier)
     ) {
-        var showNameInputDialog by rememberSaveable {
-            mutableStateOf(false)
-        }
-        if (showNameInputDialog) {
-            TextInputDialog(
-                initial = name,
-                title = stringResource(R.string.bundle_input_name),
-                onDismissRequest = {
-                    showNameInputDialog = false
-                },
-                onConfirm = {
-                    showNameInputDialog = false
-                    onNameChange?.invoke(it)
-                },
-                validator = {
-                    it.length in 1..19
+        if (name != null) {
+            var showNameInputDialog by rememberSaveable {
+                mutableStateOf(false)
+            }
+            if (showNameInputDialog) {
+                TextInputDialog(
+                    initial = name,
+                    title = stringResource(R.string.bundle_input_name),
+                    onDismissRequest = {
+                        showNameInputDialog = false
+                    },
+                    onConfirm = {
+                        showNameInputDialog = false
+                        onNameChange?.invoke(it)
+                    },
+                    validator = {
+                        it.length in 1..19
+                    }
+                )
+            }
+            BundleListItem(
+                headlineText = stringResource(R.string.bundle_input_name),
+                supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
+                modifier = Modifier.clickable(enabled = onNameChange != null) {
+                    showNameInputDialog = true
                 }
             )
         }
-        BundleListItem(
-            headlineText = stringResource(R.string.bundle_input_name),
-            supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
-            modifier = Modifier.clickable(enabled = onNameChange != null) {
-                showNameInputDialog = true
-            }
-        )
 
         remoteUrl?.takeUnless { isDefault }?.let { url ->
             var showUrlInputDialog by rememberSaveable {
@@ -113,8 +116,8 @@ fun BaseBundleDialog(
 
         if (remoteUrl != null) {
             BundleListItem(
-                headlineText = stringResource(R.string.automatically_update),
-                supportingText = stringResource(R.string.automatically_update_description),
+                headlineText = stringResource(R.string.bundle_auto_update),
+                supportingText = stringResource(R.string.bundle_auto_update_description),
                 trailingContent = {
                     Switch(
                         checked = autoUpdate,
@@ -161,8 +164,7 @@ fun BaseBundleDialog(
         val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
         BundleListItem(
             headlineText = stringResource(R.string.patches),
-            supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
-            else stringResource(R.string.patches_available, patchCount),
+            supportingText = pluralStringResource(R.plurals.bundle_patches_available, patchCount, patchCount),
             modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
         ) {
             if (patchesClickable)
