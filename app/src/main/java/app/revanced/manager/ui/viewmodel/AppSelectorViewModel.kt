@@ -43,11 +43,6 @@ class AppSelectorViewModel(
         nonSuggestedVersionDialogSubject = null
     }
 
-    fun continueWithNonSuggestedVersion() = viewModelScope.launch {
-        nonSuggestedVersionDialogSubject?.let(onStorageClick)
-        dismissNonSuggestedVersionDialog()
-    }
-
     fun handleStorageResult(uri: Uri) = viewModelScope.launch {
         val selectedApp = withContext(Dispatchers.IO) {
             loadSelectedFile(uri)

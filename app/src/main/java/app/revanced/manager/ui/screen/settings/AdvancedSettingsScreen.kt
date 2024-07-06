@@ -127,6 +127,12 @@ fun AdvancedSettingsScreen(
                 description = R.string.patch_compat_check_description
             )
             BooleanItem(
+                preference = vm.prefs.disableUniversalPatchWarning,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.universal_patches_safeguard,
+                description = R.string.universal_patches_safeguard_description
+            )
+            BooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.suggested_version_safeguard,

@@ -162,11 +162,6 @@ class VersionSelectorViewModel(
         nonSuggestedVersionDialogSubject = null
     }
 
-    fun continueWithNonSuggestedVersion() = viewModelScope.launch {
-        selectedVersion = nonSuggestedVersionDialogSubject
-        dismissNonSuggestedVersionDialog()
-    }
-
     fun select(app: SelectedApp) {
         if (requiredVersion != null && app.version != requiredVersion) {
             nonSuggestedVersionDialogSubject = app

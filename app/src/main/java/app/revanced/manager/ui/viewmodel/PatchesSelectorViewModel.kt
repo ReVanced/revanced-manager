@@ -47,7 +47,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     private val packageName = input.app.packageName
     val appVersion = input.app.version
 
-    var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
     var pendingUniversalPatchAction by mutableStateOf<(() -> Unit)?>(null)
 
     var selectionWarningEnabled by mutableStateOf(true)
@@ -134,17 +133,6 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         } ?: persistentSetOf(patch.name)
 
         customPatchSelection = selection.put(bundle, newPatches)
-    }
-
-    fun confirmSelectionWarning() {
-        selectionWarningEnabled = false
-
-        pendingSelectionAction?.invoke()
-        dismissSelectionWarning()
-    }
-
-    fun dismissSelectionWarning() {
-        pendingSelectionAction = null
     }
 
     fun confirmUniversalPatchWarning() {

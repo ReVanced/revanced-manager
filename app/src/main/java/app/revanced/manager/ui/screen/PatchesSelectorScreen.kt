@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,16 +48,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.DangerousActionDialog
+import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
@@ -68,7 +69,6 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -158,11 +158,11 @@ fun PatchesSelectorScreen(
         )
     }
 
-    vm.pendingSelectionAction?.let {
-        SelectionWarningDialog(
-            onCancel = vm::dismissSelectionWarning,
-            onConfirm = vm::confirmSelectionWarning
-        )
+    var showSelectionWarning by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if (showSelectionWarning) {
+        SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
     }
     vm.pendingUniversalPatchAction?.let { 
         UniversalPatchWarningDialog(
@@ -199,12 +199,10 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
-                        val fn: () -> Unit = { vm.togglePatch(uid, patch) }
-
                         if (vm.selectionWarningEnabled) {
-                            vm.pendingSelectionAction = fn
+                            showSelectionWarning = true
                         } else if (vm.universalPatchWarningEnabled && patch.compatiblePackages == null) {
-                            vm.pendingUniversalPatchAction = fn
+                            vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
                         } else {
                             vm.togglePatch(uid, patch)
                         }
@@ -375,17 +373,10 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-fun SelectionWarningDialog(
-    onCancel: () -> Unit,
-    onConfirm: () -> Unit
-) {
-    val prefs: PreferencesManager = koinInject()
-
-    DangerousActionDialog(
-        onCancel = onCancel,
-        onConfirm = onConfirm,
-        enableConfirmCountdown = prefs.enableSelectionWarningCountdown,
-        title = R.string.selection_warning_title,
+fun SelectionWarningDialog(onDismiss: () -> Unit) {
+    SafeguardDialog(
+        onDismiss = onDismiss,
+        title = R.string.warning,
         body = stringResource(R.string.selection_warning_description),
     )
 }
@@ -395,15 +386,30 @@ fun UniversalPatchWarningDialog(
     onCancel: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    DangerousActionDialog(
-        onCancel = onCancel,
+    AlertDialog(
+        onDismissRequest = onCancel,
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(stringResource(R.string.continue_))
             }
         },
-        title = R.string.universal_patch_warning_title,
-        body = stringResource(R.string.universal_patch_warning_description)
+        dismissButton = {
+            TextButton(onClick = onCancel) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        icon = {
+            Icon(Icons.Outlined.WarningAmber, null)
+        },
+        title = {
+            Text(
+                text = stringResource(R.string.warning),
+                style = MaterialTheme.typography.headlineSmall.copy(textAlign = TextAlign.Center)
+            )
+        },
+        text = {
+            Text(stringResource(R.string.universal_patch_warning_description))
+        }
     )
 }
 
