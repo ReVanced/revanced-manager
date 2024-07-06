@@ -270,6 +270,11 @@ class PatcherViewModel(
         context.startActivity(shareIntent)
     }
 
+    fun versionNameToInt(versionName: String): Int {
+        val versionParts = versionName.split(".")
+        return versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
+    }
+
     fun open() = installedPackageName?.let(pm::launch)
 
     fun install(installType: InstallType) = viewModelScope.launch {
@@ -277,6 +282,22 @@ class PatcherViewModel(
             isInstalling = true
             when (installType) {
                 InstallType.DEFAULT -> {
+                    // Check if the app is mounted as root
+                    // If it is, unmount it first, silently
+                    if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
+                        rootInstaller.unmount(packageName)
+                    }
+
+                    // If the app is currently installed
+                    val packageInfo = pm.getPackageInfo(packageName)
+                    if (packageInfo != null) {
+                        // Check if the app version is less than the installed version
+                        if (versionNameToInt(packageInfo.versionName) < versionNameToInt(input.selectedApp.version)) {
+                            reinstall()
+                            return@launch
+                        }
+                    }
+
                     pm.installApp(listOf(outputFile))
                 }
 
