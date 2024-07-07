@@ -238,7 +238,6 @@ fun DashboardScreen(
                 if (vm.showBatteryOptimizationsWarning) {
                     {
                         NotificationCard(
-                            modifier = Modifier.padding(16.dp),
                             isWarning = true,
                             icon = Icons.Default.BatteryAlert,
                             text = stringResource(R.string.battery_optimization_notification),
