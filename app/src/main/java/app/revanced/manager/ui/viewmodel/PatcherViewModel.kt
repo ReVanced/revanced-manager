@@ -288,31 +288,6 @@ class PatcherViewModel(
         return versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
     }
 
-    private fun getFingerprint(packageInfo: PackageInfo?): String {
-        // Get the signature of the app that matches the package name
-        val signature = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-            val signingInfo = packageInfo?.signingInfo
-            signingInfo?.signingCertificateHistory?.first()
-        } else {
-            //TODO: Add support for older versions
-            return ""
-        } ?: throw Exception("Failed to get signature")
-
-        // Get the raw certificate data
-        val rawCert = signature.toByteArray()
-
-        // Generate an X509Certificate from the data
-        val certFactory = CertificateFactory.getInstance("X509")
-        val x509Cert = certFactory.generateCertificate(ByteArrayInputStream(rawCert)) as X509Certificate
-
-        // Get the SHA256 fingerprint
-        val fingerprint = MessageDigest.getInstance("SHA256").digest(x509Cert.encoded).joinToString("") {
-            "%02x".format(it)
-        }
-
-        return fingerprint
-    }
-
     fun open() = installedPackageName?.let(pm::launch)
 
     fun install(installType: InstallType) = viewModelScope.launch {
@@ -335,13 +310,6 @@ class PatcherViewModel(
 
             when (installType) {
                 InstallType.DEFAULT -> {
-                    // Check if existing app has the same signature
-                    if (existingPackageInfo != null && getFingerprint(existingPackageInfo) != getFingerprint(currentPackageInfo)) {
-                        installerStatusDialogModel.packageInstallerStatus =
-                            PackageInstaller.STATUS_FAILURE_CONFLICT
-                        return@launch
-                    }
-
                     // Check if the app is mounted as root
                     // If it is, unmount it first, silently
                     if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
@@ -367,15 +335,6 @@ class PatcherViewModel(
                                 // Exit if there is no base APK package
                                 installerStatusDialogModel.packageInstallerStatus =
                                     PackageInstaller.STATUS_FAILURE_INVALID
-                                return@launch
-                            }
-                        }
-
-                        // Check if stock apk has the same fingerprint as the installed apk
-                        if (existingPackageInfo != null && inputPackageInfo != null) {
-                            if (getFingerprint(existingPackageInfo) != getFingerprint(inputPackageInfo)) {
-                                installerStatusDialogModel.packageInstallerStatus =
-                                    PackageInstaller.STATUS_FAILURE_CONFLICT
                                 return@launch
                             }
                         }
