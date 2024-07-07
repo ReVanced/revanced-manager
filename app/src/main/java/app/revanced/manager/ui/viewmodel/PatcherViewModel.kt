@@ -5,7 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
@@ -53,8 +55,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.Files
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
+import java.security.MessageDigest
 import java.time.Duration
 import java.util.UUID
 
@@ -277,9 +283,34 @@ class PatcherViewModel(
         context.startActivity(shareIntent)
     }
 
-    fun versionNameToInt(versionName: String): Int {
+    private fun versionNameToInt(versionName: String): Int {
         val versionParts = versionName.split(".")
         return versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
+    }
+
+    private fun getFingerprint(packageInfo: PackageInfo?): String {
+        // Get the signature of the app that matches the package name
+        val signature = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            val signingInfo = packageInfo?.signingInfo
+            signingInfo?.signingCertificateHistory?.first()
+        } else {
+            //TODO: Add support for older versions
+            return ""
+        } ?: throw Exception("Failed to get signature")
+
+        // Get the raw certificate data
+        val rawCert = signature.toByteArray()
+
+        // Generate an X509Certificate from the data
+        val certFactory = CertificateFactory.getInstance("X509")
+        val x509Cert = certFactory.generateCertificate(ByteArrayInputStream(rawCert)) as X509Certificate
+
+        // Get the SHA256 fingerprint
+        val fingerprint = MessageDigest.getInstance("SHA256").digest(x509Cert.encoded).joinToString("") {
+            "%02x".format(it)
+        }
+
+        return fingerprint
     }
 
     fun open() = installedPackageName?.let(pm::launch)
@@ -287,35 +318,74 @@ class PatcherViewModel(
     fun install(installType: InstallType) = viewModelScope.launch {
         try {
             isInstalling = true
+
+            // If the app is currently installed
+            val existingPackageInfo = pm.getPackageInfo(packageName)
+            if (existingPackageInfo != null) {
+                // Check if the app version is less than the installed version
+                if (versionNameToInt(existingPackageInfo.versionName) < versionNameToInt(input.selectedApp.version)) {
+                    // Exit if the selected app version is less than the installed version
+                    installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
+                    return@launch
+                }
+            }
+
+            val currentPackageInfo = pm.getPackageInfo(outputFile)
+                ?: throw Exception("Failed to load application info")
+
             when (installType) {
                 InstallType.DEFAULT -> {
+                    // Check if existing app has the same signature
+                    if (existingPackageInfo != null && getFingerprint(existingPackageInfo) != getFingerprint(currentPackageInfo)) {
+                        installerStatusDialogModel.packageInstallerStatus =
+                            PackageInstaller.STATUS_FAILURE_CONFLICT
+                        return@launch
+                    }
+
                     // Check if the app is mounted as root
                     // If it is, unmount it first, silently
                     if (rootInstaller.hasRootAccess() && rootInstaller.isAppMounted(packageName)) {
                         rootInstaller.unmount(packageName)
                     }
 
-                    // If the app is currently installed
-                    val packageInfo = pm.getPackageInfo(packageName)
-                    if (packageInfo != null) {
-                        // Check if the app version is less than the installed version
-                        if (versionNameToInt(packageInfo.versionName) < versionNameToInt(input.selectedApp.version)) {
-                            // Exit if the installed version is less than the selected version
-                            installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
-                            return@launch
-                        }
-                    }
-
+                    // Install regularly
                     pm.installApp(listOf(outputFile))
                 }
 
                 InstallType.ROOT -> {
                     try {
-                        val label = with(pm) {
-                            getPackageInfo(outputFile)?.label()
-                                ?: throw Exception("Failed to load application info")
+                        // Get input package info
+                        val inputPackageInfo = if (inputFile != null)
+                            pm.getPackageInfo(inputFile!!)
+                        else
+                            null
+
+                        // Check for base APK, first check if the app is already installed
+                        if (existingPackageInfo == null) {
+                            // If the app is not installed, check if the input file is a base apk
+                            if (inputPackageInfo == null || inputPackageInfo.splitNames != null) {
+                                // Exit if there is no base APK package
+                                installerStatusDialogModel.packageInstallerStatus =
+                                    PackageInstaller.STATUS_FAILURE_INVALID
+                                return@launch
+                            }
                         }
 
+                        // Check if stock apk has the same fingerprint as the installed apk
+                        if (existingPackageInfo != null && inputPackageInfo != null) {
+                            if (getFingerprint(existingPackageInfo) != getFingerprint(inputPackageInfo)) {
+                                installerStatusDialogModel.packageInstallerStatus =
+                                    PackageInstaller.STATUS_FAILURE_CONFLICT
+                                return@launch
+                            }
+                        }
+
+                        // Get label
+                        val label = with(pm) {
+                            currentPackageInfo.label()
+                        }
+
+                        // Install as root
                         rootInstaller.install(
                             outputFile,
                             inputFile,
