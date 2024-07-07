@@ -322,14 +322,13 @@ class PatcherViewModel(
 
                 InstallType.ROOT -> {
                     try {
-                        // Get input package info
-                        val inputPackageInfo = if (inputFile != null)
-                            pm.getPackageInfo(inputFile!!)
-                        else
-                            null
-
                         // Check for base APK, first check if the app is already installed
                         if (existingPackageInfo == null) {
+                            val inputPackageInfo = if (inputFile != null)
+                                pm.getPackageInfo(inputFile!!)
+                            else
+                                null
+
                             // If the app is not installed, check if the input file is a base apk
                             if (inputPackageInfo == null || inputPackageInfo.splitNames != null) {
                                 // Exit if there is no base APK package
