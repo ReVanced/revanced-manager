@@ -168,7 +168,7 @@ fun AdvancedSettingsScreen(
 @Preview
 @Composable
 private fun APIUrlDialogPreview() {
-    APIUrlDialog("https://example.com", {})
+    APIUrlDialog("https://example.com") {}
 }
 
 @Composable
