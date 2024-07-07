@@ -69,8 +69,8 @@ class PatcherViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
 
-    val installerStatusDialogModel = object : InstallerStatusDialogModel {
-        override var packageInstallerStatus by mutableStateOf<Int?>(null)
+    val installerStatusDialogModel : InstallerStatusDialogModel = object : InstallerStatusDialogModel {
+        override var packageInstallerStatus: Int? by mutableStateOf(null)
 
         override fun reinstall() {
             this@PatcherViewModel.reinstall()
@@ -300,7 +300,8 @@ class PatcherViewModel(
                     if (packageInfo != null) {
                         // Check if the app version is less than the installed version
                         if (versionNameToInt(packageInfo.versionName) < versionNameToInt(input.selectedApp.version)) {
-                            reinstall()
+                            // Exit if the installed version is less than the selected version
+                            installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
                             return@launch
                         }
                     }

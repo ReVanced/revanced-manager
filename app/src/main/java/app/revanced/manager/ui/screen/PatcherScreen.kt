@@ -177,3 +177,5 @@ fun PatcherScreen(
         }
     }
 }
+
+// Create an uninstall dialogue
