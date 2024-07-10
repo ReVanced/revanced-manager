@@ -20,9 +20,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
-        resourceConfigurations.addAll(listOf(
-            "en",
-        ))
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -87,6 +84,12 @@ android {
     buildFeatures.compose = true
     buildFeatures.aidl = true
     buildFeatures.buildConfig=true
+
+    android {
+        androidResources {
+            generateLocaleConfig = true
+        }
+    }
 
     composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
     externalNativeBuild {

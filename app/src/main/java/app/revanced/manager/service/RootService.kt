@@ -1,8 +1,6 @@
 package app.revanced.manager.service
 
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.IBinder
 import app.revanced.manager.IRootSystemService
 import com.topjohnwu.superuser.ipc.RootService
@@ -14,23 +12,5 @@ class ManagerRootService : RootService() {
             FileSystemManager.getService()
     }
 
-    override fun onBind(intent: Intent): IBinder {
-        return RootSystemService()
-    }
-}
-
-class RootConnection : ServiceConnection {
-    var remoteFS: FileSystemManager? = null
-        private set
-
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val ipc = IRootSystemService.Stub.asInterface(service)
-        val binder = ipc.fileSystemService
-
-        remoteFS = FileSystemManager.getRemote(binder)
-    }
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        remoteFS = null
-    }
+    override fun onBind(intent: Intent): IBinder = RootSystemService()
 }

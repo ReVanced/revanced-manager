@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -39,7 +40,7 @@ class MainViewModel(
             val launcher = componentActivity.registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult()
             ) { result: ActivityResult ->
-                if (result.resultCode == ComponentActivity.RESULT_OK) {
+                if (result.resultCode == Activity.RESULT_OK) {
                     result.data?.getStringExtra("data")?.let {
                         applyLegacySettings(it)
                     } ?: app.toast(app.getString(R.string.legacy_import_failed))

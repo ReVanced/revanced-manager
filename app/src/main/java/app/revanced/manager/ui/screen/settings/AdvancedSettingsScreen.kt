@@ -72,6 +72,8 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            GroupHeader(stringResource(R.string.manager))
+
             val apiUrl by vm.prefs.api.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -112,10 +114,24 @@ fun AdvancedSettingsScreen(
                 description = R.string.process_runtime_memory_limit_description,
             )
             BooleanItem(
+                preference = vm.prefs.multithreadingDexFileWriter,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.multithreaded_dex_file_writer,
+                description = R.string.multithreaded_dex_file_writer_description,
+            )
+
+            GroupHeader(stringResource(R.string.safeguards))
+            BooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
                 description = R.string.patch_compat_check_description
+            )
+            BooleanItem(
+                preference = vm.prefs.disableUniversalPatchWarning,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.universal_patches_safeguard,
+                description = R.string.universal_patches_safeguard_description
             )
             BooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
@@ -124,24 +140,10 @@ fun AdvancedSettingsScreen(
                 description = R.string.suggested_version_safeguard_description
             )
             BooleanItem(
-                preference = vm.prefs.multithreadingDexFileWriter,
+                preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
-                headline = R.string.multithreaded_dex_file_writer,
-                description = R.string.multithreaded_dex_file_writer_description,
-            )
-
-            GroupHeader(stringResource(R.string.patch_bundles_section))
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_redownload),
-                modifier = Modifier.clickable {
-                    vm.redownloadBundles()
-                }
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_reset),
-                modifier = Modifier.clickable {
-                    vm.resetBundles()
-                }
+                headline = R.string.patch_selection_safeguard,
+                description = R.string.patch_selection_safeguard_description
             )
 
             GroupHeader(stringResource(R.string.debugging))

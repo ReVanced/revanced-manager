@@ -23,8 +23,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
         env:
@@ -38,7 +38,7 @@ jobs:
         run: mv app/build/outputs/apk/release/app-release.apk revanced-manager-${{ env.COMMIT_HASH }}.apk
 
       - name: Upload build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-manager
           path: revanced-manager-${{ env.COMMIT_HASH }}.apk

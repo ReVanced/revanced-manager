@@ -6,12 +6,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
-import app.revanced.manager.util.uiSafe
 import com.github.pgreze.process.Redirect
 import com.github.pgreze.process.process
 import kotlinx.coroutines.CancellationException
@@ -41,16 +39,6 @@ class AdvancedSettingsViewModel(
 
         prefs.api.update(value)
         patchBundleRepository.reloadApiBundles()
-    }
-
-    fun redownloadBundles() = viewModelScope.launch {
-        uiSafe(app, R.string.source_download_fail, RemotePatchBundle.updateFailMsg) {
-            patchBundleRepository.redownloadRemoteBundles()
-        }
-    }
-
-    fun resetBundles() = viewModelScope.launch {
-        patchBundleRepository.reset()
     }
 
     fun exportDebugLogs(target: Uri) = viewModelScope.launch {

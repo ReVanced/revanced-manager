@@ -71,10 +71,15 @@
     <string name="theme_description">Choose between light or dark theme</string>
     <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
     <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
+    <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
     <string name="suggested_version_safeguard">Require suggested app version</string>
     <string name="suggested_version_safeguard_description">Enforce selection of the suggested app version</string>
+    <string name="patch_selection_safeguard">Allow changing patch selection</string>
+    <string name="patch_selection_safeguard_description">Do not prevent selecting or deselecting patches</string>
+    <string name="universal_patches_safeguard">Disable universal patch warning</string>
+    <string name="universal_patches_safeguard_description">Disables the warning that appears when you try to select universal patches</string>
     <string name="import_keystore">Import keystore</string>
     <string name="import_keystore_description">Import a custom keystore</string>
     <string name="import_keystore_dialog_title">Enter keystore credentials</string>
@@ -133,6 +138,7 @@
     <string name="apply">Apply</string>
     <string name="help">Help</string>
     <string name="back">Back</string>
+    <string name="warning">Warning</string>
     <string name="add">Add</string>
     <string name="close">Close</string>
     <string name="system">System</string>
@@ -181,8 +187,6 @@
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
     <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
-    <string name="no_patches">No patches available to view</string>
-    <string name="patches_available">%d Patches available, tap to view</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
     <string name="unsupported_app">Unsupported app</string>
@@ -191,10 +195,10 @@
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
     <string name="patch_options_reset_toast">Patch options have been reset</string>
     <string name="non_suggested_version_warning_title">Non suggested version</string>
-    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s</string>
+    <string name="non_suggested_version_warning_description">The version of the app you have selected does not match the suggested version.\nPlease use the suggested version: %s\n\nTo continue anyway, disable \"Require suggested app version\" in the advanced settings.</string>
     <string name="selection_warning_title">Stop using defaults?</string>
-    <string name="selection_warning_description">You may encounter issues when not using the default patch selection and options.</string>
-    <string name="selection_warning_continue_countdown">Continue (%ds)</string>
+    <string name="selection_warning_description">It is recommended to use the default patch selection and options. Changing them may result in unexpected issues.\n\nYou need to turn on \"Allow changing patch selection\" in the advanced settings before toggling patches.</string>
+    <string name="universal_patch_warning_description">Universal patches have a more generalized use and do not work as reliably as patches that target specific apps. You may encounter issues while using them.\n\nThis warning can be disabled in the advanced settings.</string>
     <string name="supported">Supported</string>
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
@@ -299,8 +303,8 @@
     <string name="bundle_input_source_url">Source URL</string>
     <string name="bundle_update_success">Successfully updated %s</string>
     <string name="bundle_update_unavailable">No update available for %s</string>
-    <string name="automatically_update">Automatically update</string>
-    <string name="automatically_update_description">Automatically update this bundle when ReVanced starts</string>
+    <string name="bundle_auto_update">Auto update</string>
+    <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
     <string name="bundle_type_description">Choose the type of bundle you want</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
@@ -319,7 +323,7 @@
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
-    <string name="battery_optimization_notification">Battery optimization must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off.</string>
+    <string name="battery_optimization_notification">Battery optimizations must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off optimizations.</string>
     <string name="installing_manager_update">Installing update…</string>
     <string name="downloading_manager_update">Downloading update…</string>
     <string name="download_manager_failed">Failed to download update: %s</string>
