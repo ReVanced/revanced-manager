@@ -109,7 +109,7 @@ fun ImportPatchBundleDialog(
             steps[currentStep]()
         },
         confirmButton = {
-            if (currentStep == steps.size - 1) {
+            if (currentStep == steps.lastIndex) {
                 TextButton(
                     enabled = inputsAreValid,
                     onClick = {
