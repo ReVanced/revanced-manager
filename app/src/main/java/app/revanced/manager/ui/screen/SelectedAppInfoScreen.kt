@@ -3,12 +3,13 @@ package app.revanced.manager.ui.screen
 import android.content.pm.PackageInfo
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
@@ -164,9 +166,16 @@ private fun SelectedAppInfoScreen(
                 title = stringResource(R.string.app_info),
                 onBackClick = onBackClick
             )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text(stringResource(R.string.patch)) },
+                icon = { Icon(Icons.Default.AutoFixHigh, null) },
+                onClick = onPatchClick
+            )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -178,15 +187,6 @@ private fun SelectedAppInfoScreen(
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-
-            PageItem(R.string.patch, stringResource(R.string.patch_item_description), onPatchClick)
-
-            Text(
-                stringResource(R.string.advanced),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelLarge,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-            )
 
             PageItem(
                 R.string.patch_selector_item,
