@@ -4,14 +4,10 @@
   "dismissButton": "Dismiss",
   "quitButton": "Quit",
   "updateButton": "Update",
-  "enabledLabel": "Enabled",
-  "disabledLabel": "Disabled",
-  "installed": "Installed: ${version}",
   "suggested": "Suggested: ${version}",
   "yesButton": "Yes",
   "noButton": "No",
   "warning": "Warning",
-  "options": "Options",
   "notice": "Notice",
   "noShowAgain": "Don't show this again",
   "add": "Add",
@@ -30,8 +26,6 @@
     "lastPatchedAppSubtitle": "Last patched app",
     "patchedSubtitle": "Installed apps",
     "changeLaterSubtitle": "You can change this in the settings at a later time.",
-    "noUpdates": "No updates available",
-    "WIP": "Work in progress...",
     "noSavedAppFound": "No app found",
     "noInstallations": "No patched apps installed",
     "installUpdate": "Continue to install the update?",
@@ -43,27 +37,19 @@
     "downloadConsentDialogTitle": "Download necessary files?",
     "downloadConsentDialogText": "ReVanced Manager needs to download necessary files to work properly.",
     "downloadConsentDialogText2": "This will connect you to ${url}.",
-    "checkUpdateDialogTitle": "Check for updates?",
-    "checkUpdateDialogText": "Do you want ReVanced Manager to check for updates automatically?",
-    "notificationTitle": "Update downloaded",
-    "notificationText": "Tap to install the update",
     "downloadingMessage": "Downloading update...",
     "downloadedMessage": "Update downloaded",
     "installingMessage": "Installing update...",
     "errorDownloadMessage": "Unable to download update",
     "errorInstallMessage": "Unable to install update",
-    "noConnection": "No internet connection",
-    "updatesDisabled": "Updating a patched app is currently disabled. Repatch the app again."
+    "noConnection": "No internet connection"
   },
   "applicationItem": {
     "infoButton": "Info"
   },
   "latestCommitCard": {
     "loadingLabel": "Loading...",
-    "timeagoLabel": "${time} ago",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Update Manager"
+    "timeagoLabel": "${time} ago"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
@@ -77,8 +63,6 @@
     "widgetTitleSelected": "Selected app",
     "widgetSubtitle": "No app selected",
     "noAppsLabel": "No applications found",
-    "currentVersion": "Current",
-    "suggestedVersion": "Suggested",
     "anyVersion": "Any version"
   },
   "patchSelectorCard": {
@@ -122,15 +106,12 @@
     "customValue": "Custom value",
     "setToNull": "Set to null",
     "nullValue": "This option value is currently null",
-    "resetOptionsTooltip": "Reset patch options",
     "viewTitle": "Patch options",
     "saveOptions": "Save",
-    "addOptions": "Add options",
     "unselectPatch": "Unselect patch",
     "tooltip": "More input options",
     "selectFilePath": "Select file path",
     "selectFolder": "Select folder",
-    "selectOption": "Select option",
     "requiredOption": "Setting this option is required",
     "unsupportedOption": "This option is not supported",
     "requiredOptionNull": "The following options have to be set:\n\n${options}"
@@ -143,7 +124,6 @@
     "patchesChangeWarningDialogButton": "Use default selection"
   },
   "installerView": {
-    "widgetTitle": "Installer",
     "installType": "Select install type",
     "installTypeDescription": "Select the installation type to continue with.",
     "installButton": "Install",
@@ -152,7 +132,6 @@
     "warning": "Disable auto updates for the patched app to avoid unexpected issues.",
     "pressBackAgain": "Press back again to cancel",
     "openButton": "Open",
-    "shareButton": "Share file",
     "notificationTitle": "ReVanced Manager is patching",
     "notificationText": "Tap to return to the installer",
     "exportApkButtonTooltip": "Export patched APK",
@@ -177,7 +156,6 @@
     "dynamicThemeHint": "Enjoy an experience closer to your device",
     "languageLabel": "Language",
     "languageUpdated": "Language updated",
-    "englishOption": "English",
     "sourcesLabel": "Alternative sources",
     "sourcesLabelHint": "Configure the alternative sources for ReVanced Patches and ReVanced Integrations",
     "sourcesIntegrationsLabel": "Integrations source",

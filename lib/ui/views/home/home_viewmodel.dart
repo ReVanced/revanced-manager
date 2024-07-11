@@ -458,10 +458,6 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  void updatesAreDisabled() {
-    _toast.showBottom(t.homeView.updatesDisabled);
-  }
-
   Future<void> showUpdateConfirmationDialog(
     BuildContext parentContext,
     bool isPatches, [
