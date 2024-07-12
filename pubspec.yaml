@@ -35,7 +35,7 @@ dependencies:
   flutter_local_notifications: ^17.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.7.1
+  flutter_markdown: ^0.7.3
   fluttertoast: ^8.2.5
   font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1
