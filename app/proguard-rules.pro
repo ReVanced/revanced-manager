@@ -49,6 +49,14 @@
 -keep class com.android.** {
   *;
 }
+# These two are used by downloader plugins
+-keep class app.revanced.manager.plugin.** {
+  *;
+}
+-keep class androidx.paging.** {
+  *;
+}
+
 -dontwarn com.google.auto.value.**
 -dontwarn java.awt.**
 -dontwarn javax.**

@@ -5,13 +5,14 @@ import android.content.Context
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
-import app.revanced.manager.network.downloader.AppDownloader
+import app.revanced.manager.plugin.downloader.DownloaderPlugin
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
 
 class DownloadedAppRepository(
     app: Application,
-    db: AppDatabase
+    db: AppDatabase,
+    private val downloaderPluginRepository: DownloaderPluginRepository
 ) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
@@ -21,10 +22,10 @@ class DownloadedAppRepository(
     fun getApkFileForApp(app: DownloadedApp): File = getApkFileForDir(dir.resolve(app.directory))
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
-    suspend fun download(
-        app: AppDownloader.App,
-        preferSplits: Boolean,
-        onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit = {},
+    suspend fun <A : DownloaderPlugin.App> download(
+        plugin: DownloaderPlugin<A>,
+        app: A,
+        onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit,
     ): File {
         this.get(app.packageName, app.version)?.let { downloaded ->
             return getApkFileForApp(downloaded)
@@ -35,13 +36,25 @@ class DownloadedAppRepository(
         val savePath = dir.resolve(relativePath).also { it.mkdirs() }
 
         try {
-            app.download(savePath, preferSplits, onDownload)
+            val parameters = DownloaderPlugin.DownloadParameters(
+                targetFile = savePath.resolve("base.apk"),
+                onDownloadProgress = { progress ->
+                    val (bytesReceived, bytesTotal) = progress
+                        ?: return@DownloadParameters onDownload(null)
 
-            dao.insert(DownloadedApp(
-                packageName = app.packageName,
-                version = app.version,
-                directory = relativePath,
-            ))
+                    onDownload(bytesReceived.megaBytes to bytesTotal.megaBytes)
+                }
+            )
+
+            plugin.download(app, parameters)
+
+            dao.insert(
+                DownloadedApp(
+                    packageName = app.packageName,
+                    version = app.version,
+                    directory = relativePath,
+                )
+            )
         } catch (e: Exception) {
             savePath.deleteRecursively()
             throw e
@@ -59,5 +72,9 @@ class DownloadedAppRepository(
         }
 
         dao.delete(downloadedApps)
+    }
+
+    private companion object {
+        val Int.megaBytes get() = div(100000).toFloat() / 10
     }
 }

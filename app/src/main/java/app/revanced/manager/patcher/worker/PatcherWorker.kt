@@ -22,6 +22,7 @@ import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.manager.KeystoreManager
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
+import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.worker.Worker
 import app.revanced.manager.domain.worker.WorkerRepository
@@ -49,6 +50,7 @@ class PatcherWorker(
     private val workerRepository: WorkerRepository by inject()
     private val prefs: PreferencesManager by inject()
     private val keystoreManager: KeystoreManager by inject()
+    private val downloaderPluginRepository: DownloaderPluginRepository by inject()
     private val downloadedAppRepository: DownloadedAppRepository by inject()
     private val pm: PM by inject()
     private val fs: Filesystem by inject()
@@ -143,10 +145,12 @@ class PatcherWorker(
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
+                    val (plugin, app) = downloaderPluginRepository.unwrapParceledApp(selectedApp.app)
+
                     downloadedAppRepository.download(
-                        selectedApp.app,
-                        prefs.preferSplits.get(),
-                        onDownload = { args.downloadProgress.emit(it) }
+                        plugin,
+                        app,
+                        onDownload = args.downloadProgress::emit
                     ).also {
                         args.setInputFile(it)
                         updateProgress(state = State.COMPLETED) // Download APK

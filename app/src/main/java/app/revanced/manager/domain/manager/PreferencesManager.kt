@@ -19,8 +19,6 @@ class PreferencesManager(
     val keystoreCommonName = stringPreference("keystore_cn", KeystoreManager.DEFAULT)
     val keystorePass = stringPreference("keystore_pass", KeystoreManager.DEFAULT)
 
-    val preferSplits = booleanPreference("prefer_splits", false)
-
     val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
 

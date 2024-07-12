@@ -113,10 +113,14 @@
     <string name="patch_options_reset_bundle_description">Resets patch options for all patches in a bundle</string>
     <string name="patch_options_reset_all">Reset patch options</string>
     <string name="patch_options_reset_all_description">Resets all patch options</string>
-    <string name="prefer_splits">Prefer split APK\'s</string>
-    <string name="prefer_splits_description">Prefer split APK\'s instead of full APK\'s</string>
-    <string name="prefer_universal">Prefer universal APK\'s</string>
-    <string name="prefer_universal_description">Prefer universal instead of arch-specific APK\'s</string>
+    <string name="downloader_plugins">Plugins</string>
+    <string name="downloader_plugin_state_trusted">Trusted</string>
+    <string name="downloader_plugin_state_failed">Failed</string>
+    <string name="downloader_plugin_state_untrusted">Untrusted</string>
+    <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
+    <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
+    <string name="downloader_plugin_trust_dialog_body">Package name: %1$s\nSignature (SHA-256): %2$s</string>
+    <string name="downloader_settings_no_apps">No downloaded apps found</string>
 
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
@@ -237,6 +241,12 @@
     <string name="already_downloaded">Already downloaded</string>
     <string name="select_version">Select version</string>
     <string name="downloadable_versions">Downloadable versions</string>
+    <string name="downloaded_versions">Downloaded versions</string>
+    <string name="downloader_select">Select downloader</string>
+    <string name="downloader_not_selected">No downloader selected</string>
+    <string name="downloader_no_versions">No downloadable versions found</string>
+    <string name="downloader_no_plugins_installed">No plugins installed.</string>
+    <string name="downloader_no_plugins_available">No trusted plugins available for use. Check your settings.</string>
     <string name="already_patched">Already patched</string>
 
     <string name="patch_selector_sheet_filter_title">Filter</string>

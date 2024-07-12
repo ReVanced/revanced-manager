@@ -113,6 +113,7 @@ dependencies {
     implementation(libs.splash.screen)
     implementation(libs.compose.activity)
     implementation(libs.paging.common.ktx)
+    implementation(libs.paging.compose)
     implementation(libs.work.runtime.ktx)
     implementation(libs.preferences.datastore)
 
@@ -152,6 +153,9 @@ dependencies {
     // ReVanced
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
+
+    // Downloader plugins
+    implementation(project(":downloader-plugin"))
 
     // Native processes
     implementation(libs.kotlin.process)

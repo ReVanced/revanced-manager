@@ -1,0 +1,33 @@
+public abstract interface class app/revanced/manager/plugin/downloader/DownloaderPlugin {
+	public abstract fun createPagingSource (Lapp/revanced/manager/plugin/downloader/DownloaderPlugin$SearchParameters;)Landroidx/paging/PagingSource;
+	public abstract fun download (Lapp/revanced/manager/plugin/downloader/DownloaderPlugin$App;Lapp/revanced/manager/plugin/downloader/DownloaderPlugin$DownloadParameters;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getPagingConfig ()Landroidx/paging/PagingConfig;
+}
+
+public abstract interface class app/revanced/manager/plugin/downloader/DownloaderPlugin$App : android/os/Parcelable {
+	public abstract fun getPackageName ()Ljava/lang/String;
+	public abstract fun getVersion ()Ljava/lang/String;
+}
+
+public final class app/revanced/manager/plugin/downloader/DownloaderPlugin$DownloadParameters {
+	public fun <init> (Ljava/io/File;Lkotlin/jvm/functions/Function2;)V
+	public final fun getOnDownloadProgress ()Lkotlin/jvm/functions/Function2;
+	public final fun getTargetFile ()Ljava/io/File;
+}
+
+public final class app/revanced/manager/plugin/downloader/DownloaderPlugin$Parameters {
+	public fun <init> (Landroid/content/Context;Ljava/io/File;)V
+	public final fun getContext ()Landroid/content/Context;
+	public final fun getTempDirectory ()Ljava/io/File;
+}
+
+public final class app/revanced/manager/plugin/downloader/DownloaderPlugin$SearchParameters {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getPackageName ()Ljava/lang/String;
+	public final fun getVersionHint ()Ljava/lang/String;
+}
+
+public final class app/revanced/manager/plugin/downloader/UtilsKt {
+	public static final fun singlePagePagingSource (Lkotlin/jvm/functions/Function1;)Landroidx/paging/PagingSource;
+}
+
