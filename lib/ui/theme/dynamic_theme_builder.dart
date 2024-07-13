@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:revanced_manager/app/app.router.dart';
@@ -52,7 +51,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
         final ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
           navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
+            labelTextStyle: WidgetStateProperty.all(
               GoogleFonts.roboto(
                 color: lightColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
@@ -66,7 +65,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
           brightness: Brightness.dark,
           useMaterial3: true,
           navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
+            labelTextStyle: WidgetStateProperty.all(
               GoogleFonts.roboto(
                 color: darkColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,

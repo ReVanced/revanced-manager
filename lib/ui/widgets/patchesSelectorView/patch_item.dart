@@ -170,7 +170,7 @@ class _PatchItemState extends State<PatchItem> {
                                     onPressed: () =>
                                         _showUnsupportedWarningDialog(),
                                     style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
+                                      shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -181,12 +181,10 @@ class _PatchItemState extends State<PatchItem> {
                                           ),
                                         ),
                                       ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
+                                      backgroundColor: WidgetStateProperty.all(
                                         Colors.transparent,
                                       ),
-                                      foregroundColor:
-                                          MaterialStateProperty.all(
+                                      foregroundColor: WidgetStateProperty.all(
                                         Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),
