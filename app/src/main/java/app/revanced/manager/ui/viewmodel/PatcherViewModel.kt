@@ -94,7 +94,7 @@ class PatcherViewModel(
     }
 
     val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
-    private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
+    private val downloadProgress = MutableStateFlow<Pair<Float, Float?>?>(null)
     val steps = generateSteps(
         app,
         input.selectedApp,
@@ -304,7 +304,7 @@ class PatcherViewModel(
         fun generateSteps(
             context: Context,
             selectedApp: SelectedApp,
-            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
+            downloadProgress: StateFlow<Pair<Float, Float?>?>? = null
         ): List<Step> {
             val needsDownload = selectedApp is SelectedApp.Download
 

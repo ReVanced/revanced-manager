@@ -5,15 +5,13 @@ import android.content.Context
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
-import app.revanced.manager.plugin.downloader.DownloaderPlugin
+import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
+import app.revanced.manager.plugin.downloader.App
+import app.revanced.manager.plugin.downloader.DownloadScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
 
-class DownloadedAppRepository(
-    app: Application,
-    db: AppDatabase,
-    private val downloaderPluginRepository: DownloaderPluginRepository
-) {
+class DownloadedAppRepository(app: Application, db: AppDatabase) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
 
@@ -22,10 +20,10 @@ class DownloadedAppRepository(
     fun getApkFileForApp(app: DownloadedApp): File = getApkFileForDir(dir.resolve(app.directory))
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
-    suspend fun <A : DownloaderPlugin.App> download(
-        plugin: DownloaderPlugin<A>,
-        app: A,
-        onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit,
+    suspend fun download(
+        plugin: LoadedDownloaderPlugin,
+        app: App,
+        onDownload: suspend (downloadProgress: Pair<Float, Float?>) -> Unit,
     ): File {
         this.get(app.packageName, app.version)?.let { downloaded ->
             return getApkFileForApp(downloaded)
@@ -36,17 +34,12 @@ class DownloadedAppRepository(
         val savePath = dir.resolve(relativePath).also { it.mkdirs() }
 
         try {
-            val parameters = DownloaderPlugin.DownloadParameters(
-                targetFile = savePath.resolve("base.apk"),
-                onDownloadProgress = { progress ->
-                    val (bytesReceived, bytesTotal) = progress
-                        ?: return@DownloadParameters onDownload(null)
+            val scope = object : DownloadScope {
+                override val saveLocation = savePath.resolve("base.apk")
+                override suspend fun reportProgress(bytesReceived: Int, bytesTotal: Int?) = onDownload(bytesReceived.megaBytes to bytesTotal?.megaBytes)
+            }
 
-                    onDownload(bytesReceived.megaBytes to bytesTotal.megaBytes)
-                }
-            )
-
-            plugin.download(app, parameters)
+            plugin.download(scope, app)
 
             dao.insert(
                 DownloadedApp(

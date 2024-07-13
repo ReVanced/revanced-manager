@@ -12,17 +12,14 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.installer.RootInstaller
-import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.domain.repository.DownloadedAppRepository
 import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
-import app.revanced.manager.plugin.downloader.DownloaderPlugin
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderApp
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
@@ -100,12 +97,7 @@ class VersionSelectorViewModel(
             Pager(
                 config = plugin.pagingConfig
             ) {
-                plugin.createPagingSource(
-                    DownloaderPlugin.SearchParameters(
-                        packageName,
-                        suggestedVersion
-                    )
-                )
+                plugin.createVersionPagingSource(packageName, suggestedVersion)
             }.flow.map { pagingData ->
                 pagingData.map {
                     SelectedApp.Download(

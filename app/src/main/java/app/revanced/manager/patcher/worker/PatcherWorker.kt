@@ -63,7 +63,7 @@ class PatcherWorker(
         val selectedPatches: PatchSelection,
         val options: Options,
         val logger: Logger,
-        val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
+        val downloadProgress: MutableStateFlow<Pair<Float, Float?>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
         val setInputFile: (File) -> Unit,
         val onProgress: ProgressEventHandler
