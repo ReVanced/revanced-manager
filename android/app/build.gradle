@@ -24,7 +24,6 @@ if (flutterVersionName == null) {
 
 android {
     compileSdk 34
-    ndkVersion flutter.ndkVersion
 
     compileOptions {
         coreLibraryDesugaringEnabled true
