@@ -115,7 +115,7 @@
     <string name="patch_options_reset_all_description">Resets all patch options</string>
     <string name="downloader_plugins">Plugins</string>
     <string name="downloader_plugin_state_trusted">Trusted</string>
-    <string name="downloader_plugin_state_failed">Failed</string>
+    <string name="downloader_plugin_state_failed">Failed to load. Click for more details</string>
     <string name="downloader_plugin_state_untrusted">Untrusted</string>
     <string name="downloader_plugin_trust_dialog_title">Trust plugin?</string>
     <string name="downloader_plugin_revoke_trust_dialog_title">Revoke trust?</string>
