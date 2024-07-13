@@ -43,11 +43,11 @@ private fun installedAppDownloader(context: DownloaderContext) = downloader<Inst
     }
 
     download {
-        Files.copy(Path(it.apkPath), saveLocation.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(Path(it.apkPath), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 }
 
-private val Int.megabytes get() = times(1_000_000)
+private val Int.megaBytes get() = times(1_000_000)
 
 val examplePaginatedDownloader = paginatedDownloader {
     versionPager { packageName, versionHint ->
@@ -81,7 +81,7 @@ val examplePaginatedDownloader = paginatedDownloader {
 
     download {
         for (i in 0..5) {
-            reportProgress(i.megabytes , 5.megabytes)
+            reportProgress(i.megaBytes , 5.megaBytes)
             delay(1000L)
         }
 

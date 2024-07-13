@@ -31,15 +31,24 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
 
         // Converted integers cannot contain / or .. unlike the package name or version, so they are safer to use here.
         val relativePath = File(generateUid().toString())
-        val savePath = dir.resolve(relativePath).also { it.mkdirs() }
+        val saveDir = dir.resolve(relativePath).also { it.mkdirs() }
+        val targetFile = saveDir.resolve("base.apk")
 
         try {
             val scope = object : DownloadScope {
-                override val saveLocation = savePath.resolve("base.apk")
-                override suspend fun reportProgress(bytesReceived: Int, bytesTotal: Int?) = onDownload(bytesReceived.megaBytes to bytesTotal?.megaBytes)
+                override val targetFile = targetFile
+                override suspend fun reportProgress(bytesReceived: Int, bytesTotal: Int?) {
+                    require(bytesReceived >= 0) { "bytesReceived must not be negative" }
+                    require(bytesTotal == null || bytesTotal >= bytesReceived) { "bytesTotal must be greater than or equal to bytesReceived" }
+                    require(bytesTotal != 0) { "bytesTotal must not be zero" }
+
+                    onDownload(bytesReceived.megaBytes to bytesTotal?.megaBytes)
+                }
             }
 
             plugin.download(scope, app)
+
+            if (!targetFile.exists()) throw Exception("Downloader did not download any files")
 
             dao.insert(
                 DownloadedApp(
@@ -49,12 +58,12 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
                 )
             )
         } catch (e: Exception) {
-            savePath.deleteRecursively()
+            saveDir.deleteRecursively()
             throw e
         }
 
         // Return the Apk file.
-        return getApkFileForDir(savePath)
+        return getApkFileForDir(saveDir)
     }
 
     suspend fun get(packageName: String, version: String) = dao.get(packageName, version)

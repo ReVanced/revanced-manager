@@ -6,7 +6,7 @@ interface DownloadScope {
     /**
      * The location where the downloaded APK should be saved.
      */
-    val saveLocation: File
+    val targetFile: File
 
     /**
      * A callback for reporting download progress
