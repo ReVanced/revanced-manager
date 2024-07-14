@@ -1,10 +1,16 @@
 package app.revanced.manager.ui.screen.settings
 
 import android.app.ActivityManager
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +32,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,7 +51,7 @@ import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
@@ -58,6 +66,7 @@ fun AdvancedSettingsScreen(
             activityManager.largeMemoryClass
         )
     }
+    val haptics = LocalHapticFeedback.current
 
     Scaffold(
         topBar = {
@@ -89,15 +98,6 @@ fun AdvancedSettingsScreen(
                 modifier = Modifier.clickable {
                     showApiUrlDialog = true
                 }
-            )
-
-            val exportDebugLogsLauncher =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    it?.let(vm::exportDebugLogs)
-                }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.debug_logs_export),
-                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
             )
 
             GroupHeader(stringResource(R.string.patcher))
@@ -147,9 +147,16 @@ fun AdvancedSettingsScreen(
             )
 
             GroupHeader(stringResource(R.string.debugging))
+            val exportDebugLogsLauncher =
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                    it?.let(vm::exportDebugLogs)
+                }
             SettingsListItem(
-                headlineContent = stringResource(R.string.about_device),
-                supportingContent = """
+                headlineContent = stringResource(R.string.debug_logs_export),
+                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
+            )
+            val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val deviceContent = """
                     **Version**: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     **Build type**: ${BuildConfig.BUILD_TYPE}
                     **Model**: ${Build.MODEL}
@@ -157,6 +164,29 @@ fun AdvancedSettingsScreen(
                     **Supported Archs**: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     **Memory limit**: $memoryLimit
                 """.trimIndent()
+            SettingsListItem(
+                modifier = Modifier.combinedClickable(
+                    onLongClickLabel = stringResource(R.string.copy_to_clipboard),
+                    onLongClick = {
+                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                        clipboard.setPrimaryClip(
+                            ClipData.newPlainText("Device Information", deviceContent)
+                        )
+
+                        /* TODO: Investigate & Testing
+                            https://developer.android.com/develop/ui/views/touch-and-input/copy-paste#duplicate-notifications
+                            Android would like us to show Toast for API 32 or lower.
+
+                            Some custom skin don't actually support this.
+                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
+                        */
+                        Toast.makeText(context, R.string.toast_copied_to_clipboard, Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+
+                },
+                headlineContent = stringResource(R.string.about_device),
+                supportingContent = deviceContent
             )
         }
     }
