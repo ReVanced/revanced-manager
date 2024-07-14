@@ -59,9 +59,12 @@ class MainActivity : ComponentActivity() {
                         is Destination.Dashboard -> DashboardScreen(
                             onSettingsClick = { navController.navigate(Destination.Settings()) },
                             onAppSelectorClick = { navController.navigate(Destination.AppSelector) },
-                            onUpdateClick = { navController.navigate(
-                                Destination.Settings(SettingsDestination.Update())
-                            ) },
+                            onUpdateClick = {
+                                navController.navigate(Destination.Settings(SettingsDestination.Update()))
+                            },
+                            onDownloaderPluginClick = {
+                                navController.navigate(Destination.Settings(SettingsDestination.Downloads))
+                            },
                             onAppClick = { installedApp ->
                                 navController.navigate(
                                     Destination.InstalledApplicationInfo(

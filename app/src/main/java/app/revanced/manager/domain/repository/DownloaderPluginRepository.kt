@@ -11,6 +11,7 @@ import androidx.paging.PagingState
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.plugins.TrustedDownloaderPlugin
+import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderApp
@@ -27,6 +28,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -35,6 +37,7 @@ import java.lang.reflect.Modifier
 class DownloaderPluginRepository(
     private val pm: PM,
     private val fs: Filesystem,
+    private val prefs: PreferencesManager,
     private val context: Context,
     db: AppDatabase
 ) {
@@ -43,6 +46,15 @@ class DownloaderPluginRepository(
     val pluginStates = _pluginStates.asStateFlow()
     val loadedPluginsFlow = pluginStates.map { states ->
         states.values.filterIsInstance<DownloaderPluginState.Loaded>().map { it.plugin }
+    }
+
+    private val acknowledgedDownloaderPlugins = prefs.acknowledgedDownloaderPlugins
+    private val installedPluginPackageNames = MutableStateFlow(emptySet<String>())
+    val newPluginPackageNames = combine(
+        installedPluginPackageNames,
+        acknowledgedDownloaderPlugins.flow
+    ) { installed, acknowledged ->
+        installed subtract acknowledged
     }
 
     suspend fun reload() {
@@ -55,6 +67,15 @@ class DownloaderPluginRepository(
             }
 
         _pluginStates.value = pluginPackages.associate { it.packageName to loadPlugin(it) }
+        installedPluginPackageNames.value = pluginPackages.map { it.packageName }.toSet()
+
+        val acknowledgedPlugins = acknowledgedDownloaderPlugins.get()
+        val uninstalledPlugins = acknowledgedPlugins subtract installedPluginPackageNames.value
+        if (uninstalledPlugins.isNotEmpty()) {
+            Log.d(tag, "Uninstalled plugins: ${uninstalledPlugins.joinToString(", ")}")
+            acknowledgedDownloaderPlugins.update(acknowledgedPlugins subtract uninstalledPlugins)
+            trustDao.removeAll(uninstalledPlugins)
+        }
     }
 
     fun unwrapParceledApp(app: ParceledDownloaderApp): Pair<LoadedDownloaderPlugin, App> {
@@ -157,11 +178,18 @@ class DownloaderPluginRepository(
                 pm.getSignatures(packageInfo).first().toCharsString()
             )
         )
+
         reload()
+        prefs.edit {
+            acknowledgedDownloaderPlugins += packageInfo.packageName
+        }
     }
 
     suspend fun revokeTrustForPackage(packageName: String) =
         trustDao.remove(packageName).also { reload() }
+
+    suspend fun acknowledgeAllNewPlugins() =
+        acknowledgedDownloaderPlugins.update(installedPluginPackageNames.value)
 
     private suspend fun verify(packageInfo: PackageInfo): Boolean {
         val expectedSignature =
