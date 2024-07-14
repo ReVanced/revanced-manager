@@ -1,5 +1,9 @@
 package app.revanced.manager.ui.screen
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +14,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.DeleteOutline
@@ -53,9 +58,7 @@ import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
-import app.revanced.manager.ui.component.bundle.ImportBundleDialog
-import app.revanced.manager.ui.component.bundle.ImportBundleTypeSelectorDialog
-import app.revanced.manager.ui.model.BundleType
+import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -69,6 +72,7 @@ enum class DashboardPage(
     BUNDLES(R.string.tab_bundles, Icons.Outlined.Source),
 }
 
+@SuppressLint("BatteryLife")
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -94,33 +98,17 @@ fun DashboardScreen(
     val firstLaunch by vm.prefs.firstLaunch.getAsState()
     if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
 
-    var selectedBundleType: BundleType? by rememberSaveable { mutableStateOf(null) }
-    selectedBundleType?.let {
-        fun dismiss() {
-            selectedBundleType = null
-        }
-
-        ImportBundleDialog(
-            onDismissRequest = ::dismiss,
+    var showAddBundleDialog by rememberSaveable { mutableStateOf(false) }
+    if (showAddBundleDialog) {
+        ImportPatchBundleDialog(
+            onDismiss = { showAddBundleDialog = false },
             onLocalSubmit = { patches, integrations ->
-                dismiss()
+                showAddBundleDialog = false
                 vm.createLocalSource(patches, integrations)
             },
             onRemoteSubmit = { url, autoUpdate ->
-                dismiss()
+                showAddBundleDialog = false
                 vm.createRemoteSource(url, autoUpdate)
-            },
-            initialBundleType = it
-        )
-    }
-
-    var showBundleTypeSelectorDialog by rememberSaveable { mutableStateOf(false) }
-    if (showBundleTypeSelectorDialog) {
-        ImportBundleTypeSelectorDialog(
-            onDismiss = { showBundleTypeSelectorDialog = false },
-            onConfirm = {
-                selectedBundleType = it
-                showBundleTypeSelectorDialog = false
             }
         )
     }
@@ -131,7 +119,7 @@ fun DashboardScreen(
                 BundleTopBar(
                     title = stringResource(R.string.bundles_selected, vm.selectedSources.size),
                     onBackClick = vm::cancelSourceSelection,
-                    onBackIcon = {
+                    backIcon = {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.back)
@@ -194,7 +182,7 @@ fun DashboardScreen(
                         }
 
                         DashboardPage.BUNDLES.ordinal -> {
-                            showBundleTypeSelectorDialog = true
+                            showAddBundleDialog = true
                         }
                     }
                 }
@@ -229,6 +217,20 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
+                if (vm.showBatteryOptimizationsWarning) {
+                    {
+                        NotificationCard(
+                            isWarning = true,
+                            icon = Icons.Default.BatteryAlert,
+                            text = stringResource(R.string.battery_optimization_notification),
+                            onClick = {
+                                androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                    data = Uri.parse("package:${androidContext.packageName}")
+                                })
+                            }
+                        )
+                    }
+                } else null,
                 vm.updatedManagerVersion?.let {
                     {
                         NotificationCard(
@@ -239,7 +241,7 @@ fun DashboardScreen(
                                     Text(stringResource(R.string.dismiss))
                                 }
                                 TextButton(onClick = onUpdateClick) {
-                                    Text(stringResource(R.string.update))
+                                    Text(stringResource(R.string.show))
                                 }
                             }
                         )

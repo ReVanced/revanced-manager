@@ -69,8 +69,7 @@ fun VersionSelectorScreen(
     if (viewModel.showNonSuggestedVersionDialog)
         NonSuggestedVersionDialog(
             suggestedVersion = viewModel.requiredVersion.orEmpty(),
-            onCancel = viewModel::dismissNonSuggestedVersionDialog,
-            onContinue = viewModel::continueWithNonSuggestedVersion,
+            onDismiss = viewModel::dismissNonSuggestedVersionDialog
         )
 
     val lazyListState = rememberLazyListState()

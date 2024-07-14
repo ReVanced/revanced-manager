@@ -112,7 +112,7 @@ private fun ThemePicker(
             }
         },
         confirmButton = {
-            Button(
+            TextButton(
                 onClick = {
                     onConfirm(selectedTheme)
                     onDismiss()

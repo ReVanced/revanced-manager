@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
@@ -115,8 +116,8 @@ fun BaseBundleDialog(
 
         if (remoteUrl != null) {
             BundleListItem(
-                headlineText = stringResource(R.string.automatically_update),
-                supportingText = stringResource(R.string.automatically_update_description),
+                headlineText = stringResource(R.string.bundle_auto_update),
+                supportingText = stringResource(R.string.bundle_auto_update_description),
                 trailingContent = {
                     Switch(
                         checked = autoUpdate,
@@ -163,8 +164,7 @@ fun BaseBundleDialog(
         val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
         BundleListItem(
             headlineText = stringResource(R.string.patches),
-            supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
-            else stringResource(R.string.patches_available, patchCount),
+            supportingText = pluralStringResource(R.plurals.bundle_patches_available, patchCount, patchCount),
             modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
         ) {
             if (patchesClickable)

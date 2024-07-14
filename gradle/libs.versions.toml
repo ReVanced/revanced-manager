@@ -1,16 +1,17 @@
 [versions]
-ktx = "1.12.0"
+ktx = "1.13.1"
 material3 = "1.2.1"
-ui-tooling = "1.6.4"
-viewmodel-lifecycle = "2.7.0"
+ui-tooling = "1.6.8"
+viewmodel-lifecycle = "2.8.3"
 splash-screen = "1.0.1"
-compose-activity = "1.8.2"
-paging = "3.2.1"
-preferences-datastore = "1.0.0"
+compose-activity = "1.9.0"
+paging = "3.3.0"
+preferences-datastore = "1.1.1"
 work-runtime = "2.9.0"
-compose-bom = "2024.03.00"
+compose-bom = "2024.06.00"
 accompanist = "0.34.0"
 placeholder = "1.1.2"
+reorderable = "1.5.2"
 serialization = "1.6.3"
 collection = "0.3.7"
 room-version = "2.6.1"
@@ -20,12 +21,12 @@ koin-version = "3.5.3"
 koin-version-compose = "3.5.3"
 reimagined-navigation = "1.5.0"
 ktor = "2.3.9"
-markdown-renderer = "0.13.0"
+markdown-renderer = "0.22.0"
 fading-edges = "1.0.4"
-androidGradlePlugin = "8.3.0"
-kotlinGradlePlugin = "1.9.22"
-devToolsGradlePlugin = "1.9.22-1.0.17"
-aboutLibrariesGradlePlugin = "11.1.1"
+android-gradle-plugin = "8.3.2"
+kotlin-gradle-plugin = "1.9.22"
+dev-tools-gradle-plugin = "1.9.22-1.0.17"
+about-libraries-gradle-plugin = "11.1.1"
 coil = "2.6.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
@@ -86,8 +87,8 @@ koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager
 # Compose Navigation
 reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
 
-# about-libraries
-about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "aboutLibrariesGradlePlugin" }
+# About Libraries
+about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries-gradle-plugin" }
 
 # Ktor
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -120,12 +121,15 @@ libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = 
 # Scrollbars
 scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
 
+# Reorderable lists
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
+
 # Compose Icons
 # switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
-devtools = { id = "com.google.devtools.ksp", version.ref = "devToolsGradlePlugin" }
-about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibrariesGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-gradle-plugin" }
+devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
+about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }

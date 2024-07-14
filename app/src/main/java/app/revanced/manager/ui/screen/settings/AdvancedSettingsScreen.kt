@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import androidx.lifecycle.viewModelScope
+import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -72,6 +73,8 @@ fun AdvancedSettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            GroupHeader(stringResource(R.string.manager))
+
             val apiUrl by vm.prefs.api.getAsState()
             var showApiUrlDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -112,10 +115,24 @@ fun AdvancedSettingsScreen(
                 description = R.string.process_runtime_memory_limit_description,
             )
             BooleanItem(
+                preference = vm.prefs.multithreadingDexFileWriter,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.multithreaded_dex_file_writer,
+                description = R.string.multithreaded_dex_file_writer_description,
+            )
+
+            GroupHeader(stringResource(R.string.safeguards))
+            BooleanItem(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
                 description = R.string.patch_compat_check_description
+            )
+            BooleanItem(
+                preference = vm.prefs.disableUniversalPatchWarning,
+                coroutineScope = vm.viewModelScope,
+                headline = R.string.universal_patches_safeguard,
+                description = R.string.universal_patches_safeguard_description
             )
             BooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
@@ -124,42 +141,23 @@ fun AdvancedSettingsScreen(
                 description = R.string.suggested_version_safeguard_description
             )
             BooleanItem(
-                preference = vm.prefs.multithreadingDexFileWriter,
+                preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
-                headline = R.string.multithreaded_dex_file_writer,
-                description = R.string.multithreaded_dex_file_writer_description,
+                headline = R.string.patch_selection_safeguard,
+                description = R.string.patch_selection_safeguard_description
             )
 
-            GroupHeader(stringResource(R.string.patch_bundles_section))
+            GroupHeader(stringResource(R.string.debugging))
             SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_redownload),
-                modifier = Modifier.clickable {
-                    vm.redownloadBundles()
-                }
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_reset),
-                modifier = Modifier.clickable {
-                    vm.resetBundles()
-                }
-            )
-
-            GroupHeader(stringResource(R.string.device))
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_model),
-                supportingContent = Build.MODEL
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_android_version),
-                supportingContent = Build.VERSION.RELEASE
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_architectures),
-                supportingContent = Build.SUPPORTED_ABIS.joinToString(", ")
-            )
-            SettingsListItem(
-                headlineContent = stringResource(R.string.device_memory_limit),
-                supportingContent = memoryLimit
+                headlineContent = stringResource(R.string.about_device),
+                supportingContent = """
+                    **Version**: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+                    **Build type**: ${BuildConfig.BUILD_TYPE}
+                    **Model**: ${Build.MODEL}
+                    **Android version**: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
+                    **Supported Archs**: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    **Memory limit**: $memoryLimit
+                """.trimIndent()
             )
         }
     }
