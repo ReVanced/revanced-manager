@@ -157,12 +157,12 @@ fun AdvancedSettingsScreen(
             )
             val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val deviceContent = """
-                    **Version**: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-                    **Build type**: ${BuildConfig.BUILD_TYPE}
-                    **Model**: ${Build.MODEL}
-                    **Android version**: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
-                    **Supported Archs**: ${Build.SUPPORTED_ABIS.joinToString(", ")}
-                    **Memory limit**: $memoryLimit
+                    Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+                    Build type: ${BuildConfig.BUILD_TYPE}
+                    Model: ${Build.MODEL}
+                    Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
+                    Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    Memory limit: $memoryLimit
                 """.trimIndent()
             SettingsListItem(
                 modifier = Modifier.combinedClickable(
