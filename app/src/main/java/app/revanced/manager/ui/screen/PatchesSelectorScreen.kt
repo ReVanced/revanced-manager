@@ -142,10 +142,18 @@ fun PatchesSelectorScreen(
     }
 
     if (vm.compatibleVersions.isNotEmpty())
-        UnsupportedDialog(
+        UnsupportedPatchDialog(
             appVersion = vm.appVersion,
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
+        )
+    var showUnsupportedPatchesDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if (showUnsupportedPatchesDialog)
+        UnsupportedPatchesDialog(
+            appVersion = vm.appVersion,
+            onDismissRequest = { showUnsupportedPatchesDialog = false }
         )
 
     vm.optionsDialog?.let { (bundle, patch) ->
@@ -199,12 +207,16 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
-                        if (vm.selectionWarningEnabled) {
-                            showSelectionWarning = true
-                        } else if (vm.universalPatchWarningEnabled && patch.compatiblePackages == null) {
-                            vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
+                        if (!supported) {
+                            vm.openUnsupportedDialog(patch)
                         } else {
-                            vm.togglePatch(uid, patch)
+                            if (vm.selectionWarningEnabled) {
+                                showSelectionWarning = true
+                            } else if (vm.universalPatchWarningEnabled && patch.compatiblePackages == null) {
+                                vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
+                            } else {
+                                vm.togglePatch(uid, patch)
+                            }
                         }
                     },
                     supported = supported
@@ -255,7 +267,7 @@ fun PatchesSelectorScreen(
                 ) {
                     ListHeader(
                         title = stringResource(R.string.unsupported_patches),
-                        onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                        onHelpClick = { showUnsupportedPatchesDialog = true }
                     )
                 }
             }
@@ -362,7 +374,7 @@ fun PatchesSelectorScreen(
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),
-                                onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                                onHelpClick = { showUnsupportedPatchesDialog = true }
                             )
                         }
                     }
@@ -423,7 +435,7 @@ fun PatchItem(
 ) = ListItem(
     modifier = Modifier
         .let { if (!supported) it.alpha(0.5f) else it }
-        .clickable(enabled = supported, onClick = onToggle)
+        .clickable(onClick = onToggle)
         .fillMaxSize(),
     leadingContent = {
         Checkbox(
@@ -470,18 +482,46 @@ fun ListHeader(
 }
 
 @Composable
-fun UnsupportedDialog(
+fun UnsupportedPatchesDialog(
     appVersion: String,
-    supportedVersions: List<String>,
     onDismissRequest: () -> Unit
 ) = AlertDialog(
+    icon = {
+        Icon(Icons.Outlined.WarningAmber, null)
+    },
     onDismissRequest = onDismissRequest,
     confirmButton = {
         TextButton(onClick = onDismissRequest) {
             Text(stringResource(R.string.ok))
         }
     },
-    title = { Text(stringResource(R.string.unsupported_app)) },
+    title = { Text(stringResource(R.string.unsupported_patches)) },
+    text = {
+        Text(
+            stringResource(
+                R.string.unsupported_patches_dialog,
+                appVersion
+            )
+        )
+    }
+)
+
+@Composable
+fun UnsupportedPatchDialog(
+    appVersion: String,
+    supportedVersions: List<String>,
+    onDismissRequest: () -> Unit
+) = AlertDialog(
+    icon = {
+        Icon(Icons.Outlined.WarningAmber, null)
+    },
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+        TextButton(onClick = onDismissRequest) {
+            Text(stringResource(R.string.ok))
+        }
+    },
+    title = { Text(stringResource(R.string.unsupported_patch)) },
     text = {
         Text(
             stringResource(
