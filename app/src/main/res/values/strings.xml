@@ -156,9 +156,10 @@
     <string name="debug_logs_export_failed">Failed to export logs</string>
     <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
+    <string name="api_url_description">The API used to download necessary files.</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
-    <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
-    <string name="api_url_dialog_warning">Only use API\'s you trust!</string>
+    <string name="api_url_dialog_description">Set the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
+    <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
     <string name="api_url_dialog_save">Set</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
