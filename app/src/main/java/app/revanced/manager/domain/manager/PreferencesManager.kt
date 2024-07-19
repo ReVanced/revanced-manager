@@ -9,6 +9,7 @@ class PreferencesManager(
 ) : BasePreferencesManager(context, "settings") {
     val dynamicColor = booleanPreference("dynamic_color", true)
     val theme = enumPreference("theme", Theme.SYSTEM)
+    val showManagerUpdateDialog = booleanPreference("show_manager_update_dialog", true)
 
     val api = stringPreference("api_url", "https://api.revanced.app")
 

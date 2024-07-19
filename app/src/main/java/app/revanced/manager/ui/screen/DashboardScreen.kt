@@ -49,12 +49,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstalledApp
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefault
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
+import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
@@ -111,6 +113,27 @@ fun DashboardScreen(
                 vm.createRemoteSource(url, autoUpdate)
             }
         )
+    }
+
+    val showManagerUpdateDialog by vm.prefs.showManagerUpdateDialog.getAsState()
+
+    if (showManagerUpdateDialog) {
+        var showDialog by rememberSaveable { mutableStateOf(true) }
+
+        if (showDialog) {
+            vm.updatedManagerVersion?.let {
+                AvailableUpdateDialog(
+                    onDismiss = { showDialog = false },
+                    setShowManagerUpdateDialog = {
+                        vm.viewModelScope.launch {
+                            vm.prefs.showManagerUpdateDialog.update(it)
+                        }
+                    },
+                    onConfirm = onUpdateClick,
+                    newVersion = it
+                )
+            }
+        }
     }
 
     Scaffold(

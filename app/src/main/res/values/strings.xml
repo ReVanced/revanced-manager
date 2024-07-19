@@ -367,4 +367,5 @@
     <string name="add_patch_bundle">Add patch bundle</string>
     <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
+    <string name="never_show_again">Never show again</string>
 </resources>
