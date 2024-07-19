@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
@@ -156,9 +159,21 @@ fun String.relativeTime(context: Context): String {
 
         return when {
             duration.toMinutes() < 1 -> context.getString(R.string.just_now)
-            duration.toMinutes() < 60 -> context.getString(R.string.minutes_ago, duration.toMinutes().toString())
-            duration.toHours() < 24 -> context.getString(R.string.hours_ago, duration.toHours().toString())
-            duration.toDays() < 30 -> context.getString(R.string.days_ago, duration.toDays().toString())
+            duration.toMinutes() < 60 -> context.getString(
+                R.string.minutes_ago,
+                duration.toMinutes().toString()
+            )
+
+            duration.toHours() < 24 -> context.getString(
+                R.string.hours_ago,
+                duration.toHours().toString()
+            )
+
+            duration.toDays() < 30 -> context.getString(
+                R.string.days_ago,
+                duration.toDays().toString()
+            )
+
             else -> {
                 val formatter = DateTimeFormatter.ofPattern("MMM d")
                 val formattedDate = inputDateTime.format(formatter)
@@ -176,6 +191,15 @@ fun String.relativeTime(context: Context): String {
     }
 }
 
+private var transparentListItemColorsCached: ListItemColors? = null
+
+/**
+ * The default ListItem colors, but with [ListItemColors.containerColor] set to [Color.Transparent].
+ */
+val transparentListItemColors
+    @Composable get() = transparentListItemColorsCached
+        ?: ListItemDefaults.colors(containerColor = Color.Transparent)
+            .also { transparentListItemColorsCached = it }
 
 const val isScrollingUpSensitivity = 10
 

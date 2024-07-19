@@ -72,6 +72,7 @@ import app.revanced.manager.util.mutableStateSetOf
 import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.saver.snapshotStateSetSaver
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.transparentListItemColors
 import kotlinx.parcelize.Parcelize
 import org.koin.compose.koinInject
 import org.koin.core.component.KoinComponent
@@ -426,7 +427,8 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
                                         selected = selectedPreset == presetKey,
                                         onClick = { selectedPreset = presetKey }
                                     )
-                                }
+                                },
+                                colors = transparentListItemColors
                             )
                         }
 
