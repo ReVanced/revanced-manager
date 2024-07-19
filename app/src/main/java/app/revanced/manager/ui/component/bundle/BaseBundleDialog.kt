@@ -40,7 +40,6 @@ fun BaseBundleDialog(
     autoUpdate: Boolean,
     onAutoUpdateChange: (Boolean) -> Unit,
     onPatchesClick: () -> Unit,
-    onBundleTypeClick: () -> Unit = {},
     extraFields: @Composable ColumnScope.() -> Unit = {}
 ) {
     ColumnWithScrollbar(
@@ -121,25 +120,6 @@ fun BaseBundleDialog(
                 },
                 modifier = Modifier.clickable {
                     onAutoUpdateChange(!autoUpdate)
-                }
-            )
-        }
-
-        BundleListItem(
-            headlineText = stringResource(R.string.bundle_type),
-            supportingText = stringResource(R.string.bundle_type_description),
-            modifier = Modifier.clickable {
-                onBundleTypeClick()
-            }
-        ) {
-            FilledTonalButton(
-                onClick = onBundleTypeClick,
-                content = {
-                    if (remoteUrl == null) {
-                        Text(stringResource(R.string.local))
-                    } else {
-                        Text(stringResource(R.string.remote))
-                    }
                 }
             )
         }
