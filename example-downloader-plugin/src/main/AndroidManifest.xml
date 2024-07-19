@@ -9,8 +9,14 @@
         android:label="@string/app_name"
         tools:targetApi="34">
 
+        <activity
+            android:name=".InteractionActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.DeviceDefault" />
+
         <meta-data
             android:name="app.revanced.manager.plugin.downloader.class"
             android:value="app.revanced.manager.plugin.downloader.example.ExamplePluginsKt" />
     </application>
+
 </manifest>

@@ -1,3 +1,7 @@
+public abstract interface class app/revanced/manager/plugin/downloader/ActivityLaunchPermit {
+	public abstract fun launch (Landroid/content/Intent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public class app/revanced/manager/plugin/downloader/App : android/os/Parcelable {
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
@@ -18,20 +22,20 @@ public final class app/revanced/manager/plugin/downloader/App$Creator : android/
 }
 
 public abstract interface class app/revanced/manager/plugin/downloader/DownloadScope {
-	public abstract fun getSaveLocation ()Ljava/io/File;
+	public abstract fun getTargetFile ()Ljava/io/File;
 	public abstract fun reportProgress (ILjava/lang/Integer;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class app/revanced/manager/plugin/downloader/Downloader : app/revanced/manager/plugin/downloader/DownloaderMarker {
+public final class app/revanced/manager/plugin/downloader/Downloader {
 	public final fun getDownload ()Lkotlin/jvm/functions/Function3;
-	public final fun getGetVersions ()Lkotlin/jvm/functions/Function3;
+	public final fun getGet ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class app/revanced/manager/plugin/downloader/DownloaderBuilder {
 	public fun <init> ()V
 	public final fun build ()Lapp/revanced/manager/plugin/downloader/Downloader;
 	public final fun download (Lkotlin/jvm/functions/Function3;)V
-	public final fun getVersions (Lkotlin/jvm/functions/Function3;)V
+	public final fun get (Lkotlin/jvm/functions/Function4;)V
 }
 
 public final class app/revanced/manager/plugin/downloader/DownloaderContext {
@@ -40,28 +44,26 @@ public final class app/revanced/manager/plugin/downloader/DownloaderContext {
 	public final fun getTempDirectory ()Ljava/io/File;
 }
 
+public abstract interface annotation class app/revanced/manager/plugin/downloader/DownloaderDsl : java/lang/annotation/Annotation {
+}
+
 public final class app/revanced/manager/plugin/downloader/DownloaderKt {
 	public static final fun downloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/plugin/downloader/Downloader;
 }
 
-public abstract interface class app/revanced/manager/plugin/downloader/DownloaderMarker {
+public abstract interface class app/revanced/manager/plugin/downloader/GetScope {
+	public abstract fun requestUserInteraction (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class app/revanced/manager/plugin/downloader/PaginatedDownloader : app/revanced/manager/plugin/downloader/DownloaderMarker {
-	public final fun getDownload ()Lkotlin/jvm/functions/Function3;
-	public final fun getPagingConfig ()Landroidx/paging/PagingConfig;
-	public final fun getVersionPager ()Lkotlin/jvm/functions/Function2;
+public abstract class app/revanced/manager/plugin/downloader/UserInteractionException : java/lang/Exception {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
-public final class app/revanced/manager/plugin/downloader/PaginatedDownloaderBuilder {
+public final class app/revanced/manager/plugin/downloader/UserInteractionException$ActivityCancelled : app/revanced/manager/plugin/downloader/UserInteractionException {
 	public fun <init> ()V
-	public final fun build ()Lapp/revanced/manager/plugin/downloader/PaginatedDownloader;
-	public final fun download (Lkotlin/jvm/functions/Function3;)V
-	public final fun versionPager (Landroidx/paging/PagingConfig;Lkotlin/jvm/functions/Function2;)V
-	public static synthetic fun versionPager$default (Lapp/revanced/manager/plugin/downloader/PaginatedDownloaderBuilder;Landroidx/paging/PagingConfig;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 }
 
-public final class app/revanced/manager/plugin/downloader/PaginatedDownloaderKt {
-	public static final fun paginatedDownloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/plugin/downloader/PaginatedDownloader;
+public final class app/revanced/manager/plugin/downloader/UserInteractionException$RequestDenied : app/revanced/manager/plugin/downloader/UserInteractionException {
+	public fun <init> ()V
 }
 

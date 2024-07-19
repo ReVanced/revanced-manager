@@ -38,7 +38,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: (packageName: String) -> Unit,
+    onAppClick: (packageName: String, version: String?) -> Unit,
     onStorageClick: (SelectedApp.Local) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
@@ -90,7 +90,12 @@ fun AppSelectorScreen(
                         key = { it.packageName }
                     ) { app ->
                         ListItem(
-                            modifier = Modifier.clickable { onAppClick(app.packageName) },
+                            modifier = Modifier.clickable {
+                                onAppClick(
+                                    app.packageName,
+                                    suggestedVersions[app.packageName]
+                                )
+                            },
                             leadingContent = {
                                 AppIcon(
                                     app.packageInfo,
@@ -183,7 +188,12 @@ fun AppSelectorScreen(
                     key = { it.packageName }
                 ) { app ->
                     ListItem(
-                        modifier = Modifier.clickable { onAppClick(app.packageName) },
+                        modifier = Modifier.clickable {
+                            onAppClick(
+                                app.packageName,
+                                suggestedVersions[app.packageName]
+                            )
+                        },
                         leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
                         headlineContent = {
                             AppLabel(

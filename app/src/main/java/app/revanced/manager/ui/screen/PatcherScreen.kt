@@ -17,6 +17,7 @@ import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -24,7 +25,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -46,6 +49,7 @@ import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.IntentContract
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,6 +93,36 @@ fun PatcherScreen(
         InstallPickerDialog(
             onDismiss = { showInstallPicker = false },
             onConfirm = vm::install
+        )
+
+    val activityLauncher = rememberLauncherForActivityResult(contract = IntentContract) {
+        vm.handleActivityResult(it)
+    }
+    SideEffect {
+        vm.launchActivity = activityLauncher::launch
+    }
+
+    if (vm.activeInteractionRequest)
+        AlertDialog(
+            onDismissRequest = vm::rejectInteraction,
+            confirmButton = {
+                TextButton(
+                    onClick = vm::allowInteraction
+                ) {
+                    Text(stringResource(R.string.continue_))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = vm::rejectInteraction
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            },
+            title = { Text("User interaction required.") },
+            text = {
+                Text("User interaction is required to proceed.")
+            }
         )
 
     AppScaffold(

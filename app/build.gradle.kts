@@ -83,7 +83,7 @@ android {
 
     buildFeatures.compose = true
     buildFeatures.aidl = true
-    buildFeatures.buildConfig=true
+    buildFeatures.buildConfig = true
 
     android {
         androidResources {

@@ -9,13 +9,13 @@ import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.destination.SettingsDestination
+import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
 import app.revanced.manager.ui.screen.PatcherScreen
 import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
-import app.revanced.manager.ui.screen.VersionSelectorScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.MainViewModel
@@ -76,12 +76,13 @@ class MainActivity : ComponentActivity() {
 
                         is Destination.InstalledApplicationInfo -> InstalledAppInfoScreen(
                             onPatchClick = { packageName, patchSelection ->
+                                /*
                                 navController.navigate(
                                     Destination.VersionSelector(
                                         packageName,
                                         patchSelection
                                     )
-                                )
+                                )*/
                             },
                             onBackClick = { navController.pop() },
                             viewModel = getComposeViewModel { parametersOf(destination.installedApp) }
@@ -93,7 +94,14 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.AppSelector -> AppSelectorScreen(
-                            onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
+                            // onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
+                            onAppClick = { packageName, version ->
+                                navController.navigate(
+                                    Destination.SelectedApplicationInfo(
+                                        SelectedApp.Downloadable(packageName, version.orEmpty())
+                                    )
+                                )
+                            },
                             onStorageClick = {
                                 navController.navigate(
                                     Destination.SelectedApplicationInfo(
@@ -102,24 +110,6 @@ class MainActivity : ComponentActivity() {
                                 )
                             },
                             onBackClick = { navController.pop() }
-                        )
-
-                        is Destination.VersionSelector -> VersionSelectorScreen(
-                            onBackClick = { navController.pop() },
-                            onAppClick = { selectedApp ->
-                                navController.navigate(
-                                    Destination.SelectedApplicationInfo(
-                                        selectedApp,
-                                        destination.patchSelection,
-                                    )
-                                )
-                            },
-                            viewModel = getComposeViewModel {
-                                parametersOf(
-                                    destination.packageName,
-                                    destination.patchSelection
-                                )
-                            }
                         )
 
                         is Destination.SelectedApplicationInfo -> SelectedAppInfoScreen(

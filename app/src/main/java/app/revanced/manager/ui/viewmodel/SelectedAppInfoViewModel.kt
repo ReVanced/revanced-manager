@@ -104,9 +104,9 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 
     private fun invalidateSelectedAppInfo() = viewModelScope.launch {
         val info = when (val app = selectedApp) {
-            is SelectedApp.Download -> null
             is SelectedApp.Local -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.file) }
             is SelectedApp.Installed -> withContext(Dispatchers.IO) { pm.getPackageInfo(app.packageName) }
+            else -> null
         }
 
         selectedAppInfo = info

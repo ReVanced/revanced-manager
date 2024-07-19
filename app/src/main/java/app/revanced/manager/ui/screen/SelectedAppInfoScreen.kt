@@ -108,7 +108,7 @@ fun SelectedAppInfoScreen(
                     )
                 },
                 onVersionSelectorClick = {
-                    navController.navigate(SelectedAppInfoDestination.VersionSelector)
+                    // navController.navigate(SelectedAppInfoDestination.VersionSelector)
                 },
                 onBackClick = onBackClick,
                 availablePatchCount = availablePatchCount,
@@ -116,15 +116,6 @@ fun SelectedAppInfoScreen(
                 packageName = packageName,
                 version = version,
                 packageInfo = vm.selectedAppInfo,
-            )
-
-            is SelectedAppInfoDestination.VersionSelector -> VersionSelectorScreen(
-                onBackClick = navController::pop,
-                onAppClick = {
-                    vm.selectedApp = it
-                    navController.pop()
-                },
-                viewModel = koinViewModel { parametersOf(packageName) }
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(

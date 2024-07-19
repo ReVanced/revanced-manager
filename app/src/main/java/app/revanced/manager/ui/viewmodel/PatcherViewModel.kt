@@ -1,5 +1,6 @@
 package app.revanced.manager.ui.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,6 +10,7 @@ import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,17 +31,21 @@ import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
+import app.revanced.manager.plugin.downloader.ActivityLaunchPermit
+import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
+import app.revanced.manager.util.IntentContract
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.uiSafe
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -48,7 +54,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -73,6 +78,13 @@ class PatcherViewModel(
         private set
     var isInstalling by mutableStateOf(false)
         private set
+
+    private var currentInteractionRequest: CompletableDeferred<ActivityLaunchPermit?>? by mutableStateOf(
+        null
+    )
+    val activeInteractionRequest by derivedStateOf { currentInteractionRequest != null }
+    private var launchedActivity: CompletableDeferred<IntentContract.Result>? = null
+    var launchActivity: (Intent) -> Unit = {}
 
     private val tempDir = fs.tempDir.resolve("installer").also {
         it.deleteRecursively()
@@ -115,6 +127,18 @@ class PatcherViewModel(
                 downloadProgress,
                 patchesProgress,
                 setInputFile = { inputFile = it },
+                handleUserInteractionRequest = {
+                    withContext(Dispatchers.Main) {
+                        if (activeInteractionRequest) throw Exception("Another request is already pending.")
+                        try {
+                            val job = CompletableDeferred<ActivityLaunchPermit?>()
+                            currentInteractionRequest = job
+                            job.await()
+                        } finally {
+                            currentInteractionRequest = null
+                        }
+                    }
+                },
                 onProgress = { name, state, message ->
                     viewModelScope.launch {
                         steps[currentStepIndex] = steps[currentStepIndex].run {
@@ -214,6 +238,35 @@ class PatcherViewModel(
         tempDir.deleteRecursively()
     }
 
+    fun rejectInteraction() {
+        currentInteractionRequest?.complete(null)
+        currentInteractionRequest = null
+    }
+
+    fun allowInteraction() {
+        currentInteractionRequest?.complete(ActivityLaunchPermit { intent ->
+            withContext(Dispatchers.Main) {
+                if (launchedActivity != null) throw Exception("An activity has already been launched.")
+                try {
+                    val job = CompletableDeferred<IntentContract.Result>()
+                    launchActivity(intent)
+
+                    launchedActivity = job
+                    val result = job.await()
+                    if (result.code != Activity.RESULT_OK) throw UserInteractionException.ActivityCancelled()
+                    result.intent
+                } finally {
+                    launchedActivity = null
+                }
+            }
+        })
+        currentInteractionRequest = null
+    }
+
+    fun handleActivityResult(result: IntentContract.Result) {
+        launchedActivity?.complete(result)
+    }
+
     fun export(uri: Uri?) = viewModelScope.launch {
         uri?.let {
             withContext(Dispatchers.IO) {
@@ -306,7 +359,8 @@ class PatcherViewModel(
             selectedApp: SelectedApp,
             downloadProgress: StateFlow<Pair<Float, Float?>?>? = null
         ): List<Step> {
-            val needsDownload = selectedApp is SelectedApp.Download
+            val needsDownload =
+                selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Downloadable
 
             return listOfNotNull(
                 Step(
