@@ -20,7 +20,7 @@ fun SafeguardBooleanItem(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     @StringRes headline: Int,
     @StringRes description: Int,
-    @StringRes confirmationText: Int = 0
+    @StringRes confirmationText: Int
 ) {
     val value by preference.getAsState()
     var showSafeguardWarning by rememberSaveable {
