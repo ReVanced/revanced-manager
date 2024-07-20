@@ -122,28 +122,40 @@ fun AdvancedSettingsScreen(
 
             GroupHeader(stringResource(R.string.safeguards))
             BooleanItem(
+                isSafeguard = true,
+                suggestedValue = false,
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
-                description = R.string.patch_compat_check_description
+                description = R.string.patch_compat_check_description,
+                confirmationText = R.string.patch_compat_check_confirmation
             )
             BooleanItem(
+                isSafeguard = true,
+                suggestedValue = false,
                 preference = vm.prefs.disableUniversalPatchWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.universal_patches_safeguard,
-                description = R.string.universal_patches_safeguard_description
+                description = R.string.universal_patches_safeguard_description,
+                confirmationText = R.string.universal_patches_safeguard_confirmation
             )
             BooleanItem(
+                isSafeguard = true,
+                suggestedValue = true,
                 preference = vm.prefs.suggestedVersionSafeguard,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.suggested_version_safeguard,
-                description = R.string.suggested_version_safeguard_description
+                description = R.string.suggested_version_safeguard_description,
+                confirmationText = R.string.suggested_version_safeguard_confirmation
             )
             BooleanItem(
+                isSafeguard = true,
+                suggestedValue = false,
                 preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_selection_safeguard,
-                description = R.string.patch_selection_safeguard_description
+                description = R.string.patch_selection_safeguard_description,
+                confirmationText = R.string.patch_selection_safeguard_confirmation
             )
 
             GroupHeader(stringResource(R.string.debugging))
