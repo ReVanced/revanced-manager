@@ -25,9 +25,7 @@ fun BooleanItem(
     BooleanItem(
         modifier = modifier,
         value = value,
-        onValueChange = {
-            coroutineScope.launch { preference.update(it) }
-        },
+        onValueChange = { coroutineScope.launch { preference.update(it) } },
         headline = headline,
         description = description
     )
