@@ -1,8 +1,6 @@
 package app.revanced.manager.ui.component.settings
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +38,7 @@ fun SafeguardBooleanItem(
         )
     }
 
-    SafeguardBooleanItem(
+    BooleanItem(
         modifier = modifier,
         value = value,
         onValueChange = {
@@ -54,24 +52,3 @@ fun SafeguardBooleanItem(
         description = description
     )
 }
-
-@Composable
-fun SafeguardBooleanItem(
-    modifier: Modifier = Modifier,
-    value: Boolean,
-    onValueChange: (Boolean) -> Unit,
-    @StringRes headline: Int,
-    @StringRes description: Int
-) = SettingsListItem(
-    modifier = Modifier
-        .clickable { onValueChange(!value) }
-        .then(modifier),
-    headlineContent = stringResource(headline),
-    supportingContent = stringResource(description),
-    trailingContent = {
-        Switch(
-            checked = value,
-            onCheckedChange = onValueChange,
-        )
-    }
-)
