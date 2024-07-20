@@ -1,4 +1,4 @@
-package app.revanced.manager.ui.component
+package app.revanced.manager.ui.component.settings
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.WarningAmber
