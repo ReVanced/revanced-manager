@@ -33,11 +33,9 @@ fun AppIcon(
         Image(
             image,
             contentDescription,
-            Modifier.placeholder(visible = showPlaceHolder, color = MaterialTheme.colorScheme.inverseOnSurface, shape = RoundedCornerShape(100)).then(modifier),
+            modifier,
             colorFilter = colorFilter
         )
-
-        showPlaceHolder = false
     } else {
         AsyncImage(
             packageInfo,
