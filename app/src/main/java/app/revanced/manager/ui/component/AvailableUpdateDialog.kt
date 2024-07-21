@@ -18,20 +18,23 @@ import app.revanced.manager.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvailableUpdateDialog(
-    onDismiss: () -> Unit, onConfirm: () -> Unit, setShowManagerUpdateDialog: (Boolean) -> Unit, newVersion: String
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+    setShowManagerUpdateDialog: (Boolean) -> Unit,
+    newVersion: String
 ) {
     var dontShowAgain by rememberSaveable { mutableStateOf(false) }
+    val dismissDialog = {
+        setShowManagerUpdateDialog(!dontShowAgain)
+        onDismiss()
+    }
 
     AlertDialogExtended(
-        onDismissRequest = {
-            setShowManagerUpdateDialog(!dontShowAgain)
-            onDismiss()
-        },
+        onDismissRequest = dismissDialog,
         confirmButton = {
             TextButton(
                 onClick = {
-                    setShowManagerUpdateDialog(!dontShowAgain)
-                    onDismiss()
+                    dismissDialog()
                     onConfirm()
                 }
             ) {
@@ -40,10 +43,7 @@ fun AvailableUpdateDialog(
         },
         dismissButton = {
             TextButton(
-                onClick = {
-                    setShowManagerUpdateDialog(!dontShowAgain)
-                    onDismiss()
-                }
+                onClick = dismissDialog
             ) {
                 Text(stringResource(R.string.dismiss))
             }

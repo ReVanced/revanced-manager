@@ -9,7 +9,6 @@ class PreferencesManager(
 ) : BasePreferencesManager(context, "settings") {
     val dynamicColor = booleanPreference("dynamic_color", true)
     val theme = enumPreference("theme", Theme.SYSTEM)
-    val showManagerUpdateDialog = booleanPreference("show_manager_update_dialog", true)
 
     val api = stringPreference("api_url", "https://api.revanced.app")
 
@@ -24,6 +23,7 @@ class PreferencesManager(
 
     val firstLaunch = booleanPreference("first_launch", true)
     val managerAutoUpdates = booleanPreference("manager_auto_updates", false)
+    val showManagerUpdateDialog = booleanPreference("show_manager_update_dialog", true)
 
     val disablePatchVersionCompatCheck = booleanPreference("disable_patch_version_compatibility_check", false)
     val disableSelectionWarning = booleanPreference("disable_selection_warning", false)
