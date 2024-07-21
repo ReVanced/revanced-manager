@@ -82,7 +82,7 @@ class AppSelectorViewModel extends BaseViewModel {
     if (suggestedVersion.isNotEmpty) {
       await openDefaultBrowser('$packageName apk version $suggestedVersion $architecture');
     } else {
-      await openDefaultBrowser('$packageName apk version $architecture');
+      await openDefaultBrowser('$packageName apk $architecture');
     }
   }
 
