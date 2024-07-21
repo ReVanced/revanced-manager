@@ -76,14 +76,13 @@ class AppSelectorViewModel extends BaseViewModel {
   }) async {
     final String suggestedVersion = getSuggestedVersion(packageName);
     final String architecture = await AboutInfo.getInfo().then((info) {
-      return info['supportedArch'].split(', ')[0];
+      return info['supportedArch'][0];
     });
 
     if (suggestedVersion.isNotEmpty) {
-      await openDefaultBrowser(
-          '$packageName apk version $suggestedVersion $architecture');
+      await openDefaultBrowser('$packageName apk version $suggestedVersion $architecture');
     } else {
-      await openDefaultBrowser('$packageName apk $architecture');
+      await openDefaultBrowser('$packageName apk version $architecture');
     }
   }
 
