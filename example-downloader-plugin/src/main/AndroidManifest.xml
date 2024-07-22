@@ -12,6 +12,7 @@
         <activity
             android:name=".InteractionActivity"
             android:exported="true"
+            android:permission="app.revanced.manager.permission.PLUGIN_HOST"
             android:theme="@android:style/Theme.DeviceDefault" />
 
         <meta-data

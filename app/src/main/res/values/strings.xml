@@ -6,6 +6,9 @@
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
+    <string name="plugin_host_permission_label">ReVanced Manager plugin host</string>
+    <string name="plugin_host_permission_description">Used to control access to ReVanced Manager plugins. Only ReVanced Manager has this.</string>
+
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
     <string name="select_app">Select an app</string>
