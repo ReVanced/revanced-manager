@@ -6,10 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -146,6 +143,24 @@ fun DashboardScreen(
                 AppTopBar(
                     title = stringResource(R.string.app_name),
                     actions = {
+                        vm.updatedManagerVersion?.let {
+                            IconButton(
+                                modifier = Modifier,
+                                onClick = onUpdateClick,
+                            ) {
+                                BadgedBox(
+                                    badge = {
+                                        Badge(
+                                            // A size value above 6.dp forces the Badge icon to be closer to the center, fixing a clipping issue
+                                            modifier = Modifier.size(7.dp),
+                                            containerColor = MaterialTheme.colorScheme.primary,
+                                        )
+                                    }
+                                ) {
+                                    Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                                }
+                            }
+                        }
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }
@@ -222,23 +237,7 @@ fun DashboardScreen(
                             }
                         )
                     }
-                } else null,
-                vm.updatedManagerVersion?.let {
-                    {
-                        NotificationCard(
-                            text = stringResource(R.string.update_available_dialog_description, it),
-                            icon = Icons.Outlined.Update,
-                            actions = {
-                                TextButton(onClick = vm::dismissUpdateDialog) {
-                                    Text(stringResource(R.string.dismiss))
-                                }
-                                TextButton(onClick = onUpdateClick) {
-                                    Text(stringResource(R.string.show))
-                                }
-                            }
-                        )
-                    }
-                }
+                } else null
             )
 
             HorizontalPager(
