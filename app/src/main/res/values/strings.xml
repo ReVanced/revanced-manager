@@ -43,9 +43,9 @@
     <string name="legacy_import_failed">Could not import legacy settings</string>
 
     <string name="auto_updates_dialog_title">Configure updates</string>
-    <string name="auto_updates_dialog_description">Do you want ReVanced Manager to periodically check for updates for the following components?</string>
-    <string name="auto_updates_dialog_manager">ReVanced Manager</string>
-    <string name="auto_updates_dialog_patches">ReVanced Patches</string>
+    <string name="auto_updates_dialog_description">Do you want <nobreak>ReVanced Manager</nobreak> to periodically check for updates for the following components?</string>
+    <string name="auto_updates_dialog_manager"><nobreak>ReVanced Manager</nobreak></string>
+    <string name="auto_updates_dialog_patches"><nobreak>ReVanced Patches</nobreak></string>
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
@@ -53,7 +53,7 @@
     <string name="advanced">Advanced</string>
     <string name="advanced_description">Advanced settings</string>
     <string name="updates">Updates</string>
-    <string name="updates_description">Updates for ReVanced Manager</string>
+    <string name="updates_description">Updates for <nobreak>ReVanced Manager</nobreak></string>
     <string name="opensource_licenses">Open source licenses</string>
     <string name="opensource_licenses_description">View all the libraries used to make this application</string>
     <string name="downloads">Downloads</string>
@@ -158,8 +158,8 @@
     <string name="api_url">API URL</string>
     <string name="api_url_description">The API used to download necessary files.</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
-    <string name="api_url_dialog_description">Set the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
-    <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
+    <string name="api_url_dialog_description">Set the API URL of <nobreak>ReVanced Manager</nobreak>. <nobreak>ReVanced Manager</nobreak> uses the API to download patches and updates.</string>
+    <string name="api_url_dialog_warning"><nobreak>ReVanced Manager</nobreak> connects to the API to download patches and updates. Make sure that you trust it.</string>
     <string name="api_url_dialog_save">Set</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
@@ -308,8 +308,8 @@
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
     <string name="bundle_type_description">Choose the type of bundle you want</string>
-    <string name="about_revanced_manager">About ReVanced Manager</string>
-    <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
+    <string name="about_revanced_manager">About <nobreak>ReVanced Manager</nobreak></string>
+    <string name="revanced_manager_description"><nobreak>ReVanced Manager</nobreak> is an application designed to work with <nobreak>ReVanced Patcher</nobreak>, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
     <string name="update_available">An update is available</string>
     <string name="current_version">Current version: %s</string>
     <string name="new_version">New version: %s</string>
@@ -319,12 +319,12 @@
     <string name="manual_update_check">Check for updates</string>
     <string name="manual_update_check_description">Manually check for updates</string>
     <string name="update_checking_manager">Update checking</string>
-    <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
+    <string name="update_checking_manager_description">Check for new versions of <nobreak>ReVanced Manager</nobreak> when the application starts</string>
     <string name="changelog">Changelog</string>
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
-    <string name="battery_optimization_notification">Battery optimizations must be turned off in order for ReVanced Manager to work correctly in the background. Click here to turn off optimizations.</string>
+    <string name="battery_optimization_notification">Battery optimizations must be turned off in order for <nobreak>ReVanced Manager</nobreak> to work correctly in the background. Click here to turn off optimizations.</string>
     <string name="installing_manager_update">Installing update…</string>
     <string name="downloading_manager_update">Downloading update…</string>
     <string name="download_manager_failed">Failed to download update: %s</string>
@@ -332,7 +332,7 @@
     <string name="save">Save</string>
     <string name="update">Update</string>
     <string name="empty">Empty</string>
-    <string name="installing_message">Tap on <b>Update</b> when prompted. \n ReVanced Manager will close when updating.</string>
+    <string name="installing_message">Tap on <b>Update</b> when prompted. \n <nobreak>ReVanced Manager</nobreak> will close when updating.</string>
     <string name="no_changelogs_found">No changelogs found</string>
     <string name="just_now">Just now</string>
     <string name="minutes_ago">%sm ago</string>
@@ -346,7 +346,7 @@
     <string name="no_update_available">No update available</string>
     <string name="update_check">Checking for updates…</string>
     <string name="dismiss_temporary">Not now</string>
-    <string name="update_available_dialog_description">A new version of ReVanced Manager (%s) is available.</string>
+    <string name="update_available_dialog_description">A new version of <nobreak>ReVanced Manager</nobreak> (%s) is available.</string>
     <string name="failed_to_download_update">Failed to download update: %s</string>
     <string name="download">Download</string>
     <string name="download_confirmation_metered">You are currently on a metered connection, and data charges from your service provider may apply.\n\nDo you still want to continue?</string>
