@@ -2,30 +2,26 @@ package app.revanced.manager.ui.component.bundle
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowRight
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.outlined.Extension
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Sell
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
-import app.revanced.manager.util.isDebuggable
 
 @Composable
 fun BaseBundleDialog(
@@ -45,34 +41,18 @@ fun BaseBundleDialog(
     ColumnWithScrollbar(
         modifier = Modifier
             .fillMaxWidth()
-            .then(modifier)
+            .padding(horizontal = 24.dp)
+            .then(modifier),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         if (name != null) {
-            var showNameInputDialog by rememberSaveable {
-                mutableStateOf(false)
-            }
-            if (showNameInputDialog) {
-                TextInputDialog(
-                    initial = name,
-                    title = stringResource(R.string.bundle_input_name),
-                    onDismissRequest = {
-                        showNameInputDialog = false
-                    },
-                    onConfirm = {
-                        showNameInputDialog = false
-                        onNameChange?.invoke(it)
-                    },
-                    validator = {
-                        it.length in 1..19
-                    }
-                )
-            }
-            BundleListItem(
-                headlineText = stringResource(R.string.bundle_input_name),
-                supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
-                modifier = Modifier.clickable(enabled = onNameChange != null) {
-                    showNameInputDialog = true
-                }
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(R.string.bundle_input_name)) },
+                value = name,
+                onValueChange = {
+                    if (it.length in 1..19) onNameChange?.invoke(it)
+                },
             )
         }
 
@@ -124,36 +104,71 @@ fun BaseBundleDialog(
             )
         }
 
-        if (version != null || patchCount > 0) {
-            Text(
-                text = stringResource(R.string.information),
-                modifier = Modifier.padding(
-                    horizontal = 16.dp,
-                    vertical = 12.dp
-                ),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
-
-        val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
-        BundleListItem(
-            headlineText = stringResource(R.string.patches),
-            supportingText = pluralStringResource(R.plurals.bundle_patches_available, patchCount, patchCount),
-            modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
-        ) {
-            if (patchesClickable)
-                Icon(
-                    Icons.AutoMirrored.Outlined.ArrowRight,
-                    stringResource(R.string.patches)
+        OutlinedCard {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Text(stringResource(R.string.bundle_information))
+                version?.let {
+                    BundleInfoItem(
+                        text = { Text(it,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                        icon = Icons.Outlined.Sell
+                    )
+                }
+                BundleInfoItem(
+                    text = {
+                        if (remoteUrl == null) {
+                            Text(stringResource(R.string.local),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        } else {
+                            Text(stringResource(R.string.remote),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    },
+                    icon = Icons.Outlined.Folder
                 )
+                patchCount.let {
+                    BundleInfoItem(
+                        text = {
+                            Text(
+                                pluralStringResource(
+                                    R.plurals.bundle_patches_available,
+                                    it,
+                                    it
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        icon = Icons.Outlined.Extension
+                    )
+                }
+            }
         }
+    }
+}
 
-        version?.let {
-            BundleListItem(
-                headlineText = stringResource(R.string.version),
-                supportingText = it,
-            )
-        }
+@Composable
+fun BundleInfoItem(
+    text: @Composable () -> Unit,
+    icon: ImageVector,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            icon,
+            contentDescription = null,
+            modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        text()
     }
 }
