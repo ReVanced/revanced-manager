@@ -95,7 +95,7 @@ fun DashboardScreen(
         vm.updatedManagerVersion?.let { version ->
             AvailableUpdateDialog(
                 onDismiss = { showDialog = false },
-                setShowManagerUpdateDialog = { vm.setShowManagerUpdateDialog(it) },
+                setShowManagerUpdateDialog = vm::setShowManagerUpdateDialog,
                 onConfirm = onUpdateClick,
                 newVersion = version
             )
@@ -143,9 +143,8 @@ fun DashboardScreen(
                 AppTopBar(
                     title = stringResource(R.string.app_name),
                     actions = {
-                        vm.updatedManagerVersion?.let {
+                        if (!vm.updatedManagerVersion.isNullOrEmpty()) {
                             IconButton(
-                                modifier = Modifier,
                                 onClick = onUpdateClick,
                             ) {
                                 BadgedBox(
