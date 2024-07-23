@@ -64,6 +64,7 @@ abstract class Preference<T>(
     val flow = dataStore.data.map { with(it) { read() } ?: default }.distinctUntilChanged()
 
     suspend fun get() = flow.first()
+    fun defaultValue() = default
     fun getBlocking() = runBlocking { get() }
     @Composable
     fun getAsState() = flow.collectAsStateWithLifecycle(initialValue = remember {
