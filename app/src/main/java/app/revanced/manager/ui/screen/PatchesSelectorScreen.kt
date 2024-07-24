@@ -541,7 +541,9 @@ fun OptionsDialog(
                 OptionItem(
                     option = option as Option<Any>,
                     value = value,
-                    setValue = { set(key, it) })
+                    setValue = {
+                        set(key, it)
+                    })
             }
         }
     }
