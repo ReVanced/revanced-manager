@@ -543,7 +543,8 @@ fun OptionsDialog(
                     value = value,
                     setValue = {
                         set(key, it)
-                    })
+                    }
+                )
             }
         }
     }
