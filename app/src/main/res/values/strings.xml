@@ -318,9 +318,9 @@
     <string name="install_update_manager_failed">Failed to install update</string>
     <string name="manual_update_check">Check for updates</string>
     <string name="manual_update_check_description">Manually check for updates</string>
-    <string name="update_checking_manager">Update checking</string>
+    <string name="update_checking_manager">Auto check for updates</string>
     <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
-    <string name="changelog">Changelog</string>
+    <string name="changelog">View changelogs</string>
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
