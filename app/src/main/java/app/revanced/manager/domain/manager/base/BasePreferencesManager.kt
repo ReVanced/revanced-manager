@@ -56,7 +56,7 @@ class EditorContext(private val prefs: MutablePreferences) {
 
 abstract class Preference<T>(
     private val dataStore: DataStore<Preferences>,
-    protected val default: T
+    val default: T
 ) {
     internal abstract fun Preferences.read(): T
     internal abstract fun MutablePreferences.write(value: T)
@@ -64,7 +64,6 @@ abstract class Preference<T>(
     val flow = dataStore.data.map { with(it) { read() } ?: default }.distinctUntilChanged()
 
     suspend fun get() = flow.first()
-    fun defaultValue() = default
     fun getBlocking() = runBlocking { get() }
     @Composable
     fun getAsState() = flow.collectAsStateWithLifecycle(initialValue = remember {

@@ -70,7 +70,7 @@ fun AdvancedSettingsScreen(
             if (showApiUrlDialog) {
                 APIUrlDialog(
                     currentUrl = apiUrl,
-                    defaultUrl = vm.prefs.api.defaultValue(),
+                    defaultUrl = vm.prefs.api.default,
                     onSubmit = {
                         showApiUrlDialog = false
                         it?.let(vm::setApiUrl)
