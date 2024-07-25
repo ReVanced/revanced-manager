@@ -206,7 +206,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     label = { Text(stringResource(R.string.api_url)) },
                     trailingIcon = {
                         IconButton(onClick = { url = defaultUrl }) {
-                            Icon(Icons.Outlined.Restore, null)
+                            Icon(Icons.Outlined.Restore, stringResource(R.string.reset_api_url))
                         }
                     }
                 )
