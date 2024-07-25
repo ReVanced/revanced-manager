@@ -14,6 +14,7 @@ class UpdatesSettingsViewModel(
     private val reVancedAPI: ReVancedAPI,
 ) : ViewModel() {
     val managerAutoUpdates = prefs.managerAutoUpdates
+    val showManagerUpdateDialog = prefs.showManagerUpdateDialog
 
     suspend fun checkForUpdates(): Boolean {
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
