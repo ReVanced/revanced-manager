@@ -88,8 +88,7 @@ fun DashboardScreen(
         )
     }
 
-    val showManagerUpdateDialog by vm.prefs.showManagerUpdateDialog.getAsState()
-    var showDialog by rememberSaveable { mutableStateOf(showManagerUpdateDialog) }
+    var showDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialog.getBlocking()) }
     val availableUpdate by remember {
         derivedStateOf { vm.updatedManagerVersion.takeIf { showDialog } }
     }
