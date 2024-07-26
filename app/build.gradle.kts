@@ -112,8 +112,6 @@ dependencies {
     implementation(libs.runtime.compose)
     implementation(libs.splash.screen)
     implementation(libs.compose.activity)
-    implementation(libs.paging.common.ktx)
-    implementation(libs.paging.compose)
     implementation(libs.work.runtime.ktx)
     implementation(libs.preferences.datastore)
 

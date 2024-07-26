@@ -2,10 +2,11 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+    `maven-publish`
 }
 
 android {
-    namespace = "app.revanced.manager.downloader_plugin"
+    namespace = "app.revanced.manager.plugin.downloader"
     compileSdk = 34
 
     defaultConfig {
@@ -32,6 +33,20 @@ android {
     }
 }
 
-dependencies {
-    api(libs.paging.common.ktx)
+publishing {
+    repositories {
+        mavenLocal()
+    }
+
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "app.revanced"
+            artifactId = "manager-downloader-plugin"
+            version = "1.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

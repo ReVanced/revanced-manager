@@ -1,13 +1,12 @@
 package app.revanced.manager.plugin.downloader
 
 import android.content.Context
-import java.io.File
 
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
 /**
  * The downloader plugin context.
  *
- * @param androidContext An Android [Context].
- * @param tempDirectory The temporary directory belonging to this plugin.
+ * @param androidContext An Android [Context] for this plugin.
+ * @param pluginHostPackageName The package name of the plugin host.
  */
-class DownloaderContext(val androidContext: Context, val tempDirectory: File)
+class DownloaderContext(val androidContext: Context, val pluginHostPackageName: String)

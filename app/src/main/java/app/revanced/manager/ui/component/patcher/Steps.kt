@@ -43,6 +43,7 @@ import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
+import java.util.Locale
 import kotlin.math.floor
 
 // Credits: https://github.com/Aliucord/AliucordManager/blob/main/app/src/main/kotlin/com/aliucord/manager/ui/component/installer/InstallGroup.kt
@@ -134,7 +135,7 @@ fun SubStep(
     name: String,
     state: State,
     message: String? = null,
-    downloadProgress: Pair<Float, Float?>? = null
+    downloadProgress: Pair<Double, Double?>? = null
 ) {
     var messageExpanded by rememberSaveable { mutableStateOf(true) }
 
@@ -180,7 +181,7 @@ fun SubStep(
             } else {
                 downloadProgress?.let { (current, total) ->
                     Text(
-                        if (total != null) "$current/$total MB" else "$current MB",
+                        if (total != null) "${current.formatted}/${total.formatted} MB" else "${current.formatted} MB",
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -199,7 +200,7 @@ fun SubStep(
 }
 
 @Composable
-fun StepIcon(state: State, progress: Pair<Float, Float?>? = null, size: Dp) {
+fun StepIcon(state: State, progress: Pair<Double, Double?>? = null, size: Dp) {
     val strokeWidth = Dp(floor(size.value / 10) + 1)
 
     when (state) {
@@ -237,9 +238,11 @@ fun StepIcon(state: State, progress: Pair<Float, Float?>? = null, size: Dp) {
                     progress?.let { (current, total) ->
                         if (total == null) return@let null
                         current / total
-                    }
+                    }?.toFloat()
                 },
                 strokeWidth = strokeWidth
             )
     }
 }
+
+private val Double.formatted get() = "%.1f".format(locale = Locale.ROOT, this)

@@ -106,7 +106,7 @@ class PatcherViewModel(
     }
 
     val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
-    private val downloadProgress = MutableStateFlow<Pair<Float, Float?>?>(null)
+    private val downloadProgress = MutableStateFlow<Pair<Double, Double?>?>(null)
     val steps = generateSteps(
         app,
         input.selectedApp,
@@ -184,13 +184,15 @@ class PatcherViewModel(
                             installedAppRepository.addOrUpdate(
                                 installedPackageName!!,
                                 packageName,
-                                input.selectedApp.version,
+                                input.selectedApp.version
+                                    ?: pm.getPackageInfo(outputFile)!!.versionName,
                                 InstallType.DEFAULT,
                                 input.selectedPatches
                             )
                         }
                     } else {
                         app.toast(app.getString(R.string.install_app_fail, extra))
+                        Log.e(tag, "Installation failed: $extra")
                     }
                 }
             }
@@ -240,7 +242,6 @@ class PatcherViewModel(
 
     fun rejectInteraction() {
         currentInteractionRequest?.complete(null)
-        currentInteractionRequest = null
     }
 
     fun allowInteraction() {
@@ -253,14 +254,19 @@ class PatcherViewModel(
 
                     launchedActivity = job
                     val result = job.await()
-                    if (result.code != Activity.RESULT_OK) throw UserInteractionException.ActivityCancelled()
-                    result.intent
+                    when (result.code) {
+                        Activity.RESULT_OK -> result.intent
+                        Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
+                        else -> throw UserInteractionException.Activity.NotCompleted(
+                            result.code,
+                            result.intent
+                        )
+                    }
                 } finally {
                     launchedActivity = null
                 }
             }
         })
-        currentInteractionRequest = null
     }
 
     fun handleActivityResult(result: IntentContract.Result) {
@@ -303,23 +309,24 @@ class PatcherViewModel(
 
                 InstallType.ROOT -> {
                     try {
+                        val packageInfo = pm.getPackageInfo(outputFile)
+                            ?: throw Exception("Failed to load application info")
                         val label = with(pm) {
-                            getPackageInfo(outputFile)?.label()
-                                ?: throw Exception("Failed to load application info")
+                            packageInfo.label()
                         }
 
                         rootInstaller.install(
                             outputFile,
                             inputFile,
                             packageName,
-                            input.selectedApp.version,
+                            packageInfo.versionName,
                             label
                         )
 
                         installedAppRepository.addOrUpdate(
                             packageName,
                             packageName,
-                            input.selectedApp.version,
+                            packageInfo.versionName,
                             InstallType.ROOT,
                             input.selectedPatches
                         )
@@ -357,10 +364,10 @@ class PatcherViewModel(
         fun generateSteps(
             context: Context,
             selectedApp: SelectedApp,
-            downloadProgress: StateFlow<Pair<Float, Float?>?>? = null
+            downloadProgress: StateFlow<Pair<Double, Double?>?>? = null
         ): List<Step> {
             val needsDownload =
-                selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Downloadable
+                selectedApp is SelectedApp.Download || selectedApp is SelectedApp.Search
 
             return listOfNotNull(
                 Step(

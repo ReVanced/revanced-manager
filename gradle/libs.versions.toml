@@ -5,7 +5,6 @@ ui-tooling = "1.6.8"
 viewmodel-lifecycle = "2.8.3"
 splash-screen = "1.0.1"
 compose-activity = "1.9.0"
-paging = "3.3.0"
 preferences-datastore = "1.1.1"
 work-runtime = "2.9.0"
 compose-bom = "2024.06.00"
@@ -44,8 +43,6 @@ runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", ve
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
-paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 

@@ -1,5 +1,6 @@
 package app.revanced.manager.network.downloader
 
+import android.content.Context
 import app.revanced.manager.plugin.downloader.App
 import app.revanced.manager.plugin.downloader.DownloadScope
 import app.revanced.manager.plugin.downloader.GetScope

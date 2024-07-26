@@ -98,10 +98,11 @@ class MainActivity : ComponentActivity() {
 
                         is Destination.AppSelector -> AppSelectorScreen(
                             // onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
+                            // TODO: complete this feature
                             onAppClick = { packageName, version ->
                                 navController.navigate(
                                     Destination.SelectedApplicationInfo(
-                                        SelectedApp.Downloadable(packageName, version.orEmpty())
+                                        SelectedApp.Search(packageName, version)
                                     )
                                 )
                             },

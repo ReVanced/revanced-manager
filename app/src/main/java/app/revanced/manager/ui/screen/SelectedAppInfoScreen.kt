@@ -148,7 +148,7 @@ private fun SelectedAppInfoScreen(
     availablePatchCount: Int,
     selectedPatchCount: Int,
     packageName: String,
-    version: String,
+    version: String?,
     packageInfo: PackageInfo?,
 ) {
     Scaffold(
@@ -173,7 +173,13 @@ private fun SelectedAppInfoScreen(
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
                 Text(
-                    stringResource(R.string.selected_app_meta, version, availablePatchCount),
+                    version?.let {
+                        stringResource(
+                            R.string.selected_app_meta_version,
+                            it,
+                            availablePatchCount
+                        )
+                    } ?: stringResource(R.string.selected_app_meta_no_version, availablePatchCount),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -186,7 +192,8 @@ private fun SelectedAppInfoScreen(
             )
             PageItem(
                 R.string.version_selector_item,
-                stringResource(R.string.version_selector_item_description, version),
+                version?.let { stringResource(R.string.version_selector_item_description, it) }
+                    ?: stringResource(R.string.version_selector_item_description_auto),
                 onVersionSelectorClick
             )
         }

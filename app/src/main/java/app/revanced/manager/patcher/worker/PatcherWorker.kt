@@ -69,7 +69,7 @@ class PatcherWorker(
         val selectedPatches: PatchSelection,
         val options: Options,
         val logger: Logger,
-        val downloadProgress: MutableStateFlow<Pair<Float, Float?>?>,
+        val downloadProgress: MutableStateFlow<Pair<Double, Double?>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
         val handleUserInteractionRequest: suspend () -> ActivityLaunchPermit?,
         val setInputFile: (File) -> Unit,
@@ -167,7 +167,7 @@ class PatcherWorker(
                     download(plugin, app)
                 }
 
-                is SelectedApp.Downloadable -> {
+                is SelectedApp.Search -> {
                     val getScope = object : GetScope {
                         override suspend fun requestUserInteraction() =
                             args.handleUserInteractionRequest()
@@ -180,9 +180,11 @@ class PatcherWorker(
                                 plugin.get(
                                     getScope,
                                     selectedApp.packageName,
-                                    selectedApp.suggestedVersion
+                                    selectedApp.version
                                 )
-                                    ?.takeIf { selectedApp.suggestedVersion == null || it.version == selectedApp.suggestedVersion }
+                                    ?.takeIf { selectedApp.version == null || it.version == selectedApp.version }
+                            } catch (e: UserInteractionException.Activity.NotCompleted) {
+                                throw e
                             } catch (_: UserInteractionException) {
                                 null
                             }?.let { app -> download(plugin, app) }

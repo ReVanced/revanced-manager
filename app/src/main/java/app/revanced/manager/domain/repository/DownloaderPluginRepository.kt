@@ -5,7 +5,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.util.Log
-import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.plugins.TrustedDownloaderPlugin
 import app.revanced.manager.domain.manager.PreferencesManager
@@ -26,12 +25,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.lang.reflect.Modifier
 
 class DownloaderPluginRepository(
     private val pm: PM,
-    private val fs: Filesystem,
     private val prefs: PreferencesManager,
     private val context: Context,
     db: AppDatabase
@@ -92,9 +89,11 @@ class DownloaderPluginRepository(
         }
 
         val downloaderContext = DownloaderContext(
-            androidContext = context,
-            tempDirectory = fs.tempDir.resolve("dl_plugin_${packageInfo.packageName}")
-                .also(File::mkdir)
+            androidContext = context.createPackageContext(
+                packageInfo.packageName,
+                0
+            ),
+            pluginHostPackageName = context.packageName
         )
 
         return try {

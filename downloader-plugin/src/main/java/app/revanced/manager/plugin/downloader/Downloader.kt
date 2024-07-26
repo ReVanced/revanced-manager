@@ -26,7 +26,7 @@ interface DownloadScope {
     /**
      * A callback for reporting download progress
      */
-    suspend fun reportProgress(bytesReceived: Int, bytesTotal: Int?)
+    suspend fun reportProgress(bytesReceived: Long, bytesTotal: Long?)
 }
 
 @DownloaderDsl
@@ -58,6 +58,10 @@ fun <A : App> downloader(block: DownloaderBuilder<A>.() -> Unit) =
 
 sealed class UserInteractionException(message: String) : Exception(message) {
     class RequestDenied : UserInteractionException("Request was denied")
-    // TODO: can cancelled activities return an intent?
-    class ActivityCancelled : UserInteractionException("Interaction was cancelled")
+
+    sealed class Activity(message: String) : UserInteractionException(message) {
+        class Cancelled : Activity("Interaction was cancelled")
+        class NotCompleted(val resultCode: Int, val intent: Intent?) :
+            Activity("Unexpected activity result code: $resultCode")
+    }
 }

@@ -23,7 +23,7 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
     suspend fun download(
         plugin: LoadedDownloaderPlugin,
         app: App,
-        onDownload: suspend (downloadProgress: Pair<Float, Float?>) -> Unit,
+        onDownload: suspend (downloadProgress: Pair<Double, Double?>) -> Unit,
     ): File {
         this.get(app.packageName, app.version)?.let { downloaded ->
             return getApkFileForApp(downloaded)
@@ -37,10 +37,10 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
         try {
             val scope = object : DownloadScope {
                 override val targetFile = targetFile
-                override suspend fun reportProgress(bytesReceived: Int, bytesTotal: Int?) {
+                override suspend fun reportProgress(bytesReceived: Long, bytesTotal: Long?) {
                     require(bytesReceived >= 0) { "bytesReceived must not be negative" }
                     require(bytesTotal == null || bytesTotal >= bytesReceived) { "bytesTotal must be greater than or equal to bytesReceived" }
-                    require(bytesTotal != 0) { "bytesTotal must not be zero" }
+                    require(bytesTotal != 0L) { "bytesTotal must not be zero" }
 
                     onDownload(bytesReceived.megaBytes to bytesTotal?.megaBytes)
                 }
@@ -77,6 +77,6 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
     }
 
     private companion object {
-        val Int.megaBytes get() = div(100000).toFloat() / 10
+        val Long.megaBytes get() = toDouble() / 1_000_000
     }
 }

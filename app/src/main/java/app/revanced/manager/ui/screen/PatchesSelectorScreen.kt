@@ -142,7 +142,7 @@ fun PatchesSelectorScreen(
         }
     }
 
-    if (vm.compatibleVersions.isNotEmpty())
+    if (vm.compatibleVersions.isNotEmpty() && vm.appVersion != null)
         UnsupportedDialog(
             appVersion = vm.appVersion,
             supportedVersions = vm.compatibleVersions,
