@@ -17,6 +17,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.asRemoteOrNull
 import app.revanced.manager.domain.bundles.RemotePatchBundle
 import app.revanced.manager.domain.manager.PreferencesManager
+import app.revanced.manager.domain.repository.DownloaderPluginRepository
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.util.toast
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 class DashboardViewModel(
     private val app: Application,
     private val patchBundleRepository: PatchBundleRepository,
+    private val downloaderPluginRepository: DownloaderPluginRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
     val prefs: PreferencesManager
@@ -38,6 +40,8 @@ class DashboardViewModel(
     private val powerManager = app.getSystemService<PowerManager>()!!
     val sources = patchBundleRepository.sources
     val selectedSources = mutableStateListOf<PatchBundleSource>()
+
+    val newDownloaderPluginsAvailable = downloaderPluginRepository.newPluginPackageNames.map { it.isNotEmpty() }
 
     var updatedManagerVersion: String? by mutableStateOf(null)
         private set
@@ -50,6 +54,10 @@ class DashboardViewModel(
             showBatteryOptimizationsWarning =
                 !powerManager.isIgnoringBatteryOptimizations(app.packageName)
         }
+    }
+
+    fun ignoreNewDownloaderPlugins() = viewModelScope.launch {
+        downloaderPluginRepository.acknowledgeAllNewPlugins()
     }
 
     fun dismissUpdateDialog() {

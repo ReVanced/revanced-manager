@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.util.transparentListItemColors
 
 @Composable
 fun InstallPickerDialog(
@@ -44,7 +45,7 @@ fun InstallPickerDialog(
         title = { Text(stringResource(R.string.select_install_type)) },
         text = {
             Column {
-                InstallType.values().forEach {
+                InstallType.entries.forEach {
                     ListItem(
                         modifier = Modifier.clickable { selectedInstallType = it },
                         leadingContent = {
@@ -53,7 +54,8 @@ fun InstallPickerDialog(
                                 onClick = null
                             )
                         },
-                        headlineContent = { Text(stringResource(it.stringResource)) }
+                        headlineContent = { Text(stringResource(it.stringResource)) },
+                        colors = transparentListItemColors
                     )
                 }
             }

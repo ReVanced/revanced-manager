@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Source
@@ -73,17 +74,21 @@ enum class DashboardPage(
 }
 
 @SuppressLint("BatteryLife")
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     vm: DashboardViewModel = koinViewModel(),
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
+    onDownloaderPluginClick: () -> Unit,
     onAppClick: (InstalledApp) -> Unit
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
+    val showNewDownloaderPluginsNotification by vm.newDownloaderPluginsAvailable.collectAsStateWithLifecycle(
+        false
+    )
     val androidContext = LocalContext.current
     val composableScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -246,7 +251,21 @@ fun DashboardScreen(
                             }
                         )
                     }
-                }
+                },
+                if (showNewDownloaderPluginsNotification) {
+                    {
+                        NotificationCard(
+                            text = stringResource(R.string.new_downloader_plugins_notification),
+                            icon = Icons.Outlined.Download,
+                            modifier = Modifier.clickable(onClick = onDownloaderPluginClick),
+                            actions = {
+                                TextButton(onClick = vm::ignoreNewDownloaderPlugins) {
+                                    Text(stringResource(R.string.dismiss))
+                                }
+                            }
+                        )
+                    }
+                } else null
             )
 
             HorizontalPager(

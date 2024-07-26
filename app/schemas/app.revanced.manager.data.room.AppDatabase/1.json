@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c0c780e55e10c9b095c004733c846b67",
+    "identityHash": "98837fd72fde0272894bce063c1095af",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -402,12 +402,38 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "trusted_downloader_plugins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `signature` TEXT NOT NULL, PRIMARY KEY(`package_name`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0c780e55e10c9b095c004733c846b67')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '98837fd72fde0272894bce063c1095af')"
     ]
   }
 }
