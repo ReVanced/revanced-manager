@@ -46,11 +46,6 @@ fun BaseBundleDialog(
     ColumnWithScrollbar(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                start = 8.dp,
-                top = 8.dp,
-                end = 4.dp,
-            )
             .then(modifier)
     ) {
         if (name != null) {
