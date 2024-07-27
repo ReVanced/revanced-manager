@@ -298,7 +298,7 @@ class PatcherViewModel(
             val existingPackageInfo = pm.getPackageInfo(packageName)
             if (existingPackageInfo != null) {
                 // Check if the app version is less than the installed version
-                if (versionNameToInt(existingPackageInfo.versionName) < versionNameToInt(input.selectedApp.version)) {
+                if (versionNameToInt(input.selectedApp.version) < versionNameToInt(existingPackageInfo.versionName)) {
                     // Exit if the selected app version is less than the installed version
                     installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
                     return@launch
@@ -384,7 +384,7 @@ class PatcherViewModel(
         uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
             pm.getPackageInfo(outputFile)?.packageName?.let { pm.uninstallPackage(it) }
                 ?: throw Exception("Failed to load application info")
-
+            
             pm.installApp(listOf(outputFile))
         }
     }
