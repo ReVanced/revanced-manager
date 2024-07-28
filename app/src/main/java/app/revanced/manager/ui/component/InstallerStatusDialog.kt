@@ -154,13 +154,6 @@ enum class DialogKind(
             model.install()
         },
     ),
-    SUCCESS(
-        flag = PackageInstaller.STATUS_SUCCESS,
-        title = R.string.installation_success_dialog_title,
-        contentStringResId = R.string.installation_success_description,
-        icon = Icons.Outlined.Check,
-    );
-
     // Needed due to the @FromValue annotation.
     companion object
 }
