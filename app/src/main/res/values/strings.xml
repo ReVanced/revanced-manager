@@ -161,6 +161,7 @@
     <string name="api_url_dialog_description">Set the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
     <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
     <string name="api_url_dialog_save">Set</string>
+    <string name="api_url_dialog_reset">Reset API URL</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
     <string name="device_model">Model</string>
@@ -367,5 +368,4 @@
     <string name="add_patch_bundle">Add patch bundle</string>
     <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
-    <string name="reset_api_url">Reset API URL</string>
 </resources>
