@@ -115,9 +115,12 @@ class PM(
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
-    fun versionNameToInt(versionName: String): Int {
-        val versionParts = versionName.split(".")
-        return versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
+    fun getVersionCode(packageInfo: PackageInfo): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode.toInt()
+        } else {
+            packageInfo.versionCode
+        }
     }
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {

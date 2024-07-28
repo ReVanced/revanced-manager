@@ -291,19 +291,19 @@ class PatcherViewModel(
         try {
             isInstalling = true
 
+            val currentPackageInfo = pm.getPackageInfo(outputFile)
+                ?: throw Exception("Failed to load application info")
+
             // If the app is currently installed
             val existingPackageInfo = pm.getPackageInfo(packageName)
             if (existingPackageInfo != null) {
                 // Check if the app version is less than the installed version
-                if (pm.versionNameToInt(input.selectedApp.version) < pm.versionNameToInt(existingPackageInfo.versionName)) {
+                if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
                     // Exit if the selected app version is less than the installed version
                     installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
                     return@launch
                 }
             }
-
-            val currentPackageInfo = pm.getPackageInfo(outputFile)
-                ?: throw Exception("Failed to load application info")
 
             when (installType) {
                 InstallType.DEFAULT -> {
