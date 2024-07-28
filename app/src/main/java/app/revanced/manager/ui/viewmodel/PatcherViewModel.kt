@@ -283,11 +283,6 @@ class PatcherViewModel(
         context.startActivity(shareIntent)
     }
 
-    private fun versionNameToInt(versionName: String): Int {
-        val versionParts = versionName.split(".")
-        return versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
-    }
-
     fun open() = installedPackageName?.let(pm::launch)
 
     fun install(installType: InstallType) = viewModelScope.launch {
@@ -298,7 +293,7 @@ class PatcherViewModel(
             val existingPackageInfo = pm.getPackageInfo(packageName)
             if (existingPackageInfo != null) {
                 // Check if the app version is less than the installed version
-                if (versionNameToInt(input.selectedApp.version) < versionNameToInt(existingPackageInfo.versionName)) {
+                if (pm.versionNameToInt(input.selectedApp.version) < pm.versionNameToInt(existingPackageInfo.versionName)) {
                     // Exit if the selected app version is less than the installed version
                     installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
                     return@launch
@@ -324,10 +319,7 @@ class PatcherViewModel(
                     try {
                         // Check for base APK, first check if the app is already installed
                         if (existingPackageInfo == null) {
-                            val inputPackageInfo = if (inputFile != null)
-                                pm.getPackageInfo(inputFile!!)
-                            else
-                                null
+                            val inputPackageInfo = inputFile?.let { pm.getPackageInfo(it) }
 
                             // If the app is not installed, check if the input file is a base apk
                             if (inputPackageInfo == null || inputPackageInfo.splitNames != null) {

@@ -115,6 +115,11 @@ class PM(
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
+    fun versionNameToInt(versionName: String): Int {
+        val versionParts = versionName.split(".")
+        return versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
+    }
+
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller
         packageInstaller.openSession(packageInstaller.createSession(sessionParams)).use { session ->
