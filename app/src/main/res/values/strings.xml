@@ -377,8 +377,6 @@
     <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
     <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
     <string name="installation_timeout_description">The installation took too long. Try again?</string>
-    <string name="installation_success_description">The app has been installed successfully.</string>
-
     <string name="reinstall">Reinstall</string>
     <string name="show">Show</string>
     <string name="debugging">Debugging</string>
