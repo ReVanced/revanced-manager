@@ -85,7 +85,7 @@ fun AdvancedSettingsScreen(
             }
             SettingsListItem(
                 headlineContent = stringResource(R.string.api_url),
-                supportingContent = apiUrl,
+                supportingContent = stringResource(R.string.api_url_description),
                 modifier = Modifier.clickable {
                     showApiUrlDialog = true
                 }
