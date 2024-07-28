@@ -11,7 +11,7 @@
     <string name="select_app">Select an app</string>
     <string name="select_patches">Select patches</string>
 
-    <string name="unsupported_architecture_warning">Patching on ARMv7 devices is not yet supported and will most likely fail.</string>
+    <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
     <string name="import_bundle">Import patch bundle</string>
