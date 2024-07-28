@@ -2,12 +2,7 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -15,28 +10,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.FilterList
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.WarningAmber
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -57,8 +32,8 @@ import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
@@ -207,16 +182,20 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
-                        if (!supported) {
-                            vm.openUnsupportedDialog(patch)
-                        } else {
-                            if (vm.selectionWarningEnabled) {
-                                showSelectionWarning = true
-                            } else if (vm.universalPatchWarningEnabled && patch.compatiblePackages == null) {
+                        when {
+                            // Case when the patch is not supported
+                            !supported -> vm.openUnsupportedDialog(patch)
+
+                            // Case when selection warning is enabled
+                            vm.selectionWarningEnabled -> showSelectionWarning = true
+
+                            // Case when universal patch warning is enabled and there are no compatible packages
+                            vm.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
                                 vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
-                            } else {
-                                vm.togglePatch(uid, patch)
                             }
+
+                            // Default case to toggle the patch
+                            else -> vm.togglePatch(uid, patch)
                         }
                     },
                     supported = supported
