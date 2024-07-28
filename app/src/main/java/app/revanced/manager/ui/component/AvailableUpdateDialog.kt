@@ -20,12 +20,12 @@ import app.revanced.manager.R
 fun AvailableUpdateDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    setShowManagerUpdateDialog: (Boolean) -> Unit,
+    setShowManagerUpdateDialogOnLaunch: (Boolean) -> Unit,
     newVersion: String
 ) {
     var dontShowAgain by rememberSaveable { mutableStateOf(false) }
     val dismissDialog = {
-        setShowManagerUpdateDialog(!dontShowAgain)
+        setShowManagerUpdateDialogOnLaunch(!dontShowAgain)
         onDismiss()
     }
 

@@ -64,9 +64,9 @@ class DashboardViewModel(
         }
     }
 
-    fun setShowManagerUpdateDialog(value: Boolean) {
+    fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
         viewModelScope.launch {
-            prefs.showManagerUpdateDialog.update(value)
+            prefs.showManagerUpdateDialogOnLaunch.update(value)
         }
     }
 
