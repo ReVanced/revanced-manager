@@ -153,7 +153,7 @@ enum class DialogKind(
         confirmButton = installerStatusDialogButton(R.string.install_app) { model ->
             model.install()
         },
-    ),
+    );
     // Needed due to the @FromValue annotation.
     companion object
 }
