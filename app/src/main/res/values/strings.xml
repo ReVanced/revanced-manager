@@ -11,7 +11,7 @@
     <string name="select_app">Select an app</string>
     <string name="select_patches">Select patches</string>
 
-    <string name="unsupported_architecture_warning">Patching on ARMv7 devices is not yet supported and will most likely fail.</string>
+    <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
     <string name="import_bundle">Import patch bundle</string>
@@ -318,9 +318,9 @@
     <string name="install_update_manager_failed">Failed to install update</string>
     <string name="manual_update_check">Check for updates</string>
     <string name="manual_update_check_description">Manually check for updates</string>
-    <string name="update_checking_manager">Update checking</string>
+    <string name="update_checking_manager">Auto check for updates</string>
     <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
-    <string name="changelog">Changelog</string>
+    <string name="changelog">View changelogs</string>
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
@@ -367,5 +367,8 @@
     <string name="add_patch_bundle">Add patch bundle</string>
     <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
+    <string name="never_show_again">Never show again</string>
+    <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
+    <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
     <string name="bundle_information">Bundle information</string>
 </resources>
