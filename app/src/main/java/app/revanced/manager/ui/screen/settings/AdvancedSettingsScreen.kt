@@ -5,10 +5,7 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Api
 import androidx.compose.material.icons.outlined.Restore
@@ -201,6 +198,7 @@ private fun APIUrlDialog(currentUrl: String, defaultUrl: String, onSubmit: (Stri
                     color = MaterialTheme.colorScheme.error
                 )
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     value = url,
                     onValueChange = { url = it },
                     label = { Text(stringResource(R.string.api_url)) },
