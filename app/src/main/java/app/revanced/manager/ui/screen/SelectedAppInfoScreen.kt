@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +27,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
@@ -48,7 +48,7 @@ import org.koin.core.parameter.parametersOf
 fun SelectedAppInfoScreen(
     onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
     onBackClick: () -> Unit,
-    vm: SelectedAppInfoViewModel
+    vm: SelectedAppInfoViewModel,
 ) {
     val context = LocalContext.current
 
@@ -82,67 +82,71 @@ fun SelectedAppInfoScreen(
 
     AnimatedNavHost(controller = navController) { destination ->
         when (destination) {
-            is SelectedAppInfoDestination.Main -> SelectedAppInfoScreen(
-                onPatchClick = patchClick@{
-                    if (selectedPatchCount == 0) {
-                        context.toast(context.getString(R.string.no_patches_selected))
+            is SelectedAppInfoDestination.Main ->
+                SelectedAppInfoScreen(
+                    onPatchClick = patchClick@{
+                        if (selectedPatchCount == 0) {
+                            context.toast(context.getString(R.string.no_patches_selected))
 
-                        return@patchClick
-                    }
-                    onPatchClick(
-                        vm.selectedApp,
-                        patches,
-                        vm.getOptionsFiltered(bundles)
-                    )
-                },
-                onPatchSelectorClick = {
-                    navController.navigate(
-                        SelectedAppInfoDestination.PatchesSelector(
+                            return@patchClick
+                        }
+                        onPatchClick(
                             vm.selectedApp,
-                            vm.getCustomPatches(
-                                bundles,
-                                allowIncompatiblePatches
+                            patches,
+                            vm.getOptionsFiltered(bundles),
+                        )
+                    },
+                    onPatchSelectorClick = {
+                        navController.navigate(
+                            SelectedAppInfoDestination.PatchesSelector(
+                                vm.selectedApp,
+                                vm.getCustomPatches(
+                                    bundles,
+                                    allowIncompatiblePatches,
+                                ),
+                                vm.options,
                             ),
-                            vm.options
                         )
-                    )
-                },
-                onVersionSelectorClick = {
-                    navController.navigate(SelectedAppInfoDestination.VersionSelector)
-                },
-                onBackClick = onBackClick,
-                availablePatchCount = availablePatchCount,
-                selectedPatchCount = selectedPatchCount,
-                packageName = packageName,
-                version = version,
-                packageInfo = vm.selectedAppInfo,
-            )
+                    },
+                    onVersionSelectorClick = {
+                        navController.navigate(SelectedAppInfoDestination.VersionSelector)
+                    },
+                    onBackClick = onBackClick,
+                    availablePatchCount = availablePatchCount,
+                    selectedPatchCount = selectedPatchCount,
+                    packageName = packageName,
+                    version = version,
+                    packageInfo = vm.selectedAppInfo,
+                )
 
-            is SelectedAppInfoDestination.VersionSelector -> VersionSelectorScreen(
-                onBackClick = navController::pop,
-                onAppClick = {
-                    vm.selectedApp = it
-                    navController.pop()
-                },
-                viewModel = koinViewModel { parametersOf(packageName) }
-            )
+            is SelectedAppInfoDestination.VersionSelector ->
+                VersionSelectorScreen(
+                    onBackClick = navController::pop,
+                    onAppClick = {
+                        vm.selectedApp = it
+                        navController.pop()
+                    },
+                    viewModel = koinViewModel { parametersOf(packageName) },
+                )
 
-            is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
-                onSave = { patches, options ->
-                    vm.updateConfiguration(patches, options, bundles)
-                    navController.pop()
-                },
-                onBackClick = navController::pop,
-                vm = koinViewModel {
-                    parametersOf(
-                        PatchesSelectorViewModel.Params(
-                            destination.app,
-                            destination.currentSelection,
-                            destination.options,
-                        )
-                    )
-                }
-            )
+            is SelectedAppInfoDestination.PatchesSelector ->
+                PatchesSelectorScreen(
+                    onSave = { patches, options ->
+                        vm.updateConfiguration(patches, options, bundles)
+                        navController.pop()
+                    },
+                    onBackClick = navController::pop,
+                    vm =
+                        koinViewModel {
+                            parametersOf(
+                                PatchesSelectorViewModel.Params(
+                                    destination.app,
+                                    destination.currentSelection,
+                                    destination.options,
+                                ),
+                            )
+                        },
+                )
         }
     }
 }
@@ -164,21 +168,22 @@ private fun SelectedAppInfoScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.app_info),
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            HapticExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.patch)) },
                 icon = { Icon(Icons.Default.AutoFixHigh, null) },
-                onClick = onPatchClick
+                onClick = onPatchClick,
             )
-        }
+        },
     ) { paddingValues ->
         ColumnWithScrollbar(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
                 Text(
@@ -191,39 +196,44 @@ private fun SelectedAppInfoScreen(
             PageItem(
                 R.string.patch_selector_item,
                 stringResource(R.string.patch_selector_item_description, selectedPatchCount),
-                onPatchSelectorClick
+                onPatchSelectorClick,
             )
             PageItem(
                 R.string.version_selector_item,
                 stringResource(R.string.version_selector_item_description, version),
-                onVersionSelectorClick
+                onVersionSelectorClick,
             )
         }
     }
 }
 
 @Composable
-private fun PageItem(@StringRes title: Int, description: String, onClick: () -> Unit) {
+private fun PageItem(
+    @StringRes title: Int,
+    description: String,
+    onClick: () -> Unit,
+) {
     ListItem(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(start = 8.dp),
+        modifier =
+            Modifier
+                .clickable(onClick = onClick)
+                .padding(start = 8.dp),
         headlineContent = {
             Text(
                 stringResource(title),
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
         },
         supportingContent = {
             Text(
                 description,
                 color = MaterialTheme.colorScheme.outline,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         },
         trailingContent = {
             Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)
-        }
+        },
     )
 }

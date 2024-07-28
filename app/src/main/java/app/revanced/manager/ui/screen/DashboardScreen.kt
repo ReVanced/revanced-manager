@@ -24,12 +24,10 @@ import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -59,6 +57,8 @@ import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
+import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
@@ -66,7 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 
 enum class DashboardPage(
     val titleResId: Int,
-    val icon: ImageVector
+    val icon: ImageVector,
 ) {
     DASHBOARD(R.string.tab_apps, Icons.Outlined.Apps),
     BUNDLES(R.string.tab_bundles, Icons.Outlined.Source),
@@ -80,16 +80,17 @@ fun DashboardScreen(
     onAppSelectorClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    onAppClick: (InstalledApp) -> Unit
+    onAppClick: (InstalledApp) -> Unit,
 ) {
     val bundlesSelectable by remember { derivedStateOf { vm.selectedSources.size > 0 } }
     val availablePatches by vm.availablePatches.collectAsStateWithLifecycle(0)
     val androidContext = LocalContext.current
     val composableScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(
-        initialPage = DashboardPage.DASHBOARD.ordinal,
-        initialPageOffsetFraction = 0f
-    ) { DashboardPage.entries.size }
+    val pagerState =
+        rememberPagerState(
+            initialPage = DashboardPage.DASHBOARD.ordinal,
+            initialPageOffsetFraction = 0f,
+        ) { DashboardPage.entries.size }
 
     LaunchedEffect(pagerState.currentPage) {
         if (pagerState.currentPage != DashboardPage.BUNDLES.ordinal) vm.cancelSourceSelection()
@@ -109,7 +110,7 @@ fun DashboardScreen(
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false
                 vm.createRemoteSource(url, autoUpdate)
-            }
+            },
         )
     }
 
@@ -122,7 +123,7 @@ fun DashboardScreen(
                     backIcon = {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = stringResource(R.string.back),
                         )
                     },
                     actions = {
@@ -130,25 +131,25 @@ fun DashboardScreen(
                             onClick = {
                                 vm.selectedSources.forEach { if (!it.isDefault) vm.delete(it) }
                                 vm.cancelSourceSelection()
-                            }
+                            },
                         ) {
                             Icon(
                                 Icons.Outlined.DeleteOutline,
-                                stringResource(R.string.delete)
+                                stringResource(R.string.delete),
                             )
                         }
                         IconButton(
                             onClick = {
                                 vm.selectedSources.forEach { vm.update(it) }
                                 vm.cancelSourceSelection()
-                            }
+                            },
                         ) {
                             Icon(
                                 Icons.Outlined.Refresh,
-                                stringResource(R.string.refresh)
+                                stringResource(R.string.refresh),
                             )
                         }
-                    }
+                    },
                 )
             } else {
                 AppTopBar(
@@ -157,12 +158,12 @@ fun DashboardScreen(
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }
-                    }
+                    },
                 )
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            HapticFloatingActionButton(
                 onClick = {
                     vm.cancelSourceSelection()
 
@@ -172,10 +173,10 @@ fun DashboardScreen(
                                 androidContext.toast(androidContext.getString(R.string.patches_unavailable))
                                 composableScope.launch {
                                     pagerState.animateScrollToPage(
-                                        DashboardPage.BUNDLES.ordinal
+                                        DashboardPage.BUNDLES.ordinal,
                                     )
                                 }
-                                return@FloatingActionButton
+                                return@HapticFloatingActionButton
                             }
 
                             onAppSelectorClick()
@@ -185,23 +186,23 @@ fun DashboardScreen(
                             showAddBundleDialog = true
                         }
                     }
-                }
+                },
             ) { Icon(Icons.Default.Add, stringResource(R.string.add)) }
-        }
+        },
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
+                containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp),
             ) {
                 DashboardPage.entries.forEachIndexed { index, page ->
-                    Tab(
+                    HapticTab(
                         selected = pagerState.currentPage == index,
                         onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                         text = { Text(stringResource(page.titleResId)) },
                         icon = { Icon(page.icon, null) },
                         selectedContentColor = MaterialTheme.colorScheme.primary,
-                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -213,10 +214,12 @@ fun DashboardScreen(
                             isWarning = true,
                             icon = Icons.Outlined.WarningAmber,
                             text = stringResource(R.string.unsupported_architecture_warning),
-                            onDismiss = null
+                            onDismiss = null,
                         )
                     }
-                } else null,
+                } else {
+                    null
+                },
                 if (vm.showBatteryOptimizationsWarning) {
                     {
                         NotificationCard(
@@ -224,13 +227,17 @@ fun DashboardScreen(
                             icon = Icons.Default.BatteryAlert,
                             text = stringResource(R.string.battery_optimization_notification),
                             onClick = {
-                                androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                    data = Uri.parse("package:${androidContext.packageName}")
-                                })
-                            }
+                                androidContext.startActivity(
+                                    Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                        data = Uri.parse("package:${androidContext.packageName}")
+                                    },
+                                )
+                            },
                         )
                     }
-                } else null,
+                } else {
+                    null
+                },
                 vm.updatedManagerVersion?.let {
                     {
                         NotificationCard(
@@ -243,10 +250,10 @@ fun DashboardScreen(
                                 TextButton(onClick = onUpdateClick) {
                                     Text(stringResource(R.string.show))
                                 }
-                            }
+                            },
                         )
                     }
-                }
+                },
             )
 
             HorizontalPager(
@@ -257,16 +264,20 @@ fun DashboardScreen(
                     when (DashboardPage.entries[index]) {
                         DashboardPage.DASHBOARD -> {
                             InstalledAppsScreen(
-                                onAppClick = onAppClick
+                                onAppClick = onAppClick,
                             )
                         }
 
                         DashboardPage.BUNDLES -> {
                             BackHandler {
-                                if (bundlesSelectable) vm.cancelSourceSelection() else composableScope.launch {
-                                    pagerState.animateScrollToPage(
-                                        DashboardPage.DASHBOARD.ordinal
-                                    )
+                                if (bundlesSelectable) {
+                                    vm.cancelSourceSelection()
+                                } else {
+                                    composableScope.launch {
+                                        pagerState.animateScrollToPage(
+                                            DashboardPage.DASHBOARD.ordinal,
+                                        )
+                                    }
                                 }
                             }
 
@@ -295,28 +306,26 @@ fun DashboardScreen(
                                             } else {
                                                 vm.selectedSources.remove(it)
                                             }
-                                        }
+                                        },
                                     )
                                 }
                             }
                         }
                     }
-                }
+                },
             )
         }
     }
 }
 
 @Composable
-fun Notifications(
-    vararg notifications: (@Composable () -> Unit)?,
-) {
+fun Notifications(vararg notifications: (@Composable () -> Unit)?) {
     val activeNotifications = notifications.filterNotNull()
 
     if (activeNotifications.isNotEmpty()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             activeNotifications.forEach { notification ->
                 notification()

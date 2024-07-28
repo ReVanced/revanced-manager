@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
-abstract class BasePreferencesManager(private val context: Context, name: String) {
+abstract class BasePreferencesManager(
+    private val context: Context,
+    name: String,
+) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = name)
     protected val dataStore get() = context.dataStore
 
@@ -23,20 +26,29 @@ abstract class BasePreferencesManager(private val context: Context, name: String
 
     suspend fun edit(block: EditorContext.() -> Unit) = dataStore.editor(block)
 
-    protected fun stringPreference(key: String, default: String) =
-        StringPreference(dataStore, key, default)
+    protected fun stringPreference(
+        key: String,
+        default: String,
+    ) = StringPreference(dataStore, key, default)
 
-    protected fun booleanPreference(key: String, default: Boolean) =
-        BooleanPreference(dataStore, key, default)
+    protected fun booleanPreference(
+        key: String,
+        default: Boolean,
+    ) = BooleanPreference(dataStore, key, default)
 
-    protected fun intPreference(key: String, default: Int) = IntPreference(dataStore, key, default)
+    protected fun intPreference(
+        key: String,
+        default: Int,
+    ) = IntPreference(dataStore, key, default)
 
-    protected fun floatPreference(key: String, default: Float) =
-        FloatPreference(dataStore, key, default)
+    protected fun floatPreference(
+        key: String,
+        default: Float,
+    ) = FloatPreference(dataStore, key, default)
 
     protected inline fun <reified E : Enum<E>> enumPreference(
         key: String,
-        default: E
+        default: E,
     ) = EnumPreference(dataStore, key, default, enumValues())
 
     companion object {
@@ -48,7 +60,9 @@ abstract class BasePreferencesManager(private val context: Context, name: String
     }
 }
 
-class EditorContext(private val prefs: MutablePreferences) {
+class EditorContext(
+    private val prefs: MutablePreferences,
+) {
     var <T> Preference<T>.value
         get() = prefs.run { read() }
         set(value) = prefs.run { write(value) }
@@ -56,31 +70,41 @@ class EditorContext(private val prefs: MutablePreferences) {
 
 abstract class Preference<T>(
     private val dataStore: DataStore<Preferences>,
-    protected val default: T
+    protected val default: T,
 ) {
     internal abstract fun Preferences.read(): T
+
     internal abstract fun MutablePreferences.write(value: T)
 
     val flow = dataStore.data.map { with(it) { read() } ?: default }.distinctUntilChanged()
 
     suspend fun get() = flow.first()
+
     fun getBlocking() = runBlocking { get() }
+
     @Composable
-    fun getAsState() = flow.collectAsStateWithLifecycle(initialValue = remember {
-        getBlocking()
-    })
-    suspend fun update(value: T) = dataStore.editor {
-        this@Preference.value = value
-    }
+    fun getAsState() =
+        flow.collectAsStateWithLifecycle(
+            initialValue =
+                remember {
+                    getBlocking()
+                },
+        )
+
+    suspend fun update(value: T) =
+        dataStore.editor {
+            this@Preference.value = value
+        }
 }
 
 class EnumPreference<E : Enum<E>>(
     dataStore: DataStore<Preferences>,
     key: String,
     default: E,
-    private val enumValues: Array<E>
+    private val enumValues: Array<E>,
 ) : Preference<E>(dataStore, default) {
     private val key = stringPreferencesKey(key)
+
     override fun Preferences.read() =
         this[key]?.let { name ->
             enumValues.find { it.name == name }
@@ -91,10 +115,14 @@ class EnumPreference<E : Enum<E>>(
     }
 }
 
-abstract class BasePreference<T>(dataStore: DataStore<Preferences>, default: T) :
-    Preference<T>(dataStore, default) {
+abstract class BasePreference<T>(
+    dataStore: DataStore<Preferences>,
+    default: T,
+) : Preference<T>(dataStore, default) {
     protected abstract val key: Preferences.Key<T>
+
     override fun Preferences.read() = this[key] ?: default
+
     override fun MutablePreferences.write(value: T) {
         this[key] = value
     }
@@ -103,7 +131,7 @@ abstract class BasePreference<T>(dataStore: DataStore<Preferences>, default: T) 
 class StringPreference(
     dataStore: DataStore<Preferences>,
     key: String,
-    default: String
+    default: String,
 ) : BasePreference<String>(dataStore, default) {
     override val key = stringPreferencesKey(key)
 }
@@ -111,7 +139,7 @@ class StringPreference(
 class BooleanPreference(
     dataStore: DataStore<Preferences>,
     key: String,
-    default: Boolean
+    default: Boolean,
 ) : BasePreference<Boolean>(dataStore, default) {
     override val key = booleanPreferencesKey(key)
 }
@@ -119,7 +147,7 @@ class BooleanPreference(
 class IntPreference(
     dataStore: DataStore<Preferences>,
     key: String,
-    default: Int
+    default: Int,
 ) : BasePreference<Int>(dataStore, default) {
     override val key = intPreferencesKey(key)
 }
@@ -127,7 +155,7 @@ class IntPreference(
 class FloatPreference(
     dataStore: DataStore<Preferences>,
     key: String,
-    default: Float
+    default: Float,
 ) : BasePreference<Float>(dataStore, default) {
     override val key = floatPreferencesKey(key)
 }

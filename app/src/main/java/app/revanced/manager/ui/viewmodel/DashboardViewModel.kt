@@ -30,7 +30,7 @@ class DashboardViewModel(
     private val patchBundleRepository: PatchBundleRepository,
     private val reVancedAPI: ReVancedAPI,
     private val networkInfo: NetworkInfo,
-    val prefs: PreferencesManager
+    val prefs: PreferencesManager,
 ) : ViewModel() {
     val availablePatches =
         patchBundleRepository.bundles.map { it.values.sumOf { bundle -> bundle.patches.size } }
@@ -64,7 +64,10 @@ class DashboardViewModel(
         }
     }
 
-    fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
+    fun applyAutoUpdatePrefs(
+        manager: Boolean,
+        patches: Boolean,
+    ) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
         prefs.managerAutoUpdates.update(manager)
@@ -84,39 +87,44 @@ class DashboardViewModel(
         }
     }
 
-
     fun cancelSourceSelection() {
         selectedSources.clear()
     }
 
-    fun createLocalSource(patchBundle: Uri, integrations: Uri?) =
-        viewModelScope.launch {
-            contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                integrations?.let { contentResolver.openInputStream(it) }
-                    .use { integrationsStream ->
-                        patchBundleRepository.createLocal(patchesStream, integrationsStream)
-                    }
-            }
-        }
-
-    fun createRemoteSource(apiUrl: String, autoUpdate: Boolean) =
-        viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
-
-    fun delete(bundle: PatchBundleSource) =
-        viewModelScope.launch { patchBundleRepository.remove(bundle) }
-
-    fun update(bundle: PatchBundleSource) = viewModelScope.launch {
-        if (bundle !is RemotePatchBundle) return@launch
-
-        uiSafe(
-            app,
-            R.string.source_download_fail,
-            RemotePatchBundle.updateFailMsg
-        ) {
-            if (bundle.update())
-                app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
-            else
-                app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))
+    fun createLocalSource(
+        patchBundle: Uri,
+        integrations: Uri?,
+    ) = viewModelScope.launch {
+        contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
+            integrations
+                ?.let { contentResolver.openInputStream(it) }
+                .use { integrationsStream ->
+                    patchBundleRepository.createLocal(patchesStream, integrationsStream)
+                }
         }
     }
+
+    fun createRemoteSource(
+        apiUrl: String,
+        autoUpdate: Boolean,
+    ) = viewModelScope.launch { patchBundleRepository.createRemote(apiUrl, autoUpdate) }
+
+    fun delete(bundle: PatchBundleSource) = viewModelScope.launch { patchBundleRepository.remove(bundle) }
+
+    fun update(bundle: PatchBundleSource) =
+        viewModelScope.launch {
+            if (bundle !is RemotePatchBundle) return@launch
+
+            uiSafe(
+                app,
+                R.string.source_download_fail,
+                RemotePatchBundle.updateFailMsg,
+            ) {
+                if (bundle.update()) {
+                    app.toast(app.getString(R.string.bundle_update_success, bundle.getName()))
+                } else {
+                    app.toast(app.getString(R.string.bundle_update_unavailable, bundle.getName()))
+                }
+            }
+        }
 }

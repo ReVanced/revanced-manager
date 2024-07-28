@@ -32,37 +32,40 @@ fun UpdatesSettingsScreen(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.updates),
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
-        }
+        },
     ) { paddingValues ->
         ColumnWithScrollbar(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             SettingsListItem(
-                modifier = Modifier.clickable {
-                    coroutineScope.launch {
-                        if (vm.checkForUpdates()) onUpdateClick()
-                    }
-                },
+                modifier =
+                    Modifier.clickable {
+                        coroutineScope.launch {
+                            if (vm.checkForUpdates()) onUpdateClick()
+                        }
+                    },
                 headlineContent = stringResource(R.string.manual_update_check),
-                supportingContent = stringResource(R.string.manual_update_check_description)
+                supportingContent = stringResource(R.string.manual_update_check_description),
             )
 
             SettingsListItem(
                 modifier = Modifier.clickable(onClick = onChangelogClick),
                 headlineContent = stringResource(R.string.changelog),
-                supportingContent = stringResource(
-                    R.string.changelog_description
-                )
+                supportingContent =
+                    stringResource(
+                        R.string.changelog_description,
+                    ),
             )
 
             BooleanItem(
                 preference = vm.managerAutoUpdates,
                 headline = R.string.update_checking_manager,
-                description = R.string.update_checking_manager_description
+                description = R.string.update_checking_manager_description,
             )
         }
     }

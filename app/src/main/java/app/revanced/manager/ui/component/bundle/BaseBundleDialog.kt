@@ -10,7 +10,6 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.util.isDebuggable
 
 @Composable
@@ -114,7 +114,7 @@ fun BaseBundleDialog(
                 headlineText = stringResource(R.string.bundle_auto_update),
                 supportingText = stringResource(R.string.bundle_auto_update_description),
                 trailingContent = {
-                    Switch(
+                HapticSwitch(
                         checked = autoUpdate,
                         onCheckedChange = onAutoUpdateChange
                     )

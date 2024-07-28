@@ -51,34 +51,35 @@ import org.koin.androidx.compose.koinViewModel
 @Stable
 fun UpdateScreen(
     onBackClick: () -> Unit,
-    vm: UpdateViewModel = koinViewModel()
+    vm: UpdateViewModel = koinViewModel(),
 ) {
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.update),
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
-        }
+        },
     ) { paddingValues ->
         AnimatedVisibility(visible = vm.showInternetCheckDialog) {
             MeteredDownloadConfirmationDialog(
                 onDismiss = { vm.showInternetCheckDialog = false },
-                onDownloadAnyways = { vm.downloadUpdate(true) }
+                onDownloadAnyways = { vm.downloadUpdate(true) },
             )
         }
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(vertical = 16.dp, horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(32.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(vertical = 16.dp, horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(32.dp),
         ) {
             Header(
                 vm.state,
                 vm.changelog,
-                DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize)
+                DownloadData(vm.downloadProgress, vm.downloadedSize, vm.totalSize),
             )
             vm.changelog?.let { changelog ->
                 HorizontalDivider()
@@ -92,7 +93,7 @@ fun UpdateScreen(
 @Composable
 private fun MeteredDownloadConfirmationDialog(
     onDismiss: () -> Unit,
-    onDownloadAnyways: () -> Unit
+    onDownloadAnyways: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -106,42 +107,48 @@ private fun MeteredDownloadConfirmationDialog(
                 onClick = {
                     onDismiss()
                     onDownloadAnyways()
-                }
+                },
             ) {
                 Text(stringResource(R.string.download))
             }
         },
         title = { Text(stringResource(R.string.download_update_confirmation)) },
         icon = { Icon(Icons.Outlined.Update, null) },
-        text = { Text(stringResource(R.string.download_confirmation_metered)) }
+        text = { Text(stringResource(R.string.download_confirmation_metered)) },
     )
 }
 
 @Composable
-private fun Header(state: State, changelog: Changelog?, downloadData: DownloadData) {
+private fun Header(
+    state: State,
+    changelog: Changelog?,
+    downloadData: DownloadData,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
             text = stringResource(state.title),
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
         )
         if (state == State.CAN_DOWNLOAD) {
             Column {
                 Text(
-                    text = stringResource(
-                        id = R.string.current_version,
-                        BuildConfig.VERSION_NAME
-                    ),
+                    text =
+                        stringResource(
+                            id = R.string.current_version,
+                            BuildConfig.VERSION_NAME,
+                        ),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 changelog?.let { changelog ->
                     Text(
-                        text = stringResource(
-                            id = R.string.new_version,
-                            changelog.version.replace("v", "")
-                        ),
+                        text =
+                            stringResource(
+                                id = R.string.new_version,
+                                changelog.version.replace("v", ""),
+                            ),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -152,18 +159,18 @@ private fun Header(state: State, changelog: Changelog?, downloadData: DownloadDa
             )
             Text(
                 text =
-                "${downloadData.downloadedSize.div(1000000)} MB /  ${
-                    downloadData.totalSize.div(
-                        1000000
-                    )
-                } MB (${
-                    downloadData.downloadProgress.times(
-                        100
-                    ).toInt()
-                }%)",
+                    "${downloadData.downloadedSize.div(1000000)} MB /  ${
+                        downloadData.totalSize.div(
+                            1000000,
+                        )
+                    } MB (${
+                        downloadData.downloadProgress.times(
+                            100,
+                        ).toInt()
+                    }%)",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
     }
@@ -173,31 +180,35 @@ private fun Header(state: State, changelog: Changelog?, downloadData: DownloadDa
 private fun ColumnScope.Changelog(changelog: Changelog) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier
-            .weight(1f)
-            .verticalScroll(scrollState)
-            .verticalFadingEdges(
-                fillType = FadingEdgesFillType.FadeColor(
-                    color = MaterialTheme.colorScheme.background,
-                    fillStops = Triple(0F, 0.55F, 1F),
-                    secondStopAlpha = 1F
+        modifier =
+            Modifier
+                .weight(1f)
+                .verticalScroll(scrollState)
+                .verticalFadingEdges(
+                    fillType =
+                        FadingEdgesFillType.FadeColor(
+                            color = MaterialTheme.colorScheme.background,
+                            fillStops = Triple(0F, 0.55F, 1F),
+                            secondStopAlpha = 1F,
+                        ),
+                    contentType =
+                        FadingEdgesContentType.Dynamic.Scroll(
+                            state = scrollState,
+                            scrollConfig =
+                                FadingEdgesScrollConfig.Dynamic(
+                                    animationSpec = spring(),
+                                    isLerpByDifferenceForPartialContent = true,
+                                    scrollFactor = 1.25F,
+                                ),
+                        ),
+                    length = 350.dp,
                 ),
-                contentType = FadingEdgesContentType.Dynamic.Scroll(
-                    state = scrollState,
-                    scrollConfig = FadingEdgesScrollConfig.Dynamic(
-                        animationSpec = spring(),
-                        isLerpByDifferenceForPartialContent = true,
-                        scrollFactor = 1.25F
-                    )
-                ),
-                length = 350.dp
-            )
     ) {
         Changelog(
             markdown = changelog.body.replace("`", ""),
             version = changelog.version,
             downloadCount = changelog.downloadCount.formatNumber(),
-            publishDate = changelog.publishDate.relativeTime(LocalContext.current)
+            publishDate = changelog.publishDate.relativeTime(LocalContext.current),
         )
     }
 }
@@ -207,7 +218,7 @@ private fun Buttons(
     state: State,
     onDownloadClick: () -> Unit,
     onInstallClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         if (state.showCancel) {
@@ -224,7 +235,7 @@ private fun Buttons(
             }
         } else if (state == State.CAN_INSTALL) {
             Button(
-                onClick = onInstallClick
+                onClick = onInstallClick,
             ) {
                 Text(text = stringResource(R.string.install_app))
             }
@@ -235,5 +246,5 @@ private fun Buttons(
 data class DownloadData(
     val downloadProgress: Float,
     val downloadedSize: Long,
-    val totalSize: Long
+    val totalSize: Long,
 )

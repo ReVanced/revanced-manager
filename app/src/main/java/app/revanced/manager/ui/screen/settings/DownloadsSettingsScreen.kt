@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +19,7 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
@@ -29,7 +29,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun DownloadsSettingsScreen(
     onBackClick: () -> Unit,
-    viewModel: DownloadsViewModel = koinViewModel()
+    viewModel: DownloadsViewModel = koinViewModel(),
 ) {
     val prefs = viewModel.prefs
 
@@ -46,14 +46,15 @@ fun DownloadsSettingsScreen(
                             Icon(Icons.Default.Delete, stringResource(R.string.delete))
                         }
                     }
-                }
+                },
             )
-        }
+        },
     ) { paddingValues ->
         ColumnWithScrollbar(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             BooleanItem(
                 preference = prefs.preferSplits,
@@ -69,14 +70,19 @@ fun DownloadsSettingsScreen(
                 SettingsListItem(
                     modifier = Modifier.clickable { viewModel.toggleItem(app) },
                     headlineContent = app.packageName,
-                    leadingContent = (@Composable {
-                        Checkbox(
-                            checked = selected,
-                            onCheckedChange = { viewModel.toggleItem(app) }
-                        )
-                    }).takeIf { viewModel.selection.isNotEmpty() },
+                    leadingContent =
+                        {
+                            (
+                                @Composable {
+                                    HapticCheckbox(
+                                        checked = selected,
+                                        onCheckedChange = { viewModel.toggleItem(app) },
+                                    )
+                                }
+                            ).takeIf { viewModel.selection.isNotEmpty() }
+                        },
                     supportingContent = app.version,
-                    tonalElevation = if (selected) 8.dp else 0.dp
+                    tonalElevation = if (selected) 8.dp else 0.dp,
                 )
             }
         }

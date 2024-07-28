@@ -4,12 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -17,13 +12,7 @@ import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -40,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
@@ -51,7 +41,7 @@ import app.revanced.manager.util.APK_MIMETYPE
 @Composable
 fun PatcherScreen(
     onBackClick: () -> Unit,
-    vm: PatcherViewModel
+    vm: PatcherViewModel,
 ) {
     BackHandler(onBack = onBackClick)
 
@@ -75,9 +65,10 @@ fun PatcherScreen(
         derivedStateOf {
             val (patchesCompleted, patchesTotal) = patchesProgress
 
-            val current = vm.steps.count {
-                it.state == State.COMPLETED && it.category != StepCategory.PATCHING
-            } + patchesCompleted
+            val current =
+                vm.steps.count {
+                    it.state == State.COMPLETED && it.category != StepCategory.PATCHING
+                } + patchesCompleted
 
             val total = vm.steps.size - 1 + patchesTotal
 
@@ -85,17 +76,18 @@ fun PatcherScreen(
         }
     }
 
-    if (showInstallPicker)
+    if (showInstallPicker) {
         InstallPickerDialog(
             onDismiss = { showInstallPicker = false },
-            onConfirm = vm::install
+            onConfirm = vm::install,
         )
+    }
 
     AppScaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.patcher),
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
         },
         bottomBar = {
@@ -103,70 +95,73 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                        enabled = canInstall
+                        enabled = canInstall,
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     IconButton(
                         onClick = { vm.exportLogs(context) },
-                        enabled = patcherSucceeded != null
+                        enabled = patcherSucceeded != null,
                     ) {
                         Icon(Icons.Outlined.PostAdd, stringResource(id = R.string.save_logs))
                     }
                 },
                 floatingActionButton = {
                     AnimatedVisibility(visible = canInstall) {
-                        ExtendedFloatingActionButton(
+                        HapticExtendedFloatingActionButton(
                             text = {
                                 Text(
-                                    stringResource(if (vm.installedPackageName == null) R.string.install_app else R.string.open_app)
+                                    stringResource(if (vm.installedPackageName == null) R.string.install_app else R.string.open_app),
                                 )
                             },
                             icon = {
                                 vm.installedPackageName?.let {
                                     Icon(
                                         Icons.AutoMirrored.Outlined.OpenInNew,
-                                        stringResource(R.string.open_app)
+                                        stringResource(R.string.open_app),
                                     )
                                 } ?: Icon(
                                     Icons.Outlined.FileDownload,
-                                    stringResource(R.string.install_app)
+                                    stringResource(R.string.install_app),
                                 )
                             },
                             onClick = {
-                                if (vm.installedPackageName == null)
+                                if (vm.installedPackageName == null) {
                                     showInstallPicker = true
-                                else vm.open()
-                            }
+                                } else {
+                                    vm.open()
+                                }
+                            },
                         )
                     }
-                }
+                },
             )
-        }
+        },
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
         ) {
             LinearProgressIndicator(
                 progress = { progress },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(16.dp),
             ) {
                 items(
                     items = steps.toList(),
-                    key = { it.first }
+                    key = { it.first },
                 ) { (category, steps) ->
                     Steps(
                         category = category,
                         steps = steps,
-                        stepCount = if (category == StepCategory.PATCHING) patchesProgress else null
+                        stepCount = if (category == StepCategory.PATCHING) patchesProgress else null,
                     )
                 }
             }

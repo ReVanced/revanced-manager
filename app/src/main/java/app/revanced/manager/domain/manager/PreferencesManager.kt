@@ -5,7 +5,7 @@ import app.revanced.manager.domain.manager.base.BasePreferencesManager
 import app.revanced.manager.ui.theme.Theme
 
 class PreferencesManager(
-    context: Context
+    context: Context,
 ) : BasePreferencesManager(context, "settings") {
     val dynamicColor = booleanPreference("dynamic_color", true)
     val theme = enumPreference("theme", Theme.SYSTEM)

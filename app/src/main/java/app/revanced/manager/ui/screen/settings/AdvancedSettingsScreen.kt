@@ -47,30 +47,32 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
-    vm: AdvancedSettingsViewModel = koinViewModel()
+    vm: AdvancedSettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
-    val memoryLimit = remember {
-        val activityManager = context.getSystemService<ActivityManager>()!!
-        context.getString(
-            R.string.device_memory_limit_format,
-            activityManager.memoryClass,
-            activityManager.largeMemoryClass
-        )
-    }
+    val memoryLimit =
+        remember {
+            val activityManager = context.getSystemService<ActivityManager>()!!
+            context.getString(
+                R.string.device_memory_limit_format,
+                activityManager.memoryClass,
+                activityManager.largeMemoryClass,
+            )
+        }
 
     Scaffold(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.advanced),
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
-        }
+        },
     ) { paddingValues ->
         ColumnWithScrollbar(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             GroupHeader(stringResource(R.string.manager))
 
@@ -86,9 +88,10 @@ fun AdvancedSettingsScreen(
             SettingsListItem(
                 headlineContent = stringResource(R.string.api_url),
                 supportingContent = stringResource(R.string.api_url_description),
-                modifier = Modifier.clickable {
-                    showApiUrlDialog = true
-                }
+                modifier =
+                    Modifier.clickable {
+                        showApiUrlDialog = true
+                    },
             )
 
             val exportDebugLogsLauncher =
@@ -97,7 +100,7 @@ fun AdvancedSettingsScreen(
                 }
             SettingsListItem(
                 headlineContent = stringResource(R.string.debug_logs_export),
-                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
+                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) },
             )
 
             GroupHeader(stringResource(R.string.patcher))
@@ -125,45 +128,49 @@ fun AdvancedSettingsScreen(
                 preference = vm.prefs.disablePatchVersionCompatCheck,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_compat_check,
-                description = R.string.patch_compat_check_description
+                description = R.string.patch_compat_check_description,
             )
             BooleanItem(
                 preference = vm.prefs.disableUniversalPatchWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.universal_patches_safeguard,
-                description = R.string.universal_patches_safeguard_description
+                description = R.string.universal_patches_safeguard_description,
             )
             BooleanItem(
                 preference = vm.prefs.suggestedVersionSafeguard,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.suggested_version_safeguard,
-                description = R.string.suggested_version_safeguard_description
+                description = R.string.suggested_version_safeguard_description,
             )
             BooleanItem(
                 preference = vm.prefs.disableSelectionWarning,
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.patch_selection_safeguard,
-                description = R.string.patch_selection_safeguard_description
+                description = R.string.patch_selection_safeguard_description,
             )
 
             GroupHeader(stringResource(R.string.debugging))
             SettingsListItem(
                 headlineContent = stringResource(R.string.about_device),
-                supportingContent = """
+                supportingContent =
+                    """
                     **Version**: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     **Build type**: ${BuildConfig.BUILD_TYPE}
                     **Model**: ${Build.MODEL}
                     **Android version**: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
                     **Supported Archs**: ${Build.SUPPORTED_ABIS.joinToString(", ")}
                     **Memory limit**: $memoryLimit
-                """.trimIndent()
+                    """.trimIndent(),
             )
         }
     }
 }
 
 @Composable
-private fun APIUrlDialog(currentUrl: String, onSubmit: (String?) -> Unit) {
+private fun APIUrlDialog(
+    currentUrl: String,
+    onSubmit: (String?) -> Unit,
+) {
     var url by rememberSaveable(currentUrl) { mutableStateOf(currentUrl) }
 
     AlertDialog(
@@ -172,7 +179,7 @@ private fun APIUrlDialog(currentUrl: String, onSubmit: (String?) -> Unit) {
             TextButton(
                 onClick = {
                     onSubmit(url)
-                }
+                },
             ) {
                 Text(stringResource(R.string.api_url_dialog_save))
             }
@@ -194,24 +201,24 @@ private fun APIUrlDialog(currentUrl: String, onSubmit: (String?) -> Unit) {
         },
         text = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
                     text = stringResource(R.string.api_url_dialog_description),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = stringResource(R.string.api_url_dialog_warning),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
                 )
                 OutlinedTextField(
                     value = url,
                     onValueChange = { url = it },
-                    label = { Text(stringResource(R.string.api_url)) }
+                    label = { Text(stringResource(R.string.api_url)) },
                 )
             }
-        }
+        },
     )
 }

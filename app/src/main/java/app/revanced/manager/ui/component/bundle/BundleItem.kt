@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.nameState
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -71,7 +71,7 @@ fun BundleItem(
             ),
         leadingContent = if (selectable) {
             {
-                Checkbox(
+                HapticCheckbox(
                     checked = isBundleSelected,
                     onCheckedChange = toggleSelection,
                 )
