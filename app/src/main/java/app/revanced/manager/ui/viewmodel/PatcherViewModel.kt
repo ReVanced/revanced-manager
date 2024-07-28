@@ -194,6 +194,8 @@ class PatcherViewModel(
                     }
 
                     installerStatusDialogModel.packageInstallerStatus = pmStatus
+
+                    isInstalling = false
                 }
 
                 UninstallService.APP_UNINSTALL_ACTION -> {
@@ -367,7 +369,7 @@ class PatcherViewModel(
                     }
                 }
             }
-        } finally {
+        } catch(_: Exception) {
             isInstalling = false
         }
     }

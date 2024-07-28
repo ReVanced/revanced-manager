@@ -62,6 +62,7 @@ fun PatcherScreen(
 
     val patcherSucceeded by vm.patcherSucceeded.observeAsState(null)
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (vm.installedPackageName != null || !vm.isInstalling) } }
+    val canSaveApk by remember { derivedStateOf { patcherSucceeded == true && (vm.installedPackageName != null) } }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
 
     val steps by remember {
@@ -107,7 +108,7 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                        enabled = canInstall
+                        enabled = canSaveApk
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
