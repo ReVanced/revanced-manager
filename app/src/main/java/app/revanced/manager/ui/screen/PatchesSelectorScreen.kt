@@ -364,7 +364,7 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-fun SelectionWarningDialog(onDismiss: () -> Unit) {
+private fun SelectionWarningDialog(onDismiss: () -> Unit) {
     SafeguardDialog(
         onDismiss = onDismiss,
         title = R.string.warning,
@@ -373,7 +373,7 @@ fun SelectionWarningDialog(onDismiss: () -> Unit) {
 }
 
 @Composable
-fun UniversalPatchWarningDialog(
+private fun UniversalPatchWarningDialog(
     onCancel: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -405,7 +405,7 @@ fun UniversalPatchWarningDialog(
 }
 
 @Composable
-fun PatchItem(
+private fun PatchItem(
     patch: PatchInfo,
     onOptionsDialog: () -> Unit,
     selected: Boolean,
@@ -435,7 +435,7 @@ fun PatchItem(
 )
 
 @Composable
-fun ListHeader(
+private fun ListHeader(
     title: String,
     onHelpClick: (() -> Unit)? = null
 ) {
@@ -461,7 +461,7 @@ fun ListHeader(
 }
 
 @Composable
-fun UnsupportedPatchesDialog(
+private fun UnsupportedPatchesDialog(
     appVersion: String,
     onDismissRequest: () -> Unit
 ) = AlertDialog(
@@ -486,7 +486,7 @@ fun UnsupportedPatchesDialog(
 )
 
 @Composable
-fun UnsupportedPatchDialog(
+private fun UnsupportedPatchDialog(
     appVersion: String,
     supportedVersions: List<String>,
     onDismissRequest: () -> Unit
@@ -514,7 +514,7 @@ fun UnsupportedPatchDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OptionsDialog(
+private fun OptionsDialog(
     patch: PatchInfo,
     values: Map<String, Any?>?,
     reset: () -> Unit,
