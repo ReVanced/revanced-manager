@@ -64,6 +64,12 @@ class DashboardViewModel(
         }
     }
 
+    fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
+        viewModelScope.launch {
+            prefs.showManagerUpdateDialogOnLaunch.update(value)
+        }
+    }
+
     fun applyAutoUpdatePrefs(manager: Boolean, patches: Boolean) = viewModelScope.launch {
         prefs.firstLaunch.update(false)
 
