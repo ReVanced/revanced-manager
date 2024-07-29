@@ -53,13 +53,21 @@ jobs:
           sudo chmod 777 *.json
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
 
-      - name: Validation of Translation Strings
+      - name: Generate Translation Strings
         run: |
           dart pub get
           dart run slang
+          flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
+
+      - name: Remove empty values & Validation of Translation Strings
+        run: |
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
+          cd assets/i18n
+          sudo chmod 777 *.json
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          cd ../..
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
