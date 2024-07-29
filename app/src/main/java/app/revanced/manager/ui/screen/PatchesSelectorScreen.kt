@@ -2,12 +2,7 @@ package app.revanced.manager.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -15,28 +10,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.FilterList
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.WarningAmber
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -157,10 +132,18 @@ fun PatchesSelectorScreen(
     }
 
     if (vm.compatibleVersions.isNotEmpty())
-        UnsupportedDialog(
+        UnsupportedPatchDialog(
             appVersion = vm.appVersion,
             supportedVersions = vm.compatibleVersions,
             onDismissRequest = vm::dismissDialogs
+        )
+    var showUnsupportedPatchesDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if (showUnsupportedPatchesDialog)
+        UnsupportedPatchesDialog(
+            appVersion = vm.appVersion,
+            onDismissRequest = { showUnsupportedPatchesDialog = false }
         )
 
     vm.optionsDialog?.let { (bundle, patch) ->
@@ -214,12 +197,20 @@ fun PatchesSelectorScreen(
                         patch
                     ),
                     onToggle = {
-                        if (vm.selectionWarningEnabled) {
-                            showSelectionWarning = true
-                        } else if (vm.universalPatchWarningEnabled && patch.compatiblePackages == null) {
-                            vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
-                        } else {
-                            vm.togglePatch(uid, patch)
+                        when {
+                            // Open unsupported dialog if the patch is not supported
+                            !supported -> vm.openUnsupportedDialog(patch)
+                            
+                            // Show selection warning if enabled
+                            vm.selectionWarningEnabled -> showSelectionWarning = true
+                            
+                            // Set pending universal patch action if the universal patch warning is enabled and there are no compatible packages
+                            vm.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
+                                vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
+                            }
+                            
+                            // Toggle the patch otherwise
+                            else -> vm.togglePatch(uid, patch)
                         }
                     },
                     supported = supported
@@ -270,7 +261,7 @@ fun PatchesSelectorScreen(
                 ) {
                     ListHeader(
                         title = stringResource(R.string.unsupported_patches),
-                        onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                        onHelpClick = { showUnsupportedPatchesDialog = true }
                     )
                 }
             }
@@ -377,7 +368,7 @@ fun PatchesSelectorScreen(
                         ) {
                             ListHeader(
                                 title = stringResource(R.string.unsupported_patches),
-                                onHelpClick = { vm.openUnsupportedDialog(bundle.unsupported) }
+                                onHelpClick = { showUnsupportedPatchesDialog = true }
                             )
                         }
                     }
@@ -388,7 +379,7 @@ fun PatchesSelectorScreen(
 }
 
 @Composable
-fun SelectionWarningDialog(onDismiss: () -> Unit) {
+private fun SelectionWarningDialog(onDismiss: () -> Unit) {
     SafeguardDialog(
         onDismiss = onDismiss,
         title = R.string.warning,
@@ -397,7 +388,7 @@ fun SelectionWarningDialog(onDismiss: () -> Unit) {
 }
 
 @Composable
-fun UniversalPatchWarningDialog(
+private fun UniversalPatchWarningDialog(
     onCancel: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -429,7 +420,7 @@ fun UniversalPatchWarningDialog(
 }
 
 @Composable
-fun PatchItem(
+private fun PatchItem(
     patch: PatchInfo,
     onOptionsDialog: () -> Unit,
     selected: Boolean,
@@ -438,7 +429,7 @@ fun PatchItem(
 ) = ListItem(
     modifier = Modifier
         .let { if (!supported) it.alpha(0.5f) else it }
-        .clickable(enabled = supported, onClick = onToggle)
+        .clickable(onClick = onToggle)
         .fillMaxSize(),
     leadingContent = {
         Checkbox(
@@ -459,7 +450,7 @@ fun PatchItem(
 )
 
 @Composable
-fun ListHeader(
+private fun ListHeader(
     title: String,
     onHelpClick: (() -> Unit)? = null
 ) {
@@ -485,18 +476,46 @@ fun ListHeader(
 }
 
 @Composable
-fun UnsupportedDialog(
+private fun UnsupportedPatchesDialog(
     appVersion: String,
-    supportedVersions: List<String>,
     onDismissRequest: () -> Unit
 ) = AlertDialog(
+    icon = {
+        Icon(Icons.Outlined.WarningAmber, null)
+    },
     onDismissRequest = onDismissRequest,
     confirmButton = {
         TextButton(onClick = onDismissRequest) {
             Text(stringResource(R.string.ok))
         }
     },
-    title = { Text(stringResource(R.string.unsupported_app)) },
+    title = { Text(stringResource(R.string.unsupported_patches)) },
+    text = {
+        Text(
+            stringResource(
+                R.string.unsupported_patches_dialog,
+                appVersion
+            )
+        )
+    }
+)
+
+@Composable
+private fun UnsupportedPatchDialog(
+    appVersion: String,
+    supportedVersions: List<String>,
+    onDismissRequest: () -> Unit
+) = AlertDialog(
+    icon = {
+        Icon(Icons.Outlined.WarningAmber, null)
+    },
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
+        TextButton(onClick = onDismissRequest) {
+            Text(stringResource(R.string.ok))
+        }
+    },
+    title = { Text(stringResource(R.string.unsupported_patch)) },
     text = {
         Text(
             stringResource(
@@ -510,7 +529,7 @@ fun UnsupportedDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OptionsDialog(
+private fun OptionsDialog(
     patch: PatchInfo,
     values: Map<String, Any?>?,
     reset: () -> Unit,

@@ -190,10 +190,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         compatibleVersions.clear()
     }
 
-    fun openUnsupportedDialog(unsupportedPatches: List<PatchInfo>) {
-        compatibleVersions.addAll(unsupportedPatches.flatMap { patch ->
-            patch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty()
-        })
+    fun openUnsupportedDialog(unsupportedPatch: PatchInfo) {
+        compatibleVersions.addAll(unsupportedPatch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty())
     }
 
     fun toggleFlag(flag: Int) {
