@@ -57,6 +57,8 @@ jobs:
         run: |
           dart pub get
           dart run slang
+          dart run slang analyze
+          dart run slang clean
           dart run slang normalize
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
