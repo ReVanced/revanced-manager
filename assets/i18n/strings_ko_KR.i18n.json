@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "패치하기",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "최근 적용한 패치들 중 다음 패치가 제거됩니다.\n\n${patches}\n\n계속 진행하겠습니까?",
     "requiredOptionDialogText": "일부 패치 옵션을 설정해야 합니다."
   },

@@ -24,7 +24,6 @@
     "widgetTitle": "儀表板",
     "updatesSubtitle": "更新",
     "lastPatchedAppSubtitle": "最後修補的應用程式",
-    "patchedSubtitle": "",
     "changeLaterSubtitle": "你可以稍後在設定中變更這項設定。",
     "noSavedAppFound": "未找到應用程式",
     "noInstallations": "未安裝已修補的應用程式",
@@ -54,7 +53,6 @@
   "patcherView": {
     "widgetTitle": "修補工具",
     "patchButton": "補丁",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "自從您上次使用以來，以下補丁已遭移除。\n\n${patches} \n\n仍要繼續執行嗎？",
     "requiredOptionDialogText": "某些補丁需要進一步設定。"
   },
@@ -105,10 +103,8 @@
   "patchOptionsView": {
     "customValue": "自訂值",
     "setToNull": "設為空值",
-    "nullValue": "",
     "viewTitle": "補丁選項",
     "saveOptions": "儲存",
-    "unselectPatch": "",
     "tooltip": "更多輸入選項",
     "selectFilePath": "請選取檔案路徑",
     "selectFolder": "請選取資料夾",

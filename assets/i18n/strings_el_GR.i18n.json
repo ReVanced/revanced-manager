@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Τροποποιητής",
     "patchButton": "Τροποποίηση",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Οι παρακάτω τροποποιήσεις αφαιρέθηκαν από την τελευταία φορά που τις χρησιμοποιήσατε.\n\n${patches}\n\nΣυνέχεια παρόλα αυτά;",
     "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν."
   },

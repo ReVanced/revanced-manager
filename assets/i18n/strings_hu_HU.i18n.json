@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Patchelő",
     "patchButton": "Patch",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "A következő patcheket a legutóbbi használatuk óta eltávolították.\n\n${patches}\n\nMindenképpen folytatja?",
     "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani."
   },

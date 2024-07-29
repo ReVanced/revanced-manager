@@ -24,7 +24,6 @@
     "widgetTitle": "İdarəetmə lövhəsi",
     "updatesSubtitle": "Yeniləmələr",
     "lastPatchedAppSubtitle": "Son yamaqlanmış tətbiq",
-    "patchedSubtitle": "",
     "changeLaterSubtitle": "Bunu daha sonra tənzimləmələrdə dəyişə bilərsiniz.",
     "noSavedAppFound": "Heç bir tətbiq tapılmadı",
     "noInstallations": "Yamaqlanmış tətbiq quraşdırılmayıb",
@@ -54,7 +53,6 @@
   "patcherView": {
     "widgetTitle": "Yamaqlayıcı",
     "patchButton": "Yamaqla",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Aşağıdakı yamaqlar son istifadənizdən bəri silindi.\n\n${patches}\n\nYenə də davam edilsin?",
     "requiredOptionDialogText": "Bəzi yamaq seçimləri təyin edilməlidir."
   },
@@ -105,14 +103,11 @@
   "patchOptionsView": {
     "customValue": "Xüsusi dəyər",
     "setToNull": "Boş olaraq təyin et",
-    "nullValue": "",
     "viewTitle": "Yamaq seçimləri",
     "saveOptions": "Saxla",
-    "unselectPatch": "",
     "tooltip": "Daha çox giriş seçimləri",
     "selectFilePath": "Fayl yolunu seç",
     "selectFolder": "Qovluq seç",
-    "requiredOption": "",
     "unsupportedOption": "Bu seçim dəstəklənmir",
     "requiredOptionNull": "Aşağıdakı seçimlər tənzimlənməlidir:\n\n${options}"
   },
@@ -185,8 +180,6 @@
     "showUpdateDialogHint": "Yeni yenilənmə mövcud olduqda dialoq pəncərəsi göstər",
     "universalPatchesLabel": "Ümumi yamaqları göstər",
     "universalPatchesHint": "Bütün tətbiqləri və ümumi yamaqları göstər (tətbiq siyahısı yavaşlaya bilər)",
-    "lastPatchedAppLabel": "",
-    "lastPatchedAppHint": "",
     "versionCompatibilityCheckLabel": "Versiya uyumluluq yoxlanışı",
     "versionCompatibilityCheckHint": "Seçilmiş tətbiq versiyası ilə uyumlu olmayan yamaqların seçilməsini əngəllə",
     "requireSuggestedAppVersionLabel": "Təklif edilən tətbiq versiyasın tələb et",
@@ -238,10 +231,8 @@
   "appInfoView": {
     "widgetTitle": "Tətbiq məlumatı",
     "openButton": "Aç",
-    "installButton": "",
     "uninstallButton": "Sil",
     "unmountButton": "Ayır",
-    "exportButton": "",
     "deleteButton": "Sil",
     "rootDialogTitle": "Xəta",
     "lastPatchedAppDescription": "Bu, son yamaqlanmış tətbiqin nüsxəsidir.",

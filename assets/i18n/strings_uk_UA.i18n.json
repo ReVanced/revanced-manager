@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патчити",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Наступні патчі було видалено з моменту останнього використання.\n\n${patches}\n\nВсе одно продовжити?",
     "requiredOptionDialogText": "Потрібно встановити деякі параметри патчу."
   },

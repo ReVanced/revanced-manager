@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam edilsin mi?",
     "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
   },

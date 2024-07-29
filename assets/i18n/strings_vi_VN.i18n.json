@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Những bản vá sau đây đã bị loại bỏ từ lần cuối bạn dùng chúng.\n\n${patches}\n\nVẫn tiếp tục?",
     "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
   },

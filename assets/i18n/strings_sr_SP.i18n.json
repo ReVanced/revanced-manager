@@ -54,7 +54,6 @@
   "patcherView": {
     "widgetTitle": "Печер",
     "patchButton": "Печуј",
-    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Следећи печеви су уклоњени од последњег пута када сте их користили.\n\n${patches}\n\nИпак наставити?",
     "requiredOptionDialogText": "Неке опције морају бити подешене."
   },
