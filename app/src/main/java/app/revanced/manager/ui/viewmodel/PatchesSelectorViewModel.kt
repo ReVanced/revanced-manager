@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.flow.map
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
@@ -77,7 +78,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     }
 
     private var hasModifiedSelection = false
-    private var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
+    var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
         key = "selection",
         stateSaver = selectionSaver,
     ) {
@@ -103,12 +104,13 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     var filter by mutableIntStateOf(SHOW_SUPPORTED or SHOW_UNIVERSAL or SHOW_UNSUPPORTED)
         private set
 
-    private suspend fun generateDefaultSelection(): PersistentPatchSelection {
-        val bundles = bundlesFlow.first()
-        val generatedSelection =
-            bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
+    private val defaultPatchSelection = bundlesFlow.map { bundles ->
+        bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
+            .toPersistentPatchSelection()
+    }
 
-        return generatedSelection.toPersistentPatchSelection()
+    val defaultSelectionCount = defaultPatchSelection.map { selection ->
+        selection.values.sumOf { it.size }
     }
 
     fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
@@ -124,7 +126,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     fun togglePatch(bundle: Int, patch: PatchInfo) = viewModelScope.launch {
         hasModifiedSelection = true
 
-        val selection = customPatchSelection ?: generateDefaultSelection()
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
         val newPatches = selection[bundle]?.let { patches ->
             if (patch.name in patches)
                 patches.remove(patch.name)
