@@ -119,7 +119,7 @@ class PatcherViewModel extends BaseViewModel {
   Future<void> showIncompatibleArchWarningDialog(BuildContext context) async {
     final bool notSupported = await AboutInfo.getInfo().then((info) {
       final List<String> archs = info['supportedArch'];
-      final supportedAbis = ['arm64-v8a', 'x86', 'x86_64', 'arm-v7a'];
+      final supportedAbis = ['arm64-v8a', 'x86', 'x86_64', 'armeabi-v7a'];
       return !archs.any((arch) => supportedAbis.contains(arch));
     });
     if (context.mounted && notSupported) {
