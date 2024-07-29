@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:math';
+
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
+import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -25,11 +27,7 @@ class AppInfoViewModel extends BaseViewModel {
     BuildContext context,
     PatchedApplication app,
   ) async {
-    app.isRooted = await _managerAPI.installTypeDialog(context);
-    final int statusCode = await _patcherAPI.installPatchedFile(context, app);
-    if (statusCode == 0) {
-      locator<HomeViewModel>().initialize(context);
-    }
+    locator<InstallerViewModel>().installTypeDialog(context);
   }
 
   Future<void> exportApp(
@@ -152,7 +150,7 @@ class AppInfoViewModel extends BaseViewModel {
         backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(t.appInfoView.removeAppDialogText),
         actions: <Widget>[
-          OutlinedButton(
+          TextButton(
             child: Text(t.cancelButton),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -160,7 +158,9 @@ class AppInfoViewModel extends BaseViewModel {
             child: Text(t.okButton),
             onPressed: () => {
               _managerAPI.deleteLastPatchedApp(),
-              Navigator.of(context)..pop()..pop(),
+              Navigator.of(context)
+                ..pop()
+                ..pop(),
               locator<HomeViewModel>().initialize(context),
             },
           ),

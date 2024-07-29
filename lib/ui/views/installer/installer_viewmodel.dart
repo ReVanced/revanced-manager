@@ -495,7 +495,7 @@ class InstallerViewModel extends BaseViewModel {
   Future<void> installResult(BuildContext context, bool installAsRoot) async {
     isInstalling = true;
     try {
-      _app.isRooted = await _managerAPI.installTypeDialog(context);
+      _app.isRooted = installAsRoot;
       if (headerLogs != 'Installing...') {
         update(
           .85,
@@ -512,7 +512,7 @@ class InstallerViewModel extends BaseViewModel {
         // In case a patch changed the app name or package name,
         // update the app info.
         final app =
-          await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
+            await DeviceApps.getAppFromStorage(_patcherAPI.outFile!.path);
         if (app != null) {
           _app.name = app.appName;
           _app.packageName = app.packageName;
