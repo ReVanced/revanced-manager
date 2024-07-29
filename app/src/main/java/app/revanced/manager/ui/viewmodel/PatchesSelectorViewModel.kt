@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import kotlinx.collections.immutable.*
+import kotlinx.coroutines.flow.map
 
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
@@ -47,9 +48,11 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     private val packageName = input.app.packageName
     val appVersion = input.app.version
 
-    var pendingSelectionAction by mutableStateOf<(() -> Unit)?>(null)
+    var pendingUniversalPatchAction by mutableStateOf<(() -> Unit)?>(null)
 
     var selectionWarningEnabled by mutableStateOf(true)
+        private set
+    var universalPatchWarningEnabled by mutableStateOf(true)
         private set
 
     val allowIncompatiblePatches =
@@ -59,6 +62,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     init {
         viewModelScope.launch {
+            universalPatchWarningEnabled = !prefs.disableUniversalPatchWarning.get()
+
             if (prefs.disableSelectionWarning.get()) {
                 selectionWarningEnabled = false
                 return@launch
@@ -73,7 +78,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     }
 
     private var hasModifiedSelection = false
-    private var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
+    var customPatchSelection: PersistentPatchSelection? by savedStateHandle.saveable(
         key = "selection",
         stateSaver = selectionSaver,
     ) {
@@ -99,12 +104,13 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     var filter by mutableIntStateOf(SHOW_SUPPORTED or SHOW_UNIVERSAL or SHOW_UNSUPPORTED)
         private set
 
-    private suspend fun generateDefaultSelection(): PersistentPatchSelection {
-        val bundles = bundlesFlow.first()
-        val generatedSelection =
-            bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
+    private val defaultPatchSelection = bundlesFlow.map { bundles ->
+        bundles.toPatchSelection(allowIncompatiblePatches) { _, patch -> patch.include }
+            .toPersistentPatchSelection()
+    }
 
-        return generatedSelection.toPersistentPatchSelection()
+    val defaultSelectionCount = defaultPatchSelection.map { selection ->
+        selection.values.sumOf { it.size }
     }
 
     fun selectionIsValid(bundles: List<BundleInfo>) = bundles.any { bundle ->
@@ -120,7 +126,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
     fun togglePatch(bundle: Int, patch: PatchInfo) = viewModelScope.launch {
         hasModifiedSelection = true
 
-        val selection = customPatchSelection ?: generateDefaultSelection()
+        val selection = customPatchSelection ?: defaultPatchSelection.first()
         val newPatches = selection[bundle]?.let { patches ->
             if (patch.name in patches)
                 patches.remove(patch.name)
@@ -131,21 +137,15 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         customPatchSelection = selection.put(bundle, newPatches)
     }
 
-    fun confirmSelectionWarning(dismissPermanently: Boolean) {
-        selectionWarningEnabled = false
+    fun confirmUniversalPatchWarning() {
+        universalPatchWarningEnabled = false
 
-        pendingSelectionAction?.invoke()
-        pendingSelectionAction = null
-
-        if (!dismissPermanently) return
-
-        viewModelScope.launch {
-            prefs.disableSelectionWarning.update(true)
-        }
+        pendingUniversalPatchAction?.invoke()
+        pendingUniversalPatchAction = null
     }
 
-    fun dismissSelectionWarning() {
-        pendingSelectionAction = null
+    fun dismissUniversalPatchWarning() {
+        pendingUniversalPatchAction = null
     }
 
     fun reset() {
@@ -190,10 +190,8 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
         compatibleVersions.clear()
     }
 
-    fun openUnsupportedDialog(unsupportedPatches: List<PatchInfo>) {
-        compatibleVersions.addAll(unsupportedPatches.flatMap { patch ->
-            patch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty()
-        })
+    fun openUnsupportedDialog(unsupportedPatch: PatchInfo) {
+        compatibleVersions.addAll(unsupportedPatch.compatiblePackages?.find { it.packageName == packageName }?.versions.orEmpty())
     }
 
     fun toggleFlag(flag: Int) {

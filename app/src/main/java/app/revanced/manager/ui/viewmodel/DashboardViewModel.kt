@@ -3,10 +3,12 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
+import android.os.PowerManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
@@ -33,15 +35,21 @@ class DashboardViewModel(
     val availablePatches =
         patchBundleRepository.bundles.map { it.values.sumOf { bundle -> bundle.patches.size } }
     private val contentResolver: ContentResolver = app.contentResolver
+    private val powerManager = app.getSystemService<PowerManager>()!!
     val sources = patchBundleRepository.sources
     val selectedSources = mutableStateListOf<PatchBundleSource>()
 
-
     var updatedManagerVersion: String? by mutableStateOf(null)
+        private set
+    var showBatteryOptimizationsWarning by mutableStateOf(false)
         private set
 
     init {
-        viewModelScope.launch { checkForManagerUpdates() }
+        viewModelScope.launch {
+            checkForManagerUpdates()
+            showBatteryOptimizationsWarning =
+                !powerManager.isIgnoringBatteryOptimizations(app.packageName)
+        }
     }
 
     fun dismissUpdateDialog() {
@@ -53,6 +61,12 @@ class DashboardViewModel(
 
         uiSafe(app, R.string.failed_to_check_updates, "Failed to check for updates") {
             updatedManagerVersion = reVancedAPI.getAppUpdate()?.version
+        }
+    }
+
+    fun setShowManagerUpdateDialogOnLaunch(value: Boolean) {
+        viewModelScope.launch {
+            prefs.showManagerUpdateDialogOnLaunch.update(value)
         }
     }
 
@@ -80,12 +94,14 @@ class DashboardViewModel(
     fun cancelSourceSelection() {
         selectedSources.clear()
     }
+
     fun createLocalSource(patchBundle: Uri, integrations: Uri?) =
         viewModelScope.launch {
             contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                integrations?.let { contentResolver.openInputStream(it) }.use { integrationsStream ->
-                    patchBundleRepository.createLocal(patchesStream, integrationsStream)
-                }
+                integrations?.let { contentResolver.openInputStream(it) }
+                    .use { integrationsStream ->
+                        patchBundleRepository.createLocal(patchesStream, integrationsStream)
+                    }
             }
         }
 

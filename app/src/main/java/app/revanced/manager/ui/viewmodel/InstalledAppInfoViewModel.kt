@@ -44,12 +44,18 @@ class InstalledAppInfoViewModel(
     var appInfo: PackageInfo? by mutableStateOf(null)
         private set
     var appliedPatches: PatchSelection? by mutableStateOf(null)
-    var isMounted by mutableStateOf(rootInstaller.isAppMounted(installedApp.currentPackageName))
+    var isMounted by mutableStateOf(false)
         private set
+
+    init {
+        viewModelScope.launch {
+            isMounted = rootInstaller.isAppMounted(installedApp.currentPackageName)
+        }
+    }
 
     fun launch() = pm.launch(installedApp.currentPackageName)
 
-    fun mountOrUnmount() {
+    fun mountOrUnmount() = viewModelScope.launch {
         try {
             if (isMounted)
                 rootInstaller.unmount(installedApp.currentPackageName)

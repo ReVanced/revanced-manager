@@ -1,43 +1,22 @@
 package app.revanced.manager.ui.screen
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Apps
-import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Source
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material.icons.outlined.WarningAmber
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +29,7 @@ import app.revanced.manager.domain.bundles.PatchBundleSource.Extensions.isDefaul
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.AutoUpdatesDialog
+import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
@@ -67,6 +47,7 @@ enum class DashboardPage(
     BUNDLES(R.string.tab_bundles, Icons.Outlined.Source),
 }
 
+@SuppressLint("BatteryLife")
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -104,6 +85,20 @@ fun DashboardScreen(
                 showAddBundleDialog = false
                 vm.createRemoteSource(url, autoUpdate)
             }
+        )
+    }
+
+    var showDialog by rememberSaveable { mutableStateOf(vm.prefs.showManagerUpdateDialogOnLaunch.getBlocking()) }
+    val availableUpdate by remember {
+        derivedStateOf { vm.updatedManagerVersion.takeIf { showDialog } }
+    }
+
+    availableUpdate?.let { version ->
+        AvailableUpdateDialog(
+            onDismiss = { showDialog = false },
+            setShowManagerUpdateDialogOnLaunch = vm::setShowManagerUpdateDialogOnLaunch,
+            onConfirm = onUpdateClick,
+            newVersion = version
         )
     }
 
@@ -148,6 +143,23 @@ fun DashboardScreen(
                 AppTopBar(
                     title = stringResource(R.string.app_name),
                     actions = {
+                        if (!vm.updatedManagerVersion.isNullOrEmpty()) {
+                            IconButton(
+                                onClick = onUpdateClick,
+                            ) {
+                                BadgedBox(
+                                    badge = {
+                                        Badge(
+                                            // A size value above 6.dp forces the Badge icon to be closer to the center, fixing a clipping issue
+                                            modifier = Modifier.size(7.dp),
+                                            containerColor = MaterialTheme.colorScheme.primary,
+                                        )
+                                    }
+                                ) {
+                                    Icon(Icons.Outlined.Update, stringResource(R.string.update))
+                                }
+                            }
+                        }
                         IconButton(onClick = onSettingsClick) {
                             Icon(Icons.Outlined.Settings, stringResource(R.string.settings))
                         }
@@ -211,22 +223,20 @@ fun DashboardScreen(
                         )
                     }
                 } else null,
-                vm.updatedManagerVersion?.let {
+                if (vm.showBatteryOptimizationsWarning) {
                     {
                         NotificationCard(
-                            text = stringResource(R.string.update_available_dialog_description, it),
-                            icon = Icons.Outlined.Update,
-                            actions = {
-                                TextButton(onClick = vm::dismissUpdateDialog) {
-                                    Text(stringResource(R.string.dismiss))
-                                }
-                                TextButton(onClick = onUpdateClick) {
-                                    Text(stringResource(R.string.show))
-                                }
+                            isWarning = true,
+                            icon = Icons.Default.BatteryAlert,
+                            text = stringResource(R.string.battery_optimization_notification),
+                            onClick = {
+                                androidContext.startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                    data = Uri.parse("package:${androidContext.packageName}")
+                                })
                             }
                         )
                     }
-                }
+                } else null
             )
 
             HorizontalPager(

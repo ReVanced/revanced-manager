@@ -39,7 +39,6 @@ import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AboutViewModel
 import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
-import app.revanced.manager.util.isDebuggable
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import org.koin.androidx.compose.koinViewModel
@@ -50,6 +49,7 @@ fun AboutSettingsScreen(
     onBackClick: () -> Unit,
     onContributorsClick: () -> Unit,
     onLicensesClick: () -> Unit,
+    onDeveloperOptionsClick: () -> Unit,
     viewModel: AboutViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -116,9 +116,11 @@ fun AboutSettingsScreen(
             stringResource(R.string.contributors_description),
             third = onContributorsClick
         ),
-        Triple(stringResource(R.string.developer_options),
+        Triple(
+            stringResource(R.string.developer_options),
             stringResource(R.string.developer_options_description),
-            third = { /*TODO*/ }).takeIf { context.isDebuggable },
+            third = onDeveloperOptionsClick
+        ),
         Triple(
             stringResource(R.string.opensource_licenses),
             stringResource(R.string.opensource_licenses_description),

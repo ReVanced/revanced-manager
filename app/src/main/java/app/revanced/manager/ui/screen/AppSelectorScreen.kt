@@ -70,8 +70,7 @@ fun AppSelectorScreen(
     vm.nonSuggestedVersionDialogSubject?.let {
         NonSuggestedVersionDialog(
             suggestedVersion = suggestedVersions[it.packageName].orEmpty(),
-            onCancel = vm::dismissNonSuggestedVersionDialog,
-            onContinue = vm::continueWithNonSuggestedVersion,
+            onDismiss = vm::dismissNonSuggestedVersionDialog
         )
     }
 

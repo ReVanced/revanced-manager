@@ -20,10 +20,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          cache-disabled: true
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
         env:
