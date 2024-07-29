@@ -23,8 +23,10 @@
     "refreshSuccess": "Berhasil Memuat Ulang",
     "widgetTitle": "Dasbor",
     "updatesSubtitle": "Pembaruan",
-    "patchedSubtitle": "Aplikasi tertambal",
+    "lastPatchedAppSubtitle": "",
+    "patchedSubtitle": "",
     "changeLaterSubtitle": "Anda dapat mengubahnya di pengaturan nanti.",
+    "noSavedAppFound": "",
     "noInstallations": "Aplikasi tambalan tidak terpasang",
     "installUpdate": "Lanjutkan untuk mengunduh pembaruan?",
     "updateSheetTitle": "Perbarui Manajer ReVanced",
@@ -52,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
+    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Patch berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
     "requiredOptionDialogText": "Beberapa opsi patch harus diatur."
   },
@@ -80,8 +83,8 @@
     "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih",
     "downloadToast": "Fungsi mengunduh belum tersedia",
     "requireSuggestedAppVersionDialogText": "Versi aplikasi yang Anda pilih tidak sesuai dengan versi yang disarankan yang dapat menyebabkan masalah yang tidak diharapkan. Silakan gunakan versi yang disarankan.\n\nVersi yang dipilih: ${selected}\nVersi yang disarankan: ${suggested}\n\nUntuk melanjutkan, nonaktifkan \"Memerlukan versi aplikasi yang disarankan\" di pengaturan.",
-    "featureNotAvailable": "Fitur tidak diterapkan",
-    "featureNotAvailableText": "Aplikasi ini adalah APK terpisah dan hanya dapat ditambal dan dipasang dengan andal dengan memasang dengan izin root. Namun, Anda bisa menambal dan memasang APK lengkap dengan memilihnya dari penyimpanan."
+    "featureNotAvailable": "Fitur tidak diimplementasi",
+    "featureNotAvailableText": "Aplikasi ini adalah APK terpisah yang hanya dapat ditambal dan dipasang melalui cara mount dengan izin root. Namun, APK lengkap dapat Anda tambal dan pasang dengan memilihnya dari penyimpanan."
   },
   "patchesSelectorView": {
     "viewTitle": "Pilih tambalan",
@@ -101,12 +104,15 @@
   },
   "patchOptionsView": {
     "customValue": "Nilai kustom",
+    "setToNull": "",
+    "nullValue": "",
     "viewTitle": "Opsi tambalan",
     "saveOptions": "Simpan",
+    "unselectPatch": "",
     "tooltip": "Opsi masukan lainnya",
     "selectFilePath": "Pilih lokasi berkas",
     "selectFolder": "Pilih folder",
-    "requiredOption": "Pilihan ini diperlukan",
+    "requiredOption": "",
     "unsupportedOption": "Pilihan ini tidak didukung",
     "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}"
   },
@@ -179,6 +185,8 @@
     "showUpdateDialogHint": "Tampilkan dialog ketika pembaruan tersedia",
     "universalPatchesLabel": "Tampilkan tambalan universal",
     "universalPatchesHint": "Menampilkan semua aplikasi dan tambalan universal (dapat memperlambat daftar aplikasi)",
+    "lastPatchedAppLabel": "",
+    "lastPatchedAppHint": "",
     "versionCompatibilityCheckLabel": "Periksa versi kompatibilitas",
     "versionCompatibilityCheckHint": "Cegah pemilihan tambalan yang tidak kompatibel dengan versi aplikasi yang dipilih",
     "requireSuggestedAppVersionLabel": "Memerlukan versi aplikasi yang disarankan",
@@ -230,21 +238,28 @@
   "appInfoView": {
     "widgetTitle": "Info aplikasi",
     "openButton": "Buka",
+    "installButton": "Pasang",
     "uninstallButton": "Copot",
     "unmountButton": "Lepas mount",
+    "exportButton": "",
+    "deleteButton": "",
     "rootDialogTitle": "Kesalahan",
+    "lastPatchedAppDescription": "",
     "unmountDialogText": "Apakah yakin ingin melepas mount aplikasi ini?",
     "uninstallDialogText": "Apakah yakin ingin mencopot aplikasi ini?",
     "rootDialogText": "Aplikasi dipasang dengan izin superuser, tapi saat ini ReVanced Manager belum diizinkan.\nMohon berikan izin superuser dulu.",
+    "removeAppDialogTitle": "",
+    "removeAppDialogText": "",
     "packageNameLabel": "Nama paket",
     "installTypeLabel": "Tipe pemasangan",
     "mountTypeLabel": "Mount",
     "regularTypeLabel": "Reguler",
     "patchedDateLabel": "Kapan ditambal",
     "appliedPatchesLabel": "Tambalan terterap",
+    "sizeLabel": "",
     "patchedDateHint": "${date} pukul ${time}",
     "appliedPatchesHint": "${quantity} tambalan terterap",
-    "updateNotImplemented": "Fitur ini belum diimplementasikan"
+    "updateNotImplemented": "Fitur ini belum diimplementasi"
   },
   "contributorsView": {
     "widgetTitle": "Kontributor"
