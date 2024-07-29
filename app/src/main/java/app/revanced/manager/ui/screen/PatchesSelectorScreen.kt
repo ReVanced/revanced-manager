@@ -183,18 +183,18 @@ fun PatchesSelectorScreen(
                     ),
                     onToggle = {
                         when {
-                            // Case when the patch is not supported
+                            // Open unsupported dialog if the patch is not supported
                             !supported -> vm.openUnsupportedDialog(patch)
-
-                            // Case when selection warning is enabled
+                            
+                            // Show selection warning if enabled
                             vm.selectionWarningEnabled -> showSelectionWarning = true
-
-                            // Case when universal patch warning is enabled and there are no compatible packages
+                            
+                            // Set pending universal patch action if the universal patch warning is enabled and there are no compatible packages
                             vm.universalPatchWarningEnabled && patch.compatiblePackages == null -> {
                                 vm.pendingUniversalPatchAction = { vm.togglePatch(uid, patch) }
                             }
-
-                            // Default case to toggle the patch
+                            
+                            // Toggle the patch otherwise
                             else -> vm.togglePatch(uid, patch)
                         }
                     },
