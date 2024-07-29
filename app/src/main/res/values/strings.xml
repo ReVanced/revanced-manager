@@ -191,7 +191,6 @@
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
-    <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
@@ -205,7 +204,7 @@
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
     <string name="search_patches">Patch name</string>
-    <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following version(s): %2$s.</string>
+    <string name="app_not_supported">This patch is not compatible with the selected app version (%1$s).\n\nIt only supports the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
@@ -368,8 +367,9 @@
     <string name="add_patch_bundle">Add patch bundle</string>
     <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
+    <string name="unsupported_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
+    <string name="unsupported_patch">Unsupported patch</string>
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
-
 </resources>
