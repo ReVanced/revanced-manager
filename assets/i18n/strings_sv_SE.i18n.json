@@ -4,14 +4,10 @@
   "dismissButton": "Avfärda",
   "quitButton": "Avsluta",
   "updateButton": "Uppdatera",
-  "enabledLabel": "Aktiverad",
-  "disabledLabel": "Inaktiverad",
-  "installed": "Installerad: ${version}",
   "suggested": "Rekommenderad: ${version}",
   "yesButton": "Ja",
   "noButton": "Nej",
   "warning": "Varning",
-  "options": "Alternativ",
   "notice": "Notera",
   "noShowAgain": "Visa inte det här igen",
   "add": "Lägg till",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Uppdateringar",
     "patchedSubtitle": "Patchade appar",
     "changeLaterSubtitle": "Du kan ändra detta i inställningarna vid ett senare tillfälle.",
-    "noUpdates": "Inga uppdateringar tillgängliga",
-    "WIP": "Arbete pågår...",
     "noInstallations": "Inga patchade appar installerade",
     "installUpdate": "Gå vidare och installera uppdateringen?",
     "updateSheetTitle": "Uppdatera ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Ladda ner nödvändiga filer?",
     "downloadConsentDialogText": "ReVanced Manager måste ladda ner nödvändiga filer för att fungera korrekt.",
     "downloadConsentDialogText2": "Detta kommer att ansluta dig till ${url}.",
-    "checkUpdateDialogTitle": "Sök efter uppdateringar?",
-    "checkUpdateDialogText": "Vill du att ReVanced Manager ska söka efter uppdateringar automatiskt?",
-    "notificationTitle": "Uppdatering nerladdad",
-    "notificationText": "Tryck för att installera uppdateringen",
     "downloadingMessage": "Laddar ner uppdatering...",
     "downloadedMessage": "Uppdatering nerladdad",
     "installingMessage": "Installerar uppdatering...",
     "errorDownloadMessage": "Det gick inte att ladda ner uppdateringen",
     "errorInstallMessage": "Det gick inte att installera uppdatering",
     "noConnection": "Ingen internetanslutning",
+    "noUpdates": "Inga uppdateringar tillgängliga",
+    "WIP": "Arbete pågår...",
+    "checkUpdateDialogTitle": "Sök efter uppdateringar?",
+    "checkUpdateDialogText": "Vill du att ReVanced Manager ska söka efter uppdateringar automatiskt?",
+    "notificationTitle": "Uppdatering nerladdad",
+    "notificationText": "Tryck för att installera uppdateringen",
     "updatesDisabled": "Uppdatering av en patchad app är för närvarande inaktiverad. Patcha appen igen."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "Patchning på ARMv7-enheter stöds inte ännu och det är med stor sannolikhet att det kommer att misslyckas. Fortsätta ändå?",
     "removedPatchesWarningDialogText": "Följande patchar har tagits bort sedan du senast använde dem.\n\n${patches}\n\nFortsätt ändå?",
-    "requiredOptionDialogText": "Vissa patchalternativ måste anges."
+    "requiredOptionDialogText": "Vissa patchalternativ måste anges.",
+    "armv7WarningDialogText": "Patchning på ARMv7-enheter stöds inte ännu och det är med stor sannolikhet att det kommer att misslyckas. Fortsätta ändå?"
   },
   "appSelectorCard": {
     "widgetTitle": "Välj en app",
     "widgetTitleSelected": "Välj app",
     "widgetSubtitle": "Ingen app vald",
     "noAppsLabel": "Inga applikationer hittades",
+    "anyVersion": "Valfri version",
     "currentVersion": "Aktuell",
-    "suggestedVersion": "Rekommenderad",
-    "anyVersion": "Valfri version"
+    "suggestedVersion": "Rekommenderad"
   },
   "patchSelectorCard": {
     "widgetTitle": "Välj patchar",
@@ -120,18 +116,18 @@
     "customValue": "Anpassat värde",
     "setToNull": "Sätt till noll",
     "nullValue": "Detta alternativ värde är för närvarande noll",
-    "resetOptionsTooltip": "Återställ patchalternativ",
     "viewTitle": "Patchalternativ",
     "saveOptions": "Spara",
-    "addOptions": "Lägg till alternativ",
     "unselectPatch": "Avmarkera patch",
     "tooltip": "Fler inmatningsalternativ",
     "selectFilePath": "Välj filsökväg",
     "selectFolder": "Välj mapp",
-    "selectOption": "Välj alternativ",
     "requiredOption": "Inställning av detta alternativ krävs",
     "unsupportedOption": "Detta alternativ stöds ej",
-    "requiredOptionNull": "Följande alternativ måste anges:\n\n${options}"
+    "requiredOptionNull": "Följande alternativ måste anges:\n\n${options}",
+    "resetOptionsTooltip": "Återställ patchalternativ",
+    "addOptions": "Lägg till alternativ",
+    "selectOption": "Välj alternativ"
   },
   "patchItem": {
     "unsupportedDialogText": "Denna patchen kan orsaka patchningsfel.\n\nAppversion: ${packageVersion}\nKompatibla versioner:\n${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Använd standardval"
   },
   "installerView": {
-    "widgetTitle": "Installerare",
     "installType": "Välj installationstyp",
     "installTypeDescription": "Välj vilken installationstyp du vill fortsätta med.",
     "installButton": "Installera",
@@ -150,14 +145,15 @@
     "warning": "Inaktivera automatiska uppdateringar för den patchade appen för att undvika oväntade problem.",
     "pressBackAgain": "Tryck igen på bakåt för att avbryta",
     "openButton": "Öppna",
-    "shareButton": "Dela fil",
     "notificationTitle": "ReVanced-hanteraren patchar",
     "notificationText": "Tryck för att återvända till installeraren",
     "exportApkButtonTooltip": "Exportera patchad APK",
     "exportLogButtonTooltip": "Exportera logg",
     "screenshotDetected": "En skärmdump har upptäckts. Om du försöker dela loggen, dela en kopia av texten i stället.\n\nKopiera loggen till urklipp?",
     "copiedToClipboard": "Kopierat logg till urklipp",
-    "noExit": "Installern körs fortfarande, kan inte avsluta..."
+    "noExit": "Installern körs fortfarande, kan inte avsluta...",
+    "widgetTitle": "Installerare",
+    "shareButton": "Dela fil"
   },
   "settingsView": {
     "widgetTitle": "Inställningar",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Njut av en upplevelse närmare din enhet",
     "languageLabel": "Språk",
     "languageUpdated": "Språket uppdaterat",
-    "englishOption": "Engelska",
     "sourcesLabel": "Alternativa källor",
     "sourcesLabelHint": "Konfigurera alternativa källor för ReVanced patches och ReVanced integrations",
     "sourcesIntegrationsLabel": "Källa för integrationer",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Lösenord för nyckelbutik",
     "selectKeystorePasswordHint": "Välj lösenord för nyckelbutiken som används för att signera appar",
     "jsonSelectorErrorMessage": "Det gick inte att använda vald JSON-fil",
-    "keystoreSelectorErrorMessage": "Det gick inte att använda vald nyckelbutiksfil"
+    "keystoreSelectorErrorMessage": "Det gick inte att använda vald nyckelbutiksfil",
+    "englishOption": "Engelska"
   },
   "appInfoView": {
     "widgetTitle": "Appinfo",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "Installationen misslyckades på grund av ett verifieringsproblem.\n\nJustera dina säkerhetsinställningar och försök igen.",
     "install_failed_version_downgrade_description": "Installationen misslyckades på grund av att den patchade appen var en lägre version än den installerade appen.\n\nAvinstallera appen och försök igen?",
     "status_unknown_description": "Installationen misslyckades på grund av en okänd anledning. Försök igen."
-  }
+  },
+  "enabledLabel": "Aktiverad",
+  "disabledLabel": "Inaktiverad",
+  "installed": "Installerad: ${version}",
+  "options": "Alternativ"
 }

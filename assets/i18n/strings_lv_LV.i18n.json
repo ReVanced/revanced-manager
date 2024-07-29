@@ -3,12 +3,10 @@
   "cancelButton": "Atcelt",
   "quitButton": "Iziet",
   "updateButton": "Atjaunināt",
-  "installed": "Uzstādītā versija: ${version}",
   "suggested": "Ieteiktā versija: ${version}",
   "yesButton": "Jā",
   "noButton": "Nē",
   "warning": "Brīdinājums",
-  "options": "Iestatījumi",
   "notice": "Piezīme",
   "noShowAgain": "Vairs nerādīt",
   "add": "Pievienot",
@@ -140,5 +138,7 @@
   "contributorsView": {
     "widgetTitle": "Autori"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Uzstādītā versija: ${version}",
+  "options": "Iestatījumi"
 }

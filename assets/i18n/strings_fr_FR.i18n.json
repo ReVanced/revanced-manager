@@ -4,14 +4,10 @@
   "dismissButton": "Ignorer",
   "quitButton": "Quitter",
   "updateButton": "Mettre à jour",
-  "enabledLabel": "Activé",
-  "disabledLabel": "Désactivé",
-  "installed": "Version installée : ${version}",
   "suggested": "Version suggérée : ${version}",
   "yesButton": "Oui",
   "noButton": "Non",
   "warning": "Avertissement",
-  "options": "Options",
   "notice": "Remarque",
   "noShowAgain": "Ne plus afficher",
   "add": "Ajouter",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Mises à jour",
     "patchedSubtitle": "Applications patchées",
     "changeLaterSubtitle": "Vous pouvez changer cela dans les paramètres ultérieurement.",
-    "noUpdates": "Aucune mise à jour disponible",
-    "WIP": "Bientôt disponible...",
     "noInstallations": "Aucune application patchée installée",
     "installUpdate": "Continuer à installer la mise à jour ?",
     "updateSheetTitle": "Mettre à jour ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Télécharger les fichiers requis ?",
     "downloadConsentDialogText": "ReVanced Manager à besoin de télécharger des fichiers nécessaires pour fonctionner correctement.",
     "downloadConsentDialogText2": "Vous allez être connecté à ${url}.",
-    "checkUpdateDialogTitle": "Vérifier les mises à jour ?",
-    "checkUpdateDialogText": "Voulez-vous que ReVanced Manager vérifie les mises à jour automatiquement ?",
-    "notificationTitle": "Mise à jour téléchargée",
-    "notificationText": "Cliquez pour installer la mise à jour",
     "downloadingMessage": "Téléchargement de la mise à jour...",
     "downloadedMessage": "Mise à jour téléchargée",
     "installingMessage": "Installation de la mise à jour...",
     "errorDownloadMessage": "Impossible de télécharger la mise à jour",
     "errorInstallMessage": "Impossible d'installer la mise à jour",
     "noConnection": "Aucune connexion internet",
+    "noUpdates": "Aucune mise à jour disponible",
+    "WIP": "Bientôt disponible...",
+    "checkUpdateDialogTitle": "Vérifier les mises à jour ?",
+    "checkUpdateDialogText": "Voulez-vous que ReVanced Manager vérifie les mises à jour automatiquement ?",
+    "notificationTitle": "Mise à jour téléchargée",
+    "notificationText": "Cliquez pour installer la mise à jour",
     "updatesDisabled": "La mise à jour d'une application patchée est actuellement désactivée. Repatchez l'application."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Patcheur",
     "patchButton": "Patcher",
-    "armv7WarningDialogText": "Patcher sur des appareils sur ARMv7 n'est pas encore supporté et pourrait échouer. Continuer quand même ?",
     "removedPatchesWarningDialogText": "Les patchs suivants ont été supprimés depuis la dernière fois que vous les avez utilisés.\n\n${patches}\n\nContinuer quand même ?",
-    "requiredOptionDialogText": "Certaines options de patch doivent être définies."
+    "requiredOptionDialogText": "Certaines options de patch doivent être définies.",
+    "armv7WarningDialogText": "Patcher sur des appareils sur ARMv7 n'est pas encore supporté et pourrait échouer. Continuer quand même ?"
   },
   "appSelectorCard": {
     "widgetTitle": "Sélectionner une application",
     "widgetTitleSelected": "Application sélectionnée",
     "widgetSubtitle": "Aucune application sélectionnée",
     "noAppsLabel": "Aucune application trouvée",
+    "anyVersion": "Toute les versions",
     "currentVersion": "Version actuelle",
-    "suggestedVersion": "Version suggérée",
-    "anyVersion": "Toute les versions"
+    "suggestedVersion": "Version suggérée"
   },
   "patchSelectorCard": {
     "widgetTitle": "Sélectionner les patchs",
@@ -120,18 +116,18 @@
     "customValue": "Valeur personnalisée",
     "setToNull": "Définir à NULL",
     "nullValue": "Cette valeur d'option est actuellement nulle",
-    "resetOptionsTooltip": "Réinitialiser les options de patch",
     "viewTitle": "Options de patch",
     "saveOptions": "Enregistrer",
-    "addOptions": "Ajouter des options",
     "unselectPatch": "Désélectionner le patch",
     "tooltip": "Plus d'options d'entrée",
     "selectFilePath": "Sélectionner l'emplacement du fichier",
     "selectFolder": "Sélectionner le dossier",
-    "selectOption": "Sélectionner une option",
     "requiredOption": "Définir cette option est nécessaire",
     "unsupportedOption": "Cette option n'est pas prise en charge",
-    "requiredOptionNull": "Les options suivantes doivent être définies :\n\n${options}"
+    "requiredOptionNull": "Les options suivantes doivent être définies :\n\n${options}",
+    "resetOptionsTooltip": "Réinitialiser les options de patch",
+    "addOptions": "Ajouter des options",
+    "selectOption": "Sélectionner une option"
   },
   "patchItem": {
     "unsupportedDialogText": "Sélectionner ce patch peut entrainer des erreurs dans la modification.\n\nVersion de l'application : ${packageVersion}\nVersions prises en charge :\n${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Utiliser la sélection par défaut"
   },
   "installerView": {
-    "widgetTitle": "Installateur",
     "installType": "Choisissez le mode d'installation",
     "installTypeDescription": "Sélectionner le mode d'installation avec lequel continuer.",
     "installButton": "Installer",
@@ -150,14 +145,15 @@
     "warning": "Désactiver les mises à jour automatiques pour l'application patchée afin d'éviter les problèmes inattendus.",
     "pressBackAgain": "Appuyez sur retour une nouvelle fois pour quitter",
     "openButton": "Ouvrir",
-    "shareButton": "Partager le fichier",
     "notificationTitle": "ReVanced Manager est en train de patcher",
     "notificationText": "Appuyer pour revenir à l’installateur",
     "exportApkButtonTooltip": "Exporter l'APK patché",
     "exportLogButtonTooltip": "Exporter les logs",
     "screenshotDetected": "Une capture d’écran a été détectée. Si vous essayez de partager le journal, veuillez plutôt partager une copie de texte.\n\nCopier les logs dans le presse-papiers ?",
     "copiedToClipboard": "Logs copiés dans le presse-papiers",
-    "noExit": "L'installateur est toujours en fonctionnement, impossible de quitter..."
+    "noExit": "L'installateur est toujours en fonctionnement, impossible de quitter...",
+    "widgetTitle": "Installateur",
+    "shareButton": "Partager le fichier"
   },
   "settingsView": {
     "widgetTitle": "Paramètres",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Profitez d'une expérience plus proche de votre appareil",
     "languageLabel": "Langue",
     "languageUpdated": "Langue mise à jour",
-    "englishOption": "Anglais",
     "sourcesLabel": "Sources alternatives",
     "sourcesLabelHint": "Configure les sources alternatives pour les patchs et les intégrations ReVanced",
     "sourcesIntegrationsLabel": "Source des intégrations",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Mot de passe du magasin de clés",
     "selectKeystorePasswordHint": "Sélectionner le mot de passe du magasin de clés utilisé pour signer l'apk",
     "jsonSelectorErrorMessage": "Impossible d'utiliser le fichier JSON sélectionné",
-    "keystoreSelectorErrorMessage": "Impossible d'utiliser le fichier KEYSTORE sélectionné"
+    "keystoreSelectorErrorMessage": "Impossible d'utiliser le fichier KEYSTORE sélectionné",
+    "englishOption": "Anglais"
   },
   "appInfoView": {
     "widgetTitle": "Infos de l'application",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "L'installation a échoué en raison d'un problème de vérification.\n\nAjustez vos paramètres de sécurité et réessayez.",
     "install_failed_version_downgrade_description": "L'installation a échoué car l'application patchée a une version inférieure à l'application installée.\n\nDésinstaller l'application et réessayer?",
     "status_unknown_description": "L'installation a échoué pour une raison inconnue. Veuillez réessayer."
-  }
+  },
+  "enabledLabel": "Activé",
+  "disabledLabel": "Désactivé",
+  "installed": "Version installée : ${version}",
+  "options": "Options"
 }

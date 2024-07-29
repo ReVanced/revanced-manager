@@ -4,14 +4,10 @@
   "dismissButton": "Одбаци",
   "quitButton": "Изађи",
   "updateButton": "Ажурирај",
-  "enabledLabel": "Омогућено",
-  "disabledLabel": "Онемогућено",
-  "installed": "Инсталирана верзија: ${version}",
   "suggested": "Препоручена верзија: ${version}",
   "yesButton": "Да",
   "noButton": "Не",
   "warning": "Упозорење",
-  "options": "Опције",
   "notice": "Обавештење",
   "noShowAgain": "Не приказуј поново",
   "add": "Додај",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Ажурирања",
     "patchedSubtitle": "Печоване апликације",
     "changeLaterSubtitle": "Ово можете касније да промените у подешавањима.",
-    "noUpdates": "Нема доступних ажурирања",
-    "WIP": "Радови у току…",
     "noInstallations": "Нема инсталираних печованих апликација",
     "installUpdate": "Наставити са инсталацијом ажурирања?",
     "updateSheetTitle": "Ажурирање ReVanced Manager-а",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Преузети неопходне фајлове?",
     "downloadConsentDialogText": "ReVanced Manager мора да преузме неопходне фајлове да би исправно радио.",
     "downloadConsentDialogText2": "Ово ће вас повезати са ${url}.",
-    "checkUpdateDialogTitle": "Провера ажурирања?",
-    "checkUpdateDialogText": "Желите ли да ReVanced Manager аутоматски проверава да ли постоје ажурирања?",
-    "notificationTitle": "Ажурирање је преузето",
-    "notificationText": "Додирните да бисте инсталирали ажурирање",
     "downloadingMessage": "Преузимање ажурирања…",
     "downloadedMessage": "Ажурирање је преузето",
     "installingMessage": "Инсталирање ажурирања…",
     "errorDownloadMessage": "Није могуће преузети ажурирање",
     "errorInstallMessage": "Није могуће инсталирати ажурирање",
     "noConnection": "Нема интернет везе",
+    "noUpdates": "Нема доступних ажурирања",
+    "WIP": "Радови у току…",
+    "checkUpdateDialogTitle": "Провера ажурирања?",
+    "checkUpdateDialogText": "Желите ли да ReVanced Manager аутоматски проверава да ли постоје ажурирања?",
+    "notificationTitle": "Ажурирање је преузето",
+    "notificationText": "Додирните да бисте инсталирали ажурирање",
     "updatesDisabled": "Ажурирање печоване апликације је тренутно онемогућено. Поново печујте апликацију."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Печер",
     "patchButton": "Печуј",
-    "armv7WarningDialogText": "Печовање на ARMv7 уређајима још увек није подржано и можда неће успети. Ипак наставити?",
     "removedPatchesWarningDialogText": "Следећи печеви су уклоњени од последњег пута када сте их користили.\n\n${patches}\n\nИпак наставити?",
-    "requiredOptionDialogText": "Неке опције морају бити подешене."
+    "requiredOptionDialogText": "Неке опције морају бити подешене.",
+    "armv7WarningDialogText": "Печовање на ARMv7 уређајима још увек није подржано и можда неће успети. Ипак наставити?"
   },
   "appSelectorCard": {
     "widgetTitle": "Изабери апликацију",
     "widgetTitleSelected": "Изабрана апликација",
     "widgetSubtitle": "Није изабрана ниједна апликација",
     "noAppsLabel": "Ниједна апликација није пронађена",
+    "anyVersion": "Све верзије",
     "currentVersion": "Тренутна верзија",
-    "suggestedVersion": "Препоручена верзија",
-    "anyVersion": "Све верзије"
+    "suggestedVersion": "Препоручена верзија"
   },
   "patchSelectorCard": {
     "widgetTitle": "Изабери печеве",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "Прилагођена вредност",
-    "resetOptionsTooltip": "Ресетуј опције печа",
     "viewTitle": "Опције печа",
     "saveOptions": "Сачувај",
-    "addOptions": "Додај опције",
-    "deselectPatch": "Поништи избор печа",
     "tooltip": "Више опција за унос",
     "selectFilePath": "Изабери путању фајла",
     "selectFolder": "Изабери фолдер",
-    "selectOption": "Изабери опцију",
     "requiredOption": "Ова опција је обавезна",
     "unsupportedOption": "Ова опција није подржана",
-    "requiredOptionNull": "Потребно је подесити следеће опције:\n\n${options}"
+    "requiredOptionNull": "Потребно је подесити следеће опције:\n\n${options}",
+    "resetOptionsTooltip": "Ресетуј опције печа",
+    "addOptions": "Додај опције",
+    "deselectPatch": "Поништи избор печа",
+    "selectOption": "Изабери опцију"
   },
   "patchItem": {
     "unsupportedDialogText": "Избором овог печа може доћи до грешака приликом печовања.\n\nВерзија апликације: ${packageVersion}\nПодржане верзије:\n${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "Користи подразумевани избор"
   },
   "installerView": {
-    "widgetTitle": "Програм за инсталацију",
     "installType": "Избор типа инсталације",
     "installTypeDescription": "Изаберите тип инсталације да бисте наставили.",
     "installButton": "Инсталирај",
@@ -148,14 +143,15 @@
     "warning": "Онемогућите аутоматска ажурирања за печовану апликацију да бисте избегли неочекиване проблеме.",
     "pressBackAgain": "Притисните поново да бисте отказали",
     "openButton": "Отвори",
-    "shareButton": "Дели фајл",
     "notificationTitle": "ReVanced Manager печује",
     "notificationText": "Додирните да бисте се вратили на програм за инсталацију",
     "exportApkButtonTooltip": "Извези печовани APK",
     "exportLogButtonTooltip": "Извези евиденцију",
     "screenshotDetected": "Откривен је снимак екрана. Ако желите да делите евиденцију, уместо тога пошаљите текст.\n\nКопирати евиденцију у привремену меморију?",
     "copiedToClipboard": "Евиденција је копирана у привремену меморију",
-    "noExit": "Инсталација је у току, није могуће изаћи…"
+    "noExit": "Инсталација је у току, није могуће изаћи…",
+    "widgetTitle": "Програм за инсталацију",
+    "shareButton": "Дели фајл"
   },
   "settingsView": {
     "widgetTitle": "Подешавања",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "Уживајте у теми која се прилагођава вашем уређају",
     "languageLabel": "Језик",
     "languageUpdated": "Језик је ажуриран",
-    "englishOption": "енглески",
     "sourcesLabel": "Алтернативни извори",
     "sourcesLabelHint": "Конфигуришите алтернативне изворе за ReVanced печеве и ReVanced интеграције",
     "sourcesIntegrationsLabel": "Извор интеграција",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "Лозинка складишта кључева",
     "selectKeystorePasswordHint": "Изаберите лозинку складишта кључева која се користи за потписивање апликација",
     "jsonSelectorErrorMessage": "Није могуће користити изабрани JSON фајл",
-    "keystoreSelectorErrorMessage": "Није могуће користити изабрани фајл са складиштем кључева"
+    "keystoreSelectorErrorMessage": "Није могуће користити изабрани фајл са складиштем кључева",
+    "englishOption": "енглески"
   },
   "appInfoView": {
     "widgetTitle": "О апликацији",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "Инсталација није успела због проблема са верификацијом.\n\nПодесите безбедносна подешавања и покушајте поново.",
     "install_failed_version_downgrade_description": "Инсталација није успела јер је печована апликација нижа верзија од инсталиране апликације.\n\nДеинсталирати апликацију и покушати поново?",
     "status_unknown_description": "Инсталација није успела из непознатог разлога. Покушајте поново."
-  }
+  },
+  "enabledLabel": "Омогућено",
+  "disabledLabel": "Онемогућено",
+  "installed": "Инсталирана верзија: ${version}",
+  "options": "Опције"
 }

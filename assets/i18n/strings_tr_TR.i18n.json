@@ -4,14 +4,10 @@
   "dismissButton": "Yoksay",
   "quitButton": "Çık",
   "updateButton": "Güncelle",
-  "enabledLabel": "Etkin",
-  "disabledLabel": "Devre dışı",
-  "installed": "Kurulu: ${version}",
   "suggested": "Önerilen: ${version}",
   "yesButton": "Evet",
   "noButton": "Hayır",
   "warning": "Uyarı",
-  "options": "Seçenekler",
   "notice": "Dikkat",
   "noShowAgain": "Bunu tekrar gösterme",
   "add": "Ekle",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Güncellemeler",
     "patchedSubtitle": "Yamalanmış uygulamalar",
     "changeLaterSubtitle": "Bunu daha sonra ayarlardan değiştirebilirsiniz.",
-    "noUpdates": "Yeni bir güncelleme yok",
-    "WIP": "Yapım aşamasında...",
     "noInstallations": "Kurulu yamalanmış uygulama yok",
     "installUpdate": "Güncelleme yüklensin mi?",
     "updateSheetTitle": "ReVanced Manager'ı güncelle",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Gerekli dosyalar indirilsin mi?",
     "downloadConsentDialogText": "ReVanced Manager'ın düzgün çalışması için gerekli dosyaları indirmesi gerekiyor.",
     "downloadConsentDialogText2": "Bu sizi ${url}'a bağlayacak.",
-    "checkUpdateDialogTitle": "Güncellemeler kontrol edilsin mi?",
-    "checkUpdateDialogText": "ReVanced Manager'ın güncellemeleri otomatik olarak kontrol etmesini istiyor musunuz?",
-    "notificationTitle": "Güncelleme indirildi",
-    "notificationText": "Güncellemeyi yüklemek için tıklayın",
     "downloadingMessage": "Güncelleme indiriliyor...",
     "downloadedMessage": "Güncelleme indirildi",
     "installingMessage": "Güncelleme yükleniyor...",
     "errorDownloadMessage": "Güncelleme indirilemedi",
     "errorInstallMessage": "Güncelleme yüklenemedi",
     "noConnection": "İnternet bağlantısı yok",
+    "noUpdates": "Yeni bir güncelleme yok",
+    "WIP": "Yapım aşamasında...",
+    "checkUpdateDialogTitle": "Güncellemeler kontrol edilsin mi?",
+    "checkUpdateDialogText": "ReVanced Manager'ın güncellemeleri otomatik olarak kontrol etmesini istiyor musunuz?",
+    "notificationTitle": "Güncelleme indirildi",
+    "notificationText": "Güncellemeyi yüklemek için tıklayın",
     "updatesDisabled": "Yamalanmış bir uygulamayı güncellemek şu anda mümkün değil. Uygulamayı tekrardan yamalayın."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
-    "armv7WarningDialogText": "ARMv7 cihazlarda yamalama henüz desteklenmemektedir ve başarısız olabilir. Yine de devam edilsin mi?",
     "removedPatchesWarningDialogText": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam edilsin mi?",
-    "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
+    "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor.",
+    "armv7WarningDialogText": "ARMv7 cihazlarda yamalama henüz desteklenmemektedir ve başarısız olabilir. Yine de devam edilsin mi?"
   },
   "appSelectorCard": {
     "widgetTitle": "Bir uygulama seç",
     "widgetTitleSelected": "Seçilen uygulama",
     "widgetSubtitle": "Bir uygulama seçilmedi",
     "noAppsLabel": "Hiçbir uygulama bulunamadı",
+    "anyVersion": "Herhangi bir sürüm",
     "currentVersion": "Şu anki",
-    "suggestedVersion": "Önerilen",
-    "anyVersion": "Herhangi bir sürüm"
+    "suggestedVersion": "Önerilen"
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaları seçin",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "Özel değer",
-    "resetOptionsTooltip": "Yama seçeneklerini sıfırla",
     "viewTitle": "Yama seçenekleri",
     "saveOptions": "Kaydet",
-    "addOptions": "Seçenek ekle",
-    "deselectPatch": "Yamanın seçimini kaldır",
     "tooltip": "Daha fazla giriş seçeneği",
     "selectFilePath": "Dosya yolunu seç",
     "selectFolder": "Klasör seç",
-    "selectOption": "Seçeneği seç",
     "requiredOption": "Bu seçenek gereklidir",
     "unsupportedOption": "Bu seçenek desteklenmiyor",
-    "requiredOptionNull": "Aşağıdaki seçeneklerin ayarlanması gerekiyor:\n\n${options}"
+    "requiredOptionNull": "Aşağıdaki seçeneklerin ayarlanması gerekiyor:\n\n${options}",
+    "resetOptionsTooltip": "Yama seçeneklerini sıfırla",
+    "addOptions": "Seçenek ekle",
+    "deselectPatch": "Yamanın seçimini kaldır",
+    "selectOption": "Seçeneği seç"
   },
   "patchItem": {
     "unsupportedDialogText": "Bu yamayı seçmek yamalama hatalarına sebep olabilir.\n\nUygulama sürümü: ${packageVersion}\nDesteklenen sürümler:\n${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "Varsayılan seçimi kullan"
   },
   "installerView": {
-    "widgetTitle": "Yükleyici",
     "installType": "Kurulum tipini seçin",
     "installTypeDescription": "Kullanılacak kurulum tipini seçin.",
     "installButton": "Yükle",
@@ -148,14 +143,15 @@
     "warning": "Beklenmedik sorunlar ile karşılaşmamak için, otomatik güncellemeleri yamalanmış uygulama için devre dışı bırakın.",
     "pressBackAgain": "İptal etmek için tekrar geri tuşuna basın",
     "openButton": "Aç",
-    "shareButton": "Dosyayı paylaş",
     "notificationTitle": "ReVanced Manager yamalıyor",
     "notificationText": "Yükleyiciye dönmek için dokunun",
     "exportApkButtonTooltip": "Yamalanmış APK'yı dışa aktar",
     "exportLogButtonTooltip": "Log'u dışa aktar",
     "screenshotDetected": "Bir ekran görüntüsü algılandı. Log'u paylaşmaya çalışıyorsanız lütfen bunun yerine bir metin kopyasını paylaşın.\n\nLog panoya kopyalansın mı?",
     "copiedToClipboard": "Log panoya kopyalandı",
-    "noExit": "Yükleyici hâlâ çalışıyor, çıkış yapılamaz..."
+    "noExit": "Yükleyici hâlâ çalışıyor, çıkış yapılamaz...",
+    "widgetTitle": "Yükleyici",
+    "shareButton": "Dosyayı paylaş"
   },
   "settingsView": {
     "widgetTitle": "Ayarlar",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "Cihazınıza yakın bir deneyimin keyfini çıkarın",
     "languageLabel": "Dil",
     "languageUpdated": "Dil güncellendi",
-    "englishOption": "İngilizce",
     "sourcesLabel": "Alternatif kaynaklar",
     "sourcesLabelHint": "ReVanced Patches ve ReVanced Integrations için alternatif kaynakları ayarlayın",
     "sourcesIntegrationsLabel": "Integrations source",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "Keystore şifresi",
     "selectKeystorePasswordHint": "Uygulamaları imzalamak için kullanılan keystore'un şifresini seçin",
     "jsonSelectorErrorMessage": "Seçilen JSON dosyası kullanılamıyor",
-    "keystoreSelectorErrorMessage": "Seçilen keystore dosyası kullanılamıyor"
+    "keystoreSelectorErrorMessage": "Seçilen keystore dosyası kullanılamıyor",
+    "englishOption": "İngilizce"
   },
   "appInfoView": {
     "widgetTitle": "Uygulama bilgisi",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "Bir doğrulama sorunu nedeniyle kurulum başarısız oldu.\n\nGüvenlik ayarlarınızı değiştirin ve tekrar deneyin.",
     "install_failed_version_downgrade_description": "Yamalanmış uygulamanın sürümünün, kurulu uygulamadan daha düşük olması nedeniyle kurulum başarısız oldu.\n\nUygulamayı kaldırıp tekrar denemek ister misiniz?",
     "status_unknown_description": "Bilinmeyen bir nedenden dolayı kurulum başarısız oldu. Lütfen tekrar deneyin."
-  }
+  },
+  "enabledLabel": "Etkin",
+  "disabledLabel": "Devre dışı",
+  "installed": "Kurulu: ${version}",
+  "options": "Seçenekler"
 }

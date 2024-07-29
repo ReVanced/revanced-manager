@@ -2,7 +2,6 @@
   "cancelButton": "Zrušiť",
   "quitButton": "Ukončiť",
   "updateButton": "Aktualizovať",
-  "installed": "Nainštalované: ${version}",
   "suggested": "Navrhované: ${version}",
   "yesButton": "Áno",
   "noButton": "Nie",
@@ -148,5 +147,6 @@
   "contributorsView": {
     "widgetTitle": "Prispievatelia"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Nainštalované: ${version}"
 }

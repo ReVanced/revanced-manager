@@ -4,14 +4,10 @@
   "dismissButton": "Từ bỏ",
   "quitButton": "Thoát",
   "updateButton": "Cập nhật",
-  "enabledLabel": "Đã bật",
-  "disabledLabel": "Đã tắt",
-  "installed": "Đã cài đặt: ${version}",
   "suggested": "Được đề xuất: ${version}",
   "yesButton": "Có",
   "noButton": "Không",
   "warning": "Cảnh báo",
-  "options": "Tùy chọn",
   "notice": "Lưu ý",
   "noShowAgain": "Không hiển thị lại điều này",
   "add": "Thêm",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Các bản cập nhật",
     "patchedSubtitle": "Ứng dụng đã vá",
     "changeLaterSubtitle": "Bạn có thể thay đổi cài đặt này sau.",
-    "noUpdates": "Không có bản cập nhật mới",
-    "WIP": "Đang thực hiện...",
     "noInstallations": "Không có ứng dụng đã vá nào được cài đặt",
     "installUpdate": "Tiếp tục cài đặt bản cập nhật?",
     "updateSheetTitle": "Cập nhật ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Tải các tập tin cần thiết?",
     "downloadConsentDialogText": "ReVanced Manager cần tải các tập tin cần thiết để hoạt động đúng cách.",
     "downloadConsentDialogText2": "Điều này sẽ kết nối bạn đến ${url}.",
-    "checkUpdateDialogTitle": "Kiểm tra cập nhật?",
-    "checkUpdateDialogText": "Bạn có muốn ReVanced Manager kiểm tra bản cập nhật tự động?",
-    "notificationTitle": "Đã tải xuống bản cập nhật",
-    "notificationText": "Nhấn để cài đặt bản cập nhật",
     "downloadingMessage": "Đang tải xuống bản cập nhật...",
     "downloadedMessage": "Đã tải xuống bản cập nhật",
     "installingMessage": "Đang cài đặt bản cập nhật...",
     "errorDownloadMessage": "Không thể tải về bản cập nhật",
     "errorInstallMessage": "Không thể cài đặt bản cập nhật",
     "noConnection": "Không có kết nối mạng",
+    "noUpdates": "Không có bản cập nhật mới",
+    "WIP": "Đang thực hiện...",
+    "checkUpdateDialogTitle": "Kiểm tra cập nhật?",
+    "checkUpdateDialogText": "Bạn có muốn ReVanced Manager kiểm tra bản cập nhật tự động?",
+    "notificationTitle": "Đã tải xuống bản cập nhật",
+    "notificationText": "Nhấn để cài đặt bản cập nhật",
     "updatesDisabled": "Cập nhật một ứng dụng đã được vá hiện đang tắt. Vá lại ứng dụng một lần nữa."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
-    "armv7WarningDialogText": "Việc vá trên các thiết bị ARMv7 chưa được hỗ trợ và có thể thất bại. Vẫn tiếp tục?",
     "removedPatchesWarningDialogText": "Những bản vá sau đây đã bị loại bỏ từ lần cuối bạn dùng chúng.\n\n${patches}\n\nVẫn tiếp tục?",
-    "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
+    "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt.",
+    "armv7WarningDialogText": "Việc vá trên các thiết bị ARMv7 chưa được hỗ trợ và có thể thất bại. Vẫn tiếp tục?"
   },
   "appSelectorCard": {
     "widgetTitle": "Chọn một ứng dụng",
     "widgetTitleSelected": "Ứng dụng đã chọn",
     "widgetSubtitle": "Không có ứng dụng được chọn",
     "noAppsLabel": "Không tìm thấy ứng dụng nào",
+    "anyVersion": "Phiên bản bất kỳ",
     "currentVersion": "Hiện tại",
-    "suggestedVersion": "Được đề xuất",
-    "anyVersion": "Phiên bản bất kỳ"
+    "suggestedVersion": "Được đề xuất"
   },
   "patchSelectorCard": {
     "widgetTitle": "Chọn bản vá",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "Giá trị tùy chỉnh",
-    "resetOptionsTooltip": "Cài lại tất cả tùy chọn",
     "viewTitle": "Tùy chọn bản vá",
     "saveOptions": "Lưu",
-    "addOptions": "Thêm tùy chọn",
-    "deselectPatch": "Bỏ chọn bản vá",
     "tooltip": "Tùy chọn nhập thêm",
     "selectFilePath": "Chọn đường dẫn tập tin",
     "selectFolder": "Chọn thư mục",
-    "selectOption": "Chọn tùy chọn",
     "requiredOption": "Tùy chọn này bắt buộc",
     "unsupportedOption": "Tùy chọn này không được hỗ trợ",
-    "requiredOptionNull": "Các tùy chọn sau cần được thiết đặt:\n\n${options}"
+    "requiredOptionNull": "Các tùy chọn sau cần được thiết đặt:\n\n${options}",
+    "resetOptionsTooltip": "Cài lại tất cả tùy chọn",
+    "addOptions": "Thêm tùy chọn",
+    "deselectPatch": "Bỏ chọn bản vá",
+    "selectOption": "Chọn tùy chọn"
   },
   "patchItem": {
     "unsupportedDialogText": "Chọn bản vá này có thể gây lỗi khi vá.\n\nPhiên bản ứng dụng: ${packageVersion}\nPhiên bản được hỗ trợ: ${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "Dùng lựa chọn mặc định"
   },
   "installerView": {
-    "widgetTitle": "Trình cài đặt",
     "installType": "Chọn kiểu cài đặt",
     "installTypeDescription": "Chọn kiểu cài đặt để thực hiện với nó.",
     "installButton": "Cài đặt",
@@ -148,14 +143,15 @@
     "warning": "Tắt tự động cập nhật cho ứng dụng đã vá để tránh các phát sinh không mong muốn.",
     "pressBackAgain": "Nhấn quay lại lần nữa để hủy",
     "openButton": "Mở",
-    "shareButton": "Chia sẻ tệp",
     "notificationTitle": "ReVanced Manager đang vá",
     "notificationText": "Nhấn để trở lại trình cài đặt",
     "exportApkButtonTooltip": "Xuất APK đã vá",
     "exportLogButtonTooltip": "Xuất nhật ký",
     "screenshotDetected": "Một ảnh chụp màn hình đã được phát hiện. Nếu bạn đang cố chia sẻ nhật ký, xin thay bằng chia sẻ văn bản sao chép.\n\nSao chép nhật ký vào bảng tạm?",
     "copiedToClipboard": "Đã sao chép nhật ký vào bảng tạm",
-    "noExit": "Trình cài đặt vẫn đang chạy, không thể thoát..."
+    "noExit": "Trình cài đặt vẫn đang chạy, không thể thoát...",
+    "widgetTitle": "Trình cài đặt",
+    "shareButton": "Chia sẻ tệp"
   },
   "settingsView": {
     "widgetTitle": "Cài đặt",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "Tận hưởng trải nghiệm gần hơn với thiết bị của bạn",
     "languageLabel": "Ngôn ngữ",
     "languageUpdated": "Ngôn ngữ đã cập nhập",
-    "englishOption": "Tiếng Anh",
     "sourcesLabel": "Nguồn thay thế",
     "sourcesLabelHint": "Cấu hình nguồn thay thế cho Bản vá ReVanced và Tích hợp ReVanced",
     "sourcesIntegrationsLabel": "Nguồn tích hợp",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "Mật khẩu kho khóa",
     "selectKeystorePasswordHint": "Chọn mật khẩu kho khóa được sử dụng để ký ứng dụng",
     "jsonSelectorErrorMessage": "Không thể dùng tệp JSON đã chọn",
-    "keystoreSelectorErrorMessage": "Không thể sử dụng tệp kho khóa đã chọn"
+    "keystoreSelectorErrorMessage": "Không thể sử dụng tệp kho khóa đã chọn",
+    "englishOption": "Tiếng Anh"
   },
   "appInfoView": {
     "widgetTitle": "Thông tin ứng dụng",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "Việc cài đặt đã thất bại do phát sinh xác minh.\n\nĐiều chỉnh thiết lập bảo mật của bạn và thử lại.",
     "install_failed_version_downgrade_description": "Việc cài đặt đã thất bại do ứng dụng đã vá có phiên bản nhỏ hơn ứng dụng đã cài đặt.\n\nGỡ cài đặt ứng dụng và thử lại?",
     "status_unknown_description": "Việc cài đặt đã thất bại do một lý do chưa rõ. Xin thử lại."
-  }
+  },
+  "enabledLabel": "Đã bật",
+  "disabledLabel": "Đã tắt",
+  "installed": "Đã cài đặt: ${version}",
+  "options": "Tùy chọn"
 }

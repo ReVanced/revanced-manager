@@ -4,14 +4,10 @@
   "dismissButton": "O'tkazib yuborish",
   "quitButton": "Chiqish",
   "updateButton": "Yangilash",
-  "enabledLabel": "Yoqilgan",
-  "disabledLabel": "O'chirilgan",
-  "installed": "O'rnatilgan versiya: ${version}",
   "suggested": "Taklif etilgan versiya: ${version}",
   "yesButton": "Xa",
   "noButton": "Yo'q",
   "warning": "Ogohlantirish",
-  "options": "Sozlamalar",
   "notice": "Eslatma",
   "noShowAgain": "Boshqa ko'rsatilmasin",
   "add": "Qo'shish",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Yangilanishlar",
     "patchedSubtitle": "Patchlangan dasturlar",
     "changeLaterSubtitle": "Keyinroq sozlamalardan o'zgartirishingiz mumkin.",
-    "noUpdates": "Yangilanish mavjud emas",
-    "WIP": "Jarayonda...",
     "noInstallations": "Patchlangan dasturlar o'rnatilmagan",
     "installUpdate": "Yangilanish o'rnatilishi davom ettirilsinmi?",
     "updateSheetTitle": "ReVanced Managerni yangilash",
@@ -39,7 +33,9 @@
     "updateChangelogTitle": "O'zgarishlar",
     "updateDialogText": "${file} uchun yangilanish mavjud.\n\nHozirgi o'rnatilgan versiya: ${version}.",
     "downloadConsentDialogTitle": "Ba'zi fayllarni yuklab olish?",
-    "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak."
+    "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak.",
+    "noUpdates": "Yangilanish mavjud emas",
+    "WIP": "Jarayonda..."
   },
   "applicationItem": {},
   "latestCommitCard": {},
@@ -55,5 +51,9 @@
   "settingsView": {},
   "appInfoView": {},
   "contributorsView": {},
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "enabledLabel": "Yoqilgan",
+  "disabledLabel": "O'chirilgan",
+  "installed": "O'rnatilgan versiya: ${version}",
+  "options": "Sozlamalar"
 }

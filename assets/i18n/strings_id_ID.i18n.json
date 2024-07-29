@@ -4,14 +4,10 @@
   "dismissButton": "Abaikan",
   "quitButton": "Keluar",
   "updateButton": "Perbarui",
-  "enabledLabel": "Aktif",
-  "disabledLabel": "Nonaktif",
-  "installed": "Terpasang: ${version}",
   "suggested": "Disarankan: ${version}",
   "yesButton": "Iya",
   "noButton": "Tidak",
   "warning": "Peringatan",
-  "options": "Pengaturan",
   "notice": "Pemberitahuan",
   "noShowAgain": "Jangan tampilkan lagi",
   "add": "Tambah",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Pembaruan",
     "patchedSubtitle": "Aplikasi tertambal",
     "changeLaterSubtitle": "Anda dapat mengubahnya di pengaturan nanti.",
-    "noUpdates": "Tidak ada pembaruan",
-    "WIP": "Sedang dikerjakan...",
     "noInstallations": "Aplikasi tambalan tidak terpasang",
     "installUpdate": "Lanjutkan untuk mengunduh pembaruan?",
     "updateSheetTitle": "Perbarui Manajer ReVanced",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Unduh file yang diperlukan?",
     "downloadConsentDialogText": "Manajer ReVanced perlu mengunduh file yang diperlukan agar berfungsi dengan baik.",
     "downloadConsentDialogText2": "Ini akan menghubungkan Anda ke ${url}.",
-    "checkUpdateDialogTitle": "Periksa pembaruan yang tersedia?",
-    "checkUpdateDialogText": "Apakah anda ingin Manajer ReVanced untuk mengecek pembaruan secara otomatis?",
-    "notificationTitle": "Pembaruan diunduh",
-    "notificationText": "Ketuk untuk memperbarui",
     "downloadingMessage": "Mengunduh pembaruan...",
     "downloadedMessage": "Pembaruan telah diunduh",
     "installingMessage": "Memasang pembaruan...",
     "errorDownloadMessage": "Tidak dapat mengunduh pembaruan",
     "errorInstallMessage": "Gagal memasang pembaharuan",
     "noConnection": "Tidak ada koneksi internet",
+    "noUpdates": "Tidak ada pembaruan",
+    "WIP": "Sedang dikerjakan...",
+    "checkUpdateDialogTitle": "Periksa pembaruan yang tersedia?",
+    "checkUpdateDialogText": "Apakah anda ingin Manajer ReVanced untuk mengecek pembaruan secara otomatis?",
+    "notificationTitle": "Pembaruan diunduh",
+    "notificationText": "Ketuk untuk memperbarui",
     "updatesDisabled": "Pembaharuan aplikasi tambalan sedang dinonaktifkan. Silahkan ulangi penambalan aplikasi."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
-    "armv7WarningDialogText": "Menambal pada perangkat ARMv7 belum didukung dan mungkin gagal. Lanjutkan saja?",
     "removedPatchesWarningDialogText": "Patch berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
-    "requiredOptionDialogText": "Beberapa opsi patch harus diatur."
+    "requiredOptionDialogText": "Beberapa opsi patch harus diatur.",
+    "armv7WarningDialogText": "Menambal pada perangkat ARMv7 belum didukung dan mungkin gagal. Lanjutkan saja?"
   },
   "appSelectorCard": {
     "widgetTitle": "Pilih aplikasi",
     "widgetTitleSelected": "Aplikasi yang dipilih",
     "widgetSubtitle": "Tidak ada aplikasi yang dipilih",
     "noAppsLabel": "Aplikasi tidak ditemukan",
+    "anyVersion": "Versi apa saja",
     "currentVersion": "Saat ini",
-    "suggestedVersion": "Disarankan",
-    "anyVersion": "Versi apa saja"
+    "suggestedVersion": "Disarankan"
   },
   "patchSelectorCard": {
     "widgetTitle": "Pilih tambalan",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "Nilai kustom",
-    "resetOptionsTooltip": "Mengatur ulang opsi tambalan",
     "viewTitle": "Opsi tambalan",
     "saveOptions": "Simpan",
-    "addOptions": "Tambahkan opsi",
-    "deselectPatch": "Lepas tambalan",
     "tooltip": "Opsi masukan lainnya",
     "selectFilePath": "Pilih lokasi berkas",
     "selectFolder": "Pilih folder",
-    "selectOption": "Pilih opsi",
     "requiredOption": "Pilihan ini diperlukan",
     "unsupportedOption": "Pilihan ini tidak didukung",
-    "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}"
+    "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}",
+    "resetOptionsTooltip": "Mengatur ulang opsi tambalan",
+    "addOptions": "Tambahkan opsi",
+    "deselectPatch": "Lepas tambalan",
+    "selectOption": "Pilih opsi"
   },
   "patchItem": {
     "unsupportedDialogText": "Memilih tambalan ini akan menyebabkan galat tambal.\n\nVersi apli: ${packageVersion}\nVersi anjuran:\n${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "Gunakan pemilihan bawaan"
   },
   "installerView": {
-    "widgetTitle": "Pemasang",
     "installType": "Pilih tipe pemasang",
     "installTypeDescription": "Pilih jenis instalasi untuk melanjutkan.",
     "installButton": "Pasang",
@@ -148,14 +143,15 @@
     "warning": "Nonaktifkan pembaruan pada aplikasi tertambal untuk menghindari isu.",
     "pressBackAgain": "Tekan tombol balik lagi untuk membatalkan",
     "openButton": "Buka",
-    "shareButton": "Bagikan berkas",
     "notificationTitle": "ReVanced Manager sedang menambal",
     "notificationText": "Ketuk untuk kembali ke pemasang",
     "exportApkButtonTooltip": "Ekspor APK yang ditambal",
     "exportLogButtonTooltip": "Log ekspor",
     "screenshotDetected": "Tangkapan layar telah terdeteksi. Jika Anda mencoba membagikan log, silakan bagikan salinan teks.\n\nMenyalin log ke papan klip?",
     "copiedToClipboard": "Menyalin log ke papan klip",
-    "noExit": "Pemasangan masih berjalan, tidak bisa keluar..."
+    "noExit": "Pemasangan masih berjalan, tidak bisa keluar...",
+    "widgetTitle": "Pemasang",
+    "shareButton": "Bagikan berkas"
   },
   "settingsView": {
     "widgetTitle": "Pengaturan",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "Nikmati pengalaman lebih dekat ke perangkat Anda",
     "languageLabel": "Bahasa",
     "languageUpdated": "Bahasa diperbaharui",
-    "englishOption": "Bahasa Inggris",
     "sourcesLabel": "Sumber-sumber alternatif",
     "sourcesLabelHint": "Mengonfigurasi sumber alternatif untuk ReVanced Patches dan ReVanced Integrations",
     "sourcesIntegrationsLabel": "Sumber Integrasi",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "Kata Sandi Keystore",
     "selectKeystorePasswordHint": "Pilih kata sandi keystore yang digunakan untuk menandatangani aplikasi",
     "jsonSelectorErrorMessage": "Tidak bisa menggunakan berkas JSON tersebut",
-    "keystoreSelectorErrorMessage": "Tidak bisa menggunakan berkas keystrore tersebut"
+    "keystoreSelectorErrorMessage": "Tidak bisa menggunakan berkas keystrore tersebut",
+    "englishOption": "Bahasa Inggris"
   },
   "appInfoView": {
     "widgetTitle": "Info aplikasi",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "Instalasi gagal karena masalah verifikasi.\n\nSesuaikan pengaturan keamanan anda dan coba kembali.",
     "install_failed_version_downgrade_description": "Instalasi gagal karena aplikasi tambalan memiliki versi yang lebih rendah daripada aplikasi yang sudah ada.\n\nCopot pemasangan aplikasi dan coba kembali?",
     "status_unknown_description": "Instalasi gagal karena alasan yang tidak diketahui. Silakan coba kembali."
-  }
+  },
+  "enabledLabel": "Aktif",
+  "disabledLabel": "Nonaktif",
+  "installed": "Terpasang: ${version}",
+  "options": "Pengaturan"
 }

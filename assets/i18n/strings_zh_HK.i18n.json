@@ -4,14 +4,10 @@
   "dismissButton": "忽略",
   "quitButton": "離開",
   "updateButton": "更新",
-  "enabledLabel": "已啟用",
-  "disabledLabel": "已關閉",
-  "installed": "已安裝版本: ${version}",
   "suggested": "建議: ${version}",
   "yesButton": "是",
   "noButton": "不是",
   "warning": "警告",
-  "options": "選項",
   "notice": "通知",
   "noShowAgain": "唔再顯示哩個內容",
   "add": "增加",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "更新",
     "patchedSubtitle": "修改咗既應用",
     "changeLaterSubtitle": "你可以之後喺設定改返",
-    "noUpdates": "冇新既更新",
-    "WIP": "開發中...",
     "noInstallations": "未安裝修改咗既應用",
     "installUpdate": "繼續安裝更新嗎？",
     "updateSheetTitle": "更新 ReVanced Manager",
@@ -38,12 +32,14 @@
     "updatePatchesSheetTitle": "更新 ReVanced 補丁",
     "updateChangelogTitle": "變更日誌",
     "downloadConsentDialogTitle": "下載必要嘅文件？",
-    "checkUpdateDialogTitle": "檢查更新？",
     "downloadingMessage": "正在下載更新",
     "installingMessage": "正在安裝更新…",
     "errorDownloadMessage": "下載唔到更新",
     "errorInstallMessage": "安裝更新失敗",
     "noConnection": "冇網路連線",
+    "noUpdates": "冇新既更新",
+    "WIP": "開發中...",
+    "checkUpdateDialogTitle": "檢查更新？",
     "updatesDisabled": "更新已修補的應用已暫時被禁用。請重新修補應用。"
   },
   "applicationItem": {
@@ -66,9 +62,9 @@
     "widgetTitleSelected": "揀咗嘅應用程式",
     "widgetSubtitle": "冇揀咗嘅應用程式",
     "noAppsLabel": "搵唔到應用",
+    "anyVersion": "任何版本",
     "currentVersion": "目前",
-    "suggestedVersion": "建議",
-    "anyVersion": "任何版本"
+    "suggestedVersion": "建議"
   },
   "patchSelectorCard": {
     "widgetTitle": "選擇補丁",
@@ -154,5 +150,9 @@
   "contributorsView": {
     "widgetTitle": "貢獻者"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "enabledLabel": "已啟用",
+  "disabledLabel": "已關閉",
+  "installed": "已安裝版本: ${version}",
+  "options": "選項"
 }

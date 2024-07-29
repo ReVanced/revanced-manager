@@ -3,12 +3,10 @@
   "cancelButton": "انصراف",
   "quitButton": "خروج",
   "updateButton": "به‌روزرسانی",
-  "installed": "نسخه نصب شده:${version}",
   "suggested": "پیشنهاد شده:${version}",
   "yesButton": "بله",
   "noButton": "خیر",
   "warning": "هشدار",
-  "options": "گزینه ها",
   "notice": "توجه",
   "noShowAgain": "دوباره نشان داده نشود",
   "add": "افزودن",
@@ -82,5 +80,7 @@
   "settingsView": {},
   "appInfoView": {},
   "contributorsView": {},
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "نسخه نصب شده:${version}",
+  "options": "گزینه ها"
 }

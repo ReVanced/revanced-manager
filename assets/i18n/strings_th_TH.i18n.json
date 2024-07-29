@@ -2,11 +2,9 @@
   "okButton": "ตกลง",
   "cancelButton": "ยกเลิก",
   "updateButton": "อัปเดต",
-  "installed": "รุ่นที่ติดตั้ง${version}",
   "yesButton": "ใช่",
   "noButton": "ไม่",
   "warning": "คำเตือน",
-  "options": "ตัวเลือกบทบาท",
   "navigationView": {
     "dashboardTab": "หน้าหลัก",
     "patcherTab": "ตัวดัดแปลง",
@@ -127,5 +125,7 @@
   "contributorsView": {
     "widgetTitle": "ผู้ช่วยเหลือโปรเจกต์"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "รุ่นที่ติดตั้ง${version}",
+  "options": "ตัวเลือกบทบาท"
 }

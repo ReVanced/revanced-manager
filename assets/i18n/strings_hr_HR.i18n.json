@@ -2,7 +2,6 @@
   "okButton": "U redu",
   "cancelButton": "Poništi",
   "updateButton": "Ažuriraj",
-  "installed": "Instalirana verzija: ${version}",
   "suggested": "Preporučena verzija: ${version}",
   "yesButton": "Da",
   "noButton": "Ne",
@@ -127,5 +126,6 @@
   "contributorsView": {
     "widgetTitle": "Pridonositelji"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Instalirana verzija: ${version}"
 }

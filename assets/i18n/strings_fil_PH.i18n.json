@@ -4,14 +4,10 @@
   "dismissButton": "Kalimutan",
   "quitButton": "Itigil",
   "updateButton": "Magbago",
-  "enabledLabel": "Makaya",
-  "disabledLabel": "Hindi",
-  "installed": "Naka-install: ${version}",
   "suggested": "Version payo ng ReVanced: ${version}",
   "yesButton": "Sige",
   "noButton": "Hindi",
   "warning": "Babala",
-  "options": "Mga Pagpipilian",
   "notice": "Pabatid",
   "noShowAgain": "Wag na ipakita ito muli",
   "add": "Idagdag",
@@ -29,8 +25,8 @@
     "updatesSubtitle": "Mga Pagbabago",
     "patchedSubtitle": "Naka-patch nga aplikasyon",
     "changeLaterSubtitle": "Pwede mo palitan ito sa settings mamaya.",
-    "noUpdates": "Walang pagbabagong mayroon",
-    "downloadingMessage": "Nagda-download ng update..."
+    "downloadingMessage": "Nagda-download ng update...",
+    "noUpdates": "Walang pagbabagong mayroon"
   },
   "applicationItem": {
     "infoButton": "Impormasyon"
@@ -84,5 +80,9 @@
     "appliedPatchesHint": "${quantity} ang naka-apply nga patches"
   },
   "contributorsView": {},
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "enabledLabel": "Makaya",
+  "disabledLabel": "Hindi",
+  "installed": "Naka-install: ${version}",
+  "options": "Mga Pagpipilian"
 }

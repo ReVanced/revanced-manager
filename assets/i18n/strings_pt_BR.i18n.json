@@ -4,14 +4,10 @@
   "dismissButton": "Descartar",
   "quitButton": "Sair",
   "updateButton": "Atualizar",
-  "enabledLabel": "Ativado",
-  "disabledLabel": "Desativado",
-  "installed": "Instalado: ${version}",
   "suggested": "Sugerido: ${version}",
   "yesButton": "Sim",
   "noButton": "Não",
   "warning": "Atenção",
-  "options": "Opções",
   "notice": "Nota",
   "noShowAgain": "Não mostrar novamente",
   "add": "Adicionar",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Atualizações",
     "patchedSubtitle": "Aplicativos patcheados ",
     "changeLaterSubtitle": "Você pode ajustar essa opção nas configurações mais tarde.",
-    "noUpdates": "Nenhuma atualização encontrada",
-    "WIP": "Trabalho em progresso...",
     "noInstallations": "Nenhum aplicativo patcheado instalado",
     "installUpdate": "Continuar a instalação da atualização?",
     "updateSheetTitle": "Atualizar o ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Baixar os arquivos necessários?",
     "downloadConsentDialogText": "O ReVanced Manager precisará baixar os arquivos necessários para funcionar corretamente.",
     "downloadConsentDialogText2": "Isso vai conectar você em ${url}.",
-    "checkUpdateDialogTitle": "Procurar atualizações?",
-    "checkUpdateDialogText": "Você quer que o ReVanced Manager procure atualizações automaticamente?",
-    "notificationTitle": "Atualização baixada",
-    "notificationText": "Toque para instalar a atualização",
     "downloadingMessage": "Baixando atualização...",
     "downloadedMessage": "Atualização baixada",
     "installingMessage": "Instalando atualização...",
     "errorDownloadMessage": "Não é possível baixar a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
     "noConnection": "Sem conexão",
+    "noUpdates": "Nenhuma atualização encontrada",
+    "WIP": "Trabalho em progresso...",
+    "checkUpdateDialogTitle": "Procurar atualizações?",
+    "checkUpdateDialogText": "Você quer que o ReVanced Manager procure atualizações automaticamente?",
+    "notificationTitle": "Atualização baixada",
+    "notificationText": "Toque para instalar a atualização",
     "updatesDisabled": "A opção de atualização de um aplicativo modificado está temporariamente desabilitada. Refaça o \"patch\" do aplicativo e tente novamente."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "Realizar patches em dispositivos ARMv7 ainda não é suportado e pode falhar. Continuar mesmo assim?",
     "removedPatchesWarningDialogText": "Os seguintes patches foram removidos desde a última vez que você os utilizou:\n\n${patches}\n\nContinuar mesmo assim?",
-    "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas."
+    "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas.",
+    "armv7WarningDialogText": "Realizar patches em dispositivos ARMv7 ainda não é suportado e pode falhar. Continuar mesmo assim?"
   },
   "appSelectorCard": {
     "widgetTitle": "Selecione um app",
     "widgetTitleSelected": "App selecionado",
     "widgetSubtitle": "Nenhum app selecionado",
     "noAppsLabel": "Nenhum aplicativo foi encontrado",
+    "anyVersion": "Qualquer versão",
     "currentVersion": "Atual",
-    "suggestedVersion": "Sugeridos/sugestões",
-    "anyVersion": "Qualquer versão"
+    "suggestedVersion": "Sugeridos/sugestões"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecionar patches",
@@ -120,18 +116,18 @@
     "customValue": "Valor personalizado",
     "setToNull": "Definir como nulo",
     "nullValue": "Atualmente, este valor de opção é nulo",
-    "resetOptionsTooltip": "Redefinir as opções de patch",
     "viewTitle": "Opções de patch",
     "saveOptions": "Salvar",
-    "addOptions": "Adicionar opções",
     "unselectPatch": "Desmarque o patch",
     "tooltip": "Mais opções de entrada",
     "selectFilePath": "Selecione o caminho do arquivo",
     "selectFolder": "Selecione a pasta",
-    "selectOption": "Selecione uma opção",
     "requiredOption": "Definir esta opção é necessário",
     "unsupportedOption": "Essa opção não é suportada",
-    "requiredOptionNull": "As seguintes opções precisam ser definidas:\n\n${options}"
+    "requiredOptionNull": "As seguintes opções precisam ser definidas:\n\n${options}",
+    "resetOptionsTooltip": "Redefinir as opções de patch",
+    "addOptions": "Adicionar opções",
+    "selectOption": "Selecione uma opção"
   },
   "patchItem": {
     "unsupportedDialogText": "Selecionar esse patch pode resultar em erros de patchs\n\nVersão do app: ${packageVersion}\nVersões suportadas: ${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Use a seleção padrão"
   },
   "installerView": {
-    "widgetTitle": "Instalador",
     "installType": "Selecione o tipo de instalação",
     "installTypeDescription": "Selecione o tipo de instalação para continuar.",
     "installButton": "Instalar",
@@ -150,14 +145,15 @@
     "warning": "Desative as atualizações automáticas do aplicativo patcheado para evitar problemas inesperados.",
     "pressBackAgain": "Pressione voltar mais uma vez para cancelar",
     "openButton": "Abrir",
-    "shareButton": "Share file",
     "notificationTitle": "ReVanced manager está aplicando os patches",
     "notificationText": "Toque para voltar ao instalador",
     "exportApkButtonTooltip": "Exportar APK com o patch aplicado",
     "exportLogButtonTooltip": "Exportar log",
     "screenshotDetected": "Uma captura de tela foi detectada. Se está tentando compartilhar esse log, apenas faça a cópia do texto.\n\nCopiar o log para a área de transferência?",
     "copiedToClipboard": "Log copiado para a área de transferência",
-    "noExit": "O instalador ainda está em execução, não é possível sair..."
+    "noExit": "O instalador ainda está em execução, não é possível sair...",
+    "widgetTitle": "Instalador",
+    "shareButton": "Share file"
   },
   "settingsView": {
     "widgetTitle": "Configurações",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Aproveite uma experiência mais próxima do tema de seu dispositivo",
     "languageLabel": "Idioma",
     "languageUpdated": "Idioma atualizado",
-    "englishOption": "English",
     "sourcesLabel": "Fontes alternativas",
     "sourcesLabelHint": "Conigure as fontes alternativas para ReVanced Patches e ReVanced Integrations",
     "sourcesIntegrationsLabel": "Fonte das integrações",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Senha do keystore",
     "selectKeystorePasswordHint": "Selecione a senha de keystore usada para assinar aplicativos",
     "jsonSelectorErrorMessage": "Não é possível usar o arquivo JSON selecionado",
-    "keystoreSelectorErrorMessage": "Não é possível usar o arquivo keystore selecionado"
+    "keystoreSelectorErrorMessage": "Não é possível usar o arquivo keystore selecionado",
+    "englishOption": "English"
   },
   "appInfoView": {
     "widgetTitle": "Informações do aplicativo",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "A instalação falhou devido a um problema de verificação.\n\nAjuste suas configurações de segurança e tente novamente.",
     "install_failed_version_downgrade_description": "A instalação falhou porque o app patcheado era uma versão mais baixa que o app instalado.\n\nDesinstalar o app e tentar de novo?",
     "status_unknown_description": "A instalação falhou por um motivo desconhecido. Por favor, tente novamente."
-  }
+  },
+  "enabledLabel": "Ativado",
+  "disabledLabel": "Desativado",
+  "installed": "Instalado: ${version}",
+  "options": "Opções"
 }

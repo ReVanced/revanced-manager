@@ -4,14 +4,10 @@
   "dismissButton": "Rədd et",
   "quitButton": "Çıxış",
   "updateButton": "Yenilə",
-  "enabledLabel": "Fəaldır",
-  "disabledLabel": "Sıradan çıxarıldı",
-  "installed": "Quraşdırılan: ${version}",
   "suggested": "Təklif edilən: ${version}",
   "yesButton": "Bəli",
   "noButton": "Xeyr",
   "warning": "Xәbәrdarlıq",
-  "options": "Seçimlər",
   "notice": "Bildiriş",
   "noShowAgain": "Bunu təkrar göstərmə",
   "add": "Əlavə et",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Yeniləmələr",
     "patchedSubtitle": "Yamaqlanmış tətbiqlər",
     "changeLaterSubtitle": "Bunu daha sonra ayarlarda dəyişdirə bilərsiniz.",
-    "noUpdates": "Güncəlləmə mövcud deyil",
-    "WIP": "Proses davam edir...",
     "noInstallations": "Yamaqlanmış tətbiq quraşdırılmayıb",
     "installUpdate": "Yeniləməni quraşdırmağa davam edilsin?",
     "updateSheetTitle": "ReVanced Menecerini Güncəllə",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Lazımi fayllar endirilsin?",
     "downloadConsentDialogText": "\"ReVanced Meneceri\"nin düzgün işləməsi üçün lazımi faylları endirməsi lazımdır.",
     "downloadConsentDialogText2": "Bu, sizi ${url} ünvanına bağlayacaq.",
-    "checkUpdateDialogTitle": "Güncəlləmələr yoxlanılsın?",
-    "checkUpdateDialogText": "\"ReVanced Meneceri\"nin güncəlləmələri avto-yoxlamasını istəyirsiniz?",
-    "notificationTitle": "Güncəlləmə endirildi",
-    "notificationText": "Güncəlləməni quraşdırmaq üçün toxunun",
     "downloadingMessage": "Yeniləmə yüklənilir...",
     "downloadedMessage": "Güncəlləmə endirildi",
     "installingMessage": "Yeniləmə quraşdırılır...",
     "errorDownloadMessage": "Güncəlləmə endirilə bilmir",
     "errorInstallMessage": "Güncəlləmə quraşdırıla bilmir",
     "noConnection": "İnternet bağlantısı yoxdur",
+    "noUpdates": "Güncəlləmə mövcud deyil",
+    "WIP": "Proses davam edir...",
+    "checkUpdateDialogTitle": "Güncəlləmələr yoxlanılsın?",
+    "checkUpdateDialogText": "\"ReVanced Meneceri\"nin güncəlləmələri avto-yoxlamasını istəyirsiniz?",
+    "notificationTitle": "Güncəlləmə endirildi",
+    "notificationText": "Güncəlləməni quraşdırmaq üçün toxunun",
     "updatesDisabled": "Yamaqlanmış bir tətbiqin güncəllənməsi hazırda sıradan çıxarılıb. Tətbiqi yenidən yamaqlayın."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Yamaqlayıcı",
     "patchButton": "Yamaqla",
-    "armv7WarningDialogText": "ARMv7 cihazlarında yamaqlama hələ dəstəklənmir və xəta verə bilər. Yenə də davam edilsin?",
     "removedPatchesWarningDialogText": "Aşağıdakı yamaqlar son istifadədən bu yana silindi.\n\n${patches}\n\nYenə də davam edilsin?",
-    "requiredOptionDialogText": "Bəzi yamaq seçimləri ayarlanmalıdır."
+    "requiredOptionDialogText": "Bəzi yamaq seçimləri ayarlanmalıdır.",
+    "armv7WarningDialogText": "ARMv7 cihazlarında yamaqlama hələ dəstəklənmir və xəta verə bilər. Yenə də davam edilsin?"
   },
   "appSelectorCard": {
     "widgetTitle": "Bir tətbiq seçin",
     "widgetTitleSelected": "Seçilmiş tətbiq",
     "widgetSubtitle": "Heç bir tətbiq seçilmədi",
     "noAppsLabel": "Heç bir tətbiq tapılmadı",
+    "anyVersion": "Bütün versiyalar",
     "currentVersion": "Hazırkı",
-    "suggestedVersion": "Təklif edilən",
-    "anyVersion": "Bütün versiyalar"
+    "suggestedVersion": "Təklif edilən"
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaqları seçin",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "Özəl dəyər",
-    "resetOptionsTooltip": "Yamaq seçimlərini sıfırla",
     "viewTitle": "Yamaq seçimləri",
     "saveOptions": "Saxla",
-    "addOptions": "Seçim əlavə et",
-    "deselectPatch": "Yamağı seçmə",
     "tooltip": "Daha çox giriş seçimləri",
     "selectFilePath": "Fayl yolunu seç",
     "selectFolder": "Qovluq seç",
-    "selectOption": "Seçim et",
     "requiredOption": "Bu seçim tələb olunur",
     "unsupportedOption": "Bu seçim dəstəklənmir",
-    "requiredOptionNull": "Aşağıdakı seçimlər ayarlanmalıdır:\n\n${options}"
+    "requiredOptionNull": "Aşağıdakı seçimlər ayarlanmalıdır:\n\n${options}",
+    "resetOptionsTooltip": "Yamaq seçimlərini sıfırla",
+    "addOptions": "Seçim əlavə et",
+    "deselectPatch": "Yamağı seçmə",
+    "selectOption": "Seçim et"
   },
   "patchItem": {
     "unsupportedDialogText": "Bu yamağı seçmək, yamaqlama xətalarına səbəb ola bilər.\n\nTətbiq versiyası: ${packageVersion} \nDəstəklənən versiyalar:\n${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "İlkin seçimi istifadə et"
   },
   "installerView": {
-    "widgetTitle": "Quraşdırıcı",
     "installType": "Quraşdırma növünü seçin",
     "installTypeDescription": "Davam etmək üçün quraşdırma növünü seçin.",
     "installButton": "Quraşdır",
@@ -148,14 +143,15 @@
     "warning": "Gözlənilməz problemlərin qarşısını almaq məqsədilə yamaqlanmış tətbiq üçün avto-güncəlləmələri sıradan çıxardın.",
     "pressBackAgain": "Ləğv etmək üçün yenidən geri düyməsinə bas",
     "openButton": "Aç",
-    "shareButton": "Faylı paylaş",
     "notificationTitle": "ReVanced Menecer yamaqlayır",
     "notificationText": "Quraşdırıcıya geri qayıtmaq üçün toxunun",
     "exportApkButtonTooltip": "Yamaqlı APK-ni xaricə köçür",
     "exportLogButtonTooltip": "Jurnalı xaricə köçür",
     "screenshotDetected": "Ekran şəkli silindi. Jurnalı paylaşmağa çalışırsınızsa, lütfən bunun əvəzinə mətnin kopyasını paylaşın.\n\nJurnal lövhəyə kopyalansın?",
     "copiedToClipboard": "Jurnal lövhəyə kopyalandı",
-    "noExit": "Quraşdırıcı hələ də işləyir, çıxış edilə bilməz..."
+    "noExit": "Quraşdırıcı hələ də işləyir, çıxış edilə bilməz...",
+    "widgetTitle": "Quraşdırıcı",
+    "shareButton": "Faylı paylaş"
   },
   "settingsView": {
     "widgetTitle": "Ayarlar",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "Cihazınıza yaxın bir təcrübədən həzz alın",
     "languageLabel": "Dil",
     "languageUpdated": "Dil güncəlləndi",
-    "englishOption": "İngiliscə",
     "sourcesLabel": "Alternativ mənbələr",
     "sourcesLabelHint": "ReVanced Yamaqları və ReVanced İnteqrasiyaları üçün alternativ mənbələri konfiqurasiya edin",
     "sourcesIntegrationsLabel": "İnteqrasiya mənbəyi",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "Keystore parolu",
     "selectKeystorePasswordHint": "Tətbiqləri imzalamaq üçün istifadə olunan keystore-u seçin",
     "jsonSelectorErrorMessage": "Seçilmiş JSON faylı istifadə edilə bilmir",
-    "keystoreSelectorErrorMessage": "Seçilmiş keystore faylı istifadə edilə bilmir"
+    "keystoreSelectorErrorMessage": "Seçilmiş keystore faylı istifadə edilə bilmir",
+    "englishOption": "İngiliscə"
   },
   "appInfoView": {
     "widgetTitle": "Tətbiq məlumatı",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "Doğrulama probleminə görə quraşdırma uğursuz oldu.\n\nGüvənlik ayarlarınızı nizamlayıb yenidən sınayın.",
     "install_failed_version_downgrade_description": "Yamaqlanmış tətbiq, quraşdırılmış tətbiqdən daha aşağı versiyaya sahib olduğu üçün quraşdırma uğursuz oldu.\n\nTətbiqi silib yenidən sınayırsınız?",
     "status_unknown_description": "Bilinməyən bir səbəbə görə quraşdırma uğursuz oldu. Lütfən yenidən sınayın."
-  }
+  },
+  "enabledLabel": "Fəaldır",
+  "disabledLabel": "Sıradan çıxarıldı",
+  "installed": "Quraşdırılan: ${version}",
+  "options": "Seçimlər"
 }

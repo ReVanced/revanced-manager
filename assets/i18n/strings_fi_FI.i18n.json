@@ -4,14 +4,10 @@
   "dismissButton": "Sulje",
   "quitButton": "Sulje",
   "updateButton": "Päivitä",
-  "enabledLabel": "Käytössä",
-  "disabledLabel": "Ei käytössä",
-  "installed": "Asennettu: ${version}",
   "suggested": "Ehdotettu: ${version}",
   "yesButton": "Kyllä",
   "noButton": "Ei",
   "warning": "Varoitus",
-  "options": "Asetukset",
   "notice": "Huomautus",
   "noShowAgain": "Älä näytä tätä uudelleen",
   "add": "Lisää",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Päivitykset",
     "patchedSubtitle": "Paikatut sovellukset",
     "changeLaterSubtitle": "Voit muuttaa tätä aseutksista koska tahansa.",
-    "noUpdates": "Päivityksiä ei ole saatavilla",
-    "WIP": "Työn alla...",
     "noInstallations": "Paikattuja sovelluksia ei ole asennettu",
     "installUpdate": "Jatketaanko päivityksen asennusta?",
     "updateSheetTitle": "Päivitä ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Ladataanko tarvittavat tiedostot?",
     "downloadConsentDialogText": "Revanced Managerin on ladattava kunnollista toimintaa varten tarvittavat tiedostot.",
     "downloadConsentDialogText2": "Tämä yhdistää osoitteeseen ${url}.",
-    "checkUpdateDialogTitle": "Tarkistetaanko päivitykset?",
-    "checkUpdateDialogText": "Haluatko ReVanced Managerin tarkistavan päivitykset automaattisesti?",
-    "notificationTitle": "Päivitys on ladattu",
-    "notificationText": "Asenna se napauttamalla",
     "downloadingMessage": "Päivitystä ladataan...",
     "downloadedMessage": "Päivitys on ladattu",
     "installingMessage": "Päivitystä asennetaan...",
     "errorDownloadMessage": "Päivityksen lataus epäonnistui",
     "errorInstallMessage": "Päivityksen asennus epäonnistui",
     "noConnection": "Internet-yhteyttä ei ole",
+    "noUpdates": "Päivityksiä ei ole saatavilla",
+    "WIP": "Työn alla...",
+    "checkUpdateDialogTitle": "Tarkistetaanko päivitykset?",
+    "checkUpdateDialogText": "Haluatko ReVanced Managerin tarkistavan päivitykset automaattisesti?",
+    "notificationTitle": "Päivitys on ladattu",
+    "notificationText": "Asenna se napauttamalla",
     "updatesDisabled": "Paikatun sovelluksen päivittäminen ei ole tällä hetkellä käytössä. Paikkaa sovellus uudelleen."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Paikkaaja",
     "patchButton": "Paikkaa",
-    "armv7WarningDialogText": "Paikkausta ei vielä tueta ARMv7-laitteissa ja se voi epäonnistua. Jatketaanko silti?",
     "removedPatchesWarningDialogText": "Seuraavat paikkaukset on poistettu edellisen käyttökerran jälkeen.\n\n${patches}\n\nJatketaanko silti?",
-    "requiredOptionDialogText": "Joitakin paikkausasetuksia on määritettävä."
+    "requiredOptionDialogText": "Joitakin paikkausasetuksia on määritettävä.",
+    "armv7WarningDialogText": "Paikkausta ei vielä tueta ARMv7-laitteissa ja se voi epäonnistua. Jatketaanko silti?"
   },
   "appSelectorCard": {
     "widgetTitle": "Valitse sovellus",
     "widgetTitleSelected": "Valitut sovellukset",
     "widgetSubtitle": "Sovellusta ei valittu",
     "noAppsLabel": "Sovelluksia ei löytynyt",
+    "anyVersion": "Kaikki versiot",
     "currentVersion": "Nykyinen",
-    "suggestedVersion": "Ehdotettu",
-    "anyVersion": "Kaikki versiot"
+    "suggestedVersion": "Ehdotettu"
   },
   "patchSelectorCard": {
     "widgetTitle": "Valitse paikkaukset",
@@ -120,18 +116,18 @@
     "customValue": "Oma arvo",
     "setToNull": "Aseta tyhjäksi",
     "nullValue": "Tämä valinta arvo on tällä hetkellä nolla",
-    "resetOptionsTooltip": "Palauta paikkausasetukset",
     "viewTitle": "Paikkausasetukset",
     "saveOptions": "Tallenna",
-    "addOptions": "Lisää asetuksia",
     "unselectPatch": "Peru korjauksen valinta",
     "tooltip": "Enemmän syöteasetuksia",
     "selectFilePath": "Valitse tiedostosijainti",
     "selectFolder": "Valitse kansio",
-    "selectOption": "Valitse asetus",
     "requiredOption": "Tämän asetuksen asettaminen on pakollinen",
     "unsupportedOption": "Tätä asetusta ei tueta",
-    "requiredOptionNull": "Seuraavat asetukset on määritettävä:\n\n${options}"
+    "requiredOptionNull": "Seuraavat asetukset on määritettävä:\n\n${options}",
+    "resetOptionsTooltip": "Palauta paikkausasetukset",
+    "addOptions": "Lisää asetuksia",
+    "selectOption": "Valitse asetus"
   },
   "patchItem": {
     "unsupportedDialogText": "Tämän paikkauksen valinta voi aiheuttaa virheitä.\n\nSovelluksen versio: ${packageVersion}\nTuetut versiot: \n${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Käytä oletusvalintaa"
   },
   "installerView": {
-    "widgetTitle": "Asentaja",
     "installType": "Valitse asennustyyppi",
     "installTypeDescription": "Valitse asennustyyppi, jolla jatketaan.",
     "installButton": "Asenna",
@@ -150,14 +145,15 @@
     "warning": "Poista paikatun sovelluksen automaattiset päivitykset käytöstä odottamattomien ongelmien välttämiseksi.",
     "pressBackAgain": "Peru painamalla takaisin-painiketta uudelleen",
     "openButton": "Avaa",
-    "shareButton": "Jaa tiedosto",
     "notificationTitle": "ReVanced Manager suorittaa paikkauksia",
     "notificationText": "Napauta palataksesi hallintasovellukseen",
     "exportApkButtonTooltip": "Via paikattu APK",
     "exportLogButtonTooltip": "Vie loki",
     "screenshotDetected": "Havaittiin kuvankaappaus. Jos yrität jakaa lokin, jaa se kuvan sijaan tekstinä.\n\nKopioidaanko loki leikepöydälle?",
     "copiedToClipboard": "Loki kopioitiin leikepöydälle",
-    "noExit": "Asennus on vielä kesken, eikä poistuminen ole mahdollista..."
+    "noExit": "Asennus on vielä kesken, eikä poistuminen ole mahdollista...",
+    "widgetTitle": "Asentaja",
+    "shareButton": "Jaa tiedosto"
   },
   "settingsView": {
     "widgetTitle": "Asetukset",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Nauti paremmin laitettasi vastaavasta käyttökokemuksesta",
     "languageLabel": "Kieli",
     "languageUpdated": "Kieli on vaihdettu",
-    "englishOption": "Englanti",
     "sourcesLabel": "Vaihtoehtoiset lähteet",
     "sourcesLabelHint": "Määritä käytöstä poistettujen kohteiden ja käytöstä poistettujen integraatioiden vaihtoehtoiset lähteet",
     "sourcesIntegrationsLabel": "Integraatioiden lähde",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Avainsäilön salasana",
     "selectKeystorePasswordHint": "Valitse sovellusten allekirjoitukseen käytettävä avainsäilö",
     "jsonSelectorErrorMessage": "Valittua JSON-tiedostoa ei voida käyttää",
-    "keystoreSelectorErrorMessage": "Valittua avainsäilötiedostoa ei voida käyttää"
+    "keystoreSelectorErrorMessage": "Valittua avainsäilötiedostoa ei voida käyttää",
+    "englishOption": "Englanti"
   },
   "appInfoView": {
     "widgetTitle": "Sovelluksen tiedot",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "Asennus epäonnistui todennusongelman vuoksi.\n\nSäädä suojausasetuksiasi ja yritä uudelleen.",
     "install_failed_version_downgrade_description": "Asennus epäonnistui, koska paikatun sovelluksen versio on asennettua vanhempi.\n\nPoistetaanko sovelluksen asennus ja yritetään uudelleen?",
     "status_unknown_description": "Asennus epäonnistui tuntemattomasta syystä. Yritä uudelleen."
-  }
+  },
+  "enabledLabel": "Käytössä",
+  "disabledLabel": "Ei käytössä",
+  "installed": "Asennettu: ${version}",
+  "options": "Asetukset"
 }

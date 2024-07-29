@@ -4,14 +4,10 @@
   "dismissButton": "Απόρριψη",
   "quitButton": "Έξοδος",
   "updateButton": "Ενημέρωση",
-  "enabledLabel": "Ενεργό",
-  "disabledLabel": "Ανενεργό",
-  "installed": "Εγκατεστημένη έκδοση: ${version}",
   "suggested": "Προτεινόμενη έκδοση: ${version}",
   "yesButton": "Ναι",
   "noButton": "Όχι",
   "warning": "Προειδοποίηση",
-  "options": "Ρυθμίσεις",
   "notice": "Σημείωση",
   "noShowAgain": "Να μην ξαναεμφανιστεί",
   "add": "Προσθήκη",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Ενημερώσεις",
     "patchedSubtitle": "Τροποποιημένες Εφαρμογές",
     "changeLaterSubtitle": "Μπορείτε να το αλλάξετε αργότερα στις ρυθμίσεις.",
-    "noUpdates": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
-    "WIP": "Υπό κατασκευή...",
     "noInstallations": "Δεν έχουν εγκατασταθεί τροποποιημένες εφαρμογές",
     "installUpdate": "Συνέχεια για εγκατάσταση της ενημέρωσης;",
     "updateSheetTitle": "Ενημέρωση του ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Λήψη των απαραίτητων αρχείων;",
     "downloadConsentDialogText": "Το ReVanced Manager πρέπει να κατεβάσει τα απαραίτητα αρχεία για να λειτουργήσει σωστά.",
     "downloadConsentDialogText2": "Αυτό θα σας συνδέσει με το ${url}.",
-    "checkUpdateDialogTitle": "Έλεγχος για ενημερώσεις;",
-    "checkUpdateDialogText": "Θέλετε το ReVanced Manager να ελέγχει για ενημερώσεις αυτόματα;",
-    "notificationTitle": "Η λήψη της ενημέρωσης ολοκληρώθηκε",
-    "notificationText": "Πατήστε για εγκατάσταση της ενημέρωσης",
     "downloadingMessage": "Λήψη ενημέρωσης...",
     "downloadedMessage": "Η λήψη της ενημέρωσης ολοκληρώθηκε",
     "installingMessage": "Εγκατάσταση ενημέρωσης...",
     "errorDownloadMessage": "Αδυναμία λήψης ενημέρωσης",
     "errorInstallMessage": "Αδυναμία εγκατάστασης ενημέρωσης",
     "noConnection": "Δεν υπάρχει σύνδεση στο διαδίκτυο",
+    "noUpdates": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
+    "WIP": "Υπό κατασκευή...",
+    "checkUpdateDialogTitle": "Έλεγχος για ενημερώσεις;",
+    "checkUpdateDialogText": "Θέλετε το ReVanced Manager να ελέγχει για ενημερώσεις αυτόματα;",
+    "notificationTitle": "Η λήψη της ενημέρωσης ολοκληρώθηκε",
+    "notificationText": "Πατήστε για εγκατάσταση της ενημέρωσης",
     "updatesDisabled": "Η ενημέρωση τροποποιημένων εφαρμογών είναι ανενεργή προς το παρόν. Τροποποιήστε τις εφαρμογές εκ νέου."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Τροποποιητής",
     "patchButton": "Τροποποίηση",
-    "armv7WarningDialogText": "Η διαδικασία της τροποποίησης δεν υποστηρίζεται προς το παρόν σε ARMv7 συσκευές και μπορεί να αποτύχει. Συνέχεια παρόλα αυτά;",
     "removedPatchesWarningDialogText": "Οι παρακάτω τροποποιήσεις αφαιρέθηκαν από την τελευταία φορά που τις χρησιμοποιήσατε.\n\n${patches}\n\nΣυνέχεια παρόλα αυτά;",
-    "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν."
+    "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν.",
+    "armv7WarningDialogText": "Η διαδικασία της τροποποίησης δεν υποστηρίζεται προς το παρόν σε ARMv7 συσκευές και μπορεί να αποτύχει. Συνέχεια παρόλα αυτά;"
   },
   "appSelectorCard": {
     "widgetTitle": "Επιλέξτε μία εφαρμογή",
     "widgetTitleSelected": "Επιλεγμένες εφαρμογές",
     "widgetSubtitle": "Δεν έχει επιλεγεί κάποια εφαρμογή",
     "noAppsLabel": "Δε βρέθηκαν εφαρμογές",
+    "anyVersion": "Οποιαδήποτε έκδοση",
     "currentVersion": "Τρέχουσα έκδοση",
-    "suggestedVersion": "Προτεινόμενη έκδοση",
-    "anyVersion": "Οποιαδήποτε έκδοση"
+    "suggestedVersion": "Προτεινόμενη έκδοση"
   },
   "patchSelectorCard": {
     "widgetTitle": "Επιλέξτε τροποποιήσεις",
@@ -120,18 +116,18 @@
     "customValue": "Προσαρμοσμένη τιμή",
     "setToNull": "Ορισμός σε null",
     "nullValue": "Αυτή η επιλογή είναι κενή",
-    "resetOptionsTooltip": "Επαναφορά επιλογών τροποποιήσεων",
     "viewTitle": "Επιλογές τροποποιήσεων",
     "saveOptions": "Αποθήκευση",
-    "addOptions": "Προσθήκη επιλογών",
     "unselectPatch": "Αποεπιλογή patch",
     "tooltip": "Περισσότερες επιλογές εισόδου",
     "selectFilePath": "Επιλογή τοποθεσίας αρχείου",
     "selectFolder": "Επιλογή φακέλου",
-    "selectOption": "Επιλογή ρύθμισης",
     "requiredOption": "Απαιτείται ρύθμιση αυτής της επιλογής",
     "unsupportedOption": "Αυτή η επιλογή δεν υποστηρίζεται",
-    "requiredOptionNull": "Πρέπει να οριστούν οι παρακάτω επιλογές:\n\n${options}"
+    "requiredOptionNull": "Πρέπει να οριστούν οι παρακάτω επιλογές:\n\n${options}",
+    "resetOptionsTooltip": "Επαναφορά επιλογών τροποποιήσεων",
+    "addOptions": "Προσθήκη επιλογών",
+    "selectOption": "Επιλογή ρύθμισης"
   },
   "patchItem": {
     "unsupportedDialogText": "Η επιλογή αυτής της τροποποίησης μπορεί να επιφέρει σφάλματα τροποποίησης.\n\nΈκδοση εφαρμογής: ${packageVersion}\nΥποστηριζόμενες εκδόσεις: ${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Χρήση προεπιλεγμένων επιλογών"
   },
   "installerView": {
-    "widgetTitle": "Πρόγραμμα Εγκατάστασης",
     "installType": "Επιλέξτε τύπο εγκατάστασης",
     "installTypeDescription": "Συνεχίστε επιλέγοντας τον τύπο εγκατάστασης.",
     "installButton": "Εγκατάσταση",
@@ -150,14 +145,15 @@
     "warning": "Απενεργοποίηση αυτόματων ενημερώσεων για την τροποποιημένη εφαρμογή για την αποφυγή απροσδόκητων προβλημάτων.",
     "pressBackAgain": "Πατήστε πίσω ξανά για ακύρωση",
     "openButton": "Άνοιγμα",
-    "shareButton": "Κοινοποίηση αρχείου",
     "notificationTitle": "Πραγματοποιείται τροποποίηση μέσω ReVanced Manager",
     "notificationText": "Πατήστε για να επιστρέψετε στο πρόγραμμα εγκατάστασης",
     "exportApkButtonTooltip": "Εξαγωγή τροποποιημένου αρχείου APK",
     "exportLogButtonTooltip": "Εξαγωγή αρχείου καταγραφής",
     "screenshotDetected": "Ανιχνεύθηκε στιγμιότυπο οθόνης. Αν προσπαθείτε να κοινοποιήσετε το αρχείο καταγραφής, παρακαλούμε να κοινοποιήσετε αντίγραφο κειμένου αντ'αυτού.\n\nΑντιγραφή αρχείου καταγραφής στο πρόχειρο;",
     "copiedToClipboard": "Το αρχείο καταγραφής αντιγράφηκε στο πρόχειρο",
-    "noExit": "Το πρόγραμμα εγκατάστασης εκτελείται ακόμη, αδυναμία εξόδου..."
+    "noExit": "Το πρόγραμμα εγκατάστασης εκτελείται ακόμη, αδυναμία εξόδου...",
+    "widgetTitle": "Πρόγραμμα Εγκατάστασης",
+    "shareButton": "Κοινοποίηση αρχείου"
   },
   "settingsView": {
     "widgetTitle": "Ρυθμίσεις",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Εμφάνιση που ταιριάζει με τη δική σας συσκευή",
     "languageLabel": "Γλώσσα",
     "languageUpdated": "Η γλώσσα ενημερώθηκε",
-    "englishOption": "Αγγλικά",
     "sourcesLabel": "Εναλλακτικές πηγές",
     "sourcesLabelHint": "Ρυθμίστε τις εναλλακτικές πηγές για τις τροποποιήσεις ReVanced και τις ενσωματώσεις ReVanced",
     "sourcesIntegrationsLabel": "Πηγή ενσωματώσεων",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Κωδικός Keystore",
     "selectKeystorePasswordHint": "Επιλέξτε κωδικό πρόσβασης για το κλειδί που χρησιμοποιείται για την υπογραφή εφαρμογών",
     "jsonSelectorErrorMessage": "Αδυναμία χρήσης του επιλεγμένου αρχείου JSON",
-    "keystoreSelectorErrorMessage": "Αδυναμία χρήσης του επιλεγμένου αρχείου keystore"
+    "keystoreSelectorErrorMessage": "Αδυναμία χρήσης του επιλεγμένου αρχείου keystore",
+    "englishOption": "Αγγλικά"
   },
   "appInfoView": {
     "widgetTitle": "Πληροφορίες εφαρμογής",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "Η εγκατάσταση απέτυχε λόγο θέματος επαλήθευσης.\n\nΡυθμίστε τις ρυθμίσεις ασφαλείας σας και δοκιμάστε ξανά.",
     "install_failed_version_downgrade_description": "Η εγκατάσταση απέτυχε διότι η τροποποιημένη εφαρμογή έχει χαμηλότερη έκδοση από την εγκατεστημένη εφαρμογή.\n\nΑπεγκατάσταση εφαρμογής και προσπάθεια ξανά;",
     "status_unknown_description": "Η εγκατάσταση απέτυχε για κάποιον άγνωστο λόγο.\nΠαρακαλώ δοκιμάστε ξανά."
-  }
+  },
+  "enabledLabel": "Ενεργό",
+  "disabledLabel": "Ανενεργό",
+  "installed": "Εγκατεστημένη έκδοση: ${version}",
+  "options": "Ρυθμίσεις"
 }

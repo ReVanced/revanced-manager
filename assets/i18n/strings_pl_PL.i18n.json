@@ -4,14 +4,10 @@
   "dismissButton": "Odrzuć",
   "quitButton": "Wyjdź",
   "updateButton": "Aktualizuj",
-  "enabledLabel": "Aktywne",
-  "disabledLabel": "Nieaktywne",
-  "installed": "Zainstalowana wersja: ${version}",
   "suggested": "Sugerowana wersja: ${version}",
   "yesButton": "Tak",
   "noButton": "Nie",
   "warning": "Uwaga",
-  "options": "Opcje",
   "notice": "Komunikat",
   "noShowAgain": "Nie pokazuj ponownie",
   "add": "Dodaj",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Aktualizacje",
     "patchedSubtitle": "Załatane aplikacje",
     "changeLaterSubtitle": "Możesz to zmienić w ustawieniach w późniejszym czasie.",
-    "noUpdates": "Brak dostępnych aktualizacji",
-    "WIP": "Prace w toku...",
     "noInstallations": "Nie zainstalowano żadnych załatanych aplikacji",
     "installUpdate": "Kontynuować instalację aktualizacji?",
     "updateSheetTitle": "Zaktualizuj Menedżera ReVanced",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Pobrać potrzebne pliki?",
     "downloadConsentDialogText": "Menedżer ReVanced musi pobrać niezbędne pliki do prawidłowego działania.",
     "downloadConsentDialogText2": "Zostaniesz przekierowany do ${url}.",
-    "checkUpdateDialogTitle": "Sprawdzić dostępność aktualizacji?",
-    "checkUpdateDialogText": "Czy chcesz, aby Menedżer ReVanced automatycznie sprawdzał dostępność aktualizacji?",
-    "notificationTitle": "Pobrano aktualizację",
-    "notificationText": "Kliknij, aby zainstalować aktualizację",
     "downloadingMessage": "Pobieranie aktualizacji...",
     "downloadedMessage": "Pobrano aktualizację",
     "installingMessage": "Instalowanie aktualizacji...",
     "errorDownloadMessage": "Nie udało się pobrać aktualizacji",
     "errorInstallMessage": "Nie udało się zainstalować aktualizacji",
     "noConnection": "Brak połączenia z internetem",
+    "noUpdates": "Brak dostępnych aktualizacji",
+    "WIP": "Prace w toku...",
+    "checkUpdateDialogTitle": "Sprawdzić dostępność aktualizacji?",
+    "checkUpdateDialogText": "Czy chcesz, aby Menedżer ReVanced automatycznie sprawdzał dostępność aktualizacji?",
+    "notificationTitle": "Pobrano aktualizację",
+    "notificationText": "Kliknij, aby zainstalować aktualizację",
     "updatesDisabled": "Aktualizowanie załatanej aplikacji jest obecnie niemożliwe. Spróbuj załatać aplikację jeszcze raz."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Program łatający",
     "patchButton": "Łataj",
-    "armv7WarningDialogText": "Łatanie na urządzeniach ARMv7 nie jest jeszcze wspierane i może się nie udać.\nKontynuować mimo to?",
     "removedPatchesWarningDialogText": "Następujące łatki zostały usunięte od ostatniego użycia.\n\n${patches}\n\nKontynuować mimo to?",
-    "requiredOptionDialogText": "Niektóre opcje muszą być ustawione."
+    "requiredOptionDialogText": "Niektóre opcje muszą być ustawione.",
+    "armv7WarningDialogText": "Łatanie na urządzeniach ARMv7 nie jest jeszcze wspierane i może się nie udać.\nKontynuować mimo to?"
   },
   "appSelectorCard": {
     "widgetTitle": "Wybierz aplikację",
     "widgetTitleSelected": "Wybrana aplikacja",
     "widgetSubtitle": "Brak wybranej aplikacji",
     "noAppsLabel": "Nie znaleziono aplikacji",
+    "anyVersion": "Dowolna wersja",
     "currentVersion": "Aktualna",
-    "suggestedVersion": "Sugerowane",
-    "anyVersion": "Dowolna wersja"
+    "suggestedVersion": "Sugerowane"
   },
   "patchSelectorCard": {
     "widgetTitle": "Wybierz łatki",
@@ -120,18 +116,18 @@
     "customValue": "Niestandardowa wartość",
     "setToNull": "Ustaw na zerowy",
     "nullValue": "Ta opcja jest obecnie pusta",
-    "resetOptionsTooltip": "Zresetuj opcje od łatek",
     "viewTitle": "Opcje łatek",
     "saveOptions": "Zapisz",
-    "addOptions": "Dodaj opcje",
     "unselectPatch": "Odznacz łatkę",
     "tooltip": "Więcej opcji wejściowych",
     "selectFilePath": "Wybierz ścieżkę pliku",
     "selectFolder": "Wybierz folder",
-    "selectOption": "Wybierz opcję",
     "requiredOption": "Ustawienie tej opcji jest wymagane",
     "unsupportedOption": "Ta opcja nie jest wspierana",
-    "requiredOptionNull": "Należy ustawić następujące opcje:\n\n${options}"
+    "requiredOptionNull": "Należy ustawić następujące opcje:\n\n${options}",
+    "resetOptionsTooltip": "Zresetuj opcje od łatek",
+    "addOptions": "Dodaj opcje",
+    "selectOption": "Wybierz opcję"
   },
   "patchItem": {
     "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas modyfikowania.\n\nWersja aplikacji: ${packageVersion}\nAktualnie wspierana wersja:\n${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Użyj domyślnego wyboru"
   },
   "installerView": {
-    "widgetTitle": "Instalator",
     "installType": "Wybierz typ instalacji",
     "installTypeDescription": "Wybierz typ instalacji, aby kontynuować.",
     "installButton": "Zainstaluj",
@@ -150,14 +145,15 @@
     "warning": "Wyłącz automatyczne aktualizacje załatanej aplikacji, aby uniknąć nieoczekiwanych problemów.",
     "pressBackAgain": "Naciśnij ponownie, aby anulować",
     "openButton": "Otwórz",
-    "shareButton": "Udostępnij plik",
     "notificationTitle": "Menedżer ReVanced jest w trakcie działania",
     "notificationText": "Kliknij, aby powrócić do instalatora",
     "exportApkButtonTooltip": "Wyeksportuj załatane APK",
     "exportLogButtonTooltip": "Wyeksportuj logi",
     "screenshotDetected": "Wykryto zrzut ekranu. Jeżeli próbujesz udostępnić logi, proszę udostępnić kopię tekstu.\n\nSkopiować logi?",
     "copiedToClipboard": "Logi skopiowane",
-    "noExit": "Instalator jest nadal uruchomiony, nie można zakończyć jego działania..."
+    "noExit": "Instalator jest nadal uruchomiony, nie można zakończyć jego działania...",
+    "widgetTitle": "Instalator",
+    "shareButton": "Udostępnij plik"
   },
   "settingsView": {
     "widgetTitle": "Ustawienia",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
     "languageLabel": "Język",
     "languageUpdated": "Zaktualizowano język",
-    "englishOption": "Angielski",
     "sourcesLabel": "Alternatywne źródło",
     "sourcesLabelHint": "Skonfiguruj alternatywne źródła dla Łatek ReVanced i Integracji ReVanced",
     "sourcesIntegrationsLabel": "Źródło integracji",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Hasło magazynu kluczy",
     "selectKeystorePasswordHint": "Wybierz hasło magazynu kluczy używanego do podpisywania aplikacji",
     "jsonSelectorErrorMessage": "Nie można użyć wybranego pliku JSON",
-    "keystoreSelectorErrorMessage": "Nie można użyć wybranego pliku z magazynem kluczy"
+    "keystoreSelectorErrorMessage": "Nie można użyć wybranego pliku z magazynem kluczy",
+    "englishOption": "Angielski"
   },
   "appInfoView": {
     "widgetTitle": "Informacje o aplikacji",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "Instalacja nie powiodła się z powodu problemu weryfikacji.\n\nDostosuj ustawienia zabezpieczeń i spróbuj ponownie.",
     "install_failed_version_downgrade_description": "Instalacja nie powiodła się z powodu niższej wersji załatanej od zainstalowanej aplikacji.\n\nCzy chcesz odinstalować aplikację i spróbować ponownie?",
     "status_unknown_description": "Instalacja nie powiodła się z nieznanego powodu. Spróbuj ponownie."
-  }
+  },
+  "enabledLabel": "Aktywne",
+  "disabledLabel": "Nieaktywne",
+  "installed": "Zainstalowana wersja: ${version}",
+  "options": "Opcje"
 }

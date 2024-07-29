@@ -3,12 +3,10 @@
   "cancelButton": "Atšaukti",
   "quitButton": "Išeiti",
   "updateButton": "Atnaujinti",
-  "installed": "Įdiegta: ${version}",
   "suggested": "Siūloma: ${version}",
   "yesButton": "Taip",
   "noButton": "Ne",
   "warning": "Įspėjimas",
-  "options": "Nustatymai",
   "notice": "Pranešimas",
   "noShowAgain": "Daugiau to nerodyti",
   "add": "Pridėti",
@@ -83,17 +81,17 @@
   },
   "patchOptionsView": {
     "customValue": "Pasirinkta vertė",
-    "resetOptionsTooltip": "Iš naujo nustatyti pataisymų parinktis",
     "viewTitle": "Pataisymų parinktys",
     "saveOptions": "Išsaugoti",
-    "addOptions": "Pridėti pasirinkimus",
-    "deselectPatch": "Atšaukti pataisymą",
     "tooltip": "Daugiau įvesties pasirinkčių",
     "selectFilePath": "Pasirinkite failo kelią",
     "selectFolder": "Pasirinkti aplanką",
     "requiredOption": "Ši parinktis yra privaloma",
     "unsupportedOption": "Ši parinktis nepalaikoma",
-    "requiredOptionNull": "Reikia nustatyti šias parinktis:\n\n${options}"
+    "requiredOptionNull": "Reikia nustatyti šias parinktis:\n\n${options}",
+    "resetOptionsTooltip": "Iš naujo nustatyti pataisymų parinktis",
+    "addOptions": "Pridėti pasirinkimus",
+    "deselectPatch": "Atšaukti pataisymą"
   },
   "patchItem": {
     "unsupportedDialogText": "Pasirinkus šį pataisymą, gali atsirasti pataisymo klaidų.\n\nProgramos versija: ${packageVersion}\nPalaikomos versijos:\n${supportedVersions}",
@@ -211,5 +209,7 @@
   "contributorsView": {
     "widgetTitle": "Prisidėjusieji žmonės"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Įdiegta: ${version}",
+  "options": "Nustatymai"
 }

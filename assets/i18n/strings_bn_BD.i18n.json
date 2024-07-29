@@ -4,14 +4,10 @@
   "dismissButton": "বাতিল করুন",
   "quitButton": "কাটুন",
   "updateButton": "হালনাগাদ করুন",
-  "enabledLabel": "সক্রিয় রয়েছে",
-  "disabledLabel": "নিষ্ক্রিয় হয়েছে",
-  "installed": "ইনস্টলকৃত: ${version}",
   "suggested": "প্রস্তাবিত: ${version}",
   "yesButton": "হ্যাঁ",
   "noButton": "না",
   "warning": "সতর্কতা",
-  "options": "বিকল্পসমূহ",
   "notice": "বিজ্ঞপ্তি",
   "noShowAgain": "পুনরায় দেখাবেন না",
   "add": "যুক্ত করুন",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "আপডেটসমূহ",
     "patchedSubtitle": "প্যাচড অ্যাপ্লিকেশনগুলো",
     "changeLaterSubtitle": "পরবর্তীতে আপনি এটি সেটিং থেকে পরিবর্তন করতে পারবেন।",
-    "noUpdates": "কোন আপডেট নেই",
-    "WIP": "কাজ হচ্ছে...",
     "noInstallations": "কোন প্যাচড অ্যাপ্লিকেশন ইনস্টল করা হয়নি",
     "installUpdate": "আপডেট ইনস্টল করতে এগিয়ে যেতে চান?",
     "updateSheetTitle": "ReVanced Manager আপডেট করুন",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "প্রয়োজনীয় ফাইল ডাউনলোড করবেন?",
     "downloadConsentDialogText": "ReVanced Manager সঠিকভাবে কাজ করার জন্য কিছু প্রয়োজনীয় ফাইল ডাউনলোড করতে হবে।",
     "downloadConsentDialogText2": "এটি আপনাকে যুক্ত করবে ${url}.",
-    "checkUpdateDialogTitle": "আপডেটএর জন্য পরীক্ষা করবেন?",
-    "checkUpdateDialogText": "আপনি কি চান ReVanced Manager আপডেটের জন্য স্বয়ংক্রিয়ভাবে যাচাই করুক?",
-    "notificationTitle": "আপডেট ডাউনলোড হয়েছে",
-    "notificationText": "আপডেট ইনস্টল করতে চাপ দিন",
     "downloadingMessage": "আপডেট ডাউনলোড হচ্ছে...",
     "downloadedMessage": "আপডেট ডাউনলোড করা হয়েছে",
     "installingMessage": "আপডেট ইনস্টল করা হচ্ছে...",
     "errorDownloadMessage": "আপডেট ডাউনলোড করতে সফল হয় নি",
     "errorInstallMessage": "আপডেট ইনস্টল করতে সফল হয় নি",
     "noConnection": "কোন ইন্টারনেট সংযোগ নেই",
+    "noUpdates": "কোন আপডেট নেই",
+    "WIP": "কাজ হচ্ছে...",
+    "checkUpdateDialogTitle": "আপডেটএর জন্য পরীক্ষা করবেন?",
+    "checkUpdateDialogText": "আপনি কি চান ReVanced Manager আপডেটের জন্য স্বয়ংক্রিয়ভাবে যাচাই করুক?",
+    "notificationTitle": "আপডেট ডাউনলোড হয়েছে",
+    "notificationText": "আপডেট ইনস্টল করতে চাপ দিন",
     "updatesDisabled": "প্যাচ করা অ্যাপকে আপডেট করা বর্তমানে সম্ভব নয়। অ্যাপটি পুনরায় প্যাচ করুন।"
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "প্যাচার",
     "patchButton": "প্যাচ",
-    "armv7WarningDialogText": "ARMv7 ডিভাইসগুলোতে প্যাচিং এখনো সমর্থিত নয় এবং সফল নাও হতে পারে। যেকোন ভাবে এগিয়ে যেতে চান?",
     "removedPatchesWarningDialogText": "আপনি এর আগে যখন ব্যবহার করেছিলেন তারপর এই প্যাচগুলো অপসারণ করা হয়।\n\n${patches}\n\nযেকোন ভাবে এগিয়ে যেতে চান?",
-    "requiredOptionDialogText": "কিছু প্যাচ অপশন সেট করতে হবে।"
+    "requiredOptionDialogText": "কিছু প্যাচ অপশন সেট করতে হবে।",
+    "armv7WarningDialogText": "ARMv7 ডিভাইসগুলোতে প্যাচিং এখনো সমর্থিত নয় এবং সফল নাও হতে পারে। যেকোন ভাবে এগিয়ে যেতে চান?"
   },
   "appSelectorCard": {
     "widgetTitle": "একটি অ্যাপ নির্বাচন করুন",
     "widgetTitleSelected": "নির্বাচিত অ্যাপ",
     "widgetSubtitle": "কোন অ্যাপ নির্বাচন করা হয়নি",
     "noAppsLabel": "কোন অ্যাপ্লিকেশন পাওয়া যায়নি",
+    "anyVersion": "যেকোন সংস্করণ",
     "currentVersion": "বর্তমান",
-    "suggestedVersion": "প্রস্তাবিত",
-    "anyVersion": "যেকোন সংস্করণ"
+    "suggestedVersion": "প্রস্তাবিত"
   },
   "patchSelectorCard": {
     "widgetTitle": "প্যাচসমূহ নির্বাচন করুন",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "কাস্টম ভ্যালু",
-    "resetOptionsTooltip": "প্যাচ অপশন আবার সেট করুন",
     "viewTitle": "প্যাচ অপশন",
     "saveOptions": "সংরক্ষণ করুন",
-    "addOptions": "অপশন যুক্ত করুন",
-    "deselectPatch": "প্যাচ অনির্বাচন করুন",
     "tooltip": "আরও ইনপুট অপশন",
     "selectFilePath": "ফাইলের স্থান নির্বাচন করুন",
     "selectFolder": "ফোল্ডার নির্বাচন করুন",
-    "selectOption": "অপশন নির্বাচন করুন",
     "requiredOption": "এই অপশনটি আবশ্যক",
     "unsupportedOption": "এই অপশনসটি অসমর্থিত",
-    "requiredOptionNull": "এই অপশনগুলো সেট করতে হবে:\n\n${options}"
+    "requiredOptionNull": "এই অপশনগুলো সেট করতে হবে:\n\n${options}",
+    "resetOptionsTooltip": "প্যাচ অপশন আবার সেট করুন",
+    "addOptions": "অপশন যুক্ত করুন",
+    "deselectPatch": "প্যাচ অনির্বাচন করুন",
+    "selectOption": "অপশন নির্বাচন করুন"
   },
   "patchItem": {
     "unsupportedDialogText": "এই প্যাচটি নির্বাচন করলে প্যাচিং ত্রুটিপূর্ণ হতে পারে।\n\nঅ্যাপ সংস্করণ: ${packageVersion}\nসমর্থিত সংস্করণ:\n${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "পূর্বনির্ধারিত নির্বাচন ব্যবহার করুন"
   },
   "installerView": {
-    "widgetTitle": "ইনস্টলার",
     "installType": "ইনস্টল করার ধরণ নির্বাচন করুন",
     "installTypeDescription": "যে প্রক্রিয়ায় ইনস্টল করা এগিয়ে নিতে চান তা নির্বাচন করুন।",
     "installButton": "ইনস্টল করুন",
@@ -148,14 +143,15 @@
     "warning": "অনাকাঙ্ক্ষিত ইস্যু এড়াতে প্যাচকৃত অ্যাপের স্বয়ংক্রিয় আপডেট নিষ্ক্রিয় করুন।",
     "pressBackAgain": "বাতিল করতে ব্যাক প্রেস করুন",
     "openButton": "অ্যাপ খুলুন",
-    "shareButton": "ফাইল শেয়ার করুন",
     "notificationTitle": "ReVanced Manager প্যাচ করছে",
     "notificationText": "ইনস্টলারে ফিরে যেতে আলতো চাপুন",
     "exportApkButtonTooltip": "প্যাচ হওয়া APK রপ্তানি করুন",
     "exportLogButtonTooltip": "লগ রপ্তানি করুন",
     "screenshotDetected": "একটি স্ক্রিনশট শনাক্ত করা হয়েছে। আপনি যদি লগ শেয়ার করার চেষ্টা করে থাকেন, অনুগ্রপূর্বক এর পরিবর্তে টেক্সট শেয়ার করুন।\n\nক্লিপবোর্ডে লগ কপি করতে চান?",
     "copiedToClipboard": "ক্লিপবোর্ডে লগ কপি করা হয়েছে",
-    "noExit": "ইনস্টলার এখনো চলমান, বের হওয়া সম্ভব নয়..."
+    "noExit": "ইনস্টলার এখনো চলমান, বের হওয়া সম্ভব নয়...",
+    "widgetTitle": "ইনস্টলার",
+    "shareButton": "ফাইল শেয়ার করুন"
   },
   "settingsView": {
     "widgetTitle": "সেটিংস",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "আপনার ডিভাইসের লুকের কাছাকাছি অভিজ্ঞতা নিন",
     "languageLabel": "ভাষা",
     "languageUpdated": "ভাষা হালনাগাদ করা হয়েছে",
-    "englishOption": "ইংরেজি",
     "sourcesLabel": "বিকল্প উৎস",
     "sourcesLabelHint": "ReVanced প্যাচ ও ReVanced ইন্ট্রিগ্রেশনের জন্য বিকল্প উৎস কনফিগার করুন",
     "sourcesIntegrationsLabel": "ইন্ট্রিগেশনের উৎস",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "কীস্টোরটির পাসওয়ার্ড",
     "selectKeystorePasswordHint": "অ্যাপ সাইন করতে ব্যবহৃত কীস্টোরের পাসওয়ার্ড নির্বাচন করুন",
     "jsonSelectorErrorMessage": "নির্বাচিত JSON ফাইল ব্যবহার করা সম্ভব নয়",
-    "keystoreSelectorErrorMessage": "নির্বাচিত কীস্টোর ফাইল ব্যবহার করা সম্ভব নয়"
+    "keystoreSelectorErrorMessage": "নির্বাচিত কীস্টোর ফাইল ব্যবহার করা সম্ভব নয়",
+    "englishOption": "ইংরেজি"
   },
   "appInfoView": {
     "widgetTitle": "অ্যাপের তথ্য",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "একটি যাচাইকরণ সমস্যার কারণে ইনস্টলেশন ব্যর্থ হয়েছে.\n\nআপনার নিরাপত্তা সেটিংস সামঞ্জস্য করুন এবং আবার চেষ্টা করুন.",
     "install_failed_version_downgrade_description": "প্যাচ করা অ্যাপ ইনস্টল করা অ্যাপের চেয়ে কম সংস্করণ হওয়ায় ইনস্টলেশন ব্যর্থ হয়েছে.\n\nঅ্যাপটি আনইনস্টল করে আবার চেষ্টা করবেন?",
     "status_unknown_description": "একটি অজানা কারণে ইনস্টলেশন ব্যর্থ হয়েছে. অনুগ্রহপূর্বক আবার চেষ্টা করুন."
-  }
+  },
+  "enabledLabel": "সক্রিয় রয়েছে",
+  "disabledLabel": "নিষ্ক্রিয় হয়েছে",
+  "installed": "ইনস্টলকৃত: ${version}",
+  "options": "বিকল্পসমূহ"
 }

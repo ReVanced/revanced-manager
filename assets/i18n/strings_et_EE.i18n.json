@@ -1,7 +1,6 @@
 {
   "cancelButton": "Tühista",
   "updateButton": "Värskenda",
-  "installed": "Paigaldatud: ${version}",
   "suggested": "Soovitatud: ${version}",
   "yesButton": "Jah",
   "noButton": "Ei",
@@ -97,5 +96,6 @@
   "contributorsView": {
     "widgetTitle": "Panustajad"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Paigaldatud: ${version}"
 }

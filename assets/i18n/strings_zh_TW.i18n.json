@@ -4,14 +4,10 @@
   "dismissButton": "忽略",
   "quitButton": "退出",
   "updateButton": "更新",
-  "enabledLabel": "已啟用",
-  "disabledLabel": "已停用",
-  "installed": "已安裝: ${version}",
   "suggested": "建議版本：${version}",
   "yesButton": "是",
   "noButton": "否",
   "warning": "警告",
-  "options": "選項",
   "notice": "提示",
   "noShowAgain": "不再顯示此內容",
   "add": "新增",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "更新",
     "patchedSubtitle": "已修補的應用程式",
     "changeLaterSubtitle": "您稍後可以在設定中變更此項。",
-    "noUpdates": "沒有可用的更新",
-    "WIP": "進行中……",
     "noInstallations": "未安裝已修補的應用程式",
     "installUpdate": "是否要繼續安裝更新？",
     "updateSheetTitle": "更新 ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "需要下載必要檔案嗎？",
     "downloadConsentDialogText": "ReVanced Manager 需要下載必要檔案才能正常執行。",
     "downloadConsentDialogText2": "這將連結您至 ${url}。",
-    "checkUpdateDialogTitle": "檢查更新？",
-    "checkUpdateDialogText": "您希望 ReVanced Manager 自動檢查更新嗎？",
-    "notificationTitle": "更新已下載",
-    "notificationText": "點擊安裝更新",
     "downloadingMessage": "正在下載更新……",
     "downloadedMessage": "更新已下載",
     "installingMessage": "正在安裝更新……",
     "errorDownloadMessage": "無法下載更新",
     "errorInstallMessage": "無法安裝更新",
     "noConnection": "沒有網際網路連線",
+    "noUpdates": "沒有可用的更新",
+    "WIP": "進行中……",
+    "checkUpdateDialogTitle": "檢查更新？",
+    "checkUpdateDialogText": "您希望 ReVanced Manager 自動檢查更新嗎？",
+    "notificationTitle": "更新已下載",
+    "notificationText": "點擊安裝更新",
     "updatesDisabled": "已停用更新現已修補的應用程式。請重新修補應用程式。"
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "修補工具",
     "patchButton": "修補",
-    "armv7WarningDialogText": "ARMv7 裝置上的修補功能尚未支援，可能會失敗。無論如何繼續？",
     "removedPatchesWarningDialogText": "自從您上次使用以來，以下修補檔已被移除。\n\n${patches} \n\n無論如何繼續？",
-    "requiredOptionDialogText": "某些修補檔選項需要設定。"
+    "requiredOptionDialogText": "某些修補檔選項需要設定。",
+    "armv7WarningDialogText": "ARMv7 裝置上的修補功能尚未支援，可能會失敗。無論如何繼續？"
   },
   "appSelectorCard": {
     "widgetTitle": "選擇應用程式",
     "widgetTitleSelected": "已選擇的應用程式",
     "widgetSubtitle": "未選擇任何應用程式",
     "noAppsLabel": "找不到應用程式",
+    "anyVersion": "任何版本",
     "currentVersion": "目前版本",
-    "suggestedVersion": "建議版本",
-    "anyVersion": "任何版本"
+    "suggestedVersion": "建議版本"
   },
   "patchSelectorCard": {
     "widgetTitle": "選取修補檔",
@@ -118,18 +114,18 @@
   },
   "patchOptionsView": {
     "customValue": "自訂值",
-    "resetOptionsTooltip": "重設修補選項",
     "viewTitle": "修補檔選項",
     "saveOptions": "儲存",
-    "addOptions": "新增設定選項",
-    "deselectPatch": "取消選擇修補檔",
     "tooltip": "進一步的輸入設定",
     "selectFilePath": "請選擇檔案路徑",
     "selectFolder": "請選取資料夾",
-    "selectOption": "選擇選項",
     "requiredOption": "此設定項目為必填",
     "unsupportedOption": "此設定項目不適用於本應用程式",
-    "requiredOptionNull": "以下設定項目需要完成：\n\n${options}"
+    "requiredOptionNull": "以下設定項目需要完成：\n\n${options}",
+    "resetOptionsTooltip": "重設修補選項",
+    "addOptions": "新增設定選項",
+    "deselectPatch": "取消選擇修補檔",
+    "selectOption": "選擇選項"
   },
   "patchItem": {
     "unsupportedDialogText": "選取此修補檔可能導致修補錯誤。\n應用程式版本： ${packageVersion}\n支援的版本： ${supportedVersions}",
@@ -139,7 +135,6 @@
     "patchesChangeWarningDialogButton": "採用預設設定選項"
   },
   "installerView": {
-    "widgetTitle": "安裝程式",
     "installType": "請選擇安裝方式",
     "installTypeDescription": "選擇安裝類型以繼續。",
     "installButton": "安裝",
@@ -148,14 +143,15 @@
     "warning": "停用已修補應用程式的自動更新，以避免意外問題。",
     "pressBackAgain": "再次按「返回」以取消操作",
     "openButton": "開啟",
-    "shareButton": "分享檔案",
     "notificationTitle": "ReVanced Manager 正在修補",
     "notificationText": "輕觸以返回安裝程式",
     "exportApkButtonTooltip": "匯出已修補的 APK 檔案",
     "exportLogButtonTooltip": "匯出記錄檔",
     "screenshotDetected": "偵測到螢幕截圖。若您試圖分享記錄檔，請改為複製文字版本。\n\n是否將記錄檔複製到剪貼簿？",
     "copiedToClipboard": "已複製記錄檔到剪貼簿",
-    "noExit": "安裝程式仍在執行，無法結束……"
+    "noExit": "安裝程式仍在執行，無法結束……",
+    "widgetTitle": "安裝程式",
+    "shareButton": "分享檔案"
   },
   "settingsView": {
     "widgetTitle": "設定",
@@ -173,7 +169,6 @@
     "dynamicThemeHint": "享受更貼近您裝置的使用體驗",
     "languageLabel": "語言",
     "languageUpdated": "已更新語言",
-    "englishOption": "英文",
     "sourcesLabel": "替代來源",
     "sourcesLabelHint": "設定 ReVanced 修補和 ReVanced 整合的替代來源",
     "sourcesIntegrationsLabel": "整合來源",
@@ -249,7 +244,8 @@
     "selectKeystorePassword": "金鑰庫密碼",
     "selectKeystorePasswordHint": "選取用於簽署應用程式的金鑰庫密碼",
     "jsonSelectorErrorMessage": "無法使用已選取的 JSON 檔案",
-    "keystoreSelectorErrorMessage": "無法使用所選的金鑰庫檔案"
+    "keystoreSelectorErrorMessage": "無法使用所選的金鑰庫檔案",
+    "englishOption": "英文"
   },
   "appInfoView": {
     "widgetTitle": "應用程式資訊",
@@ -298,5 +294,9 @@
     "install_failed_verification_failure_description": "安裝失敗是因為驗證問題。\n\n請調整您的安全設定，然後重試。",
     "install_failed_version_downgrade_description": "安裝失敗是因為已修補的應用程式版本低於已安裝的應用程式。\n\n請解除安裝應用程式，然後重試？",
     "status_unknown_description": "安裝失敗是因為未知原因。請重試。"
-  }
+  },
+  "enabledLabel": "已啟用",
+  "disabledLabel": "已停用",
+  "installed": "已安裝: ${version}",
+  "options": "選項"
 }

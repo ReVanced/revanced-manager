@@ -1,7 +1,6 @@
 {
   "cancelButton": "Avbryt",
   "updateButton": "Oppdater",
-  "installed": "Installert: ${version}",
   "suggested": "Anbefalt: ${version}",
   "yesButton": "Ja",
   "noButton": "Nei",
@@ -77,5 +76,6 @@
   },
   "appInfoView": {},
   "contributorsView": {},
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Installert: ${version}"
 }

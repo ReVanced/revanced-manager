@@ -4,14 +4,10 @@
   "dismissButton": "Елемеу",
   "quitButton": "Шығу",
   "updateButton": "Жаңарту",
-  "enabledLabel": "Қосулы",
-  "disabledLabel": "Сөндірулі",
-  "installed": "Орнатылған: ${version}",
   "suggested": "Ұсынылған: ${version}",
   "yesButton": "Иә",
   "noButton": "Жоқ",
   "warning": "Назар аударыңыз",
-  "options": "Баптау",
   "notice": "Ескерту",
   "noShowAgain": "Енді көрсетілмесін",
   "add": "Қосу",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Жаңартулар",
     "patchedSubtitle": "Патчталған қолданбалар",
     "changeLaterSubtitle": "Мұны кейінірек баптауда өзгертіп ала аласыз.",
-    "noUpdates": "Жаңарту жоқ",
-    "WIP": "Жүктеліп жатыр...",
     "noInstallations": "Патчталған қолданбалар орнатылмаған",
     "installUpdate": "Жаңартуды әрі қарай орната берейік пе?",
     "updateSheetTitle": "ReVanced Manager-ді жаңарту",
@@ -38,7 +32,9 @@
     "updatePatchesSheetTitle": "ReVanced патчін жаңарту",
     "updateChangelogTitle": "Өзгерту тарихы",
     "updateDialogText": "${file} үшін жаңарту қолжетімді.\n\nҚазіргі ${version} нұсқасы орнатылып тұр.",
-    "downloadConsentDialogTitle": "Керек файлды жүктеп алайық па?"
+    "downloadConsentDialogTitle": "Керек файлды жүктеп алайық па?",
+    "noUpdates": "Жаңарту жоқ",
+    "WIP": "Жүктеліп жатыр..."
   },
   "applicationItem": {},
   "latestCommitCard": {},
@@ -54,5 +50,9 @@
   "settingsView": {},
   "appInfoView": {},
   "contributorsView": {},
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "enabledLabel": "Қосулы",
+  "disabledLabel": "Сөндірулі",
+  "installed": "Орнатылған: ${version}",
+  "options": "Баптау"
 }

@@ -4,13 +4,10 @@
   "dismissButton": "बंद करें",
   "quitButton": "छोड़ें",
   "updateButton": "अपडेट करें",
-  "enabledLabel": "सक्रिय",
-  "installed": "इंस्टॉल्ड: ${version}",
   "suggested": "सुझाया गया: ${version}",
   "yesButton": "हाँ",
   "noButton": "नहीं",
   "warning": "चेतावनी",
-  "options": "विकल्प",
   "notice": "सूचना",
   "noShowAgain": "इसे पुनः न दिखाएँ",
   "add": "ऐड करें",
@@ -141,5 +138,8 @@
   "contributorsView": {
     "widgetTitle": "योगदान कर्ता"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "enabledLabel": "सक्रिय",
+  "installed": "इंस्टॉल्ड: ${version}",
+  "options": "विकल्प"
 }

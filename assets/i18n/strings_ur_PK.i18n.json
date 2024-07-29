@@ -3,12 +3,10 @@
   "cancelButton": "منسوخ کریں۔",
   "quitButton": "چھوڑو",
   "updateButton": "اپڈیٹ",
-  "installed": "موجود: ${version}",
   "suggested": "تجویز کردہ: ${version}",
   "yesButton": "ہاں",
   "noButton": "نہیں",
   "warning": "انتباہ",
-  "options": "اختیارات",
   "notice": "اطلاع",
   "noShowAgain": "اسے دوبارہ مت دکھائیں۔",
   "add": "شامل کریں۔",
@@ -58,5 +56,7 @@
   "settingsView": {},
   "appInfoView": {},
   "contributorsView": {},
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "موجود: ${version}",
+  "options": "اختیارات"
 }

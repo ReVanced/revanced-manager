@@ -2,7 +2,6 @@
   "okButton": "V redu",
   "cancelButton": "Prekliči",
   "updateButton": "Posodobi",
-  "installed": "Trenutna različica: ${version}",
   "suggested": "Priporočena različica: ${version}",
   "yesButton": "Da",
   "noButton": "Ne",
@@ -128,5 +127,6 @@
   "contributorsView": {
     "widgetTitle": "Prispevali so"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {},
+  "installed": "Trenutna različica: ${version}"
 }

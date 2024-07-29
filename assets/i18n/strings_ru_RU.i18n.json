@@ -4,14 +4,10 @@
   "dismissButton": "Отклонить",
   "quitButton": "Выход",
   "updateButton": "Обновить",
-  "enabledLabel": "Включено",
-  "disabledLabel": "Отключено",
-  "installed": "Установлено: ${version}",
   "suggested": "Рекомендуемая: ${version}",
   "yesButton": "Да",
   "noButton": "Нет",
   "warning": "Внимание",
-  "options": "Параметры",
   "notice": "Примечание",
   "noShowAgain": "Не показывать снова",
   "add": "Добавить",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Обновления",
     "patchedSubtitle": "Пропатченные приложения",
     "changeLaterSubtitle": "Вы можете изменить это в настройках позже.",
-    "noUpdates": "Нет доступных обновлений",
-    "WIP": "В процессе...",
     "noInstallations": "Пропатченные приложения не установлены",
     "installUpdate": "Продолжить установку обновления?",
     "updateSheetTitle": "Обновить Revanced Менеджер",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Скачать необходимые файлы?",
     "downloadConsentDialogText": "Для правильной работы ReVanced Менеджера нужно загрузить необходимые файлы.",
     "downloadConsentDialogText2": "Это соединит вас с ${url}.",
-    "checkUpdateDialogTitle": "Проверить наличие обновлений?",
-    "checkUpdateDialogText": "Хотите, чтобы ReVanced Менеджер автоматически проверял наличие обновлений?",
-    "notificationTitle": "Обновление загружено",
-    "notificationText": "Нажмите, чтобы установить обновление",
     "downloadingMessage": "Загрузка обновления...",
     "downloadedMessage": "Обновление загружено",
     "installingMessage": "Установка обновления...",
     "errorDownloadMessage": "Не удалось загрузить обновление",
     "errorInstallMessage": "Не удалось установить обновление",
     "noConnection": "Нет подключения к интернету",
+    "noUpdates": "Нет доступных обновлений",
+    "WIP": "В процессе...",
+    "checkUpdateDialogTitle": "Проверить наличие обновлений?",
+    "checkUpdateDialogText": "Хотите, чтобы ReVanced Менеджер автоматически проверял наличие обновлений?",
+    "notificationTitle": "Обновление загружено",
+    "notificationText": "Нажмите, чтобы установить обновление",
     "updatesDisabled": "Обновление пропатченных приложений в настоящее время отключено. Пожалуйста, пропатчьте приложение заново."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патч",
-    "armv7WarningDialogText": "Патчинг на устройствах ARMv7 пока не поддерживается и может привести к сбоям. Все равно продолжить?",
     "removedPatchesWarningDialogText": "Следующие патчи были удалены с момента их последнего использования.\n\n ${patches}\n\n Все равно продолжить?",
-    "requiredOptionDialogText": "Некоторые параметры патчей должны быть обязательно установлены."
+    "requiredOptionDialogText": "Некоторые параметры патчей должны быть обязательно установлены.",
+    "armv7WarningDialogText": "Патчинг на устройствах ARMv7 пока не поддерживается и может привести к сбоям. Все равно продолжить?"
   },
   "appSelectorCard": {
     "widgetTitle": "Выбрать приложение",
     "widgetTitleSelected": "Выбранное приложение",
     "widgetSubtitle": "Приложение не выбрано",
     "noAppsLabel": "Приложения не найдены",
+    "anyVersion": "Любая версия",
     "currentVersion": "Текущая",
-    "suggestedVersion": "Предложенная",
-    "anyVersion": "Любая версия"
+    "suggestedVersion": "Предложенная"
   },
   "patchSelectorCard": {
     "widgetTitle": "Выбор патчей",
@@ -120,18 +116,18 @@
     "customValue": "Пользовательское значение",
     "setToNull": "Установить null",
     "nullValue": "Значение этого параметра в настоящее время является нулевым",
-    "resetOptionsTooltip": "Сброс параметров патчей",
     "viewTitle": "Параметры патчей",
     "saveOptions": "Сохранить",
-    "addOptions": "Добавить параметры",
     "unselectPatch": "Отменить выбор патча",
     "tooltip": "Другие параметры ввода",
     "selectFilePath": "Выберите путь к файлу",
     "selectFolder": "Выберите папку",
-    "selectOption": "Выберите опции",
     "requiredOption": "Эта опция обязательна",
     "unsupportedOption": "Эта опция не поддерживается",
-    "requiredOptionNull": "Следующие опции должны быть установлены:\n\n${options}"
+    "requiredOptionNull": "Следующие опции должны быть установлены:\n\n${options}",
+    "resetOptionsTooltip": "Сброс параметров патчей",
+    "addOptions": "Добавить параметры",
+    "selectOption": "Выберите опции"
   },
   "patchItem": {
     "unsupportedDialogText": "Выбор этого патча может привести к ошибкам во время патчинга.\n\nВерсия приложения: ${packageVersion}\nПоддерживаемые версии:\n${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Использовать стандартный набор"
   },
   "installerView": {
-    "widgetTitle": "Установщик",
     "installType": "Выберите тип установки",
     "installTypeDescription": "Выберите тип установки, чтобы продолжить.",
     "installButton": "Установить",
@@ -150,14 +145,15 @@
     "warning": "Отключить автоматическое обновление патчей во избежание непредвиденных проблем.",
     "pressBackAgain": "Нажмите \"Назад\" еще раз для отмены",
     "openButton": "Открыть",
-    "shareButton": "Поделиться файлом",
     "notificationTitle": "ReVanced Менеджер патчит",
     "notificationText": "Нажмите, чтобы вернуться к установщику",
     "exportApkButtonTooltip": "Экспорт пропатченного APK",
     "exportLogButtonTooltip": "Экспорт логов",
     "screenshotDetected": "Обнаружена попытка снимка экрана. Если вы хотите поделиться логами, то вместо этого отправьте текст.\n\nСкопировать логи в буфер обмена?",
     "copiedToClipboard": "Логи скопированы в буфер обмена",
-    "noExit": "Установщик все еще запущен, выход невозможен..."
+    "noExit": "Установщик все еще запущен, выход невозможен...",
+    "widgetTitle": "Установщик",
+    "shareButton": "Поделиться файлом"
   },
   "settingsView": {
     "widgetTitle": "Настройки",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Наслаждайтесь темой Вашего устройства",
     "languageLabel": "Язык",
     "languageUpdated": "Язык обновлен",
-    "englishOption": "Английский",
     "sourcesLabel": "Альтернативные источники",
     "sourcesLabelHint": "Настроить альтернативные источники для патчей и интеграций ReVanced",
     "sourcesIntegrationsLabel": "Репозиторий интеграций",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Пароль хранилища ключей безопасности",
     "selectKeystorePasswordHint": "Выбрать пароль для хранилища ключей безопасности, используемого для подписи приложений",
     "jsonSelectorErrorMessage": "Невозможно использовать выбранный JSON файл",
-    "keystoreSelectorErrorMessage": "Невозможно использовать выбранный файл хранилища ключей"
+    "keystoreSelectorErrorMessage": "Невозможно использовать выбранный файл хранилища ключей",
+    "englishOption": "Английский"
   },
   "appInfoView": {
     "widgetTitle": "О приложении",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "Установка не удалась из-за проблемы с проверкой.\n\nИзмените настройки безопасности и повторите попытку.",
     "install_failed_version_downgrade_description": "Установка не удалась, поскольку пропатченное приложение имело более раннюю версию, чем установленное приложение.\n\nУдалить приложение и попробовать еще раз?",
     "status_unknown_description": "Установка не удалась по неизвестной причине. Пожалуйста, попробуйте еще раз."
-  }
+  },
+  "enabledLabel": "Включено",
+  "disabledLabel": "Отключено",
+  "installed": "Установлено: ${version}",
+  "options": "Параметры"
 }

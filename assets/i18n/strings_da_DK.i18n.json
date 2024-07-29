@@ -4,14 +4,10 @@
   "dismissButton": "Luk",
   "quitButton": "Luk",
   "updateButton": "Opdatér",
-  "enabledLabel": "Aktiveret",
-  "disabledLabel": "Deaktiveret",
-  "installed": "Installeret: ${version}",
   "suggested": "Foreslået: ${version}",
   "yesButton": "Ja",
   "noButton": "Nej",
   "warning": "Advarsel",
-  "options": "Indstillinger",
   "notice": "Bemærkning",
   "noShowAgain": "Vis ikke igen",
   "add": "Tilføj",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Opdateringer",
     "patchedSubtitle": "Patchede applikationer",
     "changeLaterSubtitle": "Du kan ændre dette i indstillingerne senere.",
-    "noUpdates": "Ingen tilgængelige opdateringer",
-    "WIP": "Arbejdet er i gang...",
     "noInstallations": "Ingen patchede apps installeret",
     "installUpdate": "Fortsæt med at installere opdateringen?",
     "updateSheetTitle": "Opdater ReVanced Manager",
@@ -41,16 +35,18 @@
     "downloadConsentDialogTitle": "Download nødvendige filer?",
     "downloadConsentDialogText": "ReVanced Manager har brug for at downloade nødvendige filer for at fungere korrekt.",
     "downloadConsentDialogText2": "Dette vil forbinde dig til ${url}.",
-    "checkUpdateDialogTitle": "Søg efter opdateringer?",
-    "checkUpdateDialogText": "Ønsker du at ReVanced Manager skal søge efter opdateringer automatisk?",
-    "notificationTitle": "Opdatering downloadet",
-    "notificationText": "Tryk for at installere opdateringen",
     "downloadingMessage": "Henter opdatering...",
     "downloadedMessage": "Opdatering downloadet",
     "installingMessage": "Installerer opdatering...",
     "errorDownloadMessage": "Opdatering kan ikke hentes",
     "errorInstallMessage": "Opdatering kunne ikke installeres",
     "noConnection": "Ingen internetforbindelse",
+    "noUpdates": "Ingen tilgængelige opdateringer",
+    "WIP": "Arbejdet er i gang...",
+    "checkUpdateDialogTitle": "Søg efter opdateringer?",
+    "checkUpdateDialogText": "Ønsker du at ReVanced Manager skal søge efter opdateringer automatisk?",
+    "notificationTitle": "Opdatering downloadet",
+    "notificationText": "Tryk for at installere opdateringen",
     "updatesDisabled": "Opdatering af en patchet app er i øjeblikket deaktiveret. Repatch appen igen."
   },
   "applicationItem": {
@@ -66,18 +62,18 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "Patching på ARMv7-enheder understøttes ikke endnu, og kan derfor fejle. Fortsæt alligevel?",
     "removedPatchesWarningDialogText": "Følgende patches er blevet fjernet siden sidste gang du brugte dem.\n\n${patches}\n\nFortsæt alligevel?",
-    "requiredOptionDialogText": "Nogle patch muligheder skal indstilles."
+    "requiredOptionDialogText": "Nogle patch muligheder skal indstilles.",
+    "armv7WarningDialogText": "Patching på ARMv7-enheder understøttes ikke endnu, og kan derfor fejle. Fortsæt alligevel?"
   },
   "appSelectorCard": {
     "widgetTitle": "Vælg en app",
     "widgetTitleSelected": "Valgte app",
     "widgetSubtitle": "Ingen app valgt",
     "noAppsLabel": "Ingen applikationer fundet",
+    "anyVersion": "Enhver version",
     "currentVersion": "Nuværende",
-    "suggestedVersion": "Anbefalet",
-    "anyVersion": "Enhver version"
+    "suggestedVersion": "Anbefalet"
   },
   "patchSelectorCard": {
     "widgetTitle": "Vælg patches",
@@ -120,18 +116,18 @@
     "customValue": "Tilpasset værdi",
     "setToNull": "Sæt til nul",
     "nullValue": "Denne valgmulighed værdi er i øjeblikket nul",
-    "resetOptionsTooltip": "Nulstil patch indstillinger",
     "viewTitle": "Patch indstillinger",
     "saveOptions": "Gem",
-    "addOptions": "Tilføj indstillinger",
     "unselectPatch": "Fravælg patch",
     "tooltip": "Flere input-indstillinger",
     "selectFilePath": "Vælg fil sti",
     "selectFolder": "Vælg mappe",
-    "selectOption": "Vælg indstilling",
     "requiredOption": "Indstilling af denne indstilling er påkrævet",
     "unsupportedOption": "Denne indstilling understøttes ikke",
-    "requiredOptionNull": "Følgende indstillinger skal indstilles:\n\n${options}"
+    "requiredOptionNull": "Følgende indstillinger skal indstilles:\n\n${options}",
+    "resetOptionsTooltip": "Nulstil patch indstillinger",
+    "addOptions": "Tilføj indstillinger",
+    "selectOption": "Vælg indstilling"
   },
   "patchItem": {
     "unsupportedDialogText": "Valg af denne patch kan medføre patching-fejl.\n\nApp version: ${packageVersion}\nUnderstøttede versioner:\n${supportedVersions}",
@@ -141,7 +137,6 @@
     "patchesChangeWarningDialogButton": "Brug standardvalg"
   },
   "installerView": {
-    "widgetTitle": "Installationsprogram",
     "installType": "Vælg installationstype",
     "installTypeDescription": "Vælg den installationstype der skal fortsættes med.",
     "installButton": "Installér",
@@ -150,14 +145,15 @@
     "warning": "Deaktiver automatiske opdateringer til den patchede app for at undgå uventede problemer.",
     "pressBackAgain": "Tryk tilbage igen for at annullere",
     "openButton": "Åbn",
-    "shareButton": "Del fil",
     "notificationTitle": "ReVanced Manager patcher",
     "notificationText": "Tryk for at gå tilbage til installationsprogrammet",
     "exportApkButtonTooltip": "Eksporter patched APK",
     "exportLogButtonTooltip": "Eksportér log",
     "screenshotDetected": "Et skærmbillede er blevet opdaget. Hvis du forsøger at dele loggen, så del venligst en tekstkopi i stedet.\n\nKopier log til udklipsholderen?",
     "copiedToClipboard": "Kopierede log til udklipsholder",
-    "noExit": "Installationen kører stadig, kan ikke afslutte..."
+    "noExit": "Installationen kører stadig, kan ikke afslutte...",
+    "widgetTitle": "Installationsprogram",
+    "shareButton": "Del fil"
   },
   "settingsView": {
     "widgetTitle": "Indstillinger",
@@ -175,7 +171,6 @@
     "dynamicThemeHint": "Nyd en oplevelse tættere på din enhed",
     "languageLabel": "Sprog",
     "languageUpdated": "Sprog opdateret",
-    "englishOption": "Engelsk",
     "sourcesLabel": "Alternative kilder",
     "sourcesLabelHint": "Konfigurer de alternative kilder til ReVanced Patches og ReVanced Integrations",
     "sourcesIntegrationsLabel": "Kilde til Integrationer",
@@ -251,7 +246,8 @@
     "selectKeystorePassword": "Keystore Adgangskode",
     "selectKeystorePasswordHint": "Vælg adgangskode til keystore som bruges til at signere apps",
     "jsonSelectorErrorMessage": "Kan ikke bruge den valgte JSON-fil",
-    "keystoreSelectorErrorMessage": "Kan ikke bruge den valgte keystore fil"
+    "keystoreSelectorErrorMessage": "Kan ikke bruge den valgte keystore fil",
+    "englishOption": "Engelsk"
   },
   "appInfoView": {
     "widgetTitle": "Appinfo",
@@ -300,5 +296,9 @@
     "install_failed_verification_failure_description": "Installationen mislykkedes på grund af et bekræftelsesproblem.\n\nJuster dine sikkerhedsindstillinger og prøv igen.",
     "install_failed_version_downgrade_description": "Installationen mislykkedes, fordi den lappede app er en lavere version end den installerede app.\n\nAfinstaller app'en og prøv igen?",
     "status_unknown_description": "Installationen mislykkedes på grund af en ukendt årsag. Prøv venligst igen."
-  }
+  },
+  "enabledLabel": "Aktiveret",
+  "disabledLabel": "Deaktiveret",
+  "installed": "Installeret: ${version}",
+  "options": "Indstillinger"
 }
