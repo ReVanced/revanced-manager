@@ -27,7 +27,7 @@ class PatcherView extends StatelessWidget {
               if (model.checkRequiredPatchOption(context)) {
                 final bool proceed = model.showRemovedPatchesDialog(context);
                 if (proceed && context.mounted) {
-                  model.showArmv7WarningDialog(context);
+                  model.showIncompatibleArchWarningDialog(context);
                 }
               }
             },

@@ -70,7 +70,7 @@ class PatcherViewModel extends BaseViewModel {
             FilledButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                showArmv7WarningDialog(context);
+                showIncompatibleArchWarningDialog(context);
               },
               child: Text(t.yesButton),
             ),
@@ -116,18 +116,18 @@ class PatcherViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> showArmv7WarningDialog(BuildContext context) async {
-    final bool armv7 = await AboutInfo.getInfo().then((info) {
+  Future<void> showIncompatibleArchWarningDialog(BuildContext context) async {
+    final bool notSupported = await AboutInfo.getInfo().then((info) {
       final List<String> archs = info['supportedArch'];
-      final supportedAbis = ['arm64-v8a', 'x86', 'x86_64'];
+      final supportedAbis = ['arm64-v8a', 'x86', 'x86_64', 'arm-v7a'];
       return !archs.any((arch) => supportedAbis.contains(arch));
     });
-    if (context.mounted && armv7) {
+    if (context.mounted && notSupported) {
       return showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(t.warning),
-          content: Text(t.patcherView.armv7WarningDialogText),
+          content: Text(t.patcherView.incompatibleArchWarningDialogText),
           actions: <Widget>[
             FilledButton(
               onPressed: () => Navigator.of(context).pop(),

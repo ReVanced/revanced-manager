@@ -54,7 +54,7 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "Patching on ARMv7 devices is not yet supported and might fail. Continue anyways?",
+    "incompatibleArchWarningDialogText": "Patching on this architecture is not yet supported and might fail. Continue anyways?",
     "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n${patches}\n\nContinue anyways?",
     "requiredOptionDialogText": "Some patch options have to be set."
   },
