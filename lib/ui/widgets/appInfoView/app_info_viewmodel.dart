@@ -147,7 +147,6 @@ class AppInfoViewModel extends BaseViewModel {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(t.appInfoView.removeAppDialogTitle),
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         content: Text(t.appInfoView.removeAppDialogText),
         actions: <Widget>[
           TextButton(
