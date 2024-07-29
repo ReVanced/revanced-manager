@@ -4,14 +4,10 @@
   "dismissButton": "Afwijzen",
   "quitButton": "Sluiten",
   "updateButton": "Bijwerken",
-  "enabledLabel": "Ingeschakeld",
-  "disabledLabel": "Uitgeschakeld",
-  "installed": "Geïnstalleerd: ${version}",
   "suggested": "Aanbevolen: ${version}",
   "yesButton": "Ja",
   "noButton": "Nee",
   "warning": "Waarschuwing",
-  "options": "Instellingen",
   "notice": "Melding",
   "noShowAgain": "Niet meer tonen",
   "add": "Voeg toe",
@@ -27,10 +23,7 @@
     "refreshSuccess": "Vernieuwen voltooid",
     "widgetTitle": "Overzicht",
     "updatesSubtitle": "Updates",
-    "patchedSubtitle": "Gepatchte applicaties",
     "changeLaterSubtitle": "U kunt dit op een later moment wijzigen in de instellingen.",
-    "noUpdates": "Geen updates beschikbaar",
-    "WIP": "Bezig met uitvoeren...",
     "noInstallations": "Geen gepatchte applicaties geïnstalleerd",
     "installUpdate": "Doorgaan met het installeren van de update?",
     "updateSheetTitle": "Update ReVanced Manager",
@@ -41,32 +34,23 @@
     "downloadConsentDialogTitle": "Download de benodigde bestanden?",
     "downloadConsentDialogText": "ReVanced Manager moet de benodigde bestanden downloaden om goed te werken.",
     "downloadConsentDialogText2": "Dit verbindt u met ${url}.",
-    "checkUpdateDialogTitle": "Controleer op updates?",
-    "checkUpdateDialogText": "Wilt u dat ReVanced Manager automatisch op updates controleert?",
-    "notificationTitle": "Update gedownload",
-    "notificationText": "Tik om de update te installeren",
     "downloadingMessage": "Update wordt gedownload...",
     "downloadedMessage": "Update gedownload",
     "installingMessage": "Update wordt geïnstalleerd...",
     "errorDownloadMessage": "Update downloaden mislukt",
     "errorInstallMessage": "Update installeren mislukt",
-    "noConnection": "Geen internetverbinding",
-    "updatesDisabled": "Bijwerken van een gepatchte app is momenteel uitgeschakeld. Patch de app opnieuw."
+    "noConnection": "Geen internetverbinding"
   },
   "applicationItem": {
     "infoButton": "Informatie"
   },
   "latestCommitCard": {
     "loadingLabel": "Bezig met laden...",
-    "timeagoLabel": "${time} geleden",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Beheerder: ",
-    "updateButton": "Manager bijwerken"
+    "timeagoLabel": "${time} geleden"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patchen",
-    "armv7WarningDialogText": "Patchen op ARMv7 apparaten zijn nog niet ondersteund en zou mogelijk kunnen misgaan. Toch verder gaan?",
     "removedPatchesWarningDialogText": "De volgende patches zijn verwijderd sinds de laatste keer dat je ze hebt gebruikt.\n\n${patches}\n\nToch doorgaan?",
     "requiredOptionDialogText": "Er moeten enkele patch-opties worden ingesteld."
   },
@@ -75,8 +59,6 @@
     "widgetTitleSelected": "Geselecteerde app",
     "widgetSubtitle": "Geen app geselecteerd",
     "noAppsLabel": "Geen applicatie gevonden",
-    "currentVersion": "Huidige",
-    "suggestedVersion": "Voorgesteld",
     "anyVersion": "Iedere versie"
   },
   "patchSelectorCard": {
@@ -118,16 +100,11 @@
   },
   "patchOptionsView": {
     "customValue": "Aangepaste waarde",
-    "resetOptionsTooltip": "Reset patch opties",
     "viewTitle": "Patch opties",
     "saveOptions": "Opslaan",
-    "addOptions": "Opties toevoegen",
-    "deselectPatch": "Deselecteer patch",
     "tooltip": "Meer invoeropties",
     "selectFilePath": "Bestandspad selecteren",
     "selectFolder": "Map selecteren",
-    "selectOption": "Selecteer optie",
-    "requiredOption": "Deze optie is vereist",
     "unsupportedOption": "Deze optie wordt niet ondersteund",
     "requiredOptionNull": "De volgende opties moeten worden ingesteld:\n\n${options}"
   },
@@ -139,7 +116,6 @@
     "patchesChangeWarningDialogButton": "Gebruik standaard selectie"
   },
   "installerView": {
-    "widgetTitle": "Installatieprogramma",
     "installType": "Selecteer installatietype",
     "installTypeDescription": "Selecteer het installatietype om mee door te gaan.",
     "installButton": "Installeren",
@@ -148,7 +124,6 @@
     "warning": "Schakel automatische updates uit voor de patched app om onverwachte problemen te voorkomen.",
     "pressBackAgain": "Druk nogmaals op terug om te annuleren",
     "openButton": "Openen",
-    "shareButton": "Bestand delen",
     "notificationTitle": "ReVanced Manager is aan het patchen",
     "notificationText": "Tik om terug te keren naar het installatieprogramma",
     "exportApkButtonTooltip": "Patched APK exporteren",
@@ -173,7 +148,6 @@
     "dynamicThemeHint": "Geniet van een ervaring dichter bij je apparaat",
     "languageLabel": "Taal",
     "languageUpdated": "Taal bijgewerkt",
-    "englishOption": "Engels",
     "sourcesLabel": "Alternatieve bronnen",
     "sourcesLabelHint": "Configureer de alternatieve bronnen voor ReVanced Patches en ReVanced Integrations",
     "sourcesIntegrationsLabel": "Integratiebronnen",
@@ -254,6 +228,7 @@
   "appInfoView": {
     "widgetTitle": "App info",
     "openButton": "Openen",
+    "installButton": "Installeren",
     "uninstallButton": "Verwijderen",
     "unmountButton": "Ontkoppelen",
     "rootDialogTitle": "Fout",

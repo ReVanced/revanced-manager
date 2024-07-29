@@ -4,14 +4,10 @@
   "dismissButton": "Descartar",
   "quitButton": "Salir",
   "updateButton": "Actualizar",
-  "enabledLabel": "Activado",
-  "disabledLabel": "Desactivado",
-  "installed": "Instalada: ${version}",
   "suggested": "Sugerida: ${version}",
   "yesButton": "Sí",
   "noButton": "No",
   "warning": "Advertencia",
-  "options": "Opciones",
   "notice": "Aviso",
   "noShowAgain": "No volver a mostrar",
   "add": "Añadir",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Actualizaciones",
     "patchedSubtitle": "Aplicaciones parcheadas",
     "changeLaterSubtitle": "Puedes cambiar esto en la configuración más tarde.",
-    "noUpdates": "No hay actualizaciones disponibles",
-    "WIP": "Desarrollo en progreso...",
     "noInstallations": "No hay aplicaciones parcheadas instaladas",
     "installUpdate": "¿Continuar actualizando la aplicación?",
     "updateSheetTitle": "Actualizar ReVanced Manager",
@@ -41,32 +35,23 @@
     "downloadConsentDialogTitle": "¿Descargar archivos necesarios?",
     "downloadConsentDialogText": "ReVanced Manager necesita descargar los archivos necesarios para funcionar correctamente.",
     "downloadConsentDialogText2": "Esto te conectará a ${url}.",
-    "checkUpdateDialogTitle": "Comprobar actualizaciones",
-    "checkUpdateDialogText": "¿Quieres que ReVanced Manager compruebe si hay actualizaciones automáticamente?",
-    "notificationTitle": "Actualización descargada",
-    "notificationText": "Toca para instalar la actualización",
     "downloadingMessage": "Descargando actualización...",
     "downloadedMessage": "Actualización descargada",
     "installingMessage": "Instalando actualización...",
     "errorDownloadMessage": "No se pudo descargar la actualización",
     "errorInstallMessage": "Error al instalar la actualización",
-    "noConnection": "Sin conexión a internet",
-    "updatesDisabled": "Por ahora no se puede actualizar o parchear la app. Intenta re-parchear de nuevo."
+    "noConnection": "Sin conexión a internet"
   },
   "applicationItem": {
     "infoButton": "Información"
   },
   "latestCommitCard": {
     "loadingLabel": "Cargando...",
-    "timeagoLabel": "Hace ${time}",
-    "patcherLabel": "Parcheador: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Actualizar ReVanced Manager"
+    "timeagoLabel": "Hace ${time}"
   },
   "patcherView": {
     "widgetTitle": "Parcheador",
     "patchButton": "Parchear",
-    "armv7WarningDialogText": "El parcheo en dispositivos ARMv7 aún no está soportado y podría fallar. ¿Quieres continuar de todas formas?",
     "removedPatchesWarningDialogText": "Los siguientes parches fueron removidos desde la última vez que los usaste.\n\n${patches}\n\n¿Quieres continuar de todas formas?",
     "requiredOptionDialogText": "Algunas opciones de parche tienen que ser establecidas."
   },
@@ -75,8 +60,6 @@
     "widgetTitleSelected": "Aplicación seleccionada",
     "widgetSubtitle": "No se seleccionó ninguna aplicación",
     "noAppsLabel": "No se encontraron aplicaciones",
-    "currentVersion": "Versión actual",
-    "suggestedVersion": "Version sugerida",
     "anyVersion": "Cualquier versión"
   },
   "patchSelectorCard": {
@@ -91,14 +74,14 @@
   },
   "appSelectorView": {
     "viewTitle": "Seleccionar una aplicación",
-    "searchBarHint": "Buscar...",
+    "searchBarHint": "Buscar aplicación",
     "storageButton": "Almacenamiento",
     "selectFromStorageButton": "Seleccionar desde almacenamiento",
     "errorMessage": "No se puede usar la aplicación seleccionada",
     "downloadToast": "La función de descarga aún no está disponible",
     "requireSuggestedAppVersionDialogText": "La versión de la aplicación que has seleccionado no coincide con la versión sugerida, lo que podría causar errores inesperados. Por favor, utiliza la versión sugerida.\n\nVersión seleccionada: ${selected}\nVersión sugerida: ${suggested}\n\nPara continuar de todas formas, desactiva \"Requerir versión sugerida de la aplicación\" en la configuración.",
     "featureNotAvailable": "Característica no implementada",
-    "featureNotAvailableText": "Esta aplicación está instalada en formato AAB (Android App Bundle) y solo se puede parchear e instalar de forma fiable mediante el montaje con acceso root. Sin embargo, puedes parchear e instalar una aplicación en formato APK seleccionándola desde el almacenamiento."
+    "featureNotAvailableText": "Esta aplicación es una APK dividida y solo puede ser parcheada e instalada confiablemente al montar con permisos de root. Sin embargo, puedes parchear e instalar una APK completa seleccionándola en el almacenamiento."
   },
   "patchesSelectorView": {
     "viewTitle": "Selecciona parches",
@@ -118,16 +101,15 @@
   },
   "patchOptionsView": {
     "customValue": "Valor personalizado",
-    "resetOptionsTooltip": "Restablecer las opciones de parche",
+    "setToNull": "Establecer a nulo",
+    "nullValue": "Este valor de opción es nulo actualmente",
     "viewTitle": "Opciones de parche",
     "saveOptions": "Guardar",
-    "addOptions": "Añadir opciones",
-    "deselectPatch": "Deseleccionar parche",
+    "unselectPatch": "Deseleccionar parche",
     "tooltip": "Más opciones de entrada",
     "selectFilePath": "Selecciona la ruta del archivo",
     "selectFolder": "Selecciona la carpeta",
-    "selectOption": "Seleccionar opción",
-    "requiredOption": "Esta opción es requerida",
+    "requiredOption": "La configuración de esta opción es necesaria",
     "unsupportedOption": "Esta opción no está disponible",
     "requiredOptionNull": "Hay que configurar las siguientes opciones:\n\n${options}"
   },
@@ -139,16 +121,14 @@
     "patchesChangeWarningDialogButton": "Usar selección por defecto"
   },
   "installerView": {
-    "widgetTitle": "Instalador",
     "installType": "Seleccione el tipo de instalación",
     "installTypeDescription": "Selecciona el tipo de instalación con el que quieres continuar.",
     "installButton": "Instalar",
-    "installRootType": "Montar (requiere acceso root)",
+    "installRootType": "Montar",
     "installNonRootType": "Normal",
     "warning": "Desactiva las actualizaciones para la aplicación parcheada para evitar problemas inesperados.",
     "pressBackAgain": "Vuelve a presionar atrás para cancelar",
     "openButton": "Abrir",
-    "shareButton": "Compartir archivo",
     "notificationTitle": "ReVanced Manager está parcheando",
     "notificationText": "Pulsa para volver al instalador",
     "exportApkButtonTooltip": "Exportar APK parcheado",
@@ -173,7 +153,6 @@
     "dynamicThemeHint": "Disfruta de una experiencia más cercana a tu dispositivo",
     "languageLabel": "Idioma",
     "languageUpdated": "Idioma actualizado",
-    "englishOption": "Inglés",
     "sourcesLabel": "Fuentes alternativas",
     "sourcesLabelHint": "Configura las fuentes alternativas para ReVanced Patches y ReVanced Integrations",
     "sourcesIntegrationsLabel": "Fuente de integraciones",
@@ -196,7 +175,7 @@
     "enablePatchesSelectionLabel": "Permitir cambiar la selección de parches",
     "enablePatchesSelectionHint": "No prevenir la selección o deselección de parches",
     "enablePatchesSelectionWarningText": "Cambiar la selección de parches puede cauar problemas inespereados.\n\n¿Quieres activarlo de todas formas?",
-    "disablePatchesSelectionWarningText": "Estás a punto de desactivar el cambiar la selección de parches.\nSe restaurará la selección de parches por defecto.",
+    "disablePatchesSelectionWarningText": "Estás a punto de desactivar cambiar la selección de los parches.\nLa selección predeterminada de los parches será restaurada.\n\n¿Desactivar de todos modos?",
     "autoUpdatePatchesLabel": "Actualizar parches automáticamente",
     "autoUpdatePatchesHint": "Actualiza los parches a la última versión automáticamente",
     "showUpdateDialogLabel": "Mostrar diálogo de actualización",
@@ -252,7 +231,7 @@
     "keystoreSelectorErrorMessage": "No se puede utilizar el archivo de repositorio de claves seleccionado"
   },
   "appInfoView": {
-    "widgetTitle": "Informacion de la applicacion",
+    "widgetTitle": "Informacion de la aplicación",
     "openButton": "Abrir",
     "uninstallButton": "Desinstalar",
     "unmountButton": "Desmontar",
@@ -262,7 +241,7 @@
     "rootDialogText": "La aplicación se instaló con permisos de root, pero actualmente ReVanced Manager no tiene permisos root.\nPor favor, conceda primero los permisos de root.",
     "packageNameLabel": "Nombre del paquete",
     "installTypeLabel": "Tipo de instalación",
-    "mountTypeLabel": "Montar (requiere acceso root)",
+    "mountTypeLabel": "Montar",
     "regularTypeLabel": "Normal",
     "patchedDateLabel": "Fecha de parcheo",
     "appliedPatchesLabel": "Parches aplicados",

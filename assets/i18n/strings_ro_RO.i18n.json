@@ -4,14 +4,10 @@
   "dismissButton": "Anulare",
   "quitButton": "Inchide",
   "updateButton": "Actualizează",
-  "enabledLabel": "Activat",
-  "disabledLabel": "Dezactivat",
-  "installed": "Versiunea instalata: ${version}",
   "suggested": "Versiune sugerată: ${version}",
   "yesButton": "Da",
   "noButton": "Nu",
   "warning": "Atenție",
-  "options": "Opţiuni",
   "notice": "Înștiințare",
   "noShowAgain": "Nu afișa asta din nou",
   "add": "Adaugă",
@@ -27,10 +23,7 @@
     "refreshSuccess": "Împrospătat cu succes",
     "widgetTitle": "Panou de bord",
     "updatesSubtitle": "Actualizări",
-    "patchedSubtitle": "Aplicații Patch-uite",
     "changeLaterSubtitle": "Puteți schimba acest lucru în setări mai târziu.",
-    "noUpdates": "Nu există actualizări disponibile",
-    "WIP": "Lucru în curs...",
     "noInstallations": "Nu sunt instalate aplicații patch-uite",
     "installUpdate": "Continuați să instalați actualizarea?",
     "updateSheetTitle": "Actualizare ReVanced Manager",
@@ -41,32 +34,23 @@
     "downloadConsentDialogTitle": "Descărcați fișierele necesare?",
     "downloadConsentDialogText": "ReVanced Manager trebuie să descarce fișierele necesare pentru a funcționa corect.",
     "downloadConsentDialogText2": "Aceasta vă va conecta la ${url}.",
-    "checkUpdateDialogTitle": "Verifică actualizări?",
-    "checkUpdateDialogText": "Doriți ca ReVanced Manager să verifice automat actualizările?",
-    "notificationTitle": "Actualizare descărcată",
-    "notificationText": "Apăsați pentru a instala actualizarea",
     "downloadingMessage": "Se descarcă actualizarea...",
     "downloadedMessage": "Actualizare descărcată",
     "installingMessage": "Se instalează actualizarea...",
     "errorDownloadMessage": "Nu s-a putut descărca actualizarea",
     "errorInstallMessage": "Nu s-a putut instala actualizarea",
-    "noConnection": "Nu există conexiune la internet",
-    "updatesDisabled": "Actualizarea aplicației patch-uite este dezactivată momentan.\nRepatch-uiți aplicația din nou."
+    "noConnection": "Nu există conexiune la internet"
   },
   "applicationItem": {
     "infoButton": "Informații"
   },
   "latestCommitCard": {
     "loadingLabel": "Se încarcă...",
-    "timeagoLabel": "În urmă cu ${time}",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Actualizați Manager"
+    "timeagoLabel": "În urmă cu ${time}"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "Patching-ul pe dispozitive ARMv7 nu este încă suportat și ar putea eșua. Continuați oricum?",
     "removedPatchesWarningDialogText": "Următoarele patch-uri au fost eliminate de la ultima dată când le-ați folosit.\n\n${patches}\n\nContinuați oricum?",
     "requiredOptionDialogText": "Unele opțiuni pentru patch-uri trebuie setate."
   },
@@ -75,8 +59,6 @@
     "widgetTitleSelected": "Aplicația selectată",
     "widgetSubtitle": "Nici o aplicație selectată",
     "noAppsLabel": "Nu s-au găsit aplicații",
-    "currentVersion": "Actual",
-    "suggestedVersion": "Sugerate",
     "anyVersion": "Orice versiune"
   },
   "patchSelectorCard": {
@@ -118,16 +100,11 @@
   },
   "patchOptionsView": {
     "customValue": "Valoare personalizată",
-    "resetOptionsTooltip": "Resetează opțiunile patch-ului",
     "viewTitle": "Opțiuni patch",
     "saveOptions": "Salvează",
-    "addOptions": "Adaugă opțiuni",
-    "deselectPatch": "Deselectați toate patch-urile",
     "tooltip": "Mai multe opțiuni de intrare",
     "selectFilePath": "Selectați calea fișierului",
     "selectFolder": "Selectați dosarul",
-    "selectOption": "Selectați opțiunea",
-    "requiredOption": "Această opțiune este necesară",
     "unsupportedOption": "Această opțiune nu este acceptată",
     "requiredOptionNull": "Următoarele opțiuni trebuie setate:\n\n${options}"
   },
@@ -139,7 +116,6 @@
     "patchesChangeWarningDialogButton": "Folosește selecția implicită"
   },
   "installerView": {
-    "widgetTitle": "Instalator",
     "installType": "Selectați tipul de instalare",
     "installTypeDescription": "Selectați tipul de instalare cu care să continuați.",
     "installButton": "Instalează",
@@ -148,7 +124,6 @@
     "warning": "Dezactivați actualizările automate pentru aplicația modificată pentru a evita probleme neașteptate.",
     "pressBackAgain": "Apăsați înapoi din nou pentru a anula",
     "openButton": "Deschide",
-    "shareButton": "Distribuie fișierul",
     "notificationTitle": "ReVanced Manager efectuează patch-uirea",
     "notificationText": "Apăsați pentru a reveni la instalator",
     "exportApkButtonTooltip": "Exportare APK modificat",
@@ -173,7 +148,6 @@
     "dynamicThemeHint": "Bucură-te de o experiență mai apropiată de dispozitivul tău",
     "languageLabel": "Limbă",
     "languageUpdated": "Limbă actualizată",
-    "englishOption": "Engleză",
     "sourcesLabel": "Surse alternative",
     "sourcesLabelHint": "Configurați sursele alternative pentru patch-urile ReVanced și Integrările ReVanced",
     "sourcesIntegrationsLabel": "Sursă integrări",
@@ -254,6 +228,7 @@
   "appInfoView": {
     "widgetTitle": "Informații despre aplicație",
     "openButton": "Deschide",
+    "installButton": "Instalează",
     "uninstallButton": "Dezinstalează",
     "unmountButton": "Demontare",
     "rootDialogTitle": "Eroare",

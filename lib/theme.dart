@@ -10,7 +10,7 @@ var lightCustomTheme = ThemeData(
   useMaterial3: true,
   colorScheme: lightCustomColorScheme,
   navigationBarTheme: NavigationBarThemeData(
-    labelTextStyle: MaterialStateProperty.all(
+    labelTextStyle: WidgetStateProperty.all(
       TextStyle(
         color: lightCustomColorScheme.onSurface,
         fontWeight: FontWeight.w500,
@@ -31,7 +31,7 @@ var darkCustomTheme = ThemeData(
   useMaterial3: true,
   colorScheme: darkCustomColorScheme,
   navigationBarTheme: NavigationBarThemeData(
-    labelTextStyle: MaterialStateProperty.all(
+    labelTextStyle: WidgetStateProperty.all(
       TextStyle(
         color: darkCustomColorScheme.onSurface,
         fontWeight: FontWeight.w500,

@@ -1,19 +1,130 @@
 {
-  "navigationView": {},
-  "homeView": {},
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
+  "okButton": "சரி",
+  "cancelButton": "ரத்து செய்",
+  "dismissButton": "நிராகரிக்கவும்",
+  "quitButton": "வெளியேறு",
+  "updateButton": "புதுப்பி",
+  "suggested": "பரிந்துரைக்கப்படும் பதிப்பு: ${version}",
+  "yesButton": "ஆம்",
+  "noButton": "இல்லை",
+  "warning": "எச்சரிக்கை",
+  "notice": "அறிவிப்பு",
+  "noShowAgain": "இதனை மீண்டும் காண்பிக்க வேண்டாம்",
+  "add": "சேர்",
+  "remove": "நீக்கு",
+  "navigationView": {
+    "dashboardTab": "கட்டுப்பாட்டகம்",
+    "patcherTab": "இணைப்பான்",
+    "settingsTab": "அமைப்புகள்"
+  },
+  "homeView": {
+    "refreshSuccess": "வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது",
+    "widgetTitle": "கட்டுப்பாட்டகம்",
+    "updatesSubtitle": "புதுப்பித்தல்கள்",
+    "updateChangelogTitle": "மாற்றங்களின் பதிவு",
+    "downloadingMessage": "மேம்பாடு பதிவிறக்கப்படுகிறது...",
+    "downloadedMessage": "புதுப்பிப்பு பதிவிறக்கப்பட்டது",
+    "installingMessage": "புதுப்பிப்பை நிறுவுகிறது...",
+    "errorDownloadMessage": "புதுப்பிப்பைப் பதிவிறக்க முடியவில்லை",
+    "errorInstallMessage": "புதுப்பிப்பை நிறுவ முடியவில்லை",
+    "noConnection": "இணைய இணைப்பு இல்லை"
+  },
+  "applicationItem": {
+    "infoButton": "தகவல்"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "ஏற்றுகிறது..."
+  },
+  "patcherView": {
+    "widgetTitle": "இணைப்பான்",
+    "patchButton": "இணைப்பு"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "செயலிகள் கண்டறியப்படவில்லை"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "இணைப்புகளைத் தேர்ந்தெடுக்கவும்",
+    "widgetTitleSelected": "தேர்ந்தெடுக்கப்பட்ட இணைப்புகள்",
+    "widgetSubtitle": "முதலில் ஒரு செயலியைத் தேர்ந்தெடுக்கவும்",
+    "widgetEmptySubtitle": "இணைப்புகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
+  },
+  "socialMediaCard": {
+    "widgetTitle": "Socials",
+    "widgetSubtitle": "நாங்கள் ஆன்லைனில் இருக்கிறோம்!"
+  },
+  "appSelectorView": {
+    "storageButton": "சேமிப்பு",
+    "selectFromStorageButton": "இருப்பிலிருந்து தேர்வு செய்க ",
+    "errorMessage": "தேர்ந்தெடுக்கப்பட்ட செயலியைப் பயன்படுத்த இயலவில்லை",
+    "downloadToast": "பதிவிறக்கம் செய்யும் ஆதரவு இன்னும் வரவில்லை ",
+    "featureNotAvailable": "இந்த அம்சம் இன்னும் செயல்படுத்தப்படவில்லை"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "இணைப்புகளைத் தேர்ந்தெடுக்கவும்",
+    "searchBarHint": "இணைப்புகளைத் தேடு",
+    "patches": "Patches",
+    "doneButton": "முடிந்தது",
+    "defaultChip": "இயல்புநிலை",
+    "defaultTooltip": "எல்லா இயல்பான இணைப்புகளையும் தேர்ந்தெடு",
+    "noneChip": "எதுவுமில்லை",
+    "noneTooltip": "அனைத்து கோப்புகளையும் நீக்கவும்",
+    "noPatchesFound": "தேர்ந்தெடுக்கப்பட்ட செயலிக்கு இணைப்புகள் காணப்படவில்லை"
+  },
+  "patchOptionsView": {
+    "saveOptions": "Save"
+  },
+  "patchItem": {
+    "unsupportedDialogText": "இந்த இணைப்பைத் தேர்ந்தெடுப்பது, இணைப்புப் பிழைகளை ஏற்படுத்தலாம்.\n\nபயன்பாட்டின் பதிப்பு: ${packageVersion}\nதற்போதைய ஆதரிக்கப்படும் பதிப்புகள்:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "நிறுவு",
+    "openButton": "திற",
+    "notificationTitle": "ReVanced Manager இணைக்கப் படுகிறது",
+    "notificationText": "நிறுவிக்குத் திரும்பச் செல்ல இங்கே கிளிக் செய்யவும்",
+    "noExit": "நிறுவி இன்னும் இயங்குகிறது, வெளியேற முடியாது..."
+  },
+  "settingsView": {
+    "widgetTitle": "அமைப்புகள்",
+    "appearanceSectionTitle": "தோற்றம்",
+    "teamSectionTitle": "குழு",
+    "advancedSectionTitle": "மேம்பட்ட அமைப்புகள்",
+    "exportSectionTitle": "இறக்க & ஏற்ற",
+    "dynamicThemeLabel": "Material You",
+    "dynamicThemeHint": "உங்கள் கருவிக்கு நெருக்கமான அனுபவத்தை அனுபவிக்கவும்",
+    "languageLabel": "மொழி",
+    "sourcesIntegrationsLabel": "ஒருங்கிணைப்புகளின் மூலம்",
+    "sourcesResetDialogTitle": "மறுஅமை",
+    "orgPatchesLabel": "இணைப்புகளின் அமைப்பு",
+    "sourcesPatchesLabel": "இணைப்புகளின் மூலம்",
+    "orgIntegrationsLabel": "ஒருங்கிணைப்புகளின் அமைப்பு",
+    "contributorsLabel": "பங்களிப்பாளர்கள்",
+    "contributorsHint": "ReVancedற்குப் பங்களித்தோர் பட்டியல்",
+    "aboutLabel": "இதைப் பற்றி",
+    "snackbarMessage": "நகலகத்திற்கு நகலெடுக்கப்பட்டது",
+    "restartAppForChanges": "மாற்றங்களைப் பயன்படுத்த பயன்பாட்டை மறுதொடக்கம் செய்யுங்கள்",
+    "deleteTempDirLabel": "தற்காலிக கோப்புகளை நீக்கவும்",
+    "deleteTempDirHint": "பயன்படுத்தப்படாத தற்காலிக கோப்புகளை நீக்கவும்",
+    "deletedTempDir": "தற்காலிக கோப்புகள் நீக்கப்பட்டன",
+    "deletedLogs": "பதிவுகள் நீக்கப்பட்டன",
+    "jsonSelectorErrorMessage": "தேர்ந்தெடுக்கப்பட்ட JSON கோப்பைப் பயன்படுத்த முடியவில்லை"
+  },
+  "appInfoView": {
+    "widgetTitle": "செயலியின் தகவல்",
+    "openButton": "திற",
+    "installButton": "நிறுவு",
+    "uninstallButton": "நிறுவல்நீக்கம்",
+    "rootDialogTitle": "பிழை",
+    "rootDialogText": "பயன்பாடு சூப்பர் யூசர் அனுமதிகளுடன் நிறுவப்பட்டது, ஆனால் தற்போது ReVanced Managerக்கு அனுமதிகள் இல்லை.\nமுதலில் சூப்பர் யூசர் அனுமதிகளை வழங்கவும்.",
+    "packageNameLabel": "தொகுப்புப் பெயர்",
+    "installTypeLabel": "நிறுவல் முறை",
+    "patchedDateLabel": "இணைப்புத் தேதி",
+    "appliedPatchesLabel": "இயக்கப்பட்ட இணைப்புகள்",
+    "patchedDateHint": "${date} அன்று ${time} மணி",
+    "appliedPatchesHint": "${quantity} இயக்கப்பட்ட இணைப்புகள்",
+    "updateNotImplemented": "இந்த அம்சம் இன்னும் செயல்படுத்தப்படவில்லை"
+  },
+  "contributorsView": {
+    "widgetTitle": "பங்களிப்பாளர்கள்"
+  },
   "installErrorDialog": {}
 }

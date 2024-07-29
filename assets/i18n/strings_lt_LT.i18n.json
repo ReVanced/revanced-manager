@@ -1,14 +1,13 @@
 {
   "okButton": "Gerai",
   "cancelButton": "Atšaukti",
+  "dismissButton": "Atmesti",
   "quitButton": "Išeiti",
   "updateButton": "Atnaujinti",
-  "installed": "Įdiegta: ${version}",
   "suggested": "Siūloma: ${version}",
   "yesButton": "Taip",
   "noButton": "Ne",
   "warning": "Įspėjimas",
-  "options": "Nustatymai",
   "notice": "Pranešimas",
   "noShowAgain": "Daugiau to nerodyti",
   "add": "Pridėti",
@@ -22,16 +21,17 @@
     "refreshSuccess": "Sėkmingai atnaujinta",
     "widgetTitle": "Valdymo skydas",
     "updatesSubtitle": "Atnaujinimai",
-    "patchedSubtitle": "Pataisytos programos",
     "noInstallations": "Nėra įdiegtų pataisytų programų",
     "installUpdate": "Tęsti atnaujinimą?",
+    "updatePatchesSheetTitle": "Atnaujinti ReVanced pataisymus",
     "updateChangelogTitle": "Pakeitimų sąrašas",
+    "downloadConsentDialogText2": "Tai prijungs jus prie ${url}.",
     "downloadingMessage": "Atsiunčiamas atnaujinimas...",
+    "downloadedMessage": "Atnaujinimas atsiųstas",
     "installingMessage": "Įdiegiamas atnaujinimas...",
     "errorDownloadMessage": "Nepavyksta atsisiųsti atnaujinimo",
     "errorInstallMessage": "Nepavyksta įdiegti atnaujinimo",
-    "noConnection": "Nėra interneto ryšio",
-    "updatesDisabled": "Šiuo metu pataisytą programėlę atnaujinti neleidžiama. Dar kartą pataisykite programėlę."
+    "noConnection": "Nėra interneto ryšio"
   },
   "applicationItem": {
     "infoButton": "Informacija"
@@ -46,9 +46,7 @@
     "requiredOptionDialogText": "Reikia nustatyti kai kurias pataisymų parinktis."
   },
   "appSelectorCard": {
-    "noAppsLabel": "Nerasta jokių programų",
-    "currentVersion": "Dabartinė",
-    "suggestedVersion": "Siūloma"
+    "noAppsLabel": "Nerasta jokių programų"
   },
   "patchSelectorCard": {
     "widgetTitle": "Pasirinkite pataisymus",
@@ -74,7 +72,9 @@
     "newPatches": "Nauji pataisymai",
     "patches": "Pataisymai",
     "doneButton": "Atlikta",
+    "defaultChip": "Numatytas",
     "defaultTooltip": "Pasirinkite visus numatytuosius pataisymus",
+    "noneChip": "Nėra",
     "noneTooltip": "Panaikinkite visų pataisymų pasirinkimą",
     "loadPatchesSelection": "Įkelti pataisymų pasirinkimą",
     "noSavedPatches": "Nėra išsaugoto pasirinktos programos pataisymų pasirinkimo.\nPaspauskite Atlikta, kad išsaugotumėte dabartinį pasirinkimą.",
@@ -83,15 +83,11 @@
   },
   "patchOptionsView": {
     "customValue": "Pasirinkta vertė",
-    "resetOptionsTooltip": "Iš naujo nustatyti pataisymų parinktis",
     "viewTitle": "Pataisymų parinktys",
     "saveOptions": "Išsaugoti",
-    "addOptions": "Pridėti pasirinkimus",
-    "deselectPatch": "Atšaukti pataisymą",
     "tooltip": "Daugiau įvesties pasirinkčių",
     "selectFilePath": "Pasirinkite failo kelią",
     "selectFolder": "Pasirinkti aplanką",
-    "requiredOption": "Ši parinktis yra privaloma",
     "unsupportedOption": "Ši parinktis nepalaikoma",
     "requiredOptionNull": "Reikia nustatyti šias parinktis:\n\n${options}"
   },
@@ -128,6 +124,7 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Mėgaukis patirtimi artimiau tavo įrenginiui",
     "languageLabel": "Kalba",
+    "languageUpdated": "Kalba atnaujinta",
     "sourcesIntegrationsLabel": "Integracijų šaltinis",
     "sourcesResetDialogTitle": "Nustatyti iš naujo",
     "sourcesResetDialogText": "Ar tikrai norite iš naujo nustatyti savo šaltinius į numatytąsias vertes?",
@@ -197,11 +194,13 @@
   "appInfoView": {
     "widgetTitle": "Programos informacija",
     "openButton": "Atidaryti",
+    "installButton": "Įdiegti",
     "uninstallButton": "Išdiegti",
     "rootDialogTitle": "Klaida",
     "rootDialogText": "Programa buvo įdiegta su super vartotojo leidimais, tačiau šiuo metu ReVanced Tvarkyklė neturi jokių leidimų.\nPrašome pirmiausia suteikti super vartotojo leidimus.",
     "packageNameLabel": "Paketo pavadinimas",
     "installTypeLabel": "Įdiegimo tipas",
+    "mountTypeLabel": "Įdėti",
     "patchedDateLabel": "Pataisymo data",
     "appliedPatchesLabel": "Pritaikyti pataisymai",
     "patchedDateHint": "${date} ${time}",

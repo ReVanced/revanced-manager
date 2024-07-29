@@ -49,12 +49,8 @@ class NavigationViewModel extends IndexTrackingViewModel {
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness:
-            DynamicTheme.of(context)!.theme.brightness == Brightness.light
-                ? Brightness.dark
-                : Brightness.light,
       ),
     );
   }

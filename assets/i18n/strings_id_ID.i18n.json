@@ -3,20 +3,16 @@
   "cancelButton": "Batal",
   "dismissButton": "Abaikan",
   "quitButton": "Keluar",
-  "updateButton": "Memperbarui",
-  "enabledLabel": "Aktif",
-  "disabledLabel": "Tidak Aktif",
-  "installed": "Terpasang: ${version}",
+  "updateButton": "Perbarui",
   "suggested": "Disarankan: ${version}",
   "yesButton": "Iya",
   "noButton": "Tidak",
   "warning": "Peringatan",
-  "options": "Pengaturan",
   "notice": "Pemberitahuan",
   "noShowAgain": "Jangan tampilkan lagi",
   "add": "Tambah",
   "remove": "Hapus",
-  "showChangelogButton": "Tampilkan daftar perubahan",
+  "showChangelogButton": "Tampilkan log perubahan",
   "showUpdateButton": "Tampilkan pembaruan",
   "navigationView": {
     "dashboardTab": "Dasbor",
@@ -27,10 +23,7 @@
     "refreshSuccess": "Berhasil Memuat Ulang",
     "widgetTitle": "Dasbor",
     "updatesSubtitle": "Pembaruan",
-    "patchedSubtitle": "Aplikasi yang dimodifikasi",
     "changeLaterSubtitle": "Anda dapat mengubahnya di pengaturan nanti.",
-    "noUpdates": "Tidak ada pembaruan",
-    "WIP": "Sedang dikerjakan...",
     "noInstallations": "Aplikasi tambalan tidak terpasang",
     "installUpdate": "Lanjutkan untuk mengunduh pembaruan?",
     "updateSheetTitle": "Perbarui Manajer ReVanced",
@@ -41,33 +34,24 @@
     "downloadConsentDialogTitle": "Unduh file yang diperlukan?",
     "downloadConsentDialogText": "Manajer ReVanced perlu mengunduh file yang diperlukan agar berfungsi dengan baik.",
     "downloadConsentDialogText2": "Ini akan menghubungkan Anda ke ${url}.",
-    "checkUpdateDialogTitle": "Periksa pembaruan yang tersedia?",
-    "checkUpdateDialogText": "Apakah anda ingin Manajer ReVanced untuk mengecek pembaruan secara otomatis?",
-    "notificationTitle": "Pembaruan diunduh",
-    "notificationText": "Ketuk untuk memperbarui",
     "downloadingMessage": "Mengunduh pembaruan...",
     "downloadedMessage": "Pembaruan telah diunduh",
     "installingMessage": "Memasang pembaruan...",
     "errorDownloadMessage": "Tidak dapat mengunduh pembaruan",
     "errorInstallMessage": "Gagal memasang pembaharuan",
-    "noConnection": "Tidak ada koneksi internet",
-    "updatesDisabled": "Pembaharuan aplikasi tambalan sedang dinonaktifkan. Silahkan ulangi penambalan aplikasi."
+    "noConnection": "Tidak ada koneksi internet"
   },
   "applicationItem": {
     "infoButton": "Informasi"
   },
   "latestCommitCard": {
     "loadingLabel": "Memuat...",
-    "timeagoLabel": "${time} yang lalu",
-    "patcherLabel": "Penambal: ",
-    "managerLabel": "Pengelola: ",
-    "updateButton": "Perbarui Manager"
+    "timeagoLabel": "${time} yang lalu"
   },
   "patcherView": {
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
-    "armv7WarningDialogText": "Menambal pada perangkat ARMv7 belum didukung dan mungkin gagal. Lanjutkan saja?",
-    "removedPatchesWarningDialogText": "Patch berikut ini telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjutkan?",
+    "removedPatchesWarningDialogText": "Patch berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
     "requiredOptionDialogText": "Beberapa opsi patch harus diatur."
   },
   "appSelectorCard": {
@@ -75,8 +59,6 @@
     "widgetTitleSelected": "Aplikasi yang dipilih",
     "widgetSubtitle": "Tidak ada aplikasi yang dipilih",
     "noAppsLabel": "Aplikasi tidak ditemukan",
-    "currentVersion": "Saat ini",
-    "suggestedVersion": "Disarankan",
     "anyVersion": "Versi apa saja"
   },
   "patchSelectorCard": {
@@ -97,8 +79,8 @@
     "errorMessage": "Tidak dapat menggunakan aplikasi yang dipilih",
     "downloadToast": "Fungsi mengunduh belum tersedia",
     "requireSuggestedAppVersionDialogText": "Versi aplikasi yang Anda pilih tidak sesuai dengan versi yang disarankan yang dapat menyebabkan masalah yang tidak diharapkan. Silakan gunakan versi yang disarankan.\n\nVersi yang dipilih: ${selected}\nVersi yang disarankan: ${suggested}\n\nUntuk melanjutkan, nonaktifkan \"Memerlukan versi aplikasi yang disarankan\" di pengaturan.",
-    "featureNotAvailable": "Fitur tidak diterapkan",
-    "featureNotAvailableText": "Aplikasi ini adalah APK terpisah dan hanya dapat ditambal dan dipasang dengan andal dengan memasang dengan izin root. Namun, Anda bisa menambal dan memasang APK lengkap dengan memilihnya dari penyimpanan."
+    "featureNotAvailable": "Fitur tidak diimplementasi",
+    "featureNotAvailableText": "Aplikasi ini adalah APK terpisah yang hanya dapat ditambal dan dipasang melalui cara mount dengan izin root. Namun, APK lengkap dapat Anda tambal dan pasang dengan memilihnya dari penyimpanan."
   },
   "patchesSelectorView": {
     "viewTitle": "Pilih tambalan",
@@ -118,16 +100,11 @@
   },
   "patchOptionsView": {
     "customValue": "Nilai kustom",
-    "resetOptionsTooltip": "Mengatur ulang opsi tambalan",
     "viewTitle": "Opsi tambalan",
     "saveOptions": "Simpan",
-    "addOptions": "Tambahkan opsi",
-    "deselectPatch": "Lepas tambalan",
     "tooltip": "Opsi masukan lainnya",
     "selectFilePath": "Pilih lokasi berkas",
     "selectFolder": "Pilih folder",
-    "selectOption": "Pilih opsi",
-    "requiredOption": "Pilihan ini diperlukan",
     "unsupportedOption": "Pilihan ini tidak didukung",
     "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}"
   },
@@ -139,7 +116,6 @@
     "patchesChangeWarningDialogButton": "Gunakan pemilihan bawaan"
   },
   "installerView": {
-    "widgetTitle": "Pemasang",
     "installType": "Pilih tipe pemasang",
     "installTypeDescription": "Pilih jenis instalasi untuk melanjutkan.",
     "installButton": "Pasang",
@@ -148,7 +124,6 @@
     "warning": "Nonaktifkan pembaruan pada aplikasi tertambal untuk menghindari isu.",
     "pressBackAgain": "Tekan tombol balik lagi untuk membatalkan",
     "openButton": "Buka",
-    "shareButton": "Bagikan berkas",
     "notificationTitle": "ReVanced Manager sedang menambal",
     "notificationText": "Ketuk untuk kembali ke pemasang",
     "exportApkButtonTooltip": "Ekspor APK yang ditambal",
@@ -173,7 +148,6 @@
     "dynamicThemeHint": "Nikmati pengalaman lebih dekat ke perangkat Anda",
     "languageLabel": "Bahasa",
     "languageUpdated": "Bahasa diperbaharui",
-    "englishOption": "Bahasa Inggris",
     "sourcesLabel": "Sumber-sumber alternatif",
     "sourcesLabelHint": "Mengonfigurasi sumber alternatif untuk ReVanced Patches dan ReVanced Integrations",
     "sourcesIntegrationsLabel": "Sumber Integrasi",
@@ -254,6 +228,7 @@
   "appInfoView": {
     "widgetTitle": "Info aplikasi",
     "openButton": "Buka",
+    "installButton": "Pasang",
     "uninstallButton": "Copot",
     "unmountButton": "Lepas mount",
     "rootDialogTitle": "Kesalahan",
@@ -268,7 +243,7 @@
     "appliedPatchesLabel": "Tambalan terterap",
     "patchedDateHint": "${date} pukul ${time}",
     "appliedPatchesHint": "${quantity} tambalan terterap",
-    "updateNotImplemented": "Fitur ini belum diimplementasikan"
+    "updateNotImplemented": "Fitur ini belum diimplementasi"
   },
   "contributorsView": {
     "widgetTitle": "Kontributor"

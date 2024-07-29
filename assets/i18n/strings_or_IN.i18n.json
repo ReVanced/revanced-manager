@@ -8,7 +8,8 @@
     "settingsTab": "ସେଟିଂ"
   },
   "homeView": {
-    "updateChangelogTitle": "ପରିବର୍ତ୍ତନ ପୋଥି"
+    "updateChangelogTitle": "ପରିବର୍ତ୍ତନ ପୋଥି",
+    "noConnection": "କୌଣସି ଇଣ୍ଟର୍‌ନେଟ୍ ସଂଯୋଗ ନାହିଁ"
   },
   "applicationItem": {
     "infoButton": "ସୂଚନା"
@@ -17,16 +18,21 @@
     "timeagoLabel": "${time} ପୂର୍ବେ"
   },
   "patcherView": {
-    "widgetTitle": "ରଫୁକାର"
+    "widgetTitle": "ରଫୁକାର",
+    "patchButton": "ରଫୁ"
   },
-  "appSelectorCard": {
-    "currentVersion": "ଚଳିତ"
-  },
+  "appSelectorCard": {},
   "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
+  "socialMediaCard": {
+    "widgetSubtitle": "ଆମେ ଅନଲାଇନ୍ ଅଛୁ!"
+  },
+  "appSelectorView": {
+    "storageButton": "ଷ୍ଟୋରେଜ୍"
+  },
   "patchesSelectorView": {
-    "doneButton": "ହେଲା"
+    "doneButton": "ହେଲା",
+    "defaultChip": "ଡିଫଲ୍ଟ",
+    "defaultTooltip": "ସମସ୍ତ ଡିଫଲ୍ଟ ରଫୁ ଚୟନ କର"
   },
   "patchOptionsView": {},
   "patchItem": {},
@@ -42,12 +48,16 @@
     "lightThemeLabel": "ହାଲୁକା",
     "darkThemeLabel": "ଗାଢ଼",
     "languageLabel": "ଭାଷା",
-    "apiURLLabel": "API URL",
-    "selectApiURL": "API URL",
+    "languageUpdated": "ଭାଷା ଅଦ୍ୟତନ କରାଗଲା",
+    "apiURLLabel": "APIର URL",
+    "selectApiURL": "APIର URL",
     "aboutLabel": "ସମ୍ବନ୍ଧରେ",
     "snackbarMessage": "କ୍ଲିପବୋର୍ଡରେ କପି କରିନିଆଗଲା"
   },
-  "appInfoView": {},
+  "appInfoView": {
+    "widgetTitle": "ଆପ୍ ସୂଚନା",
+    "rootDialogTitle": "ତ୍ରୁଟି"
+  },
   "contributorsView": {},
   "installErrorDialog": {}
 }

@@ -1,14 +1,16 @@
 {
+  "okButton": "OK",
   "cancelButton": "Zrušiť",
   "quitButton": "Ukončiť",
   "updateButton": "Aktualizovať",
-  "installed": "Nainštalované: ${version}",
   "suggested": "Navrhované: ${version}",
   "yesButton": "Áno",
   "noButton": "Nie",
   "warning": "Upozornenie",
   "notice": "Oznámenie",
   "noShowAgain": "Nabudúce nezobrazovať",
+  "add": "Pridať",
+  "remove": "Odstrániť",
   "navigationView": {
     "dashboardTab": "Hlavný panel",
     "patcherTab": "Zaplátač",
@@ -18,16 +20,17 @@
     "refreshSuccess": "Úspešne obnovené",
     "widgetTitle": "Hlavný panel",
     "updatesSubtitle": "Aktualizácie",
-    "patchedSubtitle": "Zaplátané aplikácie",
     "noInstallations": "Zaplátané aplikácie nie sú nainštalované",
     "installUpdate": "Pokračovať v inštalácii aktualizácie?",
+    "updatePatchesSheetTitle": "Aktualizovať ReVanced záplaty",
     "updateChangelogTitle": "Zoznam zmien",
+    "downloadConsentDialogText2": "Tým sa pripojíte na ${url}.",
     "downloadingMessage": "Sťahovanie aktualizácie...",
+    "downloadedMessage": "Aktualizácia bola stiahnutá",
     "installingMessage": "Inštalujú sa aktualizácie...",
     "errorDownloadMessage": "Nepodarilo sa stiahnuť aktualizáciu",
     "errorInstallMessage": "Nepodarilo sa nainštalovať aktualizáciu",
-    "noConnection": "Žiadne pripojenie na internet",
-    "updatesDisabled": "Aktualizácia zaplátanej aplikácie je v súčasnosti zakázaná. Znovu zaplátajte aplikáciu."
+    "noConnection": "Žiadne pripojenie na internet"
   },
   "applicationItem": {
     "infoButton": "Informácie"
@@ -41,9 +44,7 @@
     "patchButton": "Záplata"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Nebola nájdená žiadna aplikácia",
-    "currentVersion": "Aktuálne",
-    "suggestedVersion": "Navrhované"
+    "noAppsLabel": "Nebola nájdená žiadna aplikácia"
   },
   "patchSelectorCard": {
     "widgetTitle": "Vyberte záplaty",
@@ -67,13 +68,20 @@
     "searchBarHint": "Vyhľadajte záplaty",
     "universalPatches": "Univerzálne záplaty",
     "doneButton": "Hotovo",
+    "defaultChip": "Predvolené",
     "defaultTooltip": "Vybrať všetky predvolené záplaty",
+    "noneChip": "Žiadne",
     "noneTooltip": "Zrušiť výber všetkých odporúčaných záplat",
     "noPatchesFound": "Neboli nájdené žiadne záplaty pre zvolenú aplikáciu"
   },
-  "patchOptionsView": {},
+  "patchOptionsView": {
+    "saveOptions": "Uložiť",
+    "unsupportedOption": "Táto možnosť nie je podporovaná",
+    "requiredOptionNull": "Je potrebné nastaviť nasledujúce možnosti:\n\n${options}"
+  },
   "patchItem": {
     "unsupportedDialogText": "Výber tejto záplaty môže spôsobiť chyby.\n\nVerzia aplikácie: ${packageVersion}\nPodporované verzie:\n${supportedVersions}",
+    "unsupportedRequiredOption": "Táto záplata obsahuje požadovanú možnosť, ktorú táto apka nepodporuje",
     "patchesChangeWarningDialogButton": "Použiť predvolený výber"
   },
   "installerView": {
@@ -100,6 +108,7 @@
     "systemThemeLabel": "Systém",
     "lightThemeLabel": "Svetlý",
     "darkThemeLabel": "Tmavý režim",
+    "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "Užite si tému bližíe prispôsobenú vášmu zariadeniu",
     "languageLabel": "Jazyk",
     "sourcesIntegrationsLabel": "Zdroj integrácie",
@@ -134,11 +143,13 @@
   "appInfoView": {
     "widgetTitle": "Informácie o aplikácii",
     "openButton": "Otvoriť",
+    "installButton": "Inštalovať",
     "uninstallButton": "Odinštalovať",
     "rootDialogTitle": "Chyba",
     "rootDialogText": "Aplikácia bola nainštalovaná s oprávneniami superpoužívateľa, ale v súčasnosti ReVanced Manažér nemá žiadne oprávnenia. Najskôr mu udeľte oprávnenia superužívateľa.",
     "packageNameLabel": "Názov balíka",
     "installTypeLabel": "Spôsob inštalácie",
+    "mountTypeLabel": "Pripojiť",
     "patchedDateLabel": "Dátum záplaty",
     "appliedPatchesLabel": "Použité záplaty",
     "patchedDateHint": "${date} o ${time}",

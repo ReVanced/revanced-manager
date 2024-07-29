@@ -31,7 +31,6 @@ class ManagerAPI {
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
   List<Patch> patches = [];
-  List<Option> modifiedOptions = [];
   List<Option> options = [];
   Patch? selectedPatch;
   BuildContext? ctx;
@@ -39,6 +38,8 @@ class ManagerAPI {
   bool releaseBuild = false;
   bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
+  bool isScopedStorageAvailable = false;
+  int sdkVersion = 0;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
@@ -56,8 +57,13 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
+    if (sdkVersion == 0) {
+      sdkVersion = await getSdkVersion();
+    }
     isDynamicThemeAvailable =
-        (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
+        sdkVersion >= 31; // ANDROID_12_SDK_VERSION = 31
+    isScopedStorageAvailable =
+        sdkVersion >= 30; // ANDROID_11_SDK_VERSION = 30
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
     if (kReleaseMode) {
@@ -296,6 +302,14 @@ class ManagerAPI {
     await _prefs.setBool('requireSuggestedAppVersionEnabled', value);
   }
 
+  bool isLastPatchedAppEnabled() {
+    return _prefs.getBool('lastPatchedAppEnabled') ?? true;
+  }
+
+  Future<void> enableLastPatchedAppStatus(bool value) async {
+    await _prefs.setBool('lastPatchedAppEnabled', value);
+  }
+
   Future<void> setKeystorePassword(String password) async {
     await _prefs.setString('keystorePassword', password);
   }
@@ -326,6 +340,34 @@ class ManagerAPI {
     if (await keystore.exists()) {
       await keystore.delete();
     }
+  }
+
+  PatchedApplication? getLastPatchedApp() {
+    final String? app = _prefs.getString('lastPatchedApp');
+    return app != null ? PatchedApplication.fromJson(jsonDecode(app)) : null;
+  }
+
+  Future<void> deleteLastPatchedApp() async {
+    final PatchedApplication? app = getLastPatchedApp();
+    if (app != null) {
+      final File file = File(app.patchedFilePath);
+      await file.delete();
+      await _prefs.remove('lastPatchedApp');
+    }
+  }
+
+  Future<void> setLastPatchedApp(
+    PatchedApplication app,
+    File outFile,
+  ) async {
+    deleteLastPatchedApp();
+    final Directory appCache = await getApplicationSupportDirectory();
+    app.patchedFilePath = outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.fileSize = outFile.lengthSync();
+    await _prefs.setString(
+      'lastPatchedApp',
+      json.encode(app.toJson()),
+    );
   }
 
   List<PatchedApplication> getPatchedApps() {
@@ -422,7 +464,7 @@ class ManagerAPI {
       final String repoName = !isUsingAlternativeSources() ? defaultPatchesRepo : getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
       final String url = getPatchesDownloadURL();
-      return await _githubAPI.getPatchesReleaseFile(
+      return await _githubAPI.getReleaseFile(
         '.jar',
         repoName,
         currentVersion,
@@ -441,7 +483,7 @@ class ManagerAPI {
       final String repoName = !isUsingAlternativeSources() ? defaultIntegrationsRepo : getIntegrationsRepo();
       final String currentVersion = await getCurrentIntegrationsVersion();
       final String url = getIntegrationsDownloadURL();
-      return await _githubAPI.getPatchesReleaseFile(
+      return await _githubAPI.getReleaseFile(
         '.apk',
         repoName,
         currentVersion,
@@ -470,7 +512,7 @@ class ManagerAPI {
       );
     } else {
       final release =
-          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+          await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -519,7 +561,7 @@ class ManagerAPI {
       );
     } else {
       final release =
-          await _githubAPI.getLatestPatchesRelease(getPatchesRepo());
+          await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
@@ -686,6 +728,16 @@ class ManagerAPI {
     patchedApps.addAll(mountedApps);
 
     await setPatchedApps(patchedApps);
+
+    // Delete the saved app if the file is not found.
+    final PatchedApplication? lastPatchedApp = getLastPatchedApp();
+    if (lastPatchedApp != null) {
+      final File file = File(lastPatchedApp.patchedFilePath);
+      if (!file.existsSync()) {
+        deleteLastPatchedApp();
+        _prefs.remove('lastPatchedApp');
+      }
+    }
   }
 
   Future<bool> isAppUninstalled(PatchedApplication app) async {

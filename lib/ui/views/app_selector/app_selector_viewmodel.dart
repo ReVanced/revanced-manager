@@ -13,6 +13,7 @@ import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
+import 'package:revanced_manager/utils/about_info.dart';
 import 'package:revanced_manager/utils/check_for_supported_patch.dart';
 import 'package:stacked/stacked.dart';
 
@@ -74,11 +75,14 @@ class AppSelectorViewModel extends BaseViewModel {
     required String packageName,
   }) async {
     final String suggestedVersion = getSuggestedVersion(packageName);
+    final String architecture = await AboutInfo.getInfo().then((info) {
+      return info['supportedArch'][0];
+    });
 
     if (suggestedVersion.isNotEmpty) {
-      await openDefaultBrowser('$packageName apk version $suggestedVersion');
+      await openDefaultBrowser('$packageName apk version $suggestedVersion $architecture');
     } else {
-      await openDefaultBrowser('$packageName apk');
+      await openDefaultBrowser('$packageName apk $architecture');
     }
   }
 
@@ -178,7 +182,6 @@ class AppSelectorViewModel extends BaseViewModel {
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
-          
         ),
         actions: [
           FilledButton(

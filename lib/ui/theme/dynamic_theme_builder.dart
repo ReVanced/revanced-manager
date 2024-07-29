@@ -24,12 +24,24 @@ class DynamicThemeBuilder extends StatefulWidget {
 
 class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
     with WidgetsBindingObserver {
-  Brightness brightness = PlatformDispatcher.instance.platformBrightness;
+  late Brightness brightness;
 
   @override
   void initState() {
     super.initState();
+    brightness = PlatformDispatcher.instance.platformBrightness;
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      final systemBrightness = PlatformDispatcher.instance.platformBrightness;
+      if (brightness != systemBrightness) {
+        brightness = systemBrightness;
+        setState(() {});
+      }
+    }
   }
 
   @override
@@ -39,7 +51,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
         final ThemeData lightDynamicTheme = ThemeData(
           useMaterial3: true,
           navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
+            labelTextStyle: WidgetStateProperty.all(
               GoogleFonts.roboto(
                 color: lightColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,
@@ -53,7 +65,7 @@ class _DynamicThemeBuilderState extends State<DynamicThemeBuilder>
           brightness: Brightness.dark,
           useMaterial3: true,
           navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
+            labelTextStyle: WidgetStateProperty.all(
               GoogleFonts.roboto(
                 color: darkColorScheme?.onSurface,
                 fontWeight: FontWeight.w500,

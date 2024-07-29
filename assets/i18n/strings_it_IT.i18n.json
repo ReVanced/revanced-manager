@@ -4,14 +4,10 @@
   "dismissButton": "Chiudi",
   "quitButton": "Esci",
   "updateButton": "Aggiorna",
-  "enabledLabel": "Abilitato",
-  "disabledLabel": "Disabilitato",
-  "installed": "Installata: ${version}",
   "suggested": "Consigliata: ${version}",
   "yesButton": "Si",
   "noButton": "No",
   "warning": "Attenzione",
-  "options": "Opzioni",
   "notice": "Avviso",
   "noShowAgain": "Non mostrare più",
   "add": "Aggiungi",
@@ -27,12 +23,9 @@
     "refreshSuccess": "Ricaricato con successo",
     "widgetTitle": "Dashboard",
     "updatesSubtitle": "Aggiornamenti",
-    "patchedSubtitle": "Applicazioni patchate",
-    "changeLaterSubtitle": "È possibile modificare questa impostazione nelle impostazioni in un secondo momento.",
-    "noUpdates": "Nessun aggiornamento disponibile",
-    "WIP": "Lavori in corso...",
+    "changeLaterSubtitle": "Questo sarà modificabile nelle impostazioni in un secondo momento.",
     "noInstallations": "Nessuna applicazione patchata è stata installata",
-    "installUpdate": "Proseguire ad installare l'aggiornamento?",
+    "installUpdate": "Proseguire con l'installazione dell'aggiornamento?",
     "updateSheetTitle": "Aggiorna ReVanced Manager",
     "updateDialogTitle": "Nuovo aggiornamento disponibile",
     "updatePatchesSheetTitle": "Aggiorna le patch ReVanced",
@@ -41,32 +34,23 @@
     "downloadConsentDialogTitle": "Scaricare i file necessari?",
     "downloadConsentDialogText": "ReVanced Manager deve scaricare i file necessari per funzionare correttamente.",
     "downloadConsentDialogText2": "Questo ti collegherà a ${url}.",
-    "checkUpdateDialogTitle": "Cercare aggiornamenti?",
-    "checkUpdateDialogText": "Vuoi che ReVanced Manager verifichi automaticamente la presenza di aggiornamenti?",
-    "notificationTitle": "Aggiornamento scaricato",
-    "notificationText": "Tocca per installare l'aggiornamento",
     "downloadingMessage": "Download dell'aggiornamento...",
     "downloadedMessage": "Aggiornamento scaricato",
     "installingMessage": "Installazione dell'aggiornamento...",
     "errorDownloadMessage": "Impossibile scaricare l'aggiornamento",
     "errorInstallMessage": "Impossibile installare l'aggiornamento",
-    "noConnection": "Nessuna connessione ad internet",
-    "updatesDisabled": "L'aggiornamento di un'app patchata è attualmente disabilitato. Applica nuovamente la patch."
+    "noConnection": "Nessuna connessione ad internet"
   },
   "applicationItem": {
     "infoButton": "Info"
   },
   "latestCommitCard": {
     "loadingLabel": "Caricamento...",
-    "timeagoLabel": "${time} fa",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Aggiorna Manager"
+    "timeagoLabel": "${time} fa"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
-    "patchButton": "Patcha",
-    "armv7WarningDialogText": "Il patching sui dispositivi ARMv7 non è ancora supportato e potrebbe fallire. Continuare comunque?",
+    "patchButton": "Patch",
     "removedPatchesWarningDialogText": "Le seguenti patch sono state rimosse dall'ultima volta che le hai usate.\n\n${patches}\n\nContinuare comunque?",
     "requiredOptionDialogText": "Alcune opzioni di patch devono essere impostate."
   },
@@ -75,8 +59,6 @@
     "widgetTitleSelected": "App selezionata",
     "widgetSubtitle": "Nessuna app selezionata",
     "noAppsLabel": "Nessuna applicazione trovata",
-    "currentVersion": "Attuale",
-    "suggestedVersion": "Consigliata",
     "anyVersion": "Qualsiasi versione"
   },
   "patchSelectorCard": {
@@ -93,7 +75,7 @@
     "viewTitle": "Seleziona un'app",
     "searchBarHint": "Cerca app",
     "storageButton": "Memoria interna",
-    "selectFromStorageButton": "Seleziona dalla memoria",
+    "selectFromStorageButton": "Seleziona dalla memoria interna",
     "errorMessage": "Impossibile utilizzare l'applicazione selezionata",
     "downloadToast": "La funzione di Download non è ancora disponibile",
     "requireSuggestedAppVersionDialogText": "La versione dell'app selezionata non corrisponde a quella suggerita, il che può causare problemi imprevisti. Si prega di utilizzare la versione suggerita.\n\nVersione selezionata: ${selected}\nVersione suggerita: ${suggested}\n\nPer continuare comunque, disattiva \"Richiedi versione consigliata dell'app\" nelle impostazioni.",
@@ -118,16 +100,11 @@
   },
   "patchOptionsView": {
     "customValue": "Valore personalizzato",
-    "resetOptionsTooltip": "Ripristina opzioni patch",
     "viewTitle": "Opzioni patch",
     "saveOptions": "Salva",
-    "addOptions": "Aggiungi opzioni",
-    "deselectPatch": "Deseleziona patch",
     "tooltip": "Più opzioni di input",
     "selectFilePath": "Seleziona percorso file",
     "selectFolder": "Seleziona cartella",
-    "selectOption": "Seleziona opzione",
-    "requiredOption": "Questa opzione è richiesta",
     "unsupportedOption": "Questa opzione non è supportata",
     "requiredOptionNull": "È necessario impostare le seguenti opzioni:\n\n${options}"
   },
@@ -139,7 +116,6 @@
     "patchesChangeWarningDialogButton": "Utilizza la selezione predefinita"
   },
   "installerView": {
-    "widgetTitle": "Installer",
     "installType": "Seleziona il tipo di installazione",
     "installTypeDescription": "Seleziona il tipo di installazione con cui continuare.",
     "installButton": "Installa",
@@ -148,7 +124,6 @@
     "warning": "Disabilita gli aggiornamenti automatici per l'app patchata per evitare problemi.",
     "pressBackAgain": "Premi ancora indietro per annullare",
     "openButton": "Apri",
-    "shareButton": "Condividi file",
     "notificationTitle": "ReVanced Manager è in fase di patch",
     "notificationText": "Tocca per tornare all'installer",
     "exportApkButtonTooltip": "Esporta APK patchato",
@@ -173,7 +148,6 @@
     "dynamicThemeHint": "Goditi un'esperienza più in armonia con il tuo dispositivo",
     "languageLabel": "Lingua",
     "languageUpdated": "Lingua aggiornata",
-    "englishOption": "Inglese",
     "sourcesLabel": "Sorgenti alternative",
     "sourcesLabelHint": "Configura fonti alternative per ReVanced Patches e ReVanced Integrations",
     "sourcesIntegrationsLabel": "Sorgente Integrazioni",
@@ -254,6 +228,7 @@
   "appInfoView": {
     "widgetTitle": "Info app",
     "openButton": "Apri",
+    "installButton": "Installa",
     "uninstallButton": "Disinstalla",
     "unmountButton": "Smonta",
     "rootDialogTitle": "Errore",
