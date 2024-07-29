@@ -4,7 +4,7 @@ homepage: https://github.com/ReVanced/revanced-manager
 
 publish_to: 'none'
 
-version: 1.21.0+101800026
+version: 1.21.1-dev.1+101800027
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -23,7 +23,6 @@ dependencies:
   dynamic_color: ^1.7.0
   dynamic_themes: ^1.1.0
   expandable: ^5.0.1
-  file_picker: ^8.0.3
   flutter:
     sdk: flutter
   flutter_background:

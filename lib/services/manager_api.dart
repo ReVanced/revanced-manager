@@ -38,8 +38,6 @@ class ManagerAPI {
   bool releaseBuild = false;
   bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
-  bool isScopedStorageAvailable = false;
-  int sdkVersion = 0;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
@@ -57,13 +55,8 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
-    if (sdkVersion == 0) {
-      sdkVersion = await getSdkVersion();
-    }
     isDynamicThemeAvailable =
-        sdkVersion >= 31; // ANDROID_12_SDK_VERSION = 31
-    isScopedStorageAvailable =
-        sdkVersion >= 30; // ANDROID_11_SDK_VERSION = 30
+        (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
     if (kReleaseMode) {
