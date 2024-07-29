@@ -57,8 +57,8 @@ import app.revanced.manager.R
 import app.revanced.manager.patcher.patch.Option
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.SafeguardDialog
 import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
@@ -91,6 +91,21 @@ fun PatchesSelectorScreen(
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val showPatchButton by remember {
         derivedStateOf { vm.selectionIsValid(bundles) }
+    }
+
+    val availablePatchCount by remember {
+        derivedStateOf {
+            bundles.sumOf { it.patchCount }
+        }
+    }
+
+    val defaultPatchSelectionCount by vm.defaultSelectionCount
+        .collectAsStateWithLifecycle(initialValue = 0)
+
+    val selectedPatchCount by remember {
+        derivedStateOf {
+            vm.customPatchSelection?.values?.sumOf { it.size } ?: defaultPatchSelectionCount
+        }
     }
 
     val patchLazyListStates = remember(bundles) { List(bundles.size) { LazyListState() } }
@@ -265,7 +280,7 @@ fun PatchesSelectorScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.select_patches),
+                title = stringResource(R.string.patches_selected, selectedPatchCount, availablePatchCount),
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(onClick = vm::reset) {

@@ -9,7 +9,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
     <string name="select_app">Select an app</string>
-    <string name="select_patches">Select patches</string>
+    <string name="patches_selected">%1$d/%2$d selected</string>
 
     <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
@@ -30,7 +30,7 @@
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
-    <string name="selected_app_meta">%1$s • %2$d available patches</string>
+    <string name="selected_app_meta">%1$s</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patch selection and options</string>
