@@ -47,12 +47,6 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Remove empty values from JSON
-        run: |
-          cd assets/i18n
-          sudo chmod 777 *.json
-          dart nuke.dart >> $GITHUB_STEP_SUMMARY
-
       - name: Generate Translation Strings
         run: |
           dart pub get
@@ -67,7 +61,6 @@ jobs:
           cd assets/i18n
           sudo chmod 777 *.json
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
-          cd ../..
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
