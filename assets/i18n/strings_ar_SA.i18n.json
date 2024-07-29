@@ -40,40 +40,27 @@
     "installingMessage": "جارٍ تثبيت التحديث...",
     "errorDownloadMessage": "تعذر تنزيل التحديث",
     "errorInstallMessage": "تعذّر تثبيت التحديث",
-    "noConnection": "لا يوجد اتصال بالإنترنت",
-    "noUpdates": "لا توجد تحديثات متاحة",
-    "WIP": "العمل قيد التنفيذ...",
-    "checkUpdateDialogTitle": "التحقق من توفر تحديثات؟",
-    "checkUpdateDialogText": "هل تريد أن يقوم مدير ReVanced بالتحقق من توفر تحديثات تلقائيًا؟",
-    "notificationTitle": "تم تنزيل التحديث",
-    "notificationText": "اضغط لتثبيت التحديث",
-    "updatesDisabled": "تحديث تطبيق تم تعديله معطل حاليًا. أعد تعديل التطبيق مرة أخرى."
+    "noConnection": "لا يوجد اتصال بالإنترنت"
   },
   "applicationItem": {
     "infoButton": "معلومات"
   },
   "latestCommitCard": {
     "loadingLabel": "جارٍ التحميل...",
-    "timeagoLabel": "منذ ${time}",
-    "patcherLabel": "المعدل: ",
-    "managerLabel": "المدير: ",
-    "updateButton": "تحديث المدير"
+    "timeagoLabel": "منذ ${time}"
   },
   "patcherView": {
     "widgetTitle": "المُعَّدِّل",
     "patchButton": "تعديل",
     "removedPatchesWarningDialogText": "تم إزالة التعديلات التالية منذ آخر مرة استخدمتها فيها.\n\n${patches}\n\nتابع على أي حال؟",
-    "requiredOptionDialogText": "يجب ضبط بعض خيارات التعديل.",
-    "armv7WarningDialogText": "التعديل على أجهزة ARMv7 غير مدعوم حتى الآن وقد يفشل. هل تريد المتابعة على أي حال؟"
+    "requiredOptionDialogText": "يجب ضبط بعض خيارات التعديل."
   },
   "appSelectorCard": {
     "widgetTitle": "حدد تطبيق",
     "widgetTitleSelected": "التطبيق المحدد",
     "widgetSubtitle": "لم يتم تحديد أي تطبيق",
     "noAppsLabel": "لم يتم العثور على تطبيقات",
-    "anyVersion": "أي إصدار",
-    "currentVersion": "الحالي",
-    "suggestedVersion": "المقترح"
+    "anyVersion": "أي إصدار"
   },
   "patchSelectorCard": {
     "widgetTitle": "حدد التعديلات",
@@ -124,10 +111,7 @@
     "selectFolder": "تحديد مجلد",
     "requiredOption": "إعداد هذا الخيار مطلوب",
     "unsupportedOption": "هذا الخيار غير مدعوم",
-    "requiredOptionNull": "يجب تعيين الخيارات التالية:\n\n${options}",
-    "resetOptionsTooltip": "إعادة تعيين خيارات التعديل",
-    "addOptions": "إضافة خيارات",
-    "selectOption": "تحديد خيار"
+    "requiredOptionNull": "يجب تعيين الخيارات التالية:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "قد يؤدي تحديد هذا التعديل إلى حدوث أخطاء في عملية التعديل.\n\nإصدار التطبيق: ${packageVersion}\nالإصدارات المدعومة حاليًا:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "تصدير السجل",
     "screenshotDetected": "تم اكتشاف لقطة شاشة. إذا كنت تحاول مشاركة السجل، فيرجى مشاركة نسخة نصية بدلاً من ذلك.\n\nهل تريد نسخ السجل إلى الحافظة؟",
     "copiedToClipboard": "تم نسخ السجل إلى الحافظة",
-    "noExit": "المثبت لا يزال قيد التشغيل، لا يمكن الخروج...",
-    "widgetTitle": "المثبت",
-    "shareButton": "شارك مِلَفّ"
+    "noExit": "المثبت لا يزال قيد التشغيل، لا يمكن الخروج..."
   },
   "settingsView": {
     "widgetTitle": "الإعدادات",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "كلمة مرور مخزن المفاتيح",
     "selectKeystorePasswordHint": "حدد كلمة مرور تخزين المفاتيح المستخدمة للتوقيع على التطبيقات",
     "jsonSelectorErrorMessage": "تعذر استخدام مِلَفّ JSON المحدد",
-    "keystoreSelectorErrorMessage": "غير قادر على استخدام ملف تخزين المفاتيح المحدد",
-    "englishOption": "English"
+    "keystoreSelectorErrorMessage": "غير قادر على استخدام ملف تخزين المفاتيح المحدد"
   },
   "appInfoView": {
     "widgetTitle": "معلومات التطبيق",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "فشل التثبيت بسبب مشكلة التحقق.\n\nاضبط إعدادات الأمان وحاول مرة أخرى.",
     "install_failed_version_downgrade_description": "فشل التثبيت نظرًا لكون التطبيق المعدل إصدارًا أقل من التطبيق المثبت.\n\nهل تريد إلغاء تثبيت التطبيق والمحاولة مرة أخرى؟",
     "status_unknown_description": "فشل التثبيت لسبب غير معروف. الرجاء المحاولة مرة أخرى."
-  },
-  "enabledLabel": "مفعّل",
-  "disabledLabel": "معطّل",
-  "installed": "المثبّت: ${version}",
-  "options": "الخيارات"
+  }
 }

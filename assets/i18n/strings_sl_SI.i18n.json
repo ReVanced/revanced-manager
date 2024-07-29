@@ -23,8 +23,7 @@
     "installingMessage": "Nameščam posodobitev ...",
     "errorDownloadMessage": "Posodobitve ni bilo mogoče prenesti",
     "errorInstallMessage": "Posodobitve ni bilo mogoče namestiti",
-    "noConnection": "Ni internetne povezave",
-    "updatesDisabled": "Posodabljanje popravljene aplikacije je trenutno onemogočeno. Ponovno popravite aplikacijo."
+    "noConnection": "Ni internetne povezave"
   },
   "applicationItem": {
     "infoButton": "Informacije"
@@ -38,9 +37,7 @@
     "patchButton": "Popravi"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Ne najdem nobenih aplikacij",
-    "currentVersion": "Trenutno",
-    "suggestedVersion": "Predlagano"
+    "noAppsLabel": "Ne najdem nobenih aplikacij"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izberi popravke",
@@ -67,7 +64,6 @@
     "noneTooltip": "Razveljavi izbiro vseh popravkov",
     "noPatchesFound": "Za izbrano aplikacijo ne najdem popravkov"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "Izbira tega popravka lahko privede do napak pri popravljanju.\n\nRazličica aplikacije: ${packageVersion}\nPodprte različice:\n${supportedVersions}"
   },
@@ -126,7 +122,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Prispevali so"
-  },
-  "installErrorDialog": {},
-  "installed": "Trenutna različica: ${version}"
+  }
 }

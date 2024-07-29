@@ -22,10 +22,8 @@
     "installingMessage": "Värskenduse installimine...",
     "errorDownloadMessage": "Värskenduse alla laadimine nurjus",
     "errorInstallMessage": "Värskenduse installimine nurjus",
-    "noConnection": "Internetiühendus puudub",
-    "updatesDisabled": "Parandatud rakenduste värskendamine on hetkel keelatud. Paranda rakendus uuesti."
+    "noConnection": "Internetiühendus puudub"
   },
-  "applicationItem": {},
   "latestCommitCard": {
     "loadingLabel": "Laadimine...",
     "timeagoLabel": "${time} tagasi"
@@ -35,9 +33,7 @@
     "patchButton": "Parandus"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Ühtegi rakendust ei tuvastatud",
-    "currentVersion": "Praegune",
-    "suggestedVersion": "Soovitatud"
+    "noAppsLabel": "Ühtegi rakendust ei tuvastatud"
   },
   "patchSelectorCard": {
     "widgetTitle": "Valige parandused",
@@ -60,9 +56,6 @@
     "viewTitle": "Valige parandused",
     "searchBarHint": "Otsi parandustest"
   },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "exportSectionTitle": "Import & eksport",
     "aboutLabel": "Teave",
@@ -95,7 +88,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Panustajad"
-  },
-  "installErrorDialog": {},
-  "installed": "Paigaldatud: ${version}"
+  }
 }

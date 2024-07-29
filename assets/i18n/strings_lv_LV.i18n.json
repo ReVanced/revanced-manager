@@ -28,8 +28,7 @@
     "installingMessage": "Instalē atjauninājumu...",
     "errorDownloadMessage": "Nav iespējams lejupielādēt atjauninājumu",
     "errorInstallMessage": "Nav iespējams instalēt atjauninājumu",
-    "noConnection": "Nav interneta savienojuma",
-    "updatesDisabled": "Pačoto aplikāciju atjaunināšana pašlaik ir izslēgta. Pačo aplikāciju velreiz."
+    "noConnection": "Nav interneta savienojuma"
   },
   "applicationItem": {
     "infoButton": "Informācija"
@@ -43,9 +42,7 @@
     "patchButton": "Pačot"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Netika atrasta neviena aplikācija",
-    "currentVersion": "Pašreizējā",
-    "suggestedVersion": "Ieteikums"
+    "noAppsLabel": "Netika atrasta neviena aplikācija"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izvēlies pačus",
@@ -137,8 +134,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Autori"
-  },
-  "installErrorDialog": {},
-  "installed": "Uzstādītā versija: ${version}",
-  "options": "Iestatījumi"
+  }
 }

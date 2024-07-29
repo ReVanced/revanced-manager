@@ -40,40 +40,27 @@
     "installingMessage": "Instalando actualización...",
     "errorDownloadMessage": "No se pudo descargar la actualización",
     "errorInstallMessage": "Error al instalar la actualización",
-    "noConnection": "Sin conexión a internet",
-    "noUpdates": "No hay actualizaciones disponibles",
-    "WIP": "Desarrollo en progreso...",
-    "checkUpdateDialogTitle": "¿Comprobar actualizaciones?",
-    "checkUpdateDialogText": "¿Quieres que ReVanced Manager compruebe si hay actualizaciones automáticamente?",
-    "notificationTitle": "Actualización descargada",
-    "notificationText": "Toca para instalar la actualización",
-    "updatesDisabled": "Por ahora no se puede actualizar o parchear la app. Intenta re-parchear de nuevo."
+    "noConnection": "Sin conexión a internet"
   },
   "applicationItem": {
     "infoButton": "Información"
   },
   "latestCommitCard": {
     "loadingLabel": "Cargando...",
-    "timeagoLabel": "Hace ${time}",
-    "patcherLabel": "Parcheador: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Actualizar ReVanced Manager"
+    "timeagoLabel": "Hace ${time}"
   },
   "patcherView": {
     "widgetTitle": "Parcheador",
     "patchButton": "Parchear",
     "removedPatchesWarningDialogText": "Los siguientes parches fueron removidos desde la última vez que los usaste.\n\n${patches}\n\n¿Quieres continuar de todas formas?",
-    "requiredOptionDialogText": "Algunas opciones de parche tienen que ser establecidas.",
-    "armv7WarningDialogText": "El parcheo en dispositivos ARMv7 aún no está soportado y podría fallar. ¿Quieres continuar de todas formas?"
+    "requiredOptionDialogText": "Algunas opciones de parche tienen que ser establecidas."
   },
   "appSelectorCard": {
     "widgetTitle": "Seleccionar una aplicación",
     "widgetTitleSelected": "Aplicación seleccionada",
     "widgetSubtitle": "No se seleccionó ninguna aplicación",
     "noAppsLabel": "No se encontraron aplicaciones",
-    "anyVersion": "Cualquier versión",
-    "currentVersion": "Versión actual",
-    "suggestedVersion": "Version sugerida"
+    "anyVersion": "Cualquier versión"
   },
   "patchSelectorCard": {
     "widgetTitle": "Seleccionar parches",
@@ -124,10 +111,7 @@
     "selectFolder": "Selecciona la carpeta",
     "requiredOption": "La configuración de esta opción es necesaria",
     "unsupportedOption": "Esta opción no está disponible",
-    "requiredOptionNull": "Hay que configurar las siguientes opciones:\n\n${options}",
-    "resetOptionsTooltip": "Restablecer las opciones de parche",
-    "addOptions": "Añadir opciones",
-    "selectOption": "Seleccionar opción"
+    "requiredOptionNull": "Hay que configurar las siguientes opciones:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Seleccionar este parche puede causar errores.\n\nVersión de la app: ${packageVersion}\nVersiones compatibles:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Exportar registro",
     "screenshotDetected": "Se ha detectado una captura de pantalla. Si está intentando compartir el registro, por favor comparta una copia de texto en su lugar.\n\n¿Copiar registro al portapapeles?",
     "copiedToClipboard": "Registro copiado en el portapapeles",
-    "noExit": "El instalador se está ejecutando, no puedes salir...",
-    "widgetTitle": "Instalador",
-    "shareButton": "Compartir archivo"
+    "noExit": "El instalador se está ejecutando, no puedes salir..."
   },
   "settingsView": {
     "widgetTitle": "Ajustes",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Contraseña del repositorio de claves",
     "selectKeystorePasswordHint": "Introduce la contraseña del repositorio de claves utilizado para firmar aplicaciones",
     "jsonSelectorErrorMessage": "No se puede utilizar el archivo JSON seleccionado",
-    "keystoreSelectorErrorMessage": "No se puede utilizar el archivo de repositorio de claves seleccionado",
-    "englishOption": "Inglés"
+    "keystoreSelectorErrorMessage": "No se puede utilizar el archivo de repositorio de claves seleccionado"
   },
   "appInfoView": {
     "widgetTitle": "Informacion de la aplicación",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "La instalación falló debido a un problema de verificación.\n\nAjusta la configuración de seguridad e inténtalo de nuevo.",
     "install_failed_version_downgrade_description": "La instalación falló debido a que la aplicación parcheada es una versión inferior a la instalada.\n\n¿Quieres desinstalar la aplicación e intentarlo de nuevo?",
     "status_unknown_description": "La instalación falló debido a una razón desconocida. Por favor, inténtalo de nuevo."
-  },
-  "enabledLabel": "Activado",
-  "disabledLabel": "Desactivado",
-  "installed": "Instalada: ${version}",
-  "options": "Opciones"
+  }
 }

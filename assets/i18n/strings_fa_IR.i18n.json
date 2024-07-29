@@ -43,9 +43,7 @@
     "requiredOptionDialogText": "بعضی از تنظیمات پچ باید انتخاب شود."
   },
   "appSelectorCard": {
-    "noAppsLabel": "هیچ برنامه ای یافت نشد",
-    "currentVersion": "فعلی",
-    "suggestedVersion": "پیشنهادی"
+    "noAppsLabel": "هیچ برنامه ای یافت نشد"
   },
   "patchSelectorCard": {
     "widgetTitle": "پچ ها را انتخاب کنید",
@@ -73,14 +71,5 @@
     "doneButton": "انجام شد",
     "defaultTooltip": "تمام پچ های پیشفرض انتخاب شود",
     "noneTooltip": "حذف انتخاب همه پچ ها"
-  },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {},
-  "installed": "نسخه نصب شده:${version}",
-  "options": "گزینه ها"
+  }
 }

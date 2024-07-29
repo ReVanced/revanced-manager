@@ -40,40 +40,27 @@
     "installingMessage": "正在安装更新…",
     "errorDownloadMessage": "无法下载更新",
     "errorInstallMessage": "无法安装更新",
-    "noConnection": "未连接网络",
-    "noUpdates": "暂无更新",
-    "WIP": "正在执行操作…",
-    "checkUpdateDialogTitle": "要检查更新吗？",
-    "checkUpdateDialogText": "您想要ReVanced Manager自动检查更新吗？",
-    "notificationTitle": "更新下载完成！",
-    "notificationText": "点击安装更新",
-    "updatesDisabled": "已禁用更新已修补的应用。请重新修补此应用。"
+    "noConnection": "未连接网络"
   },
   "applicationItem": {
     "infoButton": "信息"
   },
   "latestCommitCard": {
     "loadingLabel": "正在加载…",
-    "timeagoLabel": "${time} 前",
-    "patcherLabel": "补丁程序： ",
-    "managerLabel": "管理器： ",
-    "updateButton": "更新管理器"
+    "timeagoLabel": "${time} 前"
   },
   "patcherView": {
     "widgetTitle": "修补器",
     "patchButton": "修补",
     "removedPatchesWarningDialogText": "自您上次使用以下补丁以来，它们已被删除。\n\n${patches}\n\n还是继续吗？",
-    "requiredOptionDialogText": "某些补丁选项必须设置。",
-    "armv7WarningDialogText": "尚不支持在 ARMv7 设备上进行修补并且可能会失败。仍要继续吗？"
+    "requiredOptionDialogText": "某些补丁选项必须设置。"
   },
   "appSelectorCard": {
     "widgetTitle": "选择一个应用",
     "widgetTitleSelected": "已选择的应用",
     "widgetSubtitle": "未选择任何应用",
     "noAppsLabel": "未发现应用程序",
-    "anyVersion": "所有版本",
-    "currentVersion": "当前",
-    "suggestedVersion": "建议"
+    "anyVersion": "所有版本"
   },
   "patchSelectorCard": {
     "widgetTitle": "选择补丁",
@@ -124,10 +111,7 @@
     "selectFolder": "选择文件夹",
     "requiredOption": "设置此选项是必需的",
     "unsupportedOption": "不支持此选项",
-    "requiredOptionNull": "必须设置以下选项：\n\n${options}",
-    "resetOptionsTooltip": "重置补丁选项",
-    "addOptions": "添加选项",
-    "selectOption": "选择选项"
+    "requiredOptionNull": "必须设置以下选项：\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "选择此补丁可能导致修补错误。\n\n应用版本： ${packageVersion}\n当前支持的版本：\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "导出日志",
     "screenshotDetected": "已检测到截图。如果您要共享日志，请共享文本副本。\n\n将日志复制到剪贴板？",
     "copiedToClipboard": "复制日志至剪贴板",
-    "noExit": "安装程序仍在运行，无法退出...",
-    "widgetTitle": "安装器",
-    "shareButton": "分享文件"
+    "noExit": "安装程序仍在运行，无法退出..."
   },
   "settingsView": {
     "widgetTitle": "设置",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "密钥存储密码",
     "selectKeystorePasswordHint": "选择用于签署应用程序的密钥库密码",
     "jsonSelectorErrorMessage": "无法使用所选的 json 文件",
-    "keystoreSelectorErrorMessage": "无法使用选定的密钥存储文件",
-    "englishOption": "英语"
+    "keystoreSelectorErrorMessage": "无法使用选定的密钥存储文件"
   },
   "appInfoView": {
     "widgetTitle": "应用信息",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "由于验证问题，安装失败。\n\n请调整安全设置并重试。",
     "install_failed_version_downgrade_description": "由于修补的应用程序版本低于已安装的应用程序，安装失败。\n\n卸载该应用程序并重试？",
     "status_unknown_description": "由于未知原因，安装失败。请重试。"
-  },
-  "enabledLabel": "已启用",
-  "disabledLabel": "已禁用",
-  "installed": "已安装版本：${version}",
-  "options": "选项"
+  }
 }

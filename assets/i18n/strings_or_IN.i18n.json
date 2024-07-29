@@ -19,18 +19,9 @@
   "patcherView": {
     "widgetTitle": "ରଫୁକାର"
   },
-  "appSelectorCard": {
-    "currentVersion": "ଚଳିତ"
-  },
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
   "patchesSelectorView": {
     "doneButton": "ହେଲା"
   },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "widgetTitle": "ସେଟିଂ",
     "appearanceSectionTitle": "ରୂପ",
@@ -46,8 +37,5 @@
     "selectApiURL": "API URL",
     "aboutLabel": "ସମ୍ବନ୍ଧରେ",
     "snackbarMessage": "କ୍ଲିପବୋର୍ଡରେ କପି କରିନିଆଗଲା"
-  },
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {}
+  }
 }

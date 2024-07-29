@@ -40,40 +40,27 @@
     "installingMessage": "Yeniləmə quraşdırılır...",
     "errorDownloadMessage": "Güncəlləmə endirilə bilmir",
     "errorInstallMessage": "Güncəlləmə quraşdırıla bilmir",
-    "noConnection": "İnternet bağlantısı yoxdur",
-    "noUpdates": "Güncəlləmə mövcud deyil",
-    "WIP": "Proses davam edir...",
-    "checkUpdateDialogTitle": "Güncəlləmələr yoxlanılsın?",
-    "checkUpdateDialogText": "\"ReVanced Meneceri\"nin güncəlləmələri avto-yoxlamasını istəyirsiniz?",
-    "notificationTitle": "Güncəlləmə endirildi",
-    "notificationText": "Güncəlləməni quraşdırmaq üçün toxunun",
-    "updatesDisabled": "Yamaqlanmış bir tətbiqin güncəllənməsi hazırda sıradan çıxarılıb. Tətbiqi yenidən yamaqlayın."
+    "noConnection": "İnternet bağlantısı yoxdur"
   },
   "applicationItem": {
     "infoButton": "Məlumat"
   },
   "latestCommitCard": {
     "loadingLabel": "Yüklənir...",
-    "timeagoLabel": "${time} əvvəl",
-    "patcherLabel": "Yamaqlayıcı: ",
-    "managerLabel": "Menecer: ",
-    "updateButton": "Güncəlləmə meneceri"
+    "timeagoLabel": "${time} əvvəl"
   },
   "patcherView": {
     "widgetTitle": "Yamaqlayıcı",
     "patchButton": "Yamaqla",
     "removedPatchesWarningDialogText": "Aşağıdakı yamaqlar son istifadədən bu yana silindi.\n\n${patches}\n\nYenə də davam edilsin?",
-    "requiredOptionDialogText": "Bəzi yamaq seçimləri ayarlanmalıdır.",
-    "armv7WarningDialogText": "ARMv7 cihazlarında yamaqlama hələ dəstəklənmir və xəta verə bilər. Yenə də davam edilsin?"
+    "requiredOptionDialogText": "Bəzi yamaq seçimləri ayarlanmalıdır."
   },
   "appSelectorCard": {
     "widgetTitle": "Bir tətbiq seçin",
     "widgetTitleSelected": "Seçilmiş tətbiq",
     "widgetSubtitle": "Heç bir tətbiq seçilmədi",
     "noAppsLabel": "Heç bir tətbiq tapılmadı",
-    "anyVersion": "Bütün versiyalar",
-    "currentVersion": "Hazırkı",
-    "suggestedVersion": "Təklif edilən"
+    "anyVersion": "Bütün versiyalar"
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaqları seçin",
@@ -121,11 +108,7 @@
     "selectFolder": "Qovluq seç",
     "requiredOption": "Bu seçim tələb olunur",
     "unsupportedOption": "Bu seçim dəstəklənmir",
-    "requiredOptionNull": "Aşağıdakı seçimlər ayarlanmalıdır:\n\n${options}",
-    "resetOptionsTooltip": "Yamaq seçimlərini sıfırla",
-    "addOptions": "Seçim əlavə et",
-    "deselectPatch": "Yamağı seçmə",
-    "selectOption": "Seçim et"
+    "requiredOptionNull": "Aşağıdakı seçimlər ayarlanmalıdır:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Bu yamağı seçmək, yamaqlama xətalarına səbəb ola bilər.\n\nTətbiq versiyası: ${packageVersion} \nDəstəklənən versiyalar:\n${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Jurnalı xaricə köçür",
     "screenshotDetected": "Ekran şəkli silindi. Jurnalı paylaşmağa çalışırsınızsa, lütfən bunun əvəzinə mətnin kopyasını paylaşın.\n\nJurnal lövhəyə kopyalansın?",
     "copiedToClipboard": "Jurnal lövhəyə kopyalandı",
-    "noExit": "Quraşdırıcı hələ də işləyir, çıxış edilə bilməz...",
-    "widgetTitle": "Quraşdırıcı",
-    "shareButton": "Faylı paylaş"
+    "noExit": "Quraşdırıcı hələ də işləyir, çıxış edilə bilməz..."
   },
   "settingsView": {
     "widgetTitle": "Ayarlar",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Keystore parolu",
     "selectKeystorePasswordHint": "Tətbiqləri imzalamaq üçün istifadə olunan keystore-u seçin",
     "jsonSelectorErrorMessage": "Seçilmiş JSON faylı istifadə edilə bilmir",
-    "keystoreSelectorErrorMessage": "Seçilmiş keystore faylı istifadə edilə bilmir",
-    "englishOption": "İngiliscə"
+    "keystoreSelectorErrorMessage": "Seçilmiş keystore faylı istifadə edilə bilmir"
   },
   "appInfoView": {
     "widgetTitle": "Tətbiq məlumatı",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "Doğrulama probleminə görə quraşdırma uğursuz oldu.\n\nGüvənlik ayarlarınızı nizamlayıb yenidən sınayın.",
     "install_failed_version_downgrade_description": "Yamaqlanmış tətbiq, quraşdırılmış tətbiqdən daha aşağı versiyaya sahib olduğu üçün quraşdırma uğursuz oldu.\n\nTətbiqi silib yenidən sınayırsınız?",
     "status_unknown_description": "Bilinməyən bir səbəbə görə quraşdırma uğursuz oldu. Lütfən yenidən sınayın."
-  },
-  "enabledLabel": "Fəaldır",
-  "disabledLabel": "Sıradan çıxarıldı",
-  "installed": "Quraşdırılan: ${version}",
-  "options": "Seçimlər"
+  }
 }

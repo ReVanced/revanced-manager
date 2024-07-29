@@ -33,27 +33,6 @@
     "updateChangelogTitle": "O'zgarishlar",
     "updateDialogText": "${file} uchun yangilanish mavjud.\n\nHozirgi o'rnatilgan versiya: ${version}.",
     "downloadConsentDialogTitle": "Ba'zi fayllarni yuklab olish?",
-    "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak.",
-    "noUpdates": "Yangilanish mavjud emas",
-    "WIP": "Jarayonda..."
-  },
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {},
-  "enabledLabel": "Yoqilgan",
-  "disabledLabel": "O'chirilgan",
-  "installed": "O'rnatilgan versiya: ${version}",
-  "options": "Sozlamalar"
+    "downloadConsentDialogText": "ReVanced Manager ishlashi uchun ba'zi fayllarni yuklab olish kerak."
+  }
 }

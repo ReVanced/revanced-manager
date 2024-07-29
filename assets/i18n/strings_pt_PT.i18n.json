@@ -40,40 +40,27 @@
     "installingMessage": "A instalar atualização...",
     "errorDownloadMessage": "Não é possível transferir a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
-    "noConnection": "Sem ligação à Internet",
-    "noUpdates": "Nenhuma atualização disponível",
-    "WIP": "Trabalho em progresso...",
-    "checkUpdateDialogTitle": "Verificar por atualizações?",
-    "checkUpdateDialogText": "Queres que o ReVanced Manager procure por atualizações automaticamente?",
-    "notificationTitle": "Atualização transferida",
-    "notificationText": "Toque para instalar a atualização",
-    "updatesDisabled": "A atualização de um app patcheado está desativada no momento. Repatch o app de novo."
+    "noConnection": "Sem ligação à Internet"
   },
   "applicationItem": {
     "infoButton": "Informação"
   },
   "latestCommitCard": {
     "loadingLabel": "A carregar...",
-    "timeagoLabel": "${time} atrás",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Atualizar o Manager"
+    "timeagoLabel": "${time} atrás"
   },
   "patcherView": {
     "widgetTitle": "Modificador",
     "patchButton": "Modificar",
     "removedPatchesWarningDialogText": "As seguintes modificações foram removidas desde a última vez que as utilizaste.\n\n${patches}\n\nContinuar na mesma?",
-    "requiredOptionDialogText": "Algumas opções das Modificações precisam ser definidas.",
-    "armv7WarningDialogText": "Fazer modificações numa aplicação num dispositivo com processador ARMv7 ainda não é suportada e poderá falhar. Continuar na mesma?"
+    "requiredOptionDialogText": "Algumas opções das Modificações precisam ser definidas."
   },
   "appSelectorCard": {
     "widgetTitle": "Selecionar uma aplicação",
     "widgetTitleSelected": "Aplicação selecionada",
     "widgetSubtitle": "Nenhuma aplicação selecionada",
     "noAppsLabel": "Não foram encontradas aplicações",
-    "anyVersion": "Qualquer versão",
-    "currentVersion": "Atual",
-    "suggestedVersion": "Sugerida"
+    "anyVersion": "Qualquer versão"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecionar modificações",
@@ -124,10 +111,7 @@
     "selectFolder": "Selecionar pasta",
     "requiredOption": "Definir esta opção é necessário",
     "unsupportedOption": "Esta opção não é suportada",
-    "requiredOptionNull": "As seguintes opções devem ser definidas:\n\n${options}",
-    "resetOptionsTooltip": "Reiniciar as opções da modificação",
-    "addOptions": "Adicionar opções",
-    "selectOption": "Seleccionar opção"
+    "requiredOptionNull": "As seguintes opções devem ser definidas:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Selecionar esta modificação pode resultar em erros.\n\nVersão da aplicação: ${packageVersion}\nVersões suportadas:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Exportar registo",
     "screenshotDetected": "Foi detetada uma captura de ecrã. Se estiver a tentar partilhar o registo, partilhe antes uma cópia de texto.\n\nCopiar o registo para a área de transferência?",
     "copiedToClipboard": "Registo copiado para a área de transferência",
-    "noExit": "O instalador ainda está em execução, não é possível sair...",
-    "widgetTitle": "Instalador",
-    "shareButton": "Partilhar ficheiro"
+    "noExit": "O instalador ainda está em execução, não é possível sair..."
   },
   "settingsView": {
     "widgetTitle": "Definições",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Palavra-passe do armazenamento de chaves",
     "selectKeystorePasswordHint": "Selecionar a palavra-passe do armazenamento de chaves utilizada para assinar aplicações",
     "jsonSelectorErrorMessage": "Não é possível usar o arquivo JSON selecionado",
-    "keystoreSelectorErrorMessage": "Não é possível utilizar o ficheiro de armazenamento de chaves selecionado",
-    "englishOption": "Inglês"
+    "keystoreSelectorErrorMessage": "Não é possível utilizar o ficheiro de armazenamento de chaves selecionado"
   },
   "appInfoView": {
     "widgetTitle": "Informações da aplicação",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "A instalação falhou por problemas de verificação.\n\nAjusta as tuas definições de segurança e tenta novamente.",
     "install_failed_version_downgrade_description": "A instalação falhou porque o app patcheado era uma versão inferior ao aplicativo instalado.\n\nDesinstalar o app e tentar de novo?",
     "status_unknown_description": "A instalação falhou por razões desconhecidas. Por favor, tenta novamente."
-  },
-  "enabledLabel": "Ativado",
-  "disabledLabel": "Desativado",
-  "installed": "Instalada: ${version}",
-  "options": "Opções"
+  }
 }

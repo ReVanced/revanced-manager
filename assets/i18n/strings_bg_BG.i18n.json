@@ -40,40 +40,27 @@
     "installingMessage": "Инсталиране на актуализация...",
     "errorDownloadMessage": "Свалянето на актуализацията не беше успешно",
     "errorInstallMessage": "Инсталирането на актуализацията не беше успешно",
-    "noConnection": "Няма връзка с интернет",
-    "noUpdates": "Няма налични актуализации",
-    "WIP": "В процес на разработка...",
-    "checkUpdateDialogTitle": "Да се провери ли за актуализации?",
-    "checkUpdateDialogText": "Бихте ли желали ReVanced Manager автоматично да проверява за актуализации?",
-    "notificationTitle": "Актуализацията е изтеглена",
-    "notificationText": "Натиснете за да инсталирате актуализацията",
-    "updatesDisabled": "Актуализацията на модифицирани приложения в момента не работи. Модифицирайте приложението наново."
+    "noConnection": "Няма връзка с интернет"
   },
   "applicationItem": {
     "infoButton": "Информация"
   },
   "latestCommitCard": {
     "loadingLabel": "Зареждане...",
-    "timeagoLabel": "Преди ${time}",
-    "patcherLabel": "Модификатор: ",
-    "managerLabel": "Мениджър: ",
-    "updateButton": "Обнови ReVanced Manager"
+    "timeagoLabel": "Преди ${time}"
   },
   "patcherView": {
     "widgetTitle": "Модификатор",
     "patchButton": "Модифицирайте",
     "removedPatchesWarningDialogText": "Следните модификации са били премахнати след като са били употребени за последно от вас.\n\n${patches}\n\nПродължете въпреки това?",
-    "requiredOptionDialogText": "Опциите на някои модификации трябва да бъдат зададени.",
-    "armv7WarningDialogText": "Все още не се поддържат модификации за ARMv7 устройства. Продължете въпреки това?"
+    "requiredOptionDialogText": "Опциите на някои модификации трябва да бъдат зададени."
   },
   "appSelectorCard": {
     "widgetTitle": "Изберете приложение",
     "widgetTitleSelected": "Избрани приложения",
     "widgetSubtitle": "Няма избрано приложение",
     "noAppsLabel": "Няма намерени приложения",
-    "anyVersion": "Всички версии",
-    "currentVersion": "Текуща",
-    "suggestedVersion": "Препоръчана"
+    "anyVersion": "Всички версии"
   },
   "patchSelectorCard": {
     "widgetTitle": "Изберете модификации",
@@ -121,11 +108,7 @@
     "selectFolder": "Изберете папка",
     "requiredOption": "Тази опция е задължителна",
     "unsupportedOption": "Тази опция не се поддържа",
-    "requiredOptionNull": "Следните опции трябва да бъдат зададени:\n\n${options}",
-    "resetOptionsTooltip": "Нулиране опциите на модификациите",
-    "addOptions": "Добави опции",
-    "deselectPatch": "Отмяна на всички модификации",
-    "selectOption": "Изберете опция"
+    "requiredOptionNull": "Следните опции трябва да бъдат зададени:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Изборът на тази модификация може да доведе до грешки.\n\nВерсия: ${packageVersion}\nПоддържани версии: ${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Експорт на дневника",
     "screenshotDetected": "Беше направена снимка на екрана. Ако се опитвате да споделите дневника, моля направете го в текстов формат.\n\nДа се копира ли дневника в клипборда?",
     "copiedToClipboard": "Дневникът беше копиран в клипборда",
-    "noExit": "Инсталаторът все още работи, не може да излезе...",
-    "widgetTitle": "Инсталатор",
-    "shareButton": "Сподели файла"
+    "noExit": "Инсталаторът все още работи, не може да излезе..."
   },
   "settingsView": {
     "widgetTitle": "Настройки",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Парола за keystore-а",
     "selectKeystorePasswordHint": "Изберете парола за keystore-а, който се използва за подписване на приложенията",
     "jsonSelectorErrorMessage": "Избраният JSON файл не може да се изплозва",
-    "keystoreSelectorErrorMessage": "Избранията keystore файл не може да бъде използва",
-    "englishOption": "Английски"
+    "keystoreSelectorErrorMessage": "Избранията keystore файл не може да бъде използва"
   },
   "appInfoView": {
     "widgetTitle": "Информация за приложението",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "Инсталацията се провали поради проблем с проверката.\n\nПроменете настройките си за сигурност и опитайте отново.",
     "install_failed_version_downgrade_description": "Инсталацията се провали поради това, че модифицираното приложение е с по-ниска версия от инсталираното приложение.\n\nДеинсталирайте приложението и опитайте отново?",
     "status_unknown_description": "Инсталацията не е успешна поради неизвестна причина. Моля, опитайте отново."
-  },
-  "enabledLabel": "Активирано",
-  "disabledLabel": "Деактивирано",
-  "installed": "Инсталирана версия: ${version}",
-  "options": "Опции"
+  }
 }

@@ -40,40 +40,27 @@
     "installingMessage": "Instalace aktualizace...",
     "errorDownloadMessage": "Nelze stáhnout aktualizaci",
     "errorInstallMessage": "Aktualizace se nepodařilo nainstalovat",
-    "noConnection": "Žádné připojení k internetu",
-    "noUpdates": "Nejsou dostupné žádné aktualizace",
-    "WIP": "Probíhající přípravy...",
-    "checkUpdateDialogTitle": "Zkontrolovat aktualizace?",
-    "checkUpdateDialogText": "Přejete si, aby ReVanced Manager automaticky kontroloval aktualizace?",
-    "notificationTitle": "Aktualizace byla stažena",
-    "notificationText": "Klepnutím nainstalujte aktualizaci",
-    "updatesDisabled": "Aktualizace záplatované aplikace je momentálně zakázána. Znovu záplatujte aplikaci."
+    "noConnection": "Žádné připojení k internetu"
   },
   "applicationItem": {
     "infoButton": "Info"
   },
   "latestCommitCard": {
     "loadingLabel": "Načítání...",
-    "timeagoLabel": "před ${time}",
-    "patcherLabel": "Záplatovač: ",
-    "managerLabel": "Správce: ",
-    "updateButton": "Správce aktualizací"
+    "timeagoLabel": "před ${time}"
   },
   "patcherView": {
     "widgetTitle": "Záplatovač",
     "patchButton": "Záplatovat",
     "removedPatchesWarningDialogText": "Následující záplaty byly odstraněny od doby, kdy jste je naposledy použili.\n\n${patches}\n\nPřesto pokračovat?",
-    "requiredOptionDialogText": "Je třeba nastavit některé možnosti záplat.",
-    "armv7WarningDialogText": "Záplatování na zařízení ARMv7 ještě není podporováno a může neuspět. Přejete si přesto pokračovat?"
+    "requiredOptionDialogText": "Je třeba nastavit některé možnosti záplat."
   },
   "appSelectorCard": {
     "widgetTitle": "Vybrat aplikaci",
     "widgetTitleSelected": "Vybraná aplikace",
     "widgetSubtitle": "Není vybrána žádná aplikace",
     "noAppsLabel": "Nebyly nalezeny žádné aplikace",
-    "anyVersion": "Jakákoli verze",
-    "currentVersion": "Aktuální",
-    "suggestedVersion": "Navrženo"
+    "anyVersion": "Jakákoli verze"
   },
   "patchSelectorCard": {
     "widgetTitle": "Vybrat patche",
@@ -124,10 +111,7 @@
     "selectFolder": "Vybrat složku",
     "requiredOption": "Nastavení této možnosti je vyžadováno",
     "unsupportedOption": "Tato možnost není podporována",
-    "requiredOptionNull": "Tyto možnosti musí být nastaveny:\n\n${options}",
-    "resetOptionsTooltip": "Obnovit nastavení záplat",
-    "addOptions": "Přidat možnosti",
-    "selectOption": "Vybrat možnost"
+    "requiredOptionNull": "Tyto možnosti musí být nastaveny:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Výběrem této záplaty může dojít k chybám.\n\nVerze aplikace: ${packageVersion}\nAktuálně podporované verze:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Exportovat protokol",
     "screenshotDetected": "Byl zjištěn snímek obrazovky. Pokud se pokoušíte sdílet záznam, sdílejte prosím textovou kopii.\n\nKopírovat záznam do schránky?",
     "copiedToClipboard": "Záznamy byly zkopírovány do schránky",
-    "noExit": "Instalační program je stále spuštěn, nelze ukončit...",
-    "widgetTitle": "Instalátor",
-    "shareButton": "Sdílet soubor"
+    "noExit": "Instalační program je stále spuštěn, nelze ukončit..."
   },
   "settingsView": {
     "widgetTitle": "Nastavení",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Heslo úložiště klíčů",
     "selectKeystorePasswordHint": "Vyberte heslo úložiště klíčů použité k podpisu aplikací",
     "jsonSelectorErrorMessage": "Vybraný JSON soubor nelze použít",
-    "keystoreSelectorErrorMessage": "Nelze použít vybraný soubor úložiště klíčů",
-    "englishOption": "Angličtina"
+    "keystoreSelectorErrorMessage": "Nelze použít vybraný soubor úložiště klíčů"
   },
   "appInfoView": {
     "widgetTitle": "Informace o aplikaci",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "Instalace se nezdařila kvůli problému s ověřováním.\n\nUpravte nastavení zabezpečení a zkuste to znovu.",
     "install_failed_version_downgrade_description": "Instalace se nezdařila kvůli tomu, že již nainstalovaná verze je novější.\n\nOdinstalovat tuto aplikaci a zkusit znovu?",
     "status_unknown_description": "Instalace se nezdařila z neznámých důvodů. Prosím zkuste to znovu."
-  },
-  "enabledLabel": "Zapnuto",
-  "disabledLabel": "Vypnuto",
-  "installed": "Nainstalováno: ${version}",
-  "options": "Možnosti"
+  }
 }

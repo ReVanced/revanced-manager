@@ -23,8 +23,7 @@
     "installingMessage": "Instaliranje ažuriranja...",
     "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
     "errorInstallMessage": "Nije moguće instalirati ažuriranje",
-    "noConnection": "Nema internetske veze",
-    "updatesDisabled": "Ažuriranje zakrpane aplikacije trenutno je onemogućeno. Ponovno zakrpajte aplikaciju."
+    "noConnection": "Nema internetske veze"
   },
   "applicationItem": {
     "infoButton": "Informacije"
@@ -38,9 +37,7 @@
     "patchButton": "Zakrpi"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Nije pronađena nijedna aplikacija",
-    "currentVersion": "Trenutno",
-    "suggestedVersion": "Preporučeno"
+    "noAppsLabel": "Nije pronađena nijedna aplikacija"
   },
   "patchSelectorCard": {
     "widgetTitle": "Odaberite zakrpe",
@@ -67,7 +64,6 @@
     "noneTooltip": "Poništi odabir svih zakrpa",
     "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "Odabirom ove zakrpe mogu se pojaviti greške pri krpanju.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}"
   },
@@ -125,7 +121,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Pridonositelji"
-  },
-  "installErrorDialog": {},
-  "installed": "Instalirana verzija: ${version}"
+  }
 }

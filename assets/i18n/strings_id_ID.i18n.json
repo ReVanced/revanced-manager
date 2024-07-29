@@ -40,40 +40,27 @@
     "installingMessage": "Memasang pembaruan...",
     "errorDownloadMessage": "Tidak dapat mengunduh pembaruan",
     "errorInstallMessage": "Gagal memasang pembaharuan",
-    "noConnection": "Tidak ada koneksi internet",
-    "noUpdates": "Tidak ada pembaruan",
-    "WIP": "Sedang dikerjakan...",
-    "checkUpdateDialogTitle": "Periksa pembaruan yang tersedia?",
-    "checkUpdateDialogText": "Apakah anda ingin Manajer ReVanced untuk mengecek pembaruan secara otomatis?",
-    "notificationTitle": "Pembaruan diunduh",
-    "notificationText": "Ketuk untuk memperbarui",
-    "updatesDisabled": "Pembaharuan aplikasi tambalan sedang dinonaktifkan. Silahkan ulangi penambalan aplikasi."
+    "noConnection": "Tidak ada koneksi internet"
   },
   "applicationItem": {
     "infoButton": "Informasi"
   },
   "latestCommitCard": {
     "loadingLabel": "Memuat...",
-    "timeagoLabel": "${time} yang lalu",
-    "patcherLabel": "Penambal: ",
-    "managerLabel": "Pengelola: ",
-    "updateButton": "Perbarui Manager"
+    "timeagoLabel": "${time} yang lalu"
   },
   "patcherView": {
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
     "removedPatchesWarningDialogText": "Patch berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
-    "requiredOptionDialogText": "Beberapa opsi patch harus diatur.",
-    "armv7WarningDialogText": "Menambal pada perangkat ARMv7 belum didukung dan mungkin gagal. Lanjutkan saja?"
+    "requiredOptionDialogText": "Beberapa opsi patch harus diatur."
   },
   "appSelectorCard": {
     "widgetTitle": "Pilih aplikasi",
     "widgetTitleSelected": "Aplikasi yang dipilih",
     "widgetSubtitle": "Tidak ada aplikasi yang dipilih",
     "noAppsLabel": "Aplikasi tidak ditemukan",
-    "anyVersion": "Versi apa saja",
-    "currentVersion": "Saat ini",
-    "suggestedVersion": "Disarankan"
+    "anyVersion": "Versi apa saja"
   },
   "patchSelectorCard": {
     "widgetTitle": "Pilih tambalan",
@@ -121,11 +108,7 @@
     "selectFolder": "Pilih folder",
     "requiredOption": "Pilihan ini diperlukan",
     "unsupportedOption": "Pilihan ini tidak didukung",
-    "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}",
-    "resetOptionsTooltip": "Mengatur ulang opsi tambalan",
-    "addOptions": "Tambahkan opsi",
-    "deselectPatch": "Lepas tambalan",
-    "selectOption": "Pilih opsi"
+    "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Memilih tambalan ini akan menyebabkan galat tambal.\n\nVersi apli: ${packageVersion}\nVersi anjuran:\n${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Log ekspor",
     "screenshotDetected": "Tangkapan layar telah terdeteksi. Jika Anda mencoba membagikan log, silakan bagikan salinan teks.\n\nMenyalin log ke papan klip?",
     "copiedToClipboard": "Menyalin log ke papan klip",
-    "noExit": "Pemasangan masih berjalan, tidak bisa keluar...",
-    "widgetTitle": "Pemasang",
-    "shareButton": "Bagikan berkas"
+    "noExit": "Pemasangan masih berjalan, tidak bisa keluar..."
   },
   "settingsView": {
     "widgetTitle": "Pengaturan",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Kata Sandi Keystore",
     "selectKeystorePasswordHint": "Pilih kata sandi keystore yang digunakan untuk menandatangani aplikasi",
     "jsonSelectorErrorMessage": "Tidak bisa menggunakan berkas JSON tersebut",
-    "keystoreSelectorErrorMessage": "Tidak bisa menggunakan berkas keystrore tersebut",
-    "englishOption": "Bahasa Inggris"
+    "keystoreSelectorErrorMessage": "Tidak bisa menggunakan berkas keystrore tersebut"
   },
   "appInfoView": {
     "widgetTitle": "Info aplikasi",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "Instalasi gagal karena masalah verifikasi.\n\nSesuaikan pengaturan keamanan anda dan coba kembali.",
     "install_failed_version_downgrade_description": "Instalasi gagal karena aplikasi tambalan memiliki versi yang lebih rendah daripada aplikasi yang sudah ada.\n\nCopot pemasangan aplikasi dan coba kembali?",
     "status_unknown_description": "Instalasi gagal karena alasan yang tidak diketahui. Silakan coba kembali."
-  },
-  "enabledLabel": "Aktif",
-  "disabledLabel": "Nonaktif",
-  "installed": "Terpasang: ${version}",
-  "options": "Pengaturan"
+  }
 }

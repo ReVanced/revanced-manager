@@ -40,40 +40,27 @@
     "installingMessage": "Εγκατάσταση ενημέρωσης...",
     "errorDownloadMessage": "Αδυναμία λήψης ενημέρωσης",
     "errorInstallMessage": "Αδυναμία εγκατάστασης ενημέρωσης",
-    "noConnection": "Δεν υπάρχει σύνδεση στο διαδίκτυο",
-    "noUpdates": "Δεν υπάρχουν διαθέσιμες ενημερώσεις",
-    "WIP": "Υπό κατασκευή...",
-    "checkUpdateDialogTitle": "Έλεγχος για ενημερώσεις;",
-    "checkUpdateDialogText": "Θέλετε το ReVanced Manager να ελέγχει για ενημερώσεις αυτόματα;",
-    "notificationTitle": "Η λήψη της ενημέρωσης ολοκληρώθηκε",
-    "notificationText": "Πατήστε για εγκατάσταση της ενημέρωσης",
-    "updatesDisabled": "Η ενημέρωση τροποποιημένων εφαρμογών είναι ανενεργή προς το παρόν. Τροποποιήστε τις εφαρμογές εκ νέου."
+    "noConnection": "Δεν υπάρχει σύνδεση στο διαδίκτυο"
   },
   "applicationItem": {
     "infoButton": "Πληροφορίες"
   },
   "latestCommitCard": {
     "loadingLabel": "Φόρτωση...",
-    "timeagoLabel": "${time} πριν",
-    "patcherLabel": "Τροποποιητής: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Ενημέρωση του Manager"
+    "timeagoLabel": "${time} πριν"
   },
   "patcherView": {
     "widgetTitle": "Τροποποιητής",
     "patchButton": "Τροποποίηση",
     "removedPatchesWarningDialogText": "Οι παρακάτω τροποποιήσεις αφαιρέθηκαν από την τελευταία φορά που τις χρησιμοποιήσατε.\n\n${patches}\n\nΣυνέχεια παρόλα αυτά;",
-    "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν.",
-    "armv7WarningDialogText": "Η διαδικασία της τροποποίησης δεν υποστηρίζεται προς το παρόν σε ARMv7 συσκευές και μπορεί να αποτύχει. Συνέχεια παρόλα αυτά;"
+    "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν."
   },
   "appSelectorCard": {
     "widgetTitle": "Επιλέξτε μία εφαρμογή",
     "widgetTitleSelected": "Επιλεγμένες εφαρμογές",
     "widgetSubtitle": "Δεν έχει επιλεγεί κάποια εφαρμογή",
     "noAppsLabel": "Δε βρέθηκαν εφαρμογές",
-    "anyVersion": "Οποιαδήποτε έκδοση",
-    "currentVersion": "Τρέχουσα έκδοση",
-    "suggestedVersion": "Προτεινόμενη έκδοση"
+    "anyVersion": "Οποιαδήποτε έκδοση"
   },
   "patchSelectorCard": {
     "widgetTitle": "Επιλέξτε τροποποιήσεις",
@@ -124,10 +111,7 @@
     "selectFolder": "Επιλογή φακέλου",
     "requiredOption": "Απαιτείται ρύθμιση αυτής της επιλογής",
     "unsupportedOption": "Αυτή η επιλογή δεν υποστηρίζεται",
-    "requiredOptionNull": "Πρέπει να οριστούν οι παρακάτω επιλογές:\n\n${options}",
-    "resetOptionsTooltip": "Επαναφορά επιλογών τροποποιήσεων",
-    "addOptions": "Προσθήκη επιλογών",
-    "selectOption": "Επιλογή ρύθμισης"
+    "requiredOptionNull": "Πρέπει να οριστούν οι παρακάτω επιλογές:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Η επιλογή αυτής της τροποποίησης μπορεί να επιφέρει σφάλματα τροποποίησης.\n\nΈκδοση εφαρμογής: ${packageVersion}\nΥποστηριζόμενες εκδόσεις: ${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Εξαγωγή αρχείου καταγραφής",
     "screenshotDetected": "Ανιχνεύθηκε στιγμιότυπο οθόνης. Αν προσπαθείτε να κοινοποιήσετε το αρχείο καταγραφής, παρακαλούμε να κοινοποιήσετε αντίγραφο κειμένου αντ'αυτού.\n\nΑντιγραφή αρχείου καταγραφής στο πρόχειρο;",
     "copiedToClipboard": "Το αρχείο καταγραφής αντιγράφηκε στο πρόχειρο",
-    "noExit": "Το πρόγραμμα εγκατάστασης εκτελείται ακόμη, αδυναμία εξόδου...",
-    "widgetTitle": "Πρόγραμμα Εγκατάστασης",
-    "shareButton": "Κοινοποίηση αρχείου"
+    "noExit": "Το πρόγραμμα εγκατάστασης εκτελείται ακόμη, αδυναμία εξόδου..."
   },
   "settingsView": {
     "widgetTitle": "Ρυθμίσεις",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Κωδικός Keystore",
     "selectKeystorePasswordHint": "Επιλέξτε κωδικό πρόσβασης για το κλειδί που χρησιμοποιείται για την υπογραφή εφαρμογών",
     "jsonSelectorErrorMessage": "Αδυναμία χρήσης του επιλεγμένου αρχείου JSON",
-    "keystoreSelectorErrorMessage": "Αδυναμία χρήσης του επιλεγμένου αρχείου keystore",
-    "englishOption": "Αγγλικά"
+    "keystoreSelectorErrorMessage": "Αδυναμία χρήσης του επιλεγμένου αρχείου keystore"
   },
   "appInfoView": {
     "widgetTitle": "Πληροφορίες εφαρμογής",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "Η εγκατάσταση απέτυχε λόγο θέματος επαλήθευσης.\n\nΡυθμίστε τις ρυθμίσεις ασφαλείας σας και δοκιμάστε ξανά.",
     "install_failed_version_downgrade_description": "Η εγκατάσταση απέτυχε διότι η τροποποιημένη εφαρμογή έχει χαμηλότερη έκδοση από την εγκατεστημένη εφαρμογή.\n\nΑπεγκατάσταση εφαρμογής και προσπάθεια ξανά;",
     "status_unknown_description": "Η εγκατάσταση απέτυχε για κάποιον άγνωστο λόγο.\nΠαρακαλώ δοκιμάστε ξανά."
-  },
-  "enabledLabel": "Ενεργό",
-  "disabledLabel": "Ανενεργό",
-  "installed": "Εγκατεστημένη έκδοση: ${version}",
-  "options": "Ρυθμίσεις"
+  }
 }

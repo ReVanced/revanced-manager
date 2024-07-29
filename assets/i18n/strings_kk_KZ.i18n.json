@@ -32,27 +32,6 @@
     "updatePatchesSheetTitle": "ReVanced патчін жаңарту",
     "updateChangelogTitle": "Өзгерту тарихы",
     "updateDialogText": "${file} үшін жаңарту қолжетімді.\n\nҚазіргі ${version} нұсқасы орнатылып тұр.",
-    "downloadConsentDialogTitle": "Керек файлды жүктеп алайық па?",
-    "noUpdates": "Жаңарту жоқ",
-    "WIP": "Жүктеліп жатыр..."
-  },
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {},
-  "enabledLabel": "Қосулы",
-  "disabledLabel": "Сөндірулі",
-  "installed": "Орнатылған: ${version}",
-  "options": "Баптау"
+    "downloadConsentDialogTitle": "Керек файлды жүктеп алайық па?"
+  }
 }

@@ -25,8 +25,7 @@
     "installingMessage": "Inštalujú sa aktualizácie...",
     "errorDownloadMessage": "Nepodarilo sa stiahnuť aktualizáciu",
     "errorInstallMessage": "Nepodarilo sa nainštalovať aktualizáciu",
-    "noConnection": "Žiadne pripojenie na internet",
-    "updatesDisabled": "Aktualizácia zaplátanej aplikácie je v súčasnosti zakázaná. Znovu zaplátajte aplikáciu."
+    "noConnection": "Žiadne pripojenie na internet"
   },
   "applicationItem": {
     "infoButton": "Informácie"
@@ -40,9 +39,7 @@
     "patchButton": "Záplata"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Nebola nájdená žiadna aplikácia",
-    "currentVersion": "Aktuálne",
-    "suggestedVersion": "Navrhované"
+    "noAppsLabel": "Nebola nájdená žiadna aplikácia"
   },
   "patchSelectorCard": {
     "widgetTitle": "Vyberte záplaty",
@@ -70,7 +67,6 @@
     "noneTooltip": "Zrušiť výber všetkých odporúčaných záplat",
     "noPatchesFound": "Neboli nájdené žiadne záplaty pre zvolenú aplikáciu"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "Výber tejto záplaty môže spôsobiť chyby.\n\nVerzia aplikácie: ${packageVersion}\nPodporované verzie:\n${supportedVersions}",
     "patchesChangeWarningDialogButton": "Použiť predvolený výber"
@@ -146,7 +142,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Prispievatelia"
-  },
-  "installErrorDialog": {},
-  "installed": "Nainštalované: ${version}"
+  }
 }

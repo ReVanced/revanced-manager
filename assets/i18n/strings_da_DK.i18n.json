@@ -40,40 +40,27 @@
     "installingMessage": "Installerer opdatering...",
     "errorDownloadMessage": "Opdatering kan ikke hentes",
     "errorInstallMessage": "Opdatering kunne ikke installeres",
-    "noConnection": "Ingen internetforbindelse",
-    "noUpdates": "Ingen tilgængelige opdateringer",
-    "WIP": "Arbejdet er i gang...",
-    "checkUpdateDialogTitle": "Søg efter opdateringer?",
-    "checkUpdateDialogText": "Ønsker du at ReVanced Manager skal søge efter opdateringer automatisk?",
-    "notificationTitle": "Opdatering downloadet",
-    "notificationText": "Tryk for at installere opdateringen",
-    "updatesDisabled": "Opdatering af en patchet app er i øjeblikket deaktiveret. Repatch appen igen."
+    "noConnection": "Ingen internetforbindelse"
   },
   "applicationItem": {
     "infoButton": "Information"
   },
   "latestCommitCard": {
     "loadingLabel": "Indlæser...",
-    "timeagoLabel": "${time} siden",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Opdater Manager"
+    "timeagoLabel": "${time} siden"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "removedPatchesWarningDialogText": "Følgende patches er blevet fjernet siden sidste gang du brugte dem.\n\n${patches}\n\nFortsæt alligevel?",
-    "requiredOptionDialogText": "Nogle patch muligheder skal indstilles.",
-    "armv7WarningDialogText": "Patching på ARMv7-enheder understøttes ikke endnu, og kan derfor fejle. Fortsæt alligevel?"
+    "requiredOptionDialogText": "Nogle patch muligheder skal indstilles."
   },
   "appSelectorCard": {
     "widgetTitle": "Vælg en app",
     "widgetTitleSelected": "Valgte app",
     "widgetSubtitle": "Ingen app valgt",
     "noAppsLabel": "Ingen applikationer fundet",
-    "anyVersion": "Enhver version",
-    "currentVersion": "Nuværende",
-    "suggestedVersion": "Anbefalet"
+    "anyVersion": "Enhver version"
   },
   "patchSelectorCard": {
     "widgetTitle": "Vælg patches",
@@ -124,10 +111,7 @@
     "selectFolder": "Vælg mappe",
     "requiredOption": "Indstilling af denne indstilling er påkrævet",
     "unsupportedOption": "Denne indstilling understøttes ikke",
-    "requiredOptionNull": "Følgende indstillinger skal indstilles:\n\n${options}",
-    "resetOptionsTooltip": "Nulstil patch indstillinger",
-    "addOptions": "Tilføj indstillinger",
-    "selectOption": "Vælg indstilling"
+    "requiredOptionNull": "Følgende indstillinger skal indstilles:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Valg af denne patch kan medføre patching-fejl.\n\nApp version: ${packageVersion}\nUnderstøttede versioner:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Eksportér log",
     "screenshotDetected": "Et skærmbillede er blevet opdaget. Hvis du forsøger at dele loggen, så del venligst en tekstkopi i stedet.\n\nKopier log til udklipsholderen?",
     "copiedToClipboard": "Kopierede log til udklipsholder",
-    "noExit": "Installationen kører stadig, kan ikke afslutte...",
-    "widgetTitle": "Installationsprogram",
-    "shareButton": "Del fil"
+    "noExit": "Installationen kører stadig, kan ikke afslutte..."
   },
   "settingsView": {
     "widgetTitle": "Indstillinger",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Keystore Adgangskode",
     "selectKeystorePasswordHint": "Vælg adgangskode til keystore som bruges til at signere apps",
     "jsonSelectorErrorMessage": "Kan ikke bruge den valgte JSON-fil",
-    "keystoreSelectorErrorMessage": "Kan ikke bruge den valgte keystore fil",
-    "englishOption": "Engelsk"
+    "keystoreSelectorErrorMessage": "Kan ikke bruge den valgte keystore fil"
   },
   "appInfoView": {
     "widgetTitle": "Appinfo",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "Installationen mislykkedes på grund af et bekræftelsesproblem.\n\nJuster dine sikkerhedsindstillinger og prøv igen.",
     "install_failed_version_downgrade_description": "Installationen mislykkedes, fordi den lappede app er en lavere version end den installerede app.\n\nAfinstaller app'en og prøv igen?",
     "status_unknown_description": "Installationen mislykkedes på grund af en ukendt årsag. Prøv venligst igen."
-  },
-  "enabledLabel": "Aktiveret",
-  "disabledLabel": "Deaktiveret",
-  "installed": "Installeret: ${version}",
-  "options": "Indstillinger"
+  }
 }

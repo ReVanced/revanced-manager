@@ -27,8 +27,7 @@
     "installingMessage": "اپ ڈیٹ انسٹال ہو رہی ہے...",
     "errorDownloadMessage": "اپ ڈیٹ ڈونلوڈ نہیں ہو سکی",
     "errorInstallMessage": "اپڈیٹ انسٹال نہیں ہو سکی",
-    "noConnection": "انٹرنیٹ کنکشن میسر نہیں",
-    "updatesDisabled": "پیچ شدہ ایپلیکیشن کو اپ ڈیٹ کرنا فل حال بند ہے. دوبارہ پیچ کریں."
+    "noConnection": "انٹرنیٹ کنکشن میسر نہیں"
   },
   "applicationItem": {
     "infoButton": "معلومات نامہ"
@@ -42,21 +41,6 @@
     "patchButton": "پیچ کریں"
   },
   "appSelectorCard": {
-    "noAppsLabel": "کوئی ایپلیکیشن نہیں ملی",
-    "currentVersion": "موجودہ",
-    "suggestedVersion": "تجویز کردہ"
-  },
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {},
-  "installed": "موجود: ${version}",
-  "options": "اختیارات"
+    "noAppsLabel": "کوئی ایپلیکیشن نہیں ملی"
+  }
 }

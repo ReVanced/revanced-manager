@@ -40,40 +40,27 @@
     "installingMessage": "Усталяванне абнаўлення...",
     "errorDownloadMessage": "Немагчыма спампаваць абнаўленне",
     "errorInstallMessage": "Немагчыма ўсталяваць абнаўленне",
-    "noConnection": "Няма злучэння з інтэрнэтам",
-    "noUpdates": "Няма даступных абнаўленняў",
-    "WIP": "У працэсе...",
-    "checkUpdateDialogTitle": "Праверыць наяўнасць абнаўленняў?",
-    "checkUpdateDialogText": "Вы сапраўды хочаце правяраць абнаўленні ReVanced Manager аўтаматычна?",
-    "notificationTitle": "Абнаўленне спампавана",
-    "notificationText": "Націсніце, каб усталяваць абнаўленне",
-    "updatesDisabled": "Абнаўленне выпраўленай праграмы ў цяперашні час адключана. Неабходна паўторна ўжыць выпраўленне для праграмы."
+    "noConnection": "Няма злучэння з інтэрнэтам"
   },
   "applicationItem": {
     "infoButton": "Звесткі"
   },
   "latestCommitCard": {
     "loadingLabel": "Загрузка...",
-    "timeagoLabel": "${time} таму",
-    "patcherLabel": "Праграма выпраўлення: ",
-    "managerLabel": "Менеджар: ",
-    "updateButton": "Абнавіць ReVanced Manager"
+    "timeagoLabel": "${time} таму"
   },
   "patcherView": {
     "widgetTitle": "Праграма выпраўлення",
     "patchButton": "Выправіць",
     "removedPatchesWarningDialogText": "Наступныя выпраўленні былі выдалены з моманту іх апошняга выкарыстання.\n\n${patches}\n\nУсё роўна працягнуць?",
-    "requiredOptionDialogText": "Неабходна задаць некаторыя параметры выпраўленняў.",
-    "armv7WarningDialogText": "Выпраўленне для прылад на ARMv7 пакуль не падтрымліваецца і можа прывесці да збою. Працягнуць?"
+    "requiredOptionDialogText": "Неабходна задаць некаторыя параметры выпраўленняў."
   },
   "appSelectorCard": {
     "widgetTitle": "Выбраць праграму",
     "widgetTitleSelected": "Выбраная праграма",
     "widgetSubtitle": "Праграма не выбрана",
     "noAppsLabel": "Праграмы не знойдзены",
-    "anyVersion": "Любая версія",
-    "currentVersion": "Бягучая версія",
-    "suggestedVersion": "Прапанаваная"
+    "anyVersion": "Любая версія"
   },
   "patchSelectorCard": {
     "widgetTitle": "Выберыце выпраўленні",
@@ -121,11 +108,7 @@
     "selectFolder": "Выбраць папку",
     "requiredOption": "Абавязковы параметр",
     "unsupportedOption": "Гэты параметр не падтрымліваецца",
-    "requiredOptionNull": "Наступныя параметры павінны быць зададзены:\n\n${options}",
-    "resetOptionsTooltip": "Скінуць параметры выпраўлення",
-    "addOptions": "Дадаць параметры",
-    "deselectPatch": "Зняць выбар з выпраўлення",
-    "selectOption": "Выберыце параметр"
+    "requiredOptionNull": "Наступныя параметры павінны быць зададзены:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Выбар гэтага выпраўлення можа прывесці да памылак падчас яго ўжывання.\n\nВерсія праграмы: ${packageVersion}\nВерсіі, якія падтрымліваюцца:\n${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Экспартаваць журнал",
     "screenshotDetected": "Выяўлены здымак экрана. Калі вы хочаце абагуліць журнал, то замест гэтага адпраўце тэкставую копію\n\nСкапіраваць журнал у буфер абмену?",
     "copiedToClipboard": "Журнал скапіяваны ў буфер абмену",
-    "noExit": "Усталёўшчык усё яшчэ працуе, нельга выйсці...",
-    "widgetTitle": "Устаноўшчык праграм",
-    "shareButton": "Абагуліць файл"
+    "noExit": "Усталёўшчык усё яшчэ працуе, нельга выйсці..."
   },
   "settingsView": {
     "widgetTitle": "Налады",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Пароль сховішча ключоў",
     "selectKeystorePasswordHint": "Выбраць пароль сховішча ключоў, які выкарыстоўваецца для падпісання праграм",
     "jsonSelectorErrorMessage": "Немагчыма выкарыстоўваць выбраны файл JSON",
-    "keystoreSelectorErrorMessage": "Немагчыма выкарыстоўваць выбраны файл сховішча ключоў",
-    "englishOption": "Англійская"
+    "keystoreSelectorErrorMessage": "Немагчыма выкарыстоўваць выбраны файл сховішча ключоў"
   },
   "appInfoView": {
     "widgetTitle": "Пра праграму",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "Збой усталявання, бо адбылася праблема праверкі.\n\nНаладзьце свае параметры бяспекі і паспрабуйце яшчэ раз.",
     "install_failed_version_downgrade_description": "Збой усталявання, бо выпраўленая праграма мае больш новую версію, чым усталяваная праграма.\n\nВыдаліць праграму і паспрабаваць яшчэ раз?",
     "status_unknown_description": "Збой усталявання, бо адбылася невядомая памылка. Паўтарыце спробу яшчэ раз."
-  },
-  "enabledLabel": "Уключана",
-  "disabledLabel": "Адключана",
-  "installed": "Усталявана: ${version}",
-  "options": "Параметры"
+  }
 }

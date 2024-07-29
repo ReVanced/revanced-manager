@@ -40,40 +40,27 @@
     "installingMessage": "Instaliranje ažuriranja…",
     "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
     "errorInstallMessage": "Nije moguće instalirati ažuriranje",
-    "noConnection": "Nema internet veze",
-    "noUpdates": "Nema dostupnih ažuriranja",
-    "WIP": "Radovi u toku…",
-    "checkUpdateDialogTitle": "Provera ažuriranja?",
-    "checkUpdateDialogText": "Želite li da ReVanced Manager automatski proverava da li postoje ažuriranja?",
-    "notificationTitle": "Ažuriranje je preuzeto",
-    "notificationText": "Dodirnite da biste instalirali ažuriranje",
-    "updatesDisabled": "Ažuriranje pečovane aplikacije je trenutno onemogućeno. Ponovo pečujte aplikaciju."
+    "noConnection": "Nema internet veze"
   },
   "applicationItem": {
     "infoButton": "Informacije"
   },
   "latestCommitCard": {
     "loadingLabel": "Učitavanje…",
-    "timeagoLabel": "pre ${time}",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Ažuriraj Manager"
+    "timeagoLabel": "pre ${time}"
   },
   "patcherView": {
     "widgetTitle": "Pečer",
     "patchButton": "Pečuj",
     "removedPatchesWarningDialogText": "Sledeći pečevi su uklonjeni od poslednjeg puta kada ste ih koristili.\n\n${patches}\n\nIpak nastaviti?",
-    "requiredOptionDialogText": "Neke opcije moraju biti podešene.",
-    "armv7WarningDialogText": "Pečovanje na ARMv7 uređajima još uvek nije podržano i možda neće uspeti. Ipak nastaviti?"
+    "requiredOptionDialogText": "Neke opcije moraju biti podešene."
   },
   "appSelectorCard": {
     "widgetTitle": "Izaberi aplikaciju",
     "widgetTitleSelected": "Izabrana aplikacija",
     "widgetSubtitle": "Nije izabrana nijedna aplikacija",
     "noAppsLabel": "Nijedna aplikacija nije pronađena",
-    "anyVersion": "Sve verzije",
-    "currentVersion": "Trenutna verzija",
-    "suggestedVersion": "Preporučena verzija"
+    "anyVersion": "Sve verzije"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izaberi pečeve",
@@ -121,11 +108,7 @@
     "selectFolder": "Izaberi folder",
     "requiredOption": "Ova opcija je obavezna",
     "unsupportedOption": "Ova opcija nije podržana",
-    "requiredOptionNull": "Potrebno je podesiti sledeće opcije:\n\n${options}",
-    "resetOptionsTooltip": "Resetuj opcije peča",
-    "addOptions": "Dodaj opcije",
-    "deselectPatch": "Poništi izbor peča",
-    "selectOption": "Izaberi opciju"
+    "requiredOptionNull": "Potrebno je podesiti sledeće opcije:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Izborom ovog peča može doći do grešaka prilikom pečovanja.\n\nVerzija aplikacije: ${packageVersion}\nPodržane verzije:\n${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Izvezi evidenciju",
     "screenshotDetected": "Otkriven je snimak ekrana. Ako želite da delite evidenciju, umesto toga pošaljite tekst.\n\nKopirati evidenciju u privremenu memoriju?",
     "copiedToClipboard": "Evidencija je kopirana u privremenu memoriju",
-    "noExit": "Instalacija je u toku, nije moguće izaći…",
-    "widgetTitle": "Program za instalaciju",
-    "shareButton": "Deli fajl"
+    "noExit": "Instalacija je u toku, nije moguće izaći…"
   },
   "settingsView": {
     "widgetTitle": "Podešavanja",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Lozinka skladišta ključeva",
     "selectKeystorePasswordHint": "Izaberite lozinku skladišta ključeva koja se koristi za potpisivanje aplikacija",
     "jsonSelectorErrorMessage": "Nije moguće koristiti izabrani JSON fajl",
-    "keystoreSelectorErrorMessage": "Nije moguće koristiti izabrani fajl sa skladištem ključeva",
-    "englishOption": "engleski"
+    "keystoreSelectorErrorMessage": "Nije moguće koristiti izabrani fajl sa skladištem ključeva"
   },
   "appInfoView": {
     "widgetTitle": "O aplikaciji",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "Instalacija nije uspela zbog problema sa verifikacijom.\n\nPodesite bezbednosna podešavanja i pokušajte ponovo.",
     "install_failed_version_downgrade_description": "Instalacija nije uspela jer je pečovana aplikacija niža verzija od instalirane aplikacije.\n\nDeinstalirati aplikaciju i pokušati ponovo?",
     "status_unknown_description": "Instalacija nije uspela iz nepoznatog razloga. Pokušajte ponovo."
-  },
-  "enabledLabel": "Omogućeno",
-  "disabledLabel": "Onemogućeno",
-  "installed": "Instalirana verzija: ${version}",
-  "options": "Opcije"
+  }
 }

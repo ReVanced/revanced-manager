@@ -36,35 +36,25 @@
     "installingMessage": "正在安裝更新…",
     "errorDownloadMessage": "下載唔到更新",
     "errorInstallMessage": "安裝更新失敗",
-    "noConnection": "冇網路連線",
-    "noUpdates": "冇新既更新",
-    "WIP": "開發中...",
-    "checkUpdateDialogTitle": "檢查更新？",
-    "updatesDisabled": "更新已修補的應用已暫時被禁用。請重新修補應用。"
+    "noConnection": "冇網路連線"
   },
   "applicationItem": {
     "infoButton": "信息"
   },
   "latestCommitCard": {
     "loadingLabel": "載入中...",
-    "timeagoLabel": "${time} 之前",
-    "patcherLabel": "修補工具： ",
-    "managerLabel": "管理器： ",
-    "updateButton": "更新管理器"
+    "timeagoLabel": "${time} 之前"
   },
   "patcherView": {
     "widgetTitle": "修補工具",
-    "patchButton": "修補",
-    "armv7WarningDialogText": "唔支援在ARMv7架構嘅設備上打補丁，要唔要繼續？"
+    "patchButton": "修補"
   },
   "appSelectorCard": {
     "widgetTitle": "選擇一個應用程式",
     "widgetTitleSelected": "揀咗嘅應用程式",
     "widgetSubtitle": "冇揀咗嘅應用程式",
     "noAppsLabel": "搵唔到應用",
-    "anyVersion": "任何版本",
-    "currentVersion": "目前",
-    "suggestedVersion": "建議"
+    "anyVersion": "任何版本"
   },
   "patchSelectorCard": {
     "widgetTitle": "選擇補丁",
@@ -99,7 +89,6 @@
     "noSavedPatches": "冇保存咗嘅補丁選擇俾呢個應用。\n撳\"完成\"嚟保存當前嘅選擇。",
     "noPatchesFound": "冇補丁俾呢個揀咗嘅應用。"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "揀咗哩種修改可能會導致修改錯誤\n\nApp 版本: ${packageVersion}\n現時支援嘅版本: \n${supportedVersions}"
   },
@@ -149,10 +138,5 @@
   },
   "contributorsView": {
     "widgetTitle": "貢獻者"
-  },
-  "installErrorDialog": {},
-  "enabledLabel": "已啟用",
-  "disabledLabel": "已關閉",
-  "installed": "已安裝版本: ${version}",
-  "options": "選項"
+  }
 }

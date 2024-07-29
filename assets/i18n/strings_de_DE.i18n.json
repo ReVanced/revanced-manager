@@ -40,40 +40,27 @@
     "installingMessage": "Update wird installiert...",
     "errorDownloadMessage": "Aktualisierung konnte nicht heruntergeladen werden",
     "errorInstallMessage": "Aktualisierung konnte nicht installiert werden",
-    "noConnection": "Keine Internetverbindung",
-    "noUpdates": "Keine Updates verfügbar",
-    "WIP": "In Arbeit...",
-    "checkUpdateDialogTitle": "Nach Aktualisierungen suchen?",
-    "checkUpdateDialogText": "Soll ReVanced Manager automatisch nach Updates suchen?",
-    "notificationTitle": "Update heruntergeladen",
-    "notificationText": "Tippen um Update zu installieren",
-    "updatesDisabled": "Aktualisieren einer gepatchten App ist zurzeit deaktiviert. Patche die App erneut."
+    "noConnection": "Keine Internetverbindung"
   },
   "applicationItem": {
     "infoButton": "Informationen"
   },
   "latestCommitCard": {
     "loadingLabel": "Lädt...",
-    "timeagoLabel": "vor ${time}",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Manager aktualisieren"
+    "timeagoLabel": "vor ${time}"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patchen",
     "removedPatchesWarningDialogText": "Die folgenden Patches wurden seit der letzten Verwendung entfernt.\n\n${patches}\n\nTrotzdem fortfahren?",
-    "requiredOptionDialogText": "Einige Patch-Optionen müssen gesetzt werden.",
-    "armv7WarningDialogText": "Das Patchen auf ARMv7-Geräten wird noch nicht unterstützt, es könnten Fehler auftreten. Trotzdem fortfahren?"
+    "requiredOptionDialogText": "Einige Patch-Optionen müssen gesetzt werden."
   },
   "appSelectorCard": {
     "widgetTitle": "App auswählen",
     "widgetTitleSelected": "Ausgewählte App",
     "widgetSubtitle": "Keine App ausgewählt",
     "noAppsLabel": "Keine Apps gefunden",
-    "anyVersion": "Beliebige Version",
-    "currentVersion": "Aktuell",
-    "suggestedVersion": "Empfohlen"
+    "anyVersion": "Beliebige Version"
   },
   "patchSelectorCard": {
     "widgetTitle": "Patches auswählen",
@@ -124,10 +111,7 @@
     "selectFolder": "Ordner auswählen",
     "requiredOption": "Einstellung dieser Option ist erforderlich",
     "unsupportedOption": "Dieser Vorgang ist nicht unterstützt.",
-    "requiredOptionNull": "Die folgenden Optionen müssen gesetzt sein:\n\n${options}",
-    "resetOptionsTooltip": "Patch-Optionen zurücksetzen",
-    "addOptions": "Option hinzufügen",
-    "selectOption": "Option auswählen"
+    "requiredOptionNull": "Die folgenden Optionen müssen gesetzt sein:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Die Auswahl dieses Patches kann zu Fehlern beim Patchen führen.\n\nApp-Version: ${packageVersion}\nUnterstützte Versionen:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Protokoll exportieren",
     "screenshotDetected": "Es wurde ein Screenshot erkannt. Wenn Sie versuchen, das Log zu teilen, teilen Sie stattdessen eine Textkopie.\n\nLog in die Zwischenablage kopieren?",
     "copiedToClipboard": "Das Protokoll wurde in die Zwischenablage kopiert",
-    "noExit": "Der Installer wird noch ausgeführt, kann nicht beendet werden...",
-    "widgetTitle": "Installer",
-    "shareButton": "Datei teilen"
+    "noExit": "Der Installer wird noch ausgeführt, kann nicht beendet werden..."
   },
   "settingsView": {
     "widgetTitle": "Einstellungen",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Keystore-Passwort",
     "selectKeystorePasswordHint": "Keystore-Passwort zur Signierung von Apps auswählen",
     "jsonSelectorErrorMessage": "Ausgewählte JSON-Datei kann nicht verwendet werden",
-    "keystoreSelectorErrorMessage": "Ausgewählte Keystore-Datei kann nicht verwendet werden",
-    "englishOption": "Englisch"
+    "keystoreSelectorErrorMessage": "Ausgewählte Keystore-Datei kann nicht verwendet werden"
   },
   "appInfoView": {
     "widgetTitle": "App Info",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "Die Installation ist aufgrund eines Verifizierungsproblems fehlgeschlagen.\n\nPassen Sie Ihre Sicherheitseinstellungen an und versuchen Sie es erneut.",
     "install_failed_version_downgrade_description": "Die Installation ist fehlgeschlagen, da die gepatchte App eine niedrigere Version als die installierte App ist.\n\nDie App deinstallieren und erneut versuchen?",
     "status_unknown_description": "Die Installation ist aus einem unbekannten Grund fehlgeschlagen. Bitte versuchen Sie es erneut."
-  },
-  "enabledLabel": "Aktiviert",
-  "disabledLabel": "Deaktiviert",
-  "installed": "Installiert: ${version}",
-  "options": "Optionen"
+  }
 }

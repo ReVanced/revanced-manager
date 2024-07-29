@@ -40,40 +40,27 @@
     "installingMessage": "Installerar uppdatering...",
     "errorDownloadMessage": "Det gick inte att ladda ner uppdateringen",
     "errorInstallMessage": "Det gick inte att installera uppdatering",
-    "noConnection": "Ingen internetanslutning",
-    "noUpdates": "Inga uppdateringar tillgängliga",
-    "WIP": "Arbete pågår...",
-    "checkUpdateDialogTitle": "Sök efter uppdateringar?",
-    "checkUpdateDialogText": "Vill du att ReVanced Manager ska söka efter uppdateringar automatiskt?",
-    "notificationTitle": "Uppdatering nerladdad",
-    "notificationText": "Tryck för att installera uppdateringen",
-    "updatesDisabled": "Uppdatering av en patchad app är för närvarande inaktiverad. Patcha appen igen."
+    "noConnection": "Ingen internetanslutning"
   },
   "applicationItem": {
     "infoButton": "Information"
   },
   "latestCommitCard": {
     "loadingLabel": "Laddar...",
-    "timeagoLabel": "${time} sedan",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Hanterare: ",
-    "updateButton": "Uppdateringshanterare"
+    "timeagoLabel": "${time} sedan"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "removedPatchesWarningDialogText": "Följande patchar har tagits bort sedan du senast använde dem.\n\n${patches}\n\nFortsätt ändå?",
-    "requiredOptionDialogText": "Vissa patchalternativ måste anges.",
-    "armv7WarningDialogText": "Patchning på ARMv7-enheter stöds inte ännu och det är med stor sannolikhet att det kommer att misslyckas. Fortsätta ändå?"
+    "requiredOptionDialogText": "Vissa patchalternativ måste anges."
   },
   "appSelectorCard": {
     "widgetTitle": "Välj en app",
     "widgetTitleSelected": "Välj app",
     "widgetSubtitle": "Ingen app vald",
     "noAppsLabel": "Inga applikationer hittades",
-    "anyVersion": "Valfri version",
-    "currentVersion": "Aktuell",
-    "suggestedVersion": "Rekommenderad"
+    "anyVersion": "Valfri version"
   },
   "patchSelectorCard": {
     "widgetTitle": "Välj patchar",
@@ -124,10 +111,7 @@
     "selectFolder": "Välj mapp",
     "requiredOption": "Inställning av detta alternativ krävs",
     "unsupportedOption": "Detta alternativ stöds ej",
-    "requiredOptionNull": "Följande alternativ måste anges:\n\n${options}",
-    "resetOptionsTooltip": "Återställ patchalternativ",
-    "addOptions": "Lägg till alternativ",
-    "selectOption": "Välj alternativ"
+    "requiredOptionNull": "Följande alternativ måste anges:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Denna patchen kan orsaka patchningsfel.\n\nAppversion: ${packageVersion}\nKompatibla versioner:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Exportera logg",
     "screenshotDetected": "En skärmdump har upptäckts. Om du försöker dela loggen, dela en kopia av texten i stället.\n\nKopiera loggen till urklipp?",
     "copiedToClipboard": "Kopierat logg till urklipp",
-    "noExit": "Installern körs fortfarande, kan inte avsluta...",
-    "widgetTitle": "Installerare",
-    "shareButton": "Dela fil"
+    "noExit": "Installern körs fortfarande, kan inte avsluta..."
   },
   "settingsView": {
     "widgetTitle": "Inställningar",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Lösenord för nyckelbutik",
     "selectKeystorePasswordHint": "Välj lösenord för nyckelbutiken som används för att signera appar",
     "jsonSelectorErrorMessage": "Det gick inte att använda vald JSON-fil",
-    "keystoreSelectorErrorMessage": "Det gick inte att använda vald nyckelbutiksfil",
-    "englishOption": "Engelska"
+    "keystoreSelectorErrorMessage": "Det gick inte att använda vald nyckelbutiksfil"
   },
   "appInfoView": {
     "widgetTitle": "Appinfo",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "Installationen misslyckades på grund av ett verifieringsproblem.\n\nJustera dina säkerhetsinställningar och försök igen.",
     "install_failed_version_downgrade_description": "Installationen misslyckades på grund av att den patchade appen var en lägre version än den installerade appen.\n\nAvinstallera appen och försök igen?",
     "status_unknown_description": "Installationen misslyckades på grund av en okänd anledning. Försök igen."
-  },
-  "enabledLabel": "Aktiverad",
-  "disabledLabel": "Inaktiverad",
-  "installed": "Installerad: ${version}",
-  "options": "Alternativ"
+  }
 }

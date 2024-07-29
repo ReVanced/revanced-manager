@@ -40,40 +40,27 @@
     "installingMessage": "Update wordt geïnstalleerd...",
     "errorDownloadMessage": "Update downloaden mislukt",
     "errorInstallMessage": "Update installeren mislukt",
-    "noConnection": "Geen internetverbinding",
-    "noUpdates": "Geen updates beschikbaar",
-    "WIP": "Bezig met uitvoeren...",
-    "checkUpdateDialogTitle": "Controleer op updates?",
-    "checkUpdateDialogText": "Wilt u dat ReVanced Manager automatisch op updates controleert?",
-    "notificationTitle": "Update gedownload",
-    "notificationText": "Tik om de update te installeren",
-    "updatesDisabled": "Bijwerken van een gepatchte app is momenteel uitgeschakeld. Patch de app opnieuw."
+    "noConnection": "Geen internetverbinding"
   },
   "applicationItem": {
     "infoButton": "Informatie"
   },
   "latestCommitCard": {
     "loadingLabel": "Bezig met laden...",
-    "timeagoLabel": "${time} geleden",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Beheerder: ",
-    "updateButton": "Manager bijwerken"
+    "timeagoLabel": "${time} geleden"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patchen",
     "removedPatchesWarningDialogText": "De volgende patches zijn verwijderd sinds de laatste keer dat je ze hebt gebruikt.\n\n${patches}\n\nToch doorgaan?",
-    "requiredOptionDialogText": "Er moeten enkele patch-opties worden ingesteld.",
-    "armv7WarningDialogText": "Patchen op ARMv7 apparaten zijn nog niet ondersteund en zou mogelijk kunnen misgaan. Toch verder gaan?"
+    "requiredOptionDialogText": "Er moeten enkele patch-opties worden ingesteld."
   },
   "appSelectorCard": {
     "widgetTitle": "Selecteer een app",
     "widgetTitleSelected": "Geselecteerde app",
     "widgetSubtitle": "Geen app geselecteerd",
     "noAppsLabel": "Geen applicatie gevonden",
-    "anyVersion": "Iedere versie",
-    "currentVersion": "Huidige",
-    "suggestedVersion": "Voorgesteld"
+    "anyVersion": "Iedere versie"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecteer patches",
@@ -124,10 +111,7 @@
     "selectFolder": "Map selecteren",
     "requiredOption": "Het instellen van deze optie is vereist",
     "unsupportedOption": "Deze optie wordt niet ondersteund",
-    "requiredOptionNull": "De volgende opties moeten worden ingesteld:\n\n${options}",
-    "resetOptionsTooltip": "Reset patch opties",
-    "addOptions": "Opties toevoegen",
-    "selectOption": "Selecteer optie"
+    "requiredOptionNull": "De volgende opties moeten worden ingesteld:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Het selecteren van deze patch kan leiden tot patch fouten.\n\nApp-versie: ${packageVersion}\nOndersteunde versies:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Logboek exporteren",
     "screenshotDetected": "Er is een schermafbeelding gedetecteerd. Als u probeert het logboek te delen, deel dan een tekstkopie.\n\nLog kopiëren naar klembord?",
     "copiedToClipboard": "Log gekopieerd naar klembord",
-    "noExit": "Het installatieprogramma is nog steeds actief, afsluiten is niet mogelijk...",
-    "widgetTitle": "Installatieprogramma",
-    "shareButton": "Bestand delen"
+    "noExit": "Het installatieprogramma is nog steeds actief, afsluiten is niet mogelijk..."
   },
   "settingsView": {
     "widgetTitle": "Instellingen",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Keystore wachtwoord",
     "selectKeystorePasswordHint": "Selecteer keystore wachtwoord gebruikt om apps te ondertekenen",
     "jsonSelectorErrorMessage": "Geselecteerde JSON kan niet gebruikt worden",
-    "keystoreSelectorErrorMessage": "Kan geselecteerde sleutelwinkelbestand niet gebruiken",
-    "englishOption": "Engels"
+    "keystoreSelectorErrorMessage": "Kan geselecteerde sleutelwinkelbestand niet gebruiken"
   },
   "appInfoView": {
     "widgetTitle": "App info",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "De installatie is mislukt door een verificatieprobleem.\n\nPas uw beveiligingsinstellingen aan en probeer het opnieuw.",
     "install_failed_version_downgrade_description": "De installatie is mislukt omdat de aangepaste app een lagere versie is dan de geïnstalleerde app.\n\nVerwijder de app en probeer het opnieuw?",
     "status_unknown_description": "De installatie is mislukt door een onbekende reden. Probeer het opnieuw."
-  },
-  "enabledLabel": "Ingeschakeld",
-  "disabledLabel": "Uitgeschakeld",
-  "installed": "Geïnstalleerd: ${version}",
-  "options": "Instellingen"
+  }
 }

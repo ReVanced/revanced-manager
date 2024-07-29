@@ -40,40 +40,27 @@
     "installingMessage": "Frissítés telepítése...",
     "errorDownloadMessage": "Frissítés letöltése sikertelen",
     "errorInstallMessage": "Frissítés telepítése sikertelen",
-    "noConnection": "Nincs internetkapcsolat",
-    "noUpdates": "Nincs elérhető frissítés",
-    "WIP": "Folyamatban...",
-    "checkUpdateDialogTitle": "Frissítések keresése?",
-    "checkUpdateDialogText": "Szeretné, hogy a ReVanced Manager automatikusan ellenőrizze a frissítéseket?",
-    "notificationTitle": "Frissítés letöltve",
-    "notificationText": "Koppintson a frissítés telepítéséhez",
-    "updatesDisabled": "A patchelt alkalmazások frissítése jelenleg nem lehetséges, ehelyett újra kell patchelni."
+    "noConnection": "Nincs internetkapcsolat"
   },
   "applicationItem": {
     "infoButton": "Infó"
   },
   "latestCommitCard": {
     "loadingLabel": "Betöltés...",
-    "timeagoLabel": "Frissítve: ${time}",
-    "patcherLabel": "Patchelő: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Manager frissítése"
+    "timeagoLabel": "Frissítve: ${time}"
   },
   "patcherView": {
     "widgetTitle": "Patchelő",
     "patchButton": "Patch",
     "removedPatchesWarningDialogText": "A következő patcheket a legutóbbi használatuk óta eltávolították.\n\n${patches}\n\nMindenképpen folytatja?",
-    "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani.",
-    "armv7WarningDialogText": "A patchelés az ARMv7 eszközökön még nem támogatott, és sikertelen lehet. Folytatja?"
+    "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani."
   },
   "appSelectorCard": {
     "widgetTitle": "Válasszon egy alkalmazást",
     "widgetTitleSelected": "Kiválasztott alkalmazás",
     "widgetSubtitle": "Nincs alkalmazás kiválasztva",
     "noAppsLabel": "Nem találhatóak alkalmazások",
-    "anyVersion": "Bármilyen verzió",
-    "currentVersion": "Jelenlegi",
-    "suggestedVersion": "Javasolt"
+    "anyVersion": "Bármilyen verzió"
   },
   "patchSelectorCard": {
     "widgetTitle": "Patchek kiválasztása",
@@ -121,11 +108,7 @@
     "selectFolder": "Mappa kiválasztása",
     "requiredOption": "Ez a beállítás kötelező",
     "unsupportedOption": "Ez az opció nem támogatott",
-    "requiredOptionNull": "A következő opciókat kell beállítani:\n\n${options}",
-    "resetOptionsTooltip": "Patch beállítások visszaállítása",
-    "addOptions": "Opciók hozzáadása",
-    "deselectPatch": "Patch kijelölésének törlése",
-    "selectOption": "Opció kiválasztása"
+    "requiredOptionNull": "A következő opciókat kell beállítani:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Ezt a patchet nem biztos hogy sikerül alkalmazni, mert más verzióhoz készült.\n\nAlkalmazás verzió: ${packageVersion}\nTámogatott verziók:\n${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Napló exportálása",
     "screenshotDetected": "Képernyőképet észleltünk. Ha megpróbálja megosztani a naplót, kérjük osszon meg helyette egy szöveges másolatot.\n\nA vágólapra másolja a naplót?",
     "copiedToClipboard": "A napló vágólapra másolva",
-    "noExit": "A telepítő még fut, nem lehet kilépni...",
-    "widgetTitle": "Telepítő",
-    "shareButton": "Fájl megosztása"
+    "noExit": "A telepítő még fut, nem lehet kilépni..."
   },
   "settingsView": {
     "widgetTitle": "Beállítások",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Kulcstár jelszó",
     "selectKeystorePasswordHint": "Válassza ki az alkalmazások aláírásához használt kulcstároló jelszavát",
     "jsonSelectorErrorMessage": "A kiválasztott JSON fájl nem használható",
-    "keystoreSelectorErrorMessage": "A kiválasztott kulcstároló fájl nem használható",
-    "englishOption": "Angol"
+    "keystoreSelectorErrorMessage": "A kiválasztott kulcstároló fájl nem használható"
   },
   "appInfoView": {
     "widgetTitle": "Alkalmazás információ",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "A telepítés ellenőrzési probléma miatt nem sikerült.\n\nMódosítsa a biztonsági beállításokat, és próbálja újra.",
     "install_failed_version_downgrade_description": "A telepítés meghiúsult, mert a patchelt alkalmazás régebbi verzió, mint a telepített alkalmazás.\n\nTávolítsa el az alkalmazást, és próbálja újra?",
     "status_unknown_description": "A telepítés ismeretlen ok miatt meghiúsult. Kérem próbálja újra."
-  },
-  "enabledLabel": "Engedélyezve",
-  "disabledLabel": "Letiltva",
-  "installed": "Telepített: ${version}",
-  "options": "Beállítások"
+  }
 }

@@ -40,40 +40,27 @@
     "installingMessage": "Güncelleme yükleniyor...",
     "errorDownloadMessage": "Güncelleme indirilemedi",
     "errorInstallMessage": "Güncelleme yüklenemedi",
-    "noConnection": "İnternet bağlantısı yok",
-    "noUpdates": "Yeni bir güncelleme yok",
-    "WIP": "Yapım aşamasında...",
-    "checkUpdateDialogTitle": "Güncellemeler kontrol edilsin mi?",
-    "checkUpdateDialogText": "ReVanced Manager'ın güncellemeleri otomatik olarak kontrol etmesini istiyor musunuz?",
-    "notificationTitle": "Güncelleme indirildi",
-    "notificationText": "Güncellemeyi yüklemek için tıklayın",
-    "updatesDisabled": "Yamalanmış bir uygulamayı güncellemek şu anda mümkün değil. Uygulamayı tekrardan yamalayın."
+    "noConnection": "İnternet bağlantısı yok"
   },
   "applicationItem": {
     "infoButton": "Bilgi"
   },
   "latestCommitCard": {
     "loadingLabel": "Yükleniyor...",
-    "timeagoLabel": "${time} önce",
-    "patcherLabel": "Yamalayıcı: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Manager'ı güncelle"
+    "timeagoLabel": "${time} önce"
   },
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
     "removedPatchesWarningDialogText": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam edilsin mi?",
-    "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor.",
-    "armv7WarningDialogText": "ARMv7 cihazlarda yamalama henüz desteklenmemektedir ve başarısız olabilir. Yine de devam edilsin mi?"
+    "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
   },
   "appSelectorCard": {
     "widgetTitle": "Bir uygulama seç",
     "widgetTitleSelected": "Seçilen uygulama",
     "widgetSubtitle": "Bir uygulama seçilmedi",
     "noAppsLabel": "Hiçbir uygulama bulunamadı",
-    "anyVersion": "Herhangi bir sürüm",
-    "currentVersion": "Şu anki",
-    "suggestedVersion": "Önerilen"
+    "anyVersion": "Herhangi bir sürüm"
   },
   "patchSelectorCard": {
     "widgetTitle": "Yamaları seçin",
@@ -121,11 +108,7 @@
     "selectFolder": "Klasör seç",
     "requiredOption": "Bu seçenek gereklidir",
     "unsupportedOption": "Bu seçenek desteklenmiyor",
-    "requiredOptionNull": "Aşağıdaki seçeneklerin ayarlanması gerekiyor:\n\n${options}",
-    "resetOptionsTooltip": "Yama seçeneklerini sıfırla",
-    "addOptions": "Seçenek ekle",
-    "deselectPatch": "Yamanın seçimini kaldır",
-    "selectOption": "Seçeneği seç"
+    "requiredOptionNull": "Aşağıdaki seçeneklerin ayarlanması gerekiyor:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Bu yamayı seçmek yamalama hatalarına sebep olabilir.\n\nUygulama sürümü: ${packageVersion}\nDesteklenen sürümler:\n${supportedVersions}",
@@ -149,9 +132,7 @@
     "exportLogButtonTooltip": "Log'u dışa aktar",
     "screenshotDetected": "Bir ekran görüntüsü algılandı. Log'u paylaşmaya çalışıyorsanız lütfen bunun yerine bir metin kopyasını paylaşın.\n\nLog panoya kopyalansın mı?",
     "copiedToClipboard": "Log panoya kopyalandı",
-    "noExit": "Yükleyici hâlâ çalışıyor, çıkış yapılamaz...",
-    "widgetTitle": "Yükleyici",
-    "shareButton": "Dosyayı paylaş"
+    "noExit": "Yükleyici hâlâ çalışıyor, çıkış yapılamaz..."
   },
   "settingsView": {
     "widgetTitle": "Ayarlar",
@@ -244,8 +225,7 @@
     "selectKeystorePassword": "Keystore şifresi",
     "selectKeystorePasswordHint": "Uygulamaları imzalamak için kullanılan keystore'un şifresini seçin",
     "jsonSelectorErrorMessage": "Seçilen JSON dosyası kullanılamıyor",
-    "keystoreSelectorErrorMessage": "Seçilen keystore dosyası kullanılamıyor",
-    "englishOption": "İngilizce"
+    "keystoreSelectorErrorMessage": "Seçilen keystore dosyası kullanılamıyor"
   },
   "appInfoView": {
     "widgetTitle": "Uygulama bilgisi",
@@ -294,9 +274,5 @@
     "install_failed_verification_failure_description": "Bir doğrulama sorunu nedeniyle kurulum başarısız oldu.\n\nGüvenlik ayarlarınızı değiştirin ve tekrar deneyin.",
     "install_failed_version_downgrade_description": "Yamalanmış uygulamanın sürümünün, kurulu uygulamadan daha düşük olması nedeniyle kurulum başarısız oldu.\n\nUygulamayı kaldırıp tekrar denemek ister misiniz?",
     "status_unknown_description": "Bilinmeyen bir nedenden dolayı kurulum başarısız oldu. Lütfen tekrar deneyin."
-  },
-  "enabledLabel": "Etkin",
-  "disabledLabel": "Devre dışı",
-  "installed": "Kurulu: ${version}",
-  "options": "Seçenekler"
+  }
 }

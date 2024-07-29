@@ -21,8 +21,7 @@
     "installingMessage": "กำลังติดตั้งอัปเดต...",
     "errorDownloadMessage": "ไม่สามารถดาวน์โหลดอัปเดตได้",
     "errorInstallMessage": "ไม่สามารถติดตั้งอัปเดตได้",
-    "noConnection": "ไม่​มี​การเชื่อม​ต่อ​อินเตอร์​เน็ต",
-    "updatesDisabled": "ขณะนี้การอัปเดตแอปที่ดัดแปลงถูกปิดใช้งานอยู่ ดัดแปลงแอปใหม่อีกครั้ง"
+    "noConnection": "ไม่​มี​การเชื่อม​ต่อ​อินเตอร์​เน็ต"
   },
   "applicationItem": {
     "infoButton": "ข้อมูล"
@@ -36,9 +35,7 @@
     "patchButton": "เริ่มการดัดแปลง"
   },
   "appSelectorCard": {
-    "noAppsLabel": "ไม่พบแอปพลิเคชัน",
-    "currentVersion": "ปัจจุบัน",
-    "suggestedVersion": "แนะนำ"
+    "noAppsLabel": "ไม่พบแอปพลิเคชัน"
   },
   "patchSelectorCard": {
     "widgetTitle": "เลือกการดัดแปลง",
@@ -65,7 +62,6 @@
     "noneTooltip": "เลิกเลือกการดัดแปลงทั้งหมด",
     "noPatchesFound": "ไม่พบการดัดแปลงสำหรับแอปที่เลือกไว้"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "การเลือกการดัดแปลงนี้อาจทำให้การดัดแปลงผิดพลาด\n\nเวอร์ชันปัจจุบัน: ${packageVersion}\nเวอร์ชันที่รองรับ:\n${supportedVersions}"
   },
@@ -124,8 +120,5 @@
   },
   "contributorsView": {
     "widgetTitle": "ผู้ช่วยเหลือโปรเจกต์"
-  },
-  "installErrorDialog": {},
-  "installed": "รุ่นที่ติดตั้ง${version}",
-  "options": "ตัวเลือกบทบาท"
+  }
 }

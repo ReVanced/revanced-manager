@@ -28,8 +28,7 @@
     "installingMessage": "Įdiegiamas atnaujinimas...",
     "errorDownloadMessage": "Nepavyksta atsisiųsti atnaujinimo",
     "errorInstallMessage": "Nepavyksta įdiegti atnaujinimo",
-    "noConnection": "Nėra interneto ryšio",
-    "updatesDisabled": "Šiuo metu pataisytą programėlę atnaujinti neleidžiama. Dar kartą pataisykite programėlę."
+    "noConnection": "Nėra interneto ryšio"
   },
   "applicationItem": {
     "infoButton": "Informacija"
@@ -44,9 +43,7 @@
     "requiredOptionDialogText": "Reikia nustatyti kai kurias pataisymų parinktis."
   },
   "appSelectorCard": {
-    "noAppsLabel": "Nerasta jokių programų",
-    "currentVersion": "Dabartinė",
-    "suggestedVersion": "Siūloma"
+    "noAppsLabel": "Nerasta jokių programų"
   },
   "patchSelectorCard": {
     "widgetTitle": "Pasirinkite pataisymus",
@@ -88,10 +85,7 @@
     "selectFolder": "Pasirinkti aplanką",
     "requiredOption": "Ši parinktis yra privaloma",
     "unsupportedOption": "Ši parinktis nepalaikoma",
-    "requiredOptionNull": "Reikia nustatyti šias parinktis:\n\n${options}",
-    "resetOptionsTooltip": "Iš naujo nustatyti pataisymų parinktis",
-    "addOptions": "Pridėti pasirinkimus",
-    "deselectPatch": "Atšaukti pataisymą"
+    "requiredOptionNull": "Reikia nustatyti šias parinktis:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Pasirinkus šį pataisymą, gali atsirasti pataisymo klaidų.\n\nProgramos versija: ${packageVersion}\nPalaikomos versijos:\n${supportedVersions}",
@@ -208,8 +202,5 @@
   },
   "contributorsView": {
     "widgetTitle": "Prisidėjusieji žmonės"
-  },
-  "installErrorDialog": {},
-  "installed": "Įdiegta: ${version}",
-  "options": "Nustatymai"
+  }
 }

@@ -40,40 +40,27 @@
     "installingMessage": "מתקין עדכון...",
     "errorDownloadMessage": "הורדת קובץ העדכון נכשלה",
     "errorInstallMessage": "לא ניתן להתקין את העדכון",
-    "noConnection": "אין חיבור לאינטרנט",
-    "noUpdates": "אין עדכונים זמינים",
-    "WIP": "עבודה בתהליך...",
-    "checkUpdateDialogTitle": "לבדוק עדכונים?",
-    "checkUpdateDialogText": "מעדיף ש-ReVanced Manager יבדוק עדכונים אוטומטית?",
-    "notificationTitle": "העדכון הורד",
-    "notificationText": "הקש כדי להתקין את העדכון",
-    "updatesDisabled": "עדכון אפליקציה מתוקנת מושבת כרגע. תקן שוב את האפליקציה."
+    "noConnection": "אין חיבור לאינטרנט"
   },
   "applicationItem": {
     "infoButton": "מידע"
   },
   "latestCommitCard": {
     "loadingLabel": "טוען...",
-    "timeagoLabel": "לפני ${time}",
-    "patcherLabel": "מתקן: ",
-    "managerLabel": "מנהל: ",
-    "updateButton": "עדכן את Manager"
+    "timeagoLabel": "לפני ${time}"
   },
   "patcherView": {
     "widgetTitle": "מתקן",
     "patchButton": "תיקון",
     "removedPatchesWarningDialogText": "התיקונים הבאים הוסרו מאז הפעם האחרונה שהשתמשת בהם.\n${patches}\nלהמשיך בכל זאת?",
-    "requiredOptionDialogText": "כמה אפשרויות תיקון חייבות להיקבע.",
-    "armv7WarningDialogText": "תיקון במכשירי ARMv7 לא נתמך כרגע ואולי יכשל. להמשיך בכל זאת?"
+    "requiredOptionDialogText": "כמה אפשרויות תיקון חייבות להיקבע."
   },
   "appSelectorCard": {
     "widgetTitle": "בחר אפליקציה",
     "widgetTitleSelected": "אפליקציה שנבחרה",
     "widgetSubtitle": "לא נבחרה אפליקציה",
     "noAppsLabel": "לא נמצאו יישומים",
-    "anyVersion": "כל גרסה",
-    "currentVersion": "נוֹכְחִי",
-    "suggestedVersion": "מוצע"
+    "anyVersion": "כל גרסה"
   },
   "patchSelectorCard": {
     "widgetTitle": "בחר תיקונים",
@@ -120,11 +107,7 @@
     "selectFolder": "בחר תיקייה",
     "requiredOption": "האפשרות הזו דרושה",
     "unsupportedOption": "האפשרות הזו אינה נתמכת",
-    "requiredOptionNull": "האפשרויות הבאות חייבות להיקבע:\n\n${options}",
-    "resetOptionsTooltip": "אפס אפשרויות תיקונים",
-    "addOptions": "הוסף אפשרויות",
-    "deselectPatch": "בטל את בחירת התיקון",
-    "selectOption": "בחירת אפשרות"
+    "requiredOptionNull": "האפשרויות הבאות חייבות להיקבע:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "בחירת תיקון זה עלול לגרום לשגיאות תיקון.\nגרסת יישום: ${packageVersion}\nגרסאות נתמכות:\n${supportedVersions}",
@@ -146,9 +129,7 @@
     "exportLogButtonTooltip": "יצא תיעוד אירועים",
     "screenshotDetected": "צילום מסך זוהה. אם אתה מנסה לשתף את תיעוד האירועים, אנא שתף העתק טקסט במקום.\n\nהעתקת תיעוד האירועים ללוח הגזירים?",
     "copiedToClipboard": "תיעוד האירועים הועתק ללוח הגזירים",
-    "noExit": "תוכנית ההתקנה עדיין פועלת, לא ניתן לצאת...",
-    "widgetTitle": "מתקין",
-    "shareButton": "שתף קובץ"
+    "noExit": "תוכנית ההתקנה עדיין פועלת, לא ניתן לצאת..."
   },
   "settingsView": {
     "widgetTitle": "הגדרות",
@@ -215,8 +196,7 @@
     "noKeystoreExportFileFound": "אין מפתח-אחסון כדי ליציא",
     "importKeystoreLabel": "יבוא מפתח-אחסון",
     "importedKeystore": "מפתח-אחסון מיובא",
-    "jsonSelectorErrorMessage": "לא ניתן להשתמש בקובץ JSON שנבחר",
-    "englishOption": "אנגלית"
+    "jsonSelectorErrorMessage": "לא ניתן להשתמש בקובץ JSON שנבחר"
   },
   "appInfoView": {
     "widgetTitle": "מידע אפליקציה",
@@ -260,9 +240,5 @@
     "install_failed_verification_failure_description": "ההתקנה נכשלה עקב בעיית אימות.\n\nשנה את הגדרות האבטחה שלך ונסה שוב.",
     "install_failed_version_downgrade_description": "ההתקנה נכשלה בגלל שהאפליקציה המתוקנת היא גרסה נמוכה יותר מהאפליקציה המותקנת.\n\nלהסיר את האפליקציה ולנסות שוב?",
     "status_unknown_description": "ההתקנה נכשלה מסיבה לא ידועה. בבקשה נסה שוב."
-  },
-  "enabledLabel": "הופעל",
-  "disabledLabel": "הושבת",
-  "installed": "מותקן: ${version}",
-  "options": "אפשרויות"
+  }
 }

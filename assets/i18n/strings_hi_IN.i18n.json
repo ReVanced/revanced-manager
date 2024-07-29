@@ -30,8 +30,7 @@
     "installingMessage": "अपडेट इंस्टॉल हो रहा है",
     "errorDownloadMessage": "अपडेट डाउनलोड करने मे असफल",
     "errorInstallMessage": "अपडेट इंस्टॉल करने में असफल",
-    "noConnection": "कोई इंटरनेट कनेक्शन नहीं",
-    "updatesDisabled": "पैच किए गए ऐप को अपडेट करना वर्तमान में अक्षम है।\nएप को फिर से पैच करें।"
+    "noConnection": "कोई इंटरनेट कनेक्शन नहीं"
   },
   "applicationItem": {
     "infoButton": "जानकारी"
@@ -45,9 +44,7 @@
     "patchButton": "पैच"
   },
   "appSelectorCard": {
-    "noAppsLabel": "कोई एप्लिकेशन नहीं मिला।",
-    "currentVersion": "वर्तमान",
-    "suggestedVersion": "सुझाव"
+    "noAppsLabel": "कोई एप्लिकेशन नहीं मिला।"
   },
   "patchSelectorCard": {
     "widgetTitle": "पैच चुने",
@@ -137,9 +134,5 @@
   },
   "contributorsView": {
     "widgetTitle": "योगदान कर्ता"
-  },
-  "installErrorDialog": {},
-  "enabledLabel": "सक्रिय",
-  "installed": "इंस्टॉल्ड: ${version}",
-  "options": "विकल्प"
+  }
 }

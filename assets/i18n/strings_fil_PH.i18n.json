@@ -25,8 +25,7 @@
     "updatesSubtitle": "Mga Pagbabago",
     "patchedSubtitle": "Naka-patch nga aplikasyon",
     "changeLaterSubtitle": "Pwede mo palitan ito sa settings mamaya.",
-    "downloadingMessage": "Nagda-download ng update...",
-    "noUpdates": "Walang pagbabagong mayroon"
+    "downloadingMessage": "Nagda-download ng update..."
   },
   "applicationItem": {
     "infoButton": "Impormasyon"
@@ -34,10 +33,6 @@
   "latestCommitCard": {
     "loadingLabel": "Naglo-load...",
     "timeagoLabel": "${time} ang nakalipas"
-  },
-  "patcherView": {},
-  "appSelectorCard": {
-    "currentVersion": "Ngayong Bersyon"
   },
   "patchSelectorCard": {
     "widgetEmptySubtitle": "Walang patches ang napili"
@@ -57,9 +52,6 @@
     "defaultChip": "Default",
     "noneChip": "Wala"
   },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "systemThemeLabel": "Sistema",
     "lightThemeLabel": "Liwanag",
@@ -78,11 +70,5 @@
     "uninstallDialogText": "Gusto mo bang i-alis ang aplikasyong ito?",
     "patchedDateHint": "${date} at ${time}",
     "appliedPatchesHint": "${quantity} ang naka-apply nga patches"
-  },
-  "contributorsView": {},
-  "installErrorDialog": {},
-  "enabledLabel": "Makaya",
-  "disabledLabel": "Hindi",
-  "installed": "Naka-install: ${version}",
-  "options": "Mga Pagpipilian"
+  }
 }

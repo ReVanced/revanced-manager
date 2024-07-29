@@ -40,40 +40,27 @@
     "installingMessage": "Оновлення встановлюєтся...",
     "errorDownloadMessage": "Неможливо завантажити оновлення",
     "errorInstallMessage": "Не вдалося встановити оновлення",
-    "noConnection": "Немає з’єднання з інтернетом",
-    "noUpdates": "Немає доступних оновлень",
-    "WIP": "В розробці...",
-    "checkUpdateDialogTitle": "Перевірити оновлення?",
-    "checkUpdateDialogText": "Бажаєте, щоб ReVanced Manager перевіряв оновлення автоматично?",
-    "notificationTitle": "Оновлення завантажено",
-    "notificationText": "Натисніть, щоб встановити оновлення",
-    "updatesDisabled": "Оновлення пропатченого застосунку наразі вимкнено. Пропатчіть застосунок ще раз."
+    "noConnection": "Немає з’єднання з інтернетом"
   },
   "applicationItem": {
     "infoButton": "Інформація"
   },
   "latestCommitCard": {
     "loadingLabel": "Завантаження...",
-    "timeagoLabel": "${time} тому",
-    "patcherLabel": "Патчер: ",
-    "managerLabel": "Менеджер: ",
-    "updateButton": "Оновити Менеджер"
+    "timeagoLabel": "${time} тому"
   },
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патчити",
     "removedPatchesWarningDialogText": "Наступні патчі було видалено з моменту останнього використання.\n\n${patches}\n\nВсе одно продовжити?",
-    "requiredOptionDialogText": "Потрібно встановити деякі параметри патчу.",
-    "armv7WarningDialogText": "Патчінг на пристроях ARMv7 ще не підтримується і може не спрацювати. Продовжити в будь-якому випадку?"
+    "requiredOptionDialogText": "Потрібно встановити деякі параметри патчу."
   },
   "appSelectorCard": {
     "widgetTitle": "Вибрати застосунок",
     "widgetTitleSelected": "Вибраний застосунок",
     "widgetSubtitle": "Застосунок не вибрано",
     "noAppsLabel": "Не знайдено жодного застосунку",
-    "anyVersion": "Будь-яка версія",
-    "currentVersion": "Поточна версія",
-    "suggestedVersion": "Запропоновано"
+    "anyVersion": "Будь-яка версія"
   },
   "patchSelectorCard": {
     "widgetTitle": "Вибрати патчі",
@@ -124,10 +111,7 @@
     "selectFolder": "Оберіть теку",
     "requiredOption": "Встановлення цього параметра є обов'язковим",
     "unsupportedOption": "Цей параметр не підтримується",
-    "requiredOptionNull": "Необхідно встановити наступні параметри:\n\n${options}",
-    "resetOptionsTooltip": "Скинути параметри патчу",
-    "addOptions": "Додати параметри",
-    "selectOption": "Вибрати параметр"
+    "requiredOptionNull": "Необхідно встановити наступні параметри:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Вибір цього патчу може призвести до помилок при встановленні патчу.\n\nВерсія застосунку: ${packageVersion}\nПідтримувані версії:\n${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Експортувати журнал",
     "screenshotDetected": "Виявлено знімок екрана. Якщо ви намагаєтеся поділитися журналом, будь ласка, діліться його текстовою копією.\n\nСкопіювати журнал у буфер обміну?",
     "copiedToClipboard": "Журнал скопійовано до буфера обміну",
-    "noExit": "Інсталятор все ще працює, неможливо вийти...",
-    "widgetTitle": "Інсталятор",
-    "shareButton": "Поділитися файлом"
+    "noExit": "Інсталятор все ще працює, неможливо вийти..."
   },
   "settingsView": {
     "widgetTitle": "Налаштування",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Пароль сховища ключів",
     "selectKeystorePasswordHint": "Виберіть пароль сховища ключів, що використовується для підписування застосунків",
     "jsonSelectorErrorMessage": "Неможливо використати вибраний JSON файл",
-    "keystoreSelectorErrorMessage": "Неможливо використати вибраний файл сховища ключів",
-    "englishOption": "Англійська"
+    "keystoreSelectorErrorMessage": "Неможливо використати вибраний файл сховища ключів"
   },
   "appInfoView": {
     "widgetTitle": "Про застосунок",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "Встановлення не вдалося через проблему перевірки.\n\nНалаштуйте параметри безпеки та повторіть спробу.",
     "install_failed_version_downgrade_description": "Встановлення не вдалося через те, що патчений застосунок мав старішу версію, ніж встановлений.\n\nВидалити застосунок та повторити спробу?",
     "status_unknown_description": "Встановлення не вдалося через невідому причину. Будь ласка спробуйте ще раз."
-  },
-  "enabledLabel": "Увімкнено",
-  "disabledLabel": "Вимкнуто",
-  "installed": "Установлено: ${version}",
-  "options": "Налаштування"
+  }
 }

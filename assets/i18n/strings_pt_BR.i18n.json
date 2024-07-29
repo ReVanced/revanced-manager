@@ -40,40 +40,27 @@
     "installingMessage": "Instalando atualização...",
     "errorDownloadMessage": "Não é possível baixar a atualização",
     "errorInstallMessage": "Não foi possível instalar a atualização",
-    "noConnection": "Sem conexão",
-    "noUpdates": "Nenhuma atualização encontrada",
-    "WIP": "Trabalho em progresso...",
-    "checkUpdateDialogTitle": "Procurar atualizações?",
-    "checkUpdateDialogText": "Você quer que o ReVanced Manager procure atualizações automaticamente?",
-    "notificationTitle": "Atualização baixada",
-    "notificationText": "Toque para instalar a atualização",
-    "updatesDisabled": "A opção de atualização de um aplicativo modificado está temporariamente desabilitada. Refaça o \"patch\" do aplicativo e tente novamente."
+    "noConnection": "Sem conexão"
   },
   "applicationItem": {
     "infoButton": "Informações"
   },
   "latestCommitCard": {
     "loadingLabel": "Carregando...",
-    "timeagoLabel": "há ${time}",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Gerenciador: ",
-    "updateButton": "Gerenciador de Atualizações"
+    "timeagoLabel": "há ${time}"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "removedPatchesWarningDialogText": "Os seguintes patches foram removidos desde a última vez que você os utilizou:\n\n${patches}\n\nContinuar mesmo assim?",
-    "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas.",
-    "armv7WarningDialogText": "Realizar patches em dispositivos ARMv7 ainda não é suportado e pode falhar. Continuar mesmo assim?"
+    "requiredOptionDialogText": "Algumas opções de patch tiveram que ser definidas."
   },
   "appSelectorCard": {
     "widgetTitle": "Selecione um app",
     "widgetTitleSelected": "App selecionado",
     "widgetSubtitle": "Nenhum app selecionado",
     "noAppsLabel": "Nenhum aplicativo foi encontrado",
-    "anyVersion": "Qualquer versão",
-    "currentVersion": "Atual",
-    "suggestedVersion": "Sugeridos/sugestões"
+    "anyVersion": "Qualquer versão"
   },
   "patchSelectorCard": {
     "widgetTitle": "Selecionar patches",
@@ -124,10 +111,7 @@
     "selectFolder": "Selecione a pasta",
     "requiredOption": "Definir esta opção é necessário",
     "unsupportedOption": "Essa opção não é suportada",
-    "requiredOptionNull": "As seguintes opções precisam ser definidas:\n\n${options}",
-    "resetOptionsTooltip": "Redefinir as opções de patch",
-    "addOptions": "Adicionar opções",
-    "selectOption": "Selecione uma opção"
+    "requiredOptionNull": "As seguintes opções precisam ser definidas:\n\n${options}"
   },
   "patchItem": {
     "unsupportedDialogText": "Selecionar esse patch pode resultar em erros de patchs\n\nVersão do app: ${packageVersion}\nVersões suportadas: ${supportedVersions}",
@@ -151,9 +135,7 @@
     "exportLogButtonTooltip": "Exportar log",
     "screenshotDetected": "Uma captura de tela foi detectada. Se está tentando compartilhar esse log, apenas faça a cópia do texto.\n\nCopiar o log para a área de transferência?",
     "copiedToClipboard": "Log copiado para a área de transferência",
-    "noExit": "O instalador ainda está em execução, não é possível sair...",
-    "widgetTitle": "Instalador",
-    "shareButton": "Share file"
+    "noExit": "O instalador ainda está em execução, não é possível sair..."
   },
   "settingsView": {
     "widgetTitle": "Configurações",
@@ -246,8 +228,7 @@
     "selectKeystorePassword": "Senha do keystore",
     "selectKeystorePasswordHint": "Selecione a senha de keystore usada para assinar aplicativos",
     "jsonSelectorErrorMessage": "Não é possível usar o arquivo JSON selecionado",
-    "keystoreSelectorErrorMessage": "Não é possível usar o arquivo keystore selecionado",
-    "englishOption": "English"
+    "keystoreSelectorErrorMessage": "Não é possível usar o arquivo keystore selecionado"
   },
   "appInfoView": {
     "widgetTitle": "Informações do aplicativo",
@@ -296,9 +277,5 @@
     "install_failed_verification_failure_description": "A instalação falhou devido a um problema de verificação.\n\nAjuste suas configurações de segurança e tente novamente.",
     "install_failed_version_downgrade_description": "A instalação falhou porque o app patcheado era uma versão mais baixa que o app instalado.\n\nDesinstalar o app e tentar de novo?",
     "status_unknown_description": "A instalação falhou por um motivo desconhecido. Por favor, tente novamente."
-  },
-  "enabledLabel": "Ativado",
-  "disabledLabel": "Desativado",
-  "installed": "Instalado: ${version}",
-  "options": "Opções"
+  }
 }
