@@ -3,40 +3,17 @@ package app.revanced.manager.ui.component.bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ContextualFlowRow
-import androidx.compose.foundation.layout.ContextualFlowRowOverflow
-import androidx.compose.foundation.layout.ContextualFlowRowOverflowScope
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Lightbulb
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -59,13 +36,12 @@ fun BundlePatchesDialog(
 ) {
     var informationCardVisible by remember { mutableStateOf(true) }
     var showAllVersions by remember { mutableStateOf(false) }
+    var showOptions by remember { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            dismissOnBackPress = true
+        onDismissRequest = onDismissRequest, properties = DialogProperties(
+            usePlatformDefaultWidth = false, dismissOnBackPress = true
         )
     ) {
         Scaffold(
@@ -91,21 +67,20 @@ fun BundlePatchesDialog(
             ) {
                 item {
                     AnimatedVisibility(visible = informationCardVisible) {
-                        NotificationCard(
-                            icon = Icons.Outlined.Lightbulb,
+                        NotificationCard(icon = Icons.Outlined.Lightbulb,
                             text = stringResource(R.string.tap_on_patches),
-                            onDismiss = { informationCardVisible = false }
-                        )
+                            onDismiss = { informationCardVisible = false })
                     }
                 }
 
                 state.patchBundleOrNull()?.let { bundle ->
                     items(bundle.patches.size) { bundleIndex ->
                         val patch = bundle.patches[bundleIndex]
-                        PatchItem(
-                            patch,
+                        PatchItem(patch,
                             showAllVersions,
-                            onExpandVersions = { showAllVersions = !showAllVersions })
+                            onExpandVersions = { showAllVersions = !showAllVersions },
+                            showOptions,
+                            onExpandOptions = { showOptions = !showOptions })
                     }
                 }
             }
@@ -115,124 +90,134 @@ fun BundlePatchesDialog(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PatchItem(patch: PatchInfo, expandVersions: Boolean, onExpandVersions: () -> Unit) {
+fun PatchItem(
+    patch: PatchInfo,
+    expandVersions: Boolean,
+    onExpandVersions: () -> Unit,
+    expandOptions: Boolean,
+    onExpandOptions: () -> Unit
+) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
+            .then(
+                if (patch.options.isNullOrEmpty()) Modifier else Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onExpandOptions() },
+            )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(
-                text = patch.name,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = patch.name,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                if (!patch.options.isNullOrEmpty()) {
+                    ArrowButton(expanded = expandOptions)
+                }
+            }
             patch.description?.let {
                 Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium
+                    text = it, style = MaterialTheme.typography.bodyMedium
                 )
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                patch.compatiblePackages?.forEach { compatiblePackage ->
-                    val packageName = compatiblePackage.packageName
-                    val versions = compatiblePackage.versions.orEmpty()
-                    val itemCount = if (versions.isEmpty()) 1 else versions.size + 1
-                    var maxLines by remember { mutableIntStateOf(1) }
+                if (!patch.compatiblePackages.isNullOrEmpty()) {
+                    patch.compatiblePackages.forEach { compatiblePackage ->
+                        val packageName = compatiblePackage.packageName
+                        val versions = compatiblePackage.versions.orEmpty().reversed()
+                        val itemCount = if (versions.isEmpty()) 1 else versions.size + 1
 
-                    val moreOrCollapseIndicator =
-                        @Composable { scope: ContextualFlowRowOverflowScope ->
-                            val remainingItems = itemCount - scope.shownItemCount
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
                             PatchInfoChip(
-                                text = if (remainingItems == 0) "Less" else "+$remainingItems",
-                                onClick = {
-                                    maxLines = if (remainingItems == 0) {
-                                        1
-                                    } else {
-                                        Int.MAX_VALUE
-                                    }
-                                }
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                text = "\uD83D\uDCE6 $packageName"
                             )
-                        }
 
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        PatchInfoChip(
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            text = "\uD83D\uDCE6 $packageName",
-                        )
-                        if (versions.isNotEmpty()) {
-                            if (expandVersions) {
-                                versions.forEach { version ->
+                            if (versions.isNotEmpty()) {
+                                if (expandVersions) {
+                                    versions.forEach { version ->
+                                        PatchInfoChip(
+                                            modifier = Modifier.align(Alignment.CenterVertically),
+                                            text = "\uD83C\uDFAF $version"
+                                        )
+                                    }
+                                } else {
                                     PatchInfoChip(
                                         modifier = Modifier.align(Alignment.CenterVertically),
-                                        text = "\uD83C\uDFAF $version"
+                                        text = "\uD83C\uDFAF ${versions.first()}"
                                     )
                                 }
-                            } else {
-                                PatchInfoChip(
-                                    modifier = Modifier.align(Alignment.CenterVertically),
-                                    text = "\uD83C\uDFAF ${versions.first()}"
-                                )
-                            }
-                            if (versions.size > 1) {
-                                PatchInfoChip(
-                                    onClick = onExpandVersions,
-                                    text = if (expandVersions) "Less" else "+${itemCount - 2}"
-                                )
-//                                ArrowButton(
-//                                    modifier = Modifier.align(Alignment.CenterVertically),
-//                                    expanded = expandVersions,
-//                                    onClick = onExpandVersions,
-//                                    rotationInitial = -90f,
-//                                    rotationFinal = 90f
-//                                )
+                                if (versions.size > 1) {
+                                    PatchInfoChip(
+                                        onClick = onExpandVersions,
+                                        text = if (expandVersions) "Less" else "+${itemCount - 2}"
+                                    )
+                                }
                             }
                         }
                     }
-
-                    ContextualFlowRow(
-                        itemCount = itemCount,
+                } else {
+                    Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        maxLines = maxLines,
-                        overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
-                            minRowsToShowCollapse = 2,
-                            expandIndicator = moreOrCollapseIndicator,
-                            collapseIndicator = moreOrCollapseIndicator
-                        ),
-                    ) { index ->
-                        if (index == 0) {
-                            PatchInfoChip(
-                                icon = {
-                                    Icon(
-                                        painterResource(R.drawable.ic_package),
-                                        contentDescription = null
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        PatchInfoChip(
+                            text = "\uD83D\uDCE6 Any package"
+                        )
+                        PatchInfoChip(
+                            text = "\uD83C\uDFAF Any version"
+                        )
+                    }
+                }
+            }
+            if (!patch.options.isNullOrEmpty()) {
+                AnimatedVisibility(visible = expandOptions) {
+                    val options = patch.options
+
+                    Column {
+                        options.forEachIndexed { i, option ->
+                            OutlinedCard(
+                                modifier = Modifier.fillMaxWidth(), colors = CardColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = MaterialTheme.colorScheme.onSurface,
+                                    disabledContainerColor = Color.Transparent,
+                                    disabledContentColor = MaterialTheme.colorScheme.onSurface
+                                ), shape = when {
+                                    i == 0 && options.lastIndex == 0 -> RoundedCornerShape(8.dp)
+                                    i == 0 -> RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+                                    i == options.lastIndex -> RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                                    else -> RoundedCornerShape(0.dp)
+                                }
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                                ) {
+                                    Text(
+                                        text = option.title,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = MaterialTheme.colorScheme.primary
                                     )
-                                },
-                                modifier = Modifier.align(Alignment.CenterVertically),
-                                onClick = { /* TODO: Handle click event */ },
-                                text = packageName
-                            )
-                        } else {
-                            PatchInfoChip(
-                                icon = {
-                                    Icon(
-                                        painterResource(R.drawable.ic_bullseye),
-                                        contentDescription = null
+                                    Text(
+                                        text = option.description, style = MaterialTheme.typography.bodyMedium
                                     )
-                                },
-                                modifier = Modifier.align(Alignment.CenterVertically),
-                                onClick = { /* TODO: Handle click event */ },
-                                text = "${versions.elementAt(index - 1)}"
-                            )
+                                }
+                            }
                         }
                     }
                 }
@@ -243,10 +228,7 @@ fun PatchItem(patch: PatchInfo, expandVersions: Boolean, onExpandVersions: () ->
 
 @Composable
 fun PatchInfoChip(
-    modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null,
-    text: String,
-    icon: @Composable (() -> Unit)? = null
+    modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, text: String, icon: @Composable (() -> Unit)? = null
 ) {
     val shape = RoundedCornerShape(8.0.dp)
     val cardModifier = if (onClick != null) {
@@ -258,15 +240,12 @@ fun PatchInfoChip(
     }
 
     OutlinedCard(
-        modifier = modifier.then(cardModifier),
-        colors = CardColors(
+        modifier = modifier.then(cardModifier), colors = CardColors(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = MaterialTheme.colorScheme.onSurface
-        ),
-        shape = shape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+        ), shape = shape, border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.20f))
     ) {
         Row(
             modifier = Modifier.padding(8.dp),
@@ -277,83 +256,9 @@ fun PatchInfoChip(
                 text,
                 overflow = TextOverflow.Ellipsis,
                 softWrap = false,
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
-//    InputChip(
-//        label = {
-//            Text(
-//                text,
-//                overflow = TextOverflow.Ellipsis,
-//                softWrap = false,
-//                style = MaterialTheme.typography.labelLarge
-//            )
-//        },
-//        selected = false,
-//        onClick = onClick
-//    )
-//    SuggestionChip(
-//        label = {
-//            Text(
-//                text,
-//                overflow = TextOverflow.Ellipsis,
-//                softWrap = false,
-//                style = MaterialTheme.typography.labelLarge
-//            )
-//        },
-//        onClick = onClick
-//    )
-//    ElevatedSuggestionChip(
-//        label = {
-//            Text(
-//                text,
-//                overflow = TextOverflow.Ellipsis,
-//                softWrap = false,
-//                style = MaterialTheme.typography.labelLarge
-//            )
-//        },
-//        onClick = onClick
-//    )
-//    FilterChip(
-//        label = {
-//            Text(
-//                text,
-//                overflow = TextOverflow.Ellipsis,
-//                softWrap = false,
-//                style = MaterialTheme.typography.labelLarge
-//            )
-//        },
-//        selected = false,
-//        onClick = onClick
-//    )
-
-//    AssistChip(
-//        modifier = modifier,
-//        onClick = onClick,
-//        leadingIcon = icon,
-//        label = {
-//            Text(
-//                text,
-//                overflow = TextOverflow.Ellipsis,
-//                softWrap = false,
-//                style = MaterialTheme.typography.labelLarge
-//            )
-//        },
-//        border = AssistChipDefaults.assistChipBorder(
-//            true,
-//            MaterialTheme.colorScheme.outlineVariant
-//        )
-//    )
-//    ElevatedAssistChip(
-//        label = {
-//            Text(
-//                text,
-//                overflow = TextOverflow.Ellipsis,
-//                softWrap = false,
-//                style = MaterialTheme.typography.labelLarge
-//            )
-//        },
-//        onClick = onClick
-//    )
 }
