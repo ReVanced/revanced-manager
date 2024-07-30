@@ -16,7 +16,7 @@ import app.revanced.manager.R
 fun ArrowButton(
     modifier: Modifier = Modifier,
     expanded: Boolean,
-    onClick: (() -> Unit)?,
+    onClick: (() -> Unit)? = null,
     rotationInitial: Float = 0f,
     rotationFinal: Float = 180f
 ) {
