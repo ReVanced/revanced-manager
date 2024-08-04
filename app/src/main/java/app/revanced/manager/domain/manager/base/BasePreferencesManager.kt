@@ -56,7 +56,7 @@ class EditorContext(private val prefs: MutablePreferences) {
 
 abstract class Preference<T>(
     private val dataStore: DataStore<Preferences>,
-    protected val default: T
+    val default: T
 ) {
     internal abstract fun Preferences.read(): T
     internal abstract fun MutablePreferences.write(value: T)

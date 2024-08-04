@@ -69,11 +69,6 @@ fun SelectedAppInfoScreen(
             patches.values.sumOf { it.size }
         }
     }
-    val availablePatchCount by remember {
-        derivedStateOf {
-            bundles.sumOf { it.patchCount }
-        }
-    }
 
     val navController =
         rememberNavController<SelectedAppInfoDestination>(startDestination = SelectedAppInfoDestination.Main)
@@ -111,7 +106,6 @@ fun SelectedAppInfoScreen(
                     navController.navigate(SelectedAppInfoDestination.VersionSelector)
                 },
                 onBackClick = onBackClick,
-                availablePatchCount = availablePatchCount,
                 selectedPatchCount = selectedPatchCount,
                 packageName = packageName,
                 version = version,
@@ -154,7 +148,6 @@ private fun SelectedAppInfoScreen(
     onPatchSelectorClick: () -> Unit,
     onVersionSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
-    availablePatchCount: Int,
     selectedPatchCount: Int,
     packageName: String,
     version: String,
@@ -182,7 +175,7 @@ private fun SelectedAppInfoScreen(
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
                 Text(
-                    stringResource(R.string.selected_app_meta, version, availablePatchCount),
+                    stringResource(R.string.selected_app_meta, version),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )
