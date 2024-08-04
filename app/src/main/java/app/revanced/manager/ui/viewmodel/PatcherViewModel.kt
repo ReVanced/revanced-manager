@@ -366,10 +366,13 @@ class PatcherViewModel(
                             rootInstaller.uninstall(packageName)
                         } catch (_: Exception) {
                         }
+                        isInstalling = false
                     }
                 }
             }
-        } catch(_: Exception) {
+        } catch(e: Exception) {
+            Log.e(tag, "Failed to install", e)
+            app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
             isInstalling = false
         }
     }
