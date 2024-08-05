@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,7 +29,6 @@ import app.revanced.manager.domain.bundles.PatchBundleSource
 import app.revanced.manager.patcher.patch.PatchInfo
 import app.revanced.manager.ui.component.ArrowButton
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
-import app.revanced.manager.ui.component.NotificationCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,15 +67,6 @@ fun BundlePatchesDialog(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                item {
-                    AnimatedVisibility(visible = informationCardVisible) {
-                        NotificationCard(icon = Icons.Outlined.Lightbulb,
-                            text = stringResource(R.string.tap_on_patches),
-                            onDismiss = { informationCardVisible = false }
-                        )
-                    }
-                }
-
                 state.patchBundleOrNull()?.let { bundle ->
                     items(bundle.patches.size) { bundleIndex ->
                         val patch = bundle.patches[bundleIndex]
