@@ -64,6 +64,12 @@ fun UpdatesSettingsScreen(
                 headline = R.string.update_checking_manager,
                 description = R.string.update_checking_manager_description
             )
+
+            BooleanItem(
+                preference = vm.showManagerUpdateDialogOnLaunch,
+                headline = R.string.show_manager_update_dialog_on_launch,
+                description = R.string.update_checking_manager_description
+            )
         }
     }
 }

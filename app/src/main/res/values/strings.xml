@@ -12,9 +12,9 @@
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
     <string name="select_app">Select an app</string>
-    <string name="select_patches">Select patches</string>
+    <string name="patches_selected">%1$d/%2$d selected</string>
 
-    <string name="unsupported_architecture_warning">Patching on ARMv7 devices is not yet supported and will most likely fail.</string>
+    <string name="unsupported_architecture_warning">Patching on this device architecture is unsupported and will most likely fail.</string>
 
     <string name="import_">Import</string>
     <string name="import_bundle">Import patch bundle</string>
@@ -33,7 +33,7 @@
     <string name="bundle_name_default">Default</string>
     <string name="bundle_name_fallback">Unnamed</string>
 
-    <string name="selected_app_meta">%1$s • %2$d available patches</string>
+    <string name="selected_app_meta">%1$s</string>
 
     <string name="patch_item_description">Start patching the application</string>
     <string name="patch_selector_item">Patch selection and options</string>
@@ -158,10 +158,12 @@
     <string name="debug_logs_export_failed">Failed to export logs</string>
     <string name="debug_logs_export_success">Exported logs</string>
     <string name="api_url">API URL</string>
+    <string name="api_url_description">The API used to download necessary files.</string>
     <string name="api_url_dialog_title">Set custom API URL</string>
-    <string name="api_url_dialog_description">You may have issues with features when using a custom API URL.</string>
-    <string name="api_url_dialog_warning">Only use API\'s you trust!</string>
+    <string name="api_url_dialog_description">Set the API URL of ReVanced Manager. ReVanced Manager uses the API to download patches and updates.</string>
+    <string name="api_url_dialog_warning">ReVanced Manager connects to the API to download patches and updates. Make sure that you trust it.</string>
     <string name="api_url_dialog_save">Set</string>
+    <string name="api_url_dialog_reset">Reset API URL</string>
     <string name="device">Device</string>
     <string name="device_android_version">Android version</string>
     <string name="device_model">Model</string>
@@ -191,7 +193,6 @@
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
-    <string name="unsupported_app">Unsupported app</string>
     <string name="unsupported_patches">Unsupported patches</string>
     <string name="universal_patches">Universal patches</string>
     <string name="patch_selection_reset_toast">Patch selection and options has been reset to recommended defaults</string>
@@ -205,7 +206,7 @@
     <string name="universal">Universal</string>
     <string name="unsupported">Unsupported</string>
     <string name="search_patches">Patch name</string>
-    <string name="app_not_supported">Some of the patches do not support this app version (%1$s). The patches only support the following version(s): %2$s.</string>
+    <string name="app_not_supported">This patch is not compatible with the selected app version (%1$s).\n\nIt only supports the following version(s): %2$s.</string>
     <string name="continue_with_version">Continue with this version?</string>
     <string name="version_not_supported">Not all patches support this version (%s). Do you want to continue anyway?</string>
     <string name="download_application">Download application?</string>
@@ -319,9 +320,9 @@
     <string name="install_update_manager_failed">Failed to install update</string>
     <string name="manual_update_check">Check for updates</string>
     <string name="manual_update_check_description">Manually check for updates</string>
-    <string name="update_checking_manager">Update checking</string>
+    <string name="update_checking_manager">Auto check for updates</string>
     <string name="update_checking_manager_description">Check for new versions of ReVanced Manager when the application starts</string>
-    <string name="changelog">Changelog</string>
+    <string name="changelog">View changelogs</string>
     <string name="changelog_loading">Loading changelog</string>
     <string name="changelog_download_fail">Failed to download changelog: %s</string>
     <string name="changelog_description">Check out the latest changes in this update</string>
@@ -368,4 +369,9 @@
     <string name="add_patch_bundle">Add patch bundle</string>
     <string name="bundle_url">Bundle URL</string>
     <string name="auto_update">Auto update</string>
+    <string name="unsupported_patches_dialog">These patches are not compatible with the selected app version (%1$s).\n\nClick on the patches to see more details.</string>
+    <string name="unsupported_patch">Unsupported patch</string>
+    <string name="never_show_again">Never show again</string>
+    <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
+    <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
 </resources>
