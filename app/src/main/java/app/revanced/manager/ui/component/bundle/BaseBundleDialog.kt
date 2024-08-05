@@ -5,7 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Sell
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,8 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -41,18 +41,61 @@ fun BaseBundleDialog(
     ColumnWithScrollbar(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
             .then(modifier),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (name != null) {
-            OutlinedTextField(
+        Column(
+            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(stringResource(R.string.bundle_input_name)) },
-                value = name,
-                onValueChange = {
-                    if (it.length in 1..19) onNameChange?.invoke(it)
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Inventory2,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(32.dp)
+                )
+                name?.let {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(800)),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 2.dp)
+            ) {
+                version?.let {
+                    Tag(
+                        Icons.Outlined.Sell, it
+                    )
+                }
+                Tag(
+                    Icons.Outlined.Extension, patchCount.toString()
+                )
+            }
+        }
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant
+        )
+
+        if (remoteUrl != null) {
+            BundleListItem(headlineText = stringResource(R.string.bundle_auto_update),
+                supportingText = stringResource(R.string.bundle_auto_update_description),
+                trailingContent = {
+                    Switch(
+                        checked = autoUpdate, onCheckedChange = onAutoUpdateChange
+                    )
                 },
+                modifier = Modifier.clickable {
+                    onAutoUpdateChange(!autoUpdate)
+                }
             )
         }
 
@@ -61,8 +104,7 @@ fun BaseBundleDialog(
                 mutableStateOf(false)
             }
             if (showUrlInputDialog) {
-                TextInputDialog(
-                    initial = url,
+                TextInputDialog(initial = url,
                     title = stringResource(R.string.bundle_input_source_url),
                     onDismissRequest = { showUrlInputDialog = false },
                     onConfirm = {
@@ -73,83 +115,17 @@ fun BaseBundleDialog(
                         if (it.isEmpty()) return@TextInputDialog false
 
                         URLUtil.isValidUrl(it)
-                    }
-                )
+                    })
             }
 
-            BundleListItem(
-                modifier = Modifier.clickable(enabled = onRemoteUrlChange != null) {
-                    showUrlInputDialog = true
-                },
-                headlineText = stringResource(R.string.bundle_input_source_url),
-                supportingText = url.ifEmpty { stringResource(R.string.field_not_set) }
-            )
+            BundleListItem(modifier = Modifier.clickable(enabled = onRemoteUrlChange != null) {
+                showUrlInputDialog = true
+            }, headlineText = stringResource(R.string.bundle_input_source_url), supportingText = url.ifEmpty {
+                stringResource(R.string.field_not_set)
+            })
         }
 
         extraFields()
-
-        if (remoteUrl != null) {
-            BundleListItem(
-                headlineText = stringResource(R.string.bundle_auto_update),
-                supportingText = stringResource(R.string.bundle_auto_update_description),
-                trailingContent = {
-                    Switch(
-                        checked = autoUpdate,
-                        onCheckedChange = onAutoUpdateChange
-                    )
-                },
-                modifier = Modifier.clickable {
-                    onAutoUpdateChange(!autoUpdate)
-                }
-            )
-        }
-
-        OutlinedCard {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                Text(stringResource(R.string.bundle_information))
-                version?.let {
-                    BundleInfoItem(
-                        text = { Text(it,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant) },
-                        icon = Icons.Outlined.Sell
-                    )
-                }
-                BundleInfoItem(
-                    text = {
-                        if (remoteUrl == null) {
-                            Text(stringResource(R.string.local),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        } else {
-                            Text(stringResource(R.string.remote),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    },
-                    icon = Icons.Outlined.Folder
-                )
-                patchCount.let {
-                    BundleInfoItem(
-                        text = {
-                            Text(
-                                pluralStringResource(
-                                    R.plurals.bundle_patches_available,
-                                    it,
-                                    it
-                                ),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        },
-                        icon = Icons.Outlined.Extension
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -170,5 +146,24 @@ fun BundleInfoItem(
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         text()
+    }
+}
+
+@Composable
+private fun Tag(icon: ImageVector, text: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+            tint = MaterialTheme.colorScheme.outline,
+        )
+        Text(
+            text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.outline,
+        )
     }
 }
