@@ -163,13 +163,6 @@ fun AdvancedSettingsScreen(
                             ClipData.newPlainText("Device Information", deviceContent)
                         )
 
-                        /* TODO: Investigate & Testing
-                            https://developer.android.com/develop/ui/views/touch-and-input/copy-paste#duplicate-notifications
-                            Android would like us to show Toast for API 32 or lower.
-
-                            Some custom skin don't actually support this.
-                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
-                        */
                         Toast.makeText(context, R.string.toast_copied_to_clipboard, Toast.LENGTH_SHORT).show()
                     }
                 ) {
