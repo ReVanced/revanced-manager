@@ -9,7 +9,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,9 +38,9 @@ fun BundlePatchesDialog(
     onDismissRequest: () -> Unit,
     bundle: PatchBundleSource,
 ) {
-    var informationCardVisible by remember { mutableStateOf(true) }
-    var showAllVersions by remember { mutableStateOf(false) }
-    var showOptions by remember { mutableStateOf(false) }
+    var informationCardVisible by rememberSaveable { mutableStateOf(true) }
+    var showAllVersions by rememberSaveable { mutableStateOf(false) }
+    var showOptions by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     Dialog(
@@ -69,7 +73,8 @@ fun BundlePatchesDialog(
                     AnimatedVisibility(visible = informationCardVisible) {
                         NotificationCard(icon = Icons.Outlined.Lightbulb,
                             text = stringResource(R.string.tap_on_patches),
-                            onDismiss = { informationCardVisible = false })
+                            onDismiss = { informationCardVisible = false }
+                        )
                     }
                 }
 
@@ -80,7 +85,8 @@ fun BundlePatchesDialog(
                             showAllVersions,
                             onExpandVersions = { showAllVersions = !showAllVersions },
                             showOptions,
-                            onExpandOptions = { showOptions = !showOptions })
+                            onExpandOptions = { showOptions = !showOptions }
+                        )
                     }
                 }
             }
@@ -103,7 +109,7 @@ fun PatchItem(
             .then(
                 if (patch.options.isNullOrEmpty()) Modifier else Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable { onExpandOptions() },
+                    .clickable(onClick = onExpandOptions),
             )
     ) {
         Column(
@@ -137,7 +143,6 @@ fun PatchItem(
                     patch.compatiblePackages.forEach { compatiblePackage ->
                         val packageName = compatiblePackage.packageName
                         val versions = compatiblePackage.versions.orEmpty().reversed()
-                        val itemCount = if (versions.isEmpty()) 1 else versions.size + 1
 
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -145,7 +150,7 @@ fun PatchItem(
                         ) {
                             PatchInfoChip(
                                 modifier = Modifier.align(Alignment.CenterVertically),
-                                text = "\uD83D\uDCE6 $packageName"
+                                text = "$PACKAGE_ICON $packageName"
                             )
 
                             if (versions.isNotEmpty()) {
@@ -153,19 +158,19 @@ fun PatchItem(
                                     versions.forEach { version ->
                                         PatchInfoChip(
                                             modifier = Modifier.align(Alignment.CenterVertically),
-                                            text = "\uD83C\uDFAF $version"
+                                            text = "$VERSION_ICON $version"
                                         )
                                     }
                                 } else {
                                     PatchInfoChip(
                                         modifier = Modifier.align(Alignment.CenterVertically),
-                                        text = "\uD83C\uDFAF ${versions.first()}"
+                                        text = "$VERSION_ICON ${versions.first()}"
                                     )
                                 }
                                 if (versions.size > 1) {
                                     PatchInfoChip(
                                         onClick = onExpandVersions,
-                                        text = if (expandVersions) "Less" else "+${itemCount - 2}"
+                                        text = if (expandVersions) stringResource(R.string.less) else "+${versions.size - 1}"
                                     )
                                 }
                             }
@@ -177,10 +182,10 @@ fun PatchItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         PatchInfoChip(
-                            text = "\uD83D\uDCE6 Any package"
+                            text = "$PACKAGE_ICON ${stringResource(R.string.any_package)}"
                         )
                         PatchInfoChip(
-                            text = "\uD83C\uDFAF Any version"
+                            text = "$VERSION_ICON ${stringResource(R.string.any_version)}"
                         )
                     }
                 }
@@ -228,7 +233,10 @@ fun PatchItem(
 
 @Composable
 fun PatchInfoChip(
-    modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, text: String, icon: @Composable (() -> Unit)? = null
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    text: String,
+    icon: @Composable (() -> Unit)? = null
 ) {
     val shape = RoundedCornerShape(8.0.dp)
     val cardModifier = if (onClick != null) {
@@ -245,7 +253,9 @@ fun PatchInfoChip(
             contentColor = MaterialTheme.colorScheme.onSurface,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = MaterialTheme.colorScheme.onSurface
-        ), shape = shape, border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.20f))
+        ),
+        shape = shape,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.20f))
     ) {
         Row(
             modifier = Modifier.padding(8.dp),
@@ -262,3 +272,6 @@ fun PatchInfoChip(
         }
     }
 }
+
+const val PACKAGE_ICON = "\uD83D\uDCE6"
+const val VERSION_ICON = "\uD83C\uDFAF"
