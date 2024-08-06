@@ -55,9 +55,11 @@ class PatcherViewModel extends BaseViewModel {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(t.notice),
-          content: Text(
-            t.patcherView.removedPatchesWarningDialogText(
-              patches: removedPatches.join('\n'),
+          content: SingleChildScrollView(
+            child: Text(
+              t.patcherView.removedPatchesWarningDialogText(
+                patches: removedPatches.join('\n'),
+              ),
             ),
           ),
           actions: <Widget>[
