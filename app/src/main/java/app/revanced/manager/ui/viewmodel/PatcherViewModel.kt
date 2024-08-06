@@ -217,7 +217,8 @@ class PatcherViewModel(
 
     init { // TODO: navigate away when system-initiated process death is detected because it is not possible to recover from it.
         ContextCompat.registerReceiver(
-            app, installerBroadcastReceiver,
+            app,
+            installerBroadcastReceiver,
             IntentFilter().apply {
                 addAction(InstallService.APP_INSTALL_ACTION)
                 addAction(UninstallService.APP_UNINSTALL_ACTION)
