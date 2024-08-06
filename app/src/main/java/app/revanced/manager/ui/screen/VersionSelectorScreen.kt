@@ -83,7 +83,12 @@ fun VersionSelectorScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.select_version)) },
-                icon = { Icon(Icons.Default.Check, null) },
+                icon = {
+                    Icon(
+                        Icons.Default.Check,
+                        stringResource(R.string.select_version)
+                    )
+                },
                 expanded = lazyListState.isScrollingUp,
                 onClick = { viewModel.selectedVersion?.let(onAppClick) }
             )

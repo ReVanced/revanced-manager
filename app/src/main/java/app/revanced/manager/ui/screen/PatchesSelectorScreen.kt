@@ -162,7 +162,7 @@ fun PatchesSelectorScreen(
     if (showSelectionWarning) {
         SelectionWarningDialog(onDismiss = { showSelectionWarning = false })
     }
-    vm.pendingUniversalPatchAction?.let { 
+    vm.pendingUniversalPatchAction?.let {
         UniversalPatchWarningDialog(
             onCancel = vm::dismissUniversalPatchWarning,
             onConfirm = vm::confirmUniversalPatchWarning
@@ -295,8 +295,14 @@ fun PatchesSelectorScreen(
 
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.save)) },
-                icon = { Icon(Icons.Outlined.Save, null) },
-                expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp ?: true,
+                icon = {
+                    Icon(
+                        Icons.Outlined.Save,
+                        stringResource(R.string.save)
+                    )
+                },
+                expanded = patchLazyListStates.getOrNull(pagerState.currentPage)?.isScrollingUp
+                    ?: true,
                 onClick = {
                     // TODO: only allow this if all required options have been set.
                     onSave(vm.getCustomSelection(), vm.getOptions())
@@ -566,7 +572,13 @@ private fun OptionsDialog(
                     if (values == null || !values.contains(key)) option.default else values[key]
 
                 @Suppress("UNCHECKED_CAST")
-                OptionItem(option = option as Option<Any>, value = value, setValue = { set(key, it) })
+                OptionItem(
+                    option = option as Option<Any>,
+                    value = value,
+                    setValue = {
+                        set(key, it)
+                    }
+                )
             }
         }
     }
