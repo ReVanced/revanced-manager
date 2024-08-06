@@ -373,4 +373,5 @@
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
     <string name="bundle_information">Bundle information</string>
+    <string name="view_patches">View patches</string>
 </resources>

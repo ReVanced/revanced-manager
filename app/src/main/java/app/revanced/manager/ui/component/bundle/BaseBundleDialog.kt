@@ -4,6 +4,7 @@ import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Sell
@@ -28,7 +29,6 @@ fun BaseBundleDialog(
     modifier: Modifier = Modifier,
     isDefault: Boolean,
     name: String?,
-    onNameChange: ((String) -> Unit)? = null,
     remoteUrl: String?,
     onRemoteUrlChange: ((String) -> Unit)? = null,
     patchCount: Int,
@@ -81,6 +81,7 @@ fun BaseBundleDialog(
                 )
             }
         }
+
         HorizontalDivider(
             modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant
         )
@@ -123,6 +124,23 @@ fun BaseBundleDialog(
             }, headlineText = stringResource(R.string.bundle_input_source_url), supportingText = url.ifEmpty {
                 stringResource(R.string.field_not_set)
             })
+        }
+
+        val patchesClickable = patchCount > 0
+        BundleListItem(
+            headlineText = stringResource(R.string.patches),
+            supportingText = stringResource(R.string.view_patches),
+            modifier = Modifier.clickable(
+                enabled = patchesClickable,
+                onClick = onPatchesClick
+            )
+        ) {
+            if (patchesClickable) {
+                Icon(
+                    Icons.AutoMirrored.Outlined.ArrowRight,
+                    stringResource(R.string.patches)
+                )
+            }
         }
 
         extraFields()
