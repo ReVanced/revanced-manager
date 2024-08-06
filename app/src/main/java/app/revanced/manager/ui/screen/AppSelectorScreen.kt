@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,19 +32,19 @@ import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: (packageName: String, version: String?) -> Unit,
-    onStorageClick: (SelectedApp.Local) -> Unit,
+    onSelect: (SelectedApp) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
 ) {
-    SideEffect {
-        vm.onStorageClick = onStorageClick
+    EventEffect(flow = vm.appSelectionFlow) {
+        onSelect(it)
     }
 
     val pickApkLauncher =
@@ -90,7 +89,7 @@ fun AppSelectorScreen(
                     ) { app ->
                         ListItem(
                             modifier = Modifier.clickable {
-                                onAppClick(
+                                vm.selectApp(
                                     app.packageName,
                                     suggestedVersions[app.packageName]
                                 )
@@ -190,7 +189,7 @@ fun AppSelectorScreen(
                 ) { app ->
                     ListItem(
                         modifier = Modifier.clickable {
-                            onAppClick(
+                            vm.selectApp(
                                 app.packageName,
                                 suggestedVersions[app.packageName]
                             )

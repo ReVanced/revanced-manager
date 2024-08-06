@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -39,7 +40,6 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
-import app.revanced.manager.util.IntentContract
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
@@ -49,8 +49,10 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
@@ -83,8 +85,9 @@ class PatcherViewModel(
         null
     )
     val activeInteractionRequest by derivedStateOf { currentInteractionRequest != null }
-    private var launchedActivity: CompletableDeferred<IntentContract.Result>? = null
-    var launchActivity: (Intent) -> Unit = {}
+    private var launchedActivity: CompletableDeferred<ActivityResult>? = null
+    private val launchActivityChannel = Channel<Intent>()
+    val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
     private val tempDir = fs.tempDir.resolve("installer").also {
         it.deleteRecursively()
@@ -249,17 +252,17 @@ class PatcherViewModel(
             withContext(Dispatchers.Main) {
                 if (launchedActivity != null) throw Exception("An activity has already been launched.")
                 try {
-                    val job = CompletableDeferred<IntentContract.Result>()
-                    launchActivity(intent)
+                    val job = CompletableDeferred<ActivityResult>()
+                    launchActivityChannel.send(intent)
 
                     launchedActivity = job
                     val result = job.await()
-                    when (result.code) {
-                        Activity.RESULT_OK -> result.intent
+                    when (result.resultCode) {
+                        Activity.RESULT_OK -> result.data
                         Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
                         else -> throw UserInteractionException.Activity.NotCompleted(
-                            result.code,
-                            result.intent
+                            result.resultCode,
+                            result.data
                         )
                     }
                 } finally {
@@ -269,7 +272,7 @@ class PatcherViewModel(
         })
     }
 
-    fun handleActivityResult(result: IntentContract.Result) {
+    fun handleActivityResult(result: ActivityResult) {
         launchedActivity?.complete(result)
     }
 

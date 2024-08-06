@@ -17,7 +17,7 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
 
     fun getAll() = dao.getAllApps().distinctUntilChanged()
 
-    fun getApkFileForApp(app: DownloadedApp): File = getApkFileForDir(dir.resolve(app.directory))
+    private fun getApkFileForApp(app: DownloadedApp): File = getApkFileForDir(dir.resolve(app.directory))
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
     suspend fun download(

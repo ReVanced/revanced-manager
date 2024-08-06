@@ -10,7 +10,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.destination.SettingsDestination
-import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
@@ -99,14 +98,7 @@ class MainActivity : ComponentActivity() {
                         is Destination.AppSelector -> AppSelectorScreen(
                             // onAppClick = { navController.navigate(Destination.VersionSelector(it)) },
                             // TODO: complete this feature
-                            onAppClick = { packageName, version ->
-                                navController.navigate(
-                                    Destination.SelectedApplicationInfo(
-                                        SelectedApp.Search(packageName, version)
-                                    )
-                                )
-                            },
-                            onStorageClick = {
+                            onSelect = {
                                 navController.navigate(
                                     Destination.SelectedApplicationInfo(
                                         it
