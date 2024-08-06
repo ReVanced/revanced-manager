@@ -54,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
+    "incompatibleArchWarningDialogText": "Bu mimari cihazlarda yamalama henüz desteklenmiyor ve başarısız olabilir. Yine de devam edilsin mi?",
     "removedPatchesWarningDialogText": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam edilsin mi?",
     "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
   },

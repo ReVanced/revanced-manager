@@ -54,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
+    "incompatibleArchWarningDialogText": "Việc vá ứng dụng trên kiến ​​trúc này hiện chưa được hỗ trợ và có thể thất bại. Bạn vẫn muốn tiếp tục?",
     "removedPatchesWarningDialogText": "Những bản vá sau đây đã bị loại bỏ từ lần cuối bạn dùng chúng.\n\n${patches}\n\nVẫn tiếp tục?",
     "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
   },
@@ -185,7 +186,7 @@
     "universalPatchesLabel": "Các bản vá phổ quát",
     "universalPatchesHint": "Hiển thị tất cả các ứng dụng và các bản vá phổ quát (có thể gây chậm danh sách ứng dụng)",
     "lastPatchedAppLabel": "Lưu ứng dụng đã vá",
-    "lastPatchedAppHint": "Lưu bản vá để cài đặt hoặc xuất sau đó",
+    "lastPatchedAppHint": "Lưu bản vá cuối để cài đặt hoặc xuất sau đó",
     "versionCompatibilityCheckLabel": "Kiểm tra khả năng tương thích của phiên bản",
     "versionCompatibilityCheckHint": "Việc ngăn chặn chọn bản vá không tương thích với phiên bản ứng dụng đã chọn",
     "requireSuggestedAppVersionLabel": "Yêu cầu phiên bản ứng dụng được đề xuất",

@@ -24,6 +24,7 @@
     "widgetTitle": "لوحة التحكم",
     "updatesSubtitle": "تحديثات",
     "lastPatchedAppSubtitle": "آخر تطبيق تم تعديله",
+    "patchedSubtitle": "التطبيقات المثبتة",
     "changeLaterSubtitle": "يمكنك تغيير هذا في الإعدادات في وقت لاحق.",
     "noSavedAppFound": "لم يتم العثور على تطبيق",
     "noInstallations": "لا توجد تطبيقات معدلة مثبتة",
@@ -53,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "المُعَّدِّل",
     "patchButton": "تعديل",
+    "incompatibleArchWarningDialogText": "لم يتم دعم التعديلات الخاصة بهذه البنية حتى الآن وقد تفشل. هل تريد المتابعة على أي حال؟",
     "removedPatchesWarningDialogText": "تم إزالة التعديلات التالية منذ آخر مرة استخدمتها فيها.\n\n${patches}\n\nتابع على أي حال؟",
     "requiredOptionDialogText": "يجب ضبط بعض خيارات التعديل."
   },
@@ -103,11 +105,14 @@
   "patchOptionsView": {
     "customValue": "تخصيص القيمة",
     "setToNull": "تعيين إلى ملغي",
+    "nullValue": "قيمة هذا الخيار فارغة حاليًا",
     "viewTitle": "خيارات التعديل",
     "saveOptions": "حفظ",
+    "unselectPatch": "إلغاء تحديد التعديل",
     "tooltip": "المزيد من خيارات الإدخال",
     "selectFilePath": "تحديد مسار الملف",
     "selectFolder": "تحديد مجلد",
+    "requiredOption": "إعداد هذا الخيار مطلوب",
     "unsupportedOption": "هذا الخيار غير مدعوم",
     "requiredOptionNull": "يجب تعيين الخيارات التالية:\n\n${options}"
   },
@@ -180,6 +185,7 @@
     "showUpdateDialogHint": "عرض مربع حوار عندما يتوفر تحديث جديد",
     "universalPatchesLabel": "عرض التعديلات العامة",
     "universalPatchesHint": "عرض جميع التطبيقات والتعديلات العامة (قد تؤدي إلى إبطاء قائمة التطبيقات)",
+    "lastPatchedAppLabel": "حفظ التطبيق المعدل",
     "lastPatchedAppHint": "حفظ آخر تعديل لتثبيته أو تصديره لاحقًا",
     "versionCompatibilityCheckLabel": "التحقق من توافق الإصدار",
     "versionCompatibilityCheckHint": "منع تحديد التعديلات غير المتوافقة مع إصدار التطبيق المحدد",

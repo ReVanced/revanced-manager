@@ -24,6 +24,7 @@
     "widgetTitle": "Галоўная",
     "updatesSubtitle": "Абнаўленні",
     "lastPatchedAppSubtitle": "Апошняя абноўленая праграма",
+    "patchedSubtitle": "Устаноўленыя праграмы",
     "changeLaterSubtitle": "Вы можаце змяніць гэта ў наладах пазней.",
     "noSavedAppFound": "Праграма не знойдзена",
     "noInstallations": "Няма ўсталяваных праграм з выпраўленнямі",
@@ -53,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Праграма выпраўлення",
     "patchButton": "Выправіць",
+    "incompatibleArchWarningDialogText": "",
     "removedPatchesWarningDialogText": "Наступныя выпраўленні былі выдалены з моманту іх апошняга выкарыстання.\n\n${patches}\n\nУсё роўна працягнуць?",
     "requiredOptionDialogText": "Неабходна задаць некаторыя параметры выпраўленняў."
   },
@@ -103,11 +105,14 @@
   "patchOptionsView": {
     "customValue": "Уласнае значэнне",
     "setToNull": "Усталюйце значэнне нуль",
+    "nullValue": "Зараз значэнне гэтага параметра роўна нулю",
     "viewTitle": "Параметры выпраўлення",
     "saveOptions": "Захаваць",
+    "unselectPatch": "Скасаваць выбар патча",
     "tooltip": "Больш уваходных параметраў",
     "selectFilePath": "Выбраць шлях да файла",
     "selectFolder": "Выбраць папку",
+    "requiredOption": "Неабходна наладзіць гэты параметр",
     "unsupportedOption": "Гэты параметр не падтрымліваецца",
     "requiredOptionNull": "Наступныя параметры павінны быць зададзены:\n\n${options}"
   },
@@ -180,6 +185,8 @@
     "showUpdateDialogHint": "Паказваць акно, калі даступна новае абнаўленне",
     "universalPatchesLabel": "Паказваць універсальныя выпраўленні",
     "universalPatchesHint": "Адлюстраваць усе праграмы і ўніверсальныя выпраўленні (можа запаволіць спіс праграм)",
+    "lastPatchedAppLabel": "Захаваць прапатчаную праграму",
+    "lastPatchedAppHint": "Захавайце апошні патч, каб усталяваць або экспартаваць пазней",
     "versionCompatibilityCheckLabel": "Праверка сумяшчальнасці версіі",
     "versionCompatibilityCheckHint": "Прадухіляць выбар выпраўленняў, якія несумяшчальныя з выбранай версіяй праграмы",
     "requireSuggestedAppVersionLabel": "Запыт прапанаванай версіі праграмы",

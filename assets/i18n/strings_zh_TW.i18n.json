@@ -24,6 +24,7 @@
     "widgetTitle": "儀表板",
     "updatesSubtitle": "更新",
     "lastPatchedAppSubtitle": "最後修補的應用程式",
+    "patchedSubtitle": "已安裝的應用程式",
     "changeLaterSubtitle": "你可以稍後在設定中變更這項設定。",
     "noSavedAppFound": "未找到應用程式",
     "noInstallations": "未安裝已修補的應用程式",
@@ -53,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "修補工具",
     "patchButton": "補丁",
+    "incompatibleArchWarningDialogText": "此架構尚未支援修補，可能會失敗。仍要繼續嗎？",
     "removedPatchesWarningDialogText": "自從您上次使用以來，以下補丁已遭移除。\n\n${patches} \n\n仍要繼續執行嗎？",
     "requiredOptionDialogText": "某些補丁需要進一步設定。"
   },
@@ -103,8 +105,10 @@
   "patchOptionsView": {
     "customValue": "自訂值",
     "setToNull": "設為空值",
+    "nullValue": "此選項的值目前為空",
     "viewTitle": "補丁選項",
     "saveOptions": "儲存",
+    "unselectPatch": "取消選擇補丁",
     "tooltip": "更多輸入選項",
     "selectFilePath": "請選取檔案路徑",
     "selectFolder": "請選取資料夾",
@@ -181,8 +185,8 @@
     "showUpdateDialogHint": "當有新更新可用時，顯示對話框",
     "universalPatchesLabel": "顯示通用補丁",
     "universalPatchesHint": "顯示所有應用程式和通用修補檔（可能會拖慢應用程式列表的速度）",
-    "lastPatchedAppLabel": "保存已修補的應用程式",
-    "lastPatchedAppHint": "保存最後一次修補以便稍後安裝或匯出",
+    "lastPatchedAppLabel": "儲存已修補的應用程式",
+    "lastPatchedAppHint": "儲存最後一次修補以便稍後安裝或匯出",
     "versionCompatibilityCheckLabel": "檢查版本相容性",
     "versionCompatibilityCheckHint": "防止選擇與所選應用程式版本不相容的補丁",
     "requireSuggestedAppVersionLabel": "要求使用建議的應用程式版本",
