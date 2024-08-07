@@ -146,7 +146,7 @@ fun AdvancedSettingsScreen(
                 headlineContent = stringResource(R.string.debug_logs_export),
                 modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
             )
-            val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard = remember { context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager }
             val deviceContent = """
                     Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     Build type: ${BuildConfig.BUILD_TYPE}
@@ -157,6 +157,7 @@ fun AdvancedSettingsScreen(
                 """.trimIndent()
             SettingsListItem(
                 modifier = Modifier.combinedClickable(
+                    onClick = {},
                     onLongClickLabel = stringResource(R.string.copy_to_clipboard),
                     onLongClick = {
                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -166,9 +167,7 @@ fun AdvancedSettingsScreen(
 
                         context.toast(context.getString(R.string.toast_copied_to_clipboard))
                     }
-                ) {
-
-                },
+                ),
                 headlineContent = stringResource(R.string.about_device),
                 supportingContent = deviceContent
             )
