@@ -19,7 +19,7 @@ import java.nio.file.StandardCopyOption
 internal typealias PatchList = List<Patch<*>>
 
 class Session(
-    cacheDir: String,
+    private val cacheDir: String,
     frameworkDir: String,
     aaptPath: String,
     multithreadingDexFileWriter: Boolean,
@@ -129,6 +129,7 @@ class Session(
 
     override fun close() {
         tempDir.deleteRecursively()
+        File(cacheDir, "input.apk").delete()
         patcher.close()
     }
 
