@@ -160,26 +160,6 @@ fun BaseBundleDialog(
 }
 
 @Composable
-fun BundleInfoItem(
-    text: @Composable () -> Unit,
-    icon: ImageVector,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            icon,
-            contentDescription = null,
-            modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        text()
-    }
-}
-
-@Composable
 private fun Tag(
     icon: ImageVector,
     text: String
