@@ -13,16 +13,10 @@ import androidx.compose.ui.res.stringResource
 import app.revanced.manager.R
 
 @Composable
-fun ArrowButton(
-    modifier: Modifier = Modifier,
-    expanded: Boolean,
-    onClick: (() -> Unit)? = null,
-    rotationInitial: Float = 0f,
-    rotationFinal: Float = 180f
-) {
+fun ArrowButton(modifier: Modifier = Modifier, expanded: Boolean, onClick: (() -> Unit)?) {
     val description = if (expanded) R.string.collapse_content else R.string.expand_content
     val rotation by animateFloatAsState(
-        targetValue = if (expanded) rotationInitial else rotationFinal,
+        targetValue = if (expanded) 0f else 180f,
         label = "rotation"
     )
 
