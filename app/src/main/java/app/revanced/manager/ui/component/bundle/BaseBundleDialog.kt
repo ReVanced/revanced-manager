@@ -44,7 +44,8 @@ fun BaseBundleDialog(
             .then(modifier),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -59,7 +60,7 @@ fun BaseBundleDialog(
                 )
                 name?.let {
                     Text(
-                        it,
+                        text = it,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(800)),
                         color = MaterialTheme.colorScheme.primary,
                     )
@@ -83,11 +84,13 @@ fun BaseBundleDialog(
         }
 
         HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outlineVariant
+            modifier = Modifier.padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.outlineVariant
         )
 
         if (remoteUrl != null) {
-            BundleListItem(headlineText = stringResource(R.string.bundle_auto_update),
+            BundleListItem(
+                headlineText = stringResource(R.string.bundle_auto_update),
                 supportingText = stringResource(R.string.bundle_auto_update_description),
                 trailingContent = {
                     Switch(
@@ -105,7 +108,8 @@ fun BaseBundleDialog(
                 mutableStateOf(false)
             }
             if (showUrlInputDialog) {
-                TextInputDialog(initial = url,
+                TextInputDialog(
+                    initial = url,
                     title = stringResource(R.string.bundle_input_source_url),
                     onDismissRequest = { showUrlInputDialog = false },
                     onConfirm = {
@@ -116,20 +120,28 @@ fun BaseBundleDialog(
                         if (it.isEmpty()) return@TextInputDialog false
 
                         URLUtil.isValidUrl(it)
-                    })
+                    }
+                )
             }
 
-            BundleListItem(modifier = Modifier.clickable(enabled = onRemoteUrlChange != null) {
-                showUrlInputDialog = true
-            }, headlineText = stringResource(R.string.bundle_input_source_url), supportingText = url.ifEmpty {
-                stringResource(R.string.field_not_set)
-            })
+            BundleListItem(
+                modifier = Modifier.clickable(
+                    enabled = onRemoteUrlChange != null,
+                    onClick = {
+                        showUrlInputDialog = true
+                    }
+                ),
+                headlineText = stringResource(R.string.bundle_input_source_url),
+                supportingText = url.ifEmpty {
+                    stringResource(R.string.field_not_set)
+                }
+            )
         }
 
         val patchesClickable = patchCount > 0
         BundleListItem(
             headlineText = stringResource(R.string.patches),
-            supportingText = stringResource(R.string.view_patches),
+            supportingText = stringResource(R.string.bundle_view_patches),
             modifier = Modifier.clickable(
                 enabled = patchesClickable,
                 onClick = onPatchesClick
@@ -168,9 +180,13 @@ fun BundleInfoItem(
 }
 
 @Composable
-private fun Tag(icon: ImageVector, text: String) {
+private fun Tag(
+    icon: ImageVector,
+    text: String
+) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
