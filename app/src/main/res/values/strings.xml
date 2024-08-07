@@ -308,6 +308,7 @@
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_type">Bundle type</string>
     <string name="bundle_type_description">Choose the type of bundle you want</string>
+    <string name="bundle_view_patches">View patches</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
     <string name="update_available">An update is available</string>
@@ -372,6 +373,4 @@
     <string name="never_show_again">Never show again</string>
     <string name="show_manager_update_dialog_on_launch">Show update message on launch</string>
     <string name="show_manager_update_dialog_on_launch_description">Shows a popup notification whenever there is a new update available on launch.</string>
-    <string name="bundle_information">Bundle information</string>
-    <string name="view_patches">View patches</string>
 </resources>
