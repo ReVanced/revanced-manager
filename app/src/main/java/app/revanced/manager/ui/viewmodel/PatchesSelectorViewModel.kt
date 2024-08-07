@@ -101,7 +101,7 @@ class PatchesSelectorViewModel(input: Params) : ViewModel(), KoinComponent {
 
     val compatibleVersions = mutableStateListOf<String>()
 
-    var filter by mutableIntStateOf(SHOW_SUPPORTED or SHOW_UNIVERSAL or SHOW_UNSUPPORTED)
+    var filter by mutableIntStateOf(0)
         private set
 
     private val defaultPatchSelection = bundlesFlow.map { bundles ->

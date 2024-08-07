@@ -163,7 +163,12 @@ private fun SelectedAppInfoScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.AutoFixHigh, null) },
+                icon = {
+                    Icon(
+                        Icons.Default.AutoFixHigh,
+                        stringResource(R.string.patch)
+                    )
+                },
                 onClick = onPatchClick
             )
         }
