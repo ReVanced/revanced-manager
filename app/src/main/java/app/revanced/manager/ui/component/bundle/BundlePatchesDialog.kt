@@ -36,13 +36,13 @@ fun BundlePatchesDialog(
     onDismissRequest: () -> Unit,
     bundle: PatchBundleSource,
 ) {
-    var informationCardVisible by rememberSaveable { mutableStateOf(true) }
     var showAllVersions by rememberSaveable { mutableStateOf(false) }
     var showOptions by rememberSaveable { mutableStateOf(false) }
     val state by bundle.state.collectAsStateWithLifecycle()
 
     Dialog(
-        onDismissRequest = onDismissRequest, properties = DialogProperties(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(
             usePlatformDefaultWidth = false, dismissOnBackPress = true
         )
     ) {
@@ -68,9 +68,14 @@ fun BundlePatchesDialog(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 state.patchBundleOrNull()?.let { bundle ->
-                    items(bundle.patches.size) { bundleIndex ->
+                    items(
+                        count = bundle.patches.size,
+                        key = { index -> bundle.patches[index] }
+                    ) { bundleIndex ->
                         val patch = bundle.patches[bundleIndex]
-                        PatchItem(patch,
+
+                        PatchItem(
+                            patch,
                             showAllVersions,
                             onExpandVersions = { showAllVersions = !showAllVersions },
                             showOptions,
@@ -102,7 +107,8 @@ fun PatchItem(
             )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -122,7 +128,8 @@ fun PatchItem(
             }
             patch.description?.let {
                 Text(
-                    text = it, style = MaterialTheme.typography.bodyMedium
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
             Column(
@@ -171,10 +178,10 @@ fun PatchItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         PatchInfoChip(
-                            text = "$PACKAGE_ICON ${stringResource(R.string.any_package)}"
+                            text = "$PACKAGE_ICON ${stringResource(R.string.bundle_view_patches_any_package)}"
                         )
                         PatchInfoChip(
-                            text = "$VERSION_ICON ${stringResource(R.string.any_version)}"
+                            text = "$VERSION_ICON ${stringResource(R.string.bundle_view_patches_any_version)}"
                         )
                     }
                 }
@@ -186,13 +193,14 @@ fun PatchItem(
                     Column {
                         options.forEachIndexed { i, option ->
                             OutlinedCard(
-                                modifier = Modifier.fillMaxWidth(), colors = CardColors(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardColors(
                                     containerColor = Color.Transparent,
                                     contentColor = MaterialTheme.colorScheme.onSurface,
                                     disabledContainerColor = Color.Transparent,
                                     disabledContentColor = MaterialTheme.colorScheme.onSurface
                                 ), shape = when {
-                                    i == 0 && options.lastIndex == 0 -> RoundedCornerShape(8.dp)
+                                    options.size == 1 -> RoundedCornerShape(8.dp)
                                     i == 0 -> RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                                     i == options.lastIndex -> RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
                                     else -> RoundedCornerShape(0.dp)
@@ -208,7 +216,8 @@ fun PatchItem(
                                         color = MaterialTheme.colorScheme.primary
                                     )
                                     Text(
-                                        text = option.description, style = MaterialTheme.typography.bodyMedium
+                                        text = option.description,
+                                        style = MaterialTheme.typography.bodyMedium
                                     )
                                 }
                             }
@@ -224,8 +233,7 @@ fun PatchItem(
 fun PatchInfoChip(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    text: String,
-    icon: @Composable (() -> Unit)? = null
+    text: String
 ) {
     val shape = RoundedCornerShape(8.0.dp)
     val cardModifier = if (onClick != null) {
@@ -237,7 +245,8 @@ fun PatchInfoChip(
     }
 
     OutlinedCard(
-        modifier = modifier.then(cardModifier), colors = CardColors(
+        modifier = modifier.then(cardModifier),
+        colors = CardColors(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
             disabledContainerColor = Color.Transparent,
