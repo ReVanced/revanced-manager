@@ -157,7 +157,7 @@ fun AdvancedSettingsScreen(
                 """.trimIndent()
             SettingsListItem(
                 modifier = Modifier.combinedClickable(
-                    onClick = {},
+                    onClick = { },
                     onLongClickLabel = stringResource(R.string.copy_to_clipboard),
                     onLongClick = {
                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
