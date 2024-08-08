@@ -115,6 +115,14 @@ class PM(
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
+    fun getVersionCode(packageInfo: PackageInfo): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode.toInt()
+        } else {
+            packageInfo.versionCode
+        }
+    }
+
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller
         packageInstaller.openSession(packageInstaller.createSession(sessionParams)).use { session ->

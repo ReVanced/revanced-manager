@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
@@ -61,6 +62,7 @@ fun PatcherScreen(
 
     val patcherSucceeded by vm.patcherSucceeded.observeAsState(null)
     val canInstall by remember { derivedStateOf { patcherSucceeded == true && (vm.installedPackageName != null || !vm.isInstalling) } }
+    val canSaveApk by remember { derivedStateOf { patcherSucceeded == true && (vm.installedPackageName != null) } }
     var showInstallPicker by rememberSaveable { mutableStateOf(false) }
 
     val steps by remember {
@@ -91,6 +93,9 @@ fun PatcherScreen(
             onConfirm = vm::install
         )
 
+    if (vm.installerStatusDialogModel.packageInstallerStatus != null)
+        InstallerStatusDialog(vm.installerStatusDialogModel)
+
     AppScaffold(
         topBar = {
             AppTopBar(
@@ -103,7 +108,7 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                        enabled = canInstall
+                        enabled = canSaveApk
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
