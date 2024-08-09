@@ -146,7 +146,7 @@ fun AdvancedSettingsScreen(
                 headlineContent = stringResource(R.string.debug_logs_export),
                 modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
             )
-            val clipboard = remember { context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager }
+            val clipboard = remember { context.getSystemService<ClipboardManager>() }
             val deviceContent = """
                     Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
                     Build type: ${BuildConfig.BUILD_TYPE}
