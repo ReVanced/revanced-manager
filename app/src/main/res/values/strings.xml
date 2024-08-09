@@ -58,7 +58,7 @@
     <string name="downloads">Downloads</string>
     <string name="downloads_description">Downloader plugins and downloaded apps</string>
     <string name="import_export">Import &amp; export</string>
-    <string name="import_export_description">Keystore, patch option &amp; selection</string>
+    <string name="import_export_description">Keystore, patch option and selection</string>
     <string name="advanced">Advanced</string>
     <string name="advanced_description">API URL, memory limit, debug</string>
     <string name="about">About</string>
