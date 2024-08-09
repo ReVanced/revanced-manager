@@ -2,6 +2,7 @@ package app.revanced.manager.data.platform
 
 import android.Manifest
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
@@ -16,7 +17,7 @@ class Filesystem(private val app: Application) {
      * A directory that gets cleared when the app restarts.
      * Do not store paths to this directory in a parcel.
      */
-    val tempDir = app.filesDir.resolve("ephemeral").apply {
+    val tempDir = app.getDir("ephemeral", Context.MODE_PRIVATE).apply {
         deleteRecursively()
         mkdirs()
     }

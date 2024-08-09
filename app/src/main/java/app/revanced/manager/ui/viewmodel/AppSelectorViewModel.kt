@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -9,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
@@ -18,8 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 
@@ -27,10 +25,8 @@ class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
     private val patchBundleRepository: PatchBundleRepository
-) : ViewModel(), KoinComponent {
-    private val fs: Filesystem by inject()
-
-    private val inputFile = File(fs.tempDir, "input.apk").also {
+) : ViewModel() {
+    private val inputFile = File(app.getDir("ephemeral", Context.MODE_PRIVATE), "input.apk").also {
         it.delete()
     }
     val appList = pm.appList
