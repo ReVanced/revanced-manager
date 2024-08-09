@@ -250,12 +250,17 @@ private fun PackageSelector(packages: Set<String>, onFinish: (String?) -> Unit) 
 }
 
 @Composable
-private fun GroupItem(onClick: () -> Unit, @StringRes headline: Int, @StringRes description: Int) =
+private fun GroupItem(
+    onClick: () -> Unit,
+    @StringRes headline: Int,
+    @StringRes description: Int? = null
+) {
     SettingsListItem(
         modifier = Modifier.clickable { onClick() },
         headlineContent = stringResource(headline),
-        supportingContent = stringResource(description)
+        supportingContent = description?.let { stringResource(it) }
     )
+}
 
 @Composable
 fun KeystoreCredentialsDialog(

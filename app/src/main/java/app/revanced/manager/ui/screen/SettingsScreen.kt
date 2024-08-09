@@ -66,7 +66,7 @@ fun SettingsScreen(
         ) to SettingsDestination.Advanced,
         Triple(
             R.string.about,
-            R.string.about_description,
+            R.string.app_name,
             Icons.Outlined.Info
         ) to SettingsDestination.About,
     )

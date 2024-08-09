@@ -32,7 +32,7 @@ fun DeveloperOptionsScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             GroupHeader(stringResource(R.string.patch_bundles_section))
             SettingsListItem(
-                headlineContent = stringResource(R.string.patch_bundles_redownload),
+                headlineContent = stringResource(R.string.patch_bundles_force_download),
                 modifier = Modifier.clickable(onClick = vm::redownloadBundles)
             )
             SettingsListItem(
