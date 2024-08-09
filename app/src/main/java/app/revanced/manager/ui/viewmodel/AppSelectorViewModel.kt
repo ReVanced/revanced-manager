@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -25,7 +26,7 @@ class AppSelectorViewModel(
     private val pm: PM,
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
-    private val inputFile = File(app.cacheDir, "input.apk").also {
+    private val inputFile = File(app.getDir("ephemeral", Context.MODE_PRIVATE), "input.apk").also {
         it.delete()
     }
     val appList = pm.appList
