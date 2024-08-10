@@ -3,7 +3,6 @@ package app.revanced.manager.ui.screen.settings
 import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
