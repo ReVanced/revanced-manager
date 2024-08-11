@@ -570,7 +570,12 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
 
                     ExtendedFloatingActionButton(
                         text = { Text(stringResource(R.string.add)) },
-                        icon = { Icon(Icons.Outlined.Add, null) },
+                        icon = {
+                            Icon(
+                                Icons.Outlined.Add,
+                                stringResource(R.string.add)
+                            )
+                        },
                         expanded = lazyListState.isScrollingUp,
                         onClick = { items.add(Item(null)) }
                     )
