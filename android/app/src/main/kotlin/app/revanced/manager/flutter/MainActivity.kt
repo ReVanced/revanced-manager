@@ -220,6 +220,8 @@ class MainActivity : FlutterActivity() {
         keystorePassword: String
     ) {
         val inFile = File(inFilePath)
+        inFile.setWritable(true)
+        inFile.setReadable(true)
         val outFile = File(outFilePath)
         val integrations = File(integrationsPath)
         val keyStoreFile = File(keyStoreFilePath)
