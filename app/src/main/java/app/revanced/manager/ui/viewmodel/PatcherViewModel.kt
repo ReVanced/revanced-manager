@@ -289,6 +289,7 @@ class PatcherViewModel(
     fun open() = installedPackageName?.let(pm::launch)
 
     fun install(installType: InstallType) = viewModelScope.launch {
+        var isInstallingRegularly = false
         try {
             isInstalling = true
 
@@ -315,6 +316,7 @@ class PatcherViewModel(
                     }
 
                     // Install regularly
+                    isInstallingRegularly = true
                     pm.installApp(listOf(outputFile))
                 }
 
@@ -367,14 +369,15 @@ class PatcherViewModel(
                             rootInstaller.uninstall(packageName)
                         } catch (_: Exception) {
                         }
-                        isInstalling = false
                     }
                 }
             }
         } catch(e: Exception) {
             Log.e(tag, "Failed to install", e)
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
-            isInstalling = false
+        } finally {
+            if (!isInstallingRegularly)
+                isInstalling = false
         }
     }
 
@@ -382,8 +385,9 @@ class PatcherViewModel(
         uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
             pm.getPackageInfo(outputFile)?.packageName?.let { pm.uninstallPackage(it) }
                 ?: throw Exception("Failed to load application info")
-            
+
             pm.installApp(listOf(outputFile))
+            isInstalling = true
         }
     }
 
