@@ -8,6 +8,7 @@ import 'package:revanced_manager/ui/views/app_selector/app_selector_view.dart';
 import 'package:revanced_manager/ui/views/contributors/contributors_view.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/views/installer/installer_view.dart';
+import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_view.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patch_options/patch_options_view.dart';
@@ -37,6 +38,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: PatcherViewModel),
     LazySingleton(classType: PatchOptionsViewModel),
+    LazySingleton(classType: InstallerViewModel),
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: ManagerAPI),
     LazySingleton(classType: PatcherAPI),
