@@ -60,7 +60,7 @@
     <string name="import_export">Import &amp; export</string>
     <string name="import_export_description">Keystore, patch option and selection</string>
     <string name="advanced">Advanced</string>
-    <string name="advanced_description">API URL, memory limit, debug</string>
+    <string name="advanced_description">API URL, memory limit, debugging</string>
     <string name="about">About</string>
     <string name="opensource_licenses">Open source licenses</string>
     <string name="opensource_licenses_description">View all the libraries used to make this application</string>
