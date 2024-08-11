@@ -195,7 +195,8 @@ class InstallerViewModel extends BaseViewModel {
       } else {
         _app.patchedFilePath = _patcherAPI.outFile!.path;
       }
-      locator<HomeViewModel>().initialize(context);
+      final homeViewModel = locator<HomeViewModel>();
+      _managerAPI.reAssessPatchedApps().then((_) => homeViewModel.getPatchedApps());
     } on Exception catch (e) {
       update(
         -100.0,

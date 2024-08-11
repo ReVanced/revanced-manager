@@ -27,6 +27,7 @@ class AppInfoViewModel extends BaseViewModel {
     BuildContext context,
     PatchedApplication app,
   ) async {
+    locator<PatcherViewModel>().selectedApp = app;
     locator<InstallerViewModel>().installTypeDialog(context);
   }
 
