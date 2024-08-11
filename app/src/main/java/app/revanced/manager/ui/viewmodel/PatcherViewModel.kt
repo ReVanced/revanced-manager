@@ -188,15 +188,11 @@ class PatcherViewModel(
         app.unregisterReceiver(installBroadcastReceiver)
         workManager.cancelWorkById(patcherWorkerId)
 
-        if (input.selectedApp is SelectedApp.Installed) {
+        if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.ROOT) {
             GlobalScope.launch(Dispatchers.Main) {
                 uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
-                    installedApp?.let {
-                        if (it.installType == InstallType.ROOT) {
-                            withTimeout(Duration.ofMinutes(1L)) {
-                                rootInstaller.mount(packageName)
-                            }
-                        }
+                    withTimeout(Duration.ofMinutes(1L)) {
+                        rootInstaller.mount(packageName)
                     }
                 }
             }
