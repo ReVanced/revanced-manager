@@ -193,6 +193,9 @@ class PatcherWorker(
             Result.failure()
         } finally {
             patchedApk.delete()
+            if (args.input is SelectedApp.Local && args.input.temporary) {
+                args.input.file.delete()
+            }
         }
     }
 
