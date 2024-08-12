@@ -69,11 +69,6 @@ fun SelectedAppInfoScreen(
             patches.values.sumOf { it.size }
         }
     }
-    val availablePatchCount by remember {
-        derivedStateOf {
-            bundles.sumOf { it.patchCount }
-        }
-    }
 
     val navController =
         rememberNavController<SelectedAppInfoDestination>(startDestination = SelectedAppInfoDestination.Main)
@@ -111,7 +106,6 @@ fun SelectedAppInfoScreen(
                     // navController.navigate(SelectedAppInfoDestination.VersionSelector)
                 },
                 onBackClick = onBackClick,
-                availablePatchCount = availablePatchCount,
                 selectedPatchCount = selectedPatchCount,
                 packageName = packageName,
                 version = version,
@@ -145,7 +139,6 @@ private fun SelectedAppInfoScreen(
     onPatchSelectorClick: () -> Unit,
     onVersionSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
-    availablePatchCount: Int,
     selectedPatchCount: Int,
     packageName: String,
     version: String?,
@@ -161,7 +154,12 @@ private fun SelectedAppInfoScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 text = { Text(stringResource(R.string.patch)) },
-                icon = { Icon(Icons.Default.AutoFixHigh, null) },
+                icon = {
+                    Icon(
+                        Icons.Default.AutoFixHigh,
+                        stringResource(R.string.patch)
+                    )
+                },
                 onClick = onPatchClick
             )
         }
@@ -173,13 +171,7 @@ private fun SelectedAppInfoScreen(
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
                 Text(
-                    version?.let {
-                        stringResource(
-                            R.string.selected_app_meta_version,
-                            it,
-                            availablePatchCount
-                        )
-                    } ?: stringResource(R.string.selected_app_meta_no_version, availablePatchCount),
+                    version ?: stringResource(R.string.selected_app_meta_any_version),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )

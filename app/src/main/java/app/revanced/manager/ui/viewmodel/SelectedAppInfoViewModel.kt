@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Application
 import android.content.pm.PackageInfo
 import android.os.Parcelable
 import androidx.compose.runtime.MutableState
@@ -38,7 +37,6 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     private val optionsRepository: PatchOptionsRepository = get()
     private val pm: PM = get()
     private val savedStateHandle: SavedStateHandle = get()
-    private val app: Application = get()
     val prefs: PreferencesManager = get()
 
     private val persistConfiguration = input.patches == null
@@ -82,20 +80,17 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         private set
 
     private var selectionState by savedStateHandle.saveable {
-        if (input.patches != null) {
+        if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
-        }
 
         val selection: MutableState<SelectionState> = mutableStateOf(SelectionState.Default)
 
-        // Get previous selection (if present).
+        // Try to get the previous selection if customization is enabled.
         viewModelScope.launch {
+            if (!prefs.disableSelectionWarning.get()) return@launch
+
             val previous = selectionRepository.getSelection(selectedApp.packageName)
-
-            if (previous.values.sumOf { it.size } == 0) {
-                return@launch
-            }
-
+            if (previous.values.sumOf { it.size } == 0) return@launch
             selection.value = SelectionState.Customized(previous)
         }
 
