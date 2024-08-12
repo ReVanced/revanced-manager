@@ -48,7 +48,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -189,26 +188,14 @@ class PatcherViewModel(
         app.unregisterReceiver(installBroadcastReceiver)
         workManager.cancelWorkById(patcherWorkerId)
 
-        when (val selectedApp = input.selectedApp) {
-            is SelectedApp.Local -> {
-                if (selectedApp.temporary) selectedApp.file.delete()
-            }
-
-            is SelectedApp.Installed -> {
-                GlobalScope.launch(Dispatchers.Main) {
-                    uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
-                        installedApp?.let {
-                            if (it.installType == InstallType.ROOT) {
-                                withTimeout(Duration.ofMinutes(1L)) {
-                                    rootInstaller.mount(packageName)
-                                }
-                            }
-                        }
+        if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.ROOT) {
+            GlobalScope.launch(Dispatchers.Main) {
+                uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
+                    withTimeout(Duration.ofMinutes(1L)) {
+                        rootInstaller.mount(packageName)
                     }
                 }
             }
-
-            else -> Unit
         }
 
         tempDir.deleteRecursively()
