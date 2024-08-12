@@ -10,6 +10,7 @@ import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.MATCH_UNINSTALLED_PACKAGES
 import android.content.pm.PackageManager.NameNotFoundException
+import androidx.core.content.pm.PackageInfoCompat
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
@@ -115,12 +116,8 @@ class PM(
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
-    fun getVersionCode(packageInfo: PackageInfo): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            packageInfo.longVersionCode.toInt()
-        } else {
-            packageInfo.versionCode
-        }
+    fun getVersionCode(packageInfo: PackageInfo): Long {
+        return PackageInfoCompat.getLongVersionCode(packageInfo)
     }
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
