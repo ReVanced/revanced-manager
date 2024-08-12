@@ -103,22 +103,13 @@ fun SelectedAppInfoScreen(
                     )
                 },
                 onVersionSelectorClick = {
-                    navController.navigate(SelectedAppInfoDestination.VersionSelector)
+                    // navController.navigate(SelectedAppInfoDestination.VersionSelector)
                 },
                 onBackClick = onBackClick,
                 selectedPatchCount = selectedPatchCount,
                 packageName = packageName,
                 version = version,
                 packageInfo = vm.selectedAppInfo,
-            )
-
-            is SelectedAppInfoDestination.VersionSelector -> VersionSelectorScreen(
-                onBackClick = navController::pop,
-                onAppClick = {
-                    vm.selectedApp = it
-                    navController.pop()
-                },
-                viewModel = koinViewModel { parametersOf(packageName) }
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
@@ -150,7 +141,7 @@ private fun SelectedAppInfoScreen(
     onBackClick: () -> Unit,
     selectedPatchCount: Int,
     packageName: String,
-    version: String,
+    version: String?,
     packageInfo: PackageInfo?,
 ) {
     Scaffold(
@@ -180,7 +171,7 @@ private fun SelectedAppInfoScreen(
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
                 Text(
-                    stringResource(R.string.selected_app_meta, version),
+                    version ?: stringResource(R.string.selected_app_meta_any_version),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -193,7 +184,8 @@ private fun SelectedAppInfoScreen(
             )
             PageItem(
                 R.string.version_selector_item,
-                stringResource(R.string.version_selector_item_description, version),
+                version?.let { stringResource(R.string.version_selector_item_description, it) }
+                    ?: stringResource(R.string.version_selector_item_description_auto),
                 onVersionSelectorClick
             )
         }

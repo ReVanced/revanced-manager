@@ -83,7 +83,7 @@ android {
 
     buildFeatures.compose = true
     buildFeatures.aidl = true
-    buildFeatures.buildConfig=true
+    buildFeatures.buildConfig = true
 
     android {
         androidResources {
@@ -112,7 +112,6 @@ dependencies {
     implementation(libs.runtime.compose)
     implementation(libs.splash.screen)
     implementation(libs.compose.activity)
-    implementation(libs.paging.common.ktx)
     implementation(libs.work.runtime.ktx)
     implementation(libs.preferences.datastore)
 
@@ -152,6 +151,9 @@ dependencies {
     // ReVanced
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
+
+    // Downloader plugins
+    implementation(project(":downloader-plugin"))
 
     // Native processes
     implementation(libs.kotlin.process)

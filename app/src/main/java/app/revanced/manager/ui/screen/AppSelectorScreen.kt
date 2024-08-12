@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,18 +32,19 @@ import app.revanced.manager.ui.component.SearchView
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
 import app.revanced.manager.util.APK_MIMETYPE
+import app.revanced.manager.util.EventEffect
+import app.revanced.manager.util.transparentListItemColors
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppSelectorScreen(
-    onAppClick: (packageName: String) -> Unit,
-    onStorageClick: (SelectedApp.Local) -> Unit,
+    onSelect: (SelectedApp) -> Unit,
     onBackClick: () -> Unit,
     vm: AppSelectorViewModel = koinViewModel()
 ) {
-    SideEffect {
-        vm.onStorageClick = onStorageClick
+    EventEffect(flow = vm.appSelectionFlow) {
+        onSelect(it)
     }
 
     val pickApkLauncher =
@@ -74,7 +74,7 @@ fun AppSelectorScreen(
         )
     }
 
-    if (search) {
+    if (search)
         SearchView(
             query = filterText,
             onQueryChange = { filterText = it },
@@ -82,15 +82,18 @@ fun AppSelectorScreen(
             placeholder = { Text(stringResource(R.string.search_apps)) }
         ) {
             if (appList.isNotEmpty() && filterText.isNotEmpty()) {
-                LazyColumnWithScrollbar(
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                LazyColumnWithScrollbar(modifier = Modifier.fillMaxSize()) {
                     items(
                         items = filteredAppList,
                         key = { it.packageName }
                     ) { app ->
                         ListItem(
-                            modifier = Modifier.clickable { onAppClick(app.packageName) },
+                            modifier = Modifier.clickable {
+                                vm.selectApp(
+                                    app.packageName,
+                                    suggestedVersions[app.packageName]
+                                )
+                            },
                             leadingContent = {
                                 AppIcon(
                                     app.packageInfo,
@@ -110,7 +113,8 @@ fun AppSelectorScreen(
                                         )
                                     )
                                 }
-                            }
+                            },
+                            colors = transparentListItemColors
                         )
 
                     }
@@ -124,17 +128,18 @@ fun AppSelectorScreen(
                     Icon(
                         imageVector = Icons.Outlined.Search,
                         contentDescription = stringResource(R.string.search),
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier.size(64.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Text(
                         text = stringResource(R.string.type_anything),
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
-    }
 
     Scaffold(
         topBar = {
@@ -183,7 +188,12 @@ fun AppSelectorScreen(
                     key = { it.packageName }
                 ) { app ->
                     ListItem(
-                        modifier = Modifier.clickable { onAppClick(app.packageName) },
+                        modifier = Modifier.clickable {
+                            vm.selectApp(
+                                app.packageName,
+                                suggestedVersions[app.packageName]
+                            )
+                        },
                         leadingContent = { AppIcon(app.packageInfo, null, Modifier.size(36.dp)) },
                         headlineContent = {
                             AppLabel(

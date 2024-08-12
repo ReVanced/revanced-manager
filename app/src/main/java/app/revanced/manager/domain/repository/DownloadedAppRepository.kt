@@ -5,26 +5,25 @@ import android.content.Context
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
-import app.revanced.manager.network.downloader.AppDownloader
+import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
+import app.revanced.manager.plugin.downloader.App
+import app.revanced.manager.plugin.downloader.DownloadScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
 
-class DownloadedAppRepository(
-    app: Application,
-    db: AppDatabase
-) {
+class DownloadedAppRepository(app: Application, db: AppDatabase) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
 
     fun getAll() = dao.getAllApps().distinctUntilChanged()
 
-    fun getApkFileForApp(app: DownloadedApp): File = getApkFileForDir(dir.resolve(app.directory))
+    private fun getApkFileForApp(app: DownloadedApp): File = getApkFileForDir(dir.resolve(app.directory))
     private fun getApkFileForDir(directory: File) = directory.listFiles()!!.first()
 
     suspend fun download(
-        app: AppDownloader.App,
-        preferSplits: Boolean,
-        onDownload: suspend (downloadProgress: Pair<Float, Float>?) -> Unit = {},
+        plugin: LoadedDownloaderPlugin,
+        app: App,
+        onDownload: suspend (downloadProgress: Pair<Double, Double?>) -> Unit,
     ): File {
         this.get(app.packageName, app.version)?.let { downloaded ->
             return getApkFileForApp(downloaded)
@@ -32,23 +31,39 @@ class DownloadedAppRepository(
 
         // Converted integers cannot contain / or .. unlike the package name or version, so they are safer to use here.
         val relativePath = File(generateUid().toString())
-        val savePath = dir.resolve(relativePath).also { it.mkdirs() }
+        val saveDir = dir.resolve(relativePath).also { it.mkdirs() }
+        val targetFile = saveDir.resolve("base.apk")
 
         try {
-            app.download(savePath, preferSplits, onDownload)
+            val scope = object : DownloadScope {
+                override val targetFile = targetFile
+                override suspend fun reportProgress(bytesReceived: Long, bytesTotal: Long?) {
+                    require(bytesReceived >= 0) { "bytesReceived must not be negative" }
+                    require(bytesTotal == null || bytesTotal >= bytesReceived) { "bytesTotal must be greater than or equal to bytesReceived" }
+                    require(bytesTotal != 0L) { "bytesTotal must not be zero" }
 
-            dao.insert(DownloadedApp(
-                packageName = app.packageName,
-                version = app.version,
-                directory = relativePath,
-            ))
+                    onDownload(bytesReceived.megaBytes to bytesTotal?.megaBytes)
+                }
+            }
+
+            plugin.download(scope, app)
+
+            if (!targetFile.exists()) throw Exception("Downloader did not download any files")
+
+            dao.insert(
+                DownloadedApp(
+                    packageName = app.packageName,
+                    version = app.version,
+                    directory = relativePath,
+                )
+            )
         } catch (e: Exception) {
-            savePath.deleteRecursively()
+            saveDir.deleteRecursively()
             throw e
         }
 
         // Return the Apk file.
-        return getApkFileForDir(savePath)
+        return getApkFileForDir(saveDir)
     }
 
     suspend fun get(packageName: String, version: String) = dao.get(packageName, version)
@@ -59,5 +74,9 @@ class DownloadedAppRepository(
         }
 
         dao.delete(downloadedApps)
+    }
+
+    private companion object {
+        val Long.megaBytes get() = toDouble() / 1_000_000
     }
 }

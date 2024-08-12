@@ -14,7 +14,11 @@ import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -30,12 +34,18 @@ class AppSelectorViewModel(
     }
     val appList = pm.appList
 
-    var onStorageClick: (SelectedApp.Local) -> Unit = {}
+    private val appSelectionChannel = Channel<SelectedApp>()
+    val appSelectionFlow = appSelectionChannel.receiveAsFlow()
 
     val suggestedAppVersions = patchBundleRepository.suggestedVersions.flowOn(Dispatchers.Default)
 
     var nonSuggestedVersionDialogSubject by mutableStateOf<SelectedApp.Local?>(null)
         private set
+
+    private suspend fun selectApp(app: SelectedApp) = appSelectionChannel.send(app)
+    fun selectApp(packageName: String, version: String?) = viewModelScope.launch {
+        selectApp(SelectedApp.Search(packageName, version))
+    }
 
     fun loadLabel(app: PackageInfo?) = with(pm) { app?.label() ?: "Not installed" }
 
@@ -54,7 +64,7 @@ class AppSelectorViewModel(
         }
 
         if (patchBundleRepository.isVersionAllowed(selectedApp.packageName, selectedApp.version)) {
-            onStorageClick(selectedApp)
+            selectApp(selectedApp)
         } else {
             nonSuggestedVersionDialogSubject = selectedApp
         }
