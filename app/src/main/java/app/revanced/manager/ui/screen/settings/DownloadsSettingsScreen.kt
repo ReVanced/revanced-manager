@@ -111,16 +111,15 @@ fun DownloadsSettingsScreen(
                     val packageInfo =
                         remember(packageName) {
                             viewModel.pm.getPackageInfo(
-                                packageName,
-                                flags = PM.signaturesFlag
+                                packageName
                             )
                         } ?: return@item
 
                     if (showDialog) {
                         val signature =
-                            remember(packageInfo) {
+                            remember(packageName) {
                                 val androidSignature =
-                                    viewModel.pm.getSignatures(packageInfo).first()
+                                    viewModel.pm.getSignature(packageName)
                                 val hash = MessageDigest.getInstance("SHA-256")
                                     .digest(androidSignature.toByteArray())
                                 hash.toHexString(format = HexFormat.UpperCase)
@@ -157,7 +156,7 @@ fun DownloadsSettingsScreen(
                                 ),
                                 onDismiss = ::dismiss,
                                 onConfirm = {
-                                    viewModel.trustPlugin(packageInfo)
+                                    viewModel.trustPlugin(packageName)
                                     dismiss()
                                 }
                             )

@@ -1,9 +1,8 @@
 package app.revanced.manager.domain.repository
 
-import android.content.Context
+import android.app.Application
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.Signature
 import android.util.Log
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.plugins.TrustedDownloaderPlugin
@@ -30,7 +29,7 @@ import java.lang.reflect.Modifier
 class DownloaderPluginRepository(
     private val pm: PM,
     private val prefs: PreferencesManager,
-    private val context: Context,
+    private val app: Application,
     db: AppDatabase
 ) {
     private val trustDao = db.trustedDownloaderPluginDao()
@@ -50,16 +49,14 @@ class DownloaderPluginRepository(
     }
 
     suspend fun reload() {
-        val pluginPackages =
+        val plugins =
             withContext(Dispatchers.IO) {
-                pm.getPackagesWithFeature(
-                    PLUGIN_FEATURE,
-                    flags = packageFlags
-                )
+                pm.getPackagesWithFeature(PLUGIN_FEATURE)
+                    .associate { it.packageName to loadPlugin(it.packageName) }
             }
 
-        _pluginStates.value = pluginPackages.associate { it.packageName to loadPlugin(it) }
-        installedPluginPackageNames.value = pluginPackages.map { it.packageName }.toSet()
+        _pluginStates.value = plugins
+        installedPluginPackageNames.value = plugins.keys
 
         val acknowledgedPlugins = acknowledgedDownloaderPlugins.get()
         val uninstalledPlugins = acknowledgedPlugins subtract installedPluginPackageNames.value
@@ -78,28 +75,22 @@ class DownloaderPluginRepository(
         return plugin to app.unwrapWith(plugin)
     }
 
-    private suspend fun loadPlugin(packageInfo: PackageInfo): DownloaderPluginState {
+    private suspend fun loadPlugin(packageName: String): DownloaderPluginState {
         try {
-            if (!verify(packageInfo)) return DownloaderPluginState.Untrusted
+            if (!verify(packageName)) return DownloaderPluginState.Untrusted
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            Log.e(tag, "Got exception while verifying plugin ${packageInfo.packageName}", e)
+            Log.e(tag, "Got exception while verifying plugin $packageName", e)
             return DownloaderPluginState.Failed(e)
         }
 
-        val downloaderContext = DownloaderContext(
-            androidContext = context.createPackageContext(
-                packageInfo.packageName,
-                0
-            ),
-            pluginHostPackageName = context.packageName
-        )
-
         return try {
-            val className =
-                packageInfo.applicationInfo.metaData.getString(METADATA_PLUGIN_CLASS)
-                    ?: throw Exception("Missing metadata attribute $METADATA_PLUGIN_CLASS")
+            val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
+            val pluginContext = app.createPackageContext(packageName, 0)
+
+            val className = packageInfo.applicationInfo.metaData.getString(METADATA_PLUGIN_CLASS)
+                ?: throw Exception("Missing metadata attribute $METADATA_PLUGIN_CLASS")
             val classLoader = PathClassLoader(
                 packageInfo.applicationInfo.sourceDir,
                 Downloader::class.java.classLoader
@@ -107,12 +98,17 @@ class DownloaderPluginRepository(
 
             val downloader = classLoader
                 .loadClass(className)
-                .getDownloaderImplementation(downloaderContext)
+                .getDownloaderImplementation(
+                    DownloaderContext(
+                        androidContext = pluginContext,
+                        pluginHostPackageName = app.packageName
+                    )
+                )
 
             @Suppress("UNCHECKED_CAST")
             DownloaderPluginState.Loaded(
                 LoadedDownloaderPlugin(
-                    packageInfo.packageName,
+                    packageName,
                     with(pm) { packageInfo.label() },
                     packageInfo.versionName,
                     downloader.get,
@@ -123,22 +119,22 @@ class DownloaderPluginRepository(
         } catch (e: CancellationException) {
             throw e
         } catch (t: Throwable) {
-            Log.e(tag, "Failed to load plugin ${packageInfo.packageName}", t)
+            Log.e(tag, "Failed to load plugin $packageName", t)
             DownloaderPluginState.Failed(t)
         }
     }
 
-    suspend fun trustPackage(packageInfo: PackageInfo) {
+    suspend fun trustPackage(packageName: String) {
         trustDao.upsertTrust(
             TrustedDownloaderPlugin(
-                packageInfo.packageName,
-                pm.getSignatures(packageInfo).first().toCharsString()
+                packageName,
+                pm.getSignature(packageName).toByteArray()
             )
         )
 
         reload()
         prefs.edit {
-            acknowledgedDownloaderPlugins += packageInfo.packageName
+            acknowledgedDownloaderPlugins += packageName
         }
     }
 
@@ -148,18 +144,16 @@ class DownloaderPluginRepository(
     suspend fun acknowledgeAllNewPlugins() =
         acknowledgedDownloaderPlugins.update(installedPluginPackageNames.value)
 
-    private suspend fun verify(packageInfo: PackageInfo): Boolean {
+    private suspend fun verify(packageName: String): Boolean {
         val expectedSignature =
-            trustDao.getTrustedSignature(packageInfo.packageName)?.let(::Signature) ?: return false
+            trustDao.getTrustedSignature(packageName) ?: return false
 
-        return expectedSignature in pm.getSignatures(packageInfo)
+        return pm.hasSignature(packageName, expectedSignature)
     }
 
     private companion object {
         const val PLUGIN_FEATURE = "app.revanced.manager.plugin.downloader"
         const val METADATA_PLUGIN_CLASS = "app.revanced.manager.plugin.downloader.class"
-
-        val packageFlags = PackageManager.GET_META_DATA or PM.signaturesFlag
 
         val Class<*>.isDownloader get() = Downloader::class.java.isAssignableFrom(this)
         const val PUBLIC_STATIC = Modifier.PUBLIC or Modifier.STATIC

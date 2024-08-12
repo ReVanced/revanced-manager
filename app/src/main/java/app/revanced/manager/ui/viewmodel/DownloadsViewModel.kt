@@ -58,8 +58,8 @@ class DownloadsViewModel(
         isRefreshingPlugins = false
     }
 
-    fun trustPlugin(packageInfo: PackageInfo) = viewModelScope.launch {
-        downloaderPluginRepository.trustPackage(packageInfo)
+    fun trustPlugin(packageName: String) = viewModelScope.launch {
+        downloaderPluginRepository.trustPackage(packageName)
     }
 
     fun revokePluginTrust(packageName: String) = viewModelScope.launch {

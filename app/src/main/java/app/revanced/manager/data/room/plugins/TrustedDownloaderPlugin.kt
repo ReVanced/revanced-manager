@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "trusted_downloader_plugins")
-data class TrustedDownloaderPlugin(
+class TrustedDownloaderPlugin(
     @PrimaryKey @ColumnInfo(name = "package_name") val packageName: String,
-    @ColumnInfo(name = "signature") val signature: String
+    @ColumnInfo(name = "signature") val signature: ByteArray
 )

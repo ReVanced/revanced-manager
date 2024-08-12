@@ -14,6 +14,7 @@ import android.content.pm.Signature
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
+import androidx.core.content.pm.PackageInfoCompat
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
@@ -37,7 +38,6 @@ data class AppInfo(
 ) : Parcelable
 
 @SuppressLint("QueryPermissionsNeeded")
-@Suppress("Deprecation")
 class PM(
     private val app: Application,
     patchBundleRepository: PatchBundleRepository
@@ -100,8 +100,8 @@ class PM(
         else
             app.packageManager.getInstalledPackages(flags)
 
-    fun getPackagesWithFeature(feature: String, flags: Int = 0) =
-        getInstalledPackages(PackageManager.GET_CONFIGURATIONS or flags)
+    fun getPackagesWithFeature(feature: String) =
+        getInstalledPackages(PackageManager.GET_CONFIGURATIONS)
             .filter { pkg ->
                 pkg.reqFeatures?.any { it.name == feature } ?: false
             }
@@ -129,15 +129,17 @@ class PM(
         return pkgInfo
     }
 
-    fun getSignatures(packageInfo: PackageInfo): Array<Signature> {
-        val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            packageInfo.signingInfo.apkContentsSigners
-        else packageInfo.signatures
+    fun getSignature(packageName: String): Signature =
+        // Get the last signature from the list because we want the newest one if SigningInfo.getSigningCertificateHistory() was used.
+        PackageInfoCompat.getSignatures(app.packageManager, packageName).last()
 
-        if (signatures.isEmpty()) throw Exception("Signature information was not queried")
-
-        return signatures
-    }
+    @SuppressLint("InlinedApi")
+    fun hasSignature(packageName: String, signature: ByteArray) = PackageInfoCompat.hasSignatures(
+        app.packageManager,
+        packageName,
+        mapOf(signature to PackageManager.CERT_INPUT_RAW_X509),
+        false
+    )
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
@@ -196,8 +198,4 @@ class PM(
             Intent(this, UninstallService::class.java),
             intentFlags
         ).intentSender
-
-    companion object {
-        val signaturesFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) PackageManager.GET_SIGNING_CERTIFICATES else PackageManager.GET_SIGNATURES
-    }
 }

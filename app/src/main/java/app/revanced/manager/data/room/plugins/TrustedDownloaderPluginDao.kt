@@ -8,7 +8,7 @@ import androidx.room.Upsert
 @Dao
 interface TrustedDownloaderPluginDao {
     @Query("SELECT signature FROM trusted_downloader_plugins WHERE package_name = :packageName")
-    suspend fun getTrustedSignature(packageName: String): String?
+    suspend fun getTrustedSignature(packageName: String): ByteArray?
 
     @Upsert
     suspend fun upsertTrust(plugin: TrustedDownloaderPlugin)
