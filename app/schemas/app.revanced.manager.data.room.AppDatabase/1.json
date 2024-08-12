@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c0c780e55e10c9b095c004733c846b67",
+    "identityHash": "1dd9d5c0201fdf3cfef3ae669fd65e46",
     "entities": [
       {
         "tableName": "patch_bundles",
@@ -51,17 +51,7 @@
             "uid"
           ]
         },
-        "indices": [
-          {
-            "name": "index_patch_bundles_name",
-            "unique": true,
-            "columnNames": [
-              "name"
-            ],
-            "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_patch_bundles_name` ON `${TABLE_NAME}` (`name`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": []
       },
       {
@@ -407,7 +397,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0c780e55e10c9b095c004733c846b67')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1dd9d5c0201fdf3cfef3ae669fd65e46')"
     ]
   }
 }
