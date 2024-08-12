@@ -289,7 +289,7 @@ class PatcherViewModel(
     fun open() = installedPackageName?.let(pm::launch)
 
     fun install(installType: InstallType) = viewModelScope.launch {
-        var isInstallingRegularly = false
+        var pmInstallStarted = false
         try {
             isInstalling = true
 
@@ -316,8 +316,8 @@ class PatcherViewModel(
                     }
 
                     // Install regularly
-                    isInstallingRegularly = true
                     pm.installApp(listOf(outputFile))
+                    pmInstallStarted = true
                 }
 
                 InstallType.ROOT -> {
@@ -376,7 +376,7 @@ class PatcherViewModel(
             Log.e(tag, "Failed to install", e)
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
         } finally {
-            if (!isInstallingRegularly)
+            if (!pmInstallStarted)
                 isInstalling = false
         }
     }
