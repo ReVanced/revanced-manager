@@ -6,6 +6,9 @@
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
+    <string name="toast_copied_to_clipboard">Copied!</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
     <string name="select_app">Select an app</string>
@@ -49,19 +52,18 @@
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
-    <string name="general_description">General settings</string>
-    <string name="advanced">Advanced</string>
-    <string name="advanced_description">Advanced settings</string>
+    <string name="general_description">Theme, dynamic color</string>
     <string name="updates">Updates</string>
-    <string name="updates_description">Updates for ReVanced Manager</string>
+    <string name="updates_description">Check for updates and view changelogs</string>
+    <string name="downloads">Downloads</string>
+    <string name="downloads_description">Downloader plugins and downloaded apps</string>
+    <string name="import_export">Import &amp; export</string>
+    <string name="import_export_description">Keystore, patch options and selection</string>
+    <string name="advanced">Advanced</string>
+    <string name="advanced_description">API URL, memory limit, debugging</string>
+    <string name="about">About</string>
     <string name="opensource_licenses">Open source licenses</string>
     <string name="opensource_licenses_description">View all the libraries used to make this application</string>
-    <string name="downloads">Downloads</string>
-    <string name="downloads_description">Manage downloaded content</string>
-    <string name="import_export">Import &amp; export</string>
-    <string name="import_export_description">Import and export settings</string>
-    <string name="about">About</string>
-    <string name="about_description">About ReVanced</string>
 
     <string name="contributors">Contributors</string>
     <string name="contributors_description">View the contributors of ReVanced</string>
@@ -169,7 +171,7 @@
     <string name="device_memory_limit">Memory limits</string>
     <string name="device_memory_limit_format">%1$dMB (Normal) - %2$dMB (Large)</string>
     <string name="patch_bundles_section">Patch bundles</string>
-    <string name="patch_bundles_redownload">Redownload all patch bundles</string>
+    <string name="patch_bundles_force_download">Force download all patch bundles</string>
     <string name="patch_bundles_reset">Reset patch bundles</string>
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
