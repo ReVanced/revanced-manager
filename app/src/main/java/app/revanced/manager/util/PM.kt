@@ -116,9 +116,7 @@ class PM(
 
     fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
-    fun getVersionCode(packageInfo: PackageInfo): Long {
-        return PackageInfoCompat.getLongVersionCode(packageInfo)
-    }
+    fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller
