@@ -230,26 +230,14 @@ class PatcherViewModel(
         app.unregisterReceiver(installerBroadcastReceiver)
         workManager.cancelWorkById(patcherWorkerId)
 
-        when (val selectedApp = input.selectedApp) {
-            is SelectedApp.Local -> {
-                if (selectedApp.temporary) selectedApp.file.delete()
-            }
-
-            is SelectedApp.Installed -> {
-                GlobalScope.launch(Dispatchers.Main) {
-                    uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
-                        installedApp?.let {
-                            if (it.installType == InstallType.ROOT) {
-                                withTimeout(Duration.ofMinutes(1L)) {
-                                    rootInstaller.mount(packageName)
-                                }
-                            }
-                        }
+        if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.ROOT) {
+            GlobalScope.launch(Dispatchers.Main) {
+                uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
+                    withTimeout(Duration.ofMinutes(1L)) {
+                        rootInstaller.mount(packageName)
                     }
                 }
             }
-
-            else -> Unit
         }
 
         tempDir.deleteRecursively()
