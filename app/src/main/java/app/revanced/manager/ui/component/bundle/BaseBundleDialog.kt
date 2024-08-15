@@ -73,13 +73,9 @@ fun BaseBundleDialog(
                     .padding(start = 2.dp)
             ) {
                 version?.let {
-                    Tag(
-                        Icons.Outlined.Sell, it
-                    )
+                    Tag(Icons.Outlined.Sell, it)
                 }
-                Tag(
-                    Icons.Outlined.Extension, patchCount.toString()
-                )
+                Tag(Icons.Outlined.Extension, patchCount.toString())
             }
         }
 
@@ -94,7 +90,8 @@ fun BaseBundleDialog(
                 supportingText = stringResource(R.string.bundle_auto_update_description),
                 trailingContent = {
                     Switch(
-                        checked = autoUpdate, onCheckedChange = onAutoUpdateChange
+                        checked = autoUpdate,
+                        onCheckedChange = onAutoUpdateChange
                     )
                 },
                 modifier = Modifier.clickable {
