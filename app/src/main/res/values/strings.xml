@@ -145,7 +145,6 @@
     <string name="close">Close</string>
     <string name="system">System</string>
     <string name="light">Light</string>
-    <string name="information">Information</string>
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
     <string name="downloaded_apps">Downloaded apps</string>
@@ -181,8 +180,6 @@
     <string name="tab_bundles">Patch bundles</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
-    <string name="remote">Remote</string>
-    <string name="local">Local</string>
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
@@ -302,14 +299,12 @@
     <string name="submit_feedback_description">Help us improve this application</string>
     <string name="developer_options">Developer options</string>
     <string name="developer_options_description">Options for debugging issues</string>
-    <string name="bundle_input_name">Name</string>
     <string name="bundle_input_source_url">Source URL</string>
     <string name="bundle_update_success">Successfully updated %s</string>
     <string name="bundle_update_unavailable">No update available for %s</string>
     <string name="bundle_auto_update">Auto update</string>
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
-    <string name="bundle_type">Bundle type</string>
-    <string name="bundle_type_description">Choose the type of bundle you want</string>
+    <string name="bundle_view_patches">View patches</string>
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
     <string name="update_available">An update is available</string>
