@@ -573,7 +573,6 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       widget.onChanged(null);
                     },
                   };
-                  print('[patch option] Selected: $selection');
                   if (availableActions.containsKey(selection)) {
                     await availableActions[selection]!();
                   }
