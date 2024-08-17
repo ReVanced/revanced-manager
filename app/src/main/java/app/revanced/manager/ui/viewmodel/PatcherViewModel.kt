@@ -9,14 +9,19 @@ import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.autoSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import app.revanced.manager.R
@@ -31,11 +36,15 @@ import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.ui.destination.Destination
+import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.Step
 import app.revanced.manager.ui.model.StepCategory
+import app.revanced.manager.ui.model.StepProgressProvider
 import app.revanced.manager.util.PM
+import app.revanced.manager.util.saveableVar
+import app.revanced.manager.util.saver.snapshotStateListSaver
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -43,8 +52,6 @@ import app.revanced.manager.util.uiSafe
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.withTimeout
 import kotlinx.coroutines.withContext
@@ -55,32 +62,47 @@ import java.nio.file.Files
 import java.time.Duration
 import java.util.UUID
 
+
+// @SuppressLint("AutoboxingStateCreation")
 @Stable
+@OptIn(SavedStateHandleSaveableApi::class)
 class PatcherViewModel(
     private val input: Destination.Patcher
-) : ViewModel(), KoinComponent {
+) : ViewModel(), KoinComponent, StepProgressProvider {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
+    private val savedStateHandle: SavedStateHandle by inject()
 
     private var installedApp: InstalledApp? = null
-    val packageName: String = input.selectedApp.packageName
-    var installedPackageName by mutableStateOf<String?>(null)
+    val packageName = input.selectedApp.packageName
+
+    var installedPackageName by savedStateHandle.saveable(
+        key = "installedPackageName",
+        // Force Kotlin to select the correct overload.
+        stateSaver = autoSaver()
+    ) {
+        mutableStateOf<String?>(null)
+    }
         private set
-    var isInstalling by mutableStateOf(false)
+    private var ongoingPmSession: Boolean by savedStateHandle.saveableVar { false }
+
+    var isInstalling by mutableStateOf(ongoingPmSession)
         private set
 
-    private val tempDir = fs.tempDir.resolve("installer").also {
-        it.deleteRecursively()
-        it.mkdirs()
+    private val tempDir = savedStateHandle.saveable(key = "tempDir") {
+        fs.uiTempDir.resolve("installer").also {
+            it.deleteRecursively()
+            it.mkdirs()
+        }
     }
-    private var inputFile: File? = null
+    private var inputFile: File? by savedStateHandle.saveableVar()
     private val outputFile = tempDir.resolve("output.apk")
 
-    private val logs = mutableListOf<Pair<LogLevel, String>>()
+    private val logs by savedStateHandle.saveable<MutableList<Pair<LogLevel, String>>> { mutableListOf() }
     private val logger = object : Logger() {
         override fun log(level: LogLevel, message: String) {
             level.androidLog(message)
@@ -92,18 +114,43 @@ class PatcherViewModel(
         }
     }
 
-    val patchesProgress = MutableStateFlow(Pair(0, input.selectedPatches.values.sumOf { it.size }))
-    private val downloadProgress = MutableStateFlow<Pair<Float, Float>?>(null)
-    val steps = generateSteps(
-        app,
-        input.selectedApp,
-        downloadProgress
-    ).toMutableStateList()
+    private val patchCount = input.selectedPatches.values.sumOf { it.size }
+    private var completedPatchCount by savedStateHandle.saveable {
+        // SavedStateHandle.saveable only supports the boxed version.
+        @Suppress("AutoboxingStateCreation") mutableStateOf(
+            0
+        )
+    }
+    val patchesProgress get() = completedPatchCount to patchCount
+    override var downloadProgress by savedStateHandle.saveable(
+        key = "downloadProgress",
+        stateSaver = autoSaver()
+    ) {
+        viewModelScope
+        mutableStateOf<Pair<Float, Float>?>(null)
+    }
+        private set
+    val steps by savedStateHandle.saveable(saver = snapshotStateListSaver()) {
+        generateSteps(
+            app,
+            input.selectedApp
+        ).toMutableStateList()
+    }
     private var currentStepIndex = 0
+
+    val progress by derivedStateOf {
+        val current = steps.count {
+            it.state == State.COMPLETED && it.category != StepCategory.PATCHING
+        } + completedPatchCount
+
+        val total = steps.size - 1 + patchCount
+
+        current.toFloat() / total.toFloat()
+    }
 
     private val workManager = WorkManager.getInstance(app)
 
-    private val patcherWorkerId: UUID =
+    private val patcherWorkerId by savedStateHandle.saveable<UUID> {
         workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
             "patching", PatcherWorker.Args(
                 input.selectedApp,
@@ -111,9 +158,9 @@ class PatcherViewModel(
                 input.selectedPatches,
                 input.options,
                 logger,
-                downloadProgress,
-                patchesProgress,
-                setInputFile = { inputFile = it },
+                onDownloadProgress = { withContext(Dispatchers.Main) { downloadProgress = it } },
+                onPatchCompleted = { withContext(Dispatchers.Main) { completedPatchCount += 1 } },
+                setInputFile = { withContext(Dispatchers.Main) { inputFile = it } },
                 onProgress = { name, state, message ->
                     viewModelScope.launch {
                         steps[currentStepIndex] = steps[currentStepIndex].run {
@@ -134,6 +181,7 @@ class PatcherViewModel(
                 }
             )
         )
+    }
 
     val patcherSucceeded =
         workManager.getWorkInfoByIdLiveData(patcherWorkerId).map { workInfo: WorkInfo ->
@@ -172,7 +220,8 @@ class PatcherViewModel(
         }
     }
 
-    init { // TODO: navigate away when system-initiated process death is detected because it is not possible to recover from it.
+    init {
+        // TODO: detect system-initiated process death during the patching process.
         ContextCompat.registerReceiver(app, installBroadcastReceiver, IntentFilter().apply {
             addAction(InstallService.APP_INSTALL_ACTION)
         }, ContextCompat.RECEIVER_NOT_EXPORTED)
@@ -278,8 +327,8 @@ class PatcherViewModel(
         }
     }
 
-    companion object {
-        private const val TAG = "ReVanced Patcher"
+    private companion object {
+        const val TAG = "ReVanced Patcher"
 
         fun LogLevel.androidLog(msg: String) = when (this) {
             LogLevel.TRACE -> Log.v(TAG, msg)
@@ -288,11 +337,7 @@ class PatcherViewModel(
             LogLevel.ERROR -> Log.e(TAG, msg)
         }
 
-        fun generateSteps(
-            context: Context,
-            selectedApp: SelectedApp,
-            downloadProgress: StateFlow<Pair<Float, Float>?>? = null
-        ): List<Step> {
+        fun generateSteps(context: Context, selectedApp: SelectedApp): List<Step> {
             val needsDownload = selectedApp is SelectedApp.Download
 
             return listOfNotNull(
@@ -300,7 +345,7 @@ class PatcherViewModel(
                     context.getString(R.string.download_apk),
                     StepCategory.PREPARING,
                     state = State.RUNNING,
-                    downloadProgress = downloadProgress,
+                    progressKey = ProgressKey.DOWNLOAD,
                 ).takeIf { needsDownload },
                 Step(
                     context.getString(R.string.patcher_step_load_patches),

@@ -61,9 +61,9 @@ class PatcherWorker(
         val selectedPatches: PatchSelection,
         val options: Options,
         val logger: Logger,
-        val downloadProgress: MutableStateFlow<Pair<Float, Float>?>,
-        val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
-        val setInputFile: (File) -> Unit,
+        val onDownloadProgress: suspend (Pair<Float, Float>?) -> Unit,
+        val onPatchCompleted: suspend () -> Unit,
+        val setInputFile: suspend (File) -> Unit,
         val onProgress: ProgressEventHandler
     ) {
         val packageName get() = input.packageName
@@ -146,7 +146,7 @@ class PatcherWorker(
                     downloadedAppRepository.download(
                         selectedApp.app,
                         prefs.preferSplits.get(),
-                        onDownload = { args.downloadProgress.emit(it) }
+                        onDownload = args.onDownloadProgress
                     ).also {
                         args.setInputFile(it)
                         updateProgress(state = State.COMPLETED) // Download APK
@@ -170,11 +170,13 @@ class PatcherWorker(
                 args.selectedPatches,
                 args.options,
                 args.logger,
+                /*
                 onPatchCompleted = {
                     args.patchesProgress.update { (completed, total) ->
                         completed + 1 to total
                     }
-                },
+                },*/
+                args.onPatchCompleted,
                 args.onProgress
             )
 

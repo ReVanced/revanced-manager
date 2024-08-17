@@ -10,6 +10,7 @@ import android.icu.text.CompactDecimalFormat
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.revanced.manager.R
@@ -42,6 +44,9 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.Locale
+import kotlin.properties.PropertyDelegateProvider
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 typealias PatchSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
@@ -156,9 +161,21 @@ fun String.relativeTime(context: Context): String {
 
         return when {
             duration.toMinutes() < 1 -> context.getString(R.string.just_now)
-            duration.toMinutes() < 60 -> context.getString(R.string.minutes_ago, duration.toMinutes().toString())
-            duration.toHours() < 24 -> context.getString(R.string.hours_ago, duration.toHours().toString())
-            duration.toDays() < 30 -> context.getString(R.string.days_ago, duration.toDays().toString())
+            duration.toMinutes() < 60 -> context.getString(
+                R.string.minutes_ago,
+                duration.toMinutes().toString()
+            )
+
+            duration.toHours() < 24 -> context.getString(
+                R.string.hours_ago,
+                duration.toHours().toString()
+            )
+
+            duration.toDays() < 30 -> context.getString(
+                R.string.days_ago,
+                duration.toDays().toString()
+            )
+
             else -> {
                 val formatter = DateTimeFormatter.ofPattern("MMM d")
                 val formattedDate = inputDateTime.format(formatter)
@@ -219,3 +236,22 @@ fun ScrollState.isScrollingUp(): State<Boolean> {
 
 val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
 val ScrollState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
+
+@MainThread
+fun <T : Any> SavedStateHandle.saveableVar(init: () -> T): PropertyDelegateProvider<Any?, ReadWriteProperty<Any?, T>> =
+    PropertyDelegateProvider { _: Any?, property ->
+        val name = property.name
+        if (name !in this) this[name] = init()
+        object : ReadWriteProperty<Any?, T> {
+            override fun getValue(thisRef: Any?, property: KProperty<*>): T = get(name)!!
+            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
+                set(name, value)
+        }
+    }
+
+fun <T : Any> SavedStateHandle.saveableVar(): ReadWriteProperty<Any?, T?> =
+    object : ReadWriteProperty<Any?, T?> {
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T? = get(property.name)
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
+            set(property.name, value)
+    }

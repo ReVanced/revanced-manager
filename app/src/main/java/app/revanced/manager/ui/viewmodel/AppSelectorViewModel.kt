@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.PM
@@ -23,11 +24,10 @@ import java.nio.file.Files
 class AppSelectorViewModel(
     private val app: Application,
     private val pm: PM,
+    fs: Filesystem,
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
-    private val inputFile = File(app.filesDir, "input.apk").also {
-        it.delete()
-    }
+    private val inputFile = File(fs.uiTempDir, "input.apk").also(File::delete)
     val appList = pm.appList
 
     var onStorageClick: (SelectedApp.Local) -> Unit = {}

@@ -36,13 +36,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
-import app.revanced.manager.ui.model.State
 import app.revanced.manager.ui.model.StepCategory
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.manager.util.APK_MIMETYPE
@@ -66,22 +64,6 @@ fun PatcherScreen(
     val steps by remember {
         derivedStateOf {
             vm.steps.groupBy { it.category }
-        }
-    }
-
-    val patchesProgress by vm.patchesProgress.collectAsStateWithLifecycle()
-
-    val progress by remember {
-        derivedStateOf {
-            val (patchesCompleted, patchesTotal) = patchesProgress
-
-            val current = vm.steps.count {
-                it.state == State.COMPLETED && it.category != StepCategory.PATCHING
-            } + patchesCompleted
-
-            val total = vm.steps.size - 1 + patchesTotal
-
-            current.toFloat() / total.toFloat()
         }
     }
 
@@ -150,7 +132,7 @@ fun PatcherScreen(
                 .fillMaxSize()
         ) {
             LinearProgressIndicator(
-                progress = { progress },
+                progress = { vm.progress },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -166,7 +148,8 @@ fun PatcherScreen(
                     Steps(
                         category = category,
                         steps = steps,
-                        stepCount = if (category == StepCategory.PATCHING) patchesProgress else null
+                        stepCount = if (category == StepCategory.PATCHING) vm.patchesProgress else null,
+                        stepProgressProvider = vm
                     )
                 }
             }
