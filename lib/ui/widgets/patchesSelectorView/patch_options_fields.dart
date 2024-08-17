@@ -528,19 +528,23 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                   ];
                 },
                 onSelected: (String selection) async {
-                  // manageExternalStorage permission is required for file/folder selection
-                  // otherwise, the app will not complain, but the patches will error out
-                  // the same way as if the user selected an empty file/folder.
-                  // Android 11 and above requires the manageExternalStorage permission
-                  final Map<String, dynamic> availableActions = {
-                    'file': () async {
-                      if (_managerAPI.isScopedStorageAvailable) {
-                        final permission =
-                            await Permission.manageExternalStorage.request();
-                        if (!permission.isGranted) {
-                          return;
-                        }
-                      }
+                  Future<bool> gotExternalStoragePermission() async {
+                    // manageExternalStorage permission is required for folder selection
+                    // otherwise, the app will not complain, but the patches will error out
+                    // the same way as if the user selected an empty folder.
+                    // Android 11 and above requires the manageExternalStorage permission
+                    if (_managerAPI.isScopedStorageAvailable) {
+                      final permission =
+                          await Permission.manageExternalStorage.request();
+                      return permission.isGranted;
+                    }
+                    return true;
+                  }
+
+                  switch (selection) {
+                    case 'file':
+                      // here scope storage is not required because file_picker
+                      // will copy the file to the app's cache
                       final FilePickerResult? result =
                           await FilePicker.platform.pickFiles();
                       if (result == null) {
@@ -548,14 +552,10 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       }
                       controller.text = result.files.single.path!;
                       widget.onChanged(controller.text);
-                    },
-                    'folder': () async {
-                      if (_managerAPI.isScopedStorageAvailable) {
-                        final permission =
-                            await Permission.manageExternalStorage.request();
-                        if (!permission.isGranted) {
-                          return;
-                        }
+                      break;
+                    case 'folder':
+                      if (!await gotExternalStoragePermission()) {
+                        return;
                       }
                       final String? result =
                           await FilePicker.platform.getDirectoryPath();
@@ -564,17 +564,14 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                       }
                       controller.text = result;
                       widget.onChanged(controller.text);
-                    },
-                    'remove': () {
+                      break;
+                    case 'remove':
                       widget.removeValue!();
-                    },
-                    'null': () {
+                      break;
+                    case 'null':
                       controller.text = '';
                       widget.onChanged(null);
-                    },
-                  };
-                  if (availableActions.containsKey(selection)) {
-                    await availableActions[selection]!();
+                      break;
                   }
                 },
               ),
