@@ -21,7 +21,7 @@ import app.revanced.manager.domain.installer.RootInstaller
 import app.revanced.manager.domain.repository.InstalledAppRepository
 import app.revanced.manager.service.UninstallService
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.simpleMessage
 import app.revanced.manager.util.tag
 import app.revanced.manager.util.toast
@@ -43,13 +43,19 @@ class InstalledAppInfoViewModel(
 
     var appInfo: PackageInfo? by mutableStateOf(null)
         private set
-    var appliedPatches: PatchesSelection? by mutableStateOf(null)
-    var isMounted by mutableStateOf(rootInstaller.isAppMounted(installedApp.currentPackageName))
+    var appliedPatches: PatchSelection? by mutableStateOf(null)
+    var isMounted by mutableStateOf(false)
         private set
+
+    init {
+        viewModelScope.launch {
+            isMounted = rootInstaller.isAppMounted(installedApp.currentPackageName)
+        }
+    }
 
     fun launch() = pm.launch(installedApp.currentPackageName)
 
-    fun mountOrUnmount() {
+    fun mountOrUnmount() = viewModelScope.launch {
         try {
             if (isMounted)
                 rootInstaller.unmount(installedApp.currentPackageName)

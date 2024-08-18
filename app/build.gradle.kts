@@ -1,10 +1,12 @@
+import kotlin.random.Random
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.devtools)
     alias(libs.plugins.about.libraries)
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -18,16 +20,15 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "0.0.1"
-        resourceConfigurations.addAll(listOf(
-            "en",
-        ))
         vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
-            resValue("string", "app_name", "ReVanced Manager Debug")
+            resValue("string", "app_name", "ReVanced Manager (dev)")
+
+            buildConfigField("long", "BUILD_ID", "${Random.nextLong()}L")
         }
 
         release {
@@ -42,6 +43,8 @@ android {
                 resValue("string", "app_name", "ReVanced Manager Debug")
                 signingConfig = signingConfigs.getByName("debug")
             }
+
+            buildConfigField("long", "BUILD_ID", "0L")
         }
     }
 
@@ -54,7 +57,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    
+
     packaging {
         resources.excludes.addAll(listOf(
             "/prebuilt/**",
@@ -80,8 +83,21 @@ android {
 
     buildFeatures.compose = true
     buildFeatures.aidl = true
+    buildFeatures.buildConfig=true
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.3"
+    android {
+        androidResources {
+            generateLocaleConfig = true
+        }
+    }
+
+    composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
 }
 
 kotlin {
@@ -104,14 +120,16 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.preview)
+    implementation(libs.compose.ui.tooling)
     implementation(libs.compose.livedata)
     implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
 
     // Accompanist
     implementation(libs.accompanist.drawablepainter)
-    implementation(libs.accompanist.webview)
-    implementation(libs.accompanist.placeholder)
+
+    // Placeholder
+    implementation(libs.placeholder.material3)
 
     // HTML Scraper
     implementation(libs.skrapeit.dsl)
@@ -135,6 +153,13 @@ dependencies {
     implementation(libs.revanced.patcher)
     implementation(libs.revanced.library)
 
+    // Native processes
+    implementation(libs.kotlin.process)
+
+    // HiddenAPI
+    compileOnly(libs.hidden.api.stub)
+
+    // LibSU
     implementation(libs.libsu.core)
     implementation(libs.libsu.service)
     implementation(libs.libsu.nio)
@@ -162,4 +187,13 @@ dependencies {
 
     // Fading Edges
     implementation(libs.fading.edges)
+
+    // Scrollbars
+    implementation(libs.scrollbars)
+
+    // Reorderable lists
+    implementation(libs.reorderable)
+
+    // Compose Icons
+    implementation(libs.compose.icons.fontawesome)
 }

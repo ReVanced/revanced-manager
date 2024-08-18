@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.SettingsBackupRestore
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.AlertDialog
@@ -31,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,18 +37,22 @@ import app.revanced.manager.R
 import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.SegmentedButton
+import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.InstalledAppInfoViewModel
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstalledAppInfoScreen(
-    onPatchClick: (packageName: String, patchesSelection: PatchesSelection) -> Unit,
+    onPatchClick: (packageName: String, patchSelection: PatchSelection) -> Unit,
     onBackClick: () -> Unit,
     viewModel: InstalledAppInfoViewModel
 ) {
+    val context = LocalContext.current
+
     SideEffect {
         viewModel.onBackClick = onBackClick
     }
@@ -70,18 +73,17 @@ fun InstalledAppInfoScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             AppInfo(viewModel.appInfo)  {
                 Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
 
                 if (viewModel.installedApp.installType == InstallType.ROOT) {
                     Text(
-                        text = if (viewModel.rootInstaller.isAppMounted(viewModel.installedApp.currentPackageName)) {
+                        text = if (viewModel.isMounted) {
                             stringResource(R.string.mounted)
                         } else {
                             stringResource(R.string.not_mounted)
@@ -98,7 +100,7 @@ fun InstalledAppInfoScreen(
                     .clip(RoundedCornerShape(24.dp))
             ) {
                 SegmentedButton(
-                    icon = Icons.Outlined.OpenInNew,
+                    icon = Icons.AutoMirrored.Outlined.OpenInNew,
                     text = stringResource(R.string.open_app),
                     onClick = viewModel::launch
                 )
@@ -144,17 +146,17 @@ fun InstalledAppInfoScreen(
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 SettingsListItem(
-                    modifier = Modifier.clickable {  },
+                    modifier = Modifier.clickable { context.toast("Not implemented yet!") },
                     headlineContent = stringResource(R.string.applied_patches),
                     supportingContent = 
                             (viewModel.appliedPatches?.values?.sumOf { it.size } ?: 0).let {
                                 pluralStringResource(
-                                    id = R.plurals.applied_patches,
+                                    id = R.plurals.patch_count,
                                     it,
                                     it
                                 )
                             },
-                    trailingContent = { Icon(Icons.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
+                    trailingContent = { Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = stringResource(R.string.view_applied_patches)) }
                 )
 
                 SettingsListItem(
@@ -174,7 +176,6 @@ fun InstalledAppInfoScreen(
                     supportingContent = stringResource(viewModel.installedApp.installType.stringResource)
                 )
             }
-
         }
     }
 }

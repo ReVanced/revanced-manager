@@ -5,22 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import app.revanced.manager.ui.component.AutoUpdatesDialog
 import app.revanced.manager.ui.destination.Destination
 import app.revanced.manager.ui.destination.SettingsDestination
 import app.revanced.manager.ui.screen.AppSelectorScreen
 import app.revanced.manager.ui.screen.DashboardScreen
 import app.revanced.manager.ui.screen.InstalledAppInfoScreen
-import app.revanced.manager.ui.screen.InstallerScreen
+import app.revanced.manager.ui.screen.PatcherScreen
 import app.revanced.manager.ui.screen.SelectedAppInfoScreen
 import app.revanced.manager.ui.screen.SettingsScreen
 import app.revanced.manager.ui.screen.VersionSelectorScreen
@@ -35,7 +27,7 @@ import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.compose.getViewModel as getComposeViewModel
+import org.koin.androidx.compose.koinViewModel as getComposeViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel as getAndroidViewModel
 
 class MainActivity : ComponentActivity() {
@@ -46,7 +38,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         val vm: MainViewModel = getAndroidViewModel()
-
         vm.importLegacySettings(this)
 
         setContent {
@@ -59,36 +50,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 val navController =
                     rememberNavController<Destination>(startDestination = Destination.Dashboard)
-
                 NavBackHandler(navController)
-
-                val firstLaunch by vm.prefs.firstLaunch.getAsState()
-
-                if (firstLaunch) AutoUpdatesDialog(vm::applyAutoUpdatePrefs)
-
-                vm.updatedManagerVersion?.let {
-                    AlertDialog(
-                        onDismissRequest = vm::dismissUpdateDialog,
-                        confirmButton = {
-                            TextButton(
-                                onClick = {
-                                    vm.dismissUpdateDialog()
-                                    navController.navigate(Destination.Settings(SettingsDestination.Update(false)))
-                                }
-                            ) {
-                                Text(stringResource(R.string.update))
-                            }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = vm::dismissUpdateDialog) {
-                                Text(stringResource(R.string.dismiss_temporary))
-                            }
-                        },
-                        icon = { Icon(Icons.Outlined.Update, null) },
-                        title = { Text(stringResource(R.string.update_available_dialog_title)) },
-                        text = { Text(stringResource(R.string.update_available_dialog_description, it)) }
-                    )
-                }
 
                 AnimatedNavHost(
                     controller = navController
@@ -97,6 +59,9 @@ class MainActivity : ComponentActivity() {
                         is Destination.Dashboard -> DashboardScreen(
                             onSettingsClick = { navController.navigate(Destination.Settings()) },
                             onAppSelectorClick = { navController.navigate(Destination.AppSelector) },
+                            onUpdateClick = { navController.navigate(
+                                Destination.Settings(SettingsDestination.Update())
+                            ) },
                             onAppClick = { installedApp ->
                                 navController.navigate(
                                     Destination.InstalledApplicationInfo(
@@ -107,11 +72,11 @@ class MainActivity : ComponentActivity() {
                         )
 
                         is Destination.InstalledApplicationInfo -> InstalledAppInfoScreen(
-                            onPatchClick = { packageName, patchesSelection ->
+                            onPatchClick = { packageName, patchSelection ->
                                 navController.navigate(
                                     Destination.VersionSelector(
                                         packageName,
-                                        patchesSelection
+                                        patchSelection
                                     )
                                 )
                             },
@@ -142,14 +107,14 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(
                                     Destination.SelectedApplicationInfo(
                                         selectedApp,
-                                        destination.patchesSelection,
+                                        destination.patchSelection,
                                     )
                                 )
                             },
                             viewModel = getComposeViewModel {
                                 parametersOf(
                                     destination.packageName,
-                                    destination.patchesSelection
+                                    destination.patchSelection
                                 )
                             }
                         )
@@ -157,7 +122,7 @@ class MainActivity : ComponentActivity() {
                         is Destination.SelectedApplicationInfo -> SelectedAppInfoScreen(
                             onPatchClick = { app, patches, options ->
                                 navController.navigate(
-                                    Destination.Installer(
+                                    Destination.Patcher(
                                         app, patches, options
                                     )
                                 )
@@ -167,13 +132,13 @@ class MainActivity : ComponentActivity() {
                                 parametersOf(
                                     SelectedAppInfoViewModel.Params(
                                         destination.selectedApp,
-                                        destination.patchesSelection
+                                        destination.patchSelection
                                     )
                                 )
                             }
                         )
 
-                        is Destination.Installer -> InstallerScreen(
+                        is Destination.Patcher -> PatcherScreen(
                             onBackClick = { navController.popUpTo { it is Destination.Dashboard } },
                             vm = getComposeViewModel { parametersOf(destination) }
                         )

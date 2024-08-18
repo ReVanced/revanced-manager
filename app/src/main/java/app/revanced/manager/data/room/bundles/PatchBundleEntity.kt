@@ -21,7 +21,7 @@ sealed class Source {
     }
 
     companion object {
-        fun from(value: String) = when(value) {
+        fun from(value: String) = when (value) {
             Local.SENTINEL -> Local
             API.SENTINEL -> API
             else -> Remote(Url(value))
@@ -34,7 +34,7 @@ data class VersionInfo(
     @ColumnInfo(name = "integrations_version") val integrations: String? = null,
 )
 
-@Entity(tableName = "patch_bundles", indices = [Index(value = ["name"], unique = true)])
+@Entity(tableName = "patch_bundles")
 data class PatchBundleEntity(
     @PrimaryKey val uid: Int,
     @ColumnInfo(name = "name") val name: String,

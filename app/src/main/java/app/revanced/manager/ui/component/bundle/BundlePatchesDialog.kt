@@ -3,15 +3,12 @@ package app.revanced.manager.ui.component.bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Lightbulb
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -29,6 +26,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.domain.bundles.PatchBundleSource
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.NotificationCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,16 +50,16 @@ fun BundlePatchesDialog(
                 BundleTopBar(
                     title = stringResource(R.string.bundle_patches),
                     onBackClick = onDismissRequest,
-                    onBackIcon = {
+                    backIcon = {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
                         )
                     },
                 )
             },
         ) { paddingValues ->
-            LazyColumn(
+            LazyColumnWithScrollbar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(paddingValues)
@@ -98,7 +96,7 @@ fun BundlePatchesDialog(
                                 }
                             }
                         )
-                        Divider()
+                        HorizontalDivider()
                     }
                 }
             }

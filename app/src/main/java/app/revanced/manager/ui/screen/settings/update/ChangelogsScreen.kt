@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,18 +19,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.LazyColumnWithScrollbar
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.settings.Changelog
 import app.revanced.manager.ui.viewmodel.ChangelogsViewModel
 import app.revanced.manager.util.formatNumber
 import app.revanced.manager.util.relativeTime
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangelogsScreen(
     onBackClick: () -> Unit,
-    vm: ChangelogsViewModel = getViewModel()
+    vm: ChangelogsViewModel = koinViewModel()
 ) {
     val changelogs = vm.changelogs
 
@@ -43,7 +43,7 @@ fun ChangelogsScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
+        LazyColumnWithScrollbar(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
@@ -87,7 +87,7 @@ fun ChangelogItem(
             publishDate = changelog.publishDate.relativeTime(LocalContext.current)
         )
         if (changelog != lastChangelog) {
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(top = 32.dp),
                 color = MaterialTheme.colorScheme.outlineVariant
             )

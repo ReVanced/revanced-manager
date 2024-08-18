@@ -1,32 +1,40 @@
 [versions]
-ktx = "1.12.0"
-viewmodel-lifecycle = "2.6.2"
+ktx = "1.13.1"
+material3 = "1.2.1"
+ui-tooling = "1.6.8"
+viewmodel-lifecycle = "2.8.3"
 splash-screen = "1.0.1"
-compose-activity = "1.8.0"
-paging = "3.2.1"
-preferences-datastore = "1.0.0"
-work-runtime = "2.8.1"
-compose-bom = "2023.10.00"
-accompanist = "0.30.1"
-serialization = "1.6.0"
-collection = "0.3.5"
-room-version = "2.5.2"
-revanced-patcher = "19.1.0"
-revanced-library = "1.4.0"
-koin-version = "3.4.3"
-koin-version-compose = "3.4.6"
+compose-activity = "1.9.0"
+paging = "3.3.0"
+preferences-datastore = "1.1.1"
+work-runtime = "2.9.0"
+compose-bom = "2024.06.00"
+accompanist = "0.34.0"
+placeholder = "1.1.2"
+reorderable = "1.5.2"
+serialization = "1.6.3"
+collection = "0.3.7"
+room-version = "2.6.1"
+revanced-patcher = "19.3.1"
+revanced-library = "2.2.1"
+koin-version = "3.5.3"
+koin-version-compose = "3.5.3"
 reimagined-navigation = "1.5.0"
-ktor = "2.3.3"
-markdown-renderer = "0.8.0"
+ktor = "2.3.9"
+markdown-renderer = "0.22.0"
 fading-edges = "1.0.4"
-androidGradlePlugin = "8.1.2"
-kotlinGradlePlugin = "1.9.10"
-devToolsGradlePlugin = "1.9.10-1.0.13"
-aboutLibrariesGradlePlugin = "10.8.3"
-coil = "2.4.0"
+android-gradle-plugin = "8.3.2"
+kotlin-gradle-plugin = "1.9.22"
+dev-tools-gradle-plugin = "1.9.22-1.0.17"
+about-libraries-gradle-plugin = "11.1.1"
+coil = "2.6.0"
 app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
-libsu = "5.2.0"
+libsu = "5.2.2"
+scrollbars = "1.0.4"
+compose-icons = "1.2.4"
+kotlin-process = "1.4.1"
+hidden-api-stub = "4.3.3"
 
 [libraries]
 # AndroidX Core
@@ -43,8 +51,9 @@ preferences-datastore = { group = "androidx.datastore", name = "datastore-prefer
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.0-alpha10"}
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3"}
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 # Coil
@@ -53,10 +62,9 @@ coil-appiconloader = { group = "me.zhanghai.android.appiconloader", name = "appi
 
 # Accompanist
 accompanist-drawablepainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
-accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist" }
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
-accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist" }
+
+# Placeholder
+placeholder-material3 = { group = "io.github.fornewid", name = "placeholder-material3", version.ref = "placeholder"}
 
 # Kotlinx
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
@@ -79,8 +87,8 @@ koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager
 # Compose Navigation
 reimagined-navigation = { group = "dev.olshevski.navigation", name = "reimagined", version.ref = "reimagined-navigation" }
 
-# about-libraries
-about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "aboutLibrariesGradlePlugin" }
+# About Libraries
+about-libraries = { group = "com.mikepenz", name = "aboutlibraries-compose", version.ref = "about-libraries-gradle-plugin" }
 
 # Ktor
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
@@ -94,18 +102,34 @@ skrapeit-dsl = { group = "it.skrape", name = "skrapeit-dsl", version.ref = "skra
 skrapeit-parser = { group = "it.skrape", name = "skrapeit-html-parser", version.ref = "skrapeit" }
 
 # Markdown
-markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-android", version.ref = "markdown-renderer" }
+markdown-renderer = { group = "com.mikepenz", name = "multiplatform-markdown-renderer-m3", version.ref = "markdown-renderer" }
 
 # Fading Edges
 fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version.ref = "fading-edges"}
+
+# Native processes
+kotlin-process = { group = "com.github.pgreze", name = "kotlin-process", version.ref = "kotlin-process" }
+
+# HiddenAPI
+hidden-api-stub = { group = "dev.rikka.hidden", name = "stub", version.ref = "hidden-api-stub" }
 
 # LibSU
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }
 libsu-service = { group = "com.github.topjohnwu.libsu", name = "service", version.ref = "libsu" }
 libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = "libsu" }
 
+# Scrollbars
+scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
+
+# Reorderable lists
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
+
+# Compose Icons
+# switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
+compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
+
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
-devtools = { id = "com.google.devtools.ksp", version.ref = "devToolsGradlePlugin" }
-about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibrariesGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-gradle-plugin" }
+devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
+about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }

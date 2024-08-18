@@ -80,7 +80,9 @@ class PM(
             (compatibleApps.await() + installedApps.await())
                 .distinctBy { it.packageName }
                 .sortedWith(
-                    compareByDescending<AppInfo> {
+                    compareByDescending<AppInfo>{
+                        it.packageInfo != null && (it.patches ?: 0) > 0
+                    }.thenByDescending {
                         it.patches
                     }.thenBy {
                         it.packageInfo?.label()
