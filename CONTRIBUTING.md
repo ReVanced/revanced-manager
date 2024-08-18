@@ -60,7 +60,8 @@
 
 # 👋 Contribution guidelines
 
-This document describes how to contribute to ReVanced Manager.
+Welcome to contribution guidelines, this document contains 
+everything you'll need to contribute to ReVanced Manager.
 
 ## 📖 Resources to help you get started
 
@@ -74,8 +75,8 @@ Features can be requested by opening an issue using the
 [feature request issue template](https://github.com/ReVanced/revanced-manager/issues/new?assignees=&labels=feature-request&projects=&template=feature-issue.yml&title=feat%3A+%3Ctitle%3E).
 
 > [!NOTE]
-> We may reject your request at the discretion of ReVanced Manager's maintainers,
-> please provide good motivation for a request to be accepted.
+> Requests can be accepted or rejected at the discretion of maintainers of ReVanced Manager. 
+> Good motivation has to be provided for a request to be accepted.
 
 ## 🐞 Submitting a bug report
 
@@ -84,20 +85,22 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 ## 📝 How to contribute
 
-> [!NOTE]
+> [!TIP]
 > We recommend that you discuss your changes with 
 > the maintainers of ReVanced Manager before contributing. 
 > This will help you determine whether your change is acceptable.
 
-1. Fork the repository and create a new branch based off the `dev` branch
-2. Make sure that the commit name are clear and concise as possible and commit your changes.
-3. Open a pull request to the `dev` branch and reference issues that your pull request closes
-4. The maintainers of ReVanced Manager will review and provide suggestions. 
-   Once your pull request is approved and merged, it will be included in the next release of ReVanced Manager
+1. Fork the repository and create your branch from `dev`
+2. Commit your changes
+3. Submit a pull request to the `dev` branch of the repository and reference issues that your pull request closes in the description of your pull request
+4. Our team will review your pull request and provide feedback. Once your pull request is approved, it will be merged into the `dev` branch and will be included in 
+   the next release of ReVanced Manager
 
 ## 🤚 I want to contribute but don't know how to code
 
 Even if you don't know how to code, you can still contribute by 
-translating ReVanced Manager on [Crowdin](https://translate.revanced.app/).
+translating ReVanced Manager on [Crowdin](https://translate.revanced.app/)
+or sponsor us at [GitHub Sponsor](https://github.com/sponsors/ReVanced) and [OpenCollective](https://opencollective.com/ReVanced).
 
-❤️ Thank you for considering contributing to ReVanced Manager.
+❤️ Thank you for considering contributing to ReVanced Manager,
+ReVanced
