@@ -13,8 +13,8 @@
   <br>
   <a href="https://revanced.app/">
        <picture>
-           <source height="24px" media="(prefers-color-scheme: dark)" srcset="assets/revanced-logo/revanced-logo-round.svg" />
-           <img height="24px" src="assets/revanced-logo/revanced-logo-round.svg" />
+           <source height="24px" media="(prefers-color-scheme: dark)" srcset="assets/revanced-logo/revanced-logo.svg" />
+           <img height="24px" src="assets/revanced-logo/revanced-logo.svg" />
        </picture>
    </a>&nbsp;&nbsp;&nbsp;
    <a href="https://github.com/ReVanced">
@@ -64,15 +64,17 @@ This document describes how to report security vulnerabilities for ReVanced Mana
 
 ## 🚨 Reporting a Vulnerability
 
-Please open an issue in our [advisory tracker](https://github.com/ReVanced/revanced-manager/security/advisories/new) or reach out privately to us on [Discord](https://discord.gg/revanced).
+Please open an issue in our [advisory tracker](https://github.com/ReVanced/revanced-manager/security/advisories/new) 
+or reach out privately to us on [Discord](https://discord.gg/revanced).
 
-If a vulnerability is confirmed and accepted, you can join our [Discord](https://discord.gg/revanced) server to receive a special contributor role.
+If a vulnerability is confirmed and accepted, they will be published and 
+you can join our [Discord](https://discord.gg/revanced) server to receive a 
+special contributor role.
 
 ### ⏳ Supported Versions
 
-| Version | Branch      | Supported          |
-| ------- | ------------|------------------- |
-| v1.18.0 | main        | :white_check_mark: |
-| latest  | dev         | :white_check_mark: |
-| latest  | compose-dev | :white_check_mark: |
-
+| Version                                                                                                                                 | Branch      | Supported          |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------ |
+| ![Latest stable release](https://img.shields.io/github/v/release/ReVanced/revanced-manager?style=for-the-badge "Latest stable release") | main        | :white_check_mark: |
+| ![Latest version](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version")                         | dev         | :white_check_mark: |
+| ![Latest version](https://img.shields.io/badge/version-latest-brightgreen?style=for-the-badge "Latest version")                         | compose-dev | :white_check_mark: |
