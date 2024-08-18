@@ -100,7 +100,7 @@ If you encounter a bug while using the ReVanced Manager app, open an issue using
 
 Even if you don't know how to code, you can still contribute by 
 translating ReVanced Manager on [Crowdin](https://translate.revanced.app/)
-or sponsor us at [GitHub Sponsor](https://github.com/sponsors/ReVanced) and [OpenCollective](https://opencollective.com/ReVanced).
+or sponsor us at [GitHub Sponsor](https://github.com/sponsors/ReVanced) and [Open Collective](https://opencollective.com/ReVanced).
 
 ❤️ Thank you for considering contributing to ReVanced Manager,
 ReVanced
