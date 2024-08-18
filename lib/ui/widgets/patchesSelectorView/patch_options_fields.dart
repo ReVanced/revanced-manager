@@ -1,8 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/models/patch.dart';
+import 'package:revanced_manager/services/manager_api.dart';
 import 'package:revanced_manager/ui/views/patch_options/patch_options_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_card.dart';
 
@@ -398,6 +401,7 @@ class TextFieldForPatchOption extends StatefulWidget {
 }
 
 class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
+  final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final TextEditingController controller = TextEditingController();
   String? selectedKey;
   String? defaultValue;
@@ -524,21 +528,42 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                   ];
                 },
                 onSelected: (String selection) async {
+                  Future<bool> gotExternalStoragePermission() async {
+                    // manageExternalStorage permission is required for folder selection
+                    // otherwise, the app will not complain, but the patches will error out
+                    // the same way as if the user selected an empty folder.
+                    // Android 11 and above requires the manageExternalStorage permission
+                    if (_managerAPI.isScopedStorageAvailable) {
+                      final permission =
+                          await Permission.manageExternalStorage.request();
+                      return permission.isGranted;
+                    }
+                    return true;
+                  }
+
                   switch (selection) {
                     case 'file':
-                      final String? result = await FlutterFileDialog.pickFile();
-                      if (result != null) {
-                        controller.text = result;
-                        widget.onChanged(controller.text);
+                      // here scope storage is not required because file_picker
+                      // will copy the file to the app's cache
+                      final FilePickerResult? result =
+                          await FilePicker.platform.pickFiles();
+                      if (result == null) {
+                        return;
                       }
+                      controller.text = result.files.single.path!;
+                      widget.onChanged(controller.text);
                       break;
                     case 'folder':
-                      final DirectoryLocation? result =
-                          await FlutterFileDialog.pickDirectory();
-                      if (result != null) {
-                        controller.text = result.toString();
-                        widget.onChanged(controller.text);
+                      if (!await gotExternalStoragePermission()) {
+                        return;
                       }
+                      final String? result =
+                          await FilePicker.platform.getDirectoryPath();
+                      if (result == null) {
+                        return;
+                      }
+                      controller.text = result;
+                      widget.onChanged(controller.text);
                       break;
                     case 'remove':
                       widget.removeValue!();
