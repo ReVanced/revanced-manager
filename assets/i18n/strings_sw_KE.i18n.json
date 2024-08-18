@@ -5,7 +5,9 @@
   "latestCommitCard": {},
   "patcherView": {},
   "appSelectorCard": {},
-  "patchSelectorCard": {},
+  "patchSelectorCard": {
+    "widgetSubtitle": "Chagua programu kwanza"
+  },
   "socialMediaCard": {},
   "appSelectorView": {},
   "patchesSelectorView": {},

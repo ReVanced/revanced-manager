@@ -4,6 +4,7 @@ import 'package:revanced_manager/app/app.locator.dart';
 import 'package:revanced_manager/gen/strings.g.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
 import 'package:revanced_manager/ui/widgets/homeView/installed_apps_card.dart';
+import 'package:revanced_manager/ui/widgets/homeView/last_patched_app_card.dart';
 import 'package:revanced_manager/ui/widgets/homeView/latest_commit_card.dart';
 import 'package:revanced_manager/ui/widgets/shared/custom_sliver_app_bar.dart';
 import 'package:stacked/stacked.dart';
@@ -20,7 +21,9 @@ class HomeView extends StatelessWidget {
       viewModelBuilder: () => locator<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         body: RefreshIndicator(
-          onRefresh: () => model.forceRefresh(context),
+          edgeOffset: 110.0,
+          displacement: 10.0,
+          onRefresh: () async => await model.forceRefresh(context),
           child: CustomScrollView(
             slivers: <Widget>[
               CustomSliverAppBar(
@@ -44,6 +47,21 @@ class HomeView extends StatelessWidget {
                       const SizedBox(height: 10),
                       LatestCommitCard(model: model, parentContext: context),
                       const SizedBox(height: 23),
+                      Visibility(
+                        visible: model.isLastPatchedAppEnabled(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              t.homeView.lastPatchedAppSubtitle,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 10),
+                            LastPatchedAppCard(),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
                       Text(
                         t.homeView.patchedSubtitle,
                         style: Theme.of(context).textTheme.titleLarge,

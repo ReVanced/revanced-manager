@@ -1,17 +1,13 @@
 {
-  "okButton": "OK",
+  "okButton": "OK ",
   "cancelButton": "Anuluj",
   "dismissButton": "Odrzuć",
   "quitButton": "Wyjdź",
   "updateButton": "Aktualizuj",
-  "enabledLabel": "Aktywne",
-  "disabledLabel": "Nieaktywne",
-  "installed": "Zainstalowana wersja: ${version}",
   "suggested": "Sugerowana wersja: ${version}",
   "yesButton": "Tak",
   "noButton": "Nie",
   "warning": "Uwaga",
-  "options": "Opcje",
   "notice": "Komunikat",
   "noShowAgain": "Nie pokazuj ponownie",
   "add": "Dodaj",
@@ -27,10 +23,7 @@
     "refreshSuccess": "Odświeżono pomyślnie",
     "widgetTitle": "Panel główny",
     "updatesSubtitle": "Aktualizacje",
-    "patchedSubtitle": "Załatane aplikacje",
     "changeLaterSubtitle": "Możesz to zmienić w ustawieniach w późniejszym czasie.",
-    "noUpdates": "Brak dostępnych aktualizacji",
-    "WIP": "Prace w toku...",
     "noInstallations": "Nie zainstalowano żadnych załatanych aplikacji",
     "installUpdate": "Kontynuować instalację aktualizacji?",
     "updateSheetTitle": "Zaktualizuj Menedżera ReVanced",
@@ -41,32 +34,23 @@
     "downloadConsentDialogTitle": "Pobrać potrzebne pliki?",
     "downloadConsentDialogText": "Menedżer ReVanced musi pobrać niezbędne pliki do prawidłowego działania.",
     "downloadConsentDialogText2": "Zostaniesz przekierowany do ${url}.",
-    "checkUpdateDialogTitle": "Sprawdzić dostępność aktualizacji?",
-    "checkUpdateDialogText": "Czy chcesz, aby Menedżer ReVanced automatycznie sprawdzał dostępność aktualizacji?",
-    "notificationTitle": "Pobrano aktualizację",
-    "notificationText": "Kliknij, aby zainstalować aktualizację",
     "downloadingMessage": "Pobieranie aktualizacji...",
     "downloadedMessage": "Pobrano aktualizację",
     "installingMessage": "Instalowanie aktualizacji...",
     "errorDownloadMessage": "Nie udało się pobrać aktualizacji",
     "errorInstallMessage": "Nie udało się zainstalować aktualizacji",
-    "noConnection": "Brak połączenia z internetem",
-    "updatesDisabled": "Aktualizowanie załatanej aplikacji jest obecnie niemożliwe. Spróbuj załatać aplikację jeszcze raz."
+    "noConnection": "Brak połączenia z internetem"
   },
   "applicationItem": {
     "infoButton": "Informacje"
   },
   "latestCommitCard": {
     "loadingLabel": "Ładowanie...",
-    "timeagoLabel": "${time} temu",
-    "patcherLabel": "Program łatający: ",
-    "managerLabel": "Menedżer: ",
-    "updateButton": "Zaktualizuj Menedżera"
+    "timeagoLabel": "${time} temu"
   },
   "patcherView": {
     "widgetTitle": "Program łatający",
     "patchButton": "Łataj",
-    "armv7WarningDialogText": "Łatanie na urządzeniach ARMv7 nie jest jeszcze wspierane i może się nie udać.\nKontynuować mimo to?",
     "removedPatchesWarningDialogText": "Następujące łatki zostały usunięte od ostatniego użycia.\n\n${patches}\n\nKontynuować mimo to?",
     "requiredOptionDialogText": "Niektóre opcje muszą być ustawione."
   },
@@ -75,8 +59,6 @@
     "widgetTitleSelected": "Wybrana aplikacja",
     "widgetSubtitle": "Brak wybranej aplikacji",
     "noAppsLabel": "Nie znaleziono aplikacji",
-    "currentVersion": "Aktualna",
-    "suggestedVersion": "Sugerowane",
     "anyVersion": "Dowolna wersja"
   },
   "patchSelectorCard": {
@@ -118,16 +100,11 @@
   },
   "patchOptionsView": {
     "customValue": "Niestandardowa wartość",
-    "resetOptionsTooltip": "Zresetuj opcje od łatek",
     "viewTitle": "Opcje łatek",
     "saveOptions": "Zapisz",
-    "addOptions": "Dodaj opcje",
-    "deselectPatch": "Odznacz łatkę",
     "tooltip": "Więcej opcji wejściowych",
     "selectFilePath": "Wybierz ścieżkę pliku",
     "selectFolder": "Wybierz folder",
-    "selectOption": "Wybierz opcję",
-    "requiredOption": "Ta opcja jest wymagana",
     "unsupportedOption": "Ta opcja nie jest wspierana",
     "requiredOptionNull": "Należy ustawić następujące opcje:\n\n${options}"
   },
@@ -139,7 +116,6 @@
     "patchesChangeWarningDialogButton": "Użyj domyślnego wyboru"
   },
   "installerView": {
-    "widgetTitle": "Instalator",
     "installType": "Wybierz typ instalacji",
     "installTypeDescription": "Wybierz typ instalacji, aby kontynuować.",
     "installButton": "Zainstaluj",
@@ -148,7 +124,6 @@
     "warning": "Wyłącz automatyczne aktualizacje załatanej aplikacji, aby uniknąć nieoczekiwanych problemów.",
     "pressBackAgain": "Naciśnij ponownie, aby anulować",
     "openButton": "Otwórz",
-    "shareButton": "Udostępnij plik",
     "notificationTitle": "Menedżer ReVanced jest w trakcie działania",
     "notificationText": "Kliknij, aby powrócić do instalatora",
     "exportApkButtonTooltip": "Wyeksportuj załatane APK",
@@ -173,7 +148,6 @@
     "dynamicThemeHint": "Ciesz się wrażeniami bliższymi twojemu urządzeniu",
     "languageLabel": "Język",
     "languageUpdated": "Zaktualizowano język",
-    "englishOption": "Angielski",
     "sourcesLabel": "Alternatywne źródło",
     "sourcesLabelHint": "Skonfiguruj alternatywne źródła dla Łatek ReVanced i Integracji ReVanced",
     "sourcesIntegrationsLabel": "Źródło integracji",
@@ -254,6 +228,7 @@
   "appInfoView": {
     "widgetTitle": "Informacje o aplikacji",
     "openButton": "Otwórz",
+    "installButton": "Zainstaluj",
     "uninstallButton": "Odinstaluj",
     "unmountButton": "Odinstaluj",
     "rootDialogTitle": "Błąd",
@@ -271,12 +246,7 @@
     "updateNotImplemented": "Ta funkcja nie została jeszcze zaimplementowana"
   },
   "contributorsView": {
-    "widgetTitle": "Współtwórcy",
-    "patcherContributors": "Program łatający ReVanced",
-    "patchesContributors": "Łatki ReVanced",
-    "integrationsContributors": "Integracje ReVanced",
-    "cliContributors": "CLI ReVanced",
-    "managerContributors": "Menedżer ReVanced"
+    "widgetTitle": "Współtwórcy"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Niezgodność wersji",

@@ -5,6 +5,7 @@ on:
   schedule: 
     - cron: 00 12 * * 1
   push:
+    branches: dev
     paths:
       - assets/i18n/*.json
       - assets/i18n/*.dart
@@ -20,8 +21,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          flutter-version: 3.22.x
 
       - name: Sync translations from Crowdin
         uses: crowdin/github-action@v1
@@ -43,17 +47,27 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Remove empty values from JSON
+      - name: Generate Translation Strings
         run: |
+          dart pub get
+          dart run slang
+          flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
+
+      - name: Remove empty values & Validation of Translation Strings
+        run: |
+          dart run slang analyze
+          dart run slang clean
+          dart run slang normalize
           cd assets/i18n
           sudo chmod 777 *.json
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations
         run: |
           git config user.name revanced-bot
           git config user.email github@revanced.app
           sudo chown -R $USER:$USER .git
-          git add assets/i18n/*.json
-          git commit -m "chore: Remove empty values from JSON" assets/i18n/*.json
+          git add assets/i18n/strings.*.json
+          git commit -m "chore: Remove empty values from JSON" assets/i18n/strings.*.json
           git push origin HEAD:feat/translations

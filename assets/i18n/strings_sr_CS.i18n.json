@@ -4,20 +4,16 @@
   "dismissButton": "Odbaci",
   "quitButton": "Izađi",
   "updateButton": "Ažuriraj",
-  "enabledLabel": "Omogućeno",
-  "disabledLabel": "Onemogućeno",
-  "installed": "Instalirana verzija: ${version}",
   "suggested": "Preporučena verzija: ${version}",
   "yesButton": "Da",
   "noButton": "Ne",
   "warning": "Upozorenje",
-  "options": "Opcije",
   "notice": "Obaveštenje",
   "noShowAgain": "Ne prikazuj ponovo",
   "add": "Dodaj",
   "remove": "Ukloni",
-  "showChangelogButton": "Prikaži evidenciju promena",
-  "showUpdateButton": "Prikaži ažuriranje",
+  "showChangelogButton": "Vidi evidenciju promena",
+  "showUpdateButton": "Vidi ažuriranje",
   "navigationView": {
     "dashboardTab": "Kontrolna tabla",
     "patcherTab": "Pečer",
@@ -29,8 +25,6 @@
     "updatesSubtitle": "Ažuriranja",
     "patchedSubtitle": "Pečovane aplikacije",
     "changeLaterSubtitle": "Ovo možete kasnije da promenite u podešavanjima.",
-    "noUpdates": "Nema dostupnih ažuriranja",
-    "WIP": "Radovi u toku…",
     "noInstallations": "Nema instaliranih pečovanih aplikacija",
     "installUpdate": "Nastaviti sa instalacijom ažuriranja?",
     "updateSheetTitle": "Ažuriranje ReVanced Managera",
@@ -41,32 +35,23 @@
     "downloadConsentDialogTitle": "Preuzeti neophodne fajlove?",
     "downloadConsentDialogText": "ReVanced Manager mora da preuzme neophodne fajlove da bi ispravno radio.",
     "downloadConsentDialogText2": "Ovo će vas povezati sa ${url}.",
-    "checkUpdateDialogTitle": "Provera ažuriranja?",
-    "checkUpdateDialogText": "Želite li da ReVanced Manager automatski proverava da li postoje ažuriranja?",
-    "notificationTitle": "Ažuriranje je preuzeto",
-    "notificationText": "Dodirnite da biste instalirali ažuriranje",
     "downloadingMessage": "Preuzimanje ažuriranja…",
     "downloadedMessage": "Ažuriranje je preuzeto",
     "installingMessage": "Instaliranje ažuriranja…",
     "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
     "errorInstallMessage": "Nije moguće instalirati ažuriranje",
-    "noConnection": "Nema internet veze",
-    "updatesDisabled": "Ažuriranje pečovane aplikacije je trenutno onemogućeno. Ponovo pečujte aplikaciju."
+    "noConnection": "Nema internet veze"
   },
   "applicationItem": {
     "infoButton": "Informacije"
   },
   "latestCommitCard": {
     "loadingLabel": "Učitavanje…",
-    "timeagoLabel": "pre ${time}",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Ažuriraj Manager"
+    "timeagoLabel": "pre ${time}"
   },
   "patcherView": {
     "widgetTitle": "Pečer",
     "patchButton": "Pečuj",
-    "armv7WarningDialogText": "Pečovanje na ARMv7 uređajima još uvek nije podržano i možda neće uspeti. Ipak nastaviti?",
     "removedPatchesWarningDialogText": "Sledeći pečevi su uklonjeni od poslednjeg puta kada ste ih koristili.\n\n${patches}\n\nIpak nastaviti?",
     "requiredOptionDialogText": "Neke opcije moraju biti podešene."
   },
@@ -75,12 +60,10 @@
     "widgetTitleSelected": "Izabrana aplikacija",
     "widgetSubtitle": "Nije izabrana nijedna aplikacija",
     "noAppsLabel": "Nijedna aplikacija nije pronađena",
-    "currentVersion": "Trenutna verzija",
-    "suggestedVersion": "Preporučena verzija",
-    "anyVersion": "Bilo koja verzija"
+    "anyVersion": "Sve verzije"
   },
   "patchSelectorCard": {
-    "widgetTitle": "Izaberite pečeve",
+    "widgetTitle": "Izaberi pečeve",
     "widgetTitleSelected": "Izabrani pečevi",
     "widgetSubtitle": "Prvo izaberite aplikaciju",
     "widgetEmptySubtitle": "Nema izabranih pečeva"
@@ -91,7 +74,7 @@
   },
   "appSelectorView": {
     "viewTitle": "Izaberite aplikaciju",
-    "searchBarHint": "Tražite aplikaciju",
+    "searchBarHint": "Pretražite aplikaciju",
     "storageButton": "Memorija",
     "selectFromStorageButton": "Izaberi iz memorije",
     "errorMessage": "Nije moguće koristiti izabranu aplikaciju",
@@ -118,15 +101,11 @@
   },
   "patchOptionsView": {
     "customValue": "Prilagođena vrednost",
-    "resetOptionsTooltip": "Resetuj opcije peča",
     "viewTitle": "Opcije peča",
     "saveOptions": "Sačuvaj",
-    "addOptions": "Dodaj opcije",
-    "deselectPatch": "Poništi izbor peča",
     "tooltip": "Više opcija za unos",
     "selectFilePath": "Izaberi putanju fajla",
     "selectFolder": "Izaberi folder",
-    "selectOption": "Izaberi opciju",
     "requiredOption": "Ova opcija je obavezna",
     "unsupportedOption": "Ova opcija nije podržana",
     "requiredOptionNull": "Potrebno je podesiti sledeće opcije:\n\n${options}"
@@ -139,7 +118,6 @@
     "patchesChangeWarningDialogButton": "Koristi podrazumevani izbor"
   },
   "installerView": {
-    "widgetTitle": "Program za instalaciju",
     "installType": "Izbor tipa instalacije",
     "installTypeDescription": "Izaberite tip instalacije da biste nastavili.",
     "installButton": "Instaliraj",
@@ -148,7 +126,6 @@
     "warning": "Onemogućite automatska ažuriranja za pečovanu aplikaciju da biste izbegli neočekivane probleme.",
     "pressBackAgain": "Pritisnite ponovo da biste otkazali",
     "openButton": "Otvori",
-    "shareButton": "Deli fajl",
     "notificationTitle": "ReVanced Manager pečuje",
     "notificationText": "Dodirnite da biste se vratili na program za instalaciju",
     "exportApkButtonTooltip": "Izvezi pečovani APK",
@@ -173,12 +150,11 @@
     "dynamicThemeHint": "Uživajte u temi koja se prilagođava vašem uređaju",
     "languageLabel": "Jezik",
     "languageUpdated": "Jezik je ažuriran",
-    "englishOption": "engleski",
     "sourcesLabel": "Alternativni izvori",
     "sourcesLabelHint": "Konfigurišite alternativne izvore za ReVanced pečeve i ReVanced integracije",
     "sourcesIntegrationsLabel": "Izvor integracija",
     "useAlternativeSources": "Koristi alternativne izvore",
-    "useAlternativeSourcesHint": "Koristite alternativne izvore za ReVanced pečeve i ReVanced integracije umesto API-ja",
+    "useAlternativeSourcesHint": "Korišćenje alternativnih izvora za ReVanced pečeve i ReVanced integracije umesto API-ja",
     "sourcesResetDialogTitle": "Resetovanje",
     "sourcesResetDialogText": "Želite li zaista da vratite izvore na podrazumevane vrednosti?",
     "apiURLResetDialogText": "Želite li zaista da vratite URL API-ja na podrazumevanu vrednost?",
@@ -226,12 +202,12 @@
     "resetStoredPatchesDialogTitle": "Resetovati izbor pečeva?",
     "resetStoredPatchesDialogText": "Podrazumevani izbor pečeva će biti vraćen.",
     "resetStoredPatches": "Izbor pečeva je resetovan",
-    "resetStoredOptionsLabel": "Resetuj opcije peča",
-    "resetStoredOptionsHint": "Resetujte sve opcije peča",
-    "resetStoredOptionsDialogTitle": "Resetovati opcije peča?",
-    "resetStoredOptionsDialogText": "Resetovanjem opcija peča uklanjate sve sačuvane opcije.",
+    "resetStoredOptionsLabel": "Resetuj opcije pečeva",
+    "resetStoredOptionsHint": "Resetujte sve opcije pečeva",
+    "resetStoredOptionsDialogTitle": "Resetovati opcije pečeva?",
+    "resetStoredOptionsDialogText": "Resetovanjem opcija pečeva uklanjate sve sačuvane opcije.",
     "resetStoredOptions": "Opcije su resetovane",
-    "deleteLogsLabel": "Obriši evidencije",
+    "deleteLogsLabel": "Izbriši evidencije",
     "deleteLogsHint": "Izbrišite prikupljene evidencije ReVanced Managera",
     "deletedLogs": "Evidencije su izbrisane",
     "regenerateKeystoreLabel": "Generiši novo skladište ključeva",
@@ -252,7 +228,7 @@
     "keystoreSelectorErrorMessage": "Nije moguće koristiti izabrani fajl sa skladištem ključeva"
   },
   "appInfoView": {
-    "widgetTitle": "Informacije o aplikaciji",
+    "widgetTitle": "O aplikaciji",
     "openButton": "Otvori",
     "uninstallButton": "Deinstaliraj",
     "unmountButton": "Demontiraj",
@@ -271,12 +247,7 @@
     "updateNotImplemented": "Ova funkcija još uvek nije implementirana"
   },
   "contributorsView": {
-    "widgetTitle": "Saradnici",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced pečevi",
-    "integrationsContributors": "ReVanced integracije",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Saradnici"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Verzija se ne poklapa",

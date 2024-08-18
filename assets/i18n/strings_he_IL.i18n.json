@@ -1,20 +1,19 @@
 {
   "okButton": "אישור",
   "cancelButton": "ביטול",
+  "dismissButton": "התעלם",
   "quitButton": "יציאה",
   "updateButton": "עדכן",
-  "enabledLabel": "הופעל",
-  "disabledLabel": "הושבת",
-  "installed": "מותקן: ${version}",
   "suggested": "מוצעת: ${version}",
   "yesButton": "כן",
   "noButton": "לא",
   "warning": "אזהרה",
-  "options": "אפשרויות",
   "notice": "התראה",
   "noShowAgain": "אל תציג זאת שוב",
   "add": "הוסף",
   "remove": "הסר",
+  "showChangelogButton": "הצגת יומן שינויים",
+  "showUpdateButton": "הצג עדכון",
   "navigationView": {
     "dashboardTab": "לוח בקרה",
     "patcherTab": "מתקן",
@@ -24,39 +23,43 @@
     "refreshSuccess": "רוענן בהצלחה",
     "widgetTitle": "לוח בקרה",
     "updatesSubtitle": "עדכונים",
-    "patchedSubtitle": "אפליקציות מתוקנות",
-    "noUpdates": "אין עדכונים זמינים",
-    "WIP": "עבודה בתהליך...",
+    "changeLaterSubtitle": "ניתן לשנות זאת בהגדרות מאוחר יותר.",
     "noInstallations": "אין אפליקציות מתוקנת מותקנות",
     "installUpdate": "המשך להתקין את העדכון?",
+    "updateSheetTitle": "עדכן את ReVanced Manager",
+    "updateDialogTitle": "עידכון חדש זמין",
+    "updatePatchesSheetTitle": "עדכן את ReVanced Patches",
     "updateChangelogTitle": "היסטורית שינויים",
-    "notificationTitle": "העדכון הורד",
-    "notificationText": "הקש כדי להתקין את העדכון",
+    "updateDialogText": "עדכון חדש זמין עבור ${file}.\n\nהגרסה המותקנת כרגע היא ${version}.",
+    "downloadConsentDialogTitle": "להוריד קבצי עזר?",
+    "downloadConsentDialogText": "ReVanced Manager צריך להוריד קבצי עזר על מנת לעבוד כמו שצריך.",
+    "downloadConsentDialogText2": "זה יחבר אותך ל${url}.",
     "downloadingMessage": "מוריד עדכון...",
+    "downloadedMessage": "עדכון הורד",
     "installingMessage": "מתקין עדכון...",
     "errorDownloadMessage": "הורדת קובץ העדכון נכשלה",
     "errorInstallMessage": "לא ניתן להתקין את העדכון",
-    "noConnection": "אין חיבור לאינטרנט",
-    "updatesDisabled": "עדכון אפליקציה מתוקנת מושבת כרגע. תקן שוב את האפליקציה."
+    "noConnection": "אין חיבור לאינטרנט"
   },
   "applicationItem": {
     "infoButton": "מידע"
   },
   "latestCommitCard": {
     "loadingLabel": "טוען...",
-    "timeagoLabel": "לפני ${time}",
-    "patcherLabel": "מתקן: ",
-    "managerLabel": "מנהל: "
+    "timeagoLabel": "לפני ${time}"
   },
   "patcherView": {
     "widgetTitle": "מתקן",
     "patchButton": "תיקון",
+    "removedPatchesWarningDialogText": "התיקונים הבאים הוסרו מאז הפעם האחרונה שהשתמשת בהם.\n${patches}\nלהמשיך בכל זאת?",
     "requiredOptionDialogText": "כמה אפשרויות תיקון חייבות להיקבע."
   },
   "appSelectorCard": {
+    "widgetTitle": "בחר אפליקציה",
+    "widgetTitleSelected": "אפליקציה שנבחרה",
+    "widgetSubtitle": "לא נבחרה אפליקציה",
     "noAppsLabel": "לא נמצאו יישומים",
-    "currentVersion": "נוֹכְחִי",
-    "suggestedVersion": "מוצע"
+    "anyVersion": "כל גרסה"
   },
   "patchSelectorCard": {
     "widgetTitle": "בחר תיקונים",
@@ -69,10 +72,13 @@
     "widgetSubtitle": "אנחנו מחוברים!"
   },
   "appSelectorView": {
+    "viewTitle": "בחר אפליקציה",
+    "searchBarHint": "חיפוש אפליקציה",
     "storageButton": "אחסון",
     "selectFromStorageButton": "בחירה מהאחסון",
     "errorMessage": "לא ניתן להשתמש ביישום שנבחר",
     "downloadToast": "פונקציית ההורדה אינה זמינה כעת",
+    "requireSuggestedAppVersionDialogText": "גרסת האפליקציה שבחרת אינה תואמת את הגרסה המומלצת, מה שעלול להוביל לבעיות בלתי צפויות. אנא השתמש בגרסה המומלצת.\n\nהגרסה שנבחרה: ${selected}\nהגרסה המומלצת: ${suggested}\n\nכדי להמשיך בכל זאת, כבה את \"דרוש גרסת אפליקציה מומלצת\" בהגדרות.",
     "featureNotAvailable": "תכונה לא מיושמת"
   },
   "patchesSelectorView": {
@@ -82,7 +88,9 @@
     "newPatches": "תיקונים חדשים",
     "patches": "תיקונים",
     "doneButton": "בוצע",
+    "defaultChip": "ברירת מחדל",
     "defaultTooltip": "בחר את כל תיקוני ברירת המחדל",
+    "noneChip": "כלום",
     "noneTooltip": "בטל את בחירת כל התיקונים",
     "loadPatchesSelection": "טען בחירת תיקונים",
     "noSavedPatches": "אין תיקונים שמורים עבור האפליקציה שנבחרה.\nלחץ על בוצע כדי לשמור את הבחירה הנוכחית.",
@@ -91,16 +99,11 @@
   },
   "patchOptionsView": {
     "customValue": "ערך מותאם אישית",
-    "resetOptionsTooltip": "אפס אפשרויות תיקונים",
     "viewTitle": "אפשרויות תיקון",
     "saveOptions": "שמור",
-    "addOptions": "הוסף אפשרויות",
-    "deselectPatch": "בטל את בחירת התיקון",
     "tooltip": "אפשרויות קלט נוספות",
     "selectFilePath": "בחר נתיב קובץ",
     "selectFolder": "בחר תיקייה",
-    "selectOption": "בחירת אפשרות",
-    "requiredOption": "האפשרות הזו דרושה",
     "unsupportedOption": "האפשרות הזו אינה נתמכת",
     "requiredOptionNull": "האפשרויות הבאות חייבות להיקבע:\n\n${options}"
   },
@@ -111,7 +114,6 @@
     "patchesChangeWarningDialogButton": "השתמש בבחירה ברירת המחדל"
   },
   "installerView": {
-    "widgetTitle": "מתקין",
     "installType": "בחר סוג התקנה",
     "installButton": "התקן",
     "installRootType": "טען",
@@ -119,7 +121,6 @@
     "warning": "השבת עדכונים אוטומטיים עבור באפליקציה המתוקנת כדי למנוע בעיות בלתי צפויות.",
     "pressBackAgain": "לחץ שוב כדי לבטל",
     "openButton": "פתח",
-    "shareButton": "שתף קובץ",
     "notificationTitle": "מנהל העדכונים בתהליך תיקון",
     "notificationText": "לחץ כדי לחזור להתקנה",
     "exportApkButtonTooltip": "יצא APK מתוקן",
@@ -142,7 +143,7 @@
     "dynamicThemeLabel": "Material you",
     "dynamicThemeHint": "תהנה/י מחוויה קרובה יותר למכשיר שלך",
     "languageLabel": "שפה",
-    "englishOption": "אנגלית",
+    "languageUpdated": "עדכוני שפה",
     "sourcesIntegrationsLabel": "מקור אינטגרציות",
     "sourcesResetDialogTitle": "איפוס",
     "sourcesResetDialogText": "האם אתה בטוח שברצונך לאפס את המקורות לערכי ברירת המחדל שלהם?",
@@ -199,12 +200,15 @@
   "appInfoView": {
     "widgetTitle": "מידע אפליקציה",
     "openButton": "פתח",
+    "installButton": "התקן",
     "uninstallButton": "הסר התקנה",
     "rootDialogTitle": "שגיאה",
     "uninstallDialogText": "האם אתה בטוח שברצונך להסיר את האפליקציה הזו?",
     "rootDialogText": "האפליקציה הותקנה עם הרשאות משתמש-על, אך כרגע למנהל המחודש אין הרשאות.\nאנא הענק תחילה הרשאות משתמש-על.",
     "packageNameLabel": "שם חבילה",
     "installTypeLabel": "סוג התקנה",
+    "mountTypeLabel": "טען",
+    "regularTypeLabel": "רגיל",
     "patchedDateLabel": "תאריך תיקון",
     "appliedPatchesLabel": "תיקונים הוחלו",
     "patchedDateHint": "${date} ב־${time}",

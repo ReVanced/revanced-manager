@@ -2,7 +2,6 @@
   "okButton": "U redu",
   "cancelButton": "Poništi",
   "updateButton": "Ažuriraj",
-  "installed": "Instalirana verzija: ${version}",
   "suggested": "Preporučena verzija: ${version}",
   "yesButton": "Da",
   "noButton": "Ne",
@@ -16,16 +15,15 @@
     "refreshSuccess": "Uspješno osvježeno",
     "widgetTitle": "Nadzorna ploča",
     "updatesSubtitle": "Ažuriranja",
-    "patchedSubtitle": "Zakrpane aplikacije",
     "noInstallations": "Nema instaliranih zakrpanih aplikacija",
     "installUpdate": "Nastaviti s instalacijom ažuriranja?",
     "updateChangelogTitle": "Zapisnik promjena",
     "downloadingMessage": "Preuzimanje ažuriranja...",
+    "downloadedMessage": "Ažuriranje je preuzeto",
     "installingMessage": "Instaliranje ažuriranja...",
     "errorDownloadMessage": "Nije moguće preuzeti ažuriranje",
     "errorInstallMessage": "Nije moguće instalirati ažuriranje",
-    "noConnection": "Nema internetske veze",
-    "updatesDisabled": "Ažuriranje zakrpane aplikacije trenutno je onemogućeno. Ponovno zakrpajte aplikaciju."
+    "noConnection": "Nema internetske veze"
   },
   "applicationItem": {
     "infoButton": "Informacije"
@@ -39,9 +37,7 @@
     "patchButton": "Zakrpi"
   },
   "appSelectorCard": {
-    "noAppsLabel": "Nije pronađena nijedna aplikacija",
-    "currentVersion": "Trenutno",
-    "suggestedVersion": "Preporučeno"
+    "noAppsLabel": "Nije pronađena nijedna aplikacija"
   },
   "patchSelectorCard": {
     "widgetTitle": "Odaberite zakrpe",
@@ -64,7 +60,9 @@
     "viewTitle": "Odaberite zakrpe",
     "searchBarHint": "Pretraživanje zakrpa",
     "doneButton": "Završeno",
+    "defaultChip": "Zadano",
     "defaultTooltip": "Odaberi sve zadane zakrpe",
+    "noneChip": "Ništa",
     "noneTooltip": "Poništi odabir svih zakrpa",
     "noPatchesFound": "Za odabranu aplikaciju nije pronađena nijedna zakrpa"
   },
@@ -90,7 +88,8 @@
     "languageLabel": "Jezik",
     "sourcesIntegrationsLabel": "Izvori ugradnje",
     "sourcesResetDialogTitle": "Ponovno postavljanje",
-    "apiURLLabel": "API URL (Automatic Copy)",
+    "apiURLLabel": "API URL",
+    "selectApiURL": "API URL",
     "orgPatchesLabel": "Autori zakrpa",
     "sourcesPatchesLabel": "Izvor zakrpa",
     "orgIntegrationsLabel": "Organizacije za ugradnju",
@@ -113,6 +112,7 @@
   "appInfoView": {
     "widgetTitle": "O aplikaciji",
     "openButton": "Otvori",
+    "installButton": "Instaliraj",
     "uninstallButton": "Deinstaliraj",
     "rootDialogTitle": "Greška",
     "rootDialogText": "Aplikacija je bila instalirana s superkorisničkom dopuštenosti, ali trenutno ReVanced Upravitelj nema dopuštenja.\nPrvo dodijelite superkorisničko dopuštenje.",

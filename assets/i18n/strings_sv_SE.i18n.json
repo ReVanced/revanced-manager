@@ -4,14 +4,10 @@
   "dismissButton": "Avfärda",
   "quitButton": "Avsluta",
   "updateButton": "Uppdatera",
-  "enabledLabel": "Aktiverad",
-  "disabledLabel": "Inaktiverad",
-  "installed": "Installerad: ${version}",
   "suggested": "Rekommenderad: ${version}",
   "yesButton": "Ja",
   "noButton": "Nej",
   "warning": "Varning",
-  "options": "Alternativ",
   "notice": "Notera",
   "noShowAgain": "Visa inte det här igen",
   "add": "Lägg till",
@@ -27,10 +23,9 @@
     "refreshSuccess": "Uppdaterat",
     "widgetTitle": "Kontrollpanel",
     "updatesSubtitle": "Uppdateringar",
-    "patchedSubtitle": "Patchade appar",
+    "lastPatchedAppSubtitle": "Senast patchad app",
+    "patchedSubtitle": "Installerade appar",
     "changeLaterSubtitle": "Du kan ändra detta i inställningarna vid ett senare tillfälle.",
-    "noUpdates": "Inga uppdateringar tillgängliga",
-    "WIP": "Arbete pågår...",
     "noInstallations": "Inga patchade appar installerade",
     "installUpdate": "Gå vidare och installera uppdateringen?",
     "updateSheetTitle": "Uppdatera ReVanced Manager",
@@ -41,32 +36,23 @@
     "downloadConsentDialogTitle": "Ladda ner nödvändiga filer?",
     "downloadConsentDialogText": "ReVanced Manager måste ladda ner nödvändiga filer för att fungera korrekt.",
     "downloadConsentDialogText2": "Detta kommer att ansluta dig till ${url}.",
-    "checkUpdateDialogTitle": "Sök efter uppdateringar?",
-    "checkUpdateDialogText": "Vill du att ReVanced Manager ska söka efter uppdateringar automatiskt?",
-    "notificationTitle": "Uppdatering nerladdad",
-    "notificationText": "Tryck för att installera uppdateringen",
     "downloadingMessage": "Laddar ner uppdatering...",
     "downloadedMessage": "Uppdatering nerladdad",
     "installingMessage": "Installerar uppdatering...",
     "errorDownloadMessage": "Det gick inte att ladda ner uppdateringen",
     "errorInstallMessage": "Det gick inte att installera uppdatering",
-    "noConnection": "Ingen internetanslutning",
-    "updatesDisabled": "Uppdatering av en patchad app är för närvarande inaktiverad. Patcha appen igen."
+    "noConnection": "Ingen internetanslutning"
   },
   "applicationItem": {
     "infoButton": "Information"
   },
   "latestCommitCard": {
     "loadingLabel": "Laddar...",
-    "timeagoLabel": "${time} sedan",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Hanterare: ",
-    "updateButton": "Uppdateringshanterare"
+    "timeagoLabel": "${time} sedan"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
-    "armv7WarningDialogText": "Patchning på ARMv7-enheter stöds inte ännu och det är med stor sannolikhet att det kommer att misslyckas. Fortsätta ändå?",
     "removedPatchesWarningDialogText": "Följande patchar har tagits bort sedan du senast använde dem.\n\n${patches}\n\nFortsätt ändå?",
     "requiredOptionDialogText": "Vissa patchalternativ måste anges."
   },
@@ -75,8 +61,6 @@
     "widgetTitleSelected": "Välj app",
     "widgetSubtitle": "Ingen app vald",
     "noAppsLabel": "Inga applikationer hittades",
-    "currentVersion": "Aktuell",
-    "suggestedVersion": "Rekommenderad",
     "anyVersion": "Valfri version"
   },
   "patchSelectorCard": {
@@ -118,16 +102,15 @@
   },
   "patchOptionsView": {
     "customValue": "Anpassat värde",
-    "resetOptionsTooltip": "Återställ patchalternativ",
+    "setToNull": "Sätt till null",
+    "nullValue": "Detta alternativ värde är för närvarande null",
     "viewTitle": "Patchalternativ",
     "saveOptions": "Spara",
-    "addOptions": "Lägg till alternativ",
-    "deselectPatch": "Avmarkera patch",
+    "unselectPatch": "Avmarkera patch",
     "tooltip": "Fler inmatningsalternativ",
     "selectFilePath": "Välj filsökväg",
     "selectFolder": "Välj mapp",
-    "selectOption": "Välj alternativ",
-    "requiredOption": "Detta alternativ är nödvändigt",
+    "requiredOption": "Inställning av detta alternativ krävs",
     "unsupportedOption": "Detta alternativ stöds ej",
     "requiredOptionNull": "Följande alternativ måste anges:\n\n${options}"
   },
@@ -139,7 +122,6 @@
     "patchesChangeWarningDialogButton": "Använd standardval"
   },
   "installerView": {
-    "widgetTitle": "Installerare",
     "installType": "Välj installationstyp",
     "installTypeDescription": "Välj vilken installationstyp du vill fortsätta med.",
     "installButton": "Installera",
@@ -148,7 +130,6 @@
     "warning": "Inaktivera automatiska uppdateringar för den patchade appen för att undvika oväntade problem.",
     "pressBackAgain": "Tryck igen på bakåt för att avbryta",
     "openButton": "Öppna",
-    "shareButton": "Dela fil",
     "notificationTitle": "ReVanced-hanteraren patchar",
     "notificationText": "Tryck för att återvända till installeraren",
     "exportApkButtonTooltip": "Exportera patchad APK",
@@ -173,7 +154,6 @@
     "dynamicThemeHint": "Njut av en upplevelse närmare din enhet",
     "languageLabel": "Språk",
     "languageUpdated": "Språket uppdaterat",
-    "englishOption": "Engelska",
     "sourcesLabel": "Alternativa källor",
     "sourcesLabelHint": "Konfigurera alternativa källor för ReVanced patches och ReVanced integrations",
     "sourcesIntegrationsLabel": "Källa för integrationer",
@@ -203,6 +183,8 @@
     "showUpdateDialogHint": "Visa en dialog när en ny uppdatering är tillgänglig",
     "universalPatchesLabel": "Visa universella patchar",
     "universalPatchesHint": "Visa alla appar och universella patchar (kan slöa ner applistan)",
+    "lastPatchedAppLabel": "Spara patchad app",
+    "lastPatchedAppHint": "Spara den sista patchen för att installera eller exportera senare",
     "versionCompatibilityCheckLabel": "Kontroll av versionskompatibilitet",
     "versionCompatibilityCheckHint": "Förhindra att du väljer patchar som inte är kompatibla med den valda appversionen",
     "requireSuggestedAppVersionLabel": "Kräv föreslagen appversion",
@@ -254,9 +236,11 @@
   "appInfoView": {
     "widgetTitle": "Appinfo",
     "openButton": "Öppna",
+    "installButton": "Installera",
     "uninstallButton": "Avinstallera",
     "unmountButton": "Avmontera",
     "rootDialogTitle": "Fel",
+    "lastPatchedAppDescription": "Detta är en säkerhetskopia av den app som senast patchades.",
     "unmountDialogText": "Är du säker på att du vill avmontera denna app?",
     "uninstallDialogText": "Är du säker på att du vill avinstallera denna appen?",
     "rootDialogText": "Appen installerades med superanvändarbehörigheter, men ReVanced-hanteraren har för närvarande inga behörigheter. Bevilja superanvändarbehörigheter först.",
@@ -271,12 +255,7 @@
     "updateNotImplemented": "Denna funktionen har inte lagts till ännu"
   },
   "contributorsView": {
-    "widgetTitle": "Bidragsgivare",
-    "patcherContributors": "Revanced-patcher",
-    "patchesContributors": "Revanced-patchar",
-    "integrationsContributors": "ReVanced-integrationer",
-    "cliContributors": "ReVanced-CLI",
-    "managerContributors": "ReVanced-hanterare"
+    "widgetTitle": "Bidragsgivare"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionerna stämmer inte överens",

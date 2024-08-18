@@ -1,7 +1,6 @@
 {
   "cancelButton": "Avbryt",
   "updateButton": "Oppdater",
-  "installed": "Installert: ${version}",
   "suggested": "Anbefalt: ${version}",
   "yesButton": "Ja",
   "noButton": "Nei",
@@ -22,19 +21,14 @@
     "installingMessage": "Installerer oppdatering...",
     "errorDownloadMessage": "Nedlasting av oppdatering var misslykket",
     "errorInstallMessage": "Installasjon av oppdatering var misslykket",
-    "noConnection": "Ingen nettverksforbindelse",
-    "updatesDisabled": "Oppdatering av patchet app er for øyeblikket deaktivert. Repatch appen pånytt."
+    "noConnection": "Ingen nettverksforbindelse"
   },
-  "applicationItem": {},
   "latestCommitCard": {
     "loadingLabel": "Laster...",
     "timeagoLabel": "${time} siden"
   },
-  "patcherView": {},
   "appSelectorCard": {
-    "noAppsLabel": "Ingen applikasjoner ble funnet",
-    "currentVersion": "Nåværende",
-    "suggestedVersion": "Foreslått"
+    "noAppsLabel": "Ingen applikasjoner ble funnet"
   },
   "patchSelectorCard": {
     "widgetTitle": "Velg patcher",
@@ -59,9 +53,6 @@
     "doneButton": "Fullført",
     "defaultTooltip": "Velg alle standard patcher"
   },
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
   "settingsView": {
     "advancedSectionTitle": "Avansert",
     "darkThemeLabel": "Mørk modus",
@@ -74,8 +65,5 @@
     "orgIntegrationsLabel": "Integrasjonsorganisasjon",
     "contributorsLabel": "Medvirkende",
     "contributorsHint": "En liste med bidragsytere til ReVanced"
-  },
-  "appInfoView": {},
-  "contributorsView": {},
-  "installErrorDialog": {}
+  }
 }

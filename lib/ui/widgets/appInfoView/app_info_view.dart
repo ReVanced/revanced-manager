@@ -11,8 +11,10 @@ class AppInfoView extends StatelessWidget {
   const AppInfoView({
     super.key,
     required this.app,
+    required this.isLastPatchedApp,
   });
   final PatchedApplication app;
+  final bool isLastPatchedApp;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,14 @@ class AppInfoView extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 20),
+                    if (isLastPatchedApp) ...[
+                      ListTile(
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        subtitle: Text(t.appInfoView.lastPatchedAppDescription),
+                      ),
+                      const SizedBox(height: 4),
+                    ],
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: CustomCard(
@@ -71,20 +81,26 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => model.openApp(app),
+                                    onTap: () => isLastPatchedApp
+                                      ? model.installApp(context, app)
+                                      : model.openApp(app),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          Icons.open_in_new_outlined,
+                                          isLastPatchedApp
+                                              ? Icons.download_outlined
+                                              : Icons.open_in_new_outlined,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          t.appInfoView.openButton,
+                                          isLastPatchedApp
+                                              ? t.appInfoView.installButton
+                                              : t.appInfoView.openButton,
                                           style: TextStyle(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -108,24 +124,30 @@ class AppInfoView extends StatelessWidget {
                                   type: MaterialType.transparency,
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    onTap: () => model.showUninstallDialog(
-                                      context,
-                                      app,
-                                      false,
-                                    ),
+                                    onTap: () => isLastPatchedApp
+                                      ? model.exportApp(app)
+                                      : model.showUninstallDialog(
+                                          context,
+                                          app,
+                                          false,
+                                        ),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          Icons.delete_outline,
+                                          isLastPatchedApp
+                                              ? Icons.save
+                                              : Icons.delete_outline,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          t.appInfoView.uninstallButton,
+                                          isLastPatchedApp
+                                              ? t.appInfoView.exportButton
+                                              : t.appInfoView.uninstallButton,
                                           style: TextStyle(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -144,14 +166,57 @@ class AppInfoView extends StatelessWidget {
                                 endIndent: 12.0,
                                 width: 1.0,
                               ),
-                              if (app.isRooted)
+                              if (isLastPatchedApp)
                                 VerticalDivider(
                                   color: Theme.of(context).canvasColor,
                                   indent: 12.0,
                                   endIndent: 12.0,
                                   width: 1.0,
                                 ),
-                              if (app.isRooted)
+                              if (isLastPatchedApp)
+                                Expanded(
+                                  child: Material(
+                                    type: MaterialType.transparency,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      onTap: () => model.showDeleteDialog(
+                                        context,
+                                        app,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons
+                                                .delete_forever_outlined,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            t.appInfoView.deleteButton,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (!isLastPatchedApp && app.isRooted)
+                                VerticalDivider(
+                                  color: Theme.of(context).canvasColor,
+                                  indent: 12.0,
+                                  endIndent: 12.0,
+                                  width: 1.0,
+                                ),
+                              if (!isLastPatchedApp && app.isRooted)
                                 Expanded(
                                   child: Material(
                                     type: MaterialType.transparency,
@@ -240,6 +305,23 @@ class AppInfoView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    if (isLastPatchedApp) ...[
+                      ListTile(
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 20.0),
+                        title: Text(
+                          t.appInfoView.sizeLabel,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        subtitle: Text(
+                          model.getFileSizeString(app.fileSize),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                    ],
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 20.0),

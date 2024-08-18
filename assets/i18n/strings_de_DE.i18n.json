@@ -4,14 +4,10 @@
   "dismissButton": "Verwerfen",
   "quitButton": "Verlassen",
   "updateButton": "Aktualisieren",
-  "enabledLabel": "Aktiviert",
-  "disabledLabel": "Deaktiviert",
-  "installed": "Installiert: ${version}",
   "suggested": "Empfohlen: ${version}",
   "yesButton": "Ja",
   "noButton": "Nein",
   "warning": "Warnung",
-  "options": "Optionen",
   "notice": "Hinweis",
   "noShowAgain": "Nicht erneut anzeigen",
   "add": "Hinzufügen",
@@ -27,10 +23,7 @@
     "refreshSuccess": "Erfolgreich aktualisiert",
     "widgetTitle": "Übersicht",
     "updatesSubtitle": "Aktualisierungen",
-    "patchedSubtitle": "Gepatchte Apps",
     "changeLaterSubtitle": "In den Einstellungen kannst du das später noch ändern.",
-    "noUpdates": "Keine Updates verfügbar",
-    "WIP": "In Arbeit...",
     "noInstallations": "Keine gepatchten Apps installiert",
     "installUpdate": "Mit der Installation des Updates fortfahren?",
     "updateSheetTitle": "ReVanced-Manager aktualisieren",
@@ -41,32 +34,23 @@
     "downloadConsentDialogTitle": "Benötigte Dateien herunterladen?",
     "downloadConsentDialogText": "Damit ReVanced-Manager ordnungsgemäß funktioniert, müssen notwendige Dateien heruntergeladen werden.",
     "downloadConsentDialogText2": "Dadurch wirst du mit ${url} verbunden.",
-    "checkUpdateDialogTitle": "Nach Aktualisierungen suchen?",
-    "checkUpdateDialogText": "Soll ReVanced Manager automatisch nach Updates suchen?",
-    "notificationTitle": "Update heruntergeladen",
-    "notificationText": "Tippen um Update zu installieren",
     "downloadingMessage": "Aktualisierung wird heruntergeladen...",
     "downloadedMessage": "Update heruntergeladen",
     "installingMessage": "Update wird installiert...",
     "errorDownloadMessage": "Aktualisierung konnte nicht heruntergeladen werden",
     "errorInstallMessage": "Aktualisierung konnte nicht installiert werden",
-    "noConnection": "Keine Internetverbindung",
-    "updatesDisabled": "Aktualisieren einer gepatchten App ist zurzeit deaktiviert. Patche die App erneut."
+    "noConnection": "Keine Internetverbindung"
   },
   "applicationItem": {
     "infoButton": "Informationen"
   },
   "latestCommitCard": {
     "loadingLabel": "Lädt...",
-    "timeagoLabel": "vor ${time}",
-    "patcherLabel": "Patcher: ",
-    "managerLabel": "Manager: ",
-    "updateButton": "Manager aktualisieren"
+    "timeagoLabel": "vor ${time}"
   },
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Patchen",
-    "armv7WarningDialogText": "Das Patchen auf ARMv7-Geräten wird noch nicht unterstützt, es könnten Fehler auftreten. Trotzdem fortfahren?",
     "removedPatchesWarningDialogText": "Die folgenden Patches wurden seit der letzten Verwendung entfernt.\n\n${patches}\n\nTrotzdem fortfahren?",
     "requiredOptionDialogText": "Einige Patch-Optionen müssen gesetzt werden."
   },
@@ -75,8 +59,6 @@
     "widgetTitleSelected": "Ausgewählte App",
     "widgetSubtitle": "Keine App ausgewählt",
     "noAppsLabel": "Keine Apps gefunden",
-    "currentVersion": "Aktuell",
-    "suggestedVersion": "Empfohlen",
     "anyVersion": "Beliebige Version"
   },
   "patchSelectorCard": {
@@ -118,16 +100,11 @@
   },
   "patchOptionsView": {
     "customValue": "Benutzerdefinierter Wert",
-    "resetOptionsTooltip": "Patch-Optionen zurücksetzen",
     "viewTitle": "Patch-Optionen",
     "saveOptions": "Speichern",
-    "addOptions": "Option hinzufügen",
-    "deselectPatch": "Patch abwählen",
     "tooltip": "Weitere Eingabeoptionen",
     "selectFilePath": "Dateipfad auswählen",
     "selectFolder": "Ordner auswählen",
-    "selectOption": "Option auswählen",
-    "requiredOption": "Diese Option ist erforderlich.",
     "unsupportedOption": "Dieser Vorgang ist nicht unterstützt.",
     "requiredOptionNull": "Die folgenden Optionen müssen gesetzt sein:\n\n${options}"
   },
@@ -139,7 +116,6 @@
     "patchesChangeWarningDialogButton": "Als Standard-Auswahl nutzen"
   },
   "installerView": {
-    "widgetTitle": "Installer",
     "installType": "Installationstyp wählen",
     "installTypeDescription": "Wähle zum Fortfahren die gewünschte Installationsart aus.",
     "installButton": "Installieren",
@@ -148,7 +124,6 @@
     "warning": "Deaktiviere automatische Updates für die gepatchte App, um unerwartete Probleme zu vermeiden.",
     "pressBackAgain": "Drücken Sie \"Zurück\" noch einmal, um die App zu verlassen",
     "openButton": "Öffnen",
-    "shareButton": "Datei teilen",
     "notificationTitle": "ReVanced Manager patcht",
     "notificationText": "Tippen, um zum Installer zurückzukehren",
     "exportApkButtonTooltip": "Gepatchte APK exportieren",
@@ -173,7 +148,6 @@
     "dynamicThemeHint": "Genieße ein Erlebnis näher an deinem Gerät",
     "languageLabel": "Sprache",
     "languageUpdated": "Sprache aktualisiert",
-    "englishOption": "Englisch",
     "sourcesLabel": "Alternative Quellen",
     "sourcesLabelHint": "Konfiguriere die alternativen Quellen für ReVanced Patches und ReVanced Integrations",
     "sourcesIntegrationsLabel": "Quelle für Integrationen",
@@ -254,6 +228,7 @@
   "appInfoView": {
     "widgetTitle": "App Info",
     "openButton": "Öffnen",
+    "installButton": "Installieren",
     "uninstallButton": "Deinstallieren",
     "unmountButton": "Unmounten",
     "rootDialogTitle": "Fehler",
@@ -271,12 +246,7 @@
     "updateNotImplemented": "Diese Funktion ist noch nicht implementiert"
   },
   "contributorsView": {
-    "widgetTitle": "Mitwirkende",
-    "patcherContributors": "ReVanced Patcher",
-    "patchesContributors": "ReVanced Patches",
-    "integrationsContributors": "ReVanced Integrations",
-    "cliContributors": "ReVanced CLI",
-    "managerContributors": "ReVanced Manager"
+    "widgetTitle": "Mitwirkende"
   },
   "installErrorDialog": {
     "mount_version_mismatch": "Versionskonflikt",

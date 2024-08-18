@@ -1,19 +1,118 @@
 {
-  "navigationView": {},
-  "homeView": {},
-  "applicationItem": {},
-  "latestCommitCard": {},
-  "patcherView": {},
-  "appSelectorCard": {},
-  "patchSelectorCard": {},
-  "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
+  "okButton": "D'acord",
+  "cancelButton": "Cancel·lar",
+  "updateButton": "Actualitzar",
+  "yesButton": "Sí",
+  "warning": "Advertència",
+  "navigationView": {
+    "dashboardTab": "Tauler de control",
+    "patcherTab": "Pedaçor",
+    "settingsTab": "Configuració"
+  },
+  "homeView": {
+    "refreshSuccess": "S'ha actualitzat correctament",
+    "widgetTitle": "Tauler de control",
+    "updatesSubtitle": "Actualitzacions",
+    "updateChangelogTitle": "Historial de canvis",
+    "downloadingMessage": "Descarregant l'actualització...",
+    "downloadedMessage": "S'ha baixat l'actualització",
+    "installingMessage": "Instal·lant l'actualització...",
+    "errorDownloadMessage": "No s'ha pogut baixar l'actualització",
+    "errorInstallMessage": "No s'ha pogut instal·lar l'actualització",
+    "noConnection": "No hi ha connexió a Internet"
+  },
+  "applicationItem": {
+    "infoButton": "Informació"
+  },
+  "latestCommitCard": {
+    "loadingLabel": "S'està carregant..."
+  },
+  "patcherView": {
+    "widgetTitle": "Pedaçor",
+    "patchButton": "Pedaçar"
+  },
+  "appSelectorCard": {
+    "noAppsLabel": "No s'ha trobat cap aplicació"
+  },
+  "patchSelectorCard": {
+    "widgetTitle": "Seleccioneu pedaços",
+    "widgetTitleSelected": "Pedaços seleccionats",
+    "widgetSubtitle": "Primer seleccioneu una aplicació",
+    "widgetEmptySubtitle": "No s'ha seleccionat cap pedaç"
+  },
+  "socialMediaCard": {
+    "widgetSubtitle": "Estem en línia!"
+  },
+  "appSelectorView": {
+    "storageButton": "Emmagatzematge",
+    "selectFromStorageButton": "Selecciona des d'emmagatzematge",
+    "errorMessage": "No s'ha pogut utilitzar l'aplicació seleccionada",
+    "downloadToast": "La funció de descàrrega encara no està disponible",
+    "featureNotAvailable": "Característíca no implementada"
+  },
+  "patchesSelectorView": {
+    "viewTitle": "Seleccioneu pedaços",
+    "searchBarHint": "Cerca pedaços",
+    "doneButton": "Fet",
+    "defaultChip": "Per defecte",
+    "noneChip": "Cap",
+    "noneTooltip": "Desseleccionar tots els pegats",
+    "noPatchesFound": "No s'han trobat pedaços per a l'aplicació seleccionada"
+  },
   "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {},
-  "appInfoView": {},
-  "contributorsView": {},
+  "patchItem": {
+    "unsupportedDialogText": "La selecció d'aquest pedaç pot provocar errors d'aplicació.\n\nVersió de l'aplicació: ${packageVersion}\nVersions compatibles:\n${supportedVersions}"
+  },
+  "installerView": {
+    "installButton": "Instal·la",
+    "openButton": "Obre",
+    "notificationTitle": "ReVanced Manager està aplicant pedaços",
+    "notificationText": "Toqui per tornar a l'instal·lador",
+    "noExit": "L'instal·lador està en funcionament, no es pot sortir..."
+  },
+  "settingsView": {
+    "widgetTitle": "Configuració",
+    "appearanceSectionTitle": "Aparença",
+    "teamSectionTitle": "Equip",
+    "advancedSectionTitle": "Avançat",
+    "exportSectionTitle": "Importar i exportar",
+    "dynamicThemeHint": "Gaudeixi d'una experiència més acord al seu dispositiu",
+    "languageLabel": "Llengua",
+    "sourcesIntegrationsLabel": "Font de les integracions",
+    "sourcesResetDialogTitle": "Restablir",
+    "apiURLLabel": "Direcció URL de la API",
+    "selectApiURL": "URL de l'API",
+    "orgPatchesLabel": "Organització dels pedaços",
+    "sourcesPatchesLabel": "Font dels pedaços",
+    "orgIntegrationsLabel": "Organització de les integracions",
+    "contributorsLabel": "Col·laboradors",
+    "contributorsHint": "Una llista de col·laboradors de ReVanced",
+    "aboutLabel": "Quant a",
+    "snackbarMessage": "S'ha copiat al porta-retalls",
+    "restartAppForChanges": "Reinicieu l'aplicació per a aplicar els canvis",
+    "deleteTempDirLabel": "Esborrar arxius temporals",
+    "deleteTempDirHint": "Suprimeix els fitxers temporals no utilitzats",
+    "deletedTempDir": "Arxius temporals eliminats",
+    "deletedLogs": "Registres suprimits",
+    "jsonSelectorErrorMessage": "No es pot utilitzar el fitxer JSON seleccionat"
+  },
+  "appInfoView": {
+    "widgetTitle": "Informació de l'aplicació",
+    "openButton": "Obre",
+    "installButton": "Instal·la",
+    "uninstallButton": "Desinstal·la",
+    "rootDialogTitle": "Error",
+    "rootDialogText": "L'aplicació s'ha instal·lat amb permisos de superusuari, però actualment ReVanced Manager no té cap permís.\nSi us plau, concediu primer permisos de superusuari.",
+    "packageNameLabel": "Nom del paquet",
+    "installTypeLabel": "Tipus d'instal·lació",
+    "patchedDateLabel": "Data pedaçada",
+    "appliedPatchesLabel": "Pedaços aplicats",
+    "patchedDateHint": "${date} a les ${time}",
+    "appliedPatchesHint": "${quantity} pedaços aplicats",
+    "updateNotImplemented": "Aquesta funció encara no s'ha implementat"
+  },
+  "contributorsView": {
+    "widgetTitle": "Col·laboradors"
+  },
   "installErrorDialog": {}
 }

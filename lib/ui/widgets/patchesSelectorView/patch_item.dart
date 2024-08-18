@@ -68,7 +68,7 @@ class _PatchItemState extends State<PatchItem> {
             if (widget.isUnsupported &&
                 widget._managerAPI.isVersionCompatibilityCheckEnabled()) {
               widget.isSelected = false;
-              widget.toast.showBottom('patchItem.unsupportedPatchVersion');
+              widget.toast.showBottom(t.patchItem.unsupportedPatchVersion);
             } else if (widget.isChangeEnabled) {
               if (!widget.isSelected) {
                 if (widget.hasUnsupportedPatchOption) {
@@ -103,7 +103,7 @@ class _PatchItemState extends State<PatchItem> {
                             .isVersionCompatibilityCheckEnabled()) {
                       widget.isSelected = false;
                       widget.toast.showBottom(
-                        'patchItem.unsupportedPatchVersion',
+                        t.patchItem.unsupportedPatchVersion,
                       );
                     } else if (widget.isChangeEnabled) {
                       if (!widget.isSelected) {
@@ -170,7 +170,7 @@ class _PatchItemState extends State<PatchItem> {
                                     onPressed: () =>
                                         _showUnsupportedWarningDialog(),
                                     style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
+                                      shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -181,12 +181,10 @@ class _PatchItemState extends State<PatchItem> {
                                           ),
                                         ),
                                       ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
+                                      backgroundColor: WidgetStateProperty.all(
                                         Colors.transparent,
                                       ),
-                                      foregroundColor:
-                                          MaterialStateProperty.all(
+                                      foregroundColor: WidgetStateProperty.all(
                                         Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),

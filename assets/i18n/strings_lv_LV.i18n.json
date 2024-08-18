@@ -3,16 +3,16 @@
   "cancelButton": "Atcelt",
   "quitButton": "Iziet",
   "updateButton": "Atjaunināt",
-  "installed": "Uzstādītā versija: ${version}",
   "suggested": "Ieteiktā versija: ${version}",
   "yesButton": "Jā",
   "noButton": "Nē",
   "warning": "Brīdinājums",
-  "options": "Iestatījumi",
   "notice": "Piezīme",
   "noShowAgain": "Vairs nerādīt",
   "add": "Pievienot",
   "remove": "Noņemt",
+  "showChangelogButton": "Rādīt izmaiņu sarakstu",
+  "showUpdateButton": "Rādīt atjauninājumus",
   "navigationView": {
     "dashboardTab": "Info panelis",
     "patcherTab": "Pačeris",
@@ -22,16 +22,23 @@
     "refreshSuccess": "Veiksmīgi atsvaidzināts",
     "widgetTitle": "Info panelis",
     "updatesSubtitle": "Atjauninājumi",
-    "patchedSubtitle": "Pačotās aplikācijas",
+    "changeLaterSubtitle": "Jūs varat mainīt šo iestatījumu vēlāk.",
     "noInstallations": "Nav atrasta neviena pačota aplikācija",
     "installUpdate": "Vai turpināt instalēt atjauninājumu?",
+    "updateSheetTitle": "Atjaunit ReVanced pārvaldnieku",
+    "updateDialogTitle": "Jauns atjauninājums ir pieejams",
+    "updatePatchesSheetTitle": "ReVanced Patches atjaunināšana",
     "updateChangelogTitle": "Izmaiņu žurnāls",
+    "updateDialogText": "Jauns atjauninājums ir pieejams ${file}.\n\nŠobrīd instalētā versija ir ${version}.",
+    "downloadConsentDialogTitle": "Lejupielādēt nepieciešamos failus?",
+    "downloadConsentDialogText": "ReVanced pārvaldniekam ir jālejupielādē nepieciešamie faili, lai tas darbotos korekti.",
+    "downloadConsentDialogText2": "Tev tas izveidos savienojumu ar ${url}.",
     "downloadingMessage": "Lejupielādē atjauninājumu...",
+    "downloadedMessage": "Atjauninājums lejupielādēts",
     "installingMessage": "Instalē atjauninājumu...",
     "errorDownloadMessage": "Nav iespējams lejupielādēt atjauninājumu",
     "errorInstallMessage": "Nav iespējams instalēt atjauninājumu",
-    "noConnection": "Nav interneta savienojuma",
-    "updatesDisabled": "Pačoto aplikāciju atjaunināšana pašlaik ir izslēgta. Pačo aplikāciju velreiz."
+    "noConnection": "Nav interneta savienojuma"
   },
   "applicationItem": {
     "infoButton": "Informācija"
@@ -42,17 +49,20 @@
   },
   "patcherView": {
     "widgetTitle": "Pačeris",
-    "patchButton": "Pačot"
+    "patchButton": "Pačot",
+    "removedPatchesWarningDialogText": "Kopš pēdējās lietošanas reizes ir noņemti šādi ielāpi.\n\n${patches}\n\nTurpināt jebkurā gadījumā?"
   },
   "appSelectorCard": {
+    "widgetTitle": "Izvēlaties lietotni",
+    "widgetTitleSelected": "Izvēlētā lietotne",
+    "widgetSubtitle": "Neviena lietotne nav izvēlēta",
     "noAppsLabel": "Netika atrasta neviena aplikācija",
-    "currentVersion": "Pašreizējā",
-    "suggestedVersion": "Ieteikums"
+    "anyVersion": "Jebkura versija"
   },
   "patchSelectorCard": {
     "widgetTitle": "Izvēlies pačus",
     "widgetTitleSelected": "Izvēlētie pači",
-    "widgetSubtitle": "Vispirms izvēlies aplikāciju",
+    "widgetSubtitle": "Vispirms, izvēlieties aplikāciju",
     "widgetEmptySubtitle": "Nav atlasītu paču"
   },
   "socialMediaCard": {
@@ -60,17 +70,22 @@
     "widgetSubtitle": "Mēs esam tiešsaistē!"
   },
   "appSelectorView": {
+    "viewTitle": "Izvēlaties lietotni",
+    "searchBarHint": "Meklēt lietotni",
     "storageButton": "Krātuve",
     "selectFromStorageButton": "Izvēlēties krātuvi",
     "errorMessage": "Nevar izmantot atlasīto aplikāciju",
     "downloadToast": "Instalēšanas funkcija pašlaik nav pieejama",
+    "requireSuggestedAppVersionDialogText": "Lietotnes versija, kuru Jūs izvēlējāties, neatbilst rekomendētajai versijai, kas var novest līdz dažādām ķibelēm. Aicinām Jūs lietot rekomendēto versiju.\n\nIzvēlētā versija: ${selected}\nRekomendētā versija: ${suggested}\n\nLai turpinātu tā pat, atslēdziet \"Piespiest rekomendēto aplikācijas versiju\" iestatījumos.",
     "featureNotAvailable": "Funkcija nav ieviesta"
   },
   "patchesSelectorView": {
     "viewTitle": "Izvēlies pačus",
     "searchBarHint": "Meklē pačus",
     "doneButton": "Gatavs",
+    "defaultChip": "Parasts",
     "defaultTooltip": "Atlasiet visus standarta pači",
+    "noneChip": "Neviens",
     "noneTooltip": "Atsijāt visus pači",
     "noPatchesFound": "Atlasītajai lietotnei nav atrasts neviens patčs"
   },
@@ -126,6 +141,7 @@
   "appInfoView": {
     "widgetTitle": "Lietotnes informācija",
     "openButton": "Atvērt",
+    "installButton": "Instalēt",
     "uninstallButton": "Atinstalēt",
     "rootDialogTitle": "Kļūda",
     "rootDialogText": "Aplikācija tika instalēta ar superuser pieejām, taču ReVanced Manager nav šādu pieeju.\nLūdzams uzlikt vispirms superuser ieejas.",

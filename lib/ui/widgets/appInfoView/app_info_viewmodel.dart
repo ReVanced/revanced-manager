@@ -1,4 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:math';
+
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +12,7 @@ import 'package:revanced_manager/services/patcher_api.dart';
 import 'package:revanced_manager/services/root_api.dart';
 import 'package:revanced_manager/services/toast.dart';
 import 'package:revanced_manager/ui/views/home/home_viewmodel.dart';
+import 'package:revanced_manager/ui/views/installer/installer_viewmodel.dart';
 import 'package:revanced_manager/ui/views/navigation/navigation_viewmodel.dart';
 import 'package:revanced_manager/ui/views/patcher/patcher_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -19,6 +22,20 @@ class AppInfoViewModel extends BaseViewModel {
   final PatcherAPI _patcherAPI = locator<PatcherAPI>();
   final RootAPI _rootAPI = RootAPI();
   final Toast _toast = locator<Toast>();
+
+  Future<void> installApp(
+    BuildContext context,
+    PatchedApplication app,
+  ) async {
+    locator<PatcherViewModel>().selectedApp = app;
+    locator<InstallerViewModel>().installTypeDialog(context);
+  }
+
+  Future<void> exportApp(
+    PatchedApplication app,
+  ) async {
+    _patcherAPI.exportPatchedFile(app);
+  }
 
   Future<void> uninstallApp(
     BuildContext context,
@@ -123,6 +140,35 @@ class AppInfoViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> showDeleteDialog(
+    BuildContext context,
+    PatchedApplication app,
+  ) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(t.appInfoView.removeAppDialogTitle),
+        content: Text(t.appInfoView.removeAppDialogText),
+        actions: <Widget>[
+          TextButton(
+            child: Text(t.cancelButton),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          FilledButton(
+            child: Text(t.okButton),
+            onPressed: () => {
+              _managerAPI.deleteLastPatchedApp(),
+              Navigator.of(context)
+                ..pop()
+                ..pop(),
+              locator<HomeViewModel>().initialize(context),
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   String getPrettyDate(BuildContext context, DateTime dateTime) {
     return DateFormat.yMMMMd(Localizations.localeOf(context).languageCode)
         .format(dateTime);
@@ -131,6 +177,12 @@ class AppInfoViewModel extends BaseViewModel {
   String getPrettyTime(BuildContext context, DateTime dateTime) {
     return DateFormat.jm(Localizations.localeOf(context).languageCode)
         .format(dateTime);
+  }
+
+  String getFileSizeString(int bytes) {
+    const suffixes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    final i = (log(bytes) / log(1024)).floor();
+    return '${(bytes / pow(1024, i)).toStringAsFixed(2)} ${suffixes[i]}';
   }
 
   Future<void> showAppliedPatchesDialog(

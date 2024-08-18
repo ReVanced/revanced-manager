@@ -14,6 +14,7 @@ updates:
     schedule:
       interval: monthly
 
+  # ReVanced Manager Flutter
   - package-ecosystem: pub
     labels: []
     directory: /
@@ -21,6 +22,14 @@ updates:
     schedule:
       interval: monthly
 
+  - package-ecosystem: gradle
+    labels: []
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
+
+  # ReVanced Manager Compose
   - package-ecosystem: gradle
     labels: [ "ReVanced Manager Compose" ]
     directory: /
