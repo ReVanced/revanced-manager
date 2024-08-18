@@ -33,6 +33,10 @@ android {
     }
 }
 
+dependencies {
+    implementation(libs.kotlinx.coroutines)
+}
+
 publishing {
     repositories {
         mavenLocal()

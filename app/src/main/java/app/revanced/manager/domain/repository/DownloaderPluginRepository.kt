@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.io.InputStream
 import java.lang.reflect.Modifier
 
 class DownloaderPluginRepository(
@@ -112,7 +113,7 @@ class DownloaderPluginRepository(
                     with(pm) { packageInfo.label() },
                     packageInfo.versionName,
                     downloader.get,
-                    downloader.download as suspend DownloadScope.(App) -> Unit,
+                    downloader.download as suspend DownloadScope.(App) -> InputStream,
                     classLoader
                 )
             )

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import app.revanced.manager.plugin.downloader.App
 import app.revanced.manager.plugin.downloader.DownloaderContext
+import app.revanced.manager.plugin.downloader.download
 import app.revanced.manager.plugin.downloader.downloader
 import app.revanced.manager.plugin.downloader.example.BuildConfig.PLUGIN_PACKAGE_NAME
 import kotlinx.coroutines.delay
@@ -13,6 +14,8 @@ import kotlinx.parcelize.Parcelize
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import kotlin.io.path.Path
+import kotlin.io.path.fileSize
+import kotlin.io.path.inputStream
 
 // TODO: document API, change dispatcher.
 
@@ -47,15 +50,16 @@ fun installedAppDownloader(context: DownloaderContext) = downloader<InstalledApp
         ).takeIf { version == null || it.version == version }
     }
 
-    download {
-        // Simulate download progress
-        for (i in 0..5) {
-            reportProgress(i.megaBytes, 5.megaBytes)
-            delay(1000L)
-        }
+    /*
+    download { app ->
+        Path(app.apkPath).also {
+            reportSize(it.fileSize())
+        }.inputStream()
+    }*/
 
-        Files.copy(Path(it.apkPath), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+    download { app, outputStream ->
+        val path = Path(app.apkPath)
+        reportSize(path.fileSize())
+        Files.copy(path, outputStream)
     }
 }
-
-private val Int.megaBytes get() = times(1_000_000)
