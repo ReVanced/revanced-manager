@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -43,7 +44,8 @@ fun BundlePatchesDialog(
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false, dismissOnBackPress = true
+            usePlatformDefaultWidth = false,
+            dismissOnBackPress = true
         )
     ) {
         Scaffold(
@@ -69,11 +71,9 @@ fun BundlePatchesDialog(
             ) {
                 state.patchBundleOrNull()?.let { bundle ->
                     items(
-                        count = bundle.patches.size,
-                        key = { index -> bundle.patches[index] }
-                    ) { bundleIndex ->
-                        val patch = bundle.patches[bundleIndex]
-
+                        items = bundle.patches,
+                        key = { it }
+                    ) { patch ->
                         PatchItem(
                             patch,
                             showAllVersions,
@@ -135,7 +135,19 @@ fun PatchItem(
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                if (!patch.compatiblePackages.isNullOrEmpty()) {
+                if (patch.compatiblePackages.isNullOrEmpty()) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        PatchInfoChip(
+                            text = "$PACKAGE_ICON ${stringResource(R.string.bundle_view_patches_any_package)}"
+                        )
+                        PatchInfoChip(
+                            text = "$VERSION_ICON ${stringResource(R.string.bundle_view_patches_any_version)}"
+                        )
+                    }
+                } else {
                     patch.compatiblePackages.forEach { compatiblePackage ->
                         val packageName = compatiblePackage.packageName
                         val versions = compatiblePackage.versions.orEmpty().reversed()
@@ -172,18 +184,6 @@ fun PatchItem(
                             }
                         }
                     }
-                } else {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        PatchInfoChip(
-                            text = "$PACKAGE_ICON ${stringResource(R.string.bundle_view_patches_any_package)}"
-                        )
-                        PatchInfoChip(
-                            text = "$VERSION_ICON ${stringResource(R.string.bundle_view_patches_any_version)}"
-                        )
-                    }
                 }
             }
             if (!patch.options.isNullOrEmpty()) {
@@ -202,7 +202,11 @@ fun PatchItem(
                                 ), shape = when {
                                     options.size == 1 -> RoundedCornerShape(8.dp)
                                     i == 0 -> RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
-                                    i == options.lastIndex -> RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                                    i == options.lastIndex -> RoundedCornerShape(
+                                        bottomStart = 8.dp,
+                                        bottomEnd = 8.dp
+                                    )
+
                                     else -> RoundedCornerShape(0.dp)
                                 }
                             ) {
