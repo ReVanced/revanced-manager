@@ -70,10 +70,7 @@ fun BundlePatchesDialog(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 state.patchBundleOrNull()?.let { bundle ->
-                    items(
-                        items = bundle.patches,
-                        key = { it }
-                    ) { patch ->
+                    items(bundle.patches) { patch ->
                         PatchItem(
                             patch,
                             showAllVersions,
@@ -123,7 +120,7 @@ fun PatchItem(
                 )
 
                 if (!patch.options.isNullOrEmpty()) {
-                    ArrowButton(expanded = expandOptions)
+                    ArrowButton(expanded = expandOptions, onClick = null)
                 }
             }
             patch.description?.let {

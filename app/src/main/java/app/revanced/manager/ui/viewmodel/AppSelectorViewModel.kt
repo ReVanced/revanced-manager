@@ -25,7 +25,7 @@ class AppSelectorViewModel(
     private val pm: PM,
     private val patchBundleRepository: PatchBundleRepository
 ) : ViewModel() {
-    private val inputFile = File(app.cacheDir, "input.apk").also {
+    private val inputFile = File(app.filesDir, "input.apk").also {
         it.delete()
     }
     val appList = pm.appList
