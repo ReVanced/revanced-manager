@@ -45,14 +45,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         mutableStateOf(input.app)
     }
 
+    var selectedAppInfo: PackageInfo? by mutableStateOf(null)
+        private set
+
     var selectedApp
         get() = _selectedApp
         set(value) {
             _selectedApp = value
             invalidateSelectedAppInfo()
         }
-
-    var selectedAppInfo: PackageInfo? by mutableStateOf(null)
 
     init {
         invalidateSelectedAppInfo()
@@ -64,8 +65,8 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            val packageName =
-                selectedApp.packageName // Accessing this from another thread may cause crashes.
+            // Accessing this from another thread may cause crashes.
+            val packageName = selectedApp.packageName
 
             state.value = withContext(Dispatchers.Default) {
                 val bundlePatches = bundleRepository.bundles.first()

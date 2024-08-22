@@ -1,7 +1,6 @@
 package app.revanced.manager.domain.repository
 
 import android.app.Application
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Log
 import app.revanced.manager.data.room.AppDatabase
@@ -11,9 +10,9 @@ import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderApp
 import app.revanced.manager.plugin.downloader.App
-import app.revanced.manager.plugin.downloader.DownloadScope
 import app.revanced.manager.plugin.downloader.Downloader
-import app.revanced.manager.plugin.downloader.DownloaderContext
+import app.revanced.manager.plugin.downloader.DownloaderBuilder
+import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.tag
 import dalvik.system.PathClassLoader
@@ -24,9 +23,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.io.InputStream
 import java.lang.reflect.Modifier
 
+@OptIn(PluginHostApi::class)
 class DownloaderPluginRepository(
     private val pm: PM,
     private val prefs: PreferencesManager,
@@ -88,32 +87,28 @@ class DownloaderPluginRepository(
 
         return try {
             val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
-            val pluginContext = app.createPackageContext(packageName, 0)
-
             val className = packageInfo.applicationInfo.metaData.getString(METADATA_PLUGIN_CLASS)
                 ?: throw Exception("Missing metadata attribute $METADATA_PLUGIN_CLASS")
-            val classLoader = PathClassLoader(
-                packageInfo.applicationInfo.sourceDir,
-                Downloader::class.java.classLoader
-            )
+
+            val classLoader =
+                PathClassLoader(packageInfo.applicationInfo.sourceDir, app.classLoader)
+            val pluginContext = app.createPackageContext(packageName, 0)
 
             val downloader = classLoader
                 .loadClass(className)
-                .getDownloaderImplementation(
-                    DownloaderContext(
-                        androidContext = pluginContext,
-                        pluginHostPackageName = app.packageName
-                    )
+                .getDownloaderBuilder()
+                .build(
+                    hostPackageName = app.packageName,
+                    context = pluginContext
                 )
 
-            @Suppress("UNCHECKED_CAST")
             DownloaderPluginState.Loaded(
                 LoadedDownloaderPlugin(
                     packageName,
                     with(pm) { packageInfo.label() },
                     packageInfo.versionName,
                     downloader.get,
-                    downloader.download as suspend DownloadScope.(App) -> InputStream,
+                    downloader.download,
                     classLoader
                 )
             )
@@ -156,22 +151,15 @@ class DownloaderPluginRepository(
         const val PLUGIN_FEATURE = "app.revanced.manager.plugin.downloader"
         const val METADATA_PLUGIN_CLASS = "app.revanced.manager.plugin.downloader.class"
 
-        val Class<*>.isDownloader get() = Downloader::class.java.isAssignableFrom(this)
         const val PUBLIC_STATIC = Modifier.PUBLIC or Modifier.STATIC
         val Int.isPublicStatic get() = (this and PUBLIC_STATIC) == PUBLIC_STATIC
+        val Class<*>.isDownloaderBuilder get() = DownloaderBuilder::class.java.isAssignableFrom(this)
 
-        fun Class<*>.getDownloaderImplementation(context: DownloaderContext) =
+        @Suppress("UNCHECKED_CAST")
+        fun Class<*>.getDownloaderBuilder() =
             declaredMethods
-                .filter { it.modifiers.isPublicStatic && it.returnType.isDownloader }
-                .firstNotNullOfOrNull callMethod@{
-                    if (it.parameterTypes contentEquals arrayOf(DownloaderContext::class.java)) return@callMethod it(
-                        null,
-                        context
-                    ) as Downloader<*>
-                    if (it.parameterTypes.isEmpty()) return@callMethod it(null) as Downloader<*>
-
-                    return@callMethod null
-                }
+                .firstOrNull { it.modifiers.isPublicStatic && it.returnType.isDownloaderBuilder && it.parameterTypes.isEmpty() }
+                ?.let { it(null) as DownloaderBuilder<App> }
                 ?: throw Exception("Could not find a valid downloader implementation in class $canonicalName")
     }
 }

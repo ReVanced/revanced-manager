@@ -3,8 +3,11 @@ package app.revanced.manager.ui.screen
 import android.content.pm.PackageInfo
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRight
 import androidx.compose.material.icons.filled.AutoFixHigh
@@ -13,18 +16,24 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
@@ -36,6 +45,7 @@ import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.toast
+import app.revanced.manager.util.transparentListItemColors
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
@@ -70,6 +80,10 @@ fun SelectedAppInfoScreen(
         }
     }
 
+    var showSourceSelectorDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     val navController =
         rememberNavController<SelectedAppInfoDestination>(startDestination = SelectedAppInfoDestination.Main)
 
@@ -102,7 +116,8 @@ fun SelectedAppInfoScreen(
                         )
                     )
                 },
-                onVersionSelectorClick = {
+                onSourceSelectorClick = {
+                    showSourceSelectorDialog = true
                     // navController.navigate(SelectedAppInfoDestination.VersionSelector)
                 },
                 onBackClick = onBackClick,
@@ -137,7 +152,7 @@ fun SelectedAppInfoScreen(
 private fun SelectedAppInfoScreen(
     onPatchClick: () -> Unit,
     onPatchSelectorClick: () -> Unit,
-    onVersionSelectorClick: () -> Unit,
+    onSourceSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
     selectedPatchCount: Int,
     packageName: String,
@@ -186,7 +201,7 @@ private fun SelectedAppInfoScreen(
                 R.string.version_selector_item,
                 version?.let { stringResource(R.string.version_selector_item_description, it) }
                     ?: stringResource(R.string.version_selector_item_description_auto),
-                onVersionSelectorClick
+                onSourceSelectorClick
             )
         }
     }
@@ -214,6 +229,62 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
         },
         trailingContent = {
             Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)
+        }
+    )
+}
+
+@Composable
+private fun AppSourceSelectorDialog(onDismissRequest: () -> Unit) {
+    AlertDialogExtended(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(
+                onClick = {
+
+                }
+            ) {
+                Text("Select")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        title = { Text("Select source") },
+        textHorizontalPadding = PaddingValues(horizontal = 0.dp),
+        text = {
+            /*
+            val presets = remember(scope.option.presets) {
+                scope.option.presets?.entries?.toList().orEmpty()
+            }
+
+            LazyColumn {
+                @Composable
+                fun Item(title: String, value: Any?, presetKey: String?) {
+                    ListItem(
+                        modifier = Modifier.clickable { selectedPreset = presetKey },
+                        headlineContent = { Text(title) },
+                        supportingContent = value?.toString()?.let { { Text(it) } },
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedPreset == presetKey,
+                                onClick = { selectedPreset = presetKey }
+                            )
+                        },
+                        colors = transparentListItemColors
+                    )
+                }
+
+                items(presets, key = { it.key }) {
+                    Item(it.key, it.value, it.key)
+                }
+
+                item(key = null) {
+                    Item(stringResource(R.string.option_preset_custom_value), null, null)
+                }
+            }
+             */
         }
     )
 }

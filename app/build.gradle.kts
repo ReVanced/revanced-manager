@@ -3,10 +3,11 @@ import kotlin.random.Random
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.devtools)
     alias(libs.plugins.about.libraries)
-    id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.9.23"
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -81,9 +82,11 @@ android {
         jvmTarget = "17"
     }
 
-    buildFeatures.compose = true
-    buildFeatures.aidl = true
-    buildFeatures.buildConfig = true
+    buildFeatures {
+        compose = true
+        aidl = true
+        buildConfig = true
+    }
 
     android {
         androidResources {
@@ -91,7 +94,6 @@ android {
         }
     }
 
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")

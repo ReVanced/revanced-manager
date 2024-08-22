@@ -26,20 +26,13 @@ public final class app/revanced/manager/plugin/downloader/ConstantsKt {
 }
 
 public abstract interface class app/revanced/manager/plugin/downloader/DownloadScope {
-	public abstract fun getTargetFile ()Ljava/io/File;
-	public abstract fun reportProgress (JLjava/lang/Long;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun reportSize (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class app/revanced/manager/plugin/downloader/Downloader {
-	public final fun getDownload ()Lkotlin/jvm/functions/Function3;
-	public final fun getGet ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class app/revanced/manager/plugin/downloader/DownloaderBuilder {
-	public fun <init> ()V
-	public final fun build ()Lapp/revanced/manager/plugin/downloader/Downloader;
-	public final fun download (Lkotlin/jvm/functions/Function3;)V
-	public final fun get (Lkotlin/jvm/functions/Function4;)V
 }
 
 public final class app/revanced/manager/plugin/downloader/DownloaderContext {
@@ -48,15 +41,26 @@ public final class app/revanced/manager/plugin/downloader/DownloaderContext {
 	public final fun getPluginHostPackageName ()Ljava/lang/String;
 }
 
-public abstract interface annotation class app/revanced/manager/plugin/downloader/DownloaderDsl : java/lang/annotation/Annotation {
+public final class app/revanced/manager/plugin/downloader/DownloaderKt {
+	public static final fun downloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/plugin/downloader/DownloaderBuilder;
 }
 
-public final class app/revanced/manager/plugin/downloader/DownloaderKt {
-	public static final fun downloader (Lkotlin/jvm/functions/Function1;)Lapp/revanced/manager/plugin/downloader/Downloader;
+public final class app/revanced/manager/plugin/downloader/DownloaderScope {
+	public final fun download (Lkotlin/jvm/functions/Function2;)V
+	public final fun get (Lkotlin/jvm/functions/Function4;)V
+	public final fun getHostPackageName ()Ljava/lang/String;
+	public final fun getPluginPackageName ()Ljava/lang/String;
+}
+
+public final class app/revanced/manager/plugin/downloader/ExtensionsKt {
+	public static final fun download (Lapp/revanced/manager/plugin/downloader/DownloaderScope;Lkotlin/jvm/functions/Function4;)V
 }
 
 public abstract interface class app/revanced/manager/plugin/downloader/GetScope {
 	public abstract fun requestUserInteraction (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class app/revanced/manager/plugin/downloader/PluginHostApi : java/lang/annotation/Annotation {
 }
 
 public abstract class app/revanced/manager/plugin/downloader/UserInteractionException : java/lang/Exception {

@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import java.io.File
-import java.io.FilterInputStream
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
-import kotlin.io.path.exists
+import java.io.FilterOutputStream
+import java.nio.file.StandardOpenOption
+import java.util.concurrent.atomic.AtomicLong
+import kotlin.io.path.outputStream
 
 class DownloadedAppRepository(app: Application, db: AppDatabase) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
@@ -45,50 +45,49 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
         val targetFile = saveDir.resolve("base.apk").toPath()
 
         try {
-            channelFlow {
-                var fileSize: Long? = null
-                var downloadedBytes = 0L
+            val downloadSize = AtomicLong(0)
+            val downloadedBytes = AtomicLong(0)
 
+            channelFlow {
                 val scope = object : DownloadScope {
                     override suspend fun reportSize(size: Long) {
-                        fileSize = size
-                        send(downloadedBytes to size)
+                        require(size > 0) { "Size must be greater than zero" }
+                        require(
+                            downloadSize.compareAndSet(
+                                0,
+                                size
+                            )
+                        ) { "Download size has already been set" }
+                        send(downloadedBytes.get() to size)
                     }
-                    /*
-                    override val targetFile = targetFile
-                    override suspend fun reportProgress(bytesReceived: Long, bytesTotal: Long?) {
-                        require(bytesReceived >= 0) { "bytesReceived must not be negative" }
-                        require(bytesTotal == null || bytesTotal >= bytesReceived) { "bytesTotal must be greater than or equal to bytesReceived" }
-                        require(bytesTotal != 0L) { "bytesTotal must not be zero" }
-
-                        onDownload(bytesReceived.megaBytes to bytesTotal?.megaBytes)
-                    }*/
                 }
 
-                plugin.download(scope, app).use { inputStream ->
-                    Files.copy(object : FilterInputStream(inputStream) {
-                        override fun read(): Int {
-                            val array = ByteArray(1)
-                            if (read(array, 0, 1) != 1) return -1
-                            return array[0].toInt()
-                        }
+                fun emitProgress(bytes: Long) {
+                    val newValue = downloadedBytes.addAndGet(bytes)
+                    val totalSize = downloadSize.get()
+                    if (totalSize < 1) return
+                    trySend(newValue to totalSize).getOrThrow()
+                }
 
-                        override fun read(b: ByteArray?, off: Int, len: Int) =
-                            super.read(b, off, len).also { result ->
-                                // Report download progress
-                                if (result > 0) {
-                                    downloadedBytes += result
-                                    fileSize?.let { trySend(downloadedBytes to it).getOrThrow() }
-                                }
+                targetFile.outputStream(StandardOpenOption.CREATE_NEW).buffered().use {
+                    val stream = object : FilterOutputStream(it) {
+                        override fun write(b: Int) = out.write(b).also { emitProgress(1) }
+
+                        override fun write(b: ByteArray?, off: Int, len: Int) =
+                            out.write(b, off, len).also {
+                                emitProgress(
+                                    (len - off).toLong()
+                                )
                             }
-                    }, targetFile, StandardCopyOption.REPLACE_EXISTING)
+                    }
+                    plugin.download(scope, app, stream)
                 }
             }
                 .conflate()
                 .flowOn(Dispatchers.IO)
                 .collect { (downloaded, size) -> onDownload(downloaded.megaBytes to size.megaBytes) }
 
-            if (!targetFile.exists()) throw Exception("Downloader did not download any files")
+            if (downloadedBytes.get() < 1) throw Exception("Downloader did not download any files")
 
             dao.insert(
                 DownloadedApp(

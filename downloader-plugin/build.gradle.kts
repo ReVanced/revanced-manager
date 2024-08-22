@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.parcelize)
     `maven-publish`
 }
 
@@ -31,10 +31,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-}
-
-dependencies {
-    implementation(libs.kotlinx.coroutines)
 }
 
 publishing {

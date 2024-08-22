@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -16,7 +17,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        buildConfigField("String", "PLUGIN_PACKAGE_NAME", "\"$packageName\"")
     }
 
     buildTypes {
@@ -39,11 +39,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
+    buildFeatures.compose = true
 }
 
 dependencies {
