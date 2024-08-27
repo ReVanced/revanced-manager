@@ -283,7 +283,6 @@
     "status_failure_timeout_description": "Instalacija traje predugo.\n\nŽelite li da pokušate ponovo?",
     "status_failure_storage_description": "Instalacija nije uspela zbog nedovoljno memorije.\n\nOslobodite malo memorije i pokušajte ponovo.",
     "status_failure_invalid_description": "Instalacija nije uspela jer pečovana aplikacija nije važeća.\n\nDeinstalirati aplikaciju i pokušati ponovo?",
-    "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "Instalacija je sprečena postojećom instalacijom aplikacije.\n\nDeinstalirati instaliranu aplikaciju i pokušati ponovo?",
     "status_failure_blocked_description": "Instalacija je blokirana od: ${packageName}.\n\nPodesite bezbednosna podešavanja i pokušajte ponovo.",
     "install_failed_verification_failure_description": "Instalacija nije uspela zbog problema sa verifikacijom.\n\nPodesite bezbednosna podešavanja i pokušajte ponovo.",

@@ -283,7 +283,6 @@
     "status_failure_timeout_description": "Quraşdırmanın bitməsi çox uzun çəkdi.\n\nYenidən cəhd etmək istəyirsiniz?",
     "status_failure_storage_description": "Yetərsiz yaddaş sahəsinə görə quraşdırma uğursuz oldu.\n\nBir az yer boşaldıb yenidən sınayın.",
     "status_failure_invalid_description": "Yamaqlanmış tətbiq etibarsız olduğu üçün quraşdırma uğursuz oldu.\n\nTətbiqi silib yenidən sınayırsınız?",
-    "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "Quraşdırma, tətbiqin mövcud quraşdırmasına görə əngəlləndi.\n\nQuraşdırılmış tətbiqi silib yenidən sınayırsınız?",
     "status_failure_blocked_description": "Quraşdırma, ${packageName} tərəfindən əngəlləndi.\n\nTəhlükəsizlik seçimlərinizi tənzimləyib yenidən sınayın.",
     "install_failed_verification_failure_description": "Təsdiqləmə probleminə görə quraşdırma uğursuz oldu.\n\nTəhlükəsizlik seçimlərinizi tənzimləyib təkrar sınayın.",
