@@ -47,14 +47,14 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Normalisation & Validation of Translation Strings
+      - name: Normalisation of Translation Strings
         run: |
           dart pub get
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
 
-      - name: Remove empty values of Translation Strings
+      - name: Remove empty values of Translation & Validation of Translation Strings
         run: |
           cd assets/i18n
           sudo chmod 777 *.json
