@@ -54,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
+    "incompatibleArchWarningDialogText": "Việc vá ứng dụng trên kiến ​​trúc này hiện chưa được hỗ trợ và có thể thất bại. Bạn vẫn muốn tiếp tục?",
     "removedPatchesWarningDialogText": "Những bản vá sau đây đã bị loại bỏ từ lần cuối bạn dùng chúng.\n\n${patches}\n\nVẫn tiếp tục?",
     "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
   },
@@ -185,7 +186,7 @@
     "universalPatchesLabel": "Các bản vá phổ quát",
     "universalPatchesHint": "Hiển thị tất cả các ứng dụng và các bản vá phổ quát (có thể gây chậm danh sách ứng dụng)",
     "lastPatchedAppLabel": "Lưu ứng dụng đã vá",
-    "lastPatchedAppHint": "Lưu bản vá để cài đặt hoặc xuất sau đó",
+    "lastPatchedAppHint": "Lưu bản vá cuối để cài đặt hoặc xuất sau đó",
     "versionCompatibilityCheckLabel": "Kiểm tra khả năng tương thích của phiên bản",
     "versionCompatibilityCheckHint": "Việc ngăn chặn chọn bản vá không tương thích với phiên bản ứng dụng đã chọn",
     "requireSuggestedAppVersionLabel": "Yêu cầu phiên bản ứng dụng được đề xuất",
@@ -282,7 +283,6 @@
     "status_failure_timeout_description": "Việc cài đặt mất quá lâu để hoàn thành.\n\nBạn có muốn thử lại?",
     "status_failure_storage_description": "Việc cài đặt đã thất bại do không đủ bộ nhớ.\n\nGiải phóng một phần bộ nhớ và thử lại.",
     "status_failure_invalid_description": "Việc cài đặt đã thất bại do ứng dụng đã vá không hợp lệ.\n\nGỡ cài đặt ứng dụng và thử lại?",
-    "status_failure_incompatible_description": "Ứng dụng không tương thích với thiết bị.\n\nLiên hệ nhà phát triển ứng dụng và yêu cầu trợ giúp.",
     "status_failure_conflict_description": "Việc cài đặt đã bị ngăn chặn bởi bản cài đã có của ứng dụng.\n\nGỡ cài đặt ứng dụng đã cài và thử lại?",
     "status_failure_blocked_description": "Việc cài đặt đã đã bị chặn bởi ${packageName}.\n\nĐiều chỉnh thiết lập bảo mật của bạn và thử lại.",
     "install_failed_verification_failure_description": "Việc cài đặt đã thất bại do phát sinh xác minh.\n\nĐiều chỉnh thiết lập bảo mật của bạn và thử lại.",

@@ -230,7 +230,6 @@
     "status_failure_timeout_description": "Namestitev je trajala predolgo.\n\nNaj poskusim ponovno?",
     "status_failure_storage_description": "Namestitev je spodletela zaradi pomanjkanja prostora na pomnilni napravi.\n\nSprostite nekaj prostora in poskusite ponovno.",
     "status_failure_invalid_description": "Namestitev je spodletela zaradi neveljavnosti popravljene aplikacije.\n\nNaj odstranim aplikacijo in poskusim ponovno?",
-    "status_failure_incompatible_description": "Aplikacija ni združljiva s to napravo.\n\nStopite v stik z razvijalcem aplikacije in ga prosite za pomoč.",
     "status_failure_conflict_description": "Namestitev ni uspela, ker je aplikacija že nameščena.\n\nNaj odstranim nameščeno aplikacijo in poskusim ponovno?",
     "status_failure_blocked_description": "Paket ${packageName} je preprečil namestitev.\n\nPrilagodite svoje varnostne nastavitve in poskusite ponovno.",
     "install_failed_verification_failure_description": "Namestitev ni uspela zaradi overitvenih težav.",

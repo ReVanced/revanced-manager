@@ -12,6 +12,8 @@
   "noShowAgain": "இதனை மீண்டும் காண்பிக்க வேண்டாம்",
   "add": "சேர்",
   "remove": "நீக்கு",
+  "showChangelogButton": "மாற்றப்பதிவைக் காட்டவும்",
+  "showUpdateButton": "புதுப்பிப்பைக் காட்டவும்",
   "navigationView": {
     "dashboardTab": "கட்டுப்பாட்டகம்",
     "patcherTab": "இணைப்பான்",
@@ -21,7 +23,20 @@
     "refreshSuccess": "வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது",
     "widgetTitle": "கட்டுப்பாட்டகம்",
     "updatesSubtitle": "புதுப்பித்தல்கள்",
+    "lastPatchedAppSubtitle": "கடைசியாகப் பிறழ்ந்தப்பட்ட செயலி",
+    "patchedSubtitle": "நிறுவப்பட்ட செயலிகள்",
+    "changeLaterSubtitle": "இதை நீங்கள் பின்னர் அமைப்புகளில் மாற்றலாம்.",
+    "noSavedAppFound": "செயலிகள் எதுவும் கண்டறியப்படவில்லை",
+    "noInstallations": "பிறழப்பட்ட செயலிகள் எதுவும் நிறுவப்படவில்லை",
+    "installUpdate": "புதுப்பிப்பை நிறுவுவதைத் தொடரவா?",
+    "updateSheetTitle": "ரிவன்ஸ்ட் மேனேஜரை புதுப்பிக்கவும்",
+    "updateDialogTitle": "புதிய பதிவு உள்ளது",
+    "updatePatchesSheetTitle": "ரிவன்ஸ்ட் பிறழ்களை புதுப்பிக்கவும்",
     "updateChangelogTitle": "மாற்றங்களின் பதிவு",
+    "updateDialogText": "${file} க்கு புதிய புதுப்பிப்பு உள்ளது.\n\nதற்போது நிறுவப்பட்ட பதிப்பு ${version} ஆகும்.",
+    "downloadConsentDialogTitle": "தேவையான கோப்புகளைப் பதிவிறக்கவா?",
+    "downloadConsentDialogText": "ரிவன்ஸ்ட் மேனேஜர் சரியாக வேலை செய்யத் தேவையான கோப்புகளைப் பதிவிறக்கம் செய்ய வேண்டும்.",
+    "downloadConsentDialogText2": "இது உங்களை ${url} உடன் இணைக்கும்.",
     "downloadingMessage": "மேம்பாடு பதிவிறக்கப்படுகிறது...",
     "downloadedMessage": "புதுப்பிப்பு பதிவிறக்கப்பட்டது",
     "installingMessage": "புதுப்பிப்பை நிறுவுகிறது...",
@@ -33,14 +48,22 @@
     "infoButton": "தகவல்"
   },
   "latestCommitCard": {
-    "loadingLabel": "ஏற்றுகிறது..."
+    "loadingLabel": "ஏற்றுகிறது...",
+    "timeagoLabel": "${time} முன்பு"
   },
   "patcherView": {
     "widgetTitle": "இணைப்பான்",
-    "patchButton": "இணைப்பு"
+    "patchButton": "இணைப்பு",
+    "incompatibleArchWarningDialogText": "இந்தக் கட்டமைப்பில் பிறழுதல் இன்னும் ஆதரிக்கப்படவில்லை மற்றும் தோல்வியடையக்கூடும்.  எப்படியும் தொடரவா?",
+    "removedPatchesWarningDialogText": "நீங்கள் கடைசியாகப் பயன்படுத்தியதிலிருந்து பின்வரும் பிறழ்கள் அகற்றப்பட்டன\n\n${patches}\n\nஎப்படியும் தொடரவா?",
+    "requiredOptionDialogText": "சில பிறழ்களுக்கு விருப்பங்களை அமைக்க வேண்டும்."
   },
   "appSelectorCard": {
-    "noAppsLabel": "செயலிகள் கண்டறியப்படவில்லை"
+    "widgetTitle": "செயலியைத் தேர்ந்தெடு",
+    "widgetTitleSelected": "தேர்ந்தெடுத்த செயலி",
+    "widgetSubtitle": "செயலி எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
+    "noAppsLabel": "செயலிகள் கண்டறியப்படவில்லை",
+    "anyVersion": "ஏதேனும் ஒரு பதிப்பு"
   },
   "patchSelectorCard": {
     "widgetTitle": "இணைப்புகளைத் தேர்ந்தெடுக்கவும்",
@@ -53,31 +76,51 @@
     "widgetSubtitle": "நாங்கள் ஆன்லைனில் இருக்கிறோம்!"
   },
   "appSelectorView": {
+    "viewTitle": "செயலியைத் தேர்ந்தெடு",
+    "searchBarHint": "செயலியில் தேடு",
     "storageButton": "சேமிப்பு",
     "selectFromStorageButton": "இருப்பிலிருந்து தேர்வு செய்க ",
     "errorMessage": "தேர்ந்தெடுக்கப்பட்ட செயலியைப் பயன்படுத்த இயலவில்லை",
     "downloadToast": "பதிவிறக்கம் செய்யும் ஆதரவு இன்னும் வரவில்லை ",
+    "requireSuggestedAppVersionDialogText": "நீங்கள் தேர்ந்தெடுத்த செயலியின் பதிப்பு பரிந்துரைக்கப்பட்ட பதிப்போடு பொருந்தவில்லை, இது எதிர்பாராத சிக்கல்களுக்கு வழிவகுக்கும்.  பரிந்துரைக்கப்பட்ட பதிப்பைப் பயன்படுத்தவும்.\n\n தேர்ந்தெடுக்கப்பட்ட பதிப்பு: ${selected}\n பரிந்துரைக்கப்பட்ட பதிப்பு: ${suggested}\n\n எப்படியும் தொடர, அமைப்புகளில் \"பரிந்துரைக்கப்பட்ட ஆப்ஸ் பதிப்பு தேவை\" என்பதை முடக்கவும்.",
     "featureNotAvailable": "இந்த அம்சம் இன்னும் செயல்படுத்தப்படவில்லை"
   },
   "patchesSelectorView": {
     "viewTitle": "இணைப்புகளைத் தேர்ந்தெடுக்கவும்",
     "searchBarHint": "இணைப்புகளைத் தேடு",
+    "universalPatches": "உலகளாவிய பிறழ்கள்",
+    "newPatches": "புதிய பிறழ்கல்",
     "patches": "Patches",
     "doneButton": "முடிந்தது",
     "defaultChip": "இயல்புநிலை",
     "defaultTooltip": "எல்லா இயல்பான இணைப்புகளையும் தேர்ந்தெடு",
     "noneChip": "எதுவுமில்லை",
     "noneTooltip": "அனைத்து கோப்புகளையும் நீக்கவும்",
-    "noPatchesFound": "தேர்ந்தெடுக்கப்பட்ட செயலிக்கு இணைப்புகள் காணப்படவில்லை"
+    "loadPatchesSelection": "தேர்வுசெய்த பிறழ்களை ஏற்று",
+    "noSavedPatches": "தேர்ந்தெடுக்கப்பட்ட செயளிக்கு சேமிக்கப்பட்ட பிறழ்கள் இல்லை.\n தற்போதைய தேர்வைச் சேமிக்க முடிந்தது என்பதை அழுத்தவும்.",
+    "noPatchesFound": "தேர்ந்தெடுக்கப்பட்ட செயலிக்கு இணைப்புகள் காணப்படவில்லை",
+    "setRequiredOption": "சில பிறழ்களுக்கு விருப்பங்களை அமைக்க வேண்டும்:\n\n ${patches}\n\n தொடர்வதற்கு முன் அவற்றை அமைக்கவும்."
   },
   "patchOptionsView": {
-    "saveOptions": "Save"
+    "customValue": "தனிப்பயன் மதிப்புகள்",
+    "setToNull": "பூஜ்யமாக அமைக்கவும்",
+    "nullValue": "இந்தச் செயலின் மதிப்பு தற்போது பூஜ்யமாக உள்ளது",
+    "viewTitle": "பிறழ் விருப்பங்கள்",
+    "saveOptions": "Save",
+    "unselectPatch": "பிறழை தேர்வுநீக்கு",
+    "tooltip": "மேலும் உள்ளீட்டு விருப்பங்கள்",
+    "selectFilePath": "கோப்பு பாதையைத் தேர்ந்தெடுக்கவும்",
+    "selectFolder": "கோப்புறையைத் தேர்வு செய்",
+    "requiredOption": "இந்த விருப்பத்தை அமைக்க வேண்டும்",
+    "unsupportedOption": "இந்த விருப்பம் ஆதரிக்கப்படவில்லை"
   },
   "patchItem": {
     "unsupportedDialogText": "இந்த இணைப்பைத் தேர்ந்தெடுப்பது, இணைப்புப் பிழைகளை ஏற்படுத்தலாம்.\n\nபயன்பாட்டின் பதிப்பு: ${packageVersion}\nதற்போதைய ஆதரிக்கப்படும் பதிப்புகள்:\n${supportedVersions}"
   },
   "installerView": {
     "installButton": "நிறுவு",
+    "installRootType": "பொருத்து",
+    "installNonRootType": "வழக்கமான",
     "openButton": "திற",
     "notificationTitle": "ReVanced Manager இணைக்கப் படுகிறது",
     "notificationText": "நிறுவிக்குத் திரும்பச் செல்ல இங்கே கிளிக் செய்யவும்",
@@ -87,6 +130,7 @@
     "widgetTitle": "அமைப்புகள்",
     "appearanceSectionTitle": "தோற்றம்",
     "teamSectionTitle": "குழு",
+    "debugSectionTitle": "பிழைதிருத்தம்",
     "advancedSectionTitle": "மேம்பட்ட அமைப்புகள்",
     "exportSectionTitle": "இறக்க & ஏற்ற",
     "dynamicThemeLabel": "Material You",

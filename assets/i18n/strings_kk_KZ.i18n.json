@@ -1,5 +1,5 @@
 {
-  "cancelButton": "Артқа",
+  "cancelButton": "Болдырмау",
   "dismissButton": "Елемеу",
   "quitButton": "Шығу",
   "updateButton": "Жаңарту",
@@ -30,28 +30,53 @@
     "updatePatchesSheetTitle": "ReVanced патчін жаңарту",
     "updateChangelogTitle": "Өзгерту тарихы",
     "updateDialogText": "${file} үшін жаңарту қолжетімді.\n\nҚазіргі ${version} нұсқасы орнатылып тұр.",
-    "downloadedMessage": "Жаңарту жүктелген"
+    "downloadedMessage": "Жаңарту жүктелген",
+    "noConnection": "Интернет байланысы жоқ"
   },
   "applicationItem": {
     "infoButton": "Ақпарат"
   },
-  "latestCommitCard": {},
+  "latestCommitCard": {
+    "loadingLabel": "Ju'ktely'de..."
+  },
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патч"
   },
-  "appSelectorCard": {},
+  "appSelectorCard": {
+    "widgetTitle": "Қолданбаны таңдаңыз"
+  },
   "patchSelectorCard": {},
   "socialMediaCard": {},
-  "appSelectorView": {},
-  "patchesSelectorView": {},
-  "patchOptionsView": {},
-  "patchItem": {},
-  "installerView": {},
-  "settingsView": {
-    "widgetTitle": "Баптау"
+  "appSelectorView": {
+    "viewTitle": "Қолданбаны таңдаңыз"
   },
-  "appInfoView": {},
-  "contributorsView": {},
+  "patchesSelectorView": {
+    "doneButton": "Дайын",
+    "noneChip": "Жоқ"
+  },
+  "patchOptionsView": {
+    "selectFolder": "Буманы таңдаңыз"
+  },
+  "patchItem": {},
+  "installerView": {
+    "installButton": "Орнату",
+    "installNonRootType": "Қалыпты"
+  },
+  "settingsView": {
+    "widgetTitle": "Баптау",
+    "appearanceSectionTitle": "Безендіру",
+    "advancedSectionTitle": "Қосымша",
+    "contributorsLabel": "Үлес қосушылар"
+  },
+  "appInfoView": {
+    "widgetTitle": "Қолданба ақпары",
+    "installButton": "Орнату",
+    "uninstallButton": "Алмау",
+    "rootDialogTitle": "Қате"
+  },
+  "contributorsView": {
+    "widgetTitle": "Үлес қосушылар"
+  },
   "installErrorDialog": {}
 }

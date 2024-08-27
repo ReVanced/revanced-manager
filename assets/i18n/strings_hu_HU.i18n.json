@@ -54,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Patchelő",
     "patchButton": "Patch",
+    "incompatibleArchWarningDialogText": "Ezen az architektúrán a patchelés még nem támogatott, és sikertelen lehet. Mégis folytatod?",
     "removedPatchesWarningDialogText": "A következő patcheket a legutóbbi használatuk óta eltávolították.\n\n${patches}\n\nMindenképpen folytatja?",
     "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani."
   },
@@ -282,7 +283,7 @@
     "status_failure_timeout_description": "A telepítés túl sokáig tartott.\n\nSzeretné újra megpróbálni?",
     "status_failure_storage_description": "A telepítés meghiúsult a nem elegendő tárhely miatt.\n\nSzabadítson fel helyet, és próbálja újra.",
     "status_failure_invalid_description": "A telepítés meghiúsult, mert a patchelt alkalmazás érvénytelen.\n\nTávolítsa el az alkalmazást, és próbálja újra?",
-    "status_failure_incompatible_description": "Az alkalmazás nem kompatibilis ezzel az eszközzel.\n\nLépjen kapcsolatba az alkalmazás fejlesztőjével, és kérjen támogatást.",
+    "status_failure_incompatible_description": "Az alkalmazás nem kompatibilis ezzel az eszközzel.\n\nHasználjon az eszköz által támogatott APK-t, és próbálja újra.",
     "status_failure_conflict_description": "A telepítést az alkalmazás meglévő példánya akadályozta meg.\n\nTávolítsa el a telepített alkalmazást, és próbálja újra?",
     "status_failure_blocked_description": "A telepítést blokkolta: ${packageName}\n\nMódosítsa a biztonsági beállításokat, és próbálja újra.",
     "install_failed_verification_failure_description": "A telepítés ellenőrzési probléma miatt nem sikerült.\n\nMódosítsa a biztonsági beállításokat, és próbálja újra.",

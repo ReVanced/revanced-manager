@@ -95,6 +95,7 @@
   "appInfoView": {
     "widgetTitle": "Informacioni i aplikacionit",
     "openButton": "Hape",
+    "installButton": "Instalo",
     "uninstallButton": "Ç'instaloje",
     "rootDialogTitle": "Gabim",
     "rootDialogText": "Aplikacioni u instalua me lejet e superpërdoruesit, por aktualisht Menaxheri i ReVanced nuk ka leje.",
