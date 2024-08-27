@@ -47,16 +47,19 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
+        # There has to be a better way to do this
       - name: Normalization of Translation Strings
         run: |
           dart pub get
           cd assets/i18n
           sudo chmod 766 *.json
-          dart nuke.dart >> $GITHUB_STEP_SUMMARY
           cd ../..
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
+          cd assets/i18n
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          cd ../..
           dart run slang
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
