@@ -54,6 +54,7 @@
   "patcherView": {
     "widgetTitle": "Yamalayıcı",
     "patchButton": "Yamala",
+    "incompatibleArchWarningDialogText": "Bu mimari cihazlarda yamalama henüz desteklenmiyor ve başarısız olabilir. Yine de devam edilsin mi?",
     "removedPatchesWarningDialogText": "Aşağıdaki yamalar son kullanımınızdan sonra kaldırıldı.\n\n${patches}\n\nYine de devam edilsin mi?",
     "requiredOptionDialogText": "Bazı yama seçeneklerinin ayarlanması gerekiyor."
   },
@@ -282,7 +283,7 @@
     "status_failure_timeout_description": "Kurulumun tamamlanması çok uzun sürdü.\n\nTekrar denemek ister misiniz?",
     "status_failure_storage_description": "Yetersiz depolama alanı nedeniyle kurulum başarısız oldu.\n\nCihazınızda biraz yer açın ve tekrar deneyin.",
     "status_failure_invalid_description": "Yamalanmış uygulamanın geçersiz olması nedeniyle kurulum başarısız oldu.\n\nUygulamayı kaldırıp tekrar denemek ister misiniz?",
-    "status_failure_incompatible_description": "Uygulama bu cihazla uyumlu değil.\n\nUygulamanın geliştiricisiyle iletişime geçin ve destek isteyin.",
+    "status_failure_incompatible_description": "Uygulama bu cihazla uyumlu değil.\n\nBu cihazla uyumlu olan bir APK kullanarak tekrar deneyin.",
     "status_failure_conflict_description": "Kurulum, uygulamanın mevcut kurulumu nedeniyle engellendi.\n\nKurulu uygulamayı kaldırıp tekrar denemek ister misiniz?",
     "status_failure_blocked_description": "Kurulum ${packageName} tarafından engellendi.\n\nGüvenlik ayarlarınızı değiştirin ve tekrar deneyin.",
     "install_failed_verification_failure_description": "Bir doğrulama sorunu nedeniyle kurulum başarısız oldu.\n\nGüvenlik ayarlarınızı değiştirin ve tekrar deneyin.",
