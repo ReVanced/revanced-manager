@@ -47,7 +47,7 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Normalisation of Translation Strings
+      - name: Normalization of Translation Strings
         run: |
           dart pub get
           dart run slang analyze
