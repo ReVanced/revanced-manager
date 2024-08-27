@@ -50,16 +50,13 @@ jobs:
       - name: Normalization of Translation Strings
         run: |
           dart pub get
+          cd assets/i18n
+          sudo chmod 766 *.json
+          dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          cd ../..
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
-
-      - name: Remove empty values of Translation & Validation of Translation Strings
-        run: |
-          cd assets/i18n
-          sudo chmod 777 *.json
-          dart nuke.dart >> $GITHUB_STEP_SUMMARY
-          cd ../..
           dart run slang
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
