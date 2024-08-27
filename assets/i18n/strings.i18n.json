@@ -283,7 +283,7 @@
     "status_failure_timeout_description": "The installation took too long to finish.\n\nWould you like to try again?",
     "status_failure_storage_description": "The installation failed due to insufficient storage.\n\nFree up some space and try again.",
     "status_failure_invalid_description": "The installation failed due to the patched app being invalid.\n\nUninstall the app and try again?",
-    "status_failure_incompatible_description": "The app is incompatible with this device.\n\nEnsure that the APK you are using is supported by this device and try again.",
+    "status_failure_incompatible_description": "The app is incompatible with this device.\n\nUse an APK that is supported by this device and try again.",
     "status_failure_conflict_description": "The installation was prevented by an existing installation of the app.\n\nUninstall the installed app and try again?",
     "status_failure_blocked_description": "The installation was blocked by ${packageName}.\n\nAdjust your security settings and try again.",
     "install_failed_verification_failure_description": "The installation failed due to a verification issue.\n\nAdjust your security settings and try again.",
