@@ -278,7 +278,7 @@ class PatcherViewModel(
                 ?: throw Exception("Failed to load application info")
 
             // If the app is currently installed
-            val existingPackageInfo = pm.getPackageInfo(packageName)
+            val existingPackageInfo = pm.getPackageInfo(currentPackageInfo.packageName)
             if (existingPackageInfo != null) {
                 // Check if the app version is less than the installed version
                 if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
