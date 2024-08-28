@@ -305,10 +305,8 @@ class PatcherViewModel(
                     try {
                         // Check for base APK, first check if the app is already installed
                         if (existingPackageInfo == null) {
-                            val inputPackageInfo = inputFile?.let { pm.getPackageInfo(it) }
-
-                            // If the app is not installed, check if the input file is a base apk
-                            if (inputPackageInfo == null || inputPackageInfo.splitNames != null) {
+                            // If the app is not installed, check if the output file is a base apk
+                            if (currentPackageInfo.splitNames != null) {
                                 // Exit if there is no base APK package
                                 installerStatusDialogModel.packageInstallerStatus =
                                     PackageInstaller.STATUS_FAILURE_INVALID
