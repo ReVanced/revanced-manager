@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.InstallerStatusDialog
 import app.revanced.manager.ui.component.patcher.InstallPickerDialog
 import app.revanced.manager.ui.component.patcher.Steps
 import app.revanced.manager.ui.model.State
@@ -91,6 +92,9 @@ fun PatcherScreen(
             onConfirm = vm::install
         )
 
+    if (vm.installerStatusDialogModel.packageInstallerStatus != null)
+        InstallerStatusDialog(vm.installerStatusDialogModel)
+
     AppScaffold(
         topBar = {
             AppTopBar(
@@ -103,7 +107,7 @@ fun PatcherScreen(
                 actions = {
                     IconButton(
                         onClick = { exportApkLauncher.launch("${vm.packageName}.apk") },
-                        enabled = canInstall
+                        enabled = patcherSucceeded == true
                     ) {
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
