@@ -32,6 +32,7 @@ app-icon-loader-coil = "1.5.0"
 skrapeit = "1.2.2"
 libsu = "5.2.2"
 scrollbars = "1.0.4"
+enumutil = "1.1.0"
 compose-icons = "1.2.4"
 kotlin-process = "1.4.1"
 hidden-api-stub = "4.3.3"
@@ -120,6 +121,10 @@ libsu-nio = { group = "com.github.topjohnwu.libsu", name = "nio", version.ref = 
 
 # Scrollbars
 scrollbars = { group = "com.github.GIGAMOLE", name = "ComposeScrollbars", version.ref = "scrollbars" }
+
+# EnumUtil
+enumutil = { group = "io.github.materiiapps", name = "enumutil", version.ref = "enumutil" }
+enumutil-ksp = { group = "io.github.materiiapps", name = "enumutil-ksp", version.ref = "enumutil" }
 
 # Reorderable lists
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }

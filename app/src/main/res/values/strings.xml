@@ -257,6 +257,7 @@
     <string name="install_app">Install</string>
     <string name="install_app_success">App installed</string>
     <string name="install_app_fail">Failed to install app: %s</string>
+    <string name="reinstall_app_fail">Failed to reinstall app: %s</string>
     <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
     <string name="open_app">Open</string>
     <string name="save_apk">Save APK</string>
@@ -360,6 +361,24 @@
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
     <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
     <string name="recommended">Recommended</string>
+
+    <string name="installation_failed_dialog_title">Installation failed</string>
+    <string name="installation_cancelled_dialog_title">Installation cancelled</string>
+    <string name="installation_blocked_dialog_title">Installation blocked</string>
+    <string name="installation_conflict_dialog_title">Installation conflict</string>
+    <string name="installation_incompatible_dialog_title">Installation incompatible</string>
+    <string name="installation_invalid_dialog_title">Installation invalid</string>
+    <string name="installation_storage_issue_dialog_title">Not enough storage</string>
+    <string name="installation_timeout_dialog_title">Installation timed out</string>
+    <string name="installation_failed_description">The installation failed due to an unknown reason. Try again?</string>
+    <string name="installation_aborted_description">The installation was cancelled manually. Try again?</string>
+    <string name="installation_blocked_description">The installation was blocked. Review your device security settings and try again.</string>
+    <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
+    <string name="installation_incompatible_description">The app is incompatible with this device. Use the correct APK for your device and try again.</string>
+    <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
+    <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
+    <string name="installation_timeout_description">The installation took too long. Try again?</string>
+    <string name="reinstall">Reinstall</string>
     <string name="show">Show</string>
     <string name="debugging">Debugging</string>
     <string name="about_device">About device</string>
