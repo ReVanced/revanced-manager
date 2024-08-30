@@ -2,12 +2,13 @@ package app.revanced.manager.domain.repository
 
 import android.app.Application
 import android.content.Context
+import android.os.Parcelable
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.AppDatabase.Companion.generateUid
 import app.revanced.manager.data.room.apps.downloaded.DownloadedApp
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
-import app.revanced.manager.plugin.downloader.App
 import app.revanced.manager.plugin.downloader.DownloadScope
+import app.revanced.manager.util.PM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.conflate
@@ -19,7 +20,7 @@ import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.io.path.outputStream
 
-class DownloadedAppRepository(app: Application, db: AppDatabase) {
+class DownloadedAppRepository(app: Application, db: AppDatabase, private val pm: PM) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
 
@@ -32,12 +33,15 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
 
     suspend fun download(
         plugin: LoadedDownloaderPlugin,
-        app: App,
+        data: Parcelable,
+        expectedPackageName: String,
+        expectedVersion: String?,
         onDownload: suspend (downloadProgress: Pair<Double, Double?>) -> Unit,
     ): File {
-        this.get(app.packageName, app.version)?.let { downloaded ->
-            return getApkFileForApp(downloaded)
-        }
+        if (expectedVersion != null) this.get(expectedPackageName, expectedVersion)
+            ?.let { downloaded ->
+                return getApkFileForApp(downloaded)
+            }
 
         // Converted integers cannot contain / or .. unlike the package name or version, so they are safer to use here.
         val relativePath = File(generateUid().toString())
@@ -80,19 +84,23 @@ class DownloadedAppRepository(app: Application, db: AppDatabase) {
                                 )
                             }
                     }
-                    plugin.download(scope, app, stream)
+                    plugin.download(scope, data, stream)
                 }
             }
                 .conflate()
                 .flowOn(Dispatchers.IO)
                 .collect { (downloaded, size) -> onDownload(downloaded.megaBytes to size.megaBytes) }
 
-            if (downloadedBytes.get() < 1) throw Exception("Downloader did not download any files")
+            if (downloadedBytes.get() < 1) error("Downloader did not download anything.")
+            val pkgInfo =
+                pm.getPackageInfo(targetFile.toFile()) ?: error("Downloaded APK file is invalid")
+            if (pkgInfo.packageName != expectedPackageName) error("Downloaded APK has the wrong package name. Expected: $expectedPackageName, Actual: ${pkgInfo.packageName}")
+            if (expectedVersion != null && pkgInfo.versionName != expectedVersion) error("Downloaded APK has the wrong version. Expected: $expectedVersion, Actual: ${pkgInfo.versionName}")
 
             dao.insert(
                 DownloadedApp(
-                    packageName = app.packageName,
-                    version = app.version,
+                    packageName = pkgInfo.packageName,
+                    version = pkgInfo.versionName,
                     directory = relativePath,
                 )
             )

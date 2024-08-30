@@ -1,9 +1,16 @@
 package app.revanced.manager.plugin.downloader
 
+import android.app.Service
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
+import android.os.Parcelable
 import java.io.InputStream
 import java.io.OutputStream
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @RequiresOptIn(
     level = RequiresOptIn.Level.ERROR,
@@ -12,43 +19,38 @@ import java.io.OutputStream
 annotation class PluginHostApi
 
 interface GetScope {
-    suspend fun requestUserInteraction(): ActivityLaunchPermit
-}
-
-fun interface ActivityLaunchPermit {
-    suspend fun launch(intent: Intent): Intent?
-}
-
-interface DownloadScope {
-    suspend fun reportSize(size: Long)
+    suspend fun requestStartActivity(intent: Intent): Intent?
 }
 
 typealias Size = Long
 typealias DownloadResult = Pair<InputStream, Size?>
 
-class DownloaderScope<A : App> internal constructor(
+typealias Version = String
+typealias GetResult<T> = Pair<T, Version?>
+
+class DownloaderScope<T : Parcelable> internal constructor(
     /**
      * The package name of ReVanced Manager.
      */
     val hostPackageName: String,
     internal val context: Context
 ) {
-    internal var download: (suspend DownloadScope.(A, OutputStream) -> Unit)? = null
-    internal var get: (suspend GetScope.(String, String?) -> A?)? = null
+    internal var download: (suspend DownloadScope.(T, OutputStream) -> Unit)? = null
+    internal var get: (suspend GetScope.(String, String?) -> GetResult<T>?)? = null
 
     /**
      * The package name of the plugin.
      */
     val pluginPackageName: String get() = context.packageName
 
-    fun get(block: suspend GetScope.(packageName: String, version: String?) -> A?) {
+    fun get(block: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?) {
         get = block
     }
 
     /**
      * Define the download function for this plugin.
      */
-    fun download(block: suspend (app: A) -> DownloadResult) {
+    fun download(block: suspend (data: T) -> DownloadResult) {
         download = { app, outputStream ->
             val (inputStream, size) = block(app)
 
@@ -58,12 +60,34 @@ class DownloaderScope<A : App> internal constructor(
             }
         }
     }
+
+    suspend fun <R : Any?> withBoundService(intent: Intent, block: suspend (IBinder) -> R): R {
+        var onBind: ((IBinder) -> Unit)? = null
+        val serviceConn = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) =
+                onBind!!(service!!)
+
+            override fun onServiceDisconnected(name: ComponentName?) {}
+        }
+
+        return try {
+            // TODO: add a timeout
+            block(suspendCoroutine { continuation ->
+                onBind = continuation::resume
+                context.bindService(intent, serviceConn, Context.BIND_AUTO_CREATE)
+            })
+        } finally {
+            onBind = null
+            // TODO: should we stop it?
+            context.unbindService(serviceConn)
+        }
+    }
 }
 
-class DownloaderBuilder<A : App> internal constructor(private val block: DownloaderScope<A>.() -> Unit) {
+class DownloaderBuilder<T : Parcelable> internal constructor(private val block: DownloaderScope<T>.() -> Unit) {
     @PluginHostApi
     fun build(hostPackageName: String, context: Context) =
-        with(DownloaderScope<A>(hostPackageName, context)) {
+        with(DownloaderScope<T>(hostPackageName, context)) {
             block()
 
             Downloader(
@@ -73,19 +97,20 @@ class DownloaderBuilder<A : App> internal constructor(private val block: Downloa
         }
 }
 
-class Downloader<A : App> internal constructor(
-    @property:PluginHostApi val get: suspend GetScope.(packageName: String, version: String?) -> A?,
-    @property:PluginHostApi val download: suspend DownloadScope.(app: A, outputStream: OutputStream) -> Unit
+class Downloader<T : Parcelable> internal constructor(
+    @property:PluginHostApi val get: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?,
+    @property:PluginHostApi val download: suspend DownloadScope.(data: T, outputStream: OutputStream) -> Unit
 )
 
-fun <A : App> downloader(block: DownloaderScope<A>.() -> Unit) = DownloaderBuilder(block)
+fun <T : Parcelable> downloader(block: DownloaderScope<T>.() -> Unit) = DownloaderBuilder(block)
 
 sealed class UserInteractionException(message: String) : Exception(message) {
-    class RequestDenied : UserInteractionException("Request was denied")
+    class RequestDenied @PluginHostApi constructor() :
+        UserInteractionException("Request was denied")
 
     sealed class Activity(message: String) : UserInteractionException(message) {
-        class Cancelled : Activity("Interaction was cancelled")
-        class NotCompleted(val resultCode: Int, val intent: Intent?) :
+        class Cancelled @PluginHostApi constructor() : Activity("Interaction was cancelled")
+        class NotCompleted @PluginHostApi constructor(val resultCode: Int, val intent: Intent?) :
             Activity("Unexpected activity result code: $resultCode")
     }
 }

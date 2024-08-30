@@ -2,15 +2,14 @@ package app.revanced.manager.domain.repository
 
 import android.app.Application
 import android.content.pm.PackageManager
+import android.os.Parcelable
 import android.util.Log
 import app.revanced.manager.data.room.AppDatabase
 import app.revanced.manager.data.room.plugins.TrustedDownloaderPlugin
 import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.network.downloader.DownloaderPluginState
 import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
-import app.revanced.manager.network.downloader.ParceledDownloaderApp
-import app.revanced.manager.plugin.downloader.App
-import app.revanced.manager.plugin.downloader.Downloader
+import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.plugin.downloader.DownloaderBuilder
 import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.util.PM
@@ -67,12 +66,12 @@ class DownloaderPluginRepository(
         }
     }
 
-    fun unwrapParceledApp(app: ParceledDownloaderApp): Pair<LoadedDownloaderPlugin, App> {
+    fun unwrapParceledData(data: ParceledDownloaderData): Pair<LoadedDownloaderPlugin, Parcelable> {
         val plugin =
-            (_pluginStates.value[app.pluginPackageName] as? DownloaderPluginState.Loaded)?.plugin
-                ?: throw Exception("Downloader plugin with name ${app.pluginPackageName} is not available")
+            (_pluginStates.value[data.pluginPackageName] as? DownloaderPluginState.Loaded)?.plugin
+                ?: throw Exception("Downloader plugin with name ${data.pluginPackageName} is not available")
 
-        return plugin to app.unwrapWith(plugin)
+        return plugin to data.unwrapWith(plugin)
     }
 
     private suspend fun loadPlugin(packageName: String): DownloaderPluginState {
@@ -159,7 +158,7 @@ class DownloaderPluginRepository(
         fun Class<*>.getDownloaderBuilder() =
             declaredMethods
                 .firstOrNull { it.modifiers.isPublicStatic && it.returnType.isDownloaderBuilder && it.parameterTypes.isEmpty() }
-                ?.let { it(null) as DownloaderBuilder<App> }
+                ?.let { it(null) as DownloaderBuilder<Parcelable> }
                 ?: throw Exception("Could not find a valid downloader implementation in class $canonicalName")
     }
 }

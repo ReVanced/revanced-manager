@@ -1,5 +1,6 @@
 package app.revanced.manager.patcher.worker
 
+import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,9 +10,11 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.graphics.drawable.Icon
 import android.os.Build
+import android.os.Parcelable
 import android.os.PowerManager
 import android.util.Log
 import android.view.WindowManager
+import androidx.activity.result.ActivityResult
 import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
@@ -30,10 +33,9 @@ import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.runtime.CoroutineRuntime
 import app.revanced.manager.patcher.runtime.ProcessRuntime
-import app.revanced.manager.plugin.downloader.ActivityLaunchPermit
 import app.revanced.manager.plugin.downloader.GetScope
+import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
-import app.revanced.manager.plugin.downloader.App as DownloaderApp
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
 import app.revanced.manager.util.Options
@@ -49,6 +51,7 @@ import java.io.File
 
 typealias ProgressEventHandler = (name: String?, state: State?, message: String?) -> Unit
 
+@OptIn(PluginHostApi::class)
 class PatcherWorker(
     context: Context,
     parameters: WorkerParameters
@@ -71,7 +74,7 @@ class PatcherWorker(
         val logger: Logger,
         val downloadProgress: MutableStateFlow<Pair<Double, Double?>?>,
         val patchesProgress: MutableStateFlow<Pair<Int, Int>>,
-        val handleUserInteractionRequest: suspend () -> ActivityLaunchPermit?,
+        val handleStartActivityRequest: suspend (Intent) -> ActivityResult,
         val setInputFile: (File) -> Unit,
         val onProgress: ProgressEventHandler
     ) {
@@ -150,10 +153,12 @@ class PatcherWorker(
                 }
             }
 
-            suspend fun download(plugin: LoadedDownloaderPlugin, app: DownloaderApp) =
+            suspend fun download(plugin: LoadedDownloaderPlugin, data: Parcelable) =
                 downloadedAppRepository.download(
                     plugin,
-                    app,
+                    data,
+                    args.packageName,
+                    args.input.version,
                     onDownload = args.downloadProgress::emit
                 ).also {
                     args.setInputFile(it)
@@ -162,16 +167,24 @@ class PatcherWorker(
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
-                    val (plugin, app) = downloaderPluginRepository.unwrapParceledApp(selectedApp.app)
+                    val (plugin, data) = downloaderPluginRepository.unwrapParceledData(selectedApp.app)
 
-                    download(plugin, app)
+                    download(plugin, data)
                 }
 
                 is SelectedApp.Search -> {
                     val getScope = object : GetScope {
-                        override suspend fun requestUserInteraction() =
-                            args.handleUserInteractionRequest()
-                                ?: throw UserInteractionException.RequestDenied()
+                        override suspend fun requestStartActivity(intent: Intent): Intent? {
+                            val result = args.handleStartActivityRequest(intent)
+                            return when (result.resultCode) {
+                                Activity.RESULT_OK -> result.data
+                                Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
+                                else -> throw UserInteractionException.Activity.NotCompleted(
+                                    result.resultCode,
+                                    result.data
+                                )
+                            }
+                        }
                     }
 
                     downloaderPluginRepository.loadedPluginsFlow.first()
@@ -182,12 +195,12 @@ class PatcherWorker(
                                     selectedApp.packageName,
                                     selectedApp.version
                                 )
-                                    ?.takeIf { selectedApp.version == null || it.version == selectedApp.version }
+                                    ?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
                             } catch (e: UserInteractionException.Activity.NotCompleted) {
                                 throw e
                             } catch (_: UserInteractionException) {
                                 null
-                            }?.let { app -> download(plugin, app) }
+                            }?.let { (data, _) -> download(plugin, data) }
                         } ?: throw Exception("App is not available.")
                 }
 

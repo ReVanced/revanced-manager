@@ -17,7 +17,7 @@
 
         <meta-data
             android:name="app.revanced.manager.plugin.downloader.class"
-            android:value="app.revanced.manager.plugin.downloader.example.ExamplePluginsKt" />
+            android:value="app.revanced.manager.plugin.downloader.example.ExamplePluginKt" />
     </application>
 
 </manifest>

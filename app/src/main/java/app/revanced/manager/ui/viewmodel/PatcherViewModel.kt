@@ -1,6 +1,5 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -32,7 +31,7 @@ import app.revanced.manager.domain.worker.WorkerRepository
 import app.revanced.manager.patcher.logger.LogLevel
 import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.plugin.downloader.ActivityLaunchPermit
+import app.revanced.manager.plugin.downloader.PluginHostApi
 import app.revanced.manager.plugin.downloader.UserInteractionException
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.ui.destination.Destination
@@ -64,6 +63,7 @@ import java.time.Duration
 import java.util.UUID
 
 @Stable
+@OptIn(PluginHostApi::class)
 class PatcherViewModel(
     private val input: Destination.Patcher
 ) : ViewModel(), KoinComponent {
@@ -81,9 +81,8 @@ class PatcherViewModel(
     var isInstalling by mutableStateOf(false)
         private set
 
-    private var currentInteractionRequest: CompletableDeferred<ActivityLaunchPermit?>? by mutableStateOf(
-        null
-    )
+    // TODO: rename these
+    private var currentInteractionRequest: CompletableDeferred<Boolean>? by mutableStateOf(null)
     val activeInteractionRequest by derivedStateOf { currentInteractionRequest != null }
     private var launchedActivity: CompletableDeferred<ActivityResult>? = null
     private val launchActivityChannel = Channel<Intent>()
@@ -130,13 +129,29 @@ class PatcherViewModel(
                 downloadProgress,
                 patchesProgress,
                 setInputFile = { inputFile = it },
-                handleUserInteractionRequest = {
+                handleStartActivityRequest = { intent ->
                     withContext(Dispatchers.Main) {
-                        if (activeInteractionRequest) throw Exception("Another request is already pending.")
+                        if (currentInteractionRequest != null) throw Exception("Another request is already pending.")
                         try {
-                            val job = CompletableDeferred<ActivityLaunchPermit?>()
-                            currentInteractionRequest = job
-                            job.await()
+                            // Wait for the dialog interaction.
+                            val accepted = with(CompletableDeferred<Boolean>()) {
+                                currentInteractionRequest = this
+
+                                println(activeInteractionRequest)
+                                await()
+                            }
+                            if (!accepted) throw UserInteractionException.RequestDenied()
+
+                            // Launch the activity and wait for the result.
+                            try {
+                                with(CompletableDeferred<ActivityResult>()) {
+                                    launchedActivity = this
+                                    launchActivityChannel.send(intent)
+                                    await()
+                                }
+                            } finally {
+                                launchedActivity = null
+                            }
                         } finally {
                             currentInteractionRequest = null
                         }
@@ -232,10 +247,12 @@ class PatcherViewModel(
     }
 
     fun rejectInteraction() {
-        currentInteractionRequest?.complete(null)
+        currentInteractionRequest?.complete(false)
     }
 
     fun allowInteraction() {
+        currentInteractionRequest?.complete(true)
+        /*
         currentInteractionRequest?.complete(ActivityLaunchPermit { intent ->
             withContext(Dispatchers.Main) {
                 if (launchedActivity != null) throw Exception("An activity has already been launched.")
@@ -257,7 +274,7 @@ class PatcherViewModel(
                     launchedActivity = null
                 }
             }
-        })
+        })*/
     }
 
     fun handleActivityResult(result: ActivityResult) {
