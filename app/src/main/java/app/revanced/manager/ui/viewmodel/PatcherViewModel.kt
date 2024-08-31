@@ -243,6 +243,10 @@ class PatcherViewModel(
         tempDir.deleteRecursively()
     }
 
+    fun isDeviceRooted() = System.getenv("PATH")?.split(":")?.any { path ->
+        File(path, "su").canExecute()
+    } ?: false
+
     fun export(uri: Uri?) = viewModelScope.launch {
         uri?.let {
             withContext(Dispatchers.IO) {

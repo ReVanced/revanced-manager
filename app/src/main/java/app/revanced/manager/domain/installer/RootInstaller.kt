@@ -43,7 +43,7 @@ class RootInstaller(
             }
         }
 
-        return withTimeoutOrNull(Duration.ofSeconds(120L)) {
+        return withTimeoutOrNull(Duration.ofSeconds(20L)) {
             remoteFS.await()
         } ?: throw RootServiceException()
     }
