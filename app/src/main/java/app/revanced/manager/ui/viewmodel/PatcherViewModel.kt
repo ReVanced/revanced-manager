@@ -77,7 +77,7 @@ class PatcherViewModel(
 
         override fun install() {
             // Since this is a package installer status dialog,
-            // InstallType.ROOT is never used here.
+            // InstallType.MOUNT is never used here.
             install(InstallType.DEFAULT)
         }
     }
@@ -230,7 +230,7 @@ class PatcherViewModel(
         app.unregisterReceiver(installerBroadcastReceiver)
         workManager.cancelWorkById(patcherWorkerId)
 
-        if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.ROOT) {
+        if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.MOUNT) {
             GlobalScope.launch(Dispatchers.Main) {
                 uiSafe(app, R.string.failed_to_mount, "Failed to mount") {
                     withTimeout(Duration.ofMinutes(1L)) {
@@ -305,7 +305,7 @@ class PatcherViewModel(
                     pmInstallStarted = true
                 }
 
-                InstallType.ROOT -> {
+                InstallType.MOUNT -> {
                     try {
                         // Check for base APK, first check if the app is already installed
                         if (existingPackageInfo == null) {
@@ -336,7 +336,7 @@ class PatcherViewModel(
                             packageName,
                             packageName,
                             input.selectedApp.version,
-                            InstallType.ROOT,
+                            InstallType.MOUNT,
                             input.selectedPatches
                         )
 

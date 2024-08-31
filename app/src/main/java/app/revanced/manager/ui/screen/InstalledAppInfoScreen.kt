@@ -81,7 +81,7 @@ fun InstalledAppInfoScreen(
             AppInfo(viewModel.appInfo)  {
                 Text(viewModel.installedApp.version, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
 
-                if (viewModel.installedApp.installType == InstallType.ROOT) {
+                if (viewModel.installedApp.installType == InstallType.MOUNT) {
                     Text(
                         text = if (viewModel.isMounted) {
                             stringResource(R.string.mounted)
@@ -112,7 +112,7 @@ fun InstalledAppInfoScreen(
                         onClick = viewModel::uninstall
                     )
 
-                    InstallType.ROOT -> {
+                    InstallType.MOUNT -> {
                         SegmentedButton(
                             icon = Icons.Outlined.SettingsBackupRestore,
                             text = stringResource(R.string.unpatch),
@@ -138,7 +138,7 @@ fun InstalledAppInfoScreen(
                             onPatchClick(viewModel.installedApp.originalPackageName, it)
                         }
                     },
-                    enabled = viewModel.installedApp.installType != InstallType.ROOT || viewModel.rootInstaller.hasRootAccess()
+                    enabled = viewModel.installedApp.installType != InstallType.MOUNT || viewModel.rootInstaller.hasRootAccess()
                 )
             }
 

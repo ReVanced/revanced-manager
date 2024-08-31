@@ -78,7 +78,7 @@ class InstalledAppInfoViewModel(
         when (installedApp.installType) {
             InstallType.DEFAULT -> pm.uninstallPackage(installedApp.currentPackageName)
 
-            InstallType.ROOT -> viewModelScope.launch {
+            InstallType.MOUNT -> viewModelScope.launch {
                 rootInstaller.uninstall(installedApp.currentPackageName)
                 installedAppRepository.delete(installedApp)
                 onBackClick()

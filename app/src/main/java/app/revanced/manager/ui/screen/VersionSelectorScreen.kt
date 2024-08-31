@@ -113,8 +113,8 @@ fun VersionSelectorScreen(
                             onClick = { viewModel.select(it) },
                             patchCount = supportedVersions[it.version],
                             enabled =
-                            !(installedApp?.installType == InstallType.ROOT && !viewModel.rootInstaller.hasRootAccess()),
-                            alreadyPatched = installedApp != null && installedApp.installType != InstallType.ROOT
+                            !(installedApp?.installType == InstallType.MOUNT && !viewModel.rootInstaller.hasRootAccess()),
+                            alreadyPatched = installedApp != null && installedApp.installType != InstallType.MOUNT
                         )
                     }
                 }
