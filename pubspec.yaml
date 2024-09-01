@@ -70,7 +70,7 @@ dependencies:
   stacked: ^3.4.2
   stacked_generator: ^1.6.0
   stacked_services: ^1.5.0
-  synchronized: ^3.1.0+1
+  synchronized: ^3.2.0
   timeago: ^3.6.1
   timezone: ^0.9.3
   url_launcher: ^6.2.6
