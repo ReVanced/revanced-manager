@@ -34,7 +34,7 @@ class PatcherAPI {
   Future<void> initialize() async {
     await loadPatches();
     await _managerAPI.downloadIntegrations();
-    final Directory appCache = await getTemporaryDirectory();
+    final Directory appCache = await getApplicationSupportDirectory(); // context.getFilesDir()
     _dataDir = await getExternalStorageDirectory() ?? appCache;
     _tmpDir = Directory('${appCache.path}/patcher');
     _keyStoreFile = File('${_dataDir.path}/revanced-manager.keystore');
@@ -151,6 +151,7 @@ class PatcherAPI {
     String packageName,
     String apkFilePath,
     List<Patch> selectedPatches,
+    bool isFromStorage,
   ) async {
     final File? integrationsFile = await _managerAPI.downloadIntegrations();
     final Map<String, Map<String, dynamic>> options = {};
@@ -175,6 +176,13 @@ class PatcherAPI {
 
       final File inApkFile = File('${workDir.path}/in.apk');
       await File(apkFilePath).copy(inApkFile.path);
+
+      if (isFromStorage) {
+        // The selected apk was copied to cacheDir by the file picker, so it's not needed anymore.
+        // rename() can't be used here, as Android system also counts the size of files moved out from cacheDir
+        // as part of the app's cache size.
+        File(apkFilePath).delete();
+      }
 
       outFile = File('${workDir.path}/out.apk');
 

@@ -365,6 +365,9 @@ class MainActivity : FlutterActivity() {
                         "An error occurred:\n$stack"
                     )
                 }
+            } finally {
+                inFile.delete()
+                tmpDir.deleteRecursively()
             }
 
             handler.post { result.success(null) }
