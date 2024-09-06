@@ -8,7 +8,7 @@ version: 1.22.0-dev.1+101800034
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
-  flutter: '>= 3.24.0'
+  flutter: '>=3.24.0 <4.0.0'
 
 dependencies:
   animations: ^2.0.11
