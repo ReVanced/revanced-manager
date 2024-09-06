@@ -44,10 +44,17 @@ android {
         versionName flutterVersionName
     }
     buildTypes {
-        release {
+        configureEach {
+            shrinkResources = false
+            minifyEnabled = false
+            signingConfig signingConfigs.debug
             ndk {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
             }
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
             if (System.getenv("signingKey") != null) {
                 signingConfigs {
                     create("release") {
@@ -66,29 +73,17 @@ android {
                 }
             } else {
                 signingConfig = signingConfigs.debug
-                resValue "string", "app_name", "ReVanced Manager Debug"
+                resValue "string", "app_name", "ReVanced Manager (Debug)"
                 applicationIdSuffix ".debug"
             }
         }
         debug {
-            shrinkResources false
-            minifyEnabled false
-            resValue "string", "app_name", "ReVanced Manager Debug"
+            resValue "string", "app_name", "ReVanced Manager (Debug)"
             applicationIdSuffix ".debug"
-            signingConfig signingConfigs.debug
-            ndk {
-                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
-            }
         }
         profile {
-            shrinkResources false
-            minifyEnabled false
-            resValue "string", "app_name", "ReVanced Manager Profile"
+            resValue "string", "app_name", "ReVanced Manager (Profile)"
             applicationIdSuffix ".profile"
-            signingConfig signingConfigs.debug
-            ndk {
-                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
-            }
         }
     }
     packagingOptions {
