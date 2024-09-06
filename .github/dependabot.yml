@@ -24,7 +24,7 @@ updates:
 
   - package-ecosystem: gradle
     labels: []
-    directory: /
+    directory: /android
     target-branch: dev
     schedule:
       interval: monthly
