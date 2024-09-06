@@ -13,9 +13,9 @@ class NavigationView extends StatelessWidget {
     return ViewModelBuilder<NavigationViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => locator<NavigationViewModel>(),
-      builder: (context, model, child) => PopScope(
+      builder: (context, model, child) => PopScope<Object?>(
         canPop: model.currentIndex == 0,
-        onPopInvoked: (bool didPop) {
+        onPopInvokedWithResult: (bool didPop, Object? result) {
           if (!didPop) {
             model.setIndex(0);
           }
