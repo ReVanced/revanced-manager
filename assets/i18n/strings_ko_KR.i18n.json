@@ -186,7 +186,7 @@
     "universalPatchesLabel": "공용 패치 보기",
     "universalPatchesHint": "기기에 설치된 모든 앱과 공용 패치를 표시합니다 (앱 목록이 느려질 수 있음)",
     "lastPatchedAppLabel": "패치된 앱 저장",
-    "lastPatchedAppHint": "나중에 설치하거나 내보내고 싶은 \\'마지막으로 패치된 앱\\'을 저장할 수 있습니다",
+    "lastPatchedAppHint": "나중에 설치하거나 내보낼 마지막으로 패치된 앱을 저장할 수 있습니다",
     "versionCompatibilityCheckLabel": "버전 호환성 체크",
     "versionCompatibilityCheckHint": "선택한 앱 버전과 호환되지 않는 패치를 선택할 수 없습니다",
     "requireSuggestedAppVersionLabel": "권장 앱 버전 요구",
