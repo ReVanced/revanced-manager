@@ -1,7 +1,7 @@
 {
   "okButton": "Oke",
   "cancelButton": "Batal",
-  "dismissButton": "Abaikan",
+  "dismissButton": "Hilangkan",
   "quitButton": "Keluar",
   "updateButton": "Perbarui",
   "suggested": "Disarankan: ${version}",
@@ -12,7 +12,7 @@
   "noShowAgain": "Jangan tampilkan lagi",
   "add": "Tambah",
   "remove": "Hapus",
-  "showChangelogButton": "Tampilkan log perubahan",
+  "showChangelogButton": "Tampilkan daftar perubahan",
   "showUpdateButton": "Tampilkan pembaruan",
   "navigationView": {
     "dashboardTab": "Dasbor",
