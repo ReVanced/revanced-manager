@@ -25,7 +25,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          flutter-version: 3.22.x
+          flutter-version: 3.24.x
 
       - name: Sync translations from Crowdin
         uses: crowdin/github-action@v1
@@ -47,20 +47,20 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Generate Translation Strings
+        # There has to be a better way to do this
+      - name: Normalization of Translation Strings
         run: |
           dart pub get
-          dart run slang
-          flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
-
-      - name: Remove empty values & Validation of Translation Strings
-        run: |
+          cd assets/i18n
+          sudo chmod 766 *.json
+          cd ../..
           dart run slang analyze
           dart run slang clean
           dart run slang normalize
           cd assets/i18n
-          sudo chmod 777 *.json
           dart nuke.dart >> $GITHUB_STEP_SUMMARY
+          cd ../..
+          dart run slang
           flutter analyze lib/gen/strings.g.dart --no-fatal-infos --no-fatal-warnings
 
       - name: Commit translations

@@ -12,17 +12,22 @@
   "noShowAgain": "Daugiau to nerodyti",
   "add": "Pridėti",
   "remove": "Pašalinti",
+  "showChangelogButton": "Rodyti pakeitimų sąrašą",
+  "showUpdateButton": "Rodyti naujinimą",
   "navigationView": {
-    "dashboardTab": "Valdymo skydas",
-    "patcherTab": "Pataisytuvas",
+    "dashboardTab": "Sąvadas",
+    "patcherTab": "„Patcher“",
     "settingsTab": "Nustatymai"
   },
   "homeView": {
     "refreshSuccess": "Sėkmingai atnaujinta",
-    "widgetTitle": "Valdymo skydas",
-    "updatesSubtitle": "Atnaujinimai",
+    "widgetTitle": "Sąvadas",
+    "updatesSubtitle": "Naujinimai",
+    "lastPatchedAppSubtitle": "Paskutinė pataisyta programa",
+    "patchedSubtitle": "Įdiegtos programas",
     "noInstallations": "Nėra įdiegtų pataisytų programų",
     "installUpdate": "Tęsti atnaujinimą?",
+    "updateDialogTitle": "Galimas naujas atnaujinimas",
     "updatePatchesSheetTitle": "Atnaujinti ReVanced pataisymus",
     "updateChangelogTitle": "Pakeitimų sąrašas",
     "downloadConsentDialogText2": "Tai prijungs jus prie ${url}.",
@@ -41,11 +46,12 @@
     "timeagoLabel": "Prieš ${time}"
   },
   "patcherView": {
-    "widgetTitle": "Pataisytuvas",
+    "widgetTitle": "„Patcher“",
     "patchButton": "Pataisymas",
     "requiredOptionDialogText": "Reikia nustatyti kai kurias pataisymų parinktis."
   },
   "appSelectorCard": {
+    "widgetTitle": "Pasirinkti programą",
     "noAppsLabel": "Nerasta jokių programų"
   },
   "patchSelectorCard": {
@@ -59,6 +65,7 @@
     "widgetSubtitle": "Mes esame internete!"
   },
   "appSelectorView": {
+    "viewTitle": "Pasirinkti programą",
     "storageButton": "Saugykla",
     "selectFromStorageButton": "Pasirinkti iš talpyklos",
     "errorMessage": "Neina naudoti parinktos programos",
@@ -210,5 +217,7 @@
   "contributorsView": {
     "widgetTitle": "Prisidėjusieji žmonės"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {
+    "install_failed_verification_failure": "Patikrinimas nepavyko"
+  }
 }

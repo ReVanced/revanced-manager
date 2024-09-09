@@ -85,7 +85,7 @@ class HomeViewModel extends BaseViewModel {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
     final bool isConnected =
-        await Connectivity().checkConnectivity() != ConnectivityResult.none;
+        await Connectivity().checkConnectivity() != [ConnectivityResult.none];
     if (!isConnected) {
       _toast.showBottom(t.homeView.noConnection);
     }
@@ -106,7 +106,8 @@ class HomeViewModel extends BaseViewModel {
   void navigateToAppInfo(PatchedApplication app, bool isLastPatchedApp) {
     _navigationService.navigateTo(
       Routes.appInfoView,
-      arguments: AppInfoViewArguments(app: app, isLastPatchedApp: isLastPatchedApp),
+      arguments:
+          AppInfoViewArguments(app: app, isLastPatchedApp: isLastPatchedApp),
     );
   }
 

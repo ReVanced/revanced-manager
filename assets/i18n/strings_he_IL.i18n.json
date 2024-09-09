@@ -16,7 +16,7 @@
   "showUpdateButton": "הצג עדכון",
   "navigationView": {
     "dashboardTab": "לוח בקרה",
-    "patcherTab": "מתקן",
+    "patcherTab": "Patcher",
     "settingsTab": "הגדרות"
   },
   "homeView": {
@@ -49,7 +49,7 @@
     "timeagoLabel": "לפני ${time}"
   },
   "patcherView": {
-    "widgetTitle": "מתקן",
+    "widgetTitle": "Patcher",
     "patchButton": "תיקון",
     "removedPatchesWarningDialogText": "התיקונים הבאים הוסרו מאז הפעם האחרונה שהשתמשת בהם.\n${patches}\nלהמשיך בכל זאת?",
     "requiredOptionDialogText": "כמה אפשרויות תיקון חייבות להיקבע."
@@ -99,6 +99,7 @@
   },
   "patchOptionsView": {
     "customValue": "ערך מותאם אישית",
+    "setToNull": "השמה לnull",
     "viewTitle": "אפשרויות תיקון",
     "saveOptions": "שמור",
     "tooltip": "אפשרויות קלט נוספות",
@@ -111,6 +112,7 @@
     "unsupportedDialogText": "בחירת תיקון זה עלול לגרום לשגיאות תיקון.\nגרסת יישום: ${packageVersion}\nגרסאות נתמכות:\n${supportedVersions}",
     "unsupportedPatchVersion": "תיקון זה אינו נתמך עבור גרסה זו של האפליקציה.",
     "unsupportedRequiredOption": "התיקון כולל אפשרות דרושה שאינה נתמכת על ידי אפליקציה זו",
+    "patchesChangeWarningDialogText": "מומלץ להשתמש בברירת המחדל של הטלאי והאפשרויות. שינוי עלול לגרום לבעיות בלתי צפויות.\n\nתצטרך להפעיל את \"אפשר שינוי בחירת טלאי\" בהגדרות לפני שתשנה כל בחירת טלאי.",
     "patchesChangeWarningDialogButton": "השתמש בבחירה ברירת המחדל"
   },
   "installerView": {
@@ -136,6 +138,7 @@
     "debugSectionTitle": "איתור באגים",
     "advancedSectionTitle": "הגדרות מתקדמות",
     "exportSectionTitle": "יבוא ויצוא",
+    "dataSectionTitle": "מקורות מידע",
     "themeModeLabel": "ערכת הנושא של האפליקציה",
     "systemThemeLabel": "מערכת",
     "lightThemeLabel": "בהיר",
@@ -195,6 +198,7 @@
     "noKeystoreExportFileFound": "אין מפתח-אחסון כדי ליציא",
     "importKeystoreLabel": "יבוא מפתח-אחסון",
     "importedKeystore": "מפתח-אחסון מיובא",
+    "selectKeystorePassword": "סיסמת מפתח-אחסון",
     "jsonSelectorErrorMessage": "לא ניתן להשתמש בקובץ JSON שנבחר"
   },
   "appInfoView": {
@@ -202,15 +206,19 @@
     "openButton": "פתח",
     "installButton": "התקן",
     "uninstallButton": "הסר התקנה",
+    "exportButton": "ייצוא",
+    "deleteButton": "למחוק",
     "rootDialogTitle": "שגיאה",
     "uninstallDialogText": "האם אתה בטוח שברצונך להסיר את האפליקציה הזו?",
     "rootDialogText": "האפליקציה הותקנה עם הרשאות משתמש-על, אך כרגע למנהל המחודש אין הרשאות.\nאנא הענק תחילה הרשאות משתמש-על.",
+    "removeAppDialogText": "האם אתה בטוח שאתה רוצה למחוק קובץ גיבוי זה?",
     "packageNameLabel": "שם חבילה",
     "installTypeLabel": "סוג התקנה",
     "mountTypeLabel": "טען",
     "regularTypeLabel": "רגיל",
     "patchedDateLabel": "תאריך תיקון",
     "appliedPatchesLabel": "תיקונים הוחלו",
+    "sizeLabel": "גודל הקובץ",
     "patchedDateHint": "${date} ב־${time}",
     "appliedPatchesHint": "${quantity} שינויים הוחלו",
     "updateNotImplemented": "תכונה זו טרם יושמה"
@@ -236,7 +244,6 @@
     "status_failure_timeout_description": "ההתקנה לקחה יותר מדי זמן לסיום.\n\nהאם ברצונך לנסות שוב?",
     "status_failure_storage_description": "ההתקנה נכשלה עקב אחסון לא מספיק.\n\nפנה קצת מקום ונסה שוב.",
     "status_failure_invalid_description": "ההתקנה נכשלה בגלל שהאפליקציה המתוקנת לא חוקית.\n\nלהסיר את האפליקציה ולנסות שוב?",
-    "status_failure_incompatible_description": "האפליקציה אינה תואמת למכשיר זה.\n\nצור קשר עם מפתח האפליקציה ובקש תמיכה.",
     "status_failure_conflict_description": "ההתקנה נמנעה על ידי התקנה קיימת של האפליקציה.\n\nלהסיר את ההתקנה של האפליקציה המותקנת ולנסות שוב?",
     "status_failure_blocked_description": "ההתקנה נחסמה על ידי ${packageName}.\n\nשנה את הגדרות האבטחה שלך ונסה שוב.",
     "install_failed_verification_failure_description": "ההתקנה נכשלה עקב בעיית אימות.\n\nשנה את הגדרות האבטחה שלך ונסה שוב.",

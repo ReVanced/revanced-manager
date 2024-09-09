@@ -16,9 +16,9 @@ class InstallerView extends StatelessWidget {
     return ViewModelBuilder<InstallerViewModel>.reactive(
       onViewModelReady: (model) => model.initialize(context),
       viewModelBuilder: () => InstallerViewModel(),
-      builder: (context, model, child) => PopScope(
+      builder: (context, model, child) => PopScope<Object?>(
         canPop: !model.isPatching,
-        onPopInvoked: (bool didPop) {
+        onPopInvokedWithResult: (bool didPop, Object? result) {
           if (didPop) {
             model.onPop();
           } else {

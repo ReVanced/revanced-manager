@@ -1,11 +1,18 @@
 {
   "okButton": "U redu",
   "cancelButton": "Poništi",
+  "dismissButton": "Odbaci",
+  "quitButton": "Izađi",
   "updateButton": "Ažuriraj",
   "suggested": "Preporučena verzija: ${version}",
   "yesButton": "Da",
   "noButton": "Ne",
   "warning": "Upozorenje",
+  "notice": "Napomena",
+  "noShowAgain": "Ne prikazuj ponovno",
+  "add": "Dodaj",
+  "remove": "Ukloni",
+  "showChangelogButton": "Prikaži napomene o izdanju",
   "navigationView": {
     "dashboardTab": "Nadzorna ploča",
     "patcherTab": "Zakrpe",

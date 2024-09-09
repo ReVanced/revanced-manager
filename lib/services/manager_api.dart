@@ -38,6 +38,8 @@ class ManagerAPI {
   bool releaseBuild = false;
   bool suggestedAppVersionSelected = true;
   bool isDynamicThemeAvailable = false;
+  bool isScopedStorageAvailable = false;
+  int sdkVersion = 0;
   String storedPatchesFile = '/selected-patches.json';
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
@@ -55,8 +57,11 @@ class ManagerAPI {
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     isRooted = await _rootAPI.isRooted();
-    isDynamicThemeAvailable =
-        (await getSdkVersion()) >= 31; // ANDROID_12_SDK_VERSION = 31
+    if (sdkVersion == 0) {
+      sdkVersion = await getSdkVersion();
+    }
+    isDynamicThemeAvailable = sdkVersion >= 31; // ANDROID_12_SDK_VERSION = 31
+    isScopedStorageAvailable = sdkVersion >= 30; // ANDROID_11_SDK_VERSION = 30
     storedPatchesFile =
         (await getApplicationDocumentsDirectory()).path + storedPatchesFile;
     if (kReleaseMode) {
@@ -422,19 +427,12 @@ class ManagerAPI {
       return patches;
     }
     final File? patchBundleFile = await downloadPatches();
-    final Directory appCache = await getTemporaryDirectory();
-    Directory('${appCache.path}/cache').createSync();
-    final Directory workDir =
-        Directory('${appCache.path}/cache').createTempSync('tmp-');
-    final Directory cacheDir = Directory('${workDir.path}/cache');
-    cacheDir.createSync();
     if (patchBundleFile != null) {
       try {
         final String patchesJson = await PatcherAPI.patcherChannel.invokeMethod(
           'getPatches',
           {
             'patchBundleFilePath': patchBundleFile.path,
-            'cacheDirPath': cacheDir.path,
           },
         );
         final List<dynamic> patchesJsonList = jsonDecode(patchesJson);

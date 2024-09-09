@@ -65,6 +65,7 @@
   },
   "appInfoView": {
     "openButton": "Բաց",
+    "installButton": "Տեղադրվել",
     "updateNotImplemented": "Ներկայումս այս ֆունկցիան հասանելի չէ"
   },
   "contributorsView": {},
