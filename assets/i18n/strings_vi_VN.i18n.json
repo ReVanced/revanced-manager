@@ -283,6 +283,7 @@
     "status_failure_timeout_description": "Việc cài đặt mất quá lâu để hoàn thành.\n\nBạn có muốn thử lại?",
     "status_failure_storage_description": "Việc cài đặt đã thất bại do không đủ bộ nhớ.\n\nGiải phóng một phần bộ nhớ và thử lại.",
     "status_failure_invalid_description": "Việc cài đặt đã thất bại do ứng dụng đã vá không hợp lệ.\n\nGỡ cài đặt ứng dụng và thử lại?",
+    "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "Việc cài đặt đã bị ngăn chặn bởi bản cài đã có của ứng dụng.\n\nGỡ cài đặt ứng dụng đã cài và thử lại?",
     "status_failure_blocked_description": "Việc cài đặt đã đã bị chặn bởi ${packageName}.\n\nĐiều chỉnh thiết lập bảo mật của bạn và thử lại.",
     "install_failed_verification_failure_description": "Việc cài đặt đã thất bại do phát sinh xác minh.\n\nĐiều chỉnh thiết lập bảo mật của bạn và thử lại.",

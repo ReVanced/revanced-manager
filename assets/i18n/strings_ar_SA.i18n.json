@@ -283,6 +283,7 @@
     "status_failure_timeout_description": "استغرق التثبيت وقتا طويلا للانتهاء.\n\nهل تود أن تجرب مجددا؟",
     "status_failure_storage_description": "فشل التثبيت بسبب عدم كفاية مساحة التخزين.\n\nقم بتحرير بعض المساحة وحاول مرة أخرى.",
     "status_failure_invalid_description": "فشل التثبيت نظرًا لأن التطبيق المعدل غير صالح.\n\nهل تريد إلغاء تثبيت التطبيق والمحاولة مرة أخرى؟",
+    "status_failure_incompatible_description": "التطبيق غير متوافق مع هذا الجهاز.\n\nاستخدم ملف APK متوافق مع هذا الجهاز وحاول مجددًا.",
     "status_failure_conflict_description": "تم منع التثبيت من خلال تثبيت موجود للتطبيق.\n\nهل ترغب في إلغاء تثبيت التطبيق المثبت والمحاولة مرة أخرى؟",
     "status_failure_blocked_description": "تم حظر التثبيت بواسطة ${packageName}.\n\nاضبط إعدادات الأمان الخاصة بك وحاول مرة أخرى.",
     "install_failed_verification_failure_description": "فشل التثبيت بسبب مشكلة التحقق.\n\nاضبط إعدادات الأمان وحاول مرة أخرى.",
