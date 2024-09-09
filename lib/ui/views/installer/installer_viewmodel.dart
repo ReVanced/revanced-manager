@@ -188,6 +188,7 @@ class InstallerViewModel extends BaseViewModel {
         _app.packageName,
         _app.apkFilePath,
         _patches,
+        _app.isFromStorage,
       );
       _app.appliedPatches = _patches.map((p) => p.name).toList();
       if (_managerAPI.isLastPatchedAppEnabled()) {
