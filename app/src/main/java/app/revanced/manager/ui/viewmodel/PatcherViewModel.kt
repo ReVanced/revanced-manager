@@ -66,7 +66,7 @@ class PatcherViewModel(
     private val pm: PM by inject()
     private val workerRepository: WorkerRepository by inject()
     private val installedAppRepository: InstalledAppRepository by inject()
-    private val rootInstaller: RootInstaller by inject()
+    val rootInstaller: RootInstaller by inject()
 
     val installerStatusDialogModel : InstallerStatusDialogModel = object : InstallerStatusDialogModel {
         override var packageInstallerStatus: Int? by mutableStateOf(null)
@@ -242,10 +242,6 @@ class PatcherViewModel(
 
         tempDir.deleteRecursively()
     }
-
-    fun isDeviceRooted() = System.getenv("PATH")?.split(":")?.any { path ->
-        File(path, "su").canExecute()
-    } ?: false
 
     fun export(uri: Uri?) = viewModelScope.launch {
         uri?.let {
