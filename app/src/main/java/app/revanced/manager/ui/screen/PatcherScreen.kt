@@ -140,7 +140,7 @@ fun PatcherScreen(
                             },
                             onClick = {
                                 if (vm.installedPackageName == null)
-                                    if (vm.rootInstaller.isDeviceRooted()) showInstallPicker = true
+                                    if (vm.isDeviceRooted()) showInstallPicker = true
                                     else vm.install(InstallType.DEFAULT)
                                 else vm.open()
                             }
