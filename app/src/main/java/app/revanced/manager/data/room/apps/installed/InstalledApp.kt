@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 enum class InstallType(val stringResource: Int) {
     DEFAULT(R.string.default_install),
-    ROOT(R.string.root_install)
+    MOUNT(R.string.mount_install)
 }
 
 @Parcelize

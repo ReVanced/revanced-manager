@@ -135,7 +135,7 @@ class PatcherWorker(
         return try {
             if (args.input is SelectedApp.Installed) {
                 installedAppRepository.get(args.packageName)?.let {
-                    if (it.installType == InstallType.ROOT) {
+                    if (it.installType == InstallType.MOUNT) {
                         rootInstaller.unmount(args.packageName)
                     }
                 }
