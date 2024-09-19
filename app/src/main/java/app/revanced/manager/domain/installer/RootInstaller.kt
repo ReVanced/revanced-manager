@@ -43,7 +43,7 @@ class RootInstaller(
             }
         }
 
-        return withTimeoutOrNull(Duration.ofSeconds(120L)) {
+        return withTimeoutOrNull(Duration.ofSeconds(20L)) {
             remoteFS.await()
         } ?: throw RootServiceException()
     }
@@ -57,6 +57,10 @@ class RootInstaller(
     suspend fun execute(vararg commands: String) = getShell().newJob().add(*commands).exec()
 
     fun hasRootAccess() = Shell.isAppGrantedRoot() ?: false
+
+    fun isDeviceRooted() = System.getenv("PATH")?.split(":")?.any { path ->
+        File(path, "su").canExecute()
+    } ?: false
 
     suspend fun isAppInstalled(packageName: String) =
         awaitRemoteFS().getFile("$modulesPath/$packageName-revanced").exists()

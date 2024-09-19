@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
 import app.revanced.manager.ui.component.AppScaffold
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.InstallerStatusDialog
@@ -139,7 +140,8 @@ fun PatcherScreen(
                             },
                             onClick = {
                                 if (vm.installedPackageName == null)
-                                    showInstallPicker = true
+                                    if (vm.isDeviceRooted()) showInstallPicker = true
+                                    else vm.install(InstallType.DEFAULT)
                                 else vm.open()
                             }
                         )
