@@ -220,6 +220,7 @@ class MainActivity : FlutterActivity() {
         keystorePassword: String
     ) {
         val inFile = File(inFilePath)
+        // Necessary because the file is copied from a nonwriteable location.
         inFile.setWritable(true)
         inFile.setReadable(true)
         val outFile = File(outFilePath)
