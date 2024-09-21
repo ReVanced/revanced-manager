@@ -367,7 +367,8 @@ class ManagerAPI {
   ) async {
     deleteLastPatchedApp();
     final Directory appCache = await getApplicationSupportDirectory();
-    app.patchedFilePath = outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.patchedFilePath =
+        outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
     app.fileSize = outFile.lengthSync();
     await _prefs.setString(
       'lastPatchedApp',
@@ -511,8 +512,7 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -560,8 +560,7 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
@@ -571,11 +570,27 @@ class ManagerAPI {
   }
 
   String getLastUsedPatchesVersion() {
-    return _prefs.getString('lastUsedPatchesVersion') ?? '0.0.0';
+    final String lastPatchesVersions =
+        _prefs.getString('lastUsedPatchesVersion') ?? '{}';
+    final Map<String, dynamic> lastPatchesVersionMap =
+        jsonDecode(lastPatchesVersions);
+    final String repo = getPatchesRepo();
+    return lastPatchesVersionMap[repo] ?? '0.0.0';
   }
 
-  void setLastUsedPatchesVersion(String version) {
-    _prefs.setString('lastUsedPatchesVersion', version);
+  void setLastUsedPatchesVersion({String? version}) {
+    final String lastPatchesVersions =
+        _prefs.getString('lastUsedPatchesVersion') ?? '{}';
+    final Map<String, dynamic> lastPatchesVersionMap =
+        jsonDecode(lastPatchesVersions);
+    final repo = getPatchesRepo();
+    final String lastPatchesVersion =
+        version ?? lastPatchesVersionMap[repo] ?? '0.0.0';
+    lastPatchesVersionMap[repo] = lastPatchesVersion;
+    _prefs.setString(
+      'lastUsedPatchesVersion',
+      jsonEncode(lastPatchesVersionMap),
+    );
   }
 
   Future<String> getCurrentManagerVersion() async {
