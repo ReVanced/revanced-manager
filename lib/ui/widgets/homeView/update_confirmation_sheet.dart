@@ -105,9 +105,7 @@ class UpdateConfirmationSheet extends StatelessWidget {
                 ),
               ),
               FutureBuilder<String?>(
-                future: !isPatches
-                    ? model.getManagerChangelogs()
-                    : model.getLatestPatchesChangelog(),
+                future: model.getChangelogs(isPatches),
                 builder: (_, snapshot) {
                   if (!snapshot.hasData) {
                     return Padding(
@@ -117,7 +115,6 @@ class UpdateConfirmationSheet extends StatelessWidget {
                       ),
                     );
                   }
-
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 24.0),
                     decoration: BoxDecoration(

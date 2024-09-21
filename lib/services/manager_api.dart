@@ -570,6 +570,14 @@ class ManagerAPI {
     }
   }
 
+  String getLastUsedPatchesVersion() {
+    return _prefs.getString('lastUsedPatchesVersion') ?? '0.0.0';
+  }
+
+  void setLastUsedPatchesVersion(String version) {
+    _prefs.setString('lastUsedPatchesVersion', version);
+  }
+
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version = packageInfo.version;
