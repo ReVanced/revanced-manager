@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageInstaller
 import android.net.Uri
+import android.os.ParcelUuid
 import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -36,8 +37,8 @@ import app.revanced.manager.patcher.logger.Logger
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
-import app.revanced.manager.ui.component.InstallerStatusDialogModel
 import app.revanced.manager.ui.destination.Destination
+import app.revanced.manager.ui.model.InstallerModel
 import app.revanced.manager.ui.model.ProgressKey
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.model.State
@@ -62,15 +63,12 @@ import org.koin.core.component.inject
 import java.io.File
 import java.nio.file.Files
 import java.time.Duration
-import java.util.UUID
 
-
-// @SuppressLint("AutoboxingStateCreation")
 @Stable
 @OptIn(SavedStateHandleSaveableApi::class)
 class PatcherViewModel(
     private val input: Destination.Patcher
-) : ViewModel(), KoinComponent, StepProgressProvider {
+) : ViewModel(), KoinComponent, StepProgressProvider, InstallerModel {
     private val app: Application by inject()
     private val fs: Filesystem by inject()
     private val pm: PM by inject()
@@ -78,20 +76,6 @@ class PatcherViewModel(
     private val installedAppRepository: InstalledAppRepository by inject()
     private val rootInstaller: RootInstaller by inject()
     private val savedStateHandle: SavedStateHandle by inject()
-
-    val installerStatusDialogModel : InstallerStatusDialogModel = object : InstallerStatusDialogModel {
-        override var packageInstallerStatus: Int? by mutableStateOf(null)
-
-        override fun reinstall() {
-            this@PatcherViewModel.reinstall()
-        }
-
-        override fun install() {
-            // Since this is a package installer status dialog,
-            // InstallType.ROOT is never used here.
-            install(InstallType.DEFAULT)
-        }
-    }
 
     private var installedApp: InstalledApp? = null
     val packageName = input.selectedApp.packageName
@@ -105,6 +89,13 @@ class PatcherViewModel(
     }
         private set
     private var ongoingPmSession: Boolean by savedStateHandle.saveableVar { false }
+    var packageInstallerStatus: Int? by savedStateHandle.saveable(
+        key = "packageInstallerStatus",
+        stateSaver = autoSaver()
+    ) {
+        mutableStateOf(null)
+    }
+        private set
 
     var isInstalling by mutableStateOf(ongoingPmSession)
         private set
@@ -142,7 +133,6 @@ class PatcherViewModel(
         key = "downloadProgress",
         stateSaver = autoSaver()
     ) {
-        viewModelScope
         mutableStateOf<Pair<Float, Float>?>(null)
     }
         private set
@@ -166,15 +156,19 @@ class PatcherViewModel(
 
     private val workManager = WorkManager.getInstance(app)
 
-    private val patcherWorkerId by savedStateHandle.saveable<UUID> {
-        workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
+    private val patcherWorkerId by savedStateHandle.saveable<ParcelUuid> {
+        ParcelUuid(workerRepository.launchExpedited<PatcherWorker, PatcherWorker.Args>(
             "patching", PatcherWorker.Args(
                 input.selectedApp,
                 outputFile.path,
                 input.selectedPatches,
                 input.options,
                 logger,
-                onDownloadProgress = { withContext(Dispatchers.Main) { downloadProgress = it } },
+                onDownloadProgress = {
+                    withContext(Dispatchers.Main) {
+                        downloadProgress = it
+                    }
+                },
                 onPatchCompleted = { withContext(Dispatchers.Main) { completedPatchCount += 1 } },
                 setInputFile = { withContext(Dispatchers.Main) { inputFile = it } },
                 onProgress = { name, state, message ->
@@ -196,11 +190,11 @@ class PatcherViewModel(
                     }
                 }
             )
-        )
+        ))
     }
 
     val patcherSucceeded =
-        workManager.getWorkInfoByIdLiveData(patcherWorkerId).map { workInfo: WorkInfo ->
+        workManager.getWorkInfoByIdLiveData(patcherWorkerId.uuid).map { workInfo: WorkInfo ->
             when (workInfo.state) {
                 WorkInfo.State.SUCCEEDED -> true
                 WorkInfo.State.FAILED -> false
@@ -234,7 +228,7 @@ class PatcherViewModel(
                         }
                     }
 
-                    installerStatusDialogModel.packageInstallerStatus = pmStatus
+                    packageInstallerStatus = pmStatus
 
                     isInstalling = false
                 }
@@ -249,7 +243,7 @@ class PatcherViewModel(
                         ?.let(logger::trace)
 
                     if (pmStatus != PackageInstaller.STATUS_SUCCESS) {
-                        installerStatusDialogModel.packageInstallerStatus = pmStatus
+                        packageInstallerStatus = pmStatus
                     }
                 }
             }
@@ -277,7 +271,7 @@ class PatcherViewModel(
     override fun onCleared() {
         super.onCleared()
         app.unregisterReceiver(installerBroadcastReceiver)
-        workManager.cancelWorkById(patcherWorkerId)
+        workManager.cancelWorkById(patcherWorkerId.uuid)
 
         if (input.selectedApp is SelectedApp.Installed && installedApp?.installType == InstallType.ROOT) {
             GlobalScope.launch(Dispatchers.Main) {
@@ -332,7 +326,7 @@ class PatcherViewModel(
                 // Check if the app version is less than the installed version
                 if (pm.getVersionCode(currentPackageInfo) < pm.getVersionCode(existingPackageInfo)) {
                     // Exit if the selected app version is less than the installed version
-                    installerStatusDialogModel.packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
+                    packageInstallerStatus = PackageInstaller.STATUS_FAILURE_CONFLICT
                     return@launch
                 }
             }
@@ -357,8 +351,7 @@ class PatcherViewModel(
                             // If the app is not installed, check if the output file is a base apk
                             if (currentPackageInfo.splitNames != null) {
                                 // Exit if there is no base APK package
-                                installerStatusDialogModel.packageInstallerStatus =
-                                    PackageInstaller.STATUS_FAILURE_INVALID
+                                packageInstallerStatus = PackageInstaller.STATUS_FAILURE_INVALID
                                 return@launch
                             }
                         }
@@ -400,23 +393,33 @@ class PatcherViewModel(
                     }
                 }
             }
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Log.e(tag, "Failed to install", e)
             app.toast(app.getString(R.string.install_app_fail, e.simpleMessage()))
         } finally {
-            if (!pmInstallStarted)
-                isInstalling = false
+            if (!pmInstallStarted) isInstalling = false
         }
     }
 
-    fun reinstall() = viewModelScope.launch {
-        uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
-            pm.getPackageInfo(outputFile)?.packageName?.let { pm.uninstallPackage(it) }
-                ?: throw Exception("Failed to load application info")
+    override fun install() {
+        // InstallType.ROOT is never used here since this overload is for the package installer status dialog.
+        install(InstallType.DEFAULT)
+    }
 
-            pm.installApp(listOf(outputFile))
-            isInstalling = true
+    override fun reinstall() {
+        viewModelScope.launch {
+            uiSafe(app, R.string.reinstall_app_fail, "Failed to reinstall") {
+                pm.getPackageInfo(outputFile)?.packageName?.let { pm.uninstallPackage(it) }
+                    ?: throw Exception("Failed to load application info")
+
+                pm.installApp(listOf(outputFile))
+                isInstalling = true
+            }
         }
+    }
+
+    fun dismissPackageInstallerDialog() {
+        packageInstallerStatus = null
     }
 
     private companion object {

@@ -74,8 +74,9 @@ fun PatcherScreen(
             onConfirm = vm::install
         )
 
-    if (vm.installerStatusDialogModel.packageInstallerStatus != null)
-        InstallerStatusDialog(vm.installerStatusDialogModel)
+    vm.packageInstallerStatus?.let {
+        InstallerStatusDialog(it, vm, vm::dismissPackageInstallerDialog)
+    }
 
     AppScaffold(
         topBar = {
