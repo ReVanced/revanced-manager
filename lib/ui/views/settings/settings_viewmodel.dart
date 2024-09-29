@@ -233,8 +233,11 @@ class SettingsViewModel extends BaseViewModel {
             sourceFilePath: outFile.path,
             fileName: 'selected_patches_$dateTime.json',
           ),
-        );
-        _toast.showBottom(t.settingsView.exportedPatches);
+        ).then((status) {
+          if (status != null) {
+            _toast.showBottom(t.settingsView.exportedPatches);
+          }
+        });
       } else {
         _toast.showBottom(t.settingsView.noExportFileFound);
       }
@@ -284,8 +287,11 @@ class SettingsViewModel extends BaseViewModel {
             sourceFilePath: outFile.path,
             fileName: 'keystore_$dateTime.keystore',
           ),
-        );
-        _toast.showBottom(t.settingsView.exportedKeystore);
+        ).then((status) {
+          if (status != null) {
+            _toast.showBottom(t.settingsView.exportedKeystore);
+          }
+        });
       } else {
         _toast.showBottom(t.settingsView.noKeystoreExportFileFound);
       }
