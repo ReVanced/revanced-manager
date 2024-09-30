@@ -374,7 +374,7 @@
     <string name="installation_aborted_description">The installation was cancelled manually. Try again?</string>
     <string name="installation_blocked_description">The installation was blocked. Review your device security settings and try again.</string>
     <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
-    <string name="installation_incompatible_description">The app is incompatible with this device. Use the correct APK for your device and try again.</string>
+    <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is supported by this device and try again.</string>
     <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
     <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
     <string name="installation_timeout_description">The installation took too long. Try again?</string>
