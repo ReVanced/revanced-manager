@@ -69,5 +69,5 @@ jobs:
           git config user.email github@revanced.app
           sudo chown -R $USER:$USER .git
           git add assets/i18n/strings.*.json
-          git commit -m "chore: Remove empty values from JSON" assets/i18n/strings.*.json
+          git commit -m "chore: Remove empty values from JSON"
           git push origin HEAD:feat/translations
