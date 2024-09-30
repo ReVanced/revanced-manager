@@ -1,7 +1,7 @@
 {
   "okButton": "OK",
   "cancelButton": "Peruuta",
-  "dismissButton": "Sulje",
+  "dismissButton": "Hylkää",
   "quitButton": "Sulje",
   "updateButton": "Päivitä",
   "suggested": "Ehdotettu: ${version}",
@@ -82,7 +82,7 @@
     "selectFromStorageButton": "Valitse tallennustilasta",
     "errorMessage": "Valittua sovellusta ei voida käyttää",
     "downloadToast": "Lataustoiminto ei ole vielä käytettävissä",
-    "requireSuggestedAppVersionDialogText": "Valitsemasi sovellusversio ei vastaa ehdotettua versiota ja tämä voi johtaa odottamattomia ongelmia. Käytä ehdotettua sovellusversiota.\n\nValittu versio: v${selected}\nEhdotettu versio: v${suggested}\n\nOhittaaksesi tämän, ota \"Vaadi ehdotettu sovellusversio\" -asetus käyttöön.",
+    "requireSuggestedAppVersionDialogText": "Valitsemasi sovellusversio ei vastaa ehdotettua versiota ja tämä voi aiheuttaa odottamattomia ongelmia. Käytä ehdotettua sovellusversiota.\n\nValittu versio: v${selected}\nEhdotettu versio: v${suggested}\n\nOhittaaksesi tämän, ota \"Vaadi ehdotettu sovellusversio\" -asetus käyttöön.",
     "featureNotAvailable": "Ominaisuutta ei ole toteutettu",
     "featureNotAvailableText": "Tämä sovellus on jaettu APK ja se voidaan paikata ja asentaa luotettavasti vain root-oikeuksilla liitettynä. Voit kuitenkin paikata ja asentaa täyden APK:n valitsemalla sen tallennustilasta."
   },
@@ -100,19 +100,19 @@
     "loadPatchesSelection": "Lataa paikkausvalikoima",
     "noSavedPatches": "Valitulle sovellukselle ei ole tallennettu paikkausvalikoimaa.\nTallenna nykyinen valikoima painamalla \"Valmis\".",
     "noPatchesFound": "Valitulle sovellukselle ei löytynyt paikkauksia",
-    "setRequiredOption": "Joillekin paikkauksille on määritettävä asetuksia:\n\n${patches}\n\nTee tarvittavat määritykset ennen kuin jatkat."
+    "setRequiredOption": "Joillekin paikkauksille on määritettävä asetuksia:\n\n${patches}\n\nMääritä ne ennen kuin jatkat."
   },
   "patchOptionsView": {
     "customValue": "Oma arvo",
     "setToNull": "Aseta nollaksi",
-    "nullValue": "Tämän asetuksen arvo on tällä hetkellä nolla",
+    "nullValue": "Tämän asetuksen arvo on tällä hetkellä tyhjä",
     "viewTitle": "Paikkausasetukset",
     "saveOptions": "Tallenna",
     "unselectPatch": "Poista paikkauksen valinta",
     "tooltip": "Enemmän syöttöasetuksia",
     "selectFilePath": "Valitse tiedostosijainti",
     "selectFolder": "Valitse kansio",
-    "requiredOption": "Tämän asetuksen asettaminen on pakollinen",
+    "requiredOption": "Tämän valinnan asettaminen on pakollista",
     "unsupportedOption": "Tätä asetusta ei tueta",
     "requiredOptionNull": "Seuraavat asetukset on määritettävä:\n\n${options}"
   },
@@ -198,7 +198,7 @@
     "deleteTempDirLabel": "Poista väliaikaistiedostot",
     "deleteTempDirHint": "Poista käyttämättömät väliaikaistiedostot",
     "deletedTempDir": "Väliaikaistiedostot poistettiin",
-    "exportPatchesLabel": "Vie paikkasvalikoima",
+    "exportPatchesLabel": "Vie paikkausvalikoima",
     "exportPatchesHint": "Vie paikkausvalikoima JSON-tiedostoon",
     "exportedPatches": "Paikkausvalikoima vietiin",
     "noExportFileFound": "Vietäviä paikkausvalikoimia ei ole",
