@@ -223,7 +223,7 @@
     <string name="applied_patches">Applied patches</string>
     <string name="view_applied_patches">View applied patches</string>
     <string name="default_install">Default</string>
-    <string name="root_install">Root</string>
+    <string name="mount_install">Mount</string>
     <string name="mounted">Mounted</string>
     <string name="not_mounted">Not mounted</string>
     <string name="mount">Mount</string>
@@ -257,6 +257,7 @@
     <string name="install_app">Install</string>
     <string name="install_app_success">App installed</string>
     <string name="install_app_fail">Failed to install app: %s</string>
+    <string name="reinstall_app_fail">Failed to reinstall app: %s</string>
     <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
     <string name="open_app">Open</string>
     <string name="save_apk">Save APK</string>
@@ -287,6 +288,7 @@
     <string name="drag_handle">reorder</string>
 
     <string name="more">More</string>
+    <string name="less">Less</string>
     <string name="continue_">Continue</string>
     <string name="dismiss">Dismiss</string>
     <string name="permanent_dismiss">Do not show this again</string>
@@ -305,6 +307,9 @@
     <string name="bundle_auto_update">Auto update</string>
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
     <string name="bundle_view_patches">View patches</string>
+    <string name="bundle_view_patches_any_version">Any version</string>
+    <string name="bundle_view_patches_any_package">Any package</string>
+
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
     <string name="update_available">An update is available</string>
@@ -356,6 +361,24 @@
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
     <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
     <string name="recommended">Recommended</string>
+
+    <string name="installation_failed_dialog_title">Installation failed</string>
+    <string name="installation_cancelled_dialog_title">Installation cancelled</string>
+    <string name="installation_blocked_dialog_title">Installation blocked</string>
+    <string name="installation_conflict_dialog_title">Installation conflict</string>
+    <string name="installation_incompatible_dialog_title">Installation incompatible</string>
+    <string name="installation_invalid_dialog_title">Installation invalid</string>
+    <string name="installation_storage_issue_dialog_title">Not enough storage</string>
+    <string name="installation_timeout_dialog_title">Installation timed out</string>
+    <string name="installation_failed_description">The installation failed due to an unknown reason. Try again?</string>
+    <string name="installation_aborted_description">The installation was cancelled manually. Try again?</string>
+    <string name="installation_blocked_description">The installation was blocked. Review your device security settings and try again.</string>
+    <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
+    <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is supported by this device and try again.</string>
+    <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
+    <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
+    <string name="installation_timeout_description">The installation took too long. Try again?</string>
+    <string name="reinstall">Reinstall</string>
     <string name="show">Show</string>
     <string name="debugging">Debugging</string>
     <string name="about_device">About device</string>
