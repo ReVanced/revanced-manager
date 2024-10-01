@@ -108,7 +108,7 @@ flutter {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4") // https://pub.dev/packages/flutter_local_notifications#gradle-setup
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2") // https://pub.dev/packages/flutter_local_notifications#gradle-setup
     implementation("app.revanced:revanced-patcher:19.3.1")
     implementation("app.revanced:revanced-library:2.2.1")
 }
