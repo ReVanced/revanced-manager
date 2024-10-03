@@ -33,7 +33,6 @@ class PatcherAPI {
 
   Future<void> initialize() async {
     await loadPatches();
-    await _managerAPI.downloadIntegrations();
     final Directory appCache = await getApplicationSupportDirectory();
     _dataDir = await getExternalStorageDirectory() ?? appCache;
     _tmpDir = Directory('${appCache.path}/patcher');
@@ -153,7 +152,6 @@ class PatcherAPI {
     List<Patch> selectedPatches,
     bool isFromStorage,
   ) async {
-    final File? integrationsFile = await _managerAPI.downloadIntegrations();
     final Map<String, Map<String, dynamic>> options = {};
     for (final patch in selectedPatches) {
       if (patch.options.isNotEmpty) {
@@ -169,44 +167,41 @@ class PatcherAPI {
       }
     }
 
-    if (integrationsFile != null) {
-      _dataDir.createSync();
-      _tmpDir.createSync();
-      final Directory workDir = await _tmpDir.createTemp('tmp-');
+    _dataDir.createSync();
+    _tmpDir.createSync();
+    final Directory workDir = await _tmpDir.createTemp('tmp-');
 
-      final File inApkFile = File('${workDir.path}/in.apk');
-      await File(apkFilePath).copy(inApkFile.path);
+    final File inApkFile = File('${workDir.path}/in.apk');
+    await File(apkFilePath).copy(inApkFile.path);
 
-      if (isFromStorage) {
-        // The selected apk was copied to cacheDir by the file picker, so it's not needed anymore.
-        // rename() can't be used here, as Android system also counts the size of files moved out from cacheDir
-        // as part of the app's cache size.
-        File(apkFilePath).delete();
-      }
+    if (isFromStorage) {
+      // The selected apk was copied to cacheDir by the file picker, so it's not needed anymore.
+      // rename() can't be used here, as Android system also counts the size of files moved out from cacheDir
+      // as part of the app's cache size.
+      File(apkFilePath).delete();
+    }
 
-      outFile = File('${workDir.path}/out.apk');
+    outFile = File('${workDir.path}/out.apk');
 
-      final Directory tmpDir =
-          Directory('${workDir.path}/revanced-temporary-files');
+    final Directory tmpDir =
+        Directory('${workDir.path}/revanced-temporary-files');
 
-      try {
-        await patcherChannel.invokeMethod(
-          'runPatcher',
-          {
-            'inFilePath': inApkFile.path,
-            'outFilePath': outFile!.path,
-            'integrationsPath': integrationsFile.path,
-            'selectedPatches': selectedPatches.map((p) => p.name).toList(),
-            'options': options,
-            'tmpDirPath': tmpDir.path,
-            'keyStoreFilePath': _keyStoreFile.path,
-            'keystorePassword': _managerAPI.getKeystorePassword(),
-          },
-        );
-      } on Exception catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
+    try {
+      await patcherChannel.invokeMethod(
+        'runPatcher',
+        {
+          'inFilePath': inApkFile.path,
+          'outFilePath': outFile!.path,
+          'selectedPatches': selectedPatches.map((p) => p.name).toList(),
+          'options': options,
+          'tmpDirPath': tmpDir.path,
+          'keyStoreFilePath': _keyStoreFile.path,
+          'keystorePassword': _managerAPI.getKeystorePassword(),
+        },
+      );
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
       }
     }
   }

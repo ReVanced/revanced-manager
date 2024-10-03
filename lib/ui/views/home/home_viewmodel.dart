@@ -311,11 +311,8 @@ class HomeViewModel extends BaseViewModel {
     _toast.showBottom(t.homeView.downloadingMessage);
     final String patchesVersion =
         await _managerAPI.getLatestPatchesVersion() ?? '0.0.0';
-    final String integrationsVersion =
-        await _managerAPI.getLatestIntegrationsVersion() ?? '0.0.0';
-    if (patchesVersion != '0.0.0' && integrationsVersion != '0.0.0') {
+    if (patchesVersion != '0.0.0') {
       await _managerAPI.setCurrentPatchesVersion(patchesVersion);
-      await _managerAPI.setCurrentIntegrationsVersion(integrationsVersion);
       _toast.showBottom(t.homeView.downloadedMessage);
       forceRefresh(context);
     } else {

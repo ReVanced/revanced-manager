@@ -41,11 +41,6 @@ class ContributorsView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     ContributorsCard(
-                      title: 'ReVanced Integrations',
-                      contributors: model.integrationsContributors,
-                    ),
-                    const SizedBox(height: 20),
-                    ContributorsCard(
                       title: 'ReVanced CLI',
                       contributors: model.cliContributors,
                     ),

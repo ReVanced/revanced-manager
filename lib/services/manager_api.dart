@@ -48,11 +48,9 @@ class ManagerAPI {
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
-  String defaultIntegrationsRepo = 'revanced/revanced-integrations';
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
-  String? integrationsVersion = '';
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
@@ -83,10 +81,8 @@ class ManagerAPI {
         _prefs.getBool('migratedToAlternativeSource') ?? false;
     if (!hasMigratedToAlternativeSource) {
       final String patchesRepo = getPatchesRepo();
-      final String integrationsRepo = getIntegrationsRepo();
       final bool usingAlternativeSources =
-          patchesRepo.toLowerCase() != defaultPatchesRepo ||
-              integrationsRepo.toLowerCase() != defaultIntegrationsRepo;
+          patchesRepo.toLowerCase() != defaultPatchesRepo;
       _prefs.setBool('useAlternativeSources', usingAlternativeSources);
       _prefs.setBool('migratedToAlternativeSource', true);
     }
@@ -200,14 +196,6 @@ class ManagerAPI {
     await _prefs.setStringList('savedPatches-$packageName', patchesJson);
   }
 
-  String getIntegrationsDownloadURL() {
-    return _prefs.getString('integrationsDownloadURL') ?? '';
-  }
-
-  Future<void> setIntegrationsDownloadURL(String value) async {
-    await _prefs.setString('integrationsDownloadURL', value);
-  }
-
   List<Patch> getUsedPatches(String packageName) {
     final List<String> patchesJson =
         _prefs.getStringList('usedPatches-$packageName') ?? [];
@@ -254,17 +242,6 @@ class ManagerAPI {
 
   void clearPatchOption(String packageName, String patchName, String key) {
     _prefs.remove('patchOption-$packageName-$patchName-$key');
-  }
-
-  String getIntegrationsRepo() {
-    return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
-  }
-
-  Future<void> setIntegrationsRepo(String value) async {
-    if (value.isEmpty || value.startsWith('/') || value.endsWith('/')) {
-      value = defaultIntegrationsRepo;
-    }
-    await _prefs.setString('integrationsRepo', value);
   }
 
   bool getUseDynamicTheme() {
@@ -463,28 +440,7 @@ class ManagerAPI {
       final String currentVersion = await getCurrentPatchesVersion();
       final String url = getPatchesDownloadURL();
       return await _githubAPI.getReleaseFile(
-        '.jar',
-        repoName,
-        currentVersion,
-        url,
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return null;
-    }
-  }
-
-  Future<File?> downloadIntegrations() async {
-    try {
-      final String repoName = !isUsingAlternativeSources()
-          ? defaultIntegrationsRepo
-          : getIntegrationsRepo();
-      final String currentVersion = await getCurrentIntegrationsVersion();
-      final String url = getIntegrationsDownloadURL();
-      return await _githubAPI.getReleaseFile(
-        '.apk',
+        '.rvp',
         repoName,
         currentVersion,
         url,
@@ -537,22 +493,6 @@ class ManagerAPI {
     );
   }
 
-  Future<String?> getLatestIntegrationsVersion() async {
-    if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        '.apk',
-        defaultIntegrationsRepo,
-      );
-    } else {
-      final release = await _githubAPI.getLatestRelease(getIntegrationsRepo());
-      if (release != null) {
-        return release['tag_name'];
-      } else {
-        return null;
-      }
-    }
-  }
-
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
       return await _revancedAPI.getLatestReleaseVersion(
@@ -595,25 +535,6 @@ class ManagerAPI {
     await _prefs.setString('patchesVersion', version);
     await setPatchesDownloadURL('');
     await downloadPatches();
-  }
-
-  Future<String> getCurrentIntegrationsVersion() async {
-    integrationsVersion = _prefs.getString('integrationsVersion') ?? '0.0.0';
-    if (integrationsVersion == '0.0.0' || isPatchesAutoUpdate()) {
-      final String newIntegrationsVersion =
-          await getLatestIntegrationsVersion() ?? '0.0.0';
-      if (integrationsVersion != newIntegrationsVersion &&
-          newIntegrationsVersion != '0.0.0') {
-        await setCurrentIntegrationsVersion(newIntegrationsVersion);
-      }
-    }
-    return integrationsVersion!;
-  }
-
-  Future<void> setCurrentIntegrationsVersion(String version) async {
-    await _prefs.setString('integrationsVersion', version);
-    await setIntegrationsDownloadURL('');
-    await downloadIntegrations();
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(

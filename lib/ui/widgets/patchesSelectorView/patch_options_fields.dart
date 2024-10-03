@@ -138,7 +138,7 @@ class IntStringLongListPatchOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<dynamic> values = List.from(patchOption.value ?? []);
     final ValueNotifier patchOptionValue = ValueNotifier(values);
-    final String type = patchOption.valueType;
+    final String type = patchOption.type;
 
     String getKey(dynamic value) {
       if (value != null && patchOption.values != null) {
@@ -408,12 +408,12 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isStringOption = widget.patchOption.valueType.contains('String');
-    final bool isArrayOption = widget.patchOption.valueType.contains('Array');
+    final bool isStringOption = widget.patchOption.type.contains('String');
+    final bool isListOption = widget.patchOption.type.contains('List');
     selectedKey = selectedKey == '' ? selectedKey : widget.selectedKey;
     final bool isValueArray = widget.value?.startsWith('[') ?? false;
     final bool shouldResetValue =
-        !isStringOption && isArrayOption && selectedKey == '' && isValueArray;
+        !isStringOption && isListOption && selectedKey == '' && isValueArray;
     controller.text = shouldResetValue ? '' : widget.value ?? '';
     defaultValue ??= controller.text;
     return Column(
@@ -479,7 +479,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
               } else {
                 controller.text = widget.patchOption.values![value].toString();
                 widget.onChanged(
-                  isArrayOption
+                  isListOption
                       ? widget.patchOption.values![value]
                       : controller.text,
                 );
@@ -492,9 +492,9 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
         if (selectedKey == '')
           TextFormField(
             inputFormatters: [
-              if (widget.patchOption.valueType.contains('Int'))
+              if (widget.patchOption.type.contains('Int'))
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-              if (widget.patchOption.valueType.contains('Long'))
+              if (widget.patchOption.type.contains('Long'))
                 FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*\.?[0-9]*')),
             ],
             controller: controller,
@@ -505,7 +505,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                 tooltip: t.patchOptionsView.tooltip,
                 itemBuilder: (BuildContext context) {
                   return [
-                    if (isArrayOption)
+                    if (isListOption)
                       PopupMenuItem(
                         value: 'remove',
                         child: Text(t.remove),

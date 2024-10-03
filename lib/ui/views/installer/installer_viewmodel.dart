@@ -325,7 +325,6 @@ class InstallerViewModel extends BaseViewModel {
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
-      'Integration source: ${_managerAPI.getIntegrationsRepo()}', //
 
       '\n- Logs',
       logsTrimmed.join('\n'),

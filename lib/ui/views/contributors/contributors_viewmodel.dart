@@ -6,7 +6,6 @@ class ContributorsViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   List<dynamic> patcherContributors = [];
   List<dynamic> patchesContributors = [];
-  List<dynamic> integrationsContributors = [];
   List<dynamic> cliContributors = [];
   List<dynamic> managerContributors = [];
 
@@ -15,8 +14,6 @@ class ContributorsViewModel extends BaseViewModel {
         await _managerAPI.getContributors();
     patcherContributors = contributors[_managerAPI.defaultPatcherRepo] ?? [];
     patchesContributors = contributors[_managerAPI.defaultPatchesRepo] ?? [];
-    integrationsContributors =
-        contributors[_managerAPI.defaultIntegrationsRepo] ?? [];
     cliContributors = contributors[_managerAPI.defaultCliRepo] ?? [];
     managerContributors = contributors[_managerAPI.defaultManagerRepo] ?? [];
     notifyListeners();
