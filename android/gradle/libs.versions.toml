@@ -1,0 +1,9 @@
+[versions]
+revanced-patcher = "19.3.1" # TODO: Update to non-dev
+revanced-library = "2.2.1"
+desugar_jdk_libs = "2.1.2"
+
+[libraries]
+revanced-patcher = { module = "app.revanced:revanced-patcher", version.ref = "revanced-patcher" }
+revanced-library = { module = "app.revanced:revanced-library", version.ref = "revanced-library" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
