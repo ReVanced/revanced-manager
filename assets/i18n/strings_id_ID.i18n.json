@@ -23,11 +23,11 @@
     "refreshSuccess": "Berhasil Memuat Ulang",
     "widgetTitle": "Dasbor",
     "updatesSubtitle": "Pembaruan",
-    "lastPatchedAppSubtitle": "Patch terakhir app",
-    "patchedSubtitle": "App terinstal",
+    "lastPatchedAppSubtitle": "Aplikasi terakhir yang ditambal",
+    "patchedSubtitle": "Aplikasi terpasang",
     "changeLaterSubtitle": "Anda dapat mengubahnya di pengaturan nanti.",
     "noSavedAppFound": "App tidak ditemukan",
-    "noInstallations": "Aplikasi tambalan tidak terpasang",
+    "noInstallations": "Aplikasi tertambal tidak terpasang",
     "installUpdate": "Lanjutkan untuk mengunduh pembaruan?",
     "updateSheetTitle": "Perbarui Manajer ReVanced",
     "updateDialogTitle": "Pembaruan terkini telah tersedia",
@@ -54,9 +54,9 @@
   "patcherView": {
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
-    "incompatibleArchWarningDialogText": "Patching pada arsitektur ini belum didukung dan mungkin gagal. Lanjutkan saja?",
-    "removedPatchesWarningDialogText": "Patch berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
-    "requiredOptionDialogText": "Beberapa opsi patch harus diatur."
+    "incompatibleArchWarningDialogText": "Menambal pada arsitektur ini belum didukung dan kemungkinan gagal. Lanjutkan saja?",
+    "removedPatchesWarningDialogText": "Tambalan berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
+    "requiredOptionDialogText": "Beberapa pilihan tambalan harus diatur."
   },
   "appSelectorCard": {
     "widgetTitle": "Pilih aplikasi",
@@ -84,32 +84,32 @@
     "downloadToast": "Fungsi mengunduh belum tersedia",
     "requireSuggestedAppVersionDialogText": "Versi aplikasi yang Anda pilih tidak sesuai dengan versi yang disarankan yang dapat menyebabkan masalah yang tidak diharapkan. Silakan gunakan versi yang disarankan.\n\nVersi yang dipilih: ${selected}\nVersi yang disarankan: ${suggested}\n\nUntuk melanjutkan, nonaktifkan \"Memerlukan versi aplikasi yang disarankan\" di pengaturan.",
     "featureNotAvailable": "Fitur tidak diimplementasi",
-    "featureNotAvailableText": "Aplikasi ini adalah APK terpisah yang hanya dapat ditambal dan dipasang melalui cara mount dengan izin root. Namun, APK lengkap dapat Anda tambal dan pasang dengan memilihnya dari penyimpanan."
+    "featureNotAvailableText": "Aplikasi ini adalah APK terpisah yang hanya dapat ditambal dan dipasang melalui cara mount dengan izin root. Namun, Anda dapat menambal dan memasang APK lengkap dengan memilihnya dari penyimpanan."
   },
   "patchesSelectorView": {
     "viewTitle": "Pilih tambalan",
     "searchBarHint": "Cari tambalan",
-    "universalPatches": "Patch universal",
-    "newPatches": "Patch baru",
-    "patches": "Patch",
+    "universalPatches": "Tambalan universal",
+    "newPatches": "Tambalan baru",
+    "patches": "Tambalan",
     "doneButton": "Selesai",
     "defaultChip": "Bawaan",
     "defaultTooltip": "Pilih semua tambalan bawaan",
     "noneChip": "Tidak ada",
     "noneTooltip": "Batalkan semua tambalan",
-    "loadPatchesSelection": "Muat patch terpilih",
+    "loadPatchesSelection": "Muat tambalan terpilih",
     "noSavedPatches": "Tidak ada pilihan tambalan yang disimpan untuk aplikasi yang dipilih.\nTekan Selesai untuk menyimpan pilihan saat ini.",
     "noPatchesFound": "Tidak ada tambalan untuk aplikasi",
-    "setRequiredOption": "Beberapa patch memerlukan opsi untuk diatur:\n\n${patches}\n\nAturlah sebelum melanjutkan."
+    "setRequiredOption": "Beberapa tambalan memerlukan pilihan untuk diatur:\n\n${patches}\n\nAturlah sebelum melanjutkan."
   },
   "patchOptionsView": {
     "customValue": "Nilai kustom",
     "setToNull": "Setel ke null",
-    "nullValue": "Nilai opsi ini saat ini adalah null",
-    "viewTitle": "Opsi tambalan",
+    "nullValue": "Nilai pilihan ini saat ini adalah null",
+    "viewTitle": "Pilihan tambalan",
     "saveOptions": "Simpan",
-    "unselectPatch": "Batalkan pilihan patch",
-    "tooltip": "Opsi masukan lainnya",
+    "unselectPatch": "Batalkan pilihan tambalan",
+    "tooltip": "Pilihan masukan lainnya",
     "selectFilePath": "Pilih lokasi berkas",
     "selectFolder": "Pilih folder",
     "requiredOption": "Pengaturan opsi ini diperlukan",
@@ -117,10 +117,10 @@
     "requiredOptionNull": "Pilihan ini harus terpilih:\n\n${options}"
   },
   "patchItem": {
-    "unsupportedDialogText": "Memilih tambalan ini akan menyebabkan galat tambal.\n\nVersi apli: ${packageVersion}\nVersi anjuran:\n${supportedVersions}",
+    "unsupportedDialogText": "Memilih tambalan ini akan menyebabkan kegagalan tambal.\n\nVersi apli: ${packageVersion}\nVersi anjuran:\n${supportedVersions}",
     "unsupportedPatchVersion": "Tambalan ini tidak mendukung versi aplikasi ini.",
-    "unsupportedRequiredOption": "Patch ini berisi opsi wajib yang tidak didukung oleh aplikasi ini",
-    "patchesChangeWarningDialogText": "Direkomendasikan untuk menggunakan pilihan dan opsi tambalan default. Mengubahnya dapat mengakibatkan masalah yang tidak diharapkan.\n\nAnda harus mengaktifkan \"Izinkan perubahan pilihan tambalan\" dalam pengaturan sebelum mengubah pilihan tambalan.",
+    "unsupportedRequiredOption": "Tambalan ini berisi opsi wajib yang tidak didukung oleh aplikasi ini",
+    "patchesChangeWarningDialogText": "Direkomendasikan untuk menggunakan pilihan dan opsi tambalan bawaan. Mengubahnya dapat mengakibatkan masalah yang tidak diharapkan.\n\nAnda harus mengaktifkan \"Izinkan perubahan pilihan tambalan\" dalam pengaturan sebelum mengubah pilihan tambalan.",
     "patchesChangeWarningDialogButton": "Gunakan pemilihan bawaan"
   },
   "installerView": {
@@ -279,7 +279,7 @@
     "status_unknown": "Pemasangan gagal",
     "mount_version_mismatch_description": "Penginstalan gagal karena aplikasi yang diinstal merupakan versi yang berbeda dari aplikasi yang ditambal.\n\nInstal versi aplikasi yang anda pasang dan coba lagi.",
     "mount_no_root_description": "Pemasangan ini gagal karena akses root belum dizinkan.\n\nIzinkan akses root ke ReVanced Manager dan coba lagi.",
-    "mount_missing_installation_description": "Penginstalan gagal karena aplikasi yang belum ditambal tidak diinstal pada perangkat ini untuk dipasang di atasnya.\n\nInstal aplikasi yang belum ditambal sebelum memasang dan coba lagi.",
+    "mount_missing_installation_description": "Pemasangan gagal karena aplikasi yang belum ditambal tidak terpasang pada perangkat ini supaya dipasang di atasnya.\n\nPasang aplikasi yang belum ditambal sebelum memasang dan coba lagi.",
     "status_failure_timeout_description": "Instalasi memakan waktu terlalu lama untuk diselesaikan.\n\nApakah anda ingin mencoba lagi?",
     "status_failure_storage_description": "Instalasi gagal karena penyimpanan tidak mencukupi.\n\nKosongkan sebagian ruang dan coba kembali.",
     "status_failure_invalid_description": "Instalasi gagal karena aplikasi yang ditambal tidak valid.\n\nCopot pemasangan aplikasi dan coba lagi?",
@@ -287,7 +287,7 @@
     "status_failure_conflict_description": "Penginstalan dicegah oleh aplikasi yang sudah ada.\n\nCopot pemasangan aplikasi yang terpasang dan coba kembali?",
     "status_failure_blocked_description": "Instalasi diblokir oleh ${packageName}.\n\nSesuaikan pengaturan keamanan anda dan coba kembali.",
     "install_failed_verification_failure_description": "Instalasi gagal karena masalah verifikasi.\n\nSesuaikan pengaturan keamanan anda dan coba kembali.",
-    "install_failed_version_downgrade_description": "Instalasi gagal karena aplikasi tambalan memiliki versi yang lebih rendah daripada aplikasi yang sudah ada.\n\nCopot pemasangan aplikasi dan coba kembali?",
+    "install_failed_version_downgrade_description": "Pemasangan gagal karena aplikasi tambalan memiliki versi yang lebih rendah daripada aplikasi yang sudah terpasang.\n\nCopot pemasangan aplikasi dan coba kembali?",
     "status_unknown_description": "Instalasi gagal karena alasan yang tidak diketahui. Silakan coba kembali."
   }
 }

@@ -283,6 +283,7 @@
     "status_failure_timeout_description": "安装时间太长。\n\n您想再试一次吗？",
     "status_failure_storage_description": "由于存储空间不足，安装失败。\n\n释放一些空间，然后重试。",
     "status_failure_invalid_description": "由于修补的应用程序无效，安装失败。\n\n卸载该应用程序并重试？",
+    "status_failure_incompatible_description": "",
     "status_failure_conflict_description": "该应用程序的现有安装阻止了安装。\n\n卸载已安装的应用程序并重试？",
     "status_failure_blocked_description": "安装被 ${packageName} 阻止。\n\n调整您的安全设置并重试。",
     "install_failed_verification_failure_description": "由于验证问题，安装失败。\n\n请调整安全设置并重试。",
