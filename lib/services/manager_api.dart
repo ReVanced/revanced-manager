@@ -67,15 +67,15 @@ class ManagerAPI {
     }
 
     // Migrate to new API URL if not done yet as the old one is sunset.
-    final bool hasMigratedToNewApi =
-        _prefs.getBool('migratedToNewApiUrl') ?? false;
-    if (!hasMigratedToNewApi) {
+    final bool hasMigratedToLatestApi =
+        _prefs.getBool('migratedToLatestApiUrl') ?? false;
+    if (!hasMigratedToLatestApi) {
       final String apiUrl = getApiUrl().toLowerCase();
       if (apiUrl.contains('releases.revanced.app') ||
           (apiUrl.contains('api.revanced.app') &&
               !apiUrl.contains('v3'))) {
         await setApiUrl(''); // Reset to default.
-        _prefs.setBool('migratedToNewApiUrl', true);
+        _prefs.setBool('migratedToLatestApiUrl', true);
       }
     }
 
