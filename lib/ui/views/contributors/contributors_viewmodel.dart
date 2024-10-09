@@ -9,13 +9,15 @@ class ContributorsViewModel extends BaseViewModel {
   List<dynamic> cliContributors = [];
   List<dynamic> managerContributors = [];
 
+  String repoName(String repo) => repo.split('/').last;
+
   Future<void> getContributors() async {
     final Map<String, List<dynamic>> contributors =
         await _managerAPI.getContributors();
-    patcherContributors = contributors[_managerAPI.defaultPatcherRepo] ?? [];
-    patchesContributors = contributors[_managerAPI.defaultPatchesRepo] ?? [];
-    cliContributors = contributors[_managerAPI.defaultCliRepo] ?? [];
-    managerContributors = contributors[_managerAPI.defaultManagerRepo] ?? [];
+    patcherContributors = contributors[repoName(_managerAPI.defaultPatcherRepo)] ?? [];
+    patchesContributors = contributors[repoName(_managerAPI.defaultPatchesRepo)] ?? [];
+    cliContributors = contributors[repoName(_managerAPI.defaultCliRepo)] ?? [];
+    managerContributors = contributors[repoName(_managerAPI.defaultManagerRepo)] ?? [];
     notifyListeners();
   }
 }

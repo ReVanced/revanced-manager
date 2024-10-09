@@ -44,7 +44,7 @@ class ManagerAPI {
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
-  String defaultApiUrl = 'https://api.revanced.app/';
+  String defaultApiUrl = 'https://api.revanced.app/v3';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
@@ -71,7 +71,9 @@ class ManagerAPI {
         _prefs.getBool('migratedToNewApiUrl') ?? false;
     if (!hasMigratedToNewApi) {
       final String apiUrl = getApiUrl().toLowerCase();
-      if (apiUrl.contains('releases.revanced.app')) {
+      if (apiUrl.contains('releases.revanced.app') ||
+          (apiUrl.contains('api.revanced.app') &&
+              !apiUrl.contains('v3'))) {
         await setApiUrl(''); // Reset to default.
         _prefs.setBool('migratedToNewApiUrl', true);
       }
@@ -344,7 +346,8 @@ class ManagerAPI {
   ) async {
     deleteLastPatchedApp();
     final Directory appCache = await getApplicationSupportDirectory();
-    app.patchedFilePath = outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.patchedFilePath =
+        outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
     app.fileSize = outFile.lengthSync();
     await _prefs.setString(
       'lastPatchedApp',
@@ -454,21 +457,14 @@ class ManagerAPI {
   }
 
   Future<File?> downloadManager() async {
-    return await _revancedAPI.getLatestReleaseFile(
-      '.apk',
-      defaultManagerRepo,
-    );
+    return await _revancedAPI.getLatestReleaseFile('manager');
   }
 
   Future<String?> getLatestPatchesReleaseTime() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseTime(
-        '.json',
-        defaultPatchesRepo,
-      );
+      return await _revancedAPI.getLatestReleaseTime('patches');
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -481,27 +477,23 @@ class ManagerAPI {
 
   Future<String?> getLatestManagerReleaseTime() async {
     return await _revancedAPI.getLatestReleaseTime(
-      '.apk',
-      defaultManagerRepo,
+      'manager',
     );
   }
 
   Future<String?> getLatestManagerVersion() async {
     return await _revancedAPI.getLatestReleaseVersion(
-      '.apk',
-      defaultManagerRepo,
+      'manager',
     );
   }
 
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
       return await _revancedAPI.getLatestReleaseVersion(
-        '.json',
-        defaultPatchesRepo,
+        'patches',
       );
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
