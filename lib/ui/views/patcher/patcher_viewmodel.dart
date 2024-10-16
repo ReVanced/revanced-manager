@@ -192,13 +192,10 @@ class PatcherViewModel extends BaseViewModel {
           .map((p) => p.name)
           .toSet();
     }
-    if (!savedPatchNames.contains(patch.name)) {
-      if (!newPatches.contains('• ${patch.name}')) {
-        newPatches.add('• ${patch.name}');
-      }
-      return true;
+    if (savedPatchNames.isEmpty) {
+      return false;
     }
-    return false;
+    return !savedPatchNames.contains(patch.name);
   }
 
   Future<void> loadLastSelectedPatches() async {
@@ -243,6 +240,11 @@ class PatcherViewModel extends BaseViewModel {
             option.key,
           );
         }
+      }
+    }
+    for (final patch in patches) {
+      if (isPatchNew(patch)) {
+        newPatches.add('• ${patch.name}');
       }
     }
     notifyListeners();
