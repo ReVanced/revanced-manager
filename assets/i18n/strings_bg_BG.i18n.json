@@ -55,8 +55,6 @@
     "widgetTitle": "Модификатор",
     "patchButton": "Модифицирайте",
     "incompatibleArchWarningDialogText": "Процесът на модифициране в момента не се поддържа на устройства с тази архитектура и може да се провали. Ще продължите ли?",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "Опциите на някои модификации трябва да бъдат зададени."
   },
   "appSelectorCard": {

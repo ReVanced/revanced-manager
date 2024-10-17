@@ -55,8 +55,6 @@
     "widgetTitle": "Печер",
     "patchButton": "Печуј",
     "incompatibleArchWarningDialogText": "Печовање на овој архитектури још увек није подржано и можда неће успети. Ипак наставити?",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "Неке опције морају бити изабране."
   },
   "appSelectorCard": {

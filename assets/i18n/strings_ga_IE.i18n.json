@@ -55,8 +55,6 @@
     "widgetTitle": "Paisteálaí",
     "patchButton": "Paiste",
     "incompatibleArchWarningDialogText": "Níl paisteáil ar an ailtireacht seo tacaítear leis go fóill agus d’fhéadfadh sé teip. Lean ar aghaidh fós?",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "Caithfear roinnt roghanna paiste a shocrú."
   },
   "appSelectorCard": {

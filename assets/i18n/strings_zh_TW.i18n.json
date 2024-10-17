@@ -55,8 +55,6 @@
     "widgetTitle": "修補工具",
     "patchButton": "修補",
     "incompatibleArchWarningDialogText": "此架構尚未支援修補，可能會失敗。仍要繼續嗎？",
-    "removedPatchesWarningDialogText": "",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "某些修補檔選項需要進行設定。"
   },
   "appSelectorCard": {
