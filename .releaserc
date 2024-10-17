@@ -19,7 +19,6 @@
     [
       "semantic-release-pub",
       {
-        "cli": "flutter",
         "publishPub": false,
         "updateBuildNumber": true
       }
