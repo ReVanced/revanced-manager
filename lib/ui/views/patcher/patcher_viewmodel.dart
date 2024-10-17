@@ -28,6 +28,7 @@ class PatcherViewModel extends BaseViewModel {
   BuildContext? ctx;
   List<Patch> selectedPatches = [];
   List<String> removedPatches = [];
+  List<String> newPatches = [];
 
   void navigateToAppSelector() {
     _navigationService.navigateTo(Routes.appSelectorView);
@@ -59,6 +60,11 @@ class PatcherViewModel extends BaseViewModel {
             child: Text(
               t.patcherView.removedPatchesWarningDialogText(
                 patches: removedPatches.join('\n'),
+                newPatches: newPatches.isNotEmpty
+                    ? t.patcherView.addedPatchesDialogText(
+                        addedPatches: newPatches.join('\n'),
+                      )
+                    : '',
               ),
             ),
           ),
@@ -188,14 +194,14 @@ class PatcherViewModel extends BaseViewModel {
     }
     if (savedPatchNames.isEmpty) {
       return false;
-    } else {
-      return !savedPatchNames.contains(patch.name);
     }
+    return !savedPatchNames.contains(patch.name);
   }
 
   Future<void> loadLastSelectedPatches() async {
     this.selectedPatches.clear();
     removedPatches.clear();
+    newPatches.clear();
     final List<String> selectedPatches =
         await _managerAPI.getSelectedPatches(selectedApp!.packageName);
     final List<Patch> patches =
@@ -234,6 +240,11 @@ class PatcherViewModel extends BaseViewModel {
             option.key,
           );
         }
+      }
+    }
+    for (final patch in patches) {
+      if (isPatchNew(patch)) {
+        newPatches.add('• ${patch.name}');
       }
     }
     notifyListeners();
