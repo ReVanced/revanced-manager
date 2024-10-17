@@ -55,7 +55,8 @@
     "widgetTitle": "Trình vá",
     "patchButton": "Vá",
     "incompatibleArchWarningDialogText": "Việc vá ứng dụng trên kiến ​​trúc này hiện chưa được hỗ trợ và có thể thất bại. Bạn vẫn muốn tiếp tục?",
-    "removedPatchesWarningDialogText": "Những bản vá sau đây đã bị loại bỏ từ lần cuối bạn dùng chúng.\n\n${patches}\n\n${newPatches}Vẫn tiếp tục?",
+    "removedPatchesWarningDialogText": "",
+    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "Một số tùy chọn bản vá cần được thiết đặt."
   },
   "appSelectorCard": {

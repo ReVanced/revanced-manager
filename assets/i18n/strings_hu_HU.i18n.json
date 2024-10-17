@@ -55,7 +55,8 @@
     "widgetTitle": "Patchelő",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "Ezen az architektúrán a patchelés még nem támogatott, és sikertelen lehet. Mégis folytatod?",
-    "removedPatchesWarningDialogText": "A következő patcheket a legutóbbi használatuk óta eltávolították.\n\n${patches}\n\n${newPatches}Mindenképpen folytatja?",
+    "removedPatchesWarningDialogText": "Az alkalmazás legutóbbi javítása óta eltávolított javítások:\n\n${patches}\n\n${newPatches}Amúgy folytatja?",
+    "addedPatchesDialogText": "Javítások hozzáadva az alkalmazás legutóbbi javítása óta:\n\n${addedPatches}",
     "requiredOptionDialogText": "Néhány patch lehetőséget be kell állítani."
   },
   "appSelectorCard": {

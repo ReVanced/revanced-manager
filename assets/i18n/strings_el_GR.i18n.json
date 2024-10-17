@@ -55,7 +55,8 @@
     "widgetTitle": "Τροποποιητής",
     "patchButton": "Τροποποίηση",
     "incompatibleArchWarningDialogText": "Η διαδικασία της τροποποίησης δεν υποστηρίζεται προς το παρόν σε συσκευές της συγκεκριμένης αρχιτεκτονικής και μπορεί να αποτύχει. Συνέχεια παρόλα αυτά;",
-    "removedPatchesWarningDialogText": "Οι παρακάτω τροποποιήσεις αφαιρέθηκαν από την τελευταία φορά που τις χρησιμοποιήσατε.\n\n${patches}\n\n${newPatches}Συνέχεια παρόλα αυτά;",
+    "removedPatchesWarningDialogText": "Αφαιρέθηκαν διορθώσεις από την τελευταία φορά που επισημάνατε αυτή την εφαρμογή:\n\n${patches}\n\n${newPatches}Continue anyways?",
+    "addedPatchesDialogText": "Προστέθηκε διορθώσεις από την τελευταία φορά που κάνατε αυτήν την εφαρμογή:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Κάποιες επιλογές τροποποιήσεων πρέπει να οριστούν."
   },
   "appSelectorCard": {
