@@ -3,7 +3,7 @@
 To use ReVanced on your Android device, ReVanced Manager have to be install, 
 refer to the [Prerequisites](0_prerequisites.md) if haven't already.
 
-## ✅ Installation steps
+## 🪜 Installation steps
 
 1. Get the latest version of ReVanced Manager from 
    the [ReVanced site](https://revanced.app/download) 
