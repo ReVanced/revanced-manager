@@ -55,7 +55,7 @@
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "Patchen op deze architectuur wordt nog niet ondersteund en zal mogelijk mislukken. Toch doorgaan?",
-    "removedPatchesWarningDialogText": "De volgende patches zijn verwijderd sinds de laatste keer dat je ze hebt gebruikt.\n\n${patches}\n\nToch doorgaan?",
+    "removedPatchesWarningDialogText": "De volgende patches zijn verwijderd sinds de laatste keer dat je ze hebt gebruikt.\n\n${patches}\n\n${newPatches}Toch doorgaan?",
     "requiredOptionDialogText": "Er moeten enkele patch-opties worden ingesteld."
   },
   "appSelectorCard": {

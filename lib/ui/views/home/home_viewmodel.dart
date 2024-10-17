@@ -84,8 +84,8 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-    final bool isConnected =
-        await Connectivity().checkConnectivity() != [ConnectivityResult.none];
+    final bool isConnected = !(await Connectivity().checkConnectivity())
+        .contains(ConnectivityResult.none);
     if (!isConnected) {
       _toast.showBottom(t.homeView.noConnection);
     }
@@ -484,7 +484,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<String?> getLatestPatchesChangelog() async {
     final release =
-        await _githubAPI.getLatestRelease(_managerAPI.defaultPatchesRepo);
+        await _githubAPI.getLatestRelease(_managerAPI.getPatchesRepo());
     return release?['body'];
   }
 
