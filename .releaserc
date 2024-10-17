@@ -17,15 +17,11 @@
     "@semantic-release/changelog",
     "@semantic-release/release-notes-generator",
     [
-      "@droidsolutions-oss/semantic-release-update-file",
+      "semantic-release-pub",
       {
-        "files": [
-          {
-            "path": ["pubspec.yaml"],
-            "type": "flutter",
-            "branches": ["main", "dev"]
-          }
-        ]
+        "cli": "flutter",
+        "publishPub": false,
+        "updateBuildNumber": true
       }
     ],
     [
