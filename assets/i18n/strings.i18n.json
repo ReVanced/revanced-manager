@@ -55,8 +55,8 @@
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "Patching on this architecture is not yet supported and might fail. Continue anyways?",
-    "removedPatchesWarningDialogText": "The following patches have been removed since the last time you used them.\n\n${patches}\n\n${newPatches}Continue anyways?",
-    "addedPatchesDialogText": "The following patches have been added since the last time you patched this app.\n\n${addedPatches}\n\n",
+    "removedPatchesWarningDialogText": "Removed patches since the last time you used them:\n\n${patches}\n\n${newPatches}Continue anyways?",
+    "addedPatchesDialogText": "Added patches since the last time you used them:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Some patch options have to be set."
   },
   "appSelectorCard": {
