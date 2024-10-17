@@ -21,7 +21,8 @@ subprojects {
     afterEvaluate {
         extensions.findByName("android")?.let {
             it as CommonExtension<*, *, *, *, *, *>
-            it.compileSdk = 34
+            if (it.compileSdk != null && it.compileSdk!! < 31)
+                it.compileSdk = 34
         }
     }
 
