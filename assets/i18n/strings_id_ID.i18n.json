@@ -55,7 +55,7 @@
     "widgetTitle": "Penambal",
     "patchButton": "Tambalan",
     "incompatibleArchWarningDialogText": "Menambal pada arsitektur ini belum didukung dan kemungkinan gagal. Lanjutkan saja?",
-    "removedPatchesWarningDialogText": "Tambalan berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\nTetap lanjut?",
+    "removedPatchesWarningDialogText": "Tambalan berikut telah dihapus sejak terakhir kali Anda menggunakannya.\n\n${patches}\n\n${newPatches}Tetap lanjut?",
     "requiredOptionDialogText": "Beberapa pilihan tambalan harus diatur."
   },
   "appSelectorCard": {

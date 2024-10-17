@@ -55,7 +55,7 @@
     "widgetTitle": "প্যাচার",
     "patchButton": "প্যাচ",
     "incompatibleArchWarningDialogText": "এই আর্কিটেকচারে প্যাচিং এখনো সমর্থিত নয় এবং সফল নাও হতে পারে। যেকোন ভাবে এগিয়ে যেতে চান?",
-    "removedPatchesWarningDialogText": "আপনি এর আগে যখন ব্যবহার করেছিলেন তারপর এই প্যাচগুলো অপসারণ করা হয়।\n\n${patches}\n\nযেকোন ভাবে এগিয়ে যেতে চান?",
+    "removedPatchesWarningDialogText": "আপনি এর আগে যখন ব্যবহার করেছিলেন তারপর এই প্যাচগুলো অপসারণ করা হয়।\n\n${patches}\n\n${newPatches}যেকোন ভাবে এগিয়ে যেতে চান?",
     "requiredOptionDialogText": "কিছু প্যাচ অপশন সেট করতে হবে।"
   },
   "appSelectorCard": {

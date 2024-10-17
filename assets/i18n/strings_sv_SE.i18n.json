@@ -55,7 +55,7 @@
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "Patchning av denna arkitektur stöds ännu inte och kan misslyckas. Fortsätt ändå?",
-    "removedPatchesWarningDialogText": "Följande patchar har tagits bort sedan du senast använde dem.\n\n${patches}\n\nFortsätt ändå?",
+    "removedPatchesWarningDialogText": "Följande patchar har tagits bort sedan du senast använde dem.\n\n${patches}\n\n${newPatches}Fortsätt ändå?",
     "requiredOptionDialogText": "Vissa patchalternativ måste anges."
   },
   "appSelectorCard": {

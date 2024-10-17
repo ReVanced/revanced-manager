@@ -55,7 +55,7 @@
     "widgetTitle": "パッチャー",
     "patchButton": "パッチ",
     "incompatibleArchWarningDialogText": "このアーキテクチャへのパッチ適用はまだサポートされておらず、失敗する可能性があります。とにかく続けますか？",
-    "removedPatchesWarningDialogText": "以下のパッチはもう使用できません。\n\n${patches}\n\n続行しますか?",
+    "removedPatchesWarningDialogText": "以下のパッチはもう使用できません。\n\n${patches}\n\n${newPatches}続行しますか?",
     "requiredOptionDialogText": "一部のパッチオプションを設定する必要があります。"
   },
   "appSelectorCard": {

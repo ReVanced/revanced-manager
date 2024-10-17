@@ -55,7 +55,7 @@
     "widgetTitle": "Patcher",
     "patchButton": "Patch",
     "incompatibleArchWarningDialogText": "Patcharea după această arhitectură nu este încă suportată și ar putea eșua. Continuați oricum?",
-    "removedPatchesWarningDialogText": "Următoarele patch-uri au fost eliminate de la ultima dată când le-ați folosit.\n\n${patches}\n\nContinuați oricum?",
+    "removedPatchesWarningDialogText": "Următoarele patch-uri au fost eliminate de la ultima dată când le-ați folosit.\n\n${patches}\n\n${newPatches}Continuați oricum?",
     "requiredOptionDialogText": "Unele opțiuni pentru patch-uri trebuie setate."
   },
   "appSelectorCard": {

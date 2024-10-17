@@ -55,7 +55,7 @@
     "widgetTitle": "المُعَّدِّل",
     "patchButton": "تعديل",
     "incompatibleArchWarningDialogText": "لم يتم دعم التعديلات الخاصة بهذه البنية حتى الآن وقد تفشل. هل تريد المتابعة على أي حال؟",
-    "removedPatchesWarningDialogText": "تم إزالة التعديلات التالية منذ آخر مرة استخدمتها فيها.\n\n${patches}\n\nتابع على أي حال؟",
+    "removedPatchesWarningDialogText": "تم إزالة التعديلات التالية منذ آخر مرة استخدمتها فيها.\n\n${patches}\n\n${newPatches}تابع على أي حال؟",
     "requiredOptionDialogText": "يجب ضبط بعض خيارات التعديل."
   },
   "appSelectorCard": {

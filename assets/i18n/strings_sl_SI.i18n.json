@@ -45,7 +45,7 @@
   "patcherView": {
     "widgetTitle": "Popravljalnik",
     "patchButton": "Popravi",
-    "removedPatchesWarningDialogText": "Spodnji popravki so bili odstranjeni, odkar ste jih nazadnje uporabili.\n\n${patches}\n\nVseeno nadaljujem?"
+    "removedPatchesWarningDialogText": "Spodnji popravki so bili odstranjeni, odkar ste jih nazadnje uporabili.\n\n${patches}\n\n${newPatches}Vseeno nadaljujem?"
   },
   "appSelectorCard": {
     "widgetTitle": "Izberi aplikacijo",

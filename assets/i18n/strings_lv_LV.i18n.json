@@ -50,7 +50,7 @@
   "patcherView": {
     "widgetTitle": "Pačeris",
     "patchButton": "Pačot",
-    "removedPatchesWarningDialogText": "Kopš pēdējās lietošanas reizes ir noņemti šādi ielāpi.\n\n${patches}\n\nTurpināt jebkurā gadījumā?"
+    "removedPatchesWarningDialogText": "Kopš pēdējās lietošanas reizes ir noņemti šādi ielāpi.\n\n${patches}\n\n${newPatches}Turpināt jebkurā gadījumā?"
   },
   "appSelectorCard": {
     "widgetTitle": "Izvēlaties lietotni",

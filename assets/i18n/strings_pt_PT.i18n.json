@@ -55,7 +55,7 @@
     "widgetTitle": "Modificador",
     "patchButton": "Modificar",
     "incompatibleArchWarningDialogText": "Patrulhar nesta arquitetura ainda não é suportado e pode falhar. Continuar mesmo assim?",
-    "removedPatchesWarningDialogText": "As seguintes modificações foram removidas desde a última vez que as utilizaste.\n\n${patches}\n\nContinuar na mesma?",
+    "removedPatchesWarningDialogText": "As seguintes modificações foram removidas desde a última vez que as utilizaste.\n\n${patches}\n\n${newPatches}Continuar na mesma?",
     "requiredOptionDialogText": "Algumas opções das Modificações precisam ser definidas."
   },
   "appSelectorCard": {

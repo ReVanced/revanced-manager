@@ -55,7 +55,7 @@
     "widgetTitle": "இணைப்பான்",
     "patchButton": "இணைப்பு",
     "incompatibleArchWarningDialogText": "இந்தக் கட்டமைப்பில் பிறழுதல் இன்னும் ஆதரிக்கப்படவில்லை மற்றும் தோல்வியடையக்கூடும்.  எப்படியும் தொடரவா?",
-    "removedPatchesWarningDialogText": "நீங்கள் கடைசியாகப் பயன்படுத்தியதிலிருந்து பின்வரும் பிறழ்கள் அகற்றப்பட்டன\n\n${patches}\n\nஎப்படியும் தொடரவா?",
+    "removedPatchesWarningDialogText": "நீங்கள் கடைசியாகப் பயன்படுத்தியதிலிருந்து பின்வரும் பிறழ்கள் அகற்றப்பட்டன\n\n${patches}\n\n${newPatches}எப்படியும் தொடரவா?",
     "requiredOptionDialogText": "சில பிறழ்களுக்கு விருப்பங்களை அமைக்க வேண்டும்."
   },
   "appSelectorCard": {
