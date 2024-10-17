@@ -55,6 +55,8 @@
     "widgetTitle": "Patcher",
     "patchButton": "Oppdatering",
     "incompatibleArchWarningDialogText": "Patching på denne arkitekturen er ennå ikke støttet og kan mislykkes. Fortsette likevel?",
+    "removedPatchesWarningDialogText": "Fjernede oppdateringer siden forrige gang du sendte denne appen:\n\n${patches}\n\n${newPatches}Fortsette likevel?",
+    "addedPatchesDialogText": "La til korrigeringer siden forrige gang du patchet denne appen:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Noen oppdateringsalternativer må angis."
   },
   "appSelectorCard": {

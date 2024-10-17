@@ -52,7 +52,6 @@
   "patcherView": {
     "widgetTitle": "Tagapagtapal",
     "patchButton": "Tapalan",
-    "removedPatchesWarningDialogText": "Ang mga sumusunod na patches ay tinanggal mula noong huling beses mong gamitin ang mga ito.\n\n${patches}\n\n${newPatches}Ituloy pa rin ba?",
     "requiredOptionDialogText": "Kailangan mo i-set ang ilang mga opsyon para sa patch."
   },
   "appSelectorCard": {
