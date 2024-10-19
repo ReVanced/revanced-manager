@@ -1,6 +1,7 @@
 package app.revanced.manager.ui.screen
 
-import android.content.pm.PackageInfo
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,34 +17,36 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
+import app.revanced.manager.data.room.apps.installed.InstallType
+import app.revanced.manager.data.room.apps.installed.InstalledApp
+import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
+import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
+import app.revanced.manager.util.EventEffect
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
+import app.revanced.manager.util.enabled
 import app.revanced.manager.util.toast
 import app.revanced.manager.util.transparentListItemColors
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
@@ -54,6 +57,7 @@ import dev.olshevski.navigation.reimagined.rememberNavController
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectedAppInfoScreen(
     onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
@@ -80,8 +84,12 @@ fun SelectedAppInfoScreen(
         }
     }
 
-    var showSourceSelectorDialog by rememberSaveable {
-        mutableStateOf(false)
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = vm::handlePluginActivityResult
+    )
+    EventEffect(flow = vm.launchActivityFlow) { intent ->
+        launcher.launch(intent)
     }
 
     val navController =
@@ -90,42 +98,120 @@ fun SelectedAppInfoScreen(
     NavBackHandler(controller = navController)
 
     AnimatedNavHost(controller = navController) { destination ->
+        val error by vm.error.collectAsStateWithLifecycle(null)
         when (destination) {
-            is SelectedAppInfoDestination.Main -> SelectedAppInfoScreen(
-                onPatchClick = patchClick@{
-                    if (selectedPatchCount == 0) {
-                        context.toast(context.getString(R.string.no_patches_selected))
+            is SelectedAppInfoDestination.Main -> Scaffold(
+                topBar = {
+                    AppTopBar(
+                        title = stringResource(R.string.app_info),
+                        onBackClick = onBackClick
+                    )
+                },
+                floatingActionButton = {
+                    if (error != null) return@Scaffold
 
-                        return@patchClick
-                    }
-                    onPatchClick(
-                        vm.selectedApp,
-                        patches,
-                        vm.getOptionsFiltered(bundles)
+                    ExtendedFloatingActionButton(
+                        text = { Text(stringResource(R.string.patch)) },
+                        icon = {
+                            Icon(
+                                Icons.Default.AutoFixHigh,
+                                stringResource(R.string.patch)
+                            )
+                        },
+                        onClick = patchClick@{
+                            if (selectedPatchCount == 0) {
+                                context.toast(context.getString(R.string.no_patches_selected))
+
+                                return@patchClick
+                            }
+                            onPatchClick(
+                                vm.selectedApp,
+                                patches,
+                                vm.getOptionsFiltered(bundles)
+                            )
+                        }
                     )
-                },
-                onPatchSelectorClick = {
-                    navController.navigate(
-                        SelectedAppInfoDestination.PatchesSelector(
-                            vm.selectedApp,
-                            vm.getCustomPatches(
-                                bundles,
-                                allowIncompatiblePatches
-                            ),
-                            vm.options
+                }
+            ) { paddingValues ->
+                val plugins by vm.plugins.collectAsStateWithLifecycle(emptyList())
+
+                if (vm.showSourceSelector) {
+                    AppSourceSelectorDialog(
+                        plugins = plugins,
+                        installedApp = vm.installedAppData,
+                        searchApp = SelectedApp.Search(
+                            vm.packageName,
+                            vm.desiredVersion
+                        ),
+                        activeSearchJob = vm.activePluginAction,
+                        hasRoot = vm.hasRoot,
+                        onDismissRequest = vm::dismissSourceSelector,
+                        onSelectPlugin = vm::searchInPlugin,
+                        onSelect = {
+                            vm.selectedApp = it
+                            vm.dismissSourceSelector()
+                        }
+                    )
+                }
+
+                ColumnWithScrollbar(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    AppInfo(vm.selectedAppInfo, placeholderLabel = packageName) {
+                        Text(
+                            version ?: stringResource(R.string.selected_app_meta_any_version),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
+                    }
+
+                    PageItem(
+                        R.string.patch_selector_item,
+                        stringResource(
+                            R.string.patch_selector_item_description,
+                            selectedPatchCount
+                        ),
+                        onClick = {
+                            navController.navigate(
+                                SelectedAppInfoDestination.PatchesSelector(
+                                    vm.selectedApp,
+                                    vm.getCustomPatches(
+                                        bundles,
+                                        allowIncompatiblePatches
+                                    ),
+                                    vm.options
+                                )
+                            )
+                        }
                     )
-                },
-                onSourceSelectorClick = {
-                    showSourceSelectorDialog = true
-                    // navController.navigate(SelectedAppInfoDestination.VersionSelector)
-                },
-                onBackClick = onBackClick,
-                selectedPatchCount = selectedPatchCount,
-                packageName = packageName,
-                version = version,
-                packageInfo = vm.selectedAppInfo,
-            )
+                    PageItem(
+                        R.string.apk_source_selector_item,
+                        when (val app = vm.selectedApp) {
+                            is SelectedApp.Search -> stringResource(R.string.apk_source_auto)
+                            is SelectedApp.Installed -> stringResource(R.string.apk_source_installed)
+                            is SelectedApp.Download -> stringResource(
+                                R.string.apk_source_downloader,
+                                plugins.find { it.packageName == app.data.pluginPackageName }?.name
+                                    ?: app.data.pluginPackageName
+                            )
+
+                            is SelectedApp.Local -> stringResource(R.string.apk_source_local)
+                        },
+                        onClick = {
+                            vm.showSourceSelector()
+                        }
+                    )
+                    error?.let {
+                        Text(
+                            stringResource(it.resourceId),
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+                    }
+                }
+            }
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
                 onSave = { patches, options ->
@@ -142,66 +228,6 @@ fun SelectedAppInfoScreen(
                         )
                     )
                 }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SelectedAppInfoScreen(
-    onPatchClick: () -> Unit,
-    onPatchSelectorClick: () -> Unit,
-    onSourceSelectorClick: () -> Unit,
-    onBackClick: () -> Unit,
-    selectedPatchCount: Int,
-    packageName: String,
-    version: String?,
-    packageInfo: PackageInfo?,
-) {
-    Scaffold(
-        topBar = {
-            AppTopBar(
-                title = stringResource(R.string.app_info),
-                onBackClick = onBackClick
-            )
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text(stringResource(R.string.patch)) },
-                icon = {
-                    Icon(
-                        Icons.Default.AutoFixHigh,
-                        stringResource(R.string.patch)
-                    )
-                },
-                onClick = onPatchClick
-            )
-        }
-    ) { paddingValues ->
-        ColumnWithScrollbar(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            AppInfo(packageInfo, placeholderLabel = packageName) {
-                Text(
-                    version ?: stringResource(R.string.selected_app_meta_any_version),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-
-            PageItem(
-                R.string.patch_selector_item,
-                stringResource(R.string.patch_selector_item_description, selectedPatchCount),
-                onPatchSelectorClick
-            )
-            PageItem(
-                R.string.version_selector_item,
-                version?.let { stringResource(R.string.version_selector_item_description, it) }
-                    ?: stringResource(R.string.version_selector_item_description_auto),
-                onSourceSelectorClick
             )
         }
     }
@@ -234,19 +260,21 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
 }
 
 @Composable
-private fun AppSourceSelectorDialog(onDismissRequest: () -> Unit) {
+private fun AppSourceSelectorDialog(
+    plugins: List<LoadedDownloaderPlugin>,
+    installedApp: Pair<SelectedApp.Installed, InstalledApp?>?,
+    searchApp: SelectedApp.Search,
+    activeSearchJob: String?,
+    hasRoot: Boolean,
+    onDismissRequest: () -> Unit,
+    onSelectPlugin: (LoadedDownloaderPlugin) -> Unit,
+    onSelect: (SelectedApp) -> Unit,
+) {
+    val canSelect = activeSearchJob == null
+
     AlertDialogExtended(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(
-                onClick = {
-
-                }
-            ) {
-                Text("Select")
-            }
-        },
-        dismissButton = {
             TextButton(onClick = onDismissRequest) {
                 Text(stringResource(R.string.cancel))
             }
@@ -254,37 +282,49 @@ private fun AppSourceSelectorDialog(onDismissRequest: () -> Unit) {
         title = { Text("Select source") },
         textHorizontalPadding = PaddingValues(horizontal = 0.dp),
         text = {
-            /*
-            val presets = remember(scope.option.presets) {
-                scope.option.presets?.entries?.toList().orEmpty()
-            }
-
             LazyColumn {
-                @Composable
-                fun Item(title: String, value: Any?, presetKey: String?) {
+                item(key = "auto") {
+                    val hasPlugins = plugins.isNotEmpty()
                     ListItem(
-                        modifier = Modifier.clickable { selectedPreset = presetKey },
-                        headlineContent = { Text(title) },
-                        supportingContent = value?.toString()?.let { { Text(it) } },
-                        leadingContent = {
-                            RadioButton(
-                                selected = selectedPreset == presetKey,
-                                onClick = { selectedPreset = presetKey }
-                            )
-                        },
+                        modifier = Modifier
+                            .clickable(enabled = canSelect && hasPlugins) { onSelect(searchApp) }
+                            .enabled(hasPlugins),
+                        headlineContent = { Text("Auto") },
+                        supportingContent = { Text(if (hasPlugins) "Use all installed downloaders to find a suitable app." else "No plugins available") },
                         colors = transparentListItemColors
                     )
                 }
 
-                items(presets, key = { it.key }) {
-                    Item(it.key, it.value, it.key)
+                installedApp?.let { (app, meta) ->
+                    item(key = "installed") {
+                        val (usable, text) = when {
+                            // Mounted apps must be unpatched before patching, which cannot be done without root access.
+                            meta?.installType == InstallType.ROOT && !hasRoot -> false to "Mounted apps cannot be patched again without root access"
+                            // Patching already patched apps is not allowed because patches expect unpatched apps.
+                            meta?.installType == InstallType.DEFAULT -> false to stringResource(R.string.already_patched)
+                            else -> true to app.version
+                        }
+                        ListItem(
+                            modifier = Modifier
+                                .clickable(enabled = canSelect && usable) { onSelect(app) }
+                                .enabled(usable), // TODO: version safeguard
+                            headlineContent = { Text(stringResource(R.string.installed)) },
+                            supportingContent = { Text(text) },
+                            colors = transparentListItemColors
+                        )
+                    }
                 }
 
-                item(key = null) {
-                    Item(stringResource(R.string.option_preset_custom_value), null, null)
+                items(plugins, key = { "plugin_${it.packageName}" }) { plugin ->
+                    ListItem(
+                        modifier = Modifier.clickable(enabled = canSelect) { onSelectPlugin(plugin) },
+                        headlineContent = { Text(plugin.name) },
+                        supportingContent = { Text("Try to find the app using ${plugin.name}") },
+                        trailingContent = (@Composable { LoadingIndicator() }).takeIf { activeSearchJob == plugin.packageName },
+                        colors = transparentListItemColors
+                    )
                 }
             }
-             */
         }
     )
 }

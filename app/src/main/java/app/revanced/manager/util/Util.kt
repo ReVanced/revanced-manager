@@ -24,6 +24,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
@@ -259,3 +261,5 @@ fun ScrollState.isScrollingUp(): State<Boolean> {
 
 val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
 val ScrollState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
+
+fun Modifier.enabled(condition: Boolean) = if (condition) this else alpha(0.5f)

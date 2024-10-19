@@ -41,9 +41,11 @@
     <string name="patch_selector_item_description">%d patches selected</string>
     <string name="no_patches_selected">No patches selected</string>
 
-    <string name="version_selector_item">Change version</string>
-    <string name="version_selector_item_description">%s selected</string>
-    <string name="version_selector_item_description_auto">Automatically selected</string>
+    <string name="apk_source_selector_item">Change source</string>
+    <string name="apk_source_auto">Current: All downloaders</string>
+    <string name="apk_source_downloader">Current: %s</string>
+    <string name="apk_source_installed">Current: Installed</string>
+    <string name="apk_source_local">Current: File</string>
 
     <string name="legacy_import_failed">Could not import legacy settings</string>
 

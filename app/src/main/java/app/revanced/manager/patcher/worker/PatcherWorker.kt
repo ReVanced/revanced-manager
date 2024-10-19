@@ -167,7 +167,7 @@ class PatcherWorker(
 
             val inputFile = when (val selectedApp = args.input) {
                 is SelectedApp.Download -> {
-                    val (plugin, data) = downloaderPluginRepository.unwrapParceledData(selectedApp.app)
+                    val (plugin, data) = downloaderPluginRepository.unwrapParceledData(selectedApp.data)
 
                     download(plugin, data)
                 }
