@@ -44,20 +44,20 @@ class PatchOptionsView extends StatelessWidget {
                   child: Column(
                     children: [
                       for (final Option option in model.modifiedOptions)
-                        if (option.valueType == 'String' ||
-                            option.valueType == 'Int')
+                        if (option.type == 'kotlin.String' ||
+                            option.type == 'kotlin.Int')
                           IntAndStringPatchOption(
                             patchOption: option,
                             model: model,
                           )
-                        else if (option.valueType == 'Boolean')
+                        else if (option.type == 'kotlin.Boolean')
                           BooleanPatchOption(
                             patchOption: option,
                             model: model,
                           )
-                        else if (option.valueType == 'StringArray' ||
-                            option.valueType == 'IntArray' ||
-                            option.valueType == 'LongArray')
+                        else if (option.type == 'kotlin.collections.List<kotlin.String>' ||
+                            option.type == 'kotlin.collections.List<kotlin.Int>' ||
+                            option.type == 'kotlin.collections.List<kotlin.Long>')
                           IntStringLongListPatchOption(
                             patchOption: option,
                             model: model,
