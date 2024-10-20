@@ -44,10 +44,12 @@
           {
             "path": "build/app/outputs/apk/release/revanced-manager*.apk"
           },
+        ],
+        "commits": [
           "message": "chore: Release v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         ],
         "successComment": false
-      }
+       }
     ],
     [
       "@saithodev/semantic-release-backmerge",
