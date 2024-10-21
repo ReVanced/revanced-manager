@@ -69,4 +69,4 @@ jobs:
       - name: 🛰️ Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: 'build/app/outputs/flutter-apk/app-release.apk'
+          subject-path: 'build/app/outputs/apk/release/*.apk'
