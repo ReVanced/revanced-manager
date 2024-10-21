@@ -56,7 +56,6 @@
     "patchButton": "Paikkaa",
     "incompatibleArchWarningDialogText": "Paikkaamista ei vielä tueta tällä kokoonpanolla, ja se saattaa epäonnistua. Jatketaanko silti?",
     "removedPatchesWarningDialogText": "Poistetut paikat viimeisen laastariesi jälkeen tämän sovelluksen:\n\n${patches}\n\n${newPatches}Jatka joka tapauksessa?",
-    "addedPatchesDialogText": "",
     "requiredOptionDialogText": "Joitakin paikkausasetuksia on määritettävä."
   },
   "appSelectorCard": {
