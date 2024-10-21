@@ -25,7 +25,7 @@
     "updatesSubtitle": "Yeniləmələr",
     "lastPatchedAppSubtitle": "Son yamaqlanmış tətbiq",
     "patchedSubtitle": "Quraşdırılmış tətbiqlər",
-    "changeLaterSubtitle": "Bunu daha sonra tənzimləmələrdə dəyişə bilərsiniz.",
+    "changeLaterSubtitle": "Bunu sonra tənzimləmələrdə dəyişə bilərsiniz.",
     "noSavedAppFound": "Heç bir tətbiq tapılmadı",
     "noInstallations": "Yamaqlanmış tətbiq quraşdırılmayıb",
     "installUpdate": "Yeniləməni quraşdırmağa davam edilsin?",
@@ -285,7 +285,7 @@
     "status_failure_invalid_description": "Yamaqlanmış tətbiq etibarsız olduğu üçün quraşdırma uğursuz oldu.\n\nTətbiqi silib yenidən sınayırsınız?",
     "status_failure_incompatible_description": "Tətbiq bu cihazla uyğun deyil.\n\nBu cihaz tərəfindən dəstəklənən APK istifadə et və təkrar cəhd et.",
     "status_failure_conflict_description": "Quraşdırma, tətbiqin mövcud quraşdırmasına görə əngəlləndi.\n\nQuraşdırılmış tətbiqi silib yenidən sınayırsınız?",
-    "status_failure_blocked_description": "Quraşdırma, ${packageName} tərəfindən əngəlləndi.\n\nTəhlükəsizlik seçimlərinizi tənzimləyib yenidən sınayın.",
+    "status_failure_blocked_description": "${packageName} quraşdırmanı əngəllədi.\n\nTəhlükəsizlik seçimlərinizi tənzimləyib yenidən sınayın.",
     "install_failed_verification_failure_description": "Təsdiqləmə probleminə görə quraşdırma uğursuz oldu.\n\nTəhlükəsizlik seçimlərinizi tənzimləyib təkrar sınayın.",
     "install_failed_version_downgrade_description": "Yamaqlanmış tətbiq, quraşdırılmış tətbiqdən daha aşağı versiyaya sahib olduğu üçün quraşdırma uğursuz oldu.\n\nTətbiqi silib yenidən sınayırsınız?",
     "status_unknown_description": "Naməlum səbəbə görə quraşdırma uğursuz oldu. Lütfən yenidən sınayın."
