@@ -51,7 +51,6 @@
   "patcherView": {
     "widgetTitle": "Parandaja",
     "patchButton": "Parandus",
-    "removedPatchesWarningDialogText": "Väljatoodud parandused on vahepeal eemaldatud.\n\n${patches}\n\nJätka ikkagi? ",
     "requiredOptionDialogText": "Mõned paranduste sätted on vaja valida. "
   },
   "appSelectorCard": {

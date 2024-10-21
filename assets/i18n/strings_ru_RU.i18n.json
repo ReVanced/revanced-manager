@@ -55,7 +55,8 @@
     "widgetTitle": "Патчер",
     "patchButton": "Пропатчить",
     "incompatibleArchWarningDialogText": "Патчинг на этой архитектуре еще не поддерживается и может завершиться неудачей. Продолжить?",
-    "removedPatchesWarningDialogText": "Следующие патчи были удалены с момента их последнего использования.\n\n ${patches}\n\n Все равно продолжить?",
+    "removedPatchesWarningDialogText": "Удаленные патчи с момента последнего патчинга приложения:\n\n${patches}\n\n${newPatches}Все равно продолжить?",
+    "addedPatchesDialogText": "Добавленные патчи с момента последнего патчинга приложения:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Некоторые параметры патчей должны быть обязательно установлены."
   },
   "appSelectorCard": {

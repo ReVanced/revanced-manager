@@ -55,7 +55,8 @@
     "widgetTitle": "Záplatovač",
     "patchButton": "Záplatovat",
     "incompatibleArchWarningDialogText": "Úprava této architektury není zatím podporována a může selhat. Přesto pokračovat?",
-    "removedPatchesWarningDialogText": "Následující záplaty byly odstraněny od doby, kdy jste je naposledy použili.\n\n${patches}\n\nPřesto pokračovat?",
+    "removedPatchesWarningDialogText": "Odstranili jste záplaty od poslední úpravy této aplikace:\n\n${patches}\n\n${newPatches}Pokračovat?",
+    "addedPatchesDialogText": "Přidány záplaty od poslední úpravy této aplikace:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Je třeba nastavit některé možnosti záplat."
   },
   "appSelectorCard": {

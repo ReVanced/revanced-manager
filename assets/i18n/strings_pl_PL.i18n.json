@@ -55,7 +55,8 @@
     "widgetTitle": "Program łatający",
     "patchButton": "Popraw",
     "incompatibleArchWarningDialogText": "Aktualizowanie na tej architekturze nie jest jeszcze obsługiwane i może się nie powieść. Czy chcesz kontynuować mimo to?",
-    "removedPatchesWarningDialogText": "Następujące łatki zostały usunięte od ostatniego użycia.\n\n${patches}\n\nKontynuować mimo to?",
+    "removedPatchesWarningDialogText": "Usunięto plastry od ostatniego wprowadzenia aplikacji:\n\n${patches}\n\n${newPatches}Kontynuować?",
+    "addedPatchesDialogText": "Dodano plastry od ostatniej aktualizacji aplikacji:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Niektóre opcje muszą być ustawione."
   },
   "appSelectorCard": {
