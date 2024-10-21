@@ -129,6 +129,7 @@ class SManageSources extends BaseViewModel {
               );
               _managerAPI.setCurrentPatchesVersion('0.0.0');
               _managerAPI.setCurrentIntegrationsVersion('0.0.0');
+              _managerAPI.setLastUsedPatchesVersion();
               _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context).pop();
             },
