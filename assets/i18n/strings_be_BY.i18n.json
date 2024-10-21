@@ -55,7 +55,6 @@
     "widgetTitle": "Праграма выпраўлення",
     "patchButton": "Выправіць",
     "incompatibleArchWarningDialogText": "Выпраўленні на гэтай архітэктуры пакуль не падтрымліваюцца і могуць не працаваць. Працягнуць?",
-    "removedPatchesWarningDialogText": "Наступныя выпраўленні былі выдалены з моманту іх апошняга выкарыстання.\n\n${patches}\n\n${newPatches}Усё роўна працягнуць?",
     "requiredOptionDialogText": "Неабходна задаць некаторыя параметры выпраўленняў."
   },
   "appSelectorCard": {

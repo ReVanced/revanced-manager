@@ -49,8 +49,7 @@
   },
   "patcherView": {
     "widgetTitle": "Pačeris",
-    "patchButton": "Pačot",
-    "removedPatchesWarningDialogText": "Kopš pēdējās lietošanas reizes ir noņemti šādi ielāpi.\n\n${patches}\n\n${newPatches}Turpināt jebkurā gadījumā?"
+    "patchButton": "Pačot"
   },
   "appSelectorCard": {
     "widgetTitle": "Izvēlaties lietotni",

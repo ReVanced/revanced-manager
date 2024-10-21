@@ -51,7 +51,6 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "תיקון",
-    "removedPatchesWarningDialogText": "התיקונים הבאים הוסרו מאז הפעם האחרונה שהשתמשת בהם.\n\n${patches}\n\n${newPatches}להמשיך בכל זאת?",
     "requiredOptionDialogText": "כמה אפשרויות תיקון חייבות להיקבע."
   },
   "appSelectorCard": {
