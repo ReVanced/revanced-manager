@@ -69,7 +69,7 @@ jobs:
       - name: Find APK file
         id: find_apk
         run: |
-          APK_LOCATION=$(find build/app/outputs/flutter-apk/ -name "revanced-manager-*.apk")
+          APK_LOCATION=$(find build/app/outputs/apk/release/ -name "revanced-manager-*.apk")
           echo "APK_LOCATION=$APK_LOCATION" >> $GITHUB_ENV
           
       - name: 🛰️ Generate artifact attestation
