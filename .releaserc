@@ -2,7 +2,7 @@
   "branches": [
     "main",
     {
-      "name": "dev",
+      "name": "ci/github-attest-slsa-l2",
       "prerelease": true
     }
   ],
