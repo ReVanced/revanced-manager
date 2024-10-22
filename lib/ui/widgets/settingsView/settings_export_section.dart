@@ -17,6 +17,30 @@ class SExportSection extends StatelessWidget {
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: Text(
+            t.settingsView.exportManagerSettingsLabel,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          subtitle: Text(t.settingsView.exportManagerSettingsHint),
+          onTap: () => _settingsViewModel.exportManagerSettings(),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: Text(
+            t.settingsView.importManagerSettingsLabel,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          subtitle: Text(t.settingsView.importManagerSettingsHint),
+          onTap: () => _settingsViewModel.importManagerSettings(),
+        ),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          title: Text(
             t.settingsView.exportPatchesLabel,
             style: const TextStyle(
               fontSize: 20,
@@ -114,7 +138,6 @@ class SExportSection extends StatelessWidget {
           subtitle: Text(t.settingsView.regenerateKeystoreHint),
           onTap: () => _showDeleteKeystoreDialog(context),
         ),
-        // SManageKeystorePasswordUI(),
       ],
     );
   }

@@ -367,7 +367,8 @@ class ManagerAPI {
   ) async {
     deleteLastPatchedApp();
     final Directory appCache = await getApplicationSupportDirectory();
-    app.patchedFilePath = outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
+    app.patchedFilePath =
+        outFile.copySync('${appCache.path}/lastPatchedApp.apk').path;
     app.fileSize = outFile.lengthSync();
     await _prefs.setString(
       'lastPatchedApp',
@@ -511,8 +512,7 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         final DateTime timestamp =
             DateTime.parse(release['created_at'] as String);
@@ -560,8 +560,7 @@ class ManagerAPI {
         defaultPatchesRepo,
       );
     } else {
-      final release =
-          await _githubAPI.getLatestRelease(getPatchesRepo());
+      final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
         return release['tag_name'];
       } else {
@@ -816,6 +815,36 @@ class ManagerAPI {
       return {};
     }
     return jsonDecode(string);
+  }
+
+  String exportManagerSettings() {
+    final Map<String, dynamic> settings = _prefs
+        .getKeys()
+        .fold<Map<String, dynamic>>({}, (Map<String, dynamic> map, String key) {
+      map[key] = _prefs.get(key);
+      return map;
+    });
+    return jsonEncode(settings);
+  }
+
+  Future<void> importManagerSettings(String settings) async {
+    final Map<String, dynamic> settingsMap = jsonDecode(settings);
+    settingsMap.forEach((key, value) {
+      if (value is bool) {
+        _prefs.setBool(key, value);
+      } else if (value is int) {
+        _prefs.setInt(key, value);
+      } else if (value is double) {
+        _prefs.setDouble(key, value);
+      } else if (value is String) {
+        _prefs.setString(key, value);
+      } else if (value is List<dynamic>) {
+        _prefs.setStringList(
+          key,
+          value.map((a) => json.encode(a.toJson())).toList(),
+        );
+      }
+    });
   }
 
   void resetAllOptions() {
