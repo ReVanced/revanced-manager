@@ -37,6 +37,7 @@ android {
             signingConfig = signingConfigs["debug"]
 
             ndk.abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
+            setProperty("archivesBaseName", "revanced-manager-v${flutter.versionName}")
         }
 
         release {
