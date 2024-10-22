@@ -66,7 +66,13 @@ jobs:
         run: |
           npx semantic-release -d
           
+      - name: Find APK file
+        id: find_apk
+        run: |
+          APK_LOCATION=$(find build/app/outputs/flutter-apk/ -name "revanced-manager-*.apk")
+          echo "APK_LOCATION=$APK_LOCATION" >> $GITHUB_ENV
+          
       - name: 🛰️ Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: 'build/app/outputs/apk/release/revanced-manager-*.apk'
+          subject-path: ${{ env.APK_LOCATION }}
