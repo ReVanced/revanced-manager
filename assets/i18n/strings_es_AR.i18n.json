@@ -52,7 +52,7 @@
   "patcherView": {
     "widgetTitle": "Parcheador",
     "patchButton": "Parchear",
-    "removedPatchesWarningDialogText": "Los siguientes parches fueron eliminados desde la última vez que los usaste.\n\n${patches}\n\n¿Continuar de todas formas?",
+    "removedPatchesWarningDialogText": "Los siguientes parches fueron eliminados desde la última vez que los usaste.\n\n${patches}\n\n${newPatches}¿Continuar de todas formas?",
     "requiredOptionDialogText": "Algunas opciones de parche tienen que ser establecidas."
   },
   "appSelectorCard": {

@@ -51,7 +51,6 @@
   "patcherView": {
     "widgetTitle": "Patcher",
     "patchButton": "Bót",
-    "removedPatchesWarningDialogText": "Eftirfarandi patches hafa verið fjarlægðir síðan þú notaðir þá síðast.\n\n${patches}\n\nHalda samt áfram?",
     "requiredOptionDialogText": "Það þarf að stilla nokkra patch valkosti."
   },
   "appSelectorCard": {

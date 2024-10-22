@@ -55,7 +55,6 @@
     "widgetTitle": "修补器",
     "patchButton": "修补",
     "incompatibleArchWarningDialogText": "对此架构的修补尚不支持或可能失败。仍要继续吗？",
-    "removedPatchesWarningDialogText": "自您上次使用以下补丁以来，它们已被删除。\n\n${patches}\n\n还是继续吗？",
     "requiredOptionDialogText": "某些补丁选项必须设置。"
   },
   "appSelectorCard": {

@@ -54,8 +54,9 @@
   "patcherView": {
     "widgetTitle": "Патчер",
     "patchButton": "Патчити",
-    "incompatibleArchWarningDialogText": "Патчінг на цій архітектурі ще не підтримується і може не спрацювати. Продовжити в будь-якому випадку?",
-    "removedPatchesWarningDialogText": "Наступні патчі було видалено з моменту останнього використання.\n\n${patches}\n\nВсе одно продовжити?",
+    "incompatibleArchWarningDialogText": "Патчінг на цій архітектурі ще не підтримується і може не спрацювати. Все одно продовжити?",
+    "removedPatchesWarningDialogText": "Видалені патчі з моменту останнього патчінгу цього застосунку:\n\n${patches}\n\n${newPatches}Все одно продовжити?",
+    "addedPatchesDialogText": "Додані патчі з моменту останнього патчінгу цього застосунку:\n\n${addedPatches}",
     "requiredOptionDialogText": "Потрібно встановити деякі параметри патчу."
   },
   "appSelectorCard": {
