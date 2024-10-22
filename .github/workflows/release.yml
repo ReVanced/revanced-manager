@@ -64,7 +64,7 @@ jobs:
           KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
           KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
         run: |
-          npx semantic-release
+          npx semantic-release -d
           
       - name: 🛰️ Generate artifact attestation
         uses: actions/attest-build-provenance@v1
