@@ -222,9 +222,9 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> exportManagerSettings() async {
+  Future<void> exportSettings() async {
     try {
-      final String settings = _managerAPI.exportManagerSettings();
+      final String settings = _managerAPI.exportSettings();
       final Directory tempDir = await getTemporaryDirectory();
       final String filePath = '${tempDir.path}/manager_settings.json';
       final File file = File(filePath);
@@ -237,7 +237,7 @@ class SettingsViewModel extends BaseViewModel {
         ),
       );
       if (result != null) {
-        _toast.showBottom(t.settingsView.exportedManagerSettings);
+        _toast.showBottom(t.settingsView.exportedSettings);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -246,7 +246,7 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> importManagerSettings() async {
+  Future<void> importSettings() async {
     try {
       final String? result = await FlutterFileDialog.pickFile(
         params: const OpenFileDialogParams(
@@ -257,8 +257,8 @@ class SettingsViewModel extends BaseViewModel {
         final File inFile = File(result);
         final String settings = inFile.readAsStringSync();
         inFile.delete();
-        _managerAPI.importManagerSettings(settings);
-        _toast.showBottom(t.settingsView.importedManagerSettings);
+        _managerAPI.importSettings(settings);
+        _toast.showBottom(t.settingsView.importedSettings);
         _toast.showBottom(t.settingsView.restartAppForChanges);
       }
     } on Exception catch (e) {

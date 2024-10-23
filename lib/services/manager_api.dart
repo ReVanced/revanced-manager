@@ -817,7 +817,7 @@ class ManagerAPI {
     return jsonDecode(string);
   }
 
-  String exportManagerSettings() {
+  String exportSettings() {
     final Map<String, dynamic> settings = _prefs
         .getKeys()
         .fold<Map<String, dynamic>>({}, (Map<String, dynamic> map, String key) {
@@ -827,7 +827,7 @@ class ManagerAPI {
     return jsonEncode(settings);
   }
 
-  Future<void> importManagerSettings(String settings) async {
+  Future<void> importSettings(String settings) async {
     final Map<String, dynamic> settingsMap = jsonDecode(settings);
     settingsMap.forEach((key, value) {
       if (value is bool) {
