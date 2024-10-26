@@ -56,6 +56,7 @@ class SettingsViewModel extends BaseViewModel {
   void useAlternativeSources(bool value) {
     _managerAPI.useAlternativeSources(value);
     _managerAPI.setCurrentPatchesVersion('0.0.0');
+    _managerAPI.setLastUsedPatchesVersion();
     notifyListeners();
   }
 
@@ -227,13 +228,15 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await FlutterFileDialog.saveFile(
+        final status = await FlutterFileDialog.saveFile(
           params: SaveFileDialogParams(
             sourceFilePath: outFile.path,
             fileName: 'selected_patches_$dateTime.json',
           ),
         );
-        _toast.showBottom(t.settingsView.exportedPatches);
+        if (status != null) {
+          _toast.showBottom(t.settingsView.exportedPatches);
+        }
       } else {
         _toast.showBottom(t.settingsView.noExportFileFound);
       }
@@ -278,13 +281,15 @@ class SettingsViewModel extends BaseViewModel {
       if (outFile.existsSync()) {
         final String dateTime =
             DateTime.now().toString().replaceAll(' ', '_').split('.').first;
-        await FlutterFileDialog.saveFile(
+        final status = await FlutterFileDialog.saveFile(
           params: SaveFileDialogParams(
             sourceFilePath: outFile.path,
             fileName: 'keystore_$dateTime.keystore',
           ),
         );
-        _toast.showBottom(t.settingsView.exportedKeystore);
+        if (status != null) {
+          _toast.showBottom(t.settingsView.exportedKeystore);
+        }
       } else {
         _toast.showBottom(t.settingsView.noKeystoreExportFileFound);
       }

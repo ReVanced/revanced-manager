@@ -55,7 +55,8 @@
     "widgetTitle": "Yamaqlayıcı",
     "patchButton": "Yamaqla",
     "incompatibleArchWarningDialogText": "Bu quruluşda yamaqlama hələ dəstəklənmir və uğursuz ola bilər. Yenə də davam edilsin?",
-    "removedPatchesWarningDialogText": "Aşağıdakı yamaqlar son istifadənizdən bəri silindi.\n\n${patches}\n\nYenə də davam edilsin?",
+    "removedPatchesWarningDialogText": "Bu tətbiqi son yamaqladığınız müddətdən bəri silinmiş yamaqlar:\n\n${patches}\n\n${newPatches}Yenə də davam edilsin?",
+    "addedPatchesDialogText": "Bu tətbiqi son yamaqladığınız müddətdən bəri əlavə edilən yamaqlar:\n\n${addedPatches}",
     "requiredOptionDialogText": "Bəzi yamaq seçimləri təyin edilməlidir."
   },
   "appSelectorCard": {

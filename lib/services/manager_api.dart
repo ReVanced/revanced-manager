@@ -502,6 +502,30 @@ class ManagerAPI {
     }
   }
 
+  String getLastUsedPatchesVersion() {
+    final String lastPatchesVersions =
+        _prefs.getString('lastUsedPatchesVersion') ?? '{}';
+    final Map<String, dynamic> lastPatchesVersionMap =
+        jsonDecode(lastPatchesVersions);
+    final String repo = getPatchesRepo();
+    return lastPatchesVersionMap[repo] ?? '0.0.0';
+  }
+
+  void setLastUsedPatchesVersion({String? version}) {
+    final String lastPatchesVersions =
+        _prefs.getString('lastUsedPatchesVersion') ?? '{}';
+    final Map<String, dynamic> lastPatchesVersionMap =
+        jsonDecode(lastPatchesVersions);
+    final repo = getPatchesRepo();
+    final String lastPatchesVersion =
+        version ?? lastPatchesVersionMap[repo] ?? '0.0.0';
+    lastPatchesVersionMap[repo] = lastPatchesVersion;
+    _prefs.setString(
+      'lastUsedPatchesVersion',
+      jsonEncode(lastPatchesVersionMap),
+    );
+  }
+
   Future<String> getCurrentManagerVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String version = packageInfo.version;

@@ -55,7 +55,8 @@
     "widgetTitle": "Patcher",
     "patchButton": "패치하기",
     "incompatibleArchWarningDialogText": "이 아키텍처에 대한 패치는 아직 지원되지 않으므로 실패할 수 있습니다. 그래도 계속하시겠습니까?",
-    "removedPatchesWarningDialogText": "최근 적용된 패치들 중 다음 패치가 제거됩니다.\n\n${patches}\n\n그래도 계속하시겠습니까?",
+    "removedPatchesWarningDialogText": "이 앱을 마지막으로 패치한 이후 제거된 패치입니다:\n\n${patches}\n\n${newPatches}그래도 계속하시겠습니까?",
+    "addedPatchesDialogText": "이 앱을 마지막으로 패치한 이후 추가된 패치입니다:\n\n${addedPatches}",
     "requiredOptionDialogText": "일부 패치 옵션을 설정해야 합니다."
   },
   "appSelectorCard": {
