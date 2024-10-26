@@ -20,7 +20,7 @@ import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.io.path.outputStream
 
-class DownloadedAppRepository(app: Application, db: AppDatabase, private val pm: PM) {
+class DownloadedAppRepository(private val app: Application, db: AppDatabase, private val pm: PM) {
     private val dir = app.getDir("downloaded-apps", Context.MODE_PRIVATE)
     private val dao = db.downloadedAppDao()
 
@@ -54,6 +54,8 @@ class DownloadedAppRepository(app: Application, db: AppDatabase, private val pm:
 
             channelFlow {
                 val scope = object : DownloadScope {
+                    override val pluginPackageName = plugin.packageName
+                    override val hostPackageName = app.packageName
                     override suspend fun reportSize(size: Long) {
                         require(size > 0) { "Size must be greater than zero" }
                         require(

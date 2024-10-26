@@ -98,7 +98,7 @@ fun SelectedAppInfoScreen(
     NavBackHandler(controller = navController)
 
     AnimatedNavHost(controller = navController) { destination ->
-        val error by vm.error.collectAsStateWithLifecycle(null)
+        val error by vm.errorFlow.collectAsStateWithLifecycle(null)
         when (destination) {
             is SelectedAppInfoDestination.Main -> Scaffold(
                 topBar = {

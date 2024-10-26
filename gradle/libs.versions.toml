@@ -36,6 +36,12 @@ compose-icons = "1.2.4"
 kotlin-process = "1.4.1"
 hidden-api-stub = "4.3.3"
 
+# TODO: get rid of these.
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.1"
+constraintlayout = "2.1.4"
+
 [libraries]
 # AndroidX Core
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -126,6 +132,12 @@ reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reo
 # Compose Icons
 # switch to br.com.devsrsouza.compose.icons after DevSrSouza/compose-icons#30 is merged
 compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", name = "font-awesome", version.ref = "compose-icons" }
+
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

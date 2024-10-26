@@ -150,7 +150,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     private val launchActivityChannel = Channel<Intent>()
     val launchActivityFlow = launchActivityChannel.receiveAsFlow()
 
-    val error = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
+    val errorFlow = combine(plugins, snapshotFlow { selectedApp }) { pluginsList, app ->
         when {
             app is SelectedApp.Search && pluginsList.isEmpty() -> Error.NoPlugins
             else -> null
@@ -162,18 +162,23 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         showSourceSelector = true
     }
 
-    fun dismissSourceSelector() {
+    private fun cancelPluginAction() {
         pluginAction?.second?.cancel()
         pluginAction = null
+    }
+
+    fun dismissSourceSelector() {
+        cancelPluginAction()
         showSourceSelector = false
     }
 
     fun searchInPlugin(plugin: LoadedDownloaderPlugin) {
-        pluginAction?.second?.cancel()
-        pluginAction = null
+        cancelPluginAction()
         pluginAction = plugin to viewModelScope.launch {
             try {
                 val scope = object : GetScope {
+                    override val hostPackageName = app.packageName
+                    override val pluginPackageName = plugin.packageName
                     override suspend fun requestStartActivity(intent: Intent) =
                         withContext(Dispatchers.Main) {
                             if (launchedActivity != null) error("Previous activity has not finished")
@@ -206,8 +211,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
                     }
                     selectedApp = SelectedApp.Download(
                         packageName,
-                        version
-                            ?: error("Umm, I guess I need to make the parameter nullable now?"),
+                        version,
                         ParceledDownloaderData(plugin, data)
                     )
                 } ?: app.toast("App was not found")

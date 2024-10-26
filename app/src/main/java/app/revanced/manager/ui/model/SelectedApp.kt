@@ -12,7 +12,7 @@ sealed interface SelectedApp : Parcelable {
     @Parcelize
     data class Download(
         override val packageName: String,
-        override val version: String,
+        override val version: String?,
         val data: ParceledDownloaderData
     ) : SelectedApp
 

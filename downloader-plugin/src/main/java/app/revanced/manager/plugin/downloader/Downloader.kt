@@ -1,11 +1,11 @@
 package app.revanced.manager.plugin.downloader
 
-import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.app.Activity
 import android.os.Parcelable
 import java.io.InputStream
 import java.io.OutputStream
@@ -16,9 +16,36 @@ import kotlin.coroutines.suspendCoroutine
     level = RequiresOptIn.Level.ERROR,
     message = "This API is only intended for plugin hosts, don't use it in a plugin.",
 )
+@Retention(AnnotationRetention.BINARY)
 annotation class PluginHostApi
 
-interface GetScope {
+/**
+ * The base interface for all DSL scopes.
+ */
+interface Scope {
+    /**
+     * The package name of ReVanced Manager.
+     */
+    val hostPackageName: String
+
+    /**
+     * The package name of the plugin.
+     */
+    val pluginPackageName: String
+}
+
+/**
+ * The scope of [DownloaderScope.get].
+ */
+interface GetScope : Scope {
+    /**
+     * Ask the user to perform some required interaction contained in the activity specified by the provided [Intent].
+     * This function returns normally with the resulting [Intent] when the activity finishes with code [Activity.RESULT_OK].
+     *
+     * @throws UserInteractionException.RequestDenied User decided to skip this plugin.
+     * @throws UserInteractionException.Activity.Cancelled The activity was cancelled.
+     * @throws UserInteractionException.Activity.NotCompleted The activity finished with an unknown result code.
+     */
     suspend fun requestStartActivity(intent: Intent): Intent?
 }
 
@@ -29,23 +56,13 @@ typealias Version = String
 typealias GetResult<T> = Pair<T, Version?>
 
 class DownloaderScope<T : Parcelable> internal constructor(
-    /**
-     * The package name of ReVanced Manager.
-     */
-    val hostPackageName: String,
+    private val scopeImpl: Scope,
     internal val context: Context
-) {
+) : Scope by scopeImpl {
+    // Returning an InputStream is the primary way for plugins to implement the download function, but we also want to offer an OutputStream API since using InputStream might not be convenient in all cases.
+    // It is much easier to implement the main InputStream API on top of OutputStreams compared to doing it the other way around, which is why we are using OutputStream here. This detail is not visible to plugins.
     internal var download: (suspend DownloadScope.(T, OutputStream) -> Unit)? = null
     internal var get: (suspend GetScope.(String, String?) -> GetResult<T>?)? = null
-
-    /**
-     * The package name of the plugin.
-     */
-    val pluginPackageName: String get() = context.packageName
-
-    fun get(block: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?) {
-        get = block
-    }
 
     /**
      * Define the download function for this plugin.
@@ -61,6 +78,16 @@ class DownloaderScope<T : Parcelable> internal constructor(
         }
     }
 
+    /**
+     * Define the get function for this plugin.
+     */
+    fun get(block: suspend GetScope.(packageName: String, version: String?) -> GetResult<T>?) {
+        get = block
+    }
+
+    /**
+     * Utilize the service specified by the provided [Intent]. The service will be unbound when the scope ends.
+     */
     suspend fun <R : Any?> withBoundService(intent: Intent, block: suspend (IBinder) -> R): R {
         var onBind: ((IBinder) -> Unit)? = null
         val serviceConn = object : ServiceConnection {
@@ -86,8 +113,8 @@ class DownloaderScope<T : Parcelable> internal constructor(
 
 class DownloaderBuilder<T : Parcelable> internal constructor(private val block: DownloaderScope<T>.() -> Unit) {
     @PluginHostApi
-    fun build(hostPackageName: String, context: Context) =
-        with(DownloaderScope<T>(hostPackageName, context)) {
+    fun build(scopeImpl: Scope, context: Context) =
+        with(DownloaderScope<T>(scopeImpl, context)) {
             block()
 
             Downloader(

@@ -14,7 +14,7 @@ import kotlin.io.path.Path
 import kotlin.io.path.fileSize
 import kotlin.io.path.inputStream
 
-// TODO: document and update API (update requestUserInteraction, add bound service function), change dispatcher, finish UI
+// TODO: document API, update UI error presentation and strings
 
 @Parcelize
 class InstalledApp(val path: String) : Parcelable
@@ -37,7 +37,7 @@ val installedAppDownloader = downloader<InstalledApp> {
         }
         if (version != null && packageInfo.versionName != version) return@get null
 
-        requestStartActivity<InteractionActivity>(pluginPackageName)
+        requestStartActivity<InteractionActivity>()
 
         InstalledApp(packageInfo.applicationInfo.sourceDir) to packageInfo.versionName
     }

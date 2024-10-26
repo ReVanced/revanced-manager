@@ -12,6 +12,7 @@ import app.revanced.manager.network.downloader.LoadedDownloaderPlugin
 import app.revanced.manager.network.downloader.ParceledDownloaderData
 import app.revanced.manager.plugin.downloader.DownloaderBuilder
 import app.revanced.manager.plugin.downloader.PluginHostApi
+import app.revanced.manager.plugin.downloader.Scope
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.tag
 import dalvik.system.PathClassLoader
@@ -97,7 +98,10 @@ class DownloaderPluginRepository(
                 .loadClass(className)
                 .getDownloaderBuilder()
                 .build(
-                    hostPackageName = app.packageName,
+                    scopeImpl = object : Scope {
+                        override val hostPackageName = app.packageName
+                        override val pluginPackageName = pluginContext.packageName
+                    },
                     context = pluginContext
                 )
 

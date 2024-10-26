@@ -7,7 +7,10 @@ import android.os.IBinder
 import android.os.Parcelable
 import java.io.OutputStream
 
-interface DownloadScope {
+/**
+ * The scope of [DownloaderScope.download].
+ */
+interface DownloadScope : Scope {
     suspend fun reportSize(size: Long)
 }
 
@@ -16,14 +19,21 @@ fun <T : Parcelable> DownloaderScope<T>.download(block: suspend DownloadScope.(T
     download = block
 }
 
-suspend inline fun <reified ACTIVITY : Activity> GetScope.requestStartActivity(packageName: String) =
+/**
+ * Performs [GetScope.requestStartActivity] with an [Intent] created using the type information of [ACTIVITY].
+ * @see [GetScope.requestStartActivity]
+ */
+suspend inline fun <reified ACTIVITY : Activity> GetScope.requestStartActivity() =
     requestStartActivity(
-        Intent().apply { setClassName(packageName, ACTIVITY::class.qualifiedName!!) }
+        Intent().apply { setClassName(pluginPackageName, ACTIVITY::class.qualifiedName!!) }
     )
 
+/**
+ * Performs [DownloaderScope.withBoundService] with an [Intent] created using the type information of [SERVICE].
+ * @see [DownloaderScope.withBoundService]
+ */
 suspend inline fun <reified SERVICE : Service, R : Any?> DownloaderScope<*>.withBoundService(
-    packageName: String,
     noinline block: suspend (IBinder) -> R
 ) = withBoundService(
-    Intent().apply { setClassName(packageName, SERVICE::class.qualifiedName!!) }, block
+    Intent().apply { setClassName(pluginPackageName, SERVICE::class.qualifiedName!!) }, block
 )

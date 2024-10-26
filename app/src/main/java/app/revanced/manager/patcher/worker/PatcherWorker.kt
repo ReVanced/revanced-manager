@@ -42,9 +42,11 @@ import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.tag
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -173,29 +175,31 @@ class PatcherWorker(
                 }
 
                 is SelectedApp.Search -> {
-                    val getScope = object : GetScope {
-                        override suspend fun requestStartActivity(intent: Intent): Intent? {
-                            val result = args.handleStartActivityRequest(intent)
-                            return when (result.resultCode) {
-                                Activity.RESULT_OK -> result.data
-                                Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
-                                else -> throw UserInteractionException.Activity.NotCompleted(
-                                    result.resultCode,
-                                    result.data
-                                )
-                            }
-                        }
-                    }
-
                     downloaderPluginRepository.loadedPluginsFlow.first()
                         .firstNotNullOfOrNull { plugin ->
                             try {
-                                plugin.get(
-                                    getScope,
-                                    selectedApp.packageName,
-                                    selectedApp.version
-                                )
-                                    ?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
+                                val getScope = object : GetScope {
+                                    override val pluginPackageName = plugin.packageName
+                                    override val hostPackageName = applicationContext.packageName
+                                    override suspend fun requestStartActivity(intent: Intent): Intent? {
+                                        val result = args.handleStartActivityRequest(intent)
+                                        return when (result.resultCode) {
+                                            Activity.RESULT_OK -> result.data
+                                            Activity.RESULT_CANCELED -> throw UserInteractionException.Activity.Cancelled()
+                                            else -> throw UserInteractionException.Activity.NotCompleted(
+                                                result.resultCode,
+                                                result.data
+                                            )
+                                        }
+                                    }
+                                }
+                                withContext(Dispatchers.IO) {
+                                    plugin.get(
+                                        getScope,
+                                        selectedApp.packageName,
+                                        selectedApp.version
+                                    )
+                                }?.takeIf { (_, version) -> selectedApp.version == null || version == selectedApp.version }
                             } catch (e: UserInteractionException.Activity.NotCompleted) {
                                 throw e
                             } catch (_: UserInteractionException) {
