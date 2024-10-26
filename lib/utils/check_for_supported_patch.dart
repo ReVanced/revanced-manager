@@ -33,7 +33,7 @@ bool hasUnsupportedRequiredOption(List<Option> options, Patch patch) {
               option.key,
             ) ==
             null) {
-      requiredOptionsType.add(option.valueType);
+      requiredOptionsType.add(option.type);
     }
   }
   for (final String optionType in requiredOptionsType) {

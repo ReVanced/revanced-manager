@@ -62,11 +62,12 @@ class Option {
     required this.value,
     required this.values,
     required this.required,
-    required this.valueType,
+    required this.type,
   });
 
   factory Option.fromJson(Map<String, dynamic> json) {
     _migrateV17ToV19(json);
+    _migrateV19ToV20(json);
 
     return _$OptionFromJson(json);
   }
@@ -83,13 +84,25 @@ class Option {
     }
   }
 
+  static void _migrateV19ToV20(Map<String, dynamic> json) {
+    if (json['valueType'] != null) {
+      final String type = json['valueType'];
+
+      json['type'] = type.endsWith('Array')
+          ? 'kotlin.collections.List<kotlin.${type.replaceAll('Array', '')}>'
+          : 'kotlin.$type';
+
+      json['valueType'] = null;
+    }
+  }
+
   final String key;
   final String title;
   final String description;
   final dynamic value;
   final Map<String, dynamic>? values;
   final bool required;
-  final String valueType;
+  final String type;
 
   Map toJson() => _$OptionToJson(this);
 }

@@ -56,7 +56,6 @@ class SettingsViewModel extends BaseViewModel {
   void useAlternativeSources(bool value) {
     _managerAPI.useAlternativeSources(value);
     _managerAPI.setCurrentPatchesVersion('0.0.0');
-    _managerAPI.setCurrentIntegrationsVersion('0.0.0');
     _managerAPI.setLastUsedPatchesVersion();
     notifyListeners();
   }
