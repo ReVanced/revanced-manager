@@ -1,6 +1,6 @@
 [versions]
-revanced-patcher = "20.0.1-dev.4" # TODO: Update to non-dev
-revanced-library = "3.0.1-dev.3" # TODO: Update to non-dev
+revanced-patcher = "20.0.2"
+revanced-library = "3.0.1"
 desugar_jdk_libs = "2.1.2"
 
 [libraries]
