@@ -1,0 +1,114 @@
+name: Build APK and Create Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          architecture: 'x64'
+          cache: false
+          pub-cache-path: 'default'
+          dry-run: false
+
+      - name: Configure Gradle for GitHub Packages
+        run: |
+          mkdir -p ~/.gradle
+          echo "gpr.user=${{ github.actor }}" >> ~/.gradle/gradle.properties
+          echo "gpr.key=${{ secrets.GH_PACKAGES_TOKEN }}" >> ~/.gradle/gradle.properties
+
+      - name: Check Gradle properties
+        run: cat ~/.gradle/gradle.properties
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate temporary files
+        run: |
+          dart run slang
+          dart run build_runner build -d
+
+      - name: Build APK
+        run: flutter build apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: revanced-manager-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  create_release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository for tagging
+        uses: actions/checkout@v4
+
+      - name: Get current time
+        id: time
+        run: echo "datetime=$(date -u '+%Y%m%d-%H%M')" >> $GITHUB_ENV
+
+      - name: Create tag
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git tag -a "v${{ env.datetime }}" -m "Release on ${{ env.datetime }}"
+          git push origin "v${{ env.datetime }}"
+
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: revanced-manager-apk
+          path: ./artifacts
+
+      - name: Rename APK artifact
+        run: |
+          mv ./artifacts/app-release.apk ./artifacts/revanced-manager.apk
+
+      - name: Calculate SHA256 for APK artifact
+        id: sha256_apk
+        run: |
+          sha256=$(sha256sum ./artifacts/revanced-manager.apk | awk '{print $1}')
+          echo "sha256_apk=$sha256" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2.0.7
+        with:
+          tag_name: "v${{ env.datetime }}"
+          name: "Release ${{ env.datetime }}"
+          body: |
+            Automated release from actions.
+            SHA256: ${{ env.sha256_apk }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK to release
+        uses: softprops/action-gh-release@v2.0.7
+        with:
+          tag_name: "v${{ env.datetime }}"
+          files: ./artifacts/revanced-manager.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
