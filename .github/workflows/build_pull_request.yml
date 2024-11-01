@@ -90,7 +90,7 @@ jobs:
           fi
 
       - name: "Comment on pull request #${{ inputs.pr-number }}"
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           GITHUB_TOKEN: ${{ github.token }}
           pr_number: ${{ inputs.pr-number }}
