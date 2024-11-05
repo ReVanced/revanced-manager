@@ -222,6 +222,53 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> exportSettings() async {
+    try {
+      final String settings = _managerAPI.exportSettings();
+      final Directory tempDir = await getTemporaryDirectory();
+      final String filePath = '${tempDir.path}/manager_settings.json';
+      final File file = File(filePath);
+      await file.writeAsString(settings);
+      final String? result = await FlutterFileDialog.saveFile(
+        params: SaveFileDialogParams(
+          sourceFilePath: file.path,
+          fileName: 'manager_settings.json',
+          mimeTypesFilter: ['application/json'],
+        ),
+      );
+      if (result != null) {
+        _toast.showBottom(t.settingsView.exportedSettings);
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Future<void> importSettings() async {
+    try {
+      final String? result = await FlutterFileDialog.pickFile(
+        params: const OpenFileDialogParams(
+          fileExtensionsFilter: ['json'],
+        ),
+      );
+      if (result != null) {
+        final File inFile = File(result);
+        final String settings = inFile.readAsStringSync();
+        inFile.delete();
+        _managerAPI.importSettings(settings);
+        _toast.showBottom(t.settingsView.importedSettings);
+        _toast.showBottom(t.settingsView.restartAppForChanges);
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      _toast.showBottom(t.settingsView.jsonSelectorErrorMessage);
+    }
+  }
+
   Future<void> exportPatches() async {
     try {
       final File outFile = File(_managerAPI.storedPatchesFile);

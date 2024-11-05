@@ -755,6 +755,36 @@ class ManagerAPI {
     return jsonDecode(string);
   }
 
+  String exportSettings() {
+    final Map<String, dynamic> settings = _prefs
+        .getKeys()
+        .fold<Map<String, dynamic>>({}, (Map<String, dynamic> map, String key) {
+      map[key] = _prefs.get(key);
+      return map;
+    });
+    return jsonEncode(settings);
+  }
+
+  Future<void> importSettings(String settings) async {
+    final Map<String, dynamic> settingsMap = jsonDecode(settings);
+    settingsMap.forEach((key, value) {
+      if (value is bool) {
+        _prefs.setBool(key, value);
+      } else if (value is int) {
+        _prefs.setInt(key, value);
+      } else if (value is double) {
+        _prefs.setDouble(key, value);
+      } else if (value is String) {
+        _prefs.setString(key, value);
+      } else if (value is List<dynamic>) {
+        _prefs.setStringList(
+          key,
+          value.map((a) => json.encode(a.toJson())).toList(),
+        );
+      }
+    });
+  }
+
   void resetAllOptions() {
     _prefs.getKeys().where((key) => key.startsWith('patchOption-')).forEach(
       (key) {
