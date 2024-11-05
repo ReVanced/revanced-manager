@@ -283,7 +283,6 @@ class MainActivity : FlutterActivity() {
                         tmpDir,
                         Aapt.binary(applicationContext).absolutePath,
                         tmpDir.path,
-                        true // TODO: Add option to disable this
                     )
                 )
 

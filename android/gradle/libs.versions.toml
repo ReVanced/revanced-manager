@@ -1,6 +1,6 @@
 [versions]
-revanced-patcher = "20.0.2"
-revanced-library = "3.0.1"
+revanced-patcher = "21.0.0"
+revanced-library = "3.0.2"
 desugar_jdk_libs = "2.1.2"
 
 [libraries]
