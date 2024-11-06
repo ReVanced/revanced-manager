@@ -20,53 +20,31 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DragHandle
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.SelectAll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TextButton
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog as ComposeDialog
 import androidx.compose.ui.window.DialogProperties
 import app.revanced.manager.R
 import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.patcher.patch.Option
-import app.revanced.manager.ui.component.AlertDialogExtended
-import app.revanced.manager.ui.component.AppTopBar
-import app.revanced.manager.ui.component.FloatInputDialog
-import app.revanced.manager.ui.component.IntInputDialog
-import app.revanced.manager.ui.component.LongInputDialog
+import app.revanced.manager.ui.component.*
+import app.revanced.manager.ui.component.haptics.HapticExtendedFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
+import app.revanced.manager.ui.component.haptics.HapticSwitch
 import app.revanced.manager.util.isScrollingUp
 import app.revanced.manager.util.mutableStateSetOf
 import app.revanced.manager.util.saver.snapshotStateListSaver
@@ -80,6 +58,7 @@ import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyColumnState
 import java.io.Serializable
 import kotlin.random.Random
+import androidx.compose.ui.window.Dialog as ComposeDialog
 
 private class OptionEditorScope<T : Any>(
     private val editor: OptionEditor<T>,
@@ -335,7 +314,7 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
 
     @Composable
     override fun ListItemTrailingContent(scope: OptionEditorScope<Boolean>) {
-        Switch(checked = scope.current, onCheckedChange = scope.setValue)
+        HapticSwitch(checked = scope.current, onCheckedChange = scope.setValue)
     }
 
     @Composable
@@ -422,7 +401,7 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
                                 headlineContent = { Text(title) },
                                 supportingContent = value?.toString()?.let { { Text(it) } },
                                 leadingContent = {
-                                    RadioButton(
+                                    HapticRadioButton(
                                         selected = selectedPreset == presetKey,
                                         onClick = { selectedPreset = presetKey }
                                     )
@@ -568,7 +547,7 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                 floatingActionButton = {
                     if (deleteMode) return@Scaffold
 
-                    ExtendedFloatingActionButton(
+                    HapticExtendedFloatingActionButton(
                         text = { Text(stringResource(R.string.add)) },
                         icon = {
                             Icon(

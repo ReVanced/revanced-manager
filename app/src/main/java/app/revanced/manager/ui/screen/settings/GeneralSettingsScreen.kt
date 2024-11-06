@@ -28,6 +28,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.theme.Theme
@@ -113,7 +114,7 @@ private fun ThemePicker(
                             .clickable { selectedTheme = it },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        RadioButton(
+                        HapticRadioButton(
                             selected = selectedTheme == it,
                             onClick = { selectedTheme = it })
                         Text(stringResource(it.displayName))
