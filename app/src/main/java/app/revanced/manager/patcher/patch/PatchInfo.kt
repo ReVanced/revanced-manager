@@ -1,7 +1,9 @@
 package app.revanced.manager.patcher.patch
 
 import androidx.compose.runtime.Immutable
+import app.revanced.patcher.data.ResourceContext
 import app.revanced.patcher.patch.Patch
+import app.revanced.patcher.patch.ResourcePatch
 import app.revanced.patcher.patch.options.PatchOption
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
@@ -13,7 +15,7 @@ data class PatchInfo(
     val description: String?,
     val include: Boolean,
     val compatiblePackages: ImmutableList<CompatiblePackage>?,
-    val options: ImmutableList<Option>?
+    val options: ImmutableList<Option<*>>?
 ) {
     constructor(patch: Patch<*>) : this(
         patch.name.orEmpty(),
@@ -37,6 +39,23 @@ data class PatchInfo(
             pkg.versions == null || pkg.versions.contains(versionName)
         }
     }
+
+    /**
+     * Create a fake [Patch] with the same metadata as the [PatchInfo] instance.
+     * The resulting patch cannot be executed.
+     * This is necessary because some functions in ReVanced Library only accept full [Patch] objects.
+     */
+    fun toPatcherPatch(): Patch<*> = object : ResourcePatch(
+        name = name,
+        description = description,
+        compatiblePackages = compatiblePackages
+            ?.map(app.revanced.manager.patcher.patch.CompatiblePackage::toPatcherCompatiblePackage)
+            ?.toSet(),
+        use = include,
+    ) {
+        override fun execute(context: ResourceContext) =
+            throw Exception("Metadata patches cannot be executed")
+    }
 }
 
 @Immutable
@@ -48,23 +67,35 @@ data class CompatiblePackage(
         pkg.name,
         pkg.versions?.toImmutableSet()
     )
+
+    /**
+     * Converts this [CompatiblePackage] into a [Patch.CompatiblePackage] from patcher.
+     */
+    fun toPatcherCompatiblePackage() = Patch.CompatiblePackage(
+        name = packageName,
+        versions = versions,
+    )
 }
 
 @Immutable
-data class Option(
+data class Option<T>(
     val title: String,
     val key: String,
     val description: String,
     val required: Boolean,
     val type: String,
-    val default: Any?
+    val default: T?,
+    val presets: Map<String, T?>?,
+    val validator: (T?) -> Boolean,
 ) {
-    constructor(option: PatchOption<*>) : this(
+    constructor(option: PatchOption<T>) : this(
         option.title ?: option.key,
         option.key,
         option.description.orEmpty(),
         option.required,
         option.valueType,
         option.default,
+        option.values,
+        { option.validator(option, it) },
     )
 }

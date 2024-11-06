@@ -3,12 +3,13 @@ package app.revanced.manager.ui.screen
 import android.content.pm.PackageInfo
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowRight
+import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -26,25 +27,26 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AppInfo
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.destination.SelectedAppInfoDestination
 import app.revanced.manager.ui.model.BundleInfo.Extensions.bundleInfoFlow
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.SelectedAppInfoViewModel
 import app.revanced.manager.util.Options
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.toast
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SelectedAppInfoScreen(
-    onPatchClick: (SelectedApp, PatchesSelection, Options) -> Unit,
+    onPatchClick: (SelectedApp, PatchSelection, Options) -> Unit,
     onBackClick: () -> Unit,
     vm: SelectedAppInfoViewModel
 ) {
@@ -56,20 +58,15 @@ fun SelectedAppInfoScreen(
         vm.bundlesRepo.bundleInfoFlow(packageName, version)
     }.collectAsStateWithLifecycle(initialValue = emptyList())
 
-    val allowExperimental by vm.prefs.allowExperimental.getAsState()
+    val allowIncompatiblePatches by vm.prefs.disablePatchVersionCompatCheck.getAsState()
     val patches by remember {
         derivedStateOf {
-            vm.getPatches(bundles, allowExperimental)
+            vm.getPatches(bundles, allowIncompatiblePatches)
         }
     }
     val selectedPatchCount by remember {
         derivedStateOf {
             patches.values.sumOf { it.size }
-        }
-    }
-    val availablePatchCount by remember {
-        derivedStateOf {
-            bundles.sumOf { it.patchCount }
         }
     }
 
@@ -99,7 +96,7 @@ fun SelectedAppInfoScreen(
                             vm.selectedApp,
                             vm.getCustomPatches(
                                 bundles,
-                                allowExperimental
+                                allowIncompatiblePatches
                             ),
                             vm.options
                         )
@@ -109,7 +106,6 @@ fun SelectedAppInfoScreen(
                     navController.navigate(SelectedAppInfoDestination.VersionSelector)
                 },
                 onBackClick = onBackClick,
-                availablePatchCount = availablePatchCount,
                 selectedPatchCount = selectedPatchCount,
                 packageName = packageName,
                 version = version,
@@ -122,7 +118,7 @@ fun SelectedAppInfoScreen(
                     vm.selectedApp = it
                     navController.pop()
                 },
-                viewModel = getViewModel { parametersOf(packageName) }
+                viewModel = koinViewModel { parametersOf(packageName) }
             )
 
             is SelectedAppInfoDestination.PatchesSelector -> PatchesSelectorScreen(
@@ -131,7 +127,7 @@ fun SelectedAppInfoScreen(
                     navController.pop()
                 },
                 onBackClick = navController::pop,
-                vm = getViewModel {
+                vm = koinViewModel {
                     parametersOf(
                         PatchesSelectorViewModel.Params(
                             destination.app,
@@ -152,7 +148,6 @@ private fun SelectedAppInfoScreen(
     onPatchSelectorClick: () -> Unit,
     onVersionSelectorClick: () -> Unit,
     onBackClick: () -> Unit,
-    availablePatchCount: Int,
     selectedPatchCount: Int,
     packageName: String,
     version: String,
@@ -164,29 +159,32 @@ private fun SelectedAppInfoScreen(
                 title = stringResource(R.string.app_info),
                 onBackClick = onBackClick
             )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text(stringResource(R.string.patch)) },
+                icon = {
+                    Icon(
+                        Icons.Default.AutoFixHigh,
+                        stringResource(R.string.patch)
+                    )
+                },
+                onClick = onPatchClick
+            )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
             AppInfo(packageInfo, placeholderLabel = packageName) {
                 Text(
-                    stringResource(R.string.selected_app_meta, version, availablePatchCount),
+                    stringResource(R.string.selected_app_meta, version),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-
-            PageItem(R.string.patch, stringResource(R.string.patch_item_description), onPatchClick)
-
-            Text(
-                stringResource(R.string.advanced),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelLarge,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-            )
 
             PageItem(
                 R.string.patch_selector_item,
@@ -223,7 +221,7 @@ private fun PageItem(@StringRes title: Int, description: String, onClick: () -> 
             )
         },
         trailingContent = {
-            Icon(Icons.Outlined.ArrowRight, null)
+            Icon(Icons.AutoMirrored.Outlined.ArrowRight, null)
         }
     )
 }

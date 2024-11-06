@@ -1,9 +1,12 @@
 package app.revanced.manager.patcher
 
-import app.revanced.library.ApkUtils
-import app.revanced.manager.ui.viewmodel.ManagerLogger
+import android.content.Context
+import app.revanced.library.ApkUtils.applyTo
+import app.revanced.manager.R
+import app.revanced.manager.patcher.logger.Logger
+import app.revanced.manager.ui.model.State
 import app.revanced.patcher.Patcher
-import app.revanced.patcher.PatcherOptions
+import app.revanced.patcher.PatcherConfig
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.patch.PatchResult
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +15,6 @@ import java.io.Closeable
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import java.util.logging.Logger
 
 internal typealias PatchList = List<Patch<*>>
 
@@ -21,67 +23,108 @@ class Session(
     frameworkDir: String,
     aaptPath: String,
     multithreadingDexFileWriter: Boolean,
-    private val logger: ManagerLogger,
+    private val androidContext: Context,
+    private val logger: Logger,
     private val input: File,
-    private val onStepSucceeded: suspend () -> Unit
+    private val onPatchCompleted: () -> Unit,
+    private val onProgress: (name: String?, state: State?, message: String?) -> Unit
 ) : Closeable {
+    private fun updateProgress(name: String? = null, state: State? = null, message: String? = null) =
+        onProgress(name, state, message)
+
     private val tempDir = File(cacheDir).resolve("patcher").also { it.mkdirs() }
     private val patcher = Patcher(
-        PatcherOptions(
-            inputFile = input,
-            resourceCachePath = tempDir.resolve("aapt-resources"),
+        PatcherConfig(
+            apkFile = input,
+            temporaryFilesPath = tempDir,
             frameworkFileDirectory = frameworkDir,
             aaptBinaryPath = aaptPath,
             multithreadingDexFileWriter = multithreadingDexFileWriter,
         )
     )
 
+    private suspend fun Patcher.applyPatchesVerbose(selectedPatches: PatchList) {
+        var nextPatchIndex = 0
 
-    private suspend fun Patcher.applyPatchesVerbose() {
+        updateProgress(
+            name = androidContext.getString(R.string.executing_patch, selectedPatches[nextPatchIndex]),
+            state = State.RUNNING
+        )
+
         this.apply(true).collect { (patch, exception) ->
-            if (exception == null) {
-                logger.info("$patch succeeded")
-                onStepSucceeded()
-                return@collect
+            if (patch !in selectedPatches) return@collect
+
+            if (exception != null) {
+                updateProgress(
+                    name = androidContext.getString(R.string.failed_to_execute_patch, patch.name),
+                    state = State.FAILED,
+                    message = exception.stackTraceToString()
+                )
+
+                logger.error("${patch.name} failed:")
+                logger.error(exception.stackTraceToString())
+                throw exception
             }
-            logger.error("$patch failed:")
-            logger.error(exception.stackTraceToString())
-            throw exception
+
+            nextPatchIndex++
+
+            onPatchCompleted()
+
+            selectedPatches.getOrNull(nextPatchIndex)?.let { nextPatch ->
+                updateProgress(
+                    name = androidContext.getString(R.string.executing_patch, nextPatch.name)
+                )
+            }
+
+            logger.info("${patch.name} succeeded")
         }
+
+        updateProgress(
+            state = State.COMPLETED,
+            name = androidContext.resources.getQuantityString(
+                R.plurals.patches_executed,
+                selectedPatches.size,
+                selectedPatches.size
+            )
+        )
     }
 
     suspend fun run(output: File, selectedPatches: PatchList, integrations: List<File>) {
-        onStepSucceeded() // Unpacking
-        Logger.getLogger("").apply {
+        updateProgress(state = State.COMPLETED) // Unpacking
+
+        java.util.logging.Logger.getLogger("").apply {
             handlers.forEach {
                 it.close()
                 removeHandler(it)
             }
 
-            addHandler(logger)
+            addHandler(logger.handler)
         }
+
         with(patcher) {
             logger.info("Merging integrations")
-            acceptIntegrations(integrations)
-            acceptPatches(selectedPatches)
-            onStepSucceeded() // Merging
+            acceptIntegrations(integrations.toSet())
+            acceptPatches(selectedPatches.toSet())
 
             logger.info("Applying patches...")
-            applyPatchesVerbose()
+            applyPatchesVerbose(selectedPatches.sortedBy { it.name })
         }
 
         logger.info("Writing patched files...")
         val result = patcher.get()
 
-        val aligned = tempDir.resolve("aligned.apk")
-        ApkUtils.copyAligned(input, aligned, result)
+        val patched = tempDir.resolve("result.apk")
+        withContext(Dispatchers.IO) {
+            Files.copy(input.toPath(), patched.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
+        result.applyTo(patched)
 
-        logger.info("Patched apk saved to $aligned")
+        logger.info("Patched apk saved to $patched")
 
         withContext(Dispatchers.IO) {
-            Files.move(aligned.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            Files.move(patched.toPath(), output.toPath(), StandardCopyOption.REPLACE_EXISTING)
         }
-        onStepSucceeded() // Saving
+        updateProgress(state = State.COMPLETED) // Saving
     }
 
     override fun close() {
@@ -90,7 +133,7 @@ class Session(
     }
 
     companion object {
-        operator fun PatchResult.component1() = patch.name
+        operator fun PatchResult.component1() = patch
         operator fun PatchResult.component2() = exception
     }
 }

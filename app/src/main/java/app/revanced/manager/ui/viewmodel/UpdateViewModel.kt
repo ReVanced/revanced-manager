@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
+import app.revanced.manager.data.platform.Filesystem
 import app.revanced.manager.data.platform.NetworkInfo
 import app.revanced.manager.network.api.ReVancedAPI
 import app.revanced.manager.network.api.ReVancedAPI.Extensions.findAssetByType
@@ -47,6 +48,7 @@ class UpdateViewModel(
     private val http: HttpService by inject()
     private val pm: PM by inject()
     private val networkInfo: NetworkInfo by inject()
+    private val fs: Filesystem by inject()
 
     var downloadedSize by mutableStateOf(0L)
         private set
@@ -65,17 +67,16 @@ class UpdateViewModel(
 
     var changelog: Changelog? by mutableStateOf(null)
 
-    private val location = File.createTempFile("updater", ".apk", app.cacheDir)
+    private val location = fs.tempDir.resolve("updater.apk")
     private var release: ReVancedRelease? = null
     private val job = viewModelScope.launch {
         uiSafe(app, R.string.download_manager_failed, "Failed to download ReVanced Manager") {
             withContext(Dispatchers.IO) {
-                val response = reVancedAPI
-                    .getLatestRelease("revanced-manager")
-                    .getOrThrow()
+                val response = reVancedAPI.getAppUpdate() ?: throw Exception("No update available")
+
                 release = response
                 changelog = Changelog(
-                    response.metadata.tag,
+                    response.version,
                     response.findAssetByType(APK_MIMETYPE).downloadCount,
                     response.metadata.publishedAt,
                     response.metadata.body

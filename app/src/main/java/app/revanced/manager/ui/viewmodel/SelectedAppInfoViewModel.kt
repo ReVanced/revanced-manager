@@ -20,8 +20,9 @@ import app.revanced.manager.ui.model.BundleInfo.Extensions.toPatchSelection
 import app.revanced.manager.ui.model.SelectedApp
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PM
-import app.revanced.manager.util.PatchesSelection
+import app.revanced.manager.util.PatchSelection
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
@@ -31,6 +32,7 @@ import org.koin.core.component.get
 @OptIn(SavedStateHandleSaveableApi::class)
 class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     val bundlesRepo: PatchBundleRepository = get()
+    private val bundleRepository: PatchBundleRepository = get()
     private val selectionRepository: PatchSelectionRepository = get()
     private val optionsRepository: PatchOptionsRepository = get()
     private val pm: PM = get()
@@ -62,8 +64,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         viewModelScope.launch {
             if (!persistConfiguration) return@launch // TODO: save options for patched apps.
 
-            val packageName = selectedApp.packageName // Accessing this from another thread may cause crashes.
-            state.value = withContext(Dispatchers.Default) { optionsRepository.getOptions(packageName) }
+            val packageName =
+                selectedApp.packageName // Accessing this from another thread may cause crashes.
+
+            state.value = withContext(Dispatchers.Default) {
+                val bundlePatches = bundleRepository.bundles.first()
+                    .mapValues { (_, bundle) -> bundle.patches.associateBy { it.name } }
+
+                optionsRepository.getOptions(packageName, bundlePatches)
+            }
         }
 
         state
@@ -71,20 +80,17 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
         private set
 
     private var selectionState by savedStateHandle.saveable {
-        if (input.patches != null) {
+        if (input.patches != null)
             return@saveable mutableStateOf(SelectionState.Customized(input.patches))
-        }
 
         val selection: MutableState<SelectionState> = mutableStateOf(SelectionState.Default)
 
-        // Get previous selection (if present).
+        // Try to get the previous selection if customization is enabled.
         viewModelScope.launch {
+            if (!prefs.disableSelectionWarning.get()) return@launch
+
             val previous = selectionRepository.getSelection(selectedApp.packageName)
-
-            if (previous.values.sumOf { it.size } == 0) {
-                return@launch
-            }
-
+            if (previous.values.sumOf { it.size } == 0) return@launch
             selection.value = SelectionState.Customized(previous)
         }
 
@@ -109,11 +115,11 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
     fun getCustomPatches(
         bundles: List<BundleInfo>,
         allowUnsupported: Boolean
-    ): PatchesSelection? =
+    ): PatchSelection? =
         (selectionState as? SelectionState.Customized)?.patches(bundles, allowUnsupported)
 
     fun updateConfiguration(
-        selection: PatchesSelection?,
+        selection: PatchSelection?,
         options: Options,
         bundles: List<BundleInfo>
     ) {
@@ -135,7 +141,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 
     data class Params(
         val app: SelectedApp,
-        val patches: PatchesSelection?,
+        val patches: PatchSelection?,
     )
 
     private companion object {
@@ -165,15 +171,15 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
 }
 
 private sealed interface SelectionState : Parcelable {
-    fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchesSelection
+    fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean): PatchSelection
 
     @Parcelize
-    data class Customized(val patchesSelection: PatchesSelection) : SelectionState {
+    data class Customized(val patchSelection: PatchSelection) : SelectionState {
         override fun patches(bundles: List<BundleInfo>, allowUnsupported: Boolean) =
             bundles.toPatchSelection(
                 allowUnsupported
             ) { uid, patch ->
-                patchesSelection[uid]?.contains(patch.name) ?: false
+                patchSelection[uid]?.contains(patch.name) ?: false
             }
     }
 

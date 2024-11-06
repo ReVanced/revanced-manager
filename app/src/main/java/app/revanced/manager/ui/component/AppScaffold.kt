@@ -3,7 +3,7 @@ package app.revanced.manager.ui.component
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,7 +38,7 @@ fun AppTopBar(
     onBackClick: (() -> Unit)? = null,
     backIcon: @Composable (() -> Unit) = @Composable {
         Icon(
-            imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(
                 R.string.back
             )
         )

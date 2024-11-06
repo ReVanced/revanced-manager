@@ -53,16 +53,19 @@ class ImportExportViewModel(
 
     val packagesWithOptions = optionsRepository.getPackagesWithSavedOptions()
 
-    fun clearOptionsForPackage(packageName: String) = viewModelScope.launch {
+    fun resetOptionsForPackage(packageName: String) = viewModelScope.launch {
         optionsRepository.clearOptionsForPackage(packageName)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun clearOptionsForBundle(patchBundle: PatchBundleSource) = viewModelScope.launch {
         optionsRepository.clearOptionsForPatchBundle(patchBundle.uid)
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun resetOptions() = viewModelScope.launch {
         optionsRepository.reset()
+        app.toast(app.getString(R.string.patch_options_reset_toast))
     }
 
     fun startKeystoreImport(content: Uri) = viewModelScope.launch {
@@ -98,6 +101,7 @@ class ImportExportViewModel(
     private suspend fun tryKeystoreImport(cn: String, pass: String, path: Path): Boolean {
         path.inputStream().use { stream ->
             if (keystoreManager.import(cn, pass, stream)) {
+                app.toast(app.getString(R.string.import_keystore_success))
                 cancelKeystoreImport()
                 return true
             }
@@ -116,6 +120,7 @@ class ImportExportViewModel(
 
     fun exportKeystore(target: Uri) = viewModelScope.launch {
         keystoreManager.export(contentResolver.openOutputStream(target)!!)
+        app.toast(app.getString(R.string.export_keystore_success))
     }
 
     fun regenerateKeystore() = viewModelScope.launch {
@@ -123,8 +128,9 @@ class ImportExportViewModel(
         app.toast(app.getString(R.string.regenerate_keystore_success))
     }
 
-    fun resetSelection() = viewModelScope.launch(Dispatchers.Default) {
-        selectionRepository.reset()
+    fun resetSelection() = viewModelScope.launch {
+        withContext(Dispatchers.Default) { selectionRepository.reset() }
+        app.toast(app.getString(R.string.reset_patch_selection_success))
     }
 
     fun executeSelectionAction(target: Uri) = viewModelScope.launch {
@@ -163,8 +169,8 @@ class ImportExportViewModel(
         override val activityArg = JSON_MIMETYPE
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
-            R.string.restore_patches_selection_fail,
-            "Failed to restore patches selection"
+            R.string.import_patch_selection_fail,
+            "Failed to restore patch selection"
         ) {
             val selection = withContext(Dispatchers.IO) {
                 contentResolver.openInputStream(location)!!.use {
@@ -173,6 +179,7 @@ class ImportExportViewModel(
             }
 
             selectionRepository.import(bundleUid, selection)
+            app.toast(app.getString(R.string.import_patch_selection_success))
         }
     }
 
@@ -181,8 +188,8 @@ class ImportExportViewModel(
         override val activityArg = "selection.json"
         override suspend fun execute(bundleUid: Int, location: Uri) = uiSafe(
             app,
-            R.string.backup_patches_selection_fail,
-            "Failed to backup patches selection"
+            R.string.export_patch_selection_fail,
+            "Failed to backup patch selection"
         ) {
             val selection = selectionRepository.export(bundleUid)
 
@@ -191,6 +198,7 @@ class ImportExportViewModel(
                     Json.Default.encodeToStream(selection, it)
                 }
             }
+            app.toast(app.getString(R.string.export_patch_selection_success))
         }
     }
 

@@ -43,21 +43,23 @@ class KeystoreManager(app: Application, private val prefs: PreferencesManager) {
 
     suspend fun regenerate() = withContext(Dispatchers.Default) {
         val ks = ApkSigner.newKeyStore(
-            listOf(
+            setOf(
                 ApkSigner.KeyStoreEntry(
                     DEFAULT, DEFAULT
                 )
             )
         )
-        keystorePath.outputStream().use {
-            ks.store(it, null)
+        withContext(Dispatchers.IO) {
+            keystorePath.outputStream().use {
+                ks.store(it, null)
+            }
         }
 
         updatePrefs(DEFAULT, DEFAULT)
     }
 
     suspend fun import(cn: String, pass: String, keystore: InputStream): Boolean {
-        val keystoreData = keystore.readBytes()
+        val keystoreData = withContext(Dispatchers.IO) { keystore.readBytes() }
 
         try {
             val ks = ApkSigner.readKeyStore(ByteArrayInputStream(keystoreData), null)

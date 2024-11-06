@@ -13,18 +13,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,11 +33,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.BuildConfig
 import app.revanced.manager.R
+import app.revanced.manager.network.dto.ReVancedSocial
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.settings.SettingsListItem
-import app.revanced.manager.util.isDebuggable
+import app.revanced.manager.ui.viewmodel.AboutViewModel
+import app.revanced.manager.ui.viewmodel.AboutViewModel.Companion.getSocialIcon
 import app.revanced.manager.util.openUrl
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -49,6 +49,8 @@ fun AboutSettingsScreen(
     onBackClick: () -> Unit,
     onContributorsClick: () -> Unit,
     onLicensesClick: () -> Unit,
+    onDeveloperOptionsClick: () -> Unit,
+    viewModel: AboutViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     // painterResource() is broken on release builds for some reason.
@@ -56,23 +58,52 @@ fun AboutSettingsScreen(
         AppCompatResources.getDrawable(context, R.drawable.ic_logo_ring)
     })
 
-    val filledButton = listOf(
-        Triple(Icons.Outlined.FavoriteBorder, stringResource(R.string.donate)) {
-            context.openUrl("https://revanced.app/donate")
-        },
-        Triple(Icons.Outlined.Language, stringResource(R.string.website), third = {
-            context.openUrl("https://revanced.app")
-        }),
-    )
+    val (preferredSocials, socials) = remember(viewModel.socials) {
+        viewModel.socials.partition(ReVancedSocial::preferred)
+    }
 
-    val outlinedButton = listOf(
-        Triple(Icons.Outlined.Code, stringResource(R.string.github), third = {
-            context.openUrl("https://revanced.app/github")
-        }),
-        Triple(Icons.Outlined.MailOutline, stringResource(R.string.contact), third = {
-            context.openUrl("mailto:nosupport@revanced.app")
-        }),
-    )
+    val preferredSocialButtons = remember(preferredSocials, viewModel.donate, viewModel.contact) {
+        preferredSocials.map {
+            Triple(
+                getSocialIcon(it.name),
+                it.name,
+                third = {
+                    context.openUrl(it.url)
+                }
+            )
+        } + listOfNotNull(
+            viewModel.donate?.let {
+                Triple(
+                    Icons.Outlined.FavoriteBorder,
+                    context.getString(R.string.donate),
+                    third = {
+                        context.openUrl(it)
+                    }
+                )
+            },
+            viewModel.contact?.let {
+                Triple(
+                    Icons.Outlined.MailOutline,
+                    context.getString(R.string.contact),
+                    third = {
+                        context.openUrl("mailto:$it")
+                    }
+                )
+            }
+        )
+    }
+
+    val socialButtons = remember(socials) {
+        socials.map {
+            Triple(
+                getSocialIcon(it.name),
+                it.name,
+                third = {
+                    context.openUrl(it.url)
+                }
+            )
+        }
+    }
 
     val listItems = listOfNotNull(
         Triple(stringResource(R.string.submit_feedback),
@@ -85,9 +116,11 @@ fun AboutSettingsScreen(
             stringResource(R.string.contributors_description),
             third = onContributorsClick
         ),
-        Triple(stringResource(R.string.developer_options),
+        Triple(
+            stringResource(R.string.developer_options),
             stringResource(R.string.developer_options_description),
-            third = { /*TODO*/ }).takeIf { context.isDebuggable },
+            third = onDeveloperOptionsClick
+        ),
         Triple(
             stringResource(R.string.opensource_licenses),
             stringResource(R.string.opensource_licenses_description),
@@ -103,11 +136,10 @@ fun AboutSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState()),
+                .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -132,11 +164,13 @@ fun AboutSettingsScreen(
             }
             FlowRow(
                 maxItemsInEachRow = 2,
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                modifier = Modifier.padding(horizontal = 16.dp)
             ) {
-                filledButton.forEach { (icon, text, onClick) ->
+                preferredSocialButtons.forEach { (icon, text, onClick) ->
                     FilledTonalButton(
-                        onClick = onClick
+                        onClick = onClick,
+                        modifier = Modifier.weight(1f),
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -154,29 +188,24 @@ fun AboutSettingsScreen(
                         }
                     }
                 }
-                outlinedButton.forEach { (icon, text, onClick) ->
-                    OutlinedButton(
-                        onClick = onClick
+            }
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+            ) {
+                socialButtons.forEach { (icon, text, onClick) ->
+                    IconButton(
+                        onClick = onClick,
+                        modifier = Modifier.padding(end = 8.dp),
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                icon,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Text(
-                                text,
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
+                        Icon(
+                            icon,
+                            contentDescription = text,
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
                     }
                 }
             }
-
             OutlinedCard(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)

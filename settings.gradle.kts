@@ -14,6 +14,14 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
         mavenLocal()
+        maven {
+            // A repository must be speficied for some reason. "registry" is a dummy.
+            url = uri("https://maven.pkg.github.com/revanced/registry")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: extra["gpr.user"] as String?
+                password = System.getenv("GITHUB_TOKEN") ?: extra["gpr.key"] as String?
+            }
+        }
     }
 }
 rootProject.name = "ReVanced Manager"

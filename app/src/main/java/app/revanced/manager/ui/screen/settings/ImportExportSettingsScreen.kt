@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material3.*
@@ -31,21 +29,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import app.revanced.manager.R
-import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.ui.component.AppTopBar
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.PasswordField
 import app.revanced.manager.ui.component.bundle.BundleSelector
+import app.revanced.manager.ui.component.settings.SettingsListItem
+import app.revanced.manager.ui.viewmodel.ImportExportViewModel
 import app.revanced.manager.util.toast
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
-import app.revanced.manager.ui.component.settings.SettingsListItem
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImportExportSettingsScreen(
     onBackClick: () -> Unit,
-    vm: ImportExportViewModel = getViewModel()
+    vm: ImportExportViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
 
@@ -102,11 +101,10 @@ fun ImportExportSettingsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        ColumnWithScrollbar(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             GroupHeader(stringResource(R.string.signing))
             GroupItem(
@@ -133,22 +131,22 @@ fun ImportExportSettingsScreen(
                 description = R.string.regenerate_keystore_description
             )
 
-            GroupHeader(stringResource(R.string.patches_selection))
+            GroupHeader(stringResource(R.string.patches))
             GroupItem(
                 onClick = vm::importSelection,
-                headline = R.string.restore_patches_selection,
-                description = R.string.restore_patches_selection_description
+                headline = R.string.import_patch_selection,
+                description = R.string.import_patch_selection_description
             )
             GroupItem(
                 onClick = vm::exportSelection,
-                headline = R.string.backup_patches_selection,
-                description = R.string.backup_patches_selection_description
+                headline = R.string.export_patch_selection,
+                description = R.string.export_patch_selection_description
             )
             // TODO: allow resetting selection for specific bundle or package name.
             GroupItem(
                 onClick = vm::resetSelection,
-                headline = R.string.clear_patches_selection,
-                description = R.string.clear_patches_selection_description
+                headline = R.string.reset_patch_selection,
+                description = R.string.reset_patch_selection_description
             )
 
             var showPackageSelector by rememberSaveable {
@@ -160,7 +158,7 @@ fun ImportExportSettingsScreen(
 
             if (showPackageSelector)
                 PackageSelector(packages = packagesWithOptions) { selected ->
-                    selected?.let(vm::clearOptionsForPackage)
+                    selected?.let(vm::resetOptionsForPackage)
 
                     showPackageSelector = false
                 }
@@ -172,24 +170,23 @@ fun ImportExportSettingsScreen(
                     showBundleSelector = false
                 }
 
-            GroupHeader(stringResource(R.string.patch_options))
             // TODO: patch options import/export.
             GroupItem(
+                onClick = vm::resetOptions,
+                headline = R.string.patch_options_reset_all,
+                description = R.string.patch_options_reset_all_description,
+            )
+            GroupItem(
                 onClick = { showPackageSelector = true },
-                headline = R.string.patch_options_clear_package,
-                description = R.string.patch_options_clear_package_description
+                headline = R.string.patch_options_reset_package,
+                description = R.string.patch_options_reset_package_description
             )
             if (patchBundles.size > 1)
                 GroupItem(
                     onClick = { showBundleSelector = true },
-                    headline = R.string.patch_options_clear_bundle,
-                    description = R.string.patch_options_clear_bundle_description,
+                    headline = R.string.patch_options_reset_bundle,
+                    description = R.string.patch_options_reset_bundle_description,
                 )
-            GroupItem(
-                onClick = vm::resetOptions,
-                headline = R.string.patch_options_clear_all,
-                description = R.string.patch_options_clear_all_description,
-            )
         }
     }
 }
@@ -253,12 +250,17 @@ private fun PackageSelector(packages: Set<String>, onFinish: (String?) -> Unit) 
 }
 
 @Composable
-private fun GroupItem(onClick: () -> Unit, @StringRes headline: Int, @StringRes description: Int) =
+private fun GroupItem(
+    onClick: () -> Unit,
+    @StringRes headline: Int,
+    @StringRes description: Int? = null
+) {
     SettingsListItem(
         modifier = Modifier.clickable { onClick() },
         headlineContent = stringResource(headline),
-        supportingContent = stringResource(description)
+        supportingContent = description?.let { stringResource(it) }
     )
+}
 
 @Composable
 fun KeystoreCredentialsDialog(

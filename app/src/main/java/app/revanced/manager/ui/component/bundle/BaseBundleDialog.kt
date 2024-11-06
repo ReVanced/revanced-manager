@@ -2,39 +2,34 @@ package app.revanced.manager.ui.component.bundle
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowRight
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.automirrored.outlined.ArrowRight
+import androidx.compose.material.icons.outlined.Extension
+import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.outlined.Sell
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.TextInputDialog
 import app.revanced.manager.ui.component.haptics.HapticSwitch
-import app.revanced.manager.util.isDebuggable
 
 @Composable
 fun BaseBundleDialog(
     modifier: Modifier = Modifier,
     isDefault: Boolean,
-    name: String,
-    onNameChange: ((String) -> Unit)? = null,
+    name: String?,
     remoteUrl: String?,
     onRemoteUrlChange: ((String) -> Unit)? = null,
     patchCount: Int,
@@ -42,143 +37,145 @@ fun BaseBundleDialog(
     autoUpdate: Boolean,
     onAutoUpdateChange: (Boolean) -> Unit,
     onPatchesClick: () -> Unit,
-    onBundleTypeClick: () -> Unit = {},
     extraFields: @Composable ColumnScope.() -> Unit = {}
-) = Column(
-    modifier = Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
-        .padding(
-            start = 8.dp,
-            top = 8.dp,
-            end = 4.dp,
-        )
-        .then(modifier)
 ) {
-    var showNameInputDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
-    if (showNameInputDialog) {
-        TextInputDialog(
-            initial = name,
-            title = stringResource(R.string.bundle_input_name),
-            onDismissRequest = {
-                showNameInputDialog = false
-            },
-            onConfirm = {
-                showNameInputDialog = false
-                onNameChange?.invoke(it)
-            },
-            validator = {
-                it.length in 1..19
-            }
-        )
-    }
-    BundleListItem(
-        headlineText = stringResource(R.string.bundle_input_name),
-        supportingText = name.ifEmpty { stringResource(R.string.field_not_set) },
-        modifier = Modifier.clickable(enabled = onNameChange != null) {
-            showNameInputDialog = true
-        }
-    )
-
-    remoteUrl?.takeUnless { isDefault }?.let { url ->
-        var showUrlInputDialog by rememberSaveable {
-            mutableStateOf(false)
-        }
-        if (showUrlInputDialog) {
-            TextInputDialog(
-                initial = url,
-                title = stringResource(R.string.bundle_input_source_url),
-                onDismissRequest = { showUrlInputDialog = false },
-                onConfirm = {
-                    showUrlInputDialog = false
-                    onRemoteUrlChange?.invoke(it)
-                },
-                validator = {
-                    if (it.isEmpty()) return@TextInputDialog false
-
-                    URLUtil.isValidUrl(it)
-                }
-            )
-        }
-
-        BundleListItem(
-            modifier = Modifier.clickable(enabled = onRemoteUrlChange != null) {
-                showUrlInputDialog = true
-            },
-            headlineText = stringResource(R.string.bundle_input_source_url),
-            supportingText = url.ifEmpty { stringResource(R.string.field_not_set) }
-        )
-    }
-
-    extraFields()
-
-    if (remoteUrl != null) {
-        BundleListItem(
-            headlineText = stringResource(R.string.automatically_update),
-            supportingText = stringResource(R.string.automatically_update_description),
-            trailingContent = {
-                HapticSwitch(
-                    checked = autoUpdate,
-                    onCheckedChange = onAutoUpdateChange
+    ColumnWithScrollbar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Inventory2,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(32.dp)
                 )
-            },
-            modifier = Modifier.clickable {
-                onAutoUpdateChange(!autoUpdate)
-            }
-        )
-    }
-
-    BundleListItem(
-        headlineText = stringResource(R.string.bundle_type),
-        supportingText = stringResource(R.string.bundle_type_description),
-        modifier = Modifier.clickable {
-            onBundleTypeClick()
-        }
-    ) {
-        FilledTonalButton(
-            onClick = onBundleTypeClick,
-            content = {
-                if (remoteUrl == null) {
-                    Text(stringResource(R.string.local))
-                } else {
-                    Text(stringResource(R.string.remote))
+                name?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight(800)),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
                 }
             }
-        )
-    }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 2.dp)
+            ) {
+                version?.let {
+                    Tag(Icons.Outlined.Sell, it)
+                }
+                Tag(Icons.Outlined.Extension, patchCount.toString())
+            }
+        }
 
-    if (version != null || patchCount > 0) {
-        Text(
-            text = stringResource(R.string.information),
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 12.dp
-            ),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.outlineVariant
         )
-    }
 
-    val patchesClickable = LocalContext.current.isDebuggable && patchCount > 0
-    BundleListItem(
-        headlineText = stringResource(R.string.patches),
-        supportingText = if (patchCount == 0) stringResource(R.string.no_patches)
-        else stringResource(R.string.patches_available, patchCount),
-        modifier = Modifier.clickable(enabled = patchesClickable, onClick = onPatchesClick)
-    ) {
-        if (patchesClickable)
-            Icon(
-                Icons.Outlined.ArrowRight,
-                stringResource(R.string.patches)
+        if (remoteUrl != null) {
+            BundleListItem(
+                headlineText = stringResource(R.string.bundle_auto_update),
+                supportingText = stringResource(R.string.bundle_auto_update_description),
+                trailingContent = {
+                    HapticSwitch(
+                        checked = autoUpdate,
+                        onCheckedChange = onAutoUpdateChange
+                    )
+                },
+                modifier = Modifier.clickable {
+                    onAutoUpdateChange(!autoUpdate)
+                }
             )
-    }
+        }
 
-    version?.let {
+        remoteUrl?.takeUnless { isDefault }?.let { url ->
+            var showUrlInputDialog by rememberSaveable {
+                mutableStateOf(false)
+            }
+            if (showUrlInputDialog) {
+                TextInputDialog(
+                    initial = url,
+                    title = stringResource(R.string.bundle_input_source_url),
+                    onDismissRequest = { showUrlInputDialog = false },
+                    onConfirm = {
+                        showUrlInputDialog = false
+                        onRemoteUrlChange?.invoke(it)
+                    },
+                    validator = {
+                        if (it.isEmpty()) return@TextInputDialog false
+
+                        URLUtil.isValidUrl(it)
+                    }
+                )
+            }
+
+            BundleListItem(
+                modifier = Modifier.clickable(
+                    enabled = onRemoteUrlChange != null,
+                    onClick = {
+                        showUrlInputDialog = true
+                    }
+                ),
+                headlineText = stringResource(R.string.bundle_input_source_url),
+                supportingText = url.ifEmpty {
+                    stringResource(R.string.field_not_set)
+                }
+            )
+        }
+
+        val patchesClickable = patchCount > 0
         BundleListItem(
-            headlineText = stringResource(R.string.version),
-            supportingText = it,
+            headlineText = stringResource(R.string.patches),
+            supportingText = stringResource(R.string.bundle_view_patches),
+            modifier = Modifier.clickable(
+                enabled = patchesClickable,
+                onClick = onPatchesClick
+            )
+        ) {
+            if (patchesClickable) {
+                Icon(
+                    Icons.AutoMirrored.Outlined.ArrowRight,
+                    stringResource(R.string.patches)
+                )
+            }
+        }
+
+        extraFields()
+    }
+}
+
+@Composable
+private fun Tag(
+    icon: ImageVector,
+    text: String
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+            tint = MaterialTheme.colorScheme.outline,
+        )
+        Text(
+            text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.outline,
         )
     }
 }

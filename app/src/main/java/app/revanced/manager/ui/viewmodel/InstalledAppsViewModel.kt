@@ -30,7 +30,7 @@ class InstalledAppsViewModel(
                 packageInfoMap[installedApp.currentPackageName] = withContext(Dispatchers.IO) {
                     try {
                         if (
-                            installedApp.installType == InstallType.ROOT && !rootInstaller.isAppInstalled(installedApp.currentPackageName)
+                            installedApp.installType == InstallType.MOUNT && !rootInstaller.isAppInstalled(installedApp.currentPackageName)
                         ) {
                             installedAppsRepository.delete(installedApp)
                             return@withContext null
@@ -39,7 +39,7 @@ class InstalledAppsViewModel(
 
                     val packageInfo = pm.getPackageInfo(installedApp.currentPackageName)
 
-                    if (packageInfo == null && installedApp.installType != InstallType.ROOT) {
+                    if (packageInfo == null && installedApp.installType != InstallType.MOUNT) {
                         installedAppsRepository.delete(installedApp)
                         return@withContext null
                     }

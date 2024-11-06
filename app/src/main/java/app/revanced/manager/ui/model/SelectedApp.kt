@@ -13,7 +13,7 @@ sealed class SelectedApp : Parcelable {
     data class Download(override val packageName: String, override val version: String, val app: AppDownloader.App) : SelectedApp()
 
     @Parcelize
-    data class Local(override val packageName: String, override val version: String, val file: File, val shouldDelete: Boolean) : SelectedApp()
+    data class Local(override val packageName: String, override val version: String, val file: File, val temporary: Boolean) : SelectedApp()
 
     @Parcelize
     data class Installed(override val packageName: String, override val version: String) : SelectedApp()
