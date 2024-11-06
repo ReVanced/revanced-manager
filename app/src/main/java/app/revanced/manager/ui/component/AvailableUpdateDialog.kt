@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,7 +71,7 @@ fun AvailableUpdateDialog(
                     },
                     leadingContent = {
                         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
-                            Checkbox(checked = dontShowAgain, onCheckedChange = { dontShowAgain = it })
+                            HapticCheckbox(checked = dontShowAgain, onCheckedChange = { dontShowAgain = it })
                         }
                     }
                 )

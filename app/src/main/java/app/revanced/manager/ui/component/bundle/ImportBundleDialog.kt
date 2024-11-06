@@ -10,26 +10,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Topic
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -37,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.ui.component.AlertDialogExtended
 import app.revanced.manager.ui.component.TextHorizontalPadding
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.model.BundleType
 import app.revanced.manager.util.APK_MIMETYPE
 import app.revanced.manager.util.JAR_MIMETYPE
@@ -170,7 +155,7 @@ fun SelectBundleTypeStep(
                 overlineContent = { Text(stringResource(R.string.recommended)) },
                 supportingContent = { Text(stringResource(R.string.remote_bundle_description)) },
                 leadingContent = {
-                    RadioButton(
+                    HapticRadioButton(
                         selected = bundleType == BundleType.Remote,
                         onClick = null
                     )
@@ -186,7 +171,7 @@ fun SelectBundleTypeStep(
                 supportingContent = { Text(stringResource(R.string.local_bundle_description)) },
                 overlineContent = { },
                 leadingContent = {
-                    RadioButton(
+                    HapticRadioButton(
                         selected = bundleType == BundleType.Local,
                         onClick = null
                     )
@@ -263,7 +248,7 @@ fun ImportBundleStep(
                         headlineContent = { Text(stringResource(R.string.auto_update)) },
                         leadingContent = {
                             CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
-                                Checkbox(
+                                HapticCheckbox(
                                     checked = autoUpdate,
                                     onCheckedChange = {
                                         onAutoUpdateChange(!autoUpdate)
