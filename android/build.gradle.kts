@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.CommonExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 allprojects {
     repositories {
@@ -16,6 +17,14 @@ allprojects {
 }
 
 layout.buildDirectory = File("../build")
+
+project(":screenshot_callback") {
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+}
 
 subprojects {
     afterEvaluate {

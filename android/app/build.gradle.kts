@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "app.revanced.manager.flutter"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -24,9 +24,11 @@ android {
     defaultConfig {
         applicationId = "app.revanced.manager.flutter"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        resValue("string", "app_name", "ReVanced Manager")
     }
 
     buildTypes {
@@ -37,6 +39,7 @@ android {
             signingConfig = signingConfigs["debug"]
 
             ndk.abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
+
             setProperty("archivesBaseName", "revanced-manager-v${flutter.versionName}")
         }
 
@@ -52,14 +55,16 @@ android {
                     keyAlias = System.getenv("KEYSTORE_ENTRY_ALIAS")
                     keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
                 }
+
+                resValue("string", "app_name", "ReVanced Manager")
             } else {
-                resValue("string", "app_name", "ReVanced Manager (Debug)")
+
                 applicationIdSuffix = ".debug"
 
                 signingConfig = signingConfigs["debug"]
-            }
 
-            resValue("string", "app_name", "ReVanced Manager")
+                resValue("string", "app_name", "ReVanced Manager (Debug)")
+            }
         }
 
         debug {
@@ -79,6 +84,7 @@ android {
         }
     }
 }
+
 
 flutter {
     source = "../.."
