@@ -31,6 +31,14 @@ android {
         resValue("string", "app_name", "ReVanced Manager")
     }
 
+    applicationVariants.all {
+        outputs.all {
+            this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+
+            outputFileName = "revanced-manager-$versionName.apk"
+        }
+    }
+
     buildTypes {
         configureEach {
             isShrinkResources = false
@@ -39,8 +47,6 @@ android {
             signingConfig = signingConfigs["debug"]
 
             ndk.abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
-
-            setProperty("archivesBaseName", "revanced-manager-v${flutter.versionName}")
         }
 
         release {
@@ -58,18 +64,18 @@ android {
 
                 resValue("string", "app_name", "ReVanced Manager")
             } else {
-
                 applicationIdSuffix = ".debug"
 
                 signingConfig = signingConfigs["debug"]
 
-                resValue("string", "app_name", "ReVanced Manager (Debug)")
+                resValue("string", "app_name", "ReVanced Manager (Debug signed)")
             }
         }
 
         debug {
-            resValue("string", "app_name", "ReVanced Manager (Debug)")
             applicationIdSuffix = ".debug"
+
+            resValue("string", "app_name", "ReVanced Manager (Debug)")
         }
     }
 
