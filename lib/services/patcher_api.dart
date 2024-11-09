@@ -18,8 +18,7 @@ import 'package:share_plus/share_plus.dart';
 
 @lazySingleton
 class PatcherAPI {
-  static const patcherChannel =
-      MethodChannel('app.revanced.manager.flutter/patcher');
+  static const patcherChannel = MethodChannel('app.revanced.manager.flutter/patcher');
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
   final RootAPI _rootAPI = RootAPI();
   late Directory _dataDir;
@@ -27,7 +26,7 @@ class PatcherAPI {
   late File _keyStoreFile;
   List<Patch> _patches = [];
   List<Patch> _universalPatches = [];
-  List<String> _compatiblePackages = [];
+  Set<String> _compatiblePackages = {};
   Map filteredPatches = <String, List<Patch>>{};
   File? outFile;
 
@@ -46,8 +45,8 @@ class PatcherAPI {
     }
   }
 
-  List<String> getCompatiblePackages() {
-    final List<String> compatiblePackages = [];
+  Set<String> getCompatiblePackages() {
+    final Set<String> compatiblePackages = {};
     for (final Patch patch in _patches) {
       for (final Package package in patch.compatiblePackages) {
         if (!compatiblePackages.contains(package.name)) {
@@ -66,16 +65,16 @@ class PatcherAPI {
     try {
       if (_patches.isEmpty) {
         _patches = await _managerAPI.getPatches();
+        _universalPatches = getUniversalPatches();
+        _compatiblePackages = getCompatiblePackages();
       }
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
       }
+
       _patches = List.empty();
     }
-
-    _compatiblePackages = getCompatiblePackages();
-    _universalPatches = getUniversalPatches();
   }
 
   Future<List<ApplicationWithIcon>> getFilteredInstalledApps(
@@ -84,6 +83,7 @@ class PatcherAPI {
     final List<ApplicationWithIcon> filteredApps = [];
     final bool allAppsIncluded =
         _universalPatches.isNotEmpty && showUniversalPatches;
+
     if (allAppsIncluded) {
       final appList = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
@@ -94,6 +94,7 @@ class PatcherAPI {
         filteredApps.add(app as ApplicationWithIcon);
       }
     }
+
     for (final packageName in _compatiblePackages) {
       try {
         if (!filteredApps.any((app) => app.packageName == packageName)) {
