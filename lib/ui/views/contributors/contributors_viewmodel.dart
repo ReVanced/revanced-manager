@@ -4,20 +4,10 @@ import 'package:stacked/stacked.dart';
 
 class ContributorsViewModel extends BaseViewModel {
   final ManagerAPI _managerAPI = locator<ManagerAPI>();
-  List<dynamic> patcherContributors = [];
-  List<dynamic> patchesContributors = [];
-  List<dynamic> cliContributors = [];
-  List<dynamic> managerContributors = [];
-
-  String repoName(String repo) => repo.split('/').last;
+  Map<String, List<dynamic>> contributors = {};
 
   Future<void> getContributors() async {
-    final Map<String, List<dynamic>> contributors =
-        await _managerAPI.getContributors();
-    patcherContributors = contributors[repoName(_managerAPI.defaultPatcherRepo)] ?? [];
-    patchesContributors = contributors[repoName(_managerAPI.defaultPatchesRepo)] ?? [];
-    cliContributors = contributors[repoName(_managerAPI.defaultCliRepo)] ?? [];
-    managerContributors = contributors[repoName(_managerAPI.defaultManagerRepo)] ?? [];
+    contributors = await _managerAPI.getContributors();
     notifyListeners();
   }
 }

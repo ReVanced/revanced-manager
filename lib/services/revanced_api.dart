@@ -51,7 +51,7 @@ class RevancedAPI {
     }
     return getToolsLock.synchronized(() async {
       try {
-        final response = await _dio.get('/$toolName/latest');
+        final response = await _dio.get('/$toolName');
         return response.data;
       } on Exception catch (e) {
         if (kDebugMode) {
@@ -89,7 +89,7 @@ class RevancedAPI {
         toolName,
       );
       if (release != null) {
-        final String url = release['assets'][0]['download_url'];
+        final String url = release['download_url'];
         return await _downloadManager.getSingleFile(url);
       }
     } on Exception catch (e) {

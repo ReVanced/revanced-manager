@@ -30,6 +30,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  Map<String, List>? contributors;
   List<Patch> patches = [];
   List<Option> options = [];
   Patch? selectedPatch;
@@ -44,7 +45,7 @@ class ManagerAPI {
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
-  String defaultApiUrl = 'https://api.revanced.app/v3';
+  String defaultApiUrl = 'https://api.revanced.app/v4';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
@@ -66,16 +67,23 @@ class ManagerAPI {
       releaseBuild = !(await getCurrentManagerVersion()).contains('-dev');
     }
 
-    // Migrate to new API URL if not done yet as the old one is sunset.
-    final bool hasMigratedToLatestApi =
-        _prefs.getBool('migratedToLatestApiUrl') ?? false;
-    if (!hasMigratedToLatestApi) {
-      final String apiUrl = getApiUrl().toLowerCase();
-      if (apiUrl.contains('releases.revanced.app') ||
-          (apiUrl.contains('api.revanced.app') &&
-              !apiUrl.contains('v3'))) {
-        await setApiUrl(''); // Reset to default.
-        _prefs.setBool('migratedToLatestApiUrl', true);
+    final hasMigratedToNewMigrationSystem = _prefs.getBool('migratedToNewApiPrefSystem') ?? false;
+    if (!hasMigratedToNewMigrationSystem) {
+      final apiUrl = getApiUrl().toLowerCase();
+
+      final isReleases = apiUrl.contains('releases.revanced.app');
+      final isV2 = apiUrl.contains('api.revanced.app/v2');
+      final isV3 = apiUrl.contains('api.revanced.app/v3');
+
+      if (isReleases || isV2 || isV3) {
+        await resetApiUrl();
+        // At this point, the preference is removed.
+        // Now, no more migration is needed because:
+        // If the user touches the API URL,
+        // it will be remembered forever as intended.
+        // On the other hand, if the user resets it or sets it to the default,
+        // the URL will be updated whenever the app is updated.
+        _prefs.setBool('migratedToNewApiPrefSystem', true);
       }
     }
 
@@ -99,12 +107,25 @@ class ManagerAPI {
     return _prefs.getString('apiUrl') ?? defaultApiUrl;
   }
 
-  Future<void> setApiUrl(String url) async {
-    if (url.isEmpty || url == ' ') {
-      url = defaultApiUrl;
-    }
+  Future<void> resetApiUrl() async {
+    await _prefs.remove('apiUrl');
     await _revancedAPI.clearAllCache();
+    _toast.showBottom(t.settingsView.restartAppForChanges);
+  }
+
+  Future<void> setApiUrl(String url) async {
+    url = url.toLowerCase();
+
+    if (url == defaultApiUrl) {
+      return;
+    }
+
+    if (!url.startsWith('http')) {
+      url = 'https://$url';
+    }
+
     await _prefs.setString('apiUrl', url);
+    await _revancedAPI.clearAllCache();
     _toast.showBottom(t.settingsView.restartAppForChanges);
   }
 
@@ -406,7 +427,7 @@ class ManagerAPI {
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
-    return await _revancedAPI.getContributors();
+    return contributors ??= await _revancedAPI.getContributors();
   }
 
   Future<List<Patch>> getPatches() async {
@@ -438,6 +459,10 @@ class ManagerAPI {
   }
 
   Future<File?> downloadPatches() async {
+    if (!isUsingAlternativeSources()) {
+      return await _revancedAPI.getLatestReleaseFile('patches');
+    }
+
     try {
       final String repoName = getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
