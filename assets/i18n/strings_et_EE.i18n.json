@@ -51,7 +51,6 @@
   "patcherView": {
     "widgetTitle": "Parandaja",
     "patchButton": "Parandus",
-    "removedPatchesWarningDialogText": "Väljatoodud parandused on vahepeal eemaldatud.\n\n${patches}\n\nJätka ikkagi? ",
     "requiredOptionDialogText": "Mõned paranduste sätted on vaja valida. "
   },
   "appSelectorCard": {
@@ -114,13 +113,11 @@
     "exportSectionTitle": "Import & eksport",
     "dynamicThemeHint": "Nautige kogemust oma seadmele lähemal",
     "languageLabel": "Keel",
-    "sourcesIntegrationsLabel": "Integratsioonide allikas",
     "sourcesResetDialogTitle": "Lähtesta",
     "apiURLLabel": "API URL",
     "selectApiURL": "API URL",
     "orgPatchesLabel": "Plaastrite organisatsioon",
     "sourcesPatchesLabel": "Plaastrite allikas",
-    "orgIntegrationsLabel": "Integratsiooni organisatsioon",
     "contributorsLabel": "Panustajad",
     "contributorsHint": "Revancedi kaasautorite nimekiri",
     "aboutLabel": "Teave",

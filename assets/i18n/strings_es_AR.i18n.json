@@ -52,7 +52,7 @@
   "patcherView": {
     "widgetTitle": "Parcheador",
     "patchButton": "Parchear",
-    "removedPatchesWarningDialogText": "Los siguientes parches fueron eliminados desde la última vez que los usaste.\n\n${patches}\n\n¿Continuar de todas formas?",
+    "removedPatchesWarningDialogText": "Los siguientes parches fueron eliminados desde la última vez que los usaste.\n\n${patches}\n\n${newPatches}¿Continuar de todas formas?",
     "requiredOptionDialogText": "Algunas opciones de parche tienen que ser establecidas."
   },
   "appSelectorCard": {
@@ -155,7 +155,6 @@
     "languageUpdated": "Idioma actualizado",
     "sourcesLabel": "Fuentes alternativas",
     "sourcesLabelHint": "Configurá las fuentes alternativas para ReVanced Patches y ReVanced Integrations",
-    "sourcesIntegrationsLabel": "Fuente de las integraciones",
     "useAlternativeSources": "Usar fuentes alternativas",
     "useAlternativeSourcesHint": "Usá fuentes alternativas para ReVanced Patches y ReVanced Integrations en lugar de la API",
     "sourcesResetDialogTitle": "Resetear",
@@ -167,7 +166,6 @@
     "selectApiURL": "URL de la API",
     "orgPatchesLabel": "Organización de los parches",
     "sourcesPatchesLabel": "Fuente de los parches",
-    "orgIntegrationsLabel": "Organización de las integraciones",
     "contributorsLabel": "Contribuidores",
     "contributorsHint": "Una lista de los contribuidores de ReVanced",
     "logsLabel": "Compartir registros",

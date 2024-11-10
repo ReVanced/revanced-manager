@@ -52,7 +52,6 @@
   "patcherView": {
     "widgetTitle": "Tagapagtapal",
     "patchButton": "Tapalan",
-    "removedPatchesWarningDialogText": "Ang mga sumusunod na patches ay tinanggal mula noong huling beses mong gamitin ang mga ito.\n\n${patches}\n\nItuloy pa rin ba?",
     "requiredOptionDialogText": "Kailangan mo i-set ang ilang mga opsyon para sa patch."
   },
   "appSelectorCard": {
@@ -148,16 +147,12 @@
     "languageLabel": "Wika",
     "languageUpdated": "Wika na-update na",
     "sourcesLabel": "Iba pang mga sources ",
-    "sourcesLabelHint": "I-set up ang mga alternatibong sources para sa mga ReVanced Patches at ReVanced Integrations",
-    "sourcesIntegrationsLabel": "Pinanggalingan ng mga integrasyon",
     "useAlternativeSources": "Gumamit ng alternatibong mga sources ",
-    "useAlternativeSourcesHint": "Gamitin ang mga alternatibong sources para sa mga ReVanced Patches at ReVanced Integrations sa halip ng API",
     "sourcesResetDialogTitle": "I-reset",
     "apiURLLabel": "URL ng API",
     "selectApiURL": "URL ng API",
     "orgPatchesLabel": "Pagsasaayos ng mga pantapal",
     "sourcesPatchesLabel": "Pinanggalingan ng mga pantapal",
-    "orgIntegrationsLabel": "Pagsasaayos ng mga integrasyon",
     "contributorsLabel": "Mga nag-ambag",
     "contributorsHint": "Listahan ng mga tumulong sa ReVanced",
     "aboutLabel": "Tungkol",

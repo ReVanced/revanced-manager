@@ -159,6 +159,9 @@ class InstallerViewModel extends BaseViewModel {
         _app.packageName,
       );
       await _managerAPI.setUsedPatches(_patches, _app.packageName);
+      _managerAPI.setLastUsedPatchesVersion(
+        version: _managerAPI.patchesVersion,
+      );
     } else if (value == -100.0) {
       isPatching = false;
       hasErrors = true;
@@ -197,7 +200,9 @@ class InstallerViewModel extends BaseViewModel {
         _app.patchedFilePath = _patcherAPI.outFile!.path;
       }
       final homeViewModel = locator<HomeViewModel>();
-      _managerAPI.reAssessPatchedApps().then((_) => homeViewModel.getPatchedApps());
+      _managerAPI
+          .reAssessPatchedApps()
+          .then((_) => homeViewModel.getPatchedApps());
     } on Exception catch (e) {
       update(
         -100.0,
@@ -325,7 +330,6 @@ class InstallerViewModel extends BaseViewModel {
       'Version compatibility check: ${_managerAPI.isVersionCompatibilityCheckEnabled()}',
       'Show universal patches: ${_managerAPI.areUniversalPatchesEnabled()}',
       'Patches source: ${_managerAPI.getPatchesRepo()}',
-      'Integration source: ${_managerAPI.getIntegrationsRepo()}', //
 
       '\n- Logs',
       logsTrimmed.join('\n'),

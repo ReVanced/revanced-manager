@@ -3,7 +3,6 @@ package app.revanced.manager.flutter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Base64
@@ -17,9 +16,8 @@ import java.security.MessageDigest
 class ExportSettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val callingPackageName = getCallingPackage()!!
 
-        if (getFingerprint(callingPackageName) == getFingerprint(getPackageName())) {
+        if (getFingerprint(callingPackage!!) == getFingerprint(packageName)) {
             // Create JSON Object
             val json = JSONObject()
 
@@ -64,7 +62,7 @@ class ExportSettingsActivity : Activity() {
     fun getFingerprint(packageName: String): String {
         // Get the signature of the app that matches the package name
         val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-        val signature = packageInfo.signatures[0]
+        val signature = packageInfo.signatures!![0]
 
         // Get the raw certificate data
         val rawCert = signature.toByteArray()

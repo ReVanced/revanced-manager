@@ -17,15 +17,10 @@
     "@semantic-release/changelog",
     "@semantic-release/release-notes-generator",
     [
-      "@droidsolutions-oss/semantic-release-update-file",
+      "semantic-release-pub",
       {
-        "files": [
-          {
-            "path": ["pubspec.yaml"],
-            "type": "flutter",
-            "branches": ["main", "dev"]
-          }
-        ]
+        "publishPub": false,
+        "updateBuildNumber": true
       }
     ],
     [
@@ -48,7 +43,10 @@
         "assets": [
           {
             "path": "build/app/outputs/apk/release/revanced-manager*.apk"
-          }
+          },
+        ],
+        "commits": [
+          "message": "chore: Release v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         ],
         "successComment": false
       }

@@ -58,11 +58,9 @@
     "darkThemeLabel": "Mørk modus",
     "dynamicThemeHint": "Nyt en erfaring nærmere din enhet",
     "languageLabel": "Språk",
-    "sourcesIntegrationsLabel": "Integrasjoner kilde",
     "sourcesResetDialogTitle": "Tilbakestill",
     "orgPatchesLabel": "Patches organisasjon",
     "sourcesPatchesLabel": "Patches kilde",
-    "orgIntegrationsLabel": "Integrasjonsorganisasjon",
     "contributorsLabel": "Medvirkende",
     "contributorsHint": "En liste med bidragsytere til ReVanced"
   }

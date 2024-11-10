@@ -68,12 +68,10 @@
   "settingsView": {
     "widgetTitle": "Sozlamalar",
     "exportSectionTitle": "Import & eksport",
-    "sourcesIntegrationsLabel": "Integratsiyani manbai",
     "sourcesResetDialogTitle": "Oddiy holga qaytarish",
     "apiURLLabel": "API URL",
     "selectApiURL": "API URL",
     "sourcesPatchesLabel": "Patchlarni manbai",
-    "orgIntegrationsLabel": "Integratsiyani tashkiloti",
     "contributorsLabel": "Yordamchilar",
     "contributorsHint": "ReVanced yordamchilani royxati",
     "aboutLabel": "Haqida",

@@ -16,6 +16,8 @@ on:
 jobs:
   release:
     name: Release
+    permissions:
+        contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,8 +37,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
-          flutter-version: 3.24.x
+          channel: stable
 
       - name: Install dependencies
         run: npm ci
@@ -50,13 +51,15 @@ jobs:
       - name: Generate code files
         run: dart run build_runner build --delete-conflicting-outputs
 
+      - name: Setup keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > "keystore.jks"}
+
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PUSH_ACCESS }}
-          signingKey: "keystore.jks"
-          keyStorePassword: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
-          keyAlias: ${{ secrets.SIGNING_KEY_ALIAS }}
-          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ENTRY_ALIAS: ${{ secrets.KEYSTORE_ENTRY_ALIAS }}
+          KEYSTORE_ENTRY_PASSWORD: ${{ secrets.KEYSTORE_ENTRY_PASSWORD }}
         run: |
-          echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
           npx semantic-release

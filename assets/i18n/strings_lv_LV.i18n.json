@@ -49,8 +49,7 @@
   },
   "patcherView": {
     "widgetTitle": "Pačeris",
-    "patchButton": "Pačot",
-    "removedPatchesWarningDialogText": "Kopš pēdējās lietošanas reizes ir noņemti šādi ielāpi.\n\n${patches}\n\nTurpināt jebkurā gadījumā?"
+    "patchButton": "Pačot"
   },
   "appSelectorCard": {
     "widgetTitle": "Izvēlaties lietotni",
@@ -115,13 +114,11 @@
     "dynamicThemeLabel": "Materiāls izskats",
     "dynamicThemeHint": "Izbaudi pieredzi personalizētu tavai ierīcei",
     "languageLabel": "Valoda",
-    "sourcesIntegrationsLabel": "Integrācijas avots",
     "sourcesResetDialogTitle": "Atiestatīt",
     "apiURLLabel": "API Saite",
     "selectApiURL": "API Saite",
     "orgPatchesLabel": "Paču autori",
     "sourcesPatchesLabel": "Paču avots",
-    "orgIntegrationsLabel": "Integrāciju autori",
     "contributorsLabel": "Autori",
     "contributorsHint": "ReVanced ieguldītāji",
     "aboutLabel": "Par",

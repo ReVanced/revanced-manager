@@ -44,8 +44,7 @@
   },
   "patcherView": {
     "widgetTitle": "Popravljalnik",
-    "patchButton": "Popravi",
-    "removedPatchesWarningDialogText": "Spodnji popravki so bili odstranjeni, odkar ste jih nazadnje uporabili.\n\n${patches}\n\nVseeno nadaljujem?"
+    "patchButton": "Popravi"
   },
   "appSelectorCard": {
     "widgetTitle": "Izberi aplikacijo",
@@ -120,20 +119,15 @@
     "languageLabel": "Jezik",
     "languageUpdated": "Jezik je posodobljen",
     "sourcesLabel": "Alternativni viri",
-    "sourcesLabelHint": "Nastavite alternativne vire za ReVanced Patches in ReVanced Integrations",
-    "sourcesIntegrationsLabel": "Vir integracij",
     "useAlternativeSources": "Uporabi alternativne vire",
-    "useAlternativeSourcesHint": "Namesto API-ja uporabi alternativne vire za ReVanced Patches in ReVanced Integrations",
     "sourcesResetDialogTitle": "Ponastavi",
     "sourcesResetDialogText": "Ali ste prepričani, da želite ponastaviti svoje vire na privzete vrednosti?",
     "apiURLResetDialogText": "Ali ste prepričani, da želite ponastaviti svojo povezavo do API-ja na privzeto vrednost?",
-    "sourcesUpdateNote": "Pozor: ReVanced Patches in ReVanced Integrations se bosta privzeto prenesla iz alternativnih virov.\n\nTa nastavitev bo vzpostavila povezavo na alternativni vir.",
     "apiURLLabel": "URL API-ja",
     "apiURLHint": "Nastavi naslov URL za API ReVanced Managerja",
     "selectApiURL": "URL API-ja",
     "orgPatchesLabel": "Organizacija popravkov",
     "sourcesPatchesLabel": "Vir popravkov",
-    "orgIntegrationsLabel": "Organizacija integracij",
     "contributorsLabel": "Sodelujoči",
     "contributorsHint": "Seznam sodelujočih pri projektu ReVanced",
     "logsLabel": "Deli dnevniške podatke",

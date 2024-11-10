@@ -49,18 +49,24 @@ class GithubAPI {
     }
   }
 
-  Future<String?> getManagerChangelogs() async {
+  Future<String?> getChangelogs(bool isPatches) async {
+    final String repoName = isPatches
+        ? _managerAPI.getPatchesRepo()
+        : _managerAPI.defaultManagerRepo;
     try {
       final response = await _dioGetSynchronously(
-        '/repos/${_managerAPI.defaultManagerRepo}/releases?per_page=50',
+        '/repos/$repoName/releases?per_page=50',
       );
       final buffer = StringBuffer();
-      final String currentVersion =
-          await _managerAPI.getCurrentManagerVersion();
+      final String version = isPatches
+          ? _managerAPI.getLastUsedPatchesVersion()
+          : await _managerAPI.getCurrentManagerVersion();
+      int releases = 0;
       for (final release in response.data) {
-        if (release['tag_name'] == currentVersion) {
+        if (release['tag_name'] == version) {
           if (buffer.isEmpty) {
             buffer.writeln(release['body']);
+            releases++;
           }
           break;
         }
@@ -68,6 +74,10 @@ class GithubAPI {
           continue;
         }
         buffer.writeln(release['body']);
+        releases++;
+        if (isPatches && releases == 10) {
+          break;
+        }
       }
       return buffer.toString();
     } on Exception catch (e) {
@@ -101,11 +111,7 @@ class GithubAPI {
         );
         if (asset != null) {
           final String downloadUrl = asset['browser_download_url'];
-          if (extension == '.apk') {
-            _managerAPI.setIntegrationsDownloadURL(downloadUrl);
-          } else {
-            _managerAPI.setPatchesDownloadURL(downloadUrl);
-          }
+          _managerAPI.setPatchesDownloadURL(downloadUrl);
           return await _downloadManager.getSingleFile(
             downloadUrl,
           );

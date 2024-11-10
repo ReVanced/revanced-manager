@@ -14,16 +14,11 @@ class SManageSources extends BaseViewModel {
 
   final TextEditingController _orgPatSourceController = TextEditingController();
   final TextEditingController _patSourceController = TextEditingController();
-  final TextEditingController _orgIntSourceController = TextEditingController();
-  final TextEditingController _intSourceController = TextEditingController();
 
   Future<void> showSourcesDialog(BuildContext context) async {
     final String patchesRepo = _managerAPI.getPatchesRepo();
-    final String integrationsRepo = _managerAPI.getIntegrationsRepo();
     _orgPatSourceController.text = patchesRepo.split('/')[0];
     _patSourceController.text = patchesRepo.split('/')[1];
-    _orgIntSourceController.text = integrationsRepo.split('/')[0];
-    _intSourceController.text = integrationsRepo.split('/')[1];
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -72,38 +67,6 @@ class SManageSources extends BaseViewModel {
                 hintText: patchesRepo.split('/')[1],
               ),
             ),
-            const SizedBox(height: 8),
-            // Integrations owner's name
-            TextField(
-              controller: _orgIntSourceController,
-              autocorrect: false,
-              onChanged: (value) => notifyListeners(),
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.merge_outlined,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-                border: const OutlineInputBorder(),
-                labelText: t.settingsView.orgIntegrationsLabel,
-                hintText: integrationsRepo.split('/')[0],
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Integrations repository's name
-            TextField(
-              controller: _intSourceController,
-              autocorrect: false,
-              onChanged: (value) => notifyListeners(),
-              decoration: InputDecoration(
-                icon: const Icon(
-                  Icons.merge_outlined,
-                  color: Colors.transparent,
-                ),
-                border: const OutlineInputBorder(),
-                labelText: t.settingsView.sourcesIntegrationsLabel,
-                hintText: integrationsRepo.split('/')[1],
-              ),
-            ),
             const SizedBox(height: 20),
             Text(t.settingsView.sourcesUpdateNote),
           ],
@@ -113,8 +76,6 @@ class SManageSources extends BaseViewModel {
             onPressed: () {
               _orgPatSourceController.clear();
               _patSourceController.clear();
-              _orgIntSourceController.clear();
-              _intSourceController.clear();
               Navigator.of(context).pop();
             },
             child: Text(t.cancelButton),
@@ -124,11 +85,8 @@ class SManageSources extends BaseViewModel {
               _managerAPI.setPatchesRepo(
                 '${_orgPatSourceController.text.trim()}/${_patSourceController.text.trim()}',
               );
-              _managerAPI.setIntegrationsRepo(
-                '${_orgIntSourceController.text.trim()}/${_intSourceController.text.trim()}',
-              );
               _managerAPI.setCurrentPatchesVersion('0.0.0');
-              _managerAPI.setCurrentIntegrationsVersion('0.0.0');
+              _managerAPI.setLastUsedPatchesVersion();
               _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context).pop();
             },
@@ -153,9 +111,7 @@ class SManageSources extends BaseViewModel {
           FilledButton(
             onPressed: () {
               _managerAPI.setPatchesRepo('');
-              _managerAPI.setIntegrationsRepo('');
               _managerAPI.setCurrentPatchesVersion('0.0.0');
-              _managerAPI.setCurrentIntegrationsVersion('0.0.0');
               _toast.showBottom(t.settingsView.restartAppForChanges);
               Navigator.of(context)
                 ..pop()

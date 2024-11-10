@@ -84,8 +84,8 @@ class HomeViewModel extends BaseViewModel {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
-    final bool isConnected =
-        await Connectivity().checkConnectivity() != [ConnectivityResult.none];
+    final bool isConnected = !(await Connectivity().checkConnectivity())
+        .contains(ConnectivityResult.none);
     if (!isConnected) {
       _toast.showBottom(t.homeView.noConnection);
     }
@@ -311,11 +311,8 @@ class HomeViewModel extends BaseViewModel {
     _toast.showBottom(t.homeView.downloadingMessage);
     final String patchesVersion =
         await _managerAPI.getLatestPatchesVersion() ?? '0.0.0';
-    final String integrationsVersion =
-        await _managerAPI.getLatestIntegrationsVersion() ?? '0.0.0';
-    if (patchesVersion != '0.0.0' && integrationsVersion != '0.0.0') {
+    if (patchesVersion != '0.0.0') {
       await _managerAPI.setCurrentPatchesVersion(patchesVersion);
-      await _managerAPI.setCurrentIntegrationsVersion(integrationsVersion);
       _toast.showBottom(t.homeView.downloadedMessage);
       forceRefresh(context);
     } else {
@@ -478,14 +475,8 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  Future<String?> getManagerChangelogs() {
-    return _githubAPI.getManagerChangelogs();
-  }
-
-  Future<String?> getLatestPatchesChangelog() async {
-    final release =
-        await _githubAPI.getLatestRelease(_managerAPI.defaultPatchesRepo);
-    return release?['body'];
+  Future<String?> getChangelogs(bool isPatches) {
+    return _githubAPI.getChangelogs(isPatches);
   }
 
   Future<String?> getLatestPatchesReleaseTime() {
