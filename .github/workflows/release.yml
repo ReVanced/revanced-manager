@@ -53,7 +53,7 @@ jobs:
 
       - name: Setup keystore
         run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > "keystore.jks"}
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > "android/app/keystore.jks"
 
       - name: Release
         env:
