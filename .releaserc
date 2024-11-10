@@ -26,7 +26,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "flutter build apk"
+        "prepareCmd": "flutter build apk --release"
       }
     ],
     [
