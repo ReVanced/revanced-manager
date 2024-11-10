@@ -164,7 +164,6 @@
     "sourcesResetDialogTitle": "Repor",
     "sourcesResetDialogText": "Tens a certeza de que pretendes repor os valores predefinidos das fontes?",
     "apiURLResetDialogText": "Tens a certeza de que pretendes repor a URL da API para o seu valor predefinido?",
-    "sourcesUpdateNote": "",
     "apiURLLabel": "URL da API",
     "apiURLHint": "Configurar a URL da API do Gestor ReVanced",
     "selectApiURL": "URL da API",

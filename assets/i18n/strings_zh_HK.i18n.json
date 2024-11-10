@@ -90,7 +90,6 @@
     "noSavedPatches": "冇保存咗嘅補丁選擇俾呢個應用。\n撳\"完成\"嚟保存當前嘅選擇。",
     "noPatchesFound": "冇補丁俾呢個揀咗嘅應用。"
   },
-  "patchOptionsView": {},
   "patchItem": {
     "unsupportedDialogText": "揀咗哩種修改可能會導致修改錯誤\n\nApp 版本: ${packageVersion}\n現時支援嘅版本: \n${supportedVersions}"
   },
@@ -111,7 +110,6 @@
     "dynamicThemeLabel": "Material You",
     "dynamicThemeHint": "享受一個更貼近你裝置嘅體驗",
     "languageLabel": "語言",
-    "sourcesIntegrationsLabel": "項目整合來源",
     "sourcesResetDialogTitle": "重設",
     "sourcesResetDialogText": "真喺要重新設定你嘅來源返去預設值？",
     "apiURLResetDialogText": "真喺要重新設定 API URL 返去預設值？",
@@ -119,7 +117,6 @@
     "selectApiURL": "API 网址",
     "orgPatchesLabel": "修補檔組織",
     "sourcesPatchesLabel": "修補檔來源",
-    "orgIntegrationsLabel": "項目整合組織",
     "contributorsLabel": "貢獻者",
     "contributorsHint": "ReVanced 貢獻者列表",
     "logsLabel": "分享記錄檔",
@@ -155,6 +152,5 @@
   },
   "contributorsView": {
     "widgetTitle": "貢獻者"
-  },
-  "installErrorDialog": {}
+  }
 }
