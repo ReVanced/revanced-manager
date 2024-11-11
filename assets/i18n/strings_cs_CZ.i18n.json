@@ -16,7 +16,7 @@
   "showUpdateButton": "Zobrazit aktualizaci",
   "navigationView": {
     "dashboardTab": "Řídící panel",
-    "patcherTab": "Záplatovač",
+    "patcherTab": "Patcher",
     "settingsTab": "Nastavení"
   },
   "homeView": {

@@ -11,7 +11,7 @@
   "notice": "Remarque",
   "noShowAgain": "Ne plus afficher",
   "add": "Ajouter",
-  "remove": "Supprimer",
+  "remove": "Retirer",
   "showChangelogButton": "Journal des modifications",
   "showUpdateButton": "Afficher les mises à jour",
   "navigationView": {
@@ -85,7 +85,7 @@
     "downloadToast": "La fonction de téléchargement est actuellement indisponible",
     "requireSuggestedAppVersionDialogText": "La version de l'application que vous avez sélectionné ne correspond pas à la version recommandée ce qui pourrait créer des problèmes inattendus. Veuillez utiliser la version recommendée.\n\nVersion sélectionnée : ${selected}\nVersion recommendée : ${suggested}\n\nPour continuer quand même, désactivez \"Exiger la version recommendée de l'application\" dans les paramètres.",
     "featureNotAvailable": "Fonctionnalité non implémentée",
-    "featureNotAvailableText": "Cette application est un APK fractionné et ne peut être corrigée et installée de manière fiable qu'en la montant avec les autorisations administrateur. Toutefois, vous pouvez corriger et installer un APK complet en le sélectionnant depuis le stockage."
+    "featureNotAvailableText": "Cette application est un APK fractionné et ne peut être corrigée et installée de manière fiable qu'en la montant avec les autorisations administrateur. Toutefois, vous pouvez patcher et installer un APK complet en le sélectionnant depuis le stockage."
   },
   "patchesSelectorView": {
     "viewTitle": "Sélectionner les patchs",
@@ -105,7 +105,7 @@
   },
   "patchOptionsView": {
     "customValue": "Valeur personnalisée",
-    "setToNull": "Définir à NULL",
+    "setToNull": "Définir à nul",
     "nullValue": "Cette valeur d'option est actuellement nulle",
     "viewTitle": "Options de patch",
     "saveOptions": "Enregistrer",
@@ -130,14 +130,14 @@
     "installButton": "Installer",
     "installRootType": "Monter",
     "installNonRootType": "Standard",
-    "warning": "Désactivez les mises à jour automatiques pour l'application corrigée afin d'éviter des problèmes inattendus.",
+    "warning": "Désactivez les mises à jour automatiques pour l'application patchée afin d'éviter des problèmes inattendus.",
     "pressBackAgain": "Appuyez sur retour une nouvelle fois pour quitter",
     "openButton": "Ouvrir",
-    "notificationTitle": "ReVanced Manager est en train de corriger",
+    "notificationTitle": "ReVanced Manager est en train de patcher",
     "notificationText": "Appuyer pour revenir à l’installateur",
     "exportApkButtonTooltip": "Exporter l'APK corrigé",
     "exportLogButtonTooltip": "Exporter les journaux",
-    "screenshotDetected": "Une capture d’écran a été détectée. Si vous essayez de partager le journal, veuillez plutôt partager une copie du texte.\n\nCopier le journal dans le presse-papiers ?",
+    "screenshotDetected": "Une capture d’écran a été détectée. Si vous essayez de partager le journal, veuillez plutôt partager une copie du texte.\n\nCopier les logs dans le presse-papiers ?",
     "copiedToClipboard": "Journal copié dans le presse-papiers",
     "noExit": "L'installateur est toujours en fonctionnement, impossible de quitter..."
   },
