@@ -6,13 +6,12 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 
 @Composable
-fun HapticRadioButton (
+fun HapticRadioButton(
     selected: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -20,20 +19,17 @@ fun HapticRadioButton (
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
-    val selectedState = remember { mutableStateOf(selected) }
-
-    // Perform haptic feedback
-    if (selectedState.value != selected) {
-        if (selected) {
-            val view = LocalView.current
-            view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
-        }
-        selectedState.value = selected
-    }
+    val view = LocalView.current
 
     RadioButton(
         selected = selected,
-        onClick = onClick,
+        onClick = onClick?.let {
+            {
+                // Perform haptic feedback
+                if (!selected) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                it()
+            }
+        },
         modifier = modifier,
         enabled = enabled,
         colors = colors,

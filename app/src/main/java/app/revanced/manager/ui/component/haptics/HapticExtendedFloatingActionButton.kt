@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalView
+import app.revanced.manager.util.withHapticFeedback
 
 @Composable
 fun HapticExtendedFloatingActionButton (
@@ -26,17 +26,10 @@ fun HapticExtendedFloatingActionButton (
     elevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val view = LocalView.current
-
     ExtendedFloatingActionButton(
         text = text,
         icon = icon,
-        onClick = {
-            // Perform haptic feedback
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-
-            onClick()
-        },
+        onClick = onClick.withHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY),
         modifier = modifier,
         expanded = expanded,
         shape = shape,

@@ -14,6 +14,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -219,3 +221,23 @@ fun ScrollState.isScrollingUp(): State<Boolean> {
 
 val LazyListState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
 val ScrollState.isScrollingUp: Boolean @Composable get() = this.isScrollingUp().value
+
+@Composable
+@ReadOnlyComposable
+fun <R> (() -> R).withHapticFeedback(constant: Int): () -> R {
+    val view = LocalView.current
+    return {
+        view.performHapticFeedback(constant)
+        this()
+    }
+}
+
+@Composable
+@ReadOnlyComposable
+fun <T, R> ((T) -> R).withHapticFeedback(constant: Int): (T) -> R {
+    val view = LocalView.current
+    return {
+        view.performHapticFeedback(constant)
+        this(it)
+    }
+}
