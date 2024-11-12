@@ -72,10 +72,11 @@ class ManagerAPI {
       final apiUrl = getApiUrl().toLowerCase();
 
       final isReleases = apiUrl.contains('releases.revanced.app');
+      final isDomain = apiUrl.endsWith('api.revanced.app');
       final isV2 = apiUrl.contains('api.revanced.app/v2');
       final isV3 = apiUrl.contains('api.revanced.app/v3');
 
-      if (isReleases || isV2 || isV3) {
+      if (isReleases || isDomain || isV2 || isV3) {
         await resetApiUrl();
         // At this point, the preference is removed.
         // Now, no more migration is needed because:
