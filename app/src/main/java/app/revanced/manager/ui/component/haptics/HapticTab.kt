@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
+import app.revanced.manager.util.withHapticFeedback
 
 @Composable
 fun HapticTab (
@@ -22,16 +22,9 @@ fun HapticTab (
     unselectedContentColor: Color = selectedContentColor,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
-    val view = LocalView.current
-
     Tab(
         selected = selected,
-        onClick = {
-            // Perform haptic feedback
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-
-            onClick()
-        },
+        onClick = onClick.withHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY),
         modifier = modifier,
         enabled = enabled,
         text = text,
