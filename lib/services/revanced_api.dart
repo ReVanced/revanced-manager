@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -31,7 +29,7 @@ class RevancedAPI {
     final Map<String, List<dynamic>> contributors = {};
     try {
       final response = await _dio.get('/contributors');
-      final List<dynamic> repositories = response.data['repositories'];
+      final List<dynamic> repositories = response.data;
       for (final Map<String, dynamic> repo in repositories) {
         final String name = repo['name'];
         contributors[name] = repo['contributors'];
@@ -46,21 +44,15 @@ class RevancedAPI {
   }
 
   Future<Map<String, dynamic>?> _getLatestRelease(
-    String extension,
-    String repoName,
+    String toolName,
   ) {
     if (!locator<ManagerAPI>().getDownloadConsent()) {
       return Future(() => null);
     }
     return getToolsLock.synchronized(() async {
       try {
-        final response = await _dio.get('/tools');
-        final List<dynamic> tools = response.data['tools'];
-        return tools.firstWhereOrNull(
-          (t) =>
-              (t['repository'] as String) == repoName &&
-              (t['name'] as String).endsWith(extension),
-        );
+        final response = await _dio.get('/$toolName');
+        return response.data;
       } on Exception catch (e) {
         if (kDebugMode) {
           print(e);
@@ -71,13 +63,11 @@ class RevancedAPI {
   }
 
   Future<String?> getLatestReleaseVersion(
-    String extension,
-    String repoName,
+    String toolName,
   ) async {
     try {
       final Map<String, dynamic>? release = await _getLatestRelease(
-        extension,
-        repoName,
+        toolName,
       );
       if (release != null) {
         return release['version'];
@@ -92,16 +82,14 @@ class RevancedAPI {
   }
 
   Future<File?> getLatestReleaseFile(
-    String extension,
-    String repoName,
+    String toolName,
   ) async {
     try {
       final Map<String, dynamic>? release = await _getLatestRelease(
-        extension,
-        repoName,
+        toolName,
       );
       if (release != null) {
-        final String url = release['browser_download_url'];
+        final String url = release['download_url'];
         return await _downloadManager.getSingleFile(url);
       }
     } on Exception catch (e) {
@@ -129,13 +117,10 @@ class RevancedAPI {
   }
 
   Future<File?> downloadManager() async {
-    final Map<String, dynamic>? release = await _getLatestRelease(
-      '.apk',
-      'revanced/revanced-manager',
-    );
+    final Map<String, dynamic>? release = await _getLatestRelease('manager');
     File? outputFile;
     await for (final result in _downloadManager.getFileStream(
-      release!['browser_download_url'] as String,
+      release!['download_url'] as String,
     )) {
       if (result is DownloadProgress) {
         final totalSize = result.totalSize ?? 10000000;
@@ -152,17 +137,15 @@ class RevancedAPI {
   }
 
   Future<String?> getLatestReleaseTime(
-    String extension,
-    String repoName,
+    String toolName,
   ) async {
     try {
       final Map<String, dynamic>? release = await _getLatestRelease(
-        extension,
-        repoName,
+        toolName,
       );
       if (release != null) {
         final DateTime timestamp =
-            DateTime.parse(release['timestamp'] as String);
+            DateTime.parse(release['created_at'] as String);
         return format(timestamp, locale: 'en_short');
       }
     } on Exception catch (e) {

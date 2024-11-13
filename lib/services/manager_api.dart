@@ -30,6 +30,7 @@ class ManagerAPI {
   final String patcherRepo = 'revanced-patcher';
   final String cliRepo = 'revanced-cli';
   late SharedPreferences _prefs;
+  Map<String, List>? contributors;
   List<Patch> patches = [];
   List<Option> options = [];
   Patch? selectedPatch;
@@ -44,15 +45,13 @@ class ManagerAPI {
   String keystoreFile =
       '/sdcard/Android/data/app.revanced.manager.flutter/files/revanced-manager.keystore';
   String defaultKeystorePassword = 's3cur3p@ssw0rd';
-  String defaultApiUrl = 'https://api.revanced.app/';
+  String defaultApiUrl = 'https://api.revanced.app/v4';
   String defaultRepoUrl = 'https://api.github.com';
   String defaultPatcherRepo = 'revanced/revanced-patcher';
   String defaultPatchesRepo = 'revanced/revanced-patches';
-  String defaultIntegrationsRepo = 'revanced/revanced-integrations';
   String defaultCliRepo = 'revanced/revanced-cli';
   String defaultManagerRepo = 'revanced/revanced-manager';
   String? patchesVersion = '';
-  String? integrationsVersion = '';
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
@@ -68,14 +67,24 @@ class ManagerAPI {
       releaseBuild = !(await getCurrentManagerVersion()).contains('-dev');
     }
 
-    // Migrate to new API URL if not done yet as the old one is sunset.
-    final bool hasMigratedToNewApi =
-        _prefs.getBool('migratedToNewApiUrl') ?? false;
-    if (!hasMigratedToNewApi) {
-      final String apiUrl = getApiUrl().toLowerCase();
-      if (apiUrl.contains('releases.revanced.app')) {
-        await setApiUrl(''); // Reset to default.
-        _prefs.setBool('migratedToNewApiUrl', true);
+    final hasMigratedToNewMigrationSystem = _prefs.getBool('migratedToNewApiPrefSystem') ?? false;
+    if (!hasMigratedToNewMigrationSystem) {
+      final apiUrl = getApiUrl().toLowerCase();
+
+      final isReleases = apiUrl.contains('releases.revanced.app');
+      final isDomain = apiUrl.endsWith('api.revanced.app');
+      final isV2 = apiUrl.contains('api.revanced.app/v2');
+      final isV3 = apiUrl.contains('api.revanced.app/v3');
+
+      if (isReleases || isDomain || isV2 || isV3) {
+        await resetApiUrl();
+        // At this point, the preference is removed.
+        // Now, no more migration is needed because:
+        // If the user touches the API URL,
+        // it will be remembered forever as intended.
+        // On the other hand, if the user resets it or sets it to the default,
+        // the URL will be updated whenever the app is updated.
+        _prefs.setBool('migratedToNewApiPrefSystem', true);
       }
     }
 
@@ -83,10 +92,8 @@ class ManagerAPI {
         _prefs.getBool('migratedToAlternativeSource') ?? false;
     if (!hasMigratedToAlternativeSource) {
       final String patchesRepo = getPatchesRepo();
-      final String integrationsRepo = getIntegrationsRepo();
       final bool usingAlternativeSources =
-          patchesRepo.toLowerCase() != defaultPatchesRepo ||
-              integrationsRepo.toLowerCase() != defaultIntegrationsRepo;
+          patchesRepo.toLowerCase() != defaultPatchesRepo;
       _prefs.setBool('useAlternativeSources', usingAlternativeSources);
       _prefs.setBool('migratedToAlternativeSource', true);
     }
@@ -101,12 +108,25 @@ class ManagerAPI {
     return _prefs.getString('apiUrl') ?? defaultApiUrl;
   }
 
-  Future<void> setApiUrl(String url) async {
-    if (url.isEmpty || url == ' ') {
-      url = defaultApiUrl;
-    }
+  Future<void> resetApiUrl() async {
+    await _prefs.remove('apiUrl');
     await _revancedAPI.clearAllCache();
+    _toast.showBottom(t.settingsView.restartAppForChanges);
+  }
+
+  Future<void> setApiUrl(String url) async {
+    url = url.toLowerCase();
+
+    if (url == defaultApiUrl) {
+      return;
+    }
+
+    if (!url.startsWith('http')) {
+      url = 'https://$url';
+    }
+
     await _prefs.setString('apiUrl', url);
+    await _revancedAPI.clearAllCache();
     _toast.showBottom(t.settingsView.restartAppForChanges);
   }
 
@@ -200,14 +220,6 @@ class ManagerAPI {
     await _prefs.setStringList('savedPatches-$packageName', patchesJson);
   }
 
-  String getIntegrationsDownloadURL() {
-    return _prefs.getString('integrationsDownloadURL') ?? '';
-  }
-
-  Future<void> setIntegrationsDownloadURL(String value) async {
-    await _prefs.setString('integrationsDownloadURL', value);
-  }
-
   List<Patch> getUsedPatches(String packageName) {
     final List<String> patchesJson =
         _prefs.getStringList('usedPatches-$packageName') ?? [];
@@ -254,17 +266,6 @@ class ManagerAPI {
 
   void clearPatchOption(String packageName, String patchName, String key) {
     _prefs.remove('patchOption-$packageName-$patchName-$key');
-  }
-
-  String getIntegrationsRepo() {
-    return _prefs.getString('integrationsRepo') ?? defaultIntegrationsRepo;
-  }
-
-  Future<void> setIntegrationsRepo(String value) async {
-    if (value.isEmpty || value.startsWith('/') || value.endsWith('/')) {
-      value = defaultIntegrationsRepo;
-    }
-    await _prefs.setString('integrationsRepo', value);
   }
 
   bool getUseDynamicTheme() {
@@ -427,7 +428,7 @@ class ManagerAPI {
   }
 
   Future<Map<String, List<dynamic>>> getContributors() async {
-    return await _revancedAPI.getContributors();
+    return contributors ??= await _revancedAPI.getContributors();
   }
 
   Future<List<Patch>> getPatches() async {
@@ -459,33 +460,16 @@ class ManagerAPI {
   }
 
   Future<File?> downloadPatches() async {
+    if (!isUsingAlternativeSources()) {
+      return await _revancedAPI.getLatestReleaseFile('patches');
+    }
+
     try {
       final String repoName = getPatchesRepo();
       final String currentVersion = await getCurrentPatchesVersion();
       final String url = getPatchesDownloadURL();
       return await _githubAPI.getReleaseFile(
-        '.jar',
-        repoName,
-        currentVersion,
-        url,
-      );
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return null;
-    }
-  }
-
-  Future<File?> downloadIntegrations() async {
-    try {
-      final String repoName = !isUsingAlternativeSources()
-          ? defaultIntegrationsRepo
-          : getIntegrationsRepo();
-      final String currentVersion = await getCurrentIntegrationsVersion();
-      final String url = getIntegrationsDownloadURL();
-      return await _githubAPI.getReleaseFile(
-        '.apk',
+        '.rvp',
         repoName,
         currentVersion,
         url,
@@ -499,18 +483,12 @@ class ManagerAPI {
   }
 
   Future<File?> downloadManager() async {
-    return await _revancedAPI.getLatestReleaseFile(
-      '.apk',
-      defaultManagerRepo,
-    );
+    return await _revancedAPI.getLatestReleaseFile('manager');
   }
 
   Future<String?> getLatestPatchesReleaseTime() async {
     if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseTime(
-        '.json',
-        defaultPatchesRepo,
-      );
+      return await _revancedAPI.getLatestReleaseTime('patches');
     } else {
       final release = await _githubAPI.getLatestRelease(getPatchesRepo());
       if (release != null) {
@@ -525,39 +503,20 @@ class ManagerAPI {
 
   Future<String?> getLatestManagerReleaseTime() async {
     return await _revancedAPI.getLatestReleaseTime(
-      '.apk',
-      defaultManagerRepo,
+      'manager',
     );
   }
 
   Future<String?> getLatestManagerVersion() async {
     return await _revancedAPI.getLatestReleaseVersion(
-      '.apk',
-      defaultManagerRepo,
+      'manager',
     );
-  }
-
-  Future<String?> getLatestIntegrationsVersion() async {
-    if (!isUsingAlternativeSources()) {
-      return await _revancedAPI.getLatestReleaseVersion(
-        '.apk',
-        defaultIntegrationsRepo,
-      );
-    } else {
-      final release = await _githubAPI.getLatestRelease(getIntegrationsRepo());
-      if (release != null) {
-        return release['tag_name'];
-      } else {
-        return null;
-      }
-    }
   }
 
   Future<String?> getLatestPatchesVersion() async {
     if (!isUsingAlternativeSources()) {
       return await _revancedAPI.getLatestReleaseVersion(
-        '.json',
-        defaultPatchesRepo,
+        'patches',
       );
     } else {
       final release = await _githubAPI.getLatestRelease(getPatchesRepo());
@@ -618,25 +577,6 @@ class ManagerAPI {
     await _prefs.setString('patchesVersion', version);
     await setPatchesDownloadURL('');
     await downloadPatches();
-  }
-
-  Future<String> getCurrentIntegrationsVersion() async {
-    integrationsVersion = _prefs.getString('integrationsVersion') ?? '0.0.0';
-    if (integrationsVersion == '0.0.0' || isPatchesAutoUpdate()) {
-      final String newIntegrationsVersion =
-          await getLatestIntegrationsVersion() ?? '0.0.0';
-      if (integrationsVersion != newIntegrationsVersion &&
-          newIntegrationsVersion != '0.0.0') {
-        await setCurrentIntegrationsVersion(newIntegrationsVersion);
-      }
-    }
-    return integrationsVersion!;
-  }
-
-  Future<void> setCurrentIntegrationsVersion(String version) async {
-    await _prefs.setString('integrationsVersion', version);
-    await setIntegrationsDownloadURL('');
-    await downloadIntegrations();
   }
 
   Future<List<PatchedApplication>> getAppsToRemove(
@@ -839,6 +779,36 @@ class ManagerAPI {
       return {};
     }
     return jsonDecode(string);
+  }
+
+  String exportSettings() {
+    final Map<String, dynamic> settings = _prefs
+        .getKeys()
+        .fold<Map<String, dynamic>>({}, (Map<String, dynamic> map, String key) {
+      map[key] = _prefs.get(key);
+      return map;
+    });
+    return jsonEncode(settings);
+  }
+
+  Future<void> importSettings(String settings) async {
+    final Map<String, dynamic> settingsMap = jsonDecode(settings);
+    settingsMap.forEach((key, value) {
+      if (value is bool) {
+        _prefs.setBool(key, value);
+      } else if (value is int) {
+        _prefs.setInt(key, value);
+      } else if (value is double) {
+        _prefs.setDouble(key, value);
+      } else if (value is String) {
+        _prefs.setString(key, value);
+      } else if (value is List<dynamic>) {
+        _prefs.setStringList(
+          key,
+          value.map((a) => json.encode(a.toJson())).toList(),
+        );
+      }
+    });
   }
 
   void resetAllOptions() {

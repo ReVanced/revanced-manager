@@ -49,7 +49,7 @@ class _ContributorsCardState extends State<ContributorsCard> {
               child: GestureDetector(
                 onTap: () => launchUrl(
                   Uri.parse(
-                    widget.contributors[index]['html_url'],
+                    widget.contributors[index]['url'],
                   ),
                   mode: LaunchMode.externalApplication,
                 ),

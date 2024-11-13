@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.CommonExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 allprojects {
     repositories {
@@ -17,11 +18,20 @@ allprojects {
 
 layout.buildDirectory = File("../build")
 
+project(":screenshot_callback") {
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+}
+
 subprojects {
     afterEvaluate {
         extensions.findByName("android")?.let {
             it as CommonExtension<*, *, *, *, *, *>
-            it.compileSdk = 34
+            if (it.compileSdk != null && it.compileSdk!! < 31)
+                it.compileSdk = 34
         }
     }
 
