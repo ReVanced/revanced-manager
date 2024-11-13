@@ -1,6 +1,7 @@
 {
   "okButton": "Labi",
   "cancelButton": "Atcelt",
+  "dismissButton": "Atmest",
   "quitButton": "Iziet",
   "updateButton": "Atjaunināt",
   "suggested": "Ieteiktā versija: ${version}",
@@ -22,7 +23,10 @@
     "refreshSuccess": "Veiksmīgi atsvaidzināts",
     "widgetTitle": "Info panelis",
     "updatesSubtitle": "Atjauninājumi",
+    "lastPatchedAppSubtitle": "Pēdējā lāpītā lietotne",
+    "patchedSubtitle": "Instalētās lietotnes",
     "changeLaterSubtitle": "Jūs varat mainīt šo iestatījumu vēlāk.",
+    "noSavedAppFound": "Neviena lietotne nav atrasta",
     "noInstallations": "Nav atrasta neviena pačota aplikācija",
     "installUpdate": "Vai turpināt instalēt atjauninājumu?",
     "updateSheetTitle": "Atjaunit ReVanced pārvaldnieku",
@@ -49,7 +53,10 @@
   },
   "patcherView": {
     "widgetTitle": "Pačeris",
-    "patchButton": "Pačot"
+    "patchButton": "Pačot",
+    "removedPatchesWarningDialogText": "Noņemti ielāpi kopš pēdējās reizes kad jūs lāpijāt šo lietotni:\n\n${patches}\n\n${newPatches}Vienalga turpināt?",
+    "addedPatchesDialogText": "Pievienoti ielāpi kopš pēdējās reizes kad jūs lāpijāt šo lietotni:\n\n${addedPatches}",
+    "requiredOptionDialogText": "Ir jāiestata dažas ielāpu opcijas."
   },
   "appSelectorCard": {
     "widgetTitle": "Izvēlaties lietotni",
@@ -59,10 +66,10 @@
     "anyVersion": "Jebkura versija"
   },
   "patchSelectorCard": {
-    "widgetTitle": "Izvēlies pačus",
-    "widgetTitleSelected": "Izvēlētie pači",
+    "widgetTitle": "Izvēlies ielāpus",
+    "widgetTitleSelected": "Izvēlētie ielāpi",
     "widgetSubtitle": "Vispirms, izvēlieties aplikāciju",
-    "widgetEmptySubtitle": "Nav atlasītu paču"
+    "widgetEmptySubtitle": "Nav atlasītu ielāpu"
   },
   "socialMediaCard": {
     "widgetTitle": "Sociālie tīkli",
@@ -72,27 +79,45 @@
     "viewTitle": "Izvēlaties lietotni",
     "searchBarHint": "Meklēt lietotni",
     "storageButton": "Krātuve",
-    "selectFromStorageButton": "Izvēlēties krātuvi",
+    "selectFromStorageButton": "Izvēlēties no krātuves",
     "errorMessage": "Nevar izmantot atlasīto aplikāciju",
-    "downloadToast": "Instalēšanas funkcija pašlaik nav pieejama",
+    "downloadToast": "Lejupielādes funkcija pašlaik nav pieejama",
     "requireSuggestedAppVersionDialogText": "Lietotnes versija, kuru Jūs izvēlējāties, neatbilst rekomendētajai versijai, kas var novest līdz dažādām ķibelēm. Aicinām Jūs lietot rekomendēto versiju.\n\nIzvēlētā versija: ${selected}\nRekomendētā versija: ${suggested}\n\nLai turpinātu tā pat, atslēdziet \"Piespiest rekomendēto aplikācijas versiju\" iestatījumos.",
     "featureNotAvailable": "Funkcija nav ieviesta"
   },
   "patchesSelectorView": {
-    "viewTitle": "Izvēlies pačus",
-    "searchBarHint": "Meklē pačus",
+    "viewTitle": "Izvēlies ielāpus",
+    "searchBarHint": "Meklē ielāpus",
+    "universalPatches": "Universāli ielāpi",
+    "newPatches": "Jauni ielāpi",
+    "patches": "Ielāpi",
     "doneButton": "Gatavs",
-    "defaultChip": "Parasts",
-    "defaultTooltip": "Atlasiet visus standarta pači",
+    "defaultChip": "Noklusējums",
+    "defaultTooltip": "Atlasiet visus noklusējuma ielāpus",
     "noneChip": "Neviens",
-    "noneTooltip": "Atsijāt visus pači",
-    "noPatchesFound": "Atlasītajai lietotnei nav atrasts neviens patčs"
+    "noneTooltip": "Noņemt visu ielāpu izvēli",
+    "loadPatchesSelection": "Ielādēt ielāpu izvēli",
+    "noSavedPatches": "Nav saglabāta ielāpu izvēle priekš izvēlētās lietotnes.\nSpied Gatavs lai saglabātu pašreizējo izvēli.",
+    "noPatchesFound": "Atlasītajai lietotnei nav atrasts neviens ielāps",
+    "setRequiredOption": "Dažiem ielāpiem ir prasība iestatīt opcijas:\n\n${patches}\n\nLūdzu iestatiet tās pirms turpināšanas."
   },
   "patchOptionsView": {
-    "saveOptions": "Saglabāt"
+    "customValue": "Pielāgota vērtība",
+    "setToNull": "Iestatīt uz nulli",
+    "nullValue": "Šīs opcijas vērtības šobrīd ir nulle",
+    "viewTitle": "Ielāpu opcijas",
+    "saveOptions": "Saglabāt",
+    "unselectPatch": "Noņemt ielāpa izvēli",
+    "tooltip": "Vairāk ievades opcijas",
+    "selectFilePath": "Izvēlēties faila ceļu",
+    "selectFolder": "Izvēlēties mapi",
+    "requiredOption": "Šīs opcijas iestatīšana ir obligāta",
+    "unsupportedOption": "Šī opcija netiek atbalstīta"
   },
   "patchItem": {
-    "unsupportedDialogText": "Izvēloties šo paču var rasties paču kļūdas\n\nApp versija: ${packageVersion}\nPašlaik atbalstītās versijas:\n${supportedVersions}"
+    "unsupportedDialogText": "Izvēloties šo paču var rasties paču kļūdas\n\nApp versija: ${packageVersion}\nPašlaik atbalstītās versijas:\n${supportedVersions}",
+    "unsupportedPatchVersion": "Ielāps netiek atbalstīts šīs lietotnes versijai.",
+    "patchesChangeWarningDialogButton": "Lietot noklusējuma izvēli"
   },
   "installerView": {
     "installButton": "Instalēt",
@@ -118,9 +143,13 @@
     "apiURLLabel": "API Saite",
     "selectApiURL": "API Saite",
     "orgPatchesLabel": "Paču autori",
-    "sourcesPatchesLabel": "Paču avots",
+    "sourcesPatchesLabel": "Ielāpu avots",
     "contributorsLabel": "Autori",
     "contributorsHint": "ReVanced ieguldītāji",
+    "autoUpdatePatchesLabel": "Automātiski atjaunināt ielāpus",
+    "autoUpdatePatchesHint": "Automātiski atjaunināt ielāpus uz jaunāko versiju",
+    "universalPatchesLabel": "Rādīt universālos ielāpus",
+    "lastPatchedAppLabel": "Saglabāt salāpīto lietotni",
     "aboutLabel": "Par",
     "snackbarMessage": "Ievietots starpliktuvē",
     "restartAppForChanges": "Restartējiet lietotni, lai piemērotu izmaiņas",
@@ -144,10 +173,10 @@
     "rootDialogText": "Aplikācija tika instalēta ar superuser pieejām, taču ReVanced Manager nav šādu pieeju.\nLūdzams uzlikt vispirms superuser ieejas.",
     "packageNameLabel": "Pakotnes nosaukums",
     "installTypeLabel": "Instalācijas tips",
-    "patchedDateLabel": "Pača datums",
-    "appliedPatchesLabel": "Lietotie pači",
+    "patchedDateLabel": "Salāpīšanas datums",
+    "appliedPatchesLabel": "Izmantotie ielāpi",
     "patchedDateHint": "${date} un ${time}",
-    "appliedPatchesHint": "${quantity} lietoti pači",
+    "appliedPatchesHint": "${quantity} izmantoti ielāpi",
     "updateNotImplemented": "Šī funkcija vēl nav izveidota"
   },
   "contributorsView": {
