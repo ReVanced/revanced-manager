@@ -12,7 +12,6 @@ class PreferencesManager(
 
     val api = stringPreference("api_url", "https://api.revanced.app")
 
-    val multithreadingDexFileWriter = booleanPreference("multithreading_dex_file_writer", true)
     val useProcessRuntime = booleanPreference("use_process_runtime", false)
     val patcherProcessMemoryLimit = intPreference("process_runtime_memory_limit", 700)
 

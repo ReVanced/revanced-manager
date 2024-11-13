@@ -2,7 +2,6 @@
     <string name="app_name">ReVanced Manager</string>
     <string name="patcher">Patcher</string>
     <string name="patches">Patches</string>
-    <string name="integrations">Integrations</string>
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
@@ -20,7 +19,6 @@
     <string name="import_bundle">Import patch bundle</string>
     <string name="bundle_patches">Bundle patches</string>
     <string name="patch_bundle_field">Patch bundle</string>
-    <string name="integrations_field">Integrations</string>
     <string name="file_field_set">Selected</string>
     <string name="file_field_not_set">Not selected</string>
 
@@ -71,8 +69,6 @@
     <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
-    <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
-    <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
@@ -123,7 +119,6 @@
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
     <string name="downloading_patches">Downloading patch bundle…</string>
-    <string name="downloading_integrations">Downloading Integrations…</string>
 
     <string name="options">Options</string>
     <string name="ok">OK</string>
@@ -186,7 +181,6 @@
     <string name="download_apk">Download APK file</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
-    <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>

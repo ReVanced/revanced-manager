@@ -54,13 +54,11 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
 
             logger.info("Memory limit: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)}MB")
 
-            val integrations =
-                parameters.configurations.mapNotNull { it.integrationsPath?.let(::File) }
             val patchList = parameters.configurations.flatMap { config ->
-                val bundle = PatchBundle(File(config.bundlePath), null)
+                val bundle = PatchBundle(File(config.bundlePath))
 
                 val patches =
-                    bundle.patchClasses(parameters.packageName).filter { it.name in config.patches }
+                    bundle.patches(parameters.packageName).filter { it.name in config.patches }
                         .associateBy { it.name }
 
                 config.options.forEach { (patchName, opts) ->
@@ -81,7 +79,6 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
                 cacheDir = parameters.cacheDir,
                 aaptPath = parameters.aaptPath,
                 frameworkDir = parameters.frameworkDir,
-                multithreadingDexFileWriter = parameters.enableMultithrededDexWriter,
                 androidContext = context,
                 logger = logger,
                 input = File(parameters.inputFile),
@@ -90,7 +87,7 @@ class PatcherProcess(private val context: Context) : IPatcherProcess.Stub() {
                     events.progress(name, state?.name, message)
                 }
             ).use {
-                it.run(File(parameters.outputFile), patchList, integrations)
+                it.run(File(parameters.outputFile), patchList)
             }
 
             events.finished(null)

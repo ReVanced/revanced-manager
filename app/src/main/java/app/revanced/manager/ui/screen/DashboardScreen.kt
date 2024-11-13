@@ -79,9 +79,9 @@ fun DashboardScreen(
     if (showAddBundleDialog) {
         ImportPatchBundleDialog(
             onDismiss = { showAddBundleDialog = false },
-            onLocalSubmit = { patches, integrations ->
+            onLocalSubmit = { patches ->
                 showAddBundleDialog = false
-                vm.createLocalSource(patches, integrations)
+                vm.createLocalSource(patches)
             },
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false

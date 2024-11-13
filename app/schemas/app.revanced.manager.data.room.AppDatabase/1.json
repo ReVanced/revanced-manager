@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1dd9d5c0201fdf3cfef3ae669fd65e46",
+    "identityHash": "c385297c07ea54804dc8526c388f706d",
     "entities": [
       {
         "tableName": "patch_bundles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, `version` TEXT, `integrations_version` TEXT, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `name` TEXT NOT NULL, `version` TEXT, `source` TEXT NOT NULL, `auto_update` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -21,6 +21,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "source",
             "columnName": "source",
             "affinity": "TEXT",
@@ -31,18 +37,6 @@
             "columnName": "auto_update",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "versionInfo.patches",
-            "columnName": "version",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "versionInfo.integrations",
-            "columnName": "integrations_version",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -397,7 +391,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1dd9d5c0201fdf3cfef3ae669fd65e46')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c385297c07ea54804dc8526c388f706d')"
     ]
   }
 }

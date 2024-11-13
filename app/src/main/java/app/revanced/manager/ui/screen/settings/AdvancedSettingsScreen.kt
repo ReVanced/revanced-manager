@@ -102,12 +102,6 @@ fun AdvancedSettingsScreen(
                 headline = R.string.process_runtime_memory_limit,
                 description = R.string.process_runtime_memory_limit_description,
             )
-            BooleanItem(
-                preference = vm.prefs.multithreadingDexFileWriter,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.multithreaded_dex_file_writer,
-                description = R.string.multithreaded_dex_file_writer_description,
-            )
 
             GroupHeader(stringResource(R.string.safeguards))
             BooleanItem(

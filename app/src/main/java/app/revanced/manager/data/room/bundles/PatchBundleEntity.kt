@@ -29,21 +29,16 @@ sealed class Source {
     }
 }
 
-data class VersionInfo(
-    @ColumnInfo(name = "version") val patches: String? = null,
-    @ColumnInfo(name = "integrations_version") val integrations: String? = null,
-)
-
 @Entity(tableName = "patch_bundles")
 data class PatchBundleEntity(
     @PrimaryKey val uid: Int,
     @ColumnInfo(name = "name") val name: String,
-    @Embedded val versionInfo: VersionInfo,
+    @ColumnInfo(name = "version") val version: String? = null,
     @ColumnInfo(name = "source") val source: Source,
     @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
 )
 
 data class BundleProperties(
-    @Embedded val versionInfo: VersionInfo,
+    @ColumnInfo(name = "version") val version: String? = null,
     @ColumnInfo(name = "auto_update") val autoUpdate: Boolean
 )

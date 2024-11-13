@@ -45,7 +45,7 @@ fun BundleItem(
     val state by bundle.state.collectAsStateWithLifecycle()
 
     val version by remember(bundle) {
-        bundle.propsFlow().map { props -> props?.versionInfo?.patches }
+        bundle.propsFlow().map { props -> props?.version }
     }.collectAsStateWithLifecycle(null)
     val name by bundle.nameState
 

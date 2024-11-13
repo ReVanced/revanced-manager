@@ -23,19 +23,18 @@ import app.revanced.manager.ui.component.TextHorizontalPadding
 import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.model.BundleType
-import app.revanced.manager.util.APK_MIMETYPE
-import app.revanced.manager.util.JAR_MIMETYPE
+import app.revanced.manager.util.BIN_MIMETYPE
+import app.revanced.manager.util.transparentListItemColors
 
 @Composable
 fun ImportPatchBundleDialog(
     onDismiss: () -> Unit,
     onRemoteSubmit: (String, Boolean) -> Unit,
-    onLocalSubmit: (Uri, Uri?) -> Unit
+    onLocalSubmit: (Uri) -> Unit
 ) {
     var currentStep by rememberSaveable { mutableIntStateOf(0) }
     var bundleType by rememberSaveable { mutableStateOf(BundleType.Remote) }
     var patchBundle by rememberSaveable { mutableStateOf<Uri?>(null) }
-    var integrations by rememberSaveable { mutableStateOf<Uri?>(null) }
     var remoteUrl by rememberSaveable { mutableStateOf("") }
     var autoUpdate by rememberSaveable { mutableStateOf(false) }
 
@@ -45,16 +44,7 @@ fun ImportPatchBundleDialog(
         }
 
     fun launchPatchActivity() {
-        patchActivityLauncher.launch(JAR_MIMETYPE)
-    }
-
-    val integrationsActivityLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { integrations = it }
-        }
-
-    fun launchIntegrationsActivity() {
-        integrationsActivityLauncher.launch(APK_MIMETYPE)
+        patchActivityLauncher.launch(BIN_MIMETYPE)
     }
 
     val steps = listOf<@Composable () -> Unit>(
@@ -67,11 +57,9 @@ fun ImportPatchBundleDialog(
             ImportBundleStep(
                 bundleType,
                 patchBundle,
-                integrations,
                 remoteUrl,
                 autoUpdate,
                 { launchPatchActivity() },
-                { launchIntegrationsActivity() },
                 { remoteUrl = it },
                 { autoUpdate = it }
             )
@@ -99,13 +87,7 @@ fun ImportPatchBundleDialog(
                     enabled = inputsAreValid,
                     onClick = {
                         when (bundleType) {
-                            BundleType.Local -> patchBundle?.let {
-                                onLocalSubmit(
-                                    it,
-                                    integrations
-                                )
-                            }
-
+                            BundleType.Local -> patchBundle?.let(onLocalSubmit)
                             BundleType.Remote -> onRemoteSubmit(remoteUrl, autoUpdate)
                         }
                     }
@@ -159,7 +141,8 @@ fun SelectBundleTypeStep(
                         selected = bundleType == BundleType.Remote,
                         onClick = null
                     )
-                }
+                },
+                colors = transparentListItemColors
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             ListItem(
@@ -175,7 +158,8 @@ fun SelectBundleTypeStep(
                         selected = bundleType == BundleType.Local,
                         onClick = null
                     )
-                }
+                },
+                colors = transparentListItemColors
             )
         }
     }
@@ -186,11 +170,9 @@ fun SelectBundleTypeStep(
 fun ImportBundleStep(
     bundleType: BundleType,
     patchBundle: Uri?,
-    integrations: Uri?,
     remoteUrl: String,
     autoUpdate: Boolean,
     launchPatchActivity: () -> Unit,
-    launchIntegrationsActivity: () -> Unit,
     onRemoteUrlChange: (String) -> Unit,
     onAutoUpdateChange: (Boolean) -> Unit
 ) {
@@ -210,19 +192,8 @@ fun ImportBundleStep(
                                 Icon(imageVector = Icons.Default.Topic, contentDescription = null)
                             }
                         },
-                        modifier = Modifier.clickable { launchPatchActivity() }
-                    )
-                    ListItem(
-                        headlineContent = {
-                            Text(stringResource(R.string.integrations_field))
-                        },
-                        supportingContent = { Text(stringResource(if (integrations != null) R.string.file_field_set else R.string.file_field_not_set)) },
-                        trailingContent = {
-                            IconButton(onClick = launchIntegrationsActivity) {
-                                Icon(imageVector = Icons.Default.Topic, contentDescription = null)
-                            }
-                        },
-                        modifier = Modifier.clickable { launchIntegrationsActivity() }
+                        modifier = Modifier.clickable { launchPatchActivity() },
+                        colors = transparentListItemColors
                     )
                 }
             }
@@ -256,6 +227,7 @@ fun ImportBundleStep(
                                 )
                             }
                         },
+                        colors = transparentListItemColors
                     )
                 }
             }

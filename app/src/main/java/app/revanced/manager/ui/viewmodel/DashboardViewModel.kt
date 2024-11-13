@@ -95,13 +95,10 @@ class DashboardViewModel(
         selectedSources.clear()
     }
 
-    fun createLocalSource(patchBundle: Uri, integrations: Uri?) =
+    fun createLocalSource(patchBundle: Uri) =
         viewModelScope.launch {
             contentResolver.openInputStream(patchBundle)!!.use { patchesStream ->
-                integrations?.let { contentResolver.openInputStream(it) }
-                    .use { integrationsStream ->
-                        patchBundleRepository.createLocal(patchesStream, integrationsStream)
-                    }
+                patchBundleRepository.createLocal(patchesStream)
             }
         }
 

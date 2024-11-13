@@ -1,14 +1,14 @@
 package app.revanced.manager.patcher.patch
 
 import androidx.compose.runtime.Immutable
-import app.revanced.patcher.data.ResourceContext
 import app.revanced.patcher.patch.Patch
-import app.revanced.patcher.patch.ResourcePatch
-import app.revanced.patcher.patch.options.PatchOption
+import app.revanced.patcher.patch.Option as PatchOption
+import app.revanced.patcher.patch.resourcePatch
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlin.reflect.KType
 
 data class PatchInfo(
     val name: String,
@@ -21,7 +21,12 @@ data class PatchInfo(
         patch.name.orEmpty(),
         patch.description,
         patch.use,
-        patch.compatiblePackages?.map { CompatiblePackage(it) }?.toImmutableList(),
+        patch.compatiblePackages?.map { (pkgName, versions) ->
+            CompatiblePackage(
+                pkgName,
+                versions?.toImmutableSet()
+            )
+        }?.toImmutableList(),
         patch.options.map { (_, option) -> Option(option) }.ifEmpty { null }?.toImmutableList()
     )
 
@@ -45,37 +50,19 @@ data class PatchInfo(
      * The resulting patch cannot be executed.
      * This is necessary because some functions in ReVanced Library only accept full [Patch] objects.
      */
-    fun toPatcherPatch(): Patch<*> = object : ResourcePatch(
-        name = name,
-        description = description,
-        compatiblePackages = compatiblePackages
-            ?.map(app.revanced.manager.patcher.patch.CompatiblePackage::toPatcherCompatiblePackage)
-            ?.toSet(),
-        use = include,
-    ) {
-        override fun execute(context: ResourceContext) =
-            throw Exception("Metadata patches cannot be executed")
-    }
+    fun toPatcherPatch(): Patch<*> =
+        resourcePatch(name = name, description = description, use = include) {
+            compatiblePackages?.let { pkgs ->
+                compatibleWith(*pkgs.map { it.packageName to it.versions }.toTypedArray())
+            }
+        }
 }
 
 @Immutable
 data class CompatiblePackage(
     val packageName: String,
     val versions: ImmutableSet<String>?
-) {
-    constructor(pkg: Patch.CompatiblePackage) : this(
-        pkg.name,
-        pkg.versions?.toImmutableSet()
-    )
-
-    /**
-     * Converts this [CompatiblePackage] into a [Patch.CompatiblePackage] from patcher.
-     */
-    fun toPatcherCompatiblePackage() = Patch.CompatiblePackage(
-        name = packageName,
-        versions = versions,
-    )
-}
+)
 
 @Immutable
 data class Option<T>(
@@ -83,7 +70,7 @@ data class Option<T>(
     val key: String,
     val description: String,
     val required: Boolean,
-    val type: String,
+    val type: KType,
     val default: T?,
     val presets: Map<String, T?>?,
     val validator: (T?) -> Boolean,
@@ -93,7 +80,7 @@ data class Option<T>(
         option.key,
         option.description.orEmpty(),
         option.required,
-        option.valueType,
+        option.type,
         option.default,
         option.values,
         { option.validator(option, it) },

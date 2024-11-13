@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
@@ -241,3 +243,13 @@ fun <T, R> ((T) -> R).withHapticFeedback(constant: Int): (T) -> R {
         this(it)
     }
 }
+
+private var transparentListItemColorsCached: ListItemColors? = null
+
+/**
+ * The default ListItem colors, but with [ListItemColors.containerColor] set to [Color.Transparent].
+ */
+val transparentListItemColors
+    @Composable get() = transparentListItemColorsCached
+        ?: ListItemDefaults.colors(containerColor = Color.Transparent)
+            .also { transparentListItemColorsCached = it }

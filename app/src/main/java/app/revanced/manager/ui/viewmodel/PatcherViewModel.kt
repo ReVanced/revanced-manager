@@ -152,8 +152,8 @@ class PatcherViewModel(
         )
 
     val patcherSucceeded =
-        workManager.getWorkInfoByIdLiveData(patcherWorkerId).map { workInfo: WorkInfo ->
-            when (workInfo.state) {
+        workManager.getWorkInfoByIdLiveData(patcherWorkerId).map { workInfo: WorkInfo? ->
+            when (workInfo?.state) {
                 WorkInfo.State.SUCCEEDED -> true
                 WorkInfo.State.FAILED -> false
                 else -> null
@@ -308,7 +308,7 @@ class PatcherViewModel(
                         // Check for base APK, first check if the app is already installed
                         if (existingPackageInfo == null) {
                             // If the app is not installed, check if the output file is a base apk
-                            if (currentPackageInfo.splitNames != null) {
+                            if (currentPackageInfo.splitNames.isNotEmpty()) {
                                 // Exit if there is no base APK package
                                 installerStatusDialogModel.packageInstallerStatus =
                                     PackageInstaller.STATUS_FAILURE_INVALID
