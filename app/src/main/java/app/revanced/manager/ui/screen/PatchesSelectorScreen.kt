@@ -46,6 +46,7 @@ import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW
 import app.revanced.manager.util.Options
 import app.revanced.manager.util.PatchSelection
 import app.revanced.manager.util.isScrollingUp
+import app.revanced.manager.util.transparentListItemColors
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -480,7 +481,8 @@ private fun ListHeader(
                     )
                 }
             }
-        }
+        },
+        colors = transparentListItemColors
     )
 }
 

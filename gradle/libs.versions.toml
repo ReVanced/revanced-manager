@@ -1,31 +1,30 @@
 [versions]
-ktx = "1.13.1"
-material3 = "1.2.1"
-ui-tooling = "1.6.8"
-viewmodel-lifecycle = "2.8.3"
+ktx = "1.15.0"
+material3 = "1.3.1"
+ui-tooling = "1.7.5"
+viewmodel-lifecycle = "2.8.7"
 splash-screen = "1.0.1"
-compose-activity = "1.9.0"
-paging = "3.3.0"
+compose-activity = "1.9.3"
 preferences-datastore = "1.1.1"
-work-runtime = "2.9.0"
-compose-bom = "2024.06.00"
+work-runtime = "2.10.0"
+compose-bom = "2024.10.01"
 accompanist = "0.34.0"
 placeholder = "1.1.2"
 reorderable = "1.5.2"
-serialization = "1.6.3"
-collection = "0.3.7"
+serialization = "1.7.3"
+collection = "0.3.8"
 room-version = "2.6.1"
-revanced-patcher = "19.3.1"
-revanced-library = "2.2.1"
+revanced-patcher = "21.0.0"
+revanced-library = "3.0.2"
 koin-version = "3.5.3"
 koin-version-compose = "3.5.3"
 reimagined-navigation = "1.5.0"
 ktor = "2.3.9"
 markdown-renderer = "0.22.0"
 fading-edges = "1.0.4"
-android-gradle-plugin = "8.3.2"
-kotlin-gradle-plugin = "1.9.22"
-dev-tools-gradle-plugin = "1.9.22-1.0.17"
+kotlin = "2.0.21"
+android-gradle-plugin = "8.7.2"
+dev-tools-gradle-plugin = "2.0.21-1.0.27"
 about-libraries-gradle-plugin = "11.1.1"
 coil = "2.6.0"
 app-icon-loader-coil = "1.5.0"
@@ -44,7 +43,6 @@ runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", ve
 runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "viewmodel-lifecycle" }
 splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
-paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 preferences-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "preferences-datastore" }
 
@@ -135,6 +133,9 @@ compose-icons-fontawesome = { group = "com.github.BenjaminHalko.compose-icons", 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 devtools = { id = "com.google.devtools.ksp", version.ref = "dev-tools-gradle-plugin" }
 about-libraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "about-libraries-gradle-plugin" }

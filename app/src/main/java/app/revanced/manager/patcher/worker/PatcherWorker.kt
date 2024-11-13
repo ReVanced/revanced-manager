@@ -154,7 +154,7 @@ class PatcherWorker(
                 }
 
                 is SelectedApp.Local -> selectedApp.file.also { args.setInputFile(it) }
-                is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo.sourceDir)
+                is SelectedApp.Installed -> File(pm.getPackageInfo(selectedApp.packageName)!!.applicationInfo!!.sourceDir)
             }
 
             val runtime = if (prefs.useProcessRuntime.get()) {

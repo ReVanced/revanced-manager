@@ -27,14 +27,12 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
 
         val selectedBundles = selectedPatches.keys
         val allPatches = bundles.filterKeys { selectedBundles.contains(it) }
-            .mapValues { (_, bundle) -> bundle.patchClasses(packageName) }
+            .mapValues { (_, bundle) -> bundle.patches(packageName) }
 
         val patchList = selectedPatches.flatMap { (bundle, selected) ->
             allPatches[bundle]?.filter { selected.contains(it.name) }
                 ?: throw IllegalArgumentException("Patch bundle $bundle does not exist")
         }
-
-        val integrations = bundles.mapNotNull { (_, bundle) -> bundle.integrations }
 
         // Set all patch options.
         options.forEach { (bundle, bundlePatchOptions) ->
@@ -53,7 +51,6 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
             cacheDir,
             frameworkPath,
             aaptPath,
-            enableMultithreadedDexWriter(),
             context,
             logger,
             File(inputFile),
@@ -62,8 +59,7 @@ class CoroutineRuntime(private val context: Context) : Runtime(context) {
         ).use { session ->
             session.run(
                 File(outputFile),
-                patchList,
-                integrations
+                patchList
             )
         }
     }

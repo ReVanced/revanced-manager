@@ -106,7 +106,7 @@ class PM(
         val pkgInfo = app.packageManager.getPackageArchiveInfo(path, 0) ?: return null
 
         // This is needed in order to load label and icon.
-        pkgInfo.applicationInfo.apply {
+        pkgInfo.applicationInfo!!.apply {
             sourceDir = path
             publicSourceDir = path
         }
@@ -114,7 +114,7 @@ class PM(
         return pkgInfo
     }
 
-    fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
+    fun PackageInfo.label() = this.applicationInfo!!.loadLabel(app.packageManager).toString()
 
     fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
 

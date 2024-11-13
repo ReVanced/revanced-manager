@@ -104,7 +104,7 @@ fun VersionSelectorScreen(
             viewModel.installedApp?.let { (packageInfo, installedApp) ->
                 SelectedApp.Installed(
                     packageName = viewModel.packageName,
-                    version = packageInfo.versionName
+                    version = packageInfo.versionName!!
                 ).let {
                     item {
                         SelectedAppItem(

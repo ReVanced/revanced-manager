@@ -104,7 +104,7 @@ fun BundleInformationDialog(
                 name = bundleName,
                 remoteUrl = bundle.asRemoteOrNull?.endpoint,
                 patchCount = patchCount,
-                version = props?.versionInfo?.patches,
+                version = props?.version,
                 autoUpdate = props?.autoUpdate ?: false,
                 onAutoUpdateChange = {
                     composableScope.launch {
