@@ -27,12 +27,12 @@
     "patchedSubtitle": "Zainstalowane aplikacje",
     "changeLaterSubtitle": "Możesz zmienić to później w ustawieniach.",
     "noSavedAppFound": "Nie znaleziono aplikacji",
-    "noInstallations": "Nie zainstalowano żadnych poprawionych aplikacji",
+    "noInstallations": "Nie zainstalowano żadnych łatanych aplikacji",
     "installUpdate": "Kontynuować instalację aktualizacji?",
     "updateSheetTitle": "Zaktualizuj Menedżera ReVanced",
     "updateDialogTitle": "Dostępna jest nowa aktualizacja",
     "updatePatchesSheetTitle": "Zaktualizuj łatki ReVanced",
-    "updateChangelogTitle": "Dziennik zmian",
+    "updateChangelogTitle": "Lista zmian",
     "updateDialogText": "Nowa aktualizacja jest dostępna dla ${file}.\n\nAktualnie zainstalowana wersja to ${version}.",
     "downloadConsentDialogTitle": "Pobrać potrzebne pliki?",
     "downloadConsentDialogText": "Menedżer ReVanced musi pobrać niezbędne pliki do prawidłowego działania.",
@@ -52,11 +52,11 @@
     "timeagoLabel": "${time} temu"
   },
   "patcherView": {
-    "widgetTitle": "Program łatający",
+    "widgetTitle": "Łataj",
     "patchButton": "Popraw",
-    "incompatibleArchWarningDialogText": "Aktualizowanie na tej architekturze nie jest jeszcze obsługiwane i może się nie powieść. Czy chcesz kontynuować mimo to?",
-    "removedPatchesWarningDialogText": "Usunięto plastry od ostatniego wprowadzenia aplikacji:\n\n${patches}\n\n${newPatches}Kontynuować?",
-    "addedPatchesDialogText": "Dodano plastry od ostatniej aktualizacji aplikacji:\n\n${addedPatches}\n\n",
+    "incompatibleArchWarningDialogText": "Łatanie na tej architekturze nie jest jeszcze obsługiwane i może się nie powieść. Czy chcesz kontynuować mimo to?",
+    "removedPatchesWarningDialogText": "Łatki usunięte od czasu Twojego ostatniego łatania aplikacji:\n\n${patches}\n\n${newPatches}Kontynuować?",
+    "addedPatchesDialogText": "Łatki dodane od czasu Twojego ostatniego łatania aplikacji:\n\n${addedPatches}\n\n",
     "requiredOptionDialogText": "Niektóre opcje muszą być ustawione."
   },
   "appSelectorCard": {
@@ -85,7 +85,7 @@
     "downloadToast": "Funkcja pobierania jest jeszcze niedostępna",
     "requireSuggestedAppVersionDialogText": "Wersja aplikacji, która została wybrana nie jest sugerowana, co może prowadzić do nieoczekiwanych problemów. Proszę wybrać sugerowaną wersję aplikacji.\n\nWybrana wersja: ${selected}\nSugerowana wersja: ${suggested}\n\nAby kontynuować, wyłącz \"Wymagaj sugerowanej wersji aplikacji\" w ustawieniach.",
     "featureNotAvailable": "Funkcja nie zaimplementowana",
-    "featureNotAvailableText": "Ta aplikacja jest podzieloną APK i może być zainstalowana tylko korzystając z uprawnień roota. Jednakże możesz załatać i zainstalować pełną APK wybierając ją z pamięci."
+    "featureNotAvailableText": "Ta aplikacja jest podzieloną APK i może być załatana i zainstalowana tylko korzystając z uprawnień roota. Jednakże możesz załatać i zainstalować pełną APK wybierając ją z pamięci."
   },
   "patchesSelectorView": {
     "viewTitle": "Wybierz łatki",
@@ -118,7 +118,7 @@
     "requiredOptionNull": "Należy ustawić następujące opcje:\n\n${options}"
   },
   "patchItem": {
-    "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas modyfikowania.\n\nWersja aplikacji: ${packageVersion}\nAktualnie wspierana wersja:\n${supportedVersions}",
+    "unsupportedDialogText": "Wybranie tej łatki może spowodować błędy podczas łatania.\n\nWersja aplikacji: ${packageVersion}\nAktualnie wspierana wersja:\n${supportedVersions}",
     "unsupportedPatchVersion": "Łatka nie jest wspierana dla tej wersji aplikacji.",
     "unsupportedRequiredOption": "Ta łatka wymaga ustawienia opcji, która nie jest wspierana przez tę aplikację",
     "patchesChangeWarningDialogText": "Zalecane jest użycie domyślnej listy wyboru łatek i opcji. Ich zmiana może spowodować nieoczekiwane problemy.\n\nMusisz włączyć \"Zezwól na zmianę listy wyboru łatek\" w ustawieniach przed zmianą listy wyboru łatek.",

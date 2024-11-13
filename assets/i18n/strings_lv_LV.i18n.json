@@ -16,7 +16,7 @@
   "showUpdateButton": "Rādīt atjauninājumus",
   "navigationView": {
     "dashboardTab": "Info panelis",
-    "patcherTab": "Pačeris",
+    "patcherTab": "Lāpītājs",
     "settingsTab": "Iestatījumi"
   },
   "homeView": {
@@ -27,11 +27,11 @@
     "patchedSubtitle": "Instalētās lietotnes",
     "changeLaterSubtitle": "Jūs varat mainīt šo iestatījumu vēlāk.",
     "noSavedAppFound": "Neviena lietotne nav atrasta",
-    "noInstallations": "Nav atrasta neviena pačota aplikācija",
+    "noInstallations": "Nav instalēta neviena lāpīta aplikācija",
     "installUpdate": "Vai turpināt instalēt atjauninājumu?",
     "updateSheetTitle": "Atjaunit ReVanced pārvaldnieku",
     "updateDialogTitle": "Jauns atjauninājums ir pieejams",
-    "updatePatchesSheetTitle": "ReVanced Patches atjaunināšana",
+    "updatePatchesSheetTitle": "Atjaunināt ReVanced ielāpus",
     "updateChangelogTitle": "Izmaiņu žurnāls",
     "updateDialogText": "Jauns atjauninājums ir pieejams ${file}.\n\nŠobrīd instalētā versija ir ${version}.",
     "downloadConsentDialogTitle": "Lejupielādēt nepieciešamos failus?",
@@ -52,8 +52,8 @@
     "timeagoLabel": "Pirms ${time}"
   },
   "patcherView": {
-    "widgetTitle": "Pačeris",
-    "patchButton": "Pačot",
+    "widgetTitle": "Lāpītājs",
+    "patchButton": "Lāpīt",
     "removedPatchesWarningDialogText": "Noņemti ielāpi kopš pēdējās reizes kad jūs lāpijāt šo lietotni:\n\n${patches}\n\n${newPatches}Vienalga turpināt?",
     "addedPatchesDialogText": "Pievienoti ielāpi kopš pēdējās reizes kad jūs lāpijāt šo lietotni:\n\n${addedPatches}",
     "requiredOptionDialogText": "Ir jāiestata dažas ielāpu opcijas."
@@ -115,14 +115,15 @@
     "unsupportedOption": "Šī opcija netiek atbalstīta"
   },
   "patchItem": {
-    "unsupportedDialogText": "Izvēloties šo paču var rasties paču kļūdas\n\nApp versija: ${packageVersion}\nPašlaik atbalstītās versijas:\n${supportedVersions}",
+    "unsupportedDialogText": "Var rasties ielāpu kļūdas, izvēloties šo ielāpu.\n\nLietotnes versija: ${packageVersion}\nPašlaik atbalstītās versijas:\n${supportedVersions}",
     "unsupportedPatchVersion": "Ielāps netiek atbalstīts šīs lietotnes versijai.",
     "patchesChangeWarningDialogButton": "Lietot noklusējuma izvēli"
   },
   "installerView": {
+    "installType": "Izvēlaties instalācijas tipu",
     "installButton": "Instalēt",
     "openButton": "Atvērt",
-    "notificationTitle": "ReVanced Manager pašlaik pačo",
+    "notificationTitle": "ReVanced Manager uzliek ielāpus",
     "notificationText": "Spied, lai atgrieztos pie instalācijas",
     "noExit": "Vēl notiek instalācija, nevar iziet..."
   },
@@ -142,7 +143,7 @@
     "sourcesResetDialogTitle": "Atiestatīt",
     "apiURLLabel": "API Saite",
     "selectApiURL": "API Saite",
-    "orgPatchesLabel": "Paču autori",
+    "orgPatchesLabel": "Ielāpu organizācija",
     "sourcesPatchesLabel": "Ielāpu avots",
     "contributorsLabel": "Autori",
     "contributorsHint": "ReVanced ieguldītāji",
@@ -150,6 +151,7 @@
     "autoUpdatePatchesHint": "Automātiski atjaunināt ielāpus uz jaunāko versiju",
     "universalPatchesLabel": "Rādīt universālos ielāpus",
     "lastPatchedAppLabel": "Saglabāt salāpīto lietotni",
+    "lastPatchedAppHint": "Saglabāt pēdējo ielāpu priekš vēlākas instalācijas vai eksportēšanas",
     "aboutLabel": "Par",
     "snackbarMessage": "Ievietots starpliktuvē",
     "restartAppForChanges": "Restartējiet lietotni, lai piemērotu izmaiņas",
@@ -170,6 +172,7 @@
     "installButton": "Instalēt",
     "uninstallButton": "Atinstalēt",
     "rootDialogTitle": "Kļūda",
+    "uninstallDialogText": "Vai esat pārliecināti, ka vēlaties atinstalēt šo lietotni?",
     "rootDialogText": "Aplikācija tika instalēta ar superuser pieejām, taču ReVanced Manager nav šādu pieeju.\nLūdzams uzlikt vispirms superuser ieejas.",
     "packageNameLabel": "Pakotnes nosaukums",
     "installTypeLabel": "Instalācijas tips",
@@ -182,5 +185,27 @@
   "contributorsView": {
     "widgetTitle": "Autori"
   },
-  "installErrorDialog": {}
+  "installErrorDialog": {
+    "mount_version_mismatch": "Versijas neatbilstība",
+    "mount_no_root": "Nav root piekļuves",
+    "mount_missing_installation": "Instalācija nav atrasta",
+    "status_failure_blocked": "Instalācija bloķēta",
+    "install_failed_verification_failure": "Verifikācija neizdevās",
+    "status_failure_invalid": "Instalācija nederīga",
+    "install_failed_version_downgrade": "Nevar samazināt versiju",
+    "status_failure_conflict": "Instalācijas konflikts",
+    "status_failure_storage": "Instalācijas krātuves problēma",
+    "status_failure_incompatible": "Instalācija nav saderīga",
+    "status_failure_timeout": "Instalācijas noildze",
+    "status_unknown": "Instalācija neizdevās",
+    "status_failure_timeout_description": "Instalēšana paņēma pārāk daudz laika.\n\nVai vēlaties mēģināt vēlreiz?",
+    "status_failure_storage_description": "Instalēšana neizdevās dēļ nepietiekamas vietas krātuvē.\n\nAtbrīvojiet vietu un mēģiniet vēlreiz.",
+    "status_failure_invalid_description": "Instalēšana neizdevās dēļ nederīgas lāpītās lietotnes.\n\nAtinstalēt lietotni un mēģināt vēlreiz?",
+    "status_failure_incompatible_description": "Šī lietotne nav saderīga ar jūsu ierīci.\n\nIzmantojiet APK, kuru jūsu ierīce atbalsta un mēģiniet vēlreiz.",
+    "status_failure_conflict_description": "Instalācija tika apturēta dēļ eksistējošas instalētas lietotnes.\n\nAtinstalēt instalēto lietotni un mēģināt vēlreiz?",
+    "status_failure_blocked_description": "Instalācija tika bloķēta dēļ  ${packageName}.\n\nPielāgojiet savus drošības iestatījumus un mēģiniet vēlreiz.",
+    "install_failed_verification_failure_description": "Instalācija neizdevās dēl verifikācijas problēmas.\n\nPielāgojiet savus drošības iestatījumus un mēģiniet vēlreiz.",
+    "install_failed_version_downgrade_description": "Instalācija neizdevās, jo lāpītā lietotne ir vecākas versijas nekā instalētā lietotne.\n\nAtinstalēt lietotni un mēģināt vēlreiz?",
+    "status_unknown_description": "Instalācija neizdevās nezināma iemesla dēļ. Lūdzu mēģiniet vēlreiz."
+  }
 }
