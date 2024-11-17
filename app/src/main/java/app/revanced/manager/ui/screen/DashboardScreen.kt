@@ -33,6 +33,8 @@ import app.revanced.manager.ui.component.AvailableUpdateDialog
 import app.revanced.manager.ui.component.NotificationCard
 import app.revanced.manager.ui.component.bundle.BundleItem
 import app.revanced.manager.ui.component.bundle.BundleTopBar
+import app.revanced.manager.ui.component.haptics.HapticFloatingActionButton
+import app.revanced.manager.ui.component.haptics.HapticTab
 import app.revanced.manager.ui.component.bundle.ImportPatchBundleDialog
 import app.revanced.manager.ui.viewmodel.DashboardViewModel
 import app.revanced.manager.util.toast
@@ -81,9 +83,9 @@ fun DashboardScreen(
     if (showAddBundleDialog) {
         ImportPatchBundleDialog(
             onDismiss = { showAddBundleDialog = false },
-            onLocalSubmit = { patches, integrations ->
+            onLocalSubmit = { patches ->
                 showAddBundleDialog = false
-                vm.createLocalSource(patches, integrations)
+                vm.createLocalSource(patches)
             },
             onRemoteSubmit = { url, autoUpdate ->
                 showAddBundleDialog = false
@@ -172,7 +174,7 @@ fun DashboardScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            HapticFloatingActionButton(
                 onClick = {
                     vm.cancelSourceSelection()
 
@@ -185,7 +187,7 @@ fun DashboardScreen(
                                         DashboardPage.BUNDLES.ordinal
                                     )
                                 }
-                                return@FloatingActionButton
+                                return@HapticFloatingActionButton
                             }
 
                             onAppSelectorClick()
@@ -205,7 +207,7 @@ fun DashboardScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.0.dp)
             ) {
                 DashboardPage.entries.forEachIndexed { index, page ->
-                    Tab(
+                    HapticTab(
                         selected = pagerState.currentPage == index,
                         onClick = { composableScope.launch { pagerState.animateScrollToPage(index) } },
                         text = { Text(stringResource(page.titleResId)) },

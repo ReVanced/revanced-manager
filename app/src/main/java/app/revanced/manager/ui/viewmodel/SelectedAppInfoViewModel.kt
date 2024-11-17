@@ -100,7 +100,7 @@ class SelectedAppInfoViewModel(input: Params) : ViewModel(), KoinComponent {
                 packageInfo.await()?.let {
                     SelectedApp.Installed(
                         packageName,
-                        it.versionName
+                        it.versionName!!
                     ) to installedAppDeferred.await()
                 }
         }

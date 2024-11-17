@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,9 +40,9 @@ import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ExceptionViewerDialog
 import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.LazyColumnWithScrollbar
+import app.revanced.manager.ui.component.haptics.HapticCheckbox
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.DownloadsViewModel
-import app.revanced.manager.util.PM
 import org.koin.androidx.compose.koinViewModel
 import java.security.MessageDigest
 
@@ -178,7 +177,7 @@ fun DownloadsSettingsScreen(
                                 is DownloaderPluginState.Untrusted -> R.string.downloader_plugin_state_untrusted
                             }
                         ),
-                        trailingContent = { Text(packageInfo.versionName) }
+                        trailingContent = { Text(packageInfo.versionName!!) }
                     )
                 }
             }
@@ -202,7 +201,7 @@ fun DownloadsSettingsScreen(
                     modifier = Modifier.clickable { viewModel.toggleApp(app) },
                     headlineContent = app.packageName,
                     leadingContent = (@Composable {
-                        Checkbox(
+                        HapticCheckbox(
                             checked = selected,
                             onCheckedChange = { viewModel.toggleApp(app) }
                         )

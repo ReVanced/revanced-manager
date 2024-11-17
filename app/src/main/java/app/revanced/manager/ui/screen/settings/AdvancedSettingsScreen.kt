@@ -1,10 +1,15 @@
 package app.revanced.manager.ui.screen.settings
 
 import android.app.ActivityManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Build
+import android.view.HapticFeedbackConstants
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Api
@@ -28,9 +33,11 @@ import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.IntegerItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.viewmodel.AdvancedSettingsViewModel
+import app.revanced.manager.util.toast
+import app.revanced.manager.util.withHapticFeedback
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun AdvancedSettingsScreen(
     onBackClick: () -> Unit,
@@ -82,15 +89,6 @@ fun AdvancedSettingsScreen(
                 }
             )
 
-            val exportDebugLogsLauncher =
-                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
-                    it?.let(vm::exportDebugLogs)
-                }
-            SettingsListItem(
-                headlineContent = stringResource(R.string.debug_logs_export),
-                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
-            )
-
             GroupHeader(stringResource(R.string.patcher))
             BooleanItem(
                 preference = vm.prefs.useProcessRuntime,
@@ -103,12 +101,6 @@ fun AdvancedSettingsScreen(
                 coroutineScope = vm.viewModelScope,
                 headline = R.string.process_runtime_memory_limit,
                 description = R.string.process_runtime_memory_limit_description,
-            )
-            BooleanItem(
-                preference = vm.prefs.multithreadingDexFileWriter,
-                coroutineScope = vm.viewModelScope,
-                headline = R.string.multithreaded_dex_file_writer,
-                description = R.string.multithreaded_dex_file_writer_description,
             )
 
             GroupHeader(stringResource(R.string.safeguards))
@@ -138,16 +130,37 @@ fun AdvancedSettingsScreen(
             )
 
             GroupHeader(stringResource(R.string.debugging))
+            val exportDebugLogsLauncher =
+                rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) {
+                    it?.let(vm::exportDebugLogs)
+                }
             SettingsListItem(
-                headlineContent = stringResource(R.string.about_device),
-                supportingContent = """
-                    **Version**: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-                    **Build type**: ${BuildConfig.BUILD_TYPE}
-                    **Model**: ${Build.MODEL}
-                    **Android version**: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
-                    **Supported Archs**: ${Build.SUPPORTED_ABIS.joinToString(", ")}
-                    **Memory limit**: $memoryLimit
+                headlineContent = stringResource(R.string.debug_logs_export),
+                modifier = Modifier.clickable { exportDebugLogsLauncher.launch(vm.debugLogFileName) }
+            )
+            val clipboard = remember { context.getSystemService<ClipboardManager>()!! }
+            val deviceContent = """
+                    Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
+                    Build type: ${BuildConfig.BUILD_TYPE}
+                    Model: ${Build.MODEL}
+                    Android version: ${Build.VERSION.RELEASE} (${Build.VERSION.SDK_INT})
+                    Supported Archs: ${Build.SUPPORTED_ABIS.joinToString(", ")}
+                    Memory limit: $memoryLimit
                 """.trimIndent()
+            SettingsListItem(
+                modifier = Modifier.combinedClickable(
+                    onClick = { },
+                    onLongClickLabel = stringResource(R.string.copy_to_clipboard),
+                    onLongClick = {
+                        clipboard.setPrimaryClip(
+                            ClipData.newPlainText("Device Information", deviceContent)
+                        )
+
+                        context.toast(context.getString(R.string.toast_copied_to_clipboard))
+                    }.withHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                ),
+                headlineContent = stringResource(R.string.about_device),
+                supportingContent = deviceContent
             )
         }
     }

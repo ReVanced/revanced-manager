@@ -2,8 +2,18 @@ package app.revanced.manager.ui.screen.settings
 
 import android.os.Build
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +28,7 @@ import app.revanced.manager.domain.manager.PreferencesManager
 import app.revanced.manager.ui.component.AppTopBar
 import app.revanced.manager.ui.component.ColumnWithScrollbar
 import app.revanced.manager.ui.component.GroupHeader
+import app.revanced.manager.ui.component.haptics.HapticRadioButton
 import app.revanced.manager.ui.component.settings.BooleanItem
 import app.revanced.manager.ui.component.settings.SettingsListItem
 import app.revanced.manager.ui.theme.Theme
@@ -96,14 +107,14 @@ private fun ThemePicker(
         title = { Text(stringResource(R.string.theme)) },
         text = {
             Column {
-                Theme.values().forEach {
+                Theme.entries.forEach {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { selectedTheme = it },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        RadioButton(
+                        HapticRadioButton(
                             selected = selectedTheme == it,
                             onClick = { selectedTheme = it })
                         Text(stringResource(it.displayName))

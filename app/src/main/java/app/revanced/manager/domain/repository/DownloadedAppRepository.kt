@@ -102,7 +102,7 @@ class DownloadedAppRepository(private val app: Application, db: AppDatabase, pri
             dao.insert(
                 DownloadedApp(
                     packageName = pkgInfo.packageName,
-                    version = pkgInfo.versionName,
+                    version = pkgInfo.versionName!!,
                     directory = relativePath,
                 )
             )

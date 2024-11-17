@@ -87,11 +87,11 @@ class DownloaderPluginRepository(
 
         return try {
             val packageInfo = pm.getPackageInfo(packageName, flags = PackageManager.GET_META_DATA)!!
-            val className = packageInfo.applicationInfo.metaData.getString(METADATA_PLUGIN_CLASS)
+            val className = packageInfo.applicationInfo!!.metaData.getString(METADATA_PLUGIN_CLASS)
                 ?: throw Exception("Missing metadata attribute $METADATA_PLUGIN_CLASS")
 
             val classLoader =
-                PathClassLoader(packageInfo.applicationInfo.sourceDir, app.classLoader)
+                PathClassLoader(packageInfo.applicationInfo!!.sourceDir, app.classLoader)
             val pluginContext = app.createPackageContext(packageName, 0)
 
             val downloader = classLoader
@@ -109,7 +109,7 @@ class DownloaderPluginRepository(
                 LoadedDownloaderPlugin(
                     packageName,
                     with(pm) { packageInfo.label() },
-                    packageInfo.versionName,
+                    packageInfo.versionName!!,
                     downloader.get,
                     downloader.download,
                     classLoader

@@ -5,20 +5,20 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.devtools)
     alias(libs.plugins.about.libraries)
-    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 34
-    buildToolsVersion = "34.0.0"
+    compileSdk = 35
+    buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "app.revanced.manager"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "0.0.1"
         vectorDrawables.useSupportLibrary = true
@@ -194,6 +194,10 @@ dependencies {
 
     // Scrollbars
     implementation(libs.scrollbars)
+
+    // EnumUtil
+    implementation(libs.enumutil)
+    ksp(libs.enumutil.ksp)
 
     // Reorderable lists
     implementation(libs.reorderable)

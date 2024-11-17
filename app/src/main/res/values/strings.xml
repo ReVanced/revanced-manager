@@ -2,12 +2,14 @@
     <string name="app_name">ReVanced Manager</string>
     <string name="patcher">Patcher</string>
     <string name="patches">Patches</string>
-    <string name="integrations">Integrations</string>
     <string name="cli">CLI</string>
     <string name="manager">Manager</string>
 
     <string name="plugin_host_permission_label">ReVanced Manager plugin host</string>
     <string name="plugin_host_permission_description">Used to control access to ReVanced Manager plugins. Only ReVanced Manager has this.</string>
+
+    <string name="toast_copied_to_clipboard">Copied!</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="settings">Settings</string>
@@ -21,7 +23,6 @@
     <string name="import_bundle">Import patch bundle</string>
     <string name="bundle_patches">Bundle patches</string>
     <string name="patch_bundle_field">Patch bundle</string>
-    <string name="integrations_field">Integrations</string>
     <string name="file_field_set">Selected</string>
     <string name="file_field_not_set">Not selected</string>
 
@@ -56,19 +57,18 @@
     <string name="auto_updates_dialog_note">These settings can be changed later.</string>
 
     <string name="general">General</string>
-    <string name="general_description">General settings</string>
-    <string name="advanced">Advanced</string>
-    <string name="advanced_description">Advanced settings</string>
+    <string name="general_description">Theme, dynamic color</string>
     <string name="updates">Updates</string>
-    <string name="updates_description">Updates for ReVanced Manager</string>
+    <string name="updates_description">Check for updates and view changelogs</string>
+    <string name="downloads">Downloads</string>
+    <string name="downloads_description">Downloader plugins and downloaded apps</string>
+    <string name="import_export">Import &amp; export</string>
+    <string name="import_export_description">Keystore, patch options and selection</string>
+    <string name="advanced">Advanced</string>
+    <string name="advanced_description">API URL, memory limit, debugging</string>
+    <string name="about">About</string>
     <string name="opensource_licenses">Open source licenses</string>
     <string name="opensource_licenses_description">View all the libraries used to make this application</string>
-    <string name="downloads">Downloads</string>
-    <string name="downloads_description">Manage downloaded content</string>
-    <string name="import_export">Import &amp; export</string>
-    <string name="import_export_description">Import and export settings</string>
-    <string name="about">About</string>
-    <string name="about_description">About ReVanced</string>
 
     <string name="contributors">Contributors</string>
     <string name="contributors_description">View the contributors of ReVanced</string>
@@ -76,8 +76,6 @@
     <string name="dynamic_color_description">Adapt colors to the wallpaper</string>
     <string name="theme">Theme</string>
     <string name="theme_description">Choose between light or dark theme</string>
-    <string name="multithreaded_dex_file_writer">Multi-threaded DEX file writer</string>
-    <string name="multithreaded_dex_file_writer_description">Use multiple cores to write DEX files. This is faster, but uses more memory</string>
     <string name="safeguards">Safeguards</string>
     <string name="patch_compat_check">Disable version compatibility check</string>
     <string name="patch_compat_check_description">The check restricts patches to supported app versions</string>
@@ -132,7 +130,6 @@
     <string name="search_apps">Search apps…</string>
     <string name="loading_body">Loading…</string>
     <string name="downloading_patches">Downloading patch bundle…</string>
-    <string name="downloading_integrations">Downloading Integrations…</string>
 
     <string name="options">Options</string>
     <string name="ok">OK</string>
@@ -154,7 +151,6 @@
     <string name="close">Close</string>
     <string name="system">System</string>
     <string name="light">Light</string>
-    <string name="information">Information</string>
     <string name="dark">Dark</string>
     <string name="appearance">Appearance</string>
     <string name="downloaded_apps">Downloaded apps</string>
@@ -180,7 +176,7 @@
     <string name="device_memory_limit">Memory limits</string>
     <string name="device_memory_limit_format">%1$dMB (Normal) - %2$dMB (Large)</string>
     <string name="patch_bundles_section">Patch bundles</string>
-    <string name="patch_bundles_redownload">Redownload all patch bundles</string>
+    <string name="patch_bundles_force_download">Force download all patch bundles</string>
     <string name="patch_bundles_reset">Reset patch bundles</string>
     <string name="patching">Patching</string>
     <string name="signing">Signing</string>
@@ -190,15 +186,12 @@
     <string name="tab_bundles">Patch bundles</string>
     <string name="delete">Delete</string>
     <string name="refresh">Refresh</string>
-    <string name="remote">Remote</string>
-    <string name="local">Local</string>
     <string name="continue_anyways">Continue anyways</string>
     <string name="download_another_version">Download another version</string>
     <string name="download_app">Download app</string>
     <string name="download_apk">Download APK file</string>
     <string name="source_download_fail">Failed to download patch bundle: %s</string>
     <string name="source_replace_fail">Failed to load updated patch bundle: %s</string>
-    <string name="source_replace_integrations_fail">Failed to update integrations: %s</string>
     <string name="no_patched_apps_found">No patched apps found</string>
     <string name="tap_on_patches">Tap on the patches to get more information about them</string>
     <string name="bundles_selected">%s selected</string>
@@ -235,7 +228,7 @@
     <string name="applied_patches">Applied patches</string>
     <string name="view_applied_patches">View applied patches</string>
     <string name="default_install">Default</string>
-    <string name="root_install">Root</string>
+    <string name="mount_install">Mount</string>
     <string name="mounted">Mounted</string>
     <string name="not_mounted">Not mounted</string>
     <string name="mount">Mount</string>
@@ -275,6 +268,7 @@
     <string name="install_app">Install</string>
     <string name="install_app_success">App installed</string>
     <string name="install_app_fail">Failed to install app: %s</string>
+    <string name="reinstall_app_fail">Failed to reinstall app: %s</string>
     <string name="uninstall_app_fail">Failed to uninstall app: %s</string>
     <string name="open_app">Open</string>
     <string name="save_apk">Save APK</string>
@@ -305,6 +299,7 @@
     <string name="drag_handle">reorder</string>
 
     <string name="more">More</string>
+    <string name="less">Less</string>
     <string name="continue_">Continue</string>
     <string name="dismiss">Dismiss</string>
     <string name="permanent_dismiss">Do not show this again</string>
@@ -317,14 +312,15 @@
     <string name="submit_feedback_description">Help us improve this application</string>
     <string name="developer_options">Developer options</string>
     <string name="developer_options_description">Options for debugging issues</string>
-    <string name="bundle_input_name">Name</string>
     <string name="bundle_input_source_url">Source URL</string>
     <string name="bundle_update_success">Successfully updated %s</string>
     <string name="bundle_update_unavailable">No update available for %s</string>
     <string name="bundle_auto_update">Auto update</string>
     <string name="bundle_auto_update_description">Automatically update this bundle when ReVanced starts</string>
-    <string name="bundle_type">Bundle type</string>
-    <string name="bundle_type_description">Choose the type of bundle you want</string>
+    <string name="bundle_view_patches">View patches</string>
+    <string name="bundle_view_patches_any_version">Any version</string>
+    <string name="bundle_view_patches_any_package">Any package</string>
+
     <string name="about_revanced_manager">About ReVanced Manager</string>
     <string name="revanced_manager_description">ReVanced Manager is an application designed to work with ReVanced Patcher, which allows for long-lasting patches to be created for Android apps. The patching system is designed to automatically work with new versions of apps with minimal maintenance.</string>
     <string name="update_available">An update is available</string>
@@ -376,6 +372,24 @@
     <string name="local_bundle_description">Import local files from your storage, does not automatically update</string>
     <string name="remote_bundle_description">Import remote files from a URL, can automatically update</string>
     <string name="recommended">Recommended</string>
+
+    <string name="installation_failed_dialog_title">Installation failed</string>
+    <string name="installation_cancelled_dialog_title">Installation cancelled</string>
+    <string name="installation_blocked_dialog_title">Installation blocked</string>
+    <string name="installation_conflict_dialog_title">Installation conflict</string>
+    <string name="installation_incompatible_dialog_title">Installation incompatible</string>
+    <string name="installation_invalid_dialog_title">Installation invalid</string>
+    <string name="installation_storage_issue_dialog_title">Not enough storage</string>
+    <string name="installation_timeout_dialog_title">Installation timed out</string>
+    <string name="installation_failed_description">The installation failed due to an unknown reason. Try again?</string>
+    <string name="installation_aborted_description">The installation was cancelled manually. Try again?</string>
+    <string name="installation_blocked_description">The installation was blocked. Review your device security settings and try again.</string>
+    <string name="installation_conflict_description">The installation was prevented by an existing installation of the app. Uninstall the installed app and try again?</string>
+    <string name="installation_incompatible_description">The app is incompatible with this device. Use an APK that is supported by this device and try again.</string>
+    <string name="installation_invalid_description">The app is invalid. Uninstall the app and try again?</string>
+    <string name="installation_storage_issue_description">The app could not be installed due to insufficient storage. Free up some space and try again.</string>
+    <string name="installation_timeout_description">The installation took too long. Try again?</string>
+    <string name="reinstall">Reinstall</string>
     <string name="show">Show</string>
     <string name="debugging">Debugging</string>
     <string name="about_device">About device</string>

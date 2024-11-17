@@ -10,11 +10,11 @@ import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
+import androidx.core.content.pm.PackageInfoCompat
 import android.content.pm.Signature
 import android.os.Build
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import androidx.core.content.pm.PackageInfoCompat
 import app.revanced.manager.domain.repository.PatchBundleRepository
 import app.revanced.manager.service.InstallService
 import app.revanced.manager.service.UninstallService
@@ -121,13 +121,17 @@ class PM(
         val pkgInfo = app.packageManager.getPackageArchiveInfo(path, 0) ?: return null
 
         // This is needed in order to load label and icon.
-        pkgInfo.applicationInfo.apply {
+        pkgInfo.applicationInfo!!.apply {
             sourceDir = path
             publicSourceDir = path
         }
 
         return pkgInfo
     }
+
+    fun PackageInfo.label() = this.applicationInfo!!.loadLabel(app.packageManager).toString()
+
+    fun getVersionCode(packageInfo: PackageInfo) = PackageInfoCompat.getLongVersionCode(packageInfo)
 
     fun getSignature(packageName: String): Signature =
         // Get the last signature from the list because we want the newest one if SigningInfo.getSigningCertificateHistory() was used.
@@ -140,8 +144,6 @@ class PM(
         mapOf(signature to PackageManager.CERT_INPUT_RAW_X509),
         false
     )
-
-    fun PackageInfo.label() = this.applicationInfo.loadLabel(app.packageManager).toString()
 
     suspend fun installApp(apks: List<File>) = withContext(Dispatchers.IO) {
         val packageInstaller = app.packageManager.packageInstaller

@@ -79,7 +79,7 @@ class AppSelectorViewModel(
                 pm.getPackageInfo(this)?.let { packageInfo ->
                     SelectedApp.Local(
                         packageName = packageInfo.packageName,
-                        version = packageInfo.versionName,
+                        version = packageInfo.versionName!!,
                         file = this,
                         temporary = true
                     )

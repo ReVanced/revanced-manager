@@ -116,7 +116,6 @@ fun AppSelectorScreen(
                             },
                             colors = transparentListItemColors
                         )
-
                     }
                 }
             } else {

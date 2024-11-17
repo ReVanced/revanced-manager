@@ -20,6 +20,8 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
 import kotlin.reflect.KClass
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
 @Entity(
     tableName = "options",
@@ -46,8 +48,8 @@ data class Option(
 
             val errorMessage = "Cannot deserialize value as ${option.type}"
             try {
-                if (option.type.endsWith("Array")) {
-                    val elementType = option.type.removeSuffix("Array")
+                if (option.type.classifier == List::class) {
+                    val elementType = option.type.arguments.first().type!!
                     return raw.jsonArray.map { deserializeBasicType(elementType, it.jsonPrimitive) }
                 }
 
@@ -67,12 +69,17 @@ data class Option(
                 allowSpecialFloatingPointValues = true
             }
 
-            private fun deserializeBasicType(type: String, value: JsonPrimitive) = when (type) {
-                "Boolean" -> value.boolean
-                "Int" -> value.int
-                "Long" -> value.long
-                "Float" -> value.float
-                "String" -> value.content.also { if (!value.isString) throw SerializationException("Expected value to be a string: $value") }
+            private fun deserializeBasicType(type: KType, value: JsonPrimitive) = when (type) {
+                typeOf<Boolean>() -> value.boolean
+                typeOf<Int>() -> value.int
+                typeOf<Long>() -> value.long
+                typeOf<Float>() -> value.float
+                typeOf<String>() -> value.content.also {
+                    if (!value.isString) throw SerializationException(
+                        "Expected value to be a string: $value"
+                    )
+                }
+
                 else -> throw SerializationException("Unknown type: $type")
             }
 
